@@ -22,7 +22,7 @@ pytest.skip(msg="Pycoingecko tests have not been migrated.", allow_module_level=
 @pytest.mark.record_stdout
 def test_display_potential_returns():
     dd_pycoingecko_view.display_coin_potential_returns(
-        main_coin="algorand", vs="bitcoin"
+        to_symbol="algorand", from_symbol="bitcoin"
     )
 
 
@@ -38,7 +38,7 @@ def get_bitcoin(mock_load):
     ) as f:
         sample_return = json.load(f)
     mock_load.return_value = sample_return
-    df = load("btc", vs="usd")
+    df = load("btc", vs_currency="usd", source="YahooFinance")
     return df
 
 

@@ -1,6 +1,6 @@
 ```
 usage: maxutil [-p HISTORIC_PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr]
-               [-f {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE]
+               [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE]
                [-mt NAN_FILL_METHOD]
                [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}]
                [-r RISK_FREE] [-ra RISK_AVERSION] [-a SIGNIFICANCE_LEVEL]
@@ -31,7 +31,7 @@ optional arguments:
                         MM-DD' format (default: )
   -lr, --log-returns    If use logarithmic or arithmetic returns to calculate
                         returns (default: False)
-  -f {d,w,m}, --freq {d,w,m}
+  --freq {d,w,m}
                         Frequency used to calculate returns. Possible values
                         are: 'd': for daily returns 'w': for weekly returns
                         'm': for monthly returns (default: d)
@@ -114,7 +114,7 @@ Example:
  [3 Years] Display a maximal risk averse utility function
  portfolio using volatility as risk measure
 
-     Weights      
+     Weights
 ┏━━━━━━┳━━━━━━━━━┓
 ┃      ┃ Value   ┃
 ┡━━━━━━╇━━━━━━━━━┩

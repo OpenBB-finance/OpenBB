@@ -1,7 +1,8 @@
 """Parent Classes"""
 __docformat__ = "numpy"
 
-# pylint: disable= C0301
+# pylint: disable= C0301,C0302,R0902
+
 
 from abc import ABCMeta, abstractmethod
 import argparse
@@ -9,6 +10,7 @@ import re
 import os
 import difflib
 import logging
+import json
 
 from typing import Union, List, Dict, Any
 from datetime import datetime, timedelta
@@ -34,10 +36,11 @@ from openbb_terminal.helper_funcs import (
     support_message,
     check_file_type_saved,
     check_positive,
-    get_ordered_list_sources,
+    parse_and_split_input,
+    search_wikipedia,
 )
 from openbb_terminal.config_terminal import theme
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, get_ordered_list_sources
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.terminal_helper import open_openbb_documentation
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
@@ -53,10 +56,10 @@ controllers: Dict[str, Any] = {}
 
 CRYPTO_SOURCES = {
     "bin": "Binance",
-    "cg": "CoinGecko",
+    "CoinGecko": "CoinGecko",
     "cp": "CoinPaprika",
     "cb": "Coinbase",
-    "yf": "YahooFinance",
+    "YahooFinance": "YahooFinance",
 }
 
 SUPPORT_TYPE = ["bug", "suggestion", "question", "generic"]
@@ -77,6 +80,7 @@ class BaseController(metaclass=ABCMeta):
         "r",
         "reset",
         "support",
+        "wiki",
     ]
 
     CHOICES_COMMANDS: List[str] = []
@@ -100,8 +104,11 @@ class BaseController(metaclass=ABCMeta):
         """
         self.check_path()
         self.path = [x for x in self.PATH.split("/") if x != ""]
-
-        self.queue = queue if (queue and self.PATH != "/") else list()
+        self.queue = (
+            self.parse_input(an_input="/".join(queue))
+            if (queue and self.PATH != "/")
+            else list()
+        )
 
         controller_choices = self.CHOICES_COMMANDS + self.CHOICES_MENUS
         if controller_choices:
@@ -190,6 +197,34 @@ class BaseController(metaclass=ABCMeta):
     def print_help(self) -> None:
         raise NotImplementedError("Must override print_help.")
 
+    def parse_input(self, an_input: str) -> List:
+        """Parse controller input
+
+        Splits the command chain from user input into a list of individual commands
+        while respecting the forward slash in the command arguments.
+
+        In the default scenario only unix-like paths are handles by the parser.
+        Override this function in the controller classes that inherit from this one to
+        resolve edge cases specific to command arguments on those controllers.
+
+        When handling edge cases add additional regular expressions to the list.
+
+        Parameters
+        ----------
+        an_input : str
+            User input string
+
+        Returns
+        -------
+        List
+            Command queue as list
+        """
+        custom_filters: List = []
+        commands = parse_and_split_input(
+            an_input=an_input, custom_filters=custom_filters
+        )
+        return commands
+
     def contains_keys(self, string_to_check: str) -> bool:
         if self.KEYS_MENU in string_to_check or self.KEYS_MENU in self.PATH:
             return True
@@ -208,13 +243,14 @@ class BaseController(metaclass=ABCMeta):
         self, known_cmd: str, other_args_str: str, the_input: str
     ) -> None:
         if not self.contains_keys(the_input):
-            logger.info(
-                "CMD: {'path': '%s', 'known_cmd': '%s', 'other_args': '%s', 'input': '%s'}",
-                self.PATH,
-                known_cmd,
-                other_args_str,
-                the_input,
-            )
+            cmd = {
+                "path": self.PATH,
+                "known_cmd": known_cmd,
+                "other_args": other_args_str,
+                "input": the_input,
+            }
+            logger.info("CMD: %s", json.dumps(cmd))
+
         if the_input not in self.KEYS_MENU:
             self.log_queue()
 
@@ -227,15 +263,14 @@ class BaseController(metaclass=ABCMeta):
         List[str]
             List of commands in the queue to execute
         """
+        actions = self.parse_input(an_input)
 
         # Empty command
-        if not an_input:
+        if len(actions) == 0:
             pass
-        #    console.print("")
 
         # Navigation slash is being used first split commands
-        elif "/" in an_input:
-            actions = an_input.split("/")
+        elif len(actions) > 1:
 
             # Absolute path is specified
             if not actions[0]:
@@ -430,6 +465,38 @@ class BaseController(metaclass=ABCMeta):
                 path=self.PATH,
             )
 
+    @log_start_end(log=logger)
+    def call_wiki(self, other_args: List[str]) -> None:
+        """Process wiki command"""
+
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="wiki",
+            description="Search Wikipedia",
+        )
+
+        parser.add_argument(
+            "--expression",
+            "-e",
+            action="store",
+            nargs="+",
+            dest="expression",
+            required=True,
+            default="",
+            help="Expression to search for",
+        )
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-e")
+
+        ns_parser = parse_simple_args(parser, other_args)
+
+        if ns_parser:
+            if ns_parser.expression:
+                expression = " ".join(ns_parser.expression)
+                search_wikipedia(expression)
+
     def parse_known_args_and_warn(
         self,
         parser: argparse.ArgumentParser,
@@ -501,9 +568,9 @@ class BaseController(metaclass=ABCMeta):
                 help="Number of entries to show in data.",
                 type=check_positive,
             )
-
         sources = get_ordered_list_sources(f"{self.PATH}{parser.prog}")
-        if sources:
+        # Allow to change source if there is more than one
+        if len(sources) > 1:
             parser.add_argument(
                 "--source",
                 action="store",
@@ -616,6 +683,10 @@ class BaseController(metaclass=ABCMeta):
                     an_input = "exit"
 
             try:
+                # Allow user to go back to root
+                if an_input == "/":
+                    an_input = "home"
+
                 # Process the input command
                 self.queue = self.switch(an_input)
 
@@ -755,7 +826,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             "-r",
             "--iexrange",
             dest="iexrange",
-            help="Range for using the iexcloud api.  Note that longer range requires more tokens in account",
+            help="Range for using the iexcloud api.  Longer range requires more tokens in account",
             choices=["ytd", "1y", "2y", "5y", "6m"],
             type=str,
             default="ytd",
@@ -763,10 +834,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
 
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-        )
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
             if ns_parser.weekly and ns_parser.monthly:
@@ -787,14 +855,15 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 )
             else:
                 # This seems to block the .exe since the folder needs to be manually created
-                # This block basically makes sure that we only look for the file if the -f flag is used
-                # If we add files in the argparse choices, it will fail for the .exe even if no -f is used
+                # This block makes sure that we only look for the file if the -f flag is used
+                # Adding files in the argparse choices, will fail for the .exe even without -f
                 try:
                     if ns_parser.filepath not in os.listdir(
                         os.path.join("custom_imports", "stocks")
                     ):
                         console.print(
-                            f"[red]{ns_parser.filepath} not found in custom_imports/stocks/ folder[/red].\n"
+                            f"[red]{ns_parser.filepath} not found in custom_imports/stocks/ "
+                            "folder[/red].\n"
                         )
                         return
                 except Exception as e:
@@ -826,7 +895,9 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     self.ticker = ns_parser.ticker.upper()
                     self.suffix = ""
 
-                if ns_parser.source == "iex":
+                if ns_parser.source == "IEXCloud":
+                    self.start = self.stock.index[0].to_pydatetime()
+                elif ns_parser.source == "EODHD":
                     self.start = self.stock.index[0].to_pydatetime()
                 else:
                     self.start = ns_parser.start
@@ -852,13 +923,17 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
         super().__init__(queue)
 
         self.symbol = ""
+        self.vs = ""
         self.current_df = pd.DataFrame()
         self.current_currency = ""
         self.source = ""
         self.current_interval = ""
+        self.exchange = ""
         self.price_str = ""
+        self.interval = ""
         self.resolution = "1D"
         self.TRY_RELOAD = True
+        self.exchanges = cryptocurrency_helpers.get_exchanges_ohlc()
 
     def call_load(self, other_args):
         """Process load command"""
@@ -866,8 +941,11 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
-            description="Load crypto currency to perform analysis on."
-            "CoinGecko is used as source for price and YahooFinance for volume.",
+            description="""Load crypto currency to perform analysis on.
+            Yahoo Finance is used as default source.
+            Other sources can be used such as 'ccxt' or 'cg' with --source.
+            If you select 'ccxt', you can then select any exchange with --exchange.
+            You can also select a specific interval with --interval.""",
         )
         parser.add_argument(
             "-c",
@@ -879,42 +957,79 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
         )
 
         parser.add_argument(
-            "-d",
-            "--days",
-            default="365",
-            dest="days",
-            help="Data up to number of days ago",
-            choices=["1", "7", "14", "30", "90", "180", "365"],
+            "-s",
+            "--start",
+            type=valid_date,
+            default=(datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d"),
+            dest="start",
+            help="The starting date (format YYYY-MM-DD) of the crypto",
+        )
+
+        parser.add_argument(
+            "--exchange",
+            help="Exchange to search",
+            dest="exchange",
+            type=str,
+            default="binance",
+            choices=self.exchanges,
+        )
+
+        parser.add_argument(
+            "-e",
+            "--end",
+            type=valid_date,
+            default=datetime.now().strftime("%Y-%m-%d"),
+            dest="end",
+            help="The ending date (format YYYY-MM-DD) of the crypto",
         )
         parser.add_argument(
-            "--vs",
-            help="Quote currency (what to view coin vs)",
-            dest="vs",
-            default="usd",
+            "-i",
+            "--interval",
+            action="store",
+            dest="interval",
             type=str,
-            choices=["usd", "eur"],
+            default="1440",
+            choices=["1", "5", "15", "30", "60", "240", "1440", "10080", "43200"],
+            help="The interval of the crypto",
+        )
+
+        parser.add_argument(
+            "--vs",
+            help="Quote currency (what to view coin vs). e.g., usdc, usdt, ... if source is ccxt, usd, eur, ... otherwise",  # noqa
+            dest="vs",
+            default="usdt",
+            type=str,
         )
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
 
-        ns_parser = parse_simple_args(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
+            if ns_parser.source in ("YahooFinance", "CoinGecko"):
+                if ns_parser.vs == "usdt":
+                    ns_parser.vs = "usd"
             (self.current_df) = cryptocurrency_helpers.load(
-                symbol_search=ns_parser.coin.lower(),
-                days=int(ns_parser.days),
-                vs=ns_parser.vs,
+                symbol=ns_parser.coin.lower(),
+                vs_currency=ns_parser.vs,
+                end_date=ns_parser.end,
+                start_date=ns_parser.start,
+                interval=ns_parser.interval,
+                source=ns_parser.source,
             )
             if not self.current_df.empty:
-                self.current_interval = "1day"
+                self.vs = ns_parser.vs
+                self.exchange = ns_parser.exchange
+                self.source = ns_parser.source
+                self.current_interval = ns_parser.interval
                 self.current_currency = ns_parser.vs
                 self.symbol = ns_parser.coin.lower()
                 cryptocurrency_helpers.show_quick_performance(
-                    self.current_df, self.symbol, self.current_currency
-                )
-            else:
-                console.print(
-                    f"\n[red]Could not find [bold]{ns_parser.coin}[/bold] in [bold]yfinance[/bold]."
-                    f"Make sure you search for symbol (e.g., btc) and not full name (e.g., bitcoin)[/red]\n"  # noqa: E501
+                    self.current_df,
+                    self.symbol,
+                    self.current_currency,
+                    ns_parser.source,
+                    ns_parser.exchange,
+                    self.current_interval,
                 )

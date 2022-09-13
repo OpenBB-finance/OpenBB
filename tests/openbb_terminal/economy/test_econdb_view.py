@@ -2,7 +2,7 @@
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.economy import econdb_view, econdb_model
+from openbb_terminal.economy import econdb_view
 
 
 @pytest.mark.vcr
@@ -45,4 +45,4 @@ def test_show_treasuries(
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_show_treasury_maturities():
-    econdb_view.show_treasury_maturities(econdb_model.TREASURIES)
+    econdb_view.show_treasury_maturities()

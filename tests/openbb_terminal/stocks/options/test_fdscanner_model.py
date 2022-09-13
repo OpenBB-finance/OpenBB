@@ -17,7 +17,7 @@ def vcr_config():
 
 @pytest.mark.vcr
 def test_unusual_options(recorder):
-    result_tuple = fdscanner_model.unusual_options(num=5)
+    result_tuple = fdscanner_model.unusual_options(limit=5)
     result_tuple = (
         result_tuple[0],
         result_tuple[1].isoformat(),
@@ -32,7 +32,7 @@ def test_unusual_options_invalid_status(mocker):
     mock_response.status_code = 400
     mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
 
-    result_tuple = fdscanner_model.unusual_options(num=5)
+    result_tuple = fdscanner_model.unusual_options(limit=5)
 
     assert result_tuple[0].empty
     assert isinstance(result_tuple[1], str)

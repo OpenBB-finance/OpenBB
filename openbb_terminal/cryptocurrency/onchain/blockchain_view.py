@@ -25,8 +25,8 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_btc_circulating_supply(
-    since: int,
-    until: int,
+    since: int = int(datetime(2010, 1, 1).timestamp()),
+    until: int = int(datetime.now().timestamp()),
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -78,8 +78,8 @@ def display_btc_circulating_supply(
 
 @log_start_end(log=logger)
 def display_btc_confirmed_transactions(
-    since: int,
-    until: int,
+    since: int = int(datetime(2010, 1, 1).timestamp()),
+    until: int = int(datetime.now().timestamp()),
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:

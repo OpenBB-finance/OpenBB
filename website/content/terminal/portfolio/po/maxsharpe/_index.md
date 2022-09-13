@@ -1,6 +1,6 @@
 ```
 usage: maxsharpe [-p HISTORIC_PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr]
-                 [-f {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE]
+                 [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE]
                  [-mt NAN_FILL_METHOD]
                  [-rm {MV,MAD,MSV,FLPM,SLPM,CVaR,EVaR,WR,ADD,UCI,CDaR,EDaR,MDD}]
                  [-r RISK_FREE] [-a SIGNIFICANCE_LEVEL] [-tr TARGET_RETURN]
@@ -12,7 +12,7 @@ usage: maxsharpe [-p HISTORIC_PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr]
 
 Maximizes the Risk-Adjusted Return Ratio. The Sharpe ratio is one of the most widely used methods for calculating risk-adjusted return. Modern Portfolio Theory (MPT) states that adding assets to a diversified portfolio that has low correlations can decrease portfolio risk without sacrificing returns. Adding diversification should increase the Sharpe ratio compared to similar portfolios with a lower level of diversification. For this to be true, investors must also accept the assumption that risk is equal to volatility, which is not unreasonable but may be too narrow to be applied to all investments. Post-Modern Portfolio Theory (PMPT) allows to extend the concept of Sharpe ratio to other risk measures like conditional value at risk or conditional drawdown at risk to consider downside risk aversion.
 
-The Risk-Adjusted Return Ratio is calculated as follows: 
+The Risk-Adjusted Return Ratio is calculated as follows:
 
 1. Subtract the risk-free rate from the return of the portfolio. The risk-free rate could be a U.S. Treasury rate or yield, such as the one-year or two-year Treasury yield.
 
@@ -38,7 +38,7 @@ optional arguments:
                         MM-DD' format (default: )
   -lr, --log-returns    If use logarithmic or arithmetic returns to calculate
                         returns (default: False)
-  -f {d,w,m}, --freq {d,w,m}
+  --freq {d,w,m}
                         Frequency used to calculate returns. Possible values
                         are: 'd': for daily returns 'w': for weekly returns
                         'm': for monthly returns (default: d)
@@ -119,7 +119,7 @@ Example:
  [3 Years] Display a maximal return/risk ratio portfolio using
 volatility as risk measure
 
-     Weights      
+     Weights
 ┏━━━━━━┳━━━━━━━━━┓
 ┃      ┃ Value   ┃
 ┡━━━━━━╇━━━━━━━━━┩

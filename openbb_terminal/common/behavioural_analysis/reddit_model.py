@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import logging
 from datetime import datetime, timedelta
 from typing import Dict, List, Tuple
+import warnings
 
 import finviz
 import pandas as pd
@@ -38,13 +39,13 @@ l_sub_reddits = [
 
 @log_start_end(log=logger)
 def get_watchlists(
-    n_to_get: int,
+    limit: int = 5,
 ) -> Tuple[List[praw.models.reddit.submission.Submission], Dict, int]:
     """Get reddit users watchlists [Source: reddit]
 
     Parameters
     ----------
-    n_to_get : int
+    limit : int
         Number of posts to look through
 
     Returns
@@ -120,7 +121,7 @@ def get_watchlists(
                     # Increment count of valid posts found
                     n_flair_posts_found += 1
                     subs.append(submission)
-            if n_flair_posts_found > n_to_get - 1:
+            if n_flair_posts_found > limit - 1:
                 break
 
     except ResponseException as e:
@@ -136,15 +137,15 @@ def get_watchlists(
 
 @log_start_end(log=logger)
 def get_popular_tickers(
-    n_top: int, posts_to_look_at: int, subreddits: str = ""
+    limit: int = 10, post_limit: int = 50, subreddits: str = ""
 ) -> pd.DataFrame:
     """Get popular tickers from list of subreddits [Source: reddit]
 
     Parameters
     ----------
-    n_top : int
+    limit : int
         Number of top tickers to get
-    posts_to_look_at : int
+    post_limit : int
         How many posts to analyze in each subreddit
     subreddits : str, optional
         String of comma separated subreddits.
@@ -190,11 +191,14 @@ def get_popular_tickers(
 
     for s_sub_reddit in sub_reddit_list:
         console.print(
-            f"Search for latest tickers for {posts_to_look_at} '{s_sub_reddit}' posts"
+            f"Searching for latest tickers for {post_limit} '{s_sub_reddit}' posts"
+        )
+        warnings.filterwarnings(
+            "ignore", message=".*Not all PushShift shards are active.*"
         )
         submissions = psaw_api.search_submissions(
             subreddit=s_sub_reddit,
-            limit=posts_to_look_at,
+            limit=post_limit,
             filter=["id"],
         )
 
@@ -204,30 +208,31 @@ def get_popular_tickers(
                 # Get more information about post using PRAW api
                 submission = praw_api.submission(id=submission.id)
 
-                # Ensure that the post hasn't been removed by moderator in the meanwhile,
-                # that there is a description and it's not just an image, that the flair is
-                # meaningful, and that we aren't re-considering same author's content
-                if (
-                    not submission.removed_by_category
-                    and (submission.selftext or submission.title)
-                    and submission.author.name not in l_watchlist_author
-                ):
-                    l_tickers_found = find_tickers(submission)
+                if submission is not None:
+                    # Ensure that the post hasn't been removed by moderator in the meanwhile,
+                    # that there is a description and it's not just an image, that the flair is
+                    # meaningful, and that we aren't re-considering same author's content
+                    if (
+                        not submission.removed_by_category
+                        and (submission.selftext or submission.title)
+                        and submission.author.name not in l_watchlist_author
+                    ):
+                        l_tickers_found = find_tickers(submission)
 
-                    if l_tickers_found:
-                        n_tickers += len(l_tickers_found)
+                        if l_tickers_found:
+                            n_tickers += len(l_tickers_found)
 
-                        # Add another author's name to the parsed watchlists
-                        l_watchlist_author.append(submission.author.name)
+                            # Add another author's name to the parsed watchlists
+                            l_watchlist_author.append(submission.author.name)
 
-                        # Lookup stock tickers within a watchlist
-                        for key in l_tickers_found:
-                            if key in d_watchlist_tickers:
-                                # Increment stock ticker found
-                                d_watchlist_tickers[key] += 1
-                            else:
-                                # Initialize stock ticker found
-                                d_watchlist_tickers[key] = 1
+                            # Lookup stock tickers within a watchlist
+                            for key in l_tickers_found:
+                                if key in d_watchlist_tickers:
+                                    # Increment stock ticker found
+                                    d_watchlist_tickers[key] += 1
+                                else:
+                                    # Initialize stock ticker found
+                                    d_watchlist_tickers[key] = 1
 
             except ResponseException as e:
                 logger.exception("Invalid response: %s", str(e))
@@ -249,7 +254,7 @@ def get_popular_tickers(
         # pylint: disable=redefined-outer-name
         popular_tickers = []
         for t_ticker in lt_watchlist_sorted:
-            if n_top_stocks > n_top:
+            if n_top_stocks > limit:
                 break
             try:
                 # If try doesn't trigger exception, it means that this stock exists on finviz
@@ -275,7 +280,7 @@ def get_popular_tickers(
             except Exception as e:
                 logger.exception(str(e))
                 console.print(e, "\n")
-                return
+                return pd.DataFrame()
 
         popular_tickers_df = pd.DataFrame(
             popular_tickers,
@@ -295,7 +300,7 @@ def get_popular_tickers(
 
 @log_start_end(log=logger)
 def get_spac_community(
-    limit: int, popular: bool
+    limit: int = 10, popular: bool = False
 ) -> Tuple[List[praw.models.reddit.submission.Submission], Dict]:
     """Get top tickers from r/SPACs [Source: reddit]
 
@@ -546,8 +551,6 @@ def get_wsb_community(
 
     subs = []
 
-    console.print(submissions)
-
     try:
         for submission in submissions:
             submission = praw_api.submission(id=submission.id)
@@ -570,7 +573,7 @@ def get_wsb_community(
 def get_due_dilligence(
     ticker: str, limit: int = 5, n_days: int = 3, show_all_flairs: bool = False
 ) -> List[praw.models.reddit.submission.Submission]:
-    """Gets due dilligence posts from list of subreddits [Source: reddit]
+    """Gets due diligence posts from list of subreddits [Source: reddit]
 
     Parameters
     ----------
@@ -680,9 +683,9 @@ def get_due_dilligence(
 
 @log_start_end(log=logger)
 def get_posts_about(
-    ticker: str,
+    symbol: str,
     limit: int = 100,
-    sort: str = "relevance",
+    sortby: str = "relevance",
     time_frame: str = "week",
     subreddits: str = "all",
 ) -> List[praw.models.reddit.submission.Submission]:
@@ -690,11 +693,11 @@ def get_posts_about(
 
     Parameters
     ----------
-    ticker: str
-        Ticker to search for
+    symbol: str
+        Ticker symbol to search for
     limit: int
         Number of posts to get per subreddit
-    sort: str
+    sortby: str
         Search type
         Possibilities: "relevance", "hot", "top", "new", or "comments"
     time_frame: str
@@ -745,9 +748,9 @@ def get_posts_about(
             console.print("Invalid subreddit name {sub_str}, skipping")
             continue
         submissions = subreddit.search(
-            query=ticker,
+            query=symbol,
             limit=limit,
-            sort=sort,
+            sort=sortby,
             time_filter=time_frame,
         )
         for sub in submissions:

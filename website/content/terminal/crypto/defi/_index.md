@@ -8,7 +8,7 @@ geekdocCollapseSection: true
 
 The Cryptocurrency Decentralized Finance (DeFi) menu gives the user the ability to delve deeper into Uniswap statistics (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/defi/tokens/" target="_blank">tokens</a>, <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/defi/stats/" target="_blank">stats</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/defi/pairs/" target="_blank">pairs</a>),
 information about dApps (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/defi/gdapps/" target="_blank">gdapps</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/defi/stvl/" target="_blank">stvl</a>)
-as well as infomration about terra blockchain (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/defi/sreturn/" target="_blank">sreturn</a>) and luna (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/defi/lcsc/" target="_blank">lcsc</a>).
+as well as information about terra blockchain (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/defi/sreturn/" target="_blank">sreturn</a>) and luna (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/defi/lcsc/" target="_blank">lcsc</a>).
 
 ## How to use
 

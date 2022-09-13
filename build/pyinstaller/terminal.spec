@@ -68,10 +68,10 @@ hidden_imports = [
     "user_agent",
     "vaderSentiment",
     "frozendict",
-    "boto3",
     "textwrap3",
     "pyEX",
     "tensorflow",
+    "feedparser",
 ]
 
 analysis_kwargs = dict(

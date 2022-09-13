@@ -22,4 +22,4 @@ def vcr_config():
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_capm_view():
-    factors_view.capm_view(ticker="PM")
+    factors_view.capm_view(symbol="PM")

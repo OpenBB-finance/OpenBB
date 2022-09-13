@@ -16,6 +16,6 @@ def vcr_config():
 
 @pytest.mark.vcr
 def test_get_options_info(recorder):
-    result_df = barchart_model.get_options_info(ticker="PM")
+    result_df = barchart_model.get_options_info(symbol="PM")
 
     recorder.capture(result_df)

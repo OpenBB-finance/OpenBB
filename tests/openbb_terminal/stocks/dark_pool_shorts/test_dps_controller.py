@@ -247,7 +247,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "--export=csv",
             ],
             dict(
-                num_stocks=1,
+                limit=1,
                 export="csv",
             ),
         ),
@@ -259,7 +259,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "--export=csv",
             ],
             dict(
-                num=1,
+                limit=1,
                 export="csv",
             ),
         ),
@@ -289,8 +289,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "--export=csv",
             ],
             dict(
-                num=1,
-                sort_field="sv",
+                limit=1,
+                sortby="sv",
                 ascending=True,
                 export="csv",
             ),
@@ -304,8 +304,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "--export=csv",
             ],
             dict(
-                num=1,
-                sort_field="si",
+                limit=1,
+                sortby="si",
                 export="csv",
             ),
         ),
@@ -313,17 +313,17 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "call_psi",
             "quandl_view.short_interest",
             [
-                "quandl",
+                "MOCK_TICKER",
                 "--nyse",
-                "--source=quandl",
+                "--source=Quandl",
                 "--limit=1",
                 "--raw",
                 "--export=csv",
             ],
             dict(
-                ticker="MOCK_TICKER",
+                symbol="MOCK_TICKER",
                 nyse=True,
-                days=1,
+                limit=1,
                 raw=True,
                 export="csv",
             ),
@@ -333,13 +333,13 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "stockgrid_view.short_interest_volume",
             [
                 "--limit=1",
-                "--source=stockgrid",
+                "--source=Stockgrid",
                 "--raw",
                 "--export=csv",
             ],
             dict(
-                ticker="MOCK_TICKER",
-                num=1,
+                symbol="MOCK_TICKER",
+                limit=1,
                 raw=True,
                 export="csv",
             ),
@@ -351,7 +351,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "--export=csv",
             ],
             dict(
-                ticker="MOCK_TICKER",
+                symbol="MOCK_TICKER",
                 export="csv",
             ),
         ),
@@ -366,11 +366,15 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "--export=csv",
             ],
             dict(
-                ticker="MOCK_TICKER",
-                stock=empty_df,
-                start=datetime.strptime("2020-12-01", "%Y-%m-%d"),
-                end=datetime.strptime("2020-12-02", "%Y-%m-%d"),
-                num=1,
+                symbol="MOCK_TICKER",
+                data=empty_df,
+                start_date=datetime.strptime("2020-12-01", "%Y-%m-%d").strftime(
+                    "%Y-%m-%d"
+                ),
+                end_date=datetime.strptime("2020-12-02", "%Y-%m-%d").strftime(
+                    "%Y-%m-%d"
+                ),
+                limit=1,
                 raw=True,
                 export="csv",
             ),
@@ -384,8 +388,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "--export=csv",
             ],
             dict(
-                ticker="MOCK_TICKER",
-                num=10,
+                symbol="MOCK_TICKER",
+                limit=10,
                 raw=True,
                 export="csv",
             ),

@@ -8,8 +8,8 @@ import logging
 import os
 from typing import Dict, List
 
-import hmac
-import hashlib
+import binance
+import oandapyV20.endpoints.pricing
 import dotenv
 import praw
 import pyEX
@@ -20,12 +20,16 @@ from alpha_vantage.timeseries import TimeSeries
 from coinmarketcapapi import CoinMarketCapAPI, CoinMarketCapAPIError
 from prompt_toolkit.completion import NestedCompleter
 from pyEX.common.exception import PyEXception
+from oandapyV20 import API as oanda_API
+from oandapyV20.exceptions import V20Error
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.config.paths import USER_ENV_FILE
 from openbb_terminal.cryptocurrency.coinbase_helpers import (
     CoinbaseProAuth,
     make_coinbase_request,
+    CoinbaseApiException,
 )
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import parse_simple_args
@@ -59,7 +63,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         "binance",
         "bitquery",
         "si",
-        "cb",
+        "coinbase",
         "walert",
         "glassnode",
         "coinglass",
@@ -67,14 +71,19 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         "ethplorer",
         "smartstake",
         "github",
+        "eodhd",
         "messari",
+        "santiment",
     ]
     PATH = "/keys/"
     key_dict: Dict = {}
     cfg_dict: Dict = {}
 
     def __init__(
-        self, queue: List[str] = None, menu_usage: bool = True, env_file: str = ".env"
+        self,
+        queue: List[str] = None,
+        menu_usage: bool = True,
+        env_file: str = str(USER_ENV_FILE),
     ):
         """Constructor"""
         super().__init__(queue)
@@ -356,6 +365,18 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                         username=cfg.API_REDDIT_USERNAME,
                         user_agent=cfg.API_REDDIT_USER_AGENT,
                         password=cfg.API_REDDIT_PASSWORD,
+                        check_for_updates=False,
+                        comment_kind="t1",
+                        message_kind="t4",
+                        redditor_kind="t2",
+                        submission_kind="t3",
+                        subreddit_kind="t5",
+                        trophy_kind="t6",
+                        oauth_url="https://oauth.reddit.com",
+                        reddit_url="https://www.reddit.com",
+                        short_url="https://redd.it",
+                        ratelimit_seconds=5,
+                        timeout=16,
                     )
 
                     praw_api.user.me()
@@ -439,8 +460,21 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             logger.info("Oanda key not defined")
             self.key_dict["OANDA"] = "not defined"
         else:
-            logger.info("Oanda key defined, not tested")
-            self.key_dict["OANDA"] = "defined, not tested"
+            client = oanda_API(access_token=cfg.OANDA_TOKEN)
+            account = cfg.OANDA_ACCOUNT
+            try:
+                parameters = {"instruments": "EUR_USD"}
+                request = oandapyV20.endpoints.pricing.PricingInfo(
+                    accountID=account, params=parameters
+                )
+                client.request(request)
+                logger.info("Oanda key defined, test passed")
+                self.key_dict["OANDA"] = "defined, test passed"
+
+            except V20Error as e:
+                logger.exception(str(e))
+                logger.info("Oanda key defined, test failed")
+                self.key_dict["OANDA"] = "defined, test failed"
 
         if show_output:
             console.print(self.key_dict["OANDA"] + "\n")
@@ -448,29 +482,28 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     def check_binance_key(self, show_output: bool = False) -> None:
         """Check Binance key"""
         self.cfg_dict["BINANCE"] = "binance"
-        bn_keys = [cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET]
-        if "REPLACE_ME" in bn_keys:
+
+        if "REPLACE_ME" in [cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET]:
             logger.info("Binance key not defined")
             self.key_dict["BINANCE"] = "not defined"
+
         else:
-            headers = {"X-MBX-APIKEY": bn_keys[0]}
-            timestamp = 16566804453565
-            msg = f"timestamp={timestamp}"
-            msg_hash = hmac.new(
-                bn_keys[1].encode("utf-8"), msg.encode("utf-8"), hashlib.sha256
-            ).hexdigest()
-            params = {"timestamp": timestamp, "signature": msg_hash}  # type: ignore
-            r = requests.get(
-                "https://api.binance.com/sapi/v1/capital/config/getall",
-                params=params,  # type: ignore
-                headers=headers,
-            )
-            if r.status_code == 200:
-                logger.info("Binance key defined, test passed")
-                self.key_dict["BINANCE"] = "defined, test passed"
-            else:
+            try:
+                client = binance.Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
+                candles = client.get_klines(
+                    symbol="BTCUSDT", interval=client.KLINE_INTERVAL_1DAY
+                )
+
+                if len(candles) > 0:
+                    logger.info("Binance key defined, test passed")
+                    self.key_dict["BINANCE"] = "defined, test passed"
+                else:
+                    logger.info("Binance key defined, test failed")
+                    self.key_dict["BINANCE"] = "defined, test failed"
+            except Exception:
                 logger.info("Binance key defined, test failed")
                 self.key_dict["BINANCE"] = "defined, test failed"
+
         if show_output:
             console.print(self.key_dict["BINANCE"] + "\n")
 
@@ -532,7 +565,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
     def check_coinbase_key(self, show_output: bool = False) -> None:
         """Check Coinbase key"""
-        self.cfg_dict["COINBASE"] = "cb"
+        self.cfg_dict["COINBASE"] = "coinbase"
         if "REPLACE_ME" in [
             cfg.API_COINBASE_KEY,
             cfg.API_COINBASE_SECRET,
@@ -546,7 +579,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 cfg.API_COINBASE_SECRET,
                 cfg.API_COINBASE_PASS_PHRASE,
             )
-            resp = make_coinbase_request("/accounts", auth=auth)
+            try:
+                resp = make_coinbase_request("/accounts", auth=auth)
+            except CoinbaseApiException:
+                resp = None
             if not resp:
                 logger.warning("Coinbase key defined, test failed")
                 self.key_dict["COINBASE"] = "defined, test unsuccessful"
@@ -736,6 +772,56 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         if show_output:
             console.print(self.key_dict["MESSARI"] + "\n")
 
+    def check_eodhd_key(self, show_output: bool = False) -> None:
+        """Check End of Day Historical Data key"""
+        self.cfg_dict["EODHD"] = "eodhd"
+        if cfg.API_EODHD_TOKEN == "REPLACE_ME":  # nosec
+            logger.info("End of Day Historical Data key not defined")
+            self.key_dict["EODHD"] = "not defined"
+        else:
+            try:
+                pyEX.Client(api_token=cfg.API_EODHD_TOKEN, version="v1")
+                logger.info("End of Day Historical Data key defined, test passed")
+                self.key_dict["EODHD"] = "defined, test passed"
+            except PyEXception:
+                logger.exception("End of Day Historical Data key defined, test failed")
+                self.key_dict["EODHD"] = "defined, test failed"
+
+        if show_output:
+            console.print(self.key_dict["EODHD"] + "\n")
+
+    def check_santiment_key(self, show_output: bool = False) -> None:
+        """Check Santiment key"""
+        self.cfg_dict["SANTIMENT"] = "santiment"
+        if cfg.API_SANTIMENT_KEY == "REPLACE_ME":
+            logger.info("santiment key not defined")
+            self.key_dict["SANTIMENT"] = "not defined"
+        else:
+            headers = {
+                "Content-Type": "application/graphql",
+                "Authorization": f"Apikey {cfg.API_SANTIMENT_KEY}",
+            }
+
+            # pylint: disable=line-too-long
+            data = '\n{{ getMetric(metric: "dev_activity"){{ timeseriesData( slug: "ethereum" from: ""2020-02-10T07:00:00Z"" to: "2020-03-10T07:00:00Z" interval: "1w"){{ datetime value }} }} }}'  # noqa: E501
+
+            response = requests.post(
+                "https://api.santiment.net/graphql", headers=headers, data=data
+            )
+            try:
+                if response.status_code == 200:
+                    logger.info("santiment key defined, test passed")
+                    self.key_dict["SANTIMENT"] = "defined, test passed"
+                else:
+                    logger.warning("santiment key defined, test failed")
+                    self.key_dict["SANTIMENT"] = "defined, test failed"
+            except Exception as _:  # noqa: F841
+                logger.exception("santiment key defined, test failed")
+                self.key_dict["SANTIMENT"] = "defined, test failed"
+
+        if show_output:
+            console.print(self.key_dict["SANTIMENT"] + "\n")
+
     def check_keys_status(self) -> None:
         """Check keys status"""
         self.check_av_key()
@@ -765,6 +851,8 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         self.check_smartstake_key()
         self.check_github_key()
         self.check_messari_key()
+        self.check_eodhd_key()
+        self.check_santiment_key()
 
     def print_help(self):
         """Print help"""
@@ -1343,9 +1431,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             dotenv.set_key(self.env_file, "OPENBB_DG_PASSWORD", ns_parser.password)
             cfg.DG_PASSWORD = ns_parser.password
 
-            os.environ["OPENBB_DG_TOTP_SECRET"] = ns_parser.secret
-            dotenv.set_key(self.env_file, "OPENBB_DG_TOTP_SECRET", ns_parser.secret)
-            cfg.DG_TOTP_SECRET = ns_parser.secret
+            if ns_parser.secret:
+                os.environ["OPENBB_DG_TOTP_SECRET"] = ns_parser.secret
+                dotenv.set_key(self.env_file, "OPENBB_DG_TOTP_SECRET", ns_parser.secret)
+                cfg.DG_TOTP_SECRET = ns_parser.secret
 
             self.check_degiro_key(show_output=True)
 
@@ -1377,7 +1466,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             "--account_type",
             type=str,
             dest="account_type",
-            help="account type",
+            help="account type ('live' or 'practice')",
         )
         if not other_args:
             console.print("For your API Key, visit: https://developer.oanda.com\n")
@@ -1640,6 +1729,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             other_args.insert(0, "-k")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
+            print(type(ns_parser.key))
             os.environ["OPENBB_API_COINGLASS_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_COINGLASS_KEY", ns_parser.key)
             cfg.API_COINGLASS_KEY = ns_parser.key
@@ -1708,6 +1798,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
             self.check_ethplorer_key(show_output=True)
 
+    @log_start_end(log=logger)
     def call_smartstake(self, other_args: List[str]):
         """Process smartstake command"""
         parser = argparse.ArgumentParser(
@@ -1776,3 +1867,63 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             dotenv.set_key(self.env_file, "OPENBB_API_MESSARI_KEY", ns_parser.key)
             cfg.API_MESSARI_KEY = ns_parser.key
             self.check_messari_key(show_output=True)
+
+    @log_start_end(log=logger)
+    def call_eodhd(self, other_args: List[str]):
+        """Process eodhd command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="eodhd",
+            description="Set End of Day Historical Data API key.",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="key",
+        )
+        if not other_args:
+            console.print(
+                "For your API Key, visit: https://eodhistoricaldata.com/r/?ref=869U7F4J\n"
+            )
+            return
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-k")
+        ns_parser = parse_simple_args(parser, other_args)
+        if ns_parser:
+            os.environ["API_EODHD_TOKEN"] = ns_parser.key
+            dotenv.set_key(self.env_file, "API_EODHD_TOKEN", ns_parser.key)
+            cfg.API_EODHD_TOKEN = ns_parser.key
+            self.check_eodhd_key(show_output=True)
+
+    def call_santiment(self, other_args: List[str]):
+        """Process santiment command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="santiment",
+            description="Set Santiment API key.",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="key",
+        )
+        if not other_args:
+            console.print(
+                "For your API Key, visit: "
+                "https://academy.santiment.net/products-and-plans/create-an-api-key\n"
+            )
+            return
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-k")
+        ns_parser = parse_simple_args(parser, other_args)
+        if ns_parser:
+            os.environ["OPENBB_API_SANTIMENT_KEY"] = ns_parser.key
+            dotenv.set_key(self.env_file, "OPENBB_API_SANTIMENT_KEY", ns_parser.key)
+            cfg.API_SANTIMENT_KEY = ns_parser.key
+            self.check_santiment_key(show_output=True)

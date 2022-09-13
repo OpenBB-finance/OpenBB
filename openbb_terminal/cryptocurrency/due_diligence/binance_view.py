@@ -22,9 +22,9 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_order_book(
-    coin: str,
+    from_symbol: str,
     limit: int = 100,
-    currency: str = "USDT",
+    to_symbol: str = "USDT",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -33,11 +33,11 @@ def display_order_book(
     Parameters
     ----------
 
-    coin: str
+    from_symbol: str
         Cryptocurrency symbol
     limit: int
         Limit parameter. Adjusts the weight
-    currency: str
+    to_symbol: str
         Quote currency (what to view coin vs)
     export: str
         Export dataframe data to csv,json,xlsx
@@ -45,7 +45,7 @@ def display_order_book(
         External axes (1 axis is expected in the list), by default None
     """
 
-    pair = coin + currency
+    pair = from_symbol + to_symbol
 
     client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
 
@@ -55,7 +55,7 @@ def display_order_book(
         asks = np.asarray(market_book["asks"], dtype=float)
         bids = np.insert(bids, 2, bids[:, 1].cumsum(), axis=1)
         asks = np.insert(asks, 2, np.flipud(asks[:, 1]).cumsum(), axis=1)
-        plot_order_book(bids, asks, coin, external_axes)
+        plot_order_book(bids, asks, to_symbol, external_axes)
 
         export_data(
             export,
@@ -64,16 +64,20 @@ def display_order_book(
             pd.DataFrame(market_book),
         )
     except BinanceAPIException:
-        console.print(f"{coin} is not a valid binance symbol")
+        console.print(f"{to_symbol} is not a valid binance symbol")
 
 
 @log_start_end(log=logger)
-def display_balance(coin: str, currency: str = "USDT", export: str = "") -> None:
+def display_balance(
+    from_symbol: str, to_symbol: str = "USDT", export: str = ""
+) -> None:
     """Get account holdings for asset. [Source: Binance]
 
     Parameters
     ----------
-    coin: str
+    from_symbol: str
+        Cryptocurrency
+    to_symbol: str
         Cryptocurrency
     currency: str
         Quote currency (what to view coin vs)
@@ -83,20 +87,19 @@ def display_balance(coin: str, currency: str = "USDT", export: str = "") -> None
 
     client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
 
-    pair = coin + currency
+    pair = from_symbol + to_symbol
     current_balance = client.get_asset_balance(asset=pair)
     if current_balance is None:
-        console.print("Check loaded coin")
+        console.print("Check loaded coin\n")
         return
 
-    console.print("")
     amounts = [float(current_balance["free"]), float(current_balance["locked"])]
     total = np.sum(amounts)
     df = pd.DataFrame(amounts).apply(lambda x: str(float(x)))
     df.columns = ["Amount"]
     df.index = ["Free", "Locked"]
     df["Percent"] = df.div(df.sum(axis=0), axis=1).round(3)
-    console.print(f"You currently have {total} coins and the breakdown is:")
+    console.print(f"\nYou currently have {total} coins and the breakdown is:")
 
     print_rich_table(
         df, headers=df.columns, show_index=True, title="Account Holdings for Assets"

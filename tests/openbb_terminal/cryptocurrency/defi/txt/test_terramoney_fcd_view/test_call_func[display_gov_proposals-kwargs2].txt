@@ -1,12 +1,11 @@
-    Id       Submit time  Deposit end time   Status                  Type                                              Title  Yes  No  Abstain  No with veto
-0  759  2022-03-24 05:55  2022-04-07 05:55  Deposit         Text Proposal                              Polish runner in them    0   0        0             0
-1  758  2022-03-24 03:28  2022-04-07 03:28  Deposit         Text Proposal                                     Punch Example.    0   0        0             0
-2  757  2022-03-24 02:40  2022-04-07 02:40  Deposit         Text Proposal            BruceLuna (One Inch Punch) OIP :-DDDDDD    0   0        0             0
-3  756  2022-03-24 01:43  2022-04-07 01:43  Deposit         Text Proposal           Things are ugly, Rotten Bears in droves.    0   0        0             0
-4  755  2022-03-24 01:16  2022-04-07 01:16  Deposit         Text Proposal                                     Long and Short    0   0        0             0
-5  754  2022-03-24 01:12  2022-04-07 01:12  Deposit         Text Proposal                                          jab style    0   0        0             0
-6  753  2022-03-23 23:23  2022-04-06 23:23  Deposit         Text Proposal              That's what I can call true teamwork!    0   0        0             0
-7  721  2022-03-22 08:55  2022-04-05 08:55   Passed  Community-pool Spend  UST Goes Interchain: Part Five -\nEverything Else   93   0        1             0
-8  720  2022-03-22 08:52  2022-04-05 08:52   Passed  Community-pool Spend   UST Goes Interchain: Part Five - Curve &\nConvex   97   0        0             0
-9  599  2022-03-19 03:17  2022-04-02 03:17   Passed  Community-pool Spend  Allocate Earmarked Community Pool Funds\nto Ozone   87   4        5             0
-
+    Id       Submit time  Deposit end time    Status                  Type                                                       Title  Yes  No  Abstain  No with veto
+99   2  2020-01-07 17:50  2020-01-21 17:50  Rejected         Text Proposal  Unlocking the pre-seed, seed round's\nLuna Tokens at once.   11  17        0             0
+98   3  2020-01-11 05:08  2020-01-25 05:08  Rejected         Text Proposal      Explicit disclosure of the circulating\nsupply of LUNA   13   8        5             2
+97   4  2020-01-22 08:15  2020-02-05 08:15    Passed      Parameter-change          Proposal to Implement a Temporary Tax\nRate Freeze   27   0        0             1
+96   5  2020-02-12 19:49  2020-02-26 19:49  Rejected         Text Proposal      Sort validators by self-delegation (skin\nin the game)   20   6        4             0
+95   6  2020-03-18 07:09  2020-04-01 07:09    Passed  Community-pool Spend                              Seigniorage Allocation to Chai   25   5        0             0
+94   7  2020-03-31 09:30  2020-04-14 09:30  Rejected      Parameter-change            Increase Minimum Deposit for Goverance\nProposal   28   1        1             0
+93   8  2020-03-31 09:34  2020-04-14 09:34  Rejected      Parameter-change                           Decrease Goverance Minimum Quorum   19   8        0             2
+92   9  2020-05-20 12:36  2020-06-03 12:36  Rejected         Text Proposal       Proposal to Exclude Luna delegated by\nthe Foundation   17   3        4             2
+91  10  2020-06-07 16:35  2020-06-21 16:35    Passed      Parameter-change         Temporary Increasing Tobin Tax From\n0.25% to 0.35%   29   1        0             0
+90  11  2020-09-02 08:50  2020-09-16 08:50    Passed      Parameter-change      Proposal to decrease minspread of Terra\nto Luna swaps   28   0        0             0

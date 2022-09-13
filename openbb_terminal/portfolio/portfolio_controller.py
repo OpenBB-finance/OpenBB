@@ -147,7 +147,8 @@ class PortfolioController(BaseController):
         }
 
         choices: dict = {c: {} for c in self.controller_choices}
-        choices["load"] = {c: None for c in self.DATA_HOLDINGS_FILES}
+        choices["load"]["-f"] = {c: None for c in self.DATA_HOLDINGS_FILES}
+        choices["load"]["--file"] = {c: None for c in self.DATA_HOLDINGS_FILES}
         choices["bench"] = {c: None for c in portfolio_helper.BENCHMARK_LIST}
         choices["alloc"] = {c: None for c in self.AGGREGATION_METRICS}
         choices["metric"] = {c: None for c in self.VALID_METRICS}
@@ -315,8 +316,6 @@ class PortfolioController(BaseController):
             dest="risk_free_rate",
             help="Set the risk free rate.",
         )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-f")
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
@@ -343,16 +342,40 @@ class PortfolioController(BaseController):
             # Add in the Risk-free rate
             self.portfolio.set_risk_free_rate(ns_parser.risk_free_rate)
 
-            console.print(f"\n[bold]Portfolio:[/bold] {self.portfolio_name}")
+            # Load benchmark
+            self.call_bench(["-b", "SPDR S&P 500 ETF Trust (SPY)"])
+
             console.print(
-                f"[bold]Risk Free Rate:[/bold] {self.portfolio.risk_free_rate}"
+                f"\n[bold][param]Portfolio:[/param][/bold] {self.portfolio_name}"
             )
-            console.print()
+            console.print(
+                f"[bold][param]Risk Free Rate:[/param][/bold] {self.portfolio.risk_free_rate}"
+            )
+            console.print(
+                f"[bold][param]Benchmark:[/param][/bold] {self.benchmark_name}\n"
+            )
 
     @log_start_end(log=logger)
-    def call_show(self, _):
+    def call_show(self, other_args: List[str]):
         """Process show command"""
-        portfolio_view.display_orderbook(self.portfolio, show_index=False)
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="show",
+            description="Show transactions table",
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            limit=10,
+        )
+        portfolio_view.display_orderbook(
+            self.portfolio,
+            show_index=False,
+            limit=ns_parser.limit,
+            export=ns_parser.export,
+        )
 
     @log_start_end(log=logger)
     def call_bench(self, other_args: List[str]):
@@ -383,7 +406,6 @@ class PortfolioController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-b")
-
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser and self.portfolio is not None:
@@ -410,9 +432,6 @@ class PortfolioController(BaseController):
                     self.portfolio.returns, self.portfolio.benchmark_returns
                 )
 
-                console.print(
-                    f"[bold]\nBenchmark:[/bold] {self.benchmark_name} ({benchmark_ticker})"
-                )
             else:
                 console.print("[red]Please first load orderbook using 'load'[/red]\n")
             console.print()
@@ -455,10 +474,9 @@ class PortfolioController(BaseController):
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):
-                if self.portfolio.portfolio_assets_allocation.empty:
-                    self.portfolio.calculate_allocations()
-
                 if ns_parser.agg == "assets":
+                    if self.portfolio.portfolio_assets_allocation.empty:
+                        self.portfolio.calculate_allocations("asset")
                     portfolio_view.display_assets_allocation(
                         self.portfolio.portfolio_assets_allocation,
                         self.portfolio.benchmark_assets_allocation,
@@ -466,6 +484,8 @@ class PortfolioController(BaseController):
                         ns_parser.tables,
                     )
                 elif ns_parser.agg == "sectors":
+                    if self.portfolio.portfolio_sectors_allocation.empty:
+                        self.portfolio.calculate_allocations("sector")
                     portfolio_view.display_category_allocation(
                         ns_parser.agg,
                         self.portfolio.portfolio_sectors_allocation,
@@ -474,6 +494,8 @@ class PortfolioController(BaseController):
                         ns_parser.tables,
                     )
                 elif ns_parser.agg == "countries":
+                    if self.portfolio.portfolio_country_allocation.empty:
+                        self.portfolio.calculate_allocations("country")
                     portfolio_view.display_category_allocation(
                         ns_parser.agg,
                         self.portfolio.portfolio_country_allocation,
@@ -482,10 +504,12 @@ class PortfolioController(BaseController):
                         ns_parser.tables,
                     )
                 elif ns_parser.agg == "regions":
+                    if self.portfolio.portfolio_region_allocation.empty:
+                        self.portfolio.calculate_allocations("region")
                     portfolio_view.display_category_allocation(
                         ns_parser.agg,
-                        self.portfolio.portfolio_regional_allocation,
-                        self.portfolio.benchmark_regional_allocation,
+                        self.portfolio.portfolio_region_allocation,
+                        self.portfolio.benchmark_region_allocation,
                         ns_parser.limit,
                         ns_parser.tables,
                     )
@@ -1085,8 +1109,8 @@ class PortfolioController(BaseController):
                 self.portfolio_name, self.benchmark_name
             ):
                 portfolio_view.display_rolling_beta(
-                    self.portfolio.benchmark_returns,
                     self.portfolio.returns,
+                    self.portfolio.benchmark_returns,
                     period=ns_parser.period,
                     export=ns_parser.export,
                 )
