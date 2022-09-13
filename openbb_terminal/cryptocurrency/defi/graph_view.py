@@ -156,7 +156,7 @@ def display_recently_added(
 
 @log_start_end(log=logger)
 def display_uni_pools(
-    top: int = 20, sortby: str = "volumeUSD", ascend: bool = False, export: str = ""
+    top: int = 20, sortby: str = "volumeUSD", descend: bool = True, export: str = ""
 ) -> None:
     """Displays uniswap pools by volume.
     [Source: https://thegraph.com/en/]
@@ -168,13 +168,15 @@ def display_uni_pools(
     sortby: str
         Key by which to sort data. The table can be sorted by every of its columns
         (see https://bit.ly/3ORagr1 then press ctrl-enter or execute the query).
-    ascend: bool
+    descend: bool
         Flag to sort data descending
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = graph_model.get_uni_pools_by_volume().sort_values(by=sortby, ascending=ascend)
+    df = graph_model.get_uni_pools_by_volume().sort_values(
+        by=sortby, ascending=not (descend)
+    )
     df["volumeUSD"] = df["volumeUSD"].apply(
         lambda x: lambda_very_long_number_formatter(x)
     )
