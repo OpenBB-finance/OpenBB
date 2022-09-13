@@ -174,7 +174,9 @@ def display_uni_pools(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = graph_model.get_uni_pools_by_volume().sort_values(by=sortby, ascending=not(descend))
+    df = graph_model.get_uni_pools_by_volume().sort_values(
+        by=sortby, ascending=not (descend)
+    )
     df["volumeUSD"] = df["volumeUSD"].apply(
         lambda x: lambda_very_long_number_formatter(x)
     )
