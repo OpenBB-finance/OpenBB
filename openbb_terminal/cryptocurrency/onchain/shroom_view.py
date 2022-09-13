@@ -9,7 +9,11 @@ from matplotlib import pyplot as plt
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.config_terminal import theme
-from .shroom_model import get_daily_transactions, get_dapp_stats, get_total_value_locked
+from openbb_terminal.cryptocurrency.onchain.shroom_model import (
+    get_daily_transactions,
+    get_dapp_stats,
+    get_total_value_locked,
+)
 from openbb_terminal.decorators import check_api_key
 from openbb_terminal import config_plot as cfgPlot
 from openbb_terminal.decorators import log_start_end
@@ -149,9 +153,9 @@ def display_total_value_locked(
     Parameters
     ----------
     user_address : str
-        Address of the user
+        Address of the user (e.g., 0xa5407eae9ba41422680e2e00537571bcc53efbfd)
     address_name : str
-        Name of the address
+        Name of the address (e.g., makerdao, usdc)
     symbol : str
         Symbol of the token
     interval : int
@@ -161,8 +165,8 @@ def display_total_value_locked(
 
     """
 
-    # example user_address : 0xa5407eae9ba41422680e2e00537571bcc53efbfd
-    # example addres_name : makerdao gem join usdc
+    # example user_address :
+    # example addres_name :
 
     df = get_total_value_locked(
         user_address=user_address,
@@ -186,7 +190,7 @@ def display_total_value_locked(
     # ax.plot(df.index, df["amount_usd"], label="", lw=0.5)
     ax.bar(df.index, df["amount_usd"], color=theme.down_color, label="amount_usd")
     ax.set_title("Total value locked Ethereum ERC20")
-    ax.set_ylabel("Ammount [USD M]")
+    ax.set_ylabel("Amount [USD M]")
     ax.set_xlabel("Date")
     ax.set_xlim(df.index[0], df.index[-1])
     ax.legend()

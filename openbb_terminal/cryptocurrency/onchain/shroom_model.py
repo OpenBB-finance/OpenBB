@@ -1,11 +1,10 @@
 """Shroom model"""
 import logging
 from typing import List
-
-import pandas as pd
-import requests
 import json
 import time
+import pandas as pd
+import requests
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal import config_terminal as cfg
@@ -42,9 +41,7 @@ def create_query(query: str):
 
 def get_query_results(token):
     r = requests.get(
-        "https://node-api.flipsidecrypto.com/queries/{token}?pageNumber={page_number}&pageSize={page_size}".format(
-            token=token, page_number=PAGE_NUMBER, page_size=PAGE_SIZE
-        ),
+        f"https://node-api.flipsidecrypto.com/queries/{token}?pageNumber={PAGE_NUMBER}&pageSize={PAGE_SIZE}",
         headers={
             "Accept": "application/json",
             "Content-Type": "application/json",
@@ -174,13 +171,11 @@ def get_total_value_locked(
     """
 
     if not (user_address or address_name):
-        raise Exception(f"No user address or address name provided")
-
-    extra_sql = (
-        f"user_address = '{user_address}' and"
-        if user_address
-        else f"address_name = '{address_name}' and"
-    )
+        raise Exception("No user address or address name provided")
+    if user_address:
+        extra_sql = f"user_address = '{user_address}' and"
+    else:
+        extra_sql = f"address_name = '{address_name}' and"
 
     sql = f"""
     SELECT
@@ -194,7 +189,7 @@ def get_total_value_locked(
         symbol = '{symbol}' AND
         balance_date >= getdate() - interval '{interval} month'
     ORDER BY
-	    metric_date asc
+        metric_date asc
     """
 
     data = get_shroom_data(sql)

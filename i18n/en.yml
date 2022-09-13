@@ -555,7 +555,7 @@ en:
   crypto/onchain/baas: bid, ask prices, average spread for given crypto pair
   crypto/onchain/dt: daily transactions of eth tokens
   crypto/onchain/ds: stats of eth platform      e.g., daily users; fees
-  crypto/onchain/tvl: total value locked ERC20
+  crypto/onchain/tvl: total value locked of ERC20 tokens
   crypto/onchain/_address: Ethereum address
   crypto/onchain/_type: Address type
   crypto/onchain/_ethereum_: Ethereum

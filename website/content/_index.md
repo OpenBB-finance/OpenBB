@@ -357,6 +357,7 @@ To figure out where you can obtain the API key, you can enter the command (e.g. 
 | messari    | Messari                                  | https://messari.io/api/docs                                                        |
 | cpanic     | Crypto Panic                             | https://cryptopanic.com/developers/api/                                            |
 | santiment  | Santiment                                | https://app.santiment.net/                                                         |
+| shroom     | ShroomDK                                 | https://sdk.flipsidecrypto.xyz/shroomdk                                            |
 
 ## Available menus within the OpenBB Terminal
 

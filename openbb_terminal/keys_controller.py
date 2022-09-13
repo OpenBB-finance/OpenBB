@@ -74,6 +74,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         "eodhd",
         "messari",
         "santiment",
+        "shroom",
     ]
     PATH = "/keys/"
     key_dict: Dict = {}
@@ -97,6 +98,30 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 choices["support"] = self.SUPPORT_CHOICES
 
                 self.completer = NestedCompleter.from_nested_dict(choices)
+
+    def check_shroom_key(self, show_output: bool = False) -> None:
+        """Check Shroom key"""
+        self.cfg_dict["SHROOM"] = "shroom"
+        if cfg.API_SHROOM_KEY == "REPLACE_ME":
+            logger.info("Shroom key not defined")
+            self.key_dict["SHROOM"] = "not defined"
+        else:
+            try:
+                response = requests.post(
+                    "https://node-api.flipsidecrypto.com/queries",
+                    headers={"x-api-key": cfg.API_SHROOM_KEY},
+                )
+                if response.status_code == 400:
+                    logger.info("Shroom key defined, test passed")
+                    self.key_dict["SHROOM"] = "defined, test passed"
+                elif response.status_code == 401:
+                    logger.warning("Shroom key defined, test failed")
+                    self.key_dict["SHROOM"] = "defined, test failed"
+            except requests.exceptions.RequestException:
+                logger.warning("Shroom key defined, test failed")
+                self.key_dict["SHROOM"] = "defined, test failed"
+        if show_output:
+            console.print(self.key_dict["SHROOM"] + "\n")
 
     def check_github_key(self, show_output: bool = False) -> None:
         """Check GitHub key"""
@@ -853,6 +878,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         self.check_messari_key()
         self.check_eodhd_key()
         self.check_santiment_key()
+        self.check_shroom_key()
 
     def print_help(self):
         """Print help"""
@@ -908,6 +934,37 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             dotenv.set_key(self.env_file, "OPENBB_API_GITHUB_KEY", ns_parser.key)
             cfg.API_GITHUB_KEY = ns_parser.key
             self.check_github_key(show_output=True)
+
+    @log_start_end(log=logger)
+    def call_shroom(self, other_args: List[str]):
+        """Process shroom command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="shroom",
+            description="Set Shroom API key.",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="key",
+        )
+        if not other_args:
+            console.print(
+                "For your API Key, visit: https://sdk.flipsidecrypto.xyz/shroomdk\n"
+            )
+            return
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-k")
+        ns_parser = parse_simple_args(parser, other_args)
+        if ns_parser:
+            os.environ["OPENBB_API_SHROOM_KEY"] = ns_parser.key
+            dotenv.set_key(self.env_file, "OPENBB_API_SHROOM_KEY", ns_parser.key)
+            cfg.API_SHROOM_KEY = ns_parser.key
+            self.check_shroom_key(show_output=True)
 
     @log_start_end(log=logger)
     def call_av(self, other_args: List[str]):
