@@ -56,13 +56,11 @@ def beta_view(
     fig.show()
     console.print()
 
-    df = pd.DataFrame(
-        {"sr": sr, "rr": rr, "beta (constant)": beta, "alpha (constant)": alpha}
-    )
+    df = pd.DataFrame({"sr": sr, "rr": rr})
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
-        "beta",
+        f"beta_alpha={alpha}_beta={beta}",
         df,
     )
