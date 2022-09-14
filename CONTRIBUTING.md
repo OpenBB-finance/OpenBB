@@ -17,6 +17,7 @@ Use your best judgment, and feel free to propose changes to this document in a p
     - [View](#view)
     - [Controller](#controller)
     - [General Code Requirements](#general-code-requirements)
+    - [File Specific Requirements](#file-specific-requirements)
   - [Important functions and classes](#important-functions-and-classes)
     - [Base controller class](#base-controller-class)
   - [Default Data Sources](#default-data-sources)
@@ -445,10 +446,26 @@ The `self.queue` list of commands is passed around as it contains the commands t
 
 - Classes (for example the portfolio class) should hold the relevant data and perform no other calculations, these calculations should be done in an independent function.
 
-Why? Two reasons. 
+  Why? Two reasons. 
 
-1. These calculations can then be used outside of the class with custom data; for example via the api or for tests.
-2. The function can be loaded in API factory as an endpoint and user can get result by passing the class instance.
+  1. These calculations can then be used outside of the class with custom data; for example via the api or for tests.
+  2. The function can be loaded in API factory as an endpoint and user can get result by passing the class instance.
+
+- Naming among related model and view functions should be obvious; just different prefix if possible
+
+  Why? Eases API factory mapping and keeps code clean.
+
+### File Specific Requirements
+
+- No data altering in the view file or controller file (view and model with same args)
+
+  Why? Consistency and good code structure. This also improves the api user experience. Thus follows that view and model files will have the same arguments (except for output options like raw, export, external_axes), since no data changes shall be done in the view file.
+
+- Each model (get_) should almost always have its own view function (display_)
+
+  Why? To respect the principles laid out in Code Structure and the previous bullet point. If your code does not have this get_ → display_ map it’s likely that i. and/or ii. fail to hold.
+  1. Data is processed in _model files and displayed in _view files
+  2. _view and _model files will have the same arguments (expect for output options)
 
 ## Important functions and classes
 
