@@ -504,8 +504,60 @@ Block RNN model obtains MAPE: 3.93%
 ```
 <img width="792" alt="image" src="https://user-images.githubusercontent.com/105685594/190250934-61e55441-dd20-439e-bff1-a54904ecfec9.png">
 
-There we have it. Bringing in another ticker has allowed us to further improve the model accuracy. 
+For one last experiment, we can perform some other feature engineering on `MSFT` and add it to our `past_covariates` to train on. 
+
+In this case, let's add in `Momentum` over past 10 days of `MSFT` and append it to our `past_covariates`
+
+(🦋) /forecast/ $ mom MSFT
+mom MSFT
+Successfully added 'Momentum_10' to 'MSFT' dataset
+
+(🦋) /forecast/ $ brnn MSFT --forecast-only --all-past-covariates
+brnn MSFT --forecast-only --all-past-covariates
+The data contains inf or nan values. They will be removed.
+
+Covariate #0: open
+Covariate #1: high
+Covariate #2: low
+Covariate #3: adj_close
+Covariate #4: volume
+Covariate #5: AAPL_open
+Covariate #6: AAPL_high
+Covariate #7: AAPL_low
+Covariate #8: AAPL_close
+Covariate #9: AAPL_adj_close
+Covariate #10: AAPL_volume
+Covariate #11: Momentum_10
+Epoch 71: 100%|████████████████████████████████████████████████████████████| 24/24 [00:00<00:00, 147.87it/s, loss=-2.52, train_loss=-2.57, val_loss=-1.82]
+Predicting Block RNN for 5 days                                                                                                                           
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 114/114 [00:01<00:00, 90.05it/s]
+Block RNN model obtains MAPE: 3.72% 
+
+
+   Actual price: 251.99    
+┏━━━━━━━━━━━━┳━━━━━━━━━━━━┓
+┃ Datetime   ┃ Prediction ┃
+┡━━━━━━━━━━━━╇━━━━━━━━━━━━┩
+│ 2022-09-14 │ 255.14     │
+├────────────┼────────────┤
+│ 2022-09-15 │ 256.20     │
+├────────────┼────────────┤
+│ 2022-09-16 │ 256.67     │
+├────────────┼────────────┤
+│ 2022-09-19 │ 258.63     │
+├────────────┼────────────┤
+│ 2022-09-20 │ 256.62     │
+└────────────┴────────────┘
+
+
+There we have it. Bringing in another ticker has allowed us to further improve the model accuracy. Furthermore, adding in a new feature to the dataset allowed us to improve the accuracy further.
 
 MAPE = 4.62% (no past covariates)
 MAPE = 4.26% (open,high,low,adj_close,volume)
 MAPE = 3.93% (open,high,low,adj_close,volume,AAPL_open,AAPL_high,APPL_low,APPL_adj_close,APPL_volume,APPL_close) 
+MAPE = 3.72% (open,high,low,adj_close,volume,AAPL_open,AAPL_high,APPL_low,APPL_adj_close,APPL_volume,APPL_close,Momentum_10) 
+
+
+More workflows coming soon! 
+
+If you have any questions or would like to request for new feature engineering or model additions, please join us on discord. Happy hacking!
