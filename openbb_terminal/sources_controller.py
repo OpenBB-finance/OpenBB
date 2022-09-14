@@ -69,6 +69,9 @@ class SourcesController(BaseController):
             choices: dict = {c: {} for c in self.controller_choices}
             choices["get"] = {c: None for c in list(self.commands_with_sources.keys())}
             choices["set"] = {c: None for c in list(self.commands_with_sources.keys())}
+            for cmd in list(self.commands_with_sources.keys()):
+                choices["set"][cmd] = {c: None for c in self.commands_with_sources[cmd]}
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
