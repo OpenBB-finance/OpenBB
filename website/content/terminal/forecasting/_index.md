@@ -294,6 +294,7 @@ For a refresher, we will grab data from the `stocks` menu found on the terminal.
 Before we go combining them, let's train a simple `Block RNN` model on MSFT `close` price to see how to use `past_covariates`
 
 Make sure to always check your current data set to know the column names:
+```
 (🦋) /forecast/ $ show MSFT
 show MSFT
 MSFT has following shape (rowxcolumn): (759, 7)
@@ -322,7 +323,7 @@ MSFT has following shape (rowxcolumn): (759, 7)
 ├───┼─────────────────────┼────────┼────────┼────────┼────────┼───────────┼──────────┤
 │ 9 │ 2019-09-23 00:00:00 │ 139.23 │ 139.63 │ 138.44 │ 139.14 │ 135.19    │ 17139300 │
 └───┴─────────────────────┴────────┴────────┴────────┴────────┴───────────┴──────────┘
-
+```
 
 Without any covariates:
 
@@ -552,10 +553,13 @@ Block RNN model obtains MAPE: 3.72%
 
 There we have it. Bringing in another ticker has allowed us to further improve the model accuracy. Furthermore, adding in a new feature to the dataset allowed us to improve the accuracy further.
 
-MAPE = 4.62% (no past covariates)
-MAPE = 4.26% (open,high,low,adj_close,volume)
-MAPE = 3.93% (open,high,low,adj_close,volume,AAPL_open,AAPL_high,APPL_low,APPL_adj_close,APPL_volume,APPL_close) 
-MAPE = 3.72% (open,high,low,adj_close,volume,AAPL_open,AAPL_high,APPL_low,APPL_adj_close,APPL_volume,APPL_close,Momentum_10) 
+**MAPE = 4.62%** (no past covariates)
+
+**MAPE = 4.26%** (`open`,`high`,`low`,`adj_close`,`volume`)
+
+**MAPE = 3.93%** (`open`,`high`,`low`,`adj_close`,`volume`,`AAPL_open`,`AAPL_high`,`APPL_low`,`APPL_adj_close`,`APPL_volume`,`APPL_close`) 
+
+**MAPE = 3.72%** (`open`,`high`,`low`,`adj_close`,`volume`,`AAPL_open`,`AAPL_high`,`APPL_low`,`APPL_adj_close`,`APPL_volume`,`APPL_close`,`Momentum_10`) 
 
 
 More workflows coming soon! 
