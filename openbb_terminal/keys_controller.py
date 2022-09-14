@@ -25,6 +25,7 @@ from oandapyV20.exceptions import V20Error
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.config.paths import USER_ENV_FILE
 from openbb_terminal.cryptocurrency.coinbase_helpers import (
     CoinbaseProAuth,
     make_coinbase_request,
@@ -79,7 +80,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     cfg_dict: Dict = {}
 
     def __init__(
-        self, queue: List[str] = None, menu_usage: bool = True, env_file: str = ".env"
+        self,
+        queue: List[str] = None,
+        menu_usage: bool = True,
+        env_file: str = str(USER_ENV_FILE),
     ):
         """Constructor"""
         super().__init__(queue)
@@ -361,6 +365,18 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                         username=cfg.API_REDDIT_USERNAME,
                         user_agent=cfg.API_REDDIT_USER_AGENT,
                         password=cfg.API_REDDIT_PASSWORD,
+                        check_for_updates=False,
+                        comment_kind="t1",
+                        message_kind="t4",
+                        redditor_kind="t2",
+                        submission_kind="t3",
+                        subreddit_kind="t5",
+                        trophy_kind="t6",
+                        oauth_url="https://oauth.reddit.com",
+                        reddit_url="https://www.reddit.com",
+                        short_url="https://redd.it",
+                        ratelimit_seconds=5,
+                        timeout=16,
                     )
 
                     praw_api.user.me()

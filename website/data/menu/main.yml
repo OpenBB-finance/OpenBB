@@ -59,8 +59,8 @@ main:
                 ref: "/terminal/stocks/disc/rtat"
               - name: divcal
                 ref: "/terminal/stocks/disc/divcal"
-              - name: cramer
-                ref: "/terminal/stocks/disc/cramer"
+              - name: heatmap
+                ref: "/terminal/stocks/disc/heatmap"
           - name: Sector and Industry Analysis (SIA)
             ref: "/terminal/stocks/sia"
             sub:
@@ -876,14 +876,8 @@ main:
                 ref: "/terminal/crypto/nft/collections"
               - name: fp
                 ref: "/terminal/crypto/nft/fp"
-              - name: today
-                ref: "/terminal/crypto/nft/today"
-              - name: upcoming
-                ref: "/terminal/crypto/nft/upcoming"
-              - name: ongoing
-                ref: "/terminal/crypto/nft/ongoing"
-              - name: newest
-                ref: "/terminal/crypto/nft/newest"
+              - name: stats
+                ref: "/terminal/crypto/nft/stats"
           - name: technical analysis
             ref: "/terminal/common/ta"
             sub:

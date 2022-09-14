@@ -15,6 +15,7 @@ import sys
 from difflib import SequenceMatcher
 import webbrowser
 import urllib.parse
+import json
 
 import pytz
 import pandas as pd
@@ -35,7 +36,7 @@ import numpy as np
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import config_plot as cfgPlot
-from openbb_terminal.core.config.constants import USER_HOME
+from openbb_terminal.core.config.paths import HOME_DIRECTORY
 
 logger = logging.getLogger(__name__)
 
@@ -102,7 +103,7 @@ def check_path(path: str) -> str:
     if not path:
         return ""
     if path[0] == "~":
-        path = path.replace("~", USER_HOME.as_posix())
+        path = path.replace("~", HOME_DIRECTORY.as_posix())
     # Return string of path if such relative path exists
     if os.path.isfile(path):
         return path
@@ -270,7 +271,7 @@ def print_rich_table(
             row = [str(idx)] if show_index else []
             row += [
                 str(x)
-                if not isinstance(x, float) or not isinstance(x, np.float64)
+                if not isinstance(x, float) and not isinstance(x, np.float64)
                 else (
                     f"{x:{floatfmt[idx]}}"
                     if isinstance(floatfmt, list)
@@ -1271,7 +1272,7 @@ def compose_export_path(func_name: str, dir_path: str) -> Tuple[str, str]:
     else:
         if obbff.PACKAGED_APPLICATION:
             full_path_dir = os.path.join(
-                USER_HOME.as_posix(), "Desktop", "OPENBB-exports"
+                HOME_DIRECTORY.as_posix(), "Desktop", "OPENBB-exports"
             )
 
             if not os.path.isdir(full_path_dir):
@@ -1636,3 +1637,38 @@ def check_list_values(valid_values: List[str]):
 
     # Return function handle to checking function
     return check_list_values_from_valid_values_list
+
+
+def search_wikipedia(expression: str) -> None:
+    """
+    Search wikipedia for a given expression"
+    Parameters
+    ----------
+    expression: str
+        Expression to search for
+    """
+
+    url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{expression}"
+
+    response = requests.request("GET", url, headers={}, data={})
+
+    if response.status_code == 200:
+        response_json = json.loads(response.text)
+        res = {
+            "title": response_json["title"],
+            "url": f"[blue]{response_json['content_urls']['desktop']['page']}[/blue]",
+            "summary": response_json["extract"],
+        }
+    else:
+        res = {
+            "title": "[red]Not Found[/red]",
+        }
+
+    df = pd.json_normalize(res)
+
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title=f"Wikipedia results for {expression}",
+    )

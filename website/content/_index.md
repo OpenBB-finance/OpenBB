@@ -7,7 +7,7 @@ financial terminal that will help you make more informed decisions, faster."
 geekdocCollapseSection: true
 ---
 
-## Introduction
+**Introduction**
 
 OpenBB is a leading open source investment research software platform for accessing and analyzing financial market data.
 We represent millions of investors who want to leverage state-of-the-art data science and machine learning technologies
@@ -15,7 +15,7 @@ to make sense of raw unrefined data. Our mission is to make investment research 
 
 ---
 
-## The OpenBB Terminal is Free and Open-Source (FOSS)
+**The OpenBB Terminal is Free and Open-Source (FOSS)**
 
 <!-- markdownlint-capture -->
 <!-- markdownlint-disable MD033 -->
@@ -205,6 +205,7 @@ the commands that you are able to use from any menu in the terminal (see <a href
 - `support`: allows you to submit bugs, questions and suggestions.
 - `about`: this opens the related guide, linking to this website. It also has the ability to open a guide to a specific
   command. For example, within the `stocks` menu, `about candle` opens <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/candle/" target="_blank">this guide</a>.
+- `wiki`: search for a given expression on the Wikipedia without leaving the terminal.
 
 Continuing with the example mentioned at `quit`, revisit the `stocks` menu and look at the commands. At the top you
 will see a command named <a href="terminal/stocks/load" target="_blank">load</a>. To understand what this command can do, you can use `load -h` followed by `ENTER` (⏎). The `-h` stands for `help` and every command will have this feature. This will return the following:
