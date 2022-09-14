@@ -3,13 +3,13 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from pathlib import Path
 from typing import List
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.config.paths import FOLDER_PATHS
 from openbb_terminal.custom import custom_model, custom_view
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -47,7 +47,7 @@ class CustomDataController(BaseController):
         super().__init__(queue)
         self.data = pd.DataFrame()
         self.file = ""
-        self.DATA_FILES = [file.name for file in Path("custom_imports").iterdir()]
+        self.DATA_FILES = [file.name for file in FOLDER_PATHS["custom_imports/custom_menu"]]
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
@@ -108,7 +108,7 @@ class CustomDataController(BaseController):
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            file = Path("custom_imports") / ns_parser.file
+            file = FOLDER_PATHS["custom_imports/custom_menu"] / ns_parser.file
             self.data = custom_model.load(file)
             self.data.columns = self.data.columns.map(lambda x: x.lower())
             for col in self.data.columns:

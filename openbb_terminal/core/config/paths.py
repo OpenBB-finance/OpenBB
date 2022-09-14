@@ -13,5 +13,10 @@ USER_DATA_DIRECTORY = HOME_DIRECTORY / "OpenBBUserData"
 
 FOLDERS = [
     "styles",
+    "custom_imports/custom_menu",
+    "custom_imports/stocks",
+    "custom_imports/pred",
+    "custom_imports/qa",
+    "custom_imports/econometrics",
 ]
 FOLDER_PATHS = get_folder_paths()
