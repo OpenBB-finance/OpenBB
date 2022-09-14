@@ -32,10 +32,12 @@ def get_collections() -> pd.DataFrame:
     pd.DataFrame
         nft collections
     """
-    res = requests.get(f"{API_URL}/nfts")
+    res = requests.get(f"{API_URL}/projects")
     if res.status_code == 200:
         data = res.json()
         df = pd.DataFrame(data)
+        df_stats = pd.json_normalize(df["stats"])
+        df = pd.concat([df, df_stats], axis=1)
         return df
     return pd.DataFrame()
 
@@ -54,13 +56,13 @@ def get_floor_price(slug) -> pd.DataFrame:
     pd.DataFrame
         nft collections
     """
-    res = requests.get(f"{API_URL}/nft/{slug}/chart/pricefloor?interval=all")
+    res = requests.get(f"{API_URL}/projects/{slug}/charts/all")
     if res.status_code == 200:
         data = res.json()
         df = pd.DataFrame(
-            data, columns=["dates", "dataPriceFloorETH", "dataVolumeETH", "sales"]
+            data, columns=["timestamps", "floorEth", "volumeEth", "salesCount"]
         )
-        df = df.set_index("dates")
-        df.index = pd.to_datetime(df.index)
+        df = df.set_index("timestamps")
+        df.index = pd.to_datetime(df.index * 1_000_000)
         return df
     return pd.DataFrame()
