@@ -6,7 +6,7 @@ from distutils.util import strtobool
 import dotenv
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.config import make_paths # noqa # pylint: disable=unused-import
+from openbb_terminal.core.config import make_paths # noqa  # pylint: disable=unused-import
 from openbb_terminal.core.config.paths import USER_ENV_FILE, ENV_FILE_REPOSITORY
 from .helper_classes import TerminalStyle as _TerminalStyle
 

@@ -19,7 +19,7 @@ from prompt_toolkit.formatted_text import HTML
 
 from openbb_terminal.core.config import (
     make_paths,
-)  # noqa # pylint: disable=unused-import
+)  # noqa  # pylint: disable=unused-import
 from openbb_terminal.common import feedparser_view
 from openbb_terminal.core.config.paths import (
     REPO_DIRECTORY,
