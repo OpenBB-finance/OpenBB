@@ -509,6 +509,7 @@ For one last experiment, we can perform some other feature engineering on `MSFT`
 
 In this case, let's add in `Momentum` over past 10 days of `MSFT` and append it to our `past_covariates`
 
+```
 (🦋) /forecast/ $ mom MSFT
 mom MSFT
 Successfully added 'Momentum_10' to 'MSFT' dataset
@@ -549,7 +550,7 @@ Block RNN model obtains MAPE: 3.72%
 ├────────────┼────────────┤
 │ 2022-09-20 │ 256.62     │
 └────────────┴────────────┘
-
+```
 
 There we have it. Bringing in another ticker has allowed us to further improve the model accuracy. Furthermore, adding in a new feature to the dataset allowed us to improve the accuracy further.
 
