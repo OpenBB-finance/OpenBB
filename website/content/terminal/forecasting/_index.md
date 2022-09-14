@@ -62,7 +62,7 @@ Once data is loaded in, begin with `Exploration`.
 <img width="694" alt="image" src="https://user-images.githubusercontent.com/105685594/189730287-1c5c8141-1801-4a35-b9e9-acb32be35c13.png">
 
 
-## Sample workflow (beginner) 
+## Sample workflow #1 (beginner) 
 
 Let's begin by using one of the datasets we loaded in previously : `AAPL`
 
@@ -250,4 +250,181 @@ RNN model obtains MAPE: 3.64%
 Looks like we squeezed out a little bit more accuracy! Good work. 
 
 The take away for this is that all models should work out of the box when forecasting for a particular Timeseries. One can switch the target by specifying a `-c` for `TARGET_COLUMN` and test out performance with multiple different models with a single command. 
+
+## Sample workflow #2 (advanced)
+
+To build successful models and improve accuracy over time, it is important to capture external data related to the timeseries you are training on.
+This can be seen in everyday applications:
+- Observed rainfalls and known weather forecasts can help to predict hydro and solar electricity production
+- Recently-observed activity on an e-commerce website can help predict future sales.
+- Making the model aware of up-coming holidays can help sales forecasting.
+
+_In fact, more often than not, strictly relying on the history of a time series to predict its future is missing a lot of valuable information._
+
+**Past covariates** are time series whose past values are known at prediction time. Those series often contain values that have to be observed to be known.
+
+![image](https://user-images.githubusercontent.com/105685594/190244764-ce8cf01f-c959-4827-a326-62b0e172332d.png)
+
+If you would like to explore this topic more, please read the [blog post](https://medium.com/unit8-machine-learning-publication/time-series-forecasting-using-past-and-future-external-data-with-darts-1f0539585993) written by the authors of Darts.
+
+Note: Only the following models can handle `past_covariates`:  `BlockRNNModel`, `NBEATSModel`, `TCNModel`, `TransformerModel`, `RegressionModel` (incl. `LinearRegressionModel`), `Temporal Fusion Transformer`
+
+In this work flow lets do the following:
+
+- add in some correlation analysis
+- combine datasets 
+- perform feature engineering 
+- train models with `past_covariates`
+
+Let's begin by loading in our datasets of AAPL and MSFT once again. In this work flow we are going to test if `close` price of MSFT is at all affected by the `close` of AAPL. 
+
+For a refresher, we will grab data from the `stocks` menu found on the terminal. 
+
+```
+(🦋) / $ stocks
+(🦋) /stocks/ $ load AAPL
+(🦋) /stocks/ $ forecast
+(🦋) /forecast/ $ ..
+(🦋) /stocks/ $ load MSFT
+(🦋) /stocks/ $ forecast
+```
+
+<img width="476" alt="image" src="https://user-images.githubusercontent.com/105685594/190245759-758e566f-ad35-49fe-8df1-7d87f5d9f935.png">
+
+Before we go combining them, let's train a simple `Block RNN` model on MSFT `close` price to see how to use `past_covariates`
+
+Make sure to always check your current data set to know the column names:
+(🦋) /forecast/ $ show MSFT
+show MSFT
+MSFT has following shape (rowxcolumn): (759, 7)
+
+                        Dataset MSFT | Showing 10 of 759 rows                         
+┏━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┓
+┃   ┃ date                ┃ open   ┃ high   ┃ low    ┃ close  ┃ adj_close ┃ volume   ┃
+┡━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━┩
+│ 0 │ 2019-09-10 00:00:00 │ 136.80 │ 136.89 │ 134.51 │ 136.08 │ 132.22    │ 28903400 │
+├───┼─────────────────────┼────────┼────────┼────────┼────────┼───────────┼──────────┤
+│ 1 │ 2019-09-11 00:00:00 │ 135.91 │ 136.27 │ 135.09 │ 136.12 │ 132.26    │ 24726100 │
+├───┼─────────────────────┼────────┼────────┼────────┼────────┼───────────┼──────────┤
+│ 2 │ 2019-09-12 00:00:00 │ 137.85 │ 138.42 │ 136.87 │ 137.52 │ 133.62    │ 27010000 │
+├───┼─────────────────────┼────────┼────────┼────────┼────────┼───────────┼──────────┤
+│ 3 │ 2019-09-13 00:00:00 │ 137.78 │ 138.06 │ 136.57 │ 137.32 │ 133.42    │ 23363100 │
+├───┼─────────────────────┼────────┼────────┼────────┼────────┼───────────┼──────────┤
+│ 4 │ 2019-09-16 00:00:00 │ 135.83 │ 136.70 │ 135.66 │ 136.33 │ 132.46    │ 16731400 │
+├───┼─────────────────────┼────────┼────────┼────────┼────────┼───────────┼──────────┤
+│ 5 │ 2019-09-17 00:00:00 │ 136.96 │ 137.52 │ 136.43 │ 137.39 │ 133.49    │ 17814200 │
+├───┼─────────────────────┼────────┼────────┼────────┼────────┼───────────┼──────────┤
+│ 6 │ 2019-09-18 00:00:00 │ 137.36 │ 138.67 │ 136.53 │ 138.52 │ 134.59    │ 23982100 │
+├───┼─────────────────────┼────────┼────────┼────────┼────────┼───────────┼──────────┤
+│ 7 │ 2019-09-19 00:00:00 │ 140.30 │ 142.37 │ 140.07 │ 141.07 │ 137.07    │ 35772100 │
+├───┼─────────────────────┼────────┼────────┼────────┼────────┼───────────┼──────────┤
+│ 8 │ 2019-09-20 00:00:00 │ 141.01 │ 141.65 │ 138.25 │ 139.44 │ 135.48    │ 39167300 │
+├───┼─────────────────────┼────────┼────────┼────────┼────────┼───────────┼──────────┤
+│ 9 │ 2019-09-23 00:00:00 │ 139.23 │ 139.63 │ 138.44 │ 139.14 │ 135.19    │ 17139300 │
+└───┴─────────────────────┴────────┴────────┴────────┴────────┴───────────┴──────────┘
+
+
+Without any covariates:
+
+```
+(🦋) /forecast/ $ brnn MSFT --forecast-only
+brnn MSFT --forecast-only
+Epoch 87: 100%|█████████████████████████████████████████████████████████████| 25/25 [00:00<00:00, 33.84it/s, loss=-2.06, train_loss=-2.27, val_loss=-1.82]
+Predicting Block RNN for 5 days                                                                                                                           
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 115/115 [00:06<00:00, 18.76it/s]
+Block RNN model obtains MAPE: 4.62% 
+
+
+   Actual price: 251.99    
+┏━━━━━━━━━━━━┳━━━━━━━━━━━━┓
+┃ Datetime   ┃ Prediction ┃
+┡━━━━━━━━━━━━╇━━━━━━━━━━━━┩
+│ 2022-09-14 │ 258.52     │
+├────────────┼────────────┤
+│ 2022-09-15 │ 258.01     │
+├────────────┼────────────┤
+│ 2022-09-16 │ 258.95     │
+├────────────┼────────────┤
+│ 2022-09-19 │ 257.20     │
+├────────────┼────────────┤
+│ 2022-09-20 │ 257.66     │
+└────────────┴────────────┘
+```
+<img width="792" alt="image" src="https://user-images.githubusercontent.com/105685594/190246958-d97ca130-2d4c-448d-b880-81ac3d70e93b.png">
+
+
+With covariates: 
+
+To use any covariates, you have 2 options:
+- specify specific columns with `--past-covariates`
+- specify all columns as past covariates except the one you are forecasting `--all-past-covariates`
+
+
+```
+(🦋) /forecast/ $ brnn MSFT --forecast-only --past-covariates volume
+brnn MSFT --forecast-only --past-covariates volume
+Covariate #0: volume
+Epoch 37: 100%|████████████████████████████████████████████████████████████| 25/25 [00:00<00:00, 149.03it/s, loss=-2.16, train_loss=-2.08, val_loss=-1.44]
+Predicting Block RNN for 5 days                                                                                                                           
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 115/115 [00:01<00:00, 88.94it/s]
+Block RNN model obtains MAPE: 5.10% 
+
+
+   Actual price: 251.99    
+┏━━━━━━━━━━━━┳━━━━━━━━━━━━┓
+┃ Datetime   ┃ Prediction ┃
+┡━━━━━━━━━━━━╇━━━━━━━━━━━━┩
+│ 2022-09-14 │ 257.02     │
+├────────────┼────────────┤
+│ 2022-09-15 │ 255.82     │
+├────────────┼────────────┤
+│ 2022-09-16 │ 260.13     │
+├────────────┼────────────┤
+│ 2022-09-19 │ 258.32     │
+├────────────┼────────────┤
+│ 2022-09-20 │ 258.52     │
+└────────────┴────────────┘
+```
+<img width="792" alt="image" src="https://user-images.githubusercontent.com/105685594/190247412-fe533231-17d9-4dc6-b41f-f5a27b6c2d57.png">
+
+You can see here that adding in the external variable of `volume` negatively affected the accuracy. 
+
+Let's add in all remaining columns from our dataset as covariates and see what happens to the accuracy.
+
+```
+(🦋) /forecast/ $ brnn MSFT --forecast-only --all-past-covariates
+brnn MSFT --forecast-only --all-past-covariates
+Covariate #0: open
+Covariate #1: high
+Covariate #2: low
+Covariate #3: adj_close
+Covariate #4: volume
+Epoch 50: 100%|████████████████████████████████████████████████████████████| 25/25 [00:00<00:00, 149.29it/s, loss=-2.41, train_loss=-2.53, val_loss=-1.71]
+Predicting Block RNN for 5 days                                                                                                                           
+100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 115/115 [00:01<00:00, 89.43it/s]
+Block RNN model obtains MAPE: 4.26% 
+
+
+   Actual price: 251.99    
+┏━━━━━━━━━━━━┳━━━━━━━━━━━━┓
+┃ Datetime   ┃ Prediction ┃
+┡━━━━━━━━━━━━╇━━━━━━━━━━━━┩
+│ 2022-09-14 │ 259.28     │
+├────────────┼────────────┤
+│ 2022-09-15 │ 259.13     │
+├────────────┼────────────┤
+│ 2022-09-16 │ 259.42     │
+├────────────┼────────────┤
+│ 2022-09-19 │ 257.73     │
+├────────────┼────────────┤
+│ 2022-09-20 │ 258.64     │
+└────────────┴────────────┘
+```
+<img width="792" alt="image" src="https://user-images.githubusercontent.com/105685594/190248547-2bd7801e-4ac4-43c0-868b-9aa2f79a3c3c.png">
+
+**Final Result:** Using `open`, `high`, `low`, `adj_close`, `volume` as `past_covariates` enabled us to improve our MAPE from the original 4.62 --> 4.26
+
+Now that we know how to use covariates and understand there effect, why don't we also use `AAPL`'s ticker data as `past_covariates` to check whether this correlates and improves our forecasting accuracy. 
+
+**Remember: You can use unlimited number of `past_covariates` but they must all be combined into a single dataframe with the target forecast timeseries before training.**
 
