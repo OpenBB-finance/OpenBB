@@ -8,7 +8,6 @@ from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.nft import (
-    nftcalendar_view,
     nftpricefloor_model,
     nftpricefloor_view,
     opensea_view,
@@ -28,10 +27,6 @@ class NFTController(BaseController):
     """NFT Controller class"""
 
     CHOICES_COMMANDS = [
-        "today",
-        "upcoming",
-        "ongoing",
-        "newest",
         "stats",
         "collections",
         "fp",
@@ -56,10 +51,6 @@ class NFTController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("crypto/nft/", 70)
-        mt.add_cmd("today")
-        mt.add_cmd("upcoming")
-        mt.add_cmd("ongoing")
-        mt.add_cmd("newest")
         mt.add_cmd("stats")
         mt.add_cmd("fp")
         mt.add_cmd("collections")
@@ -165,78 +156,6 @@ class NFTController(BaseController):
             nftpricefloor_view.display_collections(
                 show_sales=ns_parser.sales,
                 show_fp=ns_parser.fp,
-                num=ns_parser.limit,
-                export=ns_parser.export,
-            )
-
-    @log_start_end(log=logger)
-    def call_today(self, other_args: List[str]):
-        """Process today command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="today",
-            description="Today's NFT drops [Source: nftcalendar.io]",
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=5
-        )
-        if ns_parser:
-            nftcalendar_view.display_nft_today_drops(
-                num=ns_parser.limit,
-                export=ns_parser.export,
-            )
-
-    @log_start_end(log=logger)
-    def call_upcoming(self, other_args: List[str]):
-        """Process upcoming command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="upcoming",
-            description="Upcoming's NFT drops [Source: nftcalendar.io]",
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=5
-        )
-        if ns_parser:
-            nftcalendar_view.display_nft_upcoming_drops(
-                num=ns_parser.limit,
-                export=ns_parser.export,
-            )
-
-    @log_start_end(log=logger)
-    def call_ongoing(self, other_args: List[str]):
-        """Process ongoing command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ongoing",
-            description="Ongoing's NFT drops [Source: nftcalendar.io]",
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=5
-        )
-        if ns_parser:
-            nftcalendar_view.display_nft_ongoing_drops(
-                num=ns_parser.limit,
-                export=ns_parser.export,
-            )
-
-    @log_start_end(log=logger)
-    def call_newest(self, other_args: List[str]):
-        """Process newest command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="newest",
-            description="Newest's NFT drops [Source: nftcalendar.io]",
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=5
-        )
-        if ns_parser:
-            nftcalendar_view.display_nft_newest_drops(
                 num=ns_parser.limit,
                 export=ns_parser.export,
             )
