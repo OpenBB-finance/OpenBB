@@ -16,7 +16,7 @@ Use your best judgment, and feel free to propose changes to this document in a p
     - [Model](#model)
     - [View](#view)
     - [Controller](#controller)
-    - [API Wrapper](#api-wrapper)
+    - [General Code Requirements](#general-code-requirements)
   - [Important functions and classes](#important-functions-and-classes)
     - [Base controller class](#base-controller-class)
   - [Default Data Sources](#default-data-sources)
@@ -425,10 +425,30 @@ In addition, note the `self.load_class` which allows to not create a new DarkPoo
 The `self.queue` list of commands is passed around as it contains the commands that the terminal must perform.
 
 
-### API Wrapper
+### General Code Requirements
 
-TO BE ADDED
+- Each function should have default values for non critical kwargs
 
+  Why? It increases code readability and acts as an input example for the functions arguments. This increases the ease of use of the functions through the api, but also just generally.
+  
+- Simple and understandable input objects; avoid for example weird dictionaries packed with data: {“title”: DataFrame}
+  
+  Why? Ease of use and often these complex formats are clumsy, prone to error and the formatting required for complex parameters is time consuming and unneeded.
+  
+- Each function needs to have a docstring explaining what it does, its parameters and what it returns.
+  
+  Why? You can use the function without reading its source code. This improves the developing experience and api usage. The api factory also can’t handle functions with out docstrings.
+  
+- Consistent and clear argument naming; not `symbol` in _view and then `ticker` in _file -> ticker everywhere; the name should be descriptive of what information it hold (see Style Guide section below)
+  
+  Why? You can quickly understand what the input it should be; example: tickers and stock names are fundamentally different, but they’re both strings so they should be named accordingly.
+
+- Classes (for example the portfolio class) should hold the relevant data and perform no other calculations, these calculations should be done in an independent function.
+
+Why? Two reasons. 
+
+1. These calculations can then be used outside of the class with custom data; for example via the api or for tests.
+2. The function can be loaded in API factory as an endpoint and user can get result by passing the class instance.
 
 ## Important functions and classes
 
