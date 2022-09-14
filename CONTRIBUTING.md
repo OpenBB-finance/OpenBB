@@ -50,7 +50,7 @@ Use your best judgment, and feel free to propose changes to this document in a p
 
 ## Understand Code Structure
 
-CLI :computer: → controller.py :robot: →  _view.py :art: →  _model.py :brain:
+CLI :computer: → controller.py :robot: →  _view.py :art: →  _model.py :brain:<br />
                                           view=True ↖          ↗ view=False
                                                  _api.py :factory:
 
