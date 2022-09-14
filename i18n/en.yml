@@ -592,10 +592,6 @@ en:
   crypto/tools/il: calculate impermanent loss
   crypto/nft/fp: collection sales/floor price
   crypto/nft/collections: top ethereum collections
-  crypto/nft/today: today's NFT drops
-  crypto/nft/upcoming: upcoming NFT drops
-  crypto/nft/ongoing: Ongoing NFT drops
-  crypto/nft/newest: Recently NFTs added
   crypto/nft/stats: collection stats
   crypto/dd/_overview_: Overview
   crypto/dd/_market_: Market
