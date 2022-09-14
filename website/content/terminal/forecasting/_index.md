@@ -551,6 +551,8 @@ Block RNN model obtains MAPE: 3.72%
 │ 2022-09-20 │ 256.62     │
 └────────────┴────────────┘
 ```
+<img width="792" alt="image" src="https://user-images.githubusercontent.com/105685594/190255025-9f32d6ff-d1d7-4cdf-80a8-2a6ff4c0617d.png">
+
 
 There we have it. Bringing in another ticker has allowed us to further improve the model accuracy. Furthermore, adding in a new feature to the dataset allowed us to improve the accuracy further.
 
