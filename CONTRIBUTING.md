@@ -13,6 +13,12 @@ Use your best judgment, and feel free to propose changes to this document in a p
     - [Follow Coding Guidelines](#follow-coding-guidelines)
       - [General Code Requirements](#general-code-requirements)
       - [File Specific Requirements](#file-specific-requirements)
+      - [Coding Style](#coding-style)
+        - [OpenBB Style Guide](#openbb-style-guide)
+        - [Naming Convention](#naming-convention)
+        - [Docstrings](#docstrings)
+        - [Linters](#linters)
+        - [Command names](#command-names)
       - [External API Keys](#external-api-keys)
         - [Creating API key](#creating-api-key)
         - [Setting and checking API key](#setting-and-checking-api-key)
@@ -20,6 +26,9 @@ Use your best judgment, and feel free to propose changes to this document in a p
         - [Model](#model)
         - [View](#view)
         - [Controller](#controller)
+        - [Add Documentation](#add-documentation)
+        - [Open a Pull Request](#open-a-pull-request)
+        - [Review Process](#review-process)
   - [ADVANCED](#advanced)
     - [Important functions and classes](#important-functions-and-classes)
       - [Base controller class](#base-controller-class)
@@ -29,11 +38,6 @@ Use your best judgment, and feel free to propose changes to this document in a p
       - [Auto Completer](#auto-completer)
       - [Logging](#logging)
       - [Internationalization](#internationalization)
-    - [Remember Coding Style](#remember-coding-style)
-      - [Naming Convention](#naming-convention)
-      - [Docstrings](#docstrings)
-      - [Linters](#linters)
-      - [Command names](#command-names)
     - [Write Code and Commit](#write-code-and-commit)
       - [Pre Commit Hooks](#pre-commit-hooks)
       - [Coding](#coding)
@@ -42,9 +46,6 @@ Use your best judgment, and feel free to propose changes to this document in a p
       - [Pytest](#pytest)
       - [Coverage](#coverage)
       - [VCR](#vcr)
-    - [Add Documentation](#add-documentation)
-    - [Open a Pull Request](#open-a-pull-request)
-    - [Review Process](#review-process)
 
 # BASIC
 
@@ -161,6 +162,81 @@ With:
   Why? To respect the principles laid out in Code Structure and the previous bullet point. If your code does not have this get_ → display_ map it’s likely that i. and/or ii. fail to hold.
   1. Data is processed in _model files and displayed in _view files
   2. _view and _model files will have the same arguments (expect for output options)
+
+### Coding Style
+
+When in doubt, follow <https://www.python.org/dev/peps/pep-0008/>.
+
+#### OpenBB Style Guide
+
+The style guide is a reverse dictionary for argument names, where a brief definition is mapped to an OpenBB recommended argument name and type. When helpful a code snippet example is added below.
+
+Style guide structure:
+```
+<definition> : <argument_name (argument_type)> e.g. <examples>
+
+def func(..., argument_name: argument_type = default, ...):
+    ...
+```
+
+
+#### Naming Convention
+
+- The name of the variables must be descriptive of what they stand for. I.e. `ticker` is descriptive, `aux` is not.
+- Single character variables **must** be avoided. Except if they correspond to the iterator of a loop.
+
+#### Docstrings
+
+The docstring format used in **numpy**, an example is shown below:
+
+```python
+def command_foo(var1: str, var2: List[int], var3: bool = False) -> Tuple[int, pd.DataFrame]:
+"""Small description
+
+[Optional: Longer description]
+
+Parameters
+----------
+var1 : str
+    var1 description
+var2 : List[int]
+    var2 description
+var3 : bool, optional
+    var3 description
+
+Returns
+-------
+foo : int
+    returned foo description
+pd.DataFrame
+    dataframe returned
+"""
+```
+
+#### Linters
+
+The following linters are used by our codebase:
+
+| Linter       | Description                       |
+| ------------ | --------------------------------- |
+| bandit       | security analyzer                 |
+| black        | code formatter                    |
+| codespell    | spelling checker                  |
+| flake8       | style guide enforcer              |
+| mypy         | static typing checker             |
+| pyupgrade    | upgrade syntax for newer versions |
+| safety       | checks security vulnerabilities   |
+| pylint       | bug and quality checker           |
+| markdownlint | markdown linter                   |
+
+#### Command names
+
+* The command name should be as short as possible.
+* The command name should allow the user to know what the command refers to without needing to read description. (e.g. `earn`)
+
+    - If this is not possible, then the command name should be an abbreviation of what the functionality corresponds to (e.g. `ycrv` for `yield curve`)
+* The command name **should not** have the data source explicit
+
 
 ### External API Keys
 
@@ -473,6 +549,124 @@ In addition, note the `self.load_class` which allows to not create a new DarkPoo
 
 The `self.queue` list of commands is passed around as it contains the commands that the terminal must perform.
 
+### Add Documentation
+
+To check whether documentation is added correctly follow [Hugo Server instructions](/website/README.md).
+
+This is the structure that the documentation follows:
+
+```txt
+website/content/_index.md
+               /stocks/_index.md
+                      /load/_index.md
+                      /candle/_index.md
+                      /discovery/_index.md
+                                /ipo/_index.md
+                                    /...
+                                /...
+                      /...
+               /cryptocurrency/_index.md
+                              /chart/_index.md
+                              /defi/_index.md
+                                   /borrow/_index.md
+                                   /...
+                              /...
+               /...
+               /common/_index.md
+                      /technical_analysis/_index.md
+                                         /ema/_index.md
+                                         /...
+                      /...
+```
+
+Note that the `common` folder holds features that are common across contexts, e.g. `technical analysis` can be performed on both `stocks` or `crytpo`.
+
+
+To add a new command, there are two main actions that need to be done:
+
+1. Create a directory with the name of the command and a `_index.md` file within. Examples:
+
+   - When adding `ipo`, since this command belongs to context `stocks` and category `discovery`, we added a `ipo` folder with a `_index.md` file within to `website/content/stocks/discovery`.
+
+   - When adding `candle`, since this command belongs to context `stocks`, we added a `candle` folder with a `_index.md` file within to `website/content/stocks/`.
+
+2. The `_index.md` file should have the output of the `command -h` followed by a screenshot example of what the user can expect. Note that you can now drag and drop the images while editing the readme file on the remote web version of your PR branch. Github will create a link for it with format (https://user-images.githubusercontent.com/***/***.file_format).
+
+Example:
+
+---
+
+```shell
+usage: ipo [--past PAST_DAYS] [--future FUTURE_DAYS]
+```
+
+Past and future IPOs. [Source: https://finnhub.io]
+
+- --past : Number of past days to look for IPOs. Default 0.
+- --future : Number of future days to look for IPOs. Default 10.
+
+<IMAGE HERE - Use drag and drop hint mentioned above>
+
+---
+
+3. Update the Navigation bar to match the content you've added. This is done by adding 2 lines of code to `website/data/menu/`, i.e. a `name` and a `ref`. Example:
+
+```
+---
+main:
+  - name: stocks
+    ref: "/stocks"
+    sub:
+      - name: load
+        ref: "/stocks/load"
+      - name: candle
+        ref: "/stocks/candle"
+      - name: discovery
+        ref: "/stocks/discovery"
+        sub:
+          - name: ipo
+            ref: "/stocks/discovery/ipo"
+          - name: map
+            ref: "/stocks/discovery/map"
+```
+
+
+### Open a Pull Request
+
+Once you're happy with what you have, push your branch to remote. E.g. `git push origin feature/AmazingFeature`
+
+A user may create a **Draft Pull Request** when he/she wants to discuss implementation with the team.
+
+The team will then assign your PR one of the following labels:
+
+| Label name     | Description                         | Example                                        |
+| -------------- | ----------------------------------- | ---------------------------------------------- |
+| `feat XS`      | Extra small feature                 | Add a preset                                   |
+| `feat S`       | Small T-Shirt size Feature          | New single command added                       |
+| `feat M`       | Medium T-Shirt size feature         | Multiple commands added from same data source  |
+| `feat L`       | Large T-Shirt size Feature          | New category added under context               |
+| `feat XL`      | Extra Large feature                 | New context added                              |
+| `enhancement`  | Enhancement                         | Add new parameter to existing command          |
+| `bug`          | Fix a bug                           | Fixes terminal crashing or warning message     |
+| `build`        | Build-related work                  | Fix a github action that is breaking the build |
+| `tests`        | Test-related work                   | Add/improve tests                              |
+| `docs`         | Improvements on documentation       | Add/improve documentation                      |
+| `refactor`     | Refactor code                       | Changing argparse location                     |
+| `docker`       | Docker-related work                 | Add/improve docker                             |
+| `help wanted`  | Extra attention is needed           | When a contributor needs help                  |
+| `do not merge` | Label to prevent pull request merge | When PR is not ready to be merged just yet     |
+
+### Review Process
+
+As soon as the Pull Request is opened, our repository has a specific set of github actions that will not only run
+linters on the branch just pushed, but also run pytest on it. This allows for another layer of safety on the code developed.
+
+In addition, our team is known for performing `diligent` code reviews. This not only allows us to reduce the amount of
+iterations on that code and have it to be more future proof, but also allows the developer to learn/improve his coding skills.
+
+Often in the past the reviewers have suggested better coding practices, e.g. using `1_000_000` instead of `1000000` for
+better visibility, or suggesting a speed optimization improvement.
+
 # ADVANCED
 
 ## Important functions and classes
@@ -704,67 +898,6 @@ This is the convention in use for creating a new key/value pair:
 TO BE ADDED - WORK IN PROGRESS
 
 
-## Remember Coding Style
-
-When in doubt, follow <https://www.python.org/dev/peps/pep-0008/>.
-
-### Naming Convention
-
-- The name of the variables must be descriptive of what they stand for. I.e. `ticker` is descriptive, `aux` is not.
-- Single character variables **must** be avoided. Except if they correspond to the iterator of a loop.
-
-### Docstrings
-
-The docstring format used in **numpy**, an example is shown below:
-
-```python
-def command_foo(var1: str, var2: List[int], var3: bool = False) -> Tuple[int, pd.DataFrame]:
-"""Small description
-
-[Optional: Longer description]
-
-Parameters
-----------
-var1 : str
-    var1 description
-var2 : List[int]
-    var2 description
-var3 : bool, optional
-    var3 description
-
-Returns
--------
-foo : int
-    returned foo description
-pd.DataFrame
-    dataframe returned
-"""
-```
-
-### Linters
-
-The following linters are used by our codebase:
-
-| Linter       | Description                       |
-| ------------ | --------------------------------- |
-| bandit       | security analyzer                 |
-| black        | code formatter                    |
-| codespell    | spelling checker                  |
-| flake8       | style guide enforcer              |
-| mypy         | static typing checker             |
-| pyupgrade    | upgrade syntax for newer versions |
-| safety       | checks security vulnerabilities   |
-| pylint       | bug and quality checker           |
-| markdownlint | markdown linter                   |
-
-### Command names
-
-* The command name should be as short as possible.
-* The command name should allow the user to know what the command refers to without needing to read description. (e.g. `earn`)
-
-    - If this is not possible, then the command name should be an abbreviation of what the functionality corresponds to (e.g. `ycrv` for `yield curve`)
-* The command name **should not** have the data source explicit
-
 ## Write Code and Commit
 
 At this stage it is assumed that you have already forked the project and are ready to start working.
@@ -819,121 +952,3 @@ report of testing coverage.
 
 VCRPY allows us to save data from request methods to a .YAML file. This increases test integrity and significantly
 speeds up the time it takes to run tests. To use VCRPY add **@pytest.mark.vcr** above any function you write.
-
-## Add Documentation
-
-To check whether documentation is added correctly follow [Hugo Server instructions](/website/README.md).
-
-This is the structure that the documentation follows:
-
-```txt
-website/content/_index.md
-               /stocks/_index.md
-                      /load/_index.md
-                      /candle/_index.md
-                      /discovery/_index.md
-                                /ipo/_index.md
-                                    /...
-                                /...
-                      /...
-               /cryptocurrency/_index.md
-                              /chart/_index.md
-                              /defi/_index.md
-                                   /borrow/_index.md
-                                   /...
-                              /...
-               /...
-               /common/_index.md
-                      /technical_analysis/_index.md
-                                         /ema/_index.md
-                                         /...
-                      /...
-```
-
-Note that the `common` folder holds features that are common across contexts, e.g. `technical analysis` can be performed on both `stocks` or `crytpo`.
-
-
-To add a new command, there are two main actions that need to be done:
-
-1. Create a directory with the name of the command and a `_index.md` file within. Examples:
-
-   - When adding `ipo`, since this command belongs to context `stocks` and category `discovery`, we added a `ipo` folder with a `_index.md` file within to `website/content/stocks/discovery`.
-
-   - When adding `candle`, since this command belongs to context `stocks`, we added a `candle` folder with a `_index.md` file within to `website/content/stocks/`.
-
-2. The `_index.md` file should have the output of the `command -h` followed by a screenshot example of what the user can expect. Note that you can now drag and drop the images while editing the readme file on the remote web version of your PR branch. Github will create a link for it with format (https://user-images.githubusercontent.com/***/***.file_format).
-
-Example:
-
----
-
-```shell
-usage: ipo [--past PAST_DAYS] [--future FUTURE_DAYS]
-```
-
-Past and future IPOs. [Source: https://finnhub.io]
-
-- --past : Number of past days to look for IPOs. Default 0.
-- --future : Number of future days to look for IPOs. Default 10.
-
-<IMAGE HERE - Use drag and drop hint mentioned above>
-
----
-
-3. Update the Navigation bar to match the content you've added. This is done by adding 2 lines of code to `website/data/menu/`, i.e. a `name` and a `ref`. Example:
-
-```
----
-main:
-  - name: stocks
-    ref: "/stocks"
-    sub:
-      - name: load
-        ref: "/stocks/load"
-      - name: candle
-        ref: "/stocks/candle"
-      - name: discovery
-        ref: "/stocks/discovery"
-        sub:
-          - name: ipo
-            ref: "/stocks/discovery/ipo"
-          - name: map
-            ref: "/stocks/discovery/map"
-```
-
-
-## Open a Pull Request
-
-Once you're happy with what you have, push your branch to remote. E.g. `git push origin feature/AmazingFeature`
-
-A user may create a **Draft Pull Request** when he/she wants to discuss implementation with the team.
-
-The team will then assign your PR one of the following labels:
-
-| Label name     | Description                         | Example                                        |
-| -------------- | ----------------------------------- | ---------------------------------------------- |
-| `feat XS`      | Extra small feature                 | Add a preset                                   |
-| `feat S`       | Small T-Shirt size Feature          | New single command added                       |
-| `feat M`       | Medium T-Shirt size feature         | Multiple commands added from same data source  |
-| `feat L`       | Large T-Shirt size Feature          | New category added under context               |
-| `feat XL`      | Extra Large feature                 | New context added                              |
-| `enhancement`  | Enhancement                         | Add new parameter to existing command          |
-| `bug`          | Fix a bug                           | Fixes terminal crashing or warning message     |
-| `build`        | Build-related work                  | Fix a github action that is breaking the build |
-| `tests`        | Test-related work                   | Add/improve tests                              |
-| `docs`         | Improvements on documentation       | Add/improve documentation                      |
-| `refactor`     | Refactor code                       | Changing argparse location                     |
-| `docker`       | Docker-related work                 | Add/improve docker                             |
-| `help wanted`  | Extra attention is needed           | When a contributor needs help                  |
-| `do not merge` | Label to prevent pull request merge | When PR is not ready to be merged just yet     |
-
-## Review Process
-
-As soon as the Pull Request is opened, our repository has a specific set of github actions that will not only run
-linters on the branch just pushed, but also run pytest on it. This allows for another layer of safety on the code developed.
-
-In addition, our team is known for performing `diligent` code reviews. This not only allows us to reduce the amount of
-iterations on that code and have it to be more future proof, but also allows the developer to learn/improve his coding skills.
-
-Often in the past the reviewers have suggested better coding practices, e.g. using `1_000_000` instead of `1000000` for
-better visibility, or suggesting a speed optimization improvement.
