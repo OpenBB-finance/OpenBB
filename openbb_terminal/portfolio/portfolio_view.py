@@ -327,7 +327,11 @@ def display_yearly_returns(
         if external_axes is None:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         else:
-            ax = external_axes
+            if len(external_axes) != 1:
+                logger.error("Expected list of 1 axis items")
+                console.print("[red]Expected list of 1 axis items.\n[/red]")
+                return
+            ax = external_axes[0]
 
         creturns_year_idx = list()
         breturns_year_idx = list()
@@ -398,13 +402,13 @@ def display_monthly_returns(
         print_rich_table(
             portfolio_returns,
             title="Monthly returns",
-            headers=df.columns,
+            headers=portfolio_returns.columns,
             show_index=True,
         )
         print_rich_table(
             benchmark_returns,
             title="Monthly returns",
-            headers=df.columns,
+            headers=benchmark_returns.columns,
             show_index=True,
         )
 
@@ -417,6 +421,10 @@ def display_monthly_returns(
                 dpi=PLOT_DPI,
             )
         else:
+            if len(external_axes) != 2:
+                logger.error("Expected list of 2 axis items")
+                console.print("[red]Expected list of 2 axis items.\n[/red]")
+                return
             ax = external_axes
 
         ax[0].set_title(f"Portfolio in period {window}")
@@ -447,7 +455,7 @@ def display_monthly_returns(
         )
         theme.style_primary_axis(ax[1])
 
-        if not external_axes:
+        if external_axes is None:
             theme.visualize_output()
 
     export_data(
@@ -500,6 +508,10 @@ def display_daily_returns(
                 2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI, sharex=True
             )
         else:
+            if len(external_axes) != 2:
+                logger.error("Expected list of 2 axis items")
+                console.print("[red]Expected list of 2 axis items.\n[/red]")
+                return    
             ax = external_axes
 
         ax[0].set_title(f"Portfolio in period {window}")
@@ -511,7 +523,7 @@ def display_daily_returns(
         ax[1].set_ylabel("Returns [%]")
         theme.style_primary_axis(ax[1])
 
-        if not external_axes:
+        if external_axes is None:
             theme.visualize_output()
 
     export_data(
@@ -569,7 +581,11 @@ def display_distribution_returns(
                 dpi=PLOT_DPI,
             )
         else:
-            ax = external_axes
+            if len(external_axes) != 1:
+                logger.error("Expected list of 1 axis items")
+                console.print("[red]Expected list of 1 axis items.\n[/red]")
+                return
+            ax = external_axes[0]
 
         ax.set_title("Returns distribution")
         ax.set_ylabel("Density")
@@ -645,7 +661,11 @@ def display_holdings_value(
         if external_axes is None:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         else:
-            ax = external_axes
+            if len(external_axes) != 1:
+                logger.error("Expected list of 1 axis items")
+                console.print("[red]Expected list of 1 axis items.\n[/red]")
+                return
+            ax = external_axes[0]
 
         if sum_assets:
             ax.stackplot(
@@ -724,7 +744,11 @@ def display_holdings_percentage(
         if external_axes is None:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
         else:
-            ax = external_axes
+            if len(external_axes) != 1:
+                logger.error("Expected list of 1 axis items")
+                console.print("[red]Expected list of 1 axis items.\n[/red]")
+                return
+            ax = external_axes[0]
 
         if sum_assets:
             ax.stackplot(
@@ -785,7 +809,7 @@ def display_rolling_volatility(
             logger.error("Expected list of one axis items.")
             console.print("[red]1 axes expected.\n[/red]")
             return
-        ax = external_axes
+        ax = external_axes[0]
 
     metric = "volatility"
     df = portfolio_model.get_rolling_volatility(portfolio, window)
@@ -840,7 +864,7 @@ def display_rolling_sharpe(
             logger.error("Expected list of one axis items.")
             console.print("[red]1 axes expected.\n[/red]")
             return
-        ax = external_axes
+        ax = external_axes[0]
 
     metric = "sharpe"
     df = portfolio_model.get_rolling_sharpe(portfolio, risk_free_rate, window)
@@ -895,7 +919,7 @@ def display_rolling_sortino(
             logger.error("Expected list of one axis items.")
             console.print("[red]1 axes expected.\n[/red]")
             return
-        ax = external_axes
+        ax = external_axes[0]
 
     metric = "sortino"
     df = portfolio_model.get_rolling_sharpe(portfolio, risk_free_rate, window)
@@ -947,7 +971,7 @@ def display_rolling_beta(
             logger.error("Expected list of one axis items.")
             console.print("[red]1 axes expected.\n[/red]")
             return
-        ax = external_axes
+        ax = external_axes[0]
 
     metric = "beta"
     rolling_beta = portfolio_model.get_rolling_beta(portfolio, window)
@@ -997,6 +1021,10 @@ def display_maximum_drawdown(
     if external_axes is None:
         _, ax = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI, sharex=True)
     else:
+        if len(external_axes) != 2:
+            logger.error("Expected list of 2 axis items")
+            console.print("[red]Expected list of 2 axis items.\n[/red]")
+            return
         ax = external_axes
 
     ax[0].plot(holdings.index, holdings)
@@ -1008,6 +1036,7 @@ def display_maximum_drawdown(
     theme.style_primary_axis(ax[1])
     if external_axes is None:
         theme.visualize_output()
+        
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
