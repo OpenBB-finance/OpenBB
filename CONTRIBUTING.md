@@ -168,7 +168,7 @@ When in doubt, follow <https://www.python.org/dev/peps/pep-0008/>.
 
 #### OpenBB Style Guide
 
-The style guide is a reverse dictionary for argument names, where a brief definition is mapped to an OpenBB recommended argument name and type. When helpful a code snippet example is added below. Following this guide will help keep naming consistency and improve API users experience.
+The style guide is a reverse dictionary for argument names, where a brief definition is mapped to an OpenBB recommended argument name and type. When helpful a code snippet example is added below. Following this guide will help keep argument naming consistent and improve API users experience.
 
 Style guide structure:
 ```
