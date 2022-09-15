@@ -128,10 +128,67 @@ With:
 
   Why? It increases code readability and acts as an input example for the functions arguments. This increases the ease of use of the functions through the api, but also just generally.
   
+<table>
+<tr>
+<td> Good code :white_check_mark: </td> <td> Bad code :x: </td>
+</tr>
+<tr>
+<td>
+
+```python
+def display_last_uni_swaps(   
+  top: int = 10,   
+  sortby: str = "timestamp",   
+  descend: bool = False,   
+  export: str = "",) -> None:
+```
+
+</td>
+<td>
+    
+```python
+def display_last_uni_swaps(
+  top: int,   
+  sortby: str,
+  descend: bool,   
+  export: str,) -> None:
+```
+</td>
+</tr>
+</table>
+
+  
 - Simple and understandable input objects; avoid for example weird dictionaries packed with data: {“title”: DataFrame}
   
   Why? Ease of use and often these complex formats are clumsy, prone to error and the formatting required for complex parameters is time consuming and unneeded.
   
+<table>
+<tr>
+<td> Good code :white_check_mark: </td> <td> Bad code :x: </td>
+</tr>
+<tr>
+<td>
+
+```python
+def get_coins(       
+  top: int = 250,       
+  category: str = "") -> pd.DataFrame:
+```
+
+</td>
+<td>
+    
+```python
+def load(   
+  file: str,   
+  file_types: list,   
+  data_files: Dict[Any, Any],   
+  data_examples: Dict[Any, Any],) -> pd.DataFrame:
+```
+</td>
+</tr>
+</table>
+ 
 - Each function needs to have a docstring explaining what it does, its parameters and what it returns.
   
   Why? You can use the function without reading its source code. This improves the developing experience and api usage. The api factory also can’t handle functions with out docstrings.
@@ -140,16 +197,149 @@ With:
   
   Why? You can quickly understand what the input it should be; example: tickers and stock names are fundamentally different, but they’re both strings so they should be named accordingly.
 
+<table>
+<tr>
+<td> Good code :white_check_mark: </td> <td> Bad code :x: </td>
+</tr>
+<tr>
+<td>
+
+```python
+data: pd.Series, dataset_name: str, y_label: str,
+```
+
+</td>
+<td>
+    
+```python
+data: pd.Series, dataset: str, column: str,
+```
+</td>
+</tr>
+</table>
+
 - Classes (for example the portfolio class) should hold the relevant data and perform no other calculations, these calculations should be done in an independent function.
 
   Why? Two reasons. 
 
   1. These calculations can then be used outside of the class with custom data; for example via the api or for tests.
+```swift
+from openbb_terminal.portfolio.portfolio_helper import get_gaintopain_ratio
+
+# Direct function access
+get_gaintopain_ratio(historical_trade_data, benchmark_trades, benchmark_returns)
+```
+
   2. The function can be loaded in API factory as an endpoint and user can get result by passing the class instance.
+```swift
+from openbb_terminal.api import openbb
+from openbb_terminal.api import Portfolio
+
+transactions = Portfolio.read_orderbook("../../portfolio/holdings/example.csv")
+P = Portfolio(transactions)
+P.generate_portfolio_data()
+P.load_benchmark()
+
+# API endpoint access
+openbb.portfolio.gaintopain(P)
+```
+
+<table>
+<tr>
+<td> Good code :white_check_mark: </td> <td> Bad code :x: </td>
+</tr>
+<tr>
+<td>
+
+```python
+def get_gaintopain_ratio(portfolio: PortfolioModel) -> pd.DataFrame:  
+
+"""..."""   
+
+gtp_period_df = portfolio_helper.get_gaintopain_ratio(
+
+       portfolio.historical_trade_data, 
+
+       portfolio.benchmark_trades, 
+
+       portfolio.benchmark_returns
+
+       )   
+
+return gtp_period_df
+```
+
+</td>
+<td>
+    
+```python
+def get_gaintopain_ratio(self) -> pd.DataFrame:   
+
+"""..."""   
+
+vals = list()   
+
+for period in portfolio_helper.PERIODS:             
+
+       port_rets = portfolio_helper.filter_df_by_period(self.returns, period)       
+
+       bench_rets =  portfolio_helper.filter_df_by_period(           self.benchmark_returns, period)
+
+...
+```
+</td>
+</tr>
+</table>
 
 - Naming among related model and view functions should be obvious; just different prefix if possible
 
   Why? Eases API factory mapping and keeps code clean.
+<table>
+<tr>
+<td> Good code :white_check_mark: </td> <td> Bad code :x: </td>
+</tr>
+<tr>
+<td>
+
+```python
+[fred_view.py]
+
+def display_yieldcurve(country: str):
+
+      df = fred_model.get_yieldcurve(country)
+
+      …
+
+[fred_model.py]
+
+def get_yieldcurve(country: str) -> pd.Dataframe:
+
+      …
+```
+
+</td>
+<td>
+    
+```python
+[fred_view.py]
+
+def display_bondscrv(country: str):
+
+      df = fred_model.get_yieldcurve(country)
+
+      …
+
+[fred_model.py]
+
+def get_yldcurve(country: str) -> pd.Dataframe:
+
+      …
+```
+</td>
+</tr>
+</table>
+
+
 
 ### File Specific Requirements
 
@@ -172,7 +362,7 @@ When in doubt, follow <https://www.python.org/dev/peps/pep-0008/>.
 The style guide is a reverse dictionary for argument names, where a brief definition is mapped to an OpenBB recommended argument name and type. When helpful a code snippet example is added below. Following this guide will help keep argument naming consistent and improve API users experience.
 
 Style guide structure:
-```
+```python
 <definition> : <argument_name (argument_type)> e.g. <examples>
 
 def func(..., argument_name: argument_type = default, ...):
@@ -181,7 +371,7 @@ def func(..., argument_name: argument_type = default, ...):
 
 #### Flags
 Show raw data : `raw` *(bool)*
-```
+```python
 def display_data(..., raw: bool = False, ...):
     ...
     if raw:
@@ -189,7 +379,7 @@ def display_data(..., raw: bool = False, ...):
 ```
 
 Sort in ascending order : `ascend` *(bool)*
-```
+```python
 def display_data(..., sortby: str = "", ascend: bool = False, ...):
     ...
     if sortby:
@@ -197,7 +387,7 @@ def display_data(..., sortby: str = "", ascend: bool = False, ...):
 ```
 
 Show plot : `plot` *(bool)*
-```
+```python
 def display_data(..., plot: bool = False, ...):
     ...
     if plot:
@@ -207,14 +397,14 @@ def display_data(..., plot: bool = False, ...):
     
 #### Output format
 Format to export data : `export` *(str), e.g. csv, json, xlsx*
-```
+```python
 def display_data(..., export: str = "", ...):
     ...
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "func", data)
 ```
 
 List of external axes to include in a plot : `external_axes` *(Optional[List[plt.Axes]])*
-```
+```python
 def display_data(..., external_axes: Optional[List[plt.Axes]] = None, ...):
     ...
     if external_axes is None:
@@ -225,7 +415,7 @@ def display_data(..., external_axes: Optional[List[plt.Axes]] = None, ...):
 ```
 
 Field by which to sort : `sortby` *(str), e.g. "Volume"*
-```
+```python
 def display_data(..., sortby: str = "col", ...):
     ...
     if sortby:
@@ -233,7 +423,7 @@ def display_data(..., sortby: str = "col", ...):
 ```
 
 Maximum limit number of output items : `limit` *(int)*
-```
+```python
 def display_data(..., limit = 10, ...):
     ...
     print_rich_table(
@@ -249,7 +439,7 @@ Date from which data is fetched (YYYY-MM-DD) : `start_date` *(str), e.g. 2022-01
 Date up to which data is fetched (YYYY-MM-DD) : `end_date` *(str), e.g. 2022-12-31*
 
 Note: please specify date format in docstring
-```
+```python
 def get_historical_data(..., start_date: str = "2022-01-01", end_date: str = "2022-12-31",):
     """
     ...
@@ -267,14 +457,14 @@ def get_historical_data(..., start_date: str = "2022-01-01", end_date: str = "20
 Year from which data is fetched (YYYY) : `start_year` *(str), e.g. 2022*
 
 Year up to which data is fetched (YYYY) : `end_year` *(str), e.g. 2023*
-```
+```python
 def get_historical_data(..., start_year: str = "2022", end_year str = "2023", ...):
     ...
     data = source_model.get_data(data_name, start_year, end_year, ...)
 ```
 
 Interval for data observations : `interval` *(str), e.g. 60m, 90m, 1h*
-```
+```python
 def get_prices(interval: str = "60m", ...):    
     ...
     data = source.download(
@@ -285,7 +475,7 @@ def get_prices(interval: str = "60m", ...):
 ```
 
 Rolling window length : `window` *(int/str), e.g. 252, 252d*
-```
+```python
 def get_rolling_sum(returns: pd.Series, window: str = "252d"):    
     rolling_sum = returns.rolling(window=window).sum()
 ```
@@ -296,7 +486,7 @@ Search term used to query : `query` (str)
 Maximum limit of search items/periods in data source: `limit` *(int)*
 
 Note: please specify limit application in docstring
-```
+```python
 def get_data_from_source(..., limit: int = 10, ...):
     """
     Parameters
@@ -313,7 +503,7 @@ Dictionary of input datasets : `datasets` *(Dict[str, pd.DataFrame])*
 Note: Most occurrences are on the econometrics menu and might be refactored in near future
 
 Input dataset : `data` *(pd.DataFrame)*
-```
+```python
 def process_data(..., data: pd.DataFrame, ...):
     """
     ...
@@ -334,7 +524,7 @@ Input series : `data` *(pd.Series)*
 Dependent variable series : `dependent_series` *(pd.Series)*
 
 Independent variable series : `independent_series` *(pd.Series)*
-```
+```python
 def get_econometric_test(dependent_series, independent_series, ...):
     ...
     dataset = pd.concat([dependent_series, independent_series], axis=1)
@@ -349,7 +539,7 @@ Currency to convert data : `currency` *(str) e.g. EUR, USD*
 
 #### Financial instrument characteristics
 Instrument ticker, name or currency pair : `symbol` *(str), e.g. AAPL, ethereum, ETH, ETH-USD*
-```
+```python
 def get_prices(symbol: str = "AAPL", ...):    
     ...
     data = source.download(
@@ -367,7 +557,7 @@ List of instrument tickers, names or currency pairs : `symbols` *(List/List[str]
 Base currency under ***BASE***-QUOTE → ***XXX***-YYY convention : `from_symbol` *(str), e.g. ETH in ETH-USD*
 
 Quote currency under BASE-***QUOTE*** → XXX-***YYY*** convention : `to_symbol` *(str), e.g. USD in ETH-USD*
-```
+```python
 def get_exchange_rate(from_symbol: str = "", to_symbol: str = "", ...):
     ...
     df = source.get_quotes(from_symbol, to_symbol, ...)
