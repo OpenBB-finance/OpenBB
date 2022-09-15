@@ -10,7 +10,6 @@ import importlib
 from datetime import datetime
 from typing import List
 
-import papermill as pm
 from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
@@ -38,19 +37,22 @@ class ReportController(BaseController):
     d_id_to_report_name = {}
     for id_report, report_name in enumerate(report_names):
         d_id_to_report_name[str(id_report + 1)] = report_name
-    
+
     d_params = {}
 
     max_len_name = max(len(name) for name in report_names) + 2
     reports_opts = ""
     for k, report_to_run in d_id_to_report_name.items():
         # Crawl data to look into what
-        report_mod = importlib.import_module("openbb_terminal.reports." + report_to_run + "_rep")
+        report_mod = importlib.import_module(
+            "openbb_terminal.reports." + report_to_run + "_rep"
+        )
         l_params = []
         for param, parameter in report_mod.parameters.items():
             l_params.append(param)
+        l_params.remove("report_name")
         d_params[report_to_run] = l_params
-        
+
         # On the menu of choices add the parameters necessary for each template report
         if len(l_params) > 1 or not l_params:
             args = f"<{'> <'.join(l_params)}>"
@@ -162,9 +164,6 @@ class ReportController(BaseController):
                 console.print("")
                 return []
 
-            notebook_template = os.path.join(
-                "openbb_terminal", "reports", report_to_run
-            )
             args_to_output = f"_{'_'.join(other_args)}" if "_".join(other_args) else ""
             report_output_name = (
                 f"{datetime.now().strftime('%Y%m%d_%H%M%S')}"
@@ -184,29 +183,25 @@ class ReportController(BaseController):
 
             d_report_params["report_name"] = notebook_output
 
-            result = pm.execute_notebook(
-                notebook_template + ".ipynb",
-                notebook_output + ".ipynb",
-                parameters=d_report_params,
-                kernel_name="python3",
+            report_mod = importlib.import_module(
+                "openbb_terminal.reports." + report_to_run + "_rep"
+            )
+            report_mod.run_report(**d_report_params)
+
+            if obbff.OPEN_REPORT_AS_HTML:
+                report_output_path = os.path.join(
+                    os.path.abspath(os.path.join(".")), notebook_output + ".html"
+                )
+                print(report_output_path)
+                webbrowser.open(f"file://{report_output_path}")
+
+            console.print("")
+            console.print(
+                "Exported: ",
+                os.path.join(
+                    os.path.abspath(os.path.join(".")), notebook_output + ".html"
+                ),
+                "\n",
             )
 
-            if not result["metadata"]["papermill"]["exception"]:
-                if obbff.OPEN_REPORT_AS_HTML:
-                    report_output_path = os.path.join(
-                        os.path.abspath(os.path.join(".")), notebook_output + ".html"
-                    )
-                    print(report_output_path)
-                    webbrowser.open(f"file://{report_output_path}")
-
-                console.print("")
-                console.print(
-                    "Exported: ",
-                    os.path.join(
-                        os.path.abspath(os.path.join(".")), notebook_output + ".html"
-                    ),
-                    "\n",
-                )
-            else:
-                console.print("[red]\nParameter provided is not valid.\n[/red]")
         return self.queue

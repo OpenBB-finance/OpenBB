@@ -29,21 +29,22 @@ predictions = False
 theme = TerminalStyle("light", "light", "light")
 stylesheet = widgets.html_report_stylesheet()
 
-parameters = {"symbol":"AAPL"}
+parameters = {"symbol": "AAPL", "report_name": "Equity Report for AAPL"}
 
-def run_report(symbol: str=""):
+
+def run_report(symbol: str = "", report_name: str = ""):
     """
     Runs the report
     """
-    
-    report_name = f"Equity report for {symbol}"
 
     if "." in symbol:
         import sys
+
         sys.exit(0)
 
     ticker_data = openbb.stocks.load(
-        symbol=symbol, start_date=datetime.datetime.now() - datetime.timedelta(days=18 * 30)
+        symbol=symbol,
+        start_date=datetime.datetime.now() - datetime.timedelta(days=18 * 30),
     )
     ticker_data = openbb.stocks.process_candle(df=ticker_data)
 
@@ -83,9 +84,9 @@ def run_report(symbol: str=""):
     ) = openbb.stocks.fa.shrs(symbol)
     df_institutional_shareholders.index += 1
 
-    df_sec_filings = openbb.stocks.dd.sec(symbol=symbol)[["Type", "Category", "Link"]].head(
-        5
-    )
+    df_sec_filings = openbb.stocks.dd.sec(symbol=symbol)[
+        ["Type", "Category", "Link"]
+    ].head(5)
     df_sec_filings["Link"] = df_sec_filings["Link"].apply(
         lambda x: f'<a href="{x}">{x}</a>'
     )
@@ -390,7 +391,9 @@ def run_report(symbol: str=""):
                 break
 
         if not df_ratings.empty:
-            avg_ratings_last_30_days = round(np.mean(df_ratings["Price Target"].values), 2)
+            avg_ratings_last_30_days = round(
+                np.mean(df_ratings["Price Target"].values), 2
+            )
         else:
             avg_ratings_last_30_days = 0
 
@@ -415,15 +418,11 @@ def run_report(symbol: str=""):
     df = openbb.common.ta.rsi(ticker_data["Close"])
     rsi_value = round(df.values[-1][0], 2)
 
-
-
     model = LinearRegression().fit(
         np.array(range(len(ticker_data["Close"][-30:].index))).reshape(-1, 1),
         ticker_data["Close"][-30:].values,
     )
     regression_slope = round(model.coef_[0], 2)
-
-
 
     df_insider = pd.DataFrame.from_dict(openbb.stocks.ins.lins(symbol=symbol)).head(10)
     df_insider["Val ($)"] = df_insider["Value ($)"].replace({",": ""}, regex=True)
@@ -545,7 +544,9 @@ def run_report(symbol: str=""):
     fig.savefig(f, format="svg")
     ma_chart = f.getvalue().decode("utf-8")
 
-    fig, (ax, ax1) = plt.subplots(nrows=2, ncols=1, figsize=(11, 5), sharex=True, dpi=150)
+    fig, (ax, ax1) = plt.subplots(
+        nrows=2, ncols=1, figsize=(11, 5), sharex=True, dpi=150
+    )
     openbb.common.ta.macd(
         ticker_data["Close"], symbol=symbol, external_axes=[ax, ax1], chart=True
     )
@@ -554,8 +555,12 @@ def run_report(symbol: str=""):
     fig.savefig(f, format="svg")
     macd_chart = f.getvalue().decode("utf-8")
 
-    fig, (ax, ax1) = plt.subplots(nrows=2, ncols=1, figsize=(11, 5), sharex=True, dpi=150)
-    openbb.common.ta.cci(ticker_data, symbol=symbol, external_axes=[ax, ax1], chart=True)
+    fig, (ax, ax1) = plt.subplots(
+        nrows=2, ncols=1, figsize=(11, 5), sharex=True, dpi=150
+    )
+    openbb.common.ta.cci(
+        ticker_data, symbol=symbol, external_axes=[ax, ax1], chart=True
+    )
     fig.tight_layout()
     f = io.BytesIO()
     fig.savefig(f, format="svg")
@@ -572,7 +577,9 @@ def run_report(symbol: str=""):
     stoch_chart = f.getvalue().decode("utf-8")
 
     fig, (ax, ax1) = plt.subplots(2, 1, sharex=True, figsize=(11, 5), dpi=150)
-    openbb.common.ta.adx(ticker_data, symbol=symbol, external_axes=[ax, ax1], chart=True)
+    openbb.common.ta.adx(
+        ticker_data, symbol=symbol, external_axes=[ax, ax1], chart=True
+    )
     fig.tight_layout()
     f = io.BytesIO()
     fig.savefig(f, format="svg")
@@ -704,11 +711,15 @@ def run_report(symbol: str=""):
         [widgets.h(3, "Analyst Ratings over time") + ratings_over_time_chart]
     )
     htmlcode += widgets.row([widgets.h(3, "Analyst Ratings") + df_analyst.to_html()])
-    htmlcode += widgets.row([widgets.h(3, "Analyst Recommendations") + df_rating.to_html()])
+    htmlcode += widgets.row(
+        [widgets.h(3, "Analyst Recommendations") + df_rating.to_html()]
+    )
 
     body += widgets.add_tab("Analyst Opinions", htmlcode)
 
-    htmlcode = widgets.row([widgets.h(3, "Estimates") + df_year_estimates.head().to_html()])
+    htmlcode = widgets.row(
+        [widgets.h(3, "Estimates") + df_year_estimates.head().to_html()]
+    )
     htmlcode += widgets.row(
         [widgets.h(3, "Earnings") + df_quarter_earnings.head().to_html()]
     )
@@ -769,7 +780,8 @@ def run_report(symbol: str=""):
             htmlcode += widgets.row(
                 [
                     widgets.p(
-                        "\t" + row["Specific_Issue"].replace("\n", " ").replace("\r", "")
+                        "\t"
+                        + row["Specific_Issue"].replace("\n", " ").replace("\r", "")
                     )
                 ]
             )
@@ -839,7 +851,10 @@ def run_report(symbol: str=""):
         ]
     )
     htmlcode += widgets.row(
-        [widgets.h(3, f"Regions with highest interest in {symbol}") + google_regions_chart]
+        [
+            widgets.h(3, f"Regions with highest interest in {symbol}")
+            + google_regions_chart
+        ]
     )
     # htmlcode += widgets.row(
     #    [widgets.h(3, f"Top queries related to {symbol}") + df_related_queries.to_html()]
