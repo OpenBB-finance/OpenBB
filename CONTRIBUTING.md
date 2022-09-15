@@ -347,13 +347,13 @@ def get_yldcurve(country: str) -> pd.Dataframe:
 
 1. No data altering in the view file or controller file (view and model with same args)
 
-  Why? Consistency and good code structure. This also improves the api user experience. Thus follows that view and model files will have the same arguments (except for output options like raw, export, external_axes), since no data changes shall be done in the view file.
+    Why? Consistency and good code structure. This also improves the api user experience. Thus follows that view and model files will have the same arguments (except for output options like raw, export, external_axes), since no data changes shall be done in the view file.
 
 <br>
 
 2. Each model (get_) should almost always have its own view function (display_)
 
-  Why? To respect the principles laid out in Code Structure and the previous bullet point. If your code does not have this get_ → display_ map it’s likely that i. and/or ii. fail to hold.
+    Why? To respect the principles laid out in Code Structure and the previous bullet point. If your code does not have this get_ → display_ map it’s likely that i. and/or ii. fail to hold.
   i. Data is processed in _model files and displayed in _view files
   ii. _view and _model files will have the same arguments (expect for output options)
 
@@ -374,6 +374,8 @@ Style guide structure:
 def func(..., argument_name: argument_type = default, ...):
     ...
 ```
+
+<br>
 
 #### Flags
 Show raw data : `raw` *(bool)*
@@ -400,7 +402,9 @@ def display_data(..., plot: bool = False, ...):
         ...
         ax.plot(...)
 ```
-    
+
+<br>
+
 #### Output format
 Format to export data : `export` *(str), e.g. csv, json, xlsx*
 ```python
@@ -437,6 +441,8 @@ def display_data(..., limit = 10, ...):
         ...
     )
 ```
+
+<br>
 
 #### Time-related
 
@@ -485,6 +491,8 @@ Rolling window length : `window` *(int/str), e.g. 252, 252d*
 def get_rolling_sum(returns: pd.Series, window: str = "252d"):    
     rolling_sum = returns.rolling(window=window).sum()
 ```
+
+<br>
 
 #### Data selection and manipulation
 Search term used to query : `query` (str)
@@ -543,6 +551,8 @@ Country initials or abbreviation : `country_code` *(str) e.g. US, PT, USA, POR*
 
 Currency to convert data : `currency` *(str) e.g. EUR, USD*
 
+<br>
+
 #### Financial instrument characteristics
 Instrument ticker, name or currency pair : `symbol` *(str), e.g. AAPL, ethereum, ETH, ETH-USD*
 ```python
@@ -580,6 +590,8 @@ Option days until expiration : `time_to_expiration` *(float/str)*
 Risk free rate : `risk_free_rate` *(float)*
 
 Options expiry date : `expiry` *(str)*
+
+<br>
 
 #### Naming Convention
 
