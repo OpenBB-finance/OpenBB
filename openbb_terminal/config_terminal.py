@@ -9,11 +9,11 @@ import dotenv
 from openbb_terminal.core.config import (  # pylint: disable=unused-import  # noqa
     make_paths,
 )
-from openbb_terminal.core.config.paths import USER_ENV_FILE, ENV_FILE_REPOSITORY
+from openbb_terminal.core.config.paths import USER_ENV_FILE, REPOSITORY_ENV_FILE
 from .helper_classes import TerminalStyle as _TerminalStyle
 
 dotenv.load_dotenv(USER_ENV_FILE)
-dotenv.load_dotenv(ENV_FILE_REPOSITORY, override=True)
+dotenv.load_dotenv(REPOSITORY_ENV_FILE, override=True)
 
 # Terminal UX section
 theme = _TerminalStyle(

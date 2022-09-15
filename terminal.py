@@ -24,7 +24,7 @@ from openbb_terminal.common import feedparser_view
 from openbb_terminal.core.config.paths import (
     REPO_DIRECTORY,
     USER_ENV_FILE,
-    ENV_FILE_REPOSITORY,
+    REPOSITORY_ENV_FILE,
     HOME_DIRECTORY,
 )
 from openbb_terminal.core.log.generation.path_tracking_file_handler import (
@@ -633,7 +633,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
         check_for_updates()
 
     dotenv.load_dotenv(USER_ENV_FILE)
-    dotenv.load_dotenv(ENV_FILE_REPOSITORY, override=True)
+    dotenv.load_dotenv(REPOSITORY_ENV_FILE, override=True)
 
     while ret_code:
         if obbff.ENABLE_QUICK_EXIT:
