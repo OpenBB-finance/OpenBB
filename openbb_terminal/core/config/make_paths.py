@@ -5,7 +5,7 @@ from openbb_terminal.core.config.paths import (
     USER_DATA_DIRECTORY,
     USER_ENV_FILE,
     ENV_FILE_REPOSITORY,
-    FOLDERS,
+    USER_DATA_FOLDERS,
 )
 
 
@@ -28,7 +28,7 @@ def create_paths():
     if not os.path.exists(USER_DATA_DIRECTORY):
         os.mkdir(USER_DATA_DIRECTORY)
 
-    for folder in FOLDERS:
+    for folder in USER_DATA_FOLDERS:
         full_folder = USER_DATA_DIRECTORY / folder
         if not os.path.exists(full_folder):
             os.mkdir(full_folder)

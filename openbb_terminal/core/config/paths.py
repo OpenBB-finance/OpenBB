@@ -11,7 +11,7 @@ USER_ENV_FILE = SETTINGS_DIRECTORY / ".env"
 
 USER_DATA_DIRECTORY = HOME_DIRECTORY / "OpenBBUserData"
 
-FOLDERS = [
+USER_DATA_FOLDERS = [
     "styles",
 ]
-FOLDER_PATHS = get_folder_paths()
+USER_DATA_FOLDER_PATHS = get_folder_paths()
