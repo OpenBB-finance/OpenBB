@@ -12,7 +12,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, ticker
 
-from openbb_terminal.core.config.paths import FOLDER_PATHS, REPO_DIRECTORY
+from openbb_terminal.core.config.paths import USER_DATA_FOLDER_PATHS, REPO_DIRECTORY
 
 
 class LineAnnotateDrawer:
@@ -100,7 +100,7 @@ class TerminalStyle:
     styles as python dictionaries.
     """
 
-    _STYLES_FOLDER = FOLDER_PATHS["styles"]
+    _STYLES_FOLDER = USER_DATA_FOLDER_PATHS["styles"]
     DEFAULT_STYLES_LOCATION = os.path.join(_STYLES_FOLDER, "default")
     USER_STYLES_LOCATION = os.path.join(_STYLES_FOLDER, "user")
 
