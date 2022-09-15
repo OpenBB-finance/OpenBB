@@ -304,7 +304,7 @@ for period in portfolio_helper.PERIODS:
 <td>
 
 ```python
-[fred_view.py]
+# [fred_view.py]
 
 def display_yieldcurve(country: str):
 
@@ -312,7 +312,7 @@ def display_yieldcurve(country: str):
 
       …
 
-[fred_model.py]
+# [fred_model.py]
 
 def get_yieldcurve(country: str) -> pd.Dataframe:
 
@@ -323,7 +323,7 @@ def get_yieldcurve(country: str) -> pd.Dataframe:
 <td>
     
 ```python
-[fred_view.py]
+# [fred_view.py]
 
 def display_bondscrv(country: str):
 
@@ -331,7 +331,7 @@ def display_bondscrv(country: str):
 
       …
 
-[fred_model.py]
+# [fred_model.py]
 
 def get_yldcurve(country: str) -> pd.Dataframe:
 
@@ -354,8 +354,10 @@ def get_yldcurve(country: str) -> pd.Dataframe:
 2. Each model (get_) should almost always have its own view function (display_)
 
     Why? To respect the principles laid out in Code Structure and the previous bullet point. If your code does not have this get_ → display_ map it’s likely that i. and/or ii. fail to hold.
-  i. Data is processed in _model files and displayed in _view files
-  ii. _view and _model files will have the same arguments (expect for output options)
+    
+    i. Data is processed in _model files and displayed in _view files
+    
+    ii. _view and _model files will have the same arguments (except for output options)
 
 <br>
 
