@@ -70,7 +70,7 @@ We will be forecasting `5 Business days` ahead for the remaider of these workflo
 
 Note: All models automatically perform Historical backtesting on the test split before providing a prediction.
 
-Note: `MAPE` = mean average precision error.
+Note: `MAPE` = [mean average percentage error](https://en.wikipedia.org/wiki/Mean_absolute_percentage_error). We use MAPE as it is quite convenient and scale independent since it calulates error as a percentage, instead of an absolute value. THere are many more metrics to compare time series. The metrics will compare only common slices of series when the two series are not aligned, and parallelize computation over a large number of pairs of series. More metrics will be released in future versions of the menu.
 
 ```
 (🦋) /forecast/ $ plot AAPL.close
@@ -102,13 +102,12 @@ Note: `MAPE` = mean average precision error.
 └───────┴────────┴────────┴────────┴────────┴───────────┴──────────────┘
 ```
 
-Let's use a simple **Probabilistic Exponential Smoothing Model** to predict the close price. Keep in mind all models are perform automatic histoical backtesting before providing future forecasts. 
+Let's use a simple **Probabilistic Exponential Smoothing Model** to predict the close price. Keep in mind all models are perform automatic historical backtesting before providing future forecasts. 
 
 Note: All models forecaste `close` by default.
 
 ```
 (🦋) /forecast/ $ expo AAPL
-
 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 115/115 [00:17<00:00,  6.44it/s]
 Exponential smoothing obtains MAPE: 3.86% 
 
@@ -170,7 +169,6 @@ Now for the second task, we would like to change the model type from `LSTM` --> 
 
 ```
 (🦋) /forecast/ $ rnn -h
-rnn -h
 usage: rnn [--hidden-dim HIDDEN_DIM] [--training_length TRAINING_LENGTH] [--naive] [-d {AAPL,msft}] [-c TARGET_COLUMN] [-n N_DAYS] [-t TRAIN_SPLIT]
            [-i INPUT_CHUNK_LENGTH] [--force-reset FORCE_RESET] [--save-checkpoints SAVE_CHECKPOINTS] [--model-save-name MODEL_SAVE_NAME]
            [--n-epochs N_EPOCHS] [--model-type MODEL_TYPE] [--dropout DROPOUT] [--batch-size BATCH_SIZE] [--end S_END_DATE] [--start S_START_DATE]
@@ -223,7 +221,6 @@ Lets change the `--model-type` parameter to `GRU` and rerun.
 
 ```
 (🦋) /forecast/ $ rnn AAPL --model-type GRU --forecast-only
-rnn AAPL --model-type GRU --forecast-only 
 Epoch 35: 100%|████████████████████████████████████████████████████████████| 25/25 [00:00<00:00, 125.85it/s, loss=-2.72, train_loss=-2.74, val_loss=-2.13]
 Predicting RNN for 5 days                                                                                                                                 
 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 115/115 [00:01<00:00, 85.14it/s]
@@ -296,7 +293,6 @@ Before we go combining them, let's train a simple `Block RNN` model on MSFT `clo
 Make sure to always check your current data set to know the column names:
 ```
 (🦋) /forecast/ $ show MSFT
-show MSFT
 MSFT has following shape (rowxcolumn): (759, 7)
 
                         Dataset MSFT | Showing 10 of 759 rows                         
@@ -329,7 +325,6 @@ Without any covariates:
 
 ```
 (🦋) /forecast/ $ brnn MSFT --forecast-only
-brnn MSFT --forecast-only
 Epoch 87: 100%|█████████████████████████████████████████████████████████████| 25/25 [00:00<00:00, 33.84it/s, loss=-2.06, train_loss=-2.27, val_loss=-1.82]
 Predicting Block RNN for 5 days                                                                                                                           
 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 115/115 [00:06<00:00, 18.76it/s]
@@ -363,7 +358,6 @@ To use any covariates, you have 2 options:
 
 ```
 (🦋) /forecast/ $ brnn MSFT --forecast-only --past-covariates volume
-brnn MSFT --forecast-only --past-covariates volume
 Covariate #0: volume
 Epoch 37: 100%|████████████████████████████████████████████████████████████| 25/25 [00:00<00:00, 149.03it/s, loss=-2.16, train_loss=-2.08, val_loss=-1.44]
 Predicting Block RNN for 5 days                                                                                                                           
@@ -394,7 +388,6 @@ Let's add in all remaining columns from our dataset as covariates and see what h
 
 ```
 (🦋) /forecast/ $ brnn MSFT --forecast-only --all-past-covariates
-brnn MSFT --forecast-only --all-past-covariates
 Covariate #0: open
 Covariate #1: high
 Covariate #2: low
@@ -433,9 +426,7 @@ We will combine `MSFT` and `AAPL`.
 
 ```
 (🦋) /forecast/ $ combine MSFT -c AAPL
-combine MSFT -c AAPL
 (🦋) /forecast/ $ show MSFT
-show MSFT
 MSFT has following shape (rowxcolumn): (759, 13)
 Dataframe has more than 10 columns. Please export to see all of the data.
 
@@ -470,7 +461,6 @@ Now we can run the same `BRNN` model with all `past_covariates` of both tickers.
 
 ```
 (🦋) /forecast/ $ brnn MSFT --forecast-only --all-past-covariates
-brnn MSFT --forecast-only --all-past-covariates
 Covariate #0: open
 Covariate #1: high
 Covariate #2: low
@@ -511,11 +501,9 @@ In this case, let's add in `Momentum` over past 10 days of `MSFT` and append it 
 
 ```
 (🦋) /forecast/ $ mom MSFT
-mom MSFT
 Successfully added 'Momentum_10' to 'MSFT' dataset
 
 (🦋) /forecast/ $ brnn MSFT --forecast-only --all-past-covariates
-brnn MSFT --forecast-only --all-past-covariates
 The data contains inf or nan values. They will be removed.
 
 Covariate #0: open
