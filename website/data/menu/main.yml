@@ -64,6 +64,8 @@ main:
             ref: "terminal/forecast/theta"
           - name: trans
             ref: "terminal/forecast/trans"
+          - name: which
+            ref: "terminal/forecast/which"
 
       - name: stocks
         ref: "/terminal/stocks"
@@ -1504,8 +1506,6 @@ main:
                 ref: "/terminal/jupyter/dashboards/shortdata"
               - name: "forecast"
                 ref: "/terminal/jupyter/dashboards/forecast"
-              - name: "forecasting"
-                ref: "/terminal/jupyter/dashboards/forecasting"
           - name: "reports"
             ref: "/terminal/jupyter/reports"
       - name: common
