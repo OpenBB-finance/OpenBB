@@ -7,28 +7,33 @@ Use your best judgment, and feel free to propose changes to this document in a p
 
 
 - [CONTRIBUTING](#contributing)
-  - [BASIC](#basic) 
-    - [Select Feature](#select-feature)
+  - [BASIC](#basic)
     - [Understand Code Structure](#understand-code-structure)
     - [Follow Coding Guidelines](#follow-coding-guidelines)
       - [General Code Requirements](#general-code-requirements)
       - [File Specific Requirements](#file-specific-requirements)
       - [Coding Style](#coding-style)
         - [OpenBB Style Guide](#openbb-style-guide)
+          - [Flags](#flags)
+          - [Output format](#output-format)
+          - [Time-related](#time-related)
+          - [Data selection and manipulation](#data-selection-and-manipulation)
+          - [Financial instrument characteristics](#financial-instrument-characteristics)
         - [Naming Convention](#naming-convention)
         - [Docstrings](#docstrings)
         - [Linters](#linters)
         - [Command names](#command-names)
-      - [External API Keys](#external-api-keys)
-        - [Creating API key](#creating-api-key)
-        - [Setting and checking API key](#setting-and-checking-api-key)
-      - [Adding a new command](#adding-a-new-command)
-        - [Model](#model)
-        - [View](#view)
-        - [Controller](#controller)
-        - [Add Documentation](#add-documentation)
-        - [Open a Pull Request](#open-a-pull-request)
-        - [Review Process](#review-process)
+    - [External API Keys](#external-api-keys)
+      - [Creating API key](#creating-api-key)
+      - [Setting and checking API key](#setting-and-checking-api-key)
+    - [Adding a new command](#adding-a-new-command)
+      - [Select Feature](#select-feature)
+      - [Model](#model)
+      - [View](#view)
+      - [Controller](#controller)
+      - [Add Documentation](#add-documentation)
+      - [Open a Pull Request](#open-a-pull-request)
+      - [Review Process](#review-process)
   - [ADVANCED](#advanced)
     - [Important functions and classes](#important-functions-and-classes)
       - [Base controller class](#base-controller-class)
@@ -48,12 +53,6 @@ Use your best judgment, and feel free to propose changes to this document in a p
       - [VCR](#vcr)
 
 # BASIC
-
-## Select Feature
-
-- Pick a feature you want to implement or a bug you want to fix from [our issues](https://github.com/OpenBB-finance/OpenBBTerminal/issues).
-- Feel free to discuss what you'll be working on either directly on [the issue](https://github.com/OpenBB-finance/OpenBBTerminal/issues) or on [our Discord](www.openbb.co/discord).
-  - This ensures someone from the team can help you and there isn't duplicated work.
 
 ## Understand Code Structure
 ### Back-end
@@ -169,7 +168,7 @@ When in doubt, follow <https://www.python.org/dev/peps/pep-0008/>.
 
 #### OpenBB Style Guide
 
-The style guide is a reverse dictionary for argument names, where a brief definition is mapped to an OpenBB recommended argument name and type. When helpful a code snippet example is added below.
+The style guide is a reverse dictionary for argument names, where a brief definition is mapped to an OpenBB recommended argument name and type. When helpful a code snippet example is added below. Following this guide will help keep naming consistency and improve API users experience.
 
 Style guide structure:
 ```
@@ -179,6 +178,211 @@ def func(..., argument_name: argument_type = default, ...):
     ...
 ```
 
+#### Flags
+Show raw data : `raw` *(bool)*
+```
+def display_data(..., raw: bool = False, ...):
+    ...
+    if raw:
+        print_rich_table(...)
+```
+
+Sort in ascending order : `ascend` *(bool)*
+```
+def display_data(..., sortby: str = "", ascend: bool = False, ...):
+    ...
+    if sortby:
+        data = data.sort_values(by=sortby, ascend=ascend)
+```
+
+Show plot : `plot` *(bool)*
+```
+def display_data(..., plot: bool = False, ...):
+    ...
+    if plot:
+        ...
+        ax.plot(...)
+```
+    
+#### Output format
+Format to export data : `export` *(str), e.g. csv, json, xlsx*
+```
+def display_data(..., export: str = "", ...):
+    ...
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "func", data)
+```
+
+List of external axes to include in a plot : `external_axes` *(Optional[List[plt.Axes]])*
+```
+def display_data(..., external_axes: Optional[List[plt.Axes]] = None, ...):
+    ...
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        ax = external_axes[0]
+    ax.plot(...)
+```
+
+Field by which to sort : `sortby` *(str), e.g. "Volume"*
+```
+def display_data(..., sortby: str = "col", ...):
+    ...
+    if sortby:
+        data = data.sort_values(by=sortby)
+```
+
+Maximum limit number of output items : `limit` *(int)*
+```
+def display_data(..., limit = 10, ...):
+    ...
+    print_rich_table(
+        data[:limit],
+        ...
+    )
+```
+
+#### Time-related
+
+Date from which data is fetched (YYYY-MM-DD) : `start_date` *(str), e.g. 2022-01-01*
+
+Date up to which data is fetched (YYYY-MM-DD) : `end_date` *(str), e.g. 2022-12-31*
+
+Note: please specify date format in docstring
+```
+def get_historical_data(..., start_date: str = "2022-01-01", end_date: str = "2022-12-31",):
+    """
+    ...
+    Parameters
+    ----------
+    start_date: str
+        Date from which data is fetched in format YYYY-MM-DD
+    end_date: str
+        Date up to which data is fetched in format YYYY-MM-DD    
+    ...
+    """
+    data = source_model.get_data(data_name, start_date, end_date, ...)
+```
+
+Year from which data is fetched (YYYY) : `start_year` *(str), e.g. 2022*
+
+Year up to which data is fetched (YYYY) : `end_year` *(str), e.g. 2023*
+```
+def get_historical_data(..., start_year: str = "2022", end_year str = "2023", ...):
+    ...
+    data = source_model.get_data(data_name, start_year, end_year, ...)
+```
+
+Interval for data observations : `interval` *(str), e.g. 60m, 90m, 1h*
+```
+def get_prices(interval: str = "60m", ...):    
+    ...
+    data = source.download(
+        ..., 
+        interval=interval,
+        ...
+    )
+```
+
+Rolling window length : `window` *(int/str), e.g. 252, 252d*
+```
+def get_rolling_sum(returns: pd.Series, window: str = "252d"):    
+    rolling_sum = returns.rolling(window=window).sum()
+```
+
+#### Data selection and manipulation
+Search term used to query : `query` (str)
+
+Maximum limit of search items/periods in data source: `limit` *(int)*
+
+Note: please specify limit application in docstring
+```
+def get_data_from_source(..., limit: int = 10, ...):
+    """
+    Parameters
+    ----------
+    ...
+    limit: int
+        Number of results to fetch from source
+    ...
+    """
+    data = source.get_data(data_name, n_results=limit, ...)
+```
+Dictionary of input datasets : `datasets` *(Dict[str, pd.DataFrame])* 
+
+Note: Most occurrences are on the econometrics menu and might be refactored in near future
+
+Input dataset : `data` *(pd.DataFrame)*
+```
+def process_data(..., data: pd.DataFrame, ...):
+    """
+    ...
+    Parameters
+    ----------
+    ...
+    data : pd.DataFrame
+        Dataframe of ...
+    ...
+    """
+    col_data = pd.DataFrame(data["Col"])
+```
+
+Dataset name : `dataset_name` *(str)*
+
+Input series : `data` *(pd.Series)*
+
+Dependent variable series : `dependent_series` *(pd.Series)*
+
+Independent variable series : `independent_series` *(pd.Series)*
+```
+def get_econometric_test(dependent_series, independent_series, ...):
+    ...
+    dataset = pd.concat([dependent_series, independent_series], axis=1)
+    result = econometric_test(dataset, ...)
+```
+
+Country name : `country` *(str), e.g. United States, Portugal*
+
+Country initials or abbreviation : `country_code` *(str) e.g. US, PT, USA, POR*
+
+Currency to convert data : `currency` *(str) e.g. EUR, USD*
+
+#### Financial instrument characteristics
+Instrument ticker, name or currency pair : `symbol` *(str), e.g. AAPL, ethereum, ETH, ETH-USD*
+```
+def get_prices(symbol: str = "AAPL", ...):    
+    ...
+    data = source.download(
+        tickers=symbol,
+        ...
+    )
+```
+
+Instrument name: `name` *(str)*
+
+Note: If a function has both name and symbol as parameter, we should distinguish them and call it name
+
+List of instrument tickers, names or currency pairs : `symbols` *(List/List[str]), e.g. ["AAPL", "MSFT"]*
+
+Base currency under ***BASE***-QUOTE → ***XXX***-YYY convention : `from_symbol` *(str), e.g. ETH in ETH-USD*
+
+Quote currency under BASE-***QUOTE*** → XXX-***YYY*** convention : `to_symbol` *(str), e.g. USD in ETH-USD*
+```
+def get_exchange_rate(from_symbol: str = "", to_symbol: str = "", ...):
+    ...
+    df = source.get_quotes(from_symbol, to_symbol, ...)
+```
+
+Instrument price : `price` *(float)*
+
+Instrument implied volatility : `implied_volatility` *(float)*
+
+Option strike price : `strike_price` *(float)*
+
+Option days until expiration : `time_to_expiration` *(float/str)*
+
+Risk free rate : `risk_free_rate` *(float)*
+
+Options expiry date : `expiry` *(str)*
 
 #### Naming Convention
 
@@ -238,9 +442,9 @@ The following linters are used by our codebase:
 * The command name **should not** have the data source explicit
 
 
-### External API Keys
+## External API Keys
 
-#### Creating API key
+### Creating API key
 
 OpenBB Terminal currently has over 100 different data sources. Most of these require an API key that allows access to some free tier features from the data provider, but also paid ones.
 
@@ -251,7 +455,7 @@ API_MESSARI_KEY = os.getenv("OPENBB_API_MESSARI_KEY") or "REPLACE_ME"
 ```
 Note that a `OPENBB_` is added so that the user knows that that environment variable is used by our terminal.
 
-#### Setting and checking API key
+### Setting and checking API key
 
 One of the first steps once adding a new data source that requires an API key is to add that key to our [keys_controller.py](/openbb_terminal/keys_controller.py). This menu allows the user to set API keys and check their validity.
 
@@ -315,13 +519,19 @@ def call_iex(self, other_args: List[str]):
         self.check_iex_key(show_output=True)
 ```
 
-### Adding a new command
+## Adding a new command
 
 Process to add a new command. `shorted` command from category `dark_pool_shorts` and context `stocks` will be used as
 example. Since this command uses data from Yahoo Finance, a `yahoofinance_view.py` and a `yahoofinance_model.py` files
 will be implemented.
 
-#### Model
+### Select Feature
+
+- Pick a feature you want to implement or a bug you want to fix from [our issues](https://github.com/OpenBB-finance/OpenBBTerminal/issues).
+- Feel free to discuss what you'll be working on either directly on [the issue](https://github.com/OpenBB-finance/OpenBBTerminal/issues) or on [our Discord](www.openbb.co/discord).
+  - This ensures someone from the team can help you and there isn't duplicated work.
+
+### Model
 
 1. Create a file with the source of data as the name followed by `_model` if it doesn't exist, e.g. `yahoofinance_model`
 2. Add the documentation header
@@ -402,7 +612,7 @@ def get_economy_calendar_events() -> pd.DataFrame:
     return df
 ```
 
-#### View
+### View
 
 1. Create a file with the source of data as the name followed by `_view` if it doesn't exist, e.g. `yahoofinance_view`
 2. Add the documentation header
@@ -467,7 +677,7 @@ Note: As explained before, it is possible that this file needs to be created und
 or a specific context. The arguments will need to be parsed by `stocks_controller,py` and the other controller this
 function shares the data output with.
 
-#### Controller
+### Controller
 
 1. Import `_view` associated with command we want to allow user to select.
 2. Add command name to variable `CHOICES` from `DarkPoolShortsController` class.
