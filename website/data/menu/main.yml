@@ -1506,6 +1506,8 @@ main:
                 ref: "/terminal/jupyter/dashboards/shortdata"
               - name: "forecast"
                 ref: "/terminal/jupyter/dashboards/forecast"
+              - name: "forecasting"
+                ref: "/terminal/jupyter/dashboards/forecasting"
           - name: "reports"
             ref: "/terminal/jupyter/reports"
       - name: common
