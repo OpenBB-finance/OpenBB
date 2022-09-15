@@ -29,6 +29,8 @@ predictions = False
 theme = TerminalStyle("light", "light", "light")
 stylesheet = widgets.html_report_stylesheet()
 
+parameters = {"symbol":"AAPL"}
+
 def run_report(symbol: str=""):
     """
     Runs the report

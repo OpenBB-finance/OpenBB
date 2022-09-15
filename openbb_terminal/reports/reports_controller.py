@@ -6,7 +6,7 @@ import logging
 # pylint: disable=R1732
 import os
 import webbrowser
-from ast import literal_eval
+import importlib
 from datetime import datetime
 from typing import List
 
@@ -38,8 +38,30 @@ class ReportController(BaseController):
     d_id_to_report_name = {}
     for id_report, report_name in enumerate(report_names):
         d_id_to_report_name[str(id_report + 1)] = report_name
-
     
+    d_params = {}
+
+    max_len_name = max(len(name) for name in report_names) + 2
+    reports_opts = ""
+    for k, report_to_run in d_id_to_report_name.items():
+        # Crawl data to look into what
+        report_mod = importlib.import_module("openbb_terminal.reports." + report_to_run + "_rep")
+        l_params = []
+        for param, parameter in report_mod.parameters.items():
+            l_params.append(param)
+        d_params[report_to_run] = l_params
+        
+        # On the menu of choices add the parameters necessary for each template report
+        if len(l_params) > 1 or not l_params:
+            args = f"<{'> <'.join(l_params)}>"
+        else:
+            args = f"<{l_params[0]}>"
+
+        reports_opts += (
+            f"    {k}. {report_to_run}"
+            + f"{(max_len_name-len(report_to_run))*' '} "
+            + f"{args if args != '<>' else ''}\n"
+        )
     CHOICES_MENUS = report_names + ids_reports + ["r", "reset"]
     PATH = "/reports/"
 
@@ -122,6 +144,23 @@ class ReportController(BaseController):
                 report_to_run = self.d_id_to_report_name[known_args.cmd]
             else:
                 report_to_run = known_args.cmd
+
+            params = self.d_params[report_to_run]
+
+            # Check that the number of arguments match. We can't check validity of the
+            # argument used because this depends on what the user will use it for in
+            # the notebook. This is a downside of allowing the user to have this much
+            # flexibility.
+            if len(other_args) != len(params):
+                console.print("Wrong number of arguments provided!")
+                if len(params):
+                    console.print("Provide, in order:")
+                    for k, v in enumerate(params):
+                        console.print(f"{k+1}. {v}")
+                else:
+                    console.print("No argument required.")
+                console.print("")
+                return []
 
             notebook_template = os.path.join(
                 "openbb_terminal", "reports", report_to_run
