@@ -49,17 +49,21 @@ def get_news(
                     "https://news.google.com/rss/search?q=when:24h&hl=en-US&gl=US&ceid=US:en"
                 )
 
-        if data.status == 200:  # Checking if data request succeeded
+        if (
+            hasattr(data, "status") and data.status == 200
+        ):  # Checking if data has status attribute and if data request succeeded
             if data.entries:
                 have_data = True
-
             elif limit == 60:  # Breaking if 60 successful requests return no data
                 console.print("[red]Timeout occurred. Please try again\n[/red")
                 break
             limit = limit + 1
 
-        elif data.status != 200:  # If data request failed
+        elif hasattr(data, "status") and data.status != 200:  # If data request failed
             console.print("[red]Status code not 200. Unable to retrieve data\n[/red]")
+            break
+        else:
+            console.print("[red]Could not retrieve data\n[/red]")
             break
 
     return pd.DataFrame(data.entries, columns=["title", "link", "published"])
