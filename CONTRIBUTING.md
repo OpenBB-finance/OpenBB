@@ -124,9 +124,9 @@ With:
 
 ### General Code Requirements
 
-- Each function should have default values for non critical kwargs
+1. Each function should have default values for non critical kwargs
 
-  Why? It increases code readability and acts as an input example for the functions arguments. This increases the ease of use of the functions through the api, but also just generally.
+    Why? It increases code readability and acts as an input example for the functions arguments. This increases the ease of use of the functions through the api, but also just generally.
   
 <table>
 <tr>
@@ -157,10 +157,11 @@ def display_last_uni_swaps(
 </tr>
 </table>
 
+<br>
+
+2. Simple and understandable input objects; avoid for example weird dictionaries packed with data: {“title”: DataFrame}
   
-- Simple and understandable input objects; avoid for example weird dictionaries packed with data: {“title”: DataFrame}
-  
-  Why? Ease of use and often these complex formats are clumsy, prone to error and the formatting required for complex parameters is time consuming and unneeded.
+    Why? Ease of use and often these complex formats are clumsy, prone to error and the formatting required for complex parameters is time consuming and unneeded.
   
 <table>
 <tr>
@@ -189,11 +190,15 @@ def load(
 </tr>
 </table>
  
-- Each function needs to have a docstring explaining what it does, its parameters and what it returns.
+<br>
+ 
+3. Each function needs to have a docstring explaining what it does, its parameters and what it returns.
   
-  Why? You can use the function without reading its source code. This improves the developing experience and api usage. The api factory also can’t handle functions with out docstrings.
+    Why? You can use the function without reading its source code. This improves the developing experience and api usage. The api factory also can’t handle functions with out docstrings.
   
-- Consistent and clear argument naming; not `symbol` in _view and then `ticker` in _file -> ticker everywhere; the name should be descriptive of what information it hold (see Style Guide section below)
+<br>
+  
+4. Consistent and clear argument naming; not `symbol` in _view and then `ticker` in _file -> ticker everywhere; the name should be descriptive of what information it hold (see Style Guide section below)
   
   Why? You can quickly understand what the input it should be; example: tickers and stock names are fundamentally different, but they’re both strings so they should be named accordingly.
 
@@ -218,19 +223,21 @@ data: pd.Series, dataset: str, column: str,
 </tr>
 </table>
 
-- Classes (for example the portfolio class) should hold the relevant data and perform no other calculations, these calculations should be done in an independent function.
+<br>
 
-  Why? Two reasons. 
+5. Classes (for example the portfolio class) should hold the relevant data and perform no other calculations, these calculations should be done in an independent function.
 
-  1. These calculations can then be used outside of the class with custom data; for example via the api or for tests.
+    Why? Two reasons:
+
+These calculations can then be used outside of the class with custom data; for example via the api or for tests.
 ```swift
 from openbb_terminal.portfolio.portfolio_helper import get_gaintopain_ratio
 
 # Direct function access
 get_gaintopain_ratio(historical_trade_data, benchmark_trades, benchmark_returns)
 ```
-
-  2. The function can be loaded in API factory as an endpoint and user can get result by passing the class instance.
+The function can be loaded in API factory as an endpoint and user can get result by passing the class instance.
+    
 ```swift
 from openbb_terminal.api import openbb
 from openbb_terminal.api import Portfolio
@@ -257,14 +264,9 @@ def get_gaintopain_ratio(portfolio: PortfolioModel) -> pd.DataFrame:
 """..."""   
 
 gtp_period_df = portfolio_helper.get_gaintopain_ratio(
-
-       portfolio.historical_trade_data, 
-
-       portfolio.benchmark_trades, 
-
-       portfolio.benchmark_returns
-
-       )   
+  portfolio.historical_trade_data, 
+  portfolio.benchmark_trades, 
+  portfolio.benchmark_returns)   
 
 return gtp_period_df
 ```
@@ -280,10 +282,8 @@ def get_gaintopain_ratio(self) -> pd.DataFrame:
 vals = list()   
 
 for period in portfolio_helper.PERIODS:             
-
        port_rets = portfolio_helper.filter_df_by_period(self.returns, period)       
-
-       bench_rets =  portfolio_helper.filter_df_by_period(           self.benchmark_returns, period)
+       bench_rets =  portfolio_helper.filter_df_by_period(self.benchmark_returns, period)
 
 ...
 ```
@@ -291,9 +291,11 @@ for period in portfolio_helper.PERIODS:
 </tr>
 </table>
 
-- Naming among related model and view functions should be obvious; just different prefix if possible
+<br>
 
-  Why? Eases API factory mapping and keeps code clean.
+6. Naming among related model and view functions should be obvious; just different prefix if possible
+
+    Why? Eases API factory mapping and keeps code clean.
 <table>
 <tr>
 <td> Good code :white_check_mark: </td> <td> Bad code :x: </td>
@@ -339,19 +341,23 @@ def get_yldcurve(country: str) -> pd.Dataframe:
 </tr>
 </table>
 
-
+<br>
 
 ### File Specific Requirements
 
-- No data altering in the view file or controller file (view and model with same args)
+1. No data altering in the view file or controller file (view and model with same args)
 
   Why? Consistency and good code structure. This also improves the api user experience. Thus follows that view and model files will have the same arguments (except for output options like raw, export, external_axes), since no data changes shall be done in the view file.
 
-- Each model (get_) should almost always have its own view function (display_)
+<br>
+
+2. Each model (get_) should almost always have its own view function (display_)
 
   Why? To respect the principles laid out in Code Structure and the previous bullet point. If your code does not have this get_ → display_ map it’s likely that i. and/or ii. fail to hold.
-  1. Data is processed in _model files and displayed in _view files
-  2. _view and _model files will have the same arguments (expect for output options)
+  i. Data is processed in _model files and displayed in _view files
+  ii. _view and _model files will have the same arguments (expect for output options)
+
+<br>
 
 ### Coding Style
 
