@@ -13,7 +13,8 @@ The Forecast menu is called upon by typing `forecast` which opens the following 
 ```
 (🦋) / $ forecast
 ```
-<img width="1084" alt="image" src="https://user-images.githubusercontent.com/105685594/189725952-e3feb360-0391-4e05-a51b-4ee678af058a.png">
+<img width="971" alt="image" src="https://user-images.githubusercontent.com/105685594/190309669-24a42224-afe6-47e6-91e4-31061b0947bf.png">
+
 
 ## How to Use
 
@@ -41,8 +42,10 @@ To load external data in the form as `.csv`, please place them into the folder s
 ```
 (🦋) / $ forecast
 (🦋) /forecast/ $ load msft.csv
+(🦋) /forecast/ $ load btc.csv
 ```
-<img width="1091" alt="image" src="https://user-images.githubusercontent.com/105685594/189728980-06ea171a-f088-4bd5-8849-2eadde984ad6.png">
+<img width="971" alt="image" src="https://user-images.githubusercontent.com/105685594/190309961-43fc1dfd-3375-41e6-af53-8708e18ca186.png">
+
 
 ### Understanding the structure of the menu 
 
