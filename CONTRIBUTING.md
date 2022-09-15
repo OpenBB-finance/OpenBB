@@ -7,41 +7,46 @@ Use your best judgment, and feel free to propose changes to this document in a p
 
 
 - [CONTRIBUTING](#contributing)
-  - [Select Feature](#select-feature)
-  - [Understand Code Structure](#understand-code-structure)
-  - [Follow Coding Guidelines](#follow-coding-guidelines)
-    - [API Keys](#api-keys)
-      - [Creating API key](#creating-api-key)
-      - [Setting and checking API key](#setting-and-checking-api-key)
-    - [Model](#model)
-    - [View](#view)
-    - [Controller](#controller)
-    - [General Code Requirements](#general-code-requirements)
-    - [File Specific Requirements](#file-specific-requirements)
-  - [Important functions and classes](#important-functions-and-classes)
-    - [Base controller class](#base-controller-class)
-  - [Default Data Sources](#default-data-sources)
-    - [Export Data](#export-data)
-    - [Queue and pipeline](#queue-and-pipeline)
-    - [Auto Completer](#auto-completer)
-    - [Logging](#logging)
-    - [Internationalization](#internationalization)
-  - [Remember Coding Style](#remember-coding-style)
-    - [Naming Convention](#naming-convention)
-    - [Docstrings](#docstrings)
-    - [Linters](#linters)
-    - [Command names](#command-names)
-  - [Write Code and Commit](#write-code-and-commit)
-    - [Pre Commit Hooks](#pre-commit-hooks)
-    - [Coding](#coding)
-    - [Git Process](#git-process)
-  - [Add a Test](#add-a-test)
-    - [Pytest](#pytest)
-    - [Coverage](#coverage)
-    - [VCR](#vcr)
-  - [Add Documentation](#add-documentation)
-  - [Open a Pull Request](#open-a-pull-request)
-  - [Review Process](#review-process)
+  - [BASIC](#basic) 
+    - [Select Feature](#select-feature)
+    - [Understand Code Structure](#understand-code-structure)
+    - [Follow Coding Guidelines](#follow-coding-guidelines)
+      - [General Code Requirements](#general-code-requirements)
+      - [File Specific Requirements](#file-specific-requirements)
+      - [External API Keys](#external-api-keys)
+        - [Creating API key](#creating-api-key)
+        - [Setting and checking API key](#setting-and-checking-api-key)
+      - [Adding a new command](#adding-a-new-command)
+        - [Model](#model)
+        - [View](#view)
+        - [Controller](#controller)
+  - [ADVANCED](#advanced)
+    - [Important functions and classes](#important-functions-and-classes)
+      - [Base controller class](#base-controller-class)
+    - [Default Data Sources](#default-data-sources)
+      - [Export Data](#export-data)
+      - [Queue and pipeline](#queue-and-pipeline)
+      - [Auto Completer](#auto-completer)
+      - [Logging](#logging)
+      - [Internationalization](#internationalization)
+    - [Remember Coding Style](#remember-coding-style)
+      - [Naming Convention](#naming-convention)
+      - [Docstrings](#docstrings)
+      - [Linters](#linters)
+      - [Command names](#command-names)
+    - [Write Code and Commit](#write-code-and-commit)
+      - [Pre Commit Hooks](#pre-commit-hooks)
+      - [Coding](#coding)
+      - [Git Process](#git-process)
+    - [Add a Test](#add-a-test)
+      - [Pytest](#pytest)
+      - [Coverage](#coverage)
+      - [VCR](#vcr)
+    - [Add Documentation](#add-documentation)
+    - [Open a Pull Request](#open-a-pull-request)
+    - [Review Process](#review-process)
+
+# BASIC
 
 ## Select Feature
 
@@ -51,16 +56,16 @@ Use your best judgment, and feel free to propose changes to this document in a p
 
 ## Understand Code Structure
 ### Back-end
-CLI :computer: → `controller.py` :robot: →&nbsp;`_view.py` :art: &nbsp;&nbsp; → &nbsp;&nbsp;&nbsp;&nbsp;`_model.py` :brain:<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`view=True`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`view=False`<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#8593;&nbsp;&nbsp;`api.py` :factory: &#8593;
+CLI :computer: → `_controller.py` :robot: →&nbsp;`_view.py` :art: &nbsp;&nbsp; → &nbsp;&nbsp;&nbsp;&nbsp;`_model.py` :brain:<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`view=True`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`view=False`<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#8593;&nbsp;&nbsp;`api.py` :factory: &nbsp;&#8593;
 
 
-| **File**     | **Role**                                                                                                                                                                                | **Description**                                      |
-| :----------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------- |
-| **_controller.py**  | The router/input validator :robot:                                                                                                                                                        | The controller file should hold the least amount of logic possible. Its role is to be a stupid (no logic) router and redirect the command correctly while checking the input with argparser.                   |
-| **_view.py** | The artist :art: | The view file should only output or visualise the data it gets from the _model file! So the _view shouldn’t change any data, thus the data object should be identical in the _view and the _model files. |
-| **_model.py**  |The brain 🧠                                                                                                       | The model file is where everything fun happens. The data is gathered here (api, web scraped, …), processed here and returned to be used.|
-| **api.py**  |The API Factory 🏭                                                                                                       | The API file is where the callable functions are created for the API. There is only one api file in the openbb_terminal folder.
+| **File&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**           | **Role**       | **Description**                                        |
+| :------------------------- | :------------- | :----------------------------------------------------- |
+| **_controller.py** :robot: | The router/input validator | The controller file should hold the least amount of logic possible. Its role is to be a stupid (no logic) router and redirect the command correctly while checking the input with argparser.   |
+| **_view.py** :art:         | The artist     | The view file should only output or visualise the data it gets from the _model file! So the _view shouldn’t change any data, thus the data object should be identical in the _view and the _model files. |
+| **_model.py** 🧠           |The brain       | The model file is where everything fun happens. The data is gathered here (api, web scraped, …), processed here and returned to be used.                                                                |
+| **api.py** 🏭              |The API Factory | The API file is where the callable functions are created for the API. There is only one api file in the openbb_terminal folder.                                                                                |
 
 
 ### Front-end
@@ -116,11 +121,48 @@ With:
 
 ## Follow Coding Guidelines
 
-Process to add a new command. `shorted` command from category `dark_pool_shorts` and context `stocks` will be used as
-example. Since this command uses data from Yahoo Finance, a `yahoofinance_view.py` and a `yahoofinance_model.py` files
-will be implemented.
+### General Code Requirements
 
-### API Keys
+- Each function should have default values for non critical kwargs
+
+  Why? It increases code readability and acts as an input example for the functions arguments. This increases the ease of use of the functions through the api, but also just generally.
+  
+- Simple and understandable input objects; avoid for example weird dictionaries packed with data: {“title”: DataFrame}
+  
+  Why? Ease of use and often these complex formats are clumsy, prone to error and the formatting required for complex parameters is time consuming and unneeded.
+  
+- Each function needs to have a docstring explaining what it does, its parameters and what it returns.
+  
+  Why? You can use the function without reading its source code. This improves the developing experience and api usage. The api factory also can’t handle functions with out docstrings.
+  
+- Consistent and clear argument naming; not `symbol` in _view and then `ticker` in _file -> ticker everywhere; the name should be descriptive of what information it hold (see Style Guide section below)
+  
+  Why? You can quickly understand what the input it should be; example: tickers and stock names are fundamentally different, but they’re both strings so they should be named accordingly.
+
+- Classes (for example the portfolio class) should hold the relevant data and perform no other calculations, these calculations should be done in an independent function.
+
+  Why? Two reasons. 
+
+  1. These calculations can then be used outside of the class with custom data; for example via the api or for tests.
+  2. The function can be loaded in API factory as an endpoint and user can get result by passing the class instance.
+
+- Naming among related model and view functions should be obvious; just different prefix if possible
+
+  Why? Eases API factory mapping and keeps code clean.
+
+### File Specific Requirements
+
+- No data altering in the view file or controller file (view and model with same args)
+
+  Why? Consistency and good code structure. This also improves the api user experience. Thus follows that view and model files will have the same arguments (except for output options like raw, export, external_axes), since no data changes shall be done in the view file.
+
+- Each model (get_) should almost always have its own view function (display_)
+
+  Why? To respect the principles laid out in Code Structure and the previous bullet point. If your code does not have this get_ → display_ map it’s likely that i. and/or ii. fail to hold.
+  1. Data is processed in _model files and displayed in _view files
+  2. _view and _model files will have the same arguments (expect for output options)
+
+### External API Keys
 
 #### Creating API key
 
@@ -197,7 +239,13 @@ def call_iex(self, other_args: List[str]):
         self.check_iex_key(show_output=True)
 ```
 
-### Model
+### Adding a new command
+
+Process to add a new command. `shorted` command from category `dark_pool_shorts` and context `stocks` will be used as
+example. Since this command uses data from Yahoo Finance, a `yahoofinance_view.py` and a `yahoofinance_model.py` files
+will be implemented.
+
+#### Model
 
 1. Create a file with the source of data as the name followed by `_model` if it doesn't exist, e.g. `yahoofinance_model`
 2. Add the documentation header
@@ -278,7 +326,7 @@ def get_economy_calendar_events() -> pd.DataFrame:
     return df
 ```
 
-### View
+#### View
 
 1. Create a file with the source of data as the name followed by `_view` if it doesn't exist, e.g. `yahoofinance_view`
 2. Add the documentation header
@@ -343,7 +391,7 @@ Note: As explained before, it is possible that this file needs to be created und
 or a specific context. The arguments will need to be parsed by `stocks_controller,py` and the other controller this
 function shares the data output with.
 
-### Controller
+#### Controller
 
 1. Import `_view` associated with command we want to allow user to select.
 2. Add command name to variable `CHOICES` from `DarkPoolShortsController` class.
@@ -425,47 +473,7 @@ In addition, note the `self.load_class` which allows to not create a new DarkPoo
 
 The `self.queue` list of commands is passed around as it contains the commands that the terminal must perform.
 
-
-### General Code Requirements
-
-- Each function should have default values for non critical kwargs
-
-  Why? It increases code readability and acts as an input example for the functions arguments. This increases the ease of use of the functions through the api, but also just generally.
-  
-- Simple and understandable input objects; avoid for example weird dictionaries packed with data: {“title”: DataFrame}
-  
-  Why? Ease of use and often these complex formats are clumsy, prone to error and the formatting required for complex parameters is time consuming and unneeded.
-  
-- Each function needs to have a docstring explaining what it does, its parameters and what it returns.
-  
-  Why? You can use the function without reading its source code. This improves the developing experience and api usage. The api factory also can’t handle functions with out docstrings.
-  
-- Consistent and clear argument naming; not `symbol` in _view and then `ticker` in _file -> ticker everywhere; the name should be descriptive of what information it hold (see Style Guide section below)
-  
-  Why? You can quickly understand what the input it should be; example: tickers and stock names are fundamentally different, but they’re both strings so they should be named accordingly.
-
-- Classes (for example the portfolio class) should hold the relevant data and perform no other calculations, these calculations should be done in an independent function.
-
-  Why? Two reasons. 
-
-  1. These calculations can then be used outside of the class with custom data; for example via the api or for tests.
-  2. The function can be loaded in API factory as an endpoint and user can get result by passing the class instance.
-
-- Naming among related model and view functions should be obvious; just different prefix if possible
-
-  Why? Eases API factory mapping and keeps code clean.
-
-### File Specific Requirements
-
-- No data altering in the view file or controller file (view and model with same args)
-
-  Why? Consistency and good code structure. This also improves the api user experience. Thus follows that view and model files will have the same arguments (except for output options like raw, export, external_axes), since no data changes shall be done in the view file.
-
-- Each model (get_) should almost always have its own view function (display_)
-
-  Why? To respect the principles laid out in Code Structure and the previous bullet point. If your code does not have this get_ → display_ map it’s likely that i. and/or ii. fail to hold.
-  1. Data is processed in _model files and displayed in _view files
-  2. _view and _model files will have the same arguments (expect for output options)
+# ADVANCED
 
 ## Important functions and classes
 
