@@ -70,7 +70,7 @@ We will be forecasting `5 Business days` ahead for the remaider of these workflo
 
 Note: All models automatically perform Historical backtesting on the test split before providing a prediction.
 
-Note: `MAPE` = [mean average percentage error](https://en.wikipedia.org/wiki/Mean_absolute_percentage_error). We use MAPE as it is quite convenient and scale independent since it calulates error as a percentage, instead of an absolute value. THere are many more metrics to compare time series. The metrics will compare only common slices of series when the two series are not aligned, and parallelize computation over a large number of pairs of series. More metrics will be released in future versions of the menu.
+Note: `MAPE` = [mean average percentage error](https://en.wikipedia.org/wiki/Mean_absolute_percentage_error). We use MAPE as it is quite convenient and scale independent since it calculates error as a percentage instead of an absolute value. THere are many more metrics to compare time series. The metrics will compare only common slices of series when the two series are not aligned, and parallelize computation over a large number of pairs of series. More metrics will be released in future versions of the menu.
 
 ```
 (🦋) /forecast/ $ plot AAPL.close
