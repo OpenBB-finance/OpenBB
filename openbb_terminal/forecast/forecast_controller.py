@@ -734,7 +734,9 @@ class ForecastController(BaseController):
 
         if ns_parser:
             console.print()
-            console.print(f"[green]Current Compute Device (CPU or GPU):[/green] {self.device.upper()}")
+            console.print(
+                f"[green]Current Compute Device (CPU or GPU):[/green] {self.device.upper()}"
+            )
             console.print(f"[green]Current RAM:[/green] {self.comp_ram}")
             console.print(
                 f"[green]Recommended Max dataset size based on current RAM:[/green] {self.rec_data_size}"
