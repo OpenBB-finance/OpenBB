@@ -600,22 +600,6 @@ functions = {
         "model": "openbb_terminal.cryptocurrency.due_diligence.santiment_model.get_github_activity",
         "view": "openbb_terminal.cryptocurrency.due_diligence.santiment_view.display_github_activity",
     },
-    "crypto.nft.newest": {
-        "model": "openbb_terminal.cryptocurrency.nft.nftcalendar_model.get_nft_newest_drops",
-        "view": "openbb_terminal.cryptocurrency.nft.nftcalendar_view.display_nft_newest_drops",
-    },
-    "crypto.nft.ongoing": {
-        "model": "openbb_terminal.cryptocurrency.nft.nftcalendar_model.get_nft_ongoing_drops",
-        "view": "openbb_terminal.cryptocurrency.nft.nftcalendar_view.display_nft_ongoing_drops",
-    },
-    "crypto.nft.today": {
-        "model": "openbb_terminal.cryptocurrency.nft.nftcalendar_model.get_nft_today_drops",
-        "view": "openbb_terminal.cryptocurrency.nft.nftcalendar_view.display_nft_today_drops",
-    },
-    "crypto.nft.upcoming": {
-        "model": "openbb_terminal.cryptocurrency.nft.nftcalendar_model.get_nft_upcoming_drops",
-        "view": "openbb_terminal.cryptocurrency.nft.nftcalendar_view.display_nft_upcoming_drops",
-    },
     "crypto.nft.stats": {
         "model": "openbb_terminal.cryptocurrency.nft.opensea_model.get_collection_stats",
         "view": "openbb_terminal.cryptocurrency.nft.opensea_view.display_collection_stats",
