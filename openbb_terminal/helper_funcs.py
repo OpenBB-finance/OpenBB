@@ -1072,9 +1072,9 @@ def set_default_timezone() -> None:
     """Sets a default (America/New_York) timezone if one doesn't exist"""
 
     dotenv.load_dotenv(USER_ENV_FILE)
-    user_tz = os.getenv("TIMEZONE")
+    user_tz = os.getenv("OPENBB_TIMEZONE")
     if not user_tz:
-        dotenv.set_key(USER_ENV_FILE, "TIMEZONE", "America/New_York")
+        dotenv.set_key(USER_ENV_FILE, "OPENBB_TIMEZONE", "America/New_York")
 
 
 def is_timezone_valid(user_tz: str) -> bool:
@@ -1099,10 +1099,10 @@ def get_user_timezone() -> str:
     Returns
     -------
     str
-        user timezone based on timezone.openbb file
+        user timezone based on .env file
     """
     dotenv.load_dotenv(USER_ENV_FILE)
-    user_tz = os.getenv("TIMEZONE")
+    user_tz = os.getenv("OPENBB_TIMEZONE")
     if user_tz:
         return user_tz
     return ""
@@ -1131,10 +1131,9 @@ def replace_user_timezone(user_tz: str) -> None:
         User timezone to set
     """
     if is_timezone_valid(user_tz):
-        dotenv.set_key(USER_ENV_FILE, "TIMEZONE", user_tz)
+        dotenv.set_key(USER_ENV_FILE, "OPENBB_TIMEZONE", user_tz)
         console.print("Timezone successfully updated", "\n")
     else:
-        console.print("timezone.openbb file does not exist", "\n")
         console.print("Timezone selected is not valid", "\n")
 
 
