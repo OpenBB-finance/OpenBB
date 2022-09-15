@@ -1,6 +1,5 @@
 # IMPORTATION STANDARD
 from pathlib import Path
-from .get_paths import get_folder_paths
 
 
 HOME_DIRECTORY = Path.home()
@@ -11,7 +10,4 @@ USER_ENV_FILE = SETTINGS_DIRECTORY / ".env"
 
 USER_DATA_DIRECTORY = HOME_DIRECTORY / "OpenBBUserData"
 
-USER_DATA_FOLDERS = [
-    "styles",
-]
-USER_DATA_FOLDER_PATHS = get_folder_paths()
+STYLES_FOLDER = USER_DATA_DIRECTORY / "styles"
