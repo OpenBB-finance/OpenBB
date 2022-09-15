@@ -31,6 +31,7 @@ Use your best judgment, and feel free to propose changes to this document in a p
       - [Model](#model)
       - [View](#view)
       - [Controller](#controller)
+      - [Add API endpint](#add-api-endpoint)
       - [Add Documentation](#add-documentation)
       - [Open a Pull Request](#open-a-pull-request)
       - [Review Process](#review-process)
@@ -758,6 +759,29 @@ The **import only occurs inside this menu call**, this is so that the loading ti
 In addition, note the `self.load_class` which allows to not create a new DarkPoolShortsController instance but re-load the previous created one. Unless the arguments `self.ticker, self.start, self.stock` have changed since. 
 
 The `self.queue` list of commands is passed around as it contains the commands that the terminal must perform.
+
+### Add API endpoint
+1. Go to `openbb_terminal/api.py`.
+2. Add the endpoint to the `functions` dictionary. 
+  
+If your command only outputs a rich table, map only the model function to expose the DataFrame.
+```
+functions = {
+...
+    "stocks.dps.shorted": {
+        "model": "openbb_terminal.stocks.dark_pool_shorts.yahoofinance_model.get_most_shorted"
+    },
+...
+}
+```
+
+If your command also displays a chart, map both the model and view functions to expose the DataFrame and the chart.
+```
+    "stocks.dps.spos": {
+        "model": "openbb_terminal.stocks.dark_pool_shorts.stockgrid_model.get_net_short_position",
+        "view": "openbb_terminal.stocks.dark_pool_shorts.stockgrid_view.net_short_position",
+    },
+```
 
 ### Add Documentation
 
