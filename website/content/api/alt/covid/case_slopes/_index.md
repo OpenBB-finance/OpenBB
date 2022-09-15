@@ -1,6 +1,7 @@
 # alt.covid.case_slopes
 
-## Model (days_back: int = 30, threshold: int = 10000) -> pandas.core.frame.DataFrame
+## Get underlying data 
+###alt.covid.case_slopes(days_back: int = 30, threshold: int = 10000) -> pandas.core.frame.DataFrame
 
 Load cases and find slope over period
 

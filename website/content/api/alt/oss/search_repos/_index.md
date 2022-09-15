@@ -1,6 +1,7 @@
 # alt.oss.search_repos
 
-## Model (sortby: str = 'stars', page: int = 1, categories: str = '') -> pandas.core.frame.DataFrame
+## Get underlying data 
+###alt.oss.search_repos(sortby: str = 'stars', page: int = 1, categories: str = '') -> pandas.core.frame.DataFrame
 
 Get repos sorted by stars or forks. Can be filtered by categories
 

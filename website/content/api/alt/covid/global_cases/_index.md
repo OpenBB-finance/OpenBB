@@ -1,6 +1,7 @@
 # alt.covid.global_cases
 
-## Model (country: str) -> pandas.core.frame.DataFrame
+## Get underlying data 
+###alt.covid.global_cases(country: str) -> pandas.core.frame.DataFrame
 
 Get historical cases for given country
 

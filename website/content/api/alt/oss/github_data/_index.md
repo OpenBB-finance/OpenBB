@@ -1,6 +1,7 @@
 # alt.oss.github_data
 
-## Model (url: str, **kwargs)
+## Get underlying data 
+###alt.oss.github_data(url: str, **kwargs)
 
 Get repository stats
 

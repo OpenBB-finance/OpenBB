@@ -1,6 +1,7 @@
 # alt.oss.stars_history
 
-## Model (repo: str)
+## Get underlying data 
+###alt.oss.stars_history(repo: str)
 
 Get repository star history
 

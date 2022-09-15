@@ -1,8 +1,9 @@
 # common.behavioural_analysis.sentiment
 
-To specify a view add `chart=True` as the last parameter
+To obtain charts, make sure to add `chart=True` as the last parameter
 
-## Model (post_data: List[str]) -> float
+## Get underlying data 
+###common.behavioural_analysis.sentiment(post_data: List[str]) -> float
 
 Find the sentiment of a post and related comments
 
@@ -16,7 +17,8 @@ Find the sentiment of a post and related comments
     float
         A number in the range [-1, 1] representing sentiment
 
-## View (symbol: str, n_tweets: int = 15, n_days_past: int = 2, compare: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+## Getting charts 
+###common.behavioural_analysis.sentiment(symbol: str, n_tweets: int = 15, n_days_past: int = 2, compare: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Plot sentiments from symbol
 

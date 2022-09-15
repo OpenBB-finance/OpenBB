@@ -1,8 +1,9 @@
 # alt.oss.repo_summary
 
-To specify a view add `chart=True` as the last parameter
+To obtain charts, make sure to add `chart=True` as the last parameter
 
-## Model (repo: str)
+## Get underlying data 
+###alt.oss.repo_summary(repo: str)
 
 Get repository summary
 
@@ -15,7 +16,8 @@ Get repository summary
     -------
     pd.DataFrame - Columns: Metric, Value
 
-## View (repo: str, export: str = '') -> None
+## Getting charts 
+###alt.oss.repo_summary(repo: str, export: str = '', chart=True) -> None
 
 Display repo summary [Source: https://api.github.com]
 

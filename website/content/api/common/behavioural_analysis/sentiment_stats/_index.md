@@ -1,8 +1,9 @@
 # common.behavioural_analysis.sentiment_stats
 
-To specify a view add `chart=True` as the last parameter
+To obtain charts, make sure to add `chart=True` as the last parameter
 
-## Model (ticker: str) -> Dict
+## Get underlying data 
+###common.behavioural_analysis.sentiment_stats(ticker: str) -> Dict
 
 Get sentiment stats [Source: finnhub]
 
@@ -16,7 +17,8 @@ Get sentiment stats [Source: finnhub]
     Dict
         Get sentiment stats
 
-## View (ticker: str, export: str = '')
+## Getting charts 
+###common.behavioural_analysis.sentiment_stats(ticker: str, export: str = '', chart=True)
 
 
     Sentiment stats which displays buzz, news score, articles last week, articles weekly average,
