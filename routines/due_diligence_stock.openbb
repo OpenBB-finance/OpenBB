@@ -40,8 +40,8 @@ dcf
 # check historical quarterly government contracts
 ../gov/histcont
 
-# check ratings from analysts
-../dd/ratings
+# check rating from analysts
+../dd/rating
 
 # check price targets over time along share price
 pt
@@ -80,4 +80,4 @@ historical
 hcorr
 
 # compare fundamentals across these companies
-cash/balance/income
+cashflow/balance/income
