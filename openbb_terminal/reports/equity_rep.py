@@ -1,6 +1,5 @@
 import io
 import datetime
-from typing import Dict
 import numpy as np
 
 import matplotlib.pyplot as plt

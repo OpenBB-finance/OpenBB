@@ -41,6 +41,8 @@ added_files = [
         os.path.join(pathex, "linearmodels", "datasets"),
         os.path.join("linearmodels", "datasets"),
     ),
+    (os.path.join(pathex, "pymongo"), "pymongo"),
+    (os.path.join(pathex, "bson"), "bson"),
     (
         os.path.join(pathex, "statsmodels", "datasets"),
         os.path.join("statsmodels", "datasets"),
@@ -72,6 +74,8 @@ hidden_imports = [
     "pyEX",
     "tensorflow",
     "feedparser",
+    "pymongo",
+    "bson",
 ]
 
 analysis_kwargs = dict(
