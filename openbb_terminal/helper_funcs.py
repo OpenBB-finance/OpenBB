@@ -1681,7 +1681,8 @@ def screenshot() -> None:
     Shoot terminal to image.
     """
     try:
-        window = pyautogui.getWindowsWithTitle("OpenBB Terminal")[0]
+        win_name = pyautogui.getActiveWindowTitle()
+        window = pyautogui.getWindowsWithTitle(win_name)[0]
         header = 40
         x = window.topleft.x + 10
         y = window.topleft.y + header
@@ -1713,15 +1714,14 @@ def frameshot(shot):
     """
     try:
         CURRENT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__)))
-        background = Image.open(Path(str(CURRENT_PATH), "terminal.png"))
-        logo = Image.open(Path(str(CURRENT_PATH), "openbb_logo.png"))
-        background = background.resize((shot.width + 200, shot.height + 200))
-
         WHITE_LINE_WIDTH = 5
         OUTSIDE_CANVAS_WIDTH = shot.width + 4 * WHITE_LINE_WIDTH
         OUTSIDE_CANVAS_HEIGHT = shot.height + 4 * WHITE_LINE_WIDTH
         UPPER_SPACE = 50
 
+        background = Image.open(Path(str(CURRENT_PATH), "terminal.png"))
+        logo = Image.open(Path(str(CURRENT_PATH), "openbb_logo.png"))
+        background = background.resize((shot.width + 200, shot.height + 200))
         x = int((background.width - OUTSIDE_CANVAS_WIDTH) / 2)
         y = UPPER_SPACE
         white_shape = [(x, y), (x + OUTSIDE_CANVAS_WIDTH, y + OUTSIDE_CANVAS_HEIGHT)]
