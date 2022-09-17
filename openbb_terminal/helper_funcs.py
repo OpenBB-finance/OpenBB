@@ -1675,6 +1675,7 @@ def search_wikipedia(expression: str) -> None:
         title=f"Wikipedia results for {expression}",
     )
 
+
 def screenshot() -> None:
     """
     Shoot terminal to image.
@@ -1698,13 +1699,13 @@ def plotshot() -> None:
     """
     if plt.get_fignums():
         img_buf = io.BytesIO()
-        plt.savefig(img_buf, format='png')
+        plt.savefig(img_buf, format="png")
         shot = Image.open(img_buf)
         frameshot(shot)
         img_buf.close()
     else:
         console.print("No plots found.")
-    
+
 
 def frameshot(shot):
     """
@@ -1717,25 +1718,41 @@ def frameshot(shot):
         background = background.resize((shot.width + 200, shot.height + 200))
 
         WHITE_LINE_WIDTH = 5
-        OUTSIDE_CANVAS_WIDTH = shot.width + 4*WHITE_LINE_WIDTH
-        OUTSIDE_CANVAS_HEIGHT = shot.height + 4*WHITE_LINE_WIDTH
+        OUTSIDE_CANVAS_WIDTH = shot.width + 4 * WHITE_LINE_WIDTH
+        OUTSIDE_CANVAS_HEIGHT = shot.height + 4 * WHITE_LINE_WIDTH
         UPPER_SPACE = 50
 
-        x = int((background.width - OUTSIDE_CANVAS_WIDTH)/2)
+        x = int((background.width - OUTSIDE_CANVAS_WIDTH) / 2)
         y = UPPER_SPACE
         white_shape = [(x, y), (x + OUTSIDE_CANVAS_WIDTH, y + OUTSIDE_CANVAS_HEIGHT)]
-        img = ImageDraw.Draw(background)  
-        img.rounded_rectangle(white_shape, 
-            fill = "black", 
-            outline = "white", 
-            width = WHITE_LINE_WIDTH, 
-            radius=15)
-        background.paste(shot, (x + WHITE_LINE_WIDTH + 5 , y + WHITE_LINE_WIDTH + 5))
-        
-        background.paste(logo, 
-            (int((background.width - logo.width)/2), 
-            UPPER_SPACE + OUTSIDE_CANVAS_HEIGHT + int((background.height - UPPER_SPACE - OUTSIDE_CANVAS_HEIGHT - logo.height)/2)), 
-            logo)
+        img = ImageDraw.Draw(background)
+        img.rounded_rectangle(
+            white_shape,
+            fill="black",
+            outline="white",
+            width=WHITE_LINE_WIDTH,
+            radius=15,
+        )
+        background.paste(shot, (x + WHITE_LINE_WIDTH + 5, y + WHITE_LINE_WIDTH + 5))
+
+        background.paste(
+            logo,
+            (
+                int((background.width - logo.width) / 2),
+                UPPER_SPACE
+                + OUTSIDE_CANVAS_HEIGHT
+                + int(
+                    (
+                        background.height
+                        - UPPER_SPACE
+                        - OUTSIDE_CANVAS_HEIGHT
+                        - logo.height
+                    )
+                    / 2
+                ),
+            ),
+            logo,
+        )
         background.show()
     except Exception as _:
         console.print("Shot failed.")

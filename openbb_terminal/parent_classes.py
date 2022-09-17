@@ -518,7 +518,7 @@ class BaseController(metaclass=ABCMeta):
         ns_parser = parse_simple_args(parser, other_args)
 
         if ns_parser:
-            screenshot()    
+            screenshot()
 
     @log_start_end(log=logger)
     def call_plotshot(self, other_args: List[str]) -> None:
@@ -537,7 +537,7 @@ class BaseController(metaclass=ABCMeta):
         ns_parser = parse_simple_args(parser, other_args)
 
         if ns_parser:
-            plotshot()  
+            plotshot()
 
     def parse_known_args_and_warn(
         self,
