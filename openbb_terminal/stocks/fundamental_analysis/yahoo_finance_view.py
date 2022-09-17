@@ -399,7 +399,7 @@ def display_mktcap(
 def display_fundamentals(
     symbol: str,
     statement: str,
-    limit: int = 120,
+    limit: int = 12,
     ratios: bool = False,
     plot: list = None,
     export: str = "",
@@ -493,7 +493,6 @@ def display_fundamentals(
         fundamentals.index = fundamentals.index.to_series().apply(
             lambda x: x.replace("_", " ").title()
         )
-
         # Readable numbers
         fundamentals = fundamentals.applymap(lambda_long_number_format).fillna("-")
         print_rich_table(

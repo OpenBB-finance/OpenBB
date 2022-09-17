@@ -857,6 +857,7 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    limit=ns_parser.limit,
                 )
 
     @log_start_end(log=logger)
@@ -955,6 +956,7 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    limit=ns_parser.limit,
                 )
 
     @log_start_end(log=logger)
@@ -1059,6 +1061,7 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    limit=ns_parser.limit,
                 )
 
     @log_start_end(log=logger)
