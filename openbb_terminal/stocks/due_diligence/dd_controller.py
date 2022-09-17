@@ -48,6 +48,7 @@ class DueDiligenceController(StockBaseController):
         "arktrades",
     ]
     PATH = "/stocks/dd/"
+    ESTIMATE_CHOICES = ["annualrevenue", "annualearnings", "quarterearnings"]
 
     def __init__(
         self,
@@ -69,6 +70,7 @@ class DueDiligenceController(StockBaseController):
             choices: dict = {c: {} for c in self.controller_choices}
             choices["load"]["-i"] = {c: {} for c in stocks_helper.INTERVALS}
             choices["load"]["-s"] = {c: {} for c in stocks_helper.SOURCES}
+            choices["est"]["-e"] = {c: {} for c in self.ESTIMATE_CHOICES}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -161,13 +163,21 @@ class DueDiligenceController(StockBaseController):
             description="""Yearly estimates and quarter earnings/revenues.
             [Source: Business Insider]""",
         )
-
+        parser.add_argument(
+            "-e",
+            "--estimate",
+            help="Estimates to get",
+            dest="estimate",
+            choices=self.ESTIMATE_CHOICES,
+            default="annualearnings",
+        )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             business_insider_view.estimates(
                 symbol=self.ticker,
+                estimate=ns_parser.estimate,
                 export=ns_parser.export,
             )
 
