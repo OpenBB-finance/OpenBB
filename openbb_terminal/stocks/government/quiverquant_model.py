@@ -193,7 +193,7 @@ def get_government_buys(
     df_gov["TransactionDate"] = pd.to_datetime(df_gov["TransactionDate"])
 
     df_gov = df_gov[df_gov["TransactionDate"] > start_date].dropna(axis=1)
-    print(df_gov)
+
     # Catch bug where error shown for purchase of >5,000,000
     df_gov["Range"] = df_gov["Range"].apply(
         lambda x: "$5,000,001-$5,000,001" if x == ">$5,000,000" else x
