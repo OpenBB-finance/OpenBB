@@ -123,12 +123,11 @@ def get_shareholders(symbol: str, holder: str = "institutional") -> pd.DataFrame
 
     if holder == "major":
         return df_major_holders
-    elif holder == "institutional":
+    if holder == "institutional":
         return df_institutional_shareholders
-    elif holder == "mutualfund":
+    if holder == "mutualfund":
         return df_mutualfund_shareholders
-    else:
-        return pd.DataFrame()
+    return pd.DataFrame()
 
 
 @log_start_end(log=logger)
