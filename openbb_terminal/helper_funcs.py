@@ -1712,9 +1712,9 @@ def frameshot(shot):
     Frame image to OpenBB canvas.
     """
     try:
-        background = Image.open("./openbb_terminal/terminal.png")
-        logo = Image.open("./openbb_terminal/openbb_logo.png")
-
+        CURRENT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__)))
+        background = Image.open(Path(str(CURRENT_PATH), "terminal.png"))
+        logo = Image.open(Path(str(CURRENT_PATH), "openbb_logo.png"))
         background = background.resize((shot.width + 200, shot.height + 200))
 
         WHITE_LINE_WIDTH = 5
