@@ -521,10 +521,10 @@ def display_earnings(symbol: str, limit: int, export: str):
 
     """
     earnings = yahoo_finance_model.get_earnings_history(symbol)
-    if not earnings:
+    if earnings.empty:
         console.print("")
         return
-    earnings = earnings.drop(columns={"Symbol", "Company"})
+    earnings = earnings.drop(columns={"Symbol", "Company"}).fillna("-")
     print_rich_table(
         earnings.head(limit),
         headers=earnings.columns,
