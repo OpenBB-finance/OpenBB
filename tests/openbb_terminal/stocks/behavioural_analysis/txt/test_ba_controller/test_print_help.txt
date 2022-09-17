@@ -21,6 +21,9 @@ Ticker: TSLA
     regions            regions that show highest interest in stock                     [Google]
     interest           interest over time of sentences versus stock price              [Google]
     queries            top related queries with this stock                             [Google]
-    rise               top rising related queries with stock                           [Google]
-    jcdr               Jim Cramer's daily recommendations                              [Jim Cramer]
-    jctr               Jim Cramer's recommendations by ticker                          [Jim Cramer]
+    rise               top rising related queries with stock                           [FinBrain]
+    trend              most talked about tickers within the last hour                  [SentimentInvestor]
+    hist               plot historical RHI and AHI data by hour                        [SentimentInvestor]
+    jcdr               Jim Cramer's daily recommendations                              [JimCramer]
+    jctr               Jim Cramer's recommendations by ticker                          [JimCramer]
+
