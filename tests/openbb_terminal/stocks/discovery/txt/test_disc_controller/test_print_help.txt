@@ -16,4 +16,5 @@
     hotpenny           today's hot penny stocks                                        [YahooFinance, Shortinterest]
     rtat               top 10 retail traded stocks per day                             [Nasdaq]
     divcal             dividend calendar for selected date                             [Nasdaq]
+    heatmap            heatmap of SP500 tickers
 

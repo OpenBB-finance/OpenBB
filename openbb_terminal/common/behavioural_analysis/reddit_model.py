@@ -551,8 +551,6 @@ def get_wsb_community(
 
     subs = []
 
-    console.print(submissions)
-
     try:
         for submission in submissions:
             submission = praw_api.submission(id=submission.id)

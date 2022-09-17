@@ -4,6 +4,10 @@ more:
     ref: "https://openbb.co"
     external: true
     icon: "gdoc_link"
+  - name: "Go to Bot Docs"
+    ref: "https://my.openbb.co/app/docs"
+    external: true
+    icon: "gdoc_link"
   - name: "Install the Terminal"
     ref: "https://openbb.co/products/terminal"
     external: true
