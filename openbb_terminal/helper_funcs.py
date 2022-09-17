@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 # pylint: disable=too-many-lines
 import argparse
+import io
 import logging
 from pathlib import Path
 from typing import List, Tuple, Union, Optional, Dict
@@ -32,6 +33,9 @@ import requests
 from screeninfo import get_monitors
 import yfinance as yf
 import numpy as np
+
+import pyautogui
+from PIL import Image, ImageDraw
 
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
@@ -1670,3 +1674,65 @@ def search_wikipedia(expression: str) -> None:
         show_index=False,
         title=f"Wikipedia results for {expression}",
     )
+
+def screenshot() -> None:
+    """
+    Shoot terminal to image.
+    """
+    try:
+        window = pyautogui.getWindowsWithTitle("OpenBB Terminal")[0]
+        header = 40
+        x = window.topleft.x + 10
+        y = window.topleft.y + header
+        width = window.width - 50
+        height = window.height - 10 - header
+        shot = pyautogui.screenshot(region=(x, y, width, height))
+        frameshot(shot)
+    except Exception as _:
+        console.print("Cannot reach window.")
+
+
+def plotshot() -> None:
+    """
+    Shoot plots to image.
+    """
+    img_buf = io.BytesIO()
+    plt.savefig(img_buf, format='png')
+    shot = Image.open(img_buf)
+    frameshot(shot)
+    img_buf.close()
+    
+
+def frameshot(shot):
+    """
+    Frame image to OpenBB canvas.
+    """
+    try:
+        background = Image.open("terminal.png")
+        logo = Image.open("openbb_logo.png")
+
+        background = background.resize((shot.width + 200, shot.height + 200))
+
+        WHITE_LINE_WIDTH = 5
+        OUTSIDE_CANVAS_WIDTH = shot.width + 4*WHITE_LINE_WIDTH
+        OUTSIDE_CANVAS_HEIGHT = shot.height + 4*WHITE_LINE_WIDTH
+        UPPER_SPACE = 50
+
+        x = int((background.width - OUTSIDE_CANVAS_WIDTH)/2)
+        y = UPPER_SPACE
+        white_shape = [(x, y), (x + OUTSIDE_CANVAS_WIDTH, y + OUTSIDE_CANVAS_HEIGHT)]
+        img = ImageDraw.Draw(background)  
+        img.rounded_rectangle(white_shape, 
+            fill = "black", 
+            outline = "white", 
+            width = WHITE_LINE_WIDTH, 
+            radius=15)
+        background.paste(shot, (x + WHITE_LINE_WIDTH + 5 , y + WHITE_LINE_WIDTH + 5))
+        
+        background.paste(logo, 
+            (int((background.width - logo.width)/2), 
+            UPPER_SPACE + OUTSIDE_CANVAS_HEIGHT + int((background.height - UPPER_SPACE - OUTSIDE_CANVAS_HEIGHT - logo.height)/2)), 
+            logo)
+        background.show()
+    except Exception as _:
+        console.print("Shot failed.")
