@@ -89,54 +89,34 @@ def display_info(symbol: str, export: str = ""):
 
 
 @log_start_end(log=logger)
-def display_shareholders(symbol: str, export: str = ""):
+def display_shareholders(symbol: str, holder: str = "institutional", export: str = ""):
     """Yahoo Finance ticker shareholders
     Parameters
     ----------
     symbol : str
         Fundamental analysis ticker symbol
+    holder: str
+        Shareholder table to get.  Can be major/institutional/mutualfund
     export: str
         Format to export data
     """
-    (
-        df_major_holders,
-        df_institutional_shareholders,
-        df_mutualfund_shareholders,
-    ) = yahoo_finance_model.get_shareholders(symbol)
-    df_major_holders.columns = ["", ""]
-    dfs = [df_major_holders, df_institutional_shareholders, df_mutualfund_shareholders]
-    titles = ["Major Holders", "Institutional Holders", "Mutual Fund Holders"]
-    console.print()
-
-    for df, title in zip(dfs, titles):
-        if "Date Reported" in df.columns:
-            df["Date Reported"] = df["Date Reported"].apply(
-                lambda x: x.strftime("%Y-%m-%d")
-            )
-        print_rich_table(
-            df,
-            headers=list(df.columns),
-            show_index=False,
-            title=f"{symbol.upper()} {title}",
+    df = yahoo_finance_model.get_shareholders(symbol, holder)
+    if holder == "major":
+        df.columns = ["", ""]
+    if "Date Reported" in df.columns:
+        df["Date Reported"] = df["Date Reported"].apply(
+            lambda x: x.strftime("%Y-%m-%d")
         )
+    title = f"{holder.title()} Holders"
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title=f"{symbol.upper()} {title}",
+    )
 
     export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "major_holders",
-        df_major_holders,
-    )
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "institutional_holders",
-        df_institutional_shareholders,
-    )
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "mutualfunds_holders",
-        df_major_holders,
+        export, os.path.dirname(os.path.abspath(__file__)), f"{holder}_holders", df
     )
 
 

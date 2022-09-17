@@ -68,22 +68,20 @@ def get_info(symbol: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_shareholders(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+def get_shareholders(symbol: str, holder: str = "institutional") -> pd.DataFrame:
     """Get shareholders from yahoo
 
     Parameters
     ----------
     symbol : str
         Stock ticker symbol
+    holder : str
+        Which holder to get table for
 
     Returns
     -------
     pd.DataFrame
         Major holders
-    pd.DataFrame
-        Institutional holders
-    pd.DataFrame
-        Mutual Fund holders
     """
     stock = yf.Ticker(symbol)
 
@@ -123,7 +121,14 @@ def get_shareholders(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFr
         lambda x: str(f"{100 * x:.2f}") + " %"
     )
 
-    return df_major_holders, df_institutional_shareholders, df_mutualfund_shareholders
+    if holder == "major":
+        return df_major_holders
+    elif holder == "institutional":
+        return df_institutional_shareholders
+    elif holder == "mutualfund":
+        return df_mutualfund_shareholders
+    else:
+        return pd.DataFrame()
 
 
 @log_start_end(log=logger)

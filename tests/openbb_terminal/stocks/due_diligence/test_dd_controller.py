@@ -263,7 +263,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             [],
             {
                 "symbol": "TSLA",
-                "estimate":"annualearnings",
+                "estimate": "annualearnings",
                 "export": "",
             },
         ),
