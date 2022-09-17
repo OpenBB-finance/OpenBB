@@ -49,12 +49,12 @@ def display_crypto_rates(
     if df.empty:
         console.print("\nError in loanscan request\n")
     else:
-        platforms = [
+        valid_platforms = [
             platform
             for platform in platforms.lower().split(",")
             if platform in df.index
         ]
-        df = df[symbols.upper().split(",")].loc[platforms]
+        df = df[symbols.upper().split(",")].loc[valid_platforms]
         df = df.sort_values(df.columns[0], ascending=False, na_position="last")
 
         if not external_axes:
