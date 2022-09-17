@@ -61,4 +61,6 @@ def test_price_target_from_analysts_plt(capsys, interval, mocker, start):
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_estimates():
-    business_insider_view.estimates(symbol="TSLA", export=None)
+    business_insider_view.estimates(
+        symbol="TSLA", estimate="annualearnings", export=None
+    )
