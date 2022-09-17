@@ -1696,11 +1696,14 @@ def plotshot() -> None:
     """
     Shoot plots to image.
     """
-    img_buf = io.BytesIO()
-    plt.savefig(img_buf, format='png')
-    shot = Image.open(img_buf)
-    frameshot(shot)
-    img_buf.close()
+    if plt.get_fignums():
+        img_buf = io.BytesIO()
+        plt.savefig(img_buf, format='png')
+        shot = Image.open(img_buf)
+        frameshot(shot)
+        img_buf.close()
+    else:
+        console.print("No plots found.")
     
 
 def frameshot(shot):
@@ -1708,8 +1711,8 @@ def frameshot(shot):
     Frame image to OpenBB canvas.
     """
     try:
-        background = Image.open("terminal.png")
-        logo = Image.open("openbb_logo.png")
+        background = Image.open("./openbb_terminal/terminal.png")
+        logo = Image.open("./openbb_terminal/openbb_logo.png")
 
         background = background.resize((shot.width + 200, shot.height + 200))
 
