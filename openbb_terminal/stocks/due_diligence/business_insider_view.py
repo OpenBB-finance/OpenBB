@@ -129,13 +129,15 @@ def price_target_from_analysts(
 
 
 @log_start_end(log=logger)
-def estimates(symbol: str, export: str = ""):
+def estimates(symbol: str, estimate: str, export: str = ""):
     """Display analysts' estimates for a given ticker. [Source: Business Insider]
 
     Parameters
     ----------
     symbol : str
         Ticker to get analysts' estimates
+    estimate: str
+        Type of estimate to get
     export : str
         Export dataframe data to csv,json,xlsx file
     """
@@ -145,42 +147,48 @@ def estimates(symbol: str, export: str = ""):
         df_quarter_revenues,
     ) = business_insider_model.get_estimates(symbol)
 
-    print_rich_table(
-        df_year_estimates,
-        headers=list(df_year_estimates.columns),
-        show_index=True,
-        title="Annual Earnings Estimates",
-    )
+    if estimate == "annualearnings":
 
-    print_rich_table(
-        df_quarter_earnings,
-        headers=list(df_quarter_earnings.columns),
-        show_index=True,
-        title="Quarterly Earnings Estimates",
-    )
+        print_rich_table(
+            df_year_estimates,
+            headers=list(df_year_estimates.columns),
+            show_index=True,
+            title="Annual Earnings Estimates",
+        )
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "pt_year",
+            df_year_estimates,
+        )
 
-    print_rich_table(
-        df_quarter_revenues,
-        headers=list(df_quarter_revenues.columns),
-        show_index=True,
-        title="Quarterly Revenue Estimates",
-    )
+    elif estimate == "quarterearnings":
+        print_rich_table(
+            df_quarter_earnings,
+            headers=list(df_quarter_earnings.columns),
+            show_index=True,
+            title="Quarterly Earnings Estimates",
+        )
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "pt_qtr_earnings",
+            df_quarter_earnings,
+        )
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "pt_year",
-        df_year_estimates,
-    )
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "pt_qtr_earnings",
-        df_quarter_earnings,
-    )
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "pt_qtr_revenues",
-        df_quarter_revenues,
-    )
+    elif estimate == "annualrevenue":
+        print_rich_table(
+            df_quarter_revenues,
+            headers=list(df_quarter_revenues.columns),
+            show_index=True,
+            title="Quarterly Revenue Estimates",
+        )
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "pt_qtr_revenues",
+            df_quarter_revenues,
+        )
+    else:
+        console.print("[red]Invalid estimate type[/red]")
