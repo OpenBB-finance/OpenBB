@@ -1712,6 +1712,11 @@ def plot_shot() -> None:
 def frame_shot(shot, frame):
     """
     Frame image to OpenBB canvas.
+
+    Parameters
+    ----------
+    frame: str
+        Select frame type: plot or CLI
     """
     try:
         CURRENT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__)))
@@ -1719,6 +1724,8 @@ def frame_shot(shot, frame):
         OUTSIDE_CANVAS_WIDTH = shot.width + 4 * WHITE_LINE_WIDTH + 5
         OUTSIDE_CANVAS_HEIGHT = shot.height + 4 * WHITE_LINE_WIDTH + 5
         UPPER_SPACE = 50
+        BACKGROUND_WIDTH_SLACK = 200
+        BACKGROUND_HEIGHT_SLACK = 200
 
         background = Image.open(Path(str(CURRENT_PATH), "terminal.png"))
         logo = Image.open(Path(str(CURRENT_PATH), "openbb_logo.png"))
@@ -1728,7 +1735,12 @@ def frame_shot(shot, frame):
             HEADER_HEIGHT = 0
             RADIUS = 20
 
-            background = background.resize((shot.width + 200, shot.height + 200))
+            background = background.resize(
+                (
+                    shot.width + BACKGROUND_WIDTH_SLACK,
+                    shot.height + BACKGROUND_HEIGHT_SLACK,
+                )
+            )
 
             x = int((background.width - OUTSIDE_CANVAS_WIDTH) / 2)
             y = UPPER_SPACE
@@ -1753,7 +1765,10 @@ def frame_shot(shot, frame):
             RADIUS = 28
 
             background = background.resize(
-                (shot.width + 200, shot.height + 200 + HEADER_HEIGHT)
+                (
+                    shot.width + BACKGROUND_WIDTH_SLACK,
+                    shot.height + BACKGROUND_HEIGHT_SLACK + HEADER_HEIGHT,
+                )
             )
 
             x = int((background.width - OUTSIDE_CANVAS_WIDTH) / 2)
