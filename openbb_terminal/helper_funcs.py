@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 # pylint: disable=too-many-lines
 import argparse
+from email.header import Header
 import io
 import logging
 from pathlib import Path
@@ -1680,18 +1681,18 @@ def screenshot() -> None:
     """
     Shoot terminal to image.
     """
-    try:
-        win_name = pyautogui.getActiveWindowTitle()
-        window = pyautogui.getWindowsWithTitle(win_name)[0]
-        header = 40
-        x = window.topleft.x + 10
-        y = window.topleft.y + header
-        width = window.width - 50
-        height = window.height - 10 - header
-        shot = pyautogui.screenshot(region=(x, y, width, height))
-        frameshot(shot)
-    except Exception as _:
-        console.print("Cannot reach window.")
+    # try:
+    win_name = pyautogui.getActiveWindowTitle()
+    window = pyautogui.getWindowsWithTitle(win_name)[0]
+    header = 40
+    x = window.topleft.x + 10
+    y = window.topleft.y + header
+    width = window.width - 50
+    height = window.height - 10 - header
+    shot = pyautogui.screenshot(region=(x, y, width, height))
+    frameshot(shot, "CLI")
+    # except Exception as _:
+    #     console.print("Cannot reach window.")
 
 
 def plotshot() -> None:
@@ -1702,50 +1703,136 @@ def plotshot() -> None:
         img_buf = io.BytesIO()
         plt.savefig(img_buf, format="png")
         shot = Image.open(img_buf)
-        frameshot(shot)
+        frameshot(shot, "plot")
         img_buf.close()
     else:
         console.print("No plots found.")
 
 
-def frameshot(shot):
+def frameshot(shot, frame):
     """
     Frame image to OpenBB canvas.
     """
     try:
         CURRENT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__)))
-        WHITE_LINE_WIDTH = 5
-        OUTSIDE_CANVAS_WIDTH = shot.width + 4 * WHITE_LINE_WIDTH
-        OUTSIDE_CANVAS_HEIGHT = shot.height + 4 * WHITE_LINE_WIDTH
+        WHITE_LINE_WIDTH = 3
+        OUTSIDE_CANVAS_WIDTH = shot.width + 4 * WHITE_LINE_WIDTH + 5
+        OUTSIDE_CANVAS_HEIGHT = shot.height + 4 * WHITE_LINE_WIDTH + 5
         UPPER_SPACE = 50
 
         background = Image.open(Path(str(CURRENT_PATH), "terminal.png"))
         logo = Image.open(Path(str(CURRENT_PATH), "openbb_logo.png"))
-        background = background.resize((shot.width + 200, shot.height + 200))
-        x = int((background.width - OUTSIDE_CANVAS_WIDTH) / 2)
-        y = UPPER_SPACE
-        white_shape = [(x, y), (x + OUTSIDE_CANVAS_WIDTH, y + OUTSIDE_CANVAS_HEIGHT)]
-        img = ImageDraw.Draw(background)
-        img.rounded_rectangle(
-            white_shape,
-            fill="black",
-            outline="white",
-            width=WHITE_LINE_WIDTH,
-            radius=15,
-        )
-        background.paste(shot, (x + WHITE_LINE_WIDTH + 5, y + WHITE_LINE_WIDTH + 5))
 
+        if frame == "plot":
+
+            HEADER_HEIGHT = 0
+            RADIUS = 20
+
+            background = background.resize((shot.width + 200, shot.height + 200))
+
+            x = int((background.width - OUTSIDE_CANVAS_WIDTH) / 2)
+            y = UPPER_SPACE
+
+            white_shape = [
+                (x, y),
+                (x + OUTSIDE_CANVAS_WIDTH, y + OUTSIDE_CANVAS_HEIGHT),
+            ]
+            img = ImageDraw.Draw(background)
+            img.rounded_rectangle(
+                white_shape,
+                fill="black",
+                outline="white",
+                width=WHITE_LINE_WIDTH,
+                radius=RADIUS,
+            )
+            background.paste(shot, (x + WHITE_LINE_WIDTH + 5, y + WHITE_LINE_WIDTH + 5))
+
+        elif frame == "CLI":
+
+            HEADER_HEIGHT = 83
+            RADIUS = 28
+
+            background = background.resize(
+                (shot.width + 200, shot.height + 200 + HEADER_HEIGHT)
+            )
+
+            x = int((background.width - OUTSIDE_CANVAS_WIDTH) / 2)
+            y = UPPER_SPACE
+
+            img = ImageDraw.Draw(background)
+
+            # Frame line
+            shape = [
+                (x, y),
+                (x + OUTSIDE_CANVAS_WIDTH, y + OUTSIDE_CANVAS_HEIGHT + HEADER_HEIGHT),
+            ]
+            img.rounded_rectangle(
+                shape,
+                fill="black",
+                outline="white",
+                width=WHITE_LINE_WIDTH,
+                radius=RADIUS,
+            )
+
+            # Header upper half
+            shape = [(x, y), (x + OUTSIDE_CANVAS_WIDTH, y + HEADER_HEIGHT)]
+            img.rounded_rectangle(
+                shape,
+                fill="white",
+                outline="white",
+                width=WHITE_LINE_WIDTH,
+                radius=RADIUS,
+            )
+
+            # Header lower half
+            shape = [
+                (x, y + int(HEADER_HEIGHT / 2)),
+                (x + OUTSIDE_CANVAS_WIDTH, y + HEADER_HEIGHT),
+            ]
+            img.rounded_rectangle(
+                shape,
+                fill="white",
+                outline="white",
+                width=WHITE_LINE_WIDTH,
+            )
+
+            # Left icons
+            SIZE = 27
+            CENTER = int(HEADER_HEIGHT / 2 - SIZE / 2)
+            INDENT = 15
+            SPACING = 20
+
+            for i in range(3):
+                img.ellipse(
+                    (
+                        x + INDENT + SPACING * (i + 1) + SIZE * i,
+                        y + CENTER,
+                        x + INDENT + (SPACING + SIZE) * (i + 1),
+                        y + SIZE + CENTER,
+                    ),
+                    fill="#DADADA",
+                )
+
+            # Paste window screenshot
+            background.paste(
+                shot,
+                (x + WHITE_LINE_WIDTH + 5, y + WHITE_LINE_WIDTH + 5 + HEADER_HEIGHT),
+            )
+
+        # Logo
         background.paste(
             logo,
             (
                 int((background.width - logo.width) / 2),
                 UPPER_SPACE
                 + OUTSIDE_CANVAS_HEIGHT
+                + HEADER_HEIGHT
                 + int(
                     (
                         background.height
                         - UPPER_SPACE
                         - OUTSIDE_CANVAS_HEIGHT
+                        - HEADER_HEIGHT
                         - logo.height
                     )
                     / 2
