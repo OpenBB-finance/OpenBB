@@ -509,14 +509,15 @@ class BaseController(metaclass=ABCMeta):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="shot",
-            description="Shot terminal or plot to image.",
+            description="Screenshot terminal or plot to OpenBB frame. "
+            "Default target is plot if available or no --terminal flag passed by user, else target is terminal window.",
         )
 
         parser.add_argument(
             "-t",
             "--terminal",
             dest="terminal",
-            help="Flag to screenshot terminal window.",
+            help="Flag direct screenshot target to terminal window.",
             action="store_true",
             default=False,
         )
