@@ -1677,25 +1677,25 @@ def search_wikipedia(expression: str) -> None:
     )
 
 
-def screenshot() -> None:
+def terminal_shot() -> None:
     """
     Shoot terminal to image.
     """
-    # try:
-    win_name = pyautogui.getActiveWindowTitle()
-    window = pyautogui.getWindowsWithTitle(win_name)[0]
-    header = 40
-    x = window.topleft.x + 10
-    y = window.topleft.y + header
-    width = window.width - 50
-    height = window.height - 10 - header
-    shot = pyautogui.screenshot(region=(x, y, width, height))
-    frameshot(shot, "CLI")
-    # except Exception as _:
-    #     console.print("Cannot reach window.")
+    try:
+        win_name = pyautogui.getActiveWindowTitle()
+        window = pyautogui.getWindowsWithTitle(win_name)[0]
+        header = 40
+        x = window.topleft.x + 10
+        y = window.topleft.y + header
+        width = window.width - 50
+        height = window.height - 10 - header
+        shot = pyautogui.screenshot(region=(x, y, width, height))
+        frame_shot(shot, "CLI")
+    except Exception as _:
+        console.print("Cannot reach window.")
 
 
-def plotshot() -> None:
+def plot_shot() -> None:
     """
     Shoot plots to image.
     """
@@ -1703,13 +1703,13 @@ def plotshot() -> None:
         img_buf = io.BytesIO()
         plt.savefig(img_buf, format="png")
         shot = Image.open(img_buf)
-        frameshot(shot, "plot")
+        frame_shot(shot, "plot")
         img_buf.close()
     else:
         console.print("No plots found.")
 
 
-def frameshot(shot, frame):
+def frame_shot(shot, frame):
     """
     Frame image to OpenBB canvas.
     """

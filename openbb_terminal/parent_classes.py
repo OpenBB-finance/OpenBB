@@ -15,6 +15,7 @@ import json
 from typing import Union, List, Dict, Any
 from datetime import datetime, timedelta
 
+import matplotlib.pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
@@ -38,8 +39,8 @@ from openbb_terminal.helper_funcs import (
     check_positive,
     parse_and_split_input,
     search_wikipedia,
-    screenshot,
-    plotshot,
+    terminal_shot,
+    plot_shot,
 )
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.rich_config import console, get_ordered_list_sources
@@ -84,7 +85,6 @@ class BaseController(metaclass=ABCMeta):
         "support",
         "wiki",
         "screenshot",
-        "plotshot",
     ]
 
     CHOICES_COMMANDS: List[str] = []
@@ -512,32 +512,28 @@ class BaseController(metaclass=ABCMeta):
             description="Shot terminal or plot to image.",
         )
 
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "")
-
-        ns_parser = parse_simple_args(parser, other_args)
-
-        if ns_parser:
-            screenshot()
-
-    @log_start_end(log=logger)
-    def call_plotshot(self, other_args: List[str]) -> None:
-        """Process screenshot command"""
-
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="shot",
-            description="Shot terminal to image.",
+        parser.add_argument(
+            "-t",
+            "--terminal",
+            dest="terminal",
+            help="Flag to sort target terminal",
+            action="store_true",
+            default=False,
         )
 
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "")
+            other_args.insert(0, "-t")
 
         ns_parser = parse_simple_args(parser, other_args)
 
         if ns_parser:
-            plotshot()
+            if ns_parser.terminal:
+                terminal_shot()
+            else:
+                if plt.get_fignums():
+                    plot_shot()
+                else:
+                    terminal_shot()
 
     def parse_known_args_and_warn(
         self,
