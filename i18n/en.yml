@@ -794,6 +794,7 @@ en:
   economy/valuation: valuation of sectors, industry, country
   economy/performance: performance of sectors, industry, country
   economy/spectrum: spectrum of sectors, industry, country
+  economy/eval: create new series by performing operations on loaded data
   economy/pred: Open the prediction menu to analyse stored data
   economy/qa: Open quantitative analysis menu with stored data
   economy/qa/pick: pick new series from stored economy data
