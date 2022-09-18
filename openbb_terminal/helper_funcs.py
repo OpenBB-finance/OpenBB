@@ -1677,53 +1677,52 @@ def search_wikipedia(expression: str) -> None:
     )
 
 
-def terminal_shot() -> None:
+def screenshot(terminal_window_target: bool = False) -> None:
     """
-    Shoot terminal to image.
+    Screenshot the terminal window or the plot window
+
+    Parameters
+    ----------
+    terminal_window_target: bool
+        Target the terminal window
     """
     try:
-        win_name = pyautogui.getActiveWindowTitle()
-        window = pyautogui.getWindowsWithTitle(win_name)[0]
-        header = 40
-        x = window.topleft.x + 10
-        y = window.topleft.y + header
-        width = window.width - 50
-        height = window.height - 10 - header
-        shot = pyautogui.screenshot(region=(x, y, width, height))
-        img = frame_shot(shot, "CLI")
-        img.save("img.png","PNG")
-    except Exception as _:
-        console.print("Cannot reach window.")
+        if terminal_window_target:
+            win_name = pyautogui.getActiveWindowTitle()
+            window = pyautogui.getWindowsWithTitle(win_name)[0]
+            header = 40
+            x = window.topleft.x + 10
+            y = window.topleft.y + header
+            width = window.width - 50
+            height = window.height - 10 - header
+            shot = pyautogui.screenshot(region=(x, y, width, height))
+            screenshot_to_canvas(shot)
+            console.print("")
+
+        elif plt.get_fignums():
+            img_buf = io.BytesIO()
+            plt.savefig(img_buf, format="png")
+            shot = Image.open(img_buf)
+            screenshot_to_canvas(shot, plot_exists=True)
+            console.print("")
+
+        else:
+            console.print("No plots found.\n")
+
+    except Exception as e:
+        console.print(f"Cannot reach window - {e}\n")
 
 
-def plot_shot() -> None:
-    """
-    Shoot plots to image.
-    """
-    if plt.get_fignums():
-        img_buf = io.BytesIO()
-        plt.savefig(img_buf, format="png")
-        shot = Image.open(img_buf)
-        img = frame_shot(shot, "plot")
-        img.save("img.png","PNG")
-        img_buf.close()
-    else:
-        console.print("No plots found.")
-
-
-def frame_shot(shot, frame):
+def screenshot_to_canvas(shot, plot_exists: bool = False):
     """
     Frame image to OpenBB canvas.
 
     Parameters
     ----------
-    frame: str
-        Select frame type: plot or CLI
-
-    Returns
-    -------
-    Image
-        
+    shot
+        Image to frame with OpenBB Canvas
+    plot_exists: bool
+        Variable to say whether the image is a plot or screenshot of terminal
     """
     try:
         CURRENT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__)))
@@ -1737,8 +1736,7 @@ def frame_shot(shot, frame):
         background = Image.open(Path(str(CURRENT_PATH), "terminal.png"))
         logo = Image.open(Path(str(CURRENT_PATH), "openbb_logo.png"))
 
-        if frame == "plot":
-
+        if plot_exists:
             HEADER_HEIGHT = 0
             RADIUS = 20
 
@@ -1766,8 +1764,7 @@ def frame_shot(shot, frame):
             )
             background.paste(shot, (x + WHITE_LINE_WIDTH + 5, y + WHITE_LINE_WIDTH + 5))
 
-        elif frame == "CLI":
-
+        else:
             HEADER_HEIGHT = 83
             RADIUS = 28
 
@@ -1862,7 +1859,7 @@ def frame_shot(shot, frame):
             ),
             logo,
         )
-    
-        return background
+
+        background.show()
     except Exception as _:
         console.print("Shot failed.")

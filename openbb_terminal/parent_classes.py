@@ -39,8 +39,7 @@ from openbb_terminal.helper_funcs import (
     check_positive,
     parse_and_split_input,
     search_wikipedia,
-    terminal_shot,
-    plot_shot,
+    screenshot,
 )
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.rich_config import console, get_ordered_list_sources
@@ -504,15 +503,14 @@ class BaseController(metaclass=ABCMeta):
     @log_start_end(log=logger)
     def call_screenshot(self, other_args: List[str]) -> None:
         """Process screenshot command"""
-
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="shot",
-            description="Screenshot terminal or plot to OpenBB frame. "
-            "Default target is plot if available or no --terminal flag passed by user, else target is terminal window.",
+            prog="screenshot",
+            description="Screenshot terminal window or plot figure open into an OpenBB frame. "
+            "Default target is plot if there is one open, otherwise it's terminal window. "
+            " In case the user wants the terminal window, it can be forced with '-t` or '--terminal' flag passed.",
         )
-
         parser.add_argument(
             "-t",
             "--terminal",
@@ -521,20 +519,10 @@ class BaseController(metaclass=ABCMeta):
             action="store_true",
             default=False,
         )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-t")
-
         ns_parser = parse_simple_args(parser, other_args)
 
         if ns_parser:
-            if ns_parser.terminal:
-                terminal_shot()
-            else:
-                if plt.get_fignums():
-                    plot_shot()
-                else:
-                    terminal_shot()
+            screenshot(ns_parser.terminal)
 
     def parse_known_args_and_warn(
         self,
