@@ -1690,7 +1690,8 @@ def terminal_shot() -> None:
         width = window.width - 50
         height = window.height - 10 - header
         shot = pyautogui.screenshot(region=(x, y, width, height))
-        frame_shot(shot, "CLI")
+        img = frame_shot(shot, "CLI")
+        img.save("img.png","PNG")
     except Exception as _:
         console.print("Cannot reach window.")
 
@@ -1703,7 +1704,8 @@ def plot_shot() -> None:
         img_buf = io.BytesIO()
         plt.savefig(img_buf, format="png")
         shot = Image.open(img_buf)
-        frame_shot(shot, "plot")
+        img = frame_shot(shot, "plot")
+        img.save("img.png","PNG")
         img_buf.close()
     else:
         console.print("No plots found.")
@@ -1717,6 +1719,11 @@ def frame_shot(shot, frame):
     ----------
     frame: str
         Select frame type: plot or CLI
+
+    Returns
+    -------
+    Image
+        
     """
     try:
         CURRENT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__)))
@@ -1855,6 +1862,7 @@ def frame_shot(shot, frame):
             ),
             logo,
         )
-        background.show()
+    
+        return background
     except Exception as _:
         console.print("Shot failed.")
