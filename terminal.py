@@ -858,6 +858,7 @@ def main(
     paths: List[str],
     verbose: bool,
     routines_args: List[str] = None,
+    install: bool = False,
 ):
     """
     Runs the terminal with various options
@@ -876,7 +877,19 @@ def main(
         Whether to show output from tests
     routines_args : List[str]
         One or multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD
+    install : bool
+        Install all packages from scratch for the first time
     """
+
+    if install:
+        import subprocess
+
+        subprocess.run(  # nosec
+            "poetry install",
+            shell=True,
+            check=False,
+        )
+        return
 
     if test:
         os.environ["DEBUG_MODE"] = "true"
@@ -957,6 +970,13 @@ if __name__ == "__main__":
         description="The gamestonk terminal.",
     )
     parser.add_argument(
+        "--first-install",
+        dest="install",
+        action="store_true",
+        default=False,
+        help="Install all packages from scratch for the first time",
+    )
+    parser.add_argument(
         "-d",
         "--debug",
         dest="debug",
@@ -1010,4 +1030,5 @@ if __name__ == "__main__":
         ns_parser.path,
         ns_parser.verbose,
         ns_parser.routine_args,
+        ns_parser.install,
     )
