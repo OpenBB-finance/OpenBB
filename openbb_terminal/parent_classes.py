@@ -516,7 +516,7 @@ class BaseController(metaclass=ABCMeta):
             "-t",
             "--terminal",
             dest="terminal",
-            help="Flag to sort target terminal",
+            help="Flag to screenshot terminal window.",
             action="store_true",
             default=False,
         )
