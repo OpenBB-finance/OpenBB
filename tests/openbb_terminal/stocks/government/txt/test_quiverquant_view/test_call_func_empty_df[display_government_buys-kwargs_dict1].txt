@@ -1,2 +1,5 @@
+Empty DataFrame
+Columns: []
+Index: []
 No MOCK_TEXT trading data found
 
