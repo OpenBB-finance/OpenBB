@@ -1244,39 +1244,33 @@ functions = {
     },
     "portfolio.po.maxdecorr": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_decorrelation_portfolio",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_decorr",
     },
     "portfolio.po.blacklitterman": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_black_litterman_portfolio",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_black_litterman",
     },
     "portfolio.po.ef": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_ef",
         "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_ef",
     },
+    "portfolio.po.riskparity": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_risk_parity_portfolio",
+    },
+    "portfolio.po.relriskparity": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_rel_risk_parity_portfolio",
+    },
     "portfolio.po.meanrisk": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_mean_risk_portfolio",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_mean_risk",
-    },
-    "portfolio.po.equal": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_equal_weights",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_equal_weight",
     },
     "portfolio.po.hcp": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_hcp_portfolio",
         "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_hcp",
+    },    
+    "portfolio.po.equal": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_equal_weights",
     },
     "portfolio.po.property_weights": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_property_weights",
         "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_property_weighting",
-    },
-    "portfolio.po.rel_risk": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_rel_risk_parity_portfolio",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_rel_risk_parity",
-    },
-    "portfolio.po.riskparity": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_risk_parity_portfolio",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_risk_parity",
     },
     # "portfolio.po.categories": {
     #     "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_categories"
