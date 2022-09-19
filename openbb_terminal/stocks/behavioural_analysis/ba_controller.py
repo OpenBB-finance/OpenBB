@@ -14,7 +14,6 @@ from openbb_terminal.common.behavioural_analysis import (
     finbrain_view,
     google_view,
     reddit_view,
-    sentimentinvestor_view,
     stocktwits_view,
     twitter_view,
 )
@@ -26,7 +25,6 @@ from openbb_terminal.helper_funcs import (
     check_int_range,
     check_positive,
     valid_date,
-    valid_hour,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
@@ -62,8 +60,6 @@ class BehaviouralAnalysisController(StockBaseController):
         "headlines",
         "popular",
         "getdd",
-        "hist",
-        "trend",
         "snews",
         "jcdr",
         "jctr",
@@ -858,109 +854,6 @@ class BehaviouralAnalysisController(StockBaseController):
             else:
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-    @log_start_end(log=logger)
-    def call_hist(self, other_args: List[str]):
-        """Process hist command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="hist",
-            description="Plot historical sentiment data of RHI and AHI by hour",
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            type=valid_date,
-            default=(datetime.utcnow() - timedelta(days=7)).strftime("%Y-%m-%d"),
-            dest="start",
-            required="--end" in other_args,
-            help="The starting date (format YYYY-MM-DD) of the stock. Default: 7 days ago",
-        )
-
-        parser.add_argument(
-            "-e",
-            "--end",
-            type=valid_date,
-            default=datetime.utcnow().strftime("%Y-%m-%d"),
-            dest="end",
-            required="--start" in other_args,
-            help="The ending date (format YYYY-MM-DD) of the stock. Default: today",
-        )
-        parser.add_argument(
-            "-n",
-            "--number",
-            default=100,
-            type=check_positive,
-            dest="number",
-            help="Number of results returned from Sentiment Investor. Default: 100",
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True, limit=10
-        )
-
-        if ns_parser:
-            if self.ticker:
-                sentimentinvestor_view.display_historical(
-                    symbol=self.ticker,
-                    start_date=ns_parser.start,
-                    end_date=ns_parser.end,
-                    number=ns_parser.number,
-                    export=ns_parser.export,
-                    raw=ns_parser.raw,
-                    limit=ns_parser.limit,
-                )
-            else:
-                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
-
-    @log_start_end(log=logger)
-    def call_trend(self, other_args: List[str]):
-        """Process trend command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="trend",
-            description="Show most talked about tickers within the last one hour",
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            type=valid_date,
-            default=datetime.utcnow().strftime("%Y-%m-%d"),
-            dest="start",
-            help="The starting date (format YYYY-MM-DD). Default: Today",
-        )
-
-        parser.add_argument(
-            "-hr",
-            "--hour",
-            type=valid_hour,
-            default=0,
-            dest="hour",
-            help="Hour of the day in the 24-hour notation. Example: 14",
-        )
-
-        parser.add_argument(
-            "-n",
-            "--number",
-            default=10,
-            type=check_positive,
-            dest="number",
-            help="Number of results returned from Sentiment Investor. Default: 10",
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
-        )
-
-        if ns_parser:
-            sentimentinvestor_view.display_trending(
-                start_date=ns_parser.start,
-                hour=ns_parser.hour,
-                export=ns_parser.export,
-                number=ns_parser.number,
-            )
-
-    @log_start_end(log=logger)
     def call_jcdr(self, other_args: List[str]):
         """Process jcdr command"""
         parser = argparse.ArgumentParser(
