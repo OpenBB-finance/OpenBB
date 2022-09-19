@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 from datetime import datetime, timedelta
-from typing import Dict, List, Tuple
+from typing import List, Tuple
 import warnings
 
 import finviz
@@ -34,13 +34,11 @@ l_sub_reddits = [
     "wallstreetbets",
 ]
 
-# pylint:disable=inconsistent-return-statements
-
 
 @log_start_end(log=logger)
 def get_watchlists(
     limit: int = 5,
-) -> Tuple[List[praw.models.reddit.submission.Submission], Dict, int]:
+) -> Tuple[List[praw.models.reddit.submission.Submission], dict, int]:
     """Get reddit users watchlists [Source: reddit]
 
     Parameters
@@ -50,14 +48,14 @@ def get_watchlists(
 
     Returns
     -------
-    List[praw.models.reddit.submission.Submission]:
+    list[praw.models.reddit.submission.Submission]:
         List of reddit submissions
-    Dict:
+    dict:
         Dictionary of tickers and counts
     int
         Count of how many posts were analyzed
     """
-    d_watchlist_tickers: Dict = {}
+    d_watchlist_tickers: dict = {}
     l_watchlist_author = []
     subs = []
 
@@ -159,7 +157,7 @@ def get_popular_tickers(
         sub_reddit_list = subreddits.split(",") if "," in subreddits else [subreddits]
     else:
         sub_reddit_list = l_sub_reddits
-    d_watchlist_tickers: Dict = {}
+    d_watchlist_tickers: dict = {}
     l_watchlist_author = []
 
     praw_api = praw.Reddit(
@@ -301,7 +299,7 @@ def get_popular_tickers(
 @log_start_end(log=logger)
 def get_spac_community(
     limit: int = 10, popular: bool = False
-) -> Tuple[pd.DataFrame, Dict]:
+) -> Tuple[pd.DataFrame, dict]:
     """Get top tickers from r/SPACs [Source: reddit]
 
     Parameters
@@ -315,7 +313,7 @@ def get_spac_community(
     -------
     pd.DataFrame:
         Dataframe of reddit submission
-    Dict:
+    dict:
         Dictionary of tickers and number of mentions
     """
     praw_api = praw.Reddit(
@@ -343,7 +341,7 @@ def get_spac_community(
         console.print("[red]Wrong Reddit API keys[/red]\n")
         return pd.DataFrame(), {}
 
-    d_watchlist_tickers: Dict = {}
+    d_watchlist_tickers: dict = {}
     l_watchlist_author = []
 
     if popular:
@@ -432,7 +430,7 @@ def get_spac_community(
 @log_start_end(log=logger)
 def get_spac(
     limit: int = 5,
-) -> Tuple[pd.DataFrame, Dict, int]:
+) -> Tuple[pd.DataFrame, dict, int]:
     """Get posts containing SPAC from top subreddits [Source: reddit]
 
     Parameters
@@ -444,7 +442,7 @@ def get_spac(
     -------
     pd.DataFrame :
         Dataframe of reddit submissions
-    Dict :
+    dict :
         Dictionary of tickers and counts
     int :
         Number of posts found.
@@ -474,7 +472,7 @@ def get_spac(
         console.print("[red]Wrong Reddit API keys[/red]\n")
         return pd.DataFrame(), {}, 0
 
-    d_watchlist_tickers: Dict = {}
+    d_watchlist_tickers: dict = {}
     l_watchlist_author = []
     columns = [
         "Date",
@@ -809,7 +807,6 @@ def get_due_dilligence(
             console.print("[red]Invalid API Key[/red]\n")
         else:
             console.print(f"[red]Invalid response: {str(e)}[/red]\n")
-
     return subs
 
 
@@ -821,7 +818,7 @@ def get_posts_about(
     time_frame: str = "week",
     full_search: bool = True,
     subreddits: str = "all",
-) -> Tuple[pd.DataFrame, List, float]:
+) -> Tuple[pd.DataFrame, list, float]:
     """Finds posts related to a specific search term in Reddit
 
     Parameters
@@ -843,7 +840,7 @@ def get_posts_about(
 
     Returns
     -------
-    Tuple[pd.DataFrame, List, float]:
+    tuple[pd.DataFrame, list, float]:
         Dataframe of submissions related to the search term,
         List of polarity scores,
         Average polarity score
@@ -874,7 +871,6 @@ def get_posts_about(
         return pd.DataFrame()
 
     subreddits_l = subreddits.split(",")
-
     posts = []
     post_ids = set()
     console.print("Searching through subreddits for posts.")
@@ -934,7 +930,7 @@ def get_comments(
 
     Returns
     -------
-    List[praw.models.reddit.comment.Comment]
+    list[praw.models.reddit.comment.Comment]
         List of all comments on the post
     """
 
@@ -959,16 +955,15 @@ def clean_reddit_text(docs: List[str]) -> List[str]:
 
     Parameters
     ----------
-    docs: List[str]
+    docs: list[str]
         A list of documents to prepare for sentiment analysis
 
     Returns
     -------
-    List[str]
+    list[str]
         List of cleaned and prepared docs
     """
     stopwords = _stop_words.ENGLISH_STOP_WORDS
-
     clean_docs = []
     docs = [doc.lower().strip() for doc in docs]
 
@@ -990,7 +985,7 @@ def get_sentiment(post_data: List[str]) -> float:
 
     Parameters
     ----------
-    post_data: List[str]
+    post_data: list[str]
         A post and its comments in string form
 
     Returns
@@ -1002,9 +997,4 @@ def get_sentiment(post_data: List[str]) -> float:
     post_data_l = " ".join(post_data)
     sentiment = analyzer.polarity_scores(post_data_l)
     score = sentiment["pos"] - sentiment["neg"]
-
-    # Because we score a long document (post text and all comments),
-    # our score will be limited to a small range. We scale the score
-    # empirically to make it more interpretable.
-    scaled_score = (score - 0.06) * 8
-    return scaled_score
+    return (score - 0.06) * 8

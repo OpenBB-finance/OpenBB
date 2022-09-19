@@ -129,7 +129,7 @@ def get_covid_stat(
         data = (deaths / cases).fillna(0) * 100
     else:
         console.print("Invalid stat selected.\n")
-        return
+        return pd.DataFrame()
     data.index = [x.strftime("%Y-%m-%d") for x in data.index]
     return data.tail(limit)
 

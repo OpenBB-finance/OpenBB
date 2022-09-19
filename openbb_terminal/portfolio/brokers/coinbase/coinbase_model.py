@@ -262,12 +262,13 @@ def get_orders(
             ]
         )
 
-    df = pd.DataFrame(resp)[
-        "product_id", "side", "price", "size", "type", "created_at", "status"
-    ]
+    df = pd.DataFrame(resp)
+    if df.empty:
+        return pd.DataFrame()
+    df = df[["product_id", "side", "price", "size", "type", "created_at", "status"]]
 
     if df.empty:
-        return
+        return pd.DataFrame()
     df = df.sort_values(by=sortby, ascending=descend).head(limit)
 
     return df

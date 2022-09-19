@@ -35,7 +35,7 @@ from openbb_terminal.rich_config import console
 logger = logging.getLogger(__name__)
 
 # pylint: disable=no-member,too-many-branches,C0302,R0913
-# pylint: disable=R0915
+# pylint: disable=inconsistent-return-statements
 
 INTERVALS = [1, 5, 15, 30, 60]
 SOURCES = ["YahooFinance", "AlphaVantage", "IEXCloud", "EODHD"]
@@ -1157,7 +1157,7 @@ def display_candle(
                 if len(external_axes) != 2:
                     logger.error("Expected list of one axis item.")
                     console.print("[red]Expected list of 2 axis items.\n[/red]")
-                    return
+                    return pd.DataFrame()
                 ax1, ax2 = external_axes
                 candle_chart_kwargs["ax"] = ax1
                 candle_chart_kwargs["volume"] = ax2
@@ -1376,12 +1376,14 @@ def quote(symbol: str) -> pd.DataFrame:
     except KeyError:
         logger.exception("Invalid stock ticker")
         console.print(f"Invalid stock ticker: {symbol}")
+        return ""
 
 
 def load_ticker(
     ticker: str, start_date: Union[str, datetime], end_date: Union[str, datetime] = ""
 ) -> pd.DataFrame:
-    """Loads a ticker data from Yahoo Finance, adds a data index column data_id and Open-Close High/Low columns.
+    """Loads a ticker data from Yahoo Finance, adds a data index column data_id and Open-Close
+    High/Low columns.
 
     Parameters
     ----------
@@ -1395,7 +1397,8 @@ def load_ticker(
     Returns
     -------
     DataFrame
-        A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume, date_id, OC-High, OC-Low.
+        A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume,
+        date_id, OC-High, OC-Low.
     """
     if end_date:
         df_data = yf.download(ticker, start=start_date, end=end_date, progress=False)
@@ -1425,7 +1428,8 @@ def process_candle(df: pd.DataFrame) -> pd.DataFrame:
     Returns
     -------
     DataFrame
-        A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume, date_id, OC-High, OC-Low.
+        A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume,
+        date_id, OC-High, OC-Low.
     """
     df_data = df.copy()
     df_data["date_id"] = (df_data.index.date - df_data.index.date.min()).astype(

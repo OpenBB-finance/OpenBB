@@ -190,7 +190,7 @@ def get_balance(
     current_balance = client.get_asset_balance(asset=pair)
     if current_balance is None:
         console.print("Check loaded coin\n")
-        return
+        return pd.DataFrame()
 
     amounts = [float(current_balance["free"]), float(current_balance["locked"])]
     df = pd.DataFrame(amounts).apply(lambda x: str(float(x)))

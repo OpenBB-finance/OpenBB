@@ -1277,7 +1277,7 @@ def plot_chart(
     source: str = "",
     exchange: str = "",
     interval: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: list[plt.Axes] | None = None,
 ) -> None:
     """Load data for Technical Analysis
 
@@ -1290,6 +1290,7 @@ def plot_chart(
     currency: str
         Currency (only used for chart title), by default ""
     """
+    del interval
 
     if prices_df.empty:
         console.print("There is not data to plot chart\n")
@@ -1297,7 +1298,8 @@ def plot_chart(
 
     exchange_str = f"/{exchange}" if source == "ccxt" else ""
     title = (
-        f"{source}{exchange_str} - {symbol.upper()}/{currency.upper()} from {prices_df.index[0].strftime('%Y/%m/%d')} "
+        f"{source}{exchange_str} - {symbol.upper()}/{currency.upper()}"
+        f" from {prices_df.index[0].strftime('%Y/%m/%d')} "
         f"to {prices_df.index[-1].strftime('%Y/%m/%d')}"
     )
 

@@ -956,6 +956,7 @@ def display_rolling_beta(
         Portfolio object
     window: str
         interval for window to consider
+        Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y.
     export: str
         Export to file
     external_axes: Optional[List[plt.Axes]]

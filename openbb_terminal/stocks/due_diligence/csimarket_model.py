@@ -2,10 +2,10 @@
 __docformat__ = "numpy"
 
 import logging
+from typing import List
 
 import requests
 from bs4 import BeautifulSoup
-from typing import List
 
 from openbb_terminal.decorators import log_start_end
 
@@ -23,7 +23,7 @@ def get_suppliers(symbol: str) -> List[str]:
 
     Returns
     -------
-    List[str]
+    list[str]
         List of suppliers for ticker provided
     """
     # TODO: This link has a lot more data that we can display
@@ -53,7 +53,7 @@ def get_customers(symbol: str) -> List[str]:
 
     Returns
     -------
-    List[str]
+    list[str]
         List of customers for ticker provided
     """
     # TODO: This link has a lot more data that we can display

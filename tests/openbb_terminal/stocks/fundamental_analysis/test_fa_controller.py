@@ -356,6 +356,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 ratios=False,
                 plot=None,
                 export="csv",
+                limit=5,
             ),
         ),
         (
@@ -408,6 +409,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 ratios=False,
                 plot=None,
                 export="csv",
+                limit=5,
             ),
         ),
         (
@@ -460,6 +462,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 ratios=False,
                 plot=None,
                 export="csv",
+                limit=5,
             ),
         ),
         (

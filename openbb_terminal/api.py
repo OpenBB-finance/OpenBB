@@ -2,7 +2,7 @@
 # flake8: noqa
 # pylint: disable=unused-import
 
-# pylint: disable=C0302,W0611
+# pylint: disable=C0302,W0611,not-callable
 from inspect import signature, Parameter
 import types
 import functools
@@ -1221,6 +1221,82 @@ functions = {
         "model": "openbb_terminal.portfolio.portfolio_model.get_omega",
         "view": "openbb_terminal.portfolio.portfolio_view.display_omega",
     },
+    "portfolio.po.load": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.excel_model.load_allocation",
+    },
+    "portfolio.po.load_bl_views": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.excel_model.load_bl_views",
+    },
+    "portfolio.po.maxsharpe": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_sharpe",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_sharpe",
+    },
+    "portfolio.po.minrisk": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_min_risk",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_min_risk",
+    },
+    "portfolio.po.maxutil": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_util",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_util",
+    },
+    "portfolio.po.maxutil": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_util",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_util",
+    },
+    "portfolio.po.maxret": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_ret",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_ret",
+    },
+    "portfolio.po.maxdiv": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_diversification_portfolio",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_div",
+    },
+    "portfolio.po.maxdecorr": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_decorrelation_portfolio",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_decorr",
+    },
+    "portfolio.po.blacklitterman": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_black_litterman_portfolio",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_black_litterman",
+    },
+    "portfolio.po.ef": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_ef",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_ef",
+    },
+    "portfolio.po.riskparity": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_risk_parity_portfolio",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_risk_parity",
+    },
+    "portfolio.po.relriskparity": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_rel_risk_parity_portfolio",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_rel_risk_parity",
+    },
+    "portfolio.po.meanrisk": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_mean_risk_portfolio",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_mean_risk",
+    },
+    "portfolio.po.hrp": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_hrp",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_hrp",
+    },
+    "portfolio.po.herc": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_herc",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_herc",
+    },
+    "portfolio.po.hcp": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_hcp_portfolio",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_hcp",
+    },
+    "portfolio.po.equal": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_equal_weights",
+    },
+    "portfolio.po.property": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_property_weights",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_property_weighting",
+    },
+    "portfolio.po.get_properties": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_properties",
+    },
     "stocks.bt.ema_cross": {
         "model": "openbb_terminal.stocks.backtesting.bt_model.ema_cross_strategy",
         "view": "openbb_terminal.stocks.backtesting.bt_view.display_ema_cross",
@@ -1902,12 +1978,10 @@ class FunctionFactory:
             The original view function from the terminal, this shall be set to None if the
             function has no charting
         """
-        self.model_only = False
-        if view is None:
-            self.model_only = True
-            self.model = copy_func(model)
-        else:
-            self.model = copy_func(model)
+        self.model_only = view is None
+        self.model = copy_func(model)
+        self.view = None
+        if view is not None:
             self.view = copy_func(view)
 
     def api_callable(self, *args, **kwargs):

@@ -1,6 +1,8 @@
 """Helper classes."""
 __docformat__ = "numpy"
 import os
+from shutil import copyfile
+from pathlib import Path
 import argparse
 import json
 from importlib import machinery, util
@@ -9,6 +11,8 @@ from typing import Union, List, Dict, Optional
 import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, ticker
+
+from openbb_terminal.core.config.paths import USER_STYLES_DIRECTORY, REPO_DIRECTORY
 
 
 class LineAnnotateDrawer:
@@ -96,9 +100,7 @@ class TerminalStyle:
     styles as python dictionaries.
     """
 
-    _STYLES_FOLDER = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), "..", "styles")
-    )
+    _STYLES_FOLDER = USER_STYLES_DIRECTORY
     DEFAULT_STYLES_LOCATION = os.path.join(_STYLES_FOLDER, "default")
     USER_STYLES_LOCATION = os.path.join(_STYLES_FOLDER, "user")
 
@@ -147,6 +149,25 @@ class TerminalStyle:
         console_style : str, optional
             Style name without extension, by default ""
         """
+        # To import all styles from terminal repo folder to user data
+
+        if len(os.listdir(self._STYLES_FOLDER)) == 0:
+            repo_styles = REPO_DIRECTORY.joinpath("styles")
+            for root, _, filenames in os.walk(repo_styles.joinpath("default")):
+                os.mkdir(Path(self._STYLES_FOLDER).joinpath("default"))
+                for style in filenames:
+                    copyfile(
+                        os.path.join(root, style),
+                        Path(self._STYLES_FOLDER).joinpath("default", style),
+                    )
+            for root, _, filenames in os.walk(repo_styles.joinpath("user")):
+                os.mkdir(Path(self._STYLES_FOLDER).joinpath("user"))
+                for style in filenames:
+                    copyfile(
+                        os.path.join(root, style),
+                        Path(self._STYLES_FOLDER).joinpath("user", style),
+                    )
+
         for folder in [self.DEFAULT_STYLES_LOCATION, self.USER_STYLES_LOCATION]:
             self.load_available_styles_from_folder(folder)
             self.load_custom_fonts_from_folder(folder)
