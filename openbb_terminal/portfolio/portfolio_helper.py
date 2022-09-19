@@ -1,7 +1,6 @@
 """Portfolio Helper"""
 __docformat__ = "numpy"
 
-import imp
 import logging
 from typing import Tuple
 from datetime import datetime
@@ -9,15 +8,16 @@ import os
 from pathlib import Path
 import csv
 from dateutil.relativedelta import relativedelta
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.portfolio import portfolio_model
+
 import yfinance as yf
 import pandas as pd
 import numpy as np
 
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.rich_config import console
+
 logger = logging.getLogger(__name__)
 
-from openbb_terminal.rich_config import console
 
 # pylint: disable=too-many-return-statements
 
@@ -610,9 +610,9 @@ def rolling_beta(
         .dropna()
     )
 
-    rolling_beta = covs["Portfolio"]["Benchmark"] / covs["Benchmark"]["Benchmark"]
+    rolling_beta_num = covs["Portfolio"]["Benchmark"] / covs["Benchmark"]["Benchmark"]
 
-    return rolling_beta
+    return rolling_beta_num
 
 
 def maximum_drawdown(portfolio_returns: pd.Series) -> float:
@@ -649,8 +649,7 @@ def cumulative_returns(data: pd.Series) -> pd.Series:
         Cumulative investment returns series
     -------
     """
-    cumulative_returns = (1 + data.shift(periods=1, fill_value=0)).cumprod() - 1
-    return cumulative_returns
+    return (1 + data.shift(periods=1, fill_value=0)).cumprod() - 1
 
 
 @log_start_end(log=logger)
@@ -1281,7 +1280,8 @@ def get_payoff_ratio(portfolio_trades: pd.DataFrame) -> pd.DataFrame:
 
     if no_losses:
         console.print(
-            "During some time periods there were no losing trades. Thus some values could not be calculated."
+            "During some time periods there were no losing trades. ",
+            "Thus some values could not be calculated.",
         )
 
     pr_period_ratio = pd.DataFrame(

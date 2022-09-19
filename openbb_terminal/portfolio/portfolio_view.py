@@ -7,19 +7,14 @@ import os
 
 from datetime import datetime
 import numpy as np
-import scipy
 import pandas as pd
 from matplotlib import pyplot as plt
 import seaborn as sns
-from sklearn.metrics import r2_score
 
 from openbb_terminal.common.quantitative_analysis import qa_view
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.portfolio import (
-    portfolio_helper,
-    portfolio_model,
-)
+from openbb_terminal.portfolio import portfolio_model
 
 from openbb_terminal.helper_funcs import (
     export_data,
@@ -494,6 +489,7 @@ def display_daily_returns(
     external_axes: plt.Axes
         Optional axes to display plot on
     """
+
 
     df = portfolio_model.get_daily_returns(portfolio, window)
 

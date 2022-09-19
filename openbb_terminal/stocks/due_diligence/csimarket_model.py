@@ -5,7 +5,6 @@ import logging
 
 import requests
 from bs4 import BeautifulSoup
-from typing import List
 
 from openbb_terminal.decorators import log_start_end
 
@@ -13,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_suppliers(symbol: str) -> List[str]:
+def get_suppliers(symbol: str) -> list[str]:
     """Get suppliers from ticker provided. [Source: CSIMarket]
 
     Parameters
@@ -23,7 +22,7 @@ def get_suppliers(symbol: str) -> List[str]:
 
     Returns
     -------
-    List[str]
+    list[str]
         List of suppliers for ticker provided
     """
     # TODO: This link has a lot more data that we can display
@@ -43,7 +42,7 @@ def get_suppliers(symbol: str) -> List[str]:
 
 
 @log_start_end(log=logger)
-def get_customers(symbol: str) -> List[str]:
+def get_customers(symbol: str) -> list[str]:
     """Print customers from ticker provided
 
     Parameters
@@ -53,7 +52,7 @@ def get_customers(symbol: str) -> List[str]:
 
     Returns
     -------
-    List[str]
+    list[str]
         List of customers for ticker provided
     """
     # TODO: This link has a lot more data that we can display
