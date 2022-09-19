@@ -1,6 +1,8 @@
 """ Feedparser Model """
 __docformat__ = "numpy"
 
+import os
+import certifi
 import feedparser
 import pandas as pd
 from openbb_terminal.rich_config import console
@@ -24,9 +26,16 @@ def get_news(
     articles : dict
         term to search on the news articles
     """
+    # Necessary for installer so that it can locate the correct certificates for
+    # API calls and https
+    # https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/73270162#73270162
+    os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
+    os.environ["SSL_CERT_FILE"] = certifi.where()
+
     have_data = False
     console.print("[yellow]Fetching data. Please be patient\n[/yellow]")
     limit = 0
+
     while not have_data:
         if term:
             if sources:
