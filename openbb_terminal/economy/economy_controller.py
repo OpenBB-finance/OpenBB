@@ -310,7 +310,7 @@ class EconomyController(BaseController):
             self.choices["support"] = self.SUPPORT_CHOICES
             self.choices["about"] = self.ABOUT_CHOICES
 
-            self.completer = NestedCompleter.from_nested_dict(self.choices) # type: ignore
+            self.completer = NestedCompleter.from_nested_dict(self.choices)  # type: ignore
 
     def update_runtime_choices(self):
         if session and obbff.USE_PROMPT_TOOLKIT:
