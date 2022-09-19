@@ -22,10 +22,7 @@ from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import plot_autoscale, print_rich_table
-from openbb_terminal.portfolio.portfolio_optimization import (
-    optimizer_model,
-    yahoo_finance_model,
-)
+from openbb_terminal.portfolio.portfolio_optimization import optimizer_model
 from openbb_terminal.rich_config import console
 
 warnings.filterwarnings("ignore")
@@ -342,7 +339,8 @@ def display_weights_sa(weights: dict, weights_sa: dict):
     weights: dict
         weights to display.  Keys are stocks.  Values are either weights or values
     weights_sa: dict
-        weights of sensitivity analysis to display.  Keys are stocks.  Values are either weights or values
+        weights of sensitivity analysis to display.  Keys are stocks.
+        Values are either weights or values
     """
     if not weights or not weights_sa:
         return
@@ -2223,7 +2221,7 @@ def display_ef(
         value_short,
         n_portfolios,
         seed,
-        )
+    )
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -2262,7 +2260,13 @@ def display_ef(
             # beta=beta,
             # b_sim=b_sim,
         )
-        if risk_choices[risk_measure.lower()] not in ["ADD", "MDD", "CDaR", "EDaR", "UCI"]:
+        if risk_choices[risk_measure.lower()] not in [
+            "ADD",
+            "MDD",
+            "CDaR",
+            "EDaR",
+            "UCI",
+        ]:
             risk_sharpe = risk_sharpe * time_factor[freq.upper()] ** 0.5
 
         y = ret_sharpe * 1.5
@@ -2291,7 +2295,13 @@ def display_ef(
                 alpha=alpha,
             )
 
-            if risk_choices[risk_measure.lower()] not in ["MDD", "ADD", "CDaR", "EDaR", "UCI"]:
+            if risk_choices[risk_measure.lower()] not in [
+                "MDD",
+                "ADD",
+                "CDaR",
+                "EDaR",
+                "UCI",
+            ]:
                 risk = risk * time_factor[freq.upper()] ** 0.5
 
             ticker_plot = ticker_plot.append(
