@@ -6,7 +6,7 @@ from __future__ import annotations
 import os
 import json
 from datetime import datetime, timedelta
-from typing import Any, List, Optional
+from typing import Any
 import difflib
 import logging
 
