@@ -8,18 +8,19 @@ from pathlib import Path
 import csv
 from typing import Tuple
 from dateutil.relativedelta import relativedelta
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.rich_config import console
-from openbb_terminal.portfolio.statics import REGIONS, PERIODS
 
 import yfinance as yf
 import pandas as pd
 import numpy as np
 
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.rich_config import console
+from openbb_terminal.portfolio.statics import REGIONS, PERIODS
+
 logger = logging.getLogger(__name__)
 
 
-# pylint: disable=too-many-return-statements,too-many-lines
+# pylint: disable=too-many-return-statements, too-many-lines, too-many-statements
 
 
 now = datetime.now()

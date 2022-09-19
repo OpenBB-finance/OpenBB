@@ -1239,10 +1239,6 @@ functions = {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_util",
         "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_util",
     },
-    "portfolio.po.maxutil": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_util",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_util",
-    },
     "portfolio.po.maxret": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_ret",
         "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_ret",
