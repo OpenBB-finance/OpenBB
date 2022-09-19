@@ -278,7 +278,7 @@ def get_open_trades(accountID: str):
 
 @log_start_end(log=logger)
 @check_api_key(["OANDA_ACCOUNT", "OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
-def close_trade(accountID: str, orderID: str = "", units: Union[int, None] = ""):
+def close_trade(accountID: str, orderID: str = "", units: Union[int, None] = None):
     """Close a trade.
 
     Parameters

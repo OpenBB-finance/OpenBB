@@ -2303,7 +2303,7 @@ def get_hrp(
     leaf_order: bool = True,
     d_ewma: float = 0.94,
     value: float = 1.0,
-) -> Dict:
+) -> Tuple:
     """
     Builds a hierarchical risk parity portfolio
 
@@ -2539,7 +2539,7 @@ def get_herc(
     leaf_order: bool = True,
     d_ewma: float = 0.94,
     value: float = 1.0,
-) -> Dict:
+) -> Tuple:
     """
     Builds a hierarchical risk parity portfolio
 
