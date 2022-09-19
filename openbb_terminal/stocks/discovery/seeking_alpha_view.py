@@ -71,8 +71,8 @@ def upcoming_earning_release_dates(
         )
 
     if export:
-        for i, _ in enumerate(l_earnings):
-            l_earnings[i].reset_index(drop=True, inplace=True)
+        for item in l_earnings:
+            item.reset_index(drop=True, inplace=True)
         df_data = pd.concat(l_earnings, axis=1, ignore_index=True)
         df_data.columns = l_earnings_dates
 
