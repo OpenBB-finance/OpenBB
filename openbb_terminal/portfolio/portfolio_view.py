@@ -395,8 +395,10 @@ def display_monthly_returns(
     external_axes: plt.Axes
         Optional axes to display plot on
     """
-    
-    portfolio_returns, benchmark_returns = portfolio_model.get_monthly_returns(portfolio, window)
+
+    portfolio_returns, benchmark_returns = portfolio_model.get_monthly_returns(
+        portfolio, window
+    )
 
     if raw:
         print_rich_table(
@@ -492,7 +494,7 @@ def display_daily_returns(
     external_axes: plt.Axes
         Optional axes to display plot on
     """
-    
+
     df = portfolio_model.get_daily_returns(portfolio, window)
 
     if raw:
@@ -511,7 +513,7 @@ def display_daily_returns(
             if len(external_axes) != 2:
                 logger.error("Expected list of 2 axis items")
                 console.print("[red]Expected list of 2 axis items.\n[/red]")
-                return    
+                return
             ax = external_axes
 
         ax[0].set_title(f"Portfolio in period {window}")
@@ -1037,7 +1039,7 @@ def display_maximum_drawdown(
     theme.style_primary_axis(ax[1])
     if external_axes is None:
         theme.visualize_output()
-        
+
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),

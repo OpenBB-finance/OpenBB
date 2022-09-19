@@ -634,6 +634,7 @@ def maximum_drawdown(portfolio_returns: pd.Series) -> float:
 
     return dd.min()
 
+
 def cumulative_returns(data: pd.Series) -> pd.Series:
     """Calculate cumulative returns filtered by period
 
@@ -680,12 +681,8 @@ def get_gaintopain_ratio(
         period_historical_trade_data = filter_df_by_period(
             historical_trade_data, period
         )
-        period_bench_trades = filter_df_by_period(
-            benchmark_trades, period
-        )
-        period_bench_return = filter_df_by_period(
-            benchmark_returns, period
-        )
+        period_bench_trades = filter_df_by_period(benchmark_trades, period)
+        period_bench_return = filter_df_by_period(benchmark_returns, period)
         if not period_historical_trade_data.empty:
             if not period_bench_trades.empty:
                 benchmark_values = (
@@ -799,9 +796,7 @@ def get_tracking_error(
             vals.append([round(period_return.std(), 3)])
         else:
             vals.append(["-"])
-    tracker_period_df = pd.DataFrame(
-        vals, index=PERIODS, columns=["Tracking Error"]
-    )
+    tracker_period_df = pd.DataFrame(vals, index=PERIODS, columns=["Tracking Error"])
 
     return tracker_period_df, tracker_rolling
 
@@ -839,12 +834,8 @@ def get_information_ratio(
         period_historical_trade_data = filter_df_by_period(
             historical_trade_data, periods
         )
-        period_bench_trades = filter_df_by_period(
-            benchmark_trades, periods
-        )
-        period_bench_return = filter_df_by_period(
-            benchmark_returns, periods
-        )
+        period_bench_trades = filter_df_by_period(benchmark_trades, periods)
+        period_bench_return = filter_df_by_period(benchmark_returns, periods)
         if not period_historical_trade_data.empty:
             if not period_bench_trades.empty:
                 period_bench_total_return = (
@@ -887,9 +878,7 @@ def get_information_ratio(
         else:
             vals.append(["-"])
 
-    ir_period_df = pd.DataFrame(
-        vals, index=PERIODS, columns=["Information Ratio"]
-    )
+    ir_period_df = pd.DataFrame(vals, index=PERIODS, columns=["Information Ratio"])
 
     return ir_period_df
 
@@ -930,9 +919,7 @@ def get_tail_ratio(
     vals = list()
     for periods in PERIODS:
         period_return = filter_df_by_period(portfolio_returns, periods)
-        period_bench_return = filter_df_by_period(
-            benchmark_returns, periods
-        )
+        period_bench_return = filter_df_by_period(benchmark_returns, periods)
         if not period_return.empty:
             vals.append(
                 [
@@ -1065,15 +1052,11 @@ def jensens_alpha(
     vals = list()
     for periods in PERIODS:
         period_return = filter_df_by_period(portfolio_returns, periods)
-        period_bench_return = filter_df_by_period(
-            benchmark_returns, periods
-        )
+        period_bench_return = filter_df_by_period(benchmark_returns, periods)
         period_historical_trade_data = filter_df_by_period(
             historical_trade_data, periods
         )
-        period_bench_trades = filter_df_by_period(
-            benchmark_trades, periods
-        )
+        period_bench_trades = filter_df_by_period(benchmark_trades, periods)
         if not period_return.empty:
             beta = calculate_beta(period_return, period_bench_return)
             period_cum_returns = (
@@ -1111,9 +1094,7 @@ def jensens_alpha(
         else:
             vals.append(["-"])
 
-    ja_period_df = pd.DataFrame(
-        vals, index=PERIODS, columns=["Portfolio"]
-    )
+    ja_period_df = pd.DataFrame(vals, index=PERIODS, columns=["Portfolio"])
 
     return ja_period_df, ja_rolling
 
@@ -1166,12 +1147,8 @@ def get_calmar_ratio(
         period_historical_trade_data = filter_df_by_period(
             historical_trade_data, periods
         )
-        period_bench_trades = filter_df_by_period(
-            benchmark_trades, periods
-        )
-        period_bench_return = filter_df_by_period(
-            benchmark_returns, periods
-        )
+        period_bench_trades = filter_df_by_period(benchmark_trades, periods)
+        period_bench_return = filter_df_by_period(benchmark_returns, periods)
         if (not period_return.empty) and (periods_d[periods] != 0):
             period_cum_returns = (
                 period_historical_trade_data["End Value"]["Total"].iloc[-1]
@@ -1212,9 +1189,7 @@ def get_calmar_ratio(
         else:
             vals.append(["-", "-"])
 
-    cr_period_df = pd.DataFrame(
-        vals, index=PERIODS, columns=["Portfolio", "Benchmark"]
-    )
+    cr_period_df = pd.DataFrame(vals, index=PERIODS, columns=["Portfolio", "Benchmark"])
 
     return cr_period_df, cr_rolling
 
@@ -1243,9 +1218,7 @@ def get_kelly_criterion(
     vals: list = list()
     for period in PERIODS:
         period_return = filter_df_by_period(portfolio_returns, period)
-        period_portfolio_tr = filter_df_by_period(
-            portfolio_trades, period
-        )
+        period_portfolio_tr = filter_df_by_period(portfolio_trades, period)
         if (not period_return.empty) and (not period_portfolio_tr.empty):
             w = len(period_return[period_return > 0]) / len(period_return)
             r = len(
@@ -1260,9 +1233,7 @@ def get_kelly_criterion(
         else:
             vals.append(["-"])
 
-    kc_period_df = pd.DataFrame(
-        vals, index=PERIODS, columns=["Kelly %"]
-    )
+    kc_period_df = pd.DataFrame(vals, index=PERIODS, columns=["Kelly %"])
 
     return kc_period_df
 
@@ -1288,9 +1259,7 @@ def get_payoff_ratio(portfolio_trades: pd.DataFrame) -> pd.DataFrame:
 
     vals = list()
     for period in PERIODS:
-        period_portfolio_tr = filter_df_by_period(
-            portfolio_trades, period
-        )
+        period_portfolio_tr = filter_df_by_period(portfolio_trades, period)
         if not portfolio_trades.empty:
             portfolio_wins = period_portfolio_tr[
                 period_portfolio_tr["% Portfolio Return"] > 0
@@ -1343,9 +1312,7 @@ def get_profit_factor(portfolio_trades: pd.DataFrame) -> pd.DataFrame:
 
     vals = list()
     for period in PERIODS:
-        period_portfolio_tr = filter_df_by_period(
-            portfolio_trades, period
-        )
+        period_portfolio_tr = filter_df_by_period(portfolio_trades, period)
         if not portfolio_trades.empty:
             portfolio_wins = period_portfolio_tr[
                 period_portfolio_tr["% Portfolio Return"] > 0
@@ -1368,8 +1335,8 @@ def get_profit_factor(portfolio_trades: pd.DataFrame) -> pd.DataFrame:
             "During some time periods there were no losing trades. Thus some values could not be calculated."
         )
 
-    pf_period_df = pd.DataFrame(
-        vals, index=PERIODS, columns=["Profit Factor"]
-    ).fillna("-")
+    pf_period_df = pd.DataFrame(vals, index=PERIODS, columns=["Profit Factor"]).fillna(
+        "-"
+    )
 
     return pf_period_df
