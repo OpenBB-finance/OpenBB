@@ -1688,16 +1688,19 @@ def screenshot(terminal_window_target: bool = False) -> None:
     """
     try:
         if terminal_window_target:
-            win_name = pyautogui.getActiveWindowTitle()
-            window = pyautogui.getWindowsWithTitle(win_name)[0]
-            header = 40
-            x = window.topleft.x + 10
-            y = window.topleft.y + header
-            width = window.width - 50
-            height = window.height - 10 - header
-            shot = pyautogui.screenshot(region=(x, y, width, height))
-            screenshot_to_canvas(shot)
-            console.print("")
+            if sys.platform == "win32":
+                win_name = pyautogui.getActiveWindowTitle()
+                window = pyautogui.getWindowsWithTitle(win_name)[0]
+                header = 40
+                x = window.topleft.x + 10
+                y = window.topleft.y + header
+                width = window.width - 50
+                height = window.height - 10 - header
+                shot = pyautogui.screenshot(region=(x, y, width, height))
+                screenshot_to_canvas(shot)
+                console.print("")
+            else:
+                console.print("'screenshot' currently only supports Windows.")
 
         elif plt.get_fignums():
             img_buf = io.BytesIO()
