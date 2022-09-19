@@ -1070,26 +1070,6 @@ def get_gaintopain_ratio(portfolio: PortfolioModel):
 
     return gtp_period_df
 
-@log_start_end(log=logger)
-def get_rolling_beta(portfolio: PortfolioModel, window: int = 252):
-    """Get rolling beta
-
-    Parameters
-    ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
-    window: int
-        Interval used for rolling values
-
-    Returns
-    -------
-    pd.DataFrame
-        DataFrame of the portfolio's rolling beta
-    """
-    rolling_beta = portfolio_helper.rolling_beta(portfolio.returns, portfolio.benchmark_returns, window)
-
-    return rolling_beta
-
 
 @log_start_end(log=logger)
 def get_tracking_error(portfolio: PortfolioModel, window: int = 252):
