@@ -54,9 +54,8 @@ def display_cci(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
     """
-    df_ta = momentum_model.cci(
-        data["High"], data["Low"], data["Adj Close"], window, scalar
-    )
+
+    df_ta = momentum_model.cci(data, window, scalar)
     plot_data = pd.merge(data, df_ta, how="outer", left_index=True, right_index=True)
     plot_data = reindex_dates(plot_data)
 

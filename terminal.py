@@ -17,12 +17,14 @@ from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 
+from openbb_terminal.core.config import (  # pylint: disable=unused-import  # noqa
+    make_paths,
+)
 from openbb_terminal.common import feedparser_view
-from openbb_terminal.core.config.make_paths import create_paths
 from openbb_terminal.core.config.paths import (
     REPO_DIRECTORY,
     USER_ENV_FILE,
-    ENV_FILE_REPOSITORY,
+    REPOSITORY_ENV_FILE,
     HOME_DIRECTORY,
 )
 from openbb_terminal.core.log.generation.path_tracking_file_handler import (
@@ -56,7 +58,6 @@ from openbb_terminal.helper_funcs import parse_and_split_input
 logger = logging.getLogger(__name__)
 
 env_file = str(USER_ENV_FILE)
-create_paths()
 
 
 class TerminalController(BaseController):
@@ -382,7 +383,6 @@ class TerminalController(BaseController):
         )
 
         self.queue = self.load_class(ReportController, self.queue)
-        
 
     def call_dashboards(self, _):
         """Process dashboards command"""
@@ -627,7 +627,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
         check_for_updates()
 
     dotenv.load_dotenv(USER_ENV_FILE)
-    dotenv.load_dotenv(ENV_FILE_REPOSITORY, override=True)
+    dotenv.load_dotenv(REPOSITORY_ENV_FILE, override=True)
 
     while ret_code:
         if obbff.ENABLE_QUICK_EXIT:

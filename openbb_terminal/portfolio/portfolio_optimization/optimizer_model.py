@@ -5,10 +5,12 @@ __docformat__ = "numpy"
 
 import logging
 from typing import Dict, List, Tuple
+from datetime import date
 
 import numpy as np
 import pandas as pd
 import riskfolio as rp
+from dateutil.relativedelta import relativedelta, FR
 import yfinance as yf
 
 from openbb_terminal.decorators import log_start_end
@@ -33,11 +35,123 @@ upper_risk = {
     "UCI": "upperuci",
 }
 
+objectives_choices = {
+    "minrisk": "MinRisk",
+    "sharpe": "Sharpe",
+    "utility": "Utility",
+    "maxret": "MaxRet",
+    "erc": "ERC",
+}
+
+risk_names = {
+    "mv": "volatility",
+    "mad": "mean absolute deviation",
+    "gmd": "gini mean difference",
+    "msv": "semi standard deviation",
+    "var": "value at risk (VaR)",
+    "cvar": "conditional value at risk (CVaR)",
+    "tg": "tail gini",
+    "evar": "entropic value at risk (EVaR)",
+    "rg": "range",
+    "cvrg": "CVaR range",
+    "tgrg": "tail gini range",
+    "wr": "worst realization",
+    "flpm": "first lower partial moment",
+    "slpm": "second lower partial moment",
+    "mdd": "maximum drawdown uncompounded",
+    "add": "average drawdown uncompounded",
+    "dar": "drawdown at risk (DaR) uncompounded",
+    "cdar": "conditional drawdown at risk (CDaR) uncompounded",
+    "edar": "entropic drawdown at risk (EDaR) uncompounded",
+    "uci": "ulcer index uncompounded",
+    "mdd_rel": "maximum drawdown compounded",
+    "add_rel": "average drawdown compounded",
+    "dar_rel": "drawdown at risk (DaR) compounded",
+    "cdar_rel": "conditional drawdown at risk (CDaR) compounded",
+    "edar_rel": "entropic drawdown at risk (EDaR) compounded",
+    "uci_rel": "ulcer index compounded",
+}
+
+risk_choices = {
+    "mv": "MV",
+    "mad": "MAD",
+    "gmd": "GMD",
+    "msv": "MSV",
+    "var": "VaR",
+    "cvar": "CVaR",
+    "tg": "TG",
+    "evar": "EVaR",
+    "rg": "RG",
+    "cvrg": "CVRG",
+    "tgrg": "TGRG",
+    "wr": "WR",
+    "flpm": "FLPM",
+    "slpm": "SLPM",
+    "mdd": "MDD",
+    "add": "ADD",
+    "dar": "DaR",
+    "cdar": "CDaR",
+    "edar": "EDaR",
+    "uci": "UCI",
+    "mdd_rel": "MDD_Rel",
+    "add_rel": "ADD_Rel",
+    "dar_rel": "DaR_Rel",
+    "cdar_rel": "CDaR_Rel",
+    "edar_rel": "EDaR_Rel",
+    "uci_rel": "UCI_Rel",
+}
+
 time_factor = {
     "D": 252.0,
     "W": 52.0,
     "M": 12.0,
 }
+
+dict_conversion = {"period": "historic_period", "start": "start_period"}
+
+@log_start_end(log=logger)
+def d_period(interval: str = "1y", start_date: str = "", end_date: str = ""):
+    """
+    Builds a date range string
+
+    Parameters
+    ----------
+    interval : str
+        interval starting today
+    start_date: str
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
+        weekday.
+    """
+    extra_choices = {
+        "ytd": "[Year-to-Date]",
+        "max": "[All-time]",
+    }
+
+    if start_date == "":
+        if interval in extra_choices:
+            p = extra_choices[interval]
+        else:
+            if interval[-1] == "d":
+                p = "[" + interval[:-1] + " Days]"
+            elif interval[-1] == "w":
+                p = "[" + interval[:-1] + " Weeks]"
+            elif interval[-1] == "o":
+                p = "[" + interval[:-2] + " Months]"
+            elif interval[-1] == "y":
+                p = "[" + interval[:-1] + " Years]"
+        if p[1:3] == "1 ":
+            p = p.replace("s", "")
+    else:
+        if end_date == "":
+            end_ = date.today()
+            if end_.weekday() >= 5:
+                end_ = end_ + relativedelta(weekday=FR(-1))
+            end_date = end_.strftime("%Y-%m-%d")
+        p = "[From " + start_date + " to " + end_date + "]"
+
+    return p
 
 
 @log_start_end(log=logger)
@@ -389,6 +503,156 @@ def get_mean_risk_portfolio(
     if weights is not None:
         weights = weights.round(5)
         weights = weights.squeeze().to_dict()
+
+    return weights, stock_returns
+
+
+@log_start_end(log=logger)
+def get_max_sharpe(
+    symbols: List[str],
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
+    log_returns: bool = False,
+    freq: str = "D",
+    maxnan: float = 0.05,
+    threshold: float = 0,
+    method: str = "time",
+    risk_measure: str = "MV",
+    risk_free_rate: float = 0,
+    risk_aversion: float = 1,
+    alpha: float = 0.05,
+    target_return: float = -1,
+    target_risk: float = -1,
+    mean: str = "hist",
+    covariance: str = "hist",
+    d_ewma: float = 0.94,
+    value: float = 1.0,
+    value_short: float = 0.0,
+) -> Tuple:
+    """
+    Builds a maximal return/risk ratio portfolio
+
+    Parameters
+    ----------
+    symbols : List[str]
+        List of portfolio tickers
+    interval : str, optional
+        interval to look at returns from
+    start_date: str, optional
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str, optional
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
+        weekday.
+    log_returns: bool, optional
+        If True calculate log returns, else arithmetic returns. Default value
+        is False
+    freq: str, optional
+        The frequency used to calculate returns. Default value is 'D'. Possible
+        values are:
+            - 'D' for daily returns.
+            - 'W' for weekly returns.
+            - 'M' for monthly returns.
+
+    maxnan: float, optional
+        Max percentage of nan values accepted per asset to be included in
+        returns.
+    threshold: float, optional
+        Value used to replace outliers that are higher to threshold.
+    method: str
+        Method used to fill nan values. Default value is 'time'. For more information see
+        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+    risk_measure: str, optional
+        The risk measure used to optimize the portfolio.
+        The default is 'MV'. Possible values are:
+
+        - 'MV': Standard Deviation.
+        - 'MAD': Mean Absolute Deviation.
+        - 'MSV': Semi Standard Deviation.
+        - 'FLPM': First Lower Partial Moment (Omega Ratio).
+        - 'SLPM': Second Lower Partial Moment (Sortino Ratio).
+        - 'CVaR': Conditional Value at Risk.
+        - 'EVaR': Entropic Value at Risk.
+        - 'WR': Worst Realization.
+        - 'ADD': Average Drawdown of uncompounded cumulative returns.
+        - 'UCI': Ulcer Index of uncompounded cumulative returns.
+        - 'CDaR': Conditional Drawdown at Risk of uncompounded cumulative returns.
+        - 'EDaR': Entropic Drawdown at Risk of uncompounded cumulative returns.
+        - 'MDD': Maximum Drawdown of uncompounded cumulative returns.
+
+    risk_free_rate: float, optional
+        Risk free rate, must be in the same interval of assets returns. Used for
+        'FLPM' and 'SLPM' and Sharpe objective function. The default is 0.
+    alpha: float, optional
+        Significance level of CVaR, EVaR, CDaR and EDaR
+    target_return: float, optional
+        Constraint on minimum level of portfolio's return.
+    target_risk: float, optional
+        Constraint on maximum level of portfolio's risk.
+    mean: str, optional
+        The method used to estimate the expected returns.
+        The default value is 'hist'. Possible values are:
+
+        - 'hist': use historical estimates.
+        - 'ewma1': use ewma with adjust=True. For more information see
+        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma2': use ewma with adjust=False. For more information see
+        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+
+    covariance: str, optional
+        The method used to estimate the covariance matrix:
+        The default is 'hist'. Possible values are:
+
+        - 'hist': use historical estimates.
+        - 'ewma1': use ewma with adjust=True. For more information see
+        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma2': use ewma with adjust=False. For more information see
+        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ledoit': use the Ledoit and Wolf Shrinkage method.
+        - 'oas': use the Oracle Approximation Shrinkage method.
+        - 'shrunk': use the basic Shrunk Covariance method.
+        - 'gl': use the basic Graphical Lasso Covariance method.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+
+    d_ewma: float, optional
+        The smoothing factor of ewma methods.
+        The default is 0.94.
+    value : float, optional
+        Amount to allocate to portfolio in long positions, by default 1.0
+    value_short : float, optional
+        Amount to allocate to portfolio in short positions, by default 0.0
+
+    Returns
+    -------
+    Tuple
+        Dictionary of portfolio weights and DataFrame of stock returns
+    """
+    weights, stock_returns = get_mean_risk_portfolio(
+        symbols=symbols,
+        interval=interval,
+        start_date=start_date,
+        end_date=end_date,
+        log_returns=log_returns,
+        freq=freq,
+        maxnan=maxnan,
+        threshold=threshold,
+        method=method,
+        risk_measure=risk_choices[risk_measure.lower()],
+        objective=objectives_choices["sharpe"],
+        risk_free_rate=risk_free_rate,
+        risk_aversion=risk_aversion,
+        alpha=alpha,
+        target_return=target_return,
+        target_risk=target_risk,
+        mean=mean,
+        covariance=covariance,
+        d_ewma=d_ewma,
+        value=value,
+        value_short=value_short,
+    )
 
     return weights, stock_returns
 
