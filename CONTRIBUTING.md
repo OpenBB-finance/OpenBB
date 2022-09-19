@@ -395,6 +395,7 @@ In order to add a command to the API, follow these steps:
     
     ...
     ```
+
 2. Add a new key to the dictionary, which corresponds to the way the added command shall be accessed from the api.
 This is called the `virtual path`. In this case it should be `stocks.dps.shorted`.
 3. Now it is time to add the value to the key. This key shall be another dictionary with a `model` key and possibly a
@@ -405,6 +406,7 @@ This is called the `virtual path`. In this case it should be `stocks.dps.shorted
    the view functions path from the project root as a string. In this example the view function of the only prints a
    table and thus this step can be ignored.
 4. Done!!! The final new dictionary looks like this after the added example:
+
     ```python
     functions = {
         ...
