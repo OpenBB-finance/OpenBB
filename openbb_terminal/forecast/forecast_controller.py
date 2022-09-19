@@ -103,6 +103,7 @@ class ForecastController(BaseController):
         "trans",
         "tft",
         "season",
+        "which",
     ]
     pandas_plot_choices = [
         "line",
@@ -198,6 +199,7 @@ class ForecastController(BaseController):
 
             # To link to the support HTML
             choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
 
             self.completer = NestedCompleter.from_nested_dict(choices)
             self.update_runtime_choices()
@@ -277,12 +279,6 @@ class ForecastController(BaseController):
         """Print help"""
         mt = MenuText("forecast/")
         mt.add_param("_disclaimer_", self.disclaimer)
-        mt.add_raw("\n")
-        mt.add_param("_comp_device", self.device.upper())
-        mt.add_param("_comp_ram", self.comp_ram)
-        mt.add_param("_rec_data_size", self.rec_data_size)
-        mt.add_param("_torch_ver", self.torch_version)
-        mt.add_param("_darts_ver", self.darts_version)
         mt.add_raw("\n")
         mt.add_param(
             "_data_loc",
@@ -475,6 +471,7 @@ class ForecastController(BaseController):
                 action="store",
                 dest="start_window",
                 default=0.85,
+                type=check_positive_float,
                 help="Start point for rolling training and forecast window. 0.0-1.0",
             )
         if train_split:
@@ -719,6 +716,34 @@ class ForecastController(BaseController):
 
                 self.load(alias, data)
                 console.print()
+
+    # Show selected dataframe on console
+    @log_start_end(log=logger)
+    def call_which(self, other_args: List[str]):
+        """Process which command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="which",
+            description="Show library versions of required packages.",
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+        )
+
+        if ns_parser:
+            console.print()
+            console.print(
+                f"[green]Current Compute Device (CPU or GPU):[/green] {self.device.upper()}"
+            )
+            console.print(f"[green]Current RAM:[/green] {self.comp_ram}")
+            console.print(
+                f"[green]Recommended Max dataset size based on current RAM:[/green] {self.rec_data_size}"
+            )
+            console.print(f"[green]Torch version:[/green] {self.torch_version}")
+            console.print(f"[green]Darts version:[/green] {self.darts_version}")
+            console.print()
 
     # Show selected dataframe on console
     @log_start_end(log=logger)

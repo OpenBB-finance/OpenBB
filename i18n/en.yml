@@ -122,7 +122,7 @@ en:
   stocks/bt: strategy backtester,          simple ema, ema cross, rsi strategies
   stocks/ta: technical analysis,           ema, macd, rsi, adx, bbands, obv
   stocks/qa: quantitative analysis,        decompose, cusum, residuals analysis
-  stocks/forecast: forecast techniques,       rnn, nbeats, transformer, block rnn
+  stocks/forecast: forecast techniques,          rnn, nbeats, transformer, block rnn
   stocks/options/unu: show unusual options activity
   stocks/options/calc: basic call/put PnL calculator
   stocks/options/screen: screens tickers based on preset
@@ -578,10 +578,6 @@ en:
   crypto/tools/il: calculate impermanent loss
   crypto/nft/fp: collection sales/floor price
   crypto/nft/collections: top ethereum collections
-  crypto/nft/today: today's NFT drops
-  crypto/nft/upcoming: upcoming NFT drops
-  crypto/nft/ongoing: Ongoing NFT drops
-  crypto/nft/newest: Recently NFTs added
   crypto/nft/stats: collection stats
   crypto/dd/_overview_: Overview
   crypto/dd/_market_: Market
@@ -1023,11 +1019,6 @@ en:
   dashboards/futures: historical futures performance
   reports/_reports_: Select one of the following report
   forecast/_disclaimer_: DISCLAIMER
-  forecast/_comp_device: Current Compute Device (CPU or GPU)
-  forecast/_comp_ram: Current RAM
-  forecast/_rec_data_size: Recommended Max dataset size based on current RAM
-  forecast/_torch_ver: Torch version
-  forecast/_darts_ver: Darts version
   forecast/_data_loc: Looking for data in
   forecast/load: load a dataset from csv
   forecast/_loaded: Loaded files and data columns

@@ -64,6 +64,8 @@ main:
             ref: "terminal/forecast/theta"
           - name: trans
             ref: "terminal/forecast/trans"
+          - name: which
+            ref: "terminal/forecast/which"
 
       - name: stocks
         ref: "/terminal/stocks"
@@ -917,14 +919,8 @@ main:
                 ref: "/terminal/crypto/nft/collections"
               - name: fp
                 ref: "/terminal/crypto/nft/fp"
-              - name: today
-                ref: "/terminal/crypto/nft/today"
-              - name: upcoming
-                ref: "/terminal/crypto/nft/upcoming"
-              - name: ongoing
-                ref: "/terminal/crypto/nft/ongoing"
-              - name: newest
-                ref: "/terminal/crypto/nft/newest"
+              - name: stats
+                ref: "/terminal/crypto/nft/stats"
           - name: technical analysis
             ref: "/terminal/common/ta"
             sub:
