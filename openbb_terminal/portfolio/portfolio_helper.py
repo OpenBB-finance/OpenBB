@@ -6,6 +6,7 @@ from datetime import datetime
 import os
 from pathlib import Path
 import csv
+from typing import Tuple
 from dateutil.relativedelta import relativedelta
 
 import yfinance as yf
@@ -548,7 +549,7 @@ def calculate_beta(portfolio_returns: pd.Series, benchmark_returns: pd.Series) -
 @log_start_end(log=logger)
 def get_tracking_error(
     portfolio_returns: pd.Series, benchmark_returns: pd.Series, window: str = "252d"
-) -> tuple[pd.DataFrame, pd.Series]:
+) -> Tuple[pd.DataFrame, pd.Series]:
     """Get tracking error, or active risk, using portfolio and benchmark returns
 
     Parameters
@@ -669,7 +670,7 @@ def get_information_ratio(
 @log_start_end(log=logger)
 def get_tail_ratio(
     portfolio_returns: pd.Series, benchmark_returns: pd.Series, window: str = "252d"
-) -> tuple[pd.DataFrame, pd.Series, pd.Series]:
+) -> Tuple[pd.DataFrame, pd.Series, pd.Series]:
     """Returns the portfolios tail ratio
 
     Parameters
@@ -790,7 +791,7 @@ def jensens_alpha(
     benchmark_returns: pd.Series,
     risk_free_rate: float = 0,
     window: str = "1y",
-) -> tuple[pd.DataFrame, pd.Series]:
+) -> Tuple[pd.DataFrame, pd.Series]:
     """Get jensen's alpha
 
     Parameters
@@ -889,7 +890,7 @@ def get_calmar_ratio(
     benchmark_trades: pd.DataFrame,
     benchmark_returns: pd.Series,
     window: str = "3y",
-) -> tuple[pd.DataFrame, pd.Series]:
+) -> Tuple[pd.DataFrame, pd.Series]:
     """Get calmar ratio
 
     Parameters

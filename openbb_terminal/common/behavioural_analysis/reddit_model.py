@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 from datetime import datetime, timedelta
+from typing import List, Tuple
 import warnings
 
 import finviz
@@ -37,7 +38,7 @@ l_sub_reddits = [
 @log_start_end(log=logger)
 def get_watchlists(
     limit: int = 5,
-) -> tuple[list[praw.models.reddit.submission.Submission], dict, int]:
+) -> Tuple[List[praw.models.reddit.submission.Submission], dict, int]:
     """Get reddit users watchlists [Source: reddit]
 
     Parameters
@@ -298,7 +299,7 @@ def get_popular_tickers(
 @log_start_end(log=logger)
 def get_spac_community(
     limit: int = 10, popular: bool = False
-) -> tuple[pd.DataFrame, dict]:
+) -> Tuple[pd.DataFrame, dict]:
     """Get top tickers from r/SPACs [Source: reddit]
 
     Parameters
@@ -429,7 +430,7 @@ def get_spac_community(
 @log_start_end(log=logger)
 def get_spac(
     limit: int = 5,
-) -> tuple[pd.DataFrame, dict, int]:
+) -> Tuple[pd.DataFrame, dict, int]:
     """Get posts containing SPAC from top subreddits [Source: reddit]
 
     Parameters
@@ -817,7 +818,7 @@ def get_posts_about(
     time_frame: str = "week",
     full_search: bool = True,
     subreddits: str = "all",
-) -> tuple[pd.DataFrame, list, float]:
+) -> Tuple[pd.DataFrame, list, float]:
     """Finds posts related to a specific search term in Reddit
 
     Parameters
@@ -919,7 +920,7 @@ def get_posts_about(
 @log_start_end(log=logger)
 def get_comments(
     post: praw.models.reddit.submission.Submission,
-) -> list[praw.models.reddit.comment.Comment]:
+) -> List[praw.models.reddit.comment.Comment]:
     """Recursively gets comments from a post
 
     Parameters
@@ -949,7 +950,7 @@ def get_comments(
 
 
 @log_start_end(log=logger)
-def clean_reddit_text(docs: list[str]) -> list[str]:
+def clean_reddit_text(docs: List[str]) -> List[str]:
     """Tokenizes and cleans a list of documents for sentiment analysis
 
     Parameters
@@ -979,7 +980,7 @@ def clean_reddit_text(docs: list[str]) -> list[str]:
 
 
 @log_start_end(log=logger)
-def get_sentiment(post_data: list[str]) -> float:
+def get_sentiment(post_data: List[str]) -> float:
     """Find the sentiment of a post and related comments
 
     Parameters
