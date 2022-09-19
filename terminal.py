@@ -382,7 +382,6 @@ class TerminalController(BaseController):
         )
 
         self.queue = self.load_class(ReportController, self.queue)
-        
 
     def call_dashboards(self, _):
         """Process dashboards command"""
