@@ -1227,6 +1227,10 @@ functions = {
     "portfolio.po.maxsharpe": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_sharpe",
         "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_sharpe",
+    },
+    "portfolio.po.minrisk": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_min_risk",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_min_risk",
     },    
     "portfolio.po.bl": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_black_litterman_portfolio",
