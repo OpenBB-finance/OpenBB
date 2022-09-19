@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 # pylint:disable=too-many-arguments,unexpected-keyword-arg
 
 import logging
-from typing import Dict, Any
+from typing import Dict, Any, List
 
 import numpy as np
 import pandas as pd
@@ -82,7 +82,7 @@ SA_KEYS = {
 
 @log_start_end(log=logger)
 def get_stocks_data(
-    symbols: list[str] = None,
+    symbols: List[str] = None,
     finance_key: str = "ncf",
     stocks_data: dict = None,
     period: str = "annual",

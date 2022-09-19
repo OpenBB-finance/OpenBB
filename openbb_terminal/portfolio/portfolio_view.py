@@ -490,7 +490,6 @@ def display_daily_returns(
         Optional axes to display plot on
     """
 
-
     df = portfolio_model.get_daily_returns(portfolio, window)
 
     if raw:

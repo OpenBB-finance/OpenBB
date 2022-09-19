@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
+from typing import List
 
 import requests
 from bs4 import BeautifulSoup
@@ -12,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_suppliers(symbol: str) -> list[str]:
+def get_suppliers(symbol: str) -> List[str]:
     """Get suppliers from ticker provided. [Source: CSIMarket]
 
     Parameters
@@ -42,7 +43,7 @@ def get_suppliers(symbol: str) -> list[str]:
 
 
 @log_start_end(log=logger)
-def get_customers(symbol: str) -> list[str]:
+def get_customers(symbol: str) -> List[str]:
     """Print customers from ticker provided
 
     Parameters
