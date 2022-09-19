@@ -13,8 +13,11 @@ from datetime import datetime
 from typing import List
 import importlib
 
-from prompt_toolkit.completion import NestedCompleter
+from nbconvert.nbconvertapp import NbConvertApp
+from nbconvert.exporters import ScriptExporter
+from nbconvert.writers import FilesWriter
 
+from prompt_toolkit.completion import NestedCompleter
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
@@ -243,7 +246,12 @@ class ReportController(BaseController):
                     file.write(notebook_content)
 
             # use nbconvert to switch to .py
-            os.system(f"jupyter nbconvert --to script --no-prompt {notebook_file_copy}")
+            converter = NbConvertApp()
+            converter.export_format = "script"
+            converter.exporter = ScriptExporter()
+            converter.writer = FilesWriter()
+
+            converter.convert_single_notebook(notebook_file_copy + ".ipynb")
 
             python_file = Path(notebook_file_copy + ".py")
             python_text = python_file.read_text().split("\n")

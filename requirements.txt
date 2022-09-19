@@ -133,7 +133,6 @@ pandas-market-calendars==3.2; python_full_version >= "3.7.0"
 pandas-ta==0.3.14b
 pandas==1.4.4; python_version >= "3.8"
 pandocfilters==1.5.0; python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.7"
-papermill==2.4.0; python_version >= "3.7"
 parso==0.8.3; python_full_version >= "3.6.2" and python_version >= "3.8"
 pathspec==0.10.1; python_version >= "3.7" and python_full_version >= "3.6.2"
 patsy==0.5.2; python_version >= "3.8"
