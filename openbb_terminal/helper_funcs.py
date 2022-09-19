@@ -1700,7 +1700,7 @@ def screenshot(terminal_window_target: bool = False) -> None:
                 screenshot_to_canvas(shot)
                 console.print("")
             else:
-                console.print("'screenshot' currently only supports Windows.")
+                console.print("Terminal 'screenshot' currently only supports Windows. You can use it for plots instead.")
 
         elif plt.get_fignums():
             img_buf = io.BytesIO()
