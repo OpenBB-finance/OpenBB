@@ -1224,18 +1224,17 @@ class OptionsController(BaseController):
             elif not self.selected_date:
                 console.print("No expiry loaded. First use `exp {expiry date}`\n")
             else:
-                if ns_parser.source == "YahooFinance":
-                    opt_type = -1 if ns_parser.put else 1
-                    yfinance_view.show_greeks(
-                        symbol=self.ticker,
-                        div_cont=ns_parser.dividend,
-                        expiration=self.selected_date,
-                        rf=ns_parser.risk_free,
-                        opt_type=opt_type,
-                        mini=ns_parser.min,
-                        maxi=ns_parser.max,
-                        show_all=ns_parser.all,
-                    )
+                opt_type = -1 if ns_parser.put else 1
+                yfinance_view.show_greeks(
+                    symbol=self.ticker,
+                    div_cont=ns_parser.dividend,
+                    expiration=self.selected_date,
+                    rf=ns_parser.risk_free,
+                    opt_type=opt_type,
+                    mini=ns_parser.min,
+                    maxi=ns_parser.max,
+                    show_all=ns_parser.all,
+                )
 
     @log_start_end(log=logger)
     def call_parity(self, other_args: List[str]):
