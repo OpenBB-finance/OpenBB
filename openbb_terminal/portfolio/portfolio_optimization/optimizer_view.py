@@ -1050,6 +1050,7 @@ def display_max_sharpe(
     method: str = "time",
     risk_measure: str = "MV",
     risk_free_rate: float = 0,
+    risk_aversion: float = 1,
     alpha: float = 0.05,
     target_return: float = -1,
     target_risk: float = -1,
@@ -1113,6 +1114,9 @@ def display_max_sharpe(
     risk_free_rate: float, optional
         Risk free rate, must be in the same interval of assets returns. Used for
         'FLPM' and 'SLPM' and Sharpe objective function. The default is 0.
+    risk_aversion: float, optional
+        Risk aversion factor of the 'Utility' objective function.
+        The default is 1.
     alpha: float, optional
         Significance level of CVaR, EVaR, CDaR and EDaR
     target_return: float, optional
@@ -1157,7 +1161,12 @@ def display_max_sharpe(
     table: bool, optional
         True if plot table weights, by default False
     """
-    weights = display_mean_risk(
+
+    p = d_period(interval, start_date, end_date)
+    s_title = f"{p} Maximal return/risk ratio portfolio using "
+    s_title += risk_names[risk_measure] + " as risk measure\n"
+
+    weights, stock_returns = optimizer_model.get_max_sharpe(
         symbols=symbols,
         interval=interval,
         start_date=start_date,
@@ -1168,8 +1177,8 @@ def display_max_sharpe(
         threshold=threshold,
         method=method,
         risk_measure=risk_measure,
-        objective="sharpe",
         risk_free_rate=risk_free_rate,
+        risk_aversion=risk_aversion,
         alpha=alpha,
         target_return=target_return,
         target_risk=target_risk,
@@ -1178,8 +1187,28 @@ def display_max_sharpe(
         d_ewma=d_ewma,
         value=value,
         value_short=value_short,
-        table=table,
     )
+
+    if weights is None:
+        console.print("\n", "There is no solution with these parameters")
+        return {}
+
+    if table:
+        console.print("\n", s_title)
+        display_weights(weights)
+        portfolio_performance(
+            weights=weights,
+            data=stock_returns,
+            risk_measure=risk_choices[risk_measure],
+            risk_free_rate=risk_free_rate,
+            alpha=alpha,
+            # a_sim=a_sim,
+            # beta=beta,
+            # b_sim=beta_sim,
+            freq=freq,
+        )
+        console.print("")
+
     return weights
 
 
