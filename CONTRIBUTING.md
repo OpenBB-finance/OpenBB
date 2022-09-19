@@ -372,8 +372,8 @@ def call_shorted(self, other_args: List[str]):
             num_stocks=ns_parser.num,
             export=ns_parser.export,
         )
-
 ```
+
 ### API
 
 In order to add a command to the API, follow these steps:
