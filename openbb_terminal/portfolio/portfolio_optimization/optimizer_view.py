@@ -2223,7 +2223,7 @@ def display_ef(
         value_short,
         n_portfolios,
         seed,
-        )
+    )
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -2262,7 +2262,13 @@ def display_ef(
             # beta=beta,
             # b_sim=b_sim,
         )
-        if risk_choices[risk_measure.lower()] not in ["ADD", "MDD", "CDaR", "EDaR", "UCI"]:
+        if risk_choices[risk_measure.lower()] not in [
+            "ADD",
+            "MDD",
+            "CDaR",
+            "EDaR",
+            "UCI",
+        ]:
             risk_sharpe = risk_sharpe * time_factor[freq.upper()] ** 0.5
 
         y = ret_sharpe * 1.5
@@ -2291,7 +2297,13 @@ def display_ef(
                 alpha=alpha,
             )
 
-            if risk_choices[risk_measure.lower()] not in ["MDD", "ADD", "CDaR", "EDaR", "UCI"]:
+            if risk_choices[risk_measure.lower()] not in [
+                "MDD",
+                "ADD",
+                "CDaR",
+                "EDaR",
+                "UCI",
+            ]:
                 risk = risk * time_factor[freq.upper()] ** 0.5
 
             ticker_plot = ticker_plot.append(

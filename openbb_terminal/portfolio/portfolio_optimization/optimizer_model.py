@@ -15,7 +15,10 @@ import yfinance as yf
 from scipy.interpolate import interp1d
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.portfolio.portfolio_optimization import yahoo_finance_model
+from openbb_terminal.portfolio.portfolio_optimization import (
+    yahoo_finance_model,
+    optimizer_helper,
+)
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -1599,7 +1602,7 @@ def get_ef(
         "Number of portfolios to simulate. The default value is 100.
     seed: int, optional
         Seed used to generate random portfolios. The default value is 123.
-    
+
     Returns
     -------
     Tuple
@@ -1693,6 +1696,7 @@ def get_ef(
     )
 
     return frontier, mu, cov, stock_returns, weights, X1, Y1, port
+
 
 @log_start_end(log=logger)
 def get_risk_parity_portfolio(
@@ -2878,3 +2882,14 @@ def generate_random_portfolios(
         w = value * w
 
     return w
+
+
+@log_start_end(log=logger)
+def get_properties() -> List[str]:
+    """Get properties to use on property optimization.
+    Returns
+    -------
+    List[str]:
+        List of available properties to use on property optimization.
+    """
+    return optimizer_helper.valid_property_infos
