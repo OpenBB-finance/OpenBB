@@ -1741,7 +1741,7 @@ def screenshot_to_canvas(shot, plot_exists: bool = False):
 
         if plot_exists:
             HEADER_HEIGHT = 0
-            RADIUS = 20
+            RADIUS = 8
 
             background = background.resize(
                 (
@@ -1768,8 +1768,8 @@ def screenshot_to_canvas(shot, plot_exists: bool = False):
             background.paste(shot, (x + WHITE_LINE_WIDTH + 5, y + WHITE_LINE_WIDTH + 5))
 
         else:
-            HEADER_HEIGHT = 83
-            RADIUS = 28
+            HEADER_HEIGHT = 32
+            RADIUS = 8
 
             background = background.resize(
                 (
@@ -1819,10 +1819,10 @@ def screenshot_to_canvas(shot, plot_exists: bool = False):
             )
 
             # Left icons
-            SIZE = 27
+            SIZE = 12
             CENTER = int(HEADER_HEIGHT / 2 - SIZE / 2)
-            INDENT = 15
-            SPACING = 20
+            INDENT = 8
+            SPACING = 8
 
             for i in range(3):
                 img.ellipse(
