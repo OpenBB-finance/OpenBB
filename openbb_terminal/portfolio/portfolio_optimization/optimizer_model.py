@@ -624,6 +624,11 @@ def get_max_sharpe(
         Amount to allocate to portfolio in long positions, by default 1.0
     value_short : float, optional
         Amount to allocate to portfolio in short positions, by default 0.0
+
+    Returns
+    -------
+    Tuple
+        Dictionary of portfolio weights and DataFrame of stock returns
     """
     weights, stock_returns = get_mean_risk_portfolio(
         symbols=symbols,
@@ -635,7 +640,7 @@ def get_max_sharpe(
         maxnan=maxnan,
         threshold=threshold,
         method=method,
-        risk_measure=risk_choices[risk_measure],
+        risk_measure=risk_choices[risk_measure.lower()],
         objective=objectives_choices["sharpe"],
         risk_free_rate=risk_free_rate,
         risk_aversion=risk_aversion,

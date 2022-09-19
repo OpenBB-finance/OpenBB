@@ -1222,9 +1222,12 @@ functions = {
         "view": "openbb_terminal.portfolio.portfolio_view.display_omega",
     },
     "portfolio.po.load": {
-        "model": "openbb_terminal.portfolio.portfolio_model.get_omega",
-        "view": "openbb_terminal.portfolio.portfolio_view.display_omega",
+        "model": "openbb_terminal.portfolio.portfolio_optimization.excel_model.load_allocation",
     },
+    "portfolio.po.maxsharpe": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_sharpe",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_sharpe",
+    },    
     "portfolio.po.bl": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_black_litterman_portfolio",
         "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_black_litterman",

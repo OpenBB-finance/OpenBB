@@ -1164,7 +1164,7 @@ def display_max_sharpe(
 
     p = d_period(interval, start_date, end_date)
     s_title = f"{p} Maximal return/risk ratio portfolio using "
-    s_title += risk_names[risk_measure] + " as risk measure\n"
+    s_title += risk_names[risk_measure.lower()] + " as risk measure\n"
 
     weights, stock_returns = optimizer_model.get_max_sharpe(
         symbols=symbols,
