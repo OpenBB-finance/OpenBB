@@ -40,6 +40,7 @@ from openbb_terminal.stocks.technical_analysis import (
     finviz_view,
     tradingview_model,
     tradingview_view,
+    rsp_view,
 )
 
 logger = logging.getLogger(__name__)
@@ -62,6 +63,7 @@ class TechnicalAnalysisController(StockBaseController):
         "cci",
         "macd",
         "rsi",
+        "rsp",
         "stoch",
         "fisher",
         "cg",
@@ -117,10 +119,10 @@ class TechnicalAnalysisController(StockBaseController):
         mt = MenuText("stocks/ta/", 90)
         mt.add_param("_ticker", stock_str)
         mt.add_raw("\n")
-        mt.add_cmd("tv", "TradingView")
-        mt.add_cmd("view", "Finviz")
-        mt.add_cmd("summary", "FinBrain")
-        mt.add_cmd("recom", "TradingView")
+        mt.add_cmd("tv")
+        mt.add_cmd("recom")
+        mt.add_cmd("view")
+        mt.add_cmd("summary")
         mt.add_raw("\n")
         mt.add_info("_overlap_")
         mt.add_cmd("ema")
@@ -133,6 +135,7 @@ class TechnicalAnalysisController(StockBaseController):
         mt.add_cmd("cci")
         mt.add_cmd("macd")
         mt.add_cmd("rsi")
+        mt.add_cmd("rsp")
         mt.add_cmd("stoch")
         mt.add_cmd("fisher")
         mt.add_cmd("cg")
@@ -747,6 +750,45 @@ class TechnicalAnalysisController(StockBaseController):
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
                 export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_rsp(self, other_args: List[str]):
+        """Process rsp command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="rsp",
+            description="""
+                IBD Style Relative Strength Percentile Ranking of Stocks (i.e. 0-100 Score).
+                Ranks stocks on the basis of relative strength as calculated by Investor's
+                Business Daily (Yearly performance of stock (most recent quarter is weighted
+                double) divided by yearly performance of reference index (here, we use SPY)
+                Export table to view the entire ranking
+                Data taken from https://github.com/skyte/relative-strength
+            """,
+        )
+
+        parser.add_argument(
+            "-t",
+            "--tickers",
+            action="store_true",
+            default=False,
+            dest="disp_tickers",
+            help="Show other tickers in the industry the stock is part of",
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+        )
+
+        if ns_parser:
+            rsp_view.display_rsp(
+                s_ticker=self.ticker,
+                export=ns_parser.export,
+                tickers_show=ns_parser.disp_tickers,
             )
 
     @log_start_end(log=logger)

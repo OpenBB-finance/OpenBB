@@ -36,7 +36,7 @@ import numpy as np
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import config_plot as cfgPlot
-from openbb_terminal.core.config.constants import USER_HOME
+from openbb_terminal.core.config.paths import HOME_DIRECTORY, USER_ENV_FILE
 
 logger = logging.getLogger(__name__)
 
@@ -103,7 +103,7 @@ def check_path(path: str) -> str:
     if not path:
         return ""
     if path[0] == "~":
-        path = path.replace("~", USER_HOME.as_posix())
+        path = path.replace("~", HOME_DIRECTORY.as_posix())
     # Return string of path if such relative path exists
     if os.path.isfile(path):
         return path
@@ -134,6 +134,13 @@ def parse_and_split_input(an_input: str, custom_filters: List) -> List[str]:
     List[str]
         Command queue as list
     """
+    # Make sure that the user can go back to the root when doing "/"
+    if an_input:
+        if an_input == "/":
+            an_input = "home"
+        elif an_input[0] == "/":
+            an_input = "home" + an_input
+
     # everything from ` -f ` to the next known extension
     file_flag = r"(\ -f |\ --file )"
     up_to = r".*?"
@@ -175,7 +182,6 @@ def parse_and_split_input(an_input: str, custom_filters: List) -> List[str]:
         if len(matching_placeholders) > 0:
             for tag in matching_placeholders:
                 commands[command_num] = command.replace(tag, placeholders[tag])
-
     return commands
 
 
@@ -265,7 +271,7 @@ def print_rich_table(
             row = [str(idx)] if show_index else []
             row += [
                 str(x)
-                if not isinstance(x, float) or not isinstance(x, np.float64)
+                if not isinstance(x, float) and not isinstance(x, np.float64)
                 else (
                     f"{x:{floatfmt[idx]}}"
                     if isinstance(floatfmt, list)
@@ -1046,6 +1052,8 @@ def get_flair() -> str:
         if str(obbff.USE_FLAIR) in flairs
         else str(obbff.USE_FLAIR)
     )
+
+    set_default_timezone()
     if obbff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
         dtime = datetime.now(pytz.timezone(get_user_timezone())).strftime(
             "%Y %b %d, %H:%M"
@@ -1058,6 +1066,15 @@ def get_flair() -> str:
         return f"{dtime} {flair}"
 
     return flair
+
+
+def set_default_timezone() -> None:
+    """Sets a default (America/New_York) timezone if one doesn't exist"""
+
+    dotenv.load_dotenv(USER_ENV_FILE)
+    user_tz = os.getenv("OPENBB_TIMEZONE")
+    if not user_tz:
+        dotenv.set_key(USER_ENV_FILE, "OPENBB_TIMEZONE", "America/New_York")
 
 
 def is_timezone_valid(user_tz: str) -> bool:
@@ -1082,15 +1099,12 @@ def get_user_timezone() -> str:
     Returns
     -------
     str
-        user timezone based on timezone.openbb file
+        user timezone based on .env file
     """
-    filename = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)),
-        "timezone.openbb",
-    )
-    if os.path.isfile(filename):
-        with open(filename) as f:
-            return f.read()
+    dotenv.load_dotenv(USER_ENV_FILE)
+    user_tz = os.getenv("OPENBB_TIMEZONE")
+    if user_tz:
+        return user_tz
     return ""
 
 
@@ -1116,21 +1130,11 @@ def replace_user_timezone(user_tz: str) -> None:
     user_tz: str
         User timezone to set
     """
-    filename = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)),
-        "timezone.openbb",
-    )
-    if os.path.isfile(filename):
-        with open(filename, "w") as f:
-            if is_timezone_valid(user_tz):
-                if f.write(user_tz):
-                    console.print("Timezone successfully updated", "\n")
-                else:
-                    console.print("Timezone not set successfully", "\n")
-            else:
-                console.print("Timezone selected is not valid", "\n")
+    if is_timezone_valid(user_tz):
+        dotenv.set_key(USER_ENV_FILE, "OPENBB_TIMEZONE", user_tz)
+        console.print("Timezone successfully updated", "\n")
     else:
-        console.print("timezone.openbb file does not exist", "\n")
+        console.print("Timezone selected is not valid", "\n")
 
 
 def str_to_bool(value) -> bool:
@@ -1266,7 +1270,7 @@ def compose_export_path(func_name: str, dir_path: str) -> Tuple[str, str]:
     else:
         if obbff.PACKAGED_APPLICATION:
             full_path_dir = os.path.join(
-                USER_HOME.as_posix(), "Desktop", "OPENBB-exports"
+                HOME_DIRECTORY.as_posix(), "Desktop", "OPENBB-exports"
             )
 
             if not os.path.isdir(full_path_dir):
@@ -1633,67 +1637,36 @@ def check_list_values(valid_values: List[str]):
     return check_list_values_from_valid_values_list
 
 
-def get_ordered_list_sources(command_path: str):
+def search_wikipedia(expression: str) -> None:
     """
-    Returns the preferred source for the given command. If a value is not available for the specific
-    command, returns the most specific source, eventually returning the overall default source.
-
+    Search wikipedia for a given expression"
     Parameters
     ----------
-    command_path: str
-        The command to find the source for. Example would be "stocks/load" to return the value
-        for stocks.load first, then stocks, then the default value.
-
-    Returns
-    -------
-    str:
-        The preferred source for the given command
+    expression: str
+        Expression to search for
     """
-    try:
-        with open(obbff.PREFERRED_DATA_SOURCE_FILE) as f:
-            # Load the file as a JSON document
-            json_doc = json.load(f)
 
-            # We are going to iterate through each command as if it is broken up by period characters (.)
-            path_objects = command_path.split("/")[1:]
+    url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{expression}"
 
-            # Start iterating through the top-level JSON doc to start
-            deepest_level = json_doc
+    response = requests.request("GET", url, headers={}, data={})
 
-            # If we still have entries in path_objects, continue to go deeper
-            while len(path_objects) > 0:
-                # Is this path object in the JSON doc? If so, go into that for our next iteration.
-                if path_objects[0] in deepest_level:
-                    # We found the element, so go one level deeper
-                    deepest_level = deepest_level[path_objects[0]]
+    if response.status_code == 200:
+        response_json = json.loads(response.text)
+        res = {
+            "title": response_json["title"],
+            "url": f"[blue]{response_json['content_urls']['desktop']['page']}[/blue]",
+            "summary": response_json["extract"],
+        }
+    else:
+        res = {
+            "title": "[red]Not Found[/red]",
+        }
 
-                else:
-                    # If we have not find the `load` on the deepest level it means we may be in a sub-menu
-                    # and we can use the load from the Base class
-                    if path_objects[0] == "load":
+    df = pd.json_normalize(res)
 
-                        # Get the context associated with the sub-menu (e.g. stocks, crypto, ...)
-                        context = command_path.split("/")[1]
-
-                        # Grab the load source from that context if it exists, otherwise throws an error
-                        if context in json_doc:
-                            if "load" in json_doc[context]:
-                                return json_doc[context]["load"]
-
-                    # We didn't find the next level, so flag that that command default source is missing
-                    # Which means that there aren't more than 1 source and therefore no selection is necessary
-                    return []
-
-                # Go one level deeper into the path
-                path_objects = path_objects[1:]
-
-            # We got through all values, so return this as the final value
-            return deepest_level
-
-    except Exception as e:
-        console.print(
-            f"[red]Failed to load preferred source from file: "
-            f"{obbff.PREFERRED_DATA_SOURCE_FILE}[/red]"
-        )
-        console.print(f"[red]{e}[/red]")
-        return None
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title=f"Wikipedia results for {expression}",
+    )

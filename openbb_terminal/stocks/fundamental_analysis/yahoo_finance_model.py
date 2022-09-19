@@ -68,22 +68,20 @@ def get_info(symbol: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_shareholders(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+def get_shareholders(symbol: str, holder: str = "institutional") -> pd.DataFrame:
     """Get shareholders from yahoo
 
     Parameters
     ----------
     symbol : str
         Stock ticker symbol
+    holder : str
+        Which holder to get table for
 
     Returns
     -------
     pd.DataFrame
         Major holders
-    pd.DataFrame
-        Institutional holders
-    pd.DataFrame
-        Mutual Fund holders
     """
     stock = yf.Ticker(symbol)
 
@@ -123,7 +121,13 @@ def get_shareholders(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFr
         lambda x: str(f"{100 * x:.2f}") + " %"
     )
 
-    return df_major_holders, df_institutional_shareholders, df_mutualfund_shareholders
+    if holder == "major":
+        return df_major_holders
+    if holder == "institutional":
+        return df_institutional_shareholders
+    if holder == "mutualfund":
+        return df_mutualfund_shareholders
+    return pd.DataFrame()
 
 
 @log_start_end(log=logger)
@@ -423,4 +427,32 @@ def get_financials(symbol: str, statement: str, ratios: bool = False) -> pd.Data
             df.iloc[i] = df_fa_pc.iloc[j]
             j += 1
 
-    return df.dropna(how="all")
+    df = df.dropna(how="all")
+    return df
+
+
+@log_start_end(log=logger)
+def get_earnings_history(symbol: str) -> pd.DataFrame:
+    """Get earning reports
+
+    Parameters
+    ----------
+    symbol: str
+        Symbol to get earnings for
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe of historical earnings if present
+    """
+    earnings = yf.Ticker(symbol).earnings_history
+    return earnings
+
+
+@log_start_end(log=logger)
+def get_currency(symbol) -> str:
+    """Quick helper to get currency for financial statements"""
+    ticker_info = yf.Ticker(symbol).info
+    if "financialCurrency" in ticker_info:
+        return ticker_info["financialCurrency"]
+    return "Not Specified"

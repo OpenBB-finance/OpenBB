@@ -89,54 +89,34 @@ def display_info(symbol: str, export: str = ""):
 
 
 @log_start_end(log=logger)
-def display_shareholders(symbol: str, export: str = ""):
+def display_shareholders(symbol: str, holder: str = "institutional", export: str = ""):
     """Yahoo Finance ticker shareholders
     Parameters
     ----------
     symbol : str
         Fundamental analysis ticker symbol
+    holder: str
+        Shareholder table to get.  Can be major/institutional/mutualfund
     export: str
         Format to export data
     """
-    (
-        df_major_holders,
-        df_institutional_shareholders,
-        df_mutualfund_shareholders,
-    ) = yahoo_finance_model.get_shareholders(symbol)
-    df_major_holders.columns = ["", ""]
-    dfs = [df_major_holders, df_institutional_shareholders, df_mutualfund_shareholders]
-    titles = ["Major Holders", "Institutional Holders", "Mutual Fund Holders"]
-    console.print()
-
-    for df, title in zip(dfs, titles):
-        if "Date Reported" in df.columns:
-            df["Date Reported"] = df["Date Reported"].apply(
-                lambda x: x.strftime("%Y-%m-%d")
-            )
-        print_rich_table(
-            df,
-            headers=list(df.columns),
-            show_index=False,
-            title=f"{symbol.upper()} {title}",
+    df = yahoo_finance_model.get_shareholders(symbol, holder)
+    if holder == "major":
+        df.columns = ["", ""]
+    if "Date Reported" in df.columns:
+        df["Date Reported"] = df["Date Reported"].apply(
+            lambda x: x.strftime("%Y-%m-%d")
         )
+    title = f"{holder.title()} Holders"
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title=f"{symbol.upper()} {title}",
+    )
 
     export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "major_holders",
-        df_major_holders,
-    )
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "institutional_holders",
-        df_institutional_shareholders,
-    )
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "mutualfunds_holders",
-        df_major_holders,
+        export, os.path.dirname(os.path.abspath(__file__)), f"{holder}_holders", df
     )
 
 
@@ -399,7 +379,7 @@ def display_mktcap(
 def display_fundamentals(
     symbol: str,
     statement: str,
-    limit: int = 120,
+    limit: int = 12,
     ratios: bool = False,
     plot: list = None,
     export: str = "",
@@ -433,6 +413,9 @@ def display_fundamentals(
     if fundamentals.empty:
         # The empty data frame error handling done in model
         return
+
+    symbol_currency = yahoo_finance_model.get_currency(symbol)
+
     if plot:
         rows_plot = len(plot)
         fundamentals_plot_data = fundamentals.transpose().fillna(-1)
@@ -440,21 +423,24 @@ def display_fundamentals(
         fundamentals_plot_data = fundamentals_plot_data.replace(",", "", regex=True)
         fundamentals_plot_data = fundamentals_plot_data.replace("-", "-1")
         fundamentals_plot_data = fundamentals_plot_data.astype(float)
+        if "ttm" in list(fundamentals_plot_data.index):
+            fundamentals_plot_data = fundamentals_plot_data.drop(["ttm"])
+        fundamentals_plot_data = fundamentals_plot_data.sort_index()
 
         if not ratios:
-            maximum_value = fundamentals_plot_data.max().max()
+            maximum_value = fundamentals_plot_data[plot[0].replace("_", " ")].max()
             if maximum_value > 1_000_000_000_000:
                 df_rounded = fundamentals_plot_data / 1_000_000_000_000
-                denomination = " in Trillions"
+                denomination = "in Trillions"
             elif maximum_value > 1_000_000_000:
                 df_rounded = fundamentals_plot_data / 1_000_000_000
-                denomination = " in Billions"
+                denomination = "in Billions"
             elif maximum_value > 1_000_000:
                 df_rounded = fundamentals_plot_data / 1_000_000
-                denomination = " in Millions"
+                denomination = "in Millions"
             elif maximum_value > 1_000:
                 df_rounded = fundamentals_plot_data / 1_000
-                denomination = " in Thousands"
+                denomination = "in Thousands"
             else:
                 df_rounded = fundamentals_plot_data
                 denomination = ""
@@ -464,11 +450,11 @@ def display_fundamentals(
 
         if rows_plot == 1:
             fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            df_rounded[plot[0].replace("_", " ")].plot()
+            ax.bar(df_rounded.index, df_rounded[plot[0].replace("_", " ")])
             title = (
-                f"{plot[0].replace('_', ' ').lower()} QoQ Growth of {symbol.upper()}"
+                f"{plot[0].replace('_', ' ').capitalize()} QoQ Growth of {symbol.upper()}"
                 if ratios
-                else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
+                else f"{plot[0].replace('_', ' ').capitalize()} of {symbol.upper()} {denomination}"
             )
             plt.title(title)
             theme.style_primary_axis(ax)
@@ -476,7 +462,9 @@ def display_fundamentals(
         else:
             fig, axes = plt.subplots(rows_plot)
             for i in range(rows_plot):
-                axes[i].plot(df_rounded[plot[i].replace("_", " ")])
+                axes[i].bar(
+                    df_rounded.index, df_rounded[plot[i].replace("_", " ")], width=0.5
+                )
                 axes[i].set_title(f"{plot[i].replace('_', ' ')} {denomination}")
             theme.style_primary_axis(axes[0])
             fig.autofmt_xdate()
@@ -485,14 +473,42 @@ def display_fundamentals(
         fundamentals.index = fundamentals.index.to_series().apply(
             lambda x: x.replace("_", " ").title()
         )
-
         # Readable numbers
         fundamentals = fundamentals.applymap(lambda_long_number_format).fillna("-")
         print_rich_table(
             fundamentals.iloc[:, :limit].applymap(lambda x: "-" if x == "nan" else x),
             show_index=True,
-            title=f"{symbol} {title_str}",
+            title=f"{symbol} {title_str} Currency: {symbol_currency}",
         )
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), statement, fundamentals
+    )
+
+
+@log_start_end(log=logger)
+def display_earnings(symbol: str, limit: int, export: str):
+    """
+
+    Parameters
+    ----------
+    symbol
+    limit
+    export
+
+    Returns
+    -------
+
+    """
+    earnings = yahoo_finance_model.get_earnings_history(symbol)
+    if earnings.empty:
+        console.print("")
+        return
+    earnings = earnings.drop(columns={"Symbol", "Company"}).fillna("-")
+    print_rich_table(
+        earnings.head(limit),
+        headers=earnings.columns,
+        title=f"Historical Earnings for {symbol}",
+    )
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), "earnings_yf", earnings
     )

@@ -6,11 +6,14 @@ from distutils.util import strtobool
 import dotenv
 
 # IMPORTATION INTERNAL
+from openbb_terminal.core.config import (  # pylint: disable=unused-import  # noqa
+    make_paths,
+)
+from openbb_terminal.core.config.paths import USER_ENV_FILE, REPOSITORY_ENV_FILE
 from .helper_classes import TerminalStyle as _TerminalStyle
 
-env_files = [f for f in os.listdir() if f.endswith(".env")]
-if env_files:
-    dotenv.load_dotenv(env_files[0])
+dotenv.load_dotenv(USER_ENV_FILE)
+dotenv.load_dotenv(REPOSITORY_ENV_FILE, override=True)
 
 # Terminal UX section
 theme = _TerminalStyle(
@@ -167,3 +170,6 @@ API_GITHUB_KEY = os.getenv("OPENBB_API_GITHUB_KEY") or "REPLACE_ME"
 
 # https://academy.santiment.net/products-and-plans/create-an-api-key/
 API_SANTIMENT_KEY = os.getenv("OPENBB_API_SANTIMENT_KEY") or "REPLACE_ME"
+
+# https://eodhistoricaldata.com/r/?ref=869U7F4J
+API_EODHD_TOKEN = os.getenv("OPENBB_API_EODHD_KEY") or "REPLACE_ME"

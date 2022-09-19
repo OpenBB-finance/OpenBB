@@ -10,7 +10,6 @@ import platform
 import sys
 import webbrowser
 from typing import List
-from pathlib import Path
 import dotenv
 
 from prompt_toolkit import PromptSession
@@ -18,8 +17,16 @@ from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 
+from openbb_terminal.core.config import (  # pylint: disable=unused-import  # noqa
+    make_paths,
+)
 from openbb_terminal.common import feedparser_view
-from openbb_terminal.core.config.constants import REPO_DIR, ENV_FILE, USER_HOME
+from openbb_terminal.core.config.paths import (
+    REPO_DIRECTORY,
+    USER_ENV_FILE,
+    REPOSITORY_ENV_FILE,
+    HOME_DIRECTORY,
+)
 from openbb_terminal.core.log.generation.path_tracking_file_handler import (
     PathTrackingFileHandler,
 )
@@ -46,11 +53,11 @@ from openbb_terminal.terminal_helper import (
 )
 from openbb_terminal.helper_funcs import parse_and_split_input
 
-# pylint: disable=too-many-public-methods,import-outside-toplevel,too-many-branches,no-member
+# pylint: disable=too-many-public-methods,import-outside-toplevel,too-many-branches,no-member,C0302
 
 logger = logging.getLogger(__name__)
 
-env_file = str(ENV_FILE)
+env_file = str(USER_ENV_FILE)
 
 
 class TerminalController(BaseController):
@@ -123,6 +130,7 @@ class TerminalController(BaseController):
         mt.add_cmd("support")
         mt.add_cmd("survey")
         mt.add_cmd("update")
+        mt.add_cmd("wiki")
         mt.add_raw("\n")
         mt.add_info("_configure_")
         mt.add_menu("keys")
@@ -147,6 +155,7 @@ class TerminalController(BaseController):
         mt.add_menu("portfolio")
         mt.add_menu("dashboards")
         mt.add_menu("reports")
+        mt.add_raw("\n")
         console.print(text=mt.menu_text, menu="Home")
 
     def call_news(self, other_args: List[str]) -> None:
@@ -321,7 +330,7 @@ class TerminalController(BaseController):
         """Process settings command"""
         from openbb_terminal.settings_controller import SettingsController
 
-        self.queue = self.load_class(SettingsController, self.queue)
+        self.queue = self.load_class(SettingsController, self.queue, env_file)
 
     def call_featflags(self, _):
         """Process feature flags command"""
@@ -499,15 +508,39 @@ class TerminalController(BaseController):
                         for raw_line in raw_lines
                         if raw_line.strip("\n")
                     ]
-                    if ns_parser_exe.routine_args:
-                        lines = list()
-                        for rawline in raw_lines:
-                            templine = rawline
-                            for i, arg in enumerate(ns_parser_exe.routine_args):
-                                templine = templine.replace(f"$ARGV[{i}]", arg)
+
+                    lines = list()
+                    for rawline in raw_lines:
+                        templine = rawline
+
+                        # Check if dynamic parameter exists in script
+                        if "$ARGV" in rawline:
+                            # Check if user has provided inputs through -i or --input
+                            if ns_parser_exe.routine_args:
+                                for i, arg in enumerate(ns_parser_exe.routine_args):
+                                    # Check what is the location of the ARGV to be replaced
+                                    if f"$ARGV[{i}]" in templine:
+                                        templine = templine.replace(f"$ARGV[{i}]", arg)
+
+                                # Check if all ARGV have been removed, otherwise means that there are less inputs
+                                # when running the script than the script expects
+                                if "$ARGV" in templine:
+                                    console.print(
+                                        "[red]Not enough inputs were provided to fill in dynamic variables. "
+                                        "E.g. --input VAR1,VAR2,VAR3[/red]\n"
+                                    )
+                                    return
+
+                                lines.append(templine)
+                            # The script expects a parameter that the user has not provided
+                            else:
+                                console.print(
+                                    "[red]The script expects parameters, "
+                                    "run the script again with --input defined.[/red]\n"
+                                )
+                                return
+                        else:
                             lines.append(templine)
-                    else:
-                        lines = raw_lines
 
                     simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
                     file_cmds = simulate_argv.replace("//", "/home/").split()
@@ -527,7 +560,9 @@ class TerminalController(BaseController):
                         export_path = self.queue[0].split(" ")[1]
                         # If the path selected does not start from the user root, give relative location from root
                         if export_path[0] == "~":
-                            export_path = export_path.replace("~", USER_HOME.as_posix())
+                            export_path = export_path.replace(
+                                "~", HOME_DIRECTORY.as_posix()
+                            )
                         elif export_path[0] != "/":
                             export_path = os.path.join(
                                 os.path.dirname(os.path.abspath(__file__)), export_path
@@ -573,7 +608,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
     if export_path:
         # If the path selected does not start from the user root, give relative location from terminal root
         if export_path[0] == "~":
-            export_path = export_path.replace("~", USER_HOME.as_posix())
+            export_path = export_path.replace("~", HOME_DIRECTORY.as_posix())
         elif export_path[0] != "/":
             export_path = os.path.join(
                 os.path.dirname(os.path.abspath(__file__)), export_path
@@ -597,14 +632,8 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
         t_controller.print_help()
         check_for_updates()
 
-    env_files = [f for f in os.listdir() if f.endswith(".env")]
-    if env_files:
-        global env_file
-        env_file = env_files[0]
-        dotenv.load_dotenv(env_file)
-    else:
-        # create env file
-        Path(".env")
+    dotenv.load_dotenv(USER_ENV_FILE)
+    dotenv.load_dotenv(REPOSITORY_ENV_FILE, override=True)
 
     while ret_code:
         if obbff.ENABLE_QUICK_EXIT:
@@ -879,7 +908,7 @@ def main(
         console.print("[green]OpenBB Terminal Integrated Tests:\n[/green]")
         for file in test_files:
             file = file.replace("//", "/")
-            repo_path_position = file.rfind(REPO_DIR.name)
+            repo_path_position = file.rfind(REPO_DIRECTORY.name)
             if repo_path_position >= 0:
                 file_name = file[repo_path_position:].replace("\\", "/")
             else:
@@ -897,7 +926,7 @@ def main(
         if fails:
             console.print("\n[red]Failures:[/red]\n")
             for key, value in fails.items():
-                repo_path_position = key.rfind(REPO_DIR.name)
+                repo_path_position = key.rfind(REPO_DIRECTORY.name)
                 if repo_path_position >= 0:
                     file_name = key[repo_path_position:].replace("\\", "/")
                 else:

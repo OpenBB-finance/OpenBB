@@ -443,37 +443,37 @@ class PortfolioOptimizationController(BaseController):
         mt.add_param("_parameter", self.current_file)
         mt.add_raw("\n")
         mt.add_info("_mean_risk_optimization_")
-        mt.add_cmd("maxsharpe", "", self.tickers)
-        mt.add_cmd("minrisk", "", self.tickers)
-        mt.add_cmd("maxutil", "", self.tickers)
-        mt.add_cmd("maxret", "", self.tickers)
-        mt.add_cmd("maxdiv", "", self.tickers)
-        mt.add_cmd("maxdecorr", "", self.tickers)
-        mt.add_cmd("blacklitterman", "", self.tickers)
-        mt.add_cmd("ef", "", self.tickers)
+        mt.add_cmd("maxsharpe", self.tickers)
+        mt.add_cmd("minrisk", self.tickers)
+        mt.add_cmd("maxutil", self.tickers)
+        mt.add_cmd("maxret", self.tickers)
+        mt.add_cmd("maxdiv", self.tickers)
+        mt.add_cmd("maxdecorr", self.tickers)
+        mt.add_cmd("blacklitterman", self.tickers)
+        mt.add_cmd("ef", self.tickers)
 
         mt.add_info("_risk_parity_optimization_")
-        mt.add_cmd("riskparity", "", self.tickers)
-        mt.add_cmd("relriskparity", "", self.tickers)
+        mt.add_cmd("riskparity", self.tickers)
+        mt.add_cmd("relriskparity", self.tickers)
 
         mt.add_info("_hierarchical_clustering_models_")
-        mt.add_cmd("hrp", "", self.tickers)
-        mt.add_cmd("herc", "", self.tickers)
-        mt.add_cmd("nco", "", self.tickers)
+        mt.add_cmd("hrp", self.tickers)
+        mt.add_cmd("herc", self.tickers)
+        mt.add_cmd("nco", self.tickers)
 
         mt.add_info("_other_optimization_techniques_")
-        mt.add_cmd("equal", "", self.tickers)
-        mt.add_cmd("mktcap", "", self.tickers)
-        mt.add_cmd("dividend", "", self.tickers)
-        mt.add_cmd("property", "", self.tickers)
+        mt.add_cmd("equal", self.tickers)
+        mt.add_cmd("mktcap", self.tickers)
+        mt.add_cmd("dividend", self.tickers)
+        mt.add_cmd("property", self.tickers)
 
         mt.add_raw("\n")
         mt.add_param("_optimized_portfolio", ", ".join(self.portfolios.keys()))
         mt.add_raw("\n")
 
-        mt.add_cmd("rpf", "", bool(self.portfolios.keys()))
-        mt.add_cmd("show", "", bool(self.portfolios.keys()))
-        mt.add_cmd("plot", "", bool(self.portfolios.keys()))
+        mt.add_cmd("rpf", bool(self.portfolios.keys()))
+        mt.add_cmd("show", bool(self.portfolios.keys()))
+        mt.add_cmd("plot", bool(self.portfolios.keys()))
 
         console.print(text=mt.menu_text, menu="Portfolio - Portfolio Optimization")
 
@@ -4012,7 +4012,13 @@ class PortfolioOptimizationController(BaseController):
             if len(ns_parser.download) > 0:
                 file = os.path.abspath(
                     os.path.join(
-                        self.DEFAULT_ALLOCATION_PATH, "..", "views", ns_parser.download
+                        self.DEFAULT_ALLOCATION_PATH,
+                        "..",
+                        "..",
+                        "exports",
+                        "portfolio",
+                        "views",
+                        ns_parser.download,
                     )
                 )
                 excel_model.excel_bl_views(file=file, stocks=self.tickers, n=1)

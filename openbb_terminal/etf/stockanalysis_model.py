@@ -1,7 +1,6 @@
 """Stockanalysis.com/etf Model"""
 __docformat__ = "numpy"
 
-import json
 import logging
 from typing import List, Tuple
 
@@ -26,15 +25,23 @@ def get_all_names_symbols() -> Tuple[List[str], List[str]]:
     etf_names: List[str]
         List of all available etf names
     """
+
+    etf_symbols = []
+    etf_names = []
+
     r = requests.get(
         "https://stockanalysis.com/etf/", headers={"User-Agent": get_user_agent()}
     )
     soup2 = bs(r.text, "html.parser")
-    script = soup2.find("script", {"type": "application/json"})
+    table = soup2.find("table", attrs={"class": "svelte-v47wb2"})
+    table_body = table.find("tbody")
+    rows = table_body.find_all("tr")
+    for row in rows:
+        cols = row.find_all("td")
+        cols = [ele.text.strip() for ele in cols]
+        etf_symbols.append(cols[0])
+        etf_names.append(cols[1])
 
-    etfs = pd.DataFrame(json.loads(script.string)["data"])
-    etf_symbols = etfs.s.to_list()
-    etf_names = etfs.n.to_list()
     return etf_symbols, etf_names
 
 
