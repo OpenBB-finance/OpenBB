@@ -1274,14 +1274,16 @@ class FundamentalAnalysisController(StockBaseController):
             help="Allow similar companies of any market cap to be shown.",
         )
         parser.add_argument(
-            "-p" "--prediction",
+            "-p",
+            "--prediction",
             type=int,
             dest="prediction",
             default=10,
             help="Number of years to predict before using terminal value.",
         )
         parser.add_argument(
-            "-s" "--similar",
+            "-s",
+            "--similar",
             type=int,
             dest="similar",
             default=6,
