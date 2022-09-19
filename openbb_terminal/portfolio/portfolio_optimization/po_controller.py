@@ -338,8 +338,10 @@ class PortfolioOptimizationController(BaseController):
             self.choices["property"]["--property"] = {
                 c: None for c in yahoo_finance_model.yf_info_choices
             }
-            self.choices["file"] = {c: None for c in self.DATA_OPTIMIZATION_FILES}
-            self.choices["load"] = {c: None for c in self.DATA_ALLOCATION_FILES}
+            self.choices["file"]["-f"] = {c: None for c in self.DATA_OPTIMIZATION_FILES}
+            self.choices["file"]["--file"] = {c: None for c in self.DATA_OPTIMIZATION_FILES}
+            self.choices["load"]["-f"] = {c: None for c in self.DATA_ALLOCATION_FILES}
+            self.choices["load"]["--file"] = {c: None for c in self.DATA_ALLOCATION_FILES}
 
             for fn in models:
                 self.choices[fn]["-p"] = {c: None for c in self.PERIOD_CHOICES}
