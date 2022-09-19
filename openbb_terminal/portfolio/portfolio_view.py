@@ -390,6 +390,7 @@ def display_monthly_returns(
     external_axes: plt.Axes
         Optional axes to display plot on
     """
+
     portfolio_returns, benchmark_returns = portfolio_model.get_monthly_returns(
         portfolio, window
     )
@@ -488,6 +489,8 @@ def display_daily_returns(
     external_axes: plt.Axes
         Optional axes to display plot on
     """
+
+
     df = portfolio_model.get_daily_returns(portfolio, window)
 
     if raw:
