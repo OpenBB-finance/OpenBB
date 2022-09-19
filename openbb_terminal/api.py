@@ -2,7 +2,7 @@
 # flake8: noqa
 # pylint: disable=unused-import
 
-# pylint: disable=C0302,W0611
+# pylint: disable=C0302,W0611,not-callable
 from inspect import signature, Parameter
 import types
 import functools
@@ -1232,7 +1232,13 @@ functions = {
     },
     "portfolio.po.minrisk": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_min_risk",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_min_risk",
     },
+    "portfolio.po.maxutil": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_util",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_util",
+    },
+    "portfolio.po.bl": {},
     "portfolio.po.maxutil": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_util",
     },
@@ -1992,12 +1998,10 @@ class FunctionFactory:
             The original view function from the terminal, this shall be set to None if the
             function has no charting
         """
-        self.model_only = False
-        if view is None:
-            self.model_only = True
-            self.model = copy_func(model)
-        else:
-            self.model = copy_func(model)
+        self.model_only = view is None
+        self.model = copy_func(model)
+        self.view = None
+        if view is not None:
             self.view = copy_func(view)
 
     def api_callable(self, *args, **kwargs):

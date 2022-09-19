@@ -1369,7 +1369,7 @@ def get_maximum_drawdown(
         Drawdown series
     -------
     """
-    holdings = portfolio.portfolio_value
+    holdings: pd.Series = portfolio.portfolio_value
     if is_returns:
         holdings = (1 + holdings).cumprod()
 
@@ -1578,63 +1578,62 @@ def get_performance_vs_benchmark(
         combined["Date"] = pd.to_datetime(combined["Date"]).dt.date
 
         return combined
-    else:
 
-        # Calculate total value and return
-        total_investment_difference = (
-            portfolio_trades["Portfolio Investment"].sum()
-            - benchmark_trades["Benchmark Investment"].sum()
-        )
-        total_value_difference = (
-            portfolio_trades["Portfolio Value"].sum()
-            - benchmark_trades["Benchmark Value"].sum()
-        )
-        total_portfolio_return = (
-            portfolio_trades["Portfolio Value"].sum()
-            / portfolio_trades["Portfolio Investment"].sum()
-        ) - 1
-        total_benchmark_return = (
-            benchmark_trades["Benchmark Value"].sum()
-            / benchmark_trades["Benchmark Investment"].sum()
-        ) - 1
-        total_abs_return_difference = (
-            portfolio_trades["Portfolio Value"].sum()
-            - portfolio_trades["Portfolio Investment"].sum()
-        ) - (
-            benchmark_trades["Benchmark Value"].sum()
-            - benchmark_trades["Benchmark Investment"].sum()
-        )
+    # Calculate total value and return
+    total_investment_difference = (
+        portfolio_trades["Portfolio Investment"].sum()
+        - benchmark_trades["Benchmark Investment"].sum()
+    )
+    total_value_difference = (
+        portfolio_trades["Portfolio Value"].sum()
+        - benchmark_trades["Benchmark Value"].sum()
+    )
+    total_portfolio_return = (
+        portfolio_trades["Portfolio Value"].sum()
+        / portfolio_trades["Portfolio Investment"].sum()
+    ) - 1
+    total_benchmark_return = (
+        benchmark_trades["Benchmark Value"].sum()
+        / benchmark_trades["Benchmark Investment"].sum()
+    ) - 1
+    total_abs_return_difference = (
+        portfolio_trades["Portfolio Value"].sum()
+        - portfolio_trades["Portfolio Investment"].sum()
+    ) - (
+        benchmark_trades["Benchmark Value"].sum()
+        - benchmark_trades["Benchmark Investment"].sum()
+    )
 
-        totals = pd.DataFrame.from_dict(
-            {
-                "Total Investment": [
-                    portfolio_trades["Portfolio Investment"].sum(),
-                    benchmark_trades["Benchmark Investment"].sum(),
-                    total_investment_difference,
-                ],
-                "Total Value": [
-                    portfolio_trades["Portfolio Value"].sum(),
-                    benchmark_trades["Benchmark Value"].sum(),
-                    total_value_difference,
-                ],
-                "Total % Return": [
-                    f"{total_portfolio_return:.2%}",
-                    f"{total_benchmark_return:.2%}",
-                    f"{total_portfolio_return - total_benchmark_return:.2%}",
-                ],
-                "Total Abs Return": [
-                    portfolio_trades["Portfolio Value"].sum()
-                    - portfolio_trades["Portfolio Investment"].sum(),
-                    benchmark_trades["Benchmark Value"].sum()
-                    - benchmark_trades["Benchmark Investment"].sum(),
-                    total_abs_return_difference,
-                ],
-            },
-            orient="index",
-            columns=["Portfolio", "Benchmark", "Difference"],
-        )
+    totals = pd.DataFrame.from_dict(
+        {
+            "Total Investment": [
+                portfolio_trades["Portfolio Investment"].sum(),
+                benchmark_trades["Benchmark Investment"].sum(),
+                total_investment_difference,
+            ],
+            "Total Value": [
+                portfolio_trades["Portfolio Value"].sum(),
+                benchmark_trades["Benchmark Value"].sum(),
+                total_value_difference,
+            ],
+            "Total % Return": [
+                f"{total_portfolio_return:.2%}",
+                f"{total_benchmark_return:.2%}",
+                f"{total_portfolio_return - total_benchmark_return:.2%}",
+            ],
+            "Total Abs Return": [
+                portfolio_trades["Portfolio Value"].sum()
+                - portfolio_trades["Portfolio Investment"].sum(),
+                benchmark_trades["Benchmark Value"].sum()
+                - benchmark_trades["Benchmark Investment"].sum(),
+                total_abs_return_difference,
+            ],
+        },
+        orient="index",
+        columns=["Portfolio", "Benchmark", "Difference"],
+    )
 
-        return totals.replace(0, "-")
+    return totals.replace(0, "-")
 
 
 @log_start_end(log=logger)

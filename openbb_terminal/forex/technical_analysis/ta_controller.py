@@ -382,7 +382,7 @@ class TechnicalAnalysisController(StockBaseController):
         if ns_parser:
             momentum_view.display_macd(
                 symbol=self.ticker,
-                series=self.data["Adj Close"],
+                data=self.data["Adj Close"],
                 n_fast=ns_parser.n_fast,
                 n_slow=ns_parser.n_slow,
                 n_signal=ns_parser.n_signal,
@@ -442,7 +442,7 @@ class TechnicalAnalysisController(StockBaseController):
         if ns_parser:
             momentum_view.display_rsi(
                 symbol=self.ticker,
-                series=self.data["Adj Close"],
+                data=self.data["Adj Close"],
                 window=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
@@ -578,7 +578,7 @@ class TechnicalAnalysisController(StockBaseController):
         if ns_parser:
             momentum_view.display_cg(
                 symbol=self.ticker,
-                series=self.data["Adj Close"],
+                data=self.data["Adj Close"],
                 window=ns_parser.n_length,
                 export=ns_parser.export,
             )

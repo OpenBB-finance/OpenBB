@@ -22,6 +22,7 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.portfolio import portfolio_model
+from openbb_terminal.portfolio import statics
 from openbb_terminal.portfolio import portfolio_view
 from openbb_terminal.portfolio import portfolio_helper
 from openbb_terminal.portfolio.portfolio_optimization import po_controller
@@ -149,7 +150,7 @@ class PortfolioController(BaseController):
         choices: dict = {c: {} for c in self.controller_choices}
         choices["load"]["-f"] = {c: None for c in self.DATA_HOLDINGS_FILES}
         choices["load"]["--file"] = {c: None for c in self.DATA_HOLDINGS_FILES}
-        choices["bench"] = {c: None for c in portfolio_helper.BENCHMARK_LIST}
+        choices["bench"] = {c: None for c in statics.BENCHMARK_LIST}
         choices["alloc"] = {c: None for c in self.AGGREGATION_METRICS}
         choices["metric"] = {c: None for c in self.VALID_METRICS}
         self.choices = choices
@@ -413,8 +414,8 @@ class PortfolioController(BaseController):
             if self.portfolio_name:
                 chosen_benchmark = " ".join(ns_parser.benchmark)
 
-                if chosen_benchmark in portfolio_helper.BENCHMARK_LIST:
-                    benchmark_ticker = portfolio_helper.BENCHMARK_LIST[chosen_benchmark]
+                if chosen_benchmark in statics.BENCHMARK_LIST:
+                    benchmark_ticker = statics.BENCHMARK_LIST[chosen_benchmark]
                     self.original_benchmark_name = chosen_benchmark
                 else:
                     benchmark_ticker = chosen_benchmark
@@ -1064,8 +1065,7 @@ class PortfolioController(BaseController):
                 self.portfolio_name, self.benchmark_name
             ):
                 portfolio_view.display_rolling_sortino(
-                    self.portfolio.benchmark_returns,
-                    self.portfolio.returns,
+                    portfolio=self.portfolio.benchmark_returns,
                     window=ns_parser.period,
                     risk_free_rate=ns_parser.risk_free_rate,
                     export=ns_parser.export,
