@@ -243,7 +243,7 @@ def get_government_buys(
         DataFrame of top government buy trading
     """
     df_gov = get_government_trading(gov_type)
-
+    print(df_gov)
     if df_gov.empty:
         return pd.DataFrame()
 
@@ -252,7 +252,8 @@ def get_government_buys(
 
     df_gov["TransactionDate"] = pd.to_datetime(df_gov["TransactionDate"])
 
-    df_gov = df_gov[df_gov["TransactionDate"] > start_date].dropna()
+    df_gov = df_gov[df_gov["TransactionDate"] > start_date].dropna(axis=1)
+
     # Catch bug where error shown for purchase of >5,000,000
     df_gov["Range"] = df_gov["Range"].apply(
         lambda x: "$5,000,001-$5,000,001" if x == ">$5,000,000" else x

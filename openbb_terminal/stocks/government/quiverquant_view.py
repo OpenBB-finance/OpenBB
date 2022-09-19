@@ -413,7 +413,7 @@ def display_contracts(
             title=f"Government Contracts for {symbol.upper()}",
         )
 
-    else:
+    if df_contracts.Amount.abs().sum() != 0:
 
         # This plot has 1 axis
         if not external_axes:
@@ -434,6 +434,8 @@ def display_contracts(
         if not external_axes:
             theme.visualize_output()
 
+    if df_contracts.Amount.abs().sum() == 0:
+        console.print("Contracts found, but they are all equal to $0.00.\n")
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "contracts", df_contracts
     )
