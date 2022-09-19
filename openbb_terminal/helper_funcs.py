@@ -37,7 +37,7 @@ import numpy as np
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import config_plot as cfgPlot
-from openbb_terminal.core.config.paths import HOME_DIRECTORY
+from openbb_terminal.core.config.paths import HOME_DIRECTORY, USER_ENV_FILE
 
 logger = logging.getLogger(__name__)
 
@@ -1058,6 +1058,8 @@ def get_flair() -> str:
         if str(obbff.USE_FLAIR) in flairs
         else str(obbff.USE_FLAIR)
     )
+
+    set_default_timezone()
     if obbff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
         dtime = datetime.now(pytz.timezone(get_user_timezone())).strftime(
             "%Y %b %d, %H:%M"
@@ -1070,6 +1072,15 @@ def get_flair() -> str:
         return f"{dtime} {flair}"
 
     return flair
+
+
+def set_default_timezone() -> None:
+    """Sets a default (America/New_York) timezone if one doesn't exist"""
+
+    dotenv.load_dotenv(USER_ENV_FILE)
+    user_tz = os.getenv("OPENBB_TIMEZONE")
+    if not user_tz:
+        dotenv.set_key(USER_ENV_FILE, "OPENBB_TIMEZONE", "America/New_York")
 
 
 def is_timezone_valid(user_tz: str) -> bool:
@@ -1094,15 +1105,12 @@ def get_user_timezone() -> str:
     Returns
     -------
     str
-        user timezone based on timezone.openbb file
+        user timezone based on .env file
     """
-    filename = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)),
-        "timezone.openbb",
-    )
-    if os.path.isfile(filename):
-        with open(filename) as f:
-            return f.read()
+    dotenv.load_dotenv(USER_ENV_FILE)
+    user_tz = os.getenv("OPENBB_TIMEZONE")
+    if user_tz:
+        return user_tz
     return ""
 
 
@@ -1128,21 +1136,11 @@ def replace_user_timezone(user_tz: str) -> None:
     user_tz: str
         User timezone to set
     """
-    filename = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)),
-        "timezone.openbb",
-    )
-    if os.path.isfile(filename):
-        with open(filename, "w") as f:
-            if is_timezone_valid(user_tz):
-                if f.write(user_tz):
-                    console.print("Timezone successfully updated", "\n")
-                else:
-                    console.print("Timezone not set successfully", "\n")
-            else:
-                console.print("Timezone selected is not valid", "\n")
+    if is_timezone_valid(user_tz):
+        dotenv.set_key(USER_ENV_FILE, "OPENBB_TIMEZONE", user_tz)
+        console.print("Timezone successfully updated", "\n")
     else:
-        console.print("timezone.openbb file does not exist", "\n")
+        console.print("Timezone selected is not valid", "\n")
 
 
 def str_to_bool(value) -> bool:
