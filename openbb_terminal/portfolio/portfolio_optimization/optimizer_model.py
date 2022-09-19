@@ -2821,7 +2821,8 @@ def black_litterman(
     ) @ (np.linalg.inv(tau * S) @ PI_eq + p_views.T @ np.linalg.inv(Omega) @ q_views)
 
     if flag:
-        M = 0
+        n, m = S.shape
+        M = np.zeros([n, m])
     else:
         M = np.linalg.inv(
             np.linalg.inv(tau * S) + p_views.T @ np.linalg.inv(Omega) @ p_views
