@@ -63,7 +63,6 @@ ecos==2.0.10; python_version >= "3.8" and python_version < "3.11"
 entrypoints==0.4; python_full_version >= "3.7.0" and python_version >= "3.7"
 et-xmlfile==1.1.0; python_version >= "3.6"
 exchange-calendars==4.2.3; python_version >= "3.8" and python_version < "4.0" and python_full_version >= "3.7.0"
-execnet==1.9.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6"
 executing==1.0.0; python_full_version >= "3.6.2" and python_version >= "3.8"
 fastjsonschema==2.16.1; python_full_version >= "3.7.0" and python_version >= "3.7"
 feedparser==6.0.10; python_version >= "3.6"
@@ -220,10 +219,8 @@ pyprind==2.11.3; python_version >= "2.7" and python_full_version < "3.0.0" or py
 pyrsistent==0.18.1; python_version >= "3.7"
 pysocks==1.7.1; python_version >= "3.7" and python_full_version < "3.0.0" and python_version < "4" or python_full_version >= "3.6.0" and python_version < "4" and python_version >= "3.7"
 pytest-cov==3.0.0; python_version >= "3.6"
-pytest-forked==1.4.0; python_version >= "3.6"
 pytest-mock==3.8.2; python_version >= "3.7"
 pytest-recording==0.12.1; python_version >= "3.5"
-pytest-xdist==2.5.0; python_version >= "3.6"
 pytest==6.2.5; python_version >= "3.6"
 python-binance==1.0.16
 python-coinmarketcap==0.2
