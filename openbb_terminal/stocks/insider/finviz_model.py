@@ -24,8 +24,8 @@ def get_last_insider_activity(symbol: str) -> pd.DataFrame:
     pd.DataFrame
         Latest insider trading activity
     """
-    dict = finviz.get_insider(symbol)
-    df = pd.DataFrame.from_dict(dict)
+    activity_dict = finviz.get_insider(symbol)
+    df = pd.DataFrame.from_dict(activity_dict)
     df.set_index("Date", inplace=True)
     df = df[
         [

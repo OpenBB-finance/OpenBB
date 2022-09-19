@@ -5,7 +5,6 @@ import logging
 import os
 from typing import Optional, List
 
-import datetime
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FormatStrFormatter
 from pandas.plotting import register_matplotlib_converters

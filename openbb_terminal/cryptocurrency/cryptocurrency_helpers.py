@@ -1277,7 +1277,7 @@ def plot_chart(
     source: str = "",
     exchange: str = "",
     interval: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: list[plt.Axes] | None = None,
 ) -> None:
     """Load data for Technical Analysis
 

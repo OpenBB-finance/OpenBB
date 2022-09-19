@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import warnings
-from typing import Any, Tuple, Union, List
+from typing import Any, Tuple, Union
 import pandas as pd
 import statsmodels.api as sm
 from statsmodels.tools.sm_exceptions import MissingDataError

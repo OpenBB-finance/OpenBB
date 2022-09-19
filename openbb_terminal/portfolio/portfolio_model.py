@@ -3,8 +3,7 @@ __docformat__ = "numpy"
 
 import contextlib
 import logging
-from re import S
-from typing import Dict, Any, Tuple
+from typing import Dict, Any
 import datetime
 
 import numpy as np
@@ -13,7 +12,6 @@ import pandas as pd
 import yfinance as yf
 from sklearn.metrics import r2_score
 from pycoingecko import CoinGeckoAPI
-from openbb_terminal import portfolio
 from openbb_terminal.common.quantitative_analysis import qa_model
 
 from openbb_terminal.decorators import log_start_end
@@ -757,6 +755,7 @@ class PortfolioModel:
         """
         self.risk_free_rate = risk_free_rate
 
+
 # Metrics
 @log_start_end(log=logger)
 def get_r2_score(portfolio: PortfolioModel) -> pd.DataFrame:
@@ -786,6 +785,7 @@ def get_r2_score(portfolio: PortfolioModel) -> pd.DataFrame:
             )
         )
     return pd.DataFrame(vals, index=portfolio_helper.PERIODS, columns=["R2 Score"])
+
 
 @log_start_end(log=logger)
 def get_skewness(portfolio: PortfolioModel) -> pd.DataFrame:
@@ -823,10 +823,11 @@ def get_skewness(portfolio: PortfolioModel) -> pd.DataFrame:
         vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
     )
 
+
 @log_start_end(log=logger)
 def get_kurtosis(portfolio: PortfolioModel) -> pd.DataFrame:
     """Class method that retrieves kurtosis for portfolio and benchmark selected
-    
+
     Parameters
     ----------
     portfolio: Portfolio
@@ -861,6 +862,7 @@ def get_kurtosis(portfolio: PortfolioModel) -> pd.DataFrame:
         vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
     )
 
+
 @log_start_end(log=logger)
 def get_stats(portfolio: PortfolioModel, window: str = "all") -> pd.DataFrame:
     """Class method that retrieves stats for portfolio and benchmark selected based on a certain interval
@@ -889,6 +891,7 @@ def get_stats(portfolio: PortfolioModel, window: str = "all") -> pd.DataFrame:
     )
     df.columns = ["Portfolio", "Benchmark"]
     return df
+
 
 @log_start_end(log=logger)
 def get_volatility(portfolio: PortfolioModel) -> pd.DataFrame:
@@ -928,8 +931,11 @@ def get_volatility(portfolio: PortfolioModel) -> pd.DataFrame:
         columns=["Portfolio [%]", "Benchmark [%]"],
     )
 
+
 @log_start_end(log=logger)
-def get_sharpe_ratio(portfolio: PortfolioModel, risk_free_rate: float = 0) -> pd.DataFrame:
+def get_sharpe_ratio(
+    portfolio: PortfolioModel, risk_free_rate: float = 0
+) -> pd.DataFrame:
     """Class method that retrieves sharpe ratio for portfolio and benchmark selected
 
     Parameters
@@ -970,8 +976,11 @@ def get_sharpe_ratio(portfolio: PortfolioModel, risk_free_rate: float = 0) -> pd
         vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
     )
 
+
 @log_start_end(log=logger)
-def get_sortino_ratio(portfolio: PortfolioModel, risk_free_rate: float = 0) -> pd.DataFrame:
+def get_sortino_ratio(
+    portfolio: PortfolioModel, risk_free_rate: float = 0
+) -> pd.DataFrame:
     """Class method that retrieves sortino ratio for portfolio and benchmark selected
 
     Parameters
@@ -1012,6 +1021,7 @@ def get_sortino_ratio(portfolio: PortfolioModel, risk_free_rate: float = 0) -> p
         vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
     )
 
+
 @log_start_end(log=logger)
 def get_maximum_drawdown_ratio(portfolio: PortfolioModel) -> pd.DataFrame:
     """Class method that retrieves maximum drawdown ratio for portfolio and benchmark selected
@@ -1050,6 +1060,7 @@ def get_maximum_drawdown_ratio(portfolio: PortfolioModel) -> pd.DataFrame:
         vals, index=portfolio_helper.PERIODS, columns=["Portfolio", "Benchmark"]
     )
 
+
 @log_start_end(log=logger)
 def get_gaintopain_ratio(portfolio: PortfolioModel):
     """Get Pain-to-Gain ratio based on historical data
@@ -1065,7 +1076,9 @@ def get_gaintopain_ratio(portfolio: PortfolioModel):
         DataFrame of the portfolio's gain-to-pain ratio
     """
     gtp_period_df = portfolio_helper.get_gaintopain_ratio(
-        portfolio.historical_trade_data, portfolio.benchmark_trades, portfolio.benchmark_returns
+        portfolio.historical_trade_data,
+        portfolio.benchmark_trades,
+        portfolio.benchmark_returns,
     )
 
     return gtp_period_df
@@ -1119,6 +1132,7 @@ def get_information_ratio(portfolio: PortfolioModel):
 
     return ir_period_df
 
+
 @log_start_end(log=logger)
 def get_tail_ratio(portfolio: PortfolioModel, window: int = 252):
     """Get tail ratio
@@ -1146,6 +1160,7 @@ def get_tail_ratio(portfolio: PortfolioModel, window: int = 252):
 
     return tailr_period_df, portfolio_tr, benchmark_tr
 
+
 @log_start_end(log=logger)
 def get_common_sense_ratio(portfolio: PortfolioModel):
     """Get common sense ratio
@@ -1171,7 +1186,9 @@ def get_common_sense_ratio(portfolio: PortfolioModel):
 
 
 @log_start_end(log=logger)
-def get_jensens_alpha(portfolio: PortfolioModel, risk_free_rate: float = 0, window: str = "1y"):
+def get_jensens_alpha(
+    portfolio: PortfolioModel, risk_free_rate: float = 0, window: str = "1y"
+):
     """Get jensen's alpha
 
     Parameters
@@ -1230,6 +1247,7 @@ def get_calmar_ratio(portfolio: PortfolioModel, window: int = 756):
 
     return cr_period_df, cr_rolling
 
+
 @log_start_end(log=logger)
 def get_kelly_criterion(portfolio: PortfolioModel):
     """Gets kelly criterion
@@ -1244,7 +1262,9 @@ def get_kelly_criterion(portfolio: PortfolioModel):
     pd.DataFrame
         DataFrame of kelly criterion of the portfolio during different time periods
     """
-    kc_period_df = portfolio_helper.get_kelly_criterion(portfolio.returns, portfolio.portfolio_trades)
+    kc_period_df = portfolio_helper.get_kelly_criterion(
+        portfolio.returns, portfolio.portfolio_trades
+    )
 
     return kc_period_df
 
@@ -1777,6 +1797,7 @@ def get_summary(
 
     return summary
 
+
 @log_start_end(log=logger)
 def get_yearly_returns(
     portfolio: PortfolioModel,
@@ -1791,17 +1812,13 @@ def get_yearly_returns(
     window : str
         interval to compare cumulative returns and benchmark
     """
-    portfolio_returns = portfolio_helper.filter_df_by_period(
-        portfolio.returns, window
-    )
+    portfolio_returns = portfolio_helper.filter_df_by_period(portfolio.returns, window)
     benchmark_returns = portfolio_helper.filter_df_by_period(
         portfolio.benchmark_returns, window
     )
 
-    creturns_year_idx = list()
-    creturns_year_val = list()
-    breturns_year_idx = list()
-    breturns_year_val = list()
+    creturns_year_val = []
+    breturns_year_val = []
 
     for year in sorted(set(portfolio_returns.index.year)):
         creturns_year = portfolio_returns[portfolio_returns.index.year == year]
@@ -1829,6 +1846,7 @@ def get_yearly_returns(
 
     return df
 
+
 @log_start_end(log=logger)
 def get_monthly_returns(
     portfolio: PortfolioModel,
@@ -1847,9 +1865,7 @@ def get_monthly_returns(
     pd.DataFrame
 
     """
-    portfolio_returns = portfolio_helper.filter_df_by_period(
-        portfolio.returns, window
-    )
+    portfolio_returns = portfolio_helper.filter_df_by_period(portfolio.returns, window)
     benchmark_returns = portfolio_helper.filter_df_by_period(
         portfolio.benchmark_returns, window
     )
@@ -1924,6 +1940,7 @@ def get_monthly_returns(
     )
 
     return monthly_returns, bench_monthly_returns
+
 
 @log_start_end(log=logger)
 def get_daily_returns(

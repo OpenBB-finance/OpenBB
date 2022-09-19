@@ -84,7 +84,7 @@ SA_KEYS = {
 def get_stocks_data(
     symbols: list = ["FB", "TSLA", "MSFT"],
     finance_key: str = "ncf",
-    stocks_data: dict = dict(),
+    stocks_data: dict = None,
     period: str = "annual",
     currency: str = "USD",
 ):
@@ -112,6 +112,8 @@ def get_stocks_data(
     dict
         Dictionary of filtered stocks data separated by financial statement
     """
+    if stocks_data is None:
+        stocks_data = {}
 
     no_data = []
 

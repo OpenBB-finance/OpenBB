@@ -1,20 +1,4 @@
-          Date                                                                              Description                            Agency       Amount
-0   2022-07-12                                          SOLAR PANELS   FY22 REQ# 14453  BPA 140G0120A00  DEPARTMENT OF THE INTERIOR (DOI)     49600.00
-1   2022-05-24                                       FULL FACILITY REVITALIZATION B200, FORT TOTTEN, NY       DEPARTMENT OF DEFENSE (DOD)  29056747.00
-2   2022-05-24                        AWARD OF AN ENERGY SAVINGS PERFORMANCE CONTRACT (CANNON AFB ESPC)       DEPARTMENT OF DEFENSE (DOD)         0.00
-3   2022-05-21                                                                 ENERGY SUBMETERING STUDY     NATIONAL GALLERY OF ART (NGA)     52679.00
-4   2022-05-21                                                                    GAS UTILITIES PAYMENT       DEPARTMENT OF DEFENSE (DOD)     54504.30
-5   2022-05-20                                                                    GAS UTILITIES PAYMENT       DEPARTMENT OF DEFENSE (DOD)     44335.43
-6   2022-05-20                                                                    GAS UTILITIES PAYMENT       DEPARTMENT OF DEFENSE (DOD)     38946.21
-7   2022-05-20                                                                    GAS UTILITIES PAYMENT       DEPARTMENT OF DEFENSE (DOD)     40442.23
-8   2022-05-20                                                                    GAS UTILITIES PAYMENT       DEPARTMENT OF DEFENSE (DOD)     33716.67
-9   2022-05-20                                                                     ASHRAE LEVEL 2 AUDIT     NATIONAL GALLERY OF ART (NGA)    226523.00
-10  2022-05-20                                                                        MINIMUM GUARANTEE       DEPARTMENT OF DEFENSE (DOD)      5000.00
-11  2022-05-20                                                                               HR LP MACC       DEPARTMENT OF DEFENSE (DOD)         0.00
-12  2022-05-20                                                                    GAS UTILITIES PAYMENT       DEPARTMENT OF DEFENSE (DOD)     32333.75
-13  2022-05-20                                                                    GAS UTILITIES PAYMENT       DEPARTMENT OF DEFENSE (DOD)     31789.40
-14  2022-05-20  ENERGY SAVINGS PERFORMANCE CONTRACT (ESPC) FOR JOINT BASE MCGUIRE-DIX LAKEHURST (JBMDL)       DEPARTMENT OF DEFENSE (DOD)         0.00
-15  2022-05-20                                                                    GAS UTILITIES PAYMENT       DEPARTMENT OF DEFENSE (DOD)     31479.19
-16  2022-05-19                                                                    GAS UTILITIES PAYMENT       DEPARTMENT OF DEFENSE (DOD)     31544.02
-17  2022-05-19                                                                    GAS UTILITIES PAYMENT       DEPARTMENT OF DEFENSE (DOD)     40003.42
-18  2022-05-08                                 AMERESCO FEDERAL SOLUTIONS EVSE & ANCILLARY SERVICES BPA                              None         0.00
+         Date                                                        Description                            Agency      Amount
+0  2022-07-12                    SOLAR PANELS   FY22 REQ# 14453  BPA 140G0120A00  DEPARTMENT OF THE INTERIOR (DOI)     49600.0
+1  2022-05-24                 FULL FACILITY REVITALIZATION B200, FORT TOTTEN, NY       DEPARTMENT OF DEFENSE (DOD)  29056747.0
+2  2022-05-24  AWARD OF AN ENERGY SAVINGS PERFORMANCE CONTRACT (CANNON AFB ESPC)       DEPARTMENT OF DEFENSE (DOD)         0.0

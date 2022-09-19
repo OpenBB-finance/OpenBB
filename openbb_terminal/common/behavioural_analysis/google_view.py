@@ -211,7 +211,6 @@ def display_queries(symbol: str, limit: int = 5, export: str = ""):
         Ticker symbol
     limit: int
         Number of regions to show
-    export: str
     export: str {"csv","json","xlsx","png","jpg","pdf","svg"}
         Format to export data
 
@@ -221,10 +220,11 @@ def display_queries(symbol: str, limit: int = 5, export: str = ""):
     """
     # Retrieve a dict with top and rising queries
     df_related_queries = google_model.get_queries(symbol, limit)
+    df = df_related_queries[symbol]["top"]
 
     print_rich_table(
-        df_related_queries,
-        headers=list(df_related_queries.columns),
+        df,
+        headers=list(df.columns),
         title=f"Top {symbol}'s related queries",
     )
 
@@ -232,7 +232,7 @@ def display_queries(symbol: str, limit: int = 5, export: str = ""):
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "queries",
-        df_related_queries,
+        df,
     )
 
 
