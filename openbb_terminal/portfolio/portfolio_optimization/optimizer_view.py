@@ -17,7 +17,6 @@ import riskfolio as rp
 from dateutil.relativedelta import relativedelta, FR
 from matplotlib.gridspec import GridSpec
 from matplotlib.lines import Line2D
-from scipy.interpolate import interp1d
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
@@ -2206,103 +2205,37 @@ def display_ef(
     plot_tickers: bool
         Whether to plot the tickers for the assets
     """
-    stock_prices = yahoo_finance_model.process_stocks(
-        symbols, interval, start_date, end_date
-    )
-    stock_returns = yahoo_finance_model.process_returns(
-        stock_prices,
-        log_returns=log_returns,
-        freq=freq,
-        maxnan=maxnan,
-        threshold=threshold,
-        method=method,
-    )
 
-    risk_free_rate = risk_free_rate / time_factor[freq.upper()]
-
-    # Building the portfolio object
-    port = rp.Portfolio(returns=stock_returns, alpha=alpha)
-
-    # Estimate input parameters:
-    port.assets_stats(method_mu="hist", method_cov="hist")
-
-    # Budget constraints
-    port.upperlng = value
-    if value_short > 0:
-        port.sht = True
-        port.uppersht = value_short
-        port.budget = value - value_short
-    else:
-        port.budget = value
-
-    # Estimate tangency portfolio:
-    weights = port.optimization(
-        model="Classic",
-        rm=risk_choices[risk_measure],
-        obj="Sharpe",
-        rf=risk_free_rate,
-        hist=True,
-    )
-
-    points = 20  # Number of points of the frontier
-    frontier = port.efficient_frontier(
-        model="Classic",
-        rm=risk_choices[risk_measure],
-        points=points,
-        rf=risk_free_rate,
-        hist=True,
-    )
-
-    random_weights = optimizer_model.generate_random_portfolios(
-        symbols=symbols,
-        n_portfolios=n_portfolios,
-        seed=seed,
-    )
-
-    mu = stock_returns.mean().to_frame().T
-    cov = stock_returns.cov()
-    Y = (mu @ frontier).to_numpy() * time_factor[freq.upper()]
-    Y = np.ravel(Y)
-    X = np.zeros_like(Y)
-
-    for i in range(frontier.shape[1]):
-        w = np.array(frontier.iloc[:, i], ndmin=2).T
-        risk = rp.Sharpe_Risk(
-            w,
-            cov=cov,
-            returns=stock_returns,
-            rm=risk_choices[risk_measure],
-            rf=risk_free_rate,
-            alpha=alpha,
-            # a_sim=a_sim,
-            # beta=beta,
-            # b_sim=b_sim,
+    frontier, mu, cov, stock_returns, weights, X1, Y1, port = optimizer_model.get_ef(
+        symbols,
+        interval,
+        start_date,
+        end_date,
+        log_returns,
+        freq,
+        maxnan,
+        threshold,
+        method,
+        risk_measure,
+        risk_free_rate,
+        alpha,
+        value,
+        value_short,
+        n_portfolios,
+        seed,
         )
-        X[i] = risk
-
-    if risk_choices[risk_measure] not in ["ADD", "MDD", "CDaR", "EDaR", "UCI"]:
-        X = X * time_factor[freq.upper()] ** 0.5
-    f = interp1d(X, Y, kind="quadratic")
-    X1 = np.linspace(X[0], X[-1], num=100)
-    Y1 = f(X1)
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
         ax = external_axes[0]
 
-    frontier = pd.concat([frontier, random_weights], axis=1)
-    # to delete stocks with corrupted data
-    frontier.drop(
-        frontier.tail(len(random_weights.index) - len(stock_returns.columns)).index,
-        inplace=True,
-    )
     ax = rp.plot_frontier(
         w_frontier=frontier,
         mu=mu,
         cov=cov,
         returns=stock_returns,
-        rm=risk_choices[risk_measure],
+        rm=risk_choices[risk_measure.lower()],
         rf=risk_free_rate,
         alpha=alpha,
         cmap="RdYlBu",
@@ -2322,14 +2255,14 @@ def display_ef(
             weights,
             cov=cov,
             returns=stock_returns,
-            rm=risk_choices[risk_measure],
+            rm=risk_choices[risk_measure.lower()],
             rf=risk_free_rate,
             alpha=alpha,
             # a_sim=a_sim,
             # beta=beta,
             # b_sim=b_sim,
         )
-        if risk_choices[risk_measure] not in ["ADD", "MDD", "CDaR", "EDaR", "UCI"]:
+        if risk_choices[risk_measure.lower()] not in ["ADD", "MDD", "CDaR", "EDaR", "UCI"]:
             risk_sharpe = risk_sharpe * time_factor[freq.upper()] ** 0.5
 
         y = ret_sharpe * 1.5
@@ -2353,12 +2286,12 @@ def display_ef(
                 weight_df,
                 cov=port.cov[ticker][ticker],
                 returns=stock_returns.loc[:, [ticker]],
-                rm=risk_choices[risk_measure],
+                rm=risk_choices[risk_measure.lower()],
                 rf=risk_free_rate,
                 alpha=alpha,
             )
 
-            if risk_choices[risk_measure] not in ["MDD", "ADD", "CDaR", "EDaR", "UCI"]:
+            if risk_choices[risk_measure.lower()] not in ["MDD", "ADD", "CDaR", "EDaR", "UCI"]:
                 risk = risk * time_factor[freq.upper()] ** 0.5
 
             ticker_plot = ticker_plot.append(
