@@ -1289,6 +1289,9 @@ def display_min_risk(
     risk_free_rate: float, optional
         Risk free rate, must be in the same interval of assets returns. Used for
         'FLPM' and 'SLPM' and Sharpe objective function. The default is 0.
+    risk_aversion: float, optional
+        Risk aversion factor of the 'Utility' objective function.
+        The default is 1.
     alpha: float, optional
         Significance level of CVaR, EVaR, CDaR and EDaR
     target_return: float, optional
@@ -1334,7 +1337,7 @@ def display_min_risk(
         True if plot table weights, by default False
     """
     p = d_period(interval, start_date, end_date)
-    s_title = f"{p} Maximal return/risk ratio portfolio using "
+    s_title = f"{p} Minimum risk portfolio using "
     s_title += risk_names[risk_measure.lower()] + " as risk measure\n"
 
     weights, stock_returns = optimizer_model.get_min_risk(
@@ -1507,7 +1510,11 @@ def display_max_util(
     table: bool, optional
         True if plot table weights, by default False
     """
-    weights = display_mean_risk(
+    p = d_period(interval, start_date, end_date)
+    s_title = f"{p} Maximal risk averse utility function portfolio using "
+    s_title += risk_names[risk_measure.lower()] + " as risk measure\n"
+
+    weights, stock_returns = optimizer_model.get_max_util(
         symbols=symbols,
         interval=interval,
         start_date=start_date,
@@ -1518,7 +1525,6 @@ def display_max_util(
         threshold=threshold,
         method=method,
         risk_measure=risk_measure,
-        objective="utility",
         risk_free_rate=risk_free_rate,
         risk_aversion=risk_aversion,
         alpha=alpha,
@@ -1529,8 +1535,28 @@ def display_max_util(
         d_ewma=d_ewma,
         value=value,
         value_short=value_short,
-        table=table,
     )
+
+    if weights is None:
+        console.print("\n", "There is no solution with these parameters")
+        return {}
+
+    if table:
+        console.print("\n", s_title)
+        display_weights(weights)
+        portfolio_performance(
+            weights=weights,
+            data=stock_returns,
+            risk_measure=risk_choices[risk_measure],
+            risk_free_rate=risk_free_rate,
+            alpha=alpha,
+            # a_sim=a_sim,
+            # beta=beta,
+            # b_sim=beta_sim,
+            freq=freq,
+        )
+        console.print("")
+
     return weights
 
 
