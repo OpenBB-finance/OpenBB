@@ -109,6 +109,7 @@ time_factor = {
 
 dict_conversion = {"period": "historic_period", "start": "start_period"}
 
+
 @log_start_end(log=logger)
 def d_period(interval: str = "1y", start_date: str = "", end_date: str = ""):
     """
