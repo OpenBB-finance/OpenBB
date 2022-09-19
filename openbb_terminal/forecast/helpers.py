@@ -703,8 +703,14 @@ def check_parser_input(parser: argparse.ArgumentParser, datasets, *args) -> bool
 
 
 def plot_residuals(
-    model, past_covariates, series, forecast_horizon: int = 1, num_bins: int = 20
+    model,
+    past_covariates,
+    series,
+    forecast_horizon: int = 1,
+    num_bins: int = 20,
+    default_formatting: bool = False,
 ):
+    del default_formatting
     if past_covariates:
         console.print(
             "[red]Cannot calculate and plot residuals if there are past covariates.[/red]"
@@ -722,7 +728,13 @@ def plot_residuals(
             retrain=False,
             verbose=True,
         )
-        plot_residuals_analysis(residuals=residuals, num_bins=num_bins, fill_nan=True)
+        plot_residuals_analysis(
+            residuals=residuals,
+            num_bins=num_bins,
+            fill_nan=True,
+            # TODO: uncomment this once darts pr #1224 becomes a part of the package
+            # default_formatting=default_formatting,
+        )
 
 
 def check_data_length(
