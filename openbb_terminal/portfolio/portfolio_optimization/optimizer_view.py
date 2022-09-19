@@ -2915,11 +2915,12 @@ def display_hrp(
     covariance: str = "hist",
     risk_measure: str = "mv",
     risk_free_rate: float = 0.0,
+    risk_aversion: float = 1.0,
     alpha: float = 0.05,
     a_sim: int = 100,
     beta: float = None,
     b_sim: int = None,
-    linkage: str = "ward",
+    linkage: str = "single",
     k: int = 0,
     max_k: int = 10,
     bins_info: str = "KN",
@@ -3031,6 +3032,9 @@ def display_hrp(
     risk_free_rate: float, optional
         Risk free rate, must be in the same interval of assets returns.
         Used for 'FLPM' and 'SLPM'. The default is 0.
+    risk_aversion: float, optional
+        Risk aversion factor of the 'Utility' objective function.
+        The default is 1.
     alpha: float, optional
         Significance level of VaR, CVaR, EDaR, DaR, CDaR, EDaR, Tail Gini of losses.
         The default is 0.05.
@@ -3090,7 +3094,13 @@ def display_hrp(
     table: bool, optional
         True if plot table weights, by default False
     """
-    weights = display_hcp(
+    p = d_period(interval, start_date, end_date)
+
+    s_title = f"{p} Hierarchical risk parity portfolio"
+    s_title += " using " + codependence + " codependence,\n" + linkage
+    s_title += " linkage and " + risk_names[risk_measure] + " as risk measure\n"
+
+    weights, stock_returns = optimizer_model.get_hrp(
         symbols=symbols,
         interval=interval,
         start_date=start_date,
@@ -3100,11 +3110,11 @@ def display_hrp(
         maxnan=maxnan,
         threshold=threshold,
         method=method,
-        model="HRP",
         codependence=codependence,
         covariance=covariance,
-        risk_measure=risk_measure,
+        risk_measure=risk_choices[risk_measure],
         risk_free_rate=risk_free_rate,
+        risk_aversion=risk_aversion,
         alpha=alpha,
         a_sim=a_sim,
         beta=beta,
@@ -3117,8 +3127,28 @@ def display_hrp(
         leaf_order=leaf_order,
         d_ewma=d_ewma,
         value=value,
-        table=table,
     )
+
+    if weights is None:
+        console.print("\n", "There is no solution with this parameters")
+        return {}
+
+    if table:
+        console.print("\n", s_title)
+        display_weights(weights)
+        portfolio_performance(
+            weights=weights,
+            data=stock_returns,
+            risk_measure=risk_choices[risk_measure],
+            risk_free_rate=risk_free_rate,
+            alpha=alpha,
+            a_sim=a_sim,
+            beta=beta,
+            b_sim=b_sim,
+            freq=freq,
+        )
+        console.print("")
+
     return weights
 
 
@@ -3137,6 +3167,7 @@ def display_herc(
     covariance: str = "hist",
     risk_measure: str = "mv",
     risk_free_rate: float = 0.0,
+    risk_aversion: float = 1.0,
     alpha: float = 0.05,
     a_sim: int = 100,
     beta: float = None,
@@ -3261,6 +3292,9 @@ def display_herc(
     risk_free_rate: float, optional
         Risk free rate, must be in the same interval of assets returns.
         Used for 'FLPM' and 'SLPM'. The default is 0.
+    risk_aversion: float, optional
+        Risk aversion factor of the 'Utility' objective function.
+        The default is 1.
     alpha: float, optional
         Significance level of VaR, CVaR, EDaR, DaR, CDaR, EDaR, Tail Gini of losses.
         The default is 0.05.
@@ -3320,7 +3354,13 @@ def display_herc(
     table: bool, optional
         True if plot table weights, by default False
     """
-    weights = display_hcp(
+    p = d_period(interval, start_date, end_date)
+
+    s_title = f"{p} Hierarchical equal risk contribution portfolio"
+    s_title += " using " + codependence + "\ncodependence," + linkage
+    s_title += " linkage and " + risk_names[risk_measure] + " as risk measure\n"
+
+    weights, stock_returns = optimizer_model.get_herc(
         symbols=symbols,
         interval=interval,
         start_date=start_date,
@@ -3330,11 +3370,11 @@ def display_herc(
         maxnan=maxnan,
         threshold=threshold,
         method=method,
-        model="HERC",
         codependence=codependence,
         covariance=covariance,
-        risk_measure=risk_measure,
+        risk_measure=risk_choices[risk_measure],
         risk_free_rate=risk_free_rate,
+        risk_aversion=risk_aversion,
         alpha=alpha,
         a_sim=a_sim,
         beta=beta,
@@ -3347,8 +3387,28 @@ def display_herc(
         leaf_order=leaf_order,
         d_ewma=d_ewma,
         value=value,
-        table=table,
     )
+
+    if weights is None:
+        console.print("\n", "There is no solution with this parameters")
+        return {}
+
+    if table:
+        console.print("\n", s_title)
+        display_weights(weights)
+        portfolio_performance(
+            weights=weights,
+            data=stock_returns,
+            risk_measure=risk_choices[risk_measure],
+            risk_free_rate=risk_free_rate,
+            alpha=alpha,
+            a_sim=a_sim,
+            beta=beta,
+            b_sim=b_sim,
+            freq=freq,
+        )
+        console.print("")
+
     return weights
 
 
@@ -3574,7 +3634,7 @@ def display_nco(
         model="NCO",
         codependence=codependence,
         covariance=covariance,
-        objective=objective,
+        objective=objective.lower(),
         risk_measure=risk_measure,
         risk_free_rate=risk_free_rate,
         risk_aversion=risk_aversion,

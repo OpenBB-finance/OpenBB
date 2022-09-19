@@ -1229,6 +1229,7 @@ functions = {
     },
     "portfolio.po.maxsharpe": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_sharpe",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_sharpe",
     },
     "portfolio.po.minrisk": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_min_risk",
@@ -1238,21 +1239,25 @@ functions = {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_util",
         "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_util",
     },
-    "portfolio.po.bl": {},
     "portfolio.po.maxutil": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_util",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_util",
     },
     "portfolio.po.maxret": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_ret",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_ret",
     },
     "portfolio.po.maxdiv": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_diversification_portfolio",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_div",
     },
     "portfolio.po.maxdecorr": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_decorrelation_portfolio",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_decorr",
     },
     "portfolio.po.blacklitterman": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_black_litterman_portfolio",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_black_litterman",
     },
     "portfolio.po.ef": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_ef",
@@ -1260,13 +1265,28 @@ functions = {
     },
     "portfolio.po.riskparity": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_risk_parity_portfolio",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_risk_parity",
     },
     "portfolio.po.relriskparity": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_rel_risk_parity_portfolio",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_rel_risk_parity",
     },
     "portfolio.po.meanrisk": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_mean_risk_portfolio",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_mean_risk",
     },
+    "portfolio.po.hrp": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_hrp",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_hrp",
+    },
+    "portfolio.po.herc": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_herc",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_herc",
+    },    
+    # "portfolio.po.nco": {
+    #     "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_nco",
+    #     "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_nco",
+    # },  
     "portfolio.po.hcp": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_hcp_portfolio",
         "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_hcp",
