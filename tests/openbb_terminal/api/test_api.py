@@ -6,5 +6,7 @@
 
 
 def test_load_api():
-    # pylint: disable=unused-import
+    # pylint: import-outside-toplevel
     from openbb_terminal import api
+
+    print(api)
