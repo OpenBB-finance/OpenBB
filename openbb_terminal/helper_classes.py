@@ -12,7 +12,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, ticker
 
-from openbb_terminal.core.config.paths import USER_STYLES_DIRECTORY, REPO_DIRECTORY
+from openbb_terminal.core.config.paths import USER_STYLES_DIRECTORY, REPOSITORY_DIRECTORY
 
 
 class LineAnnotateDrawer:
@@ -152,7 +152,7 @@ class TerminalStyle:
         # To import all styles from terminal repo folder to user data
 
         if len(os.listdir(self._STYLES_FOLDER)) == 0:
-            repo_styles = REPO_DIRECTORY.joinpath("styles")
+            repo_styles = REPOSITORY_DIRECTORY.joinpath("styles")
             for root, _, filenames in os.walk(repo_styles.joinpath("default")):
                 os.mkdir(Path(self._STYLES_FOLDER).joinpath("default"))
                 for style in filenames:

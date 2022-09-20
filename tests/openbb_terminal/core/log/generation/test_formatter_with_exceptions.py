@@ -2,7 +2,7 @@ import os
 import pytest
 from openbb_terminal.core.log.generation import formatter_with_exceptions
 from openbb_terminal.core.log.generation.settings import AppSettings
-from openbb_terminal.core.config.paths import REPO_DIRECTORY
+from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY
 
 app_settings = AppSettings(
     commit_hash="MOCK_COMMIT_HASH",
@@ -33,7 +33,7 @@ def test_extract_log_extra(mocker):
 
 
 def test_filter_piis():
-    text = f"test 1.1.1.1 chavi@chavi.com {REPO_DIRECTORY.name}{os.sep} dd{os.sep}dd"
+    text = f"test 1.1.1.1 chavi@chavi.com {REPOSITORY_DIRECTORY.name}{os.sep} dd{os.sep}dd"
     value = formatter.filter_piis(text)
     assert value
 
