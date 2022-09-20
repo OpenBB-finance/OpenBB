@@ -20,6 +20,7 @@ from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import get_coins
 from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
+# pylint: disable=unsupported-assignment-operation
 
 HOLD_COINS = ["ethereum", "bitcoin"]
 
