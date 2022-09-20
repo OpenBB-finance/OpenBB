@@ -1299,6 +1299,7 @@ functions = {
     },
     "portfolio.po.plot": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.additional_plots",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.additional_plots",
     },
     "stocks.bt.ema_cross": {
         "model": "openbb_terminal.stocks.backtesting.bt_model.ema_cross_strategy",
