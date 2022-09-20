@@ -33,7 +33,9 @@ def test_extract_log_extra(mocker):
 
 
 def test_filter_piis():
-    text = f"test 1.1.1.1 chavi@chavi.com {REPOSITORY_DIRECTORY.name}{os.sep} dd{os.sep}dd"
+    text = (
+        f"test 1.1.1.1 chavi@chavi.com {REPOSITORY_DIRECTORY.name}{os.sep} dd{os.sep}dd"
+    )
     value = formatter.filter_piis(text)
     assert value
 
