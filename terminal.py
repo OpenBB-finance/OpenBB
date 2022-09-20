@@ -22,7 +22,7 @@ from openbb_terminal.core.config import (  # pylint: disable=unused-import  # no
 )
 from openbb_terminal.core.config import (  # pylint: disable=unused-import  # noqa
     move_files,
-)  
+)
 from openbb_terminal.common import feedparser_view
 from openbb_terminal.core.config.paths import (
     REPO_DIRECTORY,
