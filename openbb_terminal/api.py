@@ -2039,7 +2039,7 @@ class Loader:
     def __init__(self, funcs: dict):
         print(
             "WARNING! Breaking changes incoming! Especially avoid using kwargs, since some of them will change.\n"
-            "You can try <link> branch with the latest changes."
+            "For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/api/"
         )
         self.__function_map = self.build_function_map(funcs=funcs)
         self.load_menus()
