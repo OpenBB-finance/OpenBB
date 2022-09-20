@@ -3,9 +3,8 @@
 import shutil
 import os
 from openbb_terminal.core.config.paths import (
-    REPO_DIRECTORY,
+    REPOSITORY_DIRECTORY,
     CUSTOM_IMPORTS_DIRECTORY,
-    USER_STYLES_DIRECTORY,
 )
 
 
@@ -19,8 +18,5 @@ def copy_and_delete_files(from_dir, to_dir):
 
 
 copy_and_delete_files(
-    os.path.join(REPO_DIRECTORY, "custom_imports"), CUSTOM_IMPORTS_DIRECTORY
-)
-copy_and_delete_files(
-    os.path.join(REPO_DIRECTORY, "styles", "user"), USER_STYLES_DIRECTORY
+    os.path.join(REPOSITORY_DIRECTORY, "custom_imports"), CUSTOM_IMPORTS_DIRECTORY
 )
