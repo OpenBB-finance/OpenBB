@@ -230,9 +230,9 @@ class TerminalStyle:
                 continue
 
             if stf.name.endswith(".mplstyle"):
-                self.mpl_styles_available[stf.name.replace(".mplstyle", "")] = os.path.join(
-                    folder, stf
-                )
+                self.mpl_styles_available[
+                    stf.name.replace(".mplstyle", "")
+                ] = os.path.join(folder, stf)
             elif stf.name.endswith(".mplrc.json"):
                 self.mpl_rcparams_available[
                     stf.name.replace(".mplrc.json", "")
