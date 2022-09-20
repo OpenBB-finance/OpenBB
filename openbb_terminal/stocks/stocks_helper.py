@@ -36,6 +36,7 @@ logger = logging.getLogger(__name__)
 
 # pylint: disable=no-member,too-many-branches,C0302,R0913
 # pylint: disable=inconsistent-return-statements
+# pylint: disable=unsupported-assignment-operation
 
 INTERVALS = [1, 5, 15, 30, 60]
 SOURCES = ["YahooFinance", "AlphaVantage", "IEXCloud", "EODHD"]
