@@ -22,7 +22,7 @@ from openbb_terminal.core.config import (  # pylint: disable=unused-import  # no
 )
 from openbb_terminal.common import feedparser_view
 from openbb_terminal.core.config.paths import (
-    REPO_DIRECTORY,
+    REPOSITORY_DIRECTORY,
     USER_ENV_FILE,
     REPOSITORY_ENV_FILE,
     HOME_DIRECTORY,
@@ -908,7 +908,7 @@ def main(
         console.print("[green]OpenBB Terminal Integrated Tests:\n[/green]")
         for file in test_files:
             file = file.replace("//", "/")
-            repo_path_position = file.rfind(REPO_DIRECTORY.name)
+            repo_path_position = file.rfind(REPOSITORY_DIRECTORY.name)
             if repo_path_position >= 0:
                 file_name = file[repo_path_position:].replace("\\", "/")
             else:
@@ -926,7 +926,7 @@ def main(
         if fails:
             console.print("\n[red]Failures:[/red]\n")
             for key, value in fails.items():
-                repo_path_position = key.rfind(REPO_DIRECTORY.name)
+                repo_path_position = key.rfind(REPOSITORY_DIRECTORY.name)
                 if repo_path_position >= 0:
                     file_name = key[repo_path_position:].replace("\\", "/")
                 else:
