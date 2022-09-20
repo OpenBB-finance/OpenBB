@@ -3808,7 +3808,7 @@ def pie_chart_weights(
 def additional_plots(
     weights,
     data: pd.DataFrame,
-    category: Dict,
+    category: Dict = None,
     title_opt: str = "",
     freq: str = "D",
     risk_measure: str = "MV",
@@ -4019,7 +4019,7 @@ def additional_plots(
             w=pd.Series(weights).to_frame(),
             cov=data.cov(),
             returns=data,
-            rm=risk_choices[risk_measure],
+            rm=risk_choices[risk_measure.lower()],
             rf=risk_free_rate,
             alpha=alpha,
             a_sim=a_sim,
