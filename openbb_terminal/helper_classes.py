@@ -12,7 +12,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, ticker
 
-from openbb_terminal.core.config.paths import REPOSITORY_STYLES_DIRECTORY, USER_STYLES_DIRECTORY
+from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY, USER_DATA_DIRECTORY
 
 
 class LineAnnotateDrawer:
@@ -100,8 +100,8 @@ class TerminalStyle:
     styles as python dictionaries.
     """
 
-    DEFAULT_STYLES_LOCATION = REPOSITORY_STYLES_DIRECTORY / "default"
-    USER_STYLES_LOCATION = USER_STYLES_DIRECTORY / "user"
+    DEFAULT_STYLES_LOCATION = REPOSITORY_DIRECTORY / "styles" / "default"
+    USER_STYLES_LOCATION = USER_DATA_DIRECTORY / "styles"
 
     mpl_styles_available: Dict[str, str] = {}
     mpl_style: str = ""
@@ -184,7 +184,7 @@ class TerminalStyle:
 
         self.applyMPLstyle()
 
-    def load_custom_fonts_from_folder(self, folder: str) -> None:
+    def load_custom_fonts_from_folder(self, folder: Path) -> None:
         """Load custom fonts form folder.
 
         TTF and OTF fonts are loaded into the mpl font manager and are available for
@@ -195,12 +195,19 @@ class TerminalStyle:
         folder : str
             Path to the folder containing the fonts
         """
-        for font_file in os.listdir(folder):
-            if font_file.endswith(".otf") or font_file.endswith(".ttf"):
+
+        if not folder.exists():
+            return
+
+        for font_file in folder.iterdir():
+            if not font_file.is_file():
+                continue
+
+            if font_file.name.endswith(".otf") or font_file.name.endswith(".ttf"):
                 font_path = os.path.abspath(os.path.join(folder, font_file))
                 font_manager.fontManager.addfont(font_path)
 
-    def load_available_styles_from_folder(self, folder: str) -> None:
+    def load_available_styles_from_folder(self, folder: Path) -> None:
         """Load custom styles from folder.
 
         Parses the styles/default and styles/user folders and loads style files.
@@ -215,22 +222,29 @@ class TerminalStyle:
         folder : str
             Path to the folder containing the stylesheets
         """
-        for stf in os.listdir(folder):
-            if stf.endswith(".mplstyle"):
-                self.mpl_styles_available[stf.replace(".mplstyle", "")] = os.path.join(
+
+        if not folder.exists():
+            return
+
+        for stf in folder.iterdir():
+            if not stf.is_file():
+                continue
+
+            if stf.name.endswith(".mplstyle"):
+                self.mpl_styles_available[stf.name.replace(".mplstyle", "")] = os.path.join(
                     folder, stf
                 )
-            elif stf.endswith(".mplrc.json"):
+            elif stf.name.endswith(".mplrc.json"):
                 self.mpl_rcparams_available[
-                    stf.replace(".mplrc.json", "")
+                    stf.name.replace(".mplrc.json", "")
                 ] = os.path.join(folder, stf)
-            elif stf.endswith(".mpfstyle.json"):
+            elif stf.name.endswith(".mpfstyle.json"):
                 self.mpf_styles_available[
-                    stf.replace(".mpfstyle.json", "")
+                    stf.name.replace(".mpfstyle.json", "")
                 ] = os.path.join(folder, stf)
-            elif stf.endswith(".richstyle.json"):
+            elif stf.name.endswith(".richstyle.json"):
                 self.console_styles_available[
-                    stf.replace(".richstyle.json", "")
+                    stf.name.replace(".richstyle.json", "")
                 ] = os.path.join(folder, stf)
 
     def applyMPLstyle(self):
