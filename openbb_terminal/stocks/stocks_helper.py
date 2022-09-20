@@ -264,6 +264,7 @@ def load(
         if df_stock_candidate.empty:
             return df_stock_candidate
 
+        df_stock_candidate.index.name = "date"
         s_start = df_stock_candidate.index[0]
         s_interval = f"{interval}min"
         int_string = "Daily" if interval == 1440 else "Intraday"
