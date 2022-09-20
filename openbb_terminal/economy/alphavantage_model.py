@@ -37,7 +37,7 @@ def get_sector_data() -> pd.DataFrame:
 
     df_rtp = df_rtp.to_frame().reset_index()
 
-    df_rtp.columns = ["Sector", "Real-Time Performance"]
+    df_rtp.columns = ["Sector", "% Chg"]
 
     return df_rtp
 
