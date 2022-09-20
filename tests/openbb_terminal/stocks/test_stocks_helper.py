@@ -1,6 +1,7 @@
 # IMPORTATION STANDARD
 from datetime import datetime
 import os
+from pathlib import Path
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
@@ -108,7 +109,7 @@ def test_load_week_or_month(recorder, weekly, monthly):
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "path",
-    ["none", os.path.join(CUSTOM_IMPORTS_DIRECTORY / "stocks", "test.csv")],
+    ["none", Path(os.path.join(CUSTOM_IMPORTS_DIRECTORY, "stocks", "test.csv"))],
 )
 def test_load_custom_output(path):
     stocks_helper.load_custom(path)
