@@ -1,7 +1,6 @@
 """Helper classes."""
 __docformat__ = "numpy"
 import os
-from shutil import copyfile
 from pathlib import Path
 import argparse
 import json
