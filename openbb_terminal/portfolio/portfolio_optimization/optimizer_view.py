@@ -2655,7 +2655,7 @@ def display_hcp(
     beta: float = None,
     b_sim: int = None,
     linkage: str = "ward",
-    k: int = 0,
+    k: int = None,
     max_k: int = 10,
     bins_info: str = "KN",
     alpha_tail: float = 0.05,
@@ -3438,10 +3438,13 @@ def display_nco(
     objective: str = "MinRisk",
     risk_measure: str = "mv",
     risk_free_rate: float = 0.0,
-    risk_aversion: float = 2.0,
+    risk_aversion: float = 1.0,
     alpha: float = 0.05,
+    a_sim: int = 100,
+    beta: float = None,
+    b_sim: int = None,
     linkage: str = "ward",
-    k: int = 0,
+    k: int = None,
     max_k: int = 10,
     bins_info: str = "KN",
     alpha_tail: float = 0.05,
@@ -3451,7 +3454,7 @@ def display_nco(
     table: bool = False,
 ) -> Dict:
     """
-    Builds a nested clustered optimization portfolio
+    Builds a hierarchical equal risk contribution portfolio
 
     Parameters
     ----------
@@ -3631,7 +3634,13 @@ def display_nco(
     table: bool, optional
         True if plot table weights, by default False
     """
-    weights = display_hcp(
+    p = d_period(interval, start_date, end_date)
+
+    s_title = f"{p} Nested clustered optimization"
+    s_title += " using " + codependence + " codependence,\n" + linkage
+    s_title += " linkage and " + risk_names[risk_measure] + " as risk measure\n"
+
+    weights, stock_returns = optimizer_model.get_nco(
         symbols=symbols,
         interval=interval,
         start_date=start_date,
@@ -3641,14 +3650,16 @@ def display_nco(
         maxnan=maxnan,
         threshold=threshold,
         method=method,
-        model="NCO",
         codependence=codependence,
         covariance=covariance,
-        objective=objective.lower(),
-        risk_measure=risk_measure,
+        objective=objectives_choices[objective.lower()],
+        risk_measure=risk_choices[risk_measure],
         risk_free_rate=risk_free_rate,
         risk_aversion=risk_aversion,
         alpha=alpha,
+        a_sim=a_sim,
+        beta=beta,
+        b_sim=b_sim,
         linkage=linkage,
         k=k,
         max_k=max_k,
@@ -3657,8 +3668,28 @@ def display_nco(
         leaf_order=leaf_order,
         d_ewma=d_ewma,
         value=value,
-        table=table,
     )
+
+    if weights is None:
+        console.print("\n", "There is no solution with this parameters")
+        return {}
+
+    if table:
+        console.print("\n", s_title)
+        display_weights(weights)
+        portfolio_performance(
+            weights=weights,
+            data=stock_returns,
+            risk_measure=risk_choices[risk_measure],
+            risk_free_rate=risk_free_rate,
+            alpha=alpha,
+            a_sim=a_sim,
+            beta=beta,
+            b_sim=b_sim,
+            freq=freq,
+        )
+        console.print("")
+
     return weights
 
 

@@ -1279,6 +1279,10 @@ functions = {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_herc",
         "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_herc",
     },
+    "portfolio.po.nco": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_nco",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_nco",
+    },
     "portfolio.po.hcp": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_hcp_portfolio",
         "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_hcp",
