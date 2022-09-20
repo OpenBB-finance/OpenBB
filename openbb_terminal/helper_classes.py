@@ -12,7 +12,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, ticker
 
-from openbb_terminal.core.config.paths import USER_STYLES_DIRECTORY, REPOSITORY_DIRECTORY
+from openbb_terminal.core.config.paths import REPOSITORY_STYLES_DIRECTORY, USER_STYLES_DIRECTORY
 
 
 class LineAnnotateDrawer:
@@ -100,9 +100,8 @@ class TerminalStyle:
     styles as python dictionaries.
     """
 
-    _STYLES_FOLDER = USER_STYLES_DIRECTORY
-    DEFAULT_STYLES_LOCATION = os.path.join(_STYLES_FOLDER, "default")
-    USER_STYLES_LOCATION = os.path.join(_STYLES_FOLDER, "user")
+    DEFAULT_STYLES_LOCATION = REPOSITORY_STYLES_DIRECTORY / "default"
+    USER_STYLES_LOCATION = USER_STYLES_DIRECTORY / "user"
 
     mpl_styles_available: Dict[str, str] = {}
     mpl_style: str = ""
@@ -150,23 +149,6 @@ class TerminalStyle:
             Style name without extension, by default ""
         """
         # To import all styles from terminal repo folder to user data
-
-        if len(os.listdir(self._STYLES_FOLDER)) == 0:
-            repo_styles = REPOSITORY_DIRECTORY.joinpath("styles")
-            for root, _, filenames in os.walk(repo_styles.joinpath("default")):
-                os.mkdir(Path(self._STYLES_FOLDER).joinpath("default"))
-                for style in filenames:
-                    copyfile(
-                        os.path.join(root, style),
-                        Path(self._STYLES_FOLDER).joinpath("default", style),
-                    )
-            for root, _, filenames in os.walk(repo_styles.joinpath("user")):
-                os.mkdir(Path(self._STYLES_FOLDER).joinpath("user"))
-                for style in filenames:
-                    copyfile(
-                        os.path.join(root, style),
-                        Path(self._STYLES_FOLDER).joinpath("user", style),
-                    )
 
         for folder in [self.DEFAULT_STYLES_LOCATION, self.USER_STYLES_LOCATION]:
             self.load_available_styles_from_folder(folder)
