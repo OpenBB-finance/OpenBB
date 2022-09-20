@@ -275,7 +275,9 @@ def print_rich_table(
                 else (
                     f"{x:{floatfmt[idx]}}"
                     if isinstance(floatfmt, list)
-                    else (f"{x:.2e}" if 0 < abs(x) <= 0.0001 else f"{x:floatfmt}")
+                    else (
+                        f"{x:.2e}" if 0 < abs(float(x)) <= 0.0001 else f"{x:floatfmt}"
+                    )
                 )
                 for idx, x in enumerate(values)
             ]

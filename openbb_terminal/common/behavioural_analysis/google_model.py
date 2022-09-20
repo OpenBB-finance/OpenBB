@@ -50,13 +50,15 @@ def get_regions(symbol: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_queries(symbol: str) -> dict:
+def get_queries(symbol: str, limit: int = 10) -> pd.DataFrame:
     """Get related queries from google api [Source: google]
 
     Parameters
     ----------
     symbol: str
         Stock ticker symbol to compare
+    limit: int
+        Number of queries to show
 
     Returns
     -------
@@ -65,17 +67,24 @@ def get_queries(symbol: str) -> dict:
     """
     pytrend = TrendReq()
     pytrend.build_payload(kw_list=[symbol])
-    return pytrend.related_queries()
+    df_related_queries = pytrend.related_queries()
+    df_related_queries = df_related_queries[symbol]["top"].head(limit)
+    df_related_queries["value"] = df_related_queries["value"].apply(
+        lambda x: str(x) + "%"
+    )
+    return df_related_queries
 
 
 @log_start_end(log=logger)
-def get_rise(symbol: str) -> pd.DataFrame:
+def get_rise(symbol: str, limit: int = 10) -> pd.DataFrame:
     """Get top rising related queries with this stock's query [Source: google]
 
     Parameters
     ----------
     symbol: str
         Stock ticker symbol
+    limit: int
+        Number of queries to show
 
     Returns
     -------
@@ -85,4 +94,4 @@ def get_rise(symbol: str) -> pd.DataFrame:
     pytrend = TrendReq()
     pytrend.build_payload(kw_list=[symbol])
     df_related_queries = pytrend.related_queries()
-    return df_related_queries[symbol]["rising"]
+    return df_related_queries[symbol]["rising"].head(limit)

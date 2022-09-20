@@ -9,7 +9,28 @@ from scipy.stats import norm
 # Based on article of Roman Paolucci: https://towardsdatascience.com/algorithmic-portfolio-hedging-9e069aafff5a
 
 
-def calc_hedge(portfolio_option_amount: float, side: str, greeks: dict, sign: int):
+def calc_hedge(
+    portfolio_option_amount: float = 100,
+    side: str = "Call",
+    greeks: dict = {
+        "Portfolio": {
+            "Delta": 1,
+            "Gamma": 9.1268e-05,
+            "Vega": 5.4661,
+        },
+        "Option A": {
+            "Delta": 1,
+            "Gamma": 9.1268e-05,
+            "Vega": 5.4661,
+        },
+        "Option B": {
+            "Delta": 1,
+            "Gamma": 9.1268e-05,
+            "Vega": 5.4661,
+        },
+    },
+    sign: int = 1,
+):
     """Determine the hedge position and the weights within each option and
     underlying asset to hold a neutral portfolio
 
@@ -120,8 +141,12 @@ def calc_hedge(portfolio_option_amount: float, side: str, greeks: dict, sign: in
 
 
 def add_hedge_option(
-    price: float, implied_volatility: float, strike: float, days: float, sign: int = 1
-):
+    price: float = 100,
+    implied_volatility: float = 20,
+    strike: float = 120,
+    days: float = 30,
+    sign: int = 1,
+) -> tuple:
     """Determine the delta, gamma and vega value of the portfolio and/or options.
 
     Parameters
@@ -156,10 +181,10 @@ def add_hedge_option(
 
 
 def calc_delta(
-    asset_price: float,
-    asset_volatility: float,
-    strike_price: float,
-    time_to_expiration: float,
+    asset_price: float = 100,
+    asset_volatility: float = 20,
+    strike_price: float = 120,
+    time_to_expiration: float = 30,
     risk_free_rate: float = 0,
     sign: int = 1,
 ):
@@ -204,10 +229,10 @@ def calc_delta(
 
 
 def calc_gamma(
-    asset_price: float,
-    asset_volatility: float,
-    strike_price: float,
-    time_to_expiration: float,
+    asset_price: float = 100,
+    asset_volatility: float = 20,
+    strike_price: float = 120,
+    time_to_expiration: float = 30,
     risk_free_rate: float = 0,
 ):
     """The second-order partial-derivative with respect to the underlying asset of the Black-Scholes equation
@@ -248,10 +273,10 @@ def calc_gamma(
 
 
 def calc_vega(
-    asset_price: float,
-    asset_volatility: float,
-    strike_price: float,
-    time_to_expiration: float,
+    asset_price: float = 100,
+    asset_volatility: float = 20,
+    strike_price: float = 120,
+    time_to_expiration: float = 30,
     risk_free_rate: float = 0,
 ):
     """The first-order partial-derivative with respect to the underlying asset volatility of

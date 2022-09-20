@@ -194,7 +194,7 @@ class DiscoveryController(BaseController):
         if ns_parser:
             dappradar_view.display_top_dapps(
                 sortby=" ".join(ns_parser.sortby),
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -234,7 +234,7 @@ class DiscoveryController(BaseController):
         if ns_parser:
             dappradar_view.display_top_games(
                 sortby=" ".join(ns_parser.sortby),
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -274,7 +274,7 @@ class DiscoveryController(BaseController):
         if ns_parser:
             dappradar_view.display_top_dexes(
                 sortby=" ".join(ns_parser.sortby),
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -315,7 +315,7 @@ class DiscoveryController(BaseController):
         if ns_parser:
             dappradar_view.display_top_nfts(
                 sortby=" ".join(ns_parser.sortby),
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 

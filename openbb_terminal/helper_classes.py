@@ -1,7 +1,6 @@
 """Helper classes."""
 __docformat__ = "numpy"
 import os
-from shutil import copyfile
 from pathlib import Path
 import argparse
 import json
@@ -12,7 +11,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, ticker
 
-from openbb_terminal.core.config.paths import USER_STYLES_DIRECTORY, REPO_DIRECTORY
+from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY, USER_DATA_DIRECTORY
 
 
 class LineAnnotateDrawer:
@@ -100,9 +99,8 @@ class TerminalStyle:
     styles as python dictionaries.
     """
 
-    _STYLES_FOLDER = USER_STYLES_DIRECTORY
-    DEFAULT_STYLES_LOCATION = os.path.join(_STYLES_FOLDER, "default")
-    USER_STYLES_LOCATION = os.path.join(_STYLES_FOLDER, "user")
+    DEFAULT_STYLES_LOCATION = REPOSITORY_DIRECTORY / "styles" / "default"
+    USER_STYLES_LOCATION = USER_DATA_DIRECTORY / "styles"
 
     mpl_styles_available: Dict[str, str] = {}
     mpl_style: str = ""
@@ -151,23 +149,6 @@ class TerminalStyle:
         """
         # To import all styles from terminal repo folder to user data
 
-        if len(os.listdir(self._STYLES_FOLDER)) == 0:
-            repo_styles = REPO_DIRECTORY.joinpath("styles")
-            for root, _, filenames in os.walk(repo_styles.joinpath("default")):
-                os.mkdir(Path(self._STYLES_FOLDER).joinpath("default"))
-                for style in filenames:
-                    copyfile(
-                        os.path.join(root, style),
-                        Path(self._STYLES_FOLDER).joinpath("default", style),
-                    )
-            for root, _, filenames in os.walk(repo_styles.joinpath("user")):
-                os.mkdir(Path(self._STYLES_FOLDER).joinpath("user"))
-                for style in filenames:
-                    copyfile(
-                        os.path.join(root, style),
-                        Path(self._STYLES_FOLDER).joinpath("user", style),
-                    )
-
         for folder in [self.DEFAULT_STYLES_LOCATION, self.USER_STYLES_LOCATION]:
             self.load_available_styles_from_folder(folder)
             self.load_custom_fonts_from_folder(folder)
@@ -202,7 +183,7 @@ class TerminalStyle:
 
         self.applyMPLstyle()
 
-    def load_custom_fonts_from_folder(self, folder: str) -> None:
+    def load_custom_fonts_from_folder(self, folder: Path) -> None:
         """Load custom fonts form folder.
 
         TTF and OTF fonts are loaded into the mpl font manager and are available for
@@ -213,12 +194,19 @@ class TerminalStyle:
         folder : str
             Path to the folder containing the fonts
         """
-        for font_file in os.listdir(folder):
-            if font_file.endswith(".otf") or font_file.endswith(".ttf"):
+
+        if not folder.exists():
+            return
+
+        for font_file in folder.iterdir():
+            if not font_file.is_file():
+                continue
+
+            if font_file.name.endswith(".otf") or font_file.name.endswith(".ttf"):
                 font_path = os.path.abspath(os.path.join(folder, font_file))
                 font_manager.fontManager.addfont(font_path)
 
-    def load_available_styles_from_folder(self, folder: str) -> None:
+    def load_available_styles_from_folder(self, folder: Path) -> None:
         """Load custom styles from folder.
 
         Parses the styles/default and styles/user folders and loads style files.
@@ -233,22 +221,29 @@ class TerminalStyle:
         folder : str
             Path to the folder containing the stylesheets
         """
-        for stf in os.listdir(folder):
-            if stf.endswith(".mplstyle"):
-                self.mpl_styles_available[stf.replace(".mplstyle", "")] = os.path.join(
-                    folder, stf
-                )
-            elif stf.endswith(".mplrc.json"):
+
+        if not folder.exists():
+            return
+
+        for stf in folder.iterdir():
+            if not stf.is_file():
+                continue
+
+            if stf.name.endswith(".mplstyle"):
+                self.mpl_styles_available[
+                    stf.name.replace(".mplstyle", "")
+                ] = os.path.join(folder, stf)
+            elif stf.name.endswith(".mplrc.json"):
                 self.mpl_rcparams_available[
-                    stf.replace(".mplrc.json", "")
+                    stf.name.replace(".mplrc.json", "")
                 ] = os.path.join(folder, stf)
-            elif stf.endswith(".mpfstyle.json"):
+            elif stf.name.endswith(".mpfstyle.json"):
                 self.mpf_styles_available[
-                    stf.replace(".mpfstyle.json", "")
+                    stf.name.replace(".mpfstyle.json", "")
                 ] = os.path.join(folder, stf)
-            elif stf.endswith(".richstyle.json"):
+            elif stf.name.endswith(".richstyle.json"):
                 self.console_styles_available[
-                    stf.replace(".richstyle.json", "")
+                    stf.name.replace(".richstyle.json", "")
                 ] = os.path.join(folder, stf)
 
     def applyMPLstyle(self):
@@ -262,7 +257,10 @@ class TerminalStyle:
         self.down_color = self.mpf_style["marketcolors"]["volume"]["down"]
         self.up_color = self.mpf_style["marketcolors"]["volume"]["up"]
         self.line_width = plt.rcParams["lines.linewidth"]
-        self.volume_bar_width = self.mpl_rcparams["volume_bar_width"]
+        try:
+            self.volume_bar_width = self.mpl_rcparams["volume_bar_width"]
+        except Exception():
+            pass
 
     def get_colors(self, reverse: bool = False) -> List:
         """Get hex color sequence from the stylesheet."""

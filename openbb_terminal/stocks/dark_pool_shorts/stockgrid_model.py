@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def get_dark_pool_short_positions(
-    sortby: str = "dpp_dollar", ascending: bool = False
+    sortby: str = "dpp_dollar", ascend: bool = False
 ) -> pd.DataFrame:
     """Get dark pool short positions. [Source: Stockgrid]
 
@@ -26,7 +26,7 @@ def get_dark_pool_short_positions(
         'sv_pct': Short Vol. %%, 'nsv': Net Short Vol. [1M],
         'nsv_dollar': Net Short Vol. ($100M), 'dpp': DP Position [1M],
         'dpp_dollar': DP Position ($1B)
-    ascending : bool
+    ascend : bool
         Data in ascending order
 
     Returns
@@ -45,7 +45,7 @@ def get_dark_pool_short_positions(
 
     field = d_fields_endpoints[sortby]
 
-    if ascending:
+    if ascend:
         order = "asc"
     else:
         order = "desc"
