@@ -30,7 +30,7 @@ register_matplotlib_converters()
 
 @log_start_end(log=logger)
 def view_ma(
-    series: pd.Series,
+    data: pd.Series,
     window: List[int] = None,
     offset: int = 0,
     ma_type: str = "EMA",
@@ -42,7 +42,7 @@ def view_ma(
 
     Parameters
     ----------
-    series: pd.Series
+    data: pd.Series
         Series of prices
     window: List[int]
         Length of EMA window
@@ -58,7 +58,7 @@ def view_ma(
         External axes (1 axis is expected in the list), by default None
     """
     # Define a dataframe for adding EMA series to it
-    price_df = pd.DataFrame(series)
+    price_df = pd.DataFrame(data)
 
     l_legend = [symbol]
     if not window:
@@ -66,19 +66,19 @@ def view_ma(
 
     for win in window:
         if ma_type == "EMA":
-            df_ta = overlap_model.ema(series, win, offset)
+            df_ta = overlap_model.ema(data, win, offset)
             l_legend.append(f"EMA {win}")
         elif ma_type == "SMA":
-            df_ta = overlap_model.sma(series, win, offset)
+            df_ta = overlap_model.sma(data, win, offset)
             l_legend.append(f"SMA {win}")
         elif ma_type == "WMA":
-            df_ta = overlap_model.wma(series, win, offset)
+            df_ta = overlap_model.wma(data, win, offset)
             l_legend.append(f"WMA {win}")
         elif ma_type == "HMA":
-            df_ta = overlap_model.hma(series, win, offset)
+            df_ta = overlap_model.hma(data, win, offset)
             l_legend.append(f"HMA {win}")
         elif ma_type == "ZLMA":
-            df_ta = overlap_model.zlma(series, win, offset)
+            df_ta = overlap_model.zlma(data, win, offset)
             l_legend.append(f"ZLMA {win}")
         price_df = price_df.join(df_ta)
 
@@ -124,7 +124,7 @@ def view_vwap(
     start_date: str = None,
     end_date: str = None,
     offset: int = 0,
-    s_interval: str = "",
+    interval: str = "",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -142,7 +142,7 @@ def view_vwap(
         Start date to get data from with
     end_date: datetime
         End date to get data from with
-    s_interval : str
+    interval : str
         Interval of data
     export : str
         Format to export data
@@ -198,7 +198,7 @@ def view_vwap(
         )
         fig, ax = mpf.plot(day_df, **candle_chart_kwargs)
         fig.suptitle(
-            f"{symbol} {s_interval} VWAP",
+            f"{symbol} {interval} VWAP",
             x=0.055,
             y=0.965,
             horizontalalignment="left",

@@ -31,7 +31,7 @@ def display_mean_std(
     window: int = 14,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
-):
+) -> None:
     """View mean std deviation
 
     Parameters
@@ -43,7 +43,7 @@ def display_mean_std(
     symbol : str
         Stock ticker
     window : int
-        Window length
+        Length of window
     export: str
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional
@@ -251,7 +251,7 @@ def display_quantile(
     quantile: float = 0.5,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
-):
+) -> None:
     """View rolling quantile
 
     Parameters
@@ -346,7 +346,7 @@ def display_skew(
     window: int = 14,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
-):
+) -> None:
     """View rolling skew
 
     Parameters

@@ -6,7 +6,7 @@ import re
 # IMPORTATION THIRDPARTY
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.config.paths import REPO_DIRECTORY
+from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY
 from openbb_terminal.core.log.generation.settings import AppSettings
 
 
@@ -57,9 +57,9 @@ class FormatterWithExceptions(logging.Formatter):
                 s_list.append("suspected_ip")
             elif "@" in word and "." in word:
                 s_list.append("suspected_email")
-            elif f"{REPO_DIRECTORY.name}{os.sep}" in word:
+            elif f"{REPOSITORY_DIRECTORY.name}{os.sep}" in word:
                 s_list.append(
-                    word.split(f"{REPO_DIRECTORY.name}{os.sep}")[1]
+                    word.split(f"{REPOSITORY_DIRECTORY.name}{os.sep}")[1]
                     .replace('"', "")
                     .replace("'", "")
                 )

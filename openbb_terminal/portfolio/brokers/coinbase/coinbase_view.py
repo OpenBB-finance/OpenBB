@@ -83,7 +83,9 @@ def display_history(account: str, export: str = "", limit: int = 20) -> None:
 
 @log_start_end(log=logger)
 @check_api_key(["API_COINBASE_KEY", "API_COINBASE_SECRET", "API_COINBASE_PASS_PHRASE"])
-def display_orders(limit: int, sortby: str, descend: bool, export: str = "") -> None:
+def display_orders(
+    limit: int = 20, sortby: str = "price", descend: bool = False, export: str = ""
+) -> None:
     """List your current open orders [Source: Coinbase]
 
     Parameters
@@ -97,15 +99,8 @@ def display_orders(limit: int, sortby: str, descend: bool, export: str = "") -> 
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    df = coinbase_model.get_orders()
-
-    if df.empty:
-        return
-
+    df = coinbase_model.get_orders(limit, sortby, descend)
     df_data = df.copy()
-
-    df = df.sort_values(by=sortby, ascending=descend).head(limit)
-
     print_rich_table(
         df,
         headers=list(df.columns),
@@ -124,7 +119,11 @@ def display_orders(limit: int, sortby: str, descend: bool, export: str = "") -> 
 @log_start_end(log=logger)
 @check_api_key(["API_COINBASE_KEY", "API_COINBASE_SECRET", "API_COINBASE_PASS_PHRASE"])
 def display_deposits(
-    limit: int, sortby: str, deposit_type: str, descend: bool, export: str = ""
+    limit: int = 20,
+    sortby: str = "amount",
+    deposit_type: str = "deposit",
+    descend: bool = False,
+    export: str = "",
 ) -> None:
     """Display deposits into account [Source: Coinbase]
 
@@ -142,14 +141,12 @@ def display_deposits(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = coinbase_model.get_deposits(deposit_type=deposit_type)
+    df = coinbase_model.get_deposits(limit, sortby, deposit_type, descend)
 
     if df.empty:
         return
 
     df_data = df.copy()
-
-    df = df.sort_values(by=sortby, ascending=descend).head(limit)
 
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Account Deposits"

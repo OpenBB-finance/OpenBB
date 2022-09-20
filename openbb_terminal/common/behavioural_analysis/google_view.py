@@ -187,7 +187,7 @@ def display_regions(
     df_interest_region = df_interest_region.head(limit)
     df = df_interest_region.sort_values([symbol], ascending=True)
 
-    ax.set_title(f"Top's regions interest on {symbol}")
+    ax.set_title(f"Regions with highest interest in {symbol}")
     ax.barh(
         y=df.index, width=df[symbol], color=theme.get_colors(reverse=True), zorder=3
     )
@@ -211,33 +211,28 @@ def display_queries(symbol: str, limit: int = 5, export: str = ""):
         Ticker symbol
     limit: int
         Number of regions to show
-    export: {"csv","json","xlsx","png","jpg","pdf","svg"}
+    export: str {"csv","json","xlsx","png","jpg","pdf","svg"}
         Format to export data
 
     Returns
     -------
         None
     """
-
     # Retrieve a dict with top and rising queries
-    dict_related_queries = google_model.get_queries(symbol)
+    df_related_queries = google_model.get_queries(symbol, limit)
+    df = df_related_queries[symbol]["top"]
 
-    # Select the DataFrame "top" from the dict
-    df_top_queries = dict_related_queries[symbol]["top"].head(limit).copy()
-    df_export = (
-        df_top_queries.copy()
-    )  # export the raw values, prior to string manipulation
-
-    # convert to strings and add %
-    df_top_queries["value"] = df_top_queries["value"].apply(lambda x: str(x) + "%")
     print_rich_table(
-        df_top_queries,
-        headers=list(df_top_queries.columns),
+        df,
+        headers=list(df.columns),
         title=f"Top {symbol}'s related queries",
     )
 
     export_data(
-        export, os.path.dirname(os.path.abspath(__file__)), "queries", df_export
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "queries",
+        df,
     )
 
 
@@ -250,14 +245,14 @@ def display_rise(symbol: str, limit: int = 10, export: str = ""):
     symbol : str
         Ticker symbol
     limit: int
-        Number of regions to show
+        Number of queries to show
     export: str
         Format to export data
     """
-    df_related_queries = google_model.get_rise(symbol)
+    df_related_queries = google_model.get_rise(symbol, limit)
 
     print_rich_table(
-        df_related_queries.head(limit),
+        df_related_queries,
         headers=list(df_related_queries.columns),
         title=f"Top rising {symbol}'s related queries",
     )
