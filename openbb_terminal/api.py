@@ -1239,10 +1239,6 @@ functions = {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_util",
         "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_util",
     },
-    "portfolio.po.maxutil": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_util",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_util",
-    },
     "portfolio.po.maxret": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_ret",
         "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_ret",
@@ -2093,11 +2089,9 @@ class Loader:
             for menu in virtual_path_split[:-1]:
                 if not hasattr(previous_menu, menu):
                     next_menu = MenuFiller(function=menu_message(menu, function_map))
-                    previous_menu.__setattr__(menu, next_menu)
-                    previous_menu = previous_menu.__getattribute__(menu)
-                else:
-                    previous_menu = previous_menu.__getattribute__(menu)
-            previous_menu.__setattr__(last_virtual_path, function)
+                    setattr(previous_menu, menu, next_menu)
+                previous_menu = getattr(previous_menu, menu)
+            setattr(previous_menu, last_virtual_path, function)
 
         self.openbb = main_menu
 

@@ -48,8 +48,8 @@ signature and docstring of the function.
 ### Visual Studio Code Tricks
 
 **Get function docstring and signature**\
-In order to get the docstrings and function signatures for the API when opening a Jupyter Notebook in VSCode, 
-you have to install the [Jupyter PowerToys 
+In order to get the docstrings and function signatures for the API when opening a Jupyter Notebook in VSCode,
+you have to install the [Jupyter PowerToys
 extension](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.vscode-jupyter-powertoys).
 
 ## Code Examples

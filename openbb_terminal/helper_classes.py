@@ -264,7 +264,7 @@ class TerminalStyle:
         self.line_width = plt.rcParams["lines.linewidth"]
         try:
             self.volume_bar_width = self.mpl_rcparams["volume_bar_width"]
-        except Exception:
+        except Exception():
             pass
 
     def get_colors(self, reverse: bool = False) -> List:

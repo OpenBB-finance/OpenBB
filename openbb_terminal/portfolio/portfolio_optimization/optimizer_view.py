@@ -22,10 +22,7 @@ from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import plot_autoscale, print_rich_table
-from openbb_terminal.portfolio.portfolio_optimization import (
-    optimizer_model,
-    yahoo_finance_model,
-)
+from openbb_terminal.portfolio.portfolio_optimization import optimizer_model
 from openbb_terminal.rich_config import console
 
 warnings.filterwarnings("ignore")
@@ -342,7 +339,8 @@ def display_weights_sa(weights: dict, weights_sa: dict):
     weights: dict
         weights to display.  Keys are stocks.  Values are either weights or values
     weights_sa: dict
-        weights of sensitivity analysis to display.  Keys are stocks.  Values are either weights or values
+        weights of sensitivity analysis to display.  Keys are stocks.
+        Values are either weights or values
     """
     if not weights or not weights_sa:
         return
