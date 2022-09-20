@@ -190,7 +190,9 @@ def get_account_history(account: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_orders() -> pd.DataFrame:
+def get_orders(
+    limit: int = 20, sortby: str = "price", descend: bool = False
+) -> pd.DataFrame:
     """List your current open orders. Only open or un-settled orders are returned. [Source: Coinbase]
 
     Example response from API:
@@ -216,6 +218,14 @@ def get_orders() -> pd.DataFrame:
         }
 
     .
+    Parameters
+    ----------
+    limit: int
+        Last <limit> of trades. Maximum is 1000.
+    sortby: str
+        Key to sort by
+    descend: bool
+        Flag to sort descending
 
     Returns
     -------
@@ -251,13 +261,26 @@ def get_orders() -> pd.DataFrame:
                 "status",
             ]
         )
-    return pd.DataFrame(resp)[
-        ["product_id", "side", "price", "size", "type", "created_at", "status"]
-    ]
+
+    df = pd.DataFrame(resp)
+    if df.empty:
+        return pd.DataFrame()
+    df = df[["product_id", "side", "price", "size", "type", "created_at", "status"]]
+
+    if df.empty:
+        return pd.DataFrame()
+    df = df.sort_values(by=sortby, ascending=descend).head(limit)
+
+    return df
 
 
 @log_start_end(log=logger)
-def get_deposits(deposit_type: str = "deposit") -> pd.DataFrame:
+def get_deposits(
+    limit: int = 50,
+    sortby: str = "amount",
+    deposit_type: str = "deposit",
+    descend: bool = False,
+) -> pd.DataFrame:
     """Get a list of deposits for your account. [Source: Coinbase]
 
     Parameters
@@ -297,6 +320,9 @@ def get_deposits(deposit_type: str = "deposit") -> pd.DataFrame:
 
     # pylint:disable=no-else-return
     if deposit_type == "deposit":
-        return pd.json_normalize(resp)
+        df = pd.json_normalize(resp)
     else:
-        return pd.DataFrame(resp)[["type", "created_at", "amount", "currency"]]
+        df = pd.DataFrame(resp)[["type", "created_at", "amount", "currency"]]
+
+    df = df.sort_values(by=sortby, ascending=descend).head(limit)
+    return df

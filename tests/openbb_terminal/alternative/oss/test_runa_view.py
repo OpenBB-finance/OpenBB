@@ -25,11 +25,4 @@ def test_display_rossindex(mocker):
     # MOCK VISUALIZE_OUTPUT
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 
-    runa_view.display_rossindex(
-        sortby="",
-        descend=False,
-        top=10,
-        show_chart=True,
-        show_growth=False,
-        chart_type="stars",
-    )
+    runa_view.display_rossindex()

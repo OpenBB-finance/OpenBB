@@ -71,8 +71,8 @@ def header_fmt(header: str) -> str:
 def display_chains(
     symbol: str,
     expiration: str,
-    min_sp: float = 0.0,
-    max_sp: float = np.inf,
+    min_sp: float = -1,
+    max_sp: float = -1,
     calls_only: bool = False,
     puts_only: bool = False,
     export: str = "",
@@ -108,26 +108,16 @@ def display_chains(
         put_bool = True
 
     option_chains = yfinance_model.get_full_option_chain(
-        symbol=symbol, expiration=expiration, calls=call_bool, puts=put_bool
+        symbol=symbol,
+        expiration=expiration,
+        calls=call_bool,
+        puts=put_bool,
+        min_sp=min_sp,
+        max_sp=max_sp,
     ).fillna("-")
     if option_chains.empty:
         console.print("[red]Option chains not found.[/red]")
         return
-
-    # If min/max strike aren't provided, just get the middle 50% of strikes
-    if min_sp == -1:
-        min_strike = np.percentile(option_chains["strike"], 25)
-    else:
-        min_strike = min_sp
-
-    if max_sp == -1:
-        max_strike = np.percentile(option_chains["strike"], 75)
-    else:
-        max_strike = max_sp
-
-    option_chains = option_chains[
-        (option_chains.strike >= min_strike) & (option_chains.strike <= max_strike)
-    ]
 
     # There are 3 possibilities.  Calls only, puts only or both.  If calls only or puts only, we are actually set
     # because the columns are nicely named
@@ -379,8 +369,7 @@ def plot_vol(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    options = yfinance_model.get_option_chain(symbol, expiration)
-
+    options = yfinance_model.get_vol(symbol, expiration)
     calls = options.calls
     puts = options.puts
     current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
@@ -433,7 +422,7 @@ def plot_vol(
     ax.legend()
     ax.set_title(f"Volume for {symbol.upper()} expiring {expiration}")
     theme.style_primary_axis(ax)
-
+    print(calls)
     if external_axes is None:
         theme.visualize_output()
     export_data(
@@ -473,9 +462,7 @@ def plot_volume_open_interest(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-
-    options = yfinance_model.get_option_chain(symbol, expiration)
-
+    options = yfinance_model.get_volume_open_interest(symbol, expiration)
     calls = options.calls
     puts = options.puts
     current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
@@ -519,7 +506,11 @@ def plot_volume_open_interest(
         min_vol_puts = np.percentile(df_puts["oi+v"], volume_percentile_threshold)
 
         df_calls = df_calls[df_calls["oi+v"] > min_vol_calls]
+        df_calls = df_calls[df_calls["strike"] > 0.75 * current_price]
+        df_calls = df_calls[df_calls["strike"] < 1.25 * current_price]
         df_puts = df_puts[df_puts["oi+v"] < min_vol_puts]
+        df_puts = df_puts[df_puts["strike"] > 0.75 * current_price]
+        df_puts = df_puts[df_puts["strike"] < 1.25 * current_price]
 
     else:
         if min_vol > -1:

@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 def display_options(
     limit: int = 20,
     sortby: str = "Vol/OI",
-    ascending: bool = False,
+    ascend: bool = False,
     calls_only: bool = False,
     puts_only: bool = False,
     export: str = "",
@@ -28,8 +28,8 @@ def display_options(
         Number of rows to show
     sortby: str
         Data column to sort on
-    ascending: bool
-        Whether to sort in ascending order
+    ascend: bool
+        Whether to sort in ascend order
     calls_only : bool
         Flag to only show calls
     puts_only : bool
@@ -38,7 +38,7 @@ def display_options(
         File type to export
     """
     data, last_update = fdscanner_model.unusual_options(limit)
-    data = data.sort_values(by=sortby, ascending=ascending)
+    data = data.sort_values(by=sortby, ascending=ascend)
     if puts_only:
         data = data[data.Type == "Put"]
     if calls_only:
