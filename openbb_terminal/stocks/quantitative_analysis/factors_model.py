@@ -55,7 +55,7 @@ def get_fama_raw() -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_historical_5(symbol: str):
+def get_historical_5(symbol: str) -> pd.DataFrame:
     """Get 5 year monthly historical performance for a ticker with dividends filtered
 
     Parameters

@@ -60,7 +60,10 @@ d_signals = {
 
 @log_start_end(log=logger)
 def get_screener_data(
-    preset_loaded: str, data_type: str, limit: int = 10, ascend: bool = False
+    preset_loaded: str = "top_gainers",
+    data_type: str = "overview",
+    limit: int = 10,
+    ascend: bool = False,
 ):
     """Screener Overview
 
@@ -72,7 +75,7 @@ def get_screener_data(
         Data type between: overview, valuation, financial, ownership, performance, technical
     limit : int
         Limit of stocks filtered with presets to print
-    : bool
+    ascend : bool
         Ascended order of stocks filtered to print
 
     Returns

@@ -232,7 +232,7 @@ class CovidController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
         )
         if ns_parser:
-            covid_view.display_country_slopes(
+            covid_view.display_case_slopes(
                 days_back=ns_parser.days,
                 limit=ns_parser.limit,
                 ascend=ns_parser.ascend,

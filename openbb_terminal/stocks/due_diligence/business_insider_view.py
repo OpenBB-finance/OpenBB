@@ -29,8 +29,8 @@ register_matplotlib_converters()
 
 @log_start_end(log=logger)
 def price_target_from_analysts(
+    symbol: str,
     data: DataFrame,
-    symbol: str = "",
     start_date: str = datetime.now().strftime("%Y-%m-%d"),
     limit: int = 10,
     raw: bool = False,
@@ -41,10 +41,10 @@ def price_target_from_analysts(
 
     Parameters
     ----------
-    data: DataFrame
-        Due diligence stock dataframe
     symbol: str
         Due diligence ticker symbol
+    data: DataFrame
+        Due diligence stock dataframe
     start_date : str
         Start date of the stock data
     limit : int

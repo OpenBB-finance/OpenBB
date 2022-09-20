@@ -36,7 +36,7 @@ def display_big_mac_index(
     Parameters
     ----------
     country_codes : List[str]
-        List of country codes to get for
+        List of country codes (ISO-3 letter country code). Codes available through economy.country_codes().
     raw : bool, optional
         Flag to display raw data, by default False
     export : str, optional

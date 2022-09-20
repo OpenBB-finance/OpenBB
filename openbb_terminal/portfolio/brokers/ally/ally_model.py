@@ -54,8 +54,13 @@ def ally_positions_to_df(df: pd.DataFrame) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_history() -> pd.DataFrame:
+def get_history(limit: int = 50) -> pd.DataFrame:
     """Gets transaction history for the account."
+
+    Parameters
+    ----------
+    limit : pd.DataFrame
+        Number of entries to return
 
     Returns
     -------
@@ -63,7 +68,8 @@ def get_history() -> pd.DataFrame:
         Dataframe of transaction history
     """
     a = ally.Ally()
-    return a.history(dataframe=True)
+    df = a.history(dataframe=True)
+    return df.tail(limit)
 
 
 @log_start_end(log=logger)
@@ -80,12 +86,12 @@ def get_balances() -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_stock_quote(ticker: str) -> pd.DataFrame:
+def get_stock_quote(symbol: str) -> pd.DataFrame:
     """Gets quote for stock ticker
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Ticker to get.  Can be in form of 'tick1,tick2...'
     Returns
     -------
@@ -94,14 +100,16 @@ def get_stock_quote(ticker: str) -> pd.DataFrame:
     """
     a = ally.Ally()
     return a.quote(
-        ticker,
+        symbol,
         fields=["last", "bid", "ask", "opn", "dollar_value", "chg", "vl"],
         dataframe=True,
     )
 
 
 @log_start_end(log=logger)
-def get_top_movers(list_type: str, exchange: str) -> pd.DataFrame:
+def get_top_movers(
+    list_type: str = "", exchange: str = "", limit: int = 50
+) -> pd.DataFrame:
     """
     Gets top lists from ally Invest API.  Documentation for parameters below:
     https://www.ally.com/api/invest/documentation/market-toplists-get/
@@ -112,11 +120,13 @@ def get_top_movers(list_type: str, exchange: str) -> pd.DataFrame:
         Which list to get data for
     exchange : str
         Which exchange to look at
-
+    limit: int
+        Number of top rows to return
     Returns
     -------
     pd.DataFrame
         DataFrame of top movers
     """
     a = ally.Ally()
-    return a.toplists(list_type, exchange, dataframe=True)
+    df = a.toplists(list_type, exchange, dataframe=True)
+    return df.tail(limit)
