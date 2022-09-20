@@ -755,7 +755,7 @@ class DefiController(BaseController):
                 min_volume=ns_parser.vol,
                 min_tx=ns_parser.tx,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -807,7 +807,7 @@ class DefiController(BaseController):
             graph_view.display_uni_pools(
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                escend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -859,7 +859,7 @@ class DefiController(BaseController):
             graph_view.display_last_uni_swaps(
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 

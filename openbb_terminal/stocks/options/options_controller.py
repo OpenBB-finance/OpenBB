@@ -781,7 +781,7 @@ class OptionsController(BaseController):
                     elif ns_parser.source == "YahooFinance":
                         yfinance_view.display_chains(
                             symbol=self.ticker,
-                            expiration=self.selected_date,
+                            expiry=self.selected_date,
                             min_sp=ns_parser.min_sp,
                             max_sp=ns_parser.max_sp,
                             calls_only=ns_parser.calls,
@@ -791,7 +791,7 @@ class OptionsController(BaseController):
                     elif ns_parser.source == "Nasdaq":
                         nasdaq_view.display_chains(
                             symbol=self.ticker,
-                            expiration=self.selected_date,
+                            expiry=self.selected_date,
                             export=ns_parser.export,
                         )
                 else:
@@ -942,7 +942,7 @@ class OptionsController(BaseController):
                     elif ns_parser.source == "YahooFinance":
                         yfinance_view.plot_volume_open_interest(
                             symbol=self.ticker,
-                            expiration=self.selected_date,
+                            expiry=self.selected_date,
                             min_sp=ns_parser.min_sp,
                             max_sp=ns_parser.max_sp,
                             min_vol=ns_parser.min_vol,
@@ -951,7 +951,7 @@ class OptionsController(BaseController):
                     elif ns_parser.source == "Nasdaq":
                         nasdaq_view.display_volume_and_oi(
                             symbol=self.ticker,
-                            expiration=self.selected_date,
+                            expiry=self.selected_date,
                             min_sp=ns_parser.min_sp,
                             max_sp=ns_parser.max_sp,
                             raw=ns_parser.raw,

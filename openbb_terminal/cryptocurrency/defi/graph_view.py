@@ -99,7 +99,7 @@ def display_recently_added(
     min_liquidity: int = 0,
     min_tx: int = 100,
     sortby: str = "created",
-    descend: bool = False,
+    ascend: bool = False,
     export: str = "",
 ) -> None:
     """Displays Lastly added pairs on Uniswap DEX.
@@ -119,7 +119,7 @@ def display_recently_added(
         Minimum number of transactions
     sortby: str
         Key by which to sort data
-    descend: bool
+    ascend: bool
         Flag to sort data descending
     export : str
         Export dataframe data to csv,json,xlsx file
@@ -133,7 +133,7 @@ def display_recently_added(
     )
     df_data = df.copy()
 
-    df = df.sort_values(by=sortby, ascending=descend)
+    df = df.sort_values(by=sortby, ascending=ascend)
 
     df[["volumeUSD", "totalSupply"]] = df[["volumeUSD", "totalSupply"]].applymap(
         lambda x: lambda_very_long_number_formatter(x)
@@ -156,7 +156,7 @@ def display_recently_added(
 
 @log_start_end(log=logger)
 def display_uni_pools(
-    top: int = 20, sortby: str = "volumeUSD", descend: bool = True, export: str = ""
+    top: int = 20, sortby: str = "volumeUSD", ascend: bool = True, export: str = ""
 ) -> None:
     """Displays uniswap pools by volume.
     [Source: https://thegraph.com/en/]
@@ -168,15 +168,13 @@ def display_uni_pools(
     sortby: str
         Key by which to sort data. The table can be sorted by every of its columns
         (see https://bit.ly/3ORagr1 then press ctrl-enter or execute the query).
-    descend: bool
+    ascend: bool
         Flag to sort data descending
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = graph_model.get_uni_pools_by_volume().sort_values(
-        by=sortby, ascending=not (descend)
-    )
+    df = graph_model.get_uni_pools_by_volume().sort_values(by=sortby, ascending=ascend)
     df["volumeUSD"] = df["volumeUSD"].apply(
         lambda x: lambda_very_long_number_formatter(x)
     )
@@ -196,7 +194,7 @@ def display_uni_pools(
 
 @log_start_end(log=logger)
 def display_last_uni_swaps(
-    top: int = 10, sortby: str = "timestamp", descend: bool = False, export: str = ""
+    top: int = 10, sortby: str = "timestamp", ascend: bool = False, export: str = ""
 ) -> None:
     """Displays last swaps done on Uniswap
     [Source: https://thegraph.com/en/]
@@ -208,14 +206,14 @@ def display_last_uni_swaps(
     sortby: str
         Key by which to sort data. The table can be sorted by every of its columns
         (see https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2).
-    descend: bool
+    ascend: bool
         Flag to sort data descending
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
     df = graph_model.get_last_uni_swaps(limit=top).sort_values(
-        by=sortby, ascending=descend
+        by=sortby, ascending=ascend
     )
     df["amountUSD"] = df["amountUSD"].apply(
         lambda x: lambda_very_long_number_formatter(x)

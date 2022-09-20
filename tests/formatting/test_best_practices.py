@@ -1,9 +1,8 @@
+from typing import Optional
 from inspect import signature
 
 from docs.generate import all_functions
 
-# This is a list of modules to ignore
-ignore_modules = ["os"]
 
 # A dictionary where keys are bad parameter names and values are the correct replacements
 bad_params = {
@@ -21,23 +20,68 @@ bad_params = {
     "expire": "expiry",
     "exp": "expiry",
     "expiration": "expiry",
+    "vs": "to_symbol",
+    "coin": "symbol",
+    "coin_id": "symbol",
+    "token": "symbol",
+    "currency": "symbol",
+    "country_code": "country",
+    "sort_col": "sortby",
+    "sort_field": "sortby",
+    "num_tickers": "limit",
+    "num_stocks": "limit",
+    "since": "start_date",
+    "until": "end_date",
+    "top": "limit",
 }
 
 
-def assert_overlaps(overlaps: list[str], sub_item: str, new_parent: str):
+def create_overlaps(
+    overlaps: list[str], func_name: str, func_path: str
+) -> Optional[tuple[list[str], str, str, str]]:
+    """
+    Checks if there is a bad parameter name in a function
+
+    Parameters
+    ----------
+    overlaps : list[str]
+        Any overlaps between forbidden parameters and the function's parameters
+    func_name: str
+        The name of the function
+    func_path: str
+        The path for the function
+
+    Returns
+    ----------
+    overlaps: Optional[tuple[list[str], str, str, str]]
+        tuple[overlaps, func_name, func_path, overlaps_str]
+    """
     if overlaps:
         overlap_str = "\n"
         for item in overlaps:
             overlap_str += f"{item}->{bad_params[item]}\n"
-        raise NameError(
-            f"Forbidden parameter{'s' if len(overlaps) > 1 else ''} in funcition"
-            f" '{sub_item}' at {new_parent}. Replace the following: {overlap_str}"
-        )
+        return overlaps, func_name, func_path, overlap_str
+    return None
 
 
 def test_bad_parameters():
     all_funcs = all_functions()
+    total_overlaps = 0
+    all_overlaps: list[tuple[list[str], str, str, str]] = []
     for path, _, function in all_funcs:
         params = signature(function)
         overlaps = list(set(bad_params) & set(params.parameters.keys()))
-        assert_overlaps(overlaps, function.__name__, path)
+        new_overlaps = create_overlaps(overlaps, function.__name__, path)
+        if new_overlaps:
+            total_overlaps += 1
+            all_overlaps.append(new_overlaps)
+    final_str = ""
+    if all_overlaps:
+        for overlaps, func_name, func_path, overlap_str in all_overlaps:
+            final_str += (
+                f"Forbidden parameter{'s' if len(overlaps) > 1 else ''} in funcition"
+                f" '{func_name}' at {func_path}. Replace the following: {overlap_str}\n\n"
+            )
+
+        final_str += f"\n\nTotal bad functions: {total_overlaps}"
+        raise NameError(final_str)

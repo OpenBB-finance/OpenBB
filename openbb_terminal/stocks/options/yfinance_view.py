@@ -70,7 +70,7 @@ def header_fmt(header: str) -> str:
 @log_start_end(log=logger)
 def display_chains(
     symbol: str,
-    expiration: str,
+    expiry: str,
     min_sp: float = -1,
     max_sp: float = -1,
     calls_only: bool = False,
@@ -83,7 +83,7 @@ def display_chains(
     ----------
     symbol: str
         Stock ticker symbol
-    expiration: str
+    expiry: str
         Expiration for option chain
     min_sp: float
         Min strike
@@ -109,7 +109,7 @@ def display_chains(
 
     option_chains = yfinance_model.get_full_option_chain(
         symbol=symbol,
-        expiration=expiration,
+        expiry=expiry,
         calls=call_bool,
         puts=put_bool,
         min_sp=min_sp,
@@ -221,7 +221,7 @@ def display_chains(
 
     print_rich_table(
         option_chains,
-        title=f"Yahoo Option Chain (15 min delayed) for {expiration} (Greeks calculated by OpenBB)",
+        title=f"Yahoo Option Chain (15 min delayed) for {expiry} (Greeks calculated by OpenBB)",
         headers=[header_fmt(x) for x in option_chains.columns],
     )
     export_data(
@@ -436,7 +436,7 @@ def plot_vol(
 @log_start_end(log=logger)
 def plot_volume_open_interest(
     symbol: str,
-    expiration: str,
+    expiry: str,
     min_sp: float = -1,
     max_sp: float = -1,
     min_vol: float = -1,
@@ -449,7 +449,7 @@ def plot_volume_open_interest(
     ----------
     symbol: str
         Stock ticker symbol
-    expiration: str
+    expiry: str
         Option expiration
     min_sp: float
         Min strike price
@@ -462,7 +462,7 @@ def plot_volume_open_interest(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    options = yfinance_model.get_volume_open_interest(symbol, expiration)
+    options = yfinance_model.get_volume_open_interest(symbol, expiry)
     calls = options.calls
     puts = options.puts
     current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
@@ -595,7 +595,7 @@ def plot_volume_open_interest(
     g.set_xticklabels(xlabels)
 
     ax.set_title(
-        f"{symbol} volumes for {expiration} \n(open interest displayed only during market hours)",
+        f"{symbol} volumes for {expiry} \n(open interest displayed only during market hours)",
     )
     ax.invert_yaxis()
 
