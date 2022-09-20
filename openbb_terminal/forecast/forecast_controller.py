@@ -1266,7 +1266,7 @@ class ForecastController(BaseController):
 
         if ns_parser:
             for option in ns_parser.delete:
-                dataset, column = option.split(".")
+                dataset, column = option.split(".", 1)
 
                 if dataset not in self.datasets:
                     console.print(
