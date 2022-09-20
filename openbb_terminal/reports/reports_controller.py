@@ -12,10 +12,14 @@ from ast import literal_eval
 from datetime import datetime
 from typing import List
 import importlib
+import contextlib
+import io
 
 from nbconvert.nbconvertapp import NbConvertApp
 from nbconvert.exporters import ScriptExporter
 from nbconvert.writers import FilesWriter
+from matplotlib import pyplot as plt
+
 
 from prompt_toolkit.completion import NestedCompleter
 from openbb_terminal import feature_flags as obbff
@@ -249,6 +253,7 @@ class ReportController(BaseController):
 
             # use nbconvert to switch to .py
             converter = NbConvertApp()
+            converter.log_level = 40
             converter.export_format = "script"
             converter.exporter = ScriptExporter()
             converter.writer = FilesWriter()
@@ -268,8 +273,19 @@ class ReportController(BaseController):
             clean_code = re.sub(r"\n{2,}", "\n\n", clean_code)
             python_file.write_text(clean_code.strip())
 
-            # run the report
-            importlib.import_module(f"openbb_terminal.reports.{report_to_run}copy")
+            # Check for existing matplotlib figures
+            _figures_before = plt.get_fignums()
+
+            # Run the report
+            notebook_execution_output = io.StringIO()
+            with contextlib.redirect_stdout(notebook_execution_output):
+                importlib.import_module(f"openbb_terminal.reports.{report_to_run}copy")
+
+            # Close the figures that were created during report execution
+            _figures_after = plt.get_fignums()
+            for fig_number in _figures_after:
+                if fig_number not in _figures_before:
+                    plt.close(fig_number)
 
             # TO DO: modify report output path to exports folder in user data
             report_output_path = Path(
