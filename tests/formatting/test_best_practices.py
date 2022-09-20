@@ -1,7 +1,6 @@
-from inspect import isfunction, ismodule, signature
-from typing import List
+from inspect import signature
 
-from openbb_terminal import api
+from docs.generate import all_functions
 
 # This is a list of modules to ignore
 ignore_modules = ["os"]
@@ -25,7 +24,7 @@ bad_params = {
 }
 
 
-def assert_overlaps(overlaps: List[str], sub_item: str, new_parent: str):
+def assert_overlaps(overlaps: list[str], sub_item: str, new_parent: str):
     if overlaps:
         overlap_str = "\n"
         for item in overlaps:
@@ -36,37 +35,9 @@ def assert_overlaps(overlaps: List[str], sub_item: str, new_parent: str):
         )
 
 
-def test_no_bad_parameters():
-    command_count = 0
-    pre_modules = []
-    for module in dir(api):
-        if ismodule(getattr(api, module)):
-            pre_modules.append(module)
-    modules = [(x, api) for x in pre_modules]
-    i = 0
-    while len(modules) > i:
-        item, parent = modules[i]
-        if str(item)[0] == "_":
-            i += 1
-            continue
-        if ismodule(getattr(parent, item)):
-            new_parent = getattr(parent, item)
-            if "api" not in str(new_parent):
-                i += 1
-                continue
-            for sub_item in dir(new_parent):
-                if str(sub_item)[0] == "_":
-                    continue
-                # If we find a module we want to add it to our list to check
-                if ismodule(getattr(new_parent, sub_item)):
-                    if sub_item not in ignore_modules:
-                        # print(f"{new_parent}: {sub_item}")
-                        modules.append((sub_item, new_parent))
-                # If we find a function we want to check it for forbidden parameters
-                elif isfunction(getattr(new_parent, sub_item)):
-                    command_count += 1
-                    params = signature(getattr(new_parent, sub_item))
-                    overlaps = list(set(bad_params) & set(params.parameters.keys()))
-                    assert_overlaps(overlaps, sub_item, new_parent)
-                    # print(command_count)
-        i += 1
+def test_bad_parameters():
+    all_funcs = all_functions()
+    for path, _, function in all_funcs:
+        params = signature(function)
+        overlaps = list(set(bad_params) & set(params.parameters.keys()))
+        assert_overlaps(overlaps, function.__name__, path)
