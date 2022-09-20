@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 # pylint: disable=C0301, E1101
+# pylint: disable=unsupported-assignment-operation
 
 import logging
 import re

@@ -12,7 +12,7 @@ import difflib
 import logging
 import json
 
-from typing import Union, List, Dict, Any
+from typing import Union, Any
 from datetime import datetime, timedelta
 
 from prompt_toolkit.completion import NestedCompleter
@@ -52,7 +52,7 @@ EXPORT_ONLY_RAW_DATA_ALLOWED = 1
 EXPORT_ONLY_FIGURES_ALLOWED = 2
 EXPORT_BOTH_RAW_DATA_AND_FIGURES = 3
 
-controllers: Dict[str, Any] = {}
+controllers: dict[str, Any] = {}
 
 CRYPTO_SOURCES = {
     "bin": "Binance",
@@ -83,22 +83,22 @@ class BaseController(metaclass=ABCMeta):
         "wiki",
     ]
 
-    CHOICES_COMMANDS: List[str] = []
-    CHOICES_MENUS: List[str] = []
-    SUPPORT_CHOICES: Dict = {}
-    ABOUT_CHOICES: Dict = {}
+    CHOICES_COMMANDS: list[str] = []
+    CHOICES_MENUS: list[str] = []
+    SUPPORT_CHOICES: dict = {}
+    ABOUT_CHOICES: dict = {}
     COMMAND_SEPARATOR = "/"
     KEYS_MENU = "keys" + COMMAND_SEPARATOR
     TRY_RELOAD = False
     PATH: str = ""
     FILE_PATH: str = ""
 
-    def __init__(self, queue: List[str] = None) -> None:
+    def __init__(self, queue: list[str] = None) -> None:
         """
         This is the base class for any controller in the codebase.
         It's used to simplify the creation of menus.
 
-        queue: List[str]
+        queue: list[str]
             The current queue of jobs to process separated by "/"
             E.g. /stocks/load gme/dps/sidtc/../exit
         """
@@ -189,7 +189,7 @@ class BaseController(metaclass=ABCMeta):
         if obbff.REMEMBER_CONTEXTS:
             controllers[self.PATH] = self
 
-    def custom_reset(self) -> List[str]:
+    def custom_reset(self) -> list[str]:
         """This will be replaced by any children with custom_reset functions"""
         return []
 
@@ -197,7 +197,7 @@ class BaseController(metaclass=ABCMeta):
     def print_help(self) -> None:
         raise NotImplementedError("Must override print_help.")
 
-    def parse_input(self, an_input: str) -> List:
+    def parse_input(self, an_input: str) -> list:
         """Parse controller input
 
         Splits the command chain from user input into a list of individual commands
@@ -216,10 +216,10 @@ class BaseController(metaclass=ABCMeta):
 
         Returns
         -------
-        List
+        list
             Command queue as list
         """
-        custom_filters: List = []
+        custom_filters: list = []
         commands = parse_and_split_input(
             an_input=an_input, custom_filters=custom_filters
         )
@@ -255,13 +255,13 @@ class BaseController(metaclass=ABCMeta):
             self.log_queue()
 
     @log_start_end(log=logger)
-    def switch(self, an_input: str) -> List[str]:
+    def switch(self, an_input: str) -> list[str]:
         """Process and dispatch input
 
         Returns
         -------
-        List[str]
-            List of commands in the queue to execute
+        list[str]
+            list of commands in the queue to execute
         """
         actions = self.parse_input(an_input)
 
@@ -329,7 +329,7 @@ class BaseController(metaclass=ABCMeta):
         self.print_help()
 
     @log_start_end(log=logger)
-    def call_about(self, other_args: List[str]) -> None:
+    def call_about(self, other_args: list[str]) -> None:
         """Process about command"""
         description = "Display the documentation of the menu or command."
         if self.CHOICES_COMMANDS and self.CHOICES_MENUS:
@@ -402,7 +402,7 @@ class BaseController(metaclass=ABCMeta):
             console.print("No resources available.\n")
 
     @log_start_end(log=logger)
-    def call_support(self, other_args: List[str]) -> None:
+    def call_support(self, other_args: list[str]) -> None:
         """Process support command"""
 
         self.save_class()
@@ -466,7 +466,7 @@ class BaseController(metaclass=ABCMeta):
             )
 
     @log_start_end(log=logger)
-    def call_wiki(self, other_args: List[str]) -> None:
+    def call_wiki(self, other_args: list[str]) -> None:
         """Process wiki command"""
 
         parser = argparse.ArgumentParser(
@@ -500,7 +500,7 @@ class BaseController(metaclass=ABCMeta):
     def parse_known_args_and_warn(
         self,
         parser: argparse.ArgumentParser,
-        other_args: List[str],
+        other_args: list[str],
         export_allowed: int = NO_EXPORT,
         raw: bool = False,
         limit: int = 0,
@@ -511,8 +511,8 @@ class BaseController(metaclass=ABCMeta):
         ----------
         parser: argparse.ArgumentParser
             Parser with predefined arguments
-        other_args: List[str]
-            List of arguments to parse
+        other_args: list[str]
+            list of arguments to parse
         export_allowed: int
             Choose from NO_EXPORT, EXPORT_ONLY_RAW_DATA_ALLOWED,
             EXPORT_ONLY_FIGURES_ALLOWED and EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -745,7 +745,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
         self.add_info = stocks_helper.additional_info_about_ticker("")
         self.TRY_RELOAD = True
 
-    def call_load(self, other_args: List[str]):
+    def call_load(self, other_args: list[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -885,6 +885,8 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 console.print(self.add_info)
                 if (
                     ns_parser.interval == 1440
+                    and not ns_parser.weekly
+                    and not ns_parser.monthly
                     and ns_parser.filepath is None
                     and self.PATH == "/stocks/"
                 ):

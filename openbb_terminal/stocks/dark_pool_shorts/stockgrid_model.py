@@ -12,6 +12,8 @@ from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
 
+# pylint: disable=unsupported-assignment-operation
+
 
 @log_start_end(log=logger)
 def get_dark_pool_short_positions(

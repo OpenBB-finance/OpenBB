@@ -12,6 +12,8 @@ from openbb_terminal.cryptocurrency.dataframe_helpers import (
 )
 from openbb_terminal.decorators import log_start_end
 
+# pylint: disable=unsupported-assignment-operation
+
 logger = logging.getLogger(__name__)
 
 UNI_URL = "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2"
