@@ -20,7 +20,7 @@ from openbb_terminal.portfolio.statics import REGIONS, PERIODS
 logger = logging.getLogger(__name__)
 
 
-# pylint: disable=too-many-return-statements,too-many-lines
+# pylint: disable=too-many-return-statements, too-many-lines, too-many-statements
 
 
 now = datetime.now()

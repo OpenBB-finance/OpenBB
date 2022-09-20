@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import logging
 
 from datetime import datetime, timedelta
-from typing import Any
+from typing import Any, List, Tuple
 import requests
 import pandas as pd
 from openbb_terminal import config_terminal as cfg
@@ -21,7 +21,7 @@ def get_news(
     start_date: str = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d"),
     show_newest: bool = True,
     sources: str = "",
-) -> list[tuple[Any, Any]]:
+) -> List[Tuple[Any, Any]]:
     """Get news for a given term. [Source: NewsAPI]
 
     Parameters
@@ -37,7 +37,7 @@ def get_news(
 
     Returns
     ----------
-    tables : list[tuple]
+    tables : List[Tuple]
         List of tuples containing news df in first index and dict containing title of news df
     """
     link = (

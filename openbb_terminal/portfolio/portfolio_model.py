@@ -13,7 +13,6 @@ import yfinance as yf
 from sklearn.metrics import r2_score
 from pycoingecko import CoinGeckoAPI
 from openbb_terminal.common.quantitative_analysis import qa_model
-
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.portfolio import portfolio_helper, allocation_model
 from openbb_terminal.rich_config import console
@@ -1816,8 +1815,8 @@ def get_yearly_returns(
         portfolio.benchmark_returns, window
     )
 
-    creturns_year_val = []
-    breturns_year_val = []
+    creturns_year_val = list()
+    breturns_year_val = list()
 
     for year in sorted(set(portfolio_returns.index.year)):
         creturns_year = portfolio_returns[portfolio_returns.index.year == year]
