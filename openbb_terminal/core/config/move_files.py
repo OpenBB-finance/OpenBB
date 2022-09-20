@@ -14,7 +14,7 @@ def copy_and_delete_files(from_dir, to_dir):
     Moves default/example files from repo and deletes the folder in the repo
     """
     if os.path.exists(from_dir):
-        shutil.copytree(from_dir, to_dir, dirs_exist_ok= True)
+        shutil.copytree(from_dir, to_dir, dirs_exist_ok=True)
         shutil.rmtree(from_dir)
 
 
