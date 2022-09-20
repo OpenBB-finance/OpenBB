@@ -11,7 +11,7 @@ from openbb_terminal.decorators import check_api_key
 from openbb_terminal.common import newsapi_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data
-from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import print_rich_table
 
 logger = logging.getLogger(__name__)
 
@@ -20,12 +20,12 @@ logger = logging.getLogger(__name__)
 @check_api_key(["API_NEWS_TOKEN"])
 def display_news(
     query: str,
-    start_date: str = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d"),
     limit: int = 3,
+    start_date: str = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d"),
     show_newest: bool = True,
     sources: str = "",
     export: str = "",
-):
+) -> None:
     """Display news for a given term. [Source: NewsAPI]
 
     Parameters
@@ -43,30 +43,14 @@ def display_news(
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    articles = newsapi_model.get_news(query, start_date, show_newest, sources)
-
-    if articles:
-        for idx, article in enumerate(articles):
-
-            publishedat = article["publishedAt"].replace("T", " ").replace("Z", "")
-            title = article["title"]
-
-            console.print(f"> {publishedat} - {title}")
-            console.print(article["url"])
-
-            # The description section doesn't exist when this is invoked from UK
-            if "description" in article:
-                console.print(article["description"])
-
-            console.print()
-
-            if idx >= limit - 1:
-                console.print()
-                break
+    tables = newsapi_model.get_news(query, limit, start_date, show_newest, sources)
+    if tables:
+        for table in tables:
+            print_rich_table(table[0], title=table[1]["title"])
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         f"news_{query}_{'_'.join(sources)}",
-        pd.DataFrame(articles),
+        pd.DataFrame(tables),
     )

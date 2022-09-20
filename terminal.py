@@ -378,17 +378,11 @@ class TerminalController(BaseController):
 
     def call_reports(self, _):
         """Process reports command"""
-        if not obbff.PACKAGED_APPLICATION:
-            from openbb_terminal.reports.reports_controller import (
-                ReportController,
-            )
+        from openbb_terminal.reports.reports_controller import (
+            ReportController,
+        )
 
-            self.queue = self.load_class(ReportController, self.queue)
-        else:
-            console.print("This feature is coming soon.")
-            console.print(
-                "Use the source code and an Anaconda environment if you are familiar with Python."
-            )
+        self.queue = self.load_class(ReportController, self.queue)
 
     def call_dashboards(self, _):
         """Process dashboards command"""

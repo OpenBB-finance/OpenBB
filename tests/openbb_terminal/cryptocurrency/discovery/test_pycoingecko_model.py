@@ -19,7 +19,7 @@ def test_get_categories_keys(recorder):
     "kwargs",
     [
         {},
-        dict(top=251),
+        dict(limit=251),
     ],
 )
 def test_get_coins(kwargs, recorder):
@@ -33,7 +33,7 @@ def test_get_coins(kwargs, recorder):
     [
         ("get_categories_keys", dict()),
         ("get_coins", dict(category="analytics")),
-        ("get_coins", dict(top=251, category="analytics")),
+        ("get_coins", dict(limit=251, category="analytics")),
         ("get_gainers_or_losers", dict()),
         ("get_trending_coins", dict()),
         ("get_coin_list", dict()),

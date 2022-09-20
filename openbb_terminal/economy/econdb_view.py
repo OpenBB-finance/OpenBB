@@ -159,9 +159,9 @@ def show_treasuries(
     ----------
     instruments: list
         Type(s) of treasuries, nominal, inflation-adjusted or secondary market.
-        Available options can be accessed through get_treasury_maturities().
+        Available options can be accessed through economy.treasury_maturities().
     maturities : list
-        Treasury maturities to display. Available options can be accessed through get_treasury_maturities().
+        Treasury maturities to display. Available options can be accessed through economy.treasury_maturities().
     frequency : str
         Frequency of the data, this can be daily, weekly, monthly or annually
     start_date : str
