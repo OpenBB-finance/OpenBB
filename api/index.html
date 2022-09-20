@@ -11,8 +11,8 @@
 
     <meta name="description" content="The OpenBB Python API was created to enable usage of the terminal functionality in python scripts and IPython Notebooks (Jupyter). The API wraps the functionality of the terminal in a way that the Python commands follow the same convention as the terminal.
 For example stocks/load aapl becomes openbb.stocks.load(&quot;aapl&quot;).
-
-Table of Contents    Python environment setup Understanding the API functions Usage examples External matplotlib axes support      Python environment setup    Import the OpenBB API into your python script or notebook with">
+ Python environment setup    Import the OpenBB API into your python script or notebook with
+from openbb_terminal.api import openbb This imports all the commands at once.">
 
 
 
@@ -26768,19 +26768,6 @@ code, img {
 scripts and IPython Notebooks (Jupyter). The API wraps the functionality of the terminal in a way that the Python
 commands follow the same convention as the terminal.</p>
 <p>For example <code>stocks/load aapl</code> becomes <code>openbb.stocks.load(&quot;aapl&quot;)</code>.</p>
-<p><a target="_blank" href="https://user-images.githubusercontent.com/11668535/157916097-f9c5af6f-b97f-476d-943e-49eea4283bed.png"><img width="500" alt="image" src="https://user-images.githubusercontent.com/11668535/157916097-f9c5af6f-b97f-476d-943e-49eea4283bed.png"></a></p>
-
-
-
-  <h2>Table of Contents</h2>
-  <div class="gdoc-toc gdoc-toc__level--1"><nav id="TableOfContents"><ol>
-        <li><a href="#python-environment-setup">Python environment setup</a></li>
-        <li><a href="#understanding-the-api-functions">Understanding the API functions</a></li>
-        <li><a href="#usage-examples">Usage examples</a></li>
-        <li><a href="#external-matplotlib-axes-support">External matplotlib axes support</a></li>
-      </ul></nav><hr></div>
-
-
 <hr>
 <div class="gdoc-page__anchorwrap">
     <h2 id="python-environment-setup">
@@ -26790,8 +26777,15 @@ commands follow the same convention as the terminal.</p>
         </a>
     </h2>
 </div><p>Import the OpenBB API into your python script or notebook with</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">openbb_terminal</span> <span class="kn">import</span> <span class="n">api</span> <span class="k">as</span> <span class="n">openbb</span>
-</code></pre></div><div class="gdoc-page__anchorwrap">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">openbb_terminal.api</span> <span class="kn">import</span> <span class="n">openbb</span>
+</code></pre></div><p>This imports all the commands at once. Now you can directly begin to use it. The api function is structured in the way that it always retrieves the underlying data. For charts add the <code>chart=True</code> parameter.</p>
+<p>For example see:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="c1"># Returns data:</span>
+<span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">ba</span><span class="o">.</span><span class="n">snews</span><span class="p">(</span><span class="s2">&#34;aapl&#34;</span><span class="p">)</span>
+<span class="c1"># Returns charts:</span>
+<span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">ba</span><span class="o">.</span><span class="n">snews</span><span class="p">(</span><span class="s2">&#34;aapl&#34;</span><span class="p">,</span> <span class="n">chart</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div><p>This allows easy integration to the jupyter notebook and allows you to build new applications on top of the terminal. The api also has new functionalities that are used in the backend of the Terminal (CLI). With these backend functions you can develop new functionalities and avoid copy-pasting the code from the repository.</p>
+<div class="gdoc-page__anchorwrap">
     <h2 id="understanding-the-api-functions">
         Understanding the API functions
         <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/api/#understanding-the-api-functions" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Understanding the API functions" href="#understanding-the-api-functions">
@@ -26822,65 +26816,88 @@ external_axes : Optional[List[plt.Axes]], optional
             <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
         </a>
     </h2>
-</div><p>Load stock data into a dataframe:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">aapl_data</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
-    <span class="n">ticker</span><span class="o">=</span><span class="s2">&#34;aapl&#34;</span><span class="p">,</span>
-    <span class="n">start</span><span class="o">=</span><span class="s2">&#34;2021-06-10&#34;</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">aapl_data</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">process_candle</span><span class="p">(</span><span class="n">aapl_data</span><span class="p">)</span>
-</code></pre></div><p>Plot candle chart</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">candle</span><span class="p">(</span><span class="s2">&#34;AAPL&#34;</span><span class="p">,</span> <span class="n">aapl_data</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-</code></pre></div><p>Call the &ldquo;What if&rdquo; command of the backtesting menu</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">bt</span><span class="o">.</span><span class="n">whatif</span><span class="p">(</span><span class="s2">&#34;aapl&#34;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="s2">&#34;2012-03-03&#34;</span><span class="p">,</span> <span class="s2">&#34;%Y-%m-</span><span class="si">%d</span><span class="s2">&#34;</span><span class="p">))</span>
-</code></pre></div><p>Get sentiment for a list of tickers</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">ca</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">finbrain</span><span class="o">.</span><span class="n">get_sentiments</span><span class="p">(</span><span class="n">tickers</span><span class="o">=</span><span class="p">[</span><span class="s2">&#34;aapl&#34;</span><span class="p">])</span>
-</code></pre></div><p>Print key fundamental metrics for past 2 years</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">fa</span><span class="o">.</span><span class="n">fmp</span><span class="o">.</span><span class="n">metrics</span><span class="p">(</span><span class="n">ticker</span><span class="o">=</span><span class="s2">&#34;AAPL&#34;</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-</code></pre></div><p>Get fundamental metrics for past 3 years as a pandas dataframe</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">fa</span><span class="o">.</span><span class="n">fmp</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">fmp</span><span class="o">.</span><span class="n">get_key_metrics</span><span class="p">(</span><span class="n">ticker</span><span class="o">=</span><span class="s2">&#34;AAPL&#34;</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-</code></pre></div><p>Perform an OLS regression on multiple custom datasets</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">openbb</span><span class="o">.</span><span class="n">econometrics</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span>
-    <span class="n">regression_variables</span><span class="o">=</span><span class="p">[</span>
-    <span class="s1">&#39;close-tsla&#39;</span><span class="p">,</span> <span class="s1">&#39;volume-aapl&#39;</span>
-    <span class="p">],</span>
-    <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;aapl&#34;</span><span class="p">:</span><span class="n">aapl_data</span><span class="p">,</span><span class="s2">&#34;tsla&#34;</span><span class="p">:</span><span class="n">tsla_data</span><span class="p">},</span>
-    <span class="n">datasets</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">&#34;close-tsla&#34;</span><span class="p">:{</span><span class="s2">&#34;Close&#34;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&#34;tsla&#34;</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
-        <span class="s2">&#34;volume-aapl&#34;</span><span class="p">:{</span><span class="s2">&#34;Volume&#34;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&#34;aapl&#34;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">)</span>
-</code></pre></div><div class="gdoc-page__anchorwrap">
-    <h2 id="external-matplotlib-axes-support">
-        External matplotlib axes support
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/api/#external-matplotlib-axes-support" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor External matplotlib axes support" href="#external-matplotlib-axes-support">
+</div><p>We&rsquo;d recommend checking our example notebook reports to understand how to use OpenBB API. You can find inside <a class="gdoc-markdown__link" href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/reports">reports menu</a>.</p>
+<div class="gdoc-page__anchorwrap">
+    <h3 id="jupyter-notebook-tricks">
+        Jupyter Notebook Tricks
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/api/#jupyter-notebook-tricks" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Jupyter Notebook Tricks" href="#jupyter-notebook-tricks">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h3>
+</div><p><strong>Get  matplotlib charts in the output cells</strong><br>
+If you copy-paste the code below and use it as your initialization then you&rsquo;re matplotlib graphs will be inside
+the result cell.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib_inline.backend_inline</span>
+<span class="kn">from</span> <span class="nn">openbb_terminal.api</span> <span class="kn">import</span> <span class="n">openbb</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="n">matplotlib_inline</span><span class="o">.</span><span class="n">backend_inline</span><span class="o">.</span><span class="n">set_matplotlib_formats</span><span class="p">(</span><span class="s2">&#34;svg&#34;</span><span class="p">)</span>
+</code></pre></div><p><strong>Get function signature and docstring</strong><br>
+When you press <code>shift + tab</code> in jupyter notebook while having the mouse parser in an API function, you get the
+signature and docstring of the function.</p>
+<div class="gdoc-page__anchorwrap">
+    <h3 id="visual-studio-code-tricks">
+        Visual Studio Code Tricks
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/api/#visual-studio-code-tricks" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Visual Studio Code Tricks" href="#visual-studio-code-tricks">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h3>
+</div><p><strong>Get function docstring and signature</strong><br>
+In order to get the docstrings and function signatures for the API when opening a Jupyter Notebook in VSCode,
+you have to install the <a class="gdoc-markdown__link" href="https://marketplace.visualstudio.com/items?itemName=ms-toolsai.vscode-jupyter-powertoys">Jupyter PowerToys
+extension</a>.</p>
+<div class="gdoc-page__anchorwrap">
+    <h2 id="code-examples">
+        Code Examples
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/api/#code-examples" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Code Examples" href="#code-examples">
             <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
         </a>
     </h2>
-</div><p>Most of the functions of the terminal that generate matplotlib charts support passing
-external axes into them. This is very handy when you want a chart that is generated by
-OpenBB to appear in another chart that you are creating in a notebook.</p>
-<p>Example:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="c1"># Load stock data</span>
-<span class="n">ticker</span> <span class="o">=</span> <span class="s2">&#34;AAPL&#34;</span>
-<span class="n">stock_data</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">ticker</span><span class="o">=</span><span class="s2">&#34;aapl&#34;</span><span class="p">)</span>
-
-<span class="c1"># Create a matplotlib figure</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
-
-<span class="c1"># Use OpenBB to add charts to the axes of the created figure</span>
-<span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">ta</span><span class="o">.</span><span class="n">macd</span><span class="p">(</span><span class="n">s_ticker</span><span class="o">=</span><span class="n">ticker</span><span class="p">,</span> <span class="n">series</span><span class="o">=</span><span class="n">aapl</span><span class="p">[</span><span class="s2">&#34;Close&#34;</span><span class="p">],</span> <span class="n">external_axes</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
-<span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">voi_yf</span><span class="p">(</span>
-    <span class="n">ticker</span><span class="o">=</span><span class="n">ticker</span><span class="p">,</span>
-    <span class="n">expiry</span><span class="o">=</span><span class="s2">&#34;2022-03-11&#34;</span><span class="p">,</span>
-    <span class="n">min_sp</span><span class="o">=</span><span class="mi">110</span><span class="p">,</span>
-    <span class="n">max_sp</span><span class="o">=</span><span class="mi">210</span><span class="p">,</span>
-    <span class="n">min_vol</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
-    <span class="n">external_axes</span><span class="o">=</span><span class="p">[</span><span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]],</span>
+</div><p>Just copy-paste the code examples below into a python script or jupyter notebook, and you&rsquo;re ready to go.</p>
+<p><strong>Basic Stock Information</strong><br>
+Prints general information about the selected stock (in this case Gamsetop)</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">openbb_terminal.api</span> <span class="kn">import</span> <span class="n">openbb</span>
+<span class="n">gme_info</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">fa</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;gme&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;-- Gamstop Stock --</span><span class="se">\n\n</span><span class="s2">- Basic Info -&#34;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;Sector: </span><span class="si">{</span><span class="n">gme_info</span><span class="p">[</span><span class="s1">&#39;Sector&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;Country: </span><span class="si">{</span><span class="n">gme_info</span><span class="p">[</span><span class="s1">&#39;Country&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;Description: </span><span class="si">{</span><span class="n">gme_info</span><span class="p">[</span><span class="s1">&#39;Long business summary&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">- Financial Info -&#34;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;Ebitda Margins: </span><span class="si">{</span><span class="n">gme_info</span><span class="p">[</span><span class="s1">&#39;Ebitda margins&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;Profit Margins: </span><span class="si">{</span><span class="n">gme_info</span><span class="p">[</span><span class="s1">&#39;Profit margins&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;Revenue growth: </span><span class="si">{</span><span class="n">gme_info</span><span class="p">[</span><span class="s1">&#39;Revenue growth&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">- Target Price -&#34;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;Current price: </span><span class="si">{</span><span class="n">gme_info</span><span class="p">[</span><span class="s1">&#39;Current price&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;Target mean price: </span><span class="si">{</span><span class="n">gme_info</span><span class="p">[</span><span class="s1">&#39;Target mean price&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;Target high price: </span><span class="si">{</span><span class="n">gme_info</span><span class="p">[</span><span class="s1">&#39;Target high price&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;Target low price: </span><span class="si">{</span><span class="n">gme_info</span><span class="p">[</span><span class="s1">&#39;Target low price&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</code></pre></div><p><strong>Use external axis</strong><br>
+The code below utilises the <code>external_axes</code> parameter to get two axis in one chart</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">openbb_terminal.api</span> <span class="kn">import</span> <span class="n">openbb</span>
+<span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+<span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">dps</span><span class="o">.</span><span class="n">dpotc</span><span class="p">(</span>
+    <span class="s2">&#34;aapl&#34;</span><span class="p">,</span>
+    <span class="n">external_axes</span><span class="o">=</span><span class="p">[</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">],</span>
+    <span class="n">chart</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
-
-<span class="c1"># Show the figure with charts</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</code></pre></div><hr>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</code></pre></div><p><strong>Stocks Return Distribution</strong><br>
+Fetches data from the OpenBB API and then plots the return distribution. This is a good example, where the data from
+the API is leveraged to build a new feature on top of the API.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">openbb_terminal.api</span> <span class="kn">import</span> <span class="n">openbb</span>
+<span class="c1"># Fetches data from the api</span>
+<span class="n">gme</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&#34;gme&#34;</span><span class="p">)</span>
+<span class="c1"># Calculates logarithmic returns</span>
+<span class="n">gme</span><span class="p">[</span><span class="s2">&#34;Log Returns&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">gme</span><span class="p">[</span><span class="s2">&#34;Adj Close&#34;</span><span class="p">]</span><span class="o">/</span><span class="n">gme</span><span class="p">[</span><span class="s2">&#34;Adjusted Close&#34;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="c1"># Plots the return distributions</span>
+<span class="n">gme</span><span class="p">[</span><span class="s2">&#34;Log Returns&#34;</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">thight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div><p>For more examples see the OpenBB jupyter notebook reports. They all use the API to its fullest extent!</p>
+<hr>
 
     </article>
  
