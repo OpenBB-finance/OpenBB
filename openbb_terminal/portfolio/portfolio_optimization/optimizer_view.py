@@ -23,10 +23,7 @@ from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import plot_autoscale, print_rich_table
-from openbb_terminal.portfolio.portfolio_optimization import (
-    optimizer_model,
-    yahoo_finance_model,
-)
+from openbb_terminal.portfolio.portfolio_optimization import optimizer_model
 from openbb_terminal.rich_config import console
 
 warnings.filterwarnings("ignore")
@@ -343,7 +340,8 @@ def display_weights_sa(weights: dict, weights_sa: dict):
     weights: dict
         weights to display.  Keys are stocks.  Values are either weights or values
     weights_sa: dict
-        weights of sensitivity analysis to display.  Keys are stocks.  Values are either weights or values
+        weights of sensitivity analysis to display.  Keys are stocks.
+        Values are either weights or values
     """
     if not weights or not weights_sa:
         return
@@ -2127,85 +2125,25 @@ def display_ef(
     plot_tickers: bool
         Whether to plot the tickers for the assets
     """
-    stock_prices = yahoo_finance_model.process_stocks(
-        symbols, interval, start_date, end_date
+
+    frontier, mu, cov, stock_returns, weights, X1, Y1, port = optimizer_model.get_ef(
+        symbols,
+        interval,
+        start_date,
+        end_date,
+        log_returns,
+        freq,
+        maxnan,
+        threshold,
+        method,
+        risk_measure,
+        risk_free_rate,
+        alpha,
+        value,
+        value_short,
+        n_portfolios,
+        seed,
     )
-    stock_returns = yahoo_finance_model.process_returns(
-        stock_prices,
-        log_returns=log_returns,
-        freq=freq,
-        maxnan=maxnan,
-        threshold=threshold,
-        method=method,
-    )
-
-    risk_free_rate = risk_free_rate / time_factor[freq.upper()]
-
-    # Building the portfolio object
-    port = rp.Portfolio(returns=stock_returns, alpha=alpha)
-
-    # Estimate input parameters:
-    port.assets_stats(method_mu="hist", method_cov="hist")
-
-    # Budget constraints
-    port.upperlng = value
-    if value_short > 0:
-        port.sht = True
-        port.uppersht = value_short
-        port.budget = value - value_short
-    else:
-        port.budget = value
-
-    # Estimate tangency portfolio:
-    weights = port.optimization(
-        model="Classic",
-        rm=risk_choices[risk_measure],
-        obj="Sharpe",
-        rf=risk_free_rate,
-        hist=True,
-    )
-
-    points = 20  # Number of points of the frontier
-    frontier = port.efficient_frontier(
-        model="Classic",
-        rm=risk_choices[risk_measure],
-        points=points,
-        rf=risk_free_rate,
-        hist=True,
-    )
-
-    random_weights = optimizer_model.generate_random_portfolios(
-        symbols=symbols,
-        n_portfolios=n_portfolios,
-        seed=seed,
-    )
-
-    mu = stock_returns.mean().to_frame().T
-    cov = stock_returns.cov()
-    Y = (mu @ frontier).to_numpy() * time_factor[freq.upper()]
-    Y = np.ravel(Y)
-    X = np.zeros_like(Y)
-
-    for i in range(frontier.shape[1]):
-        w = np.array(frontier.iloc[:, i], ndmin=2).T
-        risk = rp.Sharpe_Risk(
-            w,
-            cov=cov,
-            returns=stock_returns,
-            rm=risk_choices[risk_measure],
-            rf=risk_free_rate,
-            alpha=alpha,
-            # a_sim=a_sim,
-            # beta=beta,
-            # b_sim=b_sim,
-        )
-        X[i] = risk
-
-    if risk_choices[risk_measure] not in ["ADD", "MDD", "CDaR", "EDaR", "UCI"]:
-        X = X * time_factor[freq.upper()] ** 0.5
-    f = interp1d(X, Y, kind="quadratic")
-    X1 = np.linspace(X[0], X[-1], num=100)
-    Y1 = f(X1)
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -2250,7 +2188,13 @@ def display_ef(
             # beta=beta,
             # b_sim=b_sim,
         )
-        if risk_choices[risk_measure] not in ["ADD", "MDD", "CDaR", "EDaR", "UCI"]:
+        if risk_choices[risk_measure.lower()] not in [
+            "ADD",
+            "MDD",
+            "CDaR",
+            "EDaR",
+            "UCI",
+        ]:
             risk_sharpe = risk_sharpe * time_factor[freq.upper()] ** 0.5
 
         y = ret_sharpe * 1.5
@@ -2279,7 +2223,13 @@ def display_ef(
                 alpha=alpha,
             )
 
-            if risk_choices[risk_measure] not in ["MDD", "ADD", "CDaR", "EDaR", "UCI"]:
+            if risk_choices[risk_measure.lower()] not in [
+                "MDD",
+                "ADD",
+                "CDaR",
+                "EDaR",
+                "UCI",
+            ]:
                 risk = risk * time_factor[freq.upper()] ** 0.5
 
             ticker_plot = ticker_plot.append(
@@ -2633,7 +2583,7 @@ def display_hcp(
     beta: float = None,
     b_sim: int = None,
     linkage: str = "ward",
-    k: int = 0,
+    k: int = None,
     max_k: int = 10,
     bins_info: str = "KN",
     alpha_tail: float = 0.05,
@@ -2903,11 +2853,12 @@ def display_hrp(
     covariance: str = "hist",
     risk_measure: str = "mv",
     risk_free_rate: float = 0.0,
+    risk_aversion: float = 1.0,
     alpha: float = 0.05,
     a_sim: int = 100,
     beta: float = None,
     b_sim: int = None,
-    linkage: str = "ward",
+    linkage: str = "single",
     k: int = 0,
     max_k: int = 10,
     bins_info: str = "KN",
@@ -3019,6 +2970,9 @@ def display_hrp(
     risk_free_rate: float, optional
         Risk free rate, must be in the same interval of assets returns.
         Used for 'FLPM' and 'SLPM'. The default is 0.
+    risk_aversion: float, optional
+        Risk aversion factor of the 'Utility' objective function.
+        The default is 1.
     alpha: float, optional
         Significance level of VaR, CVaR, EDaR, DaR, CDaR, EDaR, Tail Gini of losses.
         The default is 0.05.
@@ -3078,7 +3032,13 @@ def display_hrp(
     table: bool, optional
         True if plot table weights, by default False
     """
-    weights = display_hcp(
+    p = d_period(interval, start_date, end_date)
+
+    s_title = f"{p} Hierarchical risk parity portfolio"
+    s_title += " using " + codependence + " codependence,\n" + linkage
+    s_title += " linkage and " + risk_names[risk_measure] + " as risk measure\n"
+
+    weights, stock_returns = optimizer_model.get_hrp(
         symbols=symbols,
         interval=interval,
         start_date=start_date,
@@ -3088,11 +3048,11 @@ def display_hrp(
         maxnan=maxnan,
         threshold=threshold,
         method=method,
-        model="HRP",
         codependence=codependence,
         covariance=covariance,
-        risk_measure=risk_measure,
+        risk_measure=risk_choices[risk_measure],
         risk_free_rate=risk_free_rate,
+        risk_aversion=risk_aversion,
         alpha=alpha,
         a_sim=a_sim,
         beta=beta,
@@ -3105,8 +3065,28 @@ def display_hrp(
         leaf_order=leaf_order,
         d_ewma=d_ewma,
         value=value,
-        table=table,
     )
+
+    if weights is None:
+        console.print("\n", "There is no solution with this parameters")
+        return {}
+
+    if table:
+        console.print("\n", s_title)
+        display_weights(weights)
+        portfolio_performance(
+            weights=weights,
+            data=stock_returns,
+            risk_measure=risk_choices[risk_measure],
+            risk_free_rate=risk_free_rate,
+            alpha=alpha,
+            a_sim=a_sim,
+            beta=beta,
+            b_sim=b_sim,
+            freq=freq,
+        )
+        console.print("")
+
     return weights
 
 
@@ -3125,6 +3105,7 @@ def display_herc(
     covariance: str = "hist",
     risk_measure: str = "mv",
     risk_free_rate: float = 0.0,
+    risk_aversion: float = 1.0,
     alpha: float = 0.05,
     a_sim: int = 100,
     beta: float = None,
@@ -3249,6 +3230,9 @@ def display_herc(
     risk_free_rate: float, optional
         Risk free rate, must be in the same interval of assets returns.
         Used for 'FLPM' and 'SLPM'. The default is 0.
+    risk_aversion: float, optional
+        Risk aversion factor of the 'Utility' objective function.
+        The default is 1.
     alpha: float, optional
         Significance level of VaR, CVaR, EDaR, DaR, CDaR, EDaR, Tail Gini of losses.
         The default is 0.05.
@@ -3308,7 +3292,13 @@ def display_herc(
     table: bool, optional
         True if plot table weights, by default False
     """
-    weights = display_hcp(
+    p = d_period(interval, start_date, end_date)
+
+    s_title = f"{p} Hierarchical equal risk contribution portfolio"
+    s_title += " using " + codependence + "\ncodependence," + linkage
+    s_title += " linkage and " + risk_names[risk_measure] + " as risk measure\n"
+
+    weights, stock_returns = optimizer_model.get_herc(
         symbols=symbols,
         interval=interval,
         start_date=start_date,
@@ -3318,11 +3308,11 @@ def display_herc(
         maxnan=maxnan,
         threshold=threshold,
         method=method,
-        model="HERC",
         codependence=codependence,
         covariance=covariance,
-        risk_measure=risk_measure,
+        risk_measure=risk_choices[risk_measure],
         risk_free_rate=risk_free_rate,
+        risk_aversion=risk_aversion,
         alpha=alpha,
         a_sim=a_sim,
         beta=beta,
@@ -3335,8 +3325,28 @@ def display_herc(
         leaf_order=leaf_order,
         d_ewma=d_ewma,
         value=value,
-        table=table,
     )
+
+    if weights is None:
+        console.print("\n", "There is no solution with this parameters")
+        return {}
+
+    if table:
+        console.print("\n", s_title)
+        display_weights(weights)
+        portfolio_performance(
+            weights=weights,
+            data=stock_returns,
+            risk_measure=risk_choices[risk_measure],
+            risk_free_rate=risk_free_rate,
+            alpha=alpha,
+            a_sim=a_sim,
+            beta=beta,
+            b_sim=b_sim,
+            freq=freq,
+        )
+        console.print("")
+
     return weights
 
 
@@ -3356,10 +3366,13 @@ def display_nco(
     objective: str = "MinRisk",
     risk_measure: str = "mv",
     risk_free_rate: float = 0.0,
-    risk_aversion: float = 2.0,
+    risk_aversion: float = 1.0,
     alpha: float = 0.05,
+    a_sim: int = 100,
+    beta: float = None,
+    b_sim: int = None,
     linkage: str = "ward",
-    k: int = 0,
+    k: int = None,
     max_k: int = 10,
     bins_info: str = "KN",
     alpha_tail: float = 0.05,
@@ -3369,7 +3382,7 @@ def display_nco(
     table: bool = False,
 ) -> Dict:
     """
-    Builds a nested clustered optimization portfolio
+    Builds a hierarchical equal risk contribution portfolio
 
     Parameters
     ----------
@@ -3549,7 +3562,13 @@ def display_nco(
     table: bool, optional
         True if plot table weights, by default False
     """
-    weights = display_hcp(
+    p = d_period(interval, start_date, end_date)
+
+    s_title = f"{p} Nested clustered optimization"
+    s_title += " using " + codependence + " codependence,\n" + linkage
+    s_title += " linkage and " + risk_names[risk_measure] + " as risk measure\n"
+
+    weights, stock_returns = optimizer_model.get_nco(
         symbols=symbols,
         interval=interval,
         start_date=start_date,
@@ -3559,14 +3578,16 @@ def display_nco(
         maxnan=maxnan,
         threshold=threshold,
         method=method,
-        model="NCO",
         codependence=codependence,
         covariance=covariance,
-        objective=objective,
-        risk_measure=risk_measure,
+        objective=objectives_choices[objective.lower()],
+        risk_measure=risk_choices[risk_measure],
         risk_free_rate=risk_free_rate,
         risk_aversion=risk_aversion,
         alpha=alpha,
+        a_sim=a_sim,
+        beta=beta,
+        b_sim=b_sim,
         linkage=linkage,
         k=k,
         max_k=max_k,
@@ -3575,8 +3596,28 @@ def display_nco(
         leaf_order=leaf_order,
         d_ewma=d_ewma,
         value=value,
-        table=table,
     )
+
+    if weights is None:
+        console.print("\n", "There is no solution with this parameters")
+        return {}
+
+    if table:
+        console.print("\n", s_title)
+        display_weights(weights)
+        portfolio_performance(
+            weights=weights,
+            data=stock_returns,
+            risk_measure=risk_choices[risk_measure],
+            risk_free_rate=risk_free_rate,
+            alpha=alpha,
+            a_sim=a_sim,
+            beta=beta,
+            b_sim=b_sim,
+            freq=freq,
+        )
+        console.print("")
+
     return weights
 
 

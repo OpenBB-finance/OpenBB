@@ -14,7 +14,10 @@ from dateutil.relativedelta import relativedelta, FR
 import yfinance as yf
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.portfolio.portfolio_optimization import yahoo_finance_model
+from openbb_terminal.portfolio.portfolio_optimization import (
+    yahoo_finance_model,
+    optimizer_helper,
+)
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -1066,6 +1069,185 @@ def get_black_litterman_portfolio(
 
 
 @log_start_end(log=logger)
+def get_ef(
+    symbols: List[str],
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
+    log_returns: bool = False,
+    freq: str = "D",
+    maxnan: float = 0.05,
+    threshold: float = 0,
+    method: str = "time",
+    risk_measure: str = "MV",
+    risk_free_rate: float = 0,
+    alpha: float = 0.05,
+    value: float = 1.0,
+    value_short: float = 0.0,
+    n_portfolios: int = 100,
+    seed: int = 123,
+) -> Tuple:
+    """
+    Get efficient frontier
+
+    Parameters
+    ----------
+    symbols : List[str]
+        List of portfolio tickers
+    interval : str, optional
+        interval to look at returns from
+    start_date: str, optional
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str, optional
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
+        weekday.
+    log_returns: bool, optional
+        If True calculate log returns, else arithmetic returns. Default value
+        is False
+    freq: str, optional
+        The frequency used to calculate returns. Default value is 'D'. Possible
+        values are:
+            - 'D' for daily returns.
+            - 'W' for weekly returns.
+            - 'M' for monthly returns.
+
+    maxnan: float, optional
+        Max percentage of nan values accepted per asset to be included in
+        returns.
+    threshold: float, optional
+        Value used to replace outliers that are higher to threshold.
+    method: str
+        Method used to fill nan values. Default value is 'time'. For more information see
+        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+    risk_measure: str, optional
+        The risk measure used to optimize the portfolio.
+        The default is 'MV'. Possible values are:
+
+        - 'MV': Standard Deviation.
+        - 'MAD': Mean Absolute Deviation.
+        - 'MSV': Semi Standard Deviation.
+        - 'FLPM': First Lower Partial Moment (Omega Ratio).
+        - 'SLPM': Second Lower Partial Moment (Sortino Ratio).
+        - 'CVaR': Conditional Value at Risk.
+        - 'EVaR': Entropic Value at Risk.
+        - 'WR': Worst Realization.
+        - 'ADD': Average Drawdown of uncompounded cumulative returns.
+        - 'UCI': Ulcer Index of uncompounded cumulative returns.
+        - 'CDaR': Conditional Drawdown at Risk of uncompounded cumulative returns.
+        - 'EDaR': Entropic Drawdown at Risk of uncompounded cumulative returns.
+        - 'MDD': Maximum Drawdown of uncompounded cumulative returns.
+
+    risk_free_rate: float, optional
+        Risk free rate, must be in the same interval of assets returns. Used for
+        'FLPM' and 'SLPM' and Sharpe objective function. The default is 0.
+    alpha: float, optional
+        Significance level of CVaR, EVaR, CDaR and EDaR
+        The default is 0.05.
+    value : float, optional
+        Amount to allocate to portfolio in long positions, by default 1.0
+    value_short : float, optional
+        Amount to allocate to portfolio in short positions, by default 0.0
+    n_portfolios: int, optional
+        "Number of portfolios to simulate. The default value is 100.
+    seed: int, optional
+        Seed used to generate random portfolios. The default value is 123.
+
+    Returns
+    -------
+    Tuple
+        Parameters to create efficient frontier: frontier, mu, cov, stock_returns, weights, X1, Y1, port
+    """
+    stock_prices = yahoo_finance_model.process_stocks(
+        symbols, interval, start_date, end_date
+    )
+    stock_returns = yahoo_finance_model.process_returns(
+        stock_prices,
+        log_returns=log_returns,
+        freq=freq,
+        maxnan=maxnan,
+        threshold=threshold,
+        method=method,
+    )
+
+    risk_free_rate = risk_free_rate / time_factor[freq.upper()]
+
+    # Building the portfolio object
+    port = rp.Portfolio(returns=stock_returns, alpha=alpha)
+
+    # Estimate input parameters:
+    port.assets_stats(method_mu="hist", method_cov="hist")
+
+    # Budget constraints
+    port.upperlng = value
+    if value_short > 0:
+        port.sht = True
+        port.uppersht = value_short
+        port.budget = value - value_short
+    else:
+        port.budget = value
+
+    # Estimate tangency portfolio:
+    weights = port.optimization(
+        model="Classic",
+        rm=risk_choices[risk_measure.lower()],
+        obj="Sharpe",
+        rf=risk_free_rate,
+        hist=True,
+    )
+
+    points = 20  # Number of points of the frontier
+    frontier = port.efficient_frontier(
+        model="Classic",
+        rm=risk_choices[risk_measure.lower()],
+        points=points,
+        rf=risk_free_rate,
+        hist=True,
+    )
+
+    random_weights = generate_random_portfolios(
+        symbols=symbols,
+        n_portfolios=n_portfolios,
+        seed=seed,
+    )
+
+    mu = stock_returns.mean().to_frame().T
+    cov = stock_returns.cov()
+    Y = (mu @ frontier).to_numpy() * time_factor[freq.upper()]
+    Y = np.ravel(Y)
+    X = np.zeros_like(Y)
+
+    for i in range(frontier.shape[1]):
+        w = np.array(frontier.iloc[:, i], ndmin=2).T
+        risk = rp.Sharpe_Risk(
+            w,
+            cov=cov,
+            returns=stock_returns,
+            rm=risk_choices[risk_measure.lower()],
+            rf=risk_free_rate,
+            alpha=alpha,
+            # a_sim=a_sim,
+            # beta=beta,
+            # b_sim=b_sim,
+        )
+        X[i] = risk
+
+    if risk_choices[risk_measure.lower()] not in ["ADD", "MDD", "CDaR", "EDaR", "UCI"]:
+        X = X * time_factor[freq.upper()] ** 0.5
+    f = interp1d(X, Y, kind="quadratic")
+    X1 = np.linspace(X[0], X[-1], num=100)
+    Y1 = f(X1)
+
+    frontier = pd.concat([frontier, random_weights], axis=1)
+    # to delete stocks with corrupted data
+    frontier.drop(
+        frontier.tail(len(random_weights.index) - len(stock_returns.columns)).index,
+        inplace=True,
+    )
+
+    return frontier, mu, cov, stock_returns, weights, X1, Y1, port
+
+
+@log_start_end(log=logger)
 def get_risk_parity_portfolio(
     symbols: List[str],
     interval: str = "3y",
@@ -1642,6 +1824,714 @@ def get_hcp_portfolio(
 
 
 @log_start_end(log=logger)
+def get_hrp(
+    symbols: List[str],
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
+    log_returns: bool = False,
+    freq: str = "D",
+    maxnan: float = 0.05,
+    threshold: float = 0,
+    method: str = "time",
+    codependence: str = "pearson",
+    covariance: str = "hist",
+    objective: str = "minrisk",
+    risk_measure: str = "mv",
+    risk_free_rate: float = 0.0,
+    risk_aversion: float = 1.0,
+    alpha: float = 0.05,
+    a_sim: int = 100,
+    beta: float = None,
+    b_sim: int = None,
+    linkage: str = "single",
+    k: int = 0,
+    max_k: int = 10,
+    bins_info: str = "KN",
+    alpha_tail: float = 0.05,
+    leaf_order: bool = True,
+    d_ewma: float = 0.94,
+    value: float = 1.0,
+) -> Tuple:
+    """
+    Builds a hierarchical risk parity portfolio
+
+    Parameters
+    ----------
+    symbols : List[str]
+        List of portfolio tickers
+    interval : str
+        interval to look at returns from
+    start_date: str, optional
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str, optional
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
+        weekday.
+    log_returns: bool, optional
+        If True calculate log returns, else arithmetic returns. Default value
+        is False
+    freq: str, optional
+        The frequency used to calculate returns. Default value is 'D'. Possible
+        values are:
+            - 'D' for daily returns.
+            - 'W' for weekly returns.
+            - 'M' for monthly returns.
+
+    maxnan: float, optional
+        Max percentage of nan values accepted per asset to be included in
+        returns.
+    threshold: float, optional
+        Value used to replace outliers that are higher to threshold.
+    method: str, optional
+        Method used to fill nan values. Default value is 'time'. For more information see
+        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+    codependence: str, optional
+        The codependence or similarity matrix used to build the distance
+        metric and clusters. The default is 'pearson'. Possible values are:
+
+        - 'pearson': pearson correlation matrix. Distance formula:
+            :math:`D_{i,j} = \\sqrt{0.5(1-\rho^{pearson}_{i,j})}`.
+        - 'spearman': spearman correlation matrix. Distance formula:
+            :math:`D_{i,j} = \\sqrt{0.5(1-\rho^{spearman}_{i,j})}`.
+        - 'abs_pearson': absolute value pearson correlation matrix. Distance formula:
+            :math:`D_{i,j} = \\sqrt{(1-|\rho^{pearson}_{i,j}|)}`.
+        - 'abs_spearman': absolute value spearman correlation matrix. Distance formula:
+            :math:`D_{i,j} = \\sqrt{(1-|\rho^{spearman}_{i,j}|)}`.
+        - 'distance': distance correlation matrix. Distance formula:
+            :math:`D_{i,j} = \\sqrt{(1-\rho^{distance}_{i,j})}`.
+        - 'mutual_info': mutual information matrix. Distance used is variation information matrix.
+        - 'tail': lower tail dependence index matrix. Dissimilarity formula:
+            :math:`D_{i,j} = -\\log{\\lambda_{i,j}}`.
+
+    covariance: str, optional
+        The method used to estimate the covariance matrix:
+        The default is 'hist'. Possible values are:
+
+        - 'hist': use historical estimates.
+        - 'ewma1': use ewma with adjust=True. For more information see
+        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma2': use ewma with adjust=False. For more information see
+        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ledoit': use the Ledoit and Wolf Shrinkage method.
+        - 'oas': use the Oracle Approximation Shrinkage method.
+        - 'shrunk': use the basic Shrunk Covariance method.
+        - 'gl': use the basic Graphical Lasso Covariance method.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`c-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`c-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`c-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`c-MLforAM`.
+
+    objective: str, optional
+        Objective function used by the NCO model.
+        The default is 'MinRisk'. Possible values are:
+
+        - 'MinRisk': Minimize the selected risk measure.
+        - 'Utility': Maximize the risk averse utility function.
+        - 'Sharpe': Maximize the risk adjusted return ratio based on the selected risk measure.
+        - 'ERC': Equally risk contribution portfolio of the selected risk measure.
+
+    risk_measure: str, optional
+        The risk measure used to optimize the portfolio. If model is 'NCO',
+        the risk measures available depends on the objective function.
+        The default is 'MV'. Possible values are:
+
+        - 'MV': Variance.
+        - 'MAD': Mean Absolute Deviation.
+        - 'MSV': Semi Standard Deviation.
+        - 'FLPM': First Lower Partial Moment (Omega Ratio).
+        - 'SLPM': Second Lower Partial Moment (Sortino Ratio).
+        - 'VaR': Value at Risk.
+        - 'CVaR': Conditional Value at Risk.
+        - 'TG': Tail Gini.
+        - 'EVaR': Entropic Value at Risk.
+        - 'WR': Worst Realization (Minimax).
+        - 'RG': Range of returns.
+        - 'CVRG': CVaR range of returns.
+        - 'TGRG': Tail Gini range of returns.
+        - 'MDD': Maximum Drawdown of uncompounded cumulative returns (Calmar Ratio).
+        - 'ADD': Average Drawdown of uncompounded cumulative returns.
+        - 'DaR': Drawdown at Risk of uncompounded cumulative returns.
+        - 'CDaR': Conditional Drawdown at Risk of uncompounded cumulative returns.
+        - 'EDaR': Entropic Drawdown at Risk of uncompounded cumulative returns.
+        - 'UCI': Ulcer Index of uncompounded cumulative returns.
+        - 'MDD_Rel': Maximum Drawdown of compounded cumulative returns (Calmar Ratio).
+        - 'ADD_Rel': Average Drawdown of compounded cumulative returns.
+        - 'DaR_Rel': Drawdown at Risk of compounded cumulative returns.
+        - 'CDaR_Rel': Conditional Drawdown at Risk of compounded cumulative returns.
+        - 'EDaR_Rel': Entropic Drawdown at Risk of compounded cumulative returns.
+        - 'UCI_Rel': Ulcer Index of compounded cumulative returns.
+
+    risk_free_rate: float, optional
+        Risk free rate, must be in the same interval of assets returns.
+        Used for 'FLPM' and 'SLPM'. The default is 0.
+    risk_aversion: float, optional
+        Risk aversion factor of the 'Utility' objective function.
+        The default is 1.
+    alpha: float, optional
+        Significance level of VaR, CVaR, EDaR, DaR, CDaR, EDaR, Tail Gini of losses.
+        The default is 0.05.
+    a_sim: float, optional
+        Number of CVaRs used to approximate Tail Gini of losses. The default is 100.
+    beta: float, optional
+        Significance level of CVaR and Tail Gini of gains. If None it duplicates alpha value.
+        The default is None.
+    b_sim: float, optional
+        Number of CVaRs used to approximate Tail Gini of gains. If None it duplicates a_sim value.
+        The default is None.
+    linkage: str, optional
+        Linkage method of hierarchical clustering. For more information see
+        `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html>`_.
+        The default is 'single'. Possible values are:
+
+        - 'single'.
+        - 'complete'.
+        - 'average'.
+        - 'weighted'.
+        - 'centroid'.
+        - 'median'.
+        - 'ward'.
+        - 'dbht': Direct Bubble Hierarchical Tree.
+
+    k: int, optional
+        Number of clusters. This value is took instead of the optimal number
+        of clusters calculated with the two difference gap statistic.
+        The default is None.
+    max_k: int, optional
+        Max number of clusters used by the two difference gap statistic
+        to find the optimal number of clusters. The default is 10.
+    bins_info: str, optional
+        Number of bins used to calculate variation of information. The default
+        value is 'KN'. Possible values are:
+
+        - 'KN': Knuth's choice method. For more information see
+        `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`_.
+        - 'FD': Freedman–Diaconis' choice method. For more information see
+        `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`_.
+        - 'SC': Scotts' choice method. For more information see
+        `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`_.
+        - 'HGR': Hacine-Gharbi and Ravier' choice method.
+
+    alpha_tail: float, optional
+        Significance level for lower tail dependence index. The default is 0.05.
+    leaf_order: bool, optional
+        Indicates if the cluster are ordered so that the distance between
+        successive leaves is minimal. The default is True.
+    d: float, optional
+        The smoothing factor of ewma methods.
+        The default is 0.94.
+    value : float, optional
+        Amount to allocate to portfolio in long positions, by default 1.0
+    value_short : float, optional
+        Amount to allocate to portfolio in short positions, by default 0.0
+    table: bool, optional
+        True if plot table weights, by default False
+    """
+    weights, stock_returns = get_hcp_portfolio(
+        symbols=symbols,
+        interval=interval,
+        start_date=start_date,
+        end_date=end_date,
+        log_returns=log_returns,
+        freq=freq,
+        maxnan=maxnan,
+        threshold=threshold,
+        method=method,
+        model="HRP",
+        codependence=codependence,
+        covariance=covariance,
+        objective=objectives_choices[objective],
+        risk_measure=risk_choices[risk_measure.lower()],
+        risk_free_rate=risk_free_rate,
+        risk_aversion=risk_aversion,
+        alpha=alpha,
+        a_sim=a_sim,
+        beta=beta,
+        b_sim=b_sim,
+        linkage=linkage,
+        k=k,
+        max_k=max_k,
+        bins_info=bins_info,
+        alpha_tail=alpha_tail,
+        leaf_order=leaf_order,
+        d_ewma=d_ewma,
+        value=value,
+    )
+    return weights, stock_returns
+
+
+@log_start_end(log=logger)
+def get_herc(
+    symbols: List[str],
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
+    log_returns: bool = False,
+    freq: str = "D",
+    maxnan: float = 0.05,
+    threshold: float = 0,
+    method: str = "time",
+    codependence: str = "pearson",
+    covariance: str = "hist",
+    objective: str = "minrisk",
+    risk_measure: str = "mv",
+    risk_free_rate: float = 0.0,
+    risk_aversion: float = 1.0,
+    alpha: float = 0.05,
+    a_sim: int = 100,
+    beta: float = None,
+    b_sim: int = None,
+    linkage: str = "single",
+    k: int = 0,
+    max_k: int = 10,
+    bins_info: str = "KN",
+    alpha_tail: float = 0.05,
+    leaf_order: bool = True,
+    d_ewma: float = 0.94,
+    value: float = 1.0,
+) -> Tuple:
+    """
+    Builds a hierarchical risk parity portfolio
+
+    Parameters
+    ----------
+    symbols : List[str]
+        List of portfolio tickers
+    interval : str
+        interval to look at returns from
+    start_date: str, optional
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str, optional
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
+        weekday.
+    log_returns: bool, optional
+        If True calculate log returns, else arithmetic returns. Default value
+        is False
+    freq: str, optional
+        The frequency used to calculate returns. Default value is 'D'. Possible
+        values are:
+            - 'D' for daily returns.
+            - 'W' for weekly returns.
+            - 'M' for monthly returns.
+
+    maxnan: float, optional
+        Max percentage of nan values accepted per asset to be included in
+        returns.
+    threshold: float, optional
+        Value used to replace outliers that are higher to threshold.
+    method: str, optional
+        Method used to fill nan values. Default value is 'time'. For more information see
+        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+    codependence: str, optional
+        The codependence or similarity matrix used to build the distance
+        metric and clusters. The default is 'pearson'. Possible values are:
+
+        - 'pearson': pearson correlation matrix. Distance formula:
+            :math:`D_{i,j} = \\sqrt{0.5(1-\rho^{pearson}_{i,j})}`.
+        - 'spearman': spearman correlation matrix. Distance formula:
+            :math:`D_{i,j} = \\sqrt{0.5(1-\rho^{spearman}_{i,j})}`.
+        - 'abs_pearson': absolute value pearson correlation matrix. Distance formula:
+            :math:`D_{i,j} = \\sqrt{(1-|\rho^{pearson}_{i,j}|)}`.
+        - 'abs_spearman': absolute value spearman correlation matrix. Distance formula:
+            :math:`D_{i,j} = \\sqrt{(1-|\rho^{spearman}_{i,j}|)}`.
+        - 'distance': distance correlation matrix. Distance formula:
+            :math:`D_{i,j} = \\sqrt{(1-\rho^{distance}_{i,j})}`.
+        - 'mutual_info': mutual information matrix. Distance used is variation information matrix.
+        - 'tail': lower tail dependence index matrix. Dissimilarity formula:
+            :math:`D_{i,j} = -\\log{\\lambda_{i,j}}`.
+
+    covariance: str, optional
+        The method used to estimate the covariance matrix:
+        The default is 'hist'. Possible values are:
+
+        - 'hist': use historical estimates.
+        - 'ewma1': use ewma with adjust=True. For more information see
+        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma2': use ewma with adjust=False. For more information see
+        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ledoit': use the Ledoit and Wolf Shrinkage method.
+        - 'oas': use the Oracle Approximation Shrinkage method.
+        - 'shrunk': use the basic Shrunk Covariance method.
+        - 'gl': use the basic Graphical Lasso Covariance method.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`c-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`c-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`c-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`c-MLforAM`.
+
+    objective: str, optional
+        Objective function used by the NCO model.
+        The default is 'MinRisk'. Possible values are:
+
+        - 'MinRisk': Minimize the selected risk measure.
+        - 'Utility': Maximize the risk averse utility function.
+        - 'Sharpe': Maximize the risk adjusted return ratio based on the selected risk measure.
+        - 'ERC': Equally risk contribution portfolio of the selected risk measure.
+
+    risk_measure: str, optional
+        The risk measure used to optimize the portfolio. If model is 'NCO',
+        the risk measures available depends on the objective function.
+        The default is 'MV'. Possible values are:
+
+        - 'MV': Variance.
+        - 'MAD': Mean Absolute Deviation.
+        - 'MSV': Semi Standard Deviation.
+        - 'FLPM': First Lower Partial Moment (Omega Ratio).
+        - 'SLPM': Second Lower Partial Moment (Sortino Ratio).
+        - 'VaR': Value at Risk.
+        - 'CVaR': Conditional Value at Risk.
+        - 'TG': Tail Gini.
+        - 'EVaR': Entropic Value at Risk.
+        - 'WR': Worst Realization (Minimax).
+        - 'RG': Range of returns.
+        - 'CVRG': CVaR range of returns.
+        - 'TGRG': Tail Gini range of returns.
+        - 'MDD': Maximum Drawdown of uncompounded cumulative returns (Calmar Ratio).
+        - 'ADD': Average Drawdown of uncompounded cumulative returns.
+        - 'DaR': Drawdown at Risk of uncompounded cumulative returns.
+        - 'CDaR': Conditional Drawdown at Risk of uncompounded cumulative returns.
+        - 'EDaR': Entropic Drawdown at Risk of uncompounded cumulative returns.
+        - 'UCI': Ulcer Index of uncompounded cumulative returns.
+        - 'MDD_Rel': Maximum Drawdown of compounded cumulative returns (Calmar Ratio).
+        - 'ADD_Rel': Average Drawdown of compounded cumulative returns.
+        - 'DaR_Rel': Drawdown at Risk of compounded cumulative returns.
+        - 'CDaR_Rel': Conditional Drawdown at Risk of compounded cumulative returns.
+        - 'EDaR_Rel': Entropic Drawdown at Risk of compounded cumulative returns.
+        - 'UCI_Rel': Ulcer Index of compounded cumulative returns.
+
+    risk_free_rate: float, optional
+        Risk free rate, must be in the same interval of assets returns.
+        Used for 'FLPM' and 'SLPM'. The default is 0.
+    risk_aversion: float, optional
+        Risk aversion factor of the 'Utility' objective function.
+        The default is 1.
+    alpha: float, optional
+        Significance level of VaR, CVaR, EDaR, DaR, CDaR, EDaR, Tail Gini of losses.
+        The default is 0.05.
+    a_sim: float, optional
+        Number of CVaRs used to approximate Tail Gini of losses. The default is 100.
+    beta: float, optional
+        Significance level of CVaR and Tail Gini of gains. If None it duplicates alpha value.
+        The default is None.
+    b_sim: float, optional
+        Number of CVaRs used to approximate Tail Gini of gains. If None it duplicates a_sim value.
+        The default is None.
+    linkage: str, optional
+        Linkage method of hierarchical clustering. For more information see
+        `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html>`_.
+        The default is 'single'. Possible values are:
+
+        - 'single'.
+        - 'complete'.
+        - 'average'.
+        - 'weighted'.
+        - 'centroid'.
+        - 'median'.
+        - 'ward'.
+        - 'dbht': Direct Bubble Hierarchical Tree.
+
+    k: int, optional
+        Number of clusters. This value is took instead of the optimal number
+        of clusters calculated with the two difference gap statistic.
+        The default is None.
+    max_k: int, optional
+        Max number of clusters used by the two difference gap statistic
+        to find the optimal number of clusters. The default is 10.
+    bins_info: str, optional
+        Number of bins used to calculate variation of information. The default
+        value is 'KN'. Possible values are:
+
+        - 'KN': Knuth's choice method. For more information see
+        `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`_.
+        - 'FD': Freedman–Diaconis' choice method. For more information see
+        `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`_.
+        - 'SC': Scotts' choice method. For more information see
+        `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`_.
+        - 'HGR': Hacine-Gharbi and Ravier' choice method.
+
+    alpha_tail: float, optional
+        Significance level for lower tail dependence index. The default is 0.05.
+    leaf_order: bool, optional
+        Indicates if the cluster are ordered so that the distance between
+        successive leaves is minimal. The default is True.
+    d: float, optional
+        The smoothing factor of ewma methods.
+        The default is 0.94.
+    value : float, optional
+        Amount to allocate to portfolio in long positions, by default 1.0
+    value_short : float, optional
+        Amount to allocate to portfolio in short positions, by default 0.0
+    table: bool, optional
+        True if plot table weights, by default False
+    """
+    weights, stock_returns = get_hcp_portfolio(
+        symbols=symbols,
+        interval=interval,
+        start_date=start_date,
+        end_date=end_date,
+        log_returns=log_returns,
+        freq=freq,
+        maxnan=maxnan,
+        threshold=threshold,
+        method=method,
+        model="HERC",
+        codependence=codependence,
+        covariance=covariance,
+        objective=objectives_choices[objective],
+        risk_measure=risk_choices[risk_measure.lower()],
+        risk_free_rate=risk_free_rate,
+        risk_aversion=risk_aversion,
+        alpha=alpha,
+        a_sim=a_sim,
+        beta=beta,
+        b_sim=b_sim,
+        linkage=linkage,
+        k=k,
+        max_k=max_k,
+        bins_info=bins_info,
+        alpha_tail=alpha_tail,
+        leaf_order=leaf_order,
+        d_ewma=d_ewma,
+        value=value,
+    )
+    return weights, stock_returns
+
+
+@log_start_end(log=logger)
+def get_nco(
+    symbols: List[str],
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
+    log_returns: bool = False,
+    freq: str = "D",
+    maxnan: float = 0.05,
+    threshold: float = 0,
+    method: str = "time",
+    codependence: str = "pearson",
+    covariance: str = "hist",
+    objective: str = "minrisk",
+    risk_measure: str = "mv",
+    risk_free_rate: float = 0.0,
+    risk_aversion: float = 1.0,
+    alpha: float = 0.05,
+    a_sim: int = 100,
+    beta: float = None,
+    b_sim: int = None,
+    linkage: str = "single",
+    k: int = None,
+    max_k: int = 10,
+    bins_info: str = "KN",
+    alpha_tail: float = 0.05,
+    leaf_order: bool = True,
+    d_ewma: float = 0.94,
+    value: float = 1.0,
+) -> Tuple:
+    """
+    Builds a hierarchical risk parity portfolio
+
+    Parameters
+    ----------
+    symbols : List[str]
+        List of portfolio tickers
+    interval : str
+        interval to look at returns from
+    start_date: str, optional
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str, optional
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
+        weekday.
+    log_returns: bool, optional
+        If True calculate log returns, else arithmetic returns. Default value
+        is False
+    freq: str, optional
+        The frequency used to calculate returns. Default value is 'D'. Possible
+        values are:
+            - 'D' for daily returns.
+            - 'W' for weekly returns.
+            - 'M' for monthly returns.
+
+    maxnan: float, optional
+        Max percentage of nan values accepted per asset to be included in
+        returns.
+    threshold: float, optional
+        Value used to replace outliers that are higher to threshold.
+    method: str, optional
+        Method used to fill nan values. Default value is 'time'. For more information see
+        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+    codependence: str, optional
+        The codependence or similarity matrix used to build the distance
+        metric and clusters. The default is 'pearson'. Possible values are:
+
+        - 'pearson': pearson correlation matrix. Distance formula:
+            :math:`D_{i,j} = \\sqrt{0.5(1-\rho^{pearson}_{i,j})}`.
+        - 'spearman': spearman correlation matrix. Distance formula:
+            :math:`D_{i,j} = \\sqrt{0.5(1-\rho^{spearman}_{i,j})}`.
+        - 'abs_pearson': absolute value pearson correlation matrix. Distance formula:
+            :math:`D_{i,j} = \\sqrt{(1-|\rho^{pearson}_{i,j}|)}`.
+        - 'abs_spearman': absolute value spearman correlation matrix. Distance formula:
+            :math:`D_{i,j} = \\sqrt{(1-|\rho^{spearman}_{i,j}|)}`.
+        - 'distance': distance correlation matrix. Distance formula:
+            :math:`D_{i,j} = \\sqrt{(1-\rho^{distance}_{i,j})}`.
+        - 'mutual_info': mutual information matrix. Distance used is variation information matrix.
+        - 'tail': lower tail dependence index matrix. Dissimilarity formula:
+            :math:`D_{i,j} = -\\log{\\lambda_{i,j}}`.
+
+    covariance: str, optional
+        The method used to estimate the covariance matrix:
+        The default is 'hist'. Possible values are:
+
+        - 'hist': use historical estimates.
+        - 'ewma1': use ewma with adjust=True. For more information see
+        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma2': use ewma with adjust=False. For more information see
+        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ledoit': use the Ledoit and Wolf Shrinkage method.
+        - 'oas': use the Oracle Approximation Shrinkage method.
+        - 'shrunk': use the basic Shrunk Covariance method.
+        - 'gl': use the basic Graphical Lasso Covariance method.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`c-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`c-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`c-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`c-MLforAM`.
+
+    objective: str, optional
+        Objective function used by the NCO model.
+        The default is 'MinRisk'. Possible values are:
+
+        - 'MinRisk': Minimize the selected risk measure.
+        - 'Utility': Maximize the risk averse utility function.
+        - 'Sharpe': Maximize the risk adjusted return ratio based on the selected risk measure.
+        - 'ERC': Equally risk contribution portfolio of the selected risk measure.
+
+    risk_measure: str, optional
+        The risk measure used to optimize the portfolio. If model is 'NCO',
+        the risk measures available depends on the objective function.
+        The default is 'MV'. Possible values are:
+
+        - 'MV': Variance.
+        - 'MAD': Mean Absolute Deviation.
+        - 'MSV': Semi Standard Deviation.
+        - 'FLPM': First Lower Partial Moment (Omega Ratio).
+        - 'SLPM': Second Lower Partial Moment (Sortino Ratio).
+        - 'VaR': Value at Risk.
+        - 'CVaR': Conditional Value at Risk.
+        - 'TG': Tail Gini.
+        - 'EVaR': Entropic Value at Risk.
+        - 'WR': Worst Realization (Minimax).
+        - 'RG': Range of returns.
+        - 'CVRG': CVaR range of returns.
+        - 'TGRG': Tail Gini range of returns.
+        - 'MDD': Maximum Drawdown of uncompounded cumulative returns (Calmar Ratio).
+        - 'ADD': Average Drawdown of uncompounded cumulative returns.
+        - 'DaR': Drawdown at Risk of uncompounded cumulative returns.
+        - 'CDaR': Conditional Drawdown at Risk of uncompounded cumulative returns.
+        - 'EDaR': Entropic Drawdown at Risk of uncompounded cumulative returns.
+        - 'UCI': Ulcer Index of uncompounded cumulative returns.
+        - 'MDD_Rel': Maximum Drawdown of compounded cumulative returns (Calmar Ratio).
+        - 'ADD_Rel': Average Drawdown of compounded cumulative returns.
+        - 'DaR_Rel': Drawdown at Risk of compounded cumulative returns.
+        - 'CDaR_Rel': Conditional Drawdown at Risk of compounded cumulative returns.
+        - 'EDaR_Rel': Entropic Drawdown at Risk of compounded cumulative returns.
+        - 'UCI_Rel': Ulcer Index of compounded cumulative returns.
+
+    risk_free_rate: float, optional
+        Risk free rate, must be in the same interval of assets returns.
+        Used for 'FLPM' and 'SLPM'. The default is 0.
+    risk_aversion: float, optional
+        Risk aversion factor of the 'Utility' objective function.
+        The default is 1.
+    alpha: float, optional
+        Significance level of VaR, CVaR, EDaR, DaR, CDaR, EDaR, Tail Gini of losses.
+        The default is 0.05.
+    a_sim: float, optional
+        Number of CVaRs used to approximate Tail Gini of losses. The default is 100.
+    beta: float, optional
+        Significance level of CVaR and Tail Gini of gains. If None it duplicates alpha value.
+        The default is None.
+    b_sim: float, optional
+        Number of CVaRs used to approximate Tail Gini of gains. If None it duplicates a_sim value.
+        The default is None.
+    linkage: str, optional
+        Linkage method of hierarchical clustering. For more information see
+        `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html>`_.
+        The default is 'single'. Possible values are:
+
+        - 'single'.
+        - 'complete'.
+        - 'average'.
+        - 'weighted'.
+        - 'centroid'.
+        - 'median'.
+        - 'ward'.
+        - 'dbht': Direct Bubble Hierarchical Tree.
+
+    k: int, optional
+        Number of clusters. This value is took instead of the optimal number
+        of clusters calculated with the two difference gap statistic.
+        The default is None.
+    max_k: int, optional
+        Max number of clusters used by the two difference gap statistic
+        to find the optimal number of clusters. The default is 10.
+    bins_info: str, optional
+        Number of bins used to calculate variation of information. The default
+        value is 'KN'. Possible values are:
+
+        - 'KN': Knuth's choice method. For more information see
+        `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`_.
+        - 'FD': Freedman–Diaconis' choice method. For more information see
+        `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`_.
+        - 'SC': Scotts' choice method. For more information see
+        `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`_.
+        - 'HGR': Hacine-Gharbi and Ravier' choice method.
+
+    alpha_tail: float, optional
+        Significance level for lower tail dependence index. The default is 0.05.
+    leaf_order: bool, optional
+        Indicates if the cluster are ordered so that the distance between
+        successive leaves is minimal. The default is True.
+    d: float, optional
+        The smoothing factor of ewma methods.
+        The default is 0.94.
+    value : float, optional
+        Amount to allocate to portfolio in long positions, by default 1.0
+    value_short : float, optional
+        Amount to allocate to portfolio in short positions, by default 0.0
+    table: bool, optional
+        True if plot table weights, by default False
+    """
+    weights, stock_returns = get_hcp_portfolio(
+        symbols=symbols,
+        interval=interval,
+        start_date=start_date,
+        end_date=end_date,
+        log_returns=log_returns,
+        freq=freq,
+        maxnan=maxnan,
+        threshold=threshold,
+        method=method,
+        model="NCO",
+        codependence=codependence,
+        covariance=covariance,
+        objective=objectives_choices[objective.lower()],
+        risk_measure=risk_choices[risk_measure.lower()],
+        risk_free_rate=risk_free_rate,
+        risk_aversion=risk_aversion,
+        alpha=alpha,
+        a_sim=a_sim,
+        beta=beta,
+        b_sim=b_sim,
+        linkage=linkage,
+        k=k,
+        max_k=max_k,
+        bins_info=bins_info,
+        alpha_tail=alpha_tail,
+        leaf_order=leaf_order,
+        d_ewma=d_ewma,
+        value=value,
+    )
+    return weights, stock_returns
+
+
+@log_start_end(log=logger)
 def black_litterman(
     stock_returns: pd.DataFrame,
     benchmark,
@@ -1716,7 +2606,8 @@ def black_litterman(
     ) @ (np.linalg.inv(tau * S) @ PI_eq + p_views.T @ np.linalg.inv(Omega) @ q_views)
 
     if flag:
-        M = 0
+        n, m = S.shape
+        M = np.zeros([n, m])
     else:
         M = np.linalg.inv(
             np.linalg.inv(tau * S) + p_views.T @ np.linalg.inv(Omega) @ p_views
@@ -1777,3 +2668,14 @@ def generate_random_portfolios(
         w = value * w
 
     return w
+
+
+@log_start_end(log=logger)
+def get_properties() -> List[str]:
+    """Get properties to use on property optimization.
+    Returns
+    -------
+    List[str]:
+        List of available properties to use on property optimization.
+    """
+    return optimizer_helper.valid_property_infos

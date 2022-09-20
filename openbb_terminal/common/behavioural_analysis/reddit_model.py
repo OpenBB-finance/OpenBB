@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 from datetime import datetime, timedelta
-from typing import Dict, List, Tuple
+from typing import List, Tuple
 import warnings
 
 import finviz
@@ -40,7 +40,7 @@ l_sub_reddits = [
 @log_start_end(log=logger)
 def get_watchlists(
     limit: int = 5,
-) -> Tuple[List[praw.models.reddit.submission.Submission], Dict, int]:
+) -> Tuple[List[praw.models.reddit.submission.Submission], dict, int]:
     """Get reddit users watchlists [Source: reddit]
 
     Parameters
@@ -301,7 +301,7 @@ def get_popular_tickers(
 @log_start_end(log=logger)
 def get_spac_community(
     limit: int = 10, popular: bool = False
-) -> Tuple[pd.DataFrame, Dict]:
+) -> Tuple[pd.DataFrame, dict]:
     """Get top tickers from r/SPACs [Source: reddit]
 
     Parameters
@@ -432,7 +432,7 @@ def get_spac_community(
 @log_start_end(log=logger)
 def get_spac(
     limit: int = 5,
-) -> Tuple[pd.DataFrame, Dict, int]:
+) -> Tuple[pd.DataFrame, dict, int]:
     """Get posts containing SPAC from top subreddits [Source: reddit]
 
     Parameters
@@ -821,7 +821,7 @@ def get_posts_about(
     time_frame: str = "week",
     full_search: bool = True,
     subreddits: str = "all",
-) -> Tuple[pd.DataFrame, List, float]:
+) -> Tuple[pd.DataFrame, list, float]:
     """Finds posts related to a specific search term in Reddit
 
     Parameters

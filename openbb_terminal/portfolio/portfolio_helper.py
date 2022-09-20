@@ -8,6 +8,7 @@ from datetime import datetime
 import os
 from pathlib import Path
 import csv
+from typing import Tuple
 from dateutil.relativedelta import relativedelta
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.portfolio import portfolio_model
@@ -19,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 from openbb_terminal.rich_config import console
 
-# pylint: disable=too-many-return-statements
+logger = logging.getLogger(__name__)
 
 BENCHMARK_LIST = {
     "SPDR S&P 500 ETF Trust (SPY)": "SPY",
@@ -124,7 +125,7 @@ BENCHMARK_LIST = {
     "iShares Russell 2000 Value ETF (IWN)": "IWN",
 }
 
-PERIODS = ["mtd", "qtd", "ytd", "3m", "6m", "1y", "3y", "5y", "10y", "all"]
+# pylint: disable=too-many-return-statements, too-many-lines, too-many-statements
 
 REGIONS = {
     "Afghanistan": "Middle East",

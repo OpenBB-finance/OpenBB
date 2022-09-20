@@ -1228,81 +1228,72 @@ functions = {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_sharpe",
         "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_sharpe",
     },
-    "portfolio.po.bl": {
+    "portfolio.po.minrisk": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_min_risk",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_min_risk",
+    },
+    "portfolio.po.maxutil": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_util",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_util",
+    },
+    "portfolio.po.maxret": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_ret",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_ret",
+    },
+    "portfolio.po.maxdiv": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_diversification_portfolio",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_div",
+    },
+    "portfolio.po.maxdecorr": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_decorrelation_portfolio",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_decorr",
+    },
+    "portfolio.po.blacklitterman": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_black_litterman_portfolio",
         "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_black_litterman",
     },
-    "portfolio.po.equal": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_equal_weights",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_equal_weight",
+    "portfolio.po.ef": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_ef",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_ef",
+    },
+    "portfolio.po.riskparity": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_risk_parity_portfolio",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_risk_parity",
+    },
+    "portfolio.po.relriskparity": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_rel_risk_parity_portfolio",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_rel_risk_parity",
+    },
+    "portfolio.po.meanrisk": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_mean_risk_portfolio",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_mean_risk",
+    },
+    "portfolio.po.hrp": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_hrp",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_hrp",
+    },
+    "portfolio.po.herc": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_herc",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_herc",
+    },
+    "portfolio.po.nco": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_nco",
+        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_nco",
     },
     "portfolio.po.hcp": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_hcp_portfolio",
         "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_hcp",
     },
-    "portfolio.po.max_decorr": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_decorrelation_portfolio",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_decorr",
+    "portfolio.po.equal": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_equal_weights",
     },
-    "portfolio.po.max_div": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_max_diversification_portfolio",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_div",
-    },
-    "portfolio.po.mean_risk": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_mean_risk_portfolio",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_mean_risk",
-    },
-    "portfolio.po.property_weights": {
+    "portfolio.po.property": {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_property_weights",
         "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_property_weighting",
     },
-    "portfolio.po.rel_risk": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_rel_risk_parity_portfolio",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_rel_risk_parity",
+    "portfolio.po.get_properties": {
+        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_properties",
     },
-    "portfolio.po.risk": {
-        "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_model.get_risk_parity_portfolio",
-        "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_risk_parity",
-    },
-    # "portfolio.po.categories": {
-    #     "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_categories"
-    # },
-    # "portfolio.po.categories_sa": {
-    #     "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_categories_sa"
-    # },
-    # "portfolio.po.ef": {
-    #     "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_ef"
-    # },
-    # "portfolio.po.herc": {
-    #     "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_herc"
-    # },
-    # "portfolio.po.hrp": {
-    #     "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_hrp"
-    # },
-    # "portfolio.po.max_ret": {
-    #     "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_ret"
-    # },
-    # "portfolio.po.max_sharpe": {
-    #     "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_sharpe"
-    # },
-    # "portfolio.po.max_util": {
-    #     "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_max_util"
-    # },
-    # "portfolio.po.min_risk": {
-    #     "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_min_risk"
-    # },
-    # "portfolio.nco": {
-    #     "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_nco"
-    # },
-    # "portfolio.po.weights": {
-    #     "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_weights"
-    # },
-    # "portfolio.po.weigths_sa": {
-    #     "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.display_weights_sa"
-    # },
-    # "portfolio.po.perf": {
-    #     "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.portfolio_performance"
-    # },
     "stocks.bt.ema_cross": {
         "model": "openbb_terminal.stocks.backtesting.bt_model.ema_cross_strategy",
         "view": "openbb_terminal.stocks.backtesting.bt_view.display_ema_cross",
@@ -2101,11 +2092,9 @@ class Loader:
             for menu in virtual_path_split[:-1]:
                 if not hasattr(previous_menu, menu):
                     next_menu = MenuFiller(function=menu_message(menu, function_map))
-                    previous_menu.__setattr__(menu, next_menu)
-                    previous_menu = previous_menu.__getattribute__(menu)
-                else:
-                    previous_menu = previous_menu.__getattribute__(menu)
-            previous_menu.__setattr__(last_virtual_path, function)
+                    setattr(previous_menu, menu, next_menu)
+                previous_menu = getattr(previous_menu, menu)
+            setattr(previous_menu, last_virtual_path, function)
 
         self.openbb = main_menu
 

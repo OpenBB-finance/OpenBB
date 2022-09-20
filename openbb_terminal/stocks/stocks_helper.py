@@ -614,7 +614,7 @@ def search(
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "search", df)
 
 
-# pylint:disable=too-many-return-statements
+# pylint:disable=too-many-return-statements,too-many-statements
 def load(
     symbol: str,
     start_date: datetime = (datetime.now() - timedelta(days=1100)),
@@ -730,14 +730,11 @@ def load(
         elif source == "YahooFinance":
 
             # TODO: Better handling of interval with week/month
-            int_ = "1d"
-            int_string = "Daily"
+            int_, int_string = "1d", "Daily"
             if weekly:
-                int_ = "1wk"
-                int_string = "Weekly"
+                int_, int_string = "1wk", "Weekly"
             if monthly:
-                int_ = "1mo"
-                int_string = "Monthly"
+                int_, int_string = "1mo", "Monthly"
 
             # Win10 version of mktime cannot cope with dates before 1970
             if os.name == "nt" and start_date < datetime(1970, 1, 1):
@@ -761,15 +758,11 @@ def load(
         elif source == "EODHD":
             df_stock_candidate = pd.DataFrame()
 
+            int_, int_string = "d", "Daily"
             if weekly:
-                int_ = "w"
-                int_string = "Weekly"
+                int_, int_string = "w", "Weekly"
             elif monthly:
-                int_ = "m"
-                int_string = "Monthly"
-            else:
-                int_ = "d"
-                int_string = "Daily"
+                int_, int_string = "m", "Monthly"
 
             request_url = (
                 f"https://eodhistoricaldata.com/api/eod/"

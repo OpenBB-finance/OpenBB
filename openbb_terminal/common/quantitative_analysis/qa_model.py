@@ -520,7 +520,7 @@ def get_es(
     return df
 
 
-def get_sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252) -> float:
+def get_sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252) -> pd.DataFrame:
     """Calculates the sharpe ratio
     Parameters
     ----------
@@ -533,7 +533,7 @@ def get_sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252) -> float
 
     Returns
     -------
-    sharpe: float
+    sharpe: pd.DataFrame
         sharpe ratio
     """
     data_return = data.pct_change().rolling(window).sum() * 100
@@ -549,7 +549,7 @@ def get_sortino(
     target_return: float = 0,
     window: float = 252,
     adjusted: bool = False,
-) -> float:
+) -> pd.DataFrame:
     """Calculates the sortino ratio
     Parameters
     ----------
@@ -564,7 +564,7 @@ def get_sortino(
 
     Returns
     -------
-    sortino: float
+    sortino: pd.DataFrame
         sortino ratio
     """
     data = data * 100

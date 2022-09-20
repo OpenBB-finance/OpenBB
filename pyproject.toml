@@ -1,4 +1,3 @@
-# https://python-poetry.org/docs/dependency-specification/
 [tool.poetry]
 name = "OpenBBTerminal"
 version = "1.8.0"
