@@ -14,6 +14,7 @@ from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
+# pylint: disable=unsupported-assignment-operation
 
 
 @log_start_end(log=logger)
