@@ -348,3 +348,74 @@ def check_quandl_key(show_output: bool = False) -> str:
         console.print(status + "\n")
 
     return status
+
+
+def set_polygon_key(key: str, local: bool = True, show_output: bool = False):
+    """Set Polygon key.
+
+    Parameters
+    ----------
+        key: str
+            API key
+        local: bool
+            If True, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If False, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+    """
+
+    set_key("OPENBB_API_POLYGON_KEY", key, local)
+    status = check_polygon_key(show_output)
+
+    return status
+
+
+def check_polygon_key(show_output: bool = False) -> str:
+    """Check Polygon key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+
+    """
+
+    if cfg.API_POLYGON_KEY == "REPLACE_ME":
+        logger.info("Polygon key not defined")
+        status = "not defined"
+    else:
+        r = requests.get(
+            "https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/2020-06-01/2020-06-17"
+            f"?apiKey={cfg.API_POLYGON_KEY}"
+        )
+        if r.status_code in [403, 401]:
+            logger.warning("Polygon key defined, test failed")
+            status = "defined, test failed"
+        elif r.status_code == 200:
+            logger.info("Polygon key defined, test passed")
+            status = "defined, test passed"
+        else:
+            logger.warning("Polygon key defined, test inconclusive")
+            status = "defined, test inconclusive"
+
+    if show_output:
+        console.print(status + "\n")
+
+    return status

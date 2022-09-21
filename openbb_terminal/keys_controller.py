@@ -140,29 +140,14 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
         self.key_dict["QUANDL"] = status
 
-    def check_polygon_key(self, show_output: bool = False) -> None:
+    def check_polygon_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Polygon key"""
+        
         self.cfg_dict["POLYGON"] = "polygon"
-        if cfg.API_POLYGON_KEY == "REPLACE_ME":
-            logger.info("Polygon key not defined")
-            self.key_dict["POLYGON"] = "not defined"
-        else:
-            r = requests.get(
-                "https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/2020-06-01/2020-06-17"
-                f"?apiKey={cfg.API_POLYGON_KEY}"
-            )
-            if r.status_code in [403, 401]:
-                logger.warning("Polygon key defined, test failed")
-                self.key_dict["POLYGON"] = "defined, test failed"
-            elif r.status_code == 200:
-                logger.info("Polygon key defined, test passed")
-                self.key_dict["POLYGON"] = "defined, test passed"
-            else:
-                logger.warning("Polygon key defined, test inconclusive")
-                self.key_dict["POLYGON"] = "defined, test inconclusive"
+        if not status:
+            status = keys_model.check_polygon_key(show_output=show_output)
 
-        if show_output:
-            console.print(self.key_dict["POLYGON"] + "\n")
+        self.key_dict["POLYGON"] = status
 
     def check_fred_key(self, status: str = "", show_output: bool = False) -> None:
         """Check FRED key and update menu accordingly"""
@@ -968,10 +953,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             other_args.insert(0, "-k")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            os.environ["OPENBB_API_POLYGON_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "OPENBB_API_POLYGON_KEY", ns_parser.key)
-            cfg.API_POLYGON_KEY = ns_parser.key
-            self.check_polygon_key(show_output=True)
+            status = keys_model.set_polygon_key(
+                key=ns_parser.key, local=False, show_output=True
+            )
+            self.check_polygon_key(status, False)
 
     @log_start_end(log=logger)
     def call_fred(self, other_args: List[str]):
