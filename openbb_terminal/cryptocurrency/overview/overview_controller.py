@@ -593,7 +593,7 @@ class OverviewController(BaseController):
         )
         if ns_parser:
             pycoingecko_view.display_categories(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
                 pie=ns_parser.pie,
@@ -654,7 +654,7 @@ class OverviewController(BaseController):
         )
         if ns_parser:
             pycoingecko_view.display_stablecoins(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
@@ -763,7 +763,7 @@ class OverviewController(BaseController):
             "--urls",
             dest="urls",
             action="store_true",
-            help="Flag to show urls. If you will use that flag you will additional column with urls",
+            help="Flag to add a url column",
             default=False,
         )
 
@@ -772,7 +772,7 @@ class OverviewController(BaseController):
         )
         if ns_parser:
             pycoingecko_view.display_exchanges(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
@@ -825,7 +825,7 @@ class OverviewController(BaseController):
         if ns_parser:
             pycoingecko_view.display_exchange_rates(
                 sortby=ns_parser.sortby,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
@@ -879,7 +879,7 @@ class OverviewController(BaseController):
         )
         if ns_parser:
             pycoingecko_view.display_indexes(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
                 export=ns_parser.export,
@@ -936,7 +936,7 @@ class OverviewController(BaseController):
         )
         if ns_parser:
             pycoingecko_view.display_derivatives(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
                 export=ns_parser.export,

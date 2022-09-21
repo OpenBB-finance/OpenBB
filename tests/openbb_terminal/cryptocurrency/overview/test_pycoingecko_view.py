@@ -43,20 +43,20 @@ class TestCoinGeckoAPI(TestCase):
     @pytest.mark.record_stdout
     @pytest.mark.vcr()
     def test_coin_indexes(self):
-        ov_pycoingecko_view.display_indexes(top=15, ascend=True, export="")
+        ov_pycoingecko_view.display_indexes(limit=15, ascend=True, export="")
 
     @pytest.mark.record_stdout
     @pytest.mark.vcr()
     def test_coin_derivatives(self):
         ov_pycoingecko_view.display_derivatives(
-            top=15, sortby="Rank", ascend=True, export=""
+            limit=15, sortby="Rank", ascend=True, export=""
         )
 
     @pytest.mark.record_stdout
     @pytest.mark.vcr()
     def test_coin_exchange_rates(self):
         ov_pycoingecko_view.display_exchange_rates(
-            top=15, sortby="Index", ascend=True, export=""
+            limit=15, sortby="Index", ascend=True, export=""
         )
 
     @pytest.mark.record_stdout
