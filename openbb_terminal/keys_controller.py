@@ -209,7 +209,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             console.print(self.key_dict["POLYGON"] + "\n")
 
     def menu_check_fred_key(self, status: str = "", show_output: bool = False) -> None:
-        """Check FRED key"""
+        """Check FRED key and update menu accordingly"""
 
         self.cfg_dict["FRED"] = "fred"
 
@@ -1044,7 +1044,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             status = keys_model.set_fred_key(ns_parser.key, True)
-            self.menu_check_fred_key(status)
+            self.menu_check_fred_key(status, False)
 
     @log_start_end(log=logger)
     def call_news(self, other_args: List[str]):
