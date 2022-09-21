@@ -85,24 +85,31 @@ def generate_documentation(
             f.write(f"{v_docs}\n")
 
 
-def add_yaml(base: str, values: list[tuple[str, str, Callable[..., Any]]]):
+def generate_dict(values: list[tuple[str, str, Callable[..., Any]]]):
     final_dict: dict[str, Any] = {}
-    for func_path, func_type, func in values:
+    for func_path, _, _ in values:
         whole_path = func_path.split(".")
         first = whole_path[0]
         if first not in final_dict:
-            final_dict[first] = {}
+            partial_p_str = whole_path[whole_path.index(first) - 1]
+            partial_path = partial_p_str.split(".")
+            final_dict[first] = {"ref": "api/" + "/".join(partial_path)}
         temp_ref = final_dict[first]
         for item in whole_path[1:]:
             if item not in temp_ref:
-                string_to = func_path[: func_path.index(item) - 1]
-                local_path = "api/" + "/".join(string_to.split("."))
-                temp_ref[item] = {"name": item, "ref": local_path}
+                partial_p_str = whole_path[whole_path.index(item) - 1]
+                partial_path = partial_p_str.split(".")
+                temp_ref[item] = {"ref": "api/" + "/".join(partial_path)}
             temp_ref = temp_ref[item]
-        temp_ref["name"] = whole_path[-1]
         temp_ref["ref"] = "api/" + "/".join(whole_path)
 
-    print(yaml.dump(final_dict))
+    return final_dict
+
+
+def generate_output(the_dict: dict[str, Any]):
+    for key, value in the_dict.items():
+        print(key)
+        print(value)
 
 
 if __name__ == "__main__":
@@ -114,4 +121,6 @@ if __name__ == "__main__":
     for k, v in grouped_funcs.items():
         # generate_documentation(folder_path, k, v)
         pass
-    add_yaml(main_path, funcs)
+    func_dict = generate_dict(funcs)
+    print(yaml.dump(func_dict))
+    # generate_output(func_dict)
