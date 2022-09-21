@@ -5,7 +5,6 @@ First off, thanks for taking the time to contribute (or at least read the Contri
 The following is a set of guidelines for contributing to OpenBB Terminal. These are mostly guidelines, not rules.
 Use your best judgment, and feel free to propose changes to this document in a pull request.
 
-
 - [CONTRIBUTING](#contributing)
   - [BASIC](#basic)
     - [Adding a new command](#adding-a-new-command)
@@ -255,7 +254,7 @@ function shares the data output with.
    - If there is a single or even a main argument, a block of code must be used to insert a fake argument on the list of
      args provided by the user. This makes the terminal usage being faster.
 
-      ```
+      ```python
       if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
       ```
@@ -306,9 +305,7 @@ def call_dps(self, _):
 
 The **import only occurs inside this menu call**, this is so that the loading time only happens here and not at the terminal startup. This is to avoid slow loading times for users that are not interested in `stocks/dps` menu.
 
-In addition, note the `self.load_class` which allows to not create a new DarkPoolShortsController instance but re-load the previous created one. Unless the arguments `self.ticker, self.start, self.stock` have changed since. 
-
-The `self.queue` list of commands is passed around as it contains the commands that the terminal must perform.
+In addition, note the `self.load_class` which allows to not create a new DarkPoolShortsController instance but re-load the previous created one. Unless the arguments `self.ticker, self.start, self.stock` have changed since. The `self.queue` list of commands is passed around as it contains the commands that the terminal must perform.
 
 ### Add API endpoint
 
