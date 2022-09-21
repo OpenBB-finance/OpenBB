@@ -383,7 +383,6 @@ website/content/_index.md
 
 Note that the `common` folder holds features that are common across contexts, e.g. `technical analysis` can be performed on both `stocks` or `crytpo`.
 
-
 To add a new command, there are two main actions that need to be done:
 
 1. Create a directory with the name of the command and a `_index.md` file within. Examples:
@@ -392,7 +391,7 @@ To add a new command, there are two main actions that need to be done:
 
    - When adding `candle`, since this command belongs to context `stocks`, we added a `candle` folder with a `_index.md` file within to `website/content/stocks/`.
 
-2. The `_index.md` file should have the output of the `command -h` followed by a screenshot example of what the user can expect. Note that you can now drag and drop the images while editing the readme file on the remote web version of your PR branch. Github will create a link for it with format (https://user-images.githubusercontent.com/***/***.file_format).
+2. The `_index.md` file should have the output of the `command -h` followed by a screenshot example of what the user can expect. Note that you can now drag and drop the images while editing the readme file on the remote web version of your PR branch. Github will create a link for it with format (<https://user-images.githubusercontent.com/***/***.file_format>).
 
 Example:
 
@@ -402,7 +401,7 @@ Example:
 usage: ipo [--past PAST_DAYS] [--future FUTURE_DAYS]
 ```
 
-Past and future IPOs. [Source: https://finnhub.io]
+Past and future IPOs. [Source: <https://finnhub.io>]
 
 - --past : Number of past days to look for IPOs. Default 0.
 - --future : Number of future days to look for IPOs. Default 10.
@@ -413,7 +412,7 @@ Past and future IPOs. [Source: https://finnhub.io]
 
 3. Update the Navigation bar to match the content you've added. This is done by adding 2 lines of code to `website/data/menu/`, i.e. a `name` and a `ref`. Example:
 
-```
+```python
 ---
 main:
   - name: stocks
@@ -436,7 +435,6 @@ main:
 ### Open a Pull Request
 
 Once you're happy with what you have, push your branch to remote. E.g. `git push origin feature/AmazingFeature`
-
 A user may create a **Draft Pull Request** when he/she wants to discuss implementation with the team.
 
 The team will then assign your PR one of the following labels:
@@ -468,7 +466,6 @@ iterations on that code and have it to be more future proof, but also allows the
 
 Often in the past the reviewers have suggested better coding practices, e.g. using `1_000_000` instead of `1000000` for
 better visibility, or suggesting a speed optimization improvement.
-  
   
 ## Understand Code Structure
 ### Back-end
