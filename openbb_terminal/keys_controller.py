@@ -214,7 +214,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         self.cfg_dict["FRED"] = "fred"
 
         if not status:
-            status = keys_model.check_fred_key(show_output)
+            status = keys_model.check_fred_key(show_output=show_output)
 
         self.key_dict["FRED"] = status
 
@@ -1043,7 +1043,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             other_args.insert(0, "-k")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            status = keys_model.set_fred_key(ns_parser.key, True)
+            status = keys_model.set_fred_key(key=ns_parser.key, persist=True, show_output=True)
             self.menu_check_fred_key(status, False)
 
     @log_start_end(log=logger)
