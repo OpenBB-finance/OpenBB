@@ -27,7 +27,7 @@ def set_key(env_var_name: str, env_var_value: str, local: bool = True) -> None:
         local: bool
             If True, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If False, api key change will be global, i.e. it will affect terminal environment variables.
-            By default, False.
+            By default, True.
     """
     if not local:
         os.environ[env_var_name] = env_var_value
@@ -37,7 +37,6 @@ def set_key(env_var_name: str, env_var_value: str, local: bool = True) -> None:
     env_var_name = env_var_name[7:]
 
     # Set cfg.env_var_name = env_var_value
-    # cfg.API_FRED_KEY = env_var_value
     setattr(cfg, env_var_name, env_var_value)
 
 
@@ -72,7 +71,7 @@ def set_av_key(key: str, local: bool = True, show_output: bool = False):
         local: bool
             If True, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If False, api key change will be global, i.e. it will affect terminal environment variables.
-            By default, False.
+            By default, True.
 
     Returns
     -------
@@ -139,7 +138,7 @@ def set_fmp_key(key: str, local: bool = True, show_output: bool = False):
         local: bool
             If True, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If False, api key change will be global, i.e. it will affect terminal environment variables.
-            By default, False.
+            By default, True.
 
     Returns
     -------
@@ -211,7 +210,7 @@ def set_quandl_key(key: str, local: bool = True, show_output: bool = False):
         local: bool
             If True, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If False, api key change will be global, i.e. it will affect terminal environment variables.
-            By default, False.
+            By default, True.
 
     Returns
     -------
@@ -283,7 +282,7 @@ def set_polygon_key(key: str, local: bool = True, show_output: bool = False):
         local: bool
             If True, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If False, api key change will be global, i.e. it will affect terminal environment variables.
-            By default, False.
+            By default, True.
 
     Returns
     -------
@@ -354,7 +353,7 @@ def set_fred_key(key: str, local: bool = True, show_output: bool = False) -> str
         local: bool
             If True, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If False, api key change will be global, i.e. it will affect terminal environment variables.
-            By default, False.
+            By default, True.
 
     Returns
     -------
@@ -423,7 +422,7 @@ def set_news_key(key: str, local: bool = True, show_output: bool = False):
         local: bool
             If True, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If False, api key change will be global, i.e. it will affect terminal environment variables.
-            By default, False.
+            By default, True.
 
     Returns
     -------
@@ -493,7 +492,7 @@ def set_tradier_key(key: str, local: bool = True, show_output: bool = False):
         local: bool
             If True, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If False, api key change will be global, i.e. it will affect terminal environment variables.
-            By default, False.
+            By default, True.
 
     Returns
     -------
@@ -568,7 +567,7 @@ def set_cmc_key(key: str, local: bool = True, show_output: bool = False):
         local: bool
             If True, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If False, api key change will be global, i.e. it will affect terminal environment variables.
-            By default, False.
+            By default, True.
 
     Returns
     -------
