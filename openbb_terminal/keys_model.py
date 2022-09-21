@@ -1,7 +1,9 @@
 import logging
 import os
+from typing import Dict
 import dotenv
 import requests
+import pandas as pd
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.core.config.paths import USER_ENV_FILE
 from openbb_terminal.rich_config import console
@@ -57,3 +59,19 @@ def check_fred_key(show_output: bool = False) -> str:
         console.print(status + "\n")
 
     return status
+
+
+def get_keys() -> Dict:
+    """Get dictionary with currently set API keys.
+
+    Returns:
+        Dict: key: API -> values: KEY
+    """
+
+    df = pd.read_csv(str(USER_ENV_FILE), delimiter="=", header=None)
+    df = df.rename(columns={0: "API", 1: "KEY"})
+    df = df.set_index("API")
+    df["KEY"] = df["KEY"].apply(lambda x: x[1:-1])
+    keys_dict = df.to_dict().get("KEY")
+
+    return keys_dict

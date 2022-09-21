@@ -1883,6 +1883,7 @@ functions = {
     "forex.candle": {"model": "openbb_terminal.forex.forex_helper.display_candle"},
     "forex.load": {"model": "openbb_terminal.forex.forex_helper.load"},
     "keys.fred": {"model": "openbb_terminal.keys_model.set_fred_key"},
+    "keys.mykeys": {"model": "openbb_terminal.keys_model.get_keys"},
 }
 
 
