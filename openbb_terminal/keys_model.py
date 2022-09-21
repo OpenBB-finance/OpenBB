@@ -49,94 +49,18 @@ def get_keys() -> Dict:
     """
 
     # TODO: Output only the api environment variables. Remove settings variables.
+    # TODO: Bug when variable does not exist in os, function is ignoring it. Have to search in cfg api variables directly instead
 
-    df = pd.read_csv(str(USER_ENV_FILE), delimiter="=", header=None)
-    df = df.rename(columns={0: "API", 1: "KEY"})
-    df = df.set_index("API")
-    df["KEY"] = df["KEY"].apply(lambda x: x[1:-1])
-    current_keys = df.to_dict().get("KEY")
+    var_list = [v for v in dir(cfg) if not v.startswith('__')]
 
-    for env_var_name, env_var_value in current_keys.items():
-        # Remove OPENBB_ prefix from env_var
-        cfg_var_name = env_var_name[7:]
+    current_keys = {}
 
-        # Check if api variable name is in cfg file
-        if cfg_var_name in dir(cfg):
-            cfg_var_value = getattr(cfg, cfg_var_name)
-            # Substitute api key for cfg_var_value (will be different if you change it on Jupyter without local)
-            if cfg_var_value != env_var_value:
-                current_keys[env_var_name] = cfg_var_value
+    for cfg_var_name in var_list:
+        cfg_var_value = getattr(cfg, cfg_var_name)
+        current_keys[cfg_var_name] = cfg_var_value
 
     return current_keys
 
-
-def set_fred_key(key: str, local: bool = True, show_output: bool = False) -> str:
-    """Set FRED key.
-
-    Parameters
-    ----------
-        key: str
-            API key
-        local: bool
-            If True, api key change will be contained to where it was changed. For example, Jupyter notebook.
-            If False, api key change will be global, i.e. it will affect terminal environment variables.
-            By default, False.
-
-    Returns
-    -------
-    str
-        API key status. One of the following:
-            not defined
-            defined, test failed
-            defined, test passed
-            defined, test inconclusive
-    """
-
-    set_key("OPENBB_API_FRED_KEY", key, local)
-    status = check_fred_key(show_output)
-
-    return status
-
-
-def check_fred_key(show_output: bool = False) -> str:
-    """Check FRED key
-
-    Parameters
-    ----------
-        show_output: bool
-            Display status string or not.
-
-    Returns
-    -------
-    str
-        API key status. One of the following:
-            not defined
-            defined, test failed
-            defined, test passed
-            defined, test inconclusive
-    """
-
-    if cfg.API_FRED_KEY == "REPLACE_ME":
-        logger.info("FRED key not defined")
-        status = "not defined"
-    else:
-        r = requests.get(
-            f"https://api.stlouisfed.org/fred/series?series_id=GNPCA&api_key={cfg.API_FRED_KEY}"
-        )
-        if r.status_code in [403, 401, 400]:
-            logger.warning("FRED key defined, test failed")
-            status = "defined, test failed"
-        elif r.status_code == 200:
-            logger.info("FRED key defined, test passed")
-            status = "defined, test passed"
-        else:
-            logger.warning("FRED key defined, test inconclusive")
-            status = "defined, test inconclusive"
-
-    if show_output:
-        console.print(status + "\n")
-
-    return status
 
 
 def set_av_key(key: str, local: bool = True, show_output: bool = False):
@@ -413,6 +337,219 @@ def check_polygon_key(show_output: bool = False) -> str:
             status = "defined, test passed"
         else:
             logger.warning("Polygon key defined, test inconclusive")
+            status = "defined, test inconclusive"
+
+    if show_output:
+        console.print(status + "\n")
+
+    return status
+
+def set_fred_key(key: str, local: bool = True, show_output: bool = False) -> str:
+    """Set FRED key.
+
+    Parameters
+    ----------
+        key: str
+            API key
+        local: bool
+            If True, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If False, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+    """
+
+    set_key("OPENBB_API_FRED_KEY", key, local)
+    status = check_fred_key(show_output)
+
+    return status
+
+
+def check_fred_key(show_output: bool = False) -> str:
+    """Check FRED key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+    """
+
+    if cfg.API_FRED_KEY == "REPLACE_ME":
+        logger.info("FRED key not defined")
+        status = "not defined"
+    else:
+        r = requests.get(
+            f"https://api.stlouisfed.org/fred/series?series_id=GNPCA&api_key={cfg.API_FRED_KEY}"
+        )
+        if r.status_code in [403, 401, 400]:
+            logger.warning("FRED key defined, test failed")
+            status = "defined, test failed"
+        elif r.status_code == 200:
+            logger.info("FRED key defined, test passed")
+            status = "defined, test passed"
+        else:
+            logger.warning("FRED key defined, test inconclusive")
+            status = "defined, test inconclusive"
+
+    if show_output:
+        console.print(status + "\n")
+
+    return status
+
+
+def set_news_key(key: str, local: bool = True, show_output: bool = False):
+    """Set News key.
+
+    Parameters
+    ----------
+        key: str
+            API key
+        local: bool
+            If True, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If False, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+    """
+
+    set_key("OPENBB_API_NEWS_TOKEN", key, local)
+    status = check_news_key(show_output)
+
+    return status
+
+
+def check_news_key(show_output: bool = False) -> str:
+    """Check News key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+
+    """
+
+    if cfg.API_NEWS_TOKEN == "REPLACE_ME":  # nosec
+        logger.info("News API key not defined")
+        status = "not defined"
+    else:
+        r = requests.get(
+            f"https://newsapi.org/v2/everything?q=keyword&apiKey={cfg.API_NEWS_TOKEN}"
+        )
+        if r.status_code in [401, 403]:
+            logger.warning("News API key defined, test failed")
+            status = "defined, test failed"
+        elif r.status_code == 200:
+            logger.info("News API key defined, test passed")
+            status = "defined, test passed"
+        else:
+            logger.warning("News API key defined, test inconclusive")
+            status = "defined, test inconclusive"
+
+    if show_output:
+        console.print(status + "\n")
+
+    return status
+
+
+def set_tradier_key(key: str, local: bool = True, show_output: bool = False):
+    """Set Tradier key.
+
+    Parameters
+    ----------
+        key: str
+            API key
+        local: bool
+            If True, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If False, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+    """
+
+    set_key("OPENBB_API_TRADIER_TOKEN", key, local)
+    status = check_tradier_key(show_output)
+
+    return status
+
+
+def check_tradier_key(show_output: bool = False) -> str:
+    """Check Tradier key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+
+    """
+
+    if cfg.API_TRADIER_TOKEN == "REPLACE_ME":  # nosec
+        logger.info("Tradier key not defined")
+        status = "not defined"
+    else:
+        r = requests.get(
+            "https://sandbox.tradier.com/v1/markets/quotes",
+            params={"symbols": "AAPL"},
+            headers={
+                "Authorization": f"Bearer {cfg.API_TRADIER_TOKEN}",
+                "Accept": "application/json",
+            },
+        )
+        if r.status_code in [401, 403]:
+            logger.warning("Tradier key not defined, test failed")
+            status = "defined, test failed"
+        elif r.status_code == 200:
+            logger.info("Tradier key not defined, test passed")
+            status = "defined, test passed"
+        else:
+            logger.warning("Tradier key not defined, test inconclusive")
             status = "defined, test inconclusive"
 
     if show_output:

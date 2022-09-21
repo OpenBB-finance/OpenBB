@@ -21,7 +21,7 @@ class MockCFG:
         self.API_POLYGON_KEY = kwargs.get("POLYGON", None)
         self.API_FRED_KEY = kwargs.get("FRED", None)
         self.API_NEWS_TOKEN = kwargs.get("NEWS", None)
-        self.TRADIER_TOKEN = kwargs.get("TRADIER", None)
+        self.API_TRADIER_TOKEN = kwargs.get("TRADIER", None)
         self.API_CMC_KEY = kwargs.get("CMC", None)
         self.API_FINNHUB_KEY = kwargs.get("FINNHUB", None)
         self.API_IEX_TOKEN = kwargs.get("IEX", None)

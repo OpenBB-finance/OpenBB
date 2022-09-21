@@ -117,6 +117,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         """Check Alpha Vantage key"""
 
         self.cfg_dict["ALPHA_VANTAGE"] = "av"
+
         if not status:
             status = keys_model.check_av_key(show_output=show_output)
 
@@ -126,6 +127,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         """Check Financial Modeling Prep key"""
 
         self.cfg_dict["FINANCIAL_MODELING_PREP"] = "fmp"
+
         if not status:
             status = keys_model.check_fmp_key(show_output=show_output)
 
@@ -135,6 +137,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         """Check Quandl key"""
 
         self.cfg_dict["QUANDL"] = "quandl"
+
         if not status:
             status = keys_model.check_quandl_key(show_output=show_output)
 
@@ -144,6 +147,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         """Check Polygon key"""
 
         self.cfg_dict["POLYGON"] = "polygon"
+
         if not status:
             status = keys_model.check_polygon_key(show_output=show_output)
 
@@ -159,56 +163,23 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
         self.key_dict["FRED"] = status
 
-    def check_news_key(self, show_output: bool = False) -> None:
+    def check_news_key(self, status: str = "", show_output: bool = False) -> None:
         """Check News API key"""
         self.cfg_dict["NEWSAPI"] = "news"
-        if cfg.API_NEWS_TOKEN == "REPLACE_ME":  # nosec
-            logger.info("News API key not defined")
-            self.key_dict["NEWSAPI"] = "not defined"
-        else:
-            r = requests.get(
-                f"https://newsapi.org/v2/everything?q=keyword&apiKey={cfg.API_NEWS_TOKEN}"
-            )
-            if r.status_code in [401, 403]:
-                logger.warning("News API key defined, test failed")
-                self.key_dict["NEWSAPI"] = "defined, test failed"
-            elif r.status_code == 200:
-                logger.info("News API key defined, test passed")
-                self.key_dict["NEWSAPI"] = "defined, test passed"
-            else:
-                logger.warning("News API key defined, test inconclusive")
-                self.key_dict["NEWSAPI"] = "defined, test inconclusive"
 
-        if show_output:
-            console.print(self.key_dict["NEWSAPI"] + "\n")
+        if not status:
+            status = keys_model.check_news_key(show_output=show_output)
 
-    def check_tradier_key(self, show_output: bool = False) -> None:
+        self.key_dict["NEWSAPI"] = status
+
+    def check_tradier_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Tradier key"""
         self.cfg_dict["TRADIER"] = "tradier"
-        if cfg.TRADIER_TOKEN == "REPLACE_ME":  # nosec
-            logger.info("Tradier key not defined")
-            self.key_dict["TRADIER"] = "not defined"
-        else:
-            r = requests.get(
-                "https://sandbox.tradier.com/v1/markets/quotes",
-                params={"symbols": "AAPL"},
-                headers={
-                    "Authorization": f"Bearer {cfg.TRADIER_TOKEN}",
-                    "Accept": "application/json",
-                },
-            )
-            if r.status_code in [401, 403]:
-                logger.warning("Tradier key not defined, test failed")
-                self.key_dict["TRADIER"] = "defined, test failed"
-            elif r.status_code == 200:
-                logger.info("Tradier key not defined, test passed")
-                self.key_dict["TRADIER"] = "defined, test passed"
-            else:
-                logger.warning("Tradier key not defined, test inconclusive")
-                self.key_dict["TRADIER"] = "defined, test inconclusive"
 
-        if show_output:
-            console.print(self.key_dict["TRADIER"] + "\n")
+        if not status:
+            status = keys_model.check_tradier_key(show_output=show_output)
+
+        self.key_dict["TRADIER"] = status
 
     def check_cmc_key(self, show_output: bool = False) -> None:
         """Check Coinmarketcap key"""
@@ -1011,10 +982,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             other_args.insert(0, "-k")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            os.environ["OPENBB_API_NEWS_TOKEN"] = ns_parser.key
-            dotenv.set_key(self.env_file, "OPENBB_API_NEWS_TOKEN", ns_parser.key)
-            cfg.API_NEWS_TOKEN = ns_parser.key
-            self.check_news_key(show_output=True)
+            status = keys_model.set_news_key(
+                key=ns_parser.key, local=False, show_output=True
+            )
+            self.check_news_key(status, False)
 
     @log_start_end(log=logger)
     def call_tradier(self, other_args: List[str]):
@@ -1040,10 +1011,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             other_args.insert(0, "-k")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            os.environ["OPENBB_API_TRADIER_TOKEN"] = ns_parser.key
-            dotenv.set_key(self.env_file, "OPENBB_API_TRADIER_TOKEN", ns_parser.key)
-            cfg.TRADIER_TOKEN = ns_parser.key
-            self.check_tradier_key(show_output=True)
+            status = keys_model.set_tradier_key(
+                key=ns_parser.key, local=False, show_output=True
+            )
+            self.check_tradier_key(status, False)
 
     @log_start_end(log=logger)
     def call_cmc(self, other_args: List[str]):
