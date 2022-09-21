@@ -121,7 +121,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
         self.key_dict["ALPHA_VANTAGE"] = status
 
-    def check_fmp_key(self, show_output: bool = False) -> None:
+    def check_fmp_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Financial Modeling Prep key"""
         self.cfg_dict["FINANCIAL_MODELING_PREP"] = "fmp"
         if not status:
@@ -894,7 +894,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             status = keys_model.set_av_key(
-                env_var_value=ns_parser.key, local=False, show_output=True
+                key=ns_parser.key, local=False, show_output=True
             )
             self.check_av_key(status, False)
 
@@ -925,7 +925,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             status = keys_model.set_fmp_key(
-                env_var_value=ns_parser.key, local=False, show_output=True
+                key=ns_parser.key, local=False, show_output=True
             )
             self.check_fmp_key(status, False)
 
@@ -1012,7 +1012,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             status = keys_model.set_fred_key(
-                env_var_value=ns_parser.key, local=False, show_output=True
+                key=ns_parser.key, local=False, show_output=True
             )
             self.check_fred_key(status, False)
 
