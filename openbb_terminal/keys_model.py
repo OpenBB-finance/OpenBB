@@ -21,7 +21,7 @@ def set_fred_key(key: str, persist: bool = False, show_output: bool = False) -> 
         persist: bool
             If True, api key change will persist, i.e. it will affect terminal environment variables.
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
-            By default, False. 
+            By default, False.
     Returns
     -------
     str
