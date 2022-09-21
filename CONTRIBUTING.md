@@ -1173,8 +1173,8 @@ All of these variables have a `call_FUNCTION` associated with them.
 
 Worthy methods to mention are:
   * `load_class`: Checks for an existing instance of the controller before creating a new one to speed up access to that menu.
-  * `custom_reset`: Should be used by controllers that rely on a state variable - meant to be overrided. They should add the commands necessary to have the same data loaded.
-  * `print_help`: Meant to be overrided by each controller
+  * `custom_reset`: Should be used by controllers that rely on a state variable - meant to be overridden. They should add the commands necessary to have the same data loaded.
+  * `print_help`: Meant to be overridden by each controller
   * `parse_input`: Processes the string the user inputs into a list of actionable commands
   * `switch`: Acts upon the command action received
   * `parse_known_args_and_warn`: Parses the command with the `-` and `--` flags and variables. Some built-in flags are:
@@ -1260,7 +1260,7 @@ If `export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES` in `parse_known_args_and_wa
 * `cmd --export mydata.csv`
 * `cmd --export mydata.txt,alsomydata.csv,alsoalsomydata.png`
 
-Note that these files are saved on a location based on the environment variable: `EXPORT_FOLDER_PATH`. Wich can be set in `settings/export`.
+Note that these files are saved on a location based on the environment variable: `EXPORT_FOLDER_PATH`. Which can be set in `settings/export`.
 
 The default location is the `exports` folder and the data will be stored with the same organization of the terminal. But, if the user specifies the name of the file, then that will be dropped onto the folder as is with the datetime attached.
 
