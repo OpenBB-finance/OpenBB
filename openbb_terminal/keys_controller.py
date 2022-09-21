@@ -142,7 +142,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
     def check_polygon_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Polygon key"""
-        
+
         self.cfg_dict["POLYGON"] = "polygon"
         if not status:
             status = keys_model.check_polygon_key(show_output=show_output)
