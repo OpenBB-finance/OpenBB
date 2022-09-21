@@ -469,13 +469,14 @@ better visibility, or suggesting a speed optimization improvement.
 ## Understand Code Structure
 
 ### Back-end
+  
 CLI :computer: → `_controller.py` :robot: →&nbsp;`_view.py` :art: &nbsp;&nbsp; → &nbsp;&nbsp;&nbsp;&nbsp;`_model.py` :brain:<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`chart=True`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`chart=False`<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#8593;&nbsp;&nbsp;`api.py` :factory: &nbsp;&#8593;
 
 | **File&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**           | **Role**       | **Description**                                        |
 | :------------------------- | :------------- | :----------------------------------------------------- |
 | **_controller.py** :robot: | The router/input validator | The controller file should hold the least amount of logic possible. Its role is to be a stupid (no logic) router and redirect the command correctly while checking the input with argparser.   |
-| **_view.py** :art:         | The artist     | The view file should only output or visualise the data it gets from the _model file! So the _view shouldn’t change any data, thus the data object should be identical in the _view and the _model files. |
+| **_view.py** :art:         | The artist     | The view file should only output or visualise the data it gets from the `_model` file! So the _view shouldn’t change any data, thus the data object should be identical in the `_view` and the `_model` files. |
 | **_model.py** 🧠           |The brain       | The model file is where everything fun happens. The data is gathered here (api, web scraped, …), processed here and returned to be used.                                                                |
 | **api.py** 🏭              |The API Factory | The API file is where the callable functions are created for the API. There is only one api file in the openbb_terminal folder.                                                                                |
 
@@ -556,7 +557,7 @@ def display_last_uni_swaps(
 
 </td>
 <td>
-    
+
 ```python
 def display_last_uni_swaps(
   top: int,   
@@ -564,6 +565,7 @@ def display_last_uni_swaps(
   descend: bool,   
   export: str,) -> None:
 ```
+
 </td>
 </tr>
 </table>
@@ -589,7 +591,7 @@ def get_coins(
 
 </td>
 <td>
-    
+
 ```python
 def load(   
   file: str,   
@@ -597,19 +599,20 @@ def load(
   data_files: Dict[Any, Any],   
   data_examples: Dict[Any, Any],) -> pd.DataFrame:
 ```
+
 </td>
 </tr>
 </table>
- 
+
 <br>
- 
+
 3. Each function needs to have a docstring explaining what it does, its parameters and what it returns.
   
     Why? You can use the function without reading its source code. This improves the developing experience and api usage. The api factory also can’t handle functions with out docstrings.
   
 <br>
   
-4. Consistent and clear argument naming; not `symbol` in _view and then `ticker` in _file -> ticker everywhere; the name should be descriptive of what information it hold (see Style Guide section below)
+4. Consistent and clear argument naming; not `symbol` in _view and then `ticker` in `_file` -> ticker everywhere; the name should be descriptive of what information it hold (see Style Guide section below)
   
   Why? You can quickly understand what the input it should be; example: tickers and stock names are fundamentally different, but they’re both strings so they should be named accordingly.
 
@@ -626,10 +629,11 @@ data: pd.Series, dataset_name: str, y_label: str,
 
 </td>
 <td>
-    
+
 ```python
 data: pd.Series, dataset: str, column: str,
 ```
+
 </td>
 </tr>
 </table>
@@ -641,14 +645,16 @@ data: pd.Series, dataset: str, column: str,
     Why? Two reasons:
 
 These calculations can then be used outside of the class with custom data; for example via the api or for tests.
-```swift
+
+```python
 from openbb_terminal.portfolio.portfolio_helper import get_gaintopain_ratio
 
 # Direct function access
 get_gaintopain_ratio(historical_trade_data, benchmark_trades, benchmark_returns)
 ```
+
 The function can be loaded in API factory as an endpoint and user can get result by passing the class instance.
-    
+
 ```python
 from openbb_terminal.api import openbb
 from openbb_terminal.api import Portfolio
@@ -684,7 +690,7 @@ return gtp_period_df
 
 </td>
 <td>
-    
+
 ```python
 def get_gaintopain_ratio(self) -> pd.DataFrame:   
 
@@ -698,6 +704,7 @@ for period in portfolio_helper.PERIODS:
 
 ...
 ```
+
 </td>
 </tr>
 </table>
