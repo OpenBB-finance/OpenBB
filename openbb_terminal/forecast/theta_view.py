@@ -70,9 +70,7 @@ def display_theta_forecast(
         as the previous day's closing price. Defaults to False.
     """
 
-    data = helpers.clean_data(
-        data, start_date, end_date, target_column, None
-    )
+    data = helpers.clean_data(data, start_date, end_date, target_column, None)
     if not helpers.check_data(data, target_column, None):
         return
     (
