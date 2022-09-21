@@ -775,16 +775,30 @@ def clean_data(
     data: Union[pd.DataFrame, pd.Series],
     start_date: Optional[datetime],
     end_date: Optional[datetime],
+    target_column: Optional[str],
+    past_covariates: Optional[List[str]],
 ) -> Union[pd.DataFrame, pd.Series]:
-    # TODO this is temporary
-    # check dataframe for any inf or nan values
-    if data.isnull().values.any().any() or data.isin([np.inf, -np.inf]).any().any():
-        console.print(
-            "[red]The data contains inf or nan values. They will be removed.[/red]\n"
-        )
-        # drop any rows with inf values
-        data = data.replace([np.inf, -np.inf], np.nan)
-        data = data.dropna()
+    # check if target column is in data and if the target_column has any inf
+    # replace all inf with nan. This is because darts does not handle inf
+    # Creating a timeseries with fillna=True will replace all nan with interoplated values
+    if target_column and target_column in data.columns:
+        if data[target_column].isin([np.inf, -np.inf]).any():
+            console.print(
+                f"[red]The target column [{target_column}] has inf values. Cleaning...[/red]\n"
+            )
+            data = data.replace([np.inf, -np.inf], np.nan)
+
+    # check if past covariates are in data and if they have any inf
+    if past_covariates:
+        covariates = past_covariates.split(",")
+        for covariate in covariates:
+            if covariate in data.columns:
+                if data[covariate].isin([np.inf, -np.inf]).any():
+                    console.print(
+                        f"[red]The covariate:{covariate} has inf values. Cleaning...[/red]\n"
+                    )
+                    data = data.replace([np.inf, -np.inf], np.nan)
+
     if isinstance(data, pd.Series):
         col = data.name
         columns = ["date", col]
@@ -825,13 +839,24 @@ def clean_covariates(parser, dataset: pd.DataFrame) -> Optional[str]:
     return covariates
 
 
-def check_data(data: pd.DataFrame, column: str) -> bool:
-    if column not in data.columns:
+def check_data(
+    data: pd.DataFrame, target_column: str, past_covariates: List[str]
+) -> bool:
+    if target_column not in data.columns:
         console.print(
-            f"[red]Column {column} is not in the dataframe."
+            f"[red]Column {target_column} is not in the dataframe."
             " Change the 'target_column' parameter.[/red]\n"
         )
         return False
+    if past_covariates is not None:
+        covariates = past_covariates.split(",")
+        for covariate in covariates:
+            if covariate not in data.columns:
+                console.print(
+                    f"[red]Column {covariate} is not in the dataframe."
+                    " Change the 'past_covariates' parameter.[/red]\n"
+                )
+                return False
     return True
 
 

@@ -101,8 +101,10 @@ def display_brnn_forecast(
             Whether to show the naive baseline. This just assumes the closing price will be the same
             as the previous day's closing price. Defaults to False.
     """
-    data = helpers.clean_data(data, start_date, end_date)
-    if not helpers.check_data(data, target_column):
+    data = helpers.clean_data(
+        data, start_date, end_date, target_column, past_covariates
+    )
+    if not helpers.check_data(data, target_column, past_covariates):
         return
     output_chunk_length = helpers.check_output(
         output_chunk_length, n_predict, bool(past_covariates)
