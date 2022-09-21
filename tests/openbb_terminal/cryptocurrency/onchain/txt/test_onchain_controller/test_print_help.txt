@@ -10,7 +10,7 @@
     ttcp               top traded crypto pairs on given decentralized exchange         [BitQuery]
     baas               bid, ask prices, average spread for given crypto pair           [BitQuery]
     dt                 daily transactions of eth tokens                                [Shroom]
-    ds                 stats of eth platform      e.g., daily users; fees              [Shroom]
+    ds                 stats of eth platform (daily users; fees)                       [Shroom]
     tvl                total value locked of ERC20 tokens                              [Shroom]
 
 Ethereum address: 

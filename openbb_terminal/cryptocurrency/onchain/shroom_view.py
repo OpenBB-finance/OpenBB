@@ -21,6 +21,7 @@ from openbb_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     is_valid_axes_count,
+    print_rich_table,
 )
 from openbb_terminal.rich_config import console
 
@@ -81,6 +82,8 @@ def display_daily_transactions(
 @check_api_key(["API_SHROOM_KEY"])
 def display_dapp_stats(
     platform: str,
+    raw: bool = False,
+    limit: int = 10,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -89,15 +92,22 @@ def display_dapp_stats(
 
     Parameters
     ----------
-
+    platform : str
+        Platform name (e.g., uniswap-v3)
+    raw : bool
+        Show raw data
+    limit : int
+        Limit of rows
     export : str
         Export dataframe data to csv,json,xlsx file
     """
     df = get_dapp_stats(platform=platform)
-    console.print(df)
     if df.empty:
         console.print("No data found.", "\n")
     elif not df.empty:
+        if raw:
+            print_rich_table(df.head(limit), headers=list(df.columns), show_index=True)
+
         # This plot has 1 axis
         if external_axes is None:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
@@ -113,7 +123,7 @@ def display_dapp_stats(
         ax2 = ax.twinx()
         ax2.plot(df["fees"], color=theme.up_color, label="Platform Fees")
         # ax2.plot(df["volume"], label="Volume")
-        ax2.set_ylabel("Number of Users", labelpad=20)
+        ax2.set_ylabel("Number of Users", labelpad=30)
         ax2.set_zorder(ax2.get_zorder() + 1)
         ax.patch.set_visible(False)
         ax2.yaxis.set_label_position("left")

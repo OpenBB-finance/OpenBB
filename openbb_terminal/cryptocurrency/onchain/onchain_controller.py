@@ -259,11 +259,13 @@ class OnchainController(BaseController):
             other_args.insert(0, "-p")
 
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True, limit=10
         )
 
         if ns_parser:
             shroom_view.display_dapp_stats(
+                raw=ns_parser.raw,
+                limit=ns_parser.limit,
                 platform=ns_parser.platform,
                 export=ns_parser.export,
             )
