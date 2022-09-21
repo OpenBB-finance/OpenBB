@@ -742,7 +742,7 @@ def get_yieldcurve(country: str) -> pd.Dataframe:
 
 </td>
 <td>
-    
+
 ```python
 # [fred_view.py]
 
@@ -775,10 +775,10 @@ def get_yldcurve(country: str) -> pd.Dataframe:
 
 2. Each model (get_) should almost always have its own view function (display_)
 
-    Why? To respect the principles laid out in Code Structure and the previous bullet point. If your code does not have this get_ → display_ map it’s likely that i. and/or ii. fail to hold.
-    
+    Why? To respect the principles laid out in Code Structure and the previous bullet point. If your code does not have this `get_` → `display_` map it’s likely that i. and/or ii. fail to hold.
+
     i. Data is processed in _model files and displayed in `_view` files
-    
+
     ii. `_view` and `_model` files will have the same arguments (except for output options)
 
 <br>
@@ -803,6 +803,7 @@ def func(..., argument_name: argument_type = default, ...):
 <br>
 
 #### Flags
+
 Show raw data : `raw` *(bool)*
 
 ```python
@@ -834,6 +835,7 @@ def display_data(..., plot: bool = False, ...):
 <br>
 
 #### Output format
+
 Format to export data : `export` *(str), e.g. csv, json, xlsx*
 
 ```python
@@ -931,6 +933,7 @@ def get_rolling_sum(returns: pd.Series, window: str = "252d"):
 <br>
 
 #### Data selection and manipulation
+
 Search term used to query : `query` (str)
 
 Maximum limit of search items/periods in data source: `limit` *(int)*
@@ -949,6 +952,7 @@ def get_data_from_source(..., limit: int = 10, ...):
     """
     data = source.get_data(data_name, n_results=limit, ...)
 ```
+
 Dictionary of input datasets : `datasets` *(Dict[str, pd.DataFrame])* 
 
 Note: Most occurrences are on the econometrics menu and might be refactored in near future
@@ -993,6 +997,7 @@ Currency to convert data : `currency` *(str) e.g. EUR, USD*
 <br>
 
 #### Financial instrument characteristics
+
 Instrument ticker, name or currency pair : `symbol` *(str), e.g. AAPL, ethereum, ETH, ETH-USD*
 
 ```python
@@ -1085,8 +1090,8 @@ The following linters are used by our codebase:
 
 #### Command names
 
-* The command name should be as short as possible.
-* The command name should allow the user to know what the command refers to without needing to read description. (e.g. `earn`)
+- The command name should be as short as possible.
+- The command name should allow the user to know what the command refers to without needing to read description. (e.g. `earn`)
 
     - If this is not possible, then the command name should be an abbreviation of what the functionality corresponds to (e.g. `ycrv` for `yield curve`)
 * The command name **should not** have the data source explicit
