@@ -1238,21 +1238,21 @@ In the `_view.py` files it is common having at the end of each function `export_
 ```
 
 Let's go into each of these arguments:
-* `export` corresponds to the type of file we are exporting. 
+- `export` corresponds to the type of file we are exporting. 
   * If the user doesn't has anything selected, then this function doesn't do anything.
   * The user can export multiple files and even name the files.
   * The allowed type of files `json,csv,xlsx` for raw data and `jpg,png,svg` for figures depends on the `export_allowed` variable defined in `parse_known_args_and_warn`.
-* `os.path.dirname(os.path.abspath(__file__))` corresponds to the directory path
+- `os.path.dirname(os.path.abspath(__file__))` corresponds to the directory path
   * This is important when `export folder` selected is the default because the data gets stored based on where it is called. 
   * If this is called from a `common` folder, we can use `os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks")` insteaad
-* `"contracts"` corresponds to the name of the exported file (+ unique datetime) if the user doesn't provide one
-* `df_contracts` corresponds to the dataframe with data. Although we don't call this function with the figure reference, because it is open, we can use `plt.savefig` to achieve that.
+- `"contracts"` corresponds to the name of the exported file (+ unique datetime) if the user doesn't provide one
+- `df_contracts` corresponds to the dataframe with data. Although we don't call this function with the figure reference, because it is open, we can use `plt.savefig` to achieve that.
 
 If `export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES` in `parse_known_args_and_warn`, valid examples are:
-* `cmd --export csv`
-* `cmd --export csv,png,jpg`
-* `cmd --export mydata.csv`
-* `cmd --export mydata.txt,alsomydata.csv,alsoalsomydata.png`
+- `cmd --export csv`
+- `cmd --export csv,png,jpg`
+- `cmd --export mydata.csv`
+- `cmd --export mydata.txt,alsomydata.csv,alsoalsomydata.png`
 
 Note that these files are saved on a location based on the environment variable: `EXPORT_FOLDER_PATH`. Which can be set in `settings/export`.
 
@@ -1262,7 +1262,7 @@ The default location is the `exports` folder and the data will be stored with th
 
 The variable `self.queue` contains a list of all actions to be run on the platform. That is the reason why this variable is always passed as an argument to a new controller class and received back.
 
-```
+```python
   self.queue = self.load_class(
       DarkPoolShortsController, self.ticker, self.start, self.stock, self.queue
   )
@@ -1271,9 +1271,11 @@ The variable `self.queue` contains a list of all actions to be run on the platfo
 Example:
 
 If a user is in the root of the terminal and runs:
-```
+  
+```python
 $ stocks/load AAPL/dps/psi -l 90
 ```
+  
 The queue created becomes:
 `self.queue = ["stocks", "load AAPL", "dps", "psi -l 90"]`
 
@@ -1282,14 +1284,13 @@ And the user goes into the `stocks` menu and runs `load AAPL`. Then the queue is
 
 At that point the user goes into the `dps` menu and runs the command `psi` with the argument `-l 90` therefore displaying price vs short interest of the past 90 days.
 
-
 ### Auto Completer
 
 In order to help users with a powerful autocomplete, we have implemented our own (which can be found [here](/openbb_terminal/custom_prompt_toolkit.py)).
 
 This **STATIC** list of options is meant to be defined on the `__init__` method of a class as follows.
 
-```
+```python
 if session and obbff.USE_PROMPT_TOOLKIT:
   self.choices: dict = {c: {} for c in self.controller_choices}
   self.choices["overview"] = {
@@ -1315,7 +1316,7 @@ if session and obbff.USE_PROMPT_TOOLKIT:
 
 Important things to note:
 - `self.choices: dict = {c: {} for c in self.controller_choices}`: this allows users to have autocomplete on the command that they are allowed to select in each menu
-- `self.choices["overview"]`: this corresponds to the list of choices that the user is allowed to select after specifying `$ overview `
+- `self.choices["overview"]`: this corresponds to the list of choices that the user is allowed to select after specifying `$ overview`
 - `"--commodity": {c: None for c in self.futures_commodities}`: this allows the user to select several commodity values after `--commodity` flag
 - `"-c": "--commodity"`: this is interpreted as `-c` having the same effect as `--commodity`
 - `"--ascend": {}`: corresponds to a boolean flag (does not expect any value after)
@@ -1325,6 +1326,7 @@ Important things to note:
 In case the user is interested in a **DYNAMIC** list of options which changes based on user's state, then a class method must be defined.
 
 The example below shows the `update_runtime_choices` method being defined in the options controller.
+
 ```python
 def update_runtime_choices(self):
     """Update runtime choices"""
