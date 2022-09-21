@@ -216,7 +216,7 @@ class OverviewController(BaseController):
         if ns_parser:
             pycoingecko_view.display_crypto_heatmap(
                 category=ns_parser.category,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -277,7 +277,7 @@ class OverviewController(BaseController):
         if ns_parser:
             rekt_view.display_crypto_hacks(
                 slug=ns_parser.slug,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=" ".join(ns_parser.sortby),
                 ascend=not ns_parser.descend,
@@ -407,7 +407,7 @@ class OverviewController(BaseController):
 
         if ns_parser:
             withdrawalfees_view.display_overall_withdrawal_fees(
-                top=ns_parser.limit, export=ns_parser.export
+                limit=ns_parser.limit, export=ns_parser.export
             )
 
     @log_start_end(log=logger)
@@ -546,7 +546,7 @@ class OverviewController(BaseController):
                 symbol=ns_parser.coin,
                 export=ns_parser.export,
                 show_bar=ns_parser.bar,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
             )
 
     @log_start_end(log=logger)

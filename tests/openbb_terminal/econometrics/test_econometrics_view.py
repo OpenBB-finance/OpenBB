@@ -117,7 +117,7 @@ def test_display_norm(data, dataset, column, plot):
 )
 def test_display_root(df, dataset_name, column_name, fuller_reg, kpss_reg):
     econometrics_view.display_root(
-        df=df,
+        data=df,
         dataset=dataset_name,
         column=column_name,
         fuller_reg=fuller_reg,

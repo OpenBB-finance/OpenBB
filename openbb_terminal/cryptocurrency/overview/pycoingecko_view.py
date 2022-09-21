@@ -35,7 +35,7 @@ register_matplotlib_converters()
 @log_start_end(log=logger)
 def display_crypto_heatmap(
     category: str = "",
-    top: int = 15,
+    limit: int = 15,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -45,14 +45,14 @@ def display_crypto_heatmap(
     ----------
     caterogy: str
         Category (e.g., stablecoins). Empty for no category (default: )
-    top: int
+    limit: int
         Number of top cryptocurrencies to display
     export: str
         Export dataframe data to csv,json,xlsx
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df = gecko.get_coins(top, category)
+    df = gecko.get_coins(limit, category)
     if df.empty:
         console.print("\nNo cryptocurrencies found\n")
     else:
@@ -110,7 +110,7 @@ def display_crypto_heatmap(
                     * 0.8
                 ),
             )
-        ax.set_title(f"Top {top} Cryptocurrencies {category_str}")
+        ax.set_title(f"Top {limit} Cryptocurrencies {category_str}")
         ax.set_axis_off()
 
         cfg.theme.style_primary_axis(ax)
@@ -128,7 +128,7 @@ def display_crypto_heatmap(
 
 @log_start_end(log=logger)
 def display_holdings_overview(
-    symbol: str, show_bar: bool = False, export: str = "", top: int = 15
+    symbol: str, show_bar: bool = False, export: str = "", limit: int = 15
 ) -> None:
     """Shows overview of public companies that holds ethereum or bitcoin. [Source: CoinGecko]
 
@@ -140,7 +140,7 @@ def display_holdings_overview(
         Whether to show a bar graph for the data
     export: str
         Export dataframe data to csv,json,xlsx
-    top: int
+    limit: int
         The number of rows to show
     """
 
@@ -148,7 +148,7 @@ def display_holdings_overview(
     stats_string = res[0]
     df = res[1]
 
-    df = df.head(top)
+    df = df.head(limit)
 
     if df.empty:
         console.print("\nZero companies holding this crypto\n")

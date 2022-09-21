@@ -29,7 +29,7 @@ d_candle_types = {
 @log_start_end(log=logger)
 def get_historical(
     similar: List[str],
-    start: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+    start_date: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
     candle_type: str = "a",
 ) -> pd.DataFrame:
     """Get historical prices for all comparison stocks
@@ -40,7 +40,7 @@ def get_historical(
         List of similar tickers.
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
-    start: str, optional
+    start_date: str, optional
         Start date of comparison. Defaults to 1 year previously
     candle_type: str, optional
         Candle variable to compare, by default "a" for Adjusted Close. Possible values are: o, h, l, c, a, v, r
@@ -60,7 +60,7 @@ def get_historical(
     # To avoid having to recursively append, just do a single yfinance call.  This will give dataframe
     # where all tickers are columns.
     similar_tickers_dataframe = yf.download(
-        similar, start=start, progress=False, threads=False
+        similar, start=start_date, progress=False, threads=False
     )[d_candle_types[candle_type]]
 
     returnable = (

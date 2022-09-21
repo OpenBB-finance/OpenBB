@@ -532,7 +532,7 @@ def get_greeks(
 @log_start_end(log=logger)
 def get_vol(
     symbol: str,
-    expiration: str,
+    expiry: str,
 ) -> pd.DataFrame:
     """Plot volume
 
@@ -540,10 +540,10 @@ def get_vol(
     ----------
     symbol: str
         Ticker symbol
-    expiration: str
+    expiry: str
         expiration date for options
     """
-    options = get_option_chain(symbol, expiration)
+    options = get_option_chain(symbol, expiry)
 
     return options
 

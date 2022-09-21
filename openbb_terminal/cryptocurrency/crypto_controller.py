@@ -223,8 +223,8 @@ class CryptoController(CryptoBaseController):
             plot_chart(
                 exchange=self.exchange,
                 source=self.source,
-                symbol=self.symbol,
-                currency=self.current_currency,
+                to_symbol=self.symbol,
+                from_symbol=self.current_currency,
                 prices_df=self.current_df,
                 interval=self.current_interval,
             )

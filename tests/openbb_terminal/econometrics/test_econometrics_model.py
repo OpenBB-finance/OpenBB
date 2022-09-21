@@ -240,7 +240,7 @@ def test_get_normality(recorder, data):
 )
 def test_get_root(recorder, df, fuller_reg, kpss_reg):
     result = econometrics_model.get_root(
-        df=df, fuller_reg=fuller_reg, kpss_reg=kpss_reg
+        data=df, fuller_reg=fuller_reg, kpss_reg=kpss_reg
     )
 
     recorder.capture(result, float_format="%.5f")
