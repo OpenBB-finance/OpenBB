@@ -1314,18 +1314,18 @@ if session and obbff.USE_PROMPT_TOOLKIT:
 ```
 
 Important things to note:
-* `self.choices: dict = {c: {} for c in self.controller_choices}`: this allows users to have autocomplete on the command that they are allowed to select in each menu
-* `self.choices["overview"]`: this corresponds to the list of choices that the user is allowed to select after specifying `$ overview `
-* `"--commodity": {c: None for c in self.futures_commodities}`: this allows the user to select several commodity values after `--commodity` flag
-* `"-c": "--commodity"`: this is interpreted as `-c` having the same effect as `--commodity`
-* `"--ascend": {}`: corresponds to a boolean flag (does not expect any value after)
-* `"--start": None`: corresponds to a flag where the values allowed are not easily discrete due to vast range
-* `self.completer = NestedCompleter.from_nested_dict(self.choices)`: from the choices create our custom completer
+- `self.choices: dict = {c: {} for c in self.controller_choices}`: this allows users to have autocomplete on the command that they are allowed to select in each menu
+- `self.choices["overview"]`: this corresponds to the list of choices that the user is allowed to select after specifying `$ overview `
+- `"--commodity": {c: None for c in self.futures_commodities}`: this allows the user to select several commodity values after `--commodity` flag
+- `"-c": "--commodity"`: this is interpreted as `-c` having the same effect as `--commodity`
+- `"--ascend": {}`: corresponds to a boolean flag (does not expect any value after)
+- `"--start": None`: corresponds to a flag where the values allowed are not easily discrete due to vast range
+- `self.completer = NestedCompleter.from_nested_dict(self.choices)`: from the choices create our custom completer
 
 In case the user is interested in a **DYNAMIC** list of options which changes based on user's state, then a class method must be defined.
 
 The example below shows the `update_runtime_choices` method being defined in the options controller.
-```
+```python
 def update_runtime_choices(self):
     """Update runtime choices"""
     if self.expiry_dates and session and obbff.USE_PROMPT_TOOLKIT:
@@ -1335,7 +1335,7 @@ def update_runtime_choices(self):
         self.completer = NestedCompleter.from_nested_dict(self.choices)
 ```
 
-This method should only be called when the user's state changes leads to the auto-complete not being accurate. 
+This method should only be called when the user's state changes leads to the auto-complete not being accurate.
 
 In this case, this method is called as soon as the user successfully loads a new ticker since the options expiry dates vary based on the ticker. Note that the completer is recreated from it.
 
@@ -1372,7 +1372,6 @@ This is the convention in use for creating a new key/value pair:
 - `crypto/dd/_tokenomics_` - Under `crypto` context and under `dd` menu, `_tokenomics_` is used as a key of an additional information, and the displayed information is given as value
 
 TO BE ADDED - WORK IN PROGRESS
-
 
 ## Write Code and Commit
 
@@ -1430,6 +1429,7 @@ VCRPY allows us to save data from request methods to a .YAML file. This increase
 speeds up the time it takes to run tests. To use VCRPY add **@pytest.mark.vcr** above any function you write.
 
 ## OpenBB API
+  
 ### Understanding API infrastructure
 
-Work in progress. For official documentation go to: https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/openbb_terminal/API_README.md
+Work in progress. For official documentation go to: <https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/openbb_terminal/API_README.md>
