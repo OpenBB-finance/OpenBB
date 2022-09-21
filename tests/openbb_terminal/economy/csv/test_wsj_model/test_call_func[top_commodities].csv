@@ -1,11 +1,11 @@
 , ,Price,Chg,%Chg
-0,Crude Oil Futures,109.18,4.48,4.28
-1,Brent Crude Futures,112.35,4.42,4.10
-2,Gold Futures,1926.20,-3.10,-0.16
-3,Silver Futures,25.185,0.098,0.39
-4,Natural Gas Futures,4.945,0.043,0.88
-5,Unleaded Gasoline Futures,3.3230,0.0842,2.60
-6,Copper Futures,4.6710,-0.0685,-1.45
-7,Corn Futures,752.25,10.50,1.42
-8,Wheat Futures,1079.25,15.50,1.46
+0,Crude Oil ,109.18,4.48,4.28
+1,Brent Crude ,112.35,4.42,4.1
+2,Gold ,1926.20,-3.10,-0.16
+3,Silver ,25.185,0.098,0.39
+4,Natural Gas ,4.945,0.043,0.88
+5,Unleaded Gasoline ,3.3230,0.0842,2.6
+6,Copper ,4.6710,-0.0685,-1.45
+7,Corn ,752.25,10.50,1.42
+8,Wheat ,1079.25,15.50,1.46
 9,Bloomberg Commodity Index,125.48,2.12,1.72

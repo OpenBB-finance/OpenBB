@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def fibonacci_retracement(
     data: pd.DataFrame,
-    period: int = 120,
+    limit: int = 120,
     start_date: Optional[Union[str, None]] = None,
     end_date: Optional[Union[str, None]] = None,
     symbol: str = "",
@@ -40,7 +40,7 @@ def fibonacci_retracement(
     ----------
     data: pd.DataFrame
         OHLC data
-    period: int
+    limit: int
         Days to lookback
     start_date: Optional[str, None]
         User picked date for starting retracement
@@ -59,7 +59,7 @@ def fibonacci_retracement(
         max_date,
         min_pr,
         max_pr,
-    ) = custom_indicators_model.calculate_fib_levels(data, period, start_date, end_date)
+    ) = custom_indicators_model.calculate_fib_levels(data, limit, start_date, end_date)
 
     levels = df_fib.Price
 

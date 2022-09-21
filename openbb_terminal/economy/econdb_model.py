@@ -652,9 +652,9 @@ def get_aggregated_macro_data(
     Parameters
     ----------
     parameters: list
-        The type of data you wish to download. Available parameters can be accessed through get_macro_parameters().
+        The type of data you wish to download. Available parameters can be accessed through economy.macro_parameters().
     countries : list
-        The selected country or countries. Available countries can be accessed through get_macro_countries().
+        The selected country or countries. Available countries can be accessed through economy.macro_countries().
     transform : str
         The selected transform. Available transforms can be accessed through get_macro_transform().
     start_date : str
@@ -670,6 +670,8 @@ def get_aggregated_macro_data(
         A DataFrame with the requested macro data of all chosen countries
     Dictionary
         A dictionary containing the units of each country's parameter (e.g. EUR)
+    str
+        Denomination which can be Trillions, Billions, Millions, Thousands
     """
 
     if parameters is None:
@@ -737,9 +739,9 @@ def get_treasuries(
     ----------
     instruments: list
         Type(s) of treasuries, nominal, inflation-adjusted (long term average) or secondary market.
-        Available options can be accessed through get_treasury_maturities().
+        Available options can be accessed through economy.treasury_maturities().
     maturities : list
-        Treasury maturities to get. Available options can be accessed through get_treasury_maturities().
+        Treasury maturities to get. Available options can be accessed through economy.treasury_maturities().
     frequency : str
         Frequency of the data, this can be annually, monthly, weekly or daily.
     start_date : str

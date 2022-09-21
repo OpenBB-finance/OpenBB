@@ -4,11 +4,8 @@ __docformat__ = "numpy"
 import logging
 import os
 
-import pandas as pd
-
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
-from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.insider import finviz_model
 
 logger = logging.getLogger(__name__)
@@ -27,24 +24,10 @@ def last_insider_activity(symbol: str, limit: int = 10, export: str = ""):
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    d_finviz_insider = finviz_model.get_last_insider_activity(symbol)
-    df = pd.DataFrame.from_dict(d_finviz_insider)
+    df = finviz_model.get_last_insider_activity(symbol)
+
     if df.empty:
-        console.print(f"[red]No insider information found for {symbol}.\n[/red]")
         return
-    df.set_index("Date", inplace=True)
-    df = df[
-        [
-            "Relationship",
-            "Transaction",
-            "#Shares",
-            "Cost",
-            "Value ($)",
-            "#Shares Total",
-            "Insider Trading",
-            "SEC Form 4",
-        ]
-    ]
 
     print_rich_table(
         df.head(limit),

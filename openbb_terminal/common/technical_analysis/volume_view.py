@@ -77,7 +77,7 @@ def display_ad(
         return
 
     ax1.plot(plot_data.index, plot_data["Adj Close"].values)
-    ax1.set_title(f"{symbol} AD", x=0.08, y=1)
+    ax1.set_title(f"{symbol} AD", x=0.04, y=1)
     ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
     ax1.set_ylabel("Price")
     theme.style_primary_axis(

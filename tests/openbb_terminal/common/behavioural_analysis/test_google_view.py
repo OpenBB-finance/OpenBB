@@ -65,13 +65,13 @@ def get_queries_response():
         (
             # standard run without export
             "AAPL",
-            10,
+            25,
             "",
         ),
         (
             # standard run WITH export
             "AAPL",
-            10,
+            25,
             "csv",
         ),
     ],

@@ -348,7 +348,7 @@ class OptionsController(BaseController):
                     limit=ns_parser.limit,
                     sortby=ns_parser.sortby,
                     export=ns_parser.export,
-                    ascending=ns_parser.ascend,
+                    ascend=ns_parser.ascend,
                     calls_only=ns_parser.calls_only,
                     puts_only=ns_parser.puts_only,
                 )
@@ -1132,7 +1132,7 @@ class OptionsController(BaseController):
 
     @log_start_end(log=logger)
     def call_vsurf(self, other_args: List[str]):
-        """Process vol command"""
+        """Process vsurf command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,

@@ -538,7 +538,7 @@ class QaController(StockBaseController):
                 data=self.stock,
                 symbol=self.ticker,
                 target=self.target,
-                limit=ns_parser.n_window,
+                window=ns_parser.n_window,
                 export=ns_parser.export,
             )
 

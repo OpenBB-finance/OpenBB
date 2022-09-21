@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import warnings
-from typing import Any, Tuple, Union, List
+from typing import Any, Tuple, Union
 import pandas as pd
 import statsmodels.api as sm
 from statsmodels.tools.sm_exceptions import MissingDataError
@@ -29,6 +29,11 @@ def get_summary(data: pd.DataFrame) -> pd.DataFrame:
     ----------
     data : pd.DataFrame
         Dataframe to get summary statistics for
+
+    Returns
+    -------
+    summary : pd.DataFrame
+        Summary statistics
     """
 
     df_stats = data.describe(percentiles=[0.1, 0.25, 0.5, 0.75, 0.9])
@@ -178,7 +183,7 @@ def get_unitroot(
 
 def calculate_adjusted_var(
     kurtosis: float, skew: float, ndp: float, std: float, mean: float
-):
+) -> float:
     """Calculates VaR, which is adjusted for skew and kurtosis (Cornish-Fischer-Expansion)
 
     Parameters
@@ -225,7 +230,7 @@ def get_var(
     student_t: bool = False,
     percentile: Union[int, float] = 0.999,
     portfolio: bool = False,
-):
+) -> pd.DataFrame:
     """Gets value at risk for specified stock dataframe
 
     Parameters
@@ -323,7 +328,22 @@ def get_var(
 
     var_list = [var_90, var_95, var_99, var_custom]
     hist_var_list = [hist_var_90, hist_var_95, hist_var_99, hist_var_custom]
-    return var_list, hist_var_list
+
+    str_hist_label = "Historical VaR"
+
+    if adjusted_var:
+        str_var_label = "Adjusted VaR"
+    elif student_t:
+        str_var_label = "Student-t VaR"
+    else:
+        str_var_label = "VaR"
+
+    data_dictionary = {str_var_label: var_list, str_hist_label: hist_var_list}
+    df = pd.DataFrame(
+        data_dictionary, index=["90.0%", "95.0%", "99.0%", f"{percentile*100}%"]
+    )
+
+    return df
 
 
 def get_es(
@@ -332,7 +352,7 @@ def get_es(
     distribution: str = "normal",
     percentile: Union[float, int] = 0.999,
     portfolio: bool = False,
-) -> Tuple[List[float], List[float]]:
+) -> pd.DataFrame:
     """Gets Expected Shortfall for specified stock dataframe
 
     Parameters
@@ -469,7 +489,10 @@ def get_es(
         es_custom = std * -stats.norm.pdf(percentile_custom) / (1 - percentile) + mean
 
     # Historical Expected Shortfall
-    _, hist_var_list = get_var(data, use_mean, False, False, percentile, portfolio)
+    df = get_var(data, use_mean, False, False, percentile, portfolio)
+
+    hist_var_list = list(df["Historical VaR"].values)
+
     hist_es_90 = data_return[data_return <= hist_var_list[0]].mean()
     hist_es_95 = data_return[data_return <= hist_var_list[1]].mean()
     hist_es_99 = data_return[data_return <= hist_var_list[2]].mean()
@@ -477,10 +500,27 @@ def get_es(
 
     es_list = [es_90, es_95, es_99, es_custom]
     hist_es_list = [hist_es_90, hist_es_95, hist_es_99, hist_es_custom]
-    return es_list, hist_es_list
+
+    str_hist_label = "Historical ES"
+
+    if distribution == "laplace":
+        str_es_label = "Laplace ES"
+    elif distribution == "student_t":
+        str_es_label = "Student-t ES"
+    elif distribution == "logistic":
+        str_es_label = "Logistic ES"
+    else:
+        str_es_label = "ES"
+
+    data_dictionary = {str_es_label: es_list, str_hist_label: hist_es_list}
+    df = pd.DataFrame(
+        data_dictionary, index=["90.0%", "95.0%", "99.0%", f"{percentile*100}%"]
+    )
+
+    return df
 
 
-def get_sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252):
+def get_sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252) -> pd.DataFrame:
     """Calculates the sharpe ratio
     Parameters
     ----------
@@ -490,6 +530,11 @@ def get_sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252):
         risk free rate
     window: float
         length of the rolling window
+
+    Returns
+    -------
+    sharpe: pd.DataFrame
+        sharpe ratio
     """
     data_return = data.pct_change().rolling(window).sum() * 100
     std = data.rolling(window).std() / np.sqrt(252) * 100
@@ -504,7 +549,7 @@ def get_sortino(
     target_return: float = 0,
     window: float = 252,
     adjusted: bool = False,
-):
+) -> pd.DataFrame:
     """Calculates the sortino ratio
     Parameters
     ----------
@@ -516,6 +561,11 @@ def get_sortino(
         length of the rolling window
     adjusted: bool
         adjust the sortino ratio
+
+    Returns
+    -------
+    sortino: pd.DataFrame
+        sortino ratio
     """
     data = data * 100
 
@@ -537,7 +587,7 @@ def get_sortino(
     return sortino_ratio
 
 
-def get_omega(data: pd.DataFrame, threshold: float = 0):
+def get_omega_ratio(data: pd.DataFrame, threshold: float = 0) -> float:
     """Calculates the omega ratio
     Parameters
     ----------
@@ -545,6 +595,11 @@ def get_omega(data: pd.DataFrame, threshold: float = 0):
         selected dataframe
     threshold: float
         target return threshold
+
+    Returns
+    -------
+    omega_ratio: float
+        omega ratio
     """
     # Omega ratio; for more information and explanation see:
     # https://en.wikipedia.org/wiki/Omega_ratio
@@ -562,3 +617,28 @@ def get_omega(data: pd.DataFrame, threshold: float = 0):
     omega_ratio = data_positive_sum / (-data_negative_sum)
 
     return omega_ratio
+
+
+def get_omega(
+    data: pd.DataFrame, threshold_start: float = 0, threshold_end: float = 1.5
+) -> pd.DataFrame:
+    """Get the omega series
+    Parameters
+    ----------
+    data: pd.DataFrame
+        stock dataframe
+    threshold_start: float
+        annualized target return threshold start of plotted threshold range
+    threshold_end: float
+        annualized target return threshold end of plotted threshold range
+    """
+    threshold = np.linspace(threshold_start, threshold_end, 50)
+    df = pd.DataFrame(threshold, columns=["threshold"])
+
+    omega_list = []
+    for i in threshold:
+        omega_list.append(get_omega_ratio(data, i))
+
+    df["omega"] = omega_list
+
+    return df

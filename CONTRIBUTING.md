@@ -291,7 +291,6 @@ def call_shorted(self, other_args: List[str]):
 
 If a new menu is being added the code looks like this:
 
-```
 @log_start_end(log=logger)
 def call_dps(self, _):
     """Process dps command"""
