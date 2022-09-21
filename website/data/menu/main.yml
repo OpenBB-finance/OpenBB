@@ -1683,5 +1683,6 @@ main:
         sub:
           - name: exe
             ref: "/terminal/scripts/exe"
+# CODE BELOW THIS WILL BE DELETED FREQUENTLY BY PYTHON, DO NOT EDIT THIS
   - name: "OpenBB Python API"
     ref: "/api"

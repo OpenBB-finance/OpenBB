@@ -1,6 +1,7 @@
 from typing import Callable, Any, Optional
 from inspect import signature
 import importlib
+import yaml
 import os
 
 from openbb_terminal.api import functions
@@ -84,9 +85,33 @@ def generate_documentation(
             f.write(f"{v_docs}\n")
 
 
+def add_yaml(base: str, values: list[tuple[str, str, Callable[..., Any]]]):
+    final_dict: dict[str, Any] = {}
+    for func_path, func_type, func in values:
+        whole_path = func_path.split(".")
+        first = whole_path[0]
+        if first not in final_dict:
+            final_dict[first] = {}
+        temp_ref = final_dict[first]
+        for item in whole_path[1:]:
+            if item not in temp_ref:
+                string_to = func_path[: func_path.index(item) - 1]
+                local_path = "api/" + "/".join(string_to.split("."))
+                temp_ref[item] = {"name": item, "ref": local_path}
+            temp_ref = temp_ref[item]
+        temp_ref["name"] = whole_path[-1]
+        temp_ref["ref"] = "api/" + "/".join(whole_path)
+
+    print(yaml.dump(final_dict))
+
+
 if __name__ == "__main__":
     folder_path = os.path.realpath("./website/content/api")
+    # main_path = os.path.realpath("./website/menu/main.yml")
+    main_path = os.path.realpath("./website/menu/not_main.yml")
     funcs = all_functions()
     grouped_funcs = groupby(funcs, 0)
     for k, v in grouped_funcs.items():
-        generate_documentation(folder_path, k, v)
+        # generate_documentation(folder_path, k, v)
+        pass
+    add_yaml(main_path, funcs)
