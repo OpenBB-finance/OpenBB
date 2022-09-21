@@ -8,7 +8,7 @@ import os
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
 
-from openbb_terminal.cryptocurrency import cryptocurrency_helpers
+from openbb_terminal.cryptocurrency import cryptocurrency_helpers, pyth_model, pyth_view
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import (
     FIND_KEYS,
@@ -56,6 +56,7 @@ class CryptoController(CryptoBaseController):
         "find",
         "prt",
         "resources",
+        "price",
     ]
     CHOICES_MENUS = [
         "ta",
@@ -94,6 +95,7 @@ class CryptoController(CryptoBaseController):
             }
             choices["load"]["--vs"] = {c: {} for c in ["usd", "eur"]}
             choices["find"]["-k"] = {c: {} for c in FIND_KEYS}
+            choices["price"] = {c: {} for c in pyth_model.ASSETS.keys()}
             choices["headlines"] = {c: {} for c in finbrain_crypto_view.COINS}
             # choices["prt"]["--vs"] = {c: {} for c in coingecko_coin_ids} # list is huge. makes typing buggy
 
@@ -107,6 +109,7 @@ class CryptoController(CryptoBaseController):
         mt = MenuText("crypto/")
         mt.add_cmd("load")
         mt.add_cmd("find")
+        mt.add_cmd("price", "Pyth")
         mt.add_raw("\n")
         mt.add_param(
             "_symbol", f"{self.symbol.upper()}/{self.vs.upper()}" if self.symbol else ""
@@ -198,6 +201,38 @@ class CryptoController(CryptoBaseController):
                     console.print(
                         "No coin selected. Use 'load' to load the coin you want to look at.\n"
                     )
+
+    @log_start_end(log=logger)
+    def call_price(self, other_args):
+        """Process price command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="price",
+            description="""Display price and interval of confidence in real-time. [Source: Pyth]""",
+        )
+        parser.add_argument(
+            "-s",
+            "--symbol",
+            required="-h" not in other_args,
+            type=str,
+            dest="symbol",
+            help="Symbol of coin to load data for, ~100 symbols are available",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-s")
+
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+
+        if ns_parser:
+
+            if ns_parser.symbol in pyth_model.ASSETS.keys():
+                console.print(
+                    "[param]If it takes too long, you can use 'Ctrl + C' to cancel.\n[/param]"
+                )
+                pyth_view.display_price(ns_parser.symbol)
+            else:
+                console.print("[red]The symbol selected does not exist.[/red]\n")
 
     @log_start_end(log=logger)
     def call_candle(self, other_args):
@@ -339,15 +374,12 @@ class CryptoController(CryptoBaseController):
                 qa_controller,
             )
 
-            if self.current_interval != "1440":
-                console.print("Only interval `1day` is possible for now.\n")
-            else:
-                self.queue = self.load_class(
-                    qa_controller.QaController,
-                    self.symbol,
-                    self.current_df,
-                    self.queue,
-                )
+            self.queue = self.load_class(
+                qa_controller.QaController,
+                self.symbol,
+                self.current_df,
+                self.queue,
+            )
 
     @log_start_end(log=logger)
     def call_pred(self, _):

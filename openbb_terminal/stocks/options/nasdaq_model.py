@@ -14,6 +14,7 @@ from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options.op_helpers import get_dte_from_expiration as get_dte
 
 logger = logging.getLogger(__name__)
+# pylint: disable=unsupported-assignment-operation
 
 
 @log_start_end(log=logger)

@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 # pylint:disable=too-many-arguments,unexpected-keyword-arg
 
 import logging
-from typing import Dict, Any
+from typing import Dict, Any, List
 
 import numpy as np
 import pandas as pd
@@ -82,14 +82,14 @@ SA_KEYS = {
 
 @log_start_end(log=logger)
 def get_stocks_data(
-    symbols: list,
-    finance_key: str,
-    stocks_data: dict,
-    period: str,
+    symbols: List[str] = None,
+    finance_key: str = "ncf",
+    stocks_data: dict = None,
+    period: str = "annual",
     currency: str = "USD",
 ):
-    """Get stocks data based on a list of stocks and the finance key. The function searches for the correct
-     financial statement automatically. [Source: StockAnalysis]
+    """Get stocks data based on a list of stocks and the finance key. The function searches for the
+    correct financial statement automatically. [Source: StockAnalysis]
 
     Parameters
     ----------
@@ -112,6 +112,11 @@ def get_stocks_data(
     dict
         Dictionary of filtered stocks data separated by financial statement
     """
+    if symbols is None:
+        symbols = ["FB", "TSLA", "MSFT"]
+
+    if stocks_data is None:
+        stocks_data = {}
 
     no_data = []
 

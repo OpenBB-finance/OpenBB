@@ -116,7 +116,7 @@ def test_display_short_by_exchange(mocker, toggle):
         symbol="TSLA",
         raw=toggle,
         sortby="",
-        ascending=toggle,
+        ascend=toggle,
         mpl=toggle,
         export="",
     )
