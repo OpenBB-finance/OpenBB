@@ -162,6 +162,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
     def check_news_key(self, status: str = "", show_output: bool = False) -> None:
         """Check News API key"""
+
         self.cfg_dict["NEWSAPI"] = "news"
 
         if not status:
@@ -171,6 +172,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
     def check_tradier_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Tradier key"""
+
         self.cfg_dict["TRADIER"] = "tradier"
 
         if not status:
@@ -180,6 +182,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
     def check_cmc_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Coinmarketcap key"""
+        
         self.cfg_dict["COINMARKETCAP"] = "cmc"
 
         if not status:
