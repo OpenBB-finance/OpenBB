@@ -165,7 +165,7 @@ def display_total_value_locked(
     user_address : str
         Address of the user (e.g., 0xa5407eae9ba41422680e2e00537571bcc53efbfd)
     address_name : str
-        Name of the address (e.g., makerdao, usdc)
+        Name of the address (e.g., makerdao gem join usdc)
     symbol : str
         Symbol of the token
     interval : int
