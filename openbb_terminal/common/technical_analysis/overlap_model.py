@@ -15,7 +15,7 @@ WINDOW_LENGTHS2 = [10, 20]
 
 
 @log_start_end(log=logger)
-def ema(data: pd.DataFrame, length: int, offset: int = 0) -> pd.DataFrame:
+def ema(data: pd.DataFrame, length: int = 50, offset: int = 0) -> pd.DataFrame:
     """Gets exponential moving average (EMA) for stock
 
     Parameters
@@ -36,7 +36,7 @@ def ema(data: pd.DataFrame, length: int, offset: int = 0) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def sma(data: pd.DataFrame, length: int, offset: int = 0) -> pd.DataFrame:
+def sma(data: pd.DataFrame, length: int = 50, offset: int = 0) -> pd.DataFrame:
     """Gets simple moving average (EMA) for stock
 
      Parameters
@@ -57,7 +57,7 @@ def sma(data: pd.DataFrame, length: int, offset: int = 0) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def wma(data: pd.DataFrame, length: int, offset: int = 0) -> pd.DataFrame:
+def wma(data: pd.DataFrame, length: int = 50, offset: int = 0) -> pd.DataFrame:
     """Gets weighted moving average (WMA) for stock
 
     Parameters
@@ -78,7 +78,7 @@ def wma(data: pd.DataFrame, length: int, offset: int = 0) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def hma(data: pd.DataFrame, length: int, offset: int = 0) -> pd.DataFrame:
+def hma(data: pd.DataFrame, length: int = 50, offset: int = 0) -> pd.DataFrame:
     """Gets hull moving average (HMA) for stock
 
     Parameters
@@ -99,7 +99,7 @@ def hma(data: pd.DataFrame, length: int, offset: int = 0) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def zlma(data: pd.DataFrame, length: int, offset: int = 0) -> pd.DataFrame:
+def zlma(data: pd.DataFrame, length: int = 50, offset: int = 0) -> pd.DataFrame:
     """Gets zero-lagged exponential moving average (ZLEMA) for stock
 
     Parameters

@@ -12,11 +12,11 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_history(n_to_show: int = 15, export: str = "") -> None:
-    history = ally_model.get_history()
+def display_history(limit: int = 15, export: str = "") -> None:
+    history = ally_model.get_history(limit)
     show_history = history[["amount", "date", "symbol", "transactiontype", "quantity"]]
     print_rich_table(
-        show_history.tail(n_to_show),
+        show_history,
         headers=list(show_history.columns),
         show_index=False,
         title="Ally History",
@@ -86,7 +86,7 @@ def display_balances(export: str = "") -> None:
 
 
 @log_start_end(log=logger)
-def display_stock_quote(ticker: str) -> None:
+def display_stock_quote(symbol: str) -> None:
     """Displays stock quote for ticker/tickers
 
     Parameters
@@ -94,7 +94,7 @@ def display_stock_quote(ticker: str) -> None:
     ticker : str
         Ticker to get.  Can be in form of 'tick1,tick2...'
     """
-    quote = ally_model.get_stock_quote(ticker)
+    quote = ally_model.get_stock_quote(symbol)
     print_rich_table(
         quote, headers=list(quote.columns), show_index=True, title="Stock Quote"
     )
@@ -102,7 +102,7 @@ def display_stock_quote(ticker: str) -> None:
 
 @log_start_end(log=logger)
 def display_top_lists(
-    list_type: str, exchange: str, num_to_show: int = 20, export: str = ""
+    list_type: str = "", exchange: str = "", limit: int = 20, export: str = ""
 ):
     """
     Display top lists from ally Invest API.  Documentation for parameters below:
@@ -114,14 +114,14 @@ def display_top_lists(
         Which list to get data for
     exchange : str
         Which exchange to look at
-    num_to_show : int, optional
+    limit : int, optional
         Number of top rows to show, by default 20
     export : str, optional
         Format to export data, by default ""
     """
-    movers = ally_model.get_top_movers(list_type, exchange)
+    movers = ally_model.get_top_movers(list_type, exchange, limit)
     print_rich_table(
-        movers.head(num_to_show),
+        movers,
         headers=list(movers.columns),
         show_index=True,
         title="Ally Top Lists",

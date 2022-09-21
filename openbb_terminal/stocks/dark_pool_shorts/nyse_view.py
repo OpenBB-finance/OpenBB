@@ -30,7 +30,7 @@ def display_short_by_exchange(
     symbol: str,
     raw: bool = False,
     sortby: str = "",
-    ascending: bool = False,
+    ascend: bool = False,
     mpl: bool = True,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -45,7 +45,7 @@ def display_short_by_exchange(
         Flag to display raw data
     sortby: str
         Column to sort by
-    ascending: bool
+    ascend: bool
         Sort in ascending order
     mpl: bool
         Display using matplotlib
@@ -64,7 +64,7 @@ def display_short_by_exchange(
     if sortby:
         if sortby in volume_by_exchange.columns:
             volume_by_exchange = volume_by_exchange.sort_values(
-                by=sortby, ascending=ascending
+                by=sortby, ascending=ascend
             )
         else:
             console.print(

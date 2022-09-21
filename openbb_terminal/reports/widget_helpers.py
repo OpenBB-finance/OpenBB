@@ -166,7 +166,9 @@ def kpi(thresholds: List[float], sentences: List[str], value: float) -> str:
     return ""
 
 
-def add_tab(title: str, htmlcode: str, comment_cell: bool = True) -> str:
+def add_tab(
+    title: str, htmlcode: str, comment_cell: bool = True, commment_text: str = ""
+) -> str:
     """Add new tab section for the report. By default adds an opinion editable box at the start.
 
     Parameters
@@ -185,9 +187,11 @@ def add_tab(title: str, htmlcode: str, comment_cell: bool = True) -> str:
     """
     html_text = f'<div id="{title}" class="tabcontent"></br>'
     if comment_cell:
-        html_text += """<form><input style="border:3px; border-style:solid;
-            border-color:#000000; padding: 1em; width: 1050px;" type="text" value="No comment.">
-        </form>"""
+        comment = commment_text if commment_text else "No comment."
+        html_text += f"""<p style="border:3px; border-style:solid;
+            border-color:#000000; padding: 1em; width: 1050px;" contentEditable="true">
+                {comment}
+        </p>"""
     html_text += f"{htmlcode}</div>"
     return html_text
 

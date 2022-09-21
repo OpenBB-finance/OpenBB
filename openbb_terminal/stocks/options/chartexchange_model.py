@@ -16,7 +16,9 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_option_history(symbol: str, date: str, call: bool, price: str) -> pd.DataFrame:
+def get_option_history(
+    symbol: str = "GME", date: str = "2021-02-05", call: bool = True, price: str = "90"
+) -> pd.DataFrame:
     """Historic prices for a specific option [chartexchange]
 
     Parameters

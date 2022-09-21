@@ -33,7 +33,7 @@ def lambda_direction_color_red_green(val: str) -> str:
 def ark_orders_view(
     limit: int = 10,
     sortby: str = "",
-    ascending: bool = False,
+    ascend: bool = False,
     buys_only: bool = False,
     sells_only: bool = False,
     fund: str = "",
@@ -47,7 +47,7 @@ def ark_orders_view(
         Number of stocks to display
     sortby: str
         Column to sort on
-    ascending: bool
+    ascend: bool
         Flag to sort in ascending order
     buys_only: bool
         Flag to filter on buys only
@@ -58,7 +58,7 @@ def ark_orders_view(
     export: str
         Export dataframe data to csv,json,xlsx file
     """
-    df_orders = ark_model.get_ark_orders(sortby, ascending, buys_only, sells_only, fund)
+    df_orders = ark_model.get_ark_orders(sortby, ascend, buys_only, sells_only, fund)
 
     if not df_orders.empty:
 
