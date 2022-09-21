@@ -113,51 +113,21 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         if show_output:
             console.print(self.key_dict["GITHUB"] + "\n")
 
-    def check_av_key(self, show_output: bool = False) -> None:
+    def check_av_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Alpha Vantage key"""
         self.cfg_dict["ALPHA_VANTAGE"] = "av"
-        if cfg.API_KEY_ALPHAVANTAGE == "REPLACE_ME":  # pragma: allowlist secret
-            logger.info("Alpha Vantage key not defined")
-            self.key_dict["ALPHA_VANTAGE"] = "not defined"
-        else:
-            df = TimeSeries(
-                key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas"
-            ).get_intraday(symbol="AAPL")
-            if df[0].empty:  # pylint: disable=no-member
-                logger.warning("Alpha Vantage key defined, test failed")
-                self.key_dict["ALPHA_VANTAGE"] = "defined, test failed"
-            else:
-                logger.info("Alpha Vantage key defined, test passed")
-                self.key_dict["ALPHA_VANTAGE"] = "defined, test passed"
+        if not status:
+            status = keys_model.check_av_key(show_output=show_output)
 
-        if show_output:
-            console.print(self.key_dict["ALPHA_VANTAGE"] + "\n")
+        self.key_dict["ALPHA_VANTAGE"] = status
 
     def check_fmp_key(self, show_output: bool = False) -> None:
         """Check Financial Modeling Prep key"""
         self.cfg_dict["FINANCIAL_MODELING_PREP"] = "fmp"
-        if (
-            cfg.API_KEY_FINANCIALMODELINGPREP
-            == "REPLACE_ME"  # pragma: allowlist secret
-        ):  # pragma: allowlist secret
-            logger.info("Financial Modeling Prep key not defined")
-            self.key_dict["FINANCIAL_MODELING_PREP"] = "not defined"
-        else:
-            r = requests.get(
-                f"https://financialmodelingprep.com/api/v3/profile/AAPL?apikey={cfg.API_KEY_FINANCIALMODELINGPREP}"
-            )
-            if r.status_code in [403, 401]:
-                logger.warning("Financial Modeling Prep key defined, test failed")
-                self.key_dict["FINANCIAL_MODELING_PREP"] = "defined, test failed"
-            elif r.status_code == 200:
-                logger.info("Financial Modeling Prep key defined, test passed")
-                self.key_dict["FINANCIAL_MODELING_PREP"] = "defined, test passed"
-            else:
-                logger.warning("Financial Modeling Prep key defined, test inconclusive")
-                self.key_dict["FINANCIAL_MODELING_PREP"] = "defined, test inconclusive"
+        if not status:
+            status = keys_model.check_fmp_key(show_output=show_output)
 
-        if show_output:
-            console.print(self.key_dict["FINANCIAL_MODELING_PREP"] + "\n")
+        self.key_dict["FINANCIAL_MODELING_PREP"] = status
 
     def check_quandl_key(self, show_output: bool = False) -> None:
         """Check Quandl key"""
@@ -208,7 +178,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         if show_output:
             console.print(self.key_dict["POLYGON"] + "\n")
 
-    def menu_check_fred_key(self, status: str = "", show_output: bool = False) -> None:
+    def check_fred_key(self, status: str = "", show_output: bool = False) -> None:
         """Check FRED key and update menu accordingly"""
 
         self.cfg_dict["FRED"] = "fred"
@@ -816,7 +786,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         self.check_fmp_key()
         self.check_quandl_key()
         self.check_polygon_key()
-        self.menu_check_fred_key()
+        self.check_fred_key()
         self.check_news_key()
         self.check_tradier_key()
         self.check_cmc_key()
@@ -923,10 +893,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             other_args.insert(0, "-k")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            os.environ["OPENBB_API_KEY_ALPHAVANTAGE"] = ns_parser.key
-            dotenv.set_key(self.env_file, "OPENBB_API_KEY_ALPHAVANTAGE", ns_parser.key)
-            cfg.API_KEY_ALPHAVANTAGE = ns_parser.key
-            self.check_av_key(show_output=True)
+            status = keys_model.set_av_key(
+                env_var_value=ns_parser.key, local=False, show_output=True
+            )
+            self.check_av_key(status, False)
 
     @log_start_end(log=logger)
     def call_fmp(self, other_args: List[str]):
@@ -954,12 +924,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             other_args.insert(0, "-k")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            os.environ["OPENBB_API_KEY_FINANCIALMODELINGPREP"] = ns_parser.key
-            dotenv.set_key(
-                self.env_file, "OPENBB_API_KEY_FINANCIALMODELINGPREP", ns_parser.key
+            status = keys_model.set_fmp_key(
+                env_var_value=ns_parser.key, local=False, show_output=True
             )
-            cfg.API_KEY_FINANCIALMODELINGPREP = ns_parser.key
-            self.check_fmp_key(show_output=True)
+            self.check_fmp_key(status, False)
 
     @log_start_end(log=logger)
     def call_quandl(self, other_args: List[str]):
@@ -1044,9 +1012,9 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             status = keys_model.set_fred_key(
-                key=ns_parser.key, persist=True, show_output=True
+                env_var_value=ns_parser.key, local=False, show_output=True
             )
-            self.menu_check_fred_key(status, False)
+            self.check_fred_key(status, False)
 
     @log_start_end(log=logger)
     def call_news(self, other_args: List[str]):
