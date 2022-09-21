@@ -14,6 +14,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_user_agent
 
 logger = logging.getLogger(__name__)
+# pylint: disable=unsupported-assignment-operation
 
 GROUPS = {
     "sector": "Sector",
