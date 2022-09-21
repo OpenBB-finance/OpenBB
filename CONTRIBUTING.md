@@ -1096,7 +1096,6 @@ The following linters are used by our codebase:
     - If this is not possible, then the command name should be an abbreviation of what the functionality corresponds to (e.g. `ycrv` for `yield curve`)
 * The command name **should not** have the data source explicit
 
-
 ## External API Keys
 
 ### Creating API key
@@ -1104,10 +1103,12 @@ The following linters are used by our codebase:
 OpenBB Terminal currently has over 100 different data sources. Most of these require an API key that allows access to some free tier features from the data provider, but also paid ones.
 
 When a new API data source is added to the platform, it must be added through [config_terminal.py](/openbb_terminal/config_terminal.py). E.g.
-```
+
+```python
 # https://messari.io/
 API_MESSARI_KEY = os.getenv("OPENBB_API_MESSARI_KEY") or "REPLACE_ME"
 ```
+
 Note that a `OPENBB_` is added so that the user knows that that environment variable is used by our terminal.
 
 ### Setting and checking API key
@@ -1205,7 +1206,7 @@ Worthy methods to mention are:
   * `parse_input`: Processes the string the user inputs into a list of actionable commands
   * `switch`: Acts upon the command action received
   * `parse_known_args_and_warn`: Parses the command with the `-` and `--` flags and variables. Some built-in flags are:
-    * `export_allowed`: Which can be set to _NO_EXPORT_, _EXPORT_ONLY_RAW_DATA_ALLOWED_, _EXPORT_ONLY_FIGURES_ALLOWED_ and _EXPORT_BOTH_RAW_DATA_AND_FIGURES_
+    * `export_allowed`: Which can be set to `_NO_EXPORT_`, `_EXPORT_ONLY_RAW_DATA_ALLOWED_`, `_EXPORT_ONLY_FIGURES_ALLOWED_` and `_EXPORT_BOTH_RAW_DATA_AND_FIGURES_`
     * `raw`: Displaying the data raw
     * `limit`: Number of rows to display
   * `menu`: Most important method. When a menu is executed, the way to call it is through `stocks_menu.menu()`
@@ -1258,7 +1259,6 @@ The way to interpret this file is by following the path to a data source, e.g.
 * `stoks/options/unu` relies on `FDScanner`.
 * `stocks/options/exp` relies on `YahooFinance` by default but `Tradier` and `Nasdaq` sources are allowed.
 
-
 ### Export Data
 
 In the `_view.py` files it is common having at the end of each function `export_data` being called. This tipycally looks like:
@@ -1273,7 +1273,7 @@ In the `_view.py` files it is common having at the end of each function `export_
 ```
 
 Let's go into each of these arguments:
-- `export` corresponds to the type of file we are exporting. 
+- `export` corresponds to the type of file we are exporting.
   * If the user doesn't has anything selected, then this function doesn't do anything.
   * The user can export multiple files and even name the files.
   * The allowed type of files `json,csv,xlsx` for raw data and `jpg,png,svg` for figures depends on the `export_allowed` variable defined in `parse_known_args_and_warn`.
