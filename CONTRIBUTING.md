@@ -649,7 +649,7 @@ get_gaintopain_ratio(historical_trade_data, benchmark_trades, benchmark_returns)
 ```
 The function can be loaded in API factory as an endpoint and user can get result by passing the class instance.
     
-```swift
+```python
 from openbb_terminal.api import openbb
 from openbb_terminal.api import Portfolio
 
