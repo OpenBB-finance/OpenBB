@@ -1884,7 +1884,7 @@ functions = {
     "forex.load": {"model": "openbb_terminal.forex.forex_helper.load"},
     "keys.av": {"model": "openbb_terminal.keys_model.set_av_key"},
     "keys.fmp": {"model": "openbb_terminal.keys_model.set_fmp_key"},
-    # "keys.quandl": {"model": "openbb_terminal.keys_model.set_quandl_key"},
+    "keys.quandl": {"model": "openbb_terminal.keys_model.set_quandl_key"},
     # "keys.polygon": {"model": "openbb_terminal.keys_model.set_polygon_key"},
     "keys.fred": {"model": "openbb_terminal.keys_model.set_fred_key"},
     # "keys.news": {"model": "openbb_terminal.keys_model.set_news_key"},

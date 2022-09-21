@@ -115,6 +115,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
     def check_av_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Alpha Vantage key"""
+
         self.cfg_dict["ALPHA_VANTAGE"] = "av"
         if not status:
             status = keys_model.check_av_key(show_output=show_output)
@@ -123,36 +124,21 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
     def check_fmp_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Financial Modeling Prep key"""
+
         self.cfg_dict["FINANCIAL_MODELING_PREP"] = "fmp"
         if not status:
             status = keys_model.check_fmp_key(show_output=show_output)
 
         self.key_dict["FINANCIAL_MODELING_PREP"] = status
 
-    def check_quandl_key(self, show_output: bool = False) -> None:
+    def check_quandl_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Quandl key"""
-        self.cfg_dict["QUANDL"] = "quandl"
-        if cfg.API_KEY_QUANDL == "REPLACE_ME":  # pragma: allowlist secret
-            logger.info("Quandl key not defined")
-            self.key_dict["QUANDL"] = "not defined"
-        else:
-            try:
-                quandl.save_key(cfg.API_KEY_QUANDL)
-                quandl.get_table(
-                    "ZACKS/FC",
-                    paginate=True,
-                    ticker=["AAPL", "MSFT"],
-                    per_end_date={"gte": "2015-01-01"},
-                    qopts={"columns": ["ticker", "per_end_date"]},
-                )
-                logger.info("Quandl key defined, test passed")
-                self.key_dict["QUANDL"] = "defined, test passed"
-            except Exception as _:  # noqa: F841
-                logger.exception("Quandl key defined, test failed")
-                self.key_dict["QUANDL"] = "defined, test failed"
 
-        if show_output:
-            console.print(self.key_dict["QUANDL"] + "\n")
+        self.cfg_dict["QUANDL"] = "quandl"
+        if not status:
+            status = keys_model.check_quandl_key(show_output=show_output)
+
+        self.key_dict["QUANDL"] = status
 
     def check_polygon_key(self, show_output: bool = False) -> None:
         """Check Polygon key"""
@@ -953,10 +939,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             other_args.insert(0, "-k")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            os.environ["OPENBB_API_KEY_QUANDL"] = ns_parser.key
-            dotenv.set_key(self.env_file, "OPENBB_API_KEY_QUANDL", ns_parser.key)
-            cfg.API_KEY_QUANDL = ns_parser.key
-            self.check_quandl_key(show_output=True)
+            status = keys_model.set_quandl_key(
+                key=ns_parser.key, local=False, show_output=True
+            )
+            self.check_quandl_key(status, False)
 
     @log_start_end(log=logger)
     def call_polygon(self, other_args: List[str]):

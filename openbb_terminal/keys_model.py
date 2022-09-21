@@ -2,6 +2,7 @@ import logging
 import os
 from typing import Dict
 import dotenv
+import quandl
 import requests
 import pandas as pd
 from alpha_vantage.timeseries import TimeSeries
@@ -35,7 +36,7 @@ def set_key(env_var_name: str, env_var_value: str, local: bool = True) -> None:
     # Remove OPENBB_ prefix from env_var
     env_var_name = env_var_name[7:]
 
-    # Set cfg.env_var_name = env_var_value    
+    # Set cfg.env_var_name = env_var_value
     # cfg.API_FRED_KEY = env_var_value
     setattr(cfg, env_var_name, env_var_value)
 
@@ -47,7 +48,7 @@ def get_keys() -> Dict:
         Dict: key: API -> values: KEY.
     """
 
-    #TODO: Output only the api environment variables. Remove settings variables.
+    # TODO: Output only the api environment variables. Remove settings variables.
 
     df = pd.read_csv(str(USER_ENV_FILE), delimiter="=", header=None)
     df = df.rename(columns={0: "API", 1: "KEY"})
@@ -80,7 +81,7 @@ def set_fred_key(key: str, local: bool = True, show_output: bool = False) -> str
             If True, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If False, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
-            
+
     Returns
     -------
     str
@@ -98,8 +99,8 @@ def set_fred_key(key: str, local: bool = True, show_output: bool = False) -> str
 
 
 def check_fred_key(show_output: bool = False) -> str:
-    """Check FRED key    
-    
+    """Check FRED key
+
     Parameters
     ----------
         show_output: bool
@@ -168,12 +169,12 @@ def set_av_key(key: str, local: bool = True, show_output: bool = False):
 
 def check_av_key(show_output: bool = False) -> str:
     """Check Alpha Vantage key
-        
+
     Parameters
     ----------
         show_output: bool
             Display status string or not.
-            
+
     Returns
     -------
     str
@@ -203,6 +204,7 @@ def check_av_key(show_output: bool = False) -> str:
         console.print(status + "\n")
 
     return status
+
 
 def set_fmp_key(key: str, local: bool = True, show_output: bool = False):
     """Set Financial Modeling Prep key.
@@ -234,12 +236,12 @@ def set_fmp_key(key: str, local: bool = True, show_output: bool = False):
 
 def check_fmp_key(show_output: bool = False) -> str:
     """Check Financial Modeling Prep key
-        
+
     Parameters
     ----------
         show_output: bool
             Display status string or not.
-            
+
     Returns
     -------
     str
@@ -252,8 +254,7 @@ def check_fmp_key(show_output: bool = False) -> str:
     """
 
     if (
-        cfg.API_KEY_FINANCIALMODELINGPREP
-        == "REPLACE_ME"  # pragma: allowlist secret
+        cfg.API_KEY_FINANCIALMODELINGPREP == "REPLACE_ME"  # pragma: allowlist secret
     ):  # pragma: allowlist secret
         logger.info("Financial Modeling Prep key not defined")
         status = "not defined"
@@ -270,6 +271,78 @@ def check_fmp_key(show_output: bool = False) -> str:
         else:
             logger.warning("Financial Modeling Prep key defined, test inconclusive")
             status = "defined, test inconclusive"
+
+    if show_output:
+        console.print(status + "\n")
+
+    return status
+
+
+def set_quandl_key(key: str, local: bool = True, show_output: bool = False):
+    """Set Quandl key.
+
+    Parameters
+    ----------
+        key: str
+            API key
+        local: bool
+            If True, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If False, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+    """
+
+    set_key("OPENBB_API_KEY_QUANDL", key, local)
+    status = check_quandl_key(show_output)
+
+    return status
+
+
+def check_quandl_key(show_output: bool = False) -> str:
+    """Check Quandl key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+
+    """
+
+    if cfg.API_KEY_QUANDL == "REPLACE_ME":  # pragma: allowlist secret
+        logger.info("Quandl key not defined")
+        status = "not defined"
+    else:
+        try:
+            quandl.save_key(cfg.API_KEY_QUANDL)
+            quandl.get_table(
+                "ZACKS/FC",
+                paginate=True,
+                ticker=["AAPL", "MSFT"],
+                per_end_date={"gte": "2015-01-01"},
+                qopts={"columns": ["ticker", "per_end_date"]},
+            )
+            logger.info("Quandl key defined, test passed")
+            status = "defined, test passed"
+        except Exception as _:  # noqa: F841
+            logger.exception("Quandl key defined, test failed")
+            status = "defined, test failed"
 
     if show_output:
         console.print(status + "\n")
