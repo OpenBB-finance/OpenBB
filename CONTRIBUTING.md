@@ -521,8 +521,11 @@ With:
 | :---------- | :-------------------- | :--------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `stocks/`   |                       | `stocks_controller.py` | Manages **stocks** _context_ from a user perspective, i.e. routing _commands_ and arguments to output data, or, more importantly, redirecting to the selected _category_.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | `stocks/`   |                       | `stocks_helper.py`     | Helper to `stocks` menu. This file is meant to hold generic purpose  `stocks` functionalities.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| `stocks/`   | `due_diligence/`      | `dd_controller.py`     | Manages **due_diligence** _category_ from **stocks** _context_ from a user perspective, i.e. routing _commands_ and arguments to output data.       
-| `stocks/`   | `due_diligence/`      | `marketwatch_view.py`  | This file contains functions that rely on **Market Watch** data. These functions represent _commands_ that belong to **due_diligence** _category_ from **stocks** _context_. These functions are called by `dd_controller.py` using the arguments given by the user and will output either a string, table or plot.                                                                                                                                                                                                                                                                                                                                                                                                                                   
+| `stocks/`   | `due_diligence/`      | `dd_controller.py`     | Manages **due_diligence** _category_ from **stocks** _context_ from a user perspective, i.e. routing _commands_ and arguments to output data.
+| `stocks/`   | `due_diligence/`      | `marketwatch_view.py`  | This file contains functions that rely on **Market Watch** data. These functions represent _commands_ that belong to **due_diligence** _category_ from **stocks** _context_. These functions are called by `dd_controller.py` using the arguments given by the user and will output either a string, table or plot.
+
+
+
 | `stocks/`   | `due_diligence/`      | `marketwatch_model.py` | This file contains functions that rely on **Market Watch** data. These functions represent _commands_ that belong to **due_diligence** _category_ from **stocks** _context_. These functions are called by `marketwatch_view.py` and will return data to be processed in either a string, dictionary or dataframe format.                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | `stocks/`   | `due_diligence/`      | `finviz_view.py`       | This file contains functions that rely on **Finviz** data. These functions represent _commands_ that belong to **due_diligence** _category_ from **stocks** _context_. These functions are called by `dd_controller.py` using the arguments given by the user and will output either a string, table or plot.                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | `stocks/`   | `due_diligence/`      | `finviz_model.py`      | This file contains functions that rely on **Finviz** data. These functions represent _commands_ that belong to **due_diligence** _category_ from **stocks** _context_. These functions are called by `finviz_view.py` and will return data to be processed in either a string, dictionary or dataframe format.                                                                                                                                                                                                                                                                                                                                                                                                                                        |
@@ -575,7 +578,7 @@ def display_last_uni_swaps(
 2. Simple and understandable input objects; avoid for example weird dictionaries packed with data: {“title”: DataFrame}
   
     Why? Ease of use and often these complex formats are clumsy, prone to error and the formatting required for complex parameters is time consuming and unneeded.
-  
+
 <table>
 <tr>
 <td> Good code :white_check_mark: </td> <td> Bad code :x: </td>
@@ -755,6 +758,7 @@ def get_yldcurve(country: str) -> pd.Dataframe:
 
       …
 ```
+
 </td>
 </tr>
 </table>
@@ -773,9 +777,9 @@ def get_yldcurve(country: str) -> pd.Dataframe:
 
     Why? To respect the principles laid out in Code Structure and the previous bullet point. If your code does not have this get_ → display_ map it’s likely that i. and/or ii. fail to hold.
     
-    i. Data is processed in _model files and displayed in _view files
+    i. Data is processed in _model files and displayed in `_view` files
     
-    ii. _view and _model files will have the same arguments (except for output options)
+    ii. `_view` and `_model` files will have the same arguments (except for output options)
 
 <br>
 
@@ -788,6 +792,7 @@ When in doubt, follow <https://www.python.org/dev/peps/pep-0008/>.
 The style guide is a reverse dictionary for argument names, where a brief definition is mapped to an OpenBB recommended argument name and type. When helpful a code snippet example is added below. Following this guide will help keep argument naming consistent and improve API users experience.
 
 Style guide structure:
+
 ```python
 <definition> : <argument_name (argument_type)> e.g. <examples>
 
@@ -799,6 +804,7 @@ def func(..., argument_name: argument_type = default, ...):
 
 #### Flags
 Show raw data : `raw` *(bool)*
+
 ```python
 def display_data(..., raw: bool = False, ...):
     ...
@@ -807,6 +813,7 @@ def display_data(..., raw: bool = False, ...):
 ```
 
 Sort in ascending order : `ascend` *(bool)*
+
 ```python
 def display_data(..., sortby: str = "", ascend: bool = False, ...):
     ...
@@ -815,6 +822,7 @@ def display_data(..., sortby: str = "", ascend: bool = False, ...):
 ```
 
 Show plot : `plot` *(bool)*
+
 ```python
 def display_data(..., plot: bool = False, ...):
     ...
@@ -827,6 +835,7 @@ def display_data(..., plot: bool = False, ...):
 
 #### Output format
 Format to export data : `export` *(str), e.g. csv, json, xlsx*
+
 ```python
 def display_data(..., export: str = "", ...):
     ...
@@ -834,6 +843,7 @@ def display_data(..., export: str = "", ...):
 ```
 
 List of external axes to include in a plot : `external_axes` *(Optional[List[plt.Axes]])*
+
 ```python
 def display_data(..., external_axes: Optional[List[plt.Axes]] = None, ...):
     ...
@@ -845,6 +855,7 @@ def display_data(..., external_axes: Optional[List[plt.Axes]] = None, ...):
 ```
 
 Field by which to sort : `sortby` *(str), e.g. "Volume"*
+
 ```python
 def display_data(..., sortby: str = "col", ...):
     ...
@@ -853,6 +864,7 @@ def display_data(..., sortby: str = "col", ...):
 ```
 
 Maximum limit number of output items : `limit` *(int)*
+
 ```python
 def display_data(..., limit = 10, ...):
     ...
@@ -871,6 +883,7 @@ Date from which data is fetched (YYYY-MM-DD) : `start_date` *(str), e.g. 2022-01
 Date up to which data is fetched (YYYY-MM-DD) : `end_date` *(str), e.g. 2022-12-31*
 
 Note: please specify date format in docstring
+
 ```python
 def get_historical_data(..., start_date: str = "2022-01-01", end_date: str = "2022-12-31",):
     """
@@ -889,6 +902,7 @@ def get_historical_data(..., start_date: str = "2022-01-01", end_date: str = "20
 Year from which data is fetched (YYYY) : `start_year` *(str), e.g. 2022*
 
 Year up to which data is fetched (YYYY) : `end_year` *(str), e.g. 2023*
+
 ```python
 def get_historical_data(..., start_year: str = "2022", end_year str = "2023", ...):
     ...
@@ -896,6 +910,7 @@ def get_historical_data(..., start_year: str = "2022", end_year str = "2023", ..
 ```
 
 Interval for data observations : `interval` *(str), e.g. 60m, 90m, 1h*
+
 ```python
 def get_prices(interval: str = "60m", ...):    
     ...
@@ -907,6 +922,7 @@ def get_prices(interval: str = "60m", ...):
 ```
 
 Rolling window length : `window` *(int/str), e.g. 252, 252d*
+
 ```python
 def get_rolling_sum(returns: pd.Series, window: str = "252d"):    
     rolling_sum = returns.rolling(window=window).sum()
@@ -920,6 +936,7 @@ Search term used to query : `query` (str)
 Maximum limit of search items/periods in data source: `limit` *(int)*
 
 Note: please specify limit application in docstring
+
 ```python
 def get_data_from_source(..., limit: int = 10, ...):
     """
@@ -937,6 +954,7 @@ Dictionary of input datasets : `datasets` *(Dict[str, pd.DataFrame])*
 Note: Most occurrences are on the econometrics menu and might be refactored in near future
 
 Input dataset : `data` *(pd.DataFrame)*
+
 ```python
 def process_data(..., data: pd.DataFrame, ...):
     """
@@ -958,6 +976,7 @@ Input series : `data` *(pd.Series)*
 Dependent variable series : `dependent_series` *(pd.Series)*
 
 Independent variable series : `independent_series` *(pd.Series)*
+
 ```python
 def get_econometric_test(dependent_series, independent_series, ...):
     ...
@@ -975,6 +994,7 @@ Currency to convert data : `currency` *(str) e.g. EUR, USD*
 
 #### Financial instrument characteristics
 Instrument ticker, name or currency pair : `symbol` *(str), e.g. AAPL, ethereum, ETH, ETH-USD*
+
 ```python
 def get_prices(symbol: str = "AAPL", ...):    
     ...
@@ -993,6 +1013,7 @@ List of instrument tickers, names or currency pairs : `symbols` *(List/List[str]
 Base currency under ***BASE***-QUOTE → ***XXX***-YYY convention : `from_symbol` *(str), e.g. ETH in ETH-USD*
 
 Quote currency under BASE-***QUOTE*** → XXX-***YYY*** convention : `to_symbol` *(str), e.g. USD in ETH-USD*
+
 ```python
 def get_exchange_rate(from_symbol: str = "", to_symbol: str = "", ...):
     ...
@@ -1089,7 +1110,8 @@ Note that a `OPENBB_` is added so that the user knows that that environment vari
 One of the first steps once adding a new data source that requires an API key is to add that key to our [keys_controller.py](/openbb_terminal/keys_controller.py). This menu allows the user to set API keys and check their validity.
 
 The following code allows to check the validity of the IEX Cloud API key.
-```
+
+```python
 def check_iex_key(self, show_output: bool = False) -> None:
     """Check IEX Cloud key"""
     self.cfg_dict["IEXCLOUD"] = "iex"
@@ -1118,7 +1140,8 @@ Note that there are usually 3 states:
 Note: Sometimes the user may have the correct API key but still not have access to a feature from that data source, and that may be because such feature required an API key of a higher level.
 
 A function can then be created with the following format to allow the user to change its environment key directly from the terminal.
-```
+
+```python
 @log_start_end(log=logger)
 def call_iex(self, other_args: List[str]):
     """Process iex command"""
@@ -1147,7 +1170,6 @@ def call_iex(self, other_args: List[str]):
         cfg.API_IEX_TOKEN = ns_parser.key
         self.check_iex_key(show_output=True)
 ```
-
 
 # ADVANCED
 
@@ -1188,7 +1210,8 @@ Worthy methods to mention are:
 The document [data_sources_default.json](/data_sources_default.json) contains all data sources that the terminal has access to and specifies the data source utilized by default for each command.
 
 The convention is as follows:
-```
+
+```python
 {
     "stocks": {
         "search": ["FinanceDatabase"],
@@ -1234,7 +1257,8 @@ The way to interpret this file is by following the path to a data source, e.g.
 ### Export Data
 
 In the `_view.py` files it is common having at the end of each function `export_data` being called. This tipycally looks like:
-```
+
+```python
     export_data(
         export, 
         os.path.dirname(os.path.abspath(__file__)),
@@ -1277,11 +1301,11 @@ The variable `self.queue` contains a list of all actions to be run on the platfo
 Example:
 
 If a user is in the root of the terminal and runs:
-  
+
 ```python
 $ stocks/load AAPL/dps/psi -l 90
 ```
-  
+
 The queue created becomes:
 `self.queue = ["stocks", "load AAPL", "dps", "psi -l 90"]`
 
