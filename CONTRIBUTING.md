@@ -82,10 +82,17 @@ will be implemented.
 """ Yahoo Finance Model """
 __docformat__ = "numpy"
 
+import logging
+
 import pandas as pd
 import requests
 
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import get_user_agent
 
+logger = logging.getLogger(__name__)
+
+@log_start_end(log=logger)
 def get_most_shorted() -> pd.DataFrame:
     """Get most shorted stock screener [Source: Yahoo Finance]
 
@@ -96,7 +103,9 @@ def get_most_shorted() -> pd.DataFrame:
     """
     url = "https://finance.yahoo.com/screener/predefined/most_shorted_stocks"
 
-    data = pd.read_html(requests.get(url).text)[0]
+    data = pd.read_html(
+        requests.get(url, headers={"User-Agent": get_user_agent()}).text
+    )[0]
     data = data.iloc[:, :-1]
     return data
 ```
@@ -169,23 +178,28 @@ def get_economy_calendar_events() -> pd.DataFrame:
 """ Yahoo Finance View """
 __docformat__ = "numpy"
 
+import logging
 import os
-from openbb_terminal.rich_config import console
+
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
+from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.dark_pool_shorts import yahoofinance_model
 
+logger = logging.getLogger(__name__)
 
-def display_most_shorted(num_stocks: int, export: str):
+@log_start_end(log=logger)
+def display_most_shorted(limit: int = 10, export: str = ""):
     """Display most shorted stocks screener. [Source: Yahoo Finance]
 
     Parameters
     ----------
-    num_stocks: int
+    limit: int
         Number of stocks to display
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    df = yahoofinance_model.get_most_shorted()
+    df = yahoofinance_model.get_most_shorted().head(limit)
     df.dropna(how="all", axis=1, inplace=True)
     df = df.replace(float("NaN"), "")
 
@@ -193,10 +207,7 @@ def display_most_shorted(num_stocks: int, export: str):
         console.print("No data found.")
     else:
         print_rich_table(
-            df.head(num_stocks),
-            headers=list(df.columns),
-            show_index=False,
-            title="Most shorted stocks"
+            df, headers=list(df.columns), show_index=False, title="Most Shorted Stocks"
         )
 
     export_data(
