@@ -76,6 +76,8 @@ def get_keys() -> Dict:
         Dict: key: API -> values: KEY.
     """
 
+    #TODO: Output only the api environment variables. Remove settings variables.
+
     df = pd.read_csv(str(USER_ENV_FILE), delimiter="=", header=None)
     df = df.rename(columns={0: "API", 1: "KEY"})
     df = df.set_index("API")
