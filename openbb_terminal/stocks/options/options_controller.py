@@ -865,7 +865,7 @@ class OptionsController(BaseController):
                     elif ns_parser.source == "YahooFinance":
                         yfinance_view.plot_vol(
                             symbol=self.ticker,
-                            expiration=self.selected_date,
+                            expiry=self.selected_date,
                             min_sp=ns_parser.min,
                             max_sp=ns_parser.max,
                             calls_only=ns_parser.calls,
@@ -875,7 +875,7 @@ class OptionsController(BaseController):
                     elif ns_parser.source == "Nasdaq":
                         nasdaq_view.display_volume(
                             symbol=self.ticker,
-                            expiration=self.selected_date,
+                            expiry=self.selected_date,
                             min_sp=ns_parser.min,
                             max_sp=ns_parser.max,
                             export=ns_parser.export,
@@ -1031,7 +1031,7 @@ class OptionsController(BaseController):
                     elif ns_parser.source == "YahooFinance":
                         yfinance_view.plot_oi(
                             symbol=self.ticker,
-                            expiration=self.selected_date,
+                            expiry=self.selected_date,
                             min_sp=ns_parser.min,
                             max_sp=ns_parser.max,
                             calls_only=ns_parser.calls,
@@ -1041,7 +1041,7 @@ class OptionsController(BaseController):
                     elif ns_parser.source == "Nasdaq":
                         nasdaq_view.display_oi(
                             self.ticker,
-                            expiration=self.selected_date,
+                            expiry=self.selected_date,
                             min_sp=ns_parser.min,
                             max_sp=ns_parser.max,
                             export=ns_parser.export,
@@ -1228,7 +1228,7 @@ class OptionsController(BaseController):
                 yfinance_view.show_greeks(
                     symbol=self.ticker,
                     div_cont=ns_parser.dividend,
-                    expiration=self.selected_date,
+                    expiry=self.selected_date,
                     rf=ns_parser.risk_free,
                     opt_type=opt_type,
                     mini=ns_parser.min,

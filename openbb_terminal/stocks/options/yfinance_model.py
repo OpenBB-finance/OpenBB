@@ -551,7 +551,7 @@ def get_vol(
 @log_start_end(log=logger)
 def get_volume_open_interest(
     symbol: str,
-    expiration: str,
+    expiry: str,
 ) -> pd.DataFrame:
     """Plot volume and open interest
 
@@ -559,9 +559,9 @@ def get_volume_open_interest(
     ----------
     symbol: str
         Stock ticker symbol
-    expiration: str
+    expiry: str
         Option expiration
     """
-    options = get_option_chain(symbol, expiration)
+    options = get_option_chain(symbol, expiry)
 
     return options
