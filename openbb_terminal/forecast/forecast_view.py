@@ -129,7 +129,7 @@ def display_plot(
 @log_start_end(log=logger)
 def display_seasonality(
     data: pd.DataFrame,
-    column: str = "Close",
+    column: str = "close",
     export: str = "",
     m: Optional[int] = None,
     max_lag: int = 24,
