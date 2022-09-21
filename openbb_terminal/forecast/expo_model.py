@@ -3,7 +3,7 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Any, Tuple, Union, List, Optional
+from typing import Any, Union, Optional
 
 import warnings
 from statsmodels.tools.sm_exceptions import ConvergenceWarning
@@ -40,7 +40,7 @@ def get_expo_data(
     n_predict: int = 30,
     start_window: float = 0.85,
     forecast_horizon: int = 5,
-) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], Any]:
+) -> tuple[list[TimeSeries], list[TimeSeries], list[TimeSeries], Optional[float], Any]:
 
     """Performs Probabilistic Exponential Smoothing forecasting
     This is a wrapper around statsmodels Holt-Winters' Exponential Smoothing;
@@ -74,11 +74,11 @@ def get_expo_data(
 
     Returns
     -------
-    List[float]
+    list[float]
         Adjusted Data series
-    List[float]
+    list[float]
         List of historical fcast values
-    List[float]
+    list[float]
         List of predicted fcast values
     Optional[float]
         precision

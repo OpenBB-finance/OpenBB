@@ -956,7 +956,7 @@ class DefiController(BaseController):
                 protocol=ns_parser.protocol,
                 top=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=not ns_parser.descend,
+                ascend=not ns_parser.descend,
                 link=ns_parser.link,
                 export=ns_parser.export,
             )

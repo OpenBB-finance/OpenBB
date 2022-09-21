@@ -23,9 +23,9 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_rossindex(
-    top: int,
-    sortby: str,
-    descend: bool,
+    limit: int = 10,
+    sortby: str = "Stars AGR [%]",
+    descend: bool = False,
     show_chart: bool = False,
     show_growth: bool = True,
     chart_type: str = "stars",
@@ -36,7 +36,7 @@ def display_rossindex(
 
     Parameters
     ----------
-    top: int
+    limit: int
         Number of startups to search
     sortby: str
         Key by which to sort data. Default: Stars AGR [%]
@@ -60,7 +60,7 @@ def display_rossindex(
     else:
         if sortby in runa_model.SORT_COLUMNS:
             df = df.sort_values(by=sortby, ascending=descend)
-        df = df.head(top)
+        df = df.head(limit)
         if show_chart:
             if external_axes is None:
                 _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -116,7 +116,7 @@ def display_rossindex(
         show_df = show_df.fillna("")
         show_df["GitHub"] = show_df["GitHub"].str.wrap(10)
         print_rich_table(
-            show_df.head(top),
+            show_df.head(limit),
             headers=list(show_df.columns),
             floatfmt=".1f",
             show_index=False,

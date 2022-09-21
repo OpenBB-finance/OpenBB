@@ -13,7 +13,7 @@ def test_dark_pool_short_positions():
     stockgrid_view.dark_pool_short_positions(
         limit=2,
         sortby="sv_pct",
-        ascending=True,
+        ascend=True,
         export="",
     )
 

@@ -1,7 +1,7 @@
 # pylint: disable=too-many-arguments
 import os
 import argparse
-from typing import Dict, Any, Union, Optional, List, Tuple
+from typing import Any, Union, Optional
 from datetime import timedelta, datetime, time
 import logging
 import pandas as pd
@@ -68,10 +68,10 @@ def plot_data_predictions(
     forecast_data,
     n_loops,
     time_str: str = "",
-    external_axes: Optional[List[plt.Axes]] = None,
+    external_axes: Optional[list[plt.Axes]] = None,
 ):
     """Plots data predictions for the different ML techniques
-    external_axes : Optional[List[plt.Axes]], optional
+    external_axes : Optional[list[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
 
@@ -442,7 +442,7 @@ def early_stopper(patience: int, monitor: str = "val_loss"):
 
 def get_pl_kwargs(
     patience: int = 20, monitor: str = "val_loss", accelerator: str = "cpu"
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     my_stopper = early_stopper(patience, monitor)
     pl_trainer_kwargs = {
         "callbacks": [my_stopper],
@@ -550,7 +550,7 @@ def dt_format(x) -> str:
 
 def get_series(
     data: pd.DataFrame, target_column: str = None, is_scaler: bool = True
-) -> Tuple[Optional[Scaler], TimeSeries]:
+) -> tuple[Optional[Scaler], TimeSeries]:
     filler = MissingValuesFiller()
     filler_kwargs = dict(
         df=data,
@@ -776,7 +776,7 @@ def clean_data(
     start_date: Optional[datetime],
     end_date: Optional[datetime],
     target_column: Optional[str],
-    past_covariates: Optional[List[str]],
+    past_covariates: Optional[str],
 ) -> Union[pd.DataFrame, pd.Series]:
     # check if target column is in data and if the target_column has any inf
     # replace all inf with nan. This is because darts does not handle inf
@@ -840,7 +840,7 @@ def clean_covariates(parser, dataset: pd.DataFrame) -> Optional[str]:
 
 
 def check_data(
-    data: pd.DataFrame, target_column: str, past_covariates: List[str]
+    data: pd.DataFrame, target_column: str, past_covariates: Optional[str]
 ) -> bool:
     if target_column not in data.columns:
         console.print(

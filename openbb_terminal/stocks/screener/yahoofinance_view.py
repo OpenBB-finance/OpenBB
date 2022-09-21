@@ -28,7 +28,7 @@ presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets
 
 @log_start_end(log=logger)
 def historical(
-    preset_loaded: str,
+    preset_loaded: str = "top_gainers",
     limit: int = 10,
     start_date: str = (
         datetime.datetime.now() - datetime.timedelta(days=6 * 30)

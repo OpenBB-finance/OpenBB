@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 
 import logging
 import warnings
-from typing import Any, Tuple, Union, List, Optional
+from typing import Any, Union, Optional
 
 
 import pandas as pd
@@ -38,7 +38,7 @@ def get_brnn_data(
     model_save_name: str = "brnn_model",
     force_reset: bool = True,
     save_checkpoints: bool = True,
-) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], Any]:
+) -> tuple[list[TimeSeries], list[TimeSeries], list[TimeSeries], Optional[float], Any]:
     """Performs Block RNN forecasting
 
     Args:
@@ -81,11 +81,11 @@ def get_brnn_data(
             Whether or not to automatically save the untrained model and checkpoints from training. Defaults to True.
 
     Returns:
-        List[TimeSeries]
+        list[TimeSeries]
             Adjusted Data series
-        List[TimeSeries]
+        list[TimeSeries]
             Historical forecast by best RNN model
-        List[TimeSeries]
+        list[TimeSeries]
             list of Predictions
         Optional[float]
             Mean average precision error

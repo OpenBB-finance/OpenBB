@@ -26,13 +26,16 @@ def suppliers(symbol: str, export: str = ""):
         Export dataframe data to csv,json,xlsx file
     """
     tickers = csimarket_model.get_suppliers(symbol)
-    console.print(tickers)
+    if tickers:
+        console.print(f"List of suppliers: {', '.join(tickers)}\n")
+    else:
+        console.print("No suppliers found.\n")
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "supplier",
-        pd.DataFrame(tickers.split(",")),
+        pd.DataFrame(tickers),
     )
 
 
@@ -48,11 +51,14 @@ def customers(symbol: str, export: str = ""):
         Export dataframe data to csv,json,xlsx file
     """
     tickers = csimarket_model.get_customers(symbol)
-    console.print(tickers)
+    if tickers:
+        console.print(f"List of customers: {', '.join(tickers)}\n")
+    else:
+        console.print("No customers found.\n")
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "customer",
-        pd.DataFrame(tickers.split(",")),
+        pd.DataFrame(tickers),
     )

@@ -126,7 +126,7 @@ def test_call_func_empty_df(func, kwargs_dict, mocker):
         return_value=pd.DataFrame(),
     )
     mocker.patch(
-        target=model_path + "analyze_qtr_contracts",
+        target=model_path + "get_qtr_contracts",
         return_value=pd.DataFrame(),
     )
     getattr(quiverquant_view, func)(**kwargs_dict)

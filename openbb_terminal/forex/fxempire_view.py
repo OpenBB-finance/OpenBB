@@ -11,7 +11,9 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_forward_rates(to_symbol: str, from_symbol: str, export: str = ""):
+def display_forward_rates(
+    to_symbol: str = "USD", from_symbol: str = "EUR", export: str = ""
+):
     """Display forward rates for currency pairs
 
     Parameters
