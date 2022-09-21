@@ -52,12 +52,16 @@ Use your best judgment, and feel free to propose changes to this document in a p
       - [Pytest](#pytest)
       - [Coverage](#coverage)
       - [VCR](#vcr)
+    - [OpenBB API](#openbb-api)
+      - [Understanding API infrastructure](#base-controller-class)
 
 # BASIC
 
 ## Adding a new command
 
-Process to add a new command. `shorted` command from category `dark_pool_shorts` and context `stocks` will be used as
+Before implementing a new command we highly recommend that you go through [Understand Code Structure](#understand-code-structure) and [Follow Coding Guidelines](#follow-coding-guidelines). This will allow you to get your PR merged faster and keep consistency of our code base.
+
+In the next sections we describe the process to add a new command. `shorted` command from category `dark_pool_shorts` and context `stocks` will be used as
 example. Since this command uses data from Yahoo Finance, a `yahoofinance_view.py` and a `yahoofinance_model.py` files
 will be implemented.
 
@@ -1409,3 +1413,8 @@ report of testing coverage.
 
 VCRPY allows us to save data from request methods to a .YAML file. This increases test integrity and significantly
 speeds up the time it takes to run tests. To use VCRPY add **@pytest.mark.vcr** above any function you write.
+
+## OpenBB API
+### Understanding API infrastructure
+
+Work in progress. For official documentation go to: https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/openbb_terminal/API_README.md
