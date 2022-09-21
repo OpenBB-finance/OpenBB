@@ -11,29 +11,42 @@ interactions:
       User-Agent:
       - python-requests/2.27.1
     method: GET
-    uri: https://api.stlouisfed.org/fred/series?series_id=GNPCA&api_key=VALIDKEY
+    uri: https://api.stlouisfed.org/fred/series?series_id=GNPCA&api_key=bab7cd9f2e102922da9a091760829093
   response:
     body:
-      string: '<?xml version="1.0" encoding="utf-8" ?>
-
-        <error code="400" message="Bad Request.  The value for variable api_key is
-        not a 32 character alpha-numeric lower-case string.  Read https://fred.stlouisfed.org/docs/api/api_key.html
-        for more information." />
-
-
-
-
-        '
+      string: !!binary |
+        H4sIAAAAAAAEA7Kxr8jNUShLLSrOzM+zVTLUM1BSSM1Lzk/JzEu3VSotSdO1UFKwt+OyKU4tykwt
+        LlYoSk3MKcnMTY0vLkksKrFVMjIwMtI1sNQ1MlRCyKXmpaDI2HEpKEBNUMhMsVVy9wtwdkRST4pZ
+        CiWZJTmptkpBqYk5Cu5F+cXFCn6JJZn5eYk5CgFF+SmlySVKCvlJxalFZWBhmEMNLY0sdQ0MdQ0M
+        UaVhbgXJgCXTilILS1PzkittlRzz8koTc5QU4ELxxRn5IF87KimU5mWWFNsqOWXm5GTm5xUr5Kcp
+        OGckZualpigYGRgaKbjk5+QkFhVDFcI0OmXm6EGU5ulB1KkoKRSnJhaD3B+fmJJVWlySm5pXYqvk
+        l1+iEAyVyKlUcARLpaZgVQ0z3S/YUUkhJ7G4JL60ICWxJBUeC8a6xgYKBuZWpqZWRma6BqZKCgX5
+        BaU5iUWZJZW2SobmSgp5+SWpIO+4Oio4Jifnl+aVKDjnp6RaKTgaGBgGRXBxKenbcdnoQ5MBYHZc
+        AEy2FRQ5AgAA
     headers:
+      Accept-Ranges:
+      - bytes
       Connection:
       - keep-alive
+      Content-Encoding:
+      - gzip
       Content-Length:
-      - '252'
+      - '408'
       Content-Type:
       - text/xml; charset=UTF-8
       Date:
-      - Sun, 04 Sep 2022 00:08:31 GMT
+      - Wed, 21 Sep 2022 20:12:45 GMT
+      Expires:
+      - Wed, 21 Sep 2022 20:13:45 GMT
+      Last-Modified:
+      - Mon, 22 Aug 2022 15:03:51 GMT
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '120'
     status:
-      code: 400
-      message: Bad Request
+      code: 200
+      message: OK
 version: 1
