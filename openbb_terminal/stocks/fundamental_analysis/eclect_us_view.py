@@ -13,9 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_analysis(
-    symbol: str, export: str = ""
-) -> None:
+def display_analysis(symbol: str, export: str = "") -> None:
     """Display analysis of SEC filings based on NLP model. [Source: https://eclect.us]
 
     Parameters
@@ -28,7 +26,9 @@ def display_analysis(
 
     if not analysis.empty:
         print_rich_table(analysis, title="SEC sillings analysis", show_index=True)
-        export_data(export, os.path.dirname(os.path.abspath(__file__)), "analysis", analysis)
+        export_data(
+            export, os.path.dirname(os.path.abspath(__file__)), "analysis", analysis
+        )
     else:
         console.print("Filings not found from eclect.us")
     console.print("")

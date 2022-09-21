@@ -227,9 +227,7 @@ class FundamentalAnalysisController(StockBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            finviz_view.display_screen_data(
-                symbol=self.ticker,
-                export=ns_parser.export)
+            finviz_view.display_screen_data(symbol=self.ticker, export=ns_parser.export)
 
     @log_start_end(log=logger)
     def call_score(self, other_args: List[str]):
@@ -826,10 +824,7 @@ class FundamentalAnalysisController(StockBaseController):
             help="Rows to plot. (-1 represents invalid data)",
         )
         ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
-            limit=5,
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, limit=5,
         )
         if ns_parser:
             # TODO: Switch to actually getting data
@@ -927,10 +922,7 @@ class FundamentalAnalysisController(StockBaseController):
             help="Rows to plot. (-1 represents invalid data)",
         )
         ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
-            limit=5,
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, limit=5,
         )
         if ns_parser:
             # TODO: Switch to actually getting data
@@ -1033,9 +1025,7 @@ class FundamentalAnalysisController(StockBaseController):
             help="Rows to plot. (-1 represents invalid data)",
         )
         ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
         )
         if ns_parser:
             # TODO: Switch to actually getting data
@@ -1110,9 +1100,7 @@ class FundamentalAnalysisController(StockBaseController):
             help="Number of latest info",
         )
         ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-            EXPORT_ONLY_RAW_DATA_ALLOWED,
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED,
         )
         if ns_parser:
             if ns_parser.source == "AlphaVantage":
@@ -1197,9 +1185,7 @@ class FundamentalAnalysisController(StockBaseController):
         )
         if ns_parser:
             av_view.display_fraud(
-                symbol=self.ticker,
-                export=ns_parser.export,
-                detail=ns_parser.detail,
+                symbol=self.ticker, export=ns_parser.export, detail=ns_parser.detail,
             )
 
     @log_start_end(log=logger)
