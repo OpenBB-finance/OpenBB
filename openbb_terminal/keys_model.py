@@ -8,9 +8,11 @@ from openbb_terminal import config_terminal as cfg
 from openbb_terminal.core.config.paths import USER_ENV_FILE
 from openbb_terminal.rich_config import console
 
+from openbb_terminal.decorators import log_start_end
+
 logger = logging.getLogger(__name__)
 
-
+@log_start_end(log=logger)
 def set_fred_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set FRED API key.
 
@@ -40,7 +42,7 @@ def set_fred_key(key: str, persist: bool = False, show_output: bool = False) -> 
 
     return status
 
-
+@log_start_end(log=logger)
 def check_fred_key(show_output: bool = False) -> str:
     """Check FRED key"""
 
@@ -66,7 +68,7 @@ def check_fred_key(show_output: bool = False) -> str:
 
     return status
 
-
+@log_start_end(log=logger)
 def get_keys() -> Dict:
     """Get dictionary with currently set API keys.
 
