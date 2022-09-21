@@ -373,8 +373,8 @@ class OverviewController(BaseController):
 
         if ns_parser:
             blockchaincenter_view.display_altcoin_index(
-                since=ns_parser.since.timestamp(),
-                until=ns_parser.until.timestamp(),
+                start_date=ns_parser.since.timestamp(),
+                end_date=ns_parser.until.timestamp(),
                 period=ns_parser.period,
                 export=ns_parser.export,
             )
@@ -1065,7 +1065,7 @@ class OverviewController(BaseController):
         if ns_parser:
             coinpaprika_view.display_all_coins_market_info(
                 symbol=ns_parser.vs,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 ascend=not ns_parser.descend,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
@@ -1143,7 +1143,7 @@ class OverviewController(BaseController):
         if ns_parser:
             coinpaprika_view.display_exchange_markets(
                 exchange=ns_parser.exchange,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
@@ -1211,7 +1211,7 @@ class OverviewController(BaseController):
         if ns_parser:
             coinpaprika_view.display_all_coins_info(
                 symbol=ns_parser.vs,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 ascend=not ns_parser.descend,
                 sortby=ns_parser.sortby,
                 export=ns_parser.export,
@@ -1276,7 +1276,7 @@ class OverviewController(BaseController):
         if ns_parser:
             coinpaprika_view.display_all_exchanges(
                 symbol=ns_parser.vs,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 ascend=not ns_parser.descend,
                 sortby=ns_parser.sortby,
                 export=ns_parser.export,
@@ -1364,7 +1364,7 @@ class OverviewController(BaseController):
         if ns_parser:
             coinpaprika_view.display_contracts(
                 symbol=ns_parser.platform,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 ascend=not ns_parser.descend,
                 sortby=ns_parser.sortby,
                 export=ns_parser.export,
@@ -1412,7 +1412,7 @@ class OverviewController(BaseController):
         )
         if ns_parser:
             coinbase_view.display_trading_pairs(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
@@ -1501,7 +1501,7 @@ class OverviewController(BaseController):
 
         if ns_parser:
             cryptopanic_view.display_news(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,

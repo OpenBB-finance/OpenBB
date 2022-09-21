@@ -396,7 +396,7 @@ class OnchainController(BaseController):
         if ns_parser:
             whale_alert_view.display_whales_transactions(
                 min_value=ns_parser.min,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
                 show_address=ns_parser.address,
@@ -636,7 +636,7 @@ class OnchainController(BaseController):
 
         if ns_parser and self.address:
             ethplorer_view.display_top_token_holders(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
                 address=self.address,
@@ -786,7 +786,7 @@ class OnchainController(BaseController):
 
         if ns_parser and self.address:
             ethplorer_view.display_token_history(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 hash_=ns_parser.hash,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
@@ -868,7 +868,7 @@ class OnchainController(BaseController):
 
         if ns_parser and self.address:
             ethplorer_view.display_token_historical_prices(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
                 address=self.address,
