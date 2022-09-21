@@ -8,13 +8,22 @@ from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-def set_fred_key(key: str, show_output: bool = False):
+
+def set_fred_key(key: str, show_output: bool = False) -> str:
     """Set FRED API key.
 
     Parameters
     ----------
         key: str
             Fred API key
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
     """
     os.environ["OPENBB_API_FRED_KEY"] = key
     dotenv.set_key(str(USER_ENV_FILE), "OPENBB_API_FRED_KEY", key)
@@ -23,7 +32,8 @@ def set_fred_key(key: str, show_output: bool = False):
 
     return status
 
-def check_fred_key(show_output: bool = False) -> None:
+
+def check_fred_key(show_output: bool = False) -> str:
     """Check FRED key"""
 
     if cfg.API_FRED_KEY == "REPLACE_ME":

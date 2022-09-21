@@ -215,7 +215,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
         if not status:
             status = keys_model.check_fred_key(show_output)
-        
+
         self.key_dict["FRED"] = status
 
     def check_news_key(self, show_output: bool = False) -> None:
