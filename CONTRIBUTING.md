@@ -1188,28 +1188,28 @@ This `BaseController` class is inherited by all controllers on the terminal.
 This class contains both important variables and methods that are common across all terminal controllers.
 
 **CHOICES_COMMON**: List of common commands across all controllers
-  * `cls`: clear screen
-  * `home`: go back to the main root
-  * `about`: allows to open our documentation directly on the menu or command
-  * `h`, `?` and `help`: display the help menu the user is in
-  * `q`, `quit` and `..`: go back to one menu above   
-  * `exit`: exit the platform
-  * `r` and `reset`: reset the platform (reading code and settings again but going into the same state)
-  * `support`: create a support request ticket
+  - `cls`: clear screen
+  - `home`: go back to the main root
+  - `about`: allows to open our documentation directly on the menu or command
+  - `h`, `?` and `help`: display the help menu the user is in
+  - `q`, `quit` and `..`: go back to one menu above   
+  - `exit`: exit the platform
+  - `r` and `reset`: reset the platform (reading code and settings again but going into the same state)
+  - `support`: create a support request ticket
 
 All of these variables have a `call_FUNCTION` associated with them.
 
 Worthy methods to mention are:
-  * `load_class`: Checks for an existing instance of the controller before creating a new one to speed up access to that menu.
-  * `custom_reset`: Should be used by controllers that rely on a state variable - meant to be overridden. They should add the commands necessary to have the same data loaded.
-  * `print_help`: Meant to be overridden by each controller
-  * `parse_input`: Processes the string the user inputs into a list of actionable commands
-  * `switch`: Acts upon the command action received
-  * `parse_known_args_and_warn`: Parses the command with the `-` and `--` flags and variables. Some built-in flags are:
+  - `load_class`: Checks for an existing instance of the controller before creating a new one to speed up access to that menu.
+  - `custom_reset`: Should be used by controllers that rely on a state variable - meant to be overridden. They should add the commands necessary to have the same data loaded.
+  - `print_help`: Meant to be overridden by each controller
+  - `parse_input`: Processes the string the user inputs into a list of actionable commands
+  - `switch`: Acts upon the command action received
+  - `parse_known_args_and_warn`: Parses the command with the `-` and `--` flags and variables. Some built-in flags are:
     * `export_allowed`: Which can be set to `_NO_EXPORT_`, `_EXPORT_ONLY_RAW_DATA_ALLOWED_`, `_EXPORT_ONLY_FIGURES_ALLOWED_` and `_EXPORT_BOTH_RAW_DATA_AND_FIGURES_`
     * `raw`: Displaying the data raw
     * `limit`: Number of rows to display
-  * `menu`: Most important method. When a menu is executed, the way to call it is through `stocks_menu.menu()`
+  - `menu`: Most important method. When a menu is executed, the way to call it is through `stocks_menu.menu()`
 
 ## Default Data Sources
 
