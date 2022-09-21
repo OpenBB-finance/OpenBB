@@ -1889,7 +1889,7 @@ functions = {
     "keys.fred": {"model": "openbb_terminal.keys_model.set_fred_key"},
     "keys.news": {"model": "openbb_terminal.keys_model.set_news_key"},
     "keys.tradier": {"model": "openbb_terminal.keys_model.set_tradier_key"},
-    # "keys.cmc": {"model": "openbb_terminal.keys_model.set_cmc_key"},
+    "keys.cmc": {"model": "openbb_terminal.keys_model.set_cmc_key"},
     # "keys.finnhub": {"model": "openbb_terminal.keys_model.set_finnhub_key"},
     # "keys.iex": {"model": "openbb_terminal.keys_model.set_iex_key"},
     # "keys.reddit": {"model": "openbb_terminal.keys_model.set_reddit_key"},

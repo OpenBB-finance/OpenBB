@@ -13,11 +13,8 @@ import oandapyV20.endpoints.pricing
 import dotenv
 import praw
 import pyEX
-import quandl
 import requests
 from prawcore.exceptions import ResponseException
-from alpha_vantage.timeseries import TimeSeries
-from coinmarketcapapi import CoinMarketCapAPI, CoinMarketCapAPIError
 from prompt_toolkit.completion import NestedCompleter
 from pyEX.common.exception import PyEXception
 from oandapyV20 import API as oanda_API
@@ -181,25 +178,14 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
         self.key_dict["TRADIER"] = status
 
-    def check_cmc_key(self, show_output: bool = False) -> None:
+    def check_cmc_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Coinmarketcap key"""
         self.cfg_dict["COINMARKETCAP"] = "cmc"
-        if cfg.API_CMC_KEY == "REPLACE_ME":
-            logger.info("Coinmarketcap key not defined")
-            self.key_dict["COINMARKETCAP"] = "not defined"
-        else:
-            cmc = CoinMarketCapAPI(cfg.API_CMC_KEY)
 
-            try:
-                cmc.cryptocurrency_map()
-                logger.info("Coinmarketcap key defined, test passed")
-                self.key_dict["COINMARKETCAP"] = "defined, test passed"
-            except CoinMarketCapAPIError:
-                logger.exception("Coinmarketcap key defined, test failed")
-                self.key_dict["COINMARKETCAP"] = "defined, test failed"
+        if not status:
+            status = keys_model.check_cmc_key(show_output=show_output)
 
-        if show_output:
-            console.print(self.key_dict["COINMARKETCAP"] + "\n")
+        self.key_dict["COINMARKETCAP"] = status
 
     def check_finnhub_key(self, show_output: bool = False) -> None:
         """Check Finnhub key"""
@@ -1039,10 +1025,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             other_args.insert(0, "-k")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            os.environ["OPENBB_API_CMC_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "OPENBB_API_CMC_KEY", ns_parser.key)
-            cfg.API_CMC_KEY = ns_parser.key
-            self.check_cmc_key(show_output=True)
+            status = keys_model.set_cmc_key(
+                key=ns_parser.key, local=False, show_output=True
+            )
+            self.check_cmc_key(status, False)
 
     @log_start_end(log=logger)
     def call_finnhub(self, other_args: List[str]):

@@ -4,7 +4,7 @@ from typing import Dict
 import dotenv
 import quandl
 import requests
-import pandas as pd
+from coinmarketcapapi import CoinMarketCapAPI, CoinMarketCapAPIError
 from alpha_vantage.timeseries import TimeSeries
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.core.config.paths import USER_ENV_FILE
@@ -51,7 +51,7 @@ def get_keys() -> Dict:
     # TODO: Output only the api environment variables. Remove settings variables.
     # TODO: Bug when variable does not exist in os, function is ignoring it. Have to search in cfg api variables directly instead
 
-    var_list = [v for v in dir(cfg) if not v.startswith('__')]
+    var_list = [v for v in dir(cfg) if not v.startswith("__")]
 
     current_keys = {}
 
@@ -60,7 +60,6 @@ def get_keys() -> Dict:
         current_keys[cfg_var_name] = cfg_var_value
 
     return current_keys
-
 
 
 def set_av_key(key: str, local: bool = True, show_output: bool = False):
@@ -344,6 +343,7 @@ def check_polygon_key(show_output: bool = False) -> str:
 
     return status
 
+
 def set_fred_key(key: str, local: bool = True, show_output: bool = False) -> str:
     """Set FRED key.
 
@@ -551,6 +551,73 @@ def check_tradier_key(show_output: bool = False) -> str:
         else:
             logger.warning("Tradier key not defined, test inconclusive")
             status = "defined, test inconclusive"
+
+    if show_output:
+        console.print(status + "\n")
+
+    return status
+
+
+def set_cmc_key(key: str, local: bool = True, show_output: bool = False):
+    """Set Coinmarketcap key.
+
+    Parameters
+    ----------
+        key: str
+            API key
+        local: bool
+            If True, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If False, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+    """
+
+    set_key("OPENBB_API_CMC_KEY", key, local)
+    status = check_cmc_key(show_output)
+
+    return status
+
+
+def check_cmc_key(show_output: bool = False) -> str:
+    """Check Coinmarketcap key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+
+    """
+
+    if cfg.API_CMC_KEY == "REPLACE_ME":
+        logger.info("Coinmarketcap key not defined")
+        status = "not defined"
+    else:
+        cmc = CoinMarketCapAPI(cfg.API_CMC_KEY)
+
+        try:
+            cmc.cryptocurrency_map()
+            logger.info("Coinmarketcap key defined, test passed")
+            status = "defined, test passed"
+        except CoinMarketCapAPIError:
+            logger.exception("Coinmarketcap key defined, test failed")
+            status = "defined, test failed"
 
     if show_output:
         console.print(status + "\n")
