@@ -8,6 +8,15 @@ Use your best judgment, and feel free to propose changes to this document in a p
 
 - [CONTRIBUTING](#contributing)
   - [BASIC](#basic)
+    - [Adding a new command](#adding-a-new-command)
+      - [Select Feature](#select-feature)
+      - [Model](#model)
+      - [View](#view)
+      - [Controller](#controller)
+      - [Add API endpint](#add-api-endpoint)
+      - [Add Documentation](#add-documentation)
+      - [Open a Pull Request](#open-a-pull-request)
+      - [Review Process](#review-process)
     - [Understand Code Structure](#understand-code-structure)
     - [Follow Coding Guidelines](#follow-coding-guidelines)
       - [General Code Requirements](#general-code-requirements)
@@ -26,15 +35,6 @@ Use your best judgment, and feel free to propose changes to this document in a p
     - [External API Keys](#external-api-keys)
       - [Creating API key](#creating-api-key)
       - [Setting and checking API key](#setting-and-checking-api-key)
-    - [Adding a new command](#adding-a-new-command)
-      - [Select Feature](#select-feature)
-      - [Model](#model)
-      - [View](#view)
-      - [Controller](#controller)
-      - [Add API endpint](#add-api-endpoint)
-      - [Add Documentation](#add-documentation)
-      - [Open a Pull Request](#open-a-pull-request)
-      - [Review Process](#review-process)
   - [ADVANCED](#advanced)
     - [Important functions and classes](#important-functions-and-classes)
       - [Base controller class](#base-controller-class)
@@ -55,6 +55,388 @@ Use your best judgment, and feel free to propose changes to this document in a p
 
 # BASIC
 
+## Adding a new command
+
+Process to add a new command. `shorted` command from category `dark_pool_shorts` and context `stocks` will be used as
+example. Since this command uses data from Yahoo Finance, a `yahoofinance_view.py` and a `yahoofinance_model.py` files
+will be implemented.
+
+### Select Feature
+
+- Pick a feature you want to implement or a bug you want to fix from [our issues](https://github.com/OpenBB-finance/OpenBBTerminal/issues).
+- Feel free to discuss what you'll be working on either directly on [the issue](https://github.com/OpenBB-finance/OpenBBTerminal/issues) or on [our Discord](www.openbb.co/discord).
+  - This ensures someone from the team can help you and there isn't duplicated work.
+
+### Model
+
+1. Create a file with the source of data as the name followed by `_model` if it doesn't exist, e.g. `yahoofinance_model`
+2. Add the documentation header
+3. Do the necessary imports to get the data
+4. Define a function starting with `get_`
+5. In that function:
+   1. Use typing hints
+   2. Write a descriptive description where at the end the source is specified
+   3. Utilizing a third party API, get and return the data.
+
+```python
+""" Yahoo Finance Model """
+__docformat__ = "numpy"
+
+import pandas as pd
+import requests
+
+
+def get_most_shorted() -> pd.DataFrame:
+    """Get most shorted stock screener [Source: Yahoo Finance]
+
+    Returns
+    -------
+    pd.DataFrame
+        Most Shorted Stocks
+    """
+    url = "https://finance.yahoo.com/screener/predefined/most_shorted_stocks"
+
+    data = pd.read_html(requests.get(url).text)[0]
+    data = data.iloc[:, :-1]
+    return data
+```
+
+Note:
+
+1. As explained before, it is possible that this file needs to be created under `common/` directory rather than
+   `stocks/`, which means that when that happens this function should be done in a generic way, i.e. not mentioning stocks
+   or a specific context.
+2. If the model require an API key, make sure to handle the error and output relevant message.
+
+In the example below, you can see that we explicitly handle 4 important error types:
+
+- Invalid API Keys
+- API Keys not authorized for Premium feature
+- Empty return payload
+- Invalid arguments (Optional)
+
+It's not always possible to distinguish error types using status_code. So depending on the API provider, you can use either error messages or exception.
+
+```python
+def get_economy_calendar_events() -> pd.DataFrame:
+    """Get economic calendar events
+
+    Returns
+    -------
+    pd.DataFrame
+        Get dataframe with economic calendar events
+    """
+    response = requests.get(
+        f"https://finnhub.io/api/v1/calendar/economic?token={cfg.API_FINNHUB_KEY}"
+    )
+
+    df = pd.DataFrame()
+
+    if response.status_code == 200:
+        d_data = response.json()
+        if "economicCalendar" in d_data:
+            df = pd.DataFrame(d_data["economicCalendar"])
+        else:
+            console.print("No latest economy calendar events found\n")
+    elif response.status_code == 401:
+        console.print("[red]Invalid API Key[/red]\n")
+    elif response.status_code == 403:
+        console.print("[red]API Key not authorized for Premium Feature[/red]\n")
+    else:
+        console.print(f"Error in request: {response.json()['error']}", "\n")
+
+    return df
+```
+
+### View
+
+1. Create a file with the source of data as the name followed by `_view` if it doesn't exist, e.g. `yahoofinance_view`
+2. Add the documentation header
+3. Do the necessary imports to display the data. One of these is the `_model` associated with this `_view`. I.e. from same data source.
+4. Define a function starting with `display_`
+5. In this function:
+   - Use typing hints
+   - Write a descriptive description where at the end the source is specified
+   - Get the data from the `_model` and parse it to be output in a more meaningful way.
+   - Ensure that the data that comes through is reasonable, i.e. at least that we aren't displaying an empty dataframe.
+   - Do not degrade the main data dataframe coming from model if there's an export flag. This is so that the export can
+     have all the data rather than the short amount of information we may show to the user. Thus, in order to do so
+     `df_data = df.copy()` can be useful as if you change `df_data`, `df` remains intact.
+6. If the source requires an API Key or some sort of tokens, add `check_api_key` decorator on that specific view. This will throw a warning if users forget to set their API Keys
+7. Finally, call `export_data` where the variables are export variable, current filename, command name, and dataframe.
+
+```python
+""" Yahoo Finance View """
+__docformat__ = "numpy"
+
+import os
+from openbb_terminal.rich_config import console
+from openbb_terminal.helper_funcs import export_data, print_rich_table
+from openbb_terminal.stocks.dark_pool_shorts import yahoofinance_model
+
+
+def display_most_shorted(num_stocks: int, export: str):
+    """Display most shorted stocks screener. [Source: Yahoo Finance]
+
+    Parameters
+    ----------
+    num_stocks: int
+        Number of stocks to display
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+    df = yahoofinance_model.get_most_shorted()
+    df.dropna(how="all", axis=1, inplace=True)
+    df = df.replace(float("NaN"), "")
+
+    if df.empty:
+        console.print("No data found.")
+    else:
+        print_rich_table(
+            df.head(num_stocks),
+            headers=list(df.columns),
+            show_index=False,
+            title="Most shorted stocks"
+        )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "shorted",
+        df,
+    )
+
+```
+
+Note: As explained before, it is possible that this file needs to be created under `common/` directory rather than
+`stocks/`, which means that when that happens this function should be done in a generic way, i.e. not mentioning stocks
+or a specific context. The arguments will need to be parsed by `stocks_controller,py` and the other controller this
+function shares the data output with.
+
+### Controller
+
+1. Import `_view` associated with command we want to allow user to select.
+2. Add command name to variable `CHOICES` from `DarkPoolShortsController` class.
+3. Add command and source to `print_help()`.
+
+   ```python
+   def print_help(self):
+        """Print help"""
+        mt = MenuText("stocks/dps/")
+        mt.add_cmd("load")
+        mt.add_raw("\n")
+        mt.add_cmd("shorted")
+   ```
+
+4. If there is a condition to display or not the command, this is something that can be leveraged through this `add_cmd` method, e.g. `mt.add_cmd("shorted", self.ticker_is_loaded)`.
+
+5. Add command description to file `i18n/en.yml`. Use the path and command name as key, e.g. `stocks/dps/shorted` and the value as description. Please fill in other languages if this is something that you know.
+
+6. Add a method to `DarkPoolShortsController` class with name: `call_` followed by command name.
+   - This method must start defining a parser with arguments `add_help=False` and
+     `formatter_class=argparse.ArgumentDefaultsHelpFormatter`. In addition `prog` must have the same name as the command,
+     and `description` should be self-explanatory ending with a mention of the data source.
+   - Add parser arguments after defining parser. One important argument to add is the export capability. All commands should be able to export data.
+   - If there is a single or even a main argument, a block of code must be used to insert a fake argument on the list of
+     args provided by the user. This makes the terminal usage being faster.
+
+      ```
+      if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-l")
+      ```
+
+   - Parse known args from list of arguments and values provided by the user.
+   - Call the function contained in a `_view.py` file with the arguments parsed by argparse.
+
+```python
+def call_shorted(self, other_args: List[str]):
+        """Process shorted command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="shorted",
+            description="Print up to 25 top ticker most shorted. [Source: Yahoo Finance]",
+        )
+        if other_args and "-" not in other_args[0]:
+            other_args.insert(0, "-l")
+
+        ns_parser = parse_known_args_and_warn(
+            parser,
+            other_args, 
+            limit=10, 
+            export=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        
+        if ns_parser:
+          yahoofinance_view.display_most_shorted(
+              num_stocks=ns_parser.num,
+              export=ns_parser.export,
+          )
+```
+
+If a new menu is being added the code looks like this:
+
+```
+@log_start_end(log=logger)
+def call_dps(self, _):
+    """Process dps command"""
+    from openbb_terminal.stocks.dark_pool_shorts.dps_controller import (
+        DarkPoolShortsController,
+    )
+
+    self.queue = self.load_class(
+        DarkPoolShortsController, self.ticker, self.start, self.stock, self.queue
+    )
+```
+
+The **import only occurs inside this menu call**, this is so that the loading time only happens here and not at the terminal startup. This is to avoid slow loading times for users that are not interested in `stocks/dps` menu.
+
+In addition, note the `self.load_class` which allows to not create a new DarkPoolShortsController instance but re-load the previous created one. Unless the arguments `self.ticker, self.start, self.stock` have changed since. 
+
+The `self.queue` list of commands is passed around as it contains the commands that the terminal must perform.
+
+### Add API endpoint
+1. Go to `openbb_terminal/api.py`.
+2. Add the endpoint to the `functions` dictionary. 
+  
+If your command only outputs a rich table, map only the model function to expose the DataFrame.
+```
+functions = {
+...
+    "stocks.dps.shorted": {
+        "model": "openbb_terminal.stocks.dark_pool_shorts.yahoofinance_model.get_most_shorted"
+    },
+...
+}
+```
+
+If your command also displays a chart, map both the model and view functions to expose the DataFrame and the chart.
+```
+    "stocks.dps.spos": {
+        "model": "openbb_terminal.stocks.dark_pool_shorts.stockgrid_model.get_net_short_position",
+        "view": "openbb_terminal.stocks.dark_pool_shorts.stockgrid_view.net_short_position",
+    },
+```
+
+### Add Documentation
+
+To check whether documentation is added correctly follow [Hugo Server instructions](/website/README.md).
+
+This is the structure that the documentation follows:
+
+```txt
+website/content/_index.md
+               /stocks/_index.md
+                      /load/_index.md
+                      /candle/_index.md
+                      /discovery/_index.md
+                                /ipo/_index.md
+                                    /...
+                                /...
+                      /...
+               /cryptocurrency/_index.md
+                              /chart/_index.md
+                              /defi/_index.md
+                                   /borrow/_index.md
+                                   /...
+                              /...
+               /...
+               /common/_index.md
+                      /technical_analysis/_index.md
+                                         /ema/_index.md
+                                         /...
+                      /...
+```
+
+Note that the `common` folder holds features that are common across contexts, e.g. `technical analysis` can be performed on both `stocks` or `crytpo`.
+
+
+To add a new command, there are two main actions that need to be done:
+
+1. Create a directory with the name of the command and a `_index.md` file within. Examples:
+
+   - When adding `ipo`, since this command belongs to context `stocks` and category `discovery`, we added a `ipo` folder with a `_index.md` file within to `website/content/stocks/discovery`.
+
+   - When adding `candle`, since this command belongs to context `stocks`, we added a `candle` folder with a `_index.md` file within to `website/content/stocks/`.
+
+2. The `_index.md` file should have the output of the `command -h` followed by a screenshot example of what the user can expect. Note that you can now drag and drop the images while editing the readme file on the remote web version of your PR branch. Github will create a link for it with format (https://user-images.githubusercontent.com/***/***.file_format).
+
+Example:
+
+---
+
+```shell
+usage: ipo [--past PAST_DAYS] [--future FUTURE_DAYS]
+```
+
+Past and future IPOs. [Source: https://finnhub.io]
+
+- --past : Number of past days to look for IPOs. Default 0.
+- --future : Number of future days to look for IPOs. Default 10.
+
+<IMAGE HERE - Use drag and drop hint mentioned above>
+
+---
+
+3. Update the Navigation bar to match the content you've added. This is done by adding 2 lines of code to `website/data/menu/`, i.e. a `name` and a `ref`. Example:
+
+```
+---
+main:
+  - name: stocks
+    ref: "/stocks"
+    sub:
+      - name: load
+        ref: "/stocks/load"
+      - name: candle
+        ref: "/stocks/candle"
+      - name: discovery
+        ref: "/stocks/discovery"
+        sub:
+          - name: ipo
+            ref: "/stocks/discovery/ipo"
+          - name: map
+            ref: "/stocks/discovery/map"
+```
+
+
+### Open a Pull Request
+
+Once you're happy with what you have, push your branch to remote. E.g. `git push origin feature/AmazingFeature`
+
+A user may create a **Draft Pull Request** when he/she wants to discuss implementation with the team.
+
+The team will then assign your PR one of the following labels:
+
+| Label name     | Description                         | Example                                        |
+| -------------- | ----------------------------------- | ---------------------------------------------- |
+| `feat XS`      | Extra small feature                 | Add a preset                                   |
+| `feat S`       | Small T-Shirt size Feature          | New single command added                       |
+| `feat M`       | Medium T-Shirt size feature         | Multiple commands added from same data source  |
+| `feat L`       | Large T-Shirt size Feature          | New category added under context               |
+| `feat XL`      | Extra Large feature                 | New context added                              |
+| `enhancement`  | Enhancement                         | Add new parameter to existing command          |
+| `bug`          | Fix a bug                           | Fixes terminal crashing or warning message     |
+| `build`        | Build-related work                  | Fix a github action that is breaking the build |
+| `tests`        | Test-related work                   | Add/improve tests                              |
+| `docs`         | Improvements on documentation       | Add/improve documentation                      |
+| `refactor`     | Refactor code                       | Changing argparse location                     |
+| `docker`       | Docker-related work                 | Add/improve docker                             |
+| `help wanted`  | Extra attention is needed           | When a contributor needs help                  |
+| `do not merge` | Label to prevent pull request merge | When PR is not ready to be merged just yet     |
+
+### Review Process
+
+As soon as the Pull Request is opened, our repository has a specific set of github actions that will not only run
+linters on the branch just pushed, but also run pytest on it. This allows for another layer of safety on the code developed.
+
+In addition, our team is known for performing `diligent` code reviews. This not only allows us to reduce the amount of
+iterations on that code and have it to be more future proof, but also allows the developer to learn/improve his coding skills.
+
+Often in the past the reviewers have suggested better coding practices, e.g. using `1_000_000` instead of `1000000` for
+better visibility, or suggesting a speed optimization improvement.
+  
+  
 ## Understand Code Structure
 ### Back-end
 CLI :computer: → `_controller.py` :robot: →&nbsp;`_view.py` :art: &nbsp;&nbsp; → &nbsp;&nbsp;&nbsp;&nbsp;`_model.py` :brain:<br />
@@ -730,386 +1112,6 @@ def call_iex(self, other_args: List[str]):
         self.check_iex_key(show_output=True)
 ```
 
-## Adding a new command
-
-Process to add a new command. `shorted` command from category `dark_pool_shorts` and context `stocks` will be used as
-example. Since this command uses data from Yahoo Finance, a `yahoofinance_view.py` and a `yahoofinance_model.py` files
-will be implemented.
-
-### Select Feature
-
-- Pick a feature you want to implement or a bug you want to fix from [our issues](https://github.com/OpenBB-finance/OpenBBTerminal/issues).
-- Feel free to discuss what you'll be working on either directly on [the issue](https://github.com/OpenBB-finance/OpenBBTerminal/issues) or on [our Discord](www.openbb.co/discord).
-  - This ensures someone from the team can help you and there isn't duplicated work.
-
-### Model
-
-1. Create a file with the source of data as the name followed by `_model` if it doesn't exist, e.g. `yahoofinance_model`
-2. Add the documentation header
-3. Do the necessary imports to get the data
-4. Define a function starting with `get_`
-5. In that function:
-   1. Use typing hints
-   2. Write a descriptive description where at the end the source is specified
-   3. Utilizing a third party API, get and return the data.
-
-```python
-""" Yahoo Finance Model """
-__docformat__ = "numpy"
-
-import pandas as pd
-import requests
-
-
-def get_most_shorted() -> pd.DataFrame:
-    """Get most shorted stock screener [Source: Yahoo Finance]
-
-    Returns
-    -------
-    pd.DataFrame
-        Most Shorted Stocks
-    """
-    url = "https://finance.yahoo.com/screener/predefined/most_shorted_stocks"
-
-    data = pd.read_html(requests.get(url).text)[0]
-    data = data.iloc[:, :-1]
-    return data
-```
-
-Note:
-
-1. As explained before, it is possible that this file needs to be created under `common/` directory rather than
-   `stocks/`, which means that when that happens this function should be done in a generic way, i.e. not mentioning stocks
-   or a specific context.
-2. If the model require an API key, make sure to handle the error and output relevant message.
-
-In the example below, you can see that we explicitly handle 4 important error types:
-
-- Invalid API Keys
-- API Keys not authorized for Premium feature
-- Empty return payload
-- Invalid arguments (Optional)
-
-It's not always possible to distinguish error types using status_code. So depending on the API provider, you can use either error messages or exception.
-
-```python
-def get_economy_calendar_events() -> pd.DataFrame:
-    """Get economic calendar events
-
-    Returns
-    -------
-    pd.DataFrame
-        Get dataframe with economic calendar events
-    """
-    response = requests.get(
-        f"https://finnhub.io/api/v1/calendar/economic?token={cfg.API_FINNHUB_KEY}"
-    )
-
-    df = pd.DataFrame()
-
-    if response.status_code == 200:
-        d_data = response.json()
-        if "economicCalendar" in d_data:
-            df = pd.DataFrame(d_data["economicCalendar"])
-        else:
-            console.print("No latest economy calendar events found\n")
-    elif response.status_code == 401:
-        console.print("[red]Invalid API Key[/red]\n")
-    elif response.status_code == 403:
-        console.print("[red]API Key not authorized for Premium Feature[/red]\n")
-    else:
-        console.print(f"Error in request: {response.json()['error']}", "\n")
-
-    return df
-```
-
-### View
-
-1. Create a file with the source of data as the name followed by `_view` if it doesn't exist, e.g. `yahoofinance_view`
-2. Add the documentation header
-3. Do the necessary imports to display the data. One of these is the `_model` associated with this `_view`. I.e. from same data source.
-4. Define a function starting with `display_`
-5. In this function:
-   - Use typing hints
-   - Write a descriptive description where at the end the source is specified
-   - Get the data from the `_model` and parse it to be output in a more meaningful way.
-   - Ensure that the data that comes through is reasonable, i.e. at least that we aren't displaying an empty dataframe.
-   - Do not degrade the main data dataframe coming from model if there's an export flag. This is so that the export can
-     have all the data rather than the short amount of information we may show to the user. Thus, in order to do so
-     `df_data = df.copy()` can be useful as if you change `df_data`, `df` remains intact.
-6. If the source requires an API Key or some sort of tokens, add `check_api_key` decorator on that specific view. This will throw a warning if users forget to set their API Keys
-7. Finally, call `export_data` where the variables are export variable, current filename, command name, and dataframe.
-
-```python
-""" Yahoo Finance View """
-__docformat__ = "numpy"
-
-import os
-from openbb_terminal.rich_config import console
-from openbb_terminal.helper_funcs import export_data, print_rich_table
-from openbb_terminal.stocks.dark_pool_shorts import yahoofinance_model
-
-
-def display_most_shorted(num_stocks: int, export: str):
-    """Display most shorted stocks screener. [Source: Yahoo Finance]
-
-    Parameters
-    ----------
-    num_stocks: int
-        Number of stocks to display
-    export : str
-        Export dataframe data to csv,json,xlsx file
-    """
-    df = yahoofinance_model.get_most_shorted()
-    df.dropna(how="all", axis=1, inplace=True)
-    df = df.replace(float("NaN"), "")
-
-    if df.empty:
-        console.print("No data found.")
-    else:
-        print_rich_table(
-            df.head(num_stocks),
-            headers=list(df.columns),
-            show_index=False,
-            title="Most shorted stocks"
-        )
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "shorted",
-        df,
-    )
-
-```
-
-Note: As explained before, it is possible that this file needs to be created under `common/` directory rather than
-`stocks/`, which means that when that happens this function should be done in a generic way, i.e. not mentioning stocks
-or a specific context. The arguments will need to be parsed by `stocks_controller,py` and the other controller this
-function shares the data output with.
-
-### Controller
-
-1. Import `_view` associated with command we want to allow user to select.
-2. Add command name to variable `CHOICES` from `DarkPoolShortsController` class.
-3. Add command and source to `print_help()`.
-
-   ```python
-   def print_help(self):
-        """Print help"""
-        mt = MenuText("stocks/dps/")
-        mt.add_cmd("load")
-        mt.add_raw("\n")
-        mt.add_cmd("shorted")
-   ```
-
-4. If there is a condition to display or not the command, this is something that can be leveraged through this `add_cmd` method, e.g. `mt.add_cmd("shorted", self.ticker_is_loaded)`.
-
-5. Add command description to file `i18n/en.yml`. Use the path and command name as key, e.g. `stocks/dps/shorted` and the value as description. Please fill in other languages if this is something that you know.
-
-6. Add a method to `DarkPoolShortsController` class with name: `call_` followed by command name.
-   - This method must start defining a parser with arguments `add_help=False` and
-     `formatter_class=argparse.ArgumentDefaultsHelpFormatter`. In addition `prog` must have the same name as the command,
-     and `description` should be self-explanatory ending with a mention of the data source.
-   - Add parser arguments after defining parser. One important argument to add is the export capability. All commands should be able to export data.
-   - If there is a single or even a main argument, a block of code must be used to insert a fake argument on the list of
-     args provided by the user. This makes the terminal usage being faster.
-
-      ```
-      if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
-      ```
-
-   - Parse known args from list of arguments and values provided by the user.
-   - Call the function contained in a `_view.py` file with the arguments parsed by argparse.
-
-```python
-def call_shorted(self, other_args: List[str]):
-        """Process shorted command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="shorted",
-            description="Print up to 25 top ticker most shorted. [Source: Yahoo Finance]",
-        )
-        if other_args and "-" not in other_args[0]:
-            other_args.insert(0, "-l")
-
-        ns_parser = parse_known_args_and_warn(
-            parser,
-            other_args, 
-            limit=10, 
-            export=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        
-        if ns_parser:
-          yahoofinance_view.display_most_shorted(
-              num_stocks=ns_parser.num,
-              export=ns_parser.export,
-          )
-```
-
-If a new menu is being added the code looks like this:
-
-```
-@log_start_end(log=logger)
-def call_dps(self, _):
-    """Process dps command"""
-    from openbb_terminal.stocks.dark_pool_shorts.dps_controller import (
-        DarkPoolShortsController,
-    )
-
-    self.queue = self.load_class(
-        DarkPoolShortsController, self.ticker, self.start, self.stock, self.queue
-    )
-```
-
-The **import only occurs inside this menu call**, this is so that the loading time only happens here and not at the terminal startup. This is to avoid slow loading times for users that are not interested in `stocks/dps` menu.
-
-In addition, note the `self.load_class` which allows to not create a new DarkPoolShortsController instance but re-load the previous created one. Unless the arguments `self.ticker, self.start, self.stock` have changed since. 
-
-The `self.queue` list of commands is passed around as it contains the commands that the terminal must perform.
-
-### Add API endpoint
-1. Go to `openbb_terminal/api.py`.
-2. Add the endpoint to the `functions` dictionary. 
-  
-If your command only outputs a rich table, map only the model function to expose the DataFrame.
-```
-functions = {
-...
-    "stocks.dps.shorted": {
-        "model": "openbb_terminal.stocks.dark_pool_shorts.yahoofinance_model.get_most_shorted"
-    },
-...
-}
-```
-
-If your command also displays a chart, map both the model and view functions to expose the DataFrame and the chart.
-```
-    "stocks.dps.spos": {
-        "model": "openbb_terminal.stocks.dark_pool_shorts.stockgrid_model.get_net_short_position",
-        "view": "openbb_terminal.stocks.dark_pool_shorts.stockgrid_view.net_short_position",
-    },
-```
-
-### Add Documentation
-
-To check whether documentation is added correctly follow [Hugo Server instructions](/website/README.md).
-
-This is the structure that the documentation follows:
-
-```txt
-website/content/_index.md
-               /stocks/_index.md
-                      /load/_index.md
-                      /candle/_index.md
-                      /discovery/_index.md
-                                /ipo/_index.md
-                                    /...
-                                /...
-                      /...
-               /cryptocurrency/_index.md
-                              /chart/_index.md
-                              /defi/_index.md
-                                   /borrow/_index.md
-                                   /...
-                              /...
-               /...
-               /common/_index.md
-                      /technical_analysis/_index.md
-                                         /ema/_index.md
-                                         /...
-                      /...
-```
-
-Note that the `common` folder holds features that are common across contexts, e.g. `technical analysis` can be performed on both `stocks` or `crytpo`.
-
-
-To add a new command, there are two main actions that need to be done:
-
-1. Create a directory with the name of the command and a `_index.md` file within. Examples:
-
-   - When adding `ipo`, since this command belongs to context `stocks` and category `discovery`, we added a `ipo` folder with a `_index.md` file within to `website/content/stocks/discovery`.
-
-   - When adding `candle`, since this command belongs to context `stocks`, we added a `candle` folder with a `_index.md` file within to `website/content/stocks/`.
-
-2. The `_index.md` file should have the output of the `command -h` followed by a screenshot example of what the user can expect. Note that you can now drag and drop the images while editing the readme file on the remote web version of your PR branch. Github will create a link for it with format (https://user-images.githubusercontent.com/***/***.file_format).
-
-Example:
-
----
-
-```shell
-usage: ipo [--past PAST_DAYS] [--future FUTURE_DAYS]
-```
-
-Past and future IPOs. [Source: https://finnhub.io]
-
-- --past : Number of past days to look for IPOs. Default 0.
-- --future : Number of future days to look for IPOs. Default 10.
-
-<IMAGE HERE - Use drag and drop hint mentioned above>
-
----
-
-3. Update the Navigation bar to match the content you've added. This is done by adding 2 lines of code to `website/data/menu/`, i.e. a `name` and a `ref`. Example:
-
-```
----
-main:
-  - name: stocks
-    ref: "/stocks"
-    sub:
-      - name: load
-        ref: "/stocks/load"
-      - name: candle
-        ref: "/stocks/candle"
-      - name: discovery
-        ref: "/stocks/discovery"
-        sub:
-          - name: ipo
-            ref: "/stocks/discovery/ipo"
-          - name: map
-            ref: "/stocks/discovery/map"
-```
-
-
-### Open a Pull Request
-
-Once you're happy with what you have, push your branch to remote. E.g. `git push origin feature/AmazingFeature`
-
-A user may create a **Draft Pull Request** when he/she wants to discuss implementation with the team.
-
-The team will then assign your PR one of the following labels:
-
-| Label name     | Description                         | Example                                        |
-| -------------- | ----------------------------------- | ---------------------------------------------- |
-| `feat XS`      | Extra small feature                 | Add a preset                                   |
-| `feat S`       | Small T-Shirt size Feature          | New single command added                       |
-| `feat M`       | Medium T-Shirt size feature         | Multiple commands added from same data source  |
-| `feat L`       | Large T-Shirt size Feature          | New category added under context               |
-| `feat XL`      | Extra Large feature                 | New context added                              |
-| `enhancement`  | Enhancement                         | Add new parameter to existing command          |
-| `bug`          | Fix a bug                           | Fixes terminal crashing or warning message     |
-| `build`        | Build-related work                  | Fix a github action that is breaking the build |
-| `tests`        | Test-related work                   | Add/improve tests                              |
-| `docs`         | Improvements on documentation       | Add/improve documentation                      |
-| `refactor`     | Refactor code                       | Changing argparse location                     |
-| `docker`       | Docker-related work                 | Add/improve docker                             |
-| `help wanted`  | Extra attention is needed           | When a contributor needs help                  |
-| `do not merge` | Label to prevent pull request merge | When PR is not ready to be merged just yet     |
-
-### Review Process
-
-As soon as the Pull Request is opened, our repository has a specific set of github actions that will not only run
-linters on the branch just pushed, but also run pytest on it. This allows for another layer of safety on the code developed.
-
-In addition, our team is known for performing `diligent` code reviews. This not only allows us to reduce the amount of
-iterations on that code and have it to be more future proof, but also allows the developer to learn/improve his coding skills.
-
-Often in the past the reviewers have suggested better coding practices, e.g. using `1_000_000` instead of `1000000` for
-better visibility, or suggesting a speed optimization improvement.
 
 # ADVANCED
 
