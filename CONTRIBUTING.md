@@ -1206,9 +1206,9 @@ Worthy methods to mention are:
   - `parse_input`: Processes the string the user inputs into a list of actionable commands
   - `switch`: Acts upon the command action received
   - `parse_known_args_and_warn`: Parses the command with the `-` and `--` flags and variables. Some built-in flags are:
-    * `export_allowed`: Which can be set to `_NO_EXPORT_`, `_EXPORT_ONLY_RAW_DATA_ALLOWED_`, `_EXPORT_ONLY_FIGURES_ALLOWED_` and `_EXPORT_BOTH_RAW_DATA_AND_FIGURES_`
-    * `raw`: Displaying the data raw
-    * `limit`: Number of rows to display
+    - `export_allowed`: Which can be set to `_NO_EXPORT_`, `_EXPORT_ONLY_RAW_DATA_ALLOWED_`, `_EXPORT_ONLY_FIGURES_ALLOWED_` and `_EXPORT_BOTH_RAW_DATA_AND_FIGURES_`
+    - `raw`: Displaying the data raw
+    - `limit`: Number of rows to display
   - `menu`: Most important method. When a menu is executed, the way to call it is through `stocks_menu.menu()`
 
 ## Default Data Sources
@@ -1252,12 +1252,12 @@ The convention is as follows:
 ```
 
 The way to interpret this file is by following the path to a data source, e.g.
-* `stocks/search` relies on `FinanceDatabase`
-* `stocks/candle` does not rely on any data source. This means that it relies on data that has been loaded before.
-* `stocks/load` relies on `YahooFinance, `IEXCloud`, `AlphaVantage`, `Polygon` or `EODHD`.
-  * **The order is important as the first data source is the one utilized by default.** 
-* `stoks/options/unu` relies on `FDScanner`.
-* `stocks/options/exp` relies on `YahooFinance` by default but `Tradier` and `Nasdaq` sources are allowed.
+- `stocks/search` relies on `FinanceDatabase`
+- `stocks/candle` does not rely on any data source. This means that it relies on data that has been loaded before.
+- `stocks/load` relies on `YahooFinance, `IEXCloud`, `AlphaVantage`, `Polygon` or `EODHD`.
+  - **The order is important as the first data source is the one utilized by default.** 
+- `stoks/options/unu` relies on `FDScanner`.
+- `stocks/options/exp` relies on `YahooFinance` by default but `Tradier` and `Nasdaq` sources are allowed.
 
 ### Export Data
 
@@ -1274,12 +1274,12 @@ In the `_view.py` files it is common having at the end of each function `export_
 
 Let's go into each of these arguments:
 - `export` corresponds to the type of file we are exporting.
-  * If the user doesn't has anything selected, then this function doesn't do anything.
-  * The user can export multiple files and even name the files.
-  * The allowed type of files `json,csv,xlsx` for raw data and `jpg,png,svg` for figures depends on the `export_allowed` variable defined in `parse_known_args_and_warn`.
+  - If the user doesn't has anything selected, then this function doesn't do anything.
+  - The user can export multiple files and even name the files.
+  - The allowed type of files `json,csv,xlsx` for raw data and `jpg,png,svg` for figures depends on the `export_allowed` variable defined in `parse_known_args_and_warn`.
 - `os.path.dirname(os.path.abspath(__file__))` corresponds to the directory path
-  * This is important when `export folder` selected is the default because the data gets stored based on where it is called. 
-  * If this is called from a `common` folder, we can use `os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks")` insteaad
+  - This is important when `export folder` selected is the default because the data gets stored based on where it is called.
+  - If this is called from a `common` folder, we can use `os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks")` insteaad
 - `"contracts"` corresponds to the name of the exported file (+ unique datetime) if the user doesn't provide one
 - `df_contracts` corresponds to the dataframe with data. Although we don't call this function with the figure reference, because it is open, we can use `plt.savefig` to achieve that.
 
