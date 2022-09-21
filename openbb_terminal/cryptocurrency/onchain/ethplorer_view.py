@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 @check_api_key(["API_ETHPLORER_KEY"])
 def display_address_info(
     address: str,
-    top: int = 15,
+    limit: int = 15,
     sortby: str = "index",
     ascend: bool = False,
     export: str = "",
@@ -33,7 +33,7 @@ def display_address_info(
     ----------
     address: str
         Ethereum balance.
-    top: int
+    limit: int
         Limit of transactions. Maximum 100
     sortby: str
         Key to sort by.
@@ -52,7 +52,7 @@ def display_address_info(
     )
 
     print_rich_table(
-        df.head(top),
+        df.head(limit),
         headers=list(df.columns),
         show_index=False,
         title="Blockchain Token Information",
@@ -69,7 +69,7 @@ def display_address_info(
 @log_start_end(log=logger)
 @check_api_key(["API_ETHPLORER_KEY"])
 def display_top_tokens(
-    top: int = 15,
+    limit: int = 15,
     sortby: str = "rank",
     ascend: bool = True,
     export: str = "",
@@ -78,7 +78,7 @@ def display_top_tokens(
 
     Parameters
     ----------
-    top: int
+    limit: int
         Limit of transactions. Maximum 100
     sortby: str
         Key to sort by.
@@ -96,7 +96,7 @@ def display_top_tokens(
             df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
 
     print_rich_table(
-        df.head(top),
+        df.head(limit),
         headers=list(df.columns),
         show_index=False,
         title="Top ERC20 Tokens",

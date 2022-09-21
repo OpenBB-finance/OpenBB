@@ -154,7 +154,7 @@ def display_daily_volume_for_given_pair(
 def display_dex_volume_for_token(
     symbol: str = "WBTC",
     trade_amount_currency: str = "USD",
-    top: int = 10,
+    limit: int = 10,
     sortby: str = "tradeAmount",
     ascend: bool = True,
     export: str = "",
@@ -168,7 +168,7 @@ def display_dex_volume_for_token(
         ERC20 token symbol or address
     trade_amount_currency: str
         Currency of displayed trade amount. Default: USD
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data
@@ -199,7 +199,7 @@ def display_dex_volume_for_token(
         )
 
         print_rich_table(
-            df.head(top),
+            df.head(limit),
             headers=list(df.columns),
             show_index=False,
             title="Token Volume on Exchanges",

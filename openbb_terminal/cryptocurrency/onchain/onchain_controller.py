@@ -199,8 +199,8 @@ class OnchainController(BaseController):
 
         if ns_parser:
             blockchain_view.display_btc_confirmed_transactions(
-                since=int(datetime.timestamp(ns_parser.since)),
-                until=int(datetime.timestamp(ns_parser.until)),
+                start_date=int(datetime.timestamp(ns_parser.since)),
+                end_date=int(datetime.timestamp(ns_parser.until)),
                 export=ns_parser.export,
             )
 
@@ -525,7 +525,7 @@ class OnchainController(BaseController):
 
         if ns_parser and self.address:
             ethplorer_view.display_address_info(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
                 address=self.address,
@@ -691,7 +691,7 @@ class OnchainController(BaseController):
 
         if ns_parser:
             ethplorer_view.display_top_tokens(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
                 export=ns_parser.export,
@@ -1109,7 +1109,7 @@ class OnchainController(BaseController):
             bitquery_view.display_dex_volume_for_token(
                 symbol=ns_parser.coin,
                 trade_amount_currency=ns_parser.vs,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
                 export=ns_parser.export,
