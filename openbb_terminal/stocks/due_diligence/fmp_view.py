@@ -38,17 +38,10 @@ def rating(symbol: str, limit: int = 10, export: str = ""):
 
     if not df.empty:
         df = df.astype(str).applymap(lambda x: add_color(x))
-        l_recoms = [col for col in df.columns if "Recommendation" in col]
-        l_recoms_show = [
-            recom.replace("rating", "")
-            .replace("Details", "")
-            .replace("Recommendation", "")
-            for recom in l_recoms
-        ]
-        l_recoms_show[0] = "Rating"
+
         print_rich_table(
-            df[l_recoms].head(limit),
-            headers=l_recoms_show,
+            df.head(limit),
+            headers=df.columns,
             show_index=True,
             title="Rating",
         )

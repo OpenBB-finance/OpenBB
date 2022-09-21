@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
+from typing import List
 
 import requests
 from bs4 import BeautifulSoup
@@ -12,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_suppliers(symbol: str) -> str:
+def get_suppliers(symbol: str) -> List[str]:
     """Get suppliers from ticker provided. [Source: CSIMarket]
 
     Parameters
@@ -22,8 +23,8 @@ def get_suppliers(symbol: str) -> str:
 
     Returns
     -------
-    str
-        Suppliers for ticker provided
+    list[str]
+        List of suppliers for ticker provided
     """
     # TODO: This link has a lot more data that we can display
     # TODO: We could at least sort the tickers based on market cap
@@ -38,13 +39,11 @@ def get_suppliers(symbol: str) -> str:
     ):
         l_supplier.append(supplier.text.replace("\n", "").strip())
 
-    if l_supplier:
-        return f"List of Suppliers: {', '.join(l_supplier)}\n"
-    return "No suppliers found.\n"
+    return l_supplier
 
 
 @log_start_end(log=logger)
-def get_customers(symbol: str) -> str:
+def get_customers(symbol: str) -> List[str]:
     """Print customers from ticker provided
 
     Parameters
@@ -54,8 +53,8 @@ def get_customers(symbol: str) -> str:
 
     Returns
     -------
-    str
-        Customers for ticker provided
+    list[str]
+        List of customers for ticker provided
     """
     # TODO: This link has a lot more data that we can display
     # TODO: We could at least sort the tickers based on market cap
@@ -68,6 +67,4 @@ def get_customers(symbol: str) -> str:
     for customer in text_customer_chain.findAll("td", {"class": "plava svjetlirub"}):
         l_customer.append(customer.text)
 
-    if l_customer:
-        return f"List of Customers: {', '.join(l_customer)}\n"
-    return "No customers found.\n"
+    return l_customer

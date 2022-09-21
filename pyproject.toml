@@ -1,4 +1,3 @@
-# https://python-poetry.org/docs/dependency-specification/
 [tool.poetry]
 name = "OpenBBTerminal"
 version = "1.8.0"
@@ -101,7 +100,7 @@ pythclient = "^0.1.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
-pylint = "2.13.9"
+pylint = "2.15.2"
 flake8 = "^3.9.0"
 mypy = "^0.930"
 mock = "^4.0.3"

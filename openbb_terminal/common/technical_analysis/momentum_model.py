@@ -17,9 +17,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def cci(
-    high_vals: pd.Series,
-    low_vals: pd.Series,
-    close_vals: pd.Series,
+    data: pd.DataFrame,
     window: int = 14,
     scalar: float = 0.0015,
 ) -> pd.DataFrame:
@@ -43,11 +41,12 @@ def cci(
     pd.DataFrame
         Dataframe of technical indicator
     """
+
     return pd.DataFrame(
         ta.cci(
-            high=high_vals,
-            low=low_vals,
-            close=close_vals,
+            high=data["High"],
+            low=data["Low"],
+            close=data["Adj Close"],
             length=window,
             scalar=scalar,
         ).dropna()

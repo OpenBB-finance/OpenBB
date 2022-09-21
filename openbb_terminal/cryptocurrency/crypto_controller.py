@@ -374,15 +374,12 @@ class CryptoController(CryptoBaseController):
                 qa_controller,
             )
 
-            if self.current_interval != "1440":
-                console.print("Only interval `1day` is possible for now.\n")
-            else:
-                self.queue = self.load_class(
-                    qa_controller.QaController,
-                    self.symbol,
-                    self.current_df,
-                    self.queue,
-                )
+            self.queue = self.load_class(
+                qa_controller.QaController,
+                self.symbol,
+                self.current_df,
+                self.queue,
+            )
 
     @log_start_end(log=logger)
     def call_pred(self, _):

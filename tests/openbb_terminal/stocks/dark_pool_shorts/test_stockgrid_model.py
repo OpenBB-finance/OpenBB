@@ -11,7 +11,7 @@ from openbb_terminal.stocks.dark_pool_shorts import stockgrid_model
 def test_get_dark_pool_short_positions(recorder):
     result_df = stockgrid_model.get_dark_pool_short_positions(
         sortby="sv",
-        ascending=True,
+        ascend=True,
     )
 
     recorder.capture(result_df)

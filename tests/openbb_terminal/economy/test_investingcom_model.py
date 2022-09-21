@@ -1,7 +1,6 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
-import datetime
 import pandas as pd
 import pytest
 
@@ -32,8 +31,8 @@ def test_get_yieldcurve(country):
             "united states",
             "high",
             "Employment",
-            datetime.date(2022, 7, 7),
-            datetime.date(2022, 7, 8),
+            "2022-7-7",
+            "2022-7-8",
         ],
     ],
 )
