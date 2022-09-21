@@ -178,7 +178,7 @@ class FundamentalAnalysisController(StockBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            eclect_us_view.display_analysis(self.ticker)
+            eclect_us_view.display_analysis(symbol=self.ticker, export=ns_parser.export)
 
     @log_start_end(log=logger)
     def call_mgmt(self, other_args: List[str]):
@@ -227,7 +227,9 @@ class FundamentalAnalysisController(StockBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            finviz_view.display_screen_data(self.ticker)
+            finviz_view.display_screen_data(
+                symbol=self.ticker,
+                export=ns_parser.export)
 
     @log_start_end(log=logger)
     def call_score(self, other_args: List[str]):
