@@ -25,6 +25,7 @@ from oandapyV20.exceptions import V20Error
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal import keys_model
 from openbb_terminal.core.config.paths import USER_ENV_FILE
 from openbb_terminal.cryptocurrency.coinbase_helpers import (
     CoinbaseProAuth,
@@ -207,28 +208,15 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         if show_output:
             console.print(self.key_dict["POLYGON"] + "\n")
 
-    def check_fred_key(self, show_output: bool = False) -> None:
+    def menu_check_fred_key(self, status: str = "", show_output: bool = False) -> None:
         """Check FRED key"""
-        self.cfg_dict["FRED"] = "fred"
-        if cfg.API_FRED_KEY == "REPLACE_ME":
-            logger.info("FRED key not defined")
-            self.key_dict["FRED"] = "not defined"
-        else:
-            r = requests.get(
-                f"https://api.stlouisfed.org/fred/series?series_id=GNPCA&api_key={cfg.API_FRED_KEY}"
-            )
-            if r.status_code in [403, 401, 400]:
-                logger.warning("FRED key defined, test failed")
-                self.key_dict["FRED"] = "defined, test failed"
-            elif r.status_code == 200:
-                logger.info("FRED key defined, test passed")
-                self.key_dict["FRED"] = "defined, test passed"
-            else:
-                logger.warning("FRED key defined, test inconclusive")
-                self.key_dict["FRED"] = "defined, test inconclusive"
 
-        if show_output:
-            console.print(self.key_dict["FRED"] + "\n")
+        self.cfg_dict["FRED"] = "fred"
+
+        if not status:
+            status = keys_model.check_fred_key(show_output)
+        
+        self.key_dict["FRED"] = status
 
     def check_news_key(self, show_output: bool = False) -> None:
         """Check News API key"""
@@ -828,7 +816,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         self.check_fmp_key()
         self.check_quandl_key()
         self.check_polygon_key()
-        self.check_fred_key()
+        self.menu_check_fred_key()
         self.check_news_key()
         self.check_tradier_key()
         self.check_cmc_key()
@@ -1055,10 +1043,8 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             other_args.insert(0, "-k")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            os.environ["OPENBB_API_FRED_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "OPENBB_API_FRED_KEY", ns_parser.key)
-            cfg.API_FRED_KEY = ns_parser.key
-            self.check_fred_key(show_output=True)
+            status = keys_model.set_fred_key(ns_parser.key, True)
+            self.menu_check_fred_key(status)
 
     @log_start_end(log=logger)
     def call_news(self, other_args: List[str]):

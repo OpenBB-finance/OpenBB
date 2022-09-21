@@ -1882,6 +1882,7 @@ functions = {
     "etf.candle": {"model": "openbb_terminal.stocks.stocks_helper.display_candle"},
     "forex.candle": {"model": "openbb_terminal.forex.forex_helper.display_candle"},
     "forex.load": {"model": "openbb_terminal.forex.forex_helper.load"},
+    "keys.fred": {"model": "openbb_terminal.keys_model.set_fred_key"},
 }
 
 
