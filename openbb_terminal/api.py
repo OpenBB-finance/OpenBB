@@ -18,10 +18,18 @@ from .forex import forex_api as forex
 from .mutual_funds import mutual_fund_api as funds
 from .portfolio import portfolio_api as portfolio
 
+from openbb_terminal.rich_config import console
+
 try:
     from .forecast import forecast_api as forecast
+
+    forecasting = True
 except ImportError:
-    pass
+    forecasting = False
+    console.print(
+        "[red]Forecast dependencies not installed,",
+        " will not load this component of API[/red]",
+    )
 
 from .config_terminal import theme
 
@@ -1899,22 +1907,89 @@ functions = {
     "forex.candle": {"model": "openbb_terminal.forex.forex_helper.display_candle"},
     "forex.load": {"model": "openbb_terminal.forex.forex_helper.load"},
 }
+forecast_extras = {
+    "forecast.load": {"model": "openbb_terminal.forecast.forecast_model.load"},
+    "forecast.show": {
+        "model": "openbb_terminal.forecast.forecast_view.show_df",
+        "view": "openbb_terminal.forecast.forecast_view.show_df",
+    },
+    "forecast.plot": {
+        "model": "openbb_terminal.forecast.forecast_view.display_plot",
+        "view": "openbb_terminal.forecast.forecast_view.display_plot",
+    },
+    "forecast.clean": {"model": "openbb_terminal.forecast.forecast_model.clean"},
+    "forecast.combine": {
+        "model": "openbb_terminal.forecast.forecast_model.combine_dfs"
+    },
+    "forecast.desc": {"model": "openbb_terminal.forecast.forecast_view.describe_df"},
+    "forecast.corr": {"model": "openbb_terminal.forecast.forecast_view.display_corr"},
+    "forecast.season": {
+        "model": "openbb_terminal.forecast.forecast_view.display_seasonality"
+    },
+    "forecast.delete": {
+        "model": "openbb_terminal.forecast.forecast_model.delete_column"
+    },
+    "forecast.rename": {
+        "model": "openbb_terminal.forecast.forecast_model.rename_column"
+    },
+    "forecast.export": {"model": "openbb_terminal.forecast.forecast_view.export_df"},
+    "forecast.signal": {"model": "openbb_terminal.forecast.forecast_model.add_signal"},
+    "forecast.atr": {"model": "openbb_terminal.forecast.forecast_model.add_atr"},
+    "forecast.ema": {"model": "openbb_terminal.forecast.forecast_model.add_ema"},
+    "forecast.sto": {"model": "openbb_terminal.forecast.forecast_model.add_sto"},
+    "forecast.rsi": {"model": "openbb_terminal.forecast.forecast_model.add_rsi"},
+    "forecast.roc": {"model": "openbb_terminal.forecast.forecast_model.add_roc"},
+    "forecast.mom": {"model": "openbb_terminal.forecast.forecast_model.add_momentum"},
+    "forecast.delta": {"model": "openbb_terminal.forecast.forecast_model.add_delta"},
+    "forecast.expo": {
+        "model": "openbb_terminal.forecast.expo_model.get_expo_data",
+        "view": "openbb_terminal.forecast.expo_view.display_expo_forecast",
+    },
+    "forecast.theta": {
+        "model": "openbb_terminal.forecast.theta_model.get_theta_data",
+        "view": "openbb_terminal.forecast.theta_view.display_theta_forecast",
+    },
+    "forecast.linregr": {
+        "model": "openbb_terminal.forecast.linregr_model.get_linear_regression_data",
+        "view": "openbb_terminal.forecast.linregr_view.display_linear_regression",
+    },
+    "forecast.regr": {
+        "model": "openbb_terminal.forecast.regr_model.get_regression_data",
+        "view": "openbb_terminal.forecast.regr_view.display_regression",
+    },
+    "forecast.rnn": {
+        "model": "openbb_terminal.forecast.rnn_model.get_rnn_data",
+        "view": "openbb_terminal.forecast.rnn_view.display_rnn_forecast",
+    },
+    "forecast.brnn": {
+        "model": "openbb_terminal.forecast.brnn_model.get_brnn_data",
+        "view": "openbb_terminal.forecast.brnn_view.display_brnn_forecast",
+    },
+    "forecast.nbeats": {
+        "model": "openbb_terminal.forecast.nbeats_model.get_NBEATS_data",
+        "view": "openbb_terminal.forecast.nbeats_view.display_nbeats_forecast",
+    },
+    "forecast.tcn": {
+        "model": "openbb_terminal.forecast.tcn_model.get_tcn_data",
+        "view": "openbb_terminal.forecast.tcn_view.display_tcn_forecast",
+    },
+    "forecast.trans": {
+        "model": "openbb_terminal.forecast.trans_model.get_trans_data",
+        "view": "openbb_terminal.forecast.trans_view.display_trans_forecast",
+    },
+    "forecast.tft": {
+        "model": "openbb_terminal.forecast.tft_model.get_tft_data",
+        "view": "openbb_terminal.forecast.tft_view.display_tft_forecast",
+    },
+}
 
-
-"""
-api = Loader(functions=functions)
-api.stocks.get_news()
-api.economy.bigmac(chart=True)
-api.economy.bigmac(chart=False)
-
-
-TO USE THE API DIRECTLY JUST IMPORT IT:
-from openbb_terminal.api import openbb (or: from openbb_terminal.api import openbb as api)
-"""
+if forecasting:
+    functions = {**functions, **forecast_extras}
 
 
 def copy_func(f) -> Callable:
-    """Copies the contents and attributes of the entered function. Based on https://stackoverflow.com/a/13503277
+    """Copies the contents and attributes of the entered function. Based on
+    https://stackoverflow.com/a/13503277
     Parameters
     ----------
     f: Callable
@@ -2157,7 +2232,15 @@ class Loader:
         module_path, function_name = function_path.rsplit(sep=".", maxsplit=1)
         module = cls.__load_module(module_path=module_path)
 
-        return getattr(module, function_name)
+        try:
+            function = getattr(module, function_name)
+        except AttributeError:
+            function = None
+            console.print("[red]Could not find the item below:[red]")
+            console.print(f"function: {function_name}")
+            console.print(f"module path: {module_path}")
+            console.print(f"module: {module}")
+        return function
 
     @classmethod
     def build_function_map(cls, funcs: dict) -> dict:
@@ -2209,4 +2292,6 @@ class Loader:
         return function_map
 
 
+# TO USE THE API DIRECTLY JUST IMPORT IT:
+# from openbb_terminal.api import openbb (or: from openbb_terminal.api import openbb as api)
 openbb = Loader(funcs=functions).openbb
