@@ -1274,7 +1274,7 @@ def compose_export_path(func_name: str, dir_path: str) -> Tuple[str, str]:
 
     full_path_dir = USER_EXPORTS_DIRECTORY
 
-    return full_path_dir, default_filename
+    return str(full_path_dir), default_filename
 
 
 def export_data(

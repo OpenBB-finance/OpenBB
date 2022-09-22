@@ -211,7 +211,7 @@ class ReportController(BaseController):
             for idx, args in enumerate(params):
                 d_report_params[args] = other_args[idx]
 
-            d_report_params["report_name"] = notebook_output
+            d_report_params["report_name"] = str(notebook_output)
 
             result = pm.execute_notebook(
                 notebook_template + ".ipynb",
