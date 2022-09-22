@@ -33,29 +33,29 @@ def get_filings_analysis(symbol: str) -> pd.DataFrame:
 
     if response.status_code != 200:
         return pd.DataFrame()
-    else:
-        response_dict = response.json()
 
-        def resultGroupMapper(g):
-            def resultMapper(a):
-                return {
-                    "Good": a["good_or_bad"] == "good",
-                    "Sentence": a["sentence"],
-                    "Group": g,
-                }
+    response_dict = response.json()
 
-            return resultMapper
+    def resultGroupMapper(g):
+        def resultMapper(a):
+            return {
+                "Good": a["good_or_bad"] == "good",
+                "Sentence": a["sentence"],
+                "Group": g,
+            }
 
-        risk = pd.DataFrame(
-            map(resultGroupMapper("Risk factors"), response_dict[0]["rf_highlights"]),
-            columns=["Group", "Good", "Sentence"],
-        )
-        analysis = pd.DataFrame(
-            map(
-                resultGroupMapper("Discussion and Analysis"),
-                response_dict[0]["daa_highlights"],
-            ),
-            columns=["Group", "Good", "Sentence"],
-        )
+        return resultMapper
 
-        return pd.concat([risk, analysis], ignore_index=True)
+    risk = pd.DataFrame(
+        map(resultGroupMapper("Risk factors"), response_dict[0]["rf_highlights"]),
+        columns=["Group", "Good", "Sentence"],
+    )
+    analysis = pd.DataFrame(
+        map(
+            resultGroupMapper("Discussion and Analysis"),
+            response_dict[0]["daa_highlights"],
+        ),
+        columns=["Group", "Good", "Sentence"],
+    )
+
+    return pd.concat([risk, analysis], ignore_index=True)
