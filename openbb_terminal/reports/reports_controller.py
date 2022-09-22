@@ -5,6 +5,7 @@ import logging
 
 # pylint: disable=R1732
 import os
+from pathlib import Path
 import webbrowser
 from ast import literal_eval
 from datetime import datetime
@@ -14,6 +15,7 @@ import papermill as pm
 from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.config.paths import USER_EXPORTS_DIRECTORY
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -203,12 +205,7 @@ class ReportController(BaseController):
                 + "_"
                 + f"{report_to_run}{args_to_output}"
             )
-            notebook_output = os.path.join(
-                "openbb_terminal",
-                "reports",
-                "stored",
-                report_output_name,
-            )
+            notebook_output = USER_EXPORTS_DIRECTORY / "reports" / report_output_name
 
             d_report_params = {}
             for idx, args in enumerate(params):
@@ -225,18 +222,13 @@ class ReportController(BaseController):
 
             if not result["metadata"]["papermill"]["exception"]:
                 if obbff.OPEN_REPORT_AS_HTML:
-                    report_output_path = os.path.join(
-                        os.path.abspath(os.path.join(".")), notebook_output + ".html"
-                    )
+                    report_output_path = Path(str(notebook_output)+".html")
                     print(report_output_path)
                     webbrowser.open(f"file://{report_output_path}")
 
                 console.print("")
                 console.print(
-                    "Exported: ",
-                    os.path.join(
-                        os.path.abspath(os.path.join(".")), notebook_output + ".html"
-                    ),
+                    "Exported: {report_output_path}.html",
                     "\n",
                 )
             else:

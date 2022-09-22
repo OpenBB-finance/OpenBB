@@ -469,14 +469,14 @@ class SettingsController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="userdata",
-            description="Select folder where to store user data such as exports, presets, logs",
+            description="Set folder to store user data such as exports, presets, logs",
         )
         parser.add_argument(
             "--folder",
             type=str,
             dest="folder",
-            help="Folder where to store user data. 'default' redirects to $HOME/OpenBBUserData",
-            default="default",
+            help="Folder where to store user data. ",
+            default=f"{str(Path.home() / 'OpenBBUserData')}",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--folder")

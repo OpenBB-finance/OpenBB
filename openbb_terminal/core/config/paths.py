@@ -1,5 +1,6 @@
 # IMPORTATION STANDARD
 from pathlib import Path
+import dotenv
 
 
 HOME_DIRECTORY = Path.home()
@@ -8,6 +9,9 @@ SETTINGS_DIRECTORY = HOME_DIRECTORY / ".openbb_terminal"
 REPOSITORY_ENV_FILE = HOME_DIRECTORY / ".env"
 USER_ENV_FILE = SETTINGS_DIRECTORY / ".env"
 
-USER_DATA_DIRECTORY = HOME_DIRECTORY / "OpenBBUserData"
+if dotenv.get_key(USER_ENV_FILE, "OPENBB_USER_DATA_FOLDER_PATH"):
+    USER_DATA_DIRECTORY = Path(dotenv.get_key(USER_ENV_FILE, "OPENBB_USER_DATA_FOLDER_PATH"))
+else:
+    USER_DATA_DIRECTORY = Path.home() / "OpenBBUserData"
 
 USER_EXPORTS_DIRECTORY = USER_DATA_DIRECTORY / "exports"

@@ -64,7 +64,7 @@ en:
   settings/_plot_height_pct: Plot height [%]
   settings/_plot_width_pct: Plot width [%]
   settings/_monitor: Monitor
-  settings/_export_folder: Export Folder
+  settings/_user_data_folder: User Data Folder
   settings/_timezone: Timezone
   settings/source: specify data source file
   settings/_data_source: Data sources
