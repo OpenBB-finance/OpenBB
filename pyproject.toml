@@ -122,6 +122,7 @@ types-setuptools = "^57.4.7"
 pre-commit = "^2.16.0"
 pytest-cov = "^3.0.0"
 types-six = "^1.16.12"
+nbmake = ">0.5.0"
 
 [tool.poetry.extras]
 prediction = ["tensorflow", "u8darts"]
