@@ -1898,7 +1898,7 @@ functions = {
     "keys.cmc": {"model": "openbb_terminal.keys_model.set_cmc_key"},
     "keys.finnhub": {"model": "openbb_terminal.keys_model.set_finnhub_key"},
     "keys.iex": {"model": "openbb_terminal.keys_model.set_iex_key"},
-    # "keys.reddit": {"model": "openbb_terminal.keys_model.set_reddit_key"},
+    "keys.reddit": {"model": "openbb_terminal.keys_model.set_reddit_key"},
     # "keys.twitter": {"model": "openbb_terminal.keys_model.set_twitter_key"},
     # "keys.rh": {"model": "openbb_terminal.keys_model.set_rh_key"},
     # "keys.degiro": {"model": "openbb_terminal.keys_model.set_degiro_key"},

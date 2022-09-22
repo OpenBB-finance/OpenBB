@@ -180,52 +180,12 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.check_iex_key(show_output=show_output)
         self.key_dict["IEXCLOUD"] = status
 
-    def check_reddit_key(self, show_output: bool = False) -> None:
+    def check_reddit_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Reddit key"""
         self.cfg_dict["REDDIT"] = "reddit"
-        reddit_keys = [
-            cfg.API_REDDIT_CLIENT_ID,
-            cfg.API_REDDIT_CLIENT_SECRET,
-            cfg.API_REDDIT_USERNAME,
-            cfg.API_REDDIT_PASSWORD,
-            cfg.API_REDDIT_USER_AGENT,
-        ]
-        if "REPLACE_ME" in reddit_keys:
-            logger.info("Reddit key not defined")
-            self.key_dict["REDDIT"] = "not defined"
-        else:
-
-            try:
-                with suppress_stdout():
-                    praw_api = praw.Reddit(
-                        client_id=cfg.API_REDDIT_CLIENT_ID,
-                        client_secret=cfg.API_REDDIT_CLIENT_SECRET,
-                        username=cfg.API_REDDIT_USERNAME,
-                        user_agent=cfg.API_REDDIT_USER_AGENT,
-                        password=cfg.API_REDDIT_PASSWORD,
-                        check_for_updates=False,
-                        comment_kind="t1",
-                        message_kind="t4",
-                        redditor_kind="t2",
-                        submission_kind="t3",
-                        subreddit_kind="t5",
-                        trophy_kind="t6",
-                        oauth_url="https://oauth.reddit.com",
-                        reddit_url="https://www.reddit.com",
-                        short_url="https://redd.it",
-                        ratelimit_seconds=5,
-                        timeout=16,
-                    )
-
-                    praw_api.user.me()
-                logger.info("Reddit key defined, test passed")
-                self.key_dict["REDDIT"] = "defined, test passed"
-            except (Exception, ResponseException):
-                logger.warning("Reddit key defined, test failed")
-                self.key_dict["REDDIT"] = "defined, test failed"
-
-        if show_output:
-            console.print(self.key_dict["REDDIT"] + "\n")
+        if not status:
+            status = keys_model.check_reddit_key(show_output=show_output)
+        self.key_dict["REDDIT"] = status
 
     def check_twitter_key(self, show_output: bool = False) -> None:
         """Check Twitter key"""
@@ -776,7 +736,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_av_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.check_av_key(status, False)
+            self.check_av_key(status, show_output=False)
 
     @log_start_end(log=logger)
     def call_fmp(self, other_args: List[str]):
@@ -807,7 +767,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_fmp_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.check_fmp_key(status, False)
+            self.check_fmp_key(status, show_output=False)
 
     @log_start_end(log=logger)
     def call_quandl(self, other_args: List[str]):
@@ -836,7 +796,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_quandl_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.check_quandl_key(status, False)
+            self.check_quandl_key(status, show_output=False)
 
     @log_start_end(log=logger)
     def call_polygon(self, other_args: List[str]):
@@ -865,7 +825,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_polygon_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.check_polygon_key(status, False)
+            self.check_polygon_key(status, show_output=False)
 
     @log_start_end(log=logger)
     def call_fred(self, other_args: List[str]):
@@ -894,7 +854,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_fred_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.check_fred_key(status, False)
+            self.check_fred_key(status, show_output=False)
 
     @log_start_end(log=logger)
     def call_news(self, other_args: List[str]):
@@ -923,7 +883,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_news_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.check_news_key(status, False)
+            self.check_news_key(status, show_output=False)
 
     @log_start_end(log=logger)
     def call_tradier(self, other_args: List[str]):
@@ -952,7 +912,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_tradier_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.check_tradier_key(status, False)
+            self.check_tradier_key(status, show_output=False)
 
     @log_start_end(log=logger)
     def call_cmc(self, other_args: List[str]):
@@ -980,7 +940,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_cmc_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.check_cmc_key(status, False)
+            self.check_cmc_key(status, show_output=False)
 
     @log_start_end(log=logger)
     def call_finnhub(self, other_args: List[str]):
@@ -1008,7 +968,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_finnhub_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.check_finnhub_key(status, False)
+            self.check_finnhub_key(status, show_output=False)
 
     @log_start_end(log=logger)
     def call_iex(self, other_args: List[str]):
@@ -1036,7 +996,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_iex_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.check_iex_key(status, False)
+            self.check_iex_key(status, show_output=False)
 
     @log_start_end(log=logger)
     def call_reddit(self, other_args: List[str]):
@@ -1093,42 +1053,22 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             return
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            os.environ["OPENBB_API_REDDIT_CLIENT_ID"] = ns_parser.client_id
-            dotenv.set_key(
-                self.env_file, "OPENBB_API_REDDIT_CLIENT_ID", ns_parser.client_id
-            )
-            cfg.API_REDDIT_CLIENT_ID = ns_parser.client_id
-
-            os.environ["OPENBB_API_REDDIT_CLIENT_SECRET"] = ns_parser.client_secret
-            dotenv.set_key(
-                self.env_file,
-                "OPENBB_API_REDDIT_CLIENT_SECRET",
-                ns_parser.client_secret,
-            )
-            cfg.API_REDDIT_CLIENT_SECRET = ns_parser.client_secret
-
-            os.environ["OPENBB_API_REDDIT_PASSWORD"] = ns_parser.password
-            dotenv.set_key(
-                self.env_file, "OPENBB_API_REDDIT_PASSWORD", ns_parser.password
-            )
-            cfg.API_REDDIT_PASSWORD = ns_parser.password
-
-            os.environ["OPENBB_API_REDDIT_USERNAME"] = ns_parser.username
-            dotenv.set_key(
-                self.env_file, "OPENBB_API_REDDIT_USERNAME", ns_parser.username
-            )
-            cfg.API_REDDIT_USERNAME = ns_parser.username
 
             slash_components = "".join([f"/{val}" for val in self.queue])
             useragent = " ".join(ns_parser.user_agent) + " " + slash_components
             useragent = useragent.replace('"', "")
             self.queue = []
 
-            os.environ["OPENBB_API_REDDIT_USER_AGENT"] = useragent
-            dotenv.set_key(self.env_file, "OPENBB_API_REDDIT_USER_AGENT", useragent)
-            cfg.API_REDDIT_USER_AGENT = useragent
-
-            self.check_reddit_key(show_output=True)
+            status = keys_model.set_reddit_key(
+                client_id=ns_parser.client_id,
+                client_secret=ns_parser.client_secret,
+                password=ns_parser.password,
+                username=ns_parser.username,
+                useragent=ns_parser.useragent,
+                persist=True,
+                show_output=True,
+            )
+            self.check_reddit_key(status, show_output=False)
 
     @log_start_end(log=logger)
     def call_twitter(self, other_args: List[str]):

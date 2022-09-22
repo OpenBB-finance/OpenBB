@@ -4,6 +4,8 @@ from typing import Dict
 import dotenv
 import quandl
 import requests
+from prawcore.exceptions import ResponseException
+import praw
 import pyEX
 from pyEX.common.exception import PyEXception
 from coinmarketcapapi import CoinMarketCapAPI, CoinMarketCapAPIError
@@ -12,6 +14,7 @@ from openbb_terminal import config_terminal as cfg
 from openbb_terminal.core.config.paths import USER_ENV_FILE
 from openbb_terminal.rich_config import console
 
+from openbb_terminal.terminal_helper import suppress_stdout
 from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
@@ -752,6 +755,113 @@ def check_iex_key(show_output: bool = False) -> str:
             status = "defined, test passed"
         except PyEXception:
             logger.exception("IEX Cloud key defined, test failed")
+            status = "defined, test failed"
+
+    if show_output:
+        console.print(status + "\n")
+
+    return status
+
+
+def set_reddit_key(
+    client_id: str,
+    client_secret: str,
+    password: str,
+    username: str,
+    useragent: str,
+    persist: bool = False,
+    show_output: bool = False,
+):
+    """Set Reddit key.
+
+    Parameters
+    ----------
+        key: str
+            API key
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+    """
+
+    set_key("OPENBB_API_REDDIT_CLIENT_ID", client_id, persist)
+    set_key("OPENBB_API_REDDIT_CLIENT_SECRET", client_secret, persist)
+    set_key("OPENBB_API_REDDIT_PASSWORD", password, persist)
+    set_key("OPENBB_API_REDDIT_USERNAME", username, persist)
+    set_key("OPENBB_API_REDDIT_USER_AGENT", useragent, persist)
+
+    status = check_reddit_key(show_output)
+
+    return status
+
+
+def check_reddit_key(show_output: bool = False) -> str:
+    """Check Reddit key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+
+    """
+
+    reddit_keys = [
+        cfg.API_REDDIT_CLIENT_ID,
+        cfg.API_REDDIT_CLIENT_SECRET,
+        cfg.API_REDDIT_USERNAME,
+        cfg.API_REDDIT_PASSWORD,
+        cfg.API_REDDIT_USER_AGENT,
+    ]
+    if "REPLACE_ME" in reddit_keys:
+        logger.info("Reddit key not defined")
+        status = "not defined"
+    else:
+
+        try:
+            with suppress_stdout():
+                praw_api = praw.Reddit(
+                    client_id=cfg.API_REDDIT_CLIENT_ID,
+                    client_secret=cfg.API_REDDIT_CLIENT_SECRET,
+                    username=cfg.API_REDDIT_USERNAME,
+                    user_agent=cfg.API_REDDIT_USER_AGENT,
+                    password=cfg.API_REDDIT_PASSWORD,
+                    check_for_updates=False,
+                    comment_kind="t1",
+                    message_kind="t4",
+                    redditor_kind="t2",
+                    submission_kind="t3",
+                    subreddit_kind="t5",
+                    trophy_kind="t6",
+                    oauth_url="https://oauth.reddit.com",
+                    reddit_url="https://www.reddit.com",
+                    short_url="https://redd.it",
+                    ratelimit_seconds=5,
+                    timeout=16,
+                )
+
+                praw_api.user.me()
+            logger.info("Reddit key defined, test passed")
+            status = "defined, test passed"
+        except (Exception, ResponseException):
+            logger.warning("Reddit key defined, test failed")
             status = "defined, test failed"
 
     if show_output:
