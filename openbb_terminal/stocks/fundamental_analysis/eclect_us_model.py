@@ -36,17 +36,25 @@ def get_filings_analysis(symbol: str) -> pd.DataFrame:
     else:
         response_dict = response.json()
 
-        mapper = lambda g: lambda a: {
-            "Good": a["good_or_bad"] == "good",
-            "Sentence": a["sentence"],
-            "Group": g,
-        }
+        def resultGroupMapper(g):
+            def resultMapper(a):
+                return {
+                    "Good": a["good_or_bad"] == "good",
+                    "Sentence": a["sentence"],
+                    "Group": g,
+                }
+
+            return resultMapper
+
         risk = pd.DataFrame(
-            map(mapper("Risk factors"), response_dict[0]["rf_highlights"]),
+            map(resultGroupMapper("Risk factors"), response_dict[0]["rf_highlights"]),
             columns=["Group", "Good", "Sentence"],
         )
         analysis = pd.DataFrame(
-            map(mapper("Discussion and Analysis"), response_dict[0]["daa_highlights"]),
+            map(
+                resultGroupMapper("Discussion and Analysis"),
+                response_dict[0]["daa_highlights"],
+            ),
             columns=["Group", "Good", "Sentence"],
         )
 
