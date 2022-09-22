@@ -1,16 +1,19 @@
 """ Fred Model """
 __docformat__ = "numpy"
 
+import os
 import logging
 import textwrap
 from typing import Dict, List, Tuple
 from datetime import datetime, timedelta
 from requests import HTTPError
 
+
 import fred
 import pandas as pd
 import requests
 from fredapi import Fred
+import certifi
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import log_start_end
@@ -175,6 +178,11 @@ def get_series_data(
     df = pd.DataFrame()
 
     try:
+        # Necessary for installer so that it can locate the correct certificates for
+        # API calls and https
+        # https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/73270162#73270162
+        os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
+        os.environ["SSL_CERT_FILE"] = certifi.where()
         fredapi_client = Fred(cfg.API_FRED_KEY)
         df = fredapi_client.get_series(series_id, start_date, end_date)
     # Series does not exist & invalid api keys
