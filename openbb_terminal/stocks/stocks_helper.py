@@ -1011,7 +1011,7 @@ def display_candle(
     interval: int = 1440,
     end_date: datetime = datetime.now(),
     prepost: bool = False,
-    source: str = "yf",
+    source: str = "YahooFinance",
     iexrange: str = "ytd",
     weekly: bool = False,
     monthly: bool = False,
@@ -1072,6 +1072,7 @@ def display_candle(
             weekly,
             monthly,
         )
+        data = process_candle(data)
 
     if add_trend:
         if (data.index[1] - data.index[0]).total_seconds() >= 86400:
