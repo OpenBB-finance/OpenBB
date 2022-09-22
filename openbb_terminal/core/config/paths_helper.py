@@ -50,7 +50,7 @@ dirs_list = [
     CUSTOM_IMPORTS_DIRECTORY,
     CUSTOM_IMPORTS_DIRECTORY / "econometrics",
     USER_EXPORTS_DIRECTORY,
-    USER_EXPORTS_DIRECTORY/ "reports",
+    USER_EXPORTS_DIRECTORY / "reports",
 ]
 dirs_files = [USER_ENV_FILE, REPOSITORY_ENV_FILE]
 create_paths(dirs_list)
