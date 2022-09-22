@@ -621,3 +621,73 @@ def check_cmc_key(show_output: bool = False) -> str:
         console.print(status + "\n")
 
     return status
+
+
+def set_finnhub_key(key: str, persist: bool = False, show_output: bool = False):
+    """Set Finnhub key.
+
+    Parameters
+    ----------
+        key: str
+            API key
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+    """
+
+    set_key("OPENBB_API_FINNHUB_KEY", key, persist)
+    status = check_finnhub_key(show_output)
+
+    return status
+
+
+def check_finnhub_key(show_output: bool = False) -> str:
+    """Check Finnhub key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+
+    """
+
+    if cfg.API_FINNHUB_KEY == "REPLACE_ME":
+        logger.info("Finnhub key not defined")
+        status = "not defined"
+    else:
+        r = r = requests.get(
+            f"https://finnhub.io/api/v1/quote?symbol=AAPL&token={cfg.API_FINNHUB_KEY}"
+        )
+        if r.status_code in [403, 401, 400]:
+            logger.warning("Finnhub key defined, test failed")
+            status = "defined, test failed"
+        elif r.status_code == 200:
+            logger.info("Finnhub key defined, test passed")
+            status = "defined, test passed"
+        else:
+            logger.warning("Finnhub key defined, test inconclusive")
+            status = "defined, test inconclusive"
+
+    if show_output:
+        console.print(status + "\n")
+
+    return status

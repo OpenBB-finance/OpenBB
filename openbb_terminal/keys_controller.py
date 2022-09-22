@@ -193,25 +193,11 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     def check_finnhub_key(self, show_output: bool = False) -> None:
         """Check Finnhub key"""
         self.cfg_dict["FINNHUB"] = "finnhub"
-        if cfg.API_FINNHUB_KEY == "REPLACE_ME":
-            logger.info("Finnhub key not defined")
-            self.key_dict["FINNHUB"] = "not defined"
-        else:
-            r = r = requests.get(
-                f"https://finnhub.io/api/v1/quote?symbol=AAPL&token={cfg.API_FINNHUB_KEY}"
-            )
-            if r.status_code in [403, 401, 400]:
-                logger.warning("Finnhub key defined, test failed")
-                self.key_dict["FINNHUB"] = "defined, test failed"
-            elif r.status_code == 200:
-                logger.info("Finnhub key defined, test passed")
-                self.key_dict["FINNHUB"] = "defined, test passed"
-            else:
-                logger.warning("Finnhub key defined, test inconclusive")
-                self.key_dict["FINNHUB"] = "defined, test inconclusive"
 
-        if show_output:
-            console.print(self.key_dict["FINNHUB"] + "\n")
+        if not status:
+            status = keys_model.check_finnhub_key(show_output=show_output)
+
+        self.key_dict["FINNHUB"] = status
 
     def check_iex_key(self, show_output: bool = False) -> None:
         """Check IEX Cloud key"""
@@ -1056,10 +1042,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             other_args.insert(0, "-k")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            os.environ["OPENBB_API_FINNHUB_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "OPENBB_API_FINNHUB_KEY", ns_parser.key)
-            cfg.API_FINNHUB_KEY = ns_parser.key
-            self.check_finnhub_key(show_output=True)
+            status = keys_model.set_finnhub_key(
+                key=ns_parser.key, persist=True, show_output=True
+            )
+            self.check_finnhub_key(status, False)
 
     @log_start_end(log=logger)
     def call_iex(self, other_args: List[str]):
