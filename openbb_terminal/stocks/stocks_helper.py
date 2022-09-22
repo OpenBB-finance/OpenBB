@@ -1011,7 +1011,7 @@ def display_candle(
     interval: int = 1440,
     end_date: datetime = datetime.now(),
     prepost: bool = False,
-    source: str = "yf",
+    source: str = "YahooFinance",
     iexrange: str = "ytd",
     weekly: bool = False,
     monthly: bool = False,
