@@ -477,7 +477,7 @@ CLI :computer: → `_controller.py` :robot: →&nbsp;`_view.py` :art: &nbsp;&nbs
 | :------------------------- | :------------- | :----------------------------------------------------- |
 | **_controller.py** :robot: | The router/input validator | The controller file should hold the least amount of logic possible. Its role is to be a stupid (no logic) router and redirect the command correctly while checking the input with argparser.   |
 | **_view.py** :art:         | The artist     | The view file should only output or visualise the data it gets from the `_model` file! The `_view` can limit the data coming from the `_model`, otherwise the data object should be identical in the `_view` and the `_model` files. |
-| **_model.py** 🧠           |The brain       | The model file is where everything fun happens. The data is gathered here (api, web scraped, …), processed here and returned to be used.                                                                |
+| **_model.py** 🧠           |The brain       | The model file is where everything fun happens. The data is gathered (external APIs), processed and returned here.                                                                |
 | **api.py** 🏭              |The API Factory | The API file is where the callable functions are created for the API. There is only one api file in the openbb_terminal folder.                                                                                |
 
 ### Frontend
