@@ -391,7 +391,10 @@ def display_fundamentals(
     symbol: str
         Stock ticker symbol
     statement: str
-        Either balance or financials for income or cash-flow
+        can be:
+            cash-flow
+            financials for Income
+            balance-sheet
     limit: int
     ratios: bool
         Shows percentage change
