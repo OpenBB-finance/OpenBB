@@ -23,7 +23,6 @@ en:
   sources/get: get available data sources associated with command
   sources/set: set default data source for a command
   featflags/_info_: Feature flags through environment variables
-  featflags/logcollection: allow logs to be sent to help OpenBB team
   featflags/retryload: retry misspelled commands with load first
   featflags/tab: use tabulate to print dataframes
   featflags/cls: clear console after each command
@@ -476,6 +475,7 @@ en:
   stocks/qa/beta: display beta w.r.t to any reference ticker
   crypto/load: load a specific cryptocurrency for analysis
   crypto/find: find coins
+  crypto/price: real-time price and interval of confidence
   crypto/_symbol: Coin
   crypto/_interval: Interval (min)
   crypto/_source: Source

@@ -97,6 +97,7 @@ torch = {version = "1.11.0", optional = true}
 streamlit = "^1.12.2"
 charset-normalizer = "2.1.0"
 watchdog = "^2.1.9"
+pythclient = "^0.1.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
