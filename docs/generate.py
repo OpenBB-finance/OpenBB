@@ -1,10 +1,28 @@
 from typing import Callable, Any, Optional
 from inspect import signature
 import importlib
-import yaml
 import os
+import yaml
 
 from openbb_terminal.api import functions
+
+
+class Item:
+    def __init__(self, name: str, ref: str):
+        self.name = name
+        self.ref = ref
+
+    def __hash__(self):
+        return hash((self.name, self.ref))
+
+    def __eq__(self, other):
+        return (self.name, self.ref) == (other.name, other.ref)
+
+    def __ne__(self, other):
+        return not (self == other)
+
+    def __repr__(self):
+        return f"{self.ref}->{self.name}"
 
 
 def all_functions() -> list[tuple[str, str, Callable[..., Any]]]:
@@ -93,7 +111,8 @@ def generate_dict(values: list[tuple[str, str, Callable[..., Any]]]):
         if first not in final_dict:
             partial_p_str = whole_path[whole_path.index(first) - 1]
             partial_path = partial_p_str.split(".")
-            final_dict[first] = {"ref": "api/" + "/".join(partial_path)}
+            first_obj = Item(first, "api/" + "/".join(partial_path))
+            final_dict[first_obj] = {}
         temp_ref = final_dict[first]
         for item in whole_path[1:]:
             if item not in temp_ref:
