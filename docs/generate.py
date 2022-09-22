@@ -1,6 +1,7 @@
 from typing import Callable, Any, Optional
 from inspect import signature
 import importlib
+import json
 import os
 import yaml
 
@@ -22,7 +23,25 @@ class Item:
         return not (self == other)
 
     def __repr__(self):
-        return f"{self.ref}->{self.name}"
+        return f"{self.name}"
+
+
+def employee_representer(dumper: yaml.SafeDumper, item: Item) -> yaml.nodes.MappingNode:
+    """Represent an employee instance as a YAML mapping node."""
+    return dumper.represent_mapping(
+        f"{item.name}",
+        {
+            "name": item.name,
+            "ref": item.ref,
+        },
+    )
+
+
+def get_dumper():
+    """Add representers to a YAML seriailizer."""
+    safe_dumper = yaml.SafeDumper
+    safe_dumper.add_representer(Item, employee_representer)
+    return safe_dumper
 
 
 def all_functions() -> list[tuple[str, str, Callable[..., Any]]]:
@@ -104,22 +123,23 @@ def generate_documentation(
 
 
 def generate_dict(values: list[tuple[str, str, Callable[..., Any]]]):
-    final_dict: dict[str, Any] = {}
+    final_dict: dict[Item, Any] = {}
     for func_path, _, _ in values:
         whole_path = func_path.split(".")
         first = whole_path[0]
+        partial_p_str = whole_path[whole_path.index(first) - 1]
+        partial_path = partial_p_str.split(".")
+        first_obj = Item(first, "api/" + "/".join(partial_path))
         if first not in final_dict:
-            partial_p_str = whole_path[whole_path.index(first) - 1]
-            partial_path = partial_p_str.split(".")
-            first_obj = Item(first, "api/" + "/".join(partial_path))
             final_dict[first_obj] = {}
-        temp_ref = final_dict[first]
+        temp_ref = final_dict[first_obj]
         for item in whole_path[1:]:
-            if item not in temp_ref:
-                partial_p_str = whole_path[whole_path.index(item) - 1]
-                partial_path = partial_p_str.split(".")
-                temp_ref[item] = {"ref": "api/" + "/".join(partial_path)}
-            temp_ref = temp_ref[item]
+            partial_p_str = whole_path[whole_path.index(item) - 1]
+            partial_path = partial_p_str.split(".")
+            item_object = Item(item, "api/" + "/".join(partial_path))
+            if item_object not in temp_ref:
+                temp_ref[item_object] = {}
+            temp_ref = temp_ref[item_object]
         temp_ref["ref"] = "api/" + "/".join(whole_path)
 
     return final_dict
@@ -133,13 +153,15 @@ def generate_output(the_dict: dict[str, Any]):
 
 if __name__ == "__main__":
     folder_path = os.path.realpath("./website/content/api")
-    # main_path = os.path.realpath("./website/menu/main.yml")
-    main_path = os.path.realpath("./website/menu/not_main.yml")
+    main_path = os.path.realpath("./website/data/menu/main.yml")
     funcs = all_functions()
     grouped_funcs = groupby(funcs, 0)
     for k, v in grouped_funcs.items():
         # generate_documentation(folder_path, k, v)
         pass
     func_dict = generate_dict(funcs)
-    print(yaml.dump(func_dict))
+    with open(main_path) as f:
+        dataMap = yaml.safe_load(f)
+    print(json.dumps(dataMap, sort_keys=True, indent=4, separators=(",", ": ")))
+    # print(yaml.dump(func_dict, Dumper=get_dumper()))
     # generate_output(func_dict)
