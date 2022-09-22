@@ -37,6 +37,7 @@ from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import config_plot as cfgPlot
 from openbb_terminal.core.config.paths import HOME_DIRECTORY, USER_ENV_FILE
+from openbb_terminal.core.config import paths
 
 logger = logging.getLogger(__name__)
 
@@ -71,8 +72,8 @@ def set_command_location(cmd_loc: str):
 
 
 # pylint: disable=global-statement
-def set_export_folder(env_file: str = ".env", path_folder: str = ""):
-    """Set export folder location
+def set_user_data_folder(env_file: str = ".env", path_folder: str = ""):
+    """Set user data folder location
 
     Parameters
     ----------
@@ -81,9 +82,8 @@ def set_export_folder(env_file: str = ".env", path_folder: str = ""):
     path_folder: str
         Path folder location
     """
-    os.environ["OPENBB_EXPORT_FOLDER_PATH"] = path_folder
-    dotenv.set_key(env_file, "OPENBB_EXPORT_FOLDER_PATH", path_folder)
-    obbff.EXPORT_FOLDER_PATH = path_folder
+    dotenv.set_key(env_file, "OPENBB_USER_DATA_FOLDER_PATH", path_folder)
+    paths.USER_DATA_DIRECTORY = Path(path_folder)
 
 
 def check_path(path: str) -> str:
