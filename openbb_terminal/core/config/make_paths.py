@@ -6,7 +6,7 @@ from openbb_terminal.core.config.paths import (
     USER_DATA_DIRECTORY,
     USER_ENV_FILE,
     REPOSITORY_ENV_FILE,
-    USER_EXPORTS_DIRECTORY
+    USER_EXPORTS_DIRECTORY,
 )
 
 

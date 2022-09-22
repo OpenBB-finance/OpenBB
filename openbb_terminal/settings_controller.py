@@ -503,7 +503,9 @@ class SettingsController(BaseController):
                         console.print(
                             f"User data to be saved in the default folder: '{default_path}'"
                         )
-                        set_user_data_folder(self.env_file, path_folder=str(default_path))
+                        set_user_data_folder(
+                            self.env_file, path_folder=str(default_path)
+                        )
                         success_userdata = True
                     else:
                         # If the path selected does not start from the user root, give relative location from root
@@ -517,7 +519,9 @@ class SettingsController(BaseController):
                             console.print(
                                 f"User data to be saved in the selected folder: '{userdata_path}'"
                             )
-                            set_user_data_folder(self.env_file, path_folder=userdata_path)
+                            set_user_data_folder(
+                                self.env_file, path_folder=userdata_path
+                            )
                             success_userdata = True
                         else:
                             console.print(

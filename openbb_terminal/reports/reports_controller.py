@@ -222,7 +222,7 @@ class ReportController(BaseController):
 
             if not result["metadata"]["papermill"]["exception"]:
                 if obbff.OPEN_REPORT_AS_HTML:
-                    report_output_path = Path(str(notebook_output)+".html")
+                    report_output_path = Path(str(notebook_output) + ".html")
                     print(report_output_path)
                     webbrowser.open(f"file://{report_output_path}")
 

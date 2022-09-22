@@ -36,7 +36,11 @@ import numpy as np
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import config_plot as cfgPlot
-from openbb_terminal.core.config.paths import HOME_DIRECTORY, USER_ENV_FILE, USER_EXPORTS_DIRECTORY
+from openbb_terminal.core.config.paths import (
+    HOME_DIRECTORY,
+    USER_ENV_FILE,
+    USER_EXPORTS_DIRECTORY,
+)
 from openbb_terminal.core.config import paths
 
 logger = logging.getLogger(__name__)
@@ -1267,9 +1271,9 @@ def compose_export_path(func_name: str, dir_path: str) -> Tuple[str, str]:
         path_cmd = f"{resolve_path.parts[-2]}_{resolve_path.parts[-1]}"
 
     default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}"
-    
+
     full_path_dir = USER_EXPORTS_DIRECTORY
-    
+
     return full_path_dir, default_filename
 
 

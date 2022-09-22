@@ -25,7 +25,7 @@ from openbb_terminal.core.config.paths import (
     REPOSITORY_DIRECTORY,
     USER_ENV_FILE,
     REPOSITORY_ENV_FILE,
-    USER_EXPORTS_DIRECTORY
+    USER_EXPORTS_DIRECTORY,
 )
 from openbb_terminal.core.log.generation.path_tracking_file_handler import (
     PathTrackingFileHandler,
@@ -572,7 +572,6 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
     if jobs_cmds is not None and jobs_cmds:
         logger.info("INPUT: %s", "/".join(jobs_cmds))
 
-    
     if jobs_cmds and "export" in jobs_cmds[0]:
         jobs_cmds = ["/".join(jobs_cmds[0].split("/")[1:])]
 
@@ -782,7 +781,6 @@ def run_scripts(
             simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
             file_cmds = simulate_argv.replace("//", "/home/").split()
             file_cmds = insert_start_slash(file_cmds) if file_cmds else file_cmds
-            
 
             if not test_mode:
                 terminal(file_cmds, appName="openbb_script")
