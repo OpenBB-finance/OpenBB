@@ -14,7 +14,7 @@ from openbb_terminal.cryptocurrency.defi import graph_view
         ("display_uni_tokens", dict(skip=0, limit=5)),
         ("display_uni_stats", dict()),
         ("display_uni_pools", dict()),
-        ("display_last_uni_swaps", dict(top=5)),
+        ("display_last_uni_swaps", dict(limit=5)),
     ],
 )
 def test_call_func(func, kwargs, mocker):
