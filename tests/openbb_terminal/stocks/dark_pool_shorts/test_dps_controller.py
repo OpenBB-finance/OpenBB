@@ -267,7 +267,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "call_prom",
             "finra_view.darkpool_otc",
             [
-                "--num=1",
+                "--input_limit=1",
                 "--limit=2",
                 "--tier=T1",
                 "--export=csv",

@@ -158,7 +158,7 @@ def display_top_token_holders(
 @check_api_key(["API_ETHPLORER_KEY"])
 def display_address_history(
     address: str,
-    top: int = 10,
+    limit: int = 10,
     sortby: str = "timestamp",
     ascend: bool = True,
     export: str = "",
@@ -169,7 +169,7 @@ def display_address_history(
     ----------
     address: str
         Ethereum blockchain balance e.g. 0x3cD751E6b0078Be393132286c442345e5DC49699
-    top: int
+    limit: int
         Limit of transactions. Maximum 100
     sortby: str
         Key to sort by.
@@ -188,7 +188,7 @@ def display_address_history(
     )
 
     print_rich_table(
-        df.head(top),
+        df.head(limit),
         headers=list(df.columns),
         show_index=False,
         title="Historical Transactions Information",

@@ -30,7 +30,7 @@ def test_display_recently_added(mocker):
     mocker.patch(target="openbb_terminal.cryptocurrency.defi.graph_view.export_data")
 
     graph_view.display_recently_added(
-        top=10,
+        limit=10,
         days=7,
         min_volume=20,
         min_liquidity=0,

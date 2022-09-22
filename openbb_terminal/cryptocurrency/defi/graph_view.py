@@ -93,7 +93,7 @@ def display_uni_stats(export: str = "") -> None:
 
 @log_start_end(log=logger)
 def display_recently_added(
-    top: int = 20,
+    limit: int = 20,
     days: int = 7,
     min_volume: int = 20,
     min_liquidity: int = 0,
@@ -107,7 +107,7 @@ def display_recently_added(
 
     Parameters
     ----------
-    top: int
+    limit: int
         Number of records to display
     days: int
         Number of days the pair has been active,
@@ -140,7 +140,7 @@ def display_recently_added(
     )
 
     print_rich_table(
-        df.head(top),
+        df.head(limit),
         headers=list(df.columns),
         show_index=False,
         title="Latest Added Pairs on Uniswap DEX",
@@ -156,14 +156,14 @@ def display_recently_added(
 
 @log_start_end(log=logger)
 def display_uni_pools(
-    top: int = 20, sortby: str = "volumeUSD", ascend: bool = True, export: str = ""
+    limit: int = 20, sortby: str = "volumeUSD", ascend: bool = True, export: str = ""
 ) -> None:
     """Displays uniswap pools by volume.
     [Source: https://thegraph.com/en/]
 
     Parameters
     ----------
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data. The table can be sorted by every of its columns
@@ -181,7 +181,10 @@ def display_uni_pools(
     df_data = df.copy()
 
     print_rich_table(
-        df.head(top), headers=list(df.columns), show_index=False, title="Uniswap Pools"
+        df.head(limit),
+        headers=list(df.columns),
+        show_index=False,
+        title="Uniswap Pools",
     )
 
     export_data(
@@ -194,14 +197,14 @@ def display_uni_pools(
 
 @log_start_end(log=logger)
 def display_last_uni_swaps(
-    top: int = 10, sortby: str = "timestamp", ascend: bool = False, export: str = ""
+    limit: int = 10, sortby: str = "timestamp", ascend: bool = False, export: str = ""
 ) -> None:
     """Displays last swaps done on Uniswap
     [Source: https://thegraph.com/en/]
 
     Parameters
     ----------
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data. The table can be sorted by every of its columns
@@ -212,7 +215,7 @@ def display_last_uni_swaps(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = graph_model.get_last_uni_swaps(limit=top).sort_values(
+    df = graph_model.get_last_uni_swaps(limit=limit).sort_values(
         by=sortby, ascending=ascend
     )
     df["amountUSD"] = df["amountUSD"].apply(
