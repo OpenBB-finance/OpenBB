@@ -1072,6 +1072,7 @@ def display_candle(
             weekly,
             monthly,
         )
+        data = process_candle(data)
 
     if add_trend:
         if (data.index[1] - data.index[0]).total_seconds() >= 86400:
