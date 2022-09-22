@@ -39,7 +39,8 @@ def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> Non
         dotenv.set_key(str(USER_ENV_FILE), env_var_name, env_var_value)
 
     # Remove OPENBB_ prefix from env_var
-    env_var_name = env_var_name[7:]
+    if env_var_name.startswith("OPENBB_"):
+        env_var_name = env_var_name[7:]
 
     # Set cfg.env_var_name = env_var_value
     setattr(cfg, env_var_name, env_var_value)
