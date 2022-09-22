@@ -1,4 +1,4 @@
-from typing import Callable, Any, Optional, List, Tuple
+from typing import Callable, Any, Optional, List, Tuple, Dict
 from inspect import signature
 import importlib
 import os
@@ -26,7 +26,7 @@ def all_functions() -> List[Tuple[str, str, Callable[..., Any]]]:
     return func_list
 
 
-def groupby(orig_list: list[Any], index: int) -> dict[Any, Any]:
+def groupby(orig_list: List[Any], index: int) -> Dict[Any, Any]:
     """Groups a list of iterable by the index provided
 
     Parameters
@@ -41,7 +41,7 @@ def groupby(orig_list: list[Any], index: int) -> dict[Any, Any]:
     grouped: dict[Any, Any]
         Group information where keys are the groupby item and values are the iterables
     """
-    grouped: dict[Any, Any] = {}
+    grouped: Dict[Any, Any] = {}
     for item in orig_list:
         if item[index] in grouped:
             grouped[item[index]].append(item)
@@ -51,7 +51,7 @@ def groupby(orig_list: list[Any], index: int) -> dict[Any, Any]:
 
 
 def generate_documentation(
-    base: str, key: str, value: list[tuple[str, str, Callable[..., Any]]]
+    base: str, key: str, value: List[Tuple[str, str, Callable[..., Any]]]
 ):
     models = list(filter(lambda x: x[1] == "model", value))
     views = list(filter(lambda x: x[1] == "view", value))
