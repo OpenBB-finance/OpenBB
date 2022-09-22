@@ -2114,22 +2114,6 @@ traitlets = ">=5.1"
 test = ["check-manifest", "pep440", "pre-commit", "pytest", "testpath"]
 
 [[package]]
-name = "nbmake"
-version = "1.3.0"
-description = "Pytest plugin for testing notebooks"
-category = "dev"
-optional = false
-python-versions = ">=3.7.0,<4.0.0"
-
-[package.dependencies]
-ipykernel = ">=5.4.0"
-nbclient = ">=0.5.13,<0.6.0"
-nbformat = ">=5.0.8,<6.0.0"
-pydantic = ">=1.7.2,<2.0.0"
-Pygments = ">=2.7.3,<3.0.0"
-pytest = ">=6.1.0"
-
-[[package]]
 name = "nest-asyncio"
 version = "1.5.5"
 description = "Patch asyncio to allow nested event loops"
@@ -2761,7 +2745,7 @@ name = "pydantic"
 version = "1.8.2"
 description = "Data validation and settings management using python 3.6 type hinting"
 category = "main"
-optional = false
+optional = true
 python-versions = ">=3.6.1"
 
 [package.dependencies]
@@ -4562,7 +4546,7 @@ prediction-m1-mac = ["tensorflow-macos", "tensorflow-metal"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11"
-content-hash = "5b057cd798bb32fbb8e723a1b9935e4d1c5fd16f0f9aacf4049de1e2044d188d"
+content-hash = "9ccab8f8c43015959d769d62f58ffe5e727d386d3c810db16c087d7fca68c1aa"
 
 [metadata.files]
 absl-py = []
@@ -5610,7 +5594,6 @@ nbformat = [
     {file = "nbformat-5.6.0-py3-none-any.whl", hash = "sha256:349db50afcf5f44cac6ddcf747fcb9330eafb751044c83994066c48e2f140b35"},
     {file = "nbformat-5.6.0.tar.gz", hash = "sha256:6f9edb3b70119d82ba89b74b0ecfdbb83f35af8661e491e49ac0893657042674"},
 ]
-nbmake = []
 nest-asyncio = [
     {file = "nest_asyncio-1.5.5-py3-none-any.whl", hash = "sha256:b98e3ec1b246135e4642eceffa5a6c23a3ab12c82ff816a92c612d68205813b2"},
     {file = "nest_asyncio-1.5.5.tar.gz", hash = "sha256:e442291cd942698be619823a17a86a5759eabe1f8613084790de189fe9e16d65"},

@@ -81,14 +81,6 @@ jobs:
           source $VENV
           pytest tests/
 
-      - name: Run juypter tests
-        env:
-          MPLBACKEND: Agg
-        run: |
-          source $VENV
-          pytest --nbmake openbb_terminal/reports/*ipynb
-          pytest --nbmake openbb_terminal/dashboards/
-
       - name: Start Terminal and exit
         run: |
           source $VENV
