@@ -31,7 +31,8 @@ def test_get_filings_analysis_invalid(mocker):
     mock_response = requests.Response()
     mock_response.status_code = 400
     mocker.patch(
-        target="requests.get", new=mocker.Mock(return_value=mock_response),
+        target="requests.get",
+        new=mocker.Mock(return_value=mock_response),
     )
 
     result = eclect_us_model.get_filings_analysis(symbol="PM")
