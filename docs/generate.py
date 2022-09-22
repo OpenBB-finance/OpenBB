@@ -1,4 +1,4 @@
-from typing import Callable, Any, Optional
+from typing import Callable, Any, Optional, List, Tuple
 from inspect import signature
 import importlib
 import os
@@ -6,7 +6,7 @@ import os
 from openbb_terminal.api import functions
 
 
-def all_functions() -> list[tuple[str, str, Callable[..., Any]]]:
+def all_functions() -> List[Tuple[str, str, Callable[..., Any]]]:
     """Uses the base api functions dictionary to get a list of all functions we have linked
     in our API.
 
