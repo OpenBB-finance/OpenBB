@@ -953,8 +953,14 @@ functions = {
         "model": "openbb_terminal.economy.fred_model.get_yield_curve",
         "view": "openbb_terminal.economy.fred_view.display_yield_curve",
     },
+    "economy.get_events_countries": {
+        "model": "openbb_terminal.economy.investingcom_model.get_events_countries"
+    },    
     "economy.events": {
         "model": "openbb_terminal.economy.investingcom_model.get_economic_calendar"
+    },
+    "economy.get_ycrv_countries": {
+        "model": "openbb_terminal.economy.investingcom_model.get_ycrv_countries"
     },
     "economy.ycrv": {
         "model": "openbb_terminal.economy.investingcom_model.get_yieldcurve",
