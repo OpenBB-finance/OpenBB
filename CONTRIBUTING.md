@@ -1378,6 +1378,8 @@ In this case, this method is called as soon as the user successfully loads a new
 TO BE ADDED
 
 ### Internationalization
+  
+WORK IN PROGRESS - The menu can be internationalised BUT we do not support yet help commands`-h` internationalization.
 
 In order to add support for a new language, the best approach is to:
 
@@ -1404,8 +1406,6 @@ This is the convention in use for creating a new key/value pair:
 - `stocks/SEARCH_query` - Under `stocks` context, `query` description when inquiring about `search` command with `search -h`
 - `stocks/_ticker` - Under `stocks` context, `_ticker` is used as a key of a parameter, and the displayed parameter description is given as value
 - `crypto/dd/_tokenomics_` - Under `crypto` context and under `dd` menu, `_tokenomics_` is used as a key of an additional information, and the displayed information is given as value
-
-TO BE ADDED - WORK IN PROGRESS
 
 ## Write Code and Commit
 
