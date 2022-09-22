@@ -86,7 +86,7 @@ ENABLE_RICH_PANEL = strtobool(os.getenv("OPENBB_ENABLE_RICH_PANEL", "True"))
 ENABLE_CHECK_API = strtobool(os.getenv("OPENBB_ENABLE_CHECK_API", "True"))
 
 # Send logs to data lake
-LOG_COLLECTION = bool(strtobool(os.getenv("OPENBB_LOG_COLLECTION", "True")))
+LOG_COLLECTION = bool(strtobool(os.getenv("OPENBB_LOG_COLLECT", "True")))
 
 # Set a flag if the application is running from a packaged bundle
 PACKAGED_APPLICATION = strtobool(os.getenv("OPENBB_PACKAGED_APPLICATION", "False"))

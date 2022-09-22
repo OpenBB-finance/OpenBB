@@ -26,7 +26,6 @@ class FeatureFlagsController(BaseController):
     """Feature Flags Controller class"""
 
     CHOICES_COMMANDS: List[str] = [
-        "logcollection",
         "retryload",
         "tab",
         "cls",
@@ -59,7 +58,6 @@ class FeatureFlagsController(BaseController):
         mt = MenuText("featflags/")
         mt.add_info("_info_")
         mt.add_raw("\n")
-        mt.add_setting("logcollection", obbff.LOG_COLLECTION)
         mt.add_setting("retryload", obbff.RETRY_WITH_LOAD)
         mt.add_setting("tab", obbff.USE_TABULATE_DF)
         mt.add_setting("cls", obbff.USE_CLEAR_AFTER_CMD)
@@ -78,13 +76,6 @@ class FeatureFlagsController(BaseController):
         mt.add_setting("tbhint", obbff.TOOLBAR_HINT)
 
         console.print(text=mt.menu_text, menu="Feature Flags")
-
-    @log_start_end(log=logger)
-    def call_logcollection(self, _):
-        """Process logcollection command"""
-        obbff.LOG_COLLECTION = not obbff.LOG_COLLECTION
-        set_key(obbff.USER_ENV_FILE, "OPENBB_LOG_COLLECTION", str(obbff.LOG_COLLECTION))
-        console.print("")
 
     def call_retryload(self, _):
         """Process retryload command"""

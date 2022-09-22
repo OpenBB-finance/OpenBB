@@ -18,7 +18,7 @@ from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 
 from openbb_terminal.core.config import (  # pylint: disable=unused-import  # noqa
-    make_paths,
+    paths_helper,
 )
 from openbb_terminal.common import feedparser_view
 from openbb_terminal.core.config.paths import (
