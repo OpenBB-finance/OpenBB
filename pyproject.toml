@@ -1,8 +1,13 @@
 [tool.poetry]
 name = "OpenBBTerminal"
-version = "1.8.0"
-description = ""
+version = "1.8.1"
+description = "Work In Prgress. Investment Research for Everyone, Anywhere."
 authors = ["Didier Rodrigues Lopes"]
+readme = "openbb_terminal/API_README.md"
+license = "MIT"
+homepage = "https://openbb.co/"
+repository = "https://github.com/OpenBB-finance/OpenBBTerminal"
+documentation = "https://openbb-finance.github.io/OpenBBTerminal/"
 packages = [
     { include = "openbb_terminal" },
 ]
