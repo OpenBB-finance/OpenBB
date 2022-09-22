@@ -825,7 +825,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             status = keys_model.set_av_key(
-                key=ns_parser.key, local=False, show_output=True
+                key=ns_parser.key, persist=True, show_output=True
             )
             self.check_av_key(status, False)
 
@@ -856,7 +856,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             status = keys_model.set_fmp_key(
-                key=ns_parser.key, local=False, show_output=True
+                key=ns_parser.key, persist=True, show_output=True
             )
             self.check_fmp_key(status, False)
 
@@ -885,7 +885,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             status = keys_model.set_quandl_key(
-                key=ns_parser.key, local=False, show_output=True
+                key=ns_parser.key, persist=True, show_output=True
             )
             self.check_quandl_key(status, False)
 
@@ -914,7 +914,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             status = keys_model.set_polygon_key(
-                key=ns_parser.key, local=False, show_output=True
+                key=ns_parser.key, persist=True, show_output=True
             )
             self.check_polygon_key(status, False)
 
@@ -943,7 +943,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             status = keys_model.set_fred_key(
-                key=ns_parser.key, local=False, show_output=True
+                key=ns_parser.key, persist=True, show_output=True
             )
             self.check_fred_key(status, False)
 
@@ -972,7 +972,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             status = keys_model.set_news_key(
-                key=ns_parser.key, local=False, show_output=True
+                key=ns_parser.key, persist=True, show_output=True
             )
             self.check_news_key(status, False)
 
@@ -1001,7 +1001,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             status = keys_model.set_tradier_key(
-                key=ns_parser.key, local=False, show_output=True
+                key=ns_parser.key, persist=True, show_output=True
             )
             self.check_tradier_key(status, False)
 
@@ -1029,7 +1029,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             status = keys_model.set_cmc_key(
-                key=ns_parser.key, local=False, show_output=True
+                key=ns_parser.key, persist=True, show_output=True
             )
             self.check_cmc_key(status, False)
 

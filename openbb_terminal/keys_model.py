@@ -15,7 +15,7 @@ from openbb_terminal.decorators import log_start_end
 logger = logging.getLogger(__name__)
 
 
-def set_key(env_var_name: str, env_var_value: str, local: bool = True) -> None:
+def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> None:
     """Set API key.
 
     Parameters
@@ -24,12 +24,12 @@ def set_key(env_var_name: str, env_var_value: str, local: bool = True) -> None:
             API name
         env_var_value: str
             API key
-        local: bool
-            If True, api key change will be contained to where it was changed. For example, Jupyter notebook.
-            If False, api key change will be global, i.e. it will affect terminal environment variables.
-            By default, True.
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
     """
-    if not local:
+    if persist:
         os.environ[env_var_name] = env_var_value
         dotenv.set_key(str(USER_ENV_FILE), env_var_name, env_var_value)
 
@@ -47,8 +47,7 @@ def get_keys() -> Dict:
         Dict: key: API -> values: KEY.
     """
 
-    # TODO: Output only the api environment variables. Remove settings variables.
-    # TODO: Bug when variable does not exist in os, function is ignoring it. Have to search in cfg api variables directly instead
+    # TODO: Refacto api variable without prefix API_
 
     var_list = [v for v in dir(cfg) if v.startswith("API_")]
 
@@ -61,17 +60,17 @@ def get_keys() -> Dict:
     return current_keys
 
 
-def set_av_key(key: str, local: bool = True, show_output: bool = False):
+def set_av_key(key: str, persist: bool = False, show_output: bool = False):
     """Set Alphavantage key.
 
     Parameters
     ----------
         key: str
             API key
-        local: bool
-            If True, api key change will be contained to where it was changed. For example, Jupyter notebook.
-            If False, api key change will be global, i.e. it will affect terminal environment variables.
-            By default, True.
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
 
     Returns
     -------
@@ -83,7 +82,7 @@ def set_av_key(key: str, local: bool = True, show_output: bool = False):
             defined, test inconclusive
     """
 
-    set_key("OPENBB_API_KEY_ALPHAVANTAGE", key, local)
+    set_key("OPENBB_API_KEY_ALPHAVANTAGE", key, persist)
     status = check_av_key(show_output)
 
     return status
@@ -128,17 +127,17 @@ def check_av_key(show_output: bool = False) -> str:
     return status
 
 
-def set_fmp_key(key: str, local: bool = True, show_output: bool = False):
+def set_fmp_key(key: str, persist: bool = False, show_output: bool = False):
     """Set Financial Modeling Prep key.
 
     Parameters
     ----------
         key: str
             API key
-        local: bool
-            If True, api key change will be contained to where it was changed. For example, Jupyter notebook.
-            If False, api key change will be global, i.e. it will affect terminal environment variables.
-            By default, True.
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
 
     Returns
     -------
@@ -150,7 +149,7 @@ def set_fmp_key(key: str, local: bool = True, show_output: bool = False):
             defined, test inconclusive
     """
 
-    set_key("OPENBB_API_KEY_FINANCIALMODELINGPREP", key, local)
+    set_key("OPENBB_API_KEY_FINANCIALMODELINGPREP", key, persist)
     status = check_fmp_key(show_output)
 
     return status
@@ -200,17 +199,17 @@ def check_fmp_key(show_output: bool = False) -> str:
     return status
 
 
-def set_quandl_key(key: str, local: bool = True, show_output: bool = False):
+def set_quandl_key(key: str, persist: bool = False, show_output: bool = False):
     """Set Quandl key.
 
     Parameters
     ----------
         key: str
             API key
-        local: bool
-            If True, api key change will be contained to where it was changed. For example, Jupyter notebook.
-            If False, api key change will be global, i.e. it will affect terminal environment variables.
-            By default, True.
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
 
     Returns
     -------
@@ -222,7 +221,7 @@ def set_quandl_key(key: str, local: bool = True, show_output: bool = False):
             defined, test inconclusive
     """
 
-    set_key("OPENBB_API_KEY_QUANDL", key, local)
+    set_key("OPENBB_API_KEY_QUANDL", key, persist)
     status = check_quandl_key(show_output)
 
     return status
@@ -272,17 +271,17 @@ def check_quandl_key(show_output: bool = False) -> str:
     return status
 
 
-def set_polygon_key(key: str, local: bool = True, show_output: bool = False):
+def set_polygon_key(key: str, persist: bool = False, show_output: bool = False):
     """Set Polygon key.
 
     Parameters
     ----------
         key: str
             API key
-        local: bool
-            If True, api key change will be contained to where it was changed. For example, Jupyter notebook.
-            If False, api key change will be global, i.e. it will affect terminal environment variables.
-            By default, True.
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
 
     Returns
     -------
@@ -294,7 +293,7 @@ def set_polygon_key(key: str, local: bool = True, show_output: bool = False):
             defined, test inconclusive
     """
 
-    set_key("OPENBB_API_POLYGON_KEY", key, local)
+    set_key("OPENBB_API_POLYGON_KEY", key, persist)
     status = check_polygon_key(show_output)
 
     return status
@@ -343,17 +342,17 @@ def check_polygon_key(show_output: bool = False) -> str:
     return status
 
 
-def set_fred_key(key: str, local: bool = True, show_output: bool = False) -> str:
+def set_fred_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set FRED key.
 
     Parameters
     ----------
         key: str
             API key
-        local: bool
-            If True, api key change will be contained to where it was changed. For example, Jupyter notebook.
-            If False, api key change will be global, i.e. it will affect terminal environment variables.
-            By default, True.
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
 
     Returns
     -------
@@ -365,7 +364,7 @@ def set_fred_key(key: str, local: bool = True, show_output: bool = False) -> str
             defined, test inconclusive
     """
 
-    set_key("OPENBB_API_FRED_KEY", key, local)
+    set_key("OPENBB_API_FRED_KEY", key, persist)
     status = check_fred_key(show_output)
 
     return status
@@ -412,17 +411,17 @@ def check_fred_key(show_output: bool = False) -> str:
     return status
 
 
-def set_news_key(key: str, local: bool = True, show_output: bool = False):
+def set_news_key(key: str, persist: bool = False, show_output: bool = False):
     """Set News key.
 
     Parameters
     ----------
         key: str
             API key
-        local: bool
-            If True, api key change will be contained to where it was changed. For example, Jupyter notebook.
-            If False, api key change will be global, i.e. it will affect terminal environment variables.
-            By default, True.
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
 
     Returns
     -------
@@ -434,7 +433,7 @@ def set_news_key(key: str, local: bool = True, show_output: bool = False):
             defined, test inconclusive
     """
 
-    set_key("OPENBB_API_NEWS_TOKEN", key, local)
+    set_key("OPENBB_API_NEWS_TOKEN", key, persist)
     status = check_news_key(show_output)
 
     return status
@@ -482,17 +481,17 @@ def check_news_key(show_output: bool = False) -> str:
     return status
 
 
-def set_tradier_key(key: str, local: bool = True, show_output: bool = False):
+def set_tradier_key(key: str, persist: bool = False, show_output: bool = False):
     """Set Tradier key.
 
     Parameters
     ----------
         key: str
             API key
-        local: bool
-            If True, api key change will be contained to where it was changed. For example, Jupyter notebook.
-            If False, api key change will be global, i.e. it will affect terminal environment variables.
-            By default, True.
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
 
     Returns
     -------
@@ -504,7 +503,7 @@ def set_tradier_key(key: str, local: bool = True, show_output: bool = False):
             defined, test inconclusive
     """
 
-    set_key("OPENBB_API_TRADIER_TOKEN", key, local)
+    set_key("OPENBB_API_TRADIER_TOKEN", key, persist)
     status = check_tradier_key(show_output)
 
     return status
@@ -557,17 +556,17 @@ def check_tradier_key(show_output: bool = False) -> str:
     return status
 
 
-def set_cmc_key(key: str, local: bool = True, show_output: bool = False):
+def set_cmc_key(key: str, persist: bool = False, show_output: bool = False):
     """Set Coinmarketcap key.
 
     Parameters
     ----------
         key: str
             API key
-        local: bool
-            If True, api key change will be contained to where it was changed. For example, Jupyter notebook.
-            If False, api key change will be global, i.e. it will affect terminal environment variables.
-            By default, True.
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
 
     Returns
     -------
@@ -579,7 +578,7 @@ def set_cmc_key(key: str, local: bool = True, show_output: bool = False):
             defined, test inconclusive
     """
 
-    set_key("OPENBB_API_CMC_KEY", key, local)
+    set_key("OPENBB_API_CMC_KEY", key, persist)
     status = check_cmc_key(show_output)
 
     return status
