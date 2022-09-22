@@ -233,7 +233,7 @@ def test_get_normality(recorder, data):
             econometrics_model.load(
                 "sunspots", ["csv", "xlsx"], {}, {"sunspots": "sunspots"}
             )["SUNACTIVITY"],
-            "nc",
+            "n",
             "c",
         ),
     ],

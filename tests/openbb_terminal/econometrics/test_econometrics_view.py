@@ -110,7 +110,7 @@ def test_display_norm(data, dataset, column, plot):
             )["SUNACTIVITY"],
             "Sunspot",
             "Sunactivity",
-            "nc",
+            "n",
             "c",
         ),
     ],
