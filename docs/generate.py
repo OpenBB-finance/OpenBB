@@ -1,4 +1,4 @@
-from typing import Callable, Any, Optional
+from typing import Callable, Any, Optional, List, Dict
 from inspect import signature
 import importlib
 import json
@@ -44,13 +44,13 @@ def get_dumper():
     return safe_dumper
 
 
-def all_functions() -> list[tuple[str, str, Callable[..., Any]]]:
+def all_functions() -> List[Tuple[str, str, Callable[..., Any]]]:
     """Uses the base api functions dictionary to get a list of all functions we have linked
     in our API.
 
     Returns
     ----------
-    func_list: list[Tuple[str, str, Callable[..., Any]]]
+    func_list: List[Tuple[str, str, Callable[..., Any]]]
         A list of functions organized as (path_to_func, view/model, the_function)
     """
     func_list = []
@@ -64,12 +64,12 @@ def all_functions() -> list[tuple[str, str, Callable[..., Any]]]:
     return func_list
 
 
-def groupby(orig_list: list[Any], index: int) -> dict[Any, Any]:
+def groupby(orig_list: List[Any], index: int) -> dict[Any, Any]:
     """Groups a list of iterable by the index provided
 
     Parameters
     ----------
-    orig_list: list[Any]
+    orig_list: List[Any]
         A list of iterables
     index: int
         The index to groupby
@@ -79,7 +79,7 @@ def groupby(orig_list: list[Any], index: int) -> dict[Any, Any]:
     grouped: dict[Any, Any]
         Group information where keys are the groupby item and values are the iterables
     """
-    grouped: dict[Any, Any] = {}
+    grouped: Dict[Any, Any] = {}
     for item in orig_list:
         if item[index] in grouped:
             grouped[item[index]].append(item)
@@ -89,11 +89,11 @@ def groupby(orig_list: list[Any], index: int) -> dict[Any, Any]:
 
 
 def generate_documentation(
-    base: str, key: str, value: list[tuple[str, str, Callable[..., Any]]]
+    base: str, key: str, value: List[Tuple[str, str, Callable[..., Any]]]
 ):
     models = list(filter(lambda x: x[1] == "model", value))
     views = list(filter(lambda x: x[1] == "view", value))
-    model_type = Optional[tuple[str, str, Callable[..., Any]]]
+    model_type = Optional[Tuple[str, str, Callable[..., Any]]]
     model: model_type = models[0] if models else None
     view: model_type = views[0] if views else None
     for end in key.split("."):
@@ -160,8 +160,12 @@ if __name__ == "__main__":
         # generate_documentation(folder_path, k, v)
         pass
     func_dict = generate_dict(funcs)
+    with open(r'test.yaml', 'w') as file:
+        documents = yaml.dump(func_dict, file)
+    print(func_dict)
+    # print(yaml.dump(func_dict))
     with open(main_path) as f:
         dataMap = yaml.safe_load(f)
-    print(json.dumps(dataMap, sort_keys=True, indent=4, separators=(",", ": ")))
+    # print(json.dumps(dataMap, sort_keys=True, indent=4, separators=(",", ": ")))
     # print(yaml.dump(func_dict, Dumper=get_dumper()))
     # generate_output(func_dict)

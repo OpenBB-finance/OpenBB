@@ -1,5 +1,5 @@
 import yaml
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 from typing import Callable, Any, Optional
 from inspect import signature
@@ -10,7 +10,7 @@ import os
 from openbb_terminal.api import functions
 
 
-def all_functions() -> list[tuple[str, str, Callable[..., Any]]]:
+def all_functions() -> List[Tuple[str, str, Callable[..., Any]]]:
     """Uses the base api functions dictionary to get a list of all functions we have linked
     in our API.
     Returns
@@ -29,7 +29,7 @@ def all_functions() -> list[tuple[str, str, Callable[..., Any]]]:
     return func_list
 
 
-def groupby(orig_list: list[Any], index: int) -> dict[Any, Any]:
+def groupby(orig_list: List[Any], index: int) -> Dict[Any, Any]:
     """Groups a list of iterable by the index provided
     Parameters
     ----------
@@ -42,7 +42,7 @@ def groupby(orig_list: list[Any], index: int) -> dict[Any, Any]:
     grouped: dict[Any, Any]
         Group information where keys are the groupby item and values are the iterables
     """
-    grouped: dict[Any, Any] = {}
+    grouped: Dict[Any, Any] = {}
     for item in orig_list:
         if item[index] in grouped:
             grouped[item[index]].append(item)
@@ -111,8 +111,9 @@ def generate_output(the_dict: dict[str, Any]):
         print(key)
         print(value)
 
-def generate_item_list(funcs:List[tuple])-> List[Dict[str, str]]:
-    """ Generates a list of dictionaries that can be used to generate a menu.
+
+def generate_item_list(funcs: List[tuple]) -> List[Dict[str, str]]:
+    """Generates a list of dictionaries that can be used to generate a menu.
 
     Args:
         funcs (List[tuple]): function map.
@@ -153,11 +154,11 @@ class Item:
     ref: str
     sub: list
 
-    def __init__(self, name:str, ref=str, sub:list=None):
+    def __init__(self, name: str, ref=str, sub: list = None):
         self.name = name
         self.ref = ref
         self.sub = sub or []
-    
+
     def __repr__(self):
         return f"Item(name={self.name}, ref={self.ref}, sub={self.sub})"
 
@@ -171,7 +172,7 @@ class Item:
                 item = item.find_item_by_ref(ref=ref)
 
         return item
-    
+
     def add_ref(self, ref: str):
         """Adding a ref to the item considering the current Item as the root."""
 
@@ -183,8 +184,8 @@ class Item:
         item_to_add = Item(name=name, ref=ref)
 
         for i in range(ref_list_length):
-            partial_name = ref_list[ref_list_length-i-1]
-            partial_ref = "/".join(ref_list[:ref_list_length-i])
+            partial_name = ref_list[ref_list_length - i - 1]
+            partial_ref = "/".join(ref_list[: ref_list_length - i])
             # print(partial_ref, partial_name)
 
             found_item = root_item.find_item_by_ref(ref=partial_ref)
@@ -196,10 +197,10 @@ class Item:
                 parent_item.sub.append(item_to_add)
                 item_to_add = parent_item
 
-                if (ref_list_length-i-1) == 0:
+                if (ref_list_length - i - 1) == 0:
                     root_item.sub.append(item_to_add)
-    
-    def to_dict(self)->dict:
+
+    def to_dict(self) -> dict:
         item_dict = {
             "name": self.name,
             "ref": self.ref,
@@ -207,13 +208,14 @@ class Item:
         }
         return item_dict
 
-def build_api_item(item_list: List[Dict[str, str]])-> Item:
-    api_item = Item(name="OpenBB Python API", ref="/api")
 
-    for item in item_list:
-        api_item.add_ref(ref=item["ref"])
-    
-    return api_item
+def build_api_item(items_list: List[Dict[str, str]]) -> Item:
+    the_item = Item(name="OpenBB Python API", ref="/api")
+
+    for item in items_list:
+        the_item.add_ref(ref=item["ref"])
+
+    return the_item
 
 
 if __name__ == "__main__":
@@ -225,14 +227,10 @@ if __name__ == "__main__":
     for k, v in grouped_funcs.items():
         # generate_documentation(folder_path, k, v)
         pass
-    func_dict = generate_dict(funcs)
-    # print(yaml.dump(func_dict))
-    # generate_output(func_dict)
-
 
     # HERE
     item_list = generate_item_list(funcs)
-    api_item = build_api_item(item_list=item_list)
+    api_item = build_api_item(items_list=item_list)
     api_item_dict = api_item.to_dict()
 
     print(yaml.dump(api_item_dict))
