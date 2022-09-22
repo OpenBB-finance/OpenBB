@@ -1,6 +1,6 @@
 absl-py==1.2.0; python_version >= "3.7"
 aiodns==3.0.0; python_version >= "3.5.2" and python_full_version >= "3.7.0"
-aiohttp==3.8.2; python_version >= "3.6" and python_full_version >= "3.7.0"
+aiohttp==3.8.3; python_version >= "3.6" and python_full_version >= "3.7.0"
 aiosignal==1.2.0; python_version >= "3.6" and python_full_version >= "3.7.0"
 alabaster==0.7.12; python_version >= "3.6"
 alpha-vantage==2.3.1
@@ -33,7 +33,7 @@ bleach==5.0.1; python_version >= "3.7"
 bs4==0.0.1
 bt==0.2.9; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.6.0")
 cachetools==5.2.0; python_version >= "3.7" and python_version < "4.0" and (python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.7")
-ccxt==1.93.78
+ccxt==1.93.88
 certifi==2022.9.14; python_version >= "3.8" and python_version < "4" and python_full_version >= "3.7.1" and python_full_version < "4.0.0"
 cffi==1.15.1
 cfgv==3.3.1; python_full_version >= "3.6.1" and python_version >= "3.7"
@@ -90,7 +90,7 @@ gitpython==3.1.27; python_version >= "3.7"
 google-auth-oauthlib==0.4.6; python_version >= "3.7"
 google-auth==2.11.1; python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.7"
 google-pasta==0.2.0; python_version >= "3.7"
-grpcio==1.49.0; python_full_version >= "3.7.1" and python_full_version < "4.0.0" and python_version >= "3.7"
+grpcio==1.49.1; python_full_version >= "3.7.1" and python_full_version < "4.0.0" and python_version >= "3.7"
 h11==0.13.0; python_version >= "3.7" and python_version < "4.0" and python_full_version >= "3.7.0"
 h5py==3.7.0; python_version >= "3.7"
 hijri-converter==2.2.4; python_version >= "3.6"
@@ -145,7 +145,7 @@ mistune==0.8.4; python_version >= "3.7"
 mock==4.0.3; python_version >= "3.6"
 more-itertools==8.14.0; python_version >= "3.6"
 mplfinance==0.12.9b1
-multidict==5.2.0; python_version >= "3.7" and python_full_version >= "3.7.0"
+multidict==6.0.2; python_version >= "3.7" and python_full_version >= "3.7.0"
 multitasking==0.0.11
 mypy-extensions==0.4.3; python_version >= "3.8" and python_full_version >= "3.6.2"
 mypy==0.930; python_version >= "3.6"
@@ -153,7 +153,7 @@ myst-parser==0.15.2; python_version >= "3.6"
 nbclassic==0.4.3; python_version >= "3.7"
 nbclient==0.5.13; python_full_version >= "3.7.0" and python_version >= "3.7"
 nbconvert==6.5.3; python_version >= "3.7"
-nbformat==5.5.0; python_full_version >= "3.7.0" and python_version >= "3.7"
+nbformat==5.6.0; python_full_version >= "3.7.0" and python_version >= "3.7"
 nest-asyncio==1.5.5; python_full_version >= "3.7.0" and python_version >= "3.7"
 networkx==2.8.6; python_version >= "3.8"
 nodeenv==1.7.0; python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.7.0" and python_version >= "3.7"
@@ -238,7 +238,7 @@ pyupgrade==2.38.0; python_version >= "3.7"
 pywin32==304; sys_platform == "win32" and platform_python_implementation != "PyPy" and python_version >= "3.7" and python_full_version >= "3.7.0"
 pywinpty==2.0.8; os_name == "nt" and python_version >= "3.7"
 pyyaml==6.0; python_version >= "3.8"
-pyzmq==24.0.0; python_full_version >= "3.7.0" and python_version >= "3.7"
+pyzmq==24.0.1; python_full_version >= "3.7.0" and python_version >= "3.7"
 qdldl==0.1.5.post2; python_version >= "3.8" and python_version < "3.11"
 qtconsole==5.3.2; python_version >= "3.7"
 qtpy==2.2.0; python_version >= "3.7"
@@ -283,7 +283,7 @@ statsmodels==0.13.2; python_version >= "3.7"
 stevedore==4.0.0; python_version >= "3.8"
 tabulate==0.8.10; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
 temporal-cache==0.1.4
-tenacity==8.0.1; python_version >= "3.7"
+tenacity==8.1.0; python_version >= "3.7"
 tensorboard-data-server==0.6.1; python_version >= "3.7"
 tensorboard-plugin-wit==1.8.1; python_version >= "3.7"
 tensorboard==2.10.0; python_version >= "3.7"
@@ -310,7 +310,7 @@ trio==0.21.0; python_version >= "3.7" and python_version < "4.0"
 types-python-dateutil==2.8.19
 types-pytz==2021.3.8
 types-pyyaml==6.0.11
-types-requests==2.28.10
+types-requests==2.28.11
 types-setuptools==57.4.18
 types-six==1.16.19
 types-urllib3==1.26.24

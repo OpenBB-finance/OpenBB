@@ -1317,7 +1317,7 @@ class EconometricsController(BaseController):
             "-r",
             "--fuller_reg",
             help="Type of regression. Can be 'c','ct','ctt','nc'. c - Constant and t - trend order",
-            choices=["c", "ct", "ctt", "nc"],
+            choices=["c", "ct", "ctt", "n"],
             default="c",
             type=str,
             dest="fuller_reg",

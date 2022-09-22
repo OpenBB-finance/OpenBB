@@ -191,7 +191,7 @@ class OSSController(BaseController):
         if ns_parser:
             runa_view.display_rossindex(
                 sortby=" ".join(ns_parser.sortby),
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 top=ns_parser.limit,
                 show_chart=ns_parser.show_chart,
                 show_growth=ns_parser.show_growth,

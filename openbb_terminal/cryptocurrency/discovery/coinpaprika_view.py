@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 def display_search_results(
     query: str,
     category: str = "all",
-    top: int = 10,
+    limit: int = 10,
     sortby: str = "id",
     ascend: bool = True,
     export: str = "",
@@ -29,7 +29,7 @@ def display_search_results(
         Search query
     category: str
         Categories to search: currencies|exchanges|icos|people|tags|all. Default: all
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key to sort data. The table can be sorted by every of its columns. Refer to
@@ -54,7 +54,7 @@ def display_search_results(
         return
 
     print_rich_table(
-        df.head(top),
+        df.head(limit),
         headers=list(df.columns),
         show_index=False,
         title="CoinPaprika Results",
