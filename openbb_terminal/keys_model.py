@@ -55,8 +55,9 @@ def get_keys() -> Dict:
     current_keys = {}
 
     for cfg_var_name in var_list:
-        cfg_var_value = getattr(cfg, cfg_var_name)
-        current_keys[cfg_var_name] = cfg_var_value
+        if cfg_var_name.startswith("API_"):
+            cfg_var_value = getattr(cfg, cfg_var_name)
+            current_keys[cfg_var_name] = cfg_var_value
 
     return current_keys
 
