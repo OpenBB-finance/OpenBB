@@ -50,14 +50,13 @@ def get_keys() -> Dict:
     # TODO: Output only the api environment variables. Remove settings variables.
     # TODO: Bug when variable does not exist in os, function is ignoring it. Have to search in cfg api variables directly instead
 
-    var_list = [v for v in dir(cfg) if not v.startswith("__")]
+    var_list = [v for v in dir(cfg) if v.startswith("API_")]
 
     current_keys = {}
 
     for cfg_var_name in var_list:
-        if cfg_var_name.startswith("API_"):
-            cfg_var_value = getattr(cfg, cfg_var_name)
-            current_keys[cfg_var_name] = cfg_var_value
+        cfg_var_value = getattr(cfg, cfg_var_name)
+        current_keys[cfg_var_name] = cfg_var_value
 
     return current_keys
 
