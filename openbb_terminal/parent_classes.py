@@ -860,7 +860,8 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 # Adding files in the argparse choices, will fail for the .exe even without -f
                 STOCKS_CUSTOM_IMPORTS = CUSTOM_IMPORTS_DIRECTORY / "stocks"
                 try:
-                    if ns_parser.filepath not in os.listdir(STOCKS_CUSTOM_IMPORTS):
+                    file_list = [x.name for x in STOCKS_CUSTOM_IMPORTS.iterdir()]
+                    if ns_parser.filepath not in file_list:
                         console.print(
                             f"[red]{ns_parser.filepath} not found in custom_imports/stocks/ "
                             "folder[/red].\n"
