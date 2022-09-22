@@ -4,6 +4,8 @@ from typing import Dict
 import dotenv
 import quandl
 import requests
+import pyEX
+from pyEX.common.exception import PyEXception
 from coinmarketcapapi import CoinMarketCapAPI, CoinMarketCapAPIError
 from alpha_vantage.timeseries import TimeSeries
 from openbb_terminal import config_terminal as cfg
@@ -47,7 +49,7 @@ def get_keys() -> Dict:
         Dict: key: API -> values: KEY.
     """
 
-    # TODO: Refacto api variable without prefix API_
+    # TODO: Refactor api variables without prefix API_
 
     var_list = [v for v in dir(cfg) if v.startswith("API_")]
 
@@ -686,6 +688,71 @@ def check_finnhub_key(show_output: bool = False) -> str:
         else:
             logger.warning("Finnhub key defined, test inconclusive")
             status = "defined, test inconclusive"
+
+    if show_output:
+        console.print(status + "\n")
+
+    return status
+
+
+def set_iex_key(key: str, persist: bool = False, show_output: bool = False):
+    """Set IEX Cloud key.
+
+    Parameters
+    ----------
+        key: str
+            API key
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+    """
+
+    set_key("OPENBB_API_IEX_KEY", key, persist)
+    status = check_iex_key(show_output)
+
+    return status
+
+
+def check_iex_key(show_output: bool = False) -> str:
+    """Check IEX Cloud key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+
+    """
+
+    if cfg.API_IEX_TOKEN == "REPLACE_ME":  # nosec
+        logger.info("IEX Cloud key not defined")
+        status = "not defined"
+    else:
+        try:
+            pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1")
+            logger.info("IEX Cloud key defined, test passed")
+            status = "defined, test passed"
+        except PyEXception:
+            logger.exception("IEX Cloud key defined, test failed")
+            status = "defined, test failed"
 
     if show_output:
         console.print(status + "\n")

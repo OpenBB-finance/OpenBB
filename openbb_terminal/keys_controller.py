@@ -112,110 +112,73 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
     def check_av_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Alpha Vantage key"""
-
         self.cfg_dict["ALPHA_VANTAGE"] = "av"
-
         if not status:
             status = keys_model.check_av_key(show_output=show_output)
-
         self.key_dict["ALPHA_VANTAGE"] = status
 
     def check_fmp_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Financial Modeling Prep key"""
-
         self.cfg_dict["FINANCIAL_MODELING_PREP"] = "fmp"
-
         if not status:
             status = keys_model.check_fmp_key(show_output=show_output)
-
         self.key_dict["FINANCIAL_MODELING_PREP"] = status
 
     def check_quandl_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Quandl key"""
-
         self.cfg_dict["QUANDL"] = "quandl"
-
         if not status:
             status = keys_model.check_quandl_key(show_output=show_output)
-
         self.key_dict["QUANDL"] = status
 
     def check_polygon_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Polygon key"""
-
         self.cfg_dict["POLYGON"] = "polygon"
-
         if not status:
             status = keys_model.check_polygon_key(show_output=show_output)
-
         self.key_dict["POLYGON"] = status
 
     def check_fred_key(self, status: str = "", show_output: bool = False) -> None:
         """Check FRED key and update menu accordingly"""
-
         self.cfg_dict["FRED"] = "fred"
-
         if not status:
             status = keys_model.check_fred_key(show_output=show_output)
-
         self.key_dict["FRED"] = status
 
     def check_news_key(self, status: str = "", show_output: bool = False) -> None:
         """Check News API key"""
-
         self.cfg_dict["NEWSAPI"] = "news"
-
         if not status:
             status = keys_model.check_news_key(show_output=show_output)
-
         self.key_dict["NEWSAPI"] = status
 
     def check_tradier_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Tradier key"""
-
         self.cfg_dict["TRADIER"] = "tradier"
-
         if not status:
             status = keys_model.check_tradier_key(show_output=show_output)
-
         self.key_dict["TRADIER"] = status
 
     def check_cmc_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Coinmarketcap key"""
-        
         self.cfg_dict["COINMARKETCAP"] = "cmc"
-
         if not status:
             status = keys_model.check_cmc_key(show_output=show_output)
-
         self.key_dict["COINMARKETCAP"] = status
 
-    def check_finnhub_key(self, show_output: bool = False) -> None:
+    def check_finnhub_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Finnhub key"""
         self.cfg_dict["FINNHUB"] = "finnhub"
-
         if not status:
             status = keys_model.check_finnhub_key(show_output=show_output)
-
         self.key_dict["FINNHUB"] = status
 
-    def check_iex_key(self, show_output: bool = False) -> None:
+    def check_iex_key(self, status: str = "", show_output: bool = False) -> None:
         """Check IEX Cloud key"""
         self.cfg_dict["IEXCLOUD"] = "iex"
-        if cfg.API_IEX_TOKEN == "REPLACE_ME":  # nosec
-            logger.info("IEX Cloud key not defined")
-            self.key_dict["IEXCLOUD"] = "not defined"
-        else:
-            try:
-                pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1")
-                logger.info("IEX Cloud key defined, test passed")
-                self.key_dict["IEXCLOUD"] = "defined, test passed"
-            except PyEXception:
-                logger.exception("IEX Cloud key defined, test failed")
-                self.key_dict["IEXCLOUD"] = "defined, test failed"
-
-        if show_output:
-            console.print(self.key_dict["IEXCLOUD"] + "\n")
+        if not status:
+            status = keys_model.check_iex_key(show_output=show_output)
+        self.key_dict["IEXCLOUD"] = status
 
     def check_reddit_key(self, show_output: bool = False) -> None:
         """Check Reddit key"""
@@ -1070,10 +1033,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             other_args.insert(0, "-k")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            os.environ["OPENBB_API_IEX_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "OPENBB_API_IEX_KEY", ns_parser.key)
-            cfg.API_IEX_TOKEN = ns_parser.key
-            self.check_iex_key(show_output=True)
+            status = keys_model.set_iex_key(
+                key=ns_parser.key, persist=True, show_output=True
+            )
+            self.check_iex_key(status, False)
 
     @log_start_end(log=logger)
     def call_reddit(self, other_args: List[str]):
