@@ -1,7 +1,6 @@
 # IMPORTATION STANDARD
 from datetime import datetime
 import os
-from pathlib import Path
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
