@@ -9,6 +9,8 @@ from tests.helpers.tools import (  # noqa: F401
 )
 from openbb_terminal import thought_of_the_day
 
+# pylint: disable= R0201
+
 assertions = unittest.TestCase("__init__")
 
 

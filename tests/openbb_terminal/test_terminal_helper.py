@@ -6,6 +6,8 @@ from unittest.mock import patch
 from openbb_terminal import terminal_helper
 from tests.helpers.helpers import check_print
 
+# pylint: disable= R0201
+
 
 def return_val(x, shell, check):
     # pylint: disable=unused-argument

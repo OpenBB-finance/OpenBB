@@ -13,6 +13,8 @@ from openbb_terminal.rich_config import console
 
 __docformat__ = "numpy"
 
+# pylint: disable= R0201
+
 
 class ThoughtOfTheDay:
     """ThoughtOfTheDay class"""

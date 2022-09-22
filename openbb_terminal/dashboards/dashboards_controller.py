@@ -16,7 +16,7 @@ from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.helper_funcs import parse_simple_args
 
-# pylint: disable=consider-using-with
+# pylint: disable=consider-using-with,R0201
 
 
 logger = logging.getLogger(__name__)

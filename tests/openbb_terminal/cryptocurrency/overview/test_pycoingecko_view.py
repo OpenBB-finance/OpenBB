@@ -5,7 +5,7 @@ from openbb_terminal.cryptocurrency.overview import (
     pycoingecko_view as ov_pycoingecko_view,
 )
 
-# pylint: disable=unused-import
+# pylint: disable=unused-import, R0201
 
 
 # pylint: disable=R0904
