@@ -881,7 +881,7 @@ Date from which data is fetched (YYYY-MM-DD) : `start_date` *(str), e.g. 2022-01
 
 Date up to which data is fetched (YYYY-MM-DD) : `end_date` *(str), e.g. 2022-12-31*
 
-Note: please specify date format in docstring
+Note: We want to accept dates in string because it is easier to deal from user standpoint. Inside the function you can convert it to datetime and check its validity. Please specify date format in docstring.
 
 ```python
 def get_historical_data(..., start_date: str = "2022-01-01", end_date: str = "2022-12-31",):
