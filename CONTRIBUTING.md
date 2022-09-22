@@ -538,7 +538,7 @@ With:
 
 1. Each function should have default values for non critical kwargs
 
-    Why? It increases code readability and acts as an input example for the functions arguments. This increases the ease of use of the functions through the api, but also just generally.
+Why? It increases code readability and acts as an input example for the functions arguments. This increases the ease of use of the functions through the api, but also just generally.
   
 <table>
 <tr>
@@ -574,7 +574,7 @@ def display_last_uni_swaps(
 
 2. Simple and understandable input objects; avoid for example weird dictionaries packed with data: {“title”: DataFrame}
   
-    Why? Ease of use and often these complex formats are clumsy, prone to error and the formatting required for complex parameters is time consuming and unneeded.
+Why? Ease of use and often these complex formats are clumsy, prone to error and the formatting required for complex parameters is time consuming and unneeded.
 
 <table>
 <tr>
@@ -608,13 +608,13 @@ def load(
 
 3. Each function needs to have a docstring explaining what it does, its parameters and what it returns.
   
-    Why? You can use the function without reading its source code. This improves the developing experience and api usage. The api factory also can’t handle functions with out docstrings.
+Why? You can use the function without reading its source code. This improves the developing experience and api usage. The api factory also can’t handle functions with out docstrings.
   
 <br>
   
 4. Consistent and clear argument naming; not `symbol` in _view and then `ticker` in `_file` -> ticker everywhere; the name should be descriptive of what information it hold (see Style Guide section below)
   
-  Why? You can quickly understand what the input it should be; example: tickers and stock names are fundamentally different, but they’re both strings so they should be named accordingly.
+Why? You can quickly understand what the input it should be; example: tickers and stock names are fundamentally different, but they’re both strings so they should be named accordingly.
 
 <table>
 <tr>
@@ -642,7 +642,7 @@ data: pd.Series, dataset: str, column: str,
 
 5. Classes (for example the portfolio class) should hold the relevant data and perform no other calculations, these calculations should be done in an independent function.
 
-    Why? Two reasons:
+Why? Two reasons:
 
 These calculations can then be used outside of the class with custom data; for example via the api or for tests.
 
@@ -713,7 +713,7 @@ for period in portfolio_helper.PERIODS:
 
 6. Naming among related model and view functions should be obvious; just different prefix if possible
 
-    Why? Eases API factory mapping and keeps code clean.
+Why? Eases API factory mapping and keeps code clean.
 <table>
 <tr>
 <td> Good code :white_check_mark: </td> <td> Bad code :x: </td>
@@ -766,13 +766,13 @@ def get_yldcurve(country: str) -> pd.Dataframe:
 
 1. No data altering in the view file or controller file (view and model with same args)
 
-    Why? Consistency and good code structure. This also improves the api user experience. Thus follows that view and model files will have the same arguments (except for output options like raw, export, external_axes), since no data changes shall be done in the view file.
+Why? Consistency and good code structure. This also improves the api user experience. Thus follows that view and model files will have the same arguments (except for output options like raw, export, external_axes), since no data changes shall be done in the view file.
 
 <br>
 
 2. Each model (get_) should almost always have its own view function (display_)
 
-    Why? To respect the principles laid out in Code Structure and the previous bullet point. If your code does not have this `get_` → `display_` map it’s likely that i. and/or ii. fail to hold.
+Why? To respect the principles laid out in Code Structure and the previous bullet point. If your code does not have this `get_` → `display_` map it’s likely that i. and/or ii. fail to hold.
 
     i. Data is processed in _model files and displayed in `_view` files
 
