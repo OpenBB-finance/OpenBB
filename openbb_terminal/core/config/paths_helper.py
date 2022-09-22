@@ -50,8 +50,10 @@ dirs_list = [
     CUSTOM_IMPORTS_DIRECTORY,
     CUSTOM_IMPORTS_DIRECTORY / "econometrics",
     USER_EXPORTS_DIRECTORY,
+    USER_EXPORTS_DIRECTORY/ "reports",
 ]
 dirs_files = [USER_ENV_FILE, REPOSITORY_ENV_FILE]
 create_paths(dirs_list)
 create_files(dirs_files)
 copy_files(REPOSITORY_DIRECTORY / "custom_imports", CUSTOM_IMPORTS_DIRECTORY)
+copy_files(REPOSITORY_DIRECTORY / "exports", USER_EXPORTS_DIRECTORY)
