@@ -87,7 +87,7 @@ jobs:
         run: |
           source $VENV
           pytest --nbmake openbb_terminal/reports/*ipynb
-          pytest --nbmake "./openbb_terminal/dashboards/voila"
+          pytest --nbmake ./openbb_terminal/dashboards/voila
 
       - name: Start Terminal and exit
         run: |
