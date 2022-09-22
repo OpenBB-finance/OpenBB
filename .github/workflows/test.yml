@@ -81,6 +81,14 @@ jobs:
           source $VENV
           pytest tests/
 
+      - name: Run jupyter notebook tests
+        env:
+          MPLBACKEND: Agg
+        run: |
+          source $VENV
+          pytest --nbmake "./openbb_terminal/dashboards/voila"
+          pytest --nbmake "./openbb_terminal/reports"
+
       - name: Start Terminal and exit
         run: |
           source $VENV

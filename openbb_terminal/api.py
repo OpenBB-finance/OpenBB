@@ -27,8 +27,8 @@ try:
 except ImportError:
     forecasting = False
     console.print(
-        "[red]Forecast dependencies not installed,",
-        " will not load this component of API[/red]",
+        "[red]Forecast dependencies not installed,"
+        " will not load this component of API[/red]"
     )
 
 from .config_terminal import theme
