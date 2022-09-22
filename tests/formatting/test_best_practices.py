@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List, Tuple
 from inspect import signature
 
 from docs.generate import all_functions
@@ -37,14 +37,14 @@ bad_params = {
 
 
 def create_overlaps(
-    overlaps: list[str], func_name: str, func_path: str
-) -> Optional[tuple[list[str], str, str, str]]:
+    overlaps: List[str], func_name: str, func_path: str
+) -> Optional[Tuple[List[str], str, str, str]]:
     """
     Checks if there is a bad parameter name in a function
 
     Parameters
     ----------
-    overlaps : list[str]
+    overlaps : List[str]
         Any overlaps between forbidden parameters and the function's parameters
     func_name: str
         The name of the function
@@ -53,8 +53,8 @@ def create_overlaps(
 
     Returns
     ----------
-    overlaps: Optional[tuple[list[str], str, str, str]]
-        tuple[overlaps, func_name, func_path, overlaps_str]
+    overlaps: Optional[Tuple[List[str], str, str, str]]
+        Tuple[overlaps, func_name, func_path, overlaps_str]
     """
     if overlaps:
         overlap_str = "\n"
@@ -67,7 +67,7 @@ def create_overlaps(
 def test_bad_parameters():
     all_funcs = all_functions()
     total_overlaps = 0
-    all_overlaps: list[tuple[list[str], str, str, str]] = []
+    all_overlaps: List[Tuple[List[str], str, str, str]] = []
     for path, _, function in all_funcs:
         params = signature(function)
         overlaps = list(set(bad_params) & set(params.parameters.keys()))
