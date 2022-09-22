@@ -109,7 +109,7 @@ def test_load_week_or_month(recorder, weekly, monthly):
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "path",
-    ["none", Path(os.path.join(CUSTOM_IMPORTS_DIRECTORY, "stocks", "test.csv"))],
+    ["none", CUSTOM_IMPORTS_DIRECTORY / "stocks" / "test.csv"],
 )
 def test_load_custom_output(path):
     stocks_helper.load_custom(path)
@@ -128,7 +128,7 @@ def test_load_custom_output_wrong_path(path):
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "path",
-    [os.path.join(CUSTOM_IMPORTS_DIRECTORY / "stocks", "test.csv")],
+    [CUSTOM_IMPORTS_DIRECTORY / "stocks" / "test.csv"],
 )
 def test_load_custom_output_df(path):
     df = stocks_helper.load_custom(path)
