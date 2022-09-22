@@ -776,8 +776,11 @@ def set_reddit_key(
 
     Parameters
     ----------
-        key: str
-            API key
+        client_id: str
+        client_secret: str
+        password: str
+        username: str
+        useragent: str
         persist: bool
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
