@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "OpenBBTerminal"
-version = "1.8.1"
+version = "1.8.0"
 description = "Work In Prgress. Investment Research for Everyone, Anywhere."
 authors = ["Didier Rodrigues Lopes"]
 readme = "openbb_terminal/API_README.md"
