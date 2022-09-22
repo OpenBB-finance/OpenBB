@@ -955,7 +955,7 @@ functions = {
     },
     "economy.get_events_countries": {
         "model": "openbb_terminal.economy.investingcom_model.get_events_countries"
-    },    
+    },
     "economy.events": {
         "model": "openbb_terminal.economy.investingcom_model.get_economic_calendar"
     },
