@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import os
+from urllib.parse import quote
 import certifi
 import feedparser
 import pandas as pd
@@ -38,25 +39,16 @@ def get_news(
 
     while not have_data:
         if term:
-            if sources:
-                data = feedparser.parse(
-                    f"https://news.google.com/rss/search?q={term}&hl=en-US&gl=US&ceid=US:en&when:24h+allinurl"
-                    f':{sources.replace(" ", "%20")}'
-                )
-            else:
-                data = feedparser.parse(
-                    f"https://news.google.com/rss/search?q={term}&when:24h&hl=en-US&gl=US&ceid=US:en"
-                )
+            term = quote(term)
+            data = feedparser.parse(
+                f"https://news.google.com/rss/search?q={term}&hl=en-US&gl=US&ceid=US:en&when:24h+allinurl"
+                f':{sources.replace(" ", "%20")}'
+            )
         else:
-            if sources:
-                data = feedparser.parse(
-                    f'https://news.google.com/rss/search?q=when:24h+allinurl:{sources.replace(" ", "%20")}'
-                    "&hl=en-US&gl=US&ceid=US:en"
-                )
-            else:
-                data = feedparser.parse(
-                    "https://news.google.com/rss/search?q=when:24h&hl=en-US&gl=US&ceid=US:en"
-                )
+            data = feedparser.parse(
+                f'https://news.google.com/rss/search?q=when:24h+allinurl:{sources.replace(" ", "%20")}'
+                "&hl=en-US&gl=US&ceid=US:en"
+            )
 
         if (
             hasattr(data, "status") and data.status == 200

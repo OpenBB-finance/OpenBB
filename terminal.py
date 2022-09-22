@@ -169,17 +169,17 @@ class TerminalController(BaseController):
             "-t",
             "--term",
             dest="term",
-            default="",
+            default=[""],
             nargs="+",
             help="search for a term on the news",
         )
         parse.add_argument(
-            "-a",
-            "--article",
-            dest="article",
-            default="bloomberg",
+            "-s",
+            "--sources",
+            dest="sources",
+            default=["bloomberg.com"],
             nargs="+",
-            help="articles from where to get news from",
+            help="sources from where to get news from",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
@@ -188,10 +188,10 @@ class TerminalController(BaseController):
         )
         if news_parser:
             feedparser_view.display_news(
-                " ".join(news_parser.term),
-                " ".join(news_parser.article),
-                news_parser.limit,
-                news_parser.export,
+                term=" ".join(news_parser.term),
+                sources=" ".join(news_parser.sources),
+                limit=news_parser.limit,
+                export=news_parser.export,
             )
 
     def call_guess(self, other_args: List[str]) -> None:
