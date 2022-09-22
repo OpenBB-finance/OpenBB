@@ -226,7 +226,7 @@ if __name__ == "__main__":
         # generate_documentation(folder_path, k, v)
         pass
     func_dict = generate_dict(funcs)
-    print(yaml.dump(func_dict))
+    # print(yaml.dump(func_dict))
     # generate_output(func_dict)
 
 
