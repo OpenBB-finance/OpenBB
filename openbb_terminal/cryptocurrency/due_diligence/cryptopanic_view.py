@@ -21,7 +21,7 @@ def display_news(
     region: str = "en",
     filter_: Optional[str] = None,
     source: str = "cp",
-    currency: Optional[str] = None,
+    symbol: Optional[str] = None,
     limit: int = 25,
     ascend: bool = True,
     export: str = "",
@@ -51,7 +51,7 @@ def display_news(
         post_kind=post_kind,
         filter_=filter_,
         region=region,
-        currency=currency,
+        symbol=symbol,
         source=source,
         ascend=ascend,
     )

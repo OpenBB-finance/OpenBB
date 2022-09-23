@@ -20,7 +20,7 @@ def display_defi_vaults(
     chain: Optional[str] = None,
     protocol: Optional[str] = None,
     kind: Optional[str] = None,
-    top: int = 10,
+    limit: int = 10,
     sortby: str = "apy",
     ascend: bool = True,
     link: bool = False,
@@ -46,7 +46,7 @@ def display_defi_vaults(
         ]
     kind: str
         Kind/type of vault - one from list: ['lp','single','noimploss','stable']
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data
@@ -74,7 +74,7 @@ def display_defi_vaults(
         df.drop("Link", axis=1, inplace=True)
 
     print_rich_table(
-        df.head(top),
+        df.head(limit),
         headers=list(df.columns),
         show_index=False,
         title="Top DeFi Vaults",
