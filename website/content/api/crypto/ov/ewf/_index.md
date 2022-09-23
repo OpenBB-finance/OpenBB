@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.ov.ewf() -> pandas.core.frame.DataFrame
+### crypto.ov.ewf() -> pandas.core.frame.DataFrame
 
 Scrapes exchange withdrawal fees
     [Source: https://withdrawalfees.com/]
@@ -17,7 +17,7 @@ Scrapes exchange withdrawal fees
         Exchange, Coins, Lowest, Average, Median, Highest
 
 ## Getting charts 
-###crypto.ov.ewf(export: str = '', chart=True) -> None
+### crypto.ov.ewf(export: str = '', chart=True) -> None
 
 Exchange withdrawal fees
     [Source: https://withdrawalfees.com/]

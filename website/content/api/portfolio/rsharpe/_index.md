@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###portfolio.rsharpe(portfolio: pandas.core.frame.DataFrame, risk_free_rate: float = 0, window: str = '1y') -> pandas.core.frame.DataFrame
+### portfolio.rsharpe(portfolio: pandas.core.frame.DataFrame, risk_free_rate: float = 0, window: str = '1y') -> pandas.core.frame.DataFrame
 
 Get rolling sharpe ratio
 
@@ -23,7 +23,7 @@ Get rolling sharpe ratio
         Rolling sharpe ratio DataFrame
 
 ## Getting charts 
-###portfolio.rsharpe(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: str = '1y', risk_free_rate: float = 0, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### portfolio.rsharpe(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: str = '1y', risk_free_rate: float = 0, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display rolling sharpe
 

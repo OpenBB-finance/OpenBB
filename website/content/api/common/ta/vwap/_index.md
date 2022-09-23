@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###common.ta.vwap(data: pandas.core.frame.DataFrame, offset: int = 0) -> pandas.core.frame.DataFrame
+### common.ta.vwap(data: pandas.core.frame.DataFrame, offset: int = 0) -> pandas.core.frame.DataFrame
 
 Gets volume weighted average price (VWAP)
 
@@ -19,7 +19,7 @@ Gets volume weighted average price (VWAP)
         Dataframe with VWAP data
 
 ## Getting charts 
-###common.ta.vwap(data: pandas.core.frame.DataFrame, symbol: str = '', start_date: str = None, end_date: str = None, offset: int = 0, interval: str = '', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### common.ta.vwap(data: pandas.core.frame.DataFrame, symbol: str = '', start_date: str = None, end_date: str = None, offset: int = 0, interval: str = '', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Plots VWMA technical indicator
 

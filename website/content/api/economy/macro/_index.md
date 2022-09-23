@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###economy.macro(parameters: list = None, countries: list = None, transform: str = '', start_date: str = '1900-01-01', end_date=datetime.date(2022, 9, 20), currency: str = '') -> Tuple[Any, Dict[Any, Dict[Any, Any]], str]
+### economy.macro(parameters: list = None, countries: list = None, transform: str = '', start_date: str = '1900-01-01', end_date=datetime.date(2022, 9, 23), symbol: str = '') -> Tuple[Any, Dict[Any, Dict[Any, Any]], str]
 
 This functions groups the data queried from the EconDB database [Source: EconDB]
 
@@ -19,7 +19,7 @@ This functions groups the data queried from the EconDB database [Source: EconDB]
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : str
         The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
-    currency : str
+    symbol : str
         In what currency you wish to convert all values.
 
     Returns
@@ -32,7 +32,7 @@ This functions groups the data queried from the EconDB database [Source: EconDB]
         Denomination which can be Trillions, Billions, Millions, Thousands
 
 ## Getting charts 
-###economy.macro(parameters: list = None, countries: list = None, transform: str = '', start_date: str = '1900-01-01', end_date: str = '2022-09-20', currency: str = '', raw: bool = False, external_axes: Optional[List[axes]] = None, export: str = '', chart=True)
+### economy.macro(parameters: list = None, countries: list = None, transform: str = '', start_date: str = '1900-01-01', end_date: str = '2022-09-23', symbol: str = '', raw: bool = False, external_axes: Optional[List[axes]] = None, export: str = '', chart=True)
 
 Show the received macro data about a company [Source: EconDB]
 
@@ -54,7 +54,7 @@ Show the received macro data about a company [Source: EconDB]
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : str
         The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
-    currency : str
+    symbol : str
         In what currency you wish to convert all values.
     raw : bool
         Whether to display the raw output.

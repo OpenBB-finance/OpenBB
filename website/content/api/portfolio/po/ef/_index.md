@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###portfolio.po.ef(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', risk_measure: str = 'MV', risk_free_rate: float = 0, alpha: float = 0.05, value: float = 1.0, value_short: float = 0.0, n_portfolios: int = 100, seed: int = 123) -> Tuple
+### portfolio.po.ef(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', risk_measure: str = 'MV', risk_free_rate: float = 0, alpha: float = 0.05, value: float = 1.0, value_short: float = 0.0, n_portfolios: int = 100, seed: int = 123) -> Tuple
 
 
     Get efficient frontier
@@ -76,7 +76,7 @@ To obtain charts, make sure to add `chart=True` as the last parameter
         Parameters to create efficient frontier: frontier, mu, cov, stock_returns, weights, X1, Y1, port
 
 ## Getting charts 
-###portfolio.po.ef(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', risk_measure: str = 'MV', risk_free_rate: float = 0, alpha: float = 0.05, value: float = 1.0, value_short: float = 0.0, n_portfolios: int = 100, seed: int = 123, tangency: bool = False, plot_tickers: bool = True, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### portfolio.po.ef(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', risk_measure: str = 'MV', risk_free_rate: float = 0, alpha: float = 0.05, value: float = 1.0, value_short: float = 0.0, n_portfolios: int = 100, seed: int = 123, tangency: bool = False, plot_tickers: bool = True, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 
     Display efficient frontier

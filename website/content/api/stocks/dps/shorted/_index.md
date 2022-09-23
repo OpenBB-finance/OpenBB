@@ -1,7 +1,7 @@
 # stocks.dps.shorted
 
 ## Get underlying data 
-###stocks.dps.shorted() -> pandas.core.frame.DataFrame
+### stocks.dps.shorted() -> pandas.core.frame.DataFrame
 
 Get most shorted stock screener [Source: Yahoo Finance]
 

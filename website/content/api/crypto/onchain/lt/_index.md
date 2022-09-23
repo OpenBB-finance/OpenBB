@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.onchain.lt(trade_amount_currency: str = 'USD', limit: int = 90, sortby: str = 'tradeAmount', ascend: bool = True) -> pandas.core.frame.DataFrame
+### crypto.onchain.lt(trade_amount_currency: str = 'USD', limit: int = 90, sortby: str = 'tradeAmount', ascend: bool = True) -> pandas.core.frame.DataFrame
 
 Get trades on Decentralized Exchanges aggregated by DEX [Source: https://graphql.bitquery.io/]
 
@@ -25,7 +25,7 @@ Get trades on Decentralized Exchanges aggregated by DEX [Source: https://graphql
         Trades on Decentralized Exchanges aggregated by DEX
 
 ## Getting charts 
-###crypto.onchain.lt(trade_amount_currency: str = 'USD', kind: str = 'dex', top: int = 20, days: int = 90, sortby: str = 'tradeAmount', ascend: bool = True, export: str = '', chart=True) -> None
+### crypto.onchain.lt(trade_amount_currency: str = 'USD', kind: str = 'dex', limit: int = 20, days: int = 90, sortby: str = 'tradeAmount', ascend: bool = True, export: str = '', chart=True) -> None
 
 Trades on Decentralized Exchanges aggregated by DEX or Month
     [Source: https://graphql.bitquery.io/]
@@ -36,7 +36,7 @@ Trades on Decentralized Exchanges aggregated by DEX or Month
         Aggregate trades by dex or time
     trade_amount_currency: str
         Currency of displayed trade amount. Default: USD
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data

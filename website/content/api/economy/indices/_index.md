@@ -1,7 +1,7 @@
 # economy.indices
 
 ## Get underlying data 
-###economy.indices() -> pandas.core.frame.DataFrame
+### economy.indices() -> pandas.core.frame.DataFrame
 
 Get the top US indices
 

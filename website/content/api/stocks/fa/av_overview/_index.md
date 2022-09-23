@@ -1,7 +1,7 @@
 # stocks.fa.av_overview
 
 ## Get underlying data 
-###stocks.fa.av_overview(symbol: str) -> pandas.core.frame.DataFrame
+### stocks.fa.av_overview(symbol: str) -> pandas.core.frame.DataFrame
 
 Get alpha vantage company overview
 

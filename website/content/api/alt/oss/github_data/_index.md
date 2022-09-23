@@ -1,7 +1,7 @@
 # alt.oss.github_data
 
 ## Get underlying data 
-###alt.oss.github_data(url: str, **kwargs)
+### alt.oss.github_data(url: str, **kwargs)
 
 Get repository stats
 

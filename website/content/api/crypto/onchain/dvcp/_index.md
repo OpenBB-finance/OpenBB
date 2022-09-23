@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.onchain.dvcp(limit: int = 100, symbol: str = 'UNI', vs: str = 'USDT', sortby: str = 'date', ascend: bool = True) -> pandas.core.frame.DataFrame
+### crypto.onchain.dvcp(limit: int = 100, symbol: str = 'UNI', to_symbol: str = 'USDT', sortby: str = 'date', ascend: bool = True) -> pandas.core.frame.DataFrame
 
 Get daily volume for given pair [Source: https://graphql.bitquery.io/]
 
@@ -13,7 +13,7 @@ Get daily volume for given pair [Source: https://graphql.bitquery.io/]
         Last n days to query data
     symbol: str
         ERC20 token symbol
-    vs: str
+    to_symbol: str
         Quote currency.
     sortby: str
         Key by which to sort data
@@ -26,7 +26,7 @@ Get daily volume for given pair [Source: https://graphql.bitquery.io/]
          Daily volume for given pair
 
 ## Getting charts 
-###crypto.onchain.dvcp(symbol: str = 'WBTC', vs: str = 'USDT', top: int = 20, sortby: str = 'date', ascend: bool = True, export: str = '', chart=True) -> None
+### crypto.onchain.dvcp(symbol: str = 'WBTC', to_symbol: str = 'USDT', limit: int = 20, sortby: str = 'date', ascend: bool = True, export: str = '', chart=True) -> None
 
 Display daily volume for given pair
     [Source: https://graphql.bitquery.io/]
@@ -35,9 +35,9 @@ Display daily volume for given pair
     ----------
     symbol: str
         ERC20 token symbol or address
-    vs: str
+    to_symbol: str
         Quote currency.
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data

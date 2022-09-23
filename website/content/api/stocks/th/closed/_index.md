@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.th.closed() -> pandas.core.frame.DataFrame
+### stocks.th.closed() -> pandas.core.frame.DataFrame
 
 Get closed exchanges.
 
@@ -16,7 +16,7 @@ Get closed exchanges.
         Currently closed exchanges
 
 ## Getting charts 
-###stocks.th.closed(, chart=True)
+### stocks.th.closed(, chart=True)
 
 Display closed exchanges.
 

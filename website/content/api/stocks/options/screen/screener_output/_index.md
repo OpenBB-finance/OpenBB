@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.options.screen.screener_output(preset: str = 'high_IV', presets_path: str = '/Users/colindelahunty/OpenBBTerminal/openbb_terminal/stocks/options/screen/../presets/') -> Tuple[pandas.core.frame.DataFrame, str]
+### stocks.options.screen.screener_output(preset: str = 'high_IV', presets_path: str = '/Users/colindelahunty/OpenBBTerminal/openbb_terminal/stocks/options/screen/../presets/') -> Tuple[pandas.core.frame.DataFrame, str]
 
 Screen options based on preset filters
 
@@ -21,7 +21,7 @@ Screen options based on preset filters
         String containing error message if supplied
 
 ## Getting charts 
-###stocks.options.screen.screener_output(preset: str = 'high_IV', presets_path: str = '/Users/colindelahunty/OpenBBTerminal/openbb_terminal/stocks/options/screen/../presets/', limit: int = 20, export: str = '', chart=True) -> List
+### stocks.options.screen.screener_output(preset: str = 'high_IV', presets_path: str = '/Users/colindelahunty/OpenBBTerminal/openbb_terminal/stocks/options/screen/../presets/', limit: int = 20, export: str = '', chart=True) -> List
 
 Print the output of screener
 

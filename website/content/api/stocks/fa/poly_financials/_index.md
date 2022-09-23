@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.fa.poly_financials(symbol: str, statement: str, quarterly: bool = False, ratios: bool = False) -> pandas.core.frame.DataFrame
+### stocks.fa.poly_financials(symbol: str, statement: str, quarterly: bool = False, ratios: bool = False) -> pandas.core.frame.DataFrame
 
 Get ticker financial statements from polygon
 
@@ -24,7 +24,7 @@ Get ticker financial statements from polygon
         Balance Sheets or Income Statements
 
 ## Getting charts 
-###stocks.fa.poly_financials(symbol: str, statement: str, limit: int = 10, quarterly: bool = False, ratios: bool = False, plot: list = None, export: str = '', chart=True)
+### stocks.fa.poly_financials(symbol: str, statement: str, limit: int = 10, quarterly: bool = False, ratios: bool = False, plot: list = None, export: str = '', chart=True)
 
 Display tickers balance sheet or income statement
 

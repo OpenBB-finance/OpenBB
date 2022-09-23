@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.gov.toplobbying() -> pandas.core.frame.DataFrame
+### stocks.gov.toplobbying() -> pandas.core.frame.DataFrame
 
 Corporate lobbying details
 
@@ -14,7 +14,7 @@ Corporate lobbying details
 
 
 ## Getting charts 
-###stocks.gov.toplobbying(limit: int = 10, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.gov.toplobbying(limit: int = 10, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Top lobbying tickers based on total spent
 

@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.dd.oi(symbol: str, interval: int = 0) -> pandas.core.frame.DataFrame
+### crypto.dd.oi(symbol: str, interval: int = 0) -> pandas.core.frame.DataFrame
 
 Returns open interest by exchange for a certain symbol
     [Source: https://coinglass.github.io/API-Reference/]
@@ -21,7 +21,7 @@ Returns open interest by exchange for a certain symbol
         open interest by exchange and price
 
 ## Getting charts 
-###crypto.dd.oi(symbol: str, interval: int = 0, export: str = '', chart=True) -> None
+### crypto.dd.oi(symbol: str, interval: int = 0, export: str = '', chart=True) -> None
 
 Displays open interest by exchange for a certain cryptocurrency
     [Source: https://coinglass.github.io/API-Reference/]

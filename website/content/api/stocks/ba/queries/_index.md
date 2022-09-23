@@ -1,7 +1,7 @@
 # stocks.ba.queries
 
 ## Get underlying data 
-###stocks.ba.queries(symbol: str, limit: int = 10) -> pandas.core.frame.DataFrame
+### stocks.ba.queries(symbol: str, limit: int = 10) -> pandas.core.frame.DataFrame
 
 Get related queries from google api [Source: google]
 

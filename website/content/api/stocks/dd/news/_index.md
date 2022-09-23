@@ -1,7 +1,7 @@
 # stocks.dd.news
 
 ## Get underlying data 
-###stocks.dd.news(symbol: str) -> List[Any]
+### stocks.dd.news(symbol: str) -> List[Any]
 
 Get news from Finviz
 

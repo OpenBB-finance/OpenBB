@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.fa.mktcap(symbol: str, start_date: str = '2019-09-18') -> Tuple[pandas.core.frame.DataFrame, str]
+### stocks.fa.mktcap(symbol: str, start_date: str = '2019-09-21') -> Tuple[pandas.core.frame.DataFrame, str]
 
 Get market cap over time for ticker. [Source: Yahoo Finance]
 
@@ -22,7 +22,7 @@ Get market cap over time for ticker. [Source: Yahoo Finance]
         Currency of ticker
 
 ## Getting charts 
-###stocks.fa.mktcap(symbol: str, start_date: str = '2019-09-18', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.fa.mktcap(symbol: str, start_date: str = '2019-09-21', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display market cap over time. [Source: Yahoo Finance]
 

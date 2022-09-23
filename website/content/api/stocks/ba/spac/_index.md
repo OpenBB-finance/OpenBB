@@ -1,7 +1,7 @@
 # stocks.ba.spac
 
 ## Get underlying data 
-###stocks.ba.spac(limit: int = 5) -> Tuple[pandas.core.frame.DataFrame, dict, int]
+### stocks.ba.spac(limit: int = 5) -> Tuple[pandas.core.frame.DataFrame, dict, int]
 
 Get posts containing SPAC from top subreddits [Source: reddit]
 

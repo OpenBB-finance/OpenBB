@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###econometrics.panel(regression_type: str, regression_variables: List[Tuple], data: Dict[str, pandas.core.frame.DataFrame], entity_effects: bool = False, time_effects: bool = False) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any], Any]
+### econometrics.panel(regression_type: str, regression_variables: List[Tuple], data: Dict[str, pandas.core.frame.DataFrame], entity_effects: bool = False, time_effects: bool = False) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any], Any]
 
 Based on the regression type, this function decides what regression to run.
 
@@ -27,7 +27,7 @@ Based on the regression type, this function decides what regression to run.
     the regression model.
 
 ## Getting charts 
-###econometrics.panel(data: Dict[str, pandas.core.frame.DataFrame], regression_variables: List[Tuple], regression_type: str = 'OLS', entity_effects: bool = False, time_effects: bool = False, export: str = '', chart=True)
+### econometrics.panel(data: Dict[str, pandas.core.frame.DataFrame], regression_variables: List[Tuple], regression_type: str = 'OLS', entity_effects: bool = False, time_effects: bool = False, export: str = '', chart=True)
 
 Based on the regression type, this function decides what regression to run.
 

@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###common.qa.var(data: pandas.core.frame.DataFrame, use_mean: bool = False, adjusted_var: bool = False, student_t: bool = False, percentile: Union[int, float] = 0.999, portfolio: bool = False) -> pandas.core.frame.DataFrame
+### common.qa.var(data: pandas.core.frame.DataFrame, use_mean: bool = False, adjusted_var: bool = False, student_t: bool = False, percentile: Union[int, float] = 0.999, portfolio: bool = False) -> pandas.core.frame.DataFrame
 
 Gets value at risk for specified stock dataframe
 
@@ -30,7 +30,7 @@ Gets value at risk for specified stock dataframe
         list of historical VaR
 
 ## Getting charts 
-###common.qa.var(data: pandas.core.frame.DataFrame, symbol: str = '', use_mean: bool = False, adjusted_var: bool = False, student_t: bool = False, percentile: float = 0.999, data_range: int = 0, portfolio: bool = False, chart=True) -> None
+### common.qa.var(data: pandas.core.frame.DataFrame, symbol: str = '', use_mean: bool = False, adjusted_var: bool = False, student_t: bool = False, percentile: float = 0.999, data_range: int = 0, portfolio: bool = False, chart=True) -> None
 
 Displays VaR of dataframe
 

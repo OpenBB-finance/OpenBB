@@ -1,7 +1,7 @@
 # crypto.disc.coin_list
 
 ## Get underlying data 
-###crypto.disc.coin_list() -> pandas.core.frame.DataFrame
+### crypto.disc.coin_list() -> pandas.core.frame.DataFrame
 
 Get list of coins available on CoinGecko [Source: CoinGecko]
 

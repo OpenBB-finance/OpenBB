@@ -1,7 +1,7 @@
 # portfolio.po.load_bl_views
 
 ## Get underlying data 
-###portfolio.po.load_bl_views(excel_file: str = '')
+### portfolio.po.load_bl_views(excel_file: str = '')
 
 
     Load a Excel file with views for Black Litterman model.

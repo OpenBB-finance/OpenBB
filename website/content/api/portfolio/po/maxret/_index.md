@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###portfolio.po.maxret(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', risk_measure: str = 'MV', risk_free_rate: float = 0, risk_aversion: float = 1, alpha: float = 0.05, target_return: float = -1, target_risk: float = -1, mean: str = 'hist', covariance: str = 'hist', d_ewma: float = 0.94, value: float = 1.0, value_short: float = 0.0) -> Tuple
+### portfolio.po.maxret(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', risk_measure: str = 'MV', risk_free_rate: float = 0, risk_aversion: float = 1, alpha: float = 0.05, target_return: float = -1, target_risk: float = -1, mean: str = 'hist', covariance: str = 'hist', d_ewma: float = 0.94, value: float = 1.0, value_short: float = 0.0) -> Tuple
 
 
     Builds a maximal return/risk ratio portfolio
@@ -106,7 +106,7 @@ To obtain charts, make sure to add `chart=True` as the last parameter
         Dictionary of portfolio weights and DataFrame of stock returns
 
 ## Getting charts 
-###portfolio.po.maxret(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', risk_measure: str = 'MV', risk_free_rate: float = 0, risk_aversion: float = 1, alpha: float = 0.05, target_return: float = -1, target_risk: float = -1, mean: str = 'hist', covariance: str = 'hist', d_ewma: float = 0.94, value: float = 1.0, value_short: float = 0.0, table: bool = False, chart=True) -> Dict
+### portfolio.po.maxret(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', risk_measure: str = 'MV', risk_free_rate: float = 0, risk_aversion: float = 1, alpha: float = 0.05, target_return: float = -1, target_risk: float = -1, mean: str = 'hist', covariance: str = 'hist', d_ewma: float = 0.94, value: float = 1.0, value_short: float = 0.0, table: bool = False, chart=True) -> Dict
 
 
     Builds a maximal return portfolio

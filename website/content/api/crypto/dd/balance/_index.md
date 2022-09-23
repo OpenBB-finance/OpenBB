@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.dd.balance(from_symbol: str, to_symbol: str = 'USDT') -> pandas.core.frame.DataFrame
+### crypto.dd.balance(from_symbol: str, to_symbol: str = 'USDT') -> pandas.core.frame.DataFrame
 
 Get account holdings for asset. [Source: Binance]
 
@@ -20,7 +20,7 @@ Get account holdings for asset. [Source: Binance]
         Dataframe with account holdings for an asset
 
 ## Getting charts 
-###crypto.dd.balance(from_symbol: str, to_symbol: str = 'USDT', export: str = '', chart=True) -> None
+### crypto.dd.balance(from_symbol: str, to_symbol: str = 'USDT', export: str = '', chart=True) -> None
 
 Get account holdings for asset. [Source: Binance]
 

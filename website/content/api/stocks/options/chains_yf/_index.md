@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.options.chains_yf(symbol: str, expiration: str, min_sp: float = -1, max_sp: float = -1, calls: bool = True, puts: bool = True) -> pandas.core.frame.DataFrame
+### stocks.options.chains_yf(symbol: str, expiry: str, min_sp: float = -1, max_sp: float = -1, calls: bool = True, puts: bool = True) -> pandas.core.frame.DataFrame
 
 Get full option chains with calculated greeks
 
@@ -11,7 +11,7 @@ Get full option chains with calculated greeks
     ----------
     symbol: str
         Stock ticker symbol
-    expiration: str
+    expiry: str
         Expiration date for chain in format YYY-mm-dd
     calls: bool
         Flag to get calls
@@ -24,7 +24,7 @@ Get full option chains with calculated greeks
         DataFrame of option chain.  If both calls and puts
 
 ## Getting charts 
-###stocks.options.chains_yf(symbol: str, expiration: str, min_sp: float = -1, max_sp: float = -1, calls_only: bool = False, puts_only: bool = False, export: str = '', chart=True)
+### stocks.options.chains_yf(symbol: str, expiry: str, min_sp: float = -1, max_sp: float = -1, calls_only: bool = False, puts_only: bool = False, export: str = '', chart=True)
 
 Display option chains for given ticker and expiration
 
@@ -32,7 +32,7 @@ Display option chains for given ticker and expiration
     ----------
     symbol: str
         Stock ticker symbol
-    expiration: str
+    expiry: str
         Expiration for option chain
     min_sp: float
         Min strike

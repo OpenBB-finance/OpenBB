@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.th.exchange(symbol: str) -> pandas.core.frame.DataFrame
+### stocks.th.exchange(symbol: str) -> pandas.core.frame.DataFrame
 
 Get current exchange open hours.
 
@@ -18,7 +18,7 @@ Get current exchange open hours.
         Exchange info
 
 ## Getting charts 
-###stocks.th.exchange(symbol: str, chart=True)
+### stocks.th.exchange(symbol: str, chart=True)
 
 Display current exchange trading hours.
 

@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.ta.view(symbol: str) -> bytes
+### stocks.ta.view(symbol: str) -> bytes
 
 Get finviz image for given ticker
 
@@ -18,7 +18,7 @@ Get finviz image for given ticker
         Image in byte format
 
 ## Getting charts 
-###stocks.ta.view(symbol: str, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.ta.view(symbol: str, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 View finviz image for ticker
 

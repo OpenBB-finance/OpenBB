@@ -1,7 +1,7 @@
 # stocks.fa.fmp_metrics
 
 ## Get underlying data 
-###stocks.fa.fmp_metrics(symbol: str, limit: int = 5, quarterly: bool = False) -> pandas.core.frame.DataFrame
+### stocks.fa.fmp_metrics(symbol: str, limit: int = 5, quarterly: bool = False) -> pandas.core.frame.DataFrame
 
 Get key metrics
 

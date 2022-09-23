@@ -1,7 +1,7 @@
 # stocks.dd.analyst
 
 ## Get underlying data 
-###stocks.dd.analyst(symbol: str) -> pandas.core.frame.DataFrame
+### stocks.dd.analyst(symbol: str) -> pandas.core.frame.DataFrame
 
 Get analyst data. [Source: Finviz]
 

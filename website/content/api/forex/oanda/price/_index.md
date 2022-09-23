@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###forex.oanda.price(accountID: str = 'REPLACE_ME', instrument: Optional[str] = None) -> Union[Dict[str, str], bool]
+### forex.oanda.price(accountID: str = 'REPLACE_ME', instrument: Optional[str] = None) -> Union[Dict[str, str], bool]
 
 Request price for a forex pair.
 
@@ -20,7 +20,7 @@ Request price for a forex pair.
         The currency pair price or False
 
 ## Getting charts 
-###forex.oanda.price(account: str, instrument: Optional[str] = '', chart=True)
+### forex.oanda.price(account: str, instrument: Optional[str] = '', chart=True)
 
 View price for loaded currency pair.
 

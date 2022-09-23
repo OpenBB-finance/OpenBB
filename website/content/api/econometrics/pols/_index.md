@@ -1,7 +1,7 @@
 # econometrics.pols
 
 ## Get underlying data 
-###econometrics.pols(regression_variables: List[Tuple], data: Dict[str, pandas.core.frame.DataFrame]) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any], Any]
+### econometrics.pols(regression_variables: List[Tuple], data: Dict[str, pandas.core.frame.DataFrame]) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any], Any]
 
 PooledOLS is just plain OLS that understands that various panel data structures.
     It is useful as a base model. [Source: LinearModels]

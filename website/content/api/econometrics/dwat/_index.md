@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###econometrics.dwat(residual: pandas.core.frame.DataFrame) -> pandas.core.frame.DataFrame
+### econometrics.dwat(residual: pandas.core.frame.DataFrame) -> pandas.core.frame.DataFrame
 
 Calculate test statistics for Durbing Watson autocorrelation
 
@@ -17,7 +17,7 @@ Calculate test statistics for Durbing Watson autocorrelation
     Test statistic of the Durbin Watson test.
 
 ## Getting charts 
-###econometrics.dwat(dependent_variable: pandas.core.series.Series, residual: pandas.core.frame.DataFrame, plot: bool = False, export: str = '', external_axes: Optional[List[axes]] = None, chart=True)
+### econometrics.dwat(dependent_variable: pandas.core.series.Series, residual: pandas.core.frame.DataFrame, plot: bool = False, export: str = '', external_axes: Optional[List[axes]] = None, chart=True)
 
 Show Durbin-Watson autocorrelation tests
 

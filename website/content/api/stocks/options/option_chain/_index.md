@@ -1,7 +1,7 @@
 # stocks.options.option_chain
 
 ## Get underlying data 
-###stocks.options.option_chain(symbol: str, expiry: str)
+### stocks.options.option_chain(symbol: str, expiry: str)
 
 Gets option chain from yf for given ticker and expiration
 

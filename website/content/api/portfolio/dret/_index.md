@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###portfolio.dret(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: str = 'all') -> pandas.core.frame.DataFrame
+### portfolio.dret(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: str = 'all') -> pandas.core.frame.DataFrame
 
 Get daily returns
 
@@ -19,7 +19,7 @@ Get daily returns
 
 
 ## Getting charts 
-###portfolio.dret(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: str = 'all', raw: bool = False, limit: int = 10, export: str = '', external_axes: Optional[matplotlib.axes._axes.Axes] = None, chart=True)
+### portfolio.dret(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: str = 'all', raw: bool = False, limit: int = 10, export: str = '', external_axes: Optional[matplotlib.axes._axes.Axes] = None, chart=True)
 
 Display daily returns
 

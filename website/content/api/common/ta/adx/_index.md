@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###common.ta.adx(high_values: pandas.core.series.Series, low_values: pandas.core.series.Series, close_values: pandas.core.series.Series, window: int = 14, scalar: int = 100, drift: int = 1)
+### common.ta.adx(high_values: pandas.core.series.Series, low_values: pandas.core.series.Series, close_values: pandas.core.series.Series, window: int = 14, scalar: int = 100, drift: int = 1)
 
 ADX technical indicator
 
@@ -28,7 +28,7 @@ ADX technical indicator
         DataFrame with adx indicator
 
 ## Getting charts 
-###common.ta.adx(data: pandas.core.frame.DataFrame, window: int = 14, scalar: int = 100, drift: int = 1, symbol: str = '', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### common.ta.adx(data: pandas.core.frame.DataFrame, window: int = 14, scalar: int = 100, drift: int = 1, symbol: str = '', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Plot ADX indicator
 

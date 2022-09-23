@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###portfolio.rsortino(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: str = '1y', risk_free_rate: float = 0) -> pandas.core.frame.DataFrame
+### portfolio.rsortino(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: str = '1y', risk_free_rate: float = 0) -> pandas.core.frame.DataFrame
 
 Get rolling sortino
 
@@ -22,7 +22,7 @@ Get rolling sortino
         Rolling sortino ratio DataFrame
 
 ## Getting charts 
-###portfolio.rsortino(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: str = '1y', risk_free_rate: float = 0, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### portfolio.rsortino(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: str = '1y', risk_free_rate: float = 0, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display rolling sortino
 

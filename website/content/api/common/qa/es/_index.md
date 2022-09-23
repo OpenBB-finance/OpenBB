@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###common.qa.es(data: pandas.core.frame.DataFrame, use_mean: bool = False, distribution: str = 'normal', percentile: Union[float, int] = 0.999, portfolio: bool = False) -> pandas.core.frame.DataFrame
+### common.qa.es(data: pandas.core.frame.DataFrame, use_mean: bool = False, distribution: str = 'normal', percentile: Union[float, int] = 0.999, portfolio: bool = False) -> pandas.core.frame.DataFrame
 
 Gets Expected Shortfall for specified stock dataframe
 
@@ -28,7 +28,7 @@ Gets Expected Shortfall for specified stock dataframe
         list of historical ES
 
 ## Getting charts 
-###common.qa.es(data: pandas.core.frame.DataFrame, symbol: str = '', use_mean: bool = False, distribution: str = 'normal', percentile: float = 0.999, portfolio: bool = False, chart=True) -> None
+### common.qa.es(data: pandas.core.frame.DataFrame, symbol: str = '', use_mean: bool = False, distribution: str = 'normal', percentile: float = 0.999, portfolio: bool = False, chart=True) -> None
 
 Displays expected shortfall
 

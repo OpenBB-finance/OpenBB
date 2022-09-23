@@ -1,7 +1,7 @@
 # stocks.dps.pos
 
 ## Get underlying data 
-###stocks.dps.pos(sortby: str = 'dpp_dollar', ascend: bool = False) -> pandas.core.frame.DataFrame
+### stocks.dps.pos(sortby: str = 'dpp_dollar', ascend: bool = False) -> pandas.core.frame.DataFrame
 
 Get dark pool short positions. [Source: Stockgrid]
 

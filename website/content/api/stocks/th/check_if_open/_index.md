@@ -1,7 +1,7 @@
 # stocks.th.check_if_open
 
 ## Get underlying data 
-###stocks.th.check_if_open(bursa, exchange)
+### stocks.th.check_if_open(bursa, exchange)
 
 Check if market open helper function
 

@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###forex.oanda.candles(instrument: Optional[str] = None, granularity: str = 'D', candlecount: int = 180) -> Union[pandas.core.frame.DataFrame, bool]
+### forex.oanda.candles(instrument: Optional[str] = None, granularity: str = 'D', candlecount: int = 180) -> Union[pandas.core.frame.DataFrame, bool]
 
 Request data for candle chart.
 
@@ -22,7 +22,7 @@ Request data for candle chart.
         Candle chart data or False
 
 ## Getting charts 
-###forex.oanda.candles(instrument: str = '', granularity: str = 'D', candlecount: int = 180, additional_charts: Optional[Dict[str, bool]] = None, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### forex.oanda.candles(instrument: str = '', granularity: str = 'D', candlecount: int = 180, additional_charts: Optional[Dict[str, bool]] = None, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Show candle chart.
 

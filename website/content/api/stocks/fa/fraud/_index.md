@@ -1,7 +1,7 @@
 # stocks.fa.fraud
 
 ## Get underlying data 
-###stocks.fa.fraud(symbol: str, detail: bool = False) -> pandas.core.frame.DataFrame
+### stocks.fa.fraud(symbol: str, detail: bool = False) -> pandas.core.frame.DataFrame
 
 Get fraud ratios based on fundamentals
 

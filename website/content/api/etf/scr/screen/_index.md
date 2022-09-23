@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###etf.scr.screen(preset: str)
+### etf.scr.screen(preset: str)
 
 
     Screens the etfs pulled from my repo (https://github.com/jmaslek/etf_scraper),
@@ -20,7 +20,7 @@ To obtain charts, make sure to add `chart=True` as the last parameter
         Screened dataframe
 
 ## Getting charts 
-###etf.scr.screen(preset: str, num_to_show: int, sortby: str, ascend: bool, export: str = '', chart=True)
+### etf.scr.screen(preset: str, num_to_show: int, sortby: str, ascend: bool, export: str = '', chart=True)
 
 Display screener output
 

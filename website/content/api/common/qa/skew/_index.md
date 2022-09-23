@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###common.qa.skew(data: pandas.core.frame.DataFrame, window: int = 14) -> pandas.core.frame.DataFrame
+### common.qa.skew(data: pandas.core.frame.DataFrame, window: int = 14) -> pandas.core.frame.DataFrame
 
 Skewness Indicator
 
@@ -20,7 +20,7 @@ Skewness Indicator
         Dataframe of rolling skew
 
 ## Getting charts 
-###common.qa.skew(symbol: str, data: pandas.core.frame.DataFrame, target: str, window: int = 14, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
+### common.qa.skew(symbol: str, data: pandas.core.frame.DataFrame, target: str, window: int = 14, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
 
 View rolling skew
 

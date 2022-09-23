@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.ba.cramer_ticker(symbol: str) -> pandas.core.frame.DataFrame
+### stocks.ba.cramer_ticker(symbol: str) -> pandas.core.frame.DataFrame
 
 Get cramer recommendations from beginning of year for given ticker
 
@@ -18,7 +18,7 @@ Get cramer recommendations from beginning of year for given ticker
         Dataframe with dates and recommendations
 
 ## Getting charts 
-###stocks.ba.cramer_ticker(symbol: str, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.ba.cramer_ticker(symbol: str, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display ticker close with Cramer recommendations
 

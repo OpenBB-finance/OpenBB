@@ -1,7 +1,7 @@
 # economy.valuation
 
 ## Get underlying data 
-###economy.valuation(group: str = 'sector', sortby: str = 'Name', ascend: bool = True) -> pandas.core.frame.DataFrame
+### economy.valuation(group: str = 'sector', sortby: str = 'Name', ascend: bool = True) -> pandas.core.frame.DataFrame
 
 Get group (sectors, industry or country) valuation data. [Source: Finviz]
 

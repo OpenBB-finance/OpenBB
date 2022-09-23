@@ -1,7 +1,7 @@
 # portfolio.maxdrawdown
 
 ## Get underlying data 
-###portfolio.maxdrawdown(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel) -> pandas.core.frame.DataFrame
+### portfolio.maxdrawdown(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel) -> pandas.core.frame.DataFrame
 
 Class method that retrieves maximum drawdown ratio for portfolio and benchmark selected
 

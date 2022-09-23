@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.ca.scorr(similar: List[str])
+### stocks.ca.scorr(similar: List[str])
 
 Get correlation sentiments across similar companies. [Source: FinBrain]
 
@@ -15,7 +15,7 @@ Get correlation sentiments across similar companies. [Source: FinBrain]
         finnhub_peers(), finviz_peers(), polygon_peers().
 
 ## Getting charts 
-###stocks.ca.scorr(similar: List[str], raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.ca.scorr(similar: List[str], raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Plot correlation sentiments heatmap across similar companies. [Source: FinBrain]
 

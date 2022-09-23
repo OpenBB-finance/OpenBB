@@ -1,7 +1,7 @@
 # stocks.disc.arkord
 
 ## Get underlying data 
-###stocks.disc.arkord(sortby: str = '', ascend: bool = False, buys_only: bool = False, sells_only: bool = False, fund: str = '') -> pandas.core.frame.DataFrame
+### stocks.disc.arkord(sortby: str = '', ascend: bool = False, buys_only: bool = False, sells_only: bool = False, fund: str = '') -> pandas.core.frame.DataFrame
 
 Returns ARK orders in a Dataframe
 

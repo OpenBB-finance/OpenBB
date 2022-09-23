@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.dps.spos(symbol: str) -> pandas.core.frame.DataFrame
+### stocks.dps.spos(symbol: str) -> pandas.core.frame.DataFrame
 
 Get net short position. [Source: Stockgrid]
 
@@ -18,7 +18,7 @@ Get net short position. [Source: Stockgrid]
         Net short position
 
 ## Getting charts 
-###stocks.dps.spos(symbol: str, limit: int = 84, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.dps.spos(symbol: str, limit: int = 84, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Plot net short position. [Source: Stockgrid]
 

@@ -1,7 +1,7 @@
 # crypto.find
 
 ## Get underlying data 
-###crypto.find(query: 'str', source: 'str' = 'CoinGecko', key: 'str' = 'symbol', limit: 'int' = 10, export: 'str' = '') -> 'None'
+### crypto.find(query: 'str', source: 'str' = 'CoinGecko', key: 'str' = 'symbol', limit: 'int' = 10, export: 'str' = '') -> 'None'
 
 Find similar coin by coin name,symbol or id.
 

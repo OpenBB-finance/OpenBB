@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###portfolio.po.riskparity(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', risk_measure: str = 'MV', risk_cont: List[str] = None, risk_free_rate: float = 0, alpha: float = 0.05, target_return: float = -1, mean: str = 'hist', covariance: str = 'hist', d_ewma: float = 0.94, value: float = 1.0) -> Tuple
+### portfolio.po.riskparity(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', risk_measure: str = 'MV', risk_cont: List[str] = None, risk_free_rate: float = 0, alpha: float = 0.05, target_return: float = -1, mean: str = 'hist', covariance: str = 'hist', d_ewma: float = 0.94, value: float = 1.0) -> Tuple
 
 Builds a risk parity portfolio using the risk budgeting approach
 
@@ -101,7 +101,7 @@ Builds a risk parity portfolio using the risk budgeting approach
         Dictionary of portfolio weights and DataFrame of stock returns
 
 ## Getting charts 
-###portfolio.po.riskparity(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', risk_measure: str = 'mv', risk_cont: List[str] = None, risk_free_rate: float = 0, alpha: float = 0.05, target_return: float = -1, mean: str = 'hist', covariance: str = 'hist', d_ewma: float = 0.94, value: float = 1.0, table: bool = False, chart=True) -> Dict
+### portfolio.po.riskparity(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', risk_measure: str = 'mv', risk_cont: List[str] = None, risk_free_rate: float = 0, alpha: float = 0.05, target_return: float = -1, mean: str = 'hist', covariance: str = 'hist', d_ewma: float = 0.94, value: float = 1.0, table: bool = False, chart=True) -> Dict
 
 
     Builds a risk parity portfolio using the risk budgeting approach

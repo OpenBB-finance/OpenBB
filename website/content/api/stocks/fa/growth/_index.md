@@ -1,7 +1,7 @@
 # stocks.fa.growth
 
 ## Get underlying data 
-###stocks.fa.growth(symbol: str, limit: int = 5, quarterly: bool = False) -> pandas.core.frame.DataFrame
+### stocks.fa.growth(symbol: str, limit: int = 5, quarterly: bool = False) -> pandas.core.frame.DataFrame
 
 Get financial statement growth
 

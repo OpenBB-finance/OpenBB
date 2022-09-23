@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###economy.inf(start_year: int = 2010) -> pandas.core.frame.DataFrame
+### economy.inf(start_year: int = 2010) -> pandas.core.frame.DataFrame
 
 Get historical Inflation for United States from AlphaVantage
 
@@ -18,7 +18,7 @@ Get historical Inflation for United States from AlphaVantage
         DataFrame of inflation rates
 
 ## Getting charts 
-###economy.inf(start_year: int = 2010, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### economy.inf(start_year: int = 2010, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display US Inflation from AlphaVantage
 

@@ -1,7 +1,7 @@
 # stocks.fa.fmp_ratios
 
 ## Get underlying data 
-###stocks.fa.fmp_ratios(symbol: str, limit: int = 5, quarterly: bool = False) -> pandas.core.frame.DataFrame
+### stocks.fa.fmp_ratios(symbol: str, limit: int = 5, quarterly: bool = False) -> pandas.core.frame.DataFrame
 
 Get key ratios
 

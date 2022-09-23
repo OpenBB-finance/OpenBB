@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.ba.bullbear(symbol: str) -> Tuple[int, int, int, int]
+### stocks.ba.bullbear(symbol: str) -> Tuple[int, int, int, int]
 
 Gets bullbear sentiment for ticker [Source: stocktwits]
 
@@ -24,7 +24,7 @@ Gets bullbear sentiment for ticker [Source: stocktwits]
         Number of bearish statements
 
 ## Getting charts 
-###stocks.ba.bullbear(symbol: str, chart=True)
+### stocks.ba.bullbear(symbol: str, chart=True)
 
 
     Print bullbear sentiment based on last 30 messages on the board.

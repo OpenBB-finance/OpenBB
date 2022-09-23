@@ -1,7 +1,7 @@
 # econometrics.re
 
 ## Get underlying data 
-###econometrics.re(regression_variables: List[Tuple], data: Dict[str, pandas.core.frame.DataFrame]) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any], Any]
+### econometrics.re(regression_variables: List[Tuple], data: Dict[str, pandas.core.frame.DataFrame]) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any], Any]
 
 The random effects model is virtually identical to the pooled OLS model except that is accounts for the
     structure of the model and so is more efficient. Random effects uses a quasi-demeaning strategy which

@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###economy.gdpc(start_year: int = 2010) -> pandas.core.frame.DataFrame
+### economy.gdpc(start_year: int = 2010) -> pandas.core.frame.DataFrame
 
 Real GDP per Capita for United States
 
@@ -18,7 +18,7 @@ Real GDP per Capita for United States
         DataFrame of GDP per Capita
 
 ## Getting charts 
-###economy.gdpc(start_year: int = 2010, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### economy.gdpc(start_year: int = 2010, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display US GDP per Capita from AlphaVantage
 

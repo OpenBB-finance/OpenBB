@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.ba.infer(symbol: str, limit: int = 100, start_date: Optional[str] = '', end_date: Optional[str] = '') -> pandas.core.frame.DataFrame
+### stocks.ba.infer(symbol: str, limit: int = 100, start_date: Optional[str] = '', end_date: Optional[str] = '') -> pandas.core.frame.DataFrame
 
 Load tweets from twitter API and analyzes using VADER
 
@@ -24,7 +24,7 @@ Load tweets from twitter API and analyzes using VADER
         Dataframe of tweets and sentiment
 
 ## Getting charts 
-###stocks.ba.infer(symbol: str, limit: int = 100, export: str = '', chart=True)
+### stocks.ba.infer(symbol: str, limit: int = 100, export: str = '', chart=True)
 
 Infer sentiment from past n tweets
 

@@ -1,7 +1,7 @@
 # stocks.disc.hotpenny
 
 ## Get underlying data 
-###stocks.disc.hotpenny() -> pandas.core.frame.DataFrame
+### stocks.disc.hotpenny() -> pandas.core.frame.DataFrame
 
 Returns today hot penny stocks
 

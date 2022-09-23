@@ -1,7 +1,7 @@
 # portfolio.gaintopain
 
 ## Get underlying data 
-###portfolio.gaintopain(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel)
+### portfolio.gaintopain(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel)
 
 Get Pain-to-Gain ratio based on historical data
 

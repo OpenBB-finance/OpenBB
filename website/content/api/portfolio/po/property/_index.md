@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###portfolio.po.property(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', s_property: str = 'marketCap', value: float = 1.0) -> Tuple
+### portfolio.po.property(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', s_property: str = 'marketCap', value: float = 1.0) -> Tuple
 
 Calculate portfolio weights based on selected property
 
@@ -47,7 +47,7 @@ Calculate portfolio weights based on selected property
         Dictionary of portfolio weights or allocations
 
 ## Getting charts 
-###portfolio.po.property(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', s_property: str = 'marketCap', risk_measure='mv', risk_free_rate: float = 0, alpha=0.05, value: float = 1, table: bool = False, chart=True) -> Dict
+### portfolio.po.property(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', s_property: str = 'marketCap', risk_measure='mv', risk_free_rate: float = 0, alpha=0.05, value: float = 1, table: bool = False, chart=True) -> Dict
 
 
     Builds a portfolio weighted by selected property

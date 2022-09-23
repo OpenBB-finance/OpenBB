@@ -1,7 +1,7 @@
 # stocks.ba.stalker
 
 ## Get underlying data 
-###stocks.ba.stalker(user: str, limit: int = 30) -> List[Dict]
+### stocks.ba.stalker(user: str, limit: int = 30) -> List[Dict]
 
 Gets messages from given user [Source: stocktwits]
 

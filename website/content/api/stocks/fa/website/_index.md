@@ -1,7 +1,7 @@
 # stocks.fa.website
 
 ## Get underlying data 
-###stocks.fa.website(symbol: str) -> str
+### stocks.fa.website(symbol: str) -> str
 
 Gets website of company from yfinance
 

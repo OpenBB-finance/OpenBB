@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###econometrics.norm(data: pandas.core.series.Series) -> pandas.core.frame.DataFrame
+### econometrics.norm(data: pandas.core.series.Series) -> pandas.core.frame.DataFrame
 
 
     The distribution of returns and generate statistics on the relation to the normal curve.
@@ -21,7 +21,7 @@ To obtain charts, make sure to add `chart=True` as the last parameter
         Dataframe containing statistics of normality
 
 ## Getting charts 
-###econometrics.norm(data: pandas.core.series.Series, dataset: str = '', column: str = '', plot: bool = False, export: str = '', external_axes: Optional[List[axes]] = None, chart=True)
+### econometrics.norm(data: pandas.core.series.Series, dataset: str = '', column: str = '', plot: bool = False, export: str = '', external_axes: Optional[List[axes]] = None, chart=True)
 
 Determine the normality of a timeseries.
 

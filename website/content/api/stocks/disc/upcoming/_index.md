@@ -1,7 +1,7 @@
 # stocks.disc.upcoming
 
 ## Get underlying data 
-###stocks.disc.upcoming(limit: int = 10) -> pandas.core.frame.DataFrame
+### stocks.disc.upcoming(limit: int = 10) -> pandas.core.frame.DataFrame
 
 Returns a DataFrame with upcoming earnings
 

@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.ov.cgproducts(sortby: str = 'Name', ascend: bool = True) -> pandas.core.frame.DataFrame
+### crypto.ov.cgproducts(sortby: str = 'Name', ascend: bool = True) -> pandas.core.frame.DataFrame
 
 Get list of financial products from CoinGecko API
 
@@ -20,13 +20,13 @@ Get list of financial products from CoinGecko API
        Rank,  Platform, Identifier, Supply_Rate, Borrow_Rate
 
 ## Getting charts 
-###crypto.ov.cgproducts(sortby: str = 'Platform', ascend: bool = False, top: int = 15, export: str = '', chart=True) -> None
+### crypto.ov.cgproducts(sortby: str = 'Platform', ascend: bool = False, limit: int = 15, export: str = '', chart=True) -> None
 
 Shows list of financial products. [Source: CoinGecko]
 
     Parameters
     ----------
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data

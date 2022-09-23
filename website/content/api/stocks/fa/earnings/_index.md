@@ -1,7 +1,7 @@
 # stocks.fa.earnings
 
 ## Get underlying data 
-###stocks.fa.earnings(symbol: str, quarterly: bool = False) -> pandas.core.frame.DataFrame
+### stocks.fa.earnings(symbol: str, quarterly: bool = False) -> pandas.core.frame.DataFrame
 
 Get earnings calendar for ticker
 

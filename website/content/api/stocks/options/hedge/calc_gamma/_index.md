@@ -1,7 +1,7 @@
 # stocks.options.hedge.calc_gamma
 
 ## Get underlying data 
-###stocks.options.hedge.calc_gamma(asset_price: float = 100, asset_volatility: float = 20, strike_price: float = 120, time_to_expiration: float = 30, risk_free_rate: float = 0)
+### stocks.options.hedge.calc_gamma(asset_price: float = 100, asset_volatility: float = 20, strike_price: float = 120, time_to_expiration: float = 30, risk_free_rate: float = 0)
 
 The second-order partial-derivative with respect to the underlying asset of the Black-Scholes equation
     is known as gamma. Gamma refers to how the option’s delta changes when there is a change in the underlying

@@ -1,7 +1,7 @@
 # crypto.candles
 
 ## Get underlying data 
-###crypto.candles(candles_df: 'pd.DataFrame', volume: 'bool' = True, ylabel: 'str' = '', title: 'str' = '', external_axes: 'list[plt.Axes] | None' = None) -> 'None'
+### crypto.candles(candles_df: 'pd.DataFrame', volume: 'bool' = True, ylabel: 'str' = '', title: 'str' = '', external_axes: 'list[plt.Axes] | None' = None) -> 'None'
 
 Plot candle chart from dataframe. [Source: Binance]
 

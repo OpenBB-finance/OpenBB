@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.onchain.tx(tx_hash) -> pandas.core.frame.DataFrame
+### crypto.onchain.tx(tx_hash) -> pandas.core.frame.DataFrame
 
 Get info about transaction. [Source: Ethplorer]
 
@@ -18,7 +18,7 @@ Get info about transaction. [Source: Ethplorer]
         DataFrame with information about ERC20 token transaction.
 
 ## Getting charts 
-###crypto.onchain.tx(tx_hash: str, export: str = '', chart=True) -> None
+### crypto.onchain.tx(tx_hash: str, export: str = '', chart=True) -> None
 
 Display info about transaction. [Source: Ethplorer]
 

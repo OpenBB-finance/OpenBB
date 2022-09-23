@@ -1,7 +1,7 @@
 # economy.macro_parameters
 
 ## Get underlying data 
-###economy.macro_parameters() -> Dict[str, Dict[str, str]]
+### economy.macro_parameters() -> Dict[str, Dict[str, str]]
 
 This function returns the available macro parameters with detail.
 

@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.options.voi_yf(symbol: str, expiration: str) -> pandas.core.frame.DataFrame
+### stocks.options.voi_yf(symbol: str, expiry: str) -> pandas.core.frame.DataFrame
 
 Plot volume and open interest
 
@@ -11,11 +11,11 @@ Plot volume and open interest
     ----------
     symbol: str
         Stock ticker symbol
-    expiration: str
+    expiry: str
         Option expiration
 
 ## Getting charts 
-###stocks.options.voi_yf(symbol: str, expiration: str, min_sp: float = -1, max_sp: float = -1, min_vol: float = -1, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.options.voi_yf(symbol: str, expiry: str, min_sp: float = -1, max_sp: float = -1, min_vol: float = -1, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Plot volume and open interest
 
@@ -23,7 +23,7 @@ Plot volume and open interest
     ----------
     symbol: str
         Stock ticker symbol
-    expiration: str
+    expiry: str
         Option expiration
     min_sp: float
         Min strike price

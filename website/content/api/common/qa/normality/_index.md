@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###common.qa.normality(data: pandas.core.frame.DataFrame) -> pandas.core.frame.DataFrame
+### common.qa.normality(data: pandas.core.frame.DataFrame) -> pandas.core.frame.DataFrame
 
 
     Look at the distribution of returns and generate statistics on the relation to the normal curve.
@@ -21,7 +21,7 @@ To obtain charts, make sure to add `chart=True` as the last parameter
         Dataframe containing statistics of normality
 
 ## Getting charts 
-###common.qa.normality(data: pandas.core.frame.DataFrame, target: str, export: str = '', chart=True) -> None
+### common.qa.normality(data: pandas.core.frame.DataFrame, target: str, export: str = '', chart=True) -> None
 
 View normality statistics
 

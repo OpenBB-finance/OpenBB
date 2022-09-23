@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.ba.headlines(symbol: str) -> pandas.core.frame.DataFrame
+### stocks.ba.headlines(symbol: str) -> pandas.core.frame.DataFrame
 
 Gets Sentiment analysis provided by FinBrain's API [Source: finbrain]
 
@@ -18,7 +18,7 @@ Gets Sentiment analysis provided by FinBrain's API [Source: finbrain]
         Empty if there was an issue with data retrieval
 
 ## Getting charts 
-###stocks.ba.headlines(symbol: str, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.ba.headlines(symbol: str, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Sentiment analysis from FinBrain
 

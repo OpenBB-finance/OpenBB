@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.onchain.balance(address: str, sortby: str = 'index', ascend: bool = False) -> pandas.core.frame.DataFrame
+### crypto.onchain.balance(address: str, sortby: str = 'index', ascend: bool = False) -> pandas.core.frame.DataFrame
 
 Get info about tokens on you ethereum blockchain balance. Eth balance, balance of all tokens which
     have name and symbol. [Source: Ethplorer]
@@ -23,7 +23,7 @@ Get info about tokens on you ethereum blockchain balance. Eth balance, balance o
         DataFrame with list of tokens and their balances.
 
 ## Getting charts 
-###crypto.onchain.balance(address: str, top: int = 15, sortby: str = 'index', ascend: bool = False, export: str = '', chart=True) -> None
+### crypto.onchain.balance(address: str, limit: int = 15, sortby: str = 'index', ascend: bool = False, export: str = '', chart=True) -> None
 
 Display info about tokens for given ethereum blockchain balance e.g. ETH balance,
     balance of all tokens with name and symbol. [Source: Ethplorer]
@@ -32,7 +32,7 @@ Display info about tokens for given ethereum blockchain balance e.g. ETH balance
     ----------
     address: str
         Ethereum balance.
-    top: int
+    limit: int
         Limit of transactions. Maximum 100
     sortby: str
         Key to sort by.

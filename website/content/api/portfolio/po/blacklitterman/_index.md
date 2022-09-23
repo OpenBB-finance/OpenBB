@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###portfolio.po.blacklitterman(symbols: List[str], benchmark: Dict, p_views: List, q_views: List, interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', objective: str = 'Sharpe', risk_free_rate: float = 0, risk_aversion: float = 1, delta: float = None, equilibrium: bool = True, optimize: bool = True, value: float = 1.0, value_short: float = 0) -> Tuple
+### portfolio.po.blacklitterman(symbols: List[str], benchmark: Dict, p_views: List, q_views: List, interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', objective: str = 'Sharpe', risk_free_rate: float = 0, risk_aversion: float = 1, delta: float = None, equilibrium: bool = True, optimize: bool = True, value: float = 1.0, value_short: float = 0) -> Tuple
 
 Builds a maximal diversification portfolio
 
@@ -78,7 +78,7 @@ Builds a maximal diversification portfolio
         Dictionary of portfolio weights and DataFrame of stock returns
 
 ## Getting charts 
-###portfolio.po.blacklitterman(symbols: List[str], p_views: List, q_views: List, interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', benchmark: Dict = None, objective: str = 'Sharpe', risk_free_rate: float = 0, risk_aversion: float = 1, delta: float = None, equilibrium: bool = True, optimize: bool = True, value: float = 1.0, value_short: float = 0, table: bool = False, chart=True) -> Dict
+### portfolio.po.blacklitterman(symbols: List[str], p_views: List, q_views: List, interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', benchmark: Dict = None, objective: str = 'Sharpe', risk_free_rate: float = 0, risk_aversion: float = 1, delta: float = None, equilibrium: bool = True, optimize: bool = True, value: float = 1.0, value_short: float = 0, table: bool = False, chart=True) -> Dict
 
 
     Builds a black litterman portfolio

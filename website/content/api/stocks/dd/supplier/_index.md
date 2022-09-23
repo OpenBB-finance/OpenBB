@@ -1,7 +1,7 @@
 # stocks.dd.supplier
 
 ## Get underlying data 
-###stocks.dd.supplier(symbol: str) -> List[str]
+### stocks.dd.supplier(symbol: str) -> List[str]
 
 Get suppliers from ticker provided. [Source: CSIMarket]
 

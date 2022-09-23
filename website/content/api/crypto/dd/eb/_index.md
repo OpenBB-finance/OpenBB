@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.dd.eb(symbol: str, exchange: str = 'binance', start_date: int = 1262304000, end_date: int = 1663694553) -> pandas.core.frame.DataFrame
+### crypto.dd.eb(symbol: str, exchange: str = 'binance', start_date: int = 1262304000, end_date: int = 1663941836) -> pandas.core.frame.DataFrame
 
 Returns the total amount of coins held on exchange addresses in units and percentage.
     [Source: https://glassnode.com]
@@ -25,7 +25,7 @@ Returns the total amount of coins held on exchange addresses in units and percen
         total amount of coins in units/percentage and symbol price over time
 
 ## Getting charts 
-###crypto.dd.eb(symbol: str, exchange: str = 'binance', start_date: int = 1577836800, end_date: int = 1609459200, percentage: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
+### crypto.dd.eb(symbol: str, exchange: str = 'binance', start_date: int = 1577836800, end_date: int = 1609459200, percentage: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
 
 Display total amount of coins held on exchange addresses in units and percentage.
     [Source: https://glassnode.org]

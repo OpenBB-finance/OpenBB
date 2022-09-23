@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.ba.watchlist(limit: int = 5) -> Tuple[List[praw.models.reddit.submission.Submission], dict, int]
+### stocks.ba.watchlist(limit: int = 5) -> Tuple[List[praw.models.reddit.submission.Submission], dict, int]
 
 Get reddit users watchlists [Source: reddit]
 
@@ -22,7 +22,7 @@ Get reddit users watchlists [Source: reddit]
         Count of how many posts were analyzed
 
 ## Getting charts 
-###stocks.ba.watchlist(limit: int = 5, chart=True)
+### stocks.ba.watchlist(limit: int = 5, chart=True)
 
 Print other users watchlist. [Source: Reddit]
 

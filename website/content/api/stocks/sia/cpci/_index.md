@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.sia.cpci(industry: str = 'Internet Content & Information', mktcap: str = 'Large', exclude_exchanges: bool = True)
+### stocks.sia.cpci(industry: str = 'Internet Content & Information', mktcap: str = 'Large', exclude_exchanges: bool = True)
 
 Get number of companies per country in a specific industry (and specific market cap). [Source: Finance Database]
 
@@ -22,7 +22,7 @@ Get number of companies per country in a specific industry (and specific market 
         Dictionary of countries and number of companies in a specific sector
 
 ## Getting charts 
-###stocks.sia.cpci(industry: str = 'Internet Content & Information', mktcap: str = 'Large', exclude_exchanges: bool = True, export: str = '', raw: bool = False, max_countries_to_display: int = 15, min_pct_to_display_country: float = 0.015, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.sia.cpci(industry: str = 'Internet Content & Information', mktcap: str = 'Large', exclude_exchanges: bool = True, export: str = '', raw: bool = False, max_countries_to_display: int = 15, min_pct_to_display_country: float = 0.015, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display number of companies per country in a specific industry. [Source: Finance Database]
 

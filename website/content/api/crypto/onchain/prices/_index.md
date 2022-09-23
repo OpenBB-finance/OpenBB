@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.onchain.prices(address, sortby: str = 'date', ascend: bool = False) -> pandas.core.frame.DataFrame
+### crypto.onchain.prices(address, sortby: str = 'date', ascend: bool = False) -> pandas.core.frame.DataFrame
 
 Get token historical prices with volume and market cap, and average price. [Source: Ethplorer]
 
@@ -22,7 +22,7 @@ Get token historical prices with volume and market cap, and average price. [Sour
         DataFrame with token historical prices.
 
 ## Getting charts 
-###crypto.onchain.prices(address: str, top: int = 30, sortby: str = 'date', ascend: bool = False, export: str = '', chart=True) -> None
+### crypto.onchain.prices(address: str, limit: int = 30, sortby: str = 'date', ascend: bool = False, export: str = '', chart=True) -> None
 
 Display token historical prices with volume and market cap, and average price.
     [Source: Ethplorer]
@@ -31,7 +31,7 @@ Display token historical prices with volume and market cap, and average price.
     ----------
     address: str
         Token balance e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
-    top: int
+    limit: int
         Limit of transactions. Maximum 100
     sortby: str
         Key to sort by.

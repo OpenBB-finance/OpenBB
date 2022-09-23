@@ -1,7 +1,7 @@
 # econometrics.fdols
 
 ## Get underlying data 
-###econometrics.fdols(regression_variables: List[Tuple], data: Dict[str, pandas.core.frame.DataFrame]) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any], Any]
+### econometrics.fdols(regression_variables: List[Tuple], data: Dict[str, pandas.core.frame.DataFrame]) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any], Any]
 
 First differencing is an alternative to using fixed effects when there might be correlation.
     When using first differences, time-invariant variables must be excluded. Additionally,

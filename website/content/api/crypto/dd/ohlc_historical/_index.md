@@ -1,7 +1,7 @@
 # crypto.dd.ohlc_historical
 
 ## Get underlying data 
-###crypto.dd.ohlc_historical(symbol: str = 'eth-ethereum', quotes: str = 'USD', days: int = 90) -> pandas.core.frame.DataFrame
+### crypto.dd.ohlc_historical(symbol: str = 'eth-ethereum', quotes: str = 'USD', days: int = 90) -> pandas.core.frame.DataFrame
 
 
     Open/High/Low/Close values with volume and market_cap. [Source: CoinPaprika]

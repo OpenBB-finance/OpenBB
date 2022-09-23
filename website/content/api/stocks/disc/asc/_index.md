@@ -1,7 +1,7 @@
 # stocks.disc.asc
 
 ## Get underlying data 
-###stocks.disc.asc() -> pandas.core.frame.DataFrame
+### stocks.disc.asc() -> pandas.core.frame.DataFrame
 
 Get Yahoo Finance small cap stocks with earnings growth rates better than 25%.
     [Source: Yahoo Finance]

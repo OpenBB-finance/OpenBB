@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.defi.vaults(chain: Optional[str] = None, protocol: Optional[str] = None, kind: Optional[str] = None, ascend: bool = True, sortby: str = 'apy') -> pandas.core.frame.DataFrame
+### crypto.defi.vaults(chain: Optional[str] = None, protocol: Optional[str] = None, kind: Optional[str] = None, ascend: bool = True, sortby: str = 'apy') -> pandas.core.frame.DataFrame
 
 Get DeFi Vaults Information. DeFi Vaults are pools of funds with an assigned strategy which main goal is to
     maximize returns of its crypto assets. [Source: https://coindix.com/]
@@ -32,7 +32,7 @@ Get DeFi Vaults Information. DeFi Vaults are pools of funds with an assigned str
         Top 100 DeFi Vaults for given chain/protocol sorted by APY.
 
 ## Getting charts 
-###crypto.defi.vaults(chain: Optional[str] = None, protocol: Optional[str] = None, kind: Optional[str] = None, top: int = 10, sortby: str = 'apy', ascend: bool = True, link: bool = False, export: str = '', chart=True) -> None
+### crypto.defi.vaults(chain: Optional[str] = None, protocol: Optional[str] = None, kind: Optional[str] = None, limit: int = 10, sortby: str = 'apy', ascend: bool = True, link: bool = False, export: str = '', chart=True) -> None
 
 Display Top DeFi Vaults - pools of funds with an assigned strategy which main goal is to
     maximize returns of its crypto assets. [Source: https://coindix.com/]
@@ -54,7 +54,7 @@ Display Top DeFi Vaults - pools of funds with an assigned strategy which main go
         ]
     kind: str
         Kind/type of vault - one from list: ['lp','single','noimploss','stable']
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data

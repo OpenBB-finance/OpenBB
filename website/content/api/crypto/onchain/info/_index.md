@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.onchain.info(address) -> pandas.core.frame.DataFrame
+### crypto.onchain.info(address) -> pandas.core.frame.DataFrame
 
 Get info about ERC20 token. [Source: Ethplorer]
 
@@ -18,7 +18,7 @@ Get info about ERC20 token. [Source: Ethplorer]
         DataFrame with information about provided ERC20 token.
 
 ## Getting charts 
-###crypto.onchain.info(address: str, social: bool = False, export: str = '', chart=True) -> None
+### crypto.onchain.info(address: str, social: bool = False, export: str = '', chart=True) -> None
 
 Display info about ERC20 token. [Source: Ethplorer]
 

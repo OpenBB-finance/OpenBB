@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.dd.events(symbol: str = 'eth-ethereum', sortby='date', ascend: bool = False) -> pandas.core.frame.DataFrame
+### crypto.dd.events(symbol: str = 'eth-ethereum', sortby='date', ascend: bool = False) -> pandas.core.frame.DataFrame
 
 Get all events related to given coin like conferences, start date of futures trading etc.
     [Source: CoinPaprika]
@@ -40,7 +40,7 @@ Get all events related to given coin like conferences, start date of futures tra
         Columns: id, date , date_to, name, description, is_conference, link, proof_image_link
 
 ## Getting charts 
-###crypto.dd.events(symbol: str = 'BTC', limit: int = 10, sortby: str = 'date', ascend: bool = False, links: bool = False, export: str = '', chart=True) -> None
+### crypto.dd.events(symbol: str = 'BTC', limit: int = 10, sortby: str = 'date', ascend: bool = False, links: bool = False, export: str = '', chart=True) -> None
 
 Get all events for given coin id. [Source: CoinPaprika]
 

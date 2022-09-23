@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###economy.fred_series(series_ids: List[str], start_date: str = None, end_date: str = None) -> pandas.core.frame.DataFrame
+### economy.fred_series(series_ids: List[str], start_date: str = None, end_date: str = None) -> pandas.core.frame.DataFrame
 
 Get Series data. [Source: FRED]
     Parameters
@@ -21,7 +21,7 @@ Get Series data. [Source: FRED]
         Series data
 
 ## Getting charts 
-###economy.fred_series(series_ids: List[str], start_date: str = None, end_date: str = None, limit: int = 10, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### economy.fred_series(series_ids: List[str], start_date: str = None, end_date: str = None, limit: int = 10, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]
 

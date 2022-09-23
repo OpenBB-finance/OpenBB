@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.disc.top_dapps(sortby: str = '', limit: int = 10) -> pandas.core.frame.DataFrame
+### crypto.disc.top_dapps(sortby: str = '', limit: int = 10) -> pandas.core.frame.DataFrame
 
 Get top decentralized applications by daily volume and users [Source: https://dappradar.com/]
 
@@ -19,7 +19,7 @@ Get top decentralized applications by daily volume and users [Source: https://da
         Columns: Name, Category, Protocols, Daily Users, Daily Volume [$]
 
 ## Getting charts 
-###crypto.disc.top_dapps(limit: int = 10, export: str = '', sortby: str = '', chart=True) -> None
+### crypto.disc.top_dapps(limit: int = 10, export: str = '', sortby: str = '', chart=True) -> None
 
 Displays top decentralized exchanges [Source: https://dappradar.com/]
 

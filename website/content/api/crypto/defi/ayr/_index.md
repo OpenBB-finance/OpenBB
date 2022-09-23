@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.defi.ayr() -> pandas.core.frame.DataFrame
+### crypto.defi.ayr() -> pandas.core.frame.DataFrame
 
 Displays the 30-day history of the Anchor Yield Reserve.
     [Source: https://terra.engineer/]
@@ -14,7 +14,7 @@ Displays the 30-day history of the Anchor Yield Reserve.
         Dataframe containing historical data
 
 ## Getting charts 
-###crypto.defi.ayr(export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
+### crypto.defi.ayr(export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
 
 Displays the 30-day history of the Anchor Yield Reserve.
     [Source: https://terra.engineer/]

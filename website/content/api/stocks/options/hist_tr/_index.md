@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.options.hist_tr(symbol: str, expiry: str, strike: float = 0, put: bool = False, chain_id: Optional[str] = None) -> pandas.core.frame.DataFrame
+### stocks.options.hist_tr(symbol: str, expiry: str, strike: float = 0, put: bool = False, chain_id: Optional[str] = None) -> pandas.core.frame.DataFrame
 
 
     Gets historical option pricing.  This inputs either ticker, expiration, strike or the OCC chain ID and processes
@@ -28,7 +28,7 @@ To obtain charts, make sure to add `chart=True` as the last parameter
         Dataframe of historical option prices
 
 ## Getting charts 
-###stocks.options.hist_tr(symbol: str, expiry: str, strike: float = 0, put: bool = False, raw: bool = False, chain_id: str = None, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.options.hist_tr(symbol: str, expiry: str, strike: float = 0, put: bool = False, raw: bool = False, chain_id: str = None, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Plot historical option prices
 

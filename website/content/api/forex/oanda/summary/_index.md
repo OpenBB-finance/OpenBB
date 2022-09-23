@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###forex.oanda.summary(accountID: str = 'REPLACE_ME') -> Union[pandas.core.frame.DataFrame, bool]
+### forex.oanda.summary(accountID: str = 'REPLACE_ME') -> Union[pandas.core.frame.DataFrame, bool]
 
 Request Oanda account summary.
 
@@ -18,7 +18,7 @@ Request Oanda account summary.
         Account summary data or False
 
 ## Getting charts 
-###forex.oanda.summary(accountID: str, chart=True)
+### forex.oanda.summary(accountID: str, chart=True)
 
 Print Oanda account summary.
 

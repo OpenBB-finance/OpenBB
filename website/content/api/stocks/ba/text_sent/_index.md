@@ -1,7 +1,7 @@
 # stocks.ba.text_sent
 
 ## Get underlying data 
-###stocks.ba.text_sent(post_data: List[str]) -> float
+### stocks.ba.text_sent(post_data: List[str]) -> float
 
 Find the sentiment of a post and related comments
 

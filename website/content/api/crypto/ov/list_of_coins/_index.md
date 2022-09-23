@@ -1,7 +1,7 @@
 # crypto.ov.list_of_coins
 
 ## Get underlying data 
-###crypto.ov.list_of_coins() -> pandas.core.frame.DataFrame
+### crypto.ov.list_of_coins() -> pandas.core.frame.DataFrame
 
 Get list of all available coins on CoinPaprika  [Source: CoinPaprika]
 

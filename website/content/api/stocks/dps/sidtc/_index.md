@@ -1,7 +1,7 @@
 # stocks.dps.sidtc
 
 ## Get underlying data 
-###stocks.dps.sidtc(sortby: str = 'float') -> pandas.core.frame.DataFrame
+### stocks.dps.sidtc(sortby: str = 'float') -> pandas.core.frame.DataFrame
 
 Get short interest and days to cover. [Source: Stockgrid]
 

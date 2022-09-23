@@ -1,7 +1,7 @@
 # stocks.disc.active
 
 ## Get underlying data 
-###stocks.disc.active() -> pandas.core.frame.DataFrame
+### stocks.disc.active() -> pandas.core.frame.DataFrame
 
 Get stocks ordered in descending order by intraday trade volume. [Source: Yahoo Finance]
 

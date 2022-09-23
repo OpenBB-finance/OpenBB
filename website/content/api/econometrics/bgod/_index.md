@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###econometrics.bgod(model: pandas.core.frame.DataFrame, lags: int = 3) -> tuple
+### econometrics.bgod(model: pandas.core.frame.DataFrame, lags: int = 3) -> tuple
 
 Calculate test statistics for autocorrelation
 
@@ -19,7 +19,7 @@ Calculate test statistics for autocorrelation
     Test results from the Breusch-Godfrey Test
 
 ## Getting charts 
-###econometrics.bgod(model: pandas.core.frame.DataFrame, lags: int = 3, export: str = '', chart=True)
+### econometrics.bgod(model: pandas.core.frame.DataFrame, lags: int = 3, export: str = '', chart=True)
 
 Show Breusch-Godfrey autocorrelation test
 

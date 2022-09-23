@@ -1,7 +1,7 @@
 # economy.glbonds
 
 ## Get underlying data 
-###economy.glbonds() -> pandas.core.frame.DataFrame
+### economy.glbonds() -> pandas.core.frame.DataFrame
 
 Scrape data for global bonds
 

@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###portfolio.maxdd(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, is_returns: bool = False) -> pandas.core.series.Series
+### portfolio.maxdd(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, is_returns: bool = False) -> pandas.core.series.Series
 
 Calculate the drawdown (MDD) of historical series.  Note that the calculation is done
      on cumulative returns (or prices).  The definition of drawdown is
@@ -26,7 +26,7 @@ Calculate the drawdown (MDD) of historical series.  Note that the calculation is
     -------
 
 ## Getting charts 
-###portfolio.maxdd(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### portfolio.maxdd(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display maximum drawdown curve
 

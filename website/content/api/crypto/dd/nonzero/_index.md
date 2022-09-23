@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.dd.nonzero(symbol: str, start_date: int = 1262304000, end_date: int = 1663694553) -> pandas.core.frame.DataFrame
+### crypto.dd.nonzero(symbol: str, start_date: int = 1262304000, end_date: int = 1663941836) -> pandas.core.frame.DataFrame
 
 Returns addresses with non-zero balance of a certain symbol
     [Source: https://glassnode.com]
@@ -23,7 +23,7 @@ Returns addresses with non-zero balance of a certain symbol
         addresses with non-zero balances
 
 ## Getting charts 
-###crypto.dd.nonzero(symbol: str, start_date: int = 1577836800, end_date: int = 1609459200, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
+### crypto.dd.nonzero(symbol: str, start_date: int = 1577836800, end_date: int = 1609459200, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
 
 Display addresses with non-zero balance of a certain symbol
     [Source: https://glassnode.org]

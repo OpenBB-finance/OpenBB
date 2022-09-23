@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.ba.mentions(symbol: str) -> pandas.core.frame.DataFrame
+### stocks.ba.mentions(symbol: str) -> pandas.core.frame.DataFrame
 
 Get interest over time from google api [Source: google]
 
@@ -18,7 +18,7 @@ Get interest over time from google api [Source: google]
         Dataframe of interest over time
 
 ## Getting charts 
-###stocks.ba.mentions(symbol: str, start_date: str = '', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.ba.mentions(symbol: str, start_date: str = '', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Plot weekly bars of stock's interest over time. other users watchlist. [Source: Google]
 

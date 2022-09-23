@@ -1,7 +1,7 @@
 # stocks.dd.arktrades
 
 ## Get underlying data 
-###stocks.dd.arktrades(symbol: str) -> pandas.core.frame.DataFrame
+### stocks.dd.arktrades(symbol: str) -> pandas.core.frame.DataFrame
 
 Gets a dataframe of ARK trades for ticker
 

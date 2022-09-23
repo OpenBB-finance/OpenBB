@@ -1,7 +1,7 @@
 # stocks.fa.score
 
 ## Get underlying data 
-###stocks.fa.score(symbol: str) -> Optional[numpy.number]
+### stocks.fa.score(symbol: str) -> Optional[numpy.number]
 
 Gets value score from fmp
 

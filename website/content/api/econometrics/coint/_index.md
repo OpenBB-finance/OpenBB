@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###econometrics.coint(dependent_series, independent_series)
+### econometrics.coint(dependent_series, independent_series)
 
 Estimates long-run and short-run cointegration relationship for series y and x and apply
     the two-step Engle & Granger test for cointegration.
@@ -58,7 +58,7 @@ Estimates long-run and short-run cointegration relationship for series y and x a
 
 
 ## Getting charts 
-###econometrics.coint(datasets: Union[pandas.core.frame.DataFrame, Dict[str, pandas.core.series.Series]], significant: bool = False, plot: bool = False, export: str = '', external_axes: Optional[List[axes]] = None, chart=True)
+### econometrics.coint(datasets: Union[pandas.core.frame.DataFrame, Dict[str, pandas.core.series.Series]], significant: bool = False, plot: bool = False, export: str = '', external_axes: Optional[List[axes]] = None, chart=True)
 
 Estimates long-run and short-run cointegration relationship for series y and x and apply
     the two-step Engle & Granger test for cointegration.

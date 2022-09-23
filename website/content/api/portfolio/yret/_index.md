@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###portfolio.yret(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: str = 'all')
+### portfolio.yret(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: str = 'all')
 
 Get yearly returns
 
@@ -15,7 +15,7 @@ Get yearly returns
         interval to compare cumulative returns and benchmark
 
 ## Getting charts 
-###portfolio.yret(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: str = 'all', raw: bool = False, export: str = '', external_axes: Optional[matplotlib.axes._axes.Axes] = None, chart=True)
+### portfolio.yret(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: str = 'all', raw: bool = False, export: str = '', external_axes: Optional[matplotlib.axes._axes.Axes] = None, chart=True)
 
 Display yearly returns
 

@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.onchain.btc_supply() -> pandas.core.frame.DataFrame
+### crypto.onchain.btc_supply() -> pandas.core.frame.DataFrame
 
 Returns BTC circulating supply [Source: https://api.blockchain.info/]
 
@@ -13,13 +13,13 @@ Returns BTC circulating supply [Source: https://api.blockchain.info/]
         BTC circulating supply
 
 ## Getting charts 
-###crypto.onchain.btc_supply(since: int = 1262304000, until: int = 1663694553, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
+### crypto.onchain.btc_supply(start_date: int = 1262304000, end_date: int = 1663941836, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
 
 Returns BTC circulating supply [Source: https://api.blockchain.info/]
 
     Parameters
     ----------
-    since : int
+    start_date : int
         Initial date timestamp (e.g., 1_609_459_200)
     until : int
         End date timestamp (e.g., 1_641_588_030)

@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###forex.oanda.opentrades(accountID: str = 'REPLACE_ME') -> Union[pandas.core.frame.DataFrame, bool]
+### forex.oanda.opentrades(accountID: str = 'REPLACE_ME') -> Union[pandas.core.frame.DataFrame, bool]
 
 Request open trades data.
 
@@ -18,7 +18,7 @@ Request open trades data.
         Open trades data or False
 
 ## Getting charts 
-###forex.oanda.opentrades(accountID: str, chart=True)
+### forex.oanda.opentrades(accountID: str, chart=True)
 
 View open trades.
 

@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.onchain.ueat(interval: str = 'day', limit: int = 90, sortby: str = 'tradeAmount', ascend: bool = True) -> pandas.core.frame.DataFrame
+### crypto.onchain.ueat(interval: str = 'day', limit: int = 90, sortby: str = 'tradeAmount', ascend: bool = True) -> pandas.core.frame.DataFrame
 
 Get number of unique ethereum addresses which made a transaction in given time interval.
 
@@ -25,7 +25,7 @@ Get number of unique ethereum addresses which made a transaction in given time i
         Unique ethereum addresses which made a transaction
 
 ## Getting charts 
-###crypto.onchain.ueat(interval: str = 'days', limit: int = 10, sortby: str = 'date', ascend: bool = True, export: str = '', chart=True) -> None
+### crypto.onchain.ueat(interval: str = 'days', limit: int = 10, sortby: str = 'date', ascend: bool = True, export: str = '', chart=True) -> None
 
 Display number of unique ethereum addresses which made a transaction in given time interval
      [Source: https://graphql.bitquery.io/]

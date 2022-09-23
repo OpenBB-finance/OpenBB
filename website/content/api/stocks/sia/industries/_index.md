@@ -1,7 +1,7 @@
 # stocks.sia.industries
 
 ## Get underlying data 
-###stocks.sia.industries(country: str = '', sector: str = '')
+### stocks.sia.industries(country: str = '', sector: str = '')
 
 Get all industries in Yahoo Finance data based on country or sector. [Source: Finance Database]
 

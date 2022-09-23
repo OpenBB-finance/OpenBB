@@ -1,7 +1,7 @@
 # stocks.options.closing
 
 ## Get underlying data 
-###stocks.options.closing(symbol: str) -> pandas.core.series.Series
+### stocks.options.closing(symbol: str) -> pandas.core.series.Series
 
 Get closing prices for a given ticker
 

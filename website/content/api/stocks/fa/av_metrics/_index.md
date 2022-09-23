@@ -1,7 +1,7 @@
 # stocks.fa.av_metrics
 
 ## Get underlying data 
-###stocks.fa.av_metrics(symbol: str) -> pandas.core.frame.DataFrame
+### stocks.fa.av_metrics(symbol: str) -> pandas.core.frame.DataFrame
 
 Get key metrics from overview
 

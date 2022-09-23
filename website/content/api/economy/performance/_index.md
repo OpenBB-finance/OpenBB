@@ -1,7 +1,7 @@
 # economy.performance
 
 ## Get underlying data 
-###economy.performance(group: str = 'sector', sortby: str = 'Name', ascend: bool = True) -> pandas.core.frame.DataFrame
+### economy.performance(group: str = 'sector', sortby: str = 'Name', ascend: bool = True) -> pandas.core.frame.DataFrame
 
 Get group (sectors, industry or country) performance data. [Source: Finviz]
 

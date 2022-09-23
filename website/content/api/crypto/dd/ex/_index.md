@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.dd.ex(symbol: str = 'eth-ethereum', sortby: str = 'adjusted_volume_24h_share', ascend: bool = True) -> pandas.core.frame.DataFrame
+### crypto.dd.ex(symbol: str = 'eth-ethereum', sortby: str = 'adjusted_volume_24h_share', ascend: bool = True) -> pandas.core.frame.DataFrame
 
 Get all exchanges for given coin id. [Source: CoinPaprika]
 
@@ -24,7 +24,7 @@ Get all exchanges for given coin id. [Source: CoinPaprika]
         Columns: id, name, adjusted_volume_24h_share, fiats
 
 ## Getting charts 
-###crypto.dd.ex(symbol: str = 'btc', limit: int = 10, sortby: str = 'adjusted_volume_24h_share', ascend: bool = True, export: str = '', chart=True) -> None
+### crypto.dd.ex(symbol: str = 'btc', limit: int = 10, sortby: str = 'adjusted_volume_24h_share', ascend: bool = True, export: str = '', chart=True) -> None
 
 Get all exchanges for given coin id. [Source: CoinPaprika]
 

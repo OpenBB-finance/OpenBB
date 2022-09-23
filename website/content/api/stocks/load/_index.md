@@ -1,7 +1,7 @@
 # stocks.load
 
 ## Get underlying data 
-###stocks.load(symbol: str, start_date: datetime.datetime = datetime.datetime(2019, 9, 16, 18, 22, 32, 961016), interval: int = 1440, end_date: datetime.datetime = datetime.datetime(2022, 9, 20, 18, 22, 32, 961023), prepost: bool = False, source: str = 'YahooFinance', iexrange: str = 'ytd', weekly: bool = False, monthly: bool = False)
+### stocks.load(symbol: str, start_date: datetime.datetime = datetime.datetime(2019, 9, 19, 15, 3, 56, 361036), interval: int = 1440, end_date: datetime.datetime = datetime.datetime(2022, 9, 23, 15, 3, 56, 361043), prepost: bool = False, source: str = 'YahooFinance', iexrange: str = 'ytd', weekly: bool = False, monthly: bool = False)
 
 
     Load a symbol to perform analysis using the string above as a template.

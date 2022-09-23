@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###common.ta.donchian(high_prices: pandas.core.series.Series, low_prices: pandas.core.series.Series, upper_length: int = 20, lower_length: int = 20) -> pandas.core.frame.DataFrame
+### common.ta.donchian(high_prices: pandas.core.series.Series, low_prices: pandas.core.series.Series, upper_length: int = 20, lower_length: int = 20) -> pandas.core.frame.DataFrame
 
 Calculate Donchian Channels
 
@@ -24,7 +24,7 @@ Calculate Donchian Channels
         Dataframe of upper and lower channels
 
 ## Getting charts 
-###common.ta.donchian(data: pandas.core.frame.DataFrame, symbol: str = '', upper_length: int = 20, lower_length: int = 20, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### common.ta.donchian(data: pandas.core.frame.DataFrame, symbol: str = '', upper_length: int = 20, lower_length: int = 20, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Show donchian channels
 

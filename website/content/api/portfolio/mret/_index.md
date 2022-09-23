@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###portfolio.mret(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: str = 'all') -> pandas.core.frame.DataFrame
+### portfolio.mret(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: str = 'all') -> pandas.core.frame.DataFrame
 
 Get monthly returns
 
@@ -19,7 +19,7 @@ Get monthly returns
 
 
 ## Getting charts 
-###portfolio.mret(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: str = 'all', raw: bool = False, show_vals: bool = False, export: str = '', external_axes: Optional[matplotlib.axes._axes.Axes] = None, chart=True)
+### portfolio.mret(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: str = 'all', raw: bool = False, show_vals: bool = False, export: str = '', external_axes: Optional[matplotlib.axes._axes.Axes] = None, chart=True)
 
 Display monthly returns
 

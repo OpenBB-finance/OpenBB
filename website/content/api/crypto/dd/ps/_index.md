@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.dd.ps(symbol: str = 'btc-bitcoin', quotes: str = 'USD') -> pandas.core.frame.DataFrame
+### crypto.dd.ps(symbol: str = 'btc-bitcoin', quotes: str = 'USD') -> pandas.core.frame.DataFrame
 
 Get all most important ticker related information for given coin id [Source: CoinPaprika]
 
@@ -57,7 +57,7 @@ Get all most important ticker related information for given coin id [Source: Coi
         Columns: Metric, Value
 
 ## Getting charts 
-###crypto.dd.ps(from_symbol: str = 'BTC', to_symbol: str = 'USD', export: str = '', chart=True) -> None
+### crypto.dd.ps(from_symbol: str = 'BTC', to_symbol: str = 'USD', export: str = '', chart=True) -> None
 
 Get ticker information for single coin [Source: CoinPaprika]
 

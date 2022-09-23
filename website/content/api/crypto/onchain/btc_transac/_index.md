@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.onchain.btc_transac() -> pandas.core.frame.DataFrame
+### crypto.onchain.btc_transac() -> pandas.core.frame.DataFrame
 
 Returns BTC confirmed transactions [Source: https://api.blockchain.info/]
 
@@ -13,7 +13,7 @@ Returns BTC confirmed transactions [Source: https://api.blockchain.info/]
         BTC confirmed transactions
 
 ## Getting charts 
-###crypto.onchain.btc_transac(since: int = 1262304000, until: int = 1663694553, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
+### crypto.onchain.btc_transac(start_date: int = 1262304000, end_date: int = 1663941836, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
 
 Returns BTC confirmed transactions [Source: https://api.blockchain.info/]
 

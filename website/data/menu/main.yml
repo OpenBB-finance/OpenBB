@@ -2014,12 +2014,16 @@ main:
             ref: /api/economy/futures
           - name: cpi
             ref: /api/economy/cpi
+          - name: get_events_countries
+            ref: /api/economy/get_events_countries
           - name: search_index
             ref: /api/economy/search_index
           - name: country_codes
             ref: /api/economy/country_codes
           - name: unemp
             ref: /api/economy/unemp
+          - name: get_ycrv_countries
+            ref: /api/economy/get_ycrv_countries
           - name: glbonds
             ref: /api/economy/glbonds
           - name: available_indices

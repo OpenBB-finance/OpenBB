@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###portfolio.po.maxdecorr(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', covariance: str = 'hist', d_ewma: float = 0.94, value: float = 1.0, value_short: float = 0) -> Tuple
+### portfolio.po.maxdecorr(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', covariance: str = 'hist', d_ewma: float = 0.94, value: float = 1.0, value_short: float = 0) -> Tuple
 
 Builds a maximal decorrelation portfolio
 
@@ -68,7 +68,7 @@ Builds a maximal decorrelation portfolio
         Dictionary of portfolio weights and DataFrame of stock returns
 
 ## Getting charts 
-###portfolio.po.maxdecorr(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', covariance: str = 'hist', d_ewma: float = 0.94, value: float = 1.0, value_short: float = 0.0, table: bool = False, chart=True) -> Dict
+### portfolio.po.maxdecorr(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', covariance: str = 'hist', d_ewma: float = 0.94, value: float = 1.0, value_short: float = 0.0, table: bool = False, chart=True) -> Dict
 
 
     Builds a maximal decorrelation portfolio

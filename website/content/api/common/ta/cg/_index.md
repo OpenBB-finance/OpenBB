@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###common.ta.cg(values: pandas.core.series.Series, window: int) -> pandas.core.frame.DataFrame
+### common.ta.cg(values: pandas.core.series.Series, window: int) -> pandas.core.frame.DataFrame
 
 Center of gravity
 
@@ -19,7 +19,7 @@ Center of gravity
         Dataframe of technical indicator
 
 ## Getting charts 
-###common.ta.cg(data: pandas.core.series.Series, window: int = 14, symbol: str = '', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### common.ta.cg(data: pandas.core.series.Series, window: int = 14, symbol: str = '', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display center of gravity Indicator
 

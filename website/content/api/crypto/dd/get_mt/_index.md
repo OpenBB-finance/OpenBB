@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.dd.get_mt(only_free: bool = True) -> pandas.core.frame.DataFrame
+### crypto.dd.get_mt(only_free: bool = True) -> pandas.core.frame.DataFrame
 
 Returns available messari timeseries
     [Source: https://messari.io/]
@@ -19,7 +19,7 @@ Returns available messari timeseries
         available timeseries
 
 ## Getting charts 
-###crypto.dd.get_mt(limit: int = 10, query: str = '', only_free: bool = True, export: str = '', chart=True) -> None
+### crypto.dd.get_mt(limit: int = 10, query: str = '', only_free: bool = True, export: str = '', chart=True) -> None
 
 Display messari timeseries list
     [Source: https://messari.io/]

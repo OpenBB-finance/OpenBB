@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.defi.gacc(cumulative: bool = True) -> pandas.core.frame.DataFrame
+### crypto.defi.gacc(cumulative: bool = True) -> pandas.core.frame.DataFrame
 
 Get terra blockchain account growth history [Source: https://fcd.terra.dev/swagger]
 
@@ -17,13 +17,13 @@ Get terra blockchain account growth history [Source: https://fcd.terra.dev/swagg
         historical data of accounts growth
 
 ## Getting charts 
-###crypto.defi.gacc(kind: str = 'total', cumulative: bool = False, top: int = 90, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
+### crypto.defi.gacc(kind: str = 'total', cumulative: bool = False, limit: int = 90, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
 
 Display terra blockchain account growth history [Source: https://fcd.terra.dev/swagger]
 
     Parameters
     ----------
-    top: int
+    limit: int
         Number of records to display
     kind: str
         display total account count or active account count. One from list [active, total]

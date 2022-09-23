@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.screener.screener_data(preset_loaded: str = 'top_gainers', data_type: str = 'overview', limit: int = 10, ascend: bool = False)
+### stocks.screener.screener_data(preset_loaded: str = 'top_gainers', data_type: str = 'overview', limit: int = 10, ascend: bool = False)
 
 Screener Overview
 
@@ -24,7 +24,7 @@ Screener Overview
         Dataframe with loaded filtered stocks
 
 ## Getting charts 
-###stocks.screener.screener_data(loaded_preset: str = 'top_gainers', data_type: str = 'overview', limit: int = 10, ascend: bool = False, sortby: str = '', export: str = '', chart=True) -> List[str]
+### stocks.screener.screener_data(loaded_preset: str = 'top_gainers', data_type: str = 'overview', limit: int = 10, ascend: bool = False, sortby: str = '', export: str = '', chart=True) -> List[str]
 
 Screener one of the following: overview, valuation, financial, ownership, performance, technical.
 

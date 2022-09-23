@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.options.hist_ce(symbol: str = 'GME', date: str = '2021-02-05', call: bool = True, price: str = '90') -> pandas.core.frame.DataFrame
+### stocks.options.hist_ce(symbol: str = 'GME', date: str = '2021-02-05', call: bool = True, price: str = '90') -> pandas.core.frame.DataFrame
 
 Historic prices for a specific option [chartexchange]
 
@@ -24,7 +24,7 @@ Historic prices for a specific option [chartexchange]
         Historic information for an option
 
 ## Getting charts 
-###stocks.options.hist_ce(symbol: str = 'GME', expiry: str = '2021-02-05', call: bool = True, price: float = 90, limit: int = 10, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
+### stocks.options.hist_ce(symbol: str = 'GME', expiry: str = '2021-02-05', call: bool = True, price: float = 90, limit: int = 10, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
 
 Return raw stock data[chartexchange]
 

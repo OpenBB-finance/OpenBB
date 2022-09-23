@@ -1,7 +1,7 @@
 # portfolio.volatility
 
 ## Get underlying data 
-###portfolio.volatility(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel) -> pandas.core.frame.DataFrame
+### portfolio.volatility(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel) -> pandas.core.frame.DataFrame
 
 Class method that retrieves volatility for portfolio and benchmark selected
 

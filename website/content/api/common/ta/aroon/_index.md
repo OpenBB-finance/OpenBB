@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###common.ta.aroon(high_values: pandas.core.series.Series, low_values: pandas.core.series.Series, window: int = 25, scalar: int = 100) -> pandas.core.frame.DataFrame
+### common.ta.aroon(high_values: pandas.core.series.Series, low_values: pandas.core.series.Series, window: int = 25, scalar: int = 100) -> pandas.core.frame.DataFrame
 
 Aroon technical indicator
 
@@ -24,7 +24,7 @@ Aroon technical indicator
         DataFrame with aroon indicator
 
 ## Getting charts 
-###common.ta.aroon(data: pandas.core.frame.DataFrame, window: int = 25, scalar: int = 100, symbol: str = '', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### common.ta.aroon(data: pandas.core.frame.DataFrame, window: int = 25, scalar: int = 100, symbol: str = '', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Plot Aroon indicator
 

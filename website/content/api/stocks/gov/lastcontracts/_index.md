@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.gov.lastcontracts(past_transaction_days: int = 2) -> pandas.core.frame.DataFrame
+### stocks.gov.lastcontracts(past_transaction_days: int = 2) -> pandas.core.frame.DataFrame
 
 Get last government contracts [Source: quiverquant.com]
 
@@ -18,7 +18,7 @@ Get last government contracts [Source: quiverquant.com]
         DataFrame of government contracts
 
 ## Getting charts 
-###stocks.gov.lastcontracts(past_transaction_days: int = 2, limit: int = 20, sum_contracts: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.gov.lastcontracts(past_transaction_days: int = 2, limit: int = 20, sum_contracts: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Last government contracts [Source: quiverquant.com]
 

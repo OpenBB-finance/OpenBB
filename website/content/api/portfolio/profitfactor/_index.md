@@ -1,7 +1,7 @@
 # portfolio.profitfactor
 
 ## Get underlying data 
-###portfolio.profitfactor(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel)
+### portfolio.profitfactor(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel)
 
 Gets profit factor
 

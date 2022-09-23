@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###forex.oanda.orderbook(instrument: Optional[str] = None, accountID: str = 'REPLACE_ME') -> Union[pandas.core.frame.DataFrame, bool]
+### forex.oanda.orderbook(instrument: Optional[str] = None, accountID: str = 'REPLACE_ME') -> Union[pandas.core.frame.DataFrame, bool]
 
 Request order book data for plotting.
 
@@ -20,7 +20,7 @@ Request order book data for plotting.
         Order book data or False
 
 ## Getting charts 
-###forex.oanda.orderbook(accountID: str, instrument: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### forex.oanda.orderbook(accountID: str, instrument: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 
     Plot the orderbook for the instrument if Oanda provides one.

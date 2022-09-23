@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.defi.tokens(skip: int = 0, limit: int = 100, sortby: str = 'index', ascend: bool = False) -> pandas.core.frame.DataFrame
+### crypto.defi.tokens(skip: int = 0, limit: int = 100, sortby: str = 'index', ascend: bool = False) -> pandas.core.frame.DataFrame
 
 Get list of tokens trade-able on Uniswap DEX. [Source: https://thegraph.com/en/]
 
@@ -24,7 +24,7 @@ Get list of tokens trade-able on Uniswap DEX. [Source: https://thegraph.com/en/]
         Uniswap tokens with trading volume, transaction count, liquidity.
 
 ## Getting charts 
-###crypto.defi.tokens(skip: int = 0, limit: int = 20, sortby: str = 'index', ascend: bool = False, export: str = '', chart=True) -> None
+### crypto.defi.tokens(skip: int = 0, limit: int = 20, sortby: str = 'index', ascend: bool = False, export: str = '', chart=True) -> None
 
 Displays tokens trade-able on Uniswap DEX.
     [Source: https://thegraph.com/en/]

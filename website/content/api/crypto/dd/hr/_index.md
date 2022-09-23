@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.dd.hr(symbol: str, interval: str = '24h', start_date: int = 1262304000, end_date: int = 1663694553) -> pandas.core.frame.DataFrame
+### crypto.dd.hr(symbol: str, interval: str = '24h', start_date: int = 1262304000, end_date: int = 1663941836) -> pandas.core.frame.DataFrame
 
 Returns dataframe with mean hashrate of btc or eth blockchain and symbol price
     [Source: https://glassnode.com]
@@ -25,7 +25,7 @@ Returns dataframe with mean hashrate of btc or eth blockchain and symbol price
         mean hashrate and symbol price over time
 
 ## Getting charts 
-###crypto.dd.hr(symbol: str, start_date: int = 1632158553, end_date: int = 1663694553, interval: str = '24h', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
+### crypto.dd.hr(symbol: str, start_date: int = 1632405836, end_date: int = 1663941836, interval: str = '24h', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
 
 Display dataframe with mean hashrate of btc or eth blockchain and symbol price.
     [Source: https://glassnode.org]

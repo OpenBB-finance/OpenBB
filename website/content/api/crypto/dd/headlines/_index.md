@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.dd.headlines(symbol: str) -> pandas.core.frame.DataFrame
+### crypto.dd.headlines(symbol: str) -> pandas.core.frame.DataFrame
 
 Gets Sentiment analysis provided by FinBrain's API [Source: finbrain]
 
@@ -18,7 +18,7 @@ Gets Sentiment analysis provided by FinBrain's API [Source: finbrain]
         Empty if there was an issue with data retrieval
 
 ## Getting charts 
-###crypto.dd.headlines(symbol: str, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
+### crypto.dd.headlines(symbol: str, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
 
 Sentiment analysis from FinBrain for Cryptocurrencies
 

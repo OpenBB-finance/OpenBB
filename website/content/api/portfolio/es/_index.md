@@ -1,7 +1,7 @@
 # portfolio.es
 
 ## Get underlying data 
-###portfolio.es(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, use_mean: bool = False, distribution: str = 'normal', percentile: float = 0.999) -> pandas.core.frame.DataFrame
+### portfolio.es(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, use_mean: bool = False, distribution: str = 'normal', percentile: float = 0.999) -> pandas.core.frame.DataFrame
 
 Get portfolio expected shortfall
 

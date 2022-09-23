@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.fa.splits(symbol: str) -> pandas.core.frame.DataFrame
+### stocks.fa.splits(symbol: str) -> pandas.core.frame.DataFrame
 
 Get splits and reverse splits events. [Source: Yahoo Finance]
 
@@ -18,7 +18,7 @@ Get splits and reverse splits events. [Source: Yahoo Finance]
         Dataframe of forward and reverse splits
 
 ## Getting charts 
-###stocks.fa.splits(symbol: str, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.fa.splits(symbol: str, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display splits and reverse splits events. [Source: Yahoo Finance]
 

@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###forex.quote(to_symbol: str = 'USD', from_symbol: str = 'EUR') -> Dict
+### forex.quote(to_symbol: str = 'USD', from_symbol: str = 'EUR') -> Dict
 
 Get current exchange rate quote from alpha vantage.
 
@@ -20,7 +20,7 @@ Get current exchange rate quote from alpha vantage.
         Dictionary of exchange rate
 
 ## Getting charts 
-###forex.quote(to_symbol: str = 'USD', from_symbol: str = 'EUR', chart=True)
+### forex.quote(to_symbol: str = 'USD', from_symbol: str = 'EUR', chart=True)
 
 Display current forex pair exchange rate.
 

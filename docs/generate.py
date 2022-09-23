@@ -190,7 +190,7 @@ def folder_documentation(path: str):
 
 
 if __name__ == "__main__":
-    folder_path = os.path.realpath("./website/content/api")
+    base_folder_path = os.path.realpath("./website/content/api")
     target_path = os.path.realpath("./website/data/menu/main.yml")
     main_path = os.path.realpath("./website/content/api")
     folder_list = crawl_folders(main_path)
@@ -200,8 +200,7 @@ if __name__ == "__main__":
     grouped_funcs = groupby(funcs, 0)
     # Create the documentation files
     for k, v in grouped_funcs.items():
-        # generate_documentation(folder_path, k, v)
-        pass
+        generate_documentation(base_folder_path, k, v)
     # Delete our old entry to main.yaml
     start_line = find_line(target_path, "# CODE BELOW THIS WILL BE DELETED FREQUENTLY")
     delete_lines(target_path, start_line)

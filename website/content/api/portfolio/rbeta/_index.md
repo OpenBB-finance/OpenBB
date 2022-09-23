@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###portfolio.rbeta(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: str = '1y') -> pandas.core.frame.DataFrame
+### portfolio.rbeta(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: str = '1y') -> pandas.core.frame.DataFrame
 
 Get rolling beta using portfolio and benchmark returns
 
@@ -21,7 +21,7 @@ Get rolling beta using portfolio and benchmark returns
         DataFrame of the portfolio's rolling beta
 
 ## Getting charts 
-###portfolio.rbeta(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: str = '1y', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### portfolio.rbeta(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: str = '1y', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display rolling beta
 

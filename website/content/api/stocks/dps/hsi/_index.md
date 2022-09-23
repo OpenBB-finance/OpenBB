@@ -1,7 +1,7 @@
 # stocks.dps.hsi
 
 ## Get underlying data 
-###stocks.dps.hsi() -> pandas.core.frame.DataFrame
+### stocks.dps.hsi() -> pandas.core.frame.DataFrame
 
 Returns a high short interest DataFrame
 

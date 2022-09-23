@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.options.hedge.add_hedge_option(price: float = 100, implied_volatility: float = 20, strike: float = 120, days: float = 30, sign: int = 1) -> tuple
+### stocks.options.hedge.add_hedge_option(price: float = 100, implied_volatility: float = 20, strike: float = 120, days: float = 30, sign: int = 1) -> tuple
 
 Determine the delta, gamma and vega value of the portfolio and/or options.
 
@@ -27,7 +27,7 @@ Determine the delta, gamma and vega value of the portfolio and/or options.
     portfolio: float
 
 ## Getting charts 
-###stocks.options.hedge.add_hedge_option(price: float = 100, implied_volatility: float = 20, strike: float = 120, days: float = 30, sign: int = 1, chart=True)
+### stocks.options.hedge.add_hedge_option(price: float = 100, implied_volatility: float = 20, strike: float = 120, days: float = 30, sign: int = 1, chart=True)
 
 Determine the delta, gamma and vega value of the portfolio and/or options and show them.
 

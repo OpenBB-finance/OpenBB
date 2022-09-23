@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###portfolio.po.plot(weights, data: pandas.core.frame.DataFrame, category: Dict = None, title_opt: str = '', freq: str = 'D', risk_measure: str = 'MV', risk_free_rate: float = 0, alpha: float = 0.05, a_sim: float = 100, beta: float = None, b_sim: float = None, pie: bool = False, hist: bool = False, dd: bool = False, rc_chart: bool = False, heat: bool = False, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
+### portfolio.po.plot(weights, data: pandas.core.frame.DataFrame, category: Dict = None, title_opt: str = '', freq: str = 'D', risk_measure: str = 'MV', risk_free_rate: float = 0, alpha: float = 0.05, a_sim: float = 100, beta: float = None, b_sim: float = None, pie: bool = False, hist: bool = False, dd: bool = False, rc_chart: bool = False, heat: bool = False, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 
 
     Plot additional charts
@@ -82,7 +82,7 @@ To obtain charts, make sure to add `chart=True` as the last parameter
         Optional axes to plot data on
 
 ## Getting charts 
-###portfolio.po.plot(weights, data: pandas.core.frame.DataFrame, category: Dict = None, title_opt: str = '', freq: str = 'D', risk_measure: str = 'MV', risk_free_rate: float = 0, alpha: float = 0.05, a_sim: float = 100, beta: float = None, b_sim: float = None, pie: bool = False, hist: bool = False, dd: bool = False, rc_chart: bool = False, heat: bool = False, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### portfolio.po.plot(weights, data: pandas.core.frame.DataFrame, category: Dict = None, title_opt: str = '', freq: str = 'D', risk_measure: str = 'MV', risk_free_rate: float = 0, alpha: float = 0.05, a_sim: float = 100, beta: float = None, b_sim: float = None, pie: bool = False, hist: bool = False, dd: bool = False, rc_chart: bool = False, heat: bool = False, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 
     Plot additional charts

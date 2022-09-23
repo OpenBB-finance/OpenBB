@@ -1,7 +1,7 @@
 # economy.country_codes
 
 ## Get underlying data 
-###economy.country_codes() -> List[str]
+### economy.country_codes() -> List[str]
 
 Get available country codes for Bigmac index
 

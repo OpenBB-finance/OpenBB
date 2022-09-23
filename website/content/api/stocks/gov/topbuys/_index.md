@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.gov.topbuys(gov_type: str = 'congress', past_transactions_months: int = 6) -> pandas.core.frame.DataFrame
+### stocks.gov.topbuys(gov_type: str = 'congress', past_transactions_months: int = 6) -> pandas.core.frame.DataFrame
 
 Get top buy government trading [Source: quiverquant.com]
 
@@ -20,7 +20,7 @@ Get top buy government trading [Source: quiverquant.com]
         DataFrame of top government buy trading
 
 ## Getting charts 
-###stocks.gov.topbuys(gov_type: str = 'congress', past_transactions_months: int = 6, limit: int = 10, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.gov.topbuys(gov_type: str = 'congress', past_transactions_months: int = 6, limit: int = 10, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Top buy government trading [Source: quiverquant.com]
 

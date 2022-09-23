@@ -3,7 +3,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###etf.weights(name: str) -> Dict
+### etf.weights(name: str) -> Dict
 
 Return sector weightings allocation of ETF. [Source: Yahoo Finance]
 
@@ -18,7 +18,7 @@ Return sector weightings allocation of ETF. [Source: Yahoo Finance]
         Dictionary with sector weightings allocation
 
 ## Getting charts 
-###etf.weights(name: str, raw: bool = False, min_pct_to_display: float = 5, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### etf.weights(name: str, raw: bool = False, min_pct_to_display: float = 5, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display sector weightings allocation of ETF. [Source: Yahoo Finance]
 

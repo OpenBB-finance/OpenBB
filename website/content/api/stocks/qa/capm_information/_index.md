@@ -1,7 +1,7 @@
 # stocks.qa.capm_information
 
 ## Get underlying data 
-###stocks.qa.capm_information(symbol: str) -> Tuple[float, float]
+### stocks.qa.capm_information(symbol: str) -> Tuple[float, float]
 
 Provides information that relates to the CAPM model
 
