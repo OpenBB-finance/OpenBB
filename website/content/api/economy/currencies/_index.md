@@ -1,5 +1,3 @@
-# economy.currencies
-
 ## Get underlying data 
 ### economy.currencies() -> pandas.core.frame.DataFrame
 

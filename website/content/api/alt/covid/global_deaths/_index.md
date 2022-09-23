@@ -1,5 +1,3 @@
-# alt.covid.global_deaths
-
 ## Get underlying data 
 ### alt.covid.global_deaths(country: str) -> pandas.core.frame.DataFrame
 

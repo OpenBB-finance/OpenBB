@@ -1,5 +1,3 @@
-# crypto.disc.coin_list
-
 ## Get underlying data 
 ### crypto.disc.coin_list() -> pandas.core.frame.DataFrame
 

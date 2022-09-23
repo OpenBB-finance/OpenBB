@@ -1,5 +1,3 @@
-# stocks.ba.spac
-
 ## Get underlying data 
 ### stocks.ba.spac(limit: int = 5) -> Tuple[pandas.core.frame.DataFrame, dict, int]
 

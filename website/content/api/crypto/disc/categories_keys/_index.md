@@ -1,5 +1,3 @@
-# crypto.disc.categories_keys
-
 ## Get underlying data 
 ### crypto.disc.categories_keys() -> List[str]
 

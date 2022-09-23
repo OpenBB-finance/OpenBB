@@ -1,5 +1,3 @@
-# stocks.ca.finviz_peers
-
 ## Get underlying data 
 ### stocks.ca.finviz_peers(symbol: str, compare_list: List[str] = None) -> Tuple[List[str], str]
 

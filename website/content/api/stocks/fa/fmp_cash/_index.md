@@ -1,5 +1,3 @@
-# stocks.fa.fmp_cash
-
 ## Get underlying data 
 ### stocks.fa.fmp_cash(symbol: str, limit: int = 5, quarterly: bool = False, ratios: bool = False, plot: bool = False) -> pandas.core.frame.DataFrame
 

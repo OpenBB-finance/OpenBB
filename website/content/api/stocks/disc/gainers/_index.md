@@ -1,5 +1,3 @@
-# stocks.disc.gainers
-
 ## Get underlying data 
 ### stocks.disc.gainers() -> pandas.core.frame.DataFrame
 

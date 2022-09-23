@@ -1,5 +1,3 @@
-# forex.get_currency_list
-
 ## Get underlying data 
 ### forex.get_currency_list() -> List
 

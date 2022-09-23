@@ -1,5 +1,3 @@
-# portfolio.kelly
-
 ## Get underlying data 
 ### portfolio.kelly(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel)
 

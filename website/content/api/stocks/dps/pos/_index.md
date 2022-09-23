@@ -1,5 +1,3 @@
-# stocks.dps.pos
-
 ## Get underlying data 
 ### stocks.dps.pos(sortby: str = 'dpp_dollar', ascend: bool = False) -> pandas.core.frame.DataFrame
 

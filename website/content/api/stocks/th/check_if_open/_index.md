@@ -1,5 +1,3 @@
-# stocks.th.check_if_open
-
 ## Get underlying data 
 ### stocks.th.check_if_open(bursa, exchange)
 

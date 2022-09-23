@@ -1,5 +1,3 @@
-# portfolio.kurtosis
-
 ## Get underlying data 
 ### portfolio.kurtosis(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel) -> pandas.core.frame.DataFrame
 

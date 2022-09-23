@@ -1,5 +1,3 @@
-# economy.valuation
-
 ## Get underlying data 
 ### economy.valuation(group: str = 'sector', sortby: str = 'Name', ascend: bool = True) -> pandas.core.frame.DataFrame
 

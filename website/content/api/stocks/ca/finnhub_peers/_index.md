@@ -1,5 +1,3 @@
-# stocks.ca.finnhub_peers
-
 ## Get underlying data 
 ### stocks.ca.finnhub_peers(symbol: str) -> List[str]
 

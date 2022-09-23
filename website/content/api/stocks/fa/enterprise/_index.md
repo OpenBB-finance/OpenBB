@@ -1,5 +1,3 @@
-# stocks.fa.enterprise
-
 ## Get underlying data 
 ### stocks.fa.enterprise(symbol: str, limit: int = 5, quarterly: bool = False) -> pandas.core.frame.DataFrame
 

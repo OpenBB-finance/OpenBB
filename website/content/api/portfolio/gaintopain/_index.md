@@ -1,5 +1,3 @@
-# portfolio.gaintopain
-
 ## Get underlying data 
 ### portfolio.gaintopain(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel)
 

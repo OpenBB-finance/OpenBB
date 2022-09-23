@@ -1,5 +1,3 @@
-# economy.macro_parameters
-
 ## Get underlying data 
 ### economy.macro_parameters() -> Dict[str, Dict[str, str]]
 

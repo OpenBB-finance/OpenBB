@@ -1,5 +1,3 @@
-# stocks.fa.fraud
-
 ## Get underlying data 
 ### stocks.fa.fraud(symbol: str, detail: bool = False) -> pandas.core.frame.DataFrame
 

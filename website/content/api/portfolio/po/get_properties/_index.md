@@ -1,5 +1,3 @@
-# portfolio.po.get_properties
-
 ## Get underlying data 
 ### portfolio.po.get_properties() -> List[str]
 

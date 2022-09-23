@@ -1,5 +1,3 @@
-# crypto.onchain.erc20_tokens
-
 ## Get underlying data 
 ### crypto.onchain.erc20_tokens() -> pandas.core.frame.DataFrame
 

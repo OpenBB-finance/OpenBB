@@ -1,5 +1,3 @@
-# stocks.disc.rtat
-
 ## Get underlying data 
 ### stocks.disc.rtat() -> pandas.core.frame.DataFrame
 

@@ -1,9 +1,7 @@
-# crypto.dd.btcrb
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### crypto.dd.btcrb(symbol: str, start_date: int = 1262304000, end_date: int = 1663941836, print_errors: bool = True) -> pandas.core.frame.DataFrame
+### crypto.dd.btcrb(symbol: str, start_date: int = 1262304000, end_date: int = 1663943882, print_errors: bool = True) -> pandas.core.frame.DataFrame
 
 Returns the price of a cryptocurrency
     [Source: https://glassnode.com]
@@ -25,7 +23,7 @@ Returns the price of a cryptocurrency
         price over time
 
 ## Getting charts 
-### crypto.dd.btcrb(start_date: int = 1262304000, end_date: int = 1663941836, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### crypto.dd.btcrb(start_date: int = 1262304000, end_date: int = 1663943882, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Displays bitcoin rainbow chart
     [Price data from source: https://glassnode.com]

@@ -1,5 +1,3 @@
-# economy.fred_notes
-
 ## Get underlying data 
 ### economy.fred_notes(search_query: str, limit: int = -1) -> pandas.core.frame.DataFrame
 

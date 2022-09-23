@@ -1,5 +1,3 @@
-# common.qa.decompose
-
 ## Get underlying data 
 ### common.qa.decompose(data: pandas.core.frame.DataFrame, multiplicative: bool = False) -> Tuple[Any, pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
 

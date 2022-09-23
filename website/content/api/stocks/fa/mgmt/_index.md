@@ -1,5 +1,3 @@
-# stocks.fa.mgmt
-
 ## Get underlying data 
 ### stocks.fa.mgmt(symbol: str) -> pandas.core.frame.DataFrame
 

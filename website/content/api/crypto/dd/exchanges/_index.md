@@ -1,5 +1,3 @@
-# crypto.dd.exchanges
-
 ## Get underlying data 
 ### crypto.dd.exchanges()
 

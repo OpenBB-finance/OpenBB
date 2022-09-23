@@ -1,5 +1,3 @@
-# alt.oss._retry_session
-
 ## Get underlying data 
 ### alt.oss._retry_session(url: str, retries: int = 3, backoff_factor: float = 1.0) -> requests.sessions.Session
 

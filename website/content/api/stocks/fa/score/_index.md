@@ -1,5 +1,3 @@
-# stocks.fa.score
-
 ## Get underlying data 
 ### stocks.fa.score(symbol: str) -> Optional[numpy.number]
 

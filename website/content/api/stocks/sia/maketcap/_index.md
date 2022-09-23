@@ -1,5 +1,3 @@
-# stocks.sia.maketcap
-
 ## Get underlying data 
 ### stocks.sia.maketcap()
 

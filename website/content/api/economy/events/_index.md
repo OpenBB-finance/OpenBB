@@ -1,5 +1,3 @@
-# economy.events
-
 ## Get underlying data 
 ### economy.events(country: str = 'all', importance: str = '', category: str = '', start_date: str = '', end_date: str = '', limit=100) -> Tuple[pandas.core.frame.DataFrame, str]
 

@@ -1,5 +1,3 @@
-# stocks.ba.getdd
-
 ## Get underlying data 
 ### stocks.ba.getdd(symbol: str, limit: int = 5, n_days: int = 3, show_all_flairs: bool = False) -> pandas.core.frame.DataFrame
 

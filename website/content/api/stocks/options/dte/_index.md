@@ -1,5 +1,3 @@
-# stocks.options.dte
-
 ## Get underlying data 
 ### stocks.options.dte(date_value: str) -> int
 

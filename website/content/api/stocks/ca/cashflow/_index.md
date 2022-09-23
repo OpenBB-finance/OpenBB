@@ -1,5 +1,3 @@
-# stocks.ca.cashflow
-
 ## Get underlying data 
 ### stocks.ca.cashflow(similar: List[str], timeframe: str = '2021', quarter: bool = False)
 

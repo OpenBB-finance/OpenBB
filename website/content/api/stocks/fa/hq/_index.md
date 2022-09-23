@@ -1,5 +1,3 @@
-# stocks.fa.hq
-
 ## Get underlying data 
 ### stocks.fa.hq(symbol: str) -> str
 

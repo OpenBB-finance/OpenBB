@@ -1,5 +1,3 @@
-# stocks.fa.profile
-
 ## Get underlying data 
 ### stocks.fa.profile(symbol: str) -> pandas.core.frame.DataFrame
 

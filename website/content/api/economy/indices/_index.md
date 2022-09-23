@@ -1,5 +1,3 @@
-# economy.indices
-
 ## Get underlying data 
 ### economy.indices() -> pandas.core.frame.DataFrame
 

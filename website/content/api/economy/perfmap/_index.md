@@ -1,5 +1,3 @@
-# economy.perfmap
-
 ## Get underlying data 
 ### economy.perfmap(period: str = '1d', map_filter: str = 'sp500')
 

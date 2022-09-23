@@ -1,5 +1,3 @@
-# stocks.options.dividend
-
 ## Get underlying data 
 ### stocks.options.dividend(symbol: str) -> pandas.core.series.Series
 

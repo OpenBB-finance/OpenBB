@@ -1,5 +1,3 @@
-# stocks.dps.ctb
-
 ## Get underlying data 
 ### stocks.dps.ctb() -> pandas.core.frame.DataFrame
 

@@ -1,5 +1,3 @@
-# stocks.fa.av_metrics
-
 ## Get underlying data 
 ### stocks.fa.av_metrics(symbol: str) -> pandas.core.frame.DataFrame
 

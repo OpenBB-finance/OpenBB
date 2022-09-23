@@ -1,5 +1,3 @@
-# stocks.disc.hotpenny
-
 ## Get underlying data 
 ### stocks.disc.hotpenny() -> pandas.core.frame.DataFrame
 

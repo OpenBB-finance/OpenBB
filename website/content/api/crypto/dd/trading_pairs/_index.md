@@ -1,5 +1,3 @@
-# crypto.dd.trading_pairs
-
 ## Get underlying data 
 ### crypto.dd.trading_pairs() -> List[dict]
 

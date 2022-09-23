@@ -1,5 +1,3 @@
-# stocks.dd.est
-
 ## Get underlying data 
 ### stocks.dd.est(symbol: str) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
 

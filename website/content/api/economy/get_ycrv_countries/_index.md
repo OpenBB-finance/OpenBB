@@ -1,5 +1,3 @@
-# economy.get_ycrv_countries
-
 ## Get underlying data 
 ### economy.get_ycrv_countries() -> list
 

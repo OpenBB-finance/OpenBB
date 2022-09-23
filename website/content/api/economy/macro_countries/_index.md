@@ -1,5 +1,3 @@
-# economy.macro_countries
-
 ## Get underlying data 
 ### economy.macro_countries() -> Dict[str, str]
 

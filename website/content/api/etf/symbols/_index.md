@@ -1,5 +1,3 @@
-# etf.symbols
-
 ## Get underlying data 
 ### etf.symbols() -> Tuple[List[str], List[str]]
 

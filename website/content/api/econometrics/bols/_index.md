@@ -1,5 +1,3 @@
-# econometrics.bols
-
 ## Get underlying data 
 ### econometrics.bols(regression_variables: List[Tuple], data: Dict[str, pandas.core.frame.DataFrame]) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any], Any]
 

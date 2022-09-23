@@ -1,5 +1,3 @@
-# stocks.fa.sust
-
 ## Get underlying data 
 ### stocks.fa.sust(symbol: str) -> pandas.core.frame.DataFrame
 

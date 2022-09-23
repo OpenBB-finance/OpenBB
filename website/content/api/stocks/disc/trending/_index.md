@@ -1,5 +1,3 @@
-# stocks.disc.trending
-
 ## Get underlying data 
 ### stocks.disc.trending(limit: int = 5) -> list
 

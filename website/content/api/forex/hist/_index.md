@@ -1,5 +1,3 @@
-# forex.hist
-
 ## Get underlying data 
 ### forex.hist(to_symbol: str = 'USD', from_symbol: str = 'EUR', resolution: str = 'd', interval: int = 5, start_date: str = '') -> pandas.core.frame.DataFrame
 

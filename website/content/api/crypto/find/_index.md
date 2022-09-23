@@ -1,5 +1,3 @@
-# crypto.find
-
 ## Get underlying data 
 ### crypto.find(query: 'str', source: 'str' = 'CoinGecko', key: 'str' = 'symbol', limit: 'int' = 10, export: 'str' = '') -> 'None'
 

@@ -1,5 +1,3 @@
-# stocks.fa.historical_5
-
 ## Get underlying data 
 ### stocks.fa.historical_5(symbol: str) -> pandas.core.frame.DataFrame
 

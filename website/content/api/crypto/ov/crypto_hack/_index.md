@@ -1,5 +1,3 @@
-# crypto.ov.crypto_hack
-
 ## Get underlying data 
 ### crypto.ov.crypto_hack(slug: str) -> Optional[str]
 

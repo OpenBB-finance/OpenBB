@@ -1,5 +1,3 @@
-# econometrics.comparison
-
 ## Get underlying data 
 ### econometrics.comparison(regressions, export: str = '')
 

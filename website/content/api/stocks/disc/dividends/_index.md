@@ -1,5 +1,3 @@
-# stocks.disc.dividends
-
 ## Get underlying data 
 ### stocks.disc.dividends(date: str = '2022-09-23') -> pandas.core.frame.DataFrame
 

@@ -1,5 +1,3 @@
-# stocks.disc.active
-
 ## Get underlying data 
 ### stocks.disc.active() -> pandas.core.frame.DataFrame
 

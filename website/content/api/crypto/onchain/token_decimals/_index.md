@@ -1,5 +1,3 @@
-# crypto.onchain.token_decimals
-
 ## Get underlying data 
 ### crypto.onchain.token_decimals(address: str) -> Optional[int]
 

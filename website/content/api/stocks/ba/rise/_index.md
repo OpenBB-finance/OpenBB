@@ -1,5 +1,3 @@
-# stocks.ba.rise
-
 ## Get underlying data 
 ### stocks.ba.rise(symbol: str, limit: int = 10) -> pandas.core.frame.DataFrame
 

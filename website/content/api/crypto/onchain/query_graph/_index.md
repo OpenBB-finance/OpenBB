@@ -1,5 +1,3 @@
-# crypto.onchain.query_graph
-
 ## Get underlying data 
 ### crypto.onchain.query_graph(url: str, query: str) -> dict
 

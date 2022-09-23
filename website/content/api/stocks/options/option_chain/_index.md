@@ -1,5 +1,3 @@
-# stocks.options.option_chain
-
 ## Get underlying data 
 ### stocks.options.option_chain(symbol: str, expiry: str)
 

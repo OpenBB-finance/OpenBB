@@ -1,5 +1,3 @@
-# econometrics.fe
-
 ## Get underlying data 
 ### econometrics.fe(regression_variables: List[Tuple], data: Dict[str, pandas.core.frame.DataFrame], entity_effects: bool = False, time_effects: bool = False) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any], Any]
 

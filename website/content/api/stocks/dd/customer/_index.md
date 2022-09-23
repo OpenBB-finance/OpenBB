@@ -1,5 +1,3 @@
-# stocks.dd.customer
-
 ## Get underlying data 
 ### stocks.dd.customer(symbol: str) -> List[str]
 

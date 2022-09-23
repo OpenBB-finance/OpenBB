@@ -1,5 +1,3 @@
-# economy.search_index
-
 ## Get underlying data 
 ### economy.search_index(keyword: list, limit: int = 10) -> pandas.core.frame.DataFrame
 

@@ -1,5 +1,3 @@
-# stocks.dd.analyst
-
 ## Get underlying data 
 ### stocks.dd.analyst(symbol: str) -> pandas.core.frame.DataFrame
 

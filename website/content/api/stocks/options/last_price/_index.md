@@ -1,5 +1,3 @@
-# stocks.options.last_price
-
 ## Get underlying data 
 ### stocks.options.last_price(symbol: str)
 

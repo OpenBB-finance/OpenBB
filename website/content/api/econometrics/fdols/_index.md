@@ -1,5 +1,3 @@
-# econometrics.fdols
-
 ## Get underlying data 
 ### econometrics.fdols(regression_variables: List[Tuple], data: Dict[str, pandas.core.frame.DataFrame]) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any], Any]
 

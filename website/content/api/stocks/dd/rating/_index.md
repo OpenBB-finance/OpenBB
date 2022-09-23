@@ -1,5 +1,3 @@
-# stocks.dd.rating
-
 ## Get underlying data 
 ### stocks.dd.rating(symbol: str) -> pandas.core.frame.DataFrame
 

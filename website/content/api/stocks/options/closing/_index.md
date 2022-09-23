@@ -1,5 +1,3 @@
-# stocks.options.closing
-
 ## Get underlying data 
 ### stocks.options.closing(symbol: str) -> pandas.core.series.Series
 

@@ -1,5 +1,3 @@
-# stocks.options.price
-
 ## Get underlying data 
 ### stocks.options.price(symbol: str) -> float
 

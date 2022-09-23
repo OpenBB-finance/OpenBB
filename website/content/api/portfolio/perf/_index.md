@@ -1,5 +1,3 @@
-# portfolio.perf
-
 ## Get underlying data 
 ### portfolio.perf(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, interval: str = 'all', show_all_trades: bool = False) -> pandas.core.frame.DataFrame
 

@@ -1,5 +1,3 @@
-# economy.glbonds
-
 ## Get underlying data 
 ### economy.glbonds() -> pandas.core.frame.DataFrame
 

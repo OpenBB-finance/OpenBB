@@ -1,5 +1,3 @@
-# stocks.options.hedge.calc_gamma
-
 ## Get underlying data 
 ### stocks.options.hedge.calc_gamma(asset_price: float = 100, asset_volatility: float = 20, strike_price: float = 120, time_to_expiration: float = 30, risk_free_rate: float = 0)
 

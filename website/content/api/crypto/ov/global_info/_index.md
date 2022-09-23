@@ -1,5 +1,3 @@
-# crypto.ov.global_info
-
 ## Get underlying data 
 ### crypto.ov.global_info() -> pandas.core.frame.DataFrame
 

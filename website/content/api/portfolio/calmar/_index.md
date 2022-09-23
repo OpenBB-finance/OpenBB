@@ -1,5 +1,3 @@
-# portfolio.calmar
-
 ## Get underlying data 
 ### portfolio.calmar(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: int = 756)
 

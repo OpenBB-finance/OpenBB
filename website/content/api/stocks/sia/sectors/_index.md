@@ -1,5 +1,3 @@
-# stocks.sia.sectors
-
 ## Get underlying data 
 ### stocks.sia.sectors(industry: str = '', country: str = '')
 

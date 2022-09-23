@@ -1,5 +1,3 @@
-# stocks.fa.analysis
-
 ## Get underlying data 
 ### stocks.fa.analysis(symbol: str) -> str
 

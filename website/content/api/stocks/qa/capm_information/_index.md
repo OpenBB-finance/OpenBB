@@ -1,5 +1,3 @@
-# stocks.qa.capm_information
-
 ## Get underlying data 
 ### stocks.qa.capm_information(symbol: str) -> Tuple[float, float]
 

@@ -1,5 +1,3 @@
-# economy.futures
-
 ## Get underlying data 
 ### economy.futures() -> pandas.core.frame.DataFrame
 

@@ -1,5 +1,3 @@
-# stocks.qa.historical_5
-
 ## Get underlying data 
 ### stocks.qa.historical_5(symbol: str) -> pandas.core.frame.DataFrame
 

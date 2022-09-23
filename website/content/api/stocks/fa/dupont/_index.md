@@ -1,5 +1,3 @@
-# stocks.fa.dupont
-
 ## Get underlying data 
 ### stocks.fa.dupont(symbol: str) -> pandas.core.frame.DataFrame
 

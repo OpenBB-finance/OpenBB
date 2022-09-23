@@ -1,5 +1,3 @@
-# common.ta.hma
-
 ## Get underlying data 
 ### common.ta.hma(data: pandas.core.frame.DataFrame, length: int = 50, offset: int = 0) -> pandas.core.frame.DataFrame
 

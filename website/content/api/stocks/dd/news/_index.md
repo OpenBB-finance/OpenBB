@@ -1,5 +1,3 @@
-# stocks.dd.news
-
 ## Get underlying data 
 ### stocks.dd.news(symbol: str) -> List[Any]
 

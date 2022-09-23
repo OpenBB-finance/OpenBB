@@ -1,5 +1,3 @@
-# econometrics.ols
-
 ## Get underlying data 
 ### econometrics.ols(regression_variables: List[Tuple], data: Dict[str, pandas.core.frame.DataFrame], show_regression: bool = True, export: str = '') -> Tuple[pandas.core.frame.DataFrame, Any, List[Any], Any]
 

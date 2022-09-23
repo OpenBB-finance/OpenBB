@@ -1,5 +1,3 @@
-# portfolio.commonsense
-
 ## Get underlying data 
 ### portfolio.commonsense(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel)
 

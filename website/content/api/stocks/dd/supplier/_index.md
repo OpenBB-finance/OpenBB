@@ -1,5 +1,3 @@
-# stocks.dd.supplier
-
 ## Get underlying data 
 ### stocks.dd.supplier(symbol: str) -> List[str]
 

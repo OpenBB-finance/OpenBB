@@ -1,5 +1,3 @@
-# crypto.ov.crypto_hack_slugs
-
 ## Get underlying data 
 ### crypto.ov.crypto_hack_slugs() -> List[str]
 

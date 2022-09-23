@@ -1,5 +1,3 @@
-# stocks.gov.lasttrades
-
 ## Get underlying data 
 ### stocks.gov.lasttrades(gov_type: str = 'congress', limit: int = -1, representative: str = '') -> pandas.core.frame.DataFrame
 

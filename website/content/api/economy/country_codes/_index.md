@@ -1,5 +1,3 @@
-# economy.country_codes
-
 ## Get underlying data 
 ### economy.country_codes() -> List[str]
 

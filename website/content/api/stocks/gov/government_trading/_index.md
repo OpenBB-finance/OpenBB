@@ -1,5 +1,3 @@
-# stocks.gov.government_trading
-
 ## Get underlying data 
 ### stocks.gov.government_trading(gov_type: str = 'congress', symbol: str = '') -> pandas.core.frame.DataFrame
 

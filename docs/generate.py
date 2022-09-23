@@ -70,7 +70,6 @@ def generate_documentation(
         if not os.path.isdir(base):
             os.mkdir(base)
     with open(f"{base}/_index.md", "w") as f:
-        f.write(f"# {key}\n\n")
         if view:
             f.write(
                 "To obtain charts, make sure to add `chart=True` as the last parameter\n\n"

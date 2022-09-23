@@ -1,5 +1,3 @@
-# stocks.dd.arktrades
-
 ## Get underlying data 
 ### stocks.dd.arktrades(symbol: str) -> pandas.core.frame.DataFrame
 

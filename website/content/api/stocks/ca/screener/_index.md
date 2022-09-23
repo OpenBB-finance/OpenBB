@@ -1,5 +1,3 @@
-# stocks.ca.screener
-
 ## Get underlying data 
 ### stocks.ca.screener(similar: List[str], data_type: str = 'overview')
 

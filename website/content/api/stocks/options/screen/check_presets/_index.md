@@ -1,5 +1,3 @@
-# stocks.options.screen.check_presets
-
 ## Get underlying data 
 ### stocks.options.screen.check_presets(preset_dict: dict) -> str
 

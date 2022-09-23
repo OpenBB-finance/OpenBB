@@ -1,5 +1,3 @@
-# stocks.disc.asc
-
 ## Get underlying data 
 ### stocks.disc.asc() -> pandas.core.frame.DataFrame
 

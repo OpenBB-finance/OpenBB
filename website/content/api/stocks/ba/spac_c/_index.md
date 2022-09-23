@@ -1,5 +1,3 @@
-# stocks.ba.spac_c
-
 ## Get underlying data 
 ### stocks.ba.spac_c(limit: int = 10, popular: bool = False) -> Tuple[pandas.core.frame.DataFrame, dict]
 

@@ -1,5 +1,3 @@
-# econometrics.clean
-
 ## Get underlying data 
 ### econometrics.clean(dataset: pandas.core.frame.DataFrame, fill: str = '', drop: str = '', limit: Optional[int] = None) -> pandas.core.frame.DataFrame
 

@@ -1,5 +1,3 @@
-# stocks.dps.sidtc
-
 ## Get underlying data 
 ### stocks.dps.sidtc(sortby: str = 'float') -> pandas.core.frame.DataFrame
 

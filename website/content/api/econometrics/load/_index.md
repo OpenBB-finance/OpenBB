@@ -1,5 +1,3 @@
-# econometrics.load
-
 ## Get underlying data 
 ### econometrics.load(file: str, file_types: Optional[List[str]] = None, data_files: Optional[Dict[Any, Any]] = None, data_examples: Optional[Dict[Any, Any]] = None) -> pandas.core.frame.DataFrame
 

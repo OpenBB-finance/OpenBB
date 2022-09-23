@@ -1,5 +1,3 @@
-# stocks.disc.upcoming
-
 ## Get underlying data 
 ### stocks.disc.upcoming(limit: int = 10) -> pandas.core.frame.DataFrame
 

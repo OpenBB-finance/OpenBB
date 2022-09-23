@@ -1,5 +1,3 @@
-# common.ta.wma
-
 ## Get underlying data 
 ### common.ta.wma(data: pandas.core.frame.DataFrame, length: int = 50, offset: int = 0) -> pandas.core.frame.DataFrame
 

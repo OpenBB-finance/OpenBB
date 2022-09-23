@@ -1,5 +1,3 @@
-# stocks.fa.fama_raw
-
 ## Get underlying data 
 ### stocks.fa.fama_raw() -> pandas.core.frame.DataFrame
 

@@ -1,5 +1,3 @@
-# portfolio.payoff
-
 ## Get underlying data 
 ### portfolio.payoff(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel)
 

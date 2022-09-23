@@ -1,5 +1,3 @@
-# portfolio.po.load_bl_views
-
 ## Get underlying data 
 ### portfolio.po.load_bl_views(excel_file: str = '')
 

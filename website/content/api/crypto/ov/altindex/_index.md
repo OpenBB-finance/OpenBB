@@ -1,9 +1,7 @@
-# crypto.ov.altindex
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### crypto.ov.altindex(period: int = 30, start_date: int = 1262304000, end_date: int = 1663941836) -> pandas.core.frame.DataFrame
+### crypto.ov.altindex(period: int = 30, start_date: int = 1262304000, end_date: int = 1663943882) -> pandas.core.frame.DataFrame
 
 Get altcoin index overtime
     [Source: https://blockchaincenter.net]
@@ -25,7 +23,7 @@ Get altcoin index overtime
         Date, Value (Altcoin Index)
 
 ## Getting charts 
-### crypto.ov.altindex(period: int = 365, start_date: int = 1262304000, end_date: int = 1663941836, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
+### crypto.ov.altindex(period: int = 365, start_date: int = 1262304000, end_date: int = 1663943882, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
 
 Displays altcoin index overtime
      [Source: https://blockchaincenter.net]

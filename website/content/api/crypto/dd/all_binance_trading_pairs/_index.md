@@ -1,5 +1,3 @@
-# crypto.dd.all_binance_trading_pairs
-
 ## Get underlying data 
 ### crypto.dd.all_binance_trading_pairs() -> pandas.core.frame.DataFrame
 

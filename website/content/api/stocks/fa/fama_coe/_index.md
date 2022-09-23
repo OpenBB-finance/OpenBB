@@ -1,5 +1,3 @@
-# stocks.fa.fama_coe
-
 ## Get underlying data 
 ### stocks.fa.fama_coe(symbol: str) -> float
 

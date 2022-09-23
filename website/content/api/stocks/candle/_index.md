@@ -1,7 +1,5 @@
-# stocks.candle
-
 ## Get underlying data 
-### stocks.candle(symbol: str, data: pandas.core.frame.DataFrame = None, use_matplotlib: bool = True, intraday: bool = False, add_trend: bool = False, ma: Optional[Iterable[int]] = None, asset_type: str = '', start_date: datetime.datetime = datetime.datetime(2019, 9, 19, 15, 3, 56, 361046), interval: int = 1440, end_date: datetime.datetime = datetime.datetime(2022, 9, 23, 15, 3, 56, 361047), prepost: bool = False, source: str = 'YahooFinance', iexrange: str = 'ytd', weekly: bool = False, monthly: bool = False, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, raw: bool = False)
+### stocks.candle(symbol: str, data: pandas.core.frame.DataFrame = None, use_matplotlib: bool = True, intraday: bool = False, add_trend: bool = False, ma: Optional[Iterable[int]] = None, asset_type: str = '', start_date: datetime.datetime = datetime.datetime(2019, 9, 19, 15, 38, 2, 731895), interval: int = 1440, end_date: datetime.datetime = datetime.datetime(2022, 9, 23, 15, 38, 2, 731896), prepost: bool = False, source: str = 'YahooFinance', iexrange: str = 'ytd', weekly: bool = False, monthly: bool = False, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, raw: bool = False)
 
 Shows candle plot of loaded ticker. [Source: Yahoo Finance, IEX Cloud or Alpha Vantage]
 

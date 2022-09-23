@@ -1,5 +1,3 @@
-# crypto.dd.trading_pair_info
-
 ## Get underlying data 
 ### crypto.dd.trading_pair_info(symbol: str) -> pandas.core.frame.DataFrame
 

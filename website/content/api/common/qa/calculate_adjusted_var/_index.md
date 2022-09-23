@@ -1,5 +1,3 @@
-# common.qa.calculate_adjusted_var
-
 ## Get underlying data 
 ### common.qa.calculate_adjusted_var(kurtosis: float, skew: float, ndp: float, std: float, mean: float) -> float
 

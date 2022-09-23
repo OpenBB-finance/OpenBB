@@ -1,5 +1,3 @@
-# portfolio.volatility
-
 ## Get underlying data 
 ### portfolio.volatility(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel) -> pandas.core.frame.DataFrame
 

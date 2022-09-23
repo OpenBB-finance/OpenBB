@@ -1,5 +1,3 @@
-# stocks.ba.stalker
-
 ## Get underlying data 
 ### stocks.ba.stalker(user: str, limit: int = 30) -> List[Dict]
 

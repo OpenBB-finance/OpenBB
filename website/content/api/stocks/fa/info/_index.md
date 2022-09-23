@@ -1,5 +1,3 @@
-# stocks.fa.info
-
 ## Get underlying data 
 ### stocks.fa.info(symbol: str) -> pandas.core.frame.DataFrame
 

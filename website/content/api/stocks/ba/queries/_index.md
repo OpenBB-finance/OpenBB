@@ -1,5 +1,3 @@
-# stocks.ba.queries
-
 ## Get underlying data 
 ### stocks.ba.queries(symbol: str, limit: int = 10) -> pandas.core.frame.DataFrame
 

@@ -1,5 +1,3 @@
-# stocks.disc.gtech
-
 ## Get underlying data 
 ### stocks.disc.gtech() -> pandas.core.frame.DataFrame
 

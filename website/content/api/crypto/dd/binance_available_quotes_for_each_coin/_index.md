@@ -1,5 +1,3 @@
-# crypto.dd.binance_available_quotes_for_each_coin
-
 ## Get underlying data 
 ### crypto.dd.binance_available_quotes_for_each_coin() -> dict
 

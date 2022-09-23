@@ -1,5 +1,3 @@
-# crypto.onchain.btc_supply
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
@@ -13,7 +11,7 @@ Returns BTC circulating supply [Source: https://api.blockchain.info/]
         BTC circulating supply
 
 ## Getting charts 
-### crypto.onchain.btc_supply(start_date: int = 1262304000, end_date: int = 1663941836, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
+### crypto.onchain.btc_supply(start_date: int = 1262304000, end_date: int = 1663943882, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
 
 Returns BTC circulating supply [Source: https://api.blockchain.info/]
 

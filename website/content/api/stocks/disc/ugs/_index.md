@@ -1,5 +1,3 @@
-# stocks.disc.ugs
-
 ## Get underlying data 
 ### stocks.disc.ugs() -> pandas.core.frame.DataFrame
 

@@ -1,5 +1,3 @@
-# stocks.fa.website
-
 ## Get underlying data 
 ### stocks.fa.website(symbol: str) -> str
 

@@ -1,5 +1,3 @@
-# stocks.ba.trending
-
 ## Get underlying data 
 ### stocks.ba.trending() -> pandas.core.frame.DataFrame
 

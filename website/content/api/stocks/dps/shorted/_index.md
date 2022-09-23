@@ -1,5 +1,3 @@
-# stocks.dps.shorted
-
 ## Get underlying data 
 ### stocks.dps.shorted() -> pandas.core.frame.DataFrame
 

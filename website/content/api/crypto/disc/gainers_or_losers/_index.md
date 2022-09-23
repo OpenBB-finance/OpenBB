@@ -1,5 +1,3 @@
-# crypto.disc.gainers_or_losers
-
 ## Get underlying data 
 ### crypto.disc.gainers_or_losers(limit: int = 20, interval: str = '1h', typ: str = 'gainers', sortby: str = 'market_cap') -> pandas.core.frame.DataFrame
 

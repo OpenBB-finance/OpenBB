@@ -1,5 +1,3 @@
-# crypto.dd.coin
-
 ## Get underlying data 
 ### crypto.dd.coin(symbol: str = 'eth-ethereum') -> dict
 

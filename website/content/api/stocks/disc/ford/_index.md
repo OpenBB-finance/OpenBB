@@ -1,5 +1,3 @@
-# stocks.disc.ford
-
 ## Get underlying data 
 ### stocks.disc.ford() -> Tuple[str, pandas.core.frame.DataFrame]
 

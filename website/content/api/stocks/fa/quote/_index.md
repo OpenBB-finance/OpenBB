@@ -1,5 +1,3 @@
-# stocks.fa.quote
-
 ## Get underlying data 
 ### stocks.fa.quote(symbol: str) -> pandas.core.frame.DataFrame
 

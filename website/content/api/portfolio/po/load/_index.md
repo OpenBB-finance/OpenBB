@@ -1,5 +1,3 @@
-# portfolio.po.load
-
 ## Get underlying data 
 ### portfolio.po.load(excel_file: str = '')
 

@@ -1,5 +1,3 @@
-# stocks.screener.historical
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 

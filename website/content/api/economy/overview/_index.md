@@ -1,5 +1,3 @@
-# economy.overview
-
 ## Get underlying data 
 ### economy.overview() -> pandas.core.frame.DataFrame
 

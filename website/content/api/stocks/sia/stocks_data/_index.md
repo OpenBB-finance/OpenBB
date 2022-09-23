@@ -1,5 +1,3 @@
-# stocks.sia.stocks_data
-
 ## Get underlying data 
 ### stocks.sia.stocks_data(symbols: List[str] = None, finance_key: str = 'ncf', stocks_data: dict = None, period: str = 'annual', symbol: str = 'USD')
 

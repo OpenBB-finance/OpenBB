@@ -1,5 +1,3 @@
-# stocks.options.hedge.calc_delta
-
 ## Get underlying data 
 ### stocks.options.hedge.calc_delta(asset_price: float = 100, asset_volatility: float = 20, strike_price: float = 120, time_to_expiration: float = 30, risk_free_rate: float = 0, sign: int = 1)
 

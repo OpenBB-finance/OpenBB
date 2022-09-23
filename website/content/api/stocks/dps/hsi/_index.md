@@ -1,5 +1,3 @@
-# stocks.dps.hsi
-
 ## Get underlying data 
 ### stocks.dps.hsi() -> pandas.core.frame.DataFrame
 

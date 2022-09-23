@@ -1,5 +1,3 @@
-# stocks.options.option_expirations
-
 ## Get underlying data 
 ### stocks.options.option_expirations(symbol: str)
 

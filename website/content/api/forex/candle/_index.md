@@ -1,5 +1,3 @@
-# forex.candle
-
 ## Get underlying data 
 ### forex.candle(data: pandas.core.frame.DataFrame, to_symbol: str = '', from_symbol: str = '', ma: Optional[Iterable[int]] = None, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 
