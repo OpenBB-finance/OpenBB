@@ -97,6 +97,7 @@ jedi-language-server = {version = "^0.35.1", optional = true}
 charset-normalizer = "2.1.0"
 pythclient = "^0.1.2"
 "ruamel.yaml" = "^0.17.21"
+PyAutoGUI = "^0.9.53"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
