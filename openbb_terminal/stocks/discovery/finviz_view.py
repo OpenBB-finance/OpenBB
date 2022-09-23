@@ -32,7 +32,7 @@ def display_heatmap(timeframe: str, export: str = ""):
         "heatmap",
         dfs,
     )
-    color_bin = [-1, -0.02, -0.01, -0.00001, 0.00001, 0.01, 0.02, 1]
+    color_bin = [-100, -2, -1, -0.001, 0.001, 1, 2, 100]
     dfs["colors"] = pd.cut(
         dfs["Change"],
         bins=color_bin,

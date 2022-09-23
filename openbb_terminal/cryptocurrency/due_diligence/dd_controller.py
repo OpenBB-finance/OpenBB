@@ -1360,8 +1360,8 @@ class DueDiligenceController(CryptoBaseController):
                 symbol=self.symbol.upper(),
                 interval=ns_parser.interval,
                 dev_activity=ns_parser.dev,
-                start=ns_parser.start.strftime("%Y-%m-%dT%H:%M:%SZ"),
-                end=ns_parser.end.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                start_date=ns_parser.start.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                end_date=ns_parser.end.strftime("%Y-%m-%dT%H:%M:%SZ"),
             )
 
     @log_start_end(log=logger)
@@ -1737,7 +1737,7 @@ class DueDiligenceController(CryptoBaseController):
             cryptopanic_view.display_news(
                 limit=ns_parser.limit,
                 source=self.source,
-                currency=self.symbol,
+                symbol=self.symbol,
                 export=ns_parser.export,
                 ascend=not ns_parser.descend,
                 post_kind=ns_parser.kind,

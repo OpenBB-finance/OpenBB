@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 @check_api_key(["API_WHALE_ALERT_KEY"])
 def display_whales_transactions(
     min_value: int = 800000,
-    top: int = 100,
+    limit: int = 100,
     sortby: str = "date",
     ascend: bool = False,
     show_address: bool = False,
@@ -33,7 +33,7 @@ def display_whales_transactions(
     ----------
     min_value: int
         Minimum value of trade to track.
-    top: int
+    limit: int
         Limit of transactions. Maximum 100
     sortby: str
         Key to sort by.
@@ -66,7 +66,7 @@ def display_whales_transactions(
         df[col] = df[col].apply(lambda x: lambda_long_number_format(x))
 
     print_rich_table(
-        df.head(top),
+        df.head(limit),
         headers=list(df.columns),
         show_index=False,
         title="Large Value Transactions",

@@ -18,8 +18,8 @@ DAYS = [30, 90, 365]
 @log_start_end(log=logger)
 def get_altcoin_index(
     period: int = 30,
-    since: int = int(datetime(2010, 1, 1).timestamp()),
-    until: int = int(datetime.now().timestamp()),
+    start_date: int = int(datetime(2010, 1, 1).timestamp()),
+    end_date: int = int(datetime.now().timestamp()),
 ) -> pd.DataFrame:
     """Get altcoin index overtime
     [Source: https://blockchaincenter.net]
@@ -30,9 +30,9 @@ def get_altcoin_index(
        Number of days {30,90,365} to check performance of coins and calculate the altcoin index.
        E.g., 365 checks yearly performance, 90 will check seasonal performance (90 days),
        30 will check monthly performance (30 days).
-    since : int
+    start_date : int
         Initial date timestamp (e.g., 1_609_459_200)
-    until : int
+    end_date : int
         End date timestamp (e.g., 1_641_588_030)
 
     Returns
@@ -63,8 +63,8 @@ def get_altcoin_index(
     df["Value"] = df["Value"].astype(int)
     df = df.set_index("Date")
     df = df[
-        (df.index > datetime.fromtimestamp(since))
-        & (df.index < datetime.fromtimestamp(until))
+        (df.index > datetime.fromtimestamp(start_date))
+        & (df.index < datetime.fromtimestamp(end_date))
     ]
 
     return df

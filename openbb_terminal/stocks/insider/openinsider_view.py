@@ -146,7 +146,7 @@ def print_insider_filter(
     limit: int = 10,
     links: bool = False,
     export: str = "",
-):
+) -> None:
     """Print insider filter based on loaded preset. [Source: OpenInsider]
 
     Parameters

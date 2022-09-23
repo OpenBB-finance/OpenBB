@@ -57,10 +57,10 @@ def plot_chart(
 
 @log_start_end(log=logger)
 def display_raw(
-    symbol: str,
-    expiry: str,
-    call: bool,
-    price: float = 0,
+    symbol: str = "GME",
+    expiry: str = "2021-02-05",
+    call: bool = True,
+    price: float = 90,
     limit: int = 10,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,

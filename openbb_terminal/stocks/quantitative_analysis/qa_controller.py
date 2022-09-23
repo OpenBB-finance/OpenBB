@@ -507,7 +507,7 @@ class QaController(StockBaseController):
                 symbol=self.ticker,
                 data=self.stock,
                 target=self.target,
-                limit=ns_parser.n_window,
+                window=ns_parser.n_window,
                 export=ns_parser.export,
             )
 
@@ -538,7 +538,7 @@ class QaController(StockBaseController):
                 data=self.stock,
                 symbol=self.ticker,
                 target=self.target,
-                limit=ns_parser.n_window,
+                window=ns_parser.n_window,
                 export=ns_parser.export,
             )
 
@@ -783,7 +783,9 @@ class QaController(StockBaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            beta_view(self.ticker, ns_parser.ref, data=self.stock)
+            beta_view(
+                self.ticker, ns_parser.ref, data=self.stock, export=ns_parser.export
+            )
 
     @log_start_end(log=logger)
     def call_var(self, other_args: List[str]):

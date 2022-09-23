@@ -228,7 +228,7 @@ class DarkPoolShortsController(StockBaseController):
         )
         if ns_parser:
             finra_view.darkpool_otc(
-                num=ns_parser.n_num,
+                input_limit=ns_parser.n_num,
                 promising=ns_parser.limit,
                 tier=ns_parser.tier,
                 export=ns_parser.export,
@@ -268,7 +268,7 @@ class DarkPoolShortsController(StockBaseController):
             "--ascending",
             action="store_true",
             default=False,
-            dest="ascending",
+            dest="ascend",
             help="Data in ascending order",
         )
         ns_parser = self.parse_known_args_and_warn(
@@ -278,7 +278,7 @@ class DarkPoolShortsController(StockBaseController):
             stockgrid_view.dark_pool_short_positions(
                 limit=ns_parser.limit,
                 sortby=ns_parser.sort_field,
-                ascending=ns_parser.ascending,
+                ascend=ns_parser.ascend,
                 export=ns_parser.export,
             )
 

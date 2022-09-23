@@ -76,7 +76,7 @@ def load(
     interval: str = "1day",
     start_date: str = last_year.strftime("%Y-%m-%d"),
     source: str = "YahooFinance",
-):
+) -> pd.DataFrame:
     """Loads forex for two given symbols
 
     Parameters
@@ -93,6 +93,11 @@ def load(
         When to begin loading in data
     source: str
         Where to get data from
+
+    Returns
+    -------
+    pd.DataFrame
+        The loaded data
     """
     if source in ["YahooFinance", "AlphaVantage"]:
         interval_map = INTERVAL_MAPS[source]

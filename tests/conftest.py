@@ -43,7 +43,7 @@ class Record:
         elif isinstance(data, tuple(EXTENSIONS_MATCHING["csv"])):
             string_value = data.to_csv(
                 encoding="utf-8",
-                line_terminator="\n",
+                lineterminator="\n",
                 # date_format="%Y-%m-%d %H:%M:%S",
                 **kwargs,
             )

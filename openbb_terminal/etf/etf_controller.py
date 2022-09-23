@@ -66,7 +66,7 @@ class ETFController(BaseController):
         "ta",
         "pred",
         "ca",
-        "scr",
+        # "scr",
         "disc",
     ]
     PATH = "/etf/"
@@ -101,7 +101,7 @@ class ETFController(BaseController):
         mt.add_raw("\n")
         mt.add_menu("ca", len(self.etf_holdings))
         mt.add_menu("disc")
-        mt.add_menu("scr")
+        # mt.add_menu("scr")
         mt.add_raw("\n")
         mt.add_cmd("overview", self.etf_name)
         mt.add_cmd("holdings", self.etf_name)

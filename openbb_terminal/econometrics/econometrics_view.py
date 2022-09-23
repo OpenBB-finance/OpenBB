@@ -202,7 +202,7 @@ def display_norm(
 
 @log_start_end(log=logger)
 def display_root(
-    df: pd.Series,
+    data: pd.Series,
     dataset: str = "",
     column: str = "",
     fuller_reg: str = "c",
@@ -213,7 +213,7 @@ def display_root(
 
     Parameters
     ----------
-    df : pd.Series
+    data : pd.Series
         Series of target variable
     dataset: str
         Name of the dataset
@@ -226,13 +226,13 @@ def display_root(
     export: str
         Format to export data.
     """
-    if df.dtype not in [int, float]:
+    if data.dtype not in [int, float]:
         console.print(
             f"The column type must be numeric. The provided "
-            f"type is {df.dtype}. Consider using the command 'type' to change this.\n"
+            f"type is {data.dtype}. Consider using the command 'type' to change this.\n"
         )
     else:
-        results = econometrics_model.get_root(df, fuller_reg, kpss_reg)
+        results = econometrics_model.get_root(data, fuller_reg, kpss_reg)
 
         ending = get_ending(dataset, column)
         print_rich_table(

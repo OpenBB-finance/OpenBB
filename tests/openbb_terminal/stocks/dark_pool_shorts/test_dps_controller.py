@@ -291,7 +291,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             dict(
                 limit=1,
                 sortby="sv",
-                ascending=True,
+                ascend=True,
                 export="csv",
             ),
         ),
@@ -430,6 +430,8 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
     getattr(controller, tested_func)(other_args=other_args)
 
     if isinstance(called_with, dict):
+        if "num" in called_with:
+            called_with["input_limit"] = called_with.pop("num")
         mock.assert_called_once_with(**called_with)
     elif isinstance(called_with, list):
         mock.assert_called_once_with(*called_with)

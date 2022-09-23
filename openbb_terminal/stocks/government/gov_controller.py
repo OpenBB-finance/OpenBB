@@ -98,7 +98,7 @@ class GovController(StockBaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="lasttrades",
-            description="Last government trading trading. [Source: www.quiverquant.com]",
+            description="Last government trades. [Source: www.quiverquant.com]",
         )
         parser.add_argument(
             "-g",

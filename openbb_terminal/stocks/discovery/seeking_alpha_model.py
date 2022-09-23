@@ -196,7 +196,7 @@ def get_news_html(news_type: str = "Top-News") -> dict:
 
 
 @log_start_end(log=logger)
-def get_news(news_type: str = "Top-News", num: int = 5) -> List:
+def get_news(news_type: str = "Top-News", limit: int = 5) -> List:
     """Gets news. [Source: SeekingAlpha]
 
     Parameters
@@ -204,7 +204,7 @@ def get_news(news_type: str = "Top-News", num: int = 5) -> List:
     news_type : str
         From: Top-News, On-The-Move, Market-Pulse, Notable-Calls, Buybacks, Commodities, Crypto, Issuance, Global,
         Guidance, IPOs, SPACs, Politics, M-A, Consumer, Energy, Financials, Healthcare, MLPs, REITs, Technology
-    num : int
+    limit : int
         Number of news to display
 
     Returns
@@ -217,7 +217,7 @@ def get_news(news_type: str = "Top-News", num: int = 5) -> List:
 
     if news_articles:
         for idx, news in enumerate(news_articles["data"]):
-            if idx > num:
+            if idx > limit:
                 break
 
             news_to_display.append(

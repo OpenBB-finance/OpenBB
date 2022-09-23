@@ -9,5 +9,5 @@ from openbb_terminal.cryptocurrency.due_diligence import pycoingecko_model
     [("algorand", "bitcoin"), ("solana", "ethereum")],
 )
 def test_get_coin_potential_returns(main_coin, vs, recorder):
-    df = pycoingecko_model.get_coin_potential_returns(main_coin=main_coin, vs=vs)
+    df = pycoingecko_model.get_coin_potential_returns(main_coin=main_coin, to_symbol=vs)
     recorder.capture(df)

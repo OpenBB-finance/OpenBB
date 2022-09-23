@@ -95,7 +95,7 @@ def get_big_mac_indices(country_codes: List[str]) -> pd.DataFrame:
     Parameters
     ----------
     country_codes : List[str]
-        List of country codes (ISO-3 letter country code). Codes available through get_country_codes().
+        List of country codes (ISO-3 letter country code). Codes available through economy.country_codes().
 
     Returns
     -------

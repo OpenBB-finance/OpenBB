@@ -196,12 +196,12 @@ def filter_stocks(
 
 @log_start_end(log=logger)
 def get_stocks_data(
-    country: str = None,
-    sector: str = None,
-    industry: str = None,
-    marketcap: str = "",
+    country: str = "United States",
+    sector: str = "Communication Services",
+    industry: str = "Internet Content & Information",
+    marketcap: str = "Mega Cap",
     exclude_exchanges: bool = True,
-):
+) -> dict:
     """Get stocks data based on country, sector, industry, market cap and exclude exchanges. [Source: Finance Database]
 
     Parameters
@@ -234,7 +234,9 @@ def get_stocks_data(
 
 @log_start_end(log=logger)
 def get_companies_per_sector_in_country(
-    country: str, mktcap: str = "", exclude_exchanges: bool = True
+    country: str = "United States",
+    mktcap: str = "Large",
+    exclude_exchanges: bool = True,
 ):
     """Get number of companies per sector in a specific country (and specific market cap). [Source: Finance Database]
 
@@ -274,7 +276,9 @@ def get_companies_per_sector_in_country(
 
 @log_start_end(log=logger)
 def get_companies_per_industry_in_country(
-    country: str, mktcap: str = "", exclude_exchanges: bool = True
+    country: str = "United States",
+    mktcap: str = "Large",
+    exclude_exchanges: bool = True,
 ):
     """Get number of companies per industry in a specific country (and specific market cap). [Source: Finance Database]
 
@@ -317,7 +321,7 @@ def get_companies_per_industry_in_country(
 
 @log_start_end(log=logger)
 def get_companies_per_industry_in_sector(
-    sector: str, mktcap: str = "", exclude_exchanges: bool = True
+    sector: str = "Technology", mktcap: str = "Large", exclude_exchanges: bool = True
 ):
     """Get number of companies per industry in a specific sector (and specific market cap). [Source: Finance Database]
 
@@ -359,7 +363,7 @@ def get_companies_per_industry_in_sector(
 
 @log_start_end(log=logger)
 def get_companies_per_country_in_sector(
-    sector: str, mktcap: str = "", exclude_exchanges: bool = True
+    sector: str = "Technology", mktcap: str = "Large", exclude_exchanges: bool = True
 ):
     """Get number of companies per country in a specific sector (and specific market cap). [Source: Finance Database]
 
@@ -401,7 +405,9 @@ def get_companies_per_country_in_sector(
 
 @log_start_end(log=logger)
 def get_companies_per_country_in_industry(
-    industry: str, mktcap: str = "", exclude_exchanges: bool = True
+    industry: str = "Internet Content & Information",
+    mktcap: str = "Large",
+    exclude_exchanges: bool = True,
 ):
     """Get number of companies per country in a specific industry (and specific market cap). [Source: Finance Database]
 

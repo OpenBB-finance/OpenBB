@@ -62,7 +62,7 @@ def format_df(df: pd.DataFrame):
 @log_start_end(log=logger)
 def get_coin_potential_returns(
     main_coin: str,
-    vs: Union[str, None] = None,
+    to_symbol: Union[str, None] = None,
     limit: Union[int, None] = None,
     price: Union[int, None] = None,
 ) -> pd.DataFrame:
@@ -72,7 +72,7 @@ def get_coin_potential_returns(
     ----------
     main_coin   : str
         Coin loaded to check potential returns for (e.g., algorand)
-    vs          : str | None
+    to_symbol          : str | None
         Coin to compare main_coin with (e.g., bitcoin)
     limit         : int | None
         Number of coins with highest market cap to compare main_coin with (e.g., 5)
@@ -133,9 +133,9 @@ def get_coin_potential_returns(
         )
         return format_df(df)
 
-    if vs:  # user passed a coin
+    if to_symbol:  # user passed a coin
         data = client.get_price(
-            ids=f"{main_coin},{vs}",
+            ids=f"{main_coin},{to_symbol}",
             vs_currencies="usd",
             include_market_cap=True,
             include_24hr_vol=False,
@@ -143,7 +143,7 @@ def get_coin_potential_returns(
             include_last_updated_at=False,
         )
         main_coin_data = data[main_coin]
-        vs_coin_data = data[vs]
+        vs_coin_data = data[to_symbol]
 
         if main_coin_data and vs_coin_data:
             market_cap_difference_percentage = calc_change(
@@ -158,7 +158,7 @@ def get_coin_potential_returns(
                         main_coin,
                         main_coin_data["usd"],
                         main_coin_data["usd_market_cap"],
-                        vs,
+                        to_symbol,
                         future_price,
                         vs_coin_data["usd_market_cap"],
                         market_cap_difference_percentage,

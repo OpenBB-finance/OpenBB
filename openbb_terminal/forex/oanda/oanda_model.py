@@ -223,7 +223,7 @@ def positionbook_plot_data_request(
 
 @log_start_end(log=logger)
 def order_history_request(
-    order_state: str, order_count: int, accountID: str = account
+    order_state: str = "PENDING", order_count: int = 0, accountID: str = account
 ) -> Union[pd.DataFrame, bool]:
     """Request the orders list from Oanda.
 
@@ -268,8 +268,8 @@ def order_history_request(
 
 @log_start_end(log=logger)
 def create_order_request(
-    price: int,
-    units: int,
+    price: int = 0,
+    units: int = 0,
     instrument: Union[str, None] = None,
     accountID: str = account,
 ) -> Union[pd.DataFrame, bool]:
@@ -524,7 +524,7 @@ def open_trades_request(accountID: str = account) -> Union[pd.DataFrame, bool]:
 
 @log_start_end(log=logger)
 def close_trades_request(
-    orderID: str, units: Union[int, None], accountID: str = account
+    orderID: str, units: Union[int, None] = 0, accountID: str = account
 ) -> Union[pd.DataFrame, bool]:
     """Close a trade.
 

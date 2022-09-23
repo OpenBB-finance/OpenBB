@@ -13,7 +13,11 @@ logger = logging.getLogger(__name__)
 
 
 def add_and_show_greeks(
-    price: float, implied_volatility: float, strike: float, days: float, sign: int = 1
+    price: float = 100,
+    implied_volatility: float = 20,
+    strike: float = 120,
+    days: float = 30,
+    sign: int = 1,
 ):
     """Determine the delta, gamma and vega value of the portfolio and/or options and show them.
 
@@ -56,7 +60,26 @@ def add_and_show_greeks(
 
 
 def show_calculated_hedge(
-    portfolio_option_amount: float, side: str, greeks: dict, sign: int = 1
+    portfolio_option_amount: float = 100,
+    side: str = "Call",
+    greeks: dict = {
+        "Portfolio": {
+            "Delta": 1,
+            "Gamma": 9.1268e-05,
+            "Vega": 5.4661,
+        },
+        "Option A": {
+            "Delta": 1,
+            "Gamma": 9.1268e-05,
+            "Vega": 5.4661,
+        },
+        "Option B": {
+            "Delta": 1,
+            "Gamma": 9.1268e-05,
+            "Vega": 5.4661,
+        },
+    },
+    sign: int = 1,
 ):
     """Determine the hedge position and the weights within each option and
     underlying asset to hold a neutral portfolio and show them
