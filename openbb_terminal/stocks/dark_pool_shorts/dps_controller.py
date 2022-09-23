@@ -228,7 +228,7 @@ class DarkPoolShortsController(StockBaseController):
         )
         if ns_parser:
             finra_view.darkpool_otc(
-                num=ns_parser.n_num,
+                input_limit=ns_parser.n_num,
                 promising=ns_parser.limit,
                 tier=ns_parser.tier,
                 export=ns_parser.export,
