@@ -1268,11 +1268,11 @@ def compose_export_path(func_name: str, dir_path: str) -> Tuple[str, str]:
     if resolve_path.parts[-2] == "openbb_terminal":
         path_cmd = f"{resolve_path.parts[-1]}"
     else:
-        path_cmd = f"{resolve_path.parts[-2]}_{resolve_path.parts[-1]}"
+        path_cmd = Path(f"{resolve_path.parts[-2]}//{resolve_path.parts[-1]}")
 
-    default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}"
+    default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{func_name}"
 
-    full_path_dir = USER_EXPORTS_DIRECTORY
+    full_path_dir = USER_EXPORTS_DIRECTORY / path_cmd
 
     return str(full_path_dir), default_filename
 
@@ -1295,7 +1295,8 @@ def export_data(
     """
     if export_type:
         export_folder, export_filename = compose_export_path(func_name, dir_path)
-
+        if not os.path.exists(export_folder):
+            os.mkdir(export_folder)
         for exp_type in export_type.split(","):
 
             # In this scenario the path was provided, e.g. --export pt.csv, pt.jpg
