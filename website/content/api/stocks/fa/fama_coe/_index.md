@@ -1,7 +1,5 @@
-# stocks.fa.fama_coe
-
 ## Get underlying data 
-###stocks.fa.fama_coe(symbol: str) -> float
+### stocks.fa.fama_coe(symbol: str) -> float
 
 Use Fama and French to get the cost of equity for a company
 

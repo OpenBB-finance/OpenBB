@@ -1,9 +1,7 @@
-# crypto.ov.cghm
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.ov.cghm(limit: int = 250, category: str = '', sortby='Symbol') -> pandas.core.frame.DataFrame
+### crypto.ov.cghm(limit: int = 250, category: str = '', sortby='Symbol') -> pandas.core.frame.DataFrame
 
 Get N coins from CoinGecko [Source: CoinGecko]
 
@@ -20,7 +18,7 @@ Get N coins from CoinGecko [Source: CoinGecko]
         N coins
 
 ## Getting charts 
-###crypto.ov.cghm(category: str = '', top: int = 15, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
+### crypto.ov.cghm(category: str = '', limit: int = 15, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
 
 Shows cryptocurrencies heatmap [Source: CoinGecko]
 
@@ -28,7 +26,7 @@ Shows cryptocurrencies heatmap [Source: CoinGecko]
     ----------
     caterogy: str
         Category (e.g., stablecoins). Empty for no category (default: )
-    top: int
+    limit: int
         Number of top cryptocurrencies to display
     export: str
         Export dataframe data to csv,json,xlsx

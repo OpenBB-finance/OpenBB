@@ -1,9 +1,7 @@
-# stocks.ba.popular
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.ba.popular(limit: int = 10, post_limit: int = 50, subreddits: str = '') -> pandas.core.frame.DataFrame
+### stocks.ba.popular(limit: int = 10, post_limit: int = 50, subreddits: str = '') -> pandas.core.frame.DataFrame
 
 Get popular tickers from list of subreddits [Source: reddit]
 
@@ -22,7 +20,7 @@ Get popular tickers from list of subreddits [Source: reddit]
         DataFrame of top tickers from supplied subreddits
 
 ## Getting charts 
-###stocks.ba.popular(limit: int = 10, post_limit: int = 50, subreddits: str = '', export: str = '', chart=True)
+### stocks.ba.popular(limit: int = 10, post_limit: int = 50, subreddits: str = '', export: str = '', chart=True)
 
 Print latest popular tickers. [Source: Reddit]
 

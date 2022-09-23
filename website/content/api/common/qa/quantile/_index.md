@@ -1,9 +1,7 @@
-# common.qa.quantile
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###common.qa.quantile(data: pandas.core.frame.DataFrame, window: int = 14, quantile_pct: float = 0.5) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
+### common.qa.quantile(data: pandas.core.frame.DataFrame, window: int = 14, quantile_pct: float = 0.5) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
 
 Overlay Median & Quantile
 
@@ -24,7 +22,7 @@ Overlay Median & Quantile
         Dataframe of gievn quantile prices over window
 
 ## Getting charts 
-###common.qa.quantile(data: pandas.core.frame.DataFrame, target: str, symbol: str = '', window: int = 14, quantile: float = 0.5, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
+### common.qa.quantile(data: pandas.core.frame.DataFrame, target: str, symbol: str = '', window: int = 14, quantile: float = 0.5, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
 
 View rolling quantile
 

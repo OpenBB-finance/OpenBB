@@ -1,9 +1,7 @@
-# crypto.ov.cpglobal
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.ov.cpglobal() -> pandas.core.frame.DataFrame
+### crypto.ov.cpglobal() -> pandas.core.frame.DataFrame
 
 Return data frame with most important global crypto statistics like:
     market_cap_usd, volume_24h_usd, bitcoin_dominance_percentage, cryptocurrencies_number,
@@ -17,7 +15,7 @@ Return data frame with most important global crypto statistics like:
         Metric, Value
 
 ## Getting charts 
-###crypto.ov.cpglobal(export: str = '', chart=True) -> None
+### crypto.ov.cpglobal(export: str = '', chart=True) -> None
 
 Return data frame with most important global crypto statistics like:
     market_cap_usd, volume_24h_usd, bitcoin_dominance_percentage, cryptocurrencies_number,

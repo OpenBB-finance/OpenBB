@@ -1,9 +1,7 @@
-# common.ta.bbands
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###common.ta.bbands(close_values: pandas.core.series.Series, window: int = 15, n_std: float = 2, mamode: str = 'ema') -> pandas.core.frame.DataFrame
+### common.ta.bbands(close_values: pandas.core.series.Series, window: int = 15, n_std: float = 2, mamode: str = 'ema') -> pandas.core.frame.DataFrame
 
 Calculate Bollinger Bands
 
@@ -24,7 +22,7 @@ Calculate Bollinger Bands
         Dataframe of bollinger band data
 
 ## Getting charts 
-###common.ta.bbands(data: pandas.core.frame.DataFrame, symbol: str = '', window: int = 15, n_std: float = 2, mamode: str = 'sma', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### common.ta.bbands(data: pandas.core.frame.DataFrame, symbol: str = '', window: int = 15, n_std: float = 2, mamode: str = 'sma', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Show bollinger bands
 

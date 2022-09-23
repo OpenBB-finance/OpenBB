@@ -1,9 +1,7 @@
-# stocks.ca.sentiment
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.ca.sentiment(symbols: List[str]) -> pandas.core.frame.DataFrame
+### stocks.ca.sentiment(symbols: List[str]) -> pandas.core.frame.DataFrame
 
 Gets Sentiment analysis from several symbols provided by FinBrain's API
 
@@ -20,7 +18,7 @@ Gets Sentiment analysis from several symbols provided by FinBrain's API
         Contains sentiment analysis from several tickers
 
 ## Getting charts 
-###stocks.ca.sentiment(similar: List[str], raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.ca.sentiment(similar: List[str], raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display sentiment for all ticker. [Source: FinBrain]
 

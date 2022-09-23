@@ -284,7 +284,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(
                 ma_type="EMA",
                 symbol="MOCK_TICKER",
-                series=MOCK_STOCK_DF["Adj Close"],
+                data=MOCK_STOCK_DF["Adj Close"],
                 window=[1, 2],
                 offset=2,
                 export="csv",
@@ -302,7 +302,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(
                 ma_type="SMA",
                 symbol="MOCK_TICKER",
-                series=MOCK_STOCK_DF["Adj Close"],
+                data=MOCK_STOCK_DF["Adj Close"],
                 window=[1, 2],
                 offset=2,
                 export="csv",
@@ -320,7 +320,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(
                 ma_type="WMA",
                 symbol="MOCK_TICKER",
-                series=MOCK_STOCK_DF["Adj Close"],
+                data=MOCK_STOCK_DF["Adj Close"],
                 window=[1, 2],
                 offset=2,
                 export="csv",
@@ -338,7 +338,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(
                 ma_type="HMA",
                 symbol="MOCK_TICKER",
-                series=MOCK_STOCK_DF["Adj Close"],
+                data=MOCK_STOCK_DF["Adj Close"],
                 window=[1, 2],
                 offset=2,
                 export="csv",
@@ -356,7 +356,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(
                 ma_type="ZLMA",
                 symbol="MOCK_TICKER",
-                series=MOCK_STOCK_DF["Adj Close"],
+                data=MOCK_STOCK_DF["Adj Close"],
                 window=[1, 2],
                 offset=2,
                 export="csv",
@@ -391,7 +391,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 symbol="MOCK_TICKER",
-                series=MOCK_STOCK_DF["Adj Close"],
+                data=MOCK_STOCK_DF["Adj Close"],
                 n_fast=1,
                 n_slow=2,
                 n_signal=3,
@@ -410,7 +410,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 symbol="MOCK_TICKER",
-                series=MOCK_STOCK_DF["Adj Close"],
+                data=MOCK_STOCK_DF["Adj Close"],
                 window=1,
                 scalar=2,
                 drift=3,
@@ -461,7 +461,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(
                 symbol="MOCK_TICKER",
-                series=MOCK_STOCK_DF["Adj Close"],
+                data=MOCK_STOCK_DF["Adj Close"],
                 window=1,
                 export="csv",
             ),
@@ -619,7 +619,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(
                 symbol="MOCK_TICKER",
                 data=MOCK_STOCK_DF,
-                period=1,
+                limit=1,
                 start_date=datetime.strptime("2021-12-01", "%Y-%m-%d"),
                 end_date=datetime.strptime("2021-12-02", "%Y-%m-%d"),
                 export="csv",

@@ -1,7 +1,5 @@
-# stocks.disc.gainers
-
 ## Get underlying data 
-###stocks.disc.gainers() -> pandas.core.frame.DataFrame
+### stocks.disc.gainers() -> pandas.core.frame.DataFrame
 
 Get top gainers. [Source: Yahoo Finance]
 

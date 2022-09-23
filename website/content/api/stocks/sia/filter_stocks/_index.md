@@ -1,7 +1,5 @@
-# stocks.sia.filter_stocks
-
 ## Get underlying data 
-###stocks.sia.filter_stocks(country: str = None, sector: str = None, industry: str = None, marketcap: str = '', exclude_exchanges: bool = True)
+### stocks.sia.filter_stocks(country: str = None, sector: str = None, industry: str = None, marketcap: str = '', exclude_exchanges: bool = True)
 
 Filter stocks based on country, sector, industry, market cap and exclude exchanges. [Source: Finance Database]
 
