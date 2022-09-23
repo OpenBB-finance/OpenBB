@@ -391,43 +391,43 @@ To add a new command, there are two main actions that need to be done:
 
 2. The `_index.md` file should have the output of the `command -h` followed by a screenshot example of what the user can expect. Note that you can now drag and drop the images while editing the readme file on the remote web version of your PR branch. Github will create a link for it with format (<https://user-images.githubusercontent.com/***/***.file_format>).
 
-Example:
+    Example:
 
----
+    ---
 
-```shell
-usage: ipo [--past PAST_DAYS] [--future FUTURE_DAYS]
-```
+    ```shell
+    usage: ipo [--past PAST_DAYS] [--future FUTURE_DAYS]
+    ```
 
-Past and future IPOs. [Source: <https://finnhub.io>]
+    Past and future IPOs. [Source: <https://finnhub.io>]
 
-- --past : Number of past days to look for IPOs. Default 0.
-- --future : Number of future days to look for IPOs. Default 10.
+    - --past : Number of past days to look for IPOs. Default 0.
+    - --future : Number of future days to look for IPOs. Default 10.
 
-<IMAGE HERE - Use drag and drop hint mentioned above>
+    <IMAGE HERE - Use drag and drop hint mentioned above>
 
----
+    ---
 
 3. Update the Navigation bar to match the content you've added. This is done by adding 2 lines of code to `website/data/menu/`, i.e. a `name` and a `ref`. Example:
 
-```python
----
-main:
-  - name: stocks
-    ref: "/stocks"
-    sub:
-      - name: load
-        ref: "/stocks/load"
-      - name: candle
-        ref: "/stocks/candle"
-      - name: discovery
-        ref: "/stocks/discovery"
+    ```python
+    ---
+    main:
+      - name: stocks
+        ref: "/stocks"
         sub:
-          - name: ipo
-            ref: "/stocks/discovery/ipo"
-          - name: map
-            ref: "/stocks/discovery/map"
-```
+          - name: load
+            ref: "/stocks/load"
+          - name: candle
+            ref: "/stocks/candle"
+          - name: discovery
+            ref: "/stocks/discovery"
+            sub:
+              - name: ipo
+                ref: "/stocks/discovery/ipo"
+              - name: map
+                ref: "/stocks/discovery/map"
+    ```
 
 ### Open a Pull Request
 
