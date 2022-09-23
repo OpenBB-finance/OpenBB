@@ -1,7 +1,7 @@
 # pylint: disable=too-many-arguments
 import os
 import argparse
-from typing import Any, Union, Optional
+from typing import Any, Union, Optional, List, Dict
 from datetime import timedelta, datetime, time
 import logging
 import pandas as pd
@@ -68,10 +68,10 @@ def plot_data_predictions(
     forecast_data,
     n_loops,
     time_str: str = "",
-    external_axes: Optional[list[plt.Axes]] = None,
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots data predictions for the different ML techniques
-    external_axes : Optional[list[plt.Axes]], optional
+    external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
 
@@ -442,7 +442,7 @@ def early_stopper(patience: int, monitor: str = "val_loss"):
 
 def get_pl_kwargs(
     patience: int = 20, monitor: str = "val_loss", accelerator: str = "cpu"
-) -> dict[str, Any]:
+) -> Dict[str, Any]:
     my_stopper = early_stopper(patience, monitor)
     pl_trainer_kwargs = {
         "callbacks": [my_stopper],

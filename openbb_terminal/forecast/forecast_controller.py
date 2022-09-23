@@ -7,7 +7,7 @@ import argparse
 import logging
 from itertools import chain
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, Optional, List, Dict
 
 try:
     import torch
@@ -73,7 +73,7 @@ def check_greater_than_one(value) -> int:
 class ForecastController(BaseController):
     """Forecast class"""
 
-    CHOICES_COMMANDS: list[str] = [
+    CHOICES_COMMANDS: List[str] = [
         "load",
         "show",
         "plot",
@@ -130,14 +130,14 @@ class ForecastController(BaseController):
     list_dataset_cols: list = list()
 
     def __init__(
-        self, ticker: str = "", data: pd.DataFrame = empty_df, queue: list[str] = None
+        self, ticker: str = "", data: pd.DataFrame = empty_df, queue: List[str] = None
     ):
         """Constructor"""
         super().__init__(queue)
-        self.files: list[str] = []
+        self.files: List[str] = []
         # The full file name with extension, this allows the rest command to work
-        self.files_full: list[list[str]] = []
-        self.datasets: dict[str, pd.DataFrame] = dict()
+        self.files_full: List[List[str]] = []
+        self.datasets: Dict[str, pd.DataFrame] = dict()
 
         if ticker and not data.empty:
             # data["date"] = data.index
@@ -156,9 +156,9 @@ class ForecastController(BaseController):
             for col in data.columns:
                 self.list_dataset_cols.append(f"{ticker}.{col}")
 
-        self.DATA_TYPES: list[str] = ["int", "float", "str", "bool", "category", "date"]
+        self.DATA_TYPES: List[str] = ["int", "float", "str", "bool", "category", "date"]
 
-        self.signs: dict[Any, Any] = {
+        self.signs: Dict[Any, Any] = {
             "div": "/",
             "mul": "*",
             "add": "+",
@@ -340,7 +340,7 @@ class ForecastController(BaseController):
     def parse_known_args_and_warn(
         self,
         parser: argparse.ArgumentParser,
-        other_args: list[str],
+        other_args: List[str],
         export_allowed: int = NO_EXPORT,
         raw: bool = False,
         limit: int = 0,
@@ -668,7 +668,7 @@ class ForecastController(BaseController):
                     self.list_dataset_cols.append(f"{dataset}.{col}")
 
     @log_start_end(log=logger)
-    def call_load(self, other_args: list[str]):
+    def call_load(self, other_args: List[str]):
         """Process load"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -719,7 +719,7 @@ class ForecastController(BaseController):
 
     # Show selected dataframe on console
     @log_start_end(log=logger)
-    def call_which(self, other_args: list[str]):
+    def call_which(self, other_args: List[str]):
         """Process which command"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -747,7 +747,7 @@ class ForecastController(BaseController):
 
     # Show selected dataframe on console
     @log_start_end(log=logger)
-    def call_show(self, other_args: list[str]):
+    def call_show(self, other_args: List[str]):
         """Process show command"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -813,7 +813,7 @@ class ForecastController(BaseController):
                 forecast_view.show_df(df, ns_parser.limit, name, ns_parser.export)
 
     @log_start_end(log=logger)
-    def call_rename(self, other_args: list[str]):
+    def call_rename(self, other_args: List[str]):
         """Process rename"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -869,7 +869,7 @@ class ForecastController(BaseController):
 
     # Show selected dataframe on console
     @log_start_end(log=logger)
-    def call_desc(self, other_args: list[str]):
+    def call_desc(self, other_args: List[str]):
         """Process descriptive stats command"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -899,7 +899,7 @@ class ForecastController(BaseController):
             forecast_view.describe_df(df, ns_parser.target_dataset, ns_parser.export)
 
     @log_start_end(log=logger)
-    def call_plot(self, other_args: list[str]):
+    def call_plot(self, other_args: List[str]):
         """Process plot command"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -941,7 +941,7 @@ class ForecastController(BaseController):
         )
 
     @log_start_end(log=logger)
-    def call_season(self, other_args: list[str]):
+    def call_season(self, other_args: List[str]):
         """Process season command"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -1008,7 +1008,7 @@ class ForecastController(BaseController):
         )
 
     @log_start_end(log=logger)
-    def call_corr(self, other_args: list[str]):
+    def call_corr(self, other_args: List[str]):
         """Process correlation command"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -1042,7 +1042,7 @@ class ForecastController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_combine(self, other_args: list[str]):
+    def call_combine(self, other_args: List[str]):
         """Process combine"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -1105,7 +1105,7 @@ class ForecastController(BaseController):
         console.print()
 
     @log_start_end(log=logger)
-    def call_clean(self, other_args: list[str]):
+    def call_clean(self, other_args: List[str]):
         """Process clean"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -1167,7 +1167,7 @@ class ForecastController(BaseController):
         console.print()
 
     @log_start_end(log=logger)
-    def call_ema(self, other_args: list[str]):
+    def call_ema(self, other_args: List[str]):
         """Process EMA"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -1209,7 +1209,7 @@ class ForecastController(BaseController):
         console.print()
 
     @log_start_end(log=logger)
-    def call_sto(self, other_args: list[str]):
+    def call_sto(self, other_args: List[str]):
         """Process Stoch Oscill"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -1245,7 +1245,7 @@ class ForecastController(BaseController):
         console.print()
 
     @log_start_end(log=logger)
-    def call_delete(self, other_args: list[str]):
+    def call_delete(self, other_args: List[str]):
         """Process delete"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -1280,7 +1280,7 @@ class ForecastController(BaseController):
         console.print()
 
     @log_start_end(log=logger)
-    def call_rsi(self, other_args: list[str]):
+    def call_rsi(self, other_args: List[str]):
         """Process RSI"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -1322,7 +1322,7 @@ class ForecastController(BaseController):
         console.print()
 
     @log_start_end(log=logger)
-    def call_roc(self, other_args: list[str]):
+    def call_roc(self, other_args: List[str]):
         """Process ROC"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -1363,7 +1363,7 @@ class ForecastController(BaseController):
         console.print()
 
     @log_start_end(log=logger)
-    def call_mom(self, other_args: list[str]):
+    def call_mom(self, other_args: List[str]):
         """Process Momentum"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -1404,7 +1404,7 @@ class ForecastController(BaseController):
         console.print()
 
     @log_start_end(log=logger)
-    def call_delta(self, other_args: list[str]):
+    def call_delta(self, other_args: List[str]):
         """Process %Change (Delta)"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -1443,7 +1443,7 @@ class ForecastController(BaseController):
         console.print()
 
     @log_start_end(log=logger)
-    def call_atr(self, other_args: list[str]):
+    def call_atr(self, other_args: List[str]):
         """Process Average True Range"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -1488,7 +1488,7 @@ class ForecastController(BaseController):
         console.print()
 
     @log_start_end(log=logger)
-    def call_signal(self, other_args: list[str]):
+    def call_signal(self, other_args: List[str]):
         """Process Price Signal"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -1529,7 +1529,7 @@ class ForecastController(BaseController):
         console.print()
 
     @log_start_end(log=logger)
-    def call_export(self, other_args: list[str]):
+    def call_export(self, other_args: List[str]):
         """Process export command"""
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -1569,7 +1569,7 @@ class ForecastController(BaseController):
 
     # EXPO Model
     @log_start_end(log=logger)
-    def call_expo(self, other_args: list[str]):
+    def call_expo(self, other_args: List[str]):
         """Process expo command"""
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -1641,7 +1641,7 @@ class ForecastController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_theta(self, other_args: list[str]):
+    def call_theta(self, other_args: List[str]):
         """Process theta command"""
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -1694,7 +1694,7 @@ class ForecastController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_rnn(self, other_args: list[str]):
+    def call_rnn(self, other_args: List[str]):
         """Process RNN command"""
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -1783,7 +1783,7 @@ class ForecastController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_nbeats(self, other_args: list[str]):
+    def call_nbeats(self, other_args: List[str]):
         """Process NBEATS command"""
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -1895,7 +1895,7 @@ class ForecastController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_tcn(self, other_args: list[str]):
+    def call_tcn(self, other_args: List[str]):
         """Process TCN command"""
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -1999,7 +1999,7 @@ class ForecastController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_regr(self, other_args: list[str]):
+    def call_regr(self, other_args: List[str]):
         """Process REGR command"""
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -2061,7 +2061,7 @@ class ForecastController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_linregr(self, other_args: list[str]):
+    def call_linregr(self, other_args: List[str]):
         """Process LINREGR command"""
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -2121,7 +2121,7 @@ class ForecastController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_brnn(self, other_args: list[str]):
+    def call_brnn(self, other_args: List[str]):
         """Process BRNN command"""
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -2209,7 +2209,7 @@ class ForecastController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_trans(self, other_args: list[str]):
+    def call_trans(self, other_args: List[str]):
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             add_help=False,
@@ -2335,7 +2335,7 @@ class ForecastController(BaseController):
     # Below this is ports to the old pred menu
 
     @log_start_end(log=logger)
-    def call_tft(self, other_args: list[str]):
+    def call_tft(self, other_args: List[str]):
         """Process TFT command"""
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,

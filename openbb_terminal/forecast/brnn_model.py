@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 
 import logging
 import warnings
-from typing import Any, Union, Optional
+from typing import Any, Union, Optional, List, Tuple
 
 
 import pandas as pd
@@ -38,7 +38,7 @@ def get_brnn_data(
     model_save_name: str = "brnn_model",
     force_reset: bool = True,
     save_checkpoints: bool = True,
-) -> tuple[list[TimeSeries], list[TimeSeries], list[TimeSeries], Optional[float], Any]:
+) -> Tuple[list[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], Any]:
     """Performs Block RNN forecasting
 
     Args:
