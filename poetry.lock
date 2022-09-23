@@ -77,17 +77,6 @@ optional = true
 python-versions = "*"
 
 [[package]]
-name = "ansiwrap"
-version = "0.8.4"
-description = "textwrap, but savvy to ANSI colors and styles"
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-textwrap3 = ">=0.9.2"
-
-[[package]]
 name = "anyio"
 version = "3.6.1"
 description = "High level compatibility layer for multiple asynchronous event loop implementations"
@@ -2359,36 +2348,6 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
-name = "papermill"
-version = "2.4.0"
-description = "Parametrize and run Jupyter and nteract Notebooks"
-category = "main"
-optional = false
-python-versions = ">=3.7"
-
-[package.dependencies]
-ansiwrap = "*"
-click = "*"
-entrypoints = "*"
-nbclient = ">=0.2.0"
-nbformat = ">=5.1.2"
-pyyaml = "*"
-requests = "*"
-tenacity = "*"
-tqdm = ">=4.32.2"
-
-[package.extras]
-test = ["black (>=19.3b0)", "pyarrow (>=2.0)", "gcsfs (>=0.2.0)", "azure-storage-blob (>=12.1.0)", "azure-datalake-store (>=0.0.30)", "twine (>=1.11.0)", "setuptools (>=38.6.0)", "wheel (>=0.31.0)", "pip (>=18.1)", "recommonmark", "bumpversion", "tox", "flake8", "pre-commit", "attrs (>=17.4.0)", "check-manifest", "requests (>=2.21.0)", "pytest-env (>=0.6.2)", "pytest-mock (>=1.10)", "pytest-cov (>=2.6.1)", "pytest (>=4.1)", "moto", "notebook", "ipywidgets", "ipython (>=5.0)", "google-compute-engine", "coverage", "codecov", "botocore", "boto3"]
-s3 = ["boto3"]
-hdfs = ["pyarrow (>=2.0)"]
-github = ["PyGithub (>=1.55)"]
-gcs = ["gcsfs (>=0.2.0)"]
-dev = ["black (>=19.3b0)", "pyarrow (>=2.0)", "gcsfs (>=0.2.0)", "azure-storage-blob (>=12.1.0)", "azure-datalake-store (>=0.0.30)", "twine (>=1.11.0)", "setuptools (>=38.6.0)", "wheel (>=0.31.0)", "pip (>=18.1)", "recommonmark", "bumpversion", "tox", "flake8", "pre-commit", "attrs (>=17.4.0)", "check-manifest", "requests (>=2.21.0)", "pytest-env (>=0.6.2)", "pytest-mock (>=1.10)", "pytest-cov (>=2.6.1)", "pytest (>=4.1)", "moto", "notebook", "ipywidgets", "ipython (>=5.0)", "google-compute-engine", "coverage", "codecov", "botocore", "boto3"]
-black = ["black (>=19.3b0)"]
-azure = ["requests (>=2.21.0)", "azure-storage-blob (>=12.1.0)", "azure-datalake-store (>=0.0.30)"]
-all = ["black (>=19.3b0)", "pyarrow (>=2.0)", "gcsfs (>=0.2.0)", "requests (>=2.21.0)", "azure-storage-blob (>=12.1.0)", "azure-datalake-store (>=0.0.30)", "boto3"]
-
-[[package]]
 name = "parso"
 version = "0.8.3"
 description = "A Python Parser"
@@ -4017,14 +3976,6 @@ tornado = ">=6.1.0"
 test = ["pre-commit", "pytest-timeout", "pytest (>=6.0)"]
 
 [[package]]
-name = "textwrap3"
-version = "0.9.2"
-description = "textwrap from Python 3.6 backport (plus a few tweaks)"
-category = "main"
-optional = false
-python-versions = "*"
-
-[[package]]
 name = "thepassiveinvestor"
 version = "1.0.10"
 description = "Passive Investing for the Average Joe."
@@ -4569,7 +4520,7 @@ prediction-m1-mac = ["tensorflow-macos", "tensorflow-metal"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11"
-content-hash = "4aa7389e9724be5c992f3d55bccbda1378c9000823f6b9715f8204ce5726df67"
+content-hash = "125be6195590f2acc28db0b897ebf442a224fd9b7e1798dc062fb01b71dd5838"
 
 [metadata.files]
 absl-py = []
@@ -4678,10 +4629,6 @@ alpha-vantage = [
 altgraph = [
     {file = "altgraph-0.17.2-py2.py3-none-any.whl", hash = "sha256:743628f2ac6a7c26f5d9223c91ed8ecbba535f506f4b6f558885a8a56a105857"},
     {file = "altgraph-0.17.2.tar.gz", hash = "sha256:ebf2269361b47d97b3b88e696439f6e4cbc607c17c51feb1754f90fb79839158"},
-]
-ansiwrap = [
-    {file = "ansiwrap-0.8.4-py2.py3-none-any.whl", hash = "sha256:7b053567c88e1ad9eed030d3ac41b722125e4c1271c8a99ade797faff1f49fb1"},
-    {file = "ansiwrap-0.8.4.zip", hash = "sha256:ca0c740734cde59bf919f8ff2c386f74f9a369818cdc60efe94893d01ea8d9b7"},
 ]
 anyio = [
     {file = "anyio-3.6.1-py3-none-any.whl", hash = "sha256:cb29b9c70620506a9a8f87a309591713446953302d7d995344d0d7c6c0c9a7be"},
@@ -5721,7 +5668,6 @@ pandocfilters = [
     {file = "pandocfilters-1.5.0-py2.py3-none-any.whl", hash = "sha256:33aae3f25fd1a026079f5d27bdd52496f0e0803b3469282162bafdcbdf6ef14f"},
     {file = "pandocfilters-1.5.0.tar.gz", hash = "sha256:0b679503337d233b4339a817bfc8c50064e2eff681314376a47cb582305a7a38"},
 ]
-papermill = []
 parso = [
     {file = "parso-0.8.3-py2.py3-none-any.whl", hash = "sha256:c001d4636cd3aecdaf33cbb40aebb59b094be2a74c556778ef5576c175e19e75"},
     {file = "parso-0.8.3.tar.gz", hash = "sha256:8c07be290bb59f03588915921e29e8a50002acaf2cdc5fa0e0114f91709fafa0"},
@@ -6531,10 +6477,6 @@ termcolor = []
 terminado = [
     {file = "terminado-0.15.0-py3-none-any.whl", hash = "sha256:0d5f126fbfdb5887b25ae7d9d07b0d716b1cc0ccaacc71c1f3c14d228e065197"},
     {file = "terminado-0.15.0.tar.gz", hash = "sha256:ab4eeedccfcc1e6134bfee86106af90852c69d602884ea3a1e8ca6d4486e9bfe"},
-]
-textwrap3 = [
-    {file = "textwrap3-0.9.2-py2.py3-none-any.whl", hash = "sha256:bf5f4c40faf2a9ff00a9e0791fed5da7415481054cef45bb4a3cfb1f69044ae0"},
-    {file = "textwrap3-0.9.2.zip", hash = "sha256:5008eeebdb236f6303dcd68f18b856d355f6197511d952ba74bc75e40e0c3414"},
 ]
 thepassiveinvestor = [
     {file = "thepassiveinvestor-1.0.10-py3-none-any.whl", hash = "sha256:41fd07e5db0fde3587955d5ca86c52079c10c8f6e6572e3c213bded46f6969cf"},

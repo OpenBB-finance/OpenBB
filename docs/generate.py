@@ -76,7 +76,7 @@ def generate_documentation(
                 "To obtain charts, make sure to add `chart=True` as the last parameter\n\n"
             )
         if model:
-            f.write(f"## Get underlying data \n###{key}{signature(model[2])}\n\n")
+            f.write(f"## Get underlying data \n### {key}{signature(model[2])}\n\n")
             m_docs = str(model[2].__doc__)[:-5]
             f.write(f"{m_docs}\n")
         if view:
@@ -87,7 +87,7 @@ def generate_documentation(
             # TODO: This breaks if there is a ')' inside the function arguments
             idx = temp.find(")")
             new_signature = temp[:idx] + ", chart=True" + temp[idx:]
-            f.write(f"## Getting charts \n###{key}{new_signature}\n\n")
+            f.write(f"## Getting charts \n### {key}{new_signature}\n\n")
             f.write(f"{v_docs}\n")
 
 
