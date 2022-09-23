@@ -1249,10 +1249,11 @@ The convention is as follows:
 ```
 
 The way to interpret this file is by following the path to a data source, e.g.
+
 - `stocks/search` relies on `FinanceDatabase`
 - `stocks/candle` does not rely on any data source. This means that it relies on data that has been loaded before.
 - `stocks/load` relies on `YahooFinance, `IEXCloud`, `AlphaVantage`, `Polygon` or `EODHD`.
-  - **The order is important as the first data source is the one utilized by default.** 
+  - **The order is important as the first data source is the one utilized by default.**
 - `stoks/options/unu` relies on `FDScanner`.
 - `stocks/options/exp` relies on `YahooFinance` by default but `Tradier` and `Nasdaq` sources are allowed.
 
@@ -1270,6 +1271,7 @@ In the `_view.py` files it is common having at the end of each function `export_
 ```
 
 Let's go into each of these arguments:
+
 - `export` corresponds to the type of file we are exporting.
   - If the user doesn't has anything selected, then this function doesn't do anything.
   - The user can export multiple files and even name the files.
@@ -1281,6 +1283,7 @@ Let's go into each of these arguments:
 - `df_contracts` corresponds to the dataframe with data. Although we don't call this function with the figure reference, because it is open, we can use `plt.savefig` to achieve that.
 
 If `export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES` in `parse_known_args_and_warn`, valid examples are:
+
 - `cmd --export csv`
 - `cmd --export csv,png,jpg`
 - `cmd --export mydata.csv`
@@ -1304,8 +1307,8 @@ Example:
 
 If a user is in the root of the terminal and runs:
 
-```python
-$ stocks/load AAPL/dps/psi -l 90
+```shell
+stocks/load AAPL/dps/psi -l 90
 ```
 
 The queue created becomes:
