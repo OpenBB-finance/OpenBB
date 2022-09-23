@@ -1,7 +1,5 @@
-# econometrics.get_regression_data
-
 ## Get underlying data 
-###econometrics.get_regression_data(regression_variables: List[tuple], data: Dict[str, pandas.core.frame.DataFrame], regression_type: str = '') -> Tuple[pandas.core.frame.DataFrame, Any, List[Any]]
+### econometrics.get_regression_data(regression_variables: List[tuple], data: Dict[str, pandas.core.frame.DataFrame], regression_type: str = '') -> Tuple[pandas.core.frame.DataFrame, Any, List[Any]]
 
 This function creates a DataFrame with the required regression data as
     well sets up the dependent and independent variables.

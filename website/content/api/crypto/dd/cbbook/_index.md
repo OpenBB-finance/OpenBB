@@ -1,9 +1,7 @@
-# crypto.dd.cbbook
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.dd.cbbook(symbol: str) -> Tuple[numpy.ndarray, numpy.ndarray, str, dict]
+### crypto.dd.cbbook(symbol: str) -> Tuple[numpy.ndarray, numpy.ndarray, str, dict]
 
 Get orders book for chosen trading pair. [Source: Coinbase]
 
@@ -21,7 +19,7 @@ Get orders book for chosen trading pair. [Source: Coinbase]
         dict with raw data
 
 ## Getting charts 
-###crypto.dd.cbbook(symbol: str, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
+### crypto.dd.cbbook(symbol: str, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
 
 Displays a list of available currency pairs for trading. [Source: Coinbase]
 

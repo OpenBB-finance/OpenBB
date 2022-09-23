@@ -1,9 +1,7 @@
-# economy.cpi
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###economy.cpi(interval: str = 'm', start_year: int = 2010) -> pandas.core.frame.DataFrame
+### economy.cpi(interval: str = 'm', start_year: int = 2010) -> pandas.core.frame.DataFrame
 
 Get Consumer Price Index from Alpha Vantage
 
@@ -20,7 +18,7 @@ Get Consumer Price Index from Alpha Vantage
         Dataframe of CPI
 
 ## Getting charts 
-###economy.cpi(interval: str = 'm', start_year: int = 2010, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### economy.cpi(interval: str = 'm', start_year: int = 2010, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display US consumer price index (CPI) from AlphaVantage
 

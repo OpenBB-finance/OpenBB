@@ -1,7 +1,5 @@
-# stocks.sia.stocks_data
-
 ## Get underlying data 
-###stocks.sia.stocks_data(symbols: List[str] = None, finance_key: str = 'ncf', stocks_data: dict = None, period: str = 'annual', currency: str = 'USD')
+### stocks.sia.stocks_data(symbols: List[str] = None, finance_key: str = 'ncf', stocks_data: dict = None, period: str = 'annual', symbol: str = 'USD')
 
 Get stocks data based on a list of stocks and the finance key. The function searches for the
     correct financial statement automatically. [Source: StockAnalysis]
@@ -18,7 +16,7 @@ Get stocks data based on a list of stocks and the finance key. The function sear
         for the first time.
     period : str
         Whether you want annually, quarterly or trailing financial statements.
-    currency : str
+    symbol : str
         Choose in what currency you wish to convert each company's financial statement.
         Default is USD (US Dollars).
 

@@ -1,9 +1,7 @@
-# common.ta.kc
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###common.ta.kc(high_prices: pandas.core.series.Series, low_prices: pandas.core.series.Series, close_prices: pandas.core.series.Series, window: int = 20, scalar: float = 2, mamode: str = 'ema', offset: int = 0) -> pandas.core.frame.DataFrame
+### common.ta.kc(high_prices: pandas.core.series.Series, low_prices: pandas.core.series.Series, close_prices: pandas.core.series.Series, window: int = 20, scalar: float = 2, mamode: str = 'ema', offset: int = 0) -> pandas.core.frame.DataFrame
 
 Keltner Channels
 
@@ -30,7 +28,7 @@ Keltner Channels
         Dataframe of rolling kc
 
 ## Getting charts 
-###common.ta.kc(data: pandas.core.frame.DataFrame, window: int = 20, scalar: float = 2, mamode: str = 'ema', offset: int = 0, symbol: str = '', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### common.ta.kc(data: pandas.core.frame.DataFrame, window: int = 20, scalar: float = 2, mamode: str = 'ema', offset: int = 0, symbol: str = '', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 View Keltner Channels Indicator
 

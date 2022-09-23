@@ -1,9 +1,7 @@
-# stocks.options.vsurf
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.options.vsurf(symbol: str) -> pandas.core.frame.DataFrame
+### stocks.options.vsurf(symbol: str) -> pandas.core.frame.DataFrame
 
 Gets IV surface for calls and puts for ticker
 
@@ -18,7 +16,7 @@ Gets IV surface for calls and puts for ticker
         Dataframe of DTE, Strike and IV
 
 ## Getting charts 
-###stocks.options.vsurf(symbol: str, export: str = '', z: str = 'IV', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.options.vsurf(symbol: str, export: str = '', z: str = 'IV', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display vol surface
 
