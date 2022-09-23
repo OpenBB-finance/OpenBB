@@ -599,9 +599,7 @@ class Coin:
             "price_change_percentage_1y",
             "market_cap_change_24h",
         ]
-        single_stats = {}
-        for col in market_single_columns:
-            single_stats[col] = market_data.get(col)
+        single_stats = {col: market_data.get(col) for col in market_single_columns}
         single_stats.update(denominated_data)
 
         if (
@@ -644,10 +642,7 @@ class Coin:
             "ath_change_percentage",
         ]
 
-        results = {}
-        for column in ath_columns:
-            results[column] = market_data[column].get(currency)
-
+        results = {column: market_data[column].get(currency) for column in ath_columns}
         df = pd.Series(results).to_frame().reset_index()
         df.columns = ["Metric", "Value"]
         df["Metric"] = df["Metric"].apply(
@@ -680,10 +675,7 @@ class Coin:
             "atl_date",
             "atl_change_percentage",
         ]
-        results = {}
-        for column in ath_columns:
-            results[column] = market_data[column].get(currency)
-
+        results = {column: market_data[column].get(currency) for column in ath_columns}
         df = pd.Series(results).to_frame().reset_index()
         df.columns = ["Metric", "Value"]
         df["Metric"] = df["Metric"].apply(
