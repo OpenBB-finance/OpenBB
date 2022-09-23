@@ -19,7 +19,7 @@ pycares = ">=4.0.0"
 
 [[package]]
 name = "aiohttp"
-version = "3.8.1"
+version = "3.8.3"
 description = "Async http client/server framework (asyncio)"
 category = "main"
 optional = false
@@ -437,7 +437,7 @@ python-versions = "~=3.7"
 
 [[package]]
 name = "ccxt"
-version = "1.93.66"
+version = "1.93.88"
 description = "A JavaScript / Python / PHP cryptocurrency trading library with support for 130+ exchanges"
 category = "main"
 optional = false
@@ -822,7 +822,7 @@ python-versions = "*"
 
 [[package]]
 name = "fastjsonschema"
-version = "2.16.1"
+version = "2.16.2"
 description = "Fastest Python implementation of JSON schema"
 category = "main"
 optional = false
@@ -952,7 +952,7 @@ python-versions = "*"
 
 [[package]]
 name = "fonttools"
-version = "4.37.2"
+version = "4.37.3"
 description = "Tools to manipulate font files"
 category = "main"
 optional = false
@@ -1078,7 +1078,7 @@ gitdb = ">=4.0.1,<5"
 
 [[package]]
 name = "google-auth"
-version = "2.11.0"
+version = "2.11.1"
 description = "Google Authentication Library"
 category = "main"
 optional = true
@@ -1124,7 +1124,7 @@ six = "*"
 
 [[package]]
 name = "grpcio"
-version = "1.49.0"
+version = "1.49.1"
 description = "HTTP/2-based RPC framework"
 category = "main"
 optional = false
@@ -1134,7 +1134,7 @@ python-versions = ">=3.7"
 six = ">=1.5.2"
 
 [package.extras]
-protobuf = ["grpcio-tools (>=1.49.0)"]
+protobuf = ["grpcio-tools (>=1.49.1)"]
 
 [[package]]
 name = "h11"
@@ -2087,7 +2087,7 @@ webpdf = ["pyppeteer (>=1,<1.1)"]
 
 [[package]]
 name = "nbformat"
-version = "5.5.0"
+version = "5.6.0"
 description = "The Jupyter Notebook format"
 category = "main"
 optional = false
@@ -2096,11 +2096,11 @@ python-versions = ">=3.7"
 [package.dependencies]
 fastjsonschema = "*"
 jsonschema = ">=2.6"
-jupyter_core = "*"
+jupyter-core = "*"
 traitlets = ">=5.1"
 
 [package.extras]
-test = ["check-manifest", "testpath", "pytest", "pre-commit", "pep440"]
+test = ["check-manifest", "pep440", "pre-commit", "pytest", "testpath"]
 
 [[package]]
 name = "nest-asyncio"
@@ -2280,7 +2280,7 @@ pyparsing = ">=2.0.2,<3.0.5 || >3.0.5"
 
 [[package]]
 name = "pandas"
-version = "1.4.4"
+version = "1.5.0"
 description = "Powerful data structures for data analysis, time series, and statistics"
 category = "main"
 optional = false
@@ -2288,16 +2288,14 @@ python-versions = ">=3.8"
 
 [package.dependencies]
 numpy = [
-    {version = ">=1.18.5", markers = "platform_machine != \"aarch64\" and platform_machine != \"arm64\" and python_version < \"3.10\""},
-    {version = ">=1.19.2", markers = "platform_machine == \"aarch64\" and python_version < \"3.10\""},
-    {version = ">=1.20.0", markers = "platform_machine == \"arm64\" and python_version < \"3.10\""},
     {version = ">=1.21.0", markers = "python_version >= \"3.10\""},
+    {version = ">=1.20.3", markers = "python_version < \"3.10\""},
 ]
 python-dateutil = ">=2.8.1"
 pytz = ">=2020.1"
 
 [package.extras]
-test = ["hypothesis (>=5.5.3)", "pytest (>=6.0)", "pytest-xdist (>=1.31)"]
+test = ["pytest-xdist (>=1.31)", "pytest (>=6.0)", "hypothesis (>=5.5.3)"]
 
 [[package]]
 name = "pandas-datareader"
@@ -3191,7 +3189,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "pyzmq"
-version = "24.0.0"
+version = "24.0.1"
 description = "Python bindings for 0MQ"
 category = "main"
 optional = false
@@ -3786,7 +3784,7 @@ dev = ["tzlocal (>=2.0.0)", "frozendict (>=1.2)", "sphinx-markdown-builder (>=0.
 
 [[package]]
 name = "tenacity"
-version = "8.0.1"
+version = "8.1.0"
 description = "Retry code until it succeeds"
 category = "main"
 optional = false
@@ -4140,7 +4138,7 @@ python-versions = "*"
 
 [[package]]
 name = "types-requests"
-version = "2.28.10"
+version = "2.28.11"
 description = "Typing stubs for requests"
 category = "dev"
 optional = false
