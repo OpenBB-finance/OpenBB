@@ -1350,6 +1350,7 @@ if session and obbff.USE_PROMPT_TOOLKIT:
 ```
 
 Important things to note:
+
 - `self.choices: dict = {c: {} for c in self.controller_choices}`: this allows users to have autocomplete on the command that they are allowed to select in each menu
 - `self.choices["overview"]`: this corresponds to the list of choices that the user is allowed to select after specifying `$ overview`
 - `"--commodity": {c: None for c in self.futures_commodities}`: this allows the user to select several commodity values after `--commodity` flag
