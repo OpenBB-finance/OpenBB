@@ -1,10 +1,14 @@
 """Main helper"""
 __docformat__ = "numpy"
 
+# pylint: disable=unsupported-assignment-operation,too-many-lines
+# pylint: disable=no-member,too-many-branches,too-many-arguments
+# pylint: disable=inconsistent-return-statements
+
 import logging
 import os
 from datetime import datetime, timedelta, date
-from typing import List, Union, Optional, Iterable
+from typing import Any, Union, Optional, Iterable, List
 
 import financedatabase as fd
 import matplotlib.pyplot as plt
@@ -13,17 +17,30 @@ import mplfinance as mpf
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
-import pyEX
 import pytz
 import requests
 
 import yfinance as yf
-from alpha_vantage.timeseries import TimeSeries
 from numpy.core.fromnumeric import transpose
 from plotly.subplots import make_subplots
 from scipy import stats
 
 from openbb_terminal import config_terminal as cfg
+
+# pylint: disable=unused-import
+from openbb_terminal.stocks.stock_statics import market_coverage_suffix
+from openbb_terminal.stocks.stock_statics import INTERVALS  # noqa: F401
+from openbb_terminal.stocks.stock_statics import SOURCES  # noqa: F401
+from openbb_terminal.stocks.stock_statics import INCOME_PLOT  # noqa: F401
+from openbb_terminal.stocks.stock_statics import BALANCE_PLOT  # noqa: F401
+from openbb_terminal.stocks.stock_statics import CASH_PLOT  # noqa: F401
+from openbb_terminal.stocks.stocks_models import (
+    load_stock_av,
+    load_stock_yf,
+    load_stock_eodhd,
+    load_stock_iex_cloud,
+    load_stock_polygon,
+)
 from openbb_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
@@ -34,442 +51,12 @@ from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-# pylint: disable=no-member,too-many-branches,C0302,R0913
-# pylint: disable=inconsistent-return-statements
-# pylint: disable=unsupported-assignment-operation
 
-INTERVALS = [1, 5, 15, 30, 60]
-SOURCES = ["YahooFinance", "AlphaVantage", "IEXCloud", "EODHD"]
-
-market_coverage_suffix = {
-    "USA": ["CBT", "CME", "NYB", "CMX", "NYM", "US", ""],
-    "Argentina": ["BA"],
-    "Austria": ["VI"],
-    "Australia": ["AX"],
-    "Belgium": ["BR"],
-    "Brazil": ["SA"],
-    "Canada": ["CN", "NE", "TO", "V"],
-    "Chile": ["SN"],
-    "China": ["SS", "SZ"],
-    "Czech-Republic": ["PR"],
-    "Denmark": ["CO"],
-    "Egypt": ["CA"],
-    "Estonia": ["TL"],
-    "Europe": ["NX"],
-    "Finland": ["HE"],
-    "France": ["PA"],
-    "Germany": ["BE", "BM", "DU", "F", "HM", "HA", "MU", "SG", "DE"],
-    "Greece": ["AT"],
-    "Hong-Kong": ["HK"],
-    "Hungary": ["BD"],
-    "Iceland": ["IC"],
-    "India": ["BO", "NS"],
-    "Indonesia": ["JK"],
-    "Ireland": ["IR"],
-    "Israel": ["TA"],
-    "Italy": ["MI"],
-    "Japan": ["T", "S"],
-    "Latvia": ["RG"],
-    "Lithuania": ["VS"],
-    "Malaysia": ["KL"],
-    "Mexico": ["MX"],
-    "Netherlands": ["AS"],
-    "New-Zealand": ["NZ"],
-    "Norway": ["OL"],
-    "Portugal": ["LS"],
-    "Qatar": ["QA"],
-    "Russia": ["ME"],
-    "Singapore": ["SI"],
-    "South-Africa": ["JO"],
-    "South-Korea": ["KS", "KQ"],
-    "Spain": ["MC"],
-    "Saudi-Arabia": ["SAU"],
-    "Sweden": ["ST"],
-    "Switzerland": ["SW"],
-    "Taiwan": ["TWO", "TW"],
-    "Thailand": ["BK"],
-    "Turkey": ["IS"],
-    "United-Kingdom": ["L", "IL"],
-    "Venezuela": ["CR"],
-}
-
-INCOME_PLOT = {
-    "AlphaVantage": [
-        "reported_currency",
-        "gross_profit",
-        "total_revenue",
-        "cost_of_revenue",
-        "cost_of_goods_and_services_sold",
-        "operating_income",
-        "selling_general_and_administrative",
-        "research_and_development",
-        "operating_expenses",
-        "investment_income_net",
-        "net_interest_income",
-        "interest_income",
-        "interest_expense",
-        "non_interest_income",
-        "other_non_operating_income",
-        "depreciation",
-        "depreciation_and_amortization",
-        "income_before_tax",
-        "income_tax_expense",
-        "interest_and_debt_expense",
-        "net_income_from_continuing_operations",
-        "comprehensive_income_net_of_tax",
-        "ebit",
-        "ebitda",
-        "net_income",
-    ],
-    "Polygon": [
-        "cost_of_revenue",
-        "diluted_earnings_per_share",
-        "costs_and_expenses",
-        "gross_profit",
-        "non_operating_income_loss",
-        "operating_income_loss",
-        "participating_securities_distributed_and_undistributed_earnings_loss_basic",
-        "income_tax_expense_benefit",
-        "net_income_loss_attributable_to_parent",
-        "net_income_loss",
-        "income_tax_expense_benefit_deferred",
-        "preferred_stock_dividends_and_other_adjustments",
-        "operating_expenses",
-        "income_loss_from_continuing_operations_before_tax",
-        "net_income_loss_attributable_to_non_controlling_interest",
-        "income_loss_from_continuing_operations_after_tax",
-        "revenues",
-        "net_income_loss_available_to_common_stockholders_basic",
-        "benefits_costs_expenses",
-        "basic_earnings_per_share",
-        "interest_expense_operating",
-        "income_loss_before_equity_method_investments",
-    ],
-    "YahooFinance": [
-        "total_revenue",
-        "cost_of_revenue",
-        "gross_profit",
-        "research_development",
-        "selling_general_and_administrative",
-        "total_operating_expenses",
-        "operating_income_or_loss",
-        "interest_expense",
-        "total_other_income/expenses_net",
-        "income_before_tax",
-        "income_tax_expense",
-        "income_from_continuing_operations",
-        "net_income",
-        "net_income_available_to_common_shareholders",
-        "basic_eps",
-        "diluted_eps",
-        "basic_average_shares",
-        "diluted_average_shares",
-        "ebitda",
-    ],
-    "FinancialModelingPrep": [
-        "reported_currency",
-        "cik",
-        "filling_date",
-        "accepted_date",
-        "calendar_year",
-        "period",
-        "revenue",
-        "cost_of_revenue",
-        "gross_profit",
-        "gross_profit_ratio",
-        "research_and_development_expenses",
-        "general_and_administrative_expenses",
-        "selling_and_marketing_expenses",
-        "selling_general_and_administrative_expenses",
-        "other_expenses",
-        "operating_expenses",
-        "cost_and_expenses",
-        "interest_income",
-        "interest_expense",
-        "depreciation_and_amortization",
-        "ebitda",
-        "ebitda_ratio",
-        "operating_income",
-        "operating_income_ratio",
-        "total_other_income_expenses_net",
-        "income_before_tax",
-        "income_before_tax_ratio",
-        "income_tax_expense",
-        "net_income",
-        "net_income_ratio",
-        "eps",
-        "eps_diluted",
-        "weighted_average_shs_out",
-        "weighted_average_shs_out_dil",
-        "link",
-        "final_link",
-    ],
-}
-BALANCE_PLOT = {
-    "AlphaVantage": [
-        "reported_currency",
-        "total_assets",
-        "total_current_assets",
-        "cash_and_cash_equivalents_at_carrying_value",
-        "cash_and_short_term_investments",
-        "inventory",
-        "current_net_receivables",
-        "total_non_current_assets",
-        "property_plant_equipment",
-        "accumulated_depreciation_amortization_ppe",
-        "intangible_assets",
-        "intangible_assets_excluding_goodwill",
-        "goodwill",
-        "investments",
-        "long_term_investments",
-        "short_term_investments",
-        "other_current_assets",
-        "other_non_currrent_assets",
-        "total_liabilities",
-        "total_current_liabilities",
-        "current_accounts_payable",
-        "deferred_revenue",
-        "current_debt",
-        "short_term_debt",
-        "total_non_current_liabilities",
-        "capital_lease_obligations",
-        "long_term_debt",
-        "current_long_term_debt",
-        "long_term_debt_non_current",
-        "short_long_term_debt_total",
-        "other_current_liabilities",
-        "other_non_current_liabilities",
-        "total_shareholder_equity",
-        "treasury_stock",
-        "retained_earnings",
-        "common_stock",
-        "common_stock_shares_outstanding",
-    ],
-    "Polygon": [
-        "equity_attributable_to_non_controlling_interest",
-        "liabilities",
-        "non_current_assets",
-        "equity",
-        "assets",
-        "current_assets",
-        "equity_attributable_to_parent",
-        "current_liabilities",
-        "non_current_liabilities",
-        "fixed_assets",
-        "other_than_fixed_non_current_assets",
-        "liabilities_and_equity",
-    ],
-    "YahooFinance": [
-        "cash_and_cash_equivalents",
-        "other_short-term_investments",
-        "total_cash",
-        "net_receivables",
-        "inventory",
-        "other_current_assets",
-        "total_current_assets",
-        "gross_property, plant_and_equipment",
-        "accumulated_depreciation",
-        "net_property, plant_and_equipment",
-        "equity_and_other_investments",
-        "other_long-term_assets",
-        "total_non-current_assets",
-        "total_assets",
-        "current_debt",
-        "accounts_payable",
-        "deferred_revenues",
-        "other_current_liabilities",
-        "total_current_liabilities",
-        "long-term_debt",
-        "deferred_tax_liabilities",
-        "deferred_revenues",
-        "other_long-term_liabilities",
-        "total_non-current_liabilities",
-        "total_liabilities",
-        "common_stock",
-        "retained_earnings",
-        "accumulated_other_comprehensive_income",
-        "total_stockholders'_equity",
-        "total_liabilities_and_stockholders'_equity",
-    ],
-    "FinancialModelingPrep": [
-        "reported_currency",
-        "cik",
-        "filling_date",
-        "accepted_date",
-        "calendar_year",
-        "period",
-        "cash_and_cash_equivalents",
-        "short_term_investments",
-        "cash_and_short_term_investments",
-        "net_receivables",
-        "inventory",
-        "other_current_assets",
-        "total_current_assets",
-        "property_plant_equipment_net",
-        "goodwill",
-        "intangible_assets",
-        "goodwill_and_intangible_assets",
-        "long_term_investments",
-        "tax_assets",
-        "other_non_current_assets",
-        "total_non_current_assets",
-        "other_assets",
-        "total_assets",
-        "account_payables",
-        "short_term_debt",
-        "tax_payables",
-        "deferred_revenue",
-        "other_current_liabilities",
-        "total_current_liabilities",
-        "long_term_debt",
-        "deferred_revenue_non_current",
-        "deferred_tax_liabilities_non_current",
-        "other_non_current_liabilities",
-        "total_non_current_liabilities",
-        "other_liabilities",
-        "capital_lease_obligations",
-        "total_liabilities",
-        "preferred_stock",
-        "common_stock",
-        "retained_earnings",
-        "accumulated_other_comprehensive_income_loss",
-        "other_total_stockholders_equity",
-        "total_stockholders_equity",
-        "total_liabilities_and_stockholders_equity",
-        "minority_interest",
-        "total_equity",
-        "total_liabilities_and_total_equity",
-        "total_investments",
-        "total_debt",
-        "net_debt",
-        "link",
-        "final_link",
-    ],
-}
-CASH_PLOT = {
-    "AlphaVantage": [
-        "reported_currency",
-        "operating_cash_flow",
-        "payments_for_operating_activities",
-        "proceeds_from_operating_activities",
-        "change_in_operating_liabilities",
-        "change_in_operating_assets",
-        "depreciation_depletion_and_amortization",
-        "capital_expenditures",
-        "change_in_receivables",
-        "change_in_inventory",
-        "profit_loss",
-        "cash_flow_from_investment",
-        "cash_flow_from_financing",
-        "proceeds_from_repayments_of_short_term_debt",
-        "payments_for_repurchase_of_common_stock",
-        "payments_for_repurchase_of_equity",
-        "payments_for_repurchase_of_preferred_stock",
-        "dividend_payout",
-        "dividend_payout_common_stock",
-        "dividend_payout_preferred_stock",
-        "proceeds_from_issuance_of_common_stock",
-        "proceeds_from_issuance_of_long_term_debt_and_capital_securities_net",
-        "proceeds_from_issuance_of_preferred_stock",
-        "proceeds_from_repurchase_of_equity",
-        "proceeds_from_sale_of_treasury_stock",
-        "change_in_cash_and_cash_equivalents",
-        "change_in_exchange_rate",
-        "net_income",
-    ],
-    "Polygon": [
-        "net_cash_flow_from_financing_activities_continuing",
-        "net_cash_flow_continuing",
-        "net_cash_flow_from_investing_activities",
-        "net_cash_flow",
-        "net_cash_flow_from_operating_activities",
-        "net_cash_flow_from_financing_activities",
-        "net_cash_flow_from_operating_activities_continuing",
-        "net_cash_flow_from_investing_activities_continuing",
-    ],
-    "YahooFinance": [
-        "net_income",
-        "depreciation_&_amortisation",
-        "deferred_income_taxes",
-        "stock-based_compensation",
-        "change_in working_capital",
-        "accounts_receivable",
-        "inventory",
-        "accounts_payable",
-        "other_working_capital",
-        "other_non-cash_items",
-        "net_cash_provided_by_operating_activities",
-        "investments_in_property, plant_and_equipment",
-        "acquisitions, net",
-        "purchases_of_investments",
-        "sales/maturities_of_investments",
-        "other_investing_activities",
-        "net_cash_used_for_investing_activities",
-        "debt_repayment",
-        "common_stock_issued",
-        "common_stock_repurchased",
-        "dividends_paid",
-        "other_financing_activities",
-        "net_cash_used_provided_by_(used_for)_financing_activities",
-        "net_change_in_cash",
-        "cash_at_beginning_of_period",
-        "cash_at_end_of_period",
-        "operating_cash_flow",
-        "capital_expenditure",
-        "free_cash_flow",
-    ],
-    "FinancialModelingPrep": [
-        "reported_currency",
-        "cik",
-        "filling_date",
-        "accepted_date",
-        "calendar_year",
-        "period",
-        "net_income",
-        "depreciation_and_amortization",
-        "deferred_income_tax",
-        "stock_based_compensation",
-        "change_in_working_capital",
-        "accounts_receivables",
-        "inventory",
-        "accounts_payables",
-        "other_working_capital",
-        "other_non_cash_items",
-        "net_cash_provided_by_operating_activities",
-        "investments_in_property_plant_and_equipment",
-        "acquisitions_net",
-        "purchases_of_investments",
-        "sales_maturities_of_investments",
-        "other_investing_activites",
-        "net_cash_used_for_investing_activites",
-        "debt_repayment",
-        "common_stock_issued",
-        "common_stock_repurchased",
-        "dividends_paid",
-        "other_financing_activites",
-        "net_cash_used_provided_by_financing_activities",
-        "effect_of_forex_changes_on_cash",
-        "net_change_in_cash",
-        "cash_at_end_of_period",
-        "cash_at_beginning_of_period",
-        "operating_cash_flow",
-        "capital_expenditure",
-        "free_cash_flow",
-        "link",
-        "final_link",
-    ],
-}
-exchange_mappings = (
-    pd.read_csv(
-        os.path.join(
-            os.path.dirname(os.path.abspath(__file__)), "mappings", "Mic_Codes.csv"
-        ),
-        index_col=0,
-        header=None,
-    )
-    .squeeze("columns")
-    .to_dict()
+exch_file_path = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "mappings", "Mic_Codes.csv"
 )
+exhcnage_df = pd.read_csv(exch_file_path, index_col=0, header=None)
+exchange_mappings = exhcnage_df.squeeze("columns").to_dict()
 
 
 def search(
@@ -500,58 +87,15 @@ def search(
     export : str
         Export data
     """
+    kwargs: dict[str, Any] = {"exclude_exchanges": False}
     if country:
-        if sector:
-            if industry:
-                data = fd.select_equities(
-                    country=country,
-                    sector=sector,
-                    industry=industry,
-                    exclude_exchanges=False,
-                )
-            else:  # no industry
-                data = fd.select_equities(
-                    country=country,
-                    sector=sector,
-                    exclude_exchanges=False,
-                )
-        else:  # no sector
-            if industry:
-                data = fd.select_equities(
-                    country=country,
-                    industry=industry,
-                    exclude_exchanges=False,
-                )
-            else:  # no industry
-                data = fd.select_equities(
-                    country=country,
-                    exclude_exchanges=False,
-                )
+        kwargs["country"] = country
+    if sector:
+        kwargs["sector"] = sector
+    if industry:
+        kwargs["industry"] = industry
 
-    else:  # no country
-        if sector:
-            if industry:
-                data = fd.select_equities(
-                    sector=sector,
-                    industry=industry,
-                    exclude_exchanges=False,
-                )
-            else:  # no industry
-                data = fd.select_equities(
-                    sector=sector,
-                    exclude_exchanges=False,
-                )
-        else:  # no sector
-            if industry:
-                data = fd.select_equities(
-                    industry=industry,
-                    exclude_exchanges=False,
-                )
-            else:  # no industry
-                data = fd.select_equities(
-                    exclude_exchanges=False,
-                )
-
+    data = fd.select_equities(**kwargs)
     if not data:
         console.print("No companies found.\n")
         return
@@ -615,18 +159,18 @@ def search(
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "search", df)
 
 
-# pylint:disable=too-many-return-statements,too-many-statements
 def load(
     symbol: str,
-    start_date: datetime = (datetime.now() - timedelta(days=1100)),
+    start_date: datetime = None,
     interval: int = 1440,
-    end_date: datetime = datetime.now(),
+    end_date: datetime = None,
     prepost: bool = False,
     source: str = "YahooFinance",
     iexrange: str = "ytd",
     weekly: bool = False,
     monthly: bool = False,
 ):
+
     """
     Load a symbol to perform analysis using the string above as a template.
 
@@ -684,217 +228,44 @@ def load(
     df_stock_candidate: pd.DataFrame
         Dataframe of data
     """
+    if start_date is None:
+        start_date = datetime.now() - timedelta(days=1100)
+    if end_date is None:
+        end_date = datetime.now()
 
     # Daily
     if interval == 1440:
 
-        # Alpha Vantage Source
+        int_string = "Daily"
+        if weekly:
+            int_string = "Weekly"
+        if monthly:
+            int_string = "Monthly"
+
         if source == "AlphaVantage":
-            try:
-                ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
-                # pylint: disable=unbalanced-tuple-unpacking
-                df_stock_candidate, _ = ts.get_daily_adjusted(
-                    symbol=symbol, outputsize="full"
-                )
-            except Exception as e:
-                console.print(e, "")
-                return pd.DataFrame()
+            df_stock_candidate = load_stock_av(symbol, start_date, end_date)
 
-            df_stock_candidate.columns = [
-                val.split(". ")[1].capitalize() for val in df_stock_candidate.columns
-            ]
-
-            df_stock_candidate = df_stock_candidate.rename(
-                columns={
-                    "Adjusted close": "Adj Close",
-                }
-            )
-
-            # Check that loading a stock was not successful
-            # pylint: disable=no-member
-            if df_stock_candidate.empty:
-                console.print("No data found.\n")
-                return pd.DataFrame()
-
-            df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
-
-            # pylint: disable=no-member
-            df_stock_candidate.sort_index(ascending=True, inplace=True)
-
-            # Slice dataframe from the starting date YYYY-MM-DD selected
-            df_stock_candidate = df_stock_candidate[
-                (df_stock_candidate.index >= start_date.strftime("%Y-%m-%d"))
-                & (df_stock_candidate.index <= end_date.strftime("%Y-%m-%d"))
-            ]
-
-        # Yahoo Finance Source
         elif source == "YahooFinance":
+            df_stock_candidate = load_stock_yf(
+                symbol, start_date, end_date, weekly, monthly
+            )
 
-            # TODO: Better handling of interval with week/month
-            int_, int_string = "1d", "Daily"
-            if weekly:
-                int_, int_string = "1wk", "Weekly"
-            if monthly:
-                int_, int_string = "1mo", "Monthly"
-
-            # Win10 version of mktime cannot cope with dates before 1970
-            if os.name == "nt" and start_date < datetime(1970, 1, 1):
-                start_date = datetime(
-                    1970, 1, 2
-                )  # 1 day buffer in case of timezone adjustments
-
-            # Adding a dropna for weekly and monthly because these include weird NaN columns.
-            df_stock_candidate = yf.download(
-                symbol, start=start_date, end=end_date, progress=False, interval=int_
-            ).dropna(axis=0)
-
-            # Check that loading a stock was not successful
-            if df_stock_candidate.empty:
-                console.print("")
-                return pd.DataFrame()
-
-            df_stock_candidate.index.name = "date"
-
-        # End of Day Historical Data  Source
         elif source == "EODHD":
-            df_stock_candidate = pd.DataFrame()
-
-            int_, int_string = "d", "Daily"
-            if weekly:
-                int_, int_string = "w", "Weekly"
-            elif monthly:
-                int_, int_string = "m", "Monthly"
-
-            request_url = (
-                f"https://eodhistoricaldata.com/api/eod/"
-                f"{symbol.upper()}?"
-                f"{start_date.strftime('%Y-%m-%d')}&"
-                f"to={end_date.strftime('%Y-%m-%d')}&"
-                f"period={int_}&"
-                f"api_token={cfg.API_EODHD_TOKEN}&"
-                f"fmt=json&"
-                f"order=d"
+            df_stock_candidate = load_stock_eodhd(
+                symbol, start_date, end_date, weekly, monthly
             )
 
-            r = requests.get(request_url)
-            if r.status_code != 200:
-                console.print("[red]Invalid API Key for eodhistoricaldata [/red]")
-                console.print(
-                    "Get your Key here: https://eodhistoricaldata.com/r/?ref=869U7F4J\n"
-                )
-                return pd.DataFrame()
-
-            r_json = r.json()
-
-            df_stock_candidate = pd.DataFrame(r_json).dropna(axis=0)
-
-            # Check that loading a stock was not successful
-            if df_stock_candidate.empty:
-                console.print("No data found from End Of Day Historical Data.\n")
-                return df_stock_candidate
-
-            df_stock_candidate = df_stock_candidate[
-                ["date", "open", "high", "low", "close", "adjusted_close", "volume"]
-            ]
-
-            df_stock_candidate = df_stock_candidate.rename(
-                columns={
-                    "date": "Date",
-                    "close": "Close",
-                    "high": "High",
-                    "low": "Low",
-                    "open": "Open",
-                    "adjusted_close": "Adj Close",
-                    "volume": "Volume",
-                }
-            )
-            df_stock_candidate["Date"] = pd.to_datetime(df_stock_candidate.Date)
-            df_stock_candidate.set_index("Date", inplace=True)
-            df_stock_candidate.sort_index(ascending=True, inplace=True)
-
-        # IEX Cloud Source
         elif source == "IEXCloud":
-            df_stock_candidate = pd.DataFrame()
+            df_stock_candidate = load_stock_iex_cloud(symbol, iexrange)
 
-            try:
-                client = pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1")
-
-                df_stock_candidate = client.chartDF(symbol, timeframe=iexrange)
-
-                # Check that loading a stock was not successful
-                if df_stock_candidate.empty:
-                    console.print("No data found.\n")
-                    return df_stock_candidate
-
-            except Exception as e:
-                if "The API key provided is not valid" in str(e):
-                    console.print("[red]Invalid API Key[/red]\n")
-                else:
-                    console.print(e, "\n")
-
-                return df_stock_candidate
-
-            df_stock_candidate = df_stock_candidate[
-                ["close", "fHigh", "fLow", "fOpen", "fClose", "volume"]
-            ]
-            df_stock_candidate = df_stock_candidate.rename(
-                columns={
-                    "close": "Close",
-                    "fHigh": "High",
-                    "fLow": "Low",
-                    "fOpen": "Open",
-                    "fClose": "Adj Close",
-                    "volume": "Volume",
-                }
-            )
-
-            df_stock_candidate.sort_index(ascending=True, inplace=True)
-
-        # Polygon source
         elif source == "Polygon":
-
-            # Polygon allows: day, minute, hour, day, week, month, quarter, year
-            timespan = "day"
-            if weekly or monthly:
-                timespan = "week" if weekly else "month"
-
-            request_url = (
-                f"https://api.polygon.io/v2/aggs/ticker/"
-                f"{symbol.upper()}/range/1/{timespan}/"
-                f"{start_date.strftime('%Y-%m-%d')}/{end_date.strftime('%Y-%m-%d')}?adjusted=true"
-                f"&sort=desc&limit=49999&apiKey={cfg.API_POLYGON_KEY}"
+            df_stock_candidate = load_stock_polygon(
+                symbol, start_date, end_date, weekly, monthly
             )
-            r = requests.get(request_url)
-            if r.status_code != 200:
-                console.print("[red]Error in polygon request[/red]")
-                return pd.DataFrame()
+        if df_stock_candidate.empty:
+            return df_stock_candidate
 
-            r_json = r.json()
-            if "results" not in r_json.keys():
-                console.print("[red]No results found in polygon reply.[/red]")
-                return pd.DataFrame()
-
-            df_stock_candidate = pd.DataFrame(r_json["results"])
-
-            df_stock_candidate = df_stock_candidate.rename(
-                columns={
-                    "o": "Open",
-                    "c": "Adj Close",
-                    "h": "High",
-                    "l": "Low",
-                    "t": "date",
-                    "v": "Volume",
-                    "n": "Transactions",
-                }
-            )
-            df_stock_candidate["date"] = pd.to_datetime(
-                df_stock_candidate.date, unit="ms"
-            )
-            # TODO: Clean up Close vs Adj Close throughout
-            df_stock_candidate["Close"] = df_stock_candidate["Adj Close"]
-            df_stock_candidate = df_stock_candidate.sort_values(by="date")
-            df_stock_candidate = df_stock_candidate.set_index("date")
-
+        df_stock_candidate.index.name = "date"
         s_start = df_stock_candidate.index[0]
         s_interval = f"{interval}min"
         int_string = "Daily" if interval == 1440 else "Intraday"
@@ -963,6 +334,7 @@ def load(
                     "n": "Transactions",
                 }
             )
+            # pylint: disable=unsupported-assignment-operation
             df_stock_candidate["date"] = pd.to_datetime(
                 df_stock_candidate.date, unit="ms"
             )
@@ -1412,12 +784,12 @@ def load_ticker(
     return df_data
 
 
-def process_candle(df: pd.DataFrame) -> pd.DataFrame:
+def process_candle(data: pd.DataFrame) -> pd.DataFrame:
     """Process DataFrame into candle style plot
 
     Parameters
     ----------
-    df : DataFrame
+    data : DataFrame
         Stock dataframe.
 
     Returns
@@ -1426,7 +798,7 @@ def process_candle(df: pd.DataFrame) -> pd.DataFrame:
         A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume,
         date_id, OC-High, OC-Low.
     """
-    df_data = df.copy()
+    df_data = data.copy()
     df_data["date_id"] = (df_data.index.date - df_data.index.date.min()).astype(
         "timedelta64[D]"
     )
@@ -1632,25 +1004,30 @@ def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
     else:
         perfs["Period"] = 100 * (closes[-1] - closes[0]) / closes[0]
 
-    df = pd.DataFrame.from_dict(perfs, orient="index").dropna().T
-    df = df.applymap(lambda x: str(round(x, 2)) + " %")
-    df = df.applymap(lambda x: f"[red]{x}[/red]" if "-" in x else f"[green]{x}[/green]")
+    perf_df = pd.DataFrame.from_dict(perfs, orient="index").dropna().T
+    perf_df = perf_df.applymap(lambda x: str(round(x, 2)) + " %")
+    perf_df = perf_df.applymap(
+        lambda x: f"[red]{x}[/red]" if "-" in x else f"[green]{x}[/green]"
+    )
     if len(closes) > 252:
-        df["Volatility (1Y)"] = (
+        perf_df["Volatility (1Y)"] = (
             str(round(100 * np.sqrt(252) * closes[-252:].pct_change().std(), 2)) + " %"
         )
     else:
-        df["Volatility (Ann)"] = (
+        perf_df["Volatility (Ann)"] = (
             str(round(100 * np.sqrt(252) * closes.pct_change().std(), 2)) + " %"
         )
     if len(volumes) > 10:
-        df["Volume (10D avg)"] = (
+        perf_df["Volume (10D avg)"] = (
             str(round(np.mean(volumes[-12:-2]) / 1_000_000, 2)) + " M"
         )
 
-    df["Last Price"] = str(round(closes[-1], 2))
+    perf_df["Last Price"] = str(round(closes[-1], 2))
     print_rich_table(
-        df, show_index=False, headers=df.columns, title=f"{ticker.upper()} Performance"
+        perf_df,
+        show_index=False,
+        headers=perf_df.columns,
+        title=f"{ticker.upper()} Performance",
     )
 
 
@@ -1679,8 +1056,8 @@ def show_codes_polygon(ticker: str):
     vals = []
     for col in cols:
         vals.append(r_json[col])
-    df = pd.DataFrame({"codes": [c.upper() for c in cols], "vals": vals})
-    df.codes = df.codes.apply(lambda x: x.replace("_", " "))
+    polyon_df = pd.DataFrame({"codes": [c.upper() for c in cols], "vals": vals})
+    polyon_df.codes = polyon_df.codes.apply(lambda x: x.replace("_", " "))
     print_rich_table(
-        df, show_index=False, headers=["", ""], title=f"{ticker.upper()} Codes"
+        polyon_df, show_index=False, headers=["", ""], title=f"{ticker.upper()} Codes"
     )

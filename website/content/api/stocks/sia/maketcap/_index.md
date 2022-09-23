@@ -1,7 +1,5 @@
-# stocks.sia.maketcap
-
 ## Get underlying data 
-###stocks.sia.maketcap()
+### stocks.sia.maketcap()
 
 Get all market cap division in Yahoo Finance data. [Source: Finance Database]
 

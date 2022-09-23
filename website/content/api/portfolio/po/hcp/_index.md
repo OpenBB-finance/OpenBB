@@ -1,9 +1,7 @@
-# portfolio.po.hcp
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###portfolio.po.hcp(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', model: str = 'HRP', codependence: str = 'pearson', covariance: str = 'hist', objective: str = 'MinRisk', risk_measure: str = 'MV', risk_free_rate: float = 0, risk_aversion: float = 1, alpha: float = 0.05, a_sim: int = 100, beta: float = None, b_sim: int = None, linkage: str = 'single', k: int = 0, max_k: int = 10, bins_info: str = 'KN', alpha_tail: float = 0.05, leaf_order: bool = True, d_ewma: float = 0.94, value: float = 1.0) -> Tuple
+### portfolio.po.hcp(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', model: str = 'HRP', codependence: str = 'pearson', covariance: str = 'hist', objective: str = 'MinRisk', risk_measure: str = 'MV', risk_free_rate: float = 0, risk_aversion: float = 1, alpha: float = 0.05, a_sim: int = 100, beta: float = None, b_sim: int = None, linkage: str = 'single', k: int = 0, max_k: int = 10, bins_info: str = 'KN', alpha_tail: float = 0.05, leaf_order: bool = True, d_ewma: float = 0.94, value: float = 1.0) -> Tuple
 
 Builds hierarchical clustering based portfolios
 
@@ -188,7 +186,7 @@ Builds hierarchical clustering based portfolios
         Dictionary of portfolio weights and DataFrame of stock returns
 
 ## Getting charts 
-###portfolio.po.hcp(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', model: str = 'HRP', codependence: str = 'pearson', covariance: str = 'hist', objective: str = 'minrisk', risk_measure: str = 'mv', risk_free_rate: float = 0.0, risk_aversion: float = 1.0, alpha: float = 0.05, a_sim: int = 100, beta: float = None, b_sim: int = None, linkage: str = 'ward', k: int = None, max_k: int = 10, bins_info: str = 'KN', alpha_tail: float = 0.05, leaf_order: bool = True, d_ewma: float = 0.94, value: float = 1.0, table: bool = False, chart=True) -> Dict
+### portfolio.po.hcp(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', model: str = 'HRP', codependence: str = 'pearson', covariance: str = 'hist', objective: str = 'minrisk', risk_measure: str = 'mv', risk_free_rate: float = 0.0, risk_aversion: float = 1.0, alpha: float = 0.05, a_sim: int = 100, beta: float = None, b_sim: int = None, linkage: str = 'ward', k: int = None, max_k: int = 10, bins_info: str = 'KN', alpha_tail: float = 0.05, leaf_order: bool = True, d_ewma: float = 0.94, value: float = 1.0, table: bool = False, chart=True) -> Dict
 
 
     Builds a hierarchical clustering portfolio

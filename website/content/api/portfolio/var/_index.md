@@ -1,7 +1,5 @@
-# portfolio.var
-
 ## Get underlying data 
-###portfolio.var(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, use_mean: bool = False, adjusted_var: bool = False, student_t: bool = False, percentile: float = 0.999) -> pandas.core.frame.DataFrame
+### portfolio.var(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, use_mean: bool = False, adjusted_var: bool = False, student_t: bool = False, percentile: float = 0.999) -> pandas.core.frame.DataFrame
 
 Get portfolio VaR
 

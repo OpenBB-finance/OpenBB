@@ -1,9 +1,7 @@
-# stocks.dps.prom
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.dps.prom(limit: int = 1000, tier_ats: str = 'T1') -> Tuple[pandas.core.frame.DataFrame, Dict]
+### stocks.dps.prom(limit: int = 1000, tier_ats: str = 'T1') -> Tuple[pandas.core.frame.DataFrame, Dict]
 
 Get all FINRA ATS data, and parse most promising tickers based on linear regression
 
@@ -22,13 +20,13 @@ Get all FINRA ATS data, and parse most promising tickers based on linear regress
         Tickers from Dark Pools with better regression slope
 
 ## Getting charts 
-###stocks.dps.prom(num: int = 1000, limit: int = 10, tier: str = 'T1', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.dps.prom(input_limit: int = 1000, limit: int = 10, tier: str = 'T1', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display dark pool (ATS) data of tickers with growing trades activity. [Source: FINRA]
 
     Parameters
     ----------
-    num : int
+    input_limit : int
         Number of tickers to filter from entire ATS data based on
         the sum of the total weekly shares quantity
     limit : int

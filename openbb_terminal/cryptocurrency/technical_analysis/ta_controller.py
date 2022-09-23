@@ -1226,7 +1226,7 @@ class TechnicalAnalysisController(CryptoBaseController):
             custom_indicators_view.fibonacci_retracement(
                 symbol=self.coin,
                 data=self.stock,
-                period=ns_parser.period,
+                limit=ns_parser.period,
                 start_date=ns_parser.start,
                 end_date=ns_parser.end,
                 export=ns_parser.export,

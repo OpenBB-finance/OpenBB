@@ -19,4 +19,4 @@ def test_display_newsletters(mocker):
         return_value=1,
     )
 
-    substack_view.display_newsletters(top=None, export="")
+    substack_view.display_newsletters(limit=None, export="")

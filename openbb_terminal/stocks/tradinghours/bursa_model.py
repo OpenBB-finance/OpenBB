@@ -13,6 +13,8 @@ from openbb_terminal.decorators import log_start_end
 logger = logging.getLogger(__name__)
 # pylint: disable=no-member
 
+# pylint: disable=no-member
+
 
 @log_start_end(log=logger)
 def get_bursa(symbol: str) -> pd.DataFrame:

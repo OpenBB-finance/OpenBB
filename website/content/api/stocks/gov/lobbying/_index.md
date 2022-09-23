@@ -1,7 +1,5 @@
-# stocks.gov.lobbying
-
 ## Get underlying data 
-###stocks.gov.lobbying(symbol: str, limit: int = 10) -> pandas.core.frame.DataFrame
+### stocks.gov.lobbying(symbol: str, limit: int = 10) -> pandas.core.frame.DataFrame
 
 Corporate lobbying details
 

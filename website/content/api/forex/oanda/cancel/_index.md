@@ -1,9 +1,7 @@
-# forex.oanda.cancel
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###forex.oanda.cancel(orderID: str, accountID: str = 'REPLACE_ME') -> Union[str, bool]
+### forex.oanda.cancel(orderID: str, accountID: str = 'REPLACE_ME') -> Union[str, bool]
 
 Request cancellation of a pending order.
 
@@ -15,7 +13,7 @@ Request cancellation of a pending order.
         Oanda account ID, by default cfg.OANDA_ACCOUNT
 
 ## Getting charts 
-###forex.oanda.cancel(accountID: str, orderID: str = '', chart=True)
+### forex.oanda.cancel(accountID: str, orderID: str = '', chart=True)
 
 Cancel a Pending Order.
 
