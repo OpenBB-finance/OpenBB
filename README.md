@@ -119,13 +119,12 @@ You can read more details about adding a feature in our [CONTRIBUTING GUIDELINES
 
 **Raise an issue or Request a feature**
 
-* Raise an issue by opening a [bug ticket](https://github.com/OpenBB-finance/OpenBBTerminal/issues).
-* Request a new  feature through a [feature request ticket](https://github.com/OpenBB-finance/OpenBBTerminal/issues).
+- Raise an issue by opening a [bug ticket](https://github.com/OpenBB-finance/OpenBBTerminal/issues).
+- Request a new  feature through a [feature request ticket](https://github.com/OpenBB-finance/OpenBBTerminal/issues).
 
 **Join us**
 
 Join [our Discord](https://openbb.co/discord) and provide us any feedback on The OpenBB Terminal.
-
 
 ## License
 
