@@ -1,7 +1,5 @@
-# portfolio.information
-
 ## Get underlying data 
-###portfolio.information(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel)
+### portfolio.information(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel)
 
 Get information ratio
 

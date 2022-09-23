@@ -1,9 +1,7 @@
-# crypto.ov.cpexchanges
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.ov.cpexchanges(symbols: str = 'USD', sortby: str = 'rank', ascend: bool = True) -> pandas.core.frame.DataFrame
+### crypto.ov.cpexchanges(symbols: str = 'USD', sortby: str = 'rank', ascend: bool = True) -> pandas.core.frame.DataFrame
 
 
     List exchanges from CoinPaprika API [Source: CoinPaprika]
@@ -24,7 +22,7 @@ To obtain charts, make sure to add `chart=True` as the last parameter
         reported_volume_7d ,reported_volume_30d, sessions_per_month,
 
 ## Getting charts 
-###crypto.ov.cpexchanges(symbol: str, sortby: str = 'rank', ascend: bool = True, top: int = 15, export: str = '', chart=True) -> None
+### crypto.ov.cpexchanges(symbol: str, sortby: str = 'rank', ascend: bool = True, limit: int = 15, export: str = '', chart=True) -> None
 
 List exchanges from CoinPaprika API. [Source: CoinPaprika]
 
@@ -32,7 +30,7 @@ List exchanges from CoinPaprika API. [Source: CoinPaprika]
     ----------
     currency: str
         Quoted currency
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data

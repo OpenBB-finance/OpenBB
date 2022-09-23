@@ -1,9 +1,7 @@
-# crypto.ov.cpmarkets
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.ov.cpmarkets(symbols: str = 'USD', sortby: str = 'rank', ascend: bool = True) -> pandas.core.frame.DataFrame
+### crypto.ov.cpmarkets(symbols: str = 'USD', sortby: str = 'rank', ascend: bool = True) -> pandas.core.frame.DataFrame
 
 Returns basic coin information for all coins from CoinPaprika API [Source: CoinPaprika]
 
@@ -23,7 +21,7 @@ Returns basic coin information for all coins from CoinPaprika API [Source: CoinP
         pct_change_1h, pct_change_24h, ath_price, pct_from_ath,
 
 ## Getting charts 
-###crypto.ov.cpmarkets(symbol: str, sortby: str = 'rank', ascend: bool = True, top: int = 15, export: str = '', chart=True) -> None
+### crypto.ov.cpmarkets(symbol: str, sortby: str = 'rank', ascend: bool = True, limit: int = 15, export: str = '', chart=True) -> None
 
 Displays basic market information for all coins from CoinPaprika API. [Source: CoinPaprika]
 
@@ -31,7 +29,7 @@ Displays basic market information for all coins from CoinPaprika API. [Source: C
     ----------
     symbol: str
         Quoted currency
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data

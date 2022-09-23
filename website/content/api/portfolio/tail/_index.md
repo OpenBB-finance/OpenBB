@@ -1,7 +1,5 @@
-# portfolio.tail
-
 ## Get underlying data 
-###portfolio.tail(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: int = 252)
+### portfolio.tail(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: int = 252)
 
 Get tail ratio
 
