@@ -1,9 +1,7 @@
-# common.ta.obv
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###common.ta.obv(data: pandas.core.frame.DataFrame) -> pandas.core.frame.DataFrame
+### common.ta.obv(data: pandas.core.frame.DataFrame) -> pandas.core.frame.DataFrame
 
 On Balance Volume
 
@@ -18,7 +16,7 @@ On Balance Volume
         Dataframe with technical indicator
 
 ## Getting charts 
-###common.ta.obv(data: pandas.core.frame.DataFrame, symbol: str = '', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### common.ta.obv(data: pandas.core.frame.DataFrame, symbol: str = '', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Plot OBV technical indicator
 

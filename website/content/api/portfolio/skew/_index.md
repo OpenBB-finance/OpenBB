@@ -1,7 +1,5 @@
-# portfolio.skew
-
 ## Get underlying data 
-###portfolio.skew(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel) -> pandas.core.frame.DataFrame
+### portfolio.skew(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel) -> pandas.core.frame.DataFrame
 
 Class method that retrieves skewness for portfolio and benchmark selected
 

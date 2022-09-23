@@ -1,9 +1,7 @@
-# crypto.nft.stats
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.nft.stats(slug: str) -> pandas.core.frame.DataFrame
+### crypto.nft.stats(slug: str) -> pandas.core.frame.DataFrame
 
 Get stats of a nft collection [Source: opensea.io]
 
@@ -18,7 +16,7 @@ Get stats of a nft collection [Source: opensea.io]
         collection stats
 
 ## Getting charts 
-###crypto.nft.stats(slug: str, export: str, chart=True)
+### crypto.nft.stats(slug: str, export: str, chart=True)
 
 Display collection stats. [Source: opensea.io]
 

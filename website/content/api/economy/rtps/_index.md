@@ -1,9 +1,7 @@
-# economy.rtps
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###economy.rtps() -> pandas.core.frame.DataFrame
+### economy.rtps() -> pandas.core.frame.DataFrame
 
 Get real-time performance sector data
 
@@ -13,7 +11,7 @@ Get real-time performance sector data
         Real-time performance data
 
 ## Getting charts 
-###economy.rtps(raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### economy.rtps(raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display Real-Time Performance sector. [Source: AlphaVantage]
 

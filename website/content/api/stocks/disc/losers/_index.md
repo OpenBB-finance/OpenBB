@@ -1,7 +1,5 @@
-# stocks.disc.losers
-
 ## Get underlying data 
-###stocks.disc.losers() -> pandas.core.frame.DataFrame
+### stocks.disc.losers() -> pandas.core.frame.DataFrame
 
 Get top losers. [Source: Yahoo Finance]
 

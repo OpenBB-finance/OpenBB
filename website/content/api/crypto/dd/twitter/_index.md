@@ -1,9 +1,7 @@
-# crypto.dd.twitter
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.dd.twitter(symbol: str = 'eth-ethereum', sortby: str = 'date', ascend: bool = True) -> pandas.core.frame.DataFrame
+### crypto.dd.twitter(symbol: str = 'eth-ethereum', sortby: str = 'date', ascend: bool = True) -> pandas.core.frame.DataFrame
 
 Get twitter timeline for given coin id. Not more than last 50 tweets [Source: CoinPaprika]
 
@@ -24,7 +22,7 @@ Get twitter timeline for given coin id. Not more than last 50 tweets [Source: Co
         Columns: date, user_name, status, retweet_count, like_count
 
 ## Getting charts 
-###crypto.dd.twitter(symbol: str = 'BTC', limit: int = 10, sortby: str = 'date', ascend: bool = True, export: str = '', chart=True) -> None
+### crypto.dd.twitter(symbol: str = 'BTC', limit: int = 10, sortby: str = 'date', ascend: bool = True, export: str = '', chart=True) -> None
 
 Get twitter timeline for given coin id. Not more than last 50 tweets [Source: CoinPaprika]
 
