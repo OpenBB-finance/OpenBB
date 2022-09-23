@@ -7,7 +7,7 @@ __docformat__ = "numpy"
 import logging
 import os
 from datetime import datetime, timedelta, date
-from typing import Any, Union, Optional, Iterable
+from typing import Any, Union, Optional, Iterable, List
 
 import financedatabase as fd
 import matplotlib.pyplot as plt
@@ -378,7 +378,7 @@ def display_candle(
     add_trend: bool = False,
     ma: Optional[Iterable[int]] = None,
     asset_type: str = "Stock",
-    external_axes: Optional[list[plt.Axes]] = None,
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Shows candle plot of loaded ticker. [Source: Yahoo Finance, IEX Cloud or Alpha Vantage]
 
@@ -398,7 +398,7 @@ def display_candle(
         Moving averages to add to the candle
     asset_type_: str
         String to include in title
-    external_axes : Optional[list[plt.Axes]], optional
+    external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
     asset_type_: str
         String to include in title

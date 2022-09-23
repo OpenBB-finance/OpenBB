@@ -12,7 +12,7 @@ import difflib
 import logging
 import json
 
-from typing import Union, Any
+from typing import Union, Any, List, Dict
 from datetime import datetime, timedelta
 
 from prompt_toolkit.completion import NestedCompleter
@@ -52,7 +52,7 @@ EXPORT_ONLY_RAW_DATA_ALLOWED = 1
 EXPORT_ONLY_FIGURES_ALLOWED = 2
 EXPORT_BOTH_RAW_DATA_AND_FIGURES = 3
 
-controllers: dict[str, Any] = {}
+controllers: Dict[str, Any] = {}
 
 CRYPTO_SOURCES = {
     "bin": "Binance",
@@ -83,8 +83,8 @@ class BaseController(metaclass=ABCMeta):
         "wiki",
     ]
 
-    CHOICES_COMMANDS: list[str] = []
-    CHOICES_MENUS: list[str] = []
+    CHOICES_COMMANDS: List[str] = []
+    CHOICES_MENUS: List[str] = []
     SUPPORT_CHOICES: dict = {}
     ABOUT_CHOICES: dict = {}
     COMMAND_SEPARATOR = "/"
@@ -93,12 +93,12 @@ class BaseController(metaclass=ABCMeta):
     PATH: str = ""
     FILE_PATH: str = ""
 
-    def __init__(self, queue: list[str] = None) -> None:
+    def __init__(self, queue: List[str] = None) -> None:
         """
         This is the base class for any controller in the codebase.
         It's used to simplify the creation of menus.
 
-        queue: list[str]
+        queue: List[str]
             The current queue of jobs to process separated by "/"
             E.g. /stocks/load gme/dps/sidtc/../exit
         """
@@ -189,7 +189,7 @@ class BaseController(metaclass=ABCMeta):
         if obbff.REMEMBER_CONTEXTS:
             controllers[self.PATH] = self
 
-    def custom_reset(self) -> list[str]:
+    def custom_reset(self) -> List[str]:
         """This will be replaced by any children with custom_reset functions"""
         return []
 
@@ -255,12 +255,12 @@ class BaseController(metaclass=ABCMeta):
             self.log_queue()
 
     @log_start_end(log=logger)
-    def switch(self, an_input: str) -> list[str]:
+    def switch(self, an_input: str) -> List[str]:
         """Process and dispatch input
 
         Returns
         -------
-        list[str]
+        List[str]
             list of commands in the queue to execute
         """
         actions = self.parse_input(an_input)
@@ -329,7 +329,7 @@ class BaseController(metaclass=ABCMeta):
         self.print_help()
 
     @log_start_end(log=logger)
-    def call_about(self, other_args: list[str]) -> None:
+    def call_about(self, other_args: List[str]) -> None:
         """Process about command"""
         description = "Display the documentation of the menu or command."
         if self.CHOICES_COMMANDS and self.CHOICES_MENUS:
@@ -402,7 +402,7 @@ class BaseController(metaclass=ABCMeta):
             console.print("No resources available.\n")
 
     @log_start_end(log=logger)
-    def call_support(self, other_args: list[str]) -> None:
+    def call_support(self, other_args: List[str]) -> None:
         """Process support command"""
 
         self.save_class()
@@ -466,7 +466,7 @@ class BaseController(metaclass=ABCMeta):
             )
 
     @log_start_end(log=logger)
-    def call_wiki(self, other_args: list[str]) -> None:
+    def call_wiki(self, other_args: List[str]) -> None:
         """Process wiki command"""
 
         parser = argparse.ArgumentParser(
@@ -500,7 +500,7 @@ class BaseController(metaclass=ABCMeta):
     def parse_known_args_and_warn(
         self,
         parser: argparse.ArgumentParser,
-        other_args: list[str],
+        other_args: List[str],
         export_allowed: int = NO_EXPORT,
         raw: bool = False,
         limit: int = 0,
@@ -511,7 +511,7 @@ class BaseController(metaclass=ABCMeta):
         ----------
         parser: argparse.ArgumentParser
             Parser with predefined arguments
-        other_args: list[str]
+        other_args: List[str]
             list of arguments to parse
         export_allowed: int
             Choose from NO_EXPORT, EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -745,7 +745,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
         self.add_info = stocks_helper.additional_info_about_ticker("")
         self.TRY_RELOAD = True
 
-    def call_load(self, other_args: list[str]):
+    def call_load(self, other_args: List[str]):
         """Process load command"""
         parser = argparse.ArgumentParser(
             add_help=False,
