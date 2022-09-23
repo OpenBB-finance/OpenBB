@@ -536,248 +536,256 @@ With:
 
 1. Each function should have default values for non critical kwargs
 
-- Why? It increases code readability and acts as an input example for the functions arguments. This increases the ease of use of the functions through the api, but also just generally.
+    - Why? It increases code readability and acts as an input example for the functions arguments. This increases the ease of use of the functions through the api, but also just generally.
   
-<table>
-<tr>
-<td> Good code :white_check_mark: </td> <td> Bad code :x: </td>
-</tr>
-<tr>
-<td>
+    <br>
 
-```python
-def display_last_uni_swaps(   
-  top: int = 10,   
-  sortby: str = "timestamp",   
-  descend: bool = False,   
-  export: str = "",) -> None:
-```
+    <table>
+    <tr>
+    <td> Good code :white_check_mark: </td> <td> Bad code :x: </td>
+    </tr>
+    <tr>
+    <td>
 
-</td>
-<td>
+    ```python
+    def display_last_uni_swaps(   
+      top: int = 10,   
+      sortby: str = "timestamp",   
+      descend: bool = False,   
+      export: str = "",) -> None:
+    ```
 
-```python
-def display_last_uni_swaps(
-  top: int,   
-  sortby: str,
-  descend: bool,   
-  export: str,) -> None:
-```
+    </td>
+    <td>
 
-</td>
-</tr>
-</table>
+    ```python
+    def display_last_uni_swaps(
+      top: int,   
+      sortby: str,
+      descend: bool,   
+      export: str,) -> None:
+    ```
 
-<br>
+    </td>
+    </tr>
+    </table>
+
+    <br>
 
 2. Simple and understandable input objects; avoid for example weird dictionaries packed with data: {“title”: DataFrame}
   
-- Why? Ease of use and often these complex formats are clumsy, prone to error and the formatting required for complex parameters is time consuming and unneeded.
+    - Why? Ease of use and often these complex formats are clumsy, prone to error and the formatting required for complex parameters is time consuming and unneeded.
 
-<table>
-<tr>
-<td> Good code :white_check_mark: </td> <td> Bad code :x: </td>
-</tr>
-<tr>
-<td>
+    <br>
+  
+    <table>
+    <tr>
+    <td> Good code :white_check_mark: </td> <td> Bad code :x: </td>
+    </tr>
+    <tr>
+    <td>
 
-```python
-def get_coins(       
-  top: int = 250,       
-  category: str = "") -> pd.DataFrame:
-```
+    ```python
+    def get_coins(       
+      top: int = 250,       
+      category: str = "") -> pd.DataFrame:
+    ```
 
-</td>
-<td>
+    </td>
+    <td>
 
-```python
-def load(   
-  file: str,   
-  file_types: list,   
-  data_files: Dict[Any, Any],   
-  data_examples: Dict[Any, Any],) -> pd.DataFrame:
-```
+    ```python
+    def load(   
+      file: str,   
+      file_types: list,   
+      data_files: Dict[Any, Any],   
+      data_examples: Dict[Any, Any],) -> pd.DataFrame:
+    ```
 
-</td>
-</tr>
-</table>
+    </td>
+    </tr>
+    </table>
 
-<br>
+    <br>
 
 3. Each function needs to have a docstring explaining what it does, its parameters and what it returns.
   
-- Why? You can use the function without reading its source code. This improves the developing experience and api usage. The api factory also can’t handle functions with out docstrings.
-  
-<br>
+    - Why? You can use the function without reading its source code. This improves the developing experience and api usage. The api factory also can’t handle functions with out docstrings.
+
+    <br>
   
 4. Consistent and clear argument naming; not `symbol` in _view and then `ticker` in `_file` -> ticker everywhere; the name should be descriptive of what information it hold (see Style Guide section below)
   
-- Why? You can quickly understand what the input it should be; example: tickers and stock names are fundamentally different, but they’re both strings so they should be named accordingly.
+    - Why? You can quickly understand what the input it should be; example: tickers and stock names are fundamentally different, but they’re both strings so they should be named accordingly.
+  
+    <br>
 
-<table>
-<tr>
-<td> Good code :white_check_mark: </td> <td> Bad code :x: </td>
-</tr>
-<tr>
-<td>
+    <table>
+    <tr>
+    <td> Good code :white_check_mark: </td> <td> Bad code :x: </td>
+    </tr>
+    <tr>
+    <td>
 
-```python
-data: pd.Series, dataset_name: str, y_label: str,
-```
+    ```python
+    data: pd.Series, dataset_name: str, y_label: str,
+    ```
 
-</td>
-<td>
+    </td>
+    <td>
 
-```python
-data: pd.Series, dataset: str, column: str,
-```
+    ```python
+    data: pd.Series, dataset: str, column: str,
+    ```
 
-</td>
-</tr>
-</table>
+    </td>
+    </tr>
+    </table>
 
-<br>
+    <br>
 
 5. Classes (for example the portfolio class) should hold the relevant data and perform no other calculations, these calculations should be done in an independent function.
 
-- Why? Two reasons:
+    - Why? Two reasons:
 
-These calculations can then be used outside of the class with custom data; for example via the api or for tests.
+    These calculations can then be used outside of the class with custom data; for example via the api or for tests.
 
-```python
-from openbb_terminal.portfolio.portfolio_helper import get_gaintopain_ratio
+    ```python
+    from openbb_terminal.portfolio.portfolio_helper import get_gaintopain_ratio
 
-# Direct function access
-get_gaintopain_ratio(historical_trade_data, benchmark_trades, benchmark_returns)
-```
+    # Direct function access
+    get_gaintopain_ratio(historical_trade_data, benchmark_trades, benchmark_returns)
+    ```
 
-The function can be loaded in API factory as an endpoint and user can get result by passing the class instance.
+    The function can be loaded in API factory as an endpoint and user can get result by passing the class instance.
 
-```python
-from openbb_terminal.api import openbb
-from openbb_terminal.api import Portfolio
+    ```python
+    from openbb_terminal.api import openbb
+    from openbb_terminal.api import Portfolio
 
-transactions = Portfolio.read_orderbook("../../portfolio/holdings/example.csv")
-P = Portfolio(transactions)
-P.generate_portfolio_data()
-P.load_benchmark()
+    transactions = Portfolio.read_orderbook("../../portfolio/holdings/example.csv")
+    P = Portfolio(transactions)
+    P.generate_portfolio_data()
+    P.load_benchmark()
 
-# API endpoint access
-openbb.portfolio.gaintopain(P)
-```
+    # API endpoint access
+    openbb.portfolio.gaintopain(P)
+    ```
 
-<table>
-<tr>
-<td> Good code :white_check_mark: </td> <td> Bad code :x: </td>
-</tr>
-<tr>
-<td>
+    <table>
+    <tr>
+    <td> Good code :white_check_mark: </td> <td> Bad code :x: </td>
+    </tr>
+    <tr>
+    <td>
 
-```python
-def get_gaintopain_ratio(portfolio: PortfolioModel) -> pd.DataFrame:  
+    ```python
+    def get_gaintopain_ratio(portfolio: PortfolioModel) -> pd.DataFrame:  
 
-"""..."""   
+    """..."""   
 
-gtp_period_df = portfolio_helper.get_gaintopain_ratio(
-  portfolio.historical_trade_data, 
-  portfolio.benchmark_trades, 
-  portfolio.benchmark_returns)   
+    gtp_period_df = portfolio_helper.get_gaintopain_ratio(
+      portfolio.historical_trade_data, 
+      portfolio.benchmark_trades, 
+      portfolio.benchmark_returns)   
 
-return gtp_period_df
-```
+    return gtp_period_df
+    ```
 
-</td>
-<td>
+    </td>
+    <td>
 
-```python
-def get_gaintopain_ratio(self) -> pd.DataFrame:   
+    ```python
+    def get_gaintopain_ratio(self) -> pd.DataFrame:   
 
-"""..."""   
+    """..."""   
 
-vals = list()   
+    vals = list()   
 
-for period in portfolio_helper.PERIODS:             
-       port_rets = portfolio_helper.filter_df_by_period(self.returns, period)       
-       bench_rets =  portfolio_helper.filter_df_by_period(self.benchmark_returns, period)
+    for period in portfolio_helper.PERIODS:             
+           port_rets = portfolio_helper.filter_df_by_period(self.returns, period)       
+           bench_rets =  portfolio_helper.filter_df_by_period(self.benchmark_returns, period)
 
-...
-```
+    ...
+    ```
 
-</td>
-</tr>
-</table>
+    </td>
+    </tr>
+    </table>
 
-<br>
+    <br>
 
 6. Naming among related model and view functions should be obvious; just different prefix if possible
 
-- Why? Eases API factory mapping and keeps code clean.
+    - Why? Eases API factory mapping and keeps code clean.
 
-<table>
-<tr>
-<td> Good code :white_check_mark: </td> <td> Bad code :x: </td>
-</tr>
-<tr>
-<td>
+    <br>
+  
+    <table>
+    <tr>
+    <td> Good code :white_check_mark: </td> <td> Bad code :x: </td>
+    </tr>
+    <tr>
+    <td>
 
-```python
-# [fred_view.py]
+    ```python
+    # [fred_view.py]
 
-def display_yieldcurve(country: str):
+    def display_yieldcurve(country: str):
 
-      df = fred_model.get_yieldcurve(country)
+          df = fred_model.get_yieldcurve(country)
 
-      …
+          …
 
-# [fred_model.py]
+    # [fred_model.py]
 
-def get_yieldcurve(country: str) -> pd.Dataframe:
+    def get_yieldcurve(country: str) -> pd.Dataframe:
 
-      …
-```
+          …
+    ```
 
-</td>
-<td>
+    </td>
+    <td>
 
-```python
-# [fred_view.py]
+    ```python
+    # [fred_view.py]
 
-def display_bondscrv(country: str):
+    def display_bondscrv(country: str):
 
-      df = fred_model.get_yieldcurve(country)
+          df = fred_model.get_yieldcurve(country)
 
-      …
+          …
 
-# [fred_model.py]
+    # [fred_model.py]
 
-def get_yldcurve(country: str) -> pd.Dataframe:
+    def get_yldcurve(country: str) -> pd.Dataframe:
 
-      …
-```
+          …
+    ```
 
-</td>
-</tr>
-</table>
+    </td>
+    </tr>
+    </table>
 
-<br>
+    <br>
 
 ### File Specific Requirements
 
 1. No data altering in the view file or controller file (view and model with same args)
 
-- Why? Consistency and good code structure. This also improves the api user experience. Thus follows that view and model files will have the same arguments (except for output options like raw, export, external_axes), since no data changes shall be done in the view file.
+    - Why? Consistency and good code structure. This also improves the api user experience. Thus follows that view and model files will have the same arguments (except for output options like raw, export, external_axes), since no data changes shall be done in the view file.
 
-<br>
+    <br>
 
 2. Each model (get_) should almost always have its own view function (display_)
 
-- Why? To respect the principles laid out in Code Structure and the previous bullet point. If your code does not have this `get_` → `display_` map it’s likely that i. and/or ii. fail to hold.
+    - Why? To respect the principles laid out in Code Structure and the previous bullet point. If your code does not have this `get_` → `display_` map it’s likely that i. and/or ii. fail to hold.
 
-    i. Data is processed in _model files and displayed in `_view` files
+        i. Data is processed in _model files and displayed in `_view` files
 
-    ii. `_view` and `_model` files will have the same arguments (except for output options)
+        ii. `_view` and `_model` files will have the same arguments (except for output options)
 
-<br>
+    <br>
 
 ### Coding Style
 
