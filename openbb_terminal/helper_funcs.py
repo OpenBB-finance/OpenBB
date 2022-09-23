@@ -86,7 +86,7 @@ def set_user_data_folder(env_file: str = ".env", path_folder: str = ""):
     path_folder: str
         Path folder location
     """
-    dotenv.set_key(env_file, "OPENBB_USER_DATA_FOLDER_PATH", path_folder)
+    dotenv.set_key(env_file, "OPENBB_USER_DATA_DIRECTORY", path_folder)
     paths.USER_DATA_DIRECTORY = Path(path_folder)
 
 

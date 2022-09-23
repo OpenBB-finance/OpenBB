@@ -34,7 +34,7 @@ def create_files(list_files: List):
                 pass
 
 
-def copy_files(from_dir, to_dir):
+def copy_dir(from_dir, to_dir):
     """
     Copy default/example files from the repo
     to the user data folder"""
@@ -55,5 +55,4 @@ dirs_list = [
 dirs_files = [USER_ENV_FILE, REPOSITORY_ENV_FILE]
 create_paths(dirs_list)
 create_files(dirs_files)
-copy_files(REPOSITORY_DIRECTORY / "custom_imports", CUSTOM_IMPORTS_DIRECTORY)
-copy_files(REPOSITORY_DIRECTORY / "exports", USER_EXPORTS_DIRECTORY)
+
