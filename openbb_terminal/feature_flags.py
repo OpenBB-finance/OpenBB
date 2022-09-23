@@ -11,7 +11,7 @@ import i18n
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import USER_ENV_FILE, REPOSITORY_ENV_FILE
 
-# pylint: disable=no-member
+# pylint: disable=no-member,c-extension-no-member
 
 i18n_dict_location = (
     os.path.join(os.path.dirname(os.path.abspath(__file__)), "i18n")
