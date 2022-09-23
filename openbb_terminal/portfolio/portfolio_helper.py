@@ -21,6 +21,7 @@ logger = logging.getLogger(__name__)
 
 
 # pylint: disable=too-many-return-statements, too-many-lines, too-many-statements
+# pylint: disable=C0302
 
 
 now = datetime.now()
