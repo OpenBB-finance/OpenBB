@@ -1,7 +1,5 @@
-# alt.oss.search
-
 ## Get underlying data 
-###alt.oss.search(sortby: str = 'stars', page: int = 1, categories: str = '') -> pandas.core.frame.DataFrame
+### alt.oss.search(sortby: str = 'stars', page: int = 1, categories: str = '') -> pandas.core.frame.DataFrame
 
 Get repos sorted by stars or forks. Can be filtered by categories
 

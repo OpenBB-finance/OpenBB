@@ -1,9 +1,7 @@
-# crypto.ov.wfpe
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.ov.wfpe(symbol: str) -> List[Any]
+### crypto.ov.wfpe(symbol: str) -> List[Any]
 
 Scrapes coin withdrawal fees per exchange
     [Source: https://withdrawalfees.com/]
@@ -19,7 +17,7 @@ Scrapes coin withdrawal fees per exchange
         - pandas.DataFrame: Exchange, Withdrawal Fee, Minimum Withdrawal Amount
 
 ## Getting charts 
-###crypto.ov.wfpe(symbol: str, export: str = '', chart=True) -> None
+### crypto.ov.wfpe(symbol: str, export: str = '', chart=True) -> None
 
 Coin withdrawal fees per exchange
     [Source: https://withdrawalfees.com/]

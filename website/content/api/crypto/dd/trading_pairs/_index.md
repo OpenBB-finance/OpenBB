@@ -1,7 +1,5 @@
-# crypto.dd.trading_pairs
-
 ## Get underlying data 
-###crypto.dd.trading_pairs() -> List[dict]
+### crypto.dd.trading_pairs() -> List[dict]
 
 Helper method that return all trading pairs on binance. Methods ause this data for input for e.g
     building dataframe with all coins, or to build dict of all trading pairs. [Source: Binance]

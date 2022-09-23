@@ -1,9 +1,7 @@
-# portfolio.om
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###portfolio.om(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, threshold_start: float = 0, threshold_end: float = 1.5) -> pandas.core.frame.DataFrame
+### portfolio.om(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, threshold_start: float = 0, threshold_end: float = 1.5) -> pandas.core.frame.DataFrame
 
 Get omega ratio
 
@@ -21,7 +19,7 @@ Get omega ratio
 
 
 ## Getting charts 
-###portfolio.om(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, threshold_start: float = 0, threshold_end: float = 1.5, chart=True)
+### portfolio.om(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, threshold_start: float = 0, threshold_end: float = 1.5, chart=True)
 
 Display omega ratio
 

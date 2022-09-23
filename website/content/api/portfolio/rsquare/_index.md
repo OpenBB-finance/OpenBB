@@ -1,7 +1,5 @@
-# portfolio.rsquare
-
 ## Get underlying data 
-###portfolio.rsquare(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel) -> pandas.core.frame.DataFrame
+### portfolio.rsquare(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel) -> pandas.core.frame.DataFrame
 
 Class method that retrieves R2 Score for portfolio and benchmark selected
 

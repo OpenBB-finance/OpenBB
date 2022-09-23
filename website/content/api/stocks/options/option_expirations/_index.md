@@ -1,7 +1,5 @@
-# stocks.options.option_expirations
-
 ## Get underlying data 
-###stocks.options.option_expirations(symbol: str)
+### stocks.options.option_expirations(symbol: str)
 
 Get available expiration dates for given ticker
 

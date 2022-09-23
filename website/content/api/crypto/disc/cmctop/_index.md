@@ -1,9 +1,7 @@
-# crypto.disc.cmctop
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.disc.cmctop(sortby: str = 'CMC_Rank', ascend: bool = True) -> pandas.core.frame.DataFrame
+### crypto.disc.cmctop(sortby: str = 'CMC_Rank', ascend: bool = True) -> pandas.core.frame.DataFrame
 
 Shows top n coins. [Source: CoinMarketCap]
 
@@ -23,13 +21,13 @@ Shows top n coins. [Source: CoinMarketCap]
 
 
 ## Getting charts 
-###crypto.disc.cmctop(top: int = 15, sortby: str = 'CMC_Rank', ascend: bool = True, export: str = '', chart=True) -> None
+### crypto.disc.cmctop(limit: int = 15, sortby: str = 'CMC_Rank', ascend: bool = True, export: str = '', chart=True) -> None
 
 Shows top n coins. [Source: CoinMarketCap]
 
     Parameters
     ----------
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key to sort data. The table can be sorted by every of its columns. Refer to

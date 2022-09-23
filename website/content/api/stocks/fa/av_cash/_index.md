@@ -1,9 +1,7 @@
-# stocks.fa.av_cash
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.fa.av_cash(symbol: str, limit: int = 5, quarterly: bool = False, ratios: bool = False, plot: bool = False) -> pandas.core.frame.DataFrame
+### stocks.fa.av_cash(symbol: str, limit: int = 5, quarterly: bool = False, ratios: bool = False, plot: bool = False) -> pandas.core.frame.DataFrame
 
 Get cash flows for company
 
@@ -26,7 +24,7 @@ Get cash flows for company
         Dataframe of cash flow statements
 
 ## Getting charts 
-###stocks.fa.av_cash(symbol: str, limit: int = 5, quarterly: bool = False, ratios: bool = False, plot: list = None, export: str = '', chart=True)
+### stocks.fa.av_cash(symbol: str, limit: int = 5, quarterly: bool = False, ratios: bool = False, plot: list = None, export: str = '', chart=True)
 
 Alpha Vantage income statement
 

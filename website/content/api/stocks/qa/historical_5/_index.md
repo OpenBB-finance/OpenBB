@@ -1,7 +1,5 @@
-# stocks.qa.historical_5
-
 ## Get underlying data 
-###stocks.qa.historical_5(symbol: str) -> pandas.core.frame.DataFrame
+### stocks.qa.historical_5(symbol: str) -> pandas.core.frame.DataFrame
 
 Get 5 year monthly historical performance for a ticker with dividends filtered
 

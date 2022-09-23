@@ -1,7 +1,5 @@
-# economy.treasury_maturities
-
 ## Get underlying data 
-###economy.treasury_maturities() -> pandas.core.frame.DataFrame
+### economy.treasury_maturities() -> pandas.core.frame.DataFrame
 
 Get treasury maturity options [Source: EconDB]
 

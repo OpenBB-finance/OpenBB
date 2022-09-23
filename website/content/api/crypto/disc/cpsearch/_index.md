@@ -1,9 +1,7 @@
-# crypto.disc.cpsearch
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.disc.cpsearch(query: str, category: Optional[Any] = None, modifier: Optional[Any] = None, sortby: str = 'id', ascend: bool = True) -> pandas.core.frame.DataFrame
+### crypto.disc.cpsearch(query: str, category: Optional[Any] = None, modifier: Optional[Any] = None, sortby: str = 'id', ascend: bool = True) -> pandas.core.frame.DataFrame
 
 Search CoinPaprika. [Source: CoinPaprika]
 
@@ -31,7 +29,7 @@ Search CoinPaprika. [Source: CoinPaprika]
         Columns: Metric, Value
 
 ## Getting charts 
-###crypto.disc.cpsearch(query: str, category: str = 'all', top: int = 10, sortby: str = 'id', ascend: bool = True, export: str = '', chart=True) -> None
+### crypto.disc.cpsearch(query: str, category: str = 'all', limit: int = 10, sortby: str = 'id', ascend: bool = True, export: str = '', chart=True) -> None
 
 Search over CoinPaprika. [Source: CoinPaprika]
 
@@ -41,7 +39,7 @@ Search over CoinPaprika. [Source: CoinPaprika]
         Search query
     category: str
         Categories to search: currencies|exchanges|icos|people|tags|all. Default: all
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key to sort data. The table can be sorted by every of its columns. Refer to
