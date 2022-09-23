@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-from pathlib import Path
 from typing import List
 
 import pandas as pd
@@ -102,7 +101,7 @@ class PortfolioController(BaseController):
         self.DATA_HOLDINGS_FILES = {
             filepath.name: filepath
             for file_type in self.file_types
-            for filepath in Path(self.DEFAULT_HOLDINGS_PATH).rglob(f"*.{file_type}")
+            for filepath in self.DEFAULT_HOLDINGS_PATH.rglob(f"*.{file_type}")
             if filepath.is_file()
         }
 
@@ -143,7 +142,7 @@ class PortfolioController(BaseController):
         self.DATA_HOLDINGS_FILES = {
             filepath.name: filepath
             for file_type in self.file_types
-            for filepath in Path(self.DEFAULT_HOLDINGS_PATH).rglob(f"*.{file_type}")
+            for filepath in self.DEFAULT_HOLDINGS_PATH.rglob(f"*.{file_type}")
             if filepath.is_file()
         }
 
