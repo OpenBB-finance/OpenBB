@@ -341,7 +341,8 @@ class PortfolioController(BaseController):
             self.portfolio.generate_portfolio_data()
 
             # Add in the Risk-free rate
-            self.portfolio.set_risk_free_rate(ns_parser.risk_free_rate)
+            self.portfolio.set_risk_free_rate(ns_parser.risk_free_rate/100)
+            self.risk_free_rate = ns_parser.risk_free_rate/100
 
             # Load benchmark
             self.call_bench(["-b", "SPDR S&P 500 ETF Trust (SPY)"])
@@ -350,7 +351,7 @@ class PortfolioController(BaseController):
                 f"\n[bold][param]Portfolio:[/param][/bold] {self.portfolio_name}"
             )
             console.print(
-                f"[bold][param]Risk Free Rate:[/param][/bold] {self.portfolio.risk_free_rate}"
+                f"[bold][param]Risk Free Rate:[/param][/bold] {self.risk_free_rate:.2%}"
             )
             console.print(
                 f"[bold][param]Benchmark:[/param][/bold] {self.benchmark_name}\n"
