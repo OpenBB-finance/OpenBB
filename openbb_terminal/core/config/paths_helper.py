@@ -58,6 +58,10 @@ create_files(dirs_files)
 copy_files(REPOSITORY_DIRECTORY / "custom_imports", CUSTOM_IMPORTS_DIRECTORY)
 copy_files(REPOSITORY_DIRECTORY / "portfolio", PORTFOLIO_DATA_DIRECTORY)
 copy_files(
-    REPOSITORY_DIRECTORY / "portfolio" / "portfolio_analysis" / "portfolios",
+    REPOSITORY_DIRECTORY
+    / "openbb_terminal"
+    / "portfolio"
+    / "portfolio_analysis"
+    / "portfolios",
     PORTFOLIO_DATA_DIRECTORY / "portfolios",
 )
