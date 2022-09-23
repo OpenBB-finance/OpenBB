@@ -10,6 +10,7 @@ from openbb_terminal.core.config.paths import (
     REPOSITORY_ENV_FILE,
     CUSTOM_IMPORTS_DIRECTORY,
     REPOSITORY_DIRECTORY,
+    ROUTINES_DIRECTORY
 )
 
 
@@ -48,8 +49,10 @@ dirs_list = [
     USER_DATA_DIRECTORY / "styles",
     CUSTOM_IMPORTS_DIRECTORY,
     CUSTOM_IMPORTS_DIRECTORY / "econometrics",
+    ROUTINES_DIRECTORY
 ]
 dirs_files = [USER_ENV_FILE, REPOSITORY_ENV_FILE]
 create_paths(dirs_list)
 create_files(dirs_files)
 copy_files(REPOSITORY_DIRECTORY / "custom_imports", CUSTOM_IMPORTS_DIRECTORY)
+copy_files(REPOSITORY_DIRECTORY / "routines", ROUTINES_DIRECTORY)

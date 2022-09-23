@@ -26,6 +26,7 @@ from openbb_terminal.core.config.paths import (
     USER_ENV_FILE,
     REPOSITORY_ENV_FILE,
     HOME_DIRECTORY,
+    ROUTINES_DIRECTORY
 )
 from openbb_terminal.core.log.generation.path_tracking_file_handler import (
     PathTrackingFileHandler,
@@ -89,6 +90,7 @@ class TerminalController(BaseController):
     ]
 
     PATH = "/"
+    routine_files = [x.name for x in ROUTINES_DIRECTORY.iterdir() if x.suffix == ".openbb"]
     ROUTINE_CHOICES = {
         file: None
         for file in os.listdir(
@@ -485,11 +487,7 @@ class TerminalController(BaseController):
         if ns_parser_exe:
             if ns_parser_exe.path:
                 if ns_parser_exe.path in self.ROUTINE_CHOICES:
-                    path = os.path.join(
-                        os.path.abspath(os.path.dirname(__file__)),
-                        "routines",
-                        ns_parser_exe.path,
-                    )
+                    path = ROUTINES_DIRECTORY / ns_parser_exe.path
                 else:
                     path = ns_parser_exe.path
 
