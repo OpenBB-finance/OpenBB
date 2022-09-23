@@ -1,9 +1,7 @@
-# stocks.gov.contracts
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.gov.contracts(symbol: str, past_transaction_days: int = 10) -> pandas.core.frame.DataFrame
+### stocks.gov.contracts(symbol: str, past_transaction_days: int = 10) -> pandas.core.frame.DataFrame
 
 Get government contracts for ticker [Source: quiverquant.com]
 
@@ -20,7 +18,7 @@ Get government contracts for ticker [Source: quiverquant.com]
         Most recent transactions by members of U.S. Congress
 
 ## Getting charts 
-###stocks.gov.contracts(symbol: str, past_transaction_days: int = 10, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.gov.contracts(symbol: str, past_transaction_days: int = 10, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Show government contracts for ticker [Source: quiverquant.com]
 

@@ -1,7 +1,5 @@
-# stocks.options.price
-
 ## Get underlying data 
-###stocks.options.price(symbol: str) -> float
+### stocks.options.price(symbol: str) -> float
 
 Get current price for a given ticker
 

@@ -1,16 +1,16 @@
-     Rank         Name          Id                    Market          Last MultiAsset
-123   124   .BAAVET30M   BAAVET30M                    BitMEX    325.890000       None
-78     79       .BAVAX       BAVAX                    BitMEX     86.544000       None
-125   126    .BAXST30M    BAXST30M                    BitMEX    138.840000       None
-81     82    .BETHT30M    BETHT30M                    BitMEX   3218.977000       None
-132   133  .BMATICT30M  BMATICT30M                    BitMEX      1.909500       None
-139   140    .BSOLT30M    BSOLT30M                    BitMEX    205.217000       None
-59     60    .BSRMT30M    BSRMT30M                    BitMEX      7.583000       None
-153   154  .BSUSHIT30M  BSUSHIT30M                    BitMEX     12.475000       None
-142   143       .BTRXT       BTRXT                    BitMEX      0.101120      False
-97     98    .BVETT30M    BVETT30M                    BitMEX      0.137290       None
-61     62        .BXBT        BXBT            KuCoin Futures  43920.640000      False
-55     56        .BXBT        BXBT  Delta Exchange (Futures)   9088.680000      False
-158   159       .BXLMT       BXLMT                    BitMEX      0.366270      False
-105   106    .BXLMT30M    BXLMT30M                    BitMEX      0.370640       None
-143   144  .BXRPXBT30M  BXRPXBT30M                    BitMEX      0.000018      False
+     Rank         Name          Id                    Market         Last MultiAsset
+81     82        .BADA        BADA       BitMEX (Derivative)      0.44890      False
+49     50       .BADAT       BADAT       BitMEX (Derivative)      0.44883      False
+202   203       .BDOGE       BDOGE       BitMEX (Derivative)      0.05855      False
+8       9       .BEOST       BEOST       BitMEX (Derivative)      1.22222      False
+50     51      .BLINKT      BLINKT       BitMEX (Derivative)      6.87930       None
+125   126        .BOPT        BOPT       BitMEX (Derivative)      0.94240       None
+201   202        .BSOL        BSOL       BitMEX (Derivative)     31.78000       None
+102   103       .BTRXT       BTRXT       BitMEX (Derivative)      0.05965      False
+235   236        .BXBT        BXBT       BitMEX (Derivative)  18938.98000      False
+126   127        .BXRP        BXRP       BitMEX (Derivative)      0.42355       None
+56     57  .DEDYDXUSDT  DEDYDXUSDT  Delta Exchange (Futures)      1.23500       None
+210   211   .DEEOSUSDT   DEEOSUSDT  Delta Exchange (Futures)      1.22200       None
+35     36  .DEKAVAUSDT  DEKAVAUSDT  Delta Exchange (Futures)      1.49300       None
+208   209    .KGALUSDT    KGALUSDT            KuCoin Futures      2.54830      False
+32     33    .KYFIUSDT    KYFIUSDT            KuCoin Futures   8254.20000       None

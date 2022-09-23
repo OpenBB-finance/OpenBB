@@ -668,13 +668,13 @@ def get_wsb_community(limit: int = 10, new: bool = False) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_due_dilligence(
-    ticker: str, limit: int = 5, n_days: int = 3, show_all_flairs: bool = False
+    symbol: str, limit: int = 5, n_days: int = 3, show_all_flairs: bool = False
 ) -> pd.DataFrame:
     """Gets due diligence posts from list of subreddits [Source: reddit]
 
     Parameters
     ----------
-    ticker: str
+    symbol: str
         Stock ticker
     limit: int
         Number of posts to get
@@ -741,7 +741,7 @@ def get_due_dilligence(
     ]
 
     submissions = psaw_api.search_submissions(
-        after=int(n_ts_after), subreddit=l_sub_reddits_dd, q=ticker, filter=["id"]
+        after=int(n_ts_after), subreddit=l_sub_reddits_dd, q=symbol, filter=["id"]
     )
     n_flair_posts_found = 0
     columns = [

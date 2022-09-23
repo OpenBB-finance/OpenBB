@@ -953,8 +953,14 @@ functions = {
         "model": "openbb_terminal.economy.fred_model.get_yield_curve",
         "view": "openbb_terminal.economy.fred_view.display_yield_curve",
     },
+    "economy.get_events_countries": {
+        "model": "openbb_terminal.economy.investingcom_model.get_events_countries"
+    },
     "economy.events": {
         "model": "openbb_terminal.economy.investingcom_model.get_economic_calendar"
+    },
+    "economy.get_ycrv_countries": {
+        "model": "openbb_terminal.economy.investingcom_model.get_ycrv_countries"
     },
     "economy.ycrv": {
         "model": "openbb_terminal.economy.investingcom_model.get_yieldcurve",
@@ -1301,18 +1307,18 @@ functions = {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.additional_plots",
         "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.additional_plots",
     },
-    "stocks.bt.ema_cross": {
-        "model": "openbb_terminal.stocks.backtesting.bt_model.ema_cross_strategy",
-        "view": "openbb_terminal.stocks.backtesting.bt_view.display_ema_cross",
-    },
-    "stocks.bt.ema": {
-        "model": "openbb_terminal.stocks.backtesting.bt_model.ema_strategy",
-        "view": "openbb_terminal.stocks.backtesting.bt_view.display_simple_ema",
-    },
-    "stocks.bt.rsi": {
-        "model": "openbb_terminal.stocks.backtesting.bt_model.rsi_strategy",
-        "view": "openbb_terminal.stocks.backtesting.bt_view.display_rsi_strategy",
-    },
+    # "stocks.bt.ema_cross": {
+    #     "model": "openbb_terminal.stocks.backtesting.bt_model.ema_cross_strategy",
+    #     "view": "openbb_terminal.stocks.backtesting.bt_view.display_ema_cross",
+    # },
+    # "stocks.bt.ema": {
+    #     "model": "openbb_terminal.stocks.backtesting.bt_model.ema_strategy",
+    #     "view": "openbb_terminal.stocks.backtesting.bt_view.display_simple_ema",
+    # },
+    # "stocks.bt.rsi": {
+    #     "model": "openbb_terminal.stocks.backtesting.bt_model.rsi_strategy",
+    #     "view": "openbb_terminal.stocks.backtesting.bt_view.display_rsi_strategy",
+    # },
     "stocks.ba.cramer": {
         "model": "openbb_terminal.stocks.behavioural_analysis.cramer_model.get_cramer_daily"
     },

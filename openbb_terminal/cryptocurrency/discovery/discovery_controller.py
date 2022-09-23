@@ -491,7 +491,7 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             coinmarketcap_view.display_cmc_top_coins(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
                 export=ns_parser.export,
@@ -569,7 +569,7 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             coinpaprika_view.display_search_results(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
                 export=ns_parser.export,

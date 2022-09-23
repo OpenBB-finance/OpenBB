@@ -1,7 +1,5 @@
-# crypto.disc.gainers_or_losers
-
 ## Get underlying data 
-###crypto.disc.gainers_or_losers(limit: int = 20, interval: str = '1h', typ: str = 'gainers', sortby: str = 'market_cap') -> pandas.core.frame.DataFrame
+### crypto.disc.gainers_or_losers(limit: int = 20, interval: str = '1h', typ: str = 'gainers', sortby: str = 'market_cap') -> pandas.core.frame.DataFrame
 
 Returns data about top gainers - coins which gain the most in given period and
     top losers - coins that lost the most in given period of time. [Source: CoinGecko]

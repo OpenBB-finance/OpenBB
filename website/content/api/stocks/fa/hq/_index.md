@@ -1,7 +1,5 @@
-# stocks.fa.hq
-
 ## Get underlying data 
-###stocks.fa.hq(symbol: str) -> str
+### stocks.fa.hq(symbol: str) -> str
 
 Gets google map url for headquarter
 
