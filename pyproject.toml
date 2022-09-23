@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "OpenBBTerminal"
 version = "1.8.0"
-description = "Work In Prgress. Investment Research for Everyone, Anywhere."
+description = "Work In Progress. Investment Research for Everyone, Anywhere."
 authors = ["Didier Rodrigues Lopes"]
 readme = "openbb_terminal/API_README.md"
 license = "MIT"
@@ -10,7 +10,12 @@ repository = "https://github.com/OpenBB-finance/OpenBBTerminal"
 documentation = "https://openbb-finance.github.io/OpenBBTerminal/"
 packages = [
     { include = "openbb_terminal" },
+    { include = "terminal.py"}
 ]
+include = ["styles/default/*.mpfstyle.json", "styles/default/*.mplrc.json",
+            "styles/default/*.richstyle.json", "styles/default/*.mplstyle",
+            "portfolio/*/*.xlsx", "portfolio/*/*.csv", "routines/*.openbb",
+            "data_sources_default.json","i18n/en.yml"]
 
 [tool.poetry.scripts]
 openbb = 'terminal:terminal'
