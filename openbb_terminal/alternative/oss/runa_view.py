@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 def display_rossindex(
     limit: int = 10,
     sortby: str = "Stars AGR [%]",
-    descend: bool = False,
+    ascend: bool = False,
     show_chart: bool = False,
     show_growth: bool = True,
     chart_type: str = "stars",
@@ -40,7 +40,7 @@ def display_rossindex(
         Number of startups to search
     sortby: str
         Key by which to sort data. Default: Stars AGR [%]
-    descend: bool
+    ascend: bool
         Flag to sort data descending
     show_chart: bool
         Flag to show chart with startups
@@ -59,7 +59,7 @@ def display_rossindex(
         console.print("\nError in runa request\n")
     else:
         if sortby in runa_model.SORT_COLUMNS:
-            df = df.sort_values(by=sortby, ascending=descend)
+            df = df.sort_values(by=sortby, ascending=ascend)
         df = df.head(limit)
         if show_chart:
             if external_axes is None:

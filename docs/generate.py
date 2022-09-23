@@ -1,47 +1,16 @@
-from typing import Callable, Any, Optional, List, Dict
+from typing import Callable, Any, Optional, List, Tuple, Dict
 from inspect import signature
 import importlib
-import json
 import os
-import yaml
+from ruamel.yaml import YAML
 
 from openbb_terminal.api import functions
 
+# NOTE: The main.yml and documentation _index.md files are automaticallty overridden
+# every time this is ran. Folder level _index.md files are NOT overridden after creation
 
-class Item:
-    def __init__(self, name: str, ref: str):
-        self.name = name
-        self.ref = ref
-
-    def __hash__(self):
-        return hash((self.name, self.ref))
-
-    def __eq__(self, other):
-        return (self.name, self.ref) == (other.name, other.ref)
-
-    def __ne__(self, other):
-        return not (self == other)
-
-    def __repr__(self):
-        return f"{self.name}"
-
-
-def employee_representer(dumper: yaml.SafeDumper, item: Item) -> yaml.nodes.MappingNode:
-    """Represent an employee instance as a YAML mapping node."""
-    return dumper.represent_mapping(
-        f"{item.name}",
-        {
-            "name": item.name,
-            "ref": item.ref,
-        },
-    )
-
-
-def get_dumper():
-    """Add representers to a YAML seriailizer."""
-    safe_dumper = yaml.SafeDumper
-    safe_dumper.add_representer(Item, employee_representer)
-    return safe_dumper
+yaml = YAML()
+yaml.indent(mapping=2, sequence=4, offset=2)
 
 
 def all_functions() -> List[Tuple[str, str, Callable[..., Any]]]:
@@ -64,7 +33,7 @@ def all_functions() -> List[Tuple[str, str, Callable[..., Any]]]:
     return func_list
 
 
-def groupby(orig_list: List[Any], index: int) -> dict[Any, Any]:
+def groupby(orig_list: List[Any], index: int) -> Dict[Any, Any]:
     """Groups a list of iterable by the index provided
 
     Parameters
@@ -122,50 +91,122 @@ def generate_documentation(
             f.write(f"{v_docs}\n")
 
 
-def generate_dict(values: list[tuple[str, str, Callable[..., Any]]]):
-    final_dict: dict[Item, Any] = {}
-    for func_path, _, _ in values:
-        whole_path = func_path.split(".")
-        first = whole_path[0]
-        partial_p_str = whole_path[whole_path.index(first) - 1]
-        partial_path = partial_p_str.split(".")
-        first_obj = Item(first, "api/" + "/".join(partial_path))
-        if first not in final_dict:
-            final_dict[first_obj] = {}
-        temp_ref = final_dict[first_obj]
-        for item in whole_path[1:]:
-            partial_p_str = whole_path[whole_path.index(item) - 1]
-            partial_path = partial_p_str.split(".")
-            item_object = Item(item, "api/" + "/".join(partial_path))
-            if item_object not in temp_ref:
-                temp_ref[item_object] = {}
-            temp_ref = temp_ref[item_object]
-        temp_ref["ref"] = "api/" + "/".join(whole_path)
+def find_line(path: str, to_match: str) -> int:
+    """Returns the file line of a string based on given file path"""
+    with open(path) as file:
+        for i, line in enumerate(file):
+            if to_match in line:
+                return i
+    return -1
 
+
+def delete_lines(path: str, start: int):
+    """Deletes all file lines after a given number"""
+
+    with open(path, "r+") as file:
+        lines = file.readlines()
+        file.seek(0)
+        file.truncate()
+
+        for i, line in enumerate(lines):
+            if i <= start:
+                file.write(line)
+
+
+def delete_line(path: str, to_delete: int):
+    """Deletes single file lines after a given number"""
+
+    with open(path, "r+") as file:
+        lines = file.readlines()
+        file.seek(0)
+        file.truncate()
+
+        for i, line in enumerate(lines):
+            if i != to_delete:
+                file.write(line)
+
+
+def crawl_folders(path: str):
+    """Crawls created folders to get a list of what has been created"""
+    target = "website/content/"
+    results = os.walk(path)
+    new_list = []
+    for item in list(results):
+        if item[1]:
+            new_item = list(item[:2])
+            loc = item[0]
+            new_item[0] = loc[loc.index(target) + len(target) :]
+            new_list.append(new_item)
+    return new_list
+
+
+def filter_dict(sub_dict, target: str):
+    return sub_dict["name"] == target
+
+
+def set_items(the_dict, path: str, subs):
+    """Sets the sub items inside dictionaries"""
+    temp_loc = the_dict["subs"]
+    new_path = path[4:]
+    for sub_path in new_path.split("/"):
+        # pylint: disable=cell-var-from-loop
+        if "subs" in temp_loc:
+            temp_filter = filter(lambda x: filter_dict(x, sub_path), temp_loc["subs"])
+        else:
+            temp_filter = filter(lambda x: filter_dict(x, sub_path), temp_loc)
+        temp_loc = list(temp_filter)[0]
+    temp_loc["subs"] = []
+    for sub in subs:
+        temp_loc["subs"].append({"name": sub, "ref": f"/{path}/{sub}"})
+    return the_dict
+
+
+def generate_dict(paths: List):
+    """Generates the dictionary that will be saved as YAML"""
+    final_dict: Dict[str, Any] = {}
+    added_paths = []
+    for path, subs in paths:
+        if not final_dict and path == "api":
+            final_dict = {"name": "api", "ref": "/api", "subs": []}
+            for sub in subs:
+                final_dict["subs"].append({"name": sub, "ref": f"/{path}/{sub}"})
+            added_paths.append("api")
+        if path not in added_paths:
+            final_dict = set_items(final_dict, path, subs)
+            added_paths.append(path)
     return final_dict
 
 
-def generate_output(the_dict: dict[str, Any]):
-    for key, value in the_dict.items():
-        print(key)
-        print(value)
+def folder_documentation(path: str):
+    name = path.split("/")[-1]
+    local_path = os.path.realpath(f"./website/content/{path}")
+    full_path = local_path + "/_index.md"
+    if not os.path.exists(full_path):
+        with open(full_path, "w") as f:
+            f.write(f"---\ntitle: {name}\n")
+            f.write('keywords: ""\nexcerpt: ""\n')
+            f.write("geekdocCollapseSection: true\n")
+            f.write("---\n")
 
 
 if __name__ == "__main__":
     folder_path = os.path.realpath("./website/content/api")
-    main_path = os.path.realpath("./website/data/menu/main.yml")
+    target_path = os.path.realpath("./website/data/menu/main.yml")
+    main_path = os.path.realpath("./website/content/api")
+    folder_list = crawl_folders(main_path)
+    for folder_path in [x[0] for x in folder_list]:
+        folder_documentation(folder_path)
     funcs = all_functions()
     grouped_funcs = groupby(funcs, 0)
+    # Create the documentation files
     for k, v in grouped_funcs.items():
         # generate_documentation(folder_path, k, v)
         pass
-    func_dict = generate_dict(funcs)
-    with open(r'test.yaml', 'w') as file:
-        documents = yaml.dump(func_dict, file)
-    print(func_dict)
-    # print(yaml.dump(func_dict))
-    with open(main_path) as f:
-        dataMap = yaml.safe_load(f)
-    # print(json.dumps(dataMap, sort_keys=True, indent=4, separators=(",", ": ")))
-    # print(yaml.dump(func_dict, Dumper=get_dumper()))
-    # generate_output(func_dict)
+    # Delete our old entry to main.yaml
+    start_line = find_line(target_path, "# CODE BELOW THIS WILL BE DELETED FREQUENTLY")
+    delete_lines(target_path, start_line)
+    # Add our new entry to main.yaml
+    folders_dict = generate_dict(folder_list)
+    with open(target_path, "a") as fp:
+        yaml.dump({"ignore": [folders_dict]}, fp)
+    delete_line(target_path, start_line + 1)
