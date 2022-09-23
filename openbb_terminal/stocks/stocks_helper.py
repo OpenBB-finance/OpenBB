@@ -1050,8 +1050,6 @@ def show_codes_polygon(ticker: str):
     r_json = r_json["results"]
     cols = ["cik", "composite_figi", "share_class_figi", "sic_code"]
     vals = [r_json[col] for col in cols]
-    df = pd.DataFrame({"codes": [c.upper() for c in cols], "vals": vals})
-    df.codes = df.codes.apply(lambda x: x.replace("_", " "))
     polyon_df = pd.DataFrame({"codes": [c.upper() for c in cols], "vals": vals})
     polyon_df.codes = polyon_df.codes.apply(lambda x: x.replace("_", " "))
     print_rich_table(
