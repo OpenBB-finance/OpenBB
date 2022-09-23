@@ -9,7 +9,8 @@ from datetime import datetime
 from typing import List
 
 import pandas as pd
-from prompt_toolkit.completion import NestedCompleter
+
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common.technical_analysis import (

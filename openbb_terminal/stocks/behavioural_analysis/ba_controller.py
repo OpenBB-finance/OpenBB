@@ -7,7 +7,8 @@ from datetime import datetime, timedelta
 from typing import List
 
 import yfinance as yf
-from prompt_toolkit.completion import NestedCompleter
+
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common.behavioural_analysis import (

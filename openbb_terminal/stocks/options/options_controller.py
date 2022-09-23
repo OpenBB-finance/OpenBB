@@ -8,7 +8,8 @@ from datetime import datetime, timedelta
 from typing import Any, List
 
 import pandas as pd
-from prompt_toolkit.completion import NestedCompleter
+
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.config_terminal import TRADIER_TOKEN
