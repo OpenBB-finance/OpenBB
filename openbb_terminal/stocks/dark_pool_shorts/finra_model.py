@@ -255,39 +255,40 @@ def getATSdata(limit: int = 1000, tier_ats: str = "T1") -> Tuple[pd.DataFrame, D
             df_ats_week = pd.DataFrame(l_data)
             df_ats_week["weekStartDate"] = d_week["weekStartDate"]
 
+            d_ats_reg = {}
+
             if not df_ats_week.empty:
+                # df_ats_week["weekStartDate"] = d_week["weekStartDate"]
                 # df_ats = df_ats.append(df_ats_week, ignore_index=True)
                 df_ats = pd.concat([df_ats, df_ats_week], ignore_index=True)
 
-    df_ats = df_ats.sort_values("weekStartDate")
-    df_ats["weekStartDateInt"] = pd.to_datetime(df_ats["weekStartDate"]).apply(
-        lambda x: x.timestamp()
-    )
+                df_ats = df_ats.sort_values("weekStartDate")
+                df_ats["weekStartDateInt"] = pd.to_datetime(
+                    df_ats["weekStartDate"]
+                ).apply(lambda x: x.timestamp())
+                console.print(f"Processing regression on {limit} promising tickers ...")
 
-    console.print(f"Processing regression on {limit} promising tickers ...")
-
-    d_ats_reg = {}
-    # set(df_ats['issueSymbolIdentifier'].values) this would be iterating through all tickers
-    # but that is extremely time consuming for little reward. A little filtering is done to
-    # speed up search for best ATS tickers
-    for symbol in list(
-        df_ats.groupby("issueSymbolIdentifier")["totalWeeklyShareQuantity"]
-        .sum()
-        .sort_values()[-limit:]
-        .index
-    ):
-        try:
-            slope = stats.linregress(
-                df_ats[df_ats["issueSymbolIdentifier"] == symbol][
-                    "weekStartDateInt"
-                ].values,
-                df_ats[df_ats["issueSymbolIdentifier"] == symbol][
-                    "totalWeeklyShareQuantity"
-                ].values,
-            )[0]
-            d_ats_reg[symbol] = slope
-        except Exception:  # nosec B110
-            pass
+                # set(df_ats['issueSymbolIdentifier'].values) this would be iterating through all tickers
+                # but that is extremely time consuming for little reward. A little filtering is done to
+                # speed up search for best ATS tickers
+                for symbol in list(
+                    df_ats.groupby("issueSymbolIdentifier")["totalWeeklyShareQuantity"]
+                    .sum()
+                    .sort_values()[-limit:]
+                    .index
+                ):
+                    try:
+                        slope = stats.linregress(
+                            df_ats[df_ats["issueSymbolIdentifier"] == symbol][
+                                "weekStartDateInt"
+                            ].values,
+                            df_ats[df_ats["issueSymbolIdentifier"] == symbol][
+                                "totalWeeklyShareQuantity"
+                            ].values,
+                        )[0]
+                        d_ats_reg[symbol] = slope
+                    except Exception:  # nosec B110
+                        pass
 
     return df_ats, d_ats_reg
 
