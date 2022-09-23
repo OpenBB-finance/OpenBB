@@ -213,7 +213,7 @@ def darkpool_otc(
     # TODO: Improve command logic to be faster and more useful
     df_ats, d_ats_reg = finra_model.getATSdata(input_limit, tier)
 
-    if not df_ats.empty and not d_ats_reg.empty:
+    if not df_ats.empty and d_ats_reg:
 
         symbols = list(
             dict(
