@@ -1686,20 +1686,20 @@ main:
 # CODE BELOW THIS WILL BE DELETED FREQUENTLY BY PYTHON, DO NOT EDIT THIS
   - name: api
     ref: /api
-    subs:
+    sub:
       - name: crypto
         ref: /api/crypto
-        subs:
+        sub:
           - name: tools
             ref: /api/crypto/tools
-            subs:
+            sub:
               - name: apy
                 ref: /api/crypto/tools/apy
               - name: il
                 ref: /api/crypto/tools/il
           - name: onchain
             ref: /api/crypto/onchain
-            subs:
+            sub:
               - name: top
                 ref: /api/crypto/onchain/top
               - name: ttcp
@@ -1746,14 +1746,14 @@ main:
                 ref: /api/crypto/onchain/erc20_tokens
           - name: nft
             ref: /api/crypto/nft
-            subs:
+            sub:
               - name: stats
                 ref: /api/crypto/nft/stats
           - name: chart
             ref: /api/crypto/chart
           - name: ov
             ref: /api/crypto/ov
-            subs:
+            sub:
               - name: crypto_hacks
                 ref: /api/crypto/ov/crypto_hacks
               - name: cgderivatives
@@ -1822,7 +1822,7 @@ main:
             ref: /api/crypto/candles
           - name: disc
             ref: /api/crypto/disc
-            subs:
+            sub:
               - name: cpsearch
                 ref: /api/crypto/disc/cpsearch
               - name: coins_for_given_exchange
@@ -1853,7 +1853,7 @@ main:
                 ref: /api/crypto/disc/top_games
           - name: dd
             ref: /api/crypto/dd
-            subs:
+            sub:
               - name: cbbook
                 ref: /api/crypto/dd/cbbook
               - name: twitter
@@ -1948,7 +1948,7 @@ main:
             ref: /api/crypto/find
           - name: defi
             ref: /api/crypto/defi
-            subs:
+            sub:
               - name: sratio
                 ref: /api/crypto/defi/sratio
               - name: gacc
@@ -1995,7 +1995,7 @@ main:
                 ref: /api/crypto/defi/aterra
       - name: economy
         ref: /api/economy
-        subs:
+        sub:
           - name: gdpc
             ref: /api/economy/gdpc
           - name: gdp
@@ -2066,7 +2066,7 @@ main:
             ref: /api/economy/fred_ids
       - name: forex
         ref: /api/forex
-        subs:
+        sub:
           - name: quote
             ref: /api/forex/quote
           - name: candle
@@ -2077,7 +2077,7 @@ main:
             ref: /api/forex/load
           - name: oanda
             ref: /api/forex/oanda
-            subs:
+            sub:
               - name: fwd
                 ref: /api/forex/oanda/fwd
               - name: order
@@ -2110,7 +2110,7 @@ main:
             ref: /api/forex/hist
       - name: econometrics
         ref: /api/econometrics
-        subs:
+        sub:
           - name: options
             ref: /api/econometrics/options
           - name: panel
@@ -2151,10 +2151,10 @@ main:
             ref: /api/econometrics/ols
       - name: stocks
         ref: /api/stocks
-        subs:
+        sub:
           - name: options
             ref: /api/stocks/options
-            subs:
+            sub:
               - name: vsurf
                 ref: /api/stocks/options/vsurf
               - name: pcr
@@ -2165,7 +2165,7 @@ main:
                 ref: /api/stocks/options/chains_yf
               - name: hedge
                 ref: /api/stocks/options/hedge
-                subs:
+                sub:
                   - name: add_hedge_option
                     ref: /api/stocks/options/hedge/add_hedge_option
                   - name: calc_vega
@@ -2198,7 +2198,7 @@ main:
                 ref: /api/stocks/options/grhist
               - name: screen
                 ref: /api/stocks/options/screen
-                subs:
+                sub:
                   - name: screener_output
                     ref: /api/stocks/options/screen/screener_output
                   - name: check_presets
@@ -2221,7 +2221,7 @@ main:
                 ref: /api/stocks/options/x_values
           - name: screener
             ref: /api/stocks/screener
-            subs:
+            sub:
               - name: historical
                 ref: /api/stocks/screener/historical
               - name: screener_data
@@ -2232,7 +2232,7 @@ main:
             ref: /api/stocks/candle
           - name: sia
             ref: /api/stocks/sia
-            subs:
+            sub:
               - name: sectors
                 ref: /api/stocks/sia/sectors
               - name: filter_stocks
@@ -2257,7 +2257,7 @@ main:
                 ref: /api/stocks/sia/cpcs
           - name: ca
             ref: /api/stocks/ca
-            subs:
+            sub:
               - name: scorr
                 ref: /api/stocks/ca/scorr
               - name: polygon_peers
@@ -2284,7 +2284,7 @@ main:
                 ref: /api/stocks/ca/hcorr
           - name: qa
             ref: /api/stocks/qa
-            subs:
+            sub:
               - name: capm_information
                 ref: /api/stocks/qa/capm_information
               - name: historical_5
@@ -2293,7 +2293,7 @@ main:
                 ref: /api/stocks/qa/fama_raw
           - name: dps
             ref: /api/stocks/dps
-            subs:
+            sub:
               - name: prom
                 ref: /api/stocks/dps/prom
               - name: ftd
@@ -2322,7 +2322,7 @@ main:
             ref: /api/stocks/search
           - name: ins
             ref: /api/stocks/ins
-            subs:
+            sub:
               - name: lins
                 ref: /api/stocks/ins/lins
               - name: print_insider_data
@@ -2333,7 +2333,7 @@ main:
             ref: /api/stocks/load
           - name: ba
             ref: /api/stocks/ba
-            subs:
+            sub:
               - name: wsb
                 ref: /api/stocks/ba/wsb
               - name: cnews
@@ -2386,7 +2386,7 @@ main:
                 ref: /api/stocks/ba/watchlist
           - name: bt
             ref: /api/stocks/bt
-            subs:
+            sub:
               - name: ema
                 ref: /api/stocks/bt/ema
               - name: rsi
@@ -2395,7 +2395,7 @@ main:
                 ref: /api/stocks/bt/ema_cross
           - name: disc
             ref: /api/stocks/disc
-            subs:
+            sub:
               - name: ford
                 ref: /api/stocks/disc/ford
               - name: asc
@@ -2436,7 +2436,7 @@ main:
                 ref: /api/stocks/disc/fipo
           - name: dd
             ref: /api/stocks/dd
-            subs:
+            sub:
               - name: rot
                 ref: /api/stocks/dd/rot
               - name: rating
@@ -2459,7 +2459,7 @@ main:
                 ref: /api/stocks/dd/customer
           - name: fa
             ref: /api/stocks/fa
-            subs:
+            sub:
               - name: mgmt
                 ref: /api/stocks/fa/mgmt
               - name: av_income
@@ -2538,7 +2538,7 @@ main:
             ref: /api/stocks/process_candle
           - name: ta
             ref: /api/stocks/ta
-            subs:
+            sub:
               - name: recom
                 ref: /api/stocks/ta/recom
               - name: view
@@ -2547,7 +2547,7 @@ main:
                 ref: /api/stocks/ta/summary
           - name: th
             ref: /api/stocks/th
-            subs:
+            sub:
               - name: exchange
                 ref: /api/stocks/th/exchange
               - name: check_if_open
@@ -2560,7 +2560,7 @@ main:
                 ref: /api/stocks/th/open
           - name: gov
             ref: /api/stocks/gov
-            subs:
+            sub:
               - name: topbuys
                 ref: /api/stocks/gov/topbuys
               - name: lobbying
@@ -2585,17 +2585,17 @@ main:
                 ref: /api/stocks/gov/qtrcontracts
       - name: common
         ref: /api/common
-        subs:
+        sub:
           - name: behavioural_analysis
             ref: /api/common/behavioural_analysis
-            subs:
+            sub:
               - name: sentiment_stats
                 ref: /api/common/behavioural_analysis/sentiment_stats
               - name: sentiment
                 ref: /api/common/behavioural_analysis/sentiment
           - name: qa
             ref: /api/common/qa
-            subs:
+            sub:
               - name: skew
                 ref: /api/common/qa/skew
               - name: bw
@@ -2632,7 +2632,7 @@ main:
             ref: /api/common/news
           - name: ta
             ref: /api/common/ta
-            subs:
+            sub:
               - name: ema
                 ref: /api/common/ta/ema
               - name: obv
@@ -2679,7 +2679,7 @@ main:
                 ref: /api/common/ta/cci
       - name: portfolio
         ref: /api/portfolio
-        subs:
+        sub:
           - name: dret
             ref: /api/portfolio/dret
           - name: skew
@@ -2720,7 +2720,7 @@ main:
             ref: /api/portfolio/kurtosis
           - name: po
             ref: /api/portfolio/po
-            subs:
+            sub:
               - name: plot
                 ref: /api/portfolio/po/plot
               - name: maxdecorr
@@ -2795,7 +2795,7 @@ main:
             ref: /api/portfolio/holdv
       - name: etf
         ref: /api/etf
-        subs:
+        sub:
           - name: ld
             ref: /api/etf/ld
           - name: candle
@@ -2804,7 +2804,7 @@ main:
             ref: /api/etf/weights
           - name: scr
             ref: /api/etf/scr
-            subs:
+            sub:
               - name: screen
                 ref: /api/etf/scr/screen
           - name: holdings
@@ -2817,7 +2817,7 @@ main:
             ref: /api/etf/news
           - name: disc
             ref: /api/etf/disc
-            subs:
+            sub:
               - name: mover
                 ref: /api/etf/disc/mover
           - name: symbols
@@ -2832,7 +2832,7 @@ main:
             ref: /api/etf/summary
       - name: funds
         ref: /api/funds
-        subs:
+        sub:
           - name: search
             ref: /api/funds/search
           - name: info
@@ -2841,10 +2841,10 @@ main:
             ref: /api/funds/overview
       - name: alt
         ref: /api/alt
-        subs:
+        sub:
           - name: oss
             ref: /api/alt/oss
-            subs:
+            sub:
               - name: top
                 ref: /api/alt/oss/top
               - name: top_repos
@@ -2871,7 +2871,7 @@ main:
                 ref: /api/alt/oss/ross
           - name: covid
             ref: /api/alt/covid
-            subs:
+            sub:
               - name: slopes
                 ref: /api/alt/covid/slopes
               - name: global_deaths

@@ -146,18 +146,18 @@ def filter_dict(sub_dict, target: str):
 
 def set_items(the_dict, path: str, subs):
     """Sets the sub items inside dictionaries"""
-    temp_loc = the_dict["subs"]
+    temp_loc = the_dict["sub"]
     new_path = path[4:]
     for sub_path in new_path.split("/"):
         # pylint: disable=cell-var-from-loop
-        if "subs" in temp_loc:
-            temp_filter = filter(lambda x: filter_dict(x, sub_path), temp_loc["subs"])
+        if "sub" in temp_loc:
+            temp_filter = filter(lambda x: filter_dict(x, sub_path), temp_loc["sub"])
         else:
             temp_filter = filter(lambda x: filter_dict(x, sub_path), temp_loc)
         temp_loc = list(temp_filter)[0]
-    temp_loc["subs"] = []
+    temp_loc["sub"] = []
     for sub in subs:
-        temp_loc["subs"].append({"name": sub, "ref": f"/{path}/{sub}"})
+        temp_loc["sub"].append({"name": sub, "ref": f"/{path}/{sub}"})
     return the_dict
 
 
@@ -167,9 +167,9 @@ def generate_dict(paths: List):
     added_paths = []
     for path, subs in paths:
         if not final_dict and path == "api":
-            final_dict = {"name": "api", "ref": "/api", "subs": []}
+            final_dict = {"name": "api", "ref": "/api", "sub": []}
             for sub in subs:
-                final_dict["subs"].append({"name": sub, "ref": f"/{path}/{sub}"})
+                final_dict["sub"].append({"name": sub, "ref": f"/{path}/{sub}"})
             added_paths.append("api")
         if path not in added_paths:
             final_dict = set_items(final_dict, path, subs)
