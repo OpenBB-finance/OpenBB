@@ -1,9 +1,7 @@
-# common.ta.rsi
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###common.ta.rsi(values: pandas.core.series.Series, window: int = 14, scalar: float = 100, drift: int = 1) -> pandas.core.frame.DataFrame
+### common.ta.rsi(values: pandas.core.series.Series, window: int = 14, scalar: float = 100, drift: int = 1) -> pandas.core.frame.DataFrame
 
 Relative strength index
 
@@ -24,7 +22,7 @@ Relative strength index
         Dataframe of technical indicator
 
 ## Getting charts 
-###common.ta.rsi(data: pandas.core.series.Series, window: int = 14, scalar: float = 100.0, drift: int = 1, symbol: str = '', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### common.ta.rsi(data: pandas.core.series.Series, window: int = 14, scalar: float = 100.0, drift: int = 1, symbol: str = '', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display RSI Indicator
 

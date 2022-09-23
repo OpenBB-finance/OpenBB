@@ -1,9 +1,7 @@
-# stocks.ca.income
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.ca.income(similar: List[str], timeframe: str = '2021', quarter: bool = False)
+### stocks.ca.income(similar: List[str], timeframe: str = '2021', quarter: bool = False)
 
 Get income data. [Source: Marketwatch]
 
@@ -21,7 +19,7 @@ Get income data. [Source: Marketwatch]
         Format to export data
 
 ## Getting charts 
-###stocks.ca.income(symbols: List[str], timeframe: str = '2021', quarter: bool = False, export: str = '', chart=True)
+### stocks.ca.income(symbols: List[str], timeframe: str = '2021', quarter: bool = False, export: str = '', chart=True)
 
 Display income data. [Source: Marketwatch]
 

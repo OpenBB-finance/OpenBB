@@ -1,9 +1,7 @@
-# crypto.defi.stats
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.defi.stats() -> pandas.core.frame.DataFrame
+### crypto.defi.stats() -> pandas.core.frame.DataFrame
 
 Get base statistics about Uniswap DEX. [Source: https://thegraph.com/en/]
 
@@ -22,7 +20,7 @@ Get base statistics about Uniswap DEX. [Source: https://thegraph.com/en/]
         Uniswap DEX statistics like liquidity, volume, number of pairs, number of transactions.
 
 ## Getting charts 
-###crypto.defi.stats(export: str = '', chart=True) -> None
+### crypto.defi.stats(export: str = '', chart=True) -> None
 
 Displays base statistics about Uniswap DEX. [Source: https://thegraph.com/en/]
     [Source: https://thegraph.com/en/]

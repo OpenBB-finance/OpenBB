@@ -1,7 +1,5 @@
-# economy.currencies
-
 ## Get underlying data 
-###economy.currencies() -> pandas.core.frame.DataFrame
+### economy.currencies() -> pandas.core.frame.DataFrame
 
 Scrape data for global currencies
 

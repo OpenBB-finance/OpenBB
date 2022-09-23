@@ -1,9 +1,7 @@
-# funds.overview
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###funds.overview(country: str = 'united states', limit: int = 20) -> pandas.core.frame.DataFrame
+### funds.overview(country: str = 'united states', limit: int = 20) -> pandas.core.frame.DataFrame
 
 
 
@@ -20,7 +18,7 @@ To obtain charts, make sure to add `chart=True` as the last parameter
         Dataframe containing overview
 
 ## Getting charts 
-###funds.overview(country: str = 'united states', limit: int = 10, export: str = '', chart=True)
+### funds.overview(country: str = 'united states', limit: int = 10, export: str = '', chart=True)
 
 Displays an overview of the main funds from a country.
 

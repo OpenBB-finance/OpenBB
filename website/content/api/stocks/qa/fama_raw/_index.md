@@ -1,7 +1,5 @@
-# stocks.qa.fama_raw
-
 ## Get underlying data 
-###stocks.qa.fama_raw() -> pandas.core.frame.DataFrame
+### stocks.qa.fama_raw() -> pandas.core.frame.DataFrame
 
 Gets base Fama French data to calculate risk
 

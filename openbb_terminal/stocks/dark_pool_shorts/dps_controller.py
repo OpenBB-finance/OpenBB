@@ -147,7 +147,7 @@ class DarkPoolShortsController(StockBaseController):
         )
         if ns_parser:
             ibkr_view.display_cost_to_borrow(
-                num_stocks=ns_parser.number,
+                limit=ns_parser.number,
                 export=ns_parser.export,
             )
 
@@ -229,7 +229,7 @@ class DarkPoolShortsController(StockBaseController):
         if ns_parser:
             finra_view.darkpool_otc(
                 input_limit=ns_parser.n_num,
-                promising=ns_parser.limit,
+                limit=ns_parser.limit,
                 tier=ns_parser.tier,
                 export=ns_parser.export,
             )
