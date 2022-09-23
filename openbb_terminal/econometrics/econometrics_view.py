@@ -367,11 +367,6 @@ def display_cointegration_test(
         External axes to plot on
     """
 
-    if isinstance(datasets, pd.DataFrame):
-        new_datasets = {}
-        for column in datasets.columns:
-            new_datasets[column] = datasets[column]
-
     pairs = list(combinations(datasets.keys(), 2))
     result: Dict[str, list] = {}
     z_values: Dict[str, pd.Series] = {}
