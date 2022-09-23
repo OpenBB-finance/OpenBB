@@ -1272,11 +1272,12 @@ def display_all_coins(
 
 def plot_chart(
     prices_df: pd.DataFrame,
-    symbol: str = "",
-    currency: str = "",
+    to_symbol: str = "",
+    from_symbol: str = "",
     source: str = "",
     exchange: str = "",
-    interval: str = "",  # pylint: disable=unused-argument
+    interval: str = "",
+    external_axes: list[plt.Axes] | None = None,
 ) -> None:
     """Load data for Technical Analysis
 
@@ -1284,11 +1285,12 @@ def plot_chart(
     ----------
     prices_df: pd.DataFrame
         Cryptocurrency
-    symbol: str
+    to_symbol: str
         Coin (only used for chart title), by default ""
-    currency: str
+    from_symbol: str
         Currency (only used for chart title), by default ""
     """
+    del interval
 
     if prices_df.empty:
         console.print("There is not data to plot chart\n")
@@ -1296,7 +1298,8 @@ def plot_chart(
 
     exchange_str = f"/{exchange}" if source == "ccxt" else ""
     title = (
-        f"{source}{exchange_str} - {symbol.upper()}/{currency.upper()} from {prices_df.index[0].strftime('%Y/%m/%d')} "
+        f"{source}{exchange_str} - {to_symbol.upper()}/{from_symbol.upper()}"
+        f" from {prices_df.index[0].strftime('%Y/%m/%d')} "
         f"to {prices_df.index[-1].strftime('%Y/%m/%d')}"
     )
 
@@ -1309,6 +1312,7 @@ def plot_chart(
         title=title,
         volume=True,
         ylabel="Volume [1M]" if volume_mean > 1_000_000 else "Volume",
+        external_axes=external_axes,
     )
 
     console.print("")

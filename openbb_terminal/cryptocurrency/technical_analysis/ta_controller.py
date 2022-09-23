@@ -203,7 +203,7 @@ class TechnicalAnalysisController(CryptoBaseController):
             overlap_view.view_ma(
                 ma_type="EMA",
                 symbol=self.coin,
-                series=self.stock["Adj Close"],
+                data=self.stock["Adj Close"],
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -255,7 +255,7 @@ class TechnicalAnalysisController(CryptoBaseController):
             overlap_view.view_ma(
                 ma_type="SMA",
                 symbol=self.coin,
-                series=self.stock["Adj Close"],
+                data=self.stock["Adj Close"],
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -304,7 +304,7 @@ class TechnicalAnalysisController(CryptoBaseController):
             overlap_view.view_ma(
                 ma_type="WMA",
                 symbol=self.coin,
-                series=self.stock["Adj Close"],
+                data=self.stock["Adj Close"],
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -353,7 +353,7 @@ class TechnicalAnalysisController(CryptoBaseController):
             overlap_view.view_ma(
                 ma_type="HMA",
                 symbol=self.coin,
-                series=self.stock["Adj Close"],
+                data=self.stock["Adj Close"],
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -405,7 +405,7 @@ class TechnicalAnalysisController(CryptoBaseController):
             overlap_view.view_ma(
                 ma_type="ZLMA",
                 symbol=self.coin,
-                series=self.stock["Adj Close"],
+                data=self.stock["Adj Close"],
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -570,7 +570,7 @@ class TechnicalAnalysisController(CryptoBaseController):
         if ns_parser:
             momentum_view.display_macd(
                 symbol=self.coin,
-                series=self.stock["Adj Close"],
+                data=self.stock["Adj Close"],
                 n_fast=ns_parser.n_fast,
                 n_slow=ns_parser.n_slow,
                 n_signal=ns_parser.n_signal,
@@ -630,7 +630,7 @@ class TechnicalAnalysisController(CryptoBaseController):
         if ns_parser:
             momentum_view.display_rsi(
                 symbol=self.coin,
-                series=self.stock["Adj Close"],
+                data=self.stock["Adj Close"],
                 window=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
@@ -766,7 +766,7 @@ class TechnicalAnalysisController(CryptoBaseController):
         if ns_parser:
             momentum_view.display_cg(
                 symbol=self.coin,
-                series=self.stock["Adj Close"],
+                data=self.stock["Adj Close"],
                 window=ns_parser.n_length,
                 export=ns_parser.export,
             )

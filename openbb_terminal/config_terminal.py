@@ -7,7 +7,7 @@ import dotenv
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config import (  # pylint: disable=unused-import  # noqa
-    make_paths,
+    paths_helper,
 )
 from openbb_terminal.core.config.paths import USER_ENV_FILE, REPOSITORY_ENV_FILE
 from .helper_classes import TerminalStyle as _TerminalStyle

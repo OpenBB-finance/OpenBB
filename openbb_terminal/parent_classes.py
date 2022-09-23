@@ -23,6 +23,7 @@ from rich.markdown import Markdown
 import pandas as pd
 import numpy as np
 
+from openbb_terminal.core.config.paths import CUSTOM_IMPORTS_DIRECTORY
 from openbb_terminal.decorators import log_start_end
 
 from openbb_terminal.menu import session
@@ -884,10 +885,10 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 # This seems to block the .exe since the folder needs to be manually created
                 # This block makes sure that we only look for the file if the -f flag is used
                 # Adding files in the argparse choices, will fail for the .exe even without -f
+                STOCKS_CUSTOM_IMPORTS = CUSTOM_IMPORTS_DIRECTORY / "stocks"
                 try:
-                    if ns_parser.filepath not in os.listdir(
-                        os.path.join("custom_imports", "stocks")
-                    ):
+                    file_list = [x.name for x in STOCKS_CUSTOM_IMPORTS.iterdir()]
+                    if ns_parser.filepath not in file_list:
                         console.print(
                             f"[red]{ns_parser.filepath} not found in custom_imports/stocks/ "
                             "folder[/red].\n"
@@ -898,9 +899,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     return
 
                 df_stock_candidate = stocks_helper.load_custom(
-                    os.path.join(
-                        os.path.join("custom_imports", "stocks"), ns_parser.filepath
-                    )
+                    str(STOCKS_CUSTOM_IMPORTS / ns_parser.filepath)
                 )
                 if df_stock_candidate.empty:
                     return

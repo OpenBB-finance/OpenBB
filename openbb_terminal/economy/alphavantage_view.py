@@ -51,7 +51,7 @@ def realtime_performance_sector(
         print_rich_table(
             df_rtp,
             show_index=False,
-            headers=["Sector", "Real-Time Performance"],
+            headers=df_rtp.columns,
             title="Real-Time Performance",
         )
 

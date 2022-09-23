@@ -35,7 +35,7 @@ def test_get_historical(mocker, recorder):
 
     result_df = yahoo_finance_model.get_historical(
         similar=["TSLA", "GM"],
-        start=datetime.strptime("2020-12-21", "%Y-%m-%d"),
+        start_date=datetime.strptime("2020-12-21", "%Y-%m-%d"),
         candle_type="o",
     )
 

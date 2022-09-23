@@ -202,9 +202,9 @@ class DiscoveryController(BaseController):
                 console.print(f"{sort_col} not a valid selection for sorting.\n")
                 return
             nasdaq_view.display_dividend_calendar(
-                ns_parser.date.strftime("%Y-%m-%d"),
+                date=ns_parser.date.strftime("%Y-%m-%d"),
                 sortby=sort_col,
-                ascending=ns_parser.ascend,
+                ascend=ns_parser.ascend,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
             )
@@ -636,7 +636,7 @@ class DiscoveryController(BaseController):
             ark_view.ark_orders_view(
                 limit=ns_parser.limit,
                 sortby=ns_parser.sort_col,
-                ascending=ns_parser.ascend,
+                ascend=ns_parser.ascend,
                 buys_only=ns_parser.buys_only,
                 sells_only=ns_parser.sells_only,
                 fund=ns_parser.fund,

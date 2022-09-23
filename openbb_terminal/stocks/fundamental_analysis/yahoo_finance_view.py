@@ -166,7 +166,7 @@ def display_calendar_earnings(symbol: str, export: str = ""):
     export: str
         Format to export data
     """
-    df_calendar = yahoo_finance_model.get_calendar_earnings(symbol).T
+    df_calendar = yahoo_finance_model.get_calendar_earnings(symbol)
     if df_calendar.empty:
         console.print("No calendar events found.\n")
         return
@@ -391,7 +391,10 @@ def display_fundamentals(
     symbol: str
         Stock ticker symbol
     statement: str
-        Either balance or financials for income or cash-flow
+        can be:
+            cash-flow
+            financials for Income
+            balance-sheet
     limit: int
     ratios: bool
         Shows percentage change

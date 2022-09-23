@@ -29,7 +29,7 @@ def show_macro_data(
     transform: str = "",
     start_date: str = "1900-01-01",
     end_date: str = str(datetime.today().date()),
-    currency: str = "",
+    symbol: str = "",
     raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
     export: str = "",
@@ -54,7 +54,7 @@ def show_macro_data(
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : str
         The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
-    currency : str
+    symbol : str
         In what currency you wish to convert all values.
     raw : bool
         Whether to display the raw output.
@@ -74,7 +74,7 @@ def show_macro_data(
         countries = ["United_States"]
 
     df_rounded, units, denomination = econdb_model.get_aggregated_macro_data(
-        parameters, countries, transform, start_date, end_date, currency
+        parameters, countries, transform, start_date, end_date, symbol
     )
 
     if external_axes is None:
@@ -159,9 +159,9 @@ def show_treasuries(
     ----------
     instruments: list
         Type(s) of treasuries, nominal, inflation-adjusted or secondary market.
-        Available options can be accessed through get_treasury_maturities().
+        Available options can be accessed through economy.treasury_maturities().
     maturities : list
-        Treasury maturities to display. Available options can be accessed through get_treasury_maturities().
+        Treasury maturities to display. Available options can be accessed through economy.treasury_maturities().
     frequency : str
         Frequency of the data, this can be daily, weekly, monthly or annually
     start_date : str
