@@ -371,12 +371,13 @@ class PortfolioController(BaseController):
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
             limit=10,
         )
-        portfolio_view.display_orderbook(
-            self.portfolio,
-            show_index=False,
-            limit=ns_parser.limit,
-            export=ns_parser.export,
-        )
+        if ns_parser and self.portfolio is not None:
+            portfolio_view.display_orderbook(
+                self.portfolio,
+                show_index=False,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
     @log_start_end(log=logger)
     def call_bench(self, other_args: List[str]):
@@ -1065,7 +1066,7 @@ class PortfolioController(BaseController):
                 self.portfolio_name, self.benchmark_name
             ):
                 portfolio_view.display_rolling_sortino(
-                    portfolio=self.portfolio.benchmark_returns,
+                    portfolio=self.portfolio,
                     window=ns_parser.period,
                     risk_free_rate=ns_parser.risk_free_rate,
                     export=ns_parser.export,
