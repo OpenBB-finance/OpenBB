@@ -1,7 +1,5 @@
-# stocks.fa.dupont
-
 ## Get underlying data 
-###stocks.fa.dupont(symbol: str) -> pandas.core.frame.DataFrame
+### stocks.fa.dupont(symbol: str) -> pandas.core.frame.DataFrame
 
 Get dupont ratios
 

@@ -1,9 +1,7 @@
-# etf.overview
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###etf.overview(symbol: str) -> pandas.core.frame.DataFrame
+### etf.overview(symbol: str) -> pandas.core.frame.DataFrame
 
 Get overview data for selected etf
 
@@ -18,7 +16,7 @@ Get overview data for selected etf
         Dataframe of stock overview data
 
 ## Getting charts 
-###etf.overview(symbol: str, export: str = '', chart=True)
+### etf.overview(symbol: str, export: str = '', chart=True)
 
 Print etf overview information
 

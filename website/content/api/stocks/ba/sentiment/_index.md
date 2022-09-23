@@ -1,9 +1,7 @@
-# stocks.ba.sentiment
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.ba.sentiment(symbol: str, n_tweets: int = 15, n_days_past: int = 2)
+### stocks.ba.sentiment(symbol: str, n_tweets: int = 15, n_days_past: int = 2)
 
 Get sentiments from symbol
 
@@ -17,7 +15,7 @@ Get sentiments from symbol
         Number of days to extract tweets for
 
 ## Getting charts 
-###stocks.ba.sentiment(symbol: str, n_tweets: int = 15, n_days_past: int = 2, compare: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.ba.sentiment(symbol: str, n_tweets: int = 15, n_days_past: int = 2, compare: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Plot sentiments from symbol
 

@@ -13,6 +13,8 @@ from openbb_terminal.cryptocurrency.coinpaprika_helpers import PaprikaSession
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
+# pylint: disable=unsupported-assignment-operation
+
 logger = logging.getLogger(__name__)
 # pylint: disable=unsupported-assignment-operation
 

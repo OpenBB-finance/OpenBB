@@ -1,9 +1,7 @@
-# crypto.dd.candles
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.dd.candles(symbol: str, interval: str = '24h') -> pandas.core.frame.DataFrame
+### crypto.dd.candles(symbol: str, interval: str = '24h') -> pandas.core.frame.DataFrame
 
 Get candles for chosen trading pair and time interval. [Source: Coinbase]
 
@@ -20,7 +18,7 @@ Get candles for chosen trading pair and time interval. [Source: Coinbase]
         Candles for chosen trading pair.
 
 ## Getting charts 
-###crypto.dd.candles(symbol: str, interval: str = '24h', export: str = '', chart=True) -> None
+### crypto.dd.candles(symbol: str, interval: str = '24h', export: str = '', chart=True) -> None
 
 Get candles for chosen trading pair and time interval. [Source: Coinbase]
 

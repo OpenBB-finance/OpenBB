@@ -1,7 +1,5 @@
-# stocks.disc.ford
-
 ## Get underlying data 
-###stocks.disc.ford() -> Tuple[str, pandas.core.frame.DataFrame]
+### stocks.disc.ford() -> Tuple[str, pandas.core.frame.DataFrame]
 
 Returns Fidelity orders in a Dataframe
 

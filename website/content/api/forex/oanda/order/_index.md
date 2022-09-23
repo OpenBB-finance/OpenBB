@@ -1,9 +1,7 @@
-# forex.oanda.order
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###forex.oanda.order(price: int = 0, units: int = 0, instrument: Optional[str] = None, accountID: str = 'REPLACE_ME') -> Union[pandas.core.frame.DataFrame, bool]
+### forex.oanda.order(price: int = 0, units: int = 0, instrument: Optional[str] = None, accountID: str = 'REPLACE_ME') -> Union[pandas.core.frame.DataFrame, bool]
 
 Request creation of buy/sell trade order.
 
@@ -24,7 +22,7 @@ Request creation of buy/sell trade order.
         Orders data or False
 
 ## Getting charts 
-###forex.oanda.order(accountID: str, instrument: str = '', price: int = 0, units: int = 0, chart=True)
+### forex.oanda.order(accountID: str, instrument: str = '', price: int = 0, units: int = 0, chart=True)
 
 Create a buy/sell order.
 

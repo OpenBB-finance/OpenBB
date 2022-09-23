@@ -1,9 +1,7 @@
-# alt.covid.ov
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###alt.covid.ov(country, limit: int = 100) -> pandas.core.frame.DataFrame
+### alt.covid.ov(country, limit: int = 100) -> pandas.core.frame.DataFrame
 
 Get historical cases and deaths by country
 
@@ -15,7 +13,7 @@ Get historical cases and deaths by country
         Number of raw data to show
 
 ## Getting charts 
-###alt.covid.ov(country, raw: bool = False, limit: int = 10, export: str = '', plot: bool = True, chart=True) -> None
+### alt.covid.ov(country, raw: bool = False, limit: int = 10, export: str = '', plot: bool = True, chart=True) -> None
 
 Show historical cases and deaths by country
 

@@ -1,7 +1,5 @@
-# stocks.fa.profile
-
 ## Get underlying data 
-###stocks.fa.profile(symbol: str) -> pandas.core.frame.DataFrame
+### stocks.fa.profile(symbol: str) -> pandas.core.frame.DataFrame
 
 Get ticker profile from FMP
 

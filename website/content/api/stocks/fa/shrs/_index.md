@@ -1,7 +1,5 @@
-# stocks.fa.shrs
-
 ## Get underlying data 
-###stocks.fa.shrs(symbol: str, holder: str = 'institutional') -> pandas.core.frame.DataFrame
+### stocks.fa.shrs(symbol: str, holder: str = 'institutional') -> pandas.core.frame.DataFrame
 
 Get shareholders from yahoo
 

@@ -1,7 +1,5 @@
-# stocks.disc.rtat
-
 ## Get underlying data 
-###stocks.disc.rtat() -> pandas.core.frame.DataFrame
+### stocks.disc.rtat() -> pandas.core.frame.DataFrame
 
 Gets the top 10 retail stocks per day
 
