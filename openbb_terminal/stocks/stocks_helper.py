@@ -1011,7 +1011,7 @@ def display_candle(
     interval: int = 1440,
     end_date: datetime = datetime.now(),
     prepost: bool = False,
-    source: str = "yf",
+    source: str = "YahooFinance",
     iexrange: str = "ytd",
     weekly: bool = False,
     monthly: bool = False,
@@ -1072,6 +1072,7 @@ def display_candle(
             weekly,
             monthly,
         )
+        data = process_candle(data)
 
     if add_trend:
         if (data.index[1] - data.index[0]).total_seconds() >= 86400:
@@ -1411,12 +1412,12 @@ def load_ticker(
     return df_data
 
 
-def process_candle(df: pd.DataFrame) -> pd.DataFrame:
+def process_candle(data: pd.DataFrame) -> pd.DataFrame:
     """Process DataFrame into candle style plot
 
     Parameters
     ----------
-    df : DataFrame
+    data : DataFrame
         Stock dataframe.
 
     Returns
@@ -1425,7 +1426,7 @@ def process_candle(df: pd.DataFrame) -> pd.DataFrame:
         A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume,
         date_id, OC-High, OC-Low.
     """
-    df_data = df.copy()
+    df_data = data.copy()
     df_data["date_id"] = (df_data.index.date - df_data.index.date.min()).astype(
         "timedelta64[D]"
     )

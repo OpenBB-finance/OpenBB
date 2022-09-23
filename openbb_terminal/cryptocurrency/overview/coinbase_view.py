@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 @check_api_key(["API_COINBASE_KEY", "API_COINBASE_SECRET", "API_COINBASE_PASS_PHRASE"])
 def display_trading_pairs(
-    top: int = 20,
+    limit: int = 20,
     sortby: str = "quote_increment",
     ascend: bool = True,
     export: str = "",
@@ -27,7 +27,7 @@ def display_trading_pairs(
 
     Parameters
     ----------
-    top: int
+    limit: int
         Top n of pairs
     sortby: str
         Key to sortby data
@@ -37,7 +37,7 @@ def display_trading_pairs(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = coinbase_model.get_trading_pairs(top, sortby, ascend)
+    df = coinbase_model.get_trading_pairs(limit, sortby, ascend)
 
     print_rich_table(
         df,

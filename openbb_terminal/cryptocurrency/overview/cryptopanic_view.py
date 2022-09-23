@@ -19,7 +19,7 @@ def display_news(
     post_kind: str = "news",
     region: str = "en",
     filter_: Optional[str] = None,
-    top: int = 25,
+    limit: int = 25,
     sortby: str = "published_at",
     ascend: bool = False,
     links: bool = False,
@@ -30,7 +30,7 @@ def display_news(
 
     Parameters
     ----------
-    top: int
+    limit: int
         number of news to display
     post_kind: str
         Filter by category of news. Available values: news or media.
@@ -50,7 +50,7 @@ def display_news(
     """
 
     df = cryptopanic_model.get_news(
-        limit=top,
+        limit=limit,
         post_kind=post_kind,
         filter_=filter_,
         region=region,
@@ -64,7 +64,7 @@ def display_news(
             df = df[["title", "link"]]
 
         print_rich_table(
-            df.head(top),
+            df.head(limit),
             headers=list(df.columns),
             show_index=False,
             title="Recent CryptoPanic Posts",

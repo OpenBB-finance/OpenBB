@@ -95,7 +95,7 @@ def display_grouped_defi_protocols(
 
 @log_start_end(log=logger)
 def display_defi_protocols(
-    top: int,
+    limit: int,
     sortby: str,
     ascend: bool = False,
     description: bool = False,
@@ -106,7 +106,7 @@ def display_defi_protocols(
 
     Parameters
     ----------
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data
@@ -150,7 +150,7 @@ def display_defi_protocols(
         inplace=True,
     )
 
-    print_rich_table(df.head(top), headers=list(df.columns), show_index=False)
+    print_rich_table(df.head(limit), headers=list(df.columns), show_index=False)
 
     export_data(
         export,
@@ -219,7 +219,7 @@ def display_historical_tvl(
 
 @log_start_end(log=logger)
 def display_defi_tvl(
-    top: int = 5,
+    limit: int = 5,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -228,7 +228,7 @@ def display_defi_tvl(
 
     Parameters
     ----------
-    top: int
+    limit: int
         Number of records to display, by default 5
     export : str
         Export dataframe data to csv,json,xlsx file
@@ -246,7 +246,7 @@ def display_defi_tvl(
 
     df = llama_model.get_defi_tvl()
     df_data = df.copy()
-    df = df.tail(top)
+    df = df.tail(limit)
 
     ax.plot(df["date"], df["totalLiquidityUSD"], ms=2)
     # ax.set_xlim(df["date"].iloc[0], df["date"].iloc[-1])

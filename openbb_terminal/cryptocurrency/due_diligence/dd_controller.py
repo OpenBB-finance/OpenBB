@@ -1737,7 +1737,7 @@ class DueDiligenceController(CryptoBaseController):
             cryptopanic_view.display_news(
                 limit=ns_parser.limit,
                 source=self.source,
-                currency=self.symbol,
+                symbol=self.symbol,
                 export=ns_parser.export,
                 ascend=not ns_parser.descend,
                 post_kind=ns_parser.kind,

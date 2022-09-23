@@ -483,7 +483,7 @@ def get_macro_data(
     transform: str = "",
     start_date=pd.to_datetime("1900-01-01"),
     end_date=datetime.today().date(),
-    currency: str = "",
+    symbol: str = "",
 ) -> Tuple[Any, Union[str, Any]]:
     """Query the EconDB database to find specific macro data about a company [Source: EconDB]
 
@@ -505,7 +505,7 @@ def get_macro_data(
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : str
         The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
-    currency : str
+    symbol : str
         In what currency you wish to convert all values.
 
     Returns
@@ -564,15 +564,15 @@ def get_macro_data(
             df = df.loc[start_date:end_date]
 
         if (
-            currency
-            and country_currency != currency
+            symbol
+            and country_currency != symbol
             and units in COUNTRY_CURRENCIES.values()
         ):
             if units in COUNTRY_CURRENCIES.values():
-                units = currency
+                units = symbol
 
             currency_data = yf.download(
-                f"{country_currency}{currency}=X",
+                f"{country_currency}{symbol}=X",
                 start=df.index[0],
                 end=df.index[-1],
                 progress=False,
@@ -645,7 +645,7 @@ def get_aggregated_macro_data(
     transform: str = "",
     start_date: str = "1900-01-01",
     end_date=datetime.today().date(),
-    currency: str = "",
+    symbol: str = "",
 ) -> Tuple[Any, Dict[Any, Dict[Any, Any]], str]:
     """This functions groups the data queried from the EconDB database [Source: EconDB]
 
@@ -661,7 +661,7 @@ def get_aggregated_macro_data(
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : str
         The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
-    currency : str
+    symbol : str
         In what currency you wish to convert all values.
 
     Returns
@@ -690,7 +690,7 @@ def get_aggregated_macro_data(
                 country_data[country][parameter],
                 units[country][parameter],
             ) = get_macro_data(
-                parameter, country, transform, start_date, end_date, currency
+                parameter, country, transform, start_date, end_date, symbol
             )
 
             if country_data[country][parameter].empty:
