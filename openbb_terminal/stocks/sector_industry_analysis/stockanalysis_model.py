@@ -86,7 +86,7 @@ def get_stocks_data(
     finance_key: str = "ncf",
     stocks_data: dict = None,
     period: str = "annual",
-    currency: str = "USD",
+    symbol: str = "USD",
 ):
     """Get stocks data based on a list of stocks and the finance key. The function searches for the
     correct financial statement automatically. [Source: StockAnalysis]
@@ -103,7 +103,7 @@ def get_stocks_data(
         for the first time.
     period : str
         Whether you want annually, quarterly or trailing financial statements.
-    currency : str
+    symbol : str
         Choose in what currency you wish to convert each company's financial statement.
         Default is USD (US Dollars).
 
@@ -120,14 +120,14 @@ def get_stocks_data(
 
     no_data = []
 
-    for symbol in tqdm(symbols):
+    for top_item in tqdm(symbols):
         for item, description in SA_KEYS.items():
             if finance_key in description:
                 if item not in stocks_data:
                     stocks_data[item] = {}
                 used_statement = item
                 symbol_statement, rounding, currency_dcf = create_dataframe(
-                    symbol, item, period.lower()
+                    top_item, item, period.lower()
                 )
 
                 if symbol_statement.empty:
@@ -138,9 +138,9 @@ def get_stocks_data(
                     change_type_dataframes(symbol_statement) * rounding
                 )
 
-                if currency and currency != currency_dcf:
+                if symbol and symbol != currency_dcf:
                     currency_data = yf.download(
-                        f"{currency_dcf}{currency}=X",
+                        f"{currency_dcf}{top_item}=X",
                         start=f"{symbol_statement_rounded.columns[0]}-01-01",
                         end=f"{symbol_statement_rounded.columns[-1]}-12-31",
                         progress=False,
@@ -154,12 +154,12 @@ def get_stocks_data(
                             * currency_data.loc[year].median()
                         )
 
-                stocks_data[item][symbol] = symbol_statement_rounded
+                stocks_data[item][top_item] = symbol_statement_rounded
 
     if period in ["Quarterly", "Trailing"]:
-        for symbol in stocks_data[used_statement]:
+        for item in stocks_data[used_statement]:
             stocks_data[used_statement][symbol].columns = (
-                stocks_data[used_statement][symbol]
+                stocks_data[used_statement][item]
                 .columns.map(lambda x: pd.Period(x, "Q"))
                 .astype(str)
             )

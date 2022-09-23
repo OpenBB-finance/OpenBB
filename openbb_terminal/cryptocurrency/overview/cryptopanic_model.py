@@ -159,7 +159,7 @@ def get_news(
     filter_: Optional[str] = None,
     region: str = "en",
     source: str = "cp",
-    currency: str = None,
+    symbol: str = None,
     sortby: str = "published_at",
     ascend: bool = True,
 ) -> pd.DataFrame:
@@ -197,7 +197,7 @@ def get_news(
         filter_=filter_,
         region=region,
         source=source,
-        currency=currency,
+        currency=symbol,
     )
 
     if response:

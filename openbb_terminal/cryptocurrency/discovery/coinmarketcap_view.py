@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 @check_api_key(["API_CMC_KEY"])
 def display_cmc_top_coins(
-    top: int = 15,
+    limit: int = 15,
     sortby: str = "CMC_Rank",
     ascend: bool = True,
     export: str = "",
@@ -25,7 +25,7 @@ def display_cmc_top_coins(
 
     Parameters
     ----------
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key to sort data. The table can be sorted by every of its columns. Refer to
@@ -45,7 +45,10 @@ def display_cmc_top_coins(
         return
 
     print_rich_table(
-        df.iloc[:top, :], headers=list(df.columns), show_index=False, title="Top Coins"
+        df.iloc[:limit, :],
+        headers=list(df.columns),
+        show_index=False,
+        title="Top Coins",
     )
 
     export_data(
