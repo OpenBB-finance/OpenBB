@@ -1,9 +1,7 @@
-# crypto.ov.cghold
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.ov.cghold(endpoint: str = 'bitcoin') -> List[Any]
+### crypto.ov.cghold(endpoint: str = 'bitcoin') -> List[Any]
 
 Returns public companies that holds ethereum or bitcoin [Source: CoinGecko]
 
@@ -19,7 +17,7 @@ Returns public companies that holds ethereum or bitcoin [Source: CoinGecko]
         - pandas.DataFrame: Companies holding crypto
 
 ## Getting charts 
-###crypto.ov.cghold(symbol: str, show_bar: bool = False, export: str = '', top: int = 15, chart=True) -> None
+### crypto.ov.cghold(symbol: str, show_bar: bool = False, export: str = '', limit: int = 15, chart=True) -> None
 
 Shows overview of public companies that holds ethereum or bitcoin. [Source: CoinGecko]
 
@@ -31,5 +29,5 @@ Shows overview of public companies that holds ethereum or bitcoin. [Source: Coin
         Whether to show a bar graph for the data
     export: str
         Export dataframe data to csv,json,xlsx
-    top: int
+    limit: int
         The number of rows to show

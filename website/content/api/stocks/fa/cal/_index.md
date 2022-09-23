@@ -1,7 +1,5 @@
-# stocks.fa.cal
-
 ## Get underlying data 
-###stocks.fa.cal(symbol: str) -> pandas.core.frame.DataFrame
+### stocks.fa.cal(symbol: str) -> pandas.core.frame.DataFrame
 
 Get calendar earnings for ticker symbol
 

@@ -1,9 +1,7 @@
-# alt.oss.history
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###alt.oss.history(repo: str)
+### alt.oss.history(repo: str)
 
 Get repository star history
 
@@ -17,7 +15,7 @@ Get repository star history
     pd.DataFrame - Columns: Date, Stars
 
 ## Getting charts 
-###alt.oss.history(repo: str, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
+### alt.oss.history(repo: str, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
 
 Display repo summary [Source: https://api.github.com]
 

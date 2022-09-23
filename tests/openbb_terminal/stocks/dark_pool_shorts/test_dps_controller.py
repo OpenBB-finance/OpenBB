@@ -274,7 +274,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             ],
             dict(
                 num=1,
-                promising=2,
+                limit=2,
                 tier="T1",
                 export="csv",
             ),

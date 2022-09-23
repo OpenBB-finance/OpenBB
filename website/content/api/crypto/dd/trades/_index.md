@@ -1,9 +1,7 @@
-# crypto.dd.trades
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.dd.trades(symbol: str, limit: int = 1000, side: Optional[Any] = None) -> pandas.core.frame.DataFrame
+### crypto.dd.trades(symbol: str, limit: int = 1000, side: Optional[Any] = None) -> pandas.core.frame.DataFrame
 
 Get last N trades for chosen trading pair. [Source: Coinbase]
 
@@ -21,7 +19,7 @@ Get last N trades for chosen trading pair. [Source: Coinbase]
         Last N trades for chosen trading pairs.
 
 ## Getting charts 
-###crypto.dd.trades(symbol: str, limit: int = 20, side: Optional[str] = None, export: str = '', chart=True) -> None
+### crypto.dd.trades(symbol: str, limit: int = 20, side: Optional[str] = None, export: str = '', chart=True) -> None
 
 Display last N trades for chosen trading pair. [Source: Coinbase]
 

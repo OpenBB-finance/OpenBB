@@ -1,9 +1,7 @@
-# crypto.dd.basic
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.dd.basic(symbol: str = 'btc-bitcoin') -> pandas.core.frame.DataFrame
+### crypto.dd.basic(symbol: str = 'btc-bitcoin') -> pandas.core.frame.DataFrame
 
 Basic coin information [Source: CoinPaprika]
 
@@ -18,7 +16,7 @@ Basic coin information [Source: CoinPaprika]
         Metric, Value
 
 ## Getting charts 
-###crypto.dd.basic(symbol: str = 'BTC', export: str = '', chart=True) -> None
+### crypto.dd.basic(symbol: str = 'BTC', export: str = '', chart=True) -> None
 
 Get basic information for coin. Like:
         name, symbol, rank, type, description, platform, proof_type, contract, tags, parent.

@@ -213,16 +213,23 @@ def darkpool_otc(
     # TODO: Improve command logic to be faster and more useful
     df_ats, d_ats_reg = finra_model.getATSdata(input_limit, tier)
 
-    symbols = list(
-        dict(sorted(d_ats_reg.items(), key=lambda item: item[1], reverse=True)).keys()
-    )[:limit]
+    if not df_ats.empty and d_ats_reg:
 
-    plot_dark_pools_ats(df_ats, symbols, external_axes)
-    console.print("")
+        symbols = list(
+            dict(
+                sorted(d_ats_reg.items(), key=lambda item: item[1], reverse=True)
+            ).keys()
+        )[:limit]
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "prom",
-        df_ats,
-    )
+        plot_dark_pools_ats(df_ats, symbols, external_axes)
+        console.print("")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "prom",
+            df_ats,
+        )
+    else:
+        console.print("[red]Could not get data[/red]\n")
+        return

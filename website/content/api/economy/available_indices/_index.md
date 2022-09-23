@@ -1,7 +1,5 @@
-# economy.available_indices
-
 ## Get underlying data 
-###economy.available_indices() -> dict
+### economy.available_indices() -> dict
 
 Get available indices
 
