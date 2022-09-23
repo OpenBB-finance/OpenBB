@@ -153,9 +153,7 @@ def get_sector_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFrame):
 
     # Rename columns to match stock and crypto classification
     etf_global_sector_alloc.index.name = "Sector"
-    prettified = []
-    for sector in etf_global_sector_alloc.index:
-        prettified.append(sector.replace("_", " ").title())
+    prettified = [sector.replace("_", " ").title() for sector in etf_global_sector_alloc.index]
 
     etf_global_sector_alloc.index = prettified
 
