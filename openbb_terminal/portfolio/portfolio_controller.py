@@ -1027,7 +1027,7 @@ class PortfolioController(BaseController):
                 portfolio_view.display_rolling_sharpe(
                     self.portfolio,
                     window=ns_parser.period,
-                    risk_free_rate=ns_parser.risk_free_rate,
+                    risk_free_rate=ns_parser.risk_free_rate/100,
                     export=ns_parser.export,
                 )
 
@@ -1069,7 +1069,7 @@ class PortfolioController(BaseController):
                 portfolio_view.display_rolling_sortino(
                     portfolio=self.portfolio,
                     window=ns_parser.period,
-                    risk_free_rate=ns_parser.risk_free_rate,
+                    risk_free_rate=ns_parser.risk_free_rate/100,
                     export=ns_parser.export,
                 )
 
