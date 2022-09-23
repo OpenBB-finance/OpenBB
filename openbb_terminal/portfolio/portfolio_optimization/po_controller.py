@@ -313,7 +313,7 @@ class PortfolioOptimizationController(BaseController):
 
         self.current_file = ""
         self.DEFAULT_OPTIMIZATION_PATH = PORTFOLIO_DATA_DIRECTORY / "optimization"
-        
+
         self.DATA_OPTIMIZATION_FILES = {
             filepath.name: filepath
             for file_type in self.file_types
@@ -4024,11 +4024,7 @@ class PortfolioOptimizationController(BaseController):
                 return
 
             if ns_parser.file:
-                excel_file = os.path.abspath(
-                    os.path.join(
-                        self.DEFAULT_ALLOCATION_PATH, "..", "views", ns_parser.file
-                    )
-                )
+                excel_file = PORTFOLIO_DATA_DIRECTORY / "views" / ns_parser.file
                 p_views, q_views = excel_model.load_bl_views(excel_file=excel_file)
             else:
                 p_views = ns_parser.p_views
@@ -4075,14 +4071,7 @@ class PortfolioOptimizationController(BaseController):
 
             if table is False:
                 if ns_parser.file_sa:
-                    excel_file = os.path.abspath(
-                        os.path.join(
-                            self.DEFAULT_ALLOCATION_PATH,
-                            "..",
-                            "views",
-                            ns_parser.file_sa,
-                        )
-                    )
+                    excel_file = PORTFOLIO_DATA_DIRECTORY / "views" / ns_parser.file_sa
                     p_views_sa, q_views_sa = excel_model.load_bl_views(
                         excel_file=excel_file
                     )
