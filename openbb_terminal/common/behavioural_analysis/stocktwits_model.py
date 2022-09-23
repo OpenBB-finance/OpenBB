@@ -89,11 +89,10 @@ def get_trending() -> pd.DataFrame:
     """
     result = requests.get("https://api.stocktwits.com/api/2/trending/symbols.json")
     if result.status_code == 200:
-        l_symbols = []
-        for symbol in result.json()["symbols"]:
-            l_symbols.append(
-                [symbol["symbol"], symbol["watchlist_count"], symbol["title"]]
-            )
+        l_symbols = [
+            [symbol["symbol"], symbol["watchlist_count"], symbol["title"]]
+            for symbol in result.json()["symbols"]
+        ]
 
         df_trending = pd.DataFrame(
             l_symbols, columns=["Ticker", "Watchlist Count", "Name"]

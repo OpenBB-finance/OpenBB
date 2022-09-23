@@ -635,10 +635,7 @@ def get_omega(
     threshold = np.linspace(threshold_start, threshold_end, 50)
     df = pd.DataFrame(threshold, columns=["threshold"])
 
-    omega_list = []
-    for i in threshold:
-        omega_list.append(get_omega_ratio(data, i))
-
+    omega_list = [get_omega_ratio(data, i) for i in threshold]
     df["omega"] = omega_list
 
     return df

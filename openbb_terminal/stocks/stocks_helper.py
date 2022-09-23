@@ -510,11 +510,7 @@ def display_candle(
 
                 if ma:
                     # Manually construct the chart legend
-                    colors = []
-
-                    for i, _ in enumerate(ma):
-                        colors.append(cfg.theme.get_colors()[i])
-
+                    colors = [cfg.theme.get_colors()[i] for i, _ in enumerate(ma)]
                     lines = [Line2D([0], [0], color=c) for c in colors]
                     labels = ["MA " + str(label) for label in ma]
                     ax[0].legend(lines, labels)
@@ -1053,9 +1049,7 @@ def show_codes_polygon(ticker: str):
         return
     r_json = r_json["results"]
     cols = ["cik", "composite_figi", "share_class_figi", "sic_code"]
-    vals = []
-    for col in cols:
-        vals.append(r_json[col])
+    vals = [r_json[col] for col in cols]
     polyon_df = pd.DataFrame({"codes": [c.upper() for c in cols], "vals": vals})
     polyon_df.codes = polyon_df.codes.apply(lambda x: x.replace("_", " "))
     print_rich_table(
