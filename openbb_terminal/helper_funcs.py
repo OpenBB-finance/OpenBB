@@ -1268,7 +1268,7 @@ def compose_export_path(func_name: str, dir_path: str) -> Tuple[str, str]:
     if resolve_path.parts[-2] == "openbb_terminal":
         path_cmd = f"{resolve_path.parts[-1]}"
     else:
-        path_cmd = Path(f"{resolve_path.parts[-2]}//{resolve_path.parts[-1]}")
+        path_cmd = f"{resolve_path.parts[-2]}//{resolve_path.parts[-1]}"
 
     default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{func_name}"
 
