@@ -315,7 +315,7 @@ def getTickerFINRAdata(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
     for tier in tiers:
         for d_week in getFINRAweeks(tier, is_ats=True):
             status_code, response = getFINRAdata(
-                d_week["weekStartDate"], tier, symbol, True
+                d_week["weekStartDate"], symbol, tier, True
             )
             if status_code == 200:
                 if response:
@@ -334,7 +334,7 @@ def getTickerFINRAdata(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
     for tier in tiers:
         for d_week in getFINRAweeks(tier, is_ats=False):
             status_code, response = getFINRAdata(
-                d_week["weekStartDate"], tier, symbol, False
+                d_week["weekStartDate"], symbol, tier, False
             )
             if status_code == 200:
                 if response:
