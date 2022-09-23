@@ -205,6 +205,8 @@ requests==2.28.1; python_version >= "3.7" and python_version < "4"
 rich==10.16.2; python_full_version >= "3.6.2" and python_full_version < "4.0.0"
 riskfolio-lib==3.3.0; python_version >= "3.7"
 robin-stocks==2.1.0; python_version >= "3"
+ruamel.yaml.clib==0.2.6; platform_python_implementation == "CPython" and python_version < "3.11" and python_version >= "3.5"
+ruamel.yaml==0.17.21; python_version >= "3"
 scikit-learn==1.1.2; python_version >= "3.8" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.8"
 scipy==1.8.1; python_version >= "3.8" and python_version < "3.11"
 screeninfo==0.6.7
