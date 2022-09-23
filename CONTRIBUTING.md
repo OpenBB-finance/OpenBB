@@ -1190,7 +1190,7 @@ This class contains both important variables and methods that are common across 
 - `home`: go back to the main root
 - `about`: allows to open our documentation directly on the menu or command
 - `h`, `?` and `help`: display the help menu the user is in
-- `q`, `quit` and `..`: go back to one menu above   
+- `q`, `quit` and `..`: go back to one menu above
 - `exit`: exit the platform
 - `r` and `reset`: reset the platform (reading code and settings again but going into the same state)
 - `support`: create a support request ticket
