@@ -137,7 +137,7 @@ def get_top_dexes(sortby: str = "", limit: int = 10) -> pd.DataFrame:
     if data:
         arr = [
             [
-                dex["name"],              
+                dex["name"],
                 dex["category"],
                 dex["statistic"]["userActivity"],
                 dex["statistic"]["totalVolumeInFiat"],
@@ -179,7 +179,7 @@ def get_top_games(sortby: str = "", limit: int = 10) -> pd.DataFrame:
     if data:
         arr = [
             [
-                dex["name"],              
+                dex["name"],
                 dex["category"],
                 dex["statistic"]["userActivity"],
                 dex["statistic"]["totalVolumeInFiat"],
