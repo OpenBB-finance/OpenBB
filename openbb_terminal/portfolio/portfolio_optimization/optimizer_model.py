@@ -1620,8 +1620,6 @@ def get_ef(
         method=method,
     )
 
-    risk_free_rate = risk_free_rate / time_factor[freq.upper()]
-
     # Building the portfolio object
     port = rp.Portfolio(returns=stock_returns, alpha=alpha)
 
