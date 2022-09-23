@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def display_oi(
     symbol: str,
-    expiration: str,
+    expiry: str,
     min_sp: float = -1,
     max_sp: float = -1,
     raw: bool = False,
@@ -37,7 +37,7 @@ def display_oi(
     ----------
     symbol: str
         Ticker symbol
-    expiration: str
+    expiry: str
         Expiry date for options
     min_sp: float
         Min strike to consider
@@ -50,7 +50,7 @@ def display_oi(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    option_chain = nasdaq_model.get_chain_given_expiration(symbol, expiration)
+    option_chain = nasdaq_model.get_chain_given_expiration(symbol, expiry)
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -95,7 +95,7 @@ def display_oi(
     ax.set_ylabel("Open Interest (1k) ")
     ax.set_xlim(min_strike, max_strike)
     ax.legend(loc="best")
-    ax.set_title(f"Open Interest for {symbol.upper()} expiring {expiration}")
+    ax.set_title(f"Open Interest for {symbol.upper()} expiring {expiry}")
 
     theme.style_primary_axis(ax)
     if external_axes is None:
@@ -107,14 +107,14 @@ def display_oi(
         print_rich_table(
             to_print[(to_print.strike < max_strike) & (to_print.strike > min_strike)],
             headers=to_print.columns,
-            title=f"Open Interest for {symbol} expiring on {expiration}.",
+            title=f"Open Interest for {symbol} expiring on {expiry}.",
         )
 
 
 @log_start_end(log=logger)
 def display_volume(
     symbol: str,
-    expiration: str,
+    expiry: str,
     min_sp: float = -1,
     max_sp: float = -1,
     raw: bool = False,
@@ -127,7 +127,7 @@ def display_volume(
     ----------
     symbol: str
         Ticker symbol
-    expiration: str
+    expiry: str
         Expiry date for options
     min_sp: float
         Min strike to consider
@@ -140,7 +140,7 @@ def display_volume(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    option_chain = nasdaq_model.get_chain_given_expiration(symbol, expiration)
+    option_chain = nasdaq_model.get_chain_given_expiration(symbol, expiry)
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -185,7 +185,7 @@ def display_volume(
     ax.set_ylabel("Volume (1k) ")
     ax.set_xlim(min_strike, max_strike)
     ax.legend(loc="best")
-    ax.set_title(f"Volume for {symbol.upper()} expiring {expiration}")
+    ax.set_title(f"Volume for {symbol.upper()} expiring {expiry}")
 
     theme.style_primary_axis(ax)
     if external_axes is None:
@@ -197,14 +197,14 @@ def display_volume(
         print_rich_table(
             to_print[(to_print.strike < max_strike) & (to_print.strike > min_strike)],
             headers=to_print.columns,
-            title=f"Volume for {symbol} expiring on {expiration}.",
+            title=f"Volume for {symbol} expiring on {expiry}.",
         )
 
 
 @log_start_end(log=logger)
 def display_volume_and_oi(
     symbol: str,
-    expiration: str,
+    expiry: str,
     min_sp: float = -1,
     max_sp: float = -1,
     raw: bool = False,
@@ -217,7 +217,7 @@ def display_volume_and_oi(
     ----------
     symbol: str
         Ticker symbol
-    expiration: str
+    expiry: str
         Expiry date for options
     min_sp: float
         Min strike to consider
@@ -230,7 +230,7 @@ def display_volume_and_oi(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    option_chain = nasdaq_model.get_chain_given_expiration(symbol, expiration)
+    option_chain = nasdaq_model.get_chain_given_expiration(symbol, expiry)
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
@@ -257,7 +257,7 @@ def display_volume_and_oi(
         print_rich_table(
             to_print[(to_print.strike < max_strike) & (to_print.strike > min_strike)],
             headers=to_print.columns,
-            title=f"Volume and Open Interest for {symbol} expiring on {expiration}.",
+            title=f"Volume and Open Interest for {symbol} expiring on {expiry}.",
         )
 
     option_chain = option_chain.copy()[
@@ -302,7 +302,7 @@ def display_volume_and_oi(
     ax.set_ylabel("Volume or OI (1k)")
     ax.set_xlim(min_strike, max_strike)
     ax.legend(loc="best")
-    ax.set_title(f"Volume and Open Interest for {symbol.upper()} expiring {expiration}")
+    ax.set_title(f"Volume and Open Interest for {symbol.upper()} expiring {expiry}")
 
     theme.style_primary_axis(ax)
     if external_axes is None:
@@ -310,19 +310,19 @@ def display_volume_and_oi(
 
 
 @log_start_end(log=logger)
-def display_chains(symbol: str, expiration: str, export: str = ""):
+def display_chains(symbol: str, expiry: str, export: str = ""):
     """Display option chain for given expiration
 
     Parameters
     ----------
     symbol: str
         Ticker symbol
-    expiration: str
+    expiry: str
         Expiry date for options
     export: str
         Format to export data
     """
-    option_chain = nasdaq_model.get_chain_given_expiration(symbol, expiration)
+    option_chain = nasdaq_model.get_chain_given_expiration(symbol, expiry)
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),

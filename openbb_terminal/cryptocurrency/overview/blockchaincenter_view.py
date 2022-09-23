@@ -26,8 +26,8 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def display_altcoin_index(
     period: int = 365,
-    since: int = int(datetime(2010, 1, 1).timestamp()),
-    until: int = int(datetime.now().timestamp()),
+    start_date: int = int(datetime(2010, 1, 1).timestamp()),
+    end_date: int = int(datetime.now().timestamp()),
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -36,9 +36,9 @@ def display_altcoin_index(
 
     Parameters
     ----------
-    since : int
+    start_date : int
         Initial date timestamp (e.g., 1_609_459_200)
-    until : int
+    end_date : int
         End date timestamp (e.g., 1_641_588_030)
     period: int
         Number of days to check the performance of coins and calculate the altcoin index.
@@ -50,7 +50,7 @@ def display_altcoin_index(
         External axes (1 axis is expected in the list), by default None
     """
     if period in DAYS:
-        df = get_altcoin_index(period, since, until)
+        df = get_altcoin_index(period, start_date, end_date)
 
         if df.empty:
             console.print("\nError scraping blockchain central\n")

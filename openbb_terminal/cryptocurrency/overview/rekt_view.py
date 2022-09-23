@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_crypto_hacks(
-    top: int = 15,
+    limit: int = 15,
     sortby: str = "Platform",
     ascend: bool = False,
     slug: str = "polyntwork-rekt",
@@ -30,7 +30,7 @@ def display_crypto_hacks(
     ----------
     slug: str
         Crypto hack slug to check (e.g., polynetwork-rekt)
-    top: int
+    limit: int
         Number of hacks to search
     sortby: str
         Key by which to sort data {Platform,Date,Amount [$],Audit,Slug,URL}
@@ -61,7 +61,7 @@ def display_crypto_hacks(
             df["Date"] = df["Date"].dt.date
 
             print_rich_table(
-                df.head(top),
+                df.head(limit),
                 headers=list(df.columns),
                 floatfmt=".1f",
                 show_index=False,

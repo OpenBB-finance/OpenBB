@@ -187,7 +187,7 @@ def plot_dark_pools_ats(
 
 @log_start_end(log=logger)
 def darkpool_otc(
-    num: int = 1000,
+    input_limit: int = 1000,
     limit: int = 10,
     tier: str = "T1",
     export: str = "",
@@ -197,7 +197,7 @@ def darkpool_otc(
 
     Parameters
     ----------
-    num : int
+    input_limit : int
         Number of tickers to filter from entire ATS data based on
         the sum of the total weekly shares quantity
     limit : int
@@ -211,7 +211,7 @@ def darkpool_otc(
         External axes (1 axis is expected in the list), by default None
     """
     # TODO: Improve command logic to be faster and more useful
-    df_ats, d_ats_reg = finra_model.getATSdata(num, tier)
+    df_ats, d_ats_reg = finra_model.getATSdata(input_limit, tier)
 
     symbols = list(
         dict(sorted(d_ats_reg.items(), key=lambda item: item[1], reverse=True)).keys()

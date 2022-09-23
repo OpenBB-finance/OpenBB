@@ -1412,12 +1412,12 @@ def load_ticker(
     return df_data
 
 
-def process_candle(df: pd.DataFrame) -> pd.DataFrame:
+def process_candle(data: pd.DataFrame) -> pd.DataFrame:
     """Process DataFrame into candle style plot
 
     Parameters
     ----------
-    df : DataFrame
+    data : DataFrame
         Stock dataframe.
 
     Returns
@@ -1426,7 +1426,7 @@ def process_candle(df: pd.DataFrame) -> pd.DataFrame:
         A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume,
         date_id, OC-High, OC-Low.
     """
-    df_data = df.copy()
+    df_data = data.copy()
     df_data["date_id"] = (df_data.index.date - df_data.index.date.min()).astype(
         "timedelta64[D]"
     )
