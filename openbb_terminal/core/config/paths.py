@@ -3,8 +3,9 @@ from pathlib import Path
 import os
 import dotenv
 
+
 def get_user_data_directory():
-    """"
+    """ "
     Gets user data path from .env file
     """
     dotenv.load_dotenv(USER_ENV_FILE)
@@ -13,6 +14,7 @@ def get_user_data_directory():
     else:
         user_data_directory = Path.home() / "OpenBBUserData"
     return user_data_directory
+
 
 HOME_DIRECTORY = Path.home()
 REPOSITORY_DIRECTORY = Path(__file__).parent.parent.parent.parent

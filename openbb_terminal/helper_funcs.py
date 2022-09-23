@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from pathlib import Path
-from typing import List, Tuple, Union, Optional, Dict
+from typing import List, Union, Optional, Dict
 from datetime import datetime, timedelta, date as d
 import types
 from collections.abc import Iterable
@@ -1243,7 +1243,7 @@ def check_file_type_saved(valid_types: List[str] = None):
     return check_filenames
 
 
-def compose_export_path(func_name: str, dir_path: str) -> Tuple[str, str]:
+def compose_export_path(func_name: str, dir_path: str) -> Path:
     """Compose export path for data from the terminal
 
     Creates a path to a folder and a filename based on conditions.
@@ -1257,8 +1257,8 @@ def compose_export_path(func_name: str, dir_path: str) -> Tuple[str, str]:
 
     Returns
     -------
-    Tuple[str, str]
-        Tuple containing the folder path and a file name
+    Path
+        Path variable containing the path of the exported file
     """
     now = datetime.now()
     # Resolving all symlinks and also normalizing path.
@@ -1272,9 +1272,9 @@ def compose_export_path(func_name: str, dir_path: str) -> Tuple[str, str]:
 
     default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{func_name}"
 
-    full_path_dir = USER_EXPORTS_DIRECTORY / path_cmd
+    full_path = USER_EXPORTS_DIRECTORY / path_cmd / default_filename
 
-    return str(full_path_dir), default_filename
+    return full_path
 
 
 def export_data(
@@ -1294,11 +1294,11 @@ def export_data(
         Dataframe of data to save
     """
     if export_type:
-        export_folder, export_filename = compose_export_path(func_name, dir_path)
-        if not os.path.exists(export_folder):
-            os.mkdir(export_folder)
+        export_path = compose_export_path(func_name, dir_path)
+        export_folder = str(export_path.parent)
+        export_filename = export_path.name
+        export_path.parent.mkdir(parents=True, exist_ok=True)
         for exp_type in export_type.split(","):
-
             # In this scenario the path was provided, e.g. --export pt.csv, pt.jpg
             if "." in exp_type:
                 saved_path = os.path.join(export_folder, exp_type)
