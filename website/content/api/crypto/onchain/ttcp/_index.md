@@ -1,9 +1,7 @@
-# crypto.onchain.ttcp
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.onchain.ttcp(network: str = 'ethereum', exchange: str = 'Uniswap', limit: int = 90, sortby: str = 'tradeAmount', ascend: bool = True) -> pandas.core.frame.DataFrame
+### crypto.onchain.ttcp(network: str = 'ethereum', exchange: str = 'Uniswap', limit: int = 90, sortby: str = 'tradeAmount', ascend: bool = True) -> pandas.core.frame.DataFrame
 
 Get most traded crypto pairs on given decentralized exchange in chosen time period.
     [Source: https://graphql.bitquery.io/]
@@ -26,7 +24,7 @@ Get most traded crypto pairs on given decentralized exchange in chosen time peri
 
 
 ## Getting charts 
-###crypto.onchain.ttcp(exchange='Uniswap', days: int = 10, top: int = 10, sortby: str = 'tradeAmount', ascend: bool = True, export: str = '', chart=True) -> None
+### crypto.onchain.ttcp(exchange='Uniswap', days: int = 10, limit: int = 10, sortby: str = 'tradeAmount', ascend: bool = True, export: str = '', chart=True) -> None
 
 Display most traded crypto pairs on given decentralized exchange in chosen time period.
      [Source: https://graphql.bitquery.io/]

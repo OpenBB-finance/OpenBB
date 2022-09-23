@@ -1,9 +1,7 @@
-# crypto.ov.news
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.ov.news(limit: int = 60, post_kind: str = 'news', filter_: Optional[str] = None, region: str = 'en', source: str = 'cp', currency: str = None, sortby: str = 'published_at', ascend: bool = True) -> pandas.core.frame.DataFrame
+### crypto.ov.news(limit: int = 60, post_kind: str = 'news', filter_: Optional[str] = None, region: str = 'en', source: str = 'cp', symbol: str = None, sortby: str = 'published_at', ascend: bool = True) -> pandas.core.frame.DataFrame
 
 Get recent posts from CryptoPanic news aggregator platform. [Source: https://cryptopanic.com/]
 
@@ -29,14 +27,14 @@ Get recent posts from CryptoPanic news aggregator platform. [Source: https://cry
         DataFrame with recent news from different sources filtered by provided parameters.
 
 ## Getting charts 
-###crypto.ov.news(post_kind: str = 'news', region: str = 'en', filter_: Optional[str] = None, top: int = 25, sortby: str = 'published_at', ascend: bool = False, links: bool = False, export: str = '', chart=True) -> None
+### crypto.ov.news(post_kind: str = 'news', region: str = 'en', filter_: Optional[str] = None, limit: int = 25, sortby: str = 'published_at', ascend: bool = False, links: bool = False, export: str = '', chart=True) -> None
 
 Display recent posts from CryptoPanic news aggregator platform.
     [Source: https://cryptopanic.com/]
 
     Parameters
     ----------
-    top: int
+    limit: int
         number of news to display
     post_kind: str
         Filter by category of news. Available values: news or media.

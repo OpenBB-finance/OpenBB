@@ -1,7 +1,5 @@
-# stocks.dd.customer
-
 ## Get underlying data 
-###stocks.dd.customer(symbol: str) -> List[str]
+### stocks.dd.customer(symbol: str) -> List[str]
 
 Print customers from ticker provided
 

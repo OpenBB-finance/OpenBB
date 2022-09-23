@@ -1,7 +1,5 @@
-# portfolio.po.equal
-
 ## Get underlying data 
-###portfolio.po.equal(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', value: float = 1.0) -> Tuple
+### portfolio.po.equal(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', value: float = 1.0) -> Tuple
 
 Equally weighted portfolio, where weight = 1/# of symbols
 

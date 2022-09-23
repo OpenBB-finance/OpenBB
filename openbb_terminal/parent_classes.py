@@ -12,7 +12,7 @@ import difflib
 import logging
 import json
 
-from typing import Union, List, Dict, Any
+from typing import Union, Any, List, Dict
 from datetime import datetime, timedelta
 
 from prompt_toolkit.completion import NestedCompleter
@@ -86,8 +86,8 @@ class BaseController(metaclass=ABCMeta):
 
     CHOICES_COMMANDS: List[str] = []
     CHOICES_MENUS: List[str] = []
-    SUPPORT_CHOICES: Dict = {}
-    ABOUT_CHOICES: Dict = {}
+    SUPPORT_CHOICES: dict = {}
+    ABOUT_CHOICES: dict = {}
     COMMAND_SEPARATOR = "/"
     KEYS_MENU = "keys" + COMMAND_SEPARATOR
     TRY_RELOAD = False
@@ -198,7 +198,7 @@ class BaseController(metaclass=ABCMeta):
     def print_help(self) -> None:
         raise NotImplementedError("Must override print_help.")
 
-    def parse_input(self, an_input: str) -> List:
+    def parse_input(self, an_input: str) -> list:
         """Parse controller input
 
         Splits the command chain from user input into a list of individual commands
@@ -217,10 +217,10 @@ class BaseController(metaclass=ABCMeta):
 
         Returns
         -------
-        List
+        list
             Command queue as list
         """
-        custom_filters: List = []
+        custom_filters: list = []
         commands = parse_and_split_input(
             an_input=an_input, custom_filters=custom_filters
         )
@@ -262,7 +262,7 @@ class BaseController(metaclass=ABCMeta):
         Returns
         -------
         List[str]
-            List of commands in the queue to execute
+            list of commands in the queue to execute
         """
         actions = self.parse_input(an_input)
 
@@ -513,7 +513,7 @@ class BaseController(metaclass=ABCMeta):
         parser: argparse.ArgumentParser
             Parser with predefined arguments
         other_args: List[str]
-            List of arguments to parse
+            list of arguments to parse
         export_allowed: int
             Choose from NO_EXPORT, EXPORT_ONLY_RAW_DATA_ALLOWED,
             EXPORT_ONLY_FIGURES_ALLOWED and EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -884,6 +884,8 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 console.print(self.add_info)
                 if (
                     ns_parser.interval == 1440
+                    and not ns_parser.weekly
+                    and not ns_parser.monthly
                     and ns_parser.filepath is None
                     and self.PATH == "/stocks/"
                 ):

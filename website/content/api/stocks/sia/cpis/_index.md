@@ -1,9 +1,7 @@
-# stocks.sia.cpis
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.sia.cpis(sector: str = 'Technology', mktcap: str = 'Large', exclude_exchanges: bool = True)
+### stocks.sia.cpis(sector: str = 'Technology', mktcap: str = 'Large', exclude_exchanges: bool = True)
 
 Get number of companies per industry in a specific sector (and specific market cap). [Source: Finance Database]
 
@@ -22,7 +20,7 @@ Get number of companies per industry in a specific sector (and specific market c
         Dictionary of industries and number of companies in a specific sector
 
 ## Getting charts 
-###stocks.sia.cpis(sector: str = 'Technology', mktcap: str = 'Large', exclude_exchanges: bool = True, export: str = '', raw: bool = False, max_industries_to_display: int = 15, min_pct_to_display_industry: float = 0.015, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.sia.cpis(sector: str = 'Technology', mktcap: str = 'Large', exclude_exchanges: bool = True, export: str = '', raw: bool = False, max_industries_to_display: int = 15, min_pct_to_display_industry: float = 0.015, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display number of companies per industry in a specific sector. [Source: Finance Database]
 

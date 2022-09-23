@@ -1,9 +1,7 @@
-# crypto.ov.platforms
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.ov.platforms(sortby: str = 'Name', ascend: bool = True) -> pandas.core.frame.DataFrame
+### crypto.ov.platforms(sortby: str = 'Name', ascend: bool = True) -> pandas.core.frame.DataFrame
 
 Get list of financial platforms from CoinGecko API [Source: CoinGecko]
 
@@ -20,13 +18,13 @@ Get list of financial platforms from CoinGecko API [Source: CoinGecko]
         Rank, Name, Category, Centralized, Url
 
 ## Getting charts 
-###crypto.ov.platforms(sortby: str = 'Name', ascend: bool = True, top: int = 15, export: str = '', chart=True) -> None
+### crypto.ov.platforms(sortby: str = 'Name', ascend: bool = True, limit: int = 15, export: str = '', chart=True) -> None
 
 Shows list of financial platforms. [Source: CoinGecko]
 
     Parameters
     ----------
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data

@@ -1,7 +1,5 @@
-# stocks.ba.cramer
-
 ## Get underlying data 
-###stocks.ba.cramer(inverse: bool = True) -> pandas.core.frame.DataFrame
+### stocks.ba.cramer(inverse: bool = True) -> pandas.core.frame.DataFrame
 
 Scrape the daily recommendations of Jim Cramer
 

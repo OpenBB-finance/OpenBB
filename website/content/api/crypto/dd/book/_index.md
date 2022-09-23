@@ -1,9 +1,7 @@
-# crypto.dd.book
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.dd.book(from_symbol: str, limit: int = 100, to_symbol: str = 'USDT') -> pandas.core.frame.DataFrame
+### crypto.dd.book(from_symbol: str, limit: int = 100, to_symbol: str = 'USDT') -> pandas.core.frame.DataFrame
 
 Get order book for currency. [Source: Binance]
 
@@ -24,7 +22,7 @@ Get order book for currency. [Source: Binance]
         Dataframe containing orderbook
 
 ## Getting charts 
-###crypto.dd.book(from_symbol: str, limit: int = 100, to_symbol: str = 'USDT', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
+### crypto.dd.book(from_symbol: str, limit: int = 100, to_symbol: str = 'USDT', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
 
 Get order book for currency. [Source: Binance]
 

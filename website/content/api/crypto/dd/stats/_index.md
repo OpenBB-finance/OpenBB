@@ -1,9 +1,7 @@
-# crypto.dd.stats
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.dd.stats(symbol: str) -> pandas.core.frame.DataFrame
+### crypto.dd.stats(symbol: str) -> pandas.core.frame.DataFrame
 
 Get 24 hr stats for the product. Volume is in base currency units.
     Open, high and low are in quote currency units.  [Source: Coinbase]
@@ -19,7 +17,7 @@ Get 24 hr stats for the product. Volume is in base currency units.
         24h stats for chosen trading pair
 
 ## Getting charts 
-###crypto.dd.stats(symbol: str, export: str = '', chart=True) -> None
+### crypto.dd.stats(symbol: str, export: str = '', chart=True) -> None
 
 Get 24 hr stats for the product. Volume is in base currency units.
     Open, high and low are in quote currency units.  [Source: Coinbase]

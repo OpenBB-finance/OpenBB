@@ -1,9 +1,7 @@
-# stocks.dd.sec
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.dd.sec(symbol: str) -> pandas.core.frame.DataFrame
+### stocks.dd.sec(symbol: str) -> pandas.core.frame.DataFrame
 
 Get SEC filings for a given stock ticker. [Source: Market Watch]
 
@@ -18,7 +16,7 @@ Get SEC filings for a given stock ticker. [Source: Market Watch]
         SEC filings data
 
 ## Getting charts 
-###stocks.dd.sec(symbol: str, limit: int = 5, export: str = '', chart=True)
+### stocks.dd.sec(symbol: str, limit: int = 5, export: str = '', chart=True)
 
 Display SEC filings for a given stock ticker. [Source: Market Watch]
 
