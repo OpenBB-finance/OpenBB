@@ -20,6 +20,9 @@ from openbb_terminal.common.behavioural_analysis.reddit_view import (
     display_wsb_community as wsb,
 )
 from openbb_terminal.common.behavioural_analysis.reddit_view import (
+    display_reddit_sent as reddit_sent,
+)
+from openbb_terminal.common.behavioural_analysis.reddit_view import (
     display_popular_tickers as popular,
 )
 from openbb_terminal.common.behavioural_analysis.reddit_view import (

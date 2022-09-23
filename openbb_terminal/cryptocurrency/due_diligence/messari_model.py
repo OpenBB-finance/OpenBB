@@ -27,6 +27,7 @@ from openbb_terminal.rich_config import console
 logger = logging.getLogger(__name__)
 
 INTERVALS_TIMESERIES = ["5m", "15m", "30m", "1h", "1d", "1w"]
+# pylint: disable=unsupported-assignment-operation
 
 
 @log_start_end(log=logger)

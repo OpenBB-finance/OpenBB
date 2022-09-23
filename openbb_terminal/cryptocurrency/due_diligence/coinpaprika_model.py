@@ -16,6 +16,7 @@ from openbb_terminal.rich_config import console
 # pylint: disable=unsupported-assignment-operation
 
 logger = logging.getLogger(__name__)
+# pylint: disable=unsupported-assignment-operation
 
 
 @log_start_end(log=logger)

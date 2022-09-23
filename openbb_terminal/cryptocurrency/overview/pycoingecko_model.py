@@ -21,6 +21,7 @@ from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import get_coins
 from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
+# pylint: disable=unsupported-assignment-operation
 
 HOLD_COINS = ["ethereum", "bitcoin"]
 
@@ -182,13 +183,13 @@ def get_top_crypto_categories(sort_filter: str = SORT_VALUES[0]) -> pd.DataFrame
 # TODO: add string with overview
 @log_start_end(log=logger)
 def get_stable_coins(
-    top: int = 20, sortby: str = "rank", ascend: bool = False
+    limit: int = 20, sortby: str = "rank", ascend: bool = False
 ) -> pd.DataFrame:
     """Returns top stable coins [Source: CoinGecko]
 
     Parameters
     ----------
-    top: int
+    limit: int
         How many rows to show
     sortby: str
         Key by which to sort data
@@ -201,7 +202,7 @@ def get_stable_coins(
         Rank, Name, Symbol, Price, Change_24h, Exchanges, Market_Cap, Change_30d, Url
     """
 
-    df = get_coins(top=top, category="stablecoins")
+    df = get_coins(limit=limit, category="stablecoins")
     df = df[COINS_COLUMNS]
     df = df.sort_values(by=sortby, ascending=ascend)
     return df

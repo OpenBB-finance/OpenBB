@@ -12,6 +12,7 @@ from openbb_terminal.rich_config import console
 # pylint: disable=unsupported-assignment-operation
 
 logger = logging.getLogger(__name__)
+# pylint: disable=unsupported-assignment-operation
 
 api_url = "https://api.glassnode.com/v1/metrics/"
 

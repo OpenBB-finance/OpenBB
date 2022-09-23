@@ -18,11 +18,11 @@ from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 
 from openbb_terminal.core.config import (  # pylint: disable=unused-import  # noqa
-    make_paths,
+    paths_helper,
 )
 from openbb_terminal.common import feedparser_view
 from openbb_terminal.core.config.paths import (
-    REPO_DIRECTORY,
+    REPOSITORY_DIRECTORY,
     USER_ENV_FILE,
     REPOSITORY_ENV_FILE,
     HOME_DIRECTORY,
@@ -169,17 +169,17 @@ class TerminalController(BaseController):
             "-t",
             "--term",
             dest="term",
-            default="",
+            default=[""],
             nargs="+",
             help="search for a term on the news",
         )
         parse.add_argument(
-            "-a",
-            "--article",
-            dest="article",
-            default="bloomberg",
+            "-s",
+            "--sources",
+            dest="sources",
+            default=["bloomberg.com"],
             nargs="+",
-            help="articles from where to get news from",
+            help="sources from where to get news from",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
@@ -188,10 +188,10 @@ class TerminalController(BaseController):
         )
         if news_parser:
             feedparser_view.display_news(
-                " ".join(news_parser.term),
-                " ".join(news_parser.article),
-                news_parser.limit,
-                news_parser.export,
+                term=" ".join(news_parser.term),
+                sources=" ".join(news_parser.sources),
+                limit=news_parser.limit,
+                export=news_parser.export,
             )
 
     def call_guess(self, other_args: List[str]) -> None:
@@ -378,17 +378,11 @@ class TerminalController(BaseController):
 
     def call_reports(self, _):
         """Process reports command"""
-        if not obbff.PACKAGED_APPLICATION:
-            from openbb_terminal.reports.reports_controller import (
-                ReportController,
-            )
+        from openbb_terminal.reports.reports_controller import (
+            ReportController,
+        )
 
-            self.queue = self.load_class(ReportController, self.queue)
-        else:
-            console.print("This feature is coming soon.")
-            console.print(
-                "Use the source code and an Anaconda environment if you are familiar with Python."
-            )
+        self.queue = self.load_class(ReportController, self.queue)
 
     def call_dashboards(self, _):
         """Process dashboards command"""
@@ -908,7 +902,7 @@ def main(
         console.print("[green]OpenBB Terminal Integrated Tests:\n[/green]")
         for file in test_files:
             file = file.replace("//", "/")
-            repo_path_position = file.rfind(REPO_DIRECTORY.name)
+            repo_path_position = file.rfind(REPOSITORY_DIRECTORY.name)
             if repo_path_position >= 0:
                 file_name = file[repo_path_position:].replace("\\", "/")
             else:
@@ -926,7 +920,7 @@ def main(
         if fails:
             console.print("\n[red]Failures:[/red]\n")
             for key, value in fails.items():
-                repo_path_position = key.rfind(REPO_DIRECTORY.name)
+                repo_path_position = key.rfind(REPOSITORY_DIRECTORY.name)
                 if repo_path_position >= 0:
                     file_name = key[repo_path_position:].replace("\\", "/")
                 else:
