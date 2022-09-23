@@ -215,7 +215,7 @@ class ReportController(BaseController):
 
             result = pm.execute_notebook(
                 notebook_template + ".ipynb",
-                notebook_output + ".ipynb",
+                str(notebook_output) + ".ipynb",
                 parameters=d_report_params,
                 kernel_name="python3",
             )
