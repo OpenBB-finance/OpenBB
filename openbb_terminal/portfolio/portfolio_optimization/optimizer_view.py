@@ -2204,6 +2204,8 @@ def display_ef(
         Whether to plot the tickers for the assets
     """
 
+    risk_free_rate = risk_free_rate / time_factor[freq.upper()]
+
     frontier, mu, cov, stock_returns, weights, X1, Y1, port = optimizer_model.get_ef(
         symbols,
         interval,
