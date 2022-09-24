@@ -35,7 +35,7 @@ logger = logging.getLogger(__name__)
 class ReportController(BaseController):
     """Report Controller class."""
 
-    reports_folder = os.path.dirname(os.path.abspath(__file__))
+    reports_folder = Path(__file__).parent
 
     report_names = [
         notebooks[:-6]
@@ -55,12 +55,10 @@ class ReportController(BaseController):
     reports_opts = ""
     for k, report_to_run in d_id_to_report_name.items():
         # Crawl data to look into what
-        notebook_file = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)), report_to_run
-        )
+        notebook_file = Path(__file__).parent / report_to_run
 
         # Open notebook with report template
-        with open(notebook_file + ".ipynb") as n_file:
+        with open(str(notebook_file) + ".ipynb") as n_file:
             notebook_content = n_file.read()
 
         # Look for the metadata cell to understand if there are parameters required by the report
@@ -96,14 +94,14 @@ class ReportController(BaseController):
         for param in range(len(def_params) - 1):
             def_params[param] = def_params[param][:-1]
 
+        l_params.remove("report_name")
         d_params[report_to_run] = [l_params, def_params]
-        l_params_copy = list(l_params)
-        l_params_copy.remove("report_name")
+        
         # On the menu of choices add the parameters necessary for each template report
-        if len(l_params_copy) > 1 or not l_params_copy:
-            args = f"<{'> <'.join(l_params_copy)}>"
+        if len(l_params) > 1 or not l_params:
+            args = f"<{'> <'.join(l_params)}>"
         else:
-            args = f"<{l_params_copy[0]}>"
+            args = f"<{l_params[0]}>"
 
         reports_opts += (
             f"    {k}. {report_to_run}"
@@ -199,7 +197,7 @@ class ReportController(BaseController):
             # argument used because this depends on what the user will use it for in
             # the notebook. This is a downside of allowing the user to have this much
             # flexibility.
-            if len(other_args) != len(params) - 1:  # excluding report name
+            if len(other_args) != len(params):  
                 console.print("Wrong number of arguments provided!")
                 if len(params):
                     console.print("Provide, in order:")
@@ -216,39 +214,26 @@ class ReportController(BaseController):
                 + "_"
                 + f"{report_to_run}{args_to_output}"
             )
-            notebook_output = USER_EXPORTS_DIRECTORY / "reports" / report_output_name
+            notebook_output = str(USER_EXPORTS_DIRECTORY / "reports" / report_output_name)
 
             # only a single backslash appears in the .py file otherwise
             notebook_output = notebook_output.replace("\\", "\\\\")
             notebook_output = notebook_output.replace("\\", "\\\\")
 
-
             # gather params from user
             d_report_params = {}
-            for idx in range(len(params) - 1):
-                d_report_params[params[idx]] = other_args[idx]
+            for idx, param in enumerate(params):
+                d_report_params[param] = other_args[idx]
 
-            d_report_params["report_name"] = str(notebook_output)
+            d_report_params["report_name"] = notebook_output
 
-            notebook_file = os.path.join(
-                os.path.dirname(os.path.abspath(__file__)), report_to_run
-            )
+            notebook_file = str(Path(__file__).parent / report_to_run)
+
             with open(notebook_file + ".ipynb") as n_file:
                 notebook_content = n_file.read()
 
-            # replace params in notebook
-            if "parameters" in notebook_content:
-                params_to_change = self.d_params[report_to_run][1]
-                for idx, param in enumerate(params_to_change):
-                    notebook_content = notebook_content.replace(
-                        param, d_report_params[params[idx]], 1
-                    )
+            params.append("report_name") # re-add report_name
 
-<<<<<<< HEAD
-            if not result["metadata"]["papermill"]["exception"]:
-                if obbff.OPEN_REPORT_AS_HTML:
-                    report_output_path = Path(str(notebook_output) + ".html")
-=======
             # replace params in notebook
             if "parameters" in notebook_content:
                 params_to_change = self.d_params[report_to_run][1]
@@ -288,9 +273,13 @@ class ReportController(BaseController):
             _figures_before = plt.get_fignums()
 
             # Run the report
-            notebook_execution_output = io.StringIO()
-            with contextlib.redirect_stdout(notebook_execution_output):
-                importlib.import_module(f"openbb_terminal.reports.{report_to_run}copy")
+            try:
+                notebook_execution_output = io.StringIO()
+                with contextlib.redirect_stdout(notebook_execution_output):
+                    importlib.import_module(f"openbb_terminal.reports.{report_to_run}copy")
+            except Exception as error:
+                console.print("[red]\nReport wasn't executed correctly.\n[/red]")
+                console.print(f"[red]\nError : {error}\n[/red]")
 
             # Close the figures that were created during report execution
             _figures_after = plt.get_fignums()
@@ -298,27 +287,24 @@ class ReportController(BaseController):
                 if fig_number not in _figures_before:
                     plt.close(fig_number)
 
-            # TO DO: modify report output path to exports folder in user data
-            report_output_path = Path(
-                os.path.join(
-                    os.path.abspath(os.path.join(".")), notebook_output + ".html"
-                )
-            )
+            notebook_output = notebook_output.replace("\\\\","\\")
+            notebook_output = notebook_output.replace("\\\\","\\")
+            report_output_path = notebook_output + ".html"
+                
             os.remove(notebook_file_copy + ".ipynb")
             os.remove(notebook_file_copy + ".py")
 
-            if report_output_path.is_file():
+            if Path(report_output_path).is_file():
                 if obbff.OPEN_REPORT_AS_HTML:
->>>>>>> 8e3760a503e52887c863b261d29f46658616adde
-                    print(report_output_path)
-                    webbrowser.open(f"file://{str(report_output_path)}")
+                    console.print(report_output_path)
+                    webbrowser.open(f"file://{report_output_path}")
 
                 console.print("")
                 console.print(
-                    "Exported: {report_output_path}.html",
+                    f"Exported: {report_output_path}",
                     "\n",
                 )
             else:
-                console.print("[red]\nParameter provided is not valid.\n[/red]")
+                console.print("[red]\nReport couldn't be created.\n[/red]")
 
         return self.queue
