@@ -340,7 +340,8 @@ class PortfolioController(BaseController):
             self.portfolio.generate_portfolio_data()
 
             # Add in the Risk-free rate
-            self.portfolio.set_risk_free_rate(ns_parser.risk_free_rate)
+            self.portfolio.set_risk_free_rate(ns_parser.risk_free_rate / 100)
+            self.risk_free_rate = ns_parser.risk_free_rate / 100
 
             # Load benchmark
             self.call_bench(["-b", "SPDR S&P 500 ETF Trust (SPY)"])
@@ -349,7 +350,7 @@ class PortfolioController(BaseController):
                 f"\n[bold][param]Portfolio:[/param][/bold] {self.portfolio_name}"
             )
             console.print(
-                f"[bold][param]Risk Free Rate:[/param][/bold] {self.portfolio.risk_free_rate}"
+                f"[bold][param]Risk Free Rate:[/param][/bold] {self.risk_free_rate:.2%}"
             )
             console.print(
                 f"[bold][param]Benchmark:[/param][/bold] {self.benchmark_name}\n"
@@ -370,12 +371,13 @@ class PortfolioController(BaseController):
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
             limit=10,
         )
-        portfolio_view.display_orderbook(
-            self.portfolio,
-            show_index=False,
-            limit=ns_parser.limit,
-            export=ns_parser.export,
-        )
+        if ns_parser and self.portfolio is not None:
+            portfolio_view.display_orderbook(
+                self.portfolio,
+                show_index=False,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
     @log_start_end(log=logger)
     def call_bench(self, other_args: List[str]):
@@ -1024,7 +1026,7 @@ class PortfolioController(BaseController):
                 portfolio_view.display_rolling_sharpe(
                     self.portfolio,
                     window=ns_parser.period,
-                    risk_free_rate=ns_parser.risk_free_rate,
+                    risk_free_rate=ns_parser.risk_free_rate / 100,
                     export=ns_parser.export,
                 )
 
@@ -1064,9 +1066,9 @@ class PortfolioController(BaseController):
                 self.portfolio_name, self.benchmark_name
             ):
                 portfolio_view.display_rolling_sortino(
-                    portfolio=self.portfolio.benchmark_returns,
+                    portfolio=self.portfolio,
                     window=ns_parser.period,
-                    risk_free_rate=ns_parser.risk_free_rate,
+                    risk_free_rate=ns_parser.risk_free_rate / 100,
                     export=ns_parser.export,
                 )
 
