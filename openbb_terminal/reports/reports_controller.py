@@ -226,9 +226,7 @@ class ReportController(BaseController):
             notebook_output = notebook_output.replace("\\", "\\\\")
 
             # gather params from user
-            d_report_params = {}
-            for idx in range(len(params) - 1):
-                d_report_params[params[idx]] = other_args[idx]
+            d_report_params = {args: other_args[idx] for idx, args in enumerate(params)}
 
             d_report_params["report_name"] = notebook_output
 
