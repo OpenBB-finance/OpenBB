@@ -607,20 +607,20 @@ class OptionsController(BaseController):
                     self.update_runtime_choices()
 
                 if self.selected_date:
-                    if self.source == "YahooFinance":
-                        self.chain = yfinance_model.get_option_chain(
+                    if self.source == "Tradier":
+                        df = tradier_model.get_option_chains(
                             self.ticker, self.selected_date
                         )
+                        self.chain = op_helpers.Chain(df)
                     elif self.source == "Nasdaq":
                         df = nasdaq_model.get_chain_given_expiration(
                             self.ticker, self.selected_date
                         )
                         self.chain = op_helpers.Chain(df, self.source)
                     else:
-                        df = tradier_model.get_option_chains(
+                        self.chain = yfinance_model.get_option_chain(
                             self.ticker, self.selected_date
                         )
-                        self.chain = op_helpers.Chain(df)
                     self.update_runtime_choices()
             else:
                 console.print("Please load a ticker using `load <ticker>`.\n")
