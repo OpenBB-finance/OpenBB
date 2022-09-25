@@ -9,16 +9,11 @@ import os
 from typing import Dict, List
 
 import binance
-import oandapyV20.endpoints.pricing
 import dotenv
-import praw
 import pyEX
 import requests
-from prawcore.exceptions import ResponseException
 from prompt_toolkit.completion import NestedCompleter
 from pyEX.common.exception import PyEXception
-from oandapyV20 import API as oanda_API
-from oandapyV20.exceptions import V20Error
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
@@ -208,32 +203,12 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.check_degiro_key(show_output=show_output)
         self.key_dict["DEGIRO"] = status
 
-    def check_oanda_key(self, show_output: bool = False) -> None:
+    def check_oanda_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Oanda key"""
         self.cfg_dict["OANDA"] = "oanda"
-        oanda_keys = [cfg.OANDA_TOKEN, cfg.OANDA_ACCOUNT]
-        if "REPLACE_ME" in oanda_keys:
-            logger.info("Oanda key not defined")
-            self.key_dict["OANDA"] = "not defined"
-        else:
-            client = oanda_API(access_token=cfg.OANDA_TOKEN)
-            account = cfg.OANDA_ACCOUNT
-            try:
-                parameters = {"instruments": "EUR_USD"}
-                request = oandapyV20.endpoints.pricing.PricingInfo(
-                    accountID=account, params=parameters
-                )
-                client.request(request)
-                logger.info("Oanda key defined, test passed")
-                self.key_dict["OANDA"] = "defined, test passed"
-
-            except V20Error as e:
-                logger.exception(str(e))
-                logger.info("Oanda key defined, test failed")
-                self.key_dict["OANDA"] = "defined, test failed"
-
-        if show_output:
-            console.print(self.key_dict["OANDA"] + "\n")
+        if not status:
+            status = keys_model.check_degiro_key(show_output=show_output)
+        self.key_dict["OANDA"] = status
 
     def check_binance_key(self, show_output: bool = False) -> None:
         """Check Binance key"""
@@ -1147,24 +1122,16 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             console.print("For your API Key, visit: https://developer.oanda.com\n")
             return
         ns_parser = parse_simple_args(parser, other_args)
-        if not ns_parser:
-            return
-        if ns_parser.account:
-            os.environ["OPENBB_OANDA_ACCOUNT"] = ns_parser.account
-            dotenv.set_key(self.env_file, "OPENBB_OANDA_ACCOUNT", ns_parser.account)
-            cfg.OANDA_ACCOUNT = ns_parser.account
-        if ns_parser.token:
-            os.environ["OPENBB_OANDA_TOKEN"] = ns_parser.token
-            dotenv.set_key(self.env_file, "OPENBB_OANDA_TOKEN", ns_parser.token)
-            cfg.OANDA_TOKEN = ns_parser.token
-        if ns_parser.account_type:
-            os.environ["OPENBB_OANDA_ACCOUNT_TYPE"] = ns_parser.account_type
-            dotenv.set_key(
-                self.env_file, "OPENBB_OANDA_ACCOUNT_TYPE", ns_parser.account_type
+        if ns_parser:
+            status = keys_model.set_oanda_key(
+                account=ns_parser.account,
+                token=ns_parser.token,
+                account_type=ns_parser.account_type,
+                persist=True,
+                show_output=True,
             )
-            cfg.OANDA_ACCOUNT_TYPE = ns_parser.account_type
 
-        self.check_oanda_key(show_output=True)
+            self.check_oanda_key(status, show_output=False)
 
     @log_start_end(log=logger)
     def call_binance(self, other_args: List[str]):

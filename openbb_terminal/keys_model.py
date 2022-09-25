@@ -8,6 +8,9 @@ from prawcore.exceptions import ResponseException
 import praw
 import pyEX
 from pyEX.common.exception import PyEXception
+import oandapyV20.endpoints.pricing
+from oandapyV20 import API as oanda_API
+from oandapyV20.exceptions import V20Error
 from coinmarketcapapi import CoinMarketCapAPI, CoinMarketCapAPIError
 from alpha_vantage.timeseries import TimeSeries
 from openbb_terminal import config_terminal as cfg
@@ -1256,4 +1259,87 @@ def check_degiro_key(show_output: bool = False) -> str:
 
     return status
 
+
+def set_oanda_key(
+    account: str,
+    token: str,
+    account_type: str = "",
+    persist: bool = False,
+    show_output: bool = False,
+):
+    """Set Oanda key.
+
+    Parameters
+    ----------
+        account: str
+        token: str
+        account_type: str
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+    """
+
+    set_key("OPENBB_OANDA_ACCOUNT", account, persist)
+    set_key("OPENBB_OANDA_TOKEN", token, persist)
+    set_key("OPENBB_OANDA_ACCOUNT_TYPE", account_type, persist)
+
+    status = check_oanda_key(show_output)
+
+    return status
+
+
+def check_oanda_key(show_output: bool = False) -> str:
+    """Check Oanda key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+
+    """
+
+    oanda_keys = [cfg.OANDA_TOKEN, cfg.OANDA_ACCOUNT]
+    if "REPLACE_ME" in oanda_keys:
+        logger.info("Oanda key not defined")
+        status = "not defined"
+    else:
+        client = oanda_API(access_token=cfg.OANDA_TOKEN)
+        account = cfg.OANDA_ACCOUNT
+        try:
+            parameters = {"instruments": "EUR_USD"}
+            request = oandapyV20.endpoints.pricing.PricingInfo(
+                accountID=account, params=parameters
+            )
+            client.request(request)
+            logger.info("Oanda key defined, test passed")
+            status = "defined, test passed"
+
+        except V20Error as e:
+            logger.exception(str(e))
+            logger.info("Oanda key defined, test failed")
+            status = "defined, test failed"
+
+    if show_output:
+        console.print(status + "\n")
+
+    return status
 
