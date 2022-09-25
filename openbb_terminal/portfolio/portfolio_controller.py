@@ -100,14 +100,17 @@ class PortfolioController(BaseController):
         self.DATA_HOLDINGS_FILES = {
             filepath.name: filepath
             for file_type in self.file_types
-            for filepath in (
-                self.DEFAULT_HOLDINGS_PATH.rglob(f"*.{file_type}"),
-                (REPOSITORY_DIRECTORY / "portfolio" / "holdings").rglob(
-                    f"*.{file_type}"
-                ),
-            )
-            if filepath.is_file()
+            for filepath in self.DEFAULT_HOLDINGS_PATH.rglob(f"*.{file_type}")
         }
+        self.DATA_HOLDINGS_FILES.update(
+            {
+                filepath.name: filepath
+                for file_type in self.file_types
+                for filepath in (REPOSITORY_DIRECTORY / "portfolio" / "holdings").rglob(
+                    f"*.{file_type}"
+                )
+            }
+        )
 
         self.portfolio_df = pd.DataFrame(
             columns=[
@@ -143,12 +146,11 @@ class PortfolioController(BaseController):
 
         self.DEFAULT_HOLDINGS_PATH = portfolio_helper.DEFAULT_HOLDINGS_PATH
 
-        self.DATA_HOLDINGS_FILES = {
+        self.DATA_HOLDINGS_FILES.update({
             filepath.name: filepath
             for file_type in self.file_types
             for filepath in self.DEFAULT_HOLDINGS_PATH.rglob(f"*.{file_type}")
-            if filepath.is_file()
-        }
+        })
 
         choices: dict = {c: {} for c in self.controller_choices}
         choices["load"]["-f"] = {c: None for c in self.DATA_HOLDINGS_FILES}

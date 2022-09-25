@@ -310,12 +310,18 @@ class PortfolioOptimizationController(BaseController):
         self.DATA_ALLOCATION_FILES = {
             filepath.name: filepath
             for file_type in self.file_types
-            for filepath in (
-                self.DEFAULT_ALLOCATION_PATH.rglob(f"*.{file_type}"),
-                REPOSITORY_DIRECTORY / "portfolio" / "allocation",
-            )
-            if filepath.is_file()
+            for filepath in self.DEFAULT_ALLOCATION_PATH.rglob(f"*.{file_type}")
         }
+
+        self.DATA_ALLOCATION_FILES.update(
+            {
+                filepath.name: filepath
+                for file_type in self.file_types
+                for filepath in (
+                    REPOSITORY_DIRECTORY / "portfolio" / "allocation"
+                ).rglob(f"*.{file_type}")
+            }
+        )
 
         self.current_file = ""
         self.DEFAULT_OPTIMIZATION_PATH = PORTFOLIO_DATA_DIRECTORY / "optimization"
@@ -323,12 +329,18 @@ class PortfolioOptimizationController(BaseController):
         self.DATA_OPTIMIZATION_FILES = {
             filepath.name: filepath
             for file_type in self.file_types
-            for filepath in (
-                self.DEFAULT_OPTIMIZATION_PATH.rglob(f"*.{file_type}"),
-                REPOSITORY_DIRECTORY / "portfolio" / "optimization",
-            )
-            if filepath.is_file()
+            for filepath in self.DEFAULT_OPTIMIZATION_PATH.rglob(f"*.{file_type}")
         }
+
+        self.DATA_OPTIMIZATION_FILES.update(
+            {
+                filepath.name: filepath
+                for file_type in self.file_types
+                for filepath in (
+                    REPOSITORY_DIRECTORY / "portfolio" / "optimization"
+                ).rglob(f"*.{file_type}")
+            }
+        )
 
         self.params: Dict = {}
 

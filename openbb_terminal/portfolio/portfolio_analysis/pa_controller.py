@@ -27,11 +27,16 @@ port_types = [".csv", ".json", ".xlsx"]
 possible_paths = {
     portpath.name: portpath
     for port_type in port_types
-    for portpath in (
-        portfolios_path.rglob(f"*.{port_type}")
-        or (Path(__file__).parent / "portfolios").rglob(f"*.{port_type}")
-    )
+    for portpath in portfolios_path.rglob(f"*.{port_type}")
 }
+
+possible_paths.update(
+    {
+        portpath.name: portpath
+        for port_type in port_types
+        for portpath in (Path(__file__).parent / "portfolios").rglob(f"*.{port_type}")
+    }
+)
 
 
 class PortfolioAnalysisController(BaseController):
