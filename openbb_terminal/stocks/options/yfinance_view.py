@@ -422,7 +422,6 @@ def plot_vol(
     ax.legend()
     ax.set_title(f"Volume for {symbol.upper()} expiring {expiry}")
     theme.style_primary_axis(ax)
-    print(calls)
     if external_axes is None:
         theme.visualize_output()
     export_data(
@@ -505,25 +504,57 @@ def plot_volume_open_interest(
         min_vol_calls = np.percentile(df_calls["oi+v"], volume_percentile_threshold)
         min_vol_puts = np.percentile(df_puts["oi+v"], volume_percentile_threshold)
 
-        df_calls = df_calls[df_calls["oi+v"] > min_vol_calls]
+        df_calls = df_calls.loc[df_calls.index.intersection(df_puts.index)]
+        df_calls = (
+            df_calls[df_calls["oi+v"] > min_vol_calls]
+            .drop(["strike"], axis=1)
+            .reset_index()
+            .merge(
+                df_calls[df_puts["oi+v"] < min_vol_puts][
+                    ["openInterest", "volume", "type", "oi+v", "spot"]
+                ].reset_index()
+            )
+            .set_index("strike")
+        )
+        df_calls["strike"] = df_calls.index
+
+        df_puts = df_puts.loc[df_puts.index.intersection(df_calls.index)]
+
         df_calls = df_calls[df_calls["strike"] > 0.75 * current_price]
         df_calls = df_calls[df_calls["strike"] < 1.25 * current_price]
-        df_puts = df_puts[df_puts["oi+v"] < min_vol_puts]
         df_puts = df_puts[df_puts["strike"] > 0.75 * current_price]
         df_puts = df_puts[df_puts["strike"] < 1.25 * current_price]
 
     else:
+        df_calls = df_calls.loc[df_calls.index.intersection(df_puts.index)]
         if min_vol > -1:
-            df_calls = df_calls[df_calls["oi+v"] > min_vol]
-            df_puts = df_puts[df_puts["oi+v"] < -min_vol]
+            df_calls = (
+                df_calls[df_calls["oi+v"] > min_vol]
+                .drop(["strike"], axis=1)
+                .reset_index()
+                .merge(
+                    df_calls[df_puts["oi+v"] < min_vol][
+                        ["openInterest", "volume", "type", "oi+v", "spot"]
+                    ].reset_index()
+                )
+                .set_index("strike")
+            )
+            df_calls["strike"] = df_calls.index
+            df_puts = df_puts.loc[df_puts.index.intersection(df_calls.index)]
 
-        if min_sp > -1:
-            df_calls = df_calls[df_calls["strike"] > min_sp]
-            df_puts = df_puts[df_puts["strike"] > min_sp]
+    if min_sp > -1:
+        df_calls = df_calls[df_calls["strike"] > min_sp]
+        df_puts = df_puts[df_puts["strike"] > min_sp]
+    else:
+        df_calls = df_calls[df_calls["strike"] > 0.75 * current_price]
+        df_puts = df_puts[df_puts["strike"] > 0.75 * current_price]
 
-        if max_sp > -1:
-            df_calls = df_calls[df_calls["strike"] < max_sp]
-            df_puts = df_puts[df_puts["strike"] < max_sp]
+    if max_sp > -1:
+        df_calls = df_calls[df_calls["strike"] < max_sp]
+        df_puts = df_puts[df_puts["strike"] < max_sp]
+    else:
+        df_calls = df_calls[df_calls["strike"] < 1.25 * current_price]
+        df_puts = df_puts[df_puts["strike"] < 1.25 * current_price]
 
     if df_calls.empty and df_puts.empty:
         console.print(
