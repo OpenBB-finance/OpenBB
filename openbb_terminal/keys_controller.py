@@ -226,28 +226,9 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     def check_si_key(self, show_output: bool = False) -> None:
         """Check Sentiment Investor key"""
         self.cfg_dict["SENTIMENT_INVESTOR"] = "si"
-        si_keys = [cfg.API_SENTIMENTINVESTOR_TOKEN]
-        if "REPLACE_ME" in si_keys:
-            logger.info("Sentiment Investor key not defined")
-            self.key_dict["SENTIMENT_INVESTOR"] = "not defined"
-        else:
-            try:
-                account = requests.get(
-                    f"https://api.sentimentinvestor.com/v1/trending"
-                    f"?token={cfg.API_SENTIMENTINVESTOR_TOKEN}"
-                )
-                if account.ok and account.json().get("success", False):
-                    logger.info("Sentiment Investor key defined, test passed")
-                    self.key_dict["SENTIMENT_INVESTOR"] = "defined, test passed"
-                else:
-                    logger.warning("Sentiment Investor key defined, test failed")
-                    self.key_dict["SENTIMENT_INVESTOR"] = "defined, test unsuccessful"
-            except Exception:
-                logger.warning("Sentiment Investor key defined, test failed")
-                self.key_dict["SENTIMENT_INVESTOR"] = "defined, test unsuccessful"
-
-        if show_output:
-            console.print(self.key_dict["SENTIMENT_INVESTOR"] + "\n")
+        if not status:
+            status = keys_model.check_si_key(show_output=show_output)
+        self.key_dict["SENTIMENT_INVESTOR"] = status
 
     def check_coinbase_key(self, show_output: bool = False) -> None:
         """Check Coinbase key"""
@@ -1186,26 +1167,23 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             description="Set Sentiment Investor API key.",
         )
         parser.add_argument(
-            "-k",
-            "--key",
+            "-t",
+            "--token",
             type=str,
-            dest="key",
-            help="key",
+            dest="token",
+            help="token",
         )
         if not other_args:
             console.print("For your API Key, visit: https://sentimentinvestor.com\n")
             return
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-k")
+            other_args.insert(0, "-t")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            os.environ["OPENBB_API_SENTIMENTINVESTOR_TOKEN"] = ns_parser.key
-            dotenv.set_key(
-                self.env_file, "OPENBB_API_SENTIMENTINVESTOR_TOKEN", ns_parser.key
+            status = keys_model.set_si_key(
+                token=ns_parser.token, persist=True, show_output=True
             )
-            cfg.API_SENTIMENTINVESTOR_TOKEN = ns_parser.key
-
-            self.check_si_key(show_output=True)
+            self.check_si_key(status, show_output=False)
 
     @log_start_end(log=logger)
     def call_coinbase(self, other_args: List[str]):

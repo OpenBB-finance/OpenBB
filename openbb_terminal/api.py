@@ -1905,7 +1905,7 @@ functions = {
     "keys.oanda": {"model": "openbb_terminal.keys_model.set_oanda_key"},
     "keys.binance": {"model": "openbb_terminal.keys_model.set_binance_key"},
     "keys.bitquery": {"model": "openbb_terminal.keys_model.set_bitquery_key"},
-    # "keys.si": {"model": "openbb_terminal.keys_model.set_si_key"},
+    "keys.si": {"model": "openbb_terminal.keys_model.set_si_key"},
     # "keys.coinbase": {"model": "openbb_terminal.keys_model.set_coinbase_key"},
     # "keys.walert": {"model": "openbb_terminal.keys_model.set_walert_key"},
     "keys.glassnode": {"model": "openbb_terminal.keys_model.set_glassnode_key"},

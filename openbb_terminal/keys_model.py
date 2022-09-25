@@ -1423,3 +1423,81 @@ def check_binance_key(show_output: bool = False) -> str:
         console.print(status + "\n")
 
     return status
+
+
+def set_si_key(
+    token: str,
+    persist: bool = False,
+    show_output: bool = False,
+):
+    """Set Sentimentinvestor key.
+
+    Parameters
+    ----------
+        token: str
+        secret: str
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+    """
+
+    set_key("OPENBB_API_SENTIMENTINVESTOR_TOKEN", token, persist)
+
+    status = check_si_key(show_output)
+
+    return status
+
+
+def check_si_key(show_output: bool = False) -> str:
+    """Check Sentimentinvestor key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+
+    """
+
+    si_keys = [cfg.API_SENTIMENTINVESTOR_TOKEN]
+    if "REPLACE_ME" in si_keys:
+        logger.info("Sentiment Investor key not defined")
+        status = "not defined"
+    else:
+        try:
+            account = requests.get(
+                f"https://api.sentimentinvestor.com/v1/trending"
+                f"?token={cfg.API_SENTIMENTINVESTOR_TOKEN}"
+            )
+            if account.ok and account.json().get("success", False):
+                logger.info("Sentiment Investor key defined, test passed")
+                status = "defined, test passed"
+            else:
+                logger.warning("Sentiment Investor key defined, test failed")
+                status = "defined, test unsuccessful"
+        except Exception:
+            logger.warning("Sentiment Investor key defined, test failed")
+            status = "defined, test unsuccessful"
+
+    if show_output:
+        console.print(status + "\n")
+
+    return status
