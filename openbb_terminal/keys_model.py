@@ -1028,8 +1028,8 @@ def check_glassnode_key(show_output: bool = False) -> str:
 
 def set_twitter_key(
     key: str,
-    secret: str,
-    token: str,
+    secret_key: str,
+    bearer_token: str,
     persist: bool = False,
     show_output: bool = False,
 ):
@@ -1038,8 +1038,8 @@ def set_twitter_key(
     Parameters
     ----------
         key: str
-        secret: str
-        token: str
+        secret_key: str
+        bearer_token: str
         persist: bool
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
@@ -1056,8 +1056,8 @@ def set_twitter_key(
     """
 
     set_key("OPENBB_API_TWITTER_KEY", key, persist)
-    set_key("OPENBB_API_TWITTER_SECRET_KEY", secret, persist)
-    set_key("OPENBB_API_TWITTER_BEARER_TOKEN", token, persist)
+    set_key("OPENBB_API_TWITTER_SECRET_KEY", secret_key, persist)
+    set_key("OPENBB_API_TWITTER_BEARER_TOKEN", bearer_token, persist)
 
     status = check_twitter_key(show_output)
 
@@ -1111,6 +1111,74 @@ def check_twitter_key(show_output: bool = False) -> str:
         else:
             logger.warning("Twitter key defined, test failed")
             status = "defined, test inconclusive"
+
+    if show_output:
+        console.print(status + "\n")
+
+    return status
+
+
+def set_rh_key(
+    username: str,
+    password: str,
+    persist: bool = False,
+    show_output: bool = False,
+):
+    """Set Robinhood key.
+
+    Parameters
+    ----------
+        username: str
+        password: str
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+    """
+
+    set_key("OPENBB_RH_USERNAME", username, persist)
+    set_key("OPENBB_RH_PASSWORD", password, persist)
+
+    status = check_rh_key(show_output)
+
+    return status
+
+
+def check_rh_key(show_output: bool = False) -> str:
+    """Check Robinhood key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+
+    """
+
+    rh_keys = [cfg.RH_USERNAME, cfg.RH_PASSWORD]
+    if "REPLACE_ME" in rh_keys:
+        logger.info("Robinhood key not defined")
+        status = "not defined"
+    else:
+        logger.info("Robinhood key defined, not tested")
+        status = "defined, not tested"
 
     if show_output:
         console.print(status + "\n")

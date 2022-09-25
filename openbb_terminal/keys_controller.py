@@ -194,19 +194,12 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.check_twitter_key(show_output=show_output)
         self.key_dict["TWITTER"] = status
 
-    def check_rh_key(self, show_output: bool = False) -> None:
+    def check_rh_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Robinhood key"""
         self.cfg_dict["ROBINHOOD"] = "rh"
-        rh_keys = [cfg.RH_USERNAME, cfg.RH_PASSWORD]
-        if "REPLACE_ME" in rh_keys:
-            logger.info("Robinhood key not defined")
-            self.key_dict["ROBINHOOD"] = "not defined"
-        else:
-            logger.info("Robinhood key defined, not tested")
-            self.key_dict["ROBINHOOD"] = "defined, not tested"
-
-        if show_output:
-            console.print(self.key_dict["ROBINHOOD"] + "\n")
+        if not status:
+            status = keys_model.check_rh_key(show_output=show_output)
+        self.key_dict["ROBINHOOD"] = status
 
     def check_degiro_key(self, show_output: bool = False) -> None:
         """Check Degiro key"""
@@ -1037,7 +1030,11 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             status = keys_model.set_twitter_key(
-                key=ns_parser.key, persist=True, show_output=True
+                key=ns_parser.key, 
+                secret_key=ns_parser.secret_key,
+                bearer_token=ns_parser.bearer_token,
+                persist=True, 
+                show_output=True
             )
             self.check_twitter_key(status, show_output=False)
 
@@ -1069,15 +1066,13 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             return
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            os.environ["OPENBB_RH_USERNAME"] = ns_parser.username
-            dotenv.set_key(self.env_file, "OPENBB_RH_USERNAME", ns_parser.username)
-            cfg.RH_USERNAME = ns_parser.username
-
-            os.environ["OPENBB_RH_PASSWORD"] = ns_parser.password
-            dotenv.set_key(self.env_file, "OPENBB_RH_PASSWORD", ns_parser.password)
-            cfg.RH_PASSWORD = ns_parser.password
-
-            self.check_rh_key(show_output=True)
+            status = keys_model.set_rh_key(
+                username=ns_parser.username,
+                password=ns_parser.password,
+                persist=True, 
+                show_output=True
+            )
+            self.check_rh_key(status, show_output=False)
 
     @log_start_end(log=logger)
     def call_degiro(self, other_args: List[str]):
