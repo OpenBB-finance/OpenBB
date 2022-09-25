@@ -114,6 +114,7 @@ class CreateExcelFA:
         i = 0
         while True:
             path = dcf_model.generate_path(i, self.info["symbol"], self.data["now"])
+            path.parent.mkdir(parents=True, exist_ok=True)
 
             if not path.is_file():
                 self.wb.save(path)

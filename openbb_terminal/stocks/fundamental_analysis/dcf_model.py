@@ -593,6 +593,6 @@ def generate_path(n: int, symbol: str, date: str) -> Path:
         func_name="dcf", dir_path=os.path.abspath(os.path.dirname(__file__))
     ).parent
     trypath = export_folder / symbol / date / val
-    trypath = str(trypath) + ".xslx"
+    trypath = str(trypath) + ".xlsx"
 
     return Path(trypath)
