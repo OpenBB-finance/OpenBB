@@ -809,7 +809,7 @@ class DefiController(BaseController):
             graph_view.display_uni_pools(
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                escend=not ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
