@@ -1,9 +1,7 @@
-# crypto.dd.tk
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.dd.tk(symbol: str, coingecko_id: str) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
+### crypto.dd.tk(symbol: str, coingecko_id: str) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
 
 Returns coin tokenomics
     [Source: https://messari.io/]
@@ -22,7 +20,7 @@ Returns coin tokenomics
         Circulating supply overtime
 
 ## Getting charts 
-###crypto.dd.tk(symbol: str, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
+### crypto.dd.tk(symbol: str, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
 
 Display coin tokenomics
     [Source: https://messari.io/]

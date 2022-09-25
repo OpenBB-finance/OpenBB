@@ -12,7 +12,7 @@ import i18n
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
 
-# pylint: disable=no-member
+# pylint: disable=no-member,c-extension-no-member
 
 
 # https://rich.readthedocs.io/en/stable/appendix/colors.html#appendix-colors

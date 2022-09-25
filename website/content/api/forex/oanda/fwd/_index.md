@@ -1,9 +1,7 @@
-# forex.oanda.fwd
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###forex.oanda.fwd(to_symbol: str = 'USD', from_symbol: str = 'EUR')
+### forex.oanda.fwd(to_symbol: str = 'USD', from_symbol: str = 'EUR')
 
 Gets forward rates from fxempire
 
@@ -20,7 +18,7 @@ Gets forward rates from fxempire
 
 
 ## Getting charts 
-###forex.oanda.fwd(to_symbol: str = 'USD', from_symbol: str = 'EUR', export: str = '', chart=True)
+### forex.oanda.fwd(to_symbol: str = 'USD', from_symbol: str = 'EUR', export: str = '', chart=True)
 
 Display forward rates for currency pairs
 

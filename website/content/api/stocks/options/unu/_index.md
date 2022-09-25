@@ -1,9 +1,7 @@
-# stocks.options.unu
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.options.unu(limit: int = 100)
+### stocks.options.unu(limit: int = 100)
 
 Get unusual option activity from fdscanner.com
 
@@ -20,7 +18,7 @@ Get unusual option activity from fdscanner.com
         Timestamp indicated when data was updated from website
 
 ## Getting charts 
-###stocks.options.unu(limit: int = 20, sortby: str = 'Vol/OI', ascend: bool = False, calls_only: bool = False, puts_only: bool = False, export: str = '', chart=True)
+### stocks.options.unu(limit: int = 20, sortby: str = 'Vol/OI', ascend: bool = False, calls_only: bool = False, puts_only: bool = False, export: str = '', chart=True)
 
 Displays the unusual options table
 

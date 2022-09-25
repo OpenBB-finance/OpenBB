@@ -224,11 +224,10 @@ def get_stocks_data(
     """
     stocks = filter_stocks(country, sector, industry, marketcap, exclude_exchanges)
 
-    stocks_data = {}
-    for symbol in tqdm(stocks):
-        stocks_data[symbol] = yf.utils.get_json(
-            f"https://finance.yahoo.com/quote/{symbol}"
-        )
+    stocks_data = {
+        symbol: yf.utils.get_json(f"https://finance.yahoo.com/quote/{symbol}")
+        for symbol in tqdm(stocks)
+    }
 
     return stocks_data
 

@@ -1,9 +1,7 @@
-# crypto.dd.mkt
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.dd.mkt(symbol: str = 'eth-ethereum', quotes: str = 'USD', sortby: str = 'pct_volume_share', ascend: bool = True) -> pandas.core.frame.DataFrame
+### crypto.dd.mkt(symbol: str = 'eth-ethereum', quotes: str = 'USD', sortby: str = 'pct_volume_share', ascend: bool = True) -> pandas.core.frame.DataFrame
 
 All markets for given coin and currency [Source: CoinPaprika]
 
@@ -30,7 +28,7 @@ All markets for given coin and currency [Source: CoinPaprika]
         All markets for given coin and currency
 
 ## Getting charts 
-###crypto.dd.mkt(from_symbol: str = 'BTC', to_symbol: str = 'USD', limit: int = 20, sortby: str = 'pct_volume_share', ascend: bool = True, links: bool = False, export: str = '', chart=True) -> None
+### crypto.dd.mkt(from_symbol: str = 'BTC', to_symbol: str = 'USD', limit: int = 20, sortby: str = 'pct_volume_share', ascend: bool = True, links: bool = False, export: str = '', chart=True) -> None
 
 Get all markets for given coin id. [Source: CoinPaprika]
 

@@ -662,10 +662,12 @@ def us_market_holidays(years) -> list:
         holiday + " (Observed)" for holiday in market_holidays
     ]
     all_holidays = us_holidays(years=years)
-    valid_holidays = []
-    for date in list(all_holidays):
-        if all_holidays[date] in market_and_observed_holidays:
-            valid_holidays.append(date)
+    valid_holidays = [
+        date
+        for date in list(all_holidays)
+        if all_holidays[date] in market_and_observed_holidays
+    ]
+
     for year in years:
         new_Year = datetime.strptime(f"{year}-01-01", "%Y-%m-%d")
         if new_Year.weekday() != 5:  # ignore saturday

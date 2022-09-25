@@ -1,9 +1,7 @@
-# forex.oanda.pending
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###forex.oanda.pending(accountID: str = 'REPLACE_ME') -> Union[pandas.core.frame.DataFrame, bool]
+### forex.oanda.pending(accountID: str = 'REPLACE_ME') -> Union[pandas.core.frame.DataFrame, bool]
 
 Request information on pending orders.
 
@@ -18,7 +16,7 @@ Request information on pending orders.
         Pending orders data or False
 
 ## Getting charts 
-###forex.oanda.pending(accountID: str, chart=True)
+### forex.oanda.pending(accountID: str, chart=True)
 
 Get information about pending orders.
 

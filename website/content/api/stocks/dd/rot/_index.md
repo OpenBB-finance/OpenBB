@@ -1,9 +1,7 @@
-# stocks.dd.rot
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.dd.rot(symbol: str) -> pandas.core.frame.DataFrame
+### stocks.dd.rot(symbol: str) -> pandas.core.frame.DataFrame
 
 Get rating over time data. [Source: Finnhub]
 
@@ -18,7 +16,7 @@ Get rating over time data. [Source: Finnhub]
         Get dataframe with ratings
 
 ## Getting charts 
-###stocks.dd.rot(symbol: str, limit: int = 10, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.dd.rot(symbol: str, limit: int = 10, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Rating over time (monthly). [Source: Finnhub]
 

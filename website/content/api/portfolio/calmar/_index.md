@@ -1,7 +1,5 @@
-# portfolio.calmar
-
 ## Get underlying data 
-###portfolio.calmar(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: int = 756)
+### portfolio.calmar(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: int = 756)
 
 Get calmar ratio
 

@@ -1,7 +1,5 @@
-# stocks.options.process_chains
-
 ## Get underlying data 
-###stocks.options.process_chains(response: requests.models.Response) -> pandas.core.frame.DataFrame
+### stocks.options.process_chains(response: requests.models.Response) -> pandas.core.frame.DataFrame
 
 Function to take in the requests.get and return a DataFrame
 

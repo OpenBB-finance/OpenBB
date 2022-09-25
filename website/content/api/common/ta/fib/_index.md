@@ -1,9 +1,7 @@
-# common.ta.fib
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###common.ta.fib(data: pandas.core.frame.DataFrame, limit: int = 120, start_date: Any = None, end_date: Any = None) -> Tuple[pandas.core.frame.DataFrame, pandas._libs.tslibs.timestamps.Timestamp, pandas._libs.tslibs.timestamps.Timestamp, float, float]
+### common.ta.fib(data: pandas.core.frame.DataFrame, limit: int = 120, start_date: Any = None, end_date: Any = None) -> Tuple[pandas.core.frame.DataFrame, pandas._libs.tslibs.timestamps.Timestamp, pandas._libs.tslibs.timestamps.Timestamp, float, float]
 
 Calculate Fibonacci levels
 
@@ -32,7 +30,7 @@ Calculate Fibonacci levels
         Price at max point
 
 ## Getting charts 
-###common.ta.fib(data: pandas.core.frame.DataFrame, limit: int = 120, start_date: Optional[str] = None, end_date: Optional[str] = None, symbol: str = '', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### common.ta.fib(data: pandas.core.frame.DataFrame, limit: int = 120, start_date: Optional[str] = None, end_date: Optional[str] = None, symbol: str = '', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Calculate fibonacci retracement levels
 
