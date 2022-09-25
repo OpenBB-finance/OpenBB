@@ -1,6 +1,7 @@
 import logging
 import os
 from typing import Dict
+import binance
 import dotenv
 import quandl
 import requests
@@ -1343,3 +1344,82 @@ def check_oanda_key(show_output: bool = False) -> str:
 
     return status
 
+
+def set_binance_key(
+    key: str,
+    secret: str,
+    persist: bool = False,
+    show_output: bool = False,
+):
+    """Set Binance key.
+
+    Parameters
+    ----------
+        key: str
+        secret: str
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+    """
+
+    set_key("OPENBB_API_BINANCE_KEY", key, persist)
+    set_key("OPENBB_API_BINANCE_SECRET", secret, persist)
+
+    status = check_binance_key(show_output)
+
+    return status
+
+
+def check_binance_key(show_output: bool = False) -> str:
+    """Check Binance key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+
+    """
+
+    if "REPLACE_ME" in [cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET]:
+        logger.info("Binance key not defined")
+        status = "not defined"
+
+    else:
+        try:
+            client = binance.Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
+            candles = client.get_klines(
+                symbol="BTCUSDT", interval=client.KLINE_INTERVAL_1DAY
+            )
+            if len(candles) > 0:
+                logger.info("Binance key defined, test passed")
+                status = "defined, test passed"
+            else:
+                logger.info("Binance key defined, test failed")
+                status = "defined, test failed"
+        except Exception:
+            logger.info("Binance key defined, test failed")
+            status = "defined, test failed"
+
+    if show_output:
+        console.print(status + "\n")
+
+    return status

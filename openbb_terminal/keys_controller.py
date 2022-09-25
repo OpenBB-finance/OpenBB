@@ -8,7 +8,6 @@ import logging
 import os
 from typing import Dict, List
 
-import binance
 import dotenv
 import pyEX
 import requests
@@ -210,33 +209,12 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.check_degiro_key(show_output=show_output)
         self.key_dict["OANDA"] = status
 
-    def check_binance_key(self, show_output: bool = False) -> None:
+    def check_binance_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Binance key"""
         self.cfg_dict["BINANCE"] = "binance"
-
-        if "REPLACE_ME" in [cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET]:
-            logger.info("Binance key not defined")
-            self.key_dict["BINANCE"] = "not defined"
-
-        else:
-            try:
-                client = binance.Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
-                candles = client.get_klines(
-                    symbol="BTCUSDT", interval=client.KLINE_INTERVAL_1DAY
-                )
-
-                if len(candles) > 0:
-                    logger.info("Binance key defined, test passed")
-                    self.key_dict["BINANCE"] = "defined, test passed"
-                else:
-                    logger.info("Binance key defined, test failed")
-                    self.key_dict["BINANCE"] = "defined, test failed"
-            except Exception:
-                logger.info("Binance key defined, test failed")
-                self.key_dict["BINANCE"] = "defined, test failed"
-
-        if show_output:
-            console.print(self.key_dict["BINANCE"] + "\n")
+        if not status:
+            status = keys_model.check_binance_key(show_output=show_output)
+        self.key_dict["BINANCE"] = status
 
     def check_bitquery_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Bitquery key"""
@@ -980,7 +958,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             "-s",
             "--secret",
             type=str,
-            dest="secret_key",
+            dest="secret",
             help="Secret key",
             required="-h" not in other_args,
         )
@@ -988,7 +966,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             "-t",
             "--token",
             type=str,
-            dest="bearer_token",
+            dest="token",
             help="Bearer token",
             required="-h" not in other_args,
         )
@@ -999,8 +977,8 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         if ns_parser:
             status = keys_model.set_twitter_key(
                 key=ns_parser.key,
-                secret_key=ns_parser.secret_key,
-                bearer_token=ns_parser.bearer_token,
+                secret=ns_parser.secret,
+                bearer_token=ns_parser.token,
                 persist=True,
                 show_output=True,
             )
@@ -1153,7 +1131,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             "-s",
             "--secret",
             type=str,
-            dest="secret_key",
+            dest="secret",
             help="Secret key",
         )
         if not other_args:
@@ -1161,17 +1139,14 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             return
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            os.environ["OPENBB_API_BINANCE_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "OPENBB_API_BINANCE_KEY", ns_parser.key)
-            cfg.API_BINANCE_KEY = ns_parser.key
-
-            os.environ["OPENBB_API_BINANCE_SECRET"] = ns_parser.secret_key
-            dotenv.set_key(
-                self.env_file, "OPENBB_API_BINANCE_SECRET", ns_parser.secret_key
+            status = keys_model.set_binance_key(
+                key=ns_parser.key,
+                secret=ns_parser.secret,
+                persist=True,
+                show_output=True,
             )
-            cfg.API_BINANCE_SECRET = ns_parser.secret_key
 
-            self.check_binance_key(show_output=True)
+            self.check_binance_key(status, show_output=False)
 
     @log_start_end(log=logger)
     def call_bitquery(self, other_args: List[str]):
