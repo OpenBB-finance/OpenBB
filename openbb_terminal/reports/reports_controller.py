@@ -197,11 +197,7 @@ class ReportController(BaseController):
             # argument used because this depends on what the user will use it for in
             # the notebook. This is a downside of allowing the user to have this much
             # flexibility.
-<<<<<<< HEAD
-            if len(other_args) != (len(params) - 1):  # excluding report name
-=======
             if len(other_args) != len(params):
->>>>>>> 87a9e5c9c733d73b3e1915ec5b6bbd0133e3c988
                 console.print("Wrong number of arguments provided!")
                 if len(params):
                     console.print("Provide, in order:")
@@ -227,29 +223,9 @@ class ReportController(BaseController):
             notebook_output = notebook_output.replace("\\", "\\\\")
 
             # gather params from user
-<<<<<<< HEAD
-            # d_report_params = {}
-            # for idx in range(len(params) - 1):
-            #     d_report_params[params[idx]] = other_args[idx]
-
-            if len(params) - 1:
-                d_report_params = {
-                    args: other_args[idx] for idx, args in enumerate(params)
-                }
-            else:
-                d_report_params = {}
-
-            # try:
-            #     d_report_params = {
-            #         args: other_args[idx] for idx, args in enumerate(params)
-            #     }
-            # except IndexError:
-            #     d_report_params = {}
-=======
             d_report_params = {}
             for idx, param in enumerate(params):
                 d_report_params[param] = other_args[idx]
->>>>>>> 87a9e5c9c733d73b3e1915ec5b6bbd0133e3c988
 
             d_report_params["report_name"] = notebook_output
 
