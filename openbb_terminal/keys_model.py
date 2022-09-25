@@ -14,6 +14,11 @@ from oandapyV20 import API as oanda_API
 from oandapyV20.exceptions import V20Error
 from coinmarketcapapi import CoinMarketCapAPI, CoinMarketCapAPIError
 from alpha_vantage.timeseries import TimeSeries
+from openbb_terminal.cryptocurrency.coinbase_helpers import (
+    CoinbaseProAuth,
+    make_coinbase_request,
+    CoinbaseApiException,
+)
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.core.config.paths import USER_ENV_FILE
 from openbb_terminal.rich_config import console
@@ -955,81 +960,6 @@ def check_bitquery_key(show_output: bool = False) -> str:
     return status
 
 
-def set_glassnode_key(key: str, persist: bool = False, show_output: bool = False):
-    """Set Glassnode key.
-
-    Parameters
-    ----------
-        key: str
-            API key
-        persist: bool
-            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
-            If True, api key change will be global, i.e. it will affect terminal environment variables.
-            By default, False.
-
-    Returns
-    -------
-    str
-        API key status. One of the following:
-            not defined
-            defined, test failed
-            defined, test passed
-            defined, test inconclusive
-    """
-
-    set_key("OPENBB_API_GLASSNODE_KEY", key, persist)
-    status = check_glassnode_key(show_output)
-
-    return status
-
-
-def check_glassnode_key(show_output: bool = False) -> str:
-    """Check Glassnode key
-
-    Parameters
-    ----------
-        show_output: bool
-            Display status string or not.
-
-    Returns
-    -------
-    str
-        API key status. One of the following:
-            not defined
-            defined, test failed
-            defined, test passed
-            defined, test inconclusive
-
-    """
-
-    if cfg.API_GLASSNODE_KEY == "REPLACE_ME":
-        logger.info("Glassnode key not defined")
-        status = "not defined"
-    else:
-        url = "https://api.glassnode.com/v1/metrics/market/price_usd_close"
-
-        parameters = {
-            "api_key": cfg.API_GLASSNODE_KEY,
-            "a": "BTC",
-            "i": "24h",
-            "s": str(1_614_556_800),
-            "u": str(1_641_227_783_561),
-        }
-
-        r = requests.get(url, params=parameters)
-        if r.status_code == 200:
-            logger.info("Glassnode key defined, test passed")
-            status = "defined, test passed"
-        else:
-            logger.warning("Glassnode key defined, test failed")
-            status = "defined, test unsuccessful"
-
-    if show_output:
-        console.print(status + "\n")
-
-    return status
-
-
 def set_twitter_key(
     key: str,
     secret_key: str,
@@ -1495,6 +1425,168 @@ def check_si_key(show_output: bool = False) -> str:
                 status = "defined, test unsuccessful"
         except Exception:
             logger.warning("Sentiment Investor key defined, test failed")
+            status = "defined, test unsuccessful"
+
+    if show_output:
+        console.print(status + "\n")
+
+    return status
+
+
+def set_coinbase_key(
+    key: str,
+    secret: str,
+    passphrase: str,
+    persist: bool = False,
+    show_output: bool = False,
+):
+    """Set Coinbase key.
+
+    Parameters
+    ----------
+        key: str
+        secret: str
+        passphrase: str
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+    """
+
+    set_key("OPENBB_API_COINBASE_KEY", key, persist)
+    set_key("OPENBB_API_COINBASE_SECRET", secret, persist)
+    set_key("OPENBB_API_COINBASE_PASS_PHRASE", passphrase, persist)
+
+    status = check_coinbase_key(show_output)
+
+    return status
+
+
+def check_coinbase_key(show_output: bool = False) -> str:
+    """Check Coinbase key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+
+    """
+
+    if "REPLACE_ME" in [
+        cfg.API_COINBASE_KEY,
+        cfg.API_COINBASE_SECRET,
+        cfg.API_COINBASE_PASS_PHRASE,
+    ]:
+        logger.info("Coinbase key not defined")
+        status = "not defined"
+    else:
+        auth = CoinbaseProAuth(
+            cfg.API_COINBASE_KEY,
+            cfg.API_COINBASE_SECRET,
+            cfg.API_COINBASE_PASS_PHRASE,
+        )
+        try:
+            resp = make_coinbase_request("/accounts", auth=auth)
+        except CoinbaseApiException:
+            resp = None
+        if not resp:
+            logger.warning("Coinbase key defined, test failed")
+            status = "defined, test unsuccessful"
+        else:
+            logger.info("Coinbase key defined, test passed")
+            status = "defined, test passed"
+
+    if show_output:
+        console.print(status + "\n")
+
+    return status
+
+
+def set_glassnode_key(key: str, persist: bool = False, show_output: bool = False):
+    """Set Glassnode key.
+
+    Parameters
+    ----------
+        key: str
+            API key
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+    """
+
+    set_key("OPENBB_API_GLASSNODE_KEY", key, persist)
+    status = check_glassnode_key(show_output)
+
+    return status
+
+
+def check_glassnode_key(show_output: bool = False) -> str:
+    """Check Glassnode key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+
+    """
+
+    if cfg.API_GLASSNODE_KEY == "REPLACE_ME":
+        logger.info("Glassnode key not defined")
+        status = "not defined"
+    else:
+        url = "https://api.glassnode.com/v1/metrics/market/price_usd_close"
+
+        parameters = {
+            "api_key": cfg.API_GLASSNODE_KEY,
+            "a": "BTC",
+            "i": "24h",
+            "s": str(1_614_556_800),
+            "u": str(1_641_227_783_561),
+        }
+
+        r = requests.get(url, params=parameters)
+        if r.status_code == 200:
+            logger.info("Glassnode key defined, test passed")
+            status = "defined, test passed"
+        else:
+            logger.warning("Glassnode key defined, test failed")
             status = "defined, test unsuccessful"
 
     if show_output:

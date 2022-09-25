@@ -18,11 +18,6 @@ from openbb_terminal import config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import keys_model
 from openbb_terminal.core.config.paths import USER_ENV_FILE
-from openbb_terminal.cryptocurrency.coinbase_helpers import (
-    CoinbaseProAuth,
-    make_coinbase_request,
-    CoinbaseApiException,
-)
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import parse_simple_args
 from openbb_terminal.menu import session
@@ -223,42 +218,19 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.check_bitquery_key(show_output=show_output)
         self.key_dict["BITQUERY"] = status
 
-    def check_si_key(self, show_output: bool = False) -> None:
+    def check_si_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Sentiment Investor key"""
         self.cfg_dict["SENTIMENT_INVESTOR"] = "si"
         if not status:
             status = keys_model.check_si_key(show_output=show_output)
         self.key_dict["SENTIMENT_INVESTOR"] = status
 
-    def check_coinbase_key(self, show_output: bool = False) -> None:
+    def check_coinbase_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Coinbase key"""
         self.cfg_dict["COINBASE"] = "coinbase"
-        if "REPLACE_ME" in [
-            cfg.API_COINBASE_KEY,
-            cfg.API_COINBASE_SECRET,
-            cfg.API_COINBASE_PASS_PHRASE,
-        ]:
-            logger.info("Coinbase key not defined")
-            self.key_dict["COINBASE"] = "not defined"
-        else:
-            auth = CoinbaseProAuth(
-                cfg.API_COINBASE_KEY,
-                cfg.API_COINBASE_SECRET,
-                cfg.API_COINBASE_PASS_PHRASE,
-            )
-            try:
-                resp = make_coinbase_request("/accounts", auth=auth)
-            except CoinbaseApiException:
-                resp = None
-            if not resp:
-                logger.warning("Coinbase key defined, test failed")
-                self.key_dict["COINBASE"] = "defined, test unsuccessful"
-            else:
-                logger.info("Coinbase key defined, test passed")
-                self.key_dict["COINBASE"] = "defined, test passed"
-
-        if show_output:
-            console.print(self.key_dict["COINBASE"] + "\n")
+        if not status:
+            status = keys_model.check_coinbase_key(show_output=show_output)
+        self.key_dict["COINBASE"] = status
 
     def check_walert_key(self, show_output: bool = False) -> None:
         """Check Walert key"""
@@ -1205,7 +1177,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             "-s",
             "--secret",
             type=str,
-            dest="secret_key",
+            dest="secret",
             help="Secret key",
         )
         parser.add_argument(
@@ -1220,23 +1192,14 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             return
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            os.environ["OPENBB_API_COINBASE_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "OPENBB_API_COINBASE_KEY", ns_parser.key)
-            cfg.API_COINBASE_KEY = ns_parser.key
-
-            os.environ["OPENBB_API_COINBASE_SECRET"] = ns_parser.secret_key
-            dotenv.set_key(
-                self.env_file, "OPENBB_API_COINBASE_SECRET", ns_parser.secret_key
+            status = keys_model.set_coinbase_key(
+                key=ns_parser.key,
+                secret=ns_parser.secret,
+                passphrase=ns_parser.passphrase,
+                persist=True,
+                show_output=True,
             )
-            cfg.API_COINBASE_SECRET = ns_parser.secret_key
-
-            os.environ["OPENBB_API_COINBASE_PASS_PHRASE"] = ns_parser.passphrase
-            dotenv.set_key(
-                self.env_file, "OPENBB_API_COINBASE_PASS_PHRASE", ns_parser.passphrase
-            )
-            cfg.API_COINBASE_PASS_PHRASE = ns_parser.passphrase
-
-            self.check_coinbase_key(show_output=True)
+            self.check_coinbase_key(status, show_output=False)
 
     @log_start_end(log=logger)
     def call_walert(self, other_args: List[str]):
