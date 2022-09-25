@@ -96,7 +96,7 @@ class ReportController(BaseController):
 
         l_params.remove("report_name")
         d_params[report_to_run] = [l_params, def_params]
-        
+
         # On the menu of choices add the parameters necessary for each template report
         if len(l_params) > 1 or not l_params:
             args = f"<{'> <'.join(l_params)}>"
@@ -197,7 +197,7 @@ class ReportController(BaseController):
             # argument used because this depends on what the user will use it for in
             # the notebook. This is a downside of allowing the user to have this much
             # flexibility.
-            if len(other_args) != len(params):  
+            if len(other_args) != len(params):
                 console.print("Wrong number of arguments provided!")
                 if len(params):
                     console.print("Provide, in order:")
@@ -214,7 +214,9 @@ class ReportController(BaseController):
                 + "_"
                 + f"{report_to_run}{args_to_output}"
             )
-            notebook_output = str(USER_EXPORTS_DIRECTORY / "reports" / report_output_name)
+            notebook_output = str(
+                USER_EXPORTS_DIRECTORY / "reports" / report_output_name
+            )
 
             # only a single backslash appears in the .py file otherwise
             notebook_output = notebook_output.replace("\\", "\\\\")
@@ -232,7 +234,7 @@ class ReportController(BaseController):
             with open(notebook_file + ".ipynb") as n_file:
                 notebook_content = n_file.read()
 
-            params.append("report_name") # re-add report_name
+            params.append("report_name")  # re-add report_name
 
             # replace params in notebook
             if "parameters" in notebook_content:
@@ -276,7 +278,9 @@ class ReportController(BaseController):
             try:
                 notebook_execution_output = io.StringIO()
                 with contextlib.redirect_stdout(notebook_execution_output):
-                    importlib.import_module(f"openbb_terminal.reports.{report_to_run}copy")
+                    importlib.import_module(
+                        f"openbb_terminal.reports.{report_to_run}copy"
+                    )
             except Exception as error:
                 console.print("[red]\nReport wasn't executed correctly.\n[/red]")
                 console.print(f"[red]\nError : {error}\n[/red]")
@@ -287,10 +291,10 @@ class ReportController(BaseController):
                 if fig_number not in _figures_before:
                     plt.close(fig_number)
 
-            notebook_output = notebook_output.replace("\\\\","\\")
-            notebook_output = notebook_output.replace("\\\\","\\")
+            notebook_output = notebook_output.replace("\\\\", "\\")
+            notebook_output = notebook_output.replace("\\\\", "\\")
             report_output_path = notebook_output + ".html"
-                
+
             os.remove(notebook_file_copy + ".ipynb")
             os.remove(notebook_file_copy + ".py")
 
