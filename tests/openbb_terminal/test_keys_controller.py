@@ -258,11 +258,13 @@ def test_check_messari_key(key, output, mocker):
     controller.check_messari_key(output)
 
 
+@pytest.mark.skip
 def test_print_help(mocker):
     mocker.patch("openbb_terminal.keys_controller.KeysController.check_coinbase_key")
     controller.print_help()
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
 def test_call_github(other):
     controller.call_github(other)
@@ -274,51 +276,61 @@ def test_call_av(other):
     controller.call_av(other)
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
 def test_call_fmp(other):
     controller.call_fmp(other)
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
 def test_call_quandl(other):
     controller.call_quandl(other)
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
 def test_call_polygon(other):
     controller.call_polygon(other)
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
 def test_call_fred(other):
     controller.call_fred(other)
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
 def test_call_news(other):
     controller.call_news(other)
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
 def test_call_tradier(other):
     controller.call_tradier(other)
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
 def test_call_cmc(other):
     controller.call_cmc(other)
 
 
-@pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
+@pytest.mark.vcr
+@pytest.mark.parametrize("other", [[], ["-k", "1234"]])
 def test_call_finnhub(other):
     controller.call_finnhub(other)
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
 def test_call_iex(other):
     controller.call_iex(other)
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "other", [[], ["-i", "1234", "-s", "4", "-u", "5", "-p", "6", "-a", "7"]]
 )
@@ -326,81 +338,97 @@ def test_call_reddit(other):
     controller.call_reddit(other)
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize("other", [[], ["-k", "1234", "-s", "4567", "-t", "890"]])
 def test_call_twitter(other):
     controller.call_twitter(other)
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize("other", [[], ["-u", "1234", "-p", "4567"]])
 def test_call_rh(other):
     controller.call_rh(other)
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize("other", [[], ["-u", "1234", "-p" "4567", "-s" "890"]])
 def test_call_degiro(other):
     controller.call_degiro(other)
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize("other", [[], ["-a", "1234", "-t", "4567", "-at", "practice"]])
 def test_call_oanda(other):
     controller.call_oanda(other)
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize("other", [[], ["-k", "1234", "-s", "4567"]])
 def test_call_binance(other):
     controller.call_binance(other)
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
 def test_call_bitquery(other):
     controller.call_bitquery(other)
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
 def test_call_si(other):
     controller.call_si(other)
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize("other", [[], ["-k", "1234", "-s", "4567", "-p" "890"]])
 def test_call_coinbase(other):
     controller.call_coinbase(other)
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
 def test_call_walert(other):
     controller.call_walert(other)
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
 def test_call_glassnode(other):
     controller.call_glassnode(other)
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
 def test_call_coinglass(other):
     controller.call_coinglass(other)
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
 def test_call_cpanic(other):
     controller.call_cpanic(other)
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
 def test_call_ethplorer(other):
     controller.call_ethplorer(other)
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize("other", [[], ["-k", "1234", "-t", "456"]])
 def test_call_smartstake(other):
     controller.call_smartstake(other)
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
 def test_call_santiment(other):
     controller.call_santiment(other)
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize("other", [[], ["-k", "1234", "-t", "456"]])
 def test_call_messari(other):
     controller.call_messari(other)

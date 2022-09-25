@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def get_full_option_chain(
     symbol: str,
-    expiration: str,
+    expiry: str,
     min_sp: float = -1,
     max_sp: float = -1,
     calls: bool = True,
@@ -35,7 +35,7 @@ def get_full_option_chain(
     ----------
     symbol: str
         Stock ticker symbol
-    expiration: str
+    expiry: str
         Expiration date for chain in format YYY-mm-dd
     calls: bool
         Flag to get calls
@@ -49,9 +49,9 @@ def get_full_option_chain(
     """
     try:
         yf_ticker = yf.Ticker(symbol)
-        options = yf_ticker.option_chain(expiration)
+        options = yf_ticker.option_chain(expiry)
     except ValueError:
-        console.print(f"[red]{symbol} options for {expiration} not found.[/red]")
+        console.print(f"[red]{symbol} options for {expiry} not found.[/red]")
         return pd.DataFrame()
 
     last_price = yf_ticker.info["regularMarketPrice"]
@@ -80,7 +80,7 @@ def get_full_option_chain(
     df_list = [x[x["impliedVolatility"] > 0].copy() for x in df_list]
     # Add in greeks to each df
     # Time to expiration:
-    dt = (datetime.strptime(expiration, "%Y-%m-%d") - datetime.now()).seconds / (
+    dt = (datetime.strptime(expiry, "%Y-%m-%d") - datetime.now()).seconds / (
         60 * 60 * 24
     )
     # Note the way the Option class is defined, put has a -1 input and call has a +1 input
@@ -348,7 +348,7 @@ def get_iv_surface(symbol: str) -> pd.DataFrame:
 @log_start_end(log=logger)
 def get_binom(
     symbol: str,
-    expiration: str,
+    expiry: str,
     strike: float = 0,
     put: bool = False,
     europe: bool = False,
@@ -360,7 +360,7 @@ def get_binom(
     ----------
     symbol : str
         The ticker symbol of the option's underlying asset
-    expiration : str
+    expiry : str
         The expiration for the option
     strike : float
         The strike price for the option
@@ -384,7 +384,7 @@ def get_binom(
     )
     delta_t = 1 / 252
     rf = get_rf()
-    exp_date = datetime.strptime(expiration, "%Y-%m-%d").date()
+    exp_date = datetime.strptime(expiry, "%Y-%m-%d").date()
     today = date.today()
     days = (exp_date - today).days
 
@@ -532,7 +532,7 @@ def get_greeks(
 @log_start_end(log=logger)
 def get_vol(
     symbol: str,
-    expiration: str,
+    expiry: str,
 ) -> pd.DataFrame:
     """Plot volume
 
@@ -540,10 +540,10 @@ def get_vol(
     ----------
     symbol: str
         Ticker symbol
-    expiration: str
+    expiry: str
         expiration date for options
     """
-    options = get_option_chain(symbol, expiration)
+    options = get_option_chain(symbol, expiry)
 
     return options
 
@@ -551,7 +551,7 @@ def get_vol(
 @log_start_end(log=logger)
 def get_volume_open_interest(
     symbol: str,
-    expiration: str,
+    expiry: str,
 ) -> pd.DataFrame:
     """Plot volume and open interest
 
@@ -559,9 +559,9 @@ def get_volume_open_interest(
     ----------
     symbol: str
         Stock ticker symbol
-    expiration: str
+    expiry: str
         Option expiration
     """
-    options = get_option_chain(symbol, expiration)
+    options = get_option_chain(symbol, expiry)
 
     return options
