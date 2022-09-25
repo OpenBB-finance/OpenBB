@@ -19,6 +19,7 @@ from openbb_terminal.helper_funcs import (
 )
 
 from openbb_terminal.menu import session
+from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.portfolio import portfolio_model
 from openbb_terminal.portfolio import statics
@@ -31,8 +32,6 @@ from openbb_terminal.common.quantitative_analysis import qa_view
 # pylint: disable=R1710,E1101,C0415,W0212,too-many-function-args,C0302,too-many-instance-attributes
 
 logger = logging.getLogger(__name__)
-
-portfolios_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "portfolios")
 
 
 class PortfolioController(BaseController):
@@ -102,6 +101,7 @@ class PortfolioController(BaseController):
             filepath.name: filepath
             for file_type in self.file_types
             for filepath in self.DEFAULT_HOLDINGS_PATH.rglob(f"*.{file_type}")
+            or (REPOSITORY_DIRECTORY / "portfolio" / "holdings").rglob(f"*.{file_type}")
             if filepath.is_file()
         }
 
