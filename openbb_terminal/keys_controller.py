@@ -187,40 +187,12 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.check_reddit_key(show_output=show_output)
         self.key_dict["REDDIT"] = status
 
-    def check_twitter_key(self, show_output: bool = False) -> None:
+    def check_twitter_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Twitter key"""
         self.cfg_dict["TWITTER"] = "twitter"
-        twitter_keys = [
-            cfg.API_TWITTER_KEY,
-            cfg.API_TWITTER_SECRET_KEY,
-            cfg.API_TWITTER_BEARER_TOKEN,
-        ]
-        if "REPLACE_ME" in twitter_keys:
-            logger.info("Twitter key not defined")
-            self.key_dict["TWITTER"] = "not defined"
-        else:
-            params = {
-                "query": "(\\$AAPL) (lang:en)",
-                "max_results": "10",
-                "tweet.fields": "created_at,lang",
-            }
-            r = requests.get(
-                "https://api.twitter.com/2/tweets/search/recent",
-                params=params,  # type: ignore
-                headers={"authorization": "Bearer " + cfg.API_TWITTER_BEARER_TOKEN},
-            )
-            if r.status_code == 200:
-                logger.info("Twitter key defined, test passed")
-                self.key_dict["TWITTER"] = "defined, test passed"
-            elif r.status_code in [401, 403]:
-                logger.warning("Twitter key defined, test failed")
-                self.key_dict["TWITTER"] = "defined, test failed"
-            else:
-                logger.warning("Twitter key defined, test failed")
-                self.key_dict["TWITTER"] = "defined, test inconclusive"
-
-        if show_output:
-            console.print(self.key_dict["TWITTER"] + "\n")
+        if not status:
+            status = keys_model.check_twitter_key(show_output=show_output)
+        self.key_dict["TWITTER"] = status
 
     def check_rh_key(self, show_output: bool = False) -> None:
         """Check Robinhood key"""
@@ -1064,23 +1036,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             return
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            os.environ["OPENBB_API_TWITTER_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "OPENBB_API_TWITTER_KEY", ns_parser.key)
-            cfg.API_TWITTER_KEY = ns_parser.key
-
-            os.environ["OPENBB_API_TWITTER_SECRET_KEY"] = ns_parser.secret_key
-            dotenv.set_key(
-                self.env_file, "OPENBB_API_TWITTER_SECRET_KEY", ns_parser.secret_key
+            status = keys_model.set_twitter_key(
+                key=ns_parser.key, persist=True, show_output=True
             )
-            cfg.API_TWITTER_SECRET_KEY = ns_parser.secret_key
-
-            os.environ["OPENBB_API_TWITTER_BEARER_TOKEN"] = ns_parser.bearer_token
-            dotenv.set_key(
-                self.env_file, "OPENBB_API_TWITTER_BEARER_TOKEN", ns_parser.bearer_token
-            )
-            cfg.API_TWITTER_BEARER_TOKEN = ns_parser.bearer_token
-
-            self.check_twitter_key(show_output=True)
+            self.check_twitter_key(status, show_output=False)
 
     @log_start_end(log=logger)
     def call_rh(self, other_args: List[str]):

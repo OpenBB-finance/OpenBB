@@ -1024,3 +1024,95 @@ def check_glassnode_key(show_output: bool = False) -> str:
         console.print(status + "\n")
 
     return status
+
+
+def set_twitter_key(
+    key: str,
+    secret: str,
+    token: str,
+    persist: bool = False,
+    show_output: bool = False,
+):
+    """Set Twitter key.
+
+    Parameters
+    ----------
+        key: str
+        secret: str
+        token: str
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+    """
+
+    set_key("OPENBB_API_TWITTER_KEY", key, persist)
+    set_key("OPENBB_API_TWITTER_SECRET_KEY", secret, persist)
+    set_key("OPENBB_API_TWITTER_BEARER_TOKEN", token, persist)
+
+    status = check_twitter_key(show_output)
+
+    return status
+
+
+def check_twitter_key(show_output: bool = False) -> str:
+    """Check Twitter key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+
+    """
+
+    twitter_keys = [
+        cfg.API_TWITTER_KEY,
+        cfg.API_TWITTER_SECRET_KEY,
+        cfg.API_TWITTER_BEARER_TOKEN,
+    ]
+    if "REPLACE_ME" in twitter_keys:
+        logger.info("Twitter key not defined")
+        status = "not defined"
+    else:
+        params = {
+            "query": "(\\$AAPL) (lang:en)",
+            "max_results": "10",
+            "tweet.fields": "created_at,lang",
+        }
+        r = requests.get(
+            "https://api.twitter.com/2/tweets/search/recent",
+            params=params,  # type: ignore
+            headers={"authorization": "Bearer " + cfg.API_TWITTER_BEARER_TOKEN},
+        )
+        if r.status_code == 200:
+            logger.info("Twitter key defined, test passed")
+            status = "defined, test passed"
+        elif r.status_code in [401, 403]:
+            logger.warning("Twitter key defined, test failed")
+            status = "defined, test failed"
+        else:
+            logger.warning("Twitter key defined, test failed")
+            status = "defined, test inconclusive"
+
+    if show_output:
+        console.print(status + "\n")
+
+    return status
