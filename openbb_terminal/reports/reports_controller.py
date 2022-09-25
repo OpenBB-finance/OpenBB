@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 
-# pylint: disable=R1732
+# pylint: disable=R1732, R0912
 import os
 from pathlib import Path
 import re
