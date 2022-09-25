@@ -561,7 +561,7 @@ class ETFController(BaseController):
             default=compose_export_path(
                 func_name=parser.prog,
                 dir_path=os.path.dirname(os.path.abspath(__file__)),
-            )[0],
+            ).parent,
             dest="folder",
             help="Folder where the excel ETF report will be saved",
         )
