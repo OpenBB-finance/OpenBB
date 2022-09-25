@@ -1901,7 +1901,7 @@ functions = {
     "keys.reddit": {"model": "openbb_terminal.keys_model.set_reddit_key"},
     "keys.twitter": {"model": "openbb_terminal.keys_model.set_twitter_key"},
     "keys.rh": {"model": "openbb_terminal.keys_model.set_rh_key"},
-    # "keys.degiro": {"model": "openbb_terminal.keys_model.set_degiro_key"},
+    "keys.degiro": {"model": "openbb_terminal.keys_model.set_degiro_key"},
     # "keys.oanda": {"model": "openbb_terminal.keys_model.set_oanda_key"},
     # "keys.binance": {"model": "openbb_terminal.keys_model.set_binance_key"},
     "keys.bitquery": {"model": "openbb_terminal.keys_model.set_bitquery_key"},

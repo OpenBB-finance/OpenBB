@@ -201,19 +201,12 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.check_rh_key(show_output=show_output)
         self.key_dict["ROBINHOOD"] = status
 
-    def check_degiro_key(self, show_output: bool = False) -> None:
+    def check_degiro_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Degiro key"""
         self.cfg_dict["DEGIRO"] = "degiro"
-        dg_keys = [cfg.DG_USERNAME, cfg.DG_PASSWORD, cfg.DG_TOTP_SECRET]
-        if "REPLACE_ME" in dg_keys:
-            logger.info("Degiro key not defined")
-            self.key_dict["DEGIRO"] = "not defined"
-        else:
-            logger.info("Degiro key defined, not tested")
-            self.key_dict["DEGIRO"] = "defined, not tested"
-
-        if show_output:
-            console.print(self.key_dict["DEGIRO"] + "\n")
+        if not status:
+            status = keys_model.check_degiro_key(show_output=show_output)
+        self.key_dict["DEGIRO"] = status
 
     def check_oanda_key(self, show_output: bool = False) -> None:
         """Check Oanda key"""
@@ -1030,11 +1023,11 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             status = keys_model.set_twitter_key(
-                key=ns_parser.key, 
+                key=ns_parser.key,
                 secret_key=ns_parser.secret_key,
                 bearer_token=ns_parser.bearer_token,
-                persist=True, 
-                show_output=True
+                persist=True,
+                show_output=True,
             )
             self.check_twitter_key(status, show_output=False)
 
@@ -1069,8 +1062,8 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_rh_key(
                 username=ns_parser.username,
                 password=ns_parser.password,
-                persist=True, 
-                show_output=True
+                persist=True,
+                show_output=True,
             )
             self.check_rh_key(status, show_output=False)
 
@@ -1103,26 +1096,22 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="secret",
             help="TOPT Secret",
+            default="",
         )
         if not other_args:
             console.print("For your API Key, visit: https://www.degiro.fr\n")
             return
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            os.environ["OPENBB_DG_USERNAME"] = ns_parser.username
-            dotenv.set_key(self.env_file, "OPENBB_DG_USERNAME", ns_parser.username)
-            cfg.DG_USERNAME = ns_parser.username
+            status = keys_model.set_degiro_key(
+                username=ns_parser.username,
+                password=ns_parser.password,
+                secret=ns_parser.secret,
+                persist=True,
+                show_output=True,
+            )
 
-            os.environ["OPENBB_DG_PASSWORD"] = ns_parser.password
-            dotenv.set_key(self.env_file, "OPENBB_DG_PASSWORD", ns_parser.password)
-            cfg.DG_PASSWORD = ns_parser.password
-
-            if ns_parser.secret:
-                os.environ["OPENBB_DG_TOTP_SECRET"] = ns_parser.secret
-                dotenv.set_key(self.env_file, "OPENBB_DG_TOTP_SECRET", ns_parser.secret)
-                cfg.DG_TOTP_SECRET = ns_parser.secret
-
-            self.check_degiro_key(show_output=True)
+            self.check_degiro_key(status, show_output=False)
 
     @log_start_end(log=logger)
     def call_oanda(self, other_args: List[str]):

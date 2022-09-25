@@ -1184,3 +1184,76 @@ def check_rh_key(show_output: bool = False) -> str:
         console.print(status + "\n")
 
     return status
+
+
+def set_degiro_key(
+    username: str,
+    password: str,
+    secret: str = "",
+    persist: bool = False,
+    show_output: bool = False,
+):
+    """Set Degiro key.
+
+    Parameters
+    ----------
+        username: str
+        password: str
+        secret: str
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+    """
+
+    set_key("OPENBB_DG_USERNAME", username, persist)
+    set_key("OPENBB_DG_PASSWORD", password, persist)
+    set_key("OPENBB_DG_TOTP_SECRET", secret, persist)
+
+    status = check_degiro_key(show_output)
+
+    return status
+
+
+def check_degiro_key(show_output: bool = False) -> str:
+    """Check Degiro key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+
+    """
+
+    dg_keys = [cfg.DG_USERNAME, cfg.DG_PASSWORD, cfg.DG_TOTP_SECRET]
+    if "REPLACE_ME" in dg_keys:
+        logger.info("Degiro key not defined")
+        status = "not defined"
+    else:
+        logger.info("Degiro key defined, not tested")
+        status = "defined, not tested"
+
+    if show_output:
+        console.print(status + "\n")
+
+    return status
+
+
