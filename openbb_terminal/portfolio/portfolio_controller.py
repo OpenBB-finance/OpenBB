@@ -100,8 +100,12 @@ class PortfolioController(BaseController):
         self.DATA_HOLDINGS_FILES = {
             filepath.name: filepath
             for file_type in self.file_types
-            for filepath in self.DEFAULT_HOLDINGS_PATH.rglob(f"*.{file_type}")
-            or (REPOSITORY_DIRECTORY / "portfolio" / "holdings").rglob(f"*.{file_type}")
+            for filepath in (
+                self.DEFAULT_HOLDINGS_PATH.rglob(f"*.{file_type}"),
+                (REPOSITORY_DIRECTORY / "portfolio" / "holdings").rglob(
+                    f"*.{file_type}"
+                ),
+            )
             if filepath.is_file()
         }
 

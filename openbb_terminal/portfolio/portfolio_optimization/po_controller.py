@@ -5,14 +5,17 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-import os
 from typing import List, Dict
 
 from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import parent_classes
-from openbb_terminal.core.config.paths import USER_EXPORTS_DIRECTORY
+from openbb_terminal.core.config.paths import (
+    USER_EXPORTS_DIRECTORY,
+    PORTFOLIO_DATA_DIRECTORY,
+    REPOSITORY_DIRECTORY,
+)
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     check_non_negative,
@@ -20,7 +23,6 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.core.config.paths import PORTFOLIO_DATA_DIRECTORY
 from openbb_terminal.portfolio.portfolio_optimization import excel_model
 from openbb_terminal.portfolio.portfolio_optimization import (
     optimizer_helper,
@@ -308,7 +310,10 @@ class PortfolioOptimizationController(BaseController):
         self.DATA_ALLOCATION_FILES = {
             filepath.name: filepath
             for file_type in self.file_types
-            for filepath in self.DEFAULT_ALLOCATION_PATH.rglob(f"*.{file_type}")
+            for filepath in (
+                self.DEFAULT_ALLOCATION_PATH.rglob(f"*.{file_type}"),
+                REPOSITORY_DIRECTORY / "portfolio" / "allocation",
+            )
             if filepath.is_file()
         }
 
@@ -318,7 +323,10 @@ class PortfolioOptimizationController(BaseController):
         self.DATA_OPTIMIZATION_FILES = {
             filepath.name: filepath
             for file_type in self.file_types
-            for filepath in self.DEFAULT_OPTIMIZATION_PATH.rglob(f"*.{file_type}")
+            for filepath in (
+                self.DEFAULT_OPTIMIZATION_PATH.rglob(f"*.{file_type}"),
+                REPOSITORY_DIRECTORY / "portfolio" / "optimization",
+            )
             if filepath.is_file()
         }
 
