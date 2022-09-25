@@ -874,6 +874,83 @@ def check_reddit_key(show_output: bool = False) -> str:
     return status
 
 
+def set_bitquery_key(key: str, persist: bool = False, show_output: bool = False):
+    """Set Bitquery key.
+
+    Parameters
+    ----------
+        key: str
+            API key
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+    """
+
+    set_key("OPENBB_API_BITQUERY_KEY", key, persist)
+    status = check_bitquery_key(show_output)
+
+    return status
+
+
+def check_bitquery_key(show_output: bool = False) -> str:
+    """Check Bitquery key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+
+    """
+
+    bitquery = cfg.API_BITQUERY_KEY
+    if "REPLACE_ME" in bitquery:
+        logger.info("Bitquery key not defined")
+        status = "not defined"
+    else:
+        headers = {"x-api-key": cfg.API_BITQUERY_KEY}
+        query = """
+        {
+        ethereum {
+        dexTrades(options: {limit: 10, desc: "count"}) {
+            count
+            protocol
+        }}}
+        """
+        r = requests.post(
+            "https://graphql.bitquery.io", json={"query": query}, headers=headers
+        )
+        if r.status_code == 200:
+            logger.info("Bitquery key defined, test passed")
+            status = "defined, test passed"
+        else:
+            logger.warning("Bitquery key defined, test failed")
+            status = "defined, test failed"
+
+    if show_output:
+        console.print(status + "\n")
+
+    return status
+
+
 def set_glassnode_key(key: str, persist: bool = False, show_output: bool = False):
     """Set Glassnode key.
 

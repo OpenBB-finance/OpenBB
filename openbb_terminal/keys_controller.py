@@ -305,35 +305,12 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         if show_output:
             console.print(self.key_dict["BINANCE"] + "\n")
 
-    def check_bitquery_key(self, show_output: bool = False) -> None:
+    def check_bitquery_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Bitquery key"""
         self.cfg_dict["BITQUERY"] = "bitquery"
-        bitquery = cfg.API_BITQUERY_KEY
-        if "REPLACE_ME" in bitquery:
-            logger.info("Bitquery key not defined")
-            self.key_dict["BITQUERY"] = "not defined"
-        else:
-            headers = {"x-api-key": cfg.API_BITQUERY_KEY}
-            query = """
-            {
-            ethereum {
-            dexTrades(options: {limit: 10, desc: "count"}) {
-                count
-                protocol
-            }}}
-            """
-            r = requests.post(
-                "https://graphql.bitquery.io", json={"query": query}, headers=headers
-            )
-            if r.status_code == 200:
-                logger.info("Bitquery key defined, test passed")
-                self.key_dict["BITQUERY"] = "defined, test passed"
-            else:
-                logger.warning("Bitquery key defined, test failed")
-                self.key_dict["BITQUERY"] = "defined, test failed"
-
-        if show_output:
-            console.print(self.key_dict["BITQUERY"] + "\n")
+        if not status:
+            status = keys_model.check_bitquery_key(show_output=show_output)
+        self.key_dict["BITQUERY"] = status
 
     def check_si_key(self, show_output: bool = False) -> None:
         """Check Sentiment Investor key"""
@@ -1309,11 +1286,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             other_args.insert(0, "-k")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            os.environ["OPENBB_API_BITQUERY_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "OPENBB_API_BITQUERY_KEY", ns_parser.key)
-            cfg.API_BITQUERY_KEY = ns_parser.key
-
-            self.check_bitquery_key(show_output=True)
+            status = keys_model.set_bitquery_key(
+                key=ns_parser.key, persist=True, show_output=True
+            )
+            self.check_bitquery_key(status, show_output=False)
 
     @log_start_end(log=logger)
     def call_si(self, other_args: List[str]):
