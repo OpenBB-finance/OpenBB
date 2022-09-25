@@ -417,33 +417,12 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         if show_output:
             console.print(self.key_dict["WHALE_ALERT"] + "\n")
 
-    def check_glassnode_key(self, show_output: bool = False) -> None:
+    def check_glassnode_key(self, status: str = "", show_output: bool = False) -> None:
         """Check glassnode key"""
         self.cfg_dict["GLASSNODE"] = "glassnode"
-        if cfg.API_GLASSNODE_KEY == "REPLACE_ME":
-            logger.info("Glassnode key not defined")
-            self.key_dict["GLASSNODE"] = "not defined"
-        else:
-            url = "https://api.glassnode.com/v1/metrics/market/price_usd_close"
-
-            parameters = {
-                "api_key": cfg.API_GLASSNODE_KEY,
-                "a": "BTC",
-                "i": "24h",
-                "s": str(1_614_556_800),
-                "u": str(1_641_227_783_561),
-            }
-
-            r = requests.get(url, params=parameters)
-            if r.status_code == 200:
-                logger.info("Glassnode key defined, test passed")
-                self.key_dict["GLASSNODE"] = "defined, test passed"
-            else:
-                logger.warning("Glassnode key defined, test failed")
-                self.key_dict["GLASSNODE"] = "defined, test unsuccessful"
-
-        if show_output:
-            console.print(self.key_dict["GLASSNODE"] + "\n")
+        if not status:
+            status = keys_model.check_glassnode_key(show_output=show_output)
+        self.key_dict["GLASSNODE"] = status
 
     def check_coinglass_key(self, show_output: bool = False) -> None:
         """Check coinglass key"""
@@ -1474,11 +1453,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             other_args.insert(0, "-k")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            os.environ["OPENBB_API_GLASSNODE_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "OPENBB_API_GLASSNODE_KEY", ns_parser.key)
-            cfg.API_GLASSNODE_KEY = ns_parser.key
-
-            self.check_glassnode_key(show_output=True)
+            status = keys_model.set_glassnode_key(
+                key=ns_parser.key, persist=True, show_output=True
+            )
+            self.check_glassnode_key(status, show_output=False)
 
     @log_start_end(log=logger)
     def call_coinglass(self, other_args: List[str]):

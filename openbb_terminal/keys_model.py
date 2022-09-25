@@ -872,3 +872,78 @@ def check_reddit_key(show_output: bool = False) -> str:
         console.print(status + "\n")
 
     return status
+
+
+def set_glassnode_key(key: str, persist: bool = False, show_output: bool = False):
+    """Set Glassnode key.
+
+    Parameters
+    ----------
+        key: str
+            API key
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+    """
+
+    set_key("OPENBB_API_GLASSNODE_KEY", key, persist)
+    status = check_glassnode_key(show_output)
+
+    return status
+
+
+def check_glassnode_key(show_output: bool = False) -> str:
+    """Check Glassnode key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+
+    """
+
+    if cfg.API_GLASSNODE_KEY == "REPLACE_ME":
+        logger.info("Glassnode key not defined")
+        status = "not defined"
+    else:
+        url = "https://api.glassnode.com/v1/metrics/market/price_usd_close"
+
+        parameters = {
+            "api_key": cfg.API_GLASSNODE_KEY,
+            "a": "BTC",
+            "i": "24h",
+            "s": str(1_614_556_800),
+            "u": str(1_641_227_783_561),
+        }
+
+        r = requests.get(url, params=parameters)
+        if r.status_code == 200:
+            logger.info("Glassnode key defined, test passed")
+            status = "defined, test passed"
+        else:
+            logger.warning("Glassnode key defined, test failed")
+            status = "defined, test unsuccessful"
+
+    if show_output:
+        console.print(status + "\n")
+
+    return status
