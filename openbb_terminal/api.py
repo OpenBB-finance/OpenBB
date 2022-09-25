@@ -1908,7 +1908,7 @@ functions = {
     # "keys.si": {"model": "openbb_terminal.keys_model.set_si_key"},
     # "keys.coinbase": {"model": "openbb_terminal.keys_model.set_coinbase_key"},
     # "keys.walert": {"model": "openbb_terminal.keys_model.set_walert_key"},
-    # "keys.glassnode": {"model": "openbb_terminal.keys_model.set_glassnode_key"},
+    "keys.glassnode": {"model": "openbb_terminal.keys_model.set_glassnode_key"},
     # "keys.cpanic": {"model": "openbb_terminal.keys_model.set_cpanic_key"},
     # "keys.ethplorer": {"model": "openbb_terminal.keys_model.set_ethplorer_key"},
     # "keys.smartstake": {"model": "openbb_terminal.keys_model.set_smartstake_key"},
