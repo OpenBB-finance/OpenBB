@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 import datetime
 import logging
 import os
+from pathlib import Path
 from typing import List, Optional
 
 import matplotlib.pyplot as plt
@@ -22,8 +23,6 @@ from openbb_terminal.stocks.screener import yahoofinance_model
 logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
-
-presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
 
 @log_start_end(log=logger)

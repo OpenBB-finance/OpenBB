@@ -1,25 +1,35 @@
 """ Screener View Module """
 __docformat__ = "numpy"
 
-import os
-from os import path
 import configparser
+from pathlib import Path
+from typing import Union
 
 from openbb_terminal.rich_config import console
+from openbb_terminal.core.config.paths import PRESETS_DIRECTORY
 from openbb_terminal.stocks.screener import finviz_model
 
-presets_path = path.join(path.abspath(path.dirname(__file__)), "presets/")
+PRESETS_PATH = PRESETS_DIRECTORY / "stocks" / "screener"
+PRESETS_PATH_DEFAULT = Path(__file__).parent / "presets"
+preset_choices = {
+    filepath.name: filepath
+    for filepath in PRESETS_PATH.iterdir()
+    if filepath.suffix == ".ini"
+}
+preset_choices.update(
+    {
+        filepath.name: filepath
+        for filepath in PRESETS_PATH_DEFAULT.iterdir()
+        if filepath.suffix == ".ini"
+    }
+)
 
-preset_choices = [
-    preset.split(".")[0] for preset in os.listdir(presets_path) if preset[-4:] == ".ini"
-]
 
-
-def display_presets(preset: str = ""):
-    if preset:
+def display_presets(preset_path: Union[Path, None]):
+    if preset_path:
         preset_filter = configparser.RawConfigParser()
         preset_filter.optionxform = str  # type: ignore
-        preset_filter.read(presets_path + preset + ".ini")
+        preset_filter.read(preset_path)
 
         filters_headers = ["General", "Descriptive", "Fundamental", "Technical"]
 
@@ -38,7 +48,7 @@ def display_presets(preset: str = ""):
         console.print("\nCustom Presets:")
         for item in preset_choices:
             with open(
-                presets_path + item + ".ini",
+                preset_choices[item],
                 encoding="utf8",
             ) as f:
                 description = ""
