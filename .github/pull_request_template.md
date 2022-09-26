@@ -28,5 +28,3 @@
 # Others
 - [ ] I have performed a self-review of my own code.
 - [ ] I have commented my code, particularly in hard-to-understand areas.
-- [ ] My code passes all the checks pylint, flake8, black, ... To speed up development you should run `pre-commit install`.
-- [ ] New and existing unit tests pass locally with my changes. You can test this locally using `pytest tests/...`.
