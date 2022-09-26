@@ -1859,5 +1859,5 @@ def screenshot_to_canvas(shot, plot_exists: bool = False):
         )
 
         background.show()
-    except Exception as _:
+    except Exception:
         console.print("Shot failed.")
