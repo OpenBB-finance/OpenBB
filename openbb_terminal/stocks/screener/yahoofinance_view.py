@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 import datetime
 import logging
 import os
-from pathlib import Path
 from typing import List, Optional
 
 import matplotlib.pyplot as plt
