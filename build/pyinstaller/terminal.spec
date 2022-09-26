@@ -49,6 +49,11 @@ added_files = [
         os.path.join(pathex, "investpy", "resources"),
         os.path.join("investpy", "resources"),
     ),
+    (
+        os.path.join(pathex, "pymongo"),
+        "pymongo",
+    ),
+    (os.path.join(pathex, "bson"), "bson"),
     (".env", "."),
 ]
 
@@ -72,6 +77,8 @@ hidden_imports = [
     "pyEX",
     "tensorflow",
     "feedparser",
+    "pymongo",
+    "bson",
 ]
 
 analysis_kwargs = dict(

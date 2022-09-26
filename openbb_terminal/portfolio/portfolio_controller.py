@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-from pathlib import Path
 from typing import List
 
 import pandas as pd
@@ -20,6 +19,7 @@ from openbb_terminal.helper_funcs import (
 )
 
 from openbb_terminal.menu import session
+from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.portfolio import portfolio_model
 from openbb_terminal.portfolio import statics
@@ -32,8 +32,6 @@ from openbb_terminal.common.quantitative_analysis import qa_view
 # pylint: disable=R1710,E1101,C0415,W0212,too-many-function-args,C0302,too-many-instance-attributes
 
 logger = logging.getLogger(__name__)
-
-portfolios_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "portfolios")
 
 
 class PortfolioController(BaseController):
@@ -102,9 +100,17 @@ class PortfolioController(BaseController):
         self.DATA_HOLDINGS_FILES = {
             filepath.name: filepath
             for file_type in self.file_types
-            for filepath in Path(self.DEFAULT_HOLDINGS_PATH).rglob(f"*.{file_type}")
-            if filepath.is_file()
+            for filepath in self.DEFAULT_HOLDINGS_PATH.rglob(f"*.{file_type}")
         }
+        self.DATA_HOLDINGS_FILES.update(
+            {
+                filepath.name: filepath
+                for file_type in self.file_types
+                for filepath in (REPOSITORY_DIRECTORY / "portfolio" / "holdings").rglob(
+                    f"*.{file_type}"
+                )
+            }
+        )
 
         self.portfolio_df = pd.DataFrame(
             columns=[
@@ -140,12 +146,13 @@ class PortfolioController(BaseController):
 
         self.DEFAULT_HOLDINGS_PATH = portfolio_helper.DEFAULT_HOLDINGS_PATH
 
-        self.DATA_HOLDINGS_FILES = {
-            filepath.name: filepath
-            for file_type in self.file_types
-            for filepath in Path(self.DEFAULT_HOLDINGS_PATH).rglob(f"*.{file_type}")
-            if filepath.is_file()
-        }
+        self.DATA_HOLDINGS_FILES.update(
+            {
+                filepath.name: filepath
+                for file_type in self.file_types
+                for filepath in self.DEFAULT_HOLDINGS_PATH.rglob(f"*.{file_type}")
+            }
+        )
 
         choices: dict = {c: {} for c in self.controller_choices}
         choices["load"]["-f"] = {c: None for c in self.DATA_HOLDINGS_FILES}
