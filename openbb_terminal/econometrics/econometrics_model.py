@@ -257,12 +257,14 @@ def get_normality(data: pd.Series) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_root(df: pd.Series, fuller_reg: str = "c", kpss_reg: str = "c") -> pd.DataFrame:
+def get_root(
+    data: pd.Series, fuller_reg: str = "c", kpss_reg: str = "c"
+) -> pd.DataFrame:
     """Calculate test statistics for unit roots
 
     Parameters
     ----------
-    df : pd.Series
+    data : pd.Series
         Series or column of DataFrame of target variable
     fuller_reg : str
         Type of regression of ADF test
@@ -276,7 +278,7 @@ def get_root(df: pd.Series, fuller_reg: str = "c", kpss_reg: str = "c") -> pd.Da
     """
     # The Augmented Dickey-Fuller test: used to test for a unit root in a univariate process in the
     # presence of serial correlation.
-    result = adfuller(df, regression=fuller_reg)
+    result = adfuller(data, regression=fuller_reg)
     cols = ["Test Statistic", "P-Value", "NLags", "Nobs", "ICBest"]
     vals = [result[0], result[1], result[2], result[3], result[5]]
     data = pd.DataFrame(data=vals, index=cols, columns=["ADF"])
@@ -288,7 +290,7 @@ def get_root(df: pd.Series, fuller_reg: str = "c", kpss_reg: str = "c") -> pd.Da
     # Wrap this in catch_warnings to prevent this
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        res2 = kpss(df, regression=kpss_reg, nlags="auto")
+        res2 = kpss(data, regression=kpss_reg, nlags="auto")
 
     vals2 = [res2[0], res2[1], res2[2], 0, 0]
     data["KPSS"] = vals2

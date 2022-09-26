@@ -1,9 +1,7 @@
-# alt.oss.top
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###alt.oss.top(sortby: str, limit: int = 50, categories: str = '') -> pandas.core.frame.DataFrame
+### alt.oss.top(sortby: str, limit: int = 50, categories: str = '') -> pandas.core.frame.DataFrame
 
 Get repos sorted by stars or forks. Can be filtered by categories
 
@@ -20,7 +18,7 @@ Get repos sorted by stars or forks. Can be filtered by categories
     pd.DataFrame with list of repos
 
 ## Getting charts 
-###alt.oss.top(sortby: str, categories: str = '', limit: int = 10, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
+### alt.oss.top(sortby: str, categories: str = '', limit: int = 10, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
 
 Display repo summary [Source: https://api.github.com]
 

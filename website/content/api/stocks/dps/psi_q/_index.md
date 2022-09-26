@@ -1,9 +1,7 @@
-# stocks.dps.psi_q
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.dps.psi_q(symbol: str, nyse: bool = False) -> pandas.core.frame.DataFrame
+### stocks.dps.psi_q(symbol: str, nyse: bool = False) -> pandas.core.frame.DataFrame
 
 Plots the short interest of a stock. This corresponds to the
     number of shares that have been sold short but have not yet been
@@ -22,7 +20,7 @@ Plots the short interest of a stock. This corresponds to the
         short interest volume data
 
 ## Getting charts 
-###stocks.dps.psi_q(symbol: str, nyse: bool = False, limit: int = 10, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.dps.psi_q(symbol: str, nyse: bool = False, limit: int = 10, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Plots the short interest of a stock. This corresponds to the
     number of shares that have been sold short but have not yet been

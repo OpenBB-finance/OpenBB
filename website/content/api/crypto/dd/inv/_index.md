@@ -1,9 +1,7 @@
-# crypto.dd.inv
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.dd.inv(symbol: str) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
+### crypto.dd.inv(symbol: str) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
 
 Returns coin investors
     [Source: https://messari.io/]
@@ -21,7 +19,7 @@ Returns coin investors
         organizations
 
 ## Getting charts 
-###crypto.dd.inv(symbol: str, export: str = '', chart=True) -> None
+### crypto.dd.inv(symbol: str, export: str = '', chart=True) -> None
 
 Display coin investors
     [Source: https://messari.io/]

@@ -1,7 +1,5 @@
-# portfolio.commonsense
-
 ## Get underlying data 
-###portfolio.commonsense(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel)
+### portfolio.commonsense(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel)
 
 Get common sense ratio
 

@@ -1,9 +1,7 @@
-# crypto.dd.active
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.dd.active(symbol: str, interval: str = '24h', start_date: int = 1262304000, end_date: int = 1663694553) -> pandas.core.frame.DataFrame
+### crypto.dd.active(symbol: str, interval: str = '24h', start_date: int = 1262304000, end_date: int = 1663943882) -> pandas.core.frame.DataFrame
 
 Returns active addresses of a certain symbol
     [Source: https://glassnode.com]
@@ -25,7 +23,7 @@ Returns active addresses of a certain symbol
         active addresses over time
 
 ## Getting charts 
-###crypto.dd.active(symbol: str, start_date: int = 1577836800, end_date: int = 1609459200, interval: str = '24h', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
+### crypto.dd.active(symbol: str, start_date: int = 1577836800, end_date: int = 1609459200, interval: str = '24h', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
 
 Display active addresses of a certain symbol over time
     [Source: https://glassnode.org]

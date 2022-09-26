@@ -13,6 +13,8 @@ from openbb_terminal.cryptocurrency.coinpaprika_helpers import PaprikaSession
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
+# pylint: disable=unsupported-assignment-operation
+
 logger = logging.getLogger(__name__)
 # pylint: disable=unsupported-assignment-operation
 
@@ -430,10 +432,7 @@ def basic_coin_info(symbol: str = "btc-bitcoin") -> pd.DataFrame:
         "proof_type",
         "contract",
     ]
-    results = {}
-    for key in keys:
-        results[key] = coin.get(key)
-
+    results = {key: coin.get(key) for key in keys}
     try:
         tags = ", ".join(t.get("name") for t in tags)
         parent = coin.get("parent") or {}

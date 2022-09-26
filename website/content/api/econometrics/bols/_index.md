@@ -1,7 +1,5 @@
-# econometrics.bols
-
 ## Get underlying data 
-###econometrics.bols(regression_variables: List[Tuple], data: Dict[str, pandas.core.frame.DataFrame]) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any], Any]
+### econometrics.bols(regression_variables: List[Tuple], data: Dict[str, pandas.core.frame.DataFrame]) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any], Any]
 
 The between estimator is an alternative, usually less efficient estimator, can can be used to
      estimate model parameters. It is particular simple since it first computes the time averages of

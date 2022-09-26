@@ -1,9 +1,7 @@
-# crypto.defi.anchor_data
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.defi.anchor_data(address: str = '') -> Tuple[Any, Any, str]
+### crypto.defi.anchor_data(address: str = '') -> Tuple[Any, Any, str]
 
 Returns anchor protocol earnings data of a certain terra address
     [Source: https://cryptosaurio.com/]
@@ -20,7 +18,7 @@ Returns anchor protocol earnings data of a certain terra address
         - str:              Overall statistics
 
 ## Getting charts 
-###crypto.defi.anchor_data(address: str = '', export: str = '', show_transactions: bool = False, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
+### crypto.defi.anchor_data(address: str = '', export: str = '', show_transactions: bool = False, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
 
 Displays anchor protocol earnings data of a certain terra address
     [Source: https://cryptosaurio.com/]

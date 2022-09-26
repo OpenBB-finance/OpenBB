@@ -12,15 +12,13 @@ import webbrowser
 from typing import List
 import dotenv
 
-import pandas as pd
 from prompt_toolkit import PromptSession
-
 from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 
 from openbb_terminal.core.config import (  # pylint: disable=unused-import  # noqa
-    make_paths,
+    paths_helper,
 )
 from openbb_terminal.common import feedparser_view
 from openbb_terminal.core.config.paths import (
@@ -87,7 +85,6 @@ class TerminalController(BaseController):
         "funds",
         "alternative",
         "econometrics",
-        "forecast",
         "sources",
     ]
 
@@ -155,7 +152,6 @@ class TerminalController(BaseController):
         mt.add_raw("\n")
         mt.add_info("_others_")
         mt.add_menu("econometrics")
-        mt.add_menu("forecast")
         mt.add_menu("portfolio")
         mt.add_menu("dashboards")
         mt.add_menu("reports")
@@ -173,17 +169,17 @@ class TerminalController(BaseController):
             "-t",
             "--term",
             dest="term",
-            default="",
+            default=[""],
             nargs="+",
             help="search for a term on the news",
         )
         parse.add_argument(
-            "-a",
-            "--article",
-            dest="article",
-            default="bloomberg",
+            "-s",
+            "--sources",
+            dest="sources",
+            default=["bloomberg.com"],
             nargs="+",
-            help="articles from where to get news from",
+            help="sources from where to get news from",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
@@ -192,10 +188,10 @@ class TerminalController(BaseController):
         )
         if news_parser:
             feedparser_view.display_news(
-                " ".join(news_parser.term),
-                " ".join(news_parser.article),
-                news_parser.limit,
-                news_parser.export,
+                term=" ".join(news_parser.term),
+                sources=" ".join(news_parser.sources),
+                limit=news_parser.limit,
+                export=news_parser.export,
             )
 
     def call_guess(self, other_args: List[str]) -> None:
@@ -418,14 +414,6 @@ class TerminalController(BaseController):
 
         self.queue = EconometricsController(self.queue).menu()
 
-    def call_forecast(self, _):
-        """Process forecast command"""
-        from openbb_terminal.forecast.forecast_controller import (
-            ForecastController,
-        )
-
-        self.queue = self.load_class(ForecastController, "", pd.DataFrame(), self.queue)
-
     def call_portfolio(self, _):
         """Process portfolio command"""
         from openbb_terminal.portfolio.portfolio_controller import (
@@ -603,7 +591,6 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
         logger.info("INPUT: %s", "/".join(jobs_cmds))
 
     export_path = ""
-    # TODO: This causes an issue if export is in the load function
     if jobs_cmds and "export" in jobs_cmds[0]:
         export_path = jobs_cmds[0].split("/")[0].split(" ")[1]
         jobs_cmds = ["/".join(jobs_cmds[0].split("/")[1:])]
@@ -613,7 +600,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
     an_input = ""
 
     if export_path:
-        # If the path does not start from the user root, give relative location from terminal root
+        # If the path selected does not start from the user root, give relative location from terminal root
         if export_path[0] == "~":
             export_path = export_path.replace("~", HOME_DIRECTORY.as_posix())
         elif export_path[0] != "/":
@@ -888,7 +875,7 @@ def main(
     if test:
         os.environ["DEBUG_MODE"] = "true"
 
-        if not paths:
+        if paths == []:
             console.print("Please send a path when using test mode")
             return
         test_files = []

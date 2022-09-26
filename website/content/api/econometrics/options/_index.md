@@ -1,9 +1,7 @@
-# econometrics.options
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###econometrics.options(datasets: Dict[str, pandas.core.frame.DataFrame], dataset_name: str = '') -> Dict[Union[str, Any], pandas.core.frame.DataFrame]
+### econometrics.options(datasets: Dict[str, pandas.core.frame.DataFrame], dataset_name: str = '') -> Dict[Union[str, Any], pandas.core.frame.DataFrame]
 
 Obtain columns-dataset combinations from loaded in datasets that can be used in other commands
 
@@ -21,7 +19,7 @@ Obtain columns-dataset combinations from loaded in datasets that can be used in 
         options table.
 
 ## Getting charts 
-###econometrics.options(datasets: Dict[str, pandas.core.frame.DataFrame], dataset_name: str = None, export: str = '', chart=True)
+### econometrics.options(datasets: Dict[str, pandas.core.frame.DataFrame], dataset_name: str = None, export: str = '', chart=True)
 
 Plot custom data
 

@@ -1,7 +1,5 @@
-# stocks.dd.est
-
 ## Get underlying data 
-###stocks.dd.est(symbol: str) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
+### stocks.dd.est(symbol: str) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
 
 Get analysts' estimates for a given ticker. [Source: Business Insider]
 

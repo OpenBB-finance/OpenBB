@@ -692,7 +692,7 @@ class EconomyController(BaseController):
                         transform=ns_parser.transform,
                         start_date=ns_parser.start_date,
                         end_date=ns_parser.end_date,
-                        currency=ns_parser.currency,
+                        symbol=ns_parser.currency,
                         raw=ns_parser.raw,
                         export=ns_parser.export,
                     )

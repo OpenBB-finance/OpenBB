@@ -1,9 +1,7 @@
-# alt.covid.slopes
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###alt.covid.slopes(days_back: int = 30, limit: int = 50, threshold: int = 10000, ascend: bool = False) -> pandas.core.frame.DataFrame
+### alt.covid.slopes(days_back: int = 30, limit: int = 50, threshold: int = 10000, ascend: bool = False) -> pandas.core.frame.DataFrame
 
 Load cases and find slope over period
 
@@ -23,7 +21,7 @@ Load cases and find slope over period
         Dataframe containing slopes
 
 ## Getting charts 
-###alt.covid.slopes(days_back: int = 30, limit: int = 10, threshold: int = 10000, ascend: bool = False, export: str = '', chart=True) -> None
+### alt.covid.slopes(days_back: int = 30, limit: int = 10, threshold: int = 10000, ascend: bool = False, export: str = '', chart=True) -> None
 
 
 

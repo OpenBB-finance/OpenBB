@@ -18,4 +18,4 @@ def vcr_config():
 def test_display_news(mocker):
     # MOCK VISUALIZE_OUTPUT
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-    cryptopanic_view.display_news(currency="btc-bitcoin", source="cp")
+    cryptopanic_view.display_news(symbol="btc-bitcoin", source="cp")

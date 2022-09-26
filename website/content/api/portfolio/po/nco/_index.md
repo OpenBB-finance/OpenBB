@@ -1,9 +1,7 @@
-# portfolio.po.nco
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###portfolio.po.nco(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', codependence: str = 'pearson', covariance: str = 'hist', objective: str = 'minrisk', risk_measure: str = 'mv', risk_free_rate: float = 0.0, risk_aversion: float = 1.0, alpha: float = 0.05, a_sim: int = 100, beta: float = None, b_sim: int = None, linkage: str = 'single', k: int = None, max_k: int = 10, bins_info: str = 'KN', alpha_tail: float = 0.05, leaf_order: bool = True, d_ewma: float = 0.94, value: float = 1.0) -> Tuple
+### portfolio.po.nco(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', codependence: str = 'pearson', covariance: str = 'hist', objective: str = 'minrisk', risk_measure: str = 'mv', risk_free_rate: float = 0.0, risk_aversion: float = 1.0, alpha: float = 0.05, a_sim: int = 100, beta: float = None, b_sim: int = None, linkage: str = 'single', k: int = None, max_k: int = 10, bins_info: str = 'KN', alpha_tail: float = 0.05, leaf_order: bool = True, d_ewma: float = 0.94, value: float = 1.0) -> Tuple
 
 
     Builds a hierarchical risk parity portfolio
@@ -179,7 +177,7 @@ To obtain charts, make sure to add `chart=True` as the last parameter
         True if plot table weights, by default False
 
 ## Getting charts 
-###portfolio.po.nco(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', codependence: str = 'pearson', covariance: str = 'hist', objective: str = 'MinRisk', risk_measure: str = 'mv', risk_free_rate: float = 0.0, risk_aversion: float = 1.0, alpha: float = 0.05, a_sim: int = 100, beta: float = None, b_sim: int = None, linkage: str = 'ward', k: int = None, max_k: int = 10, bins_info: str = 'KN', alpha_tail: float = 0.05, leaf_order: bool = True, d_ewma: float = 0.94, value: float = 1.0, table: bool = False, chart=True) -> Dict
+### portfolio.po.nco(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', codependence: str = 'pearson', covariance: str = 'hist', objective: str = 'MinRisk', risk_measure: str = 'mv', risk_free_rate: float = 0.0, risk_aversion: float = 1.0, alpha: float = 0.05, a_sim: int = 100, beta: float = None, b_sim: int = None, linkage: str = 'ward', k: int = None, max_k: int = 10, bins_info: str = 'KN', alpha_tail: float = 0.05, leaf_order: bool = True, d_ewma: float = 0.94, value: float = 1.0, table: bool = False, chart=True) -> Dict
 
 
     Builds a hierarchical equal risk contribution portfolio

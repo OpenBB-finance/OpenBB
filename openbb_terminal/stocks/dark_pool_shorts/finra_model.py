@@ -64,8 +64,8 @@ def getFINRAweeks(tier: str = "T1", is_ats: bool = True) -> List:
 @log_start_end(log=logger)
 def getFINRAdata_offset(
     start_date: str,
-    symbol: str = "",
     tier: str = "T1",
+    symbol: str = "",
     is_ats: bool = True,
     offset: int = 0,
 ) -> requests.Response:
@@ -75,10 +75,10 @@ def getFINRAdata_offset(
     ----------
     start_date: str
         Weekly data to get FINRA data, in YYYY-MM-DD format
-    symbol: str
-        Stock ticker to get data from
     tier: str
         Stock tier between T1, T2, or OTCE
+    symbol: str
+        Stock ticker to get data from
     is_ats: bool
         ATS data if true, NON-ATS otherwise
     offset: int
@@ -259,35 +259,36 @@ def getATSdata(limit: int = 1000, tier_ats: str = "T1") -> Tuple[pd.DataFrame, D
                 # df_ats = df_ats.append(df_ats_week, ignore_index=True)
                 df_ats = pd.concat([df_ats, df_ats_week], ignore_index=True)
 
-    df_ats = df_ats.sort_values("weekStartDate")
-    df_ats["weekStartDateInt"] = pd.to_datetime(df_ats["weekStartDate"]).apply(
-        lambda x: x.timestamp()
-    )
+    if not df_ats.empty:
+        df_ats = df_ats.sort_values("weekStartDate")
+        df_ats["weekStartDateInt"] = pd.to_datetime(df_ats["weekStartDate"]).apply(
+            lambda x: x.timestamp()
+        )
 
-    console.print(f"Processing regression on {limit} promising tickers ...")
+        console.print(f"Processing regression on {limit} promising tickers ...")
 
-    d_ats_reg = {}
-    # set(df_ats['issueSymbolIdentifier'].values) this would be iterating through all tickers
-    # but that is extremely time consuming for little reward. A little filtering is done to
-    # speed up search for best ATS tickers
-    for symbol in list(
-        df_ats.groupby("issueSymbolIdentifier")["totalWeeklyShareQuantity"]
-        .sum()
-        .sort_values()[-limit:]
-        .index
-    ):
-        try:
-            slope = stats.linregress(
-                df_ats[df_ats["issueSymbolIdentifier"] == symbol][
-                    "weekStartDateInt"
-                ].values,
-                df_ats[df_ats["issueSymbolIdentifier"] == symbol][
-                    "totalWeeklyShareQuantity"
-                ].values,
-            )[0]
-            d_ats_reg[symbol] = slope
-        except Exception:  # nosec B110
-            pass
+        d_ats_reg = {}
+        # set(df_ats['issueSymbolIdentifier'].values) this would be iterating through all tickers
+        # but that is extremely time consuming for little reward. A little filtering is done to
+        # speed up search for best ATS tickers
+        for symbol in list(
+            df_ats.groupby("issueSymbolIdentifier")["totalWeeklyShareQuantity"]
+            .sum()
+            .sort_values()[-limit:]
+            .index
+        ):
+            try:
+                slope = stats.linregress(
+                    df_ats[df_ats["issueSymbolIdentifier"] == symbol][
+                        "weekStartDateInt"
+                    ].values,
+                    df_ats[df_ats["issueSymbolIdentifier"] == symbol][
+                        "totalWeeklyShareQuantity"
+                    ].values,
+                )[0]
+                d_ats_reg[symbol] = slope
+            except Exception:  # nosec B110
+                pass
 
     return df_ats, d_ats_reg
 
@@ -314,7 +315,7 @@ def getTickerFINRAdata(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
     for tier in tiers:
         for d_week in getFINRAweeks(tier, is_ats=True):
             status_code, response = getFINRAdata(
-                d_week["weekStartDate"], tier, symbol, True
+                d_week["weekStartDate"], symbol, tier, True
             )
             if status_code == 200:
                 if response:
@@ -333,7 +334,7 @@ def getTickerFINRAdata(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
     for tier in tiers:
         for d_week in getFINRAweeks(tier, is_ats=False):
             status_code, response = getFINRAdata(
-                d_week["weekStartDate"], tier, symbol, False
+                d_week["weekStartDate"], symbol, tier, False
             )
             if status_code == 200:
                 if response:

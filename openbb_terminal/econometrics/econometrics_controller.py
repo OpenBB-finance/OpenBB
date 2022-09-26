@@ -16,7 +16,9 @@ from prompt_toolkit.completion import NestedCompleter
 
 import openbb_terminal.econometrics.regression_model
 import openbb_terminal.econometrics.regression_view
+from openbb_terminal.core.config.paths import CUSTOM_IMPORTS_DIRECTORY
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.config.paths import USER_EXPORTS_DIRECTORY
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     check_positive,
@@ -161,8 +163,8 @@ class EconometricsController(BaseController):
             filepath.name: filepath
             for file_type in self.file_types
             for filepath in chain(
-                Path(obbff.EXPORT_FOLDER_PATH).rglob(f"*.{file_type}"),
-                Path("custom_imports").rglob(f"*.{file_type}"),
+                Path(USER_EXPORTS_DIRECTORY).rglob(f"*.{file_type}"),
+                Path(CUSTOM_IMPORTS_DIRECTORY / "econometrics").rglob(f"*.{file_type}"),
             )
             if filepath.is_file()
         }
@@ -248,7 +250,7 @@ class EconometricsController(BaseController):
         mt = MenuText("econometrics/")
         mt.add_param(
             "_data_loc",
-            f"\n\t{obbff.EXPORT_FOLDER_PATH}\n\t{Path('custom_imports').resolve()}",
+            f"\n\t{str(USER_EXPORTS_DIRECTORY)}\n\t{str(CUSTOM_IMPORTS_DIRECTORY/'econometrics')}",
         )
         mt.add_raw("\n")
         mt.add_cmd("load")
@@ -1318,7 +1320,7 @@ class EconometricsController(BaseController):
             "-r",
             "--fuller_reg",
             help="Type of regression. Can be 'c','ct','ctt','nc'. c - Constant and t - trend order",
-            choices=["c", "ct", "ctt", "nc"],
+            choices=["c", "ct", "ctt", "n"],
             default="c",
             type=str,
             dest="fuller_reg",

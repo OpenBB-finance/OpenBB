@@ -81,22 +81,11 @@ dev = ["black", "docutils", "ipython", "flake8", "pytest", "sphinx", "mistune (<
 
 [[package]]
 name = "altgraph"
-version = "0.17.2"
+version = "0.17.3"
 description = "Python graph (network) package"
 category = "main"
 optional = true
 python-versions = "*"
-
-[[package]]
-name = "ansiwrap"
-version = "0.8.4"
-description = "textwrap, but savvy to ANSI colors and styles"
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-textwrap3 = ">=0.9.2"
 
 [[package]]
 name = "anyio"
@@ -456,7 +445,7 @@ python-versions = "~=3.7"
 
 [[package]]
 name = "ccxt"
-version = "1.93.87"
+version = "1.93.98"
 description = "A JavaScript / Python / PHP cryptocurrency trading library with support for 130+ exchanges"
 category = "main"
 optional = false
@@ -476,7 +465,7 @@ qa = ["flake8 (==3.7.9)"]
 
 [[package]]
 name = "certifi"
-version = "2022.9.14"
+version = "2022.9.24"
 description = "Python package for providing Mozilla's CA Bundle."
 category = "main"
 optional = false
@@ -833,11 +822,14 @@ dev = ["flake8", "hypothesis", "pytest", "pytest-benchmark", "pytest-xdist", "pi
 
 [[package]]
 name = "executing"
-version = "1.0.0"
+version = "1.1.0"
 description = "Get the currently executing AST node of a frame, and other information"
 category = "main"
 optional = false
 python-versions = "*"
+
+[package.extras]
+tests = ["rich", "littleutils", "pytest", "asttokens"]
 
 [[package]]
 name = "fastjsonschema"
@@ -1095,11 +1087,11 @@ protobuf = ["grpcio-tools (>=1.49.1)"]
 
 [[package]]
 name = "h11"
-version = "0.13.0"
+version = "0.14.0"
 description = "A pure-Python, bring-your-own-I/O implementation of HTTP/1.1"
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 
 [[package]]
 name = "hijri-converter"
@@ -1729,14 +1721,14 @@ source = ["Cython (>=0.29.7)"]
 
 [[package]]
 name = "macholib"
-version = "1.16"
+version = "1.16.2"
 description = "Mach-O header analysis and editing"
 category = "main"
 optional = true
 python-versions = "*"
 
 [package.dependencies]
-altgraph = ">=0.15"
+altgraph = ">=0.17"
 
 [[package]]
 name = "markdown-it-py"
@@ -2269,36 +2261,6 @@ description = "Utilities for writing pandoc filters in python"
 category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-
-[[package]]
-name = "papermill"
-version = "2.4.0"
-description = "Parametrize and run Jupyter and nteract Notebooks"
-category = "main"
-optional = false
-python-versions = ">=3.7"
-
-[package.dependencies]
-ansiwrap = "*"
-click = "*"
-entrypoints = "*"
-nbclient = ">=0.2.0"
-nbformat = ">=5.1.2"
-pyyaml = "*"
-requests = "*"
-tenacity = "*"
-tqdm = ">=4.32.2"
-
-[package.extras]
-test = ["black (>=19.3b0)", "pyarrow (>=2.0)", "gcsfs (>=0.2.0)", "azure-storage-blob (>=12.1.0)", "azure-datalake-store (>=0.0.30)", "twine (>=1.11.0)", "setuptools (>=38.6.0)", "wheel (>=0.31.0)", "pip (>=18.1)", "recommonmark", "bumpversion", "tox", "flake8", "pre-commit", "attrs (>=17.4.0)", "check-manifest", "requests (>=2.21.0)", "pytest-env (>=0.6.2)", "pytest-mock (>=1.10)", "pytest-cov (>=2.6.1)", "pytest (>=4.1)", "moto", "notebook", "ipywidgets", "ipython (>=5.0)", "google-compute-engine", "coverage", "codecov", "botocore", "boto3"]
-s3 = ["boto3"]
-hdfs = ["pyarrow (>=2.0)"]
-github = ["PyGithub (>=1.55)"]
-gcs = ["gcsfs (>=0.2.0)"]
-dev = ["black (>=19.3b0)", "pyarrow (>=2.0)", "gcsfs (>=0.2.0)", "azure-storage-blob (>=12.1.0)", "azure-datalake-store (>=0.0.30)", "twine (>=1.11.0)", "setuptools (>=38.6.0)", "wheel (>=0.31.0)", "pip (>=18.1)", "recommonmark", "bumpversion", "tox", "flake8", "pre-commit", "attrs (>=17.4.0)", "check-manifest", "requests (>=2.21.0)", "pytest-env (>=0.6.2)", "pytest-mock (>=1.10)", "pytest-cov (>=2.6.1)", "pytest (>=4.1)", "moto", "notebook", "ipywidgets", "ipython (>=5.0)", "google-compute-engine", "coverage", "codecov", "botocore", "boto3"]
-black = ["black (>=19.3b0)"]
-azure = ["requests (>=2.21.0)", "azure-storage-blob (>=12.1.0)", "azure-datalake-store (>=0.0.30)"]
-all = ["black (>=19.3b0)", "pyarrow (>=2.0)", "gcsfs (>=0.2.0)", "requests (>=2.21.0)", "azure-storage-blob (>=12.1.0)", "azure-datalake-store (>=0.0.30)", "boto3"]
 
 [[package]]
 name = "parso"
@@ -3115,7 +3077,7 @@ tzdata = {version = "*", markers = "python_version >= \"3.6\""}
 
 [[package]]
 name = "pyupgrade"
-version = "2.38.0"
+version = "2.38.2"
 description = "A tool to automatically upgrade syntax for newer versions."
 category = "dev"
 optional = false
@@ -3349,6 +3311,29 @@ cryptography = "*"
 pyotp = "*"
 python-dotenv = "*"
 requests = "*"
+
+[[package]]
+name = "ruamel.yaml"
+version = "0.17.21"
+description = "ruamel.yaml is a YAML parser/emitter that supports roundtrip preservation of comments, seq/map flow style, and map key order"
+category = "main"
+optional = false
+python-versions = ">=3"
+
+[package.dependencies]
+"ruamel.yaml.clib" = {version = ">=0.2.6", markers = "platform_python_implementation == \"CPython\" and python_version < \"3.11\""}
+
+[package.extras]
+docs = ["ryd"]
+jinja2 = ["ruamel.yaml.jinja2 (>=0.2)"]
+
+[[package]]
+name = "ruamel.yaml.clib"
+version = "0.2.6"
+description = "C version of reader, parser and emitter for ruamel.yaml derived from libyaml"
+category = "main"
+optional = false
+python-versions = ">=3.5"
 
 [[package]]
 name = "scikit-learn"
@@ -3677,7 +3662,7 @@ six = "*"
 
 [[package]]
 name = "stack-data"
-version = "0.5.0"
+version = "0.5.1"
 description = "Extract data from python stack frames and tracebacks for informative displays"
 category = "main"
 optional = false
@@ -3808,14 +3793,6 @@ tornado = ">=6.1.0"
 
 [package.extras]
 test = ["pre-commit", "pytest-timeout", "pytest (>=6.0)"]
-
-[[package]]
-name = "textwrap3"
-version = "0.9.2"
-description = "textwrap from Python 3.6 backport (plus a few tweaks)"
-category = "main"
-optional = false
-python-versions = "*"
 
 [[package]]
 name = "thepassiveinvestor"
@@ -4033,7 +4010,7 @@ python-versions = "*"
 
 [[package]]
 name = "types-six"
-version = "1.16.19"
+version = "1.16.20"
 description = "Typing stubs for six"
 category = "dev"
 optional = false
@@ -4383,7 +4360,7 @@ prediction = ["torch"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "0ccbac0b671a569604249f527c783dbf0282221f0a8acde06d3c93432705f3d3"
+content-hash = "db61c1a8ff49d6d96e281de7ea75822034bc92f61cc4d13f45255a22a804293f"
 
 [metadata.files]
 aiodns = []
@@ -4489,14 +4466,7 @@ alpha-vantage = [
     {file = "alpha_vantage-2.3.1.tar.gz", hash = "sha256:0ce76908c3e2a22f9bbdacead90195ec3a4fa41ef8ae7c69a4a2fc99459bfbec"},
 ]
 altair = []
-altgraph = [
-    {file = "altgraph-0.17.2-py2.py3-none-any.whl", hash = "sha256:743628f2ac6a7c26f5d9223c91ed8ecbba535f506f4b6f558885a8a56a105857"},
-    {file = "altgraph-0.17.2.tar.gz", hash = "sha256:ebf2269361b47d97b3b88e696439f6e4cbc607c17c51feb1754f90fb79839158"},
-]
-ansiwrap = [
-    {file = "ansiwrap-0.8.4-py2.py3-none-any.whl", hash = "sha256:7b053567c88e1ad9eed030d3ac41b722125e4c1271c8a99ade797faff1f49fb1"},
-    {file = "ansiwrap-0.8.4.zip", hash = "sha256:ca0c740734cde59bf919f8ff2c386f74f9a369818cdc60efe94893d01ea8d9b7"},
-]
+altgraph = []
 anyio = [
     {file = "anyio-3.6.1-py3-none-any.whl", hash = "sha256:cb29b9c70620506a9a8f87a309591713446953302d7d995344d0d7c6c0c9a7be"},
     {file = "anyio-3.6.1.tar.gz", hash = "sha256:413adf95f93886e442aea925f3ee43baa5a765a64a0f52c6081894f9992fdd0b"},
@@ -4670,14 +4640,8 @@ cachetools = [
     {file = "cachetools-5.2.0-py3-none-any.whl", hash = "sha256:f9f17d2aec496a9aa6b76f53e3b614c965223c061982d434d160f930c698a9db"},
     {file = "cachetools-5.2.0.tar.gz", hash = "sha256:6a94c6402995a99c3970cc7e4884bb60b4a8639938157eeed436098bf9831757"},
 ]
-ccxt = [
-    {file = "ccxt-1.93.87-py2.py3-none-any.whl", hash = "sha256:b1543d1a8b34264bbd172a9acbea1d7d3c9dee255a40c097aeaec18c98fd6131"},
-    {file = "ccxt-1.93.87.tar.gz", hash = "sha256:2b1e7c675419a9b4c1bc07ec475b0cbd460384d2e371a98710a066e084d23425"},
-]
-certifi = [
-    {file = "certifi-2022.9.14-py3-none-any.whl", hash = "sha256:e232343de1ab72c2aa521b625c80f699e356830fd0e2c620b465b304b17b0516"},
-    {file = "certifi-2022.9.14.tar.gz", hash = "sha256:36973885b9542e6bd01dea287b2b4b3b21236307c56324fcc3f1160f2d655ed5"},
-]
+ccxt = []
+certifi = []
 cffi = [
     {file = "cffi-1.15.1-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:a66d3508133af6e8548451b25058d5812812ec3798c886bf38ed24a98216fab2"},
     {file = "cffi-1.15.1-cp27-cp27m-manylinux1_i686.whl", hash = "sha256:470c103ae716238bbe698d67ad020e1db9d9dba34fa5a899b5e21577e6d52ed2"},
@@ -4965,10 +4929,7 @@ grpcio = [
     {file = "grpcio-1.49.1-cp39-cp39-win_amd64.whl", hash = "sha256:274ffbb39717918c514b35176510ae9be06e1d93121e84d50b350861dcb9a705"},
     {file = "grpcio-1.49.1.tar.gz", hash = "sha256:d4725fc9ec8e8822906ae26bb26f5546891aa7fbc3443de970cc556d43a5c99f"},
 ]
-h11 = [
-    {file = "h11-0.13.0-py3-none-any.whl", hash = "sha256:8ddd78563b633ca55346c8cd41ec0af27d3c79931828beffb46ce70a379e7442"},
-    {file = "h11-0.13.0.tar.gz", hash = "sha256:70813c1135087a248a4d38cc0e1a0181ffab2188141a93eaf567940c3957ff06"},
-]
+h11 = []
 hijri-converter = [
     {file = "hijri-converter-2.2.4.tar.gz", hash = "sha256:9e1d9fa4c220f6867da2abb1a96240675ae974abba951c686a781f4ef6ac218f"},
     {file = "hijri_converter-2.2.4-py3-none-any.whl", hash = "sha256:5ed4f4c284626e3916cd770e09346d5cc319e2a7762c22357838864908fd6e6d"},
@@ -5215,10 +5176,7 @@ lxml = [
     {file = "lxml-4.9.1-pp39-pypy39_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl", hash = "sha256:287605bede6bd36e930577c5925fcea17cb30453d96a7b4c63c14a257118dbb9"},
     {file = "lxml-4.9.1.tar.gz", hash = "sha256:fe749b052bb7233fe5d072fcb549221a8cb1a16725c47c37e42b0b9cb3ff2c3f"},
 ]
-macholib = [
-    {file = "macholib-1.16-py2.py3-none-any.whl", hash = "sha256:5a0742b587e6e57bfade1ab90651d4877185bf66fd4a176a488116de36878229"},
-    {file = "macholib-1.16.tar.gz", hash = "sha256:001bf281279b986a66d7821790d734e61150d52f40c080899df8fefae056e9f7"},
-]
+macholib = []
 markdown-it-py = [
     {file = "markdown-it-py-1.1.0.tar.gz", hash = "sha256:36be6bb3ad987bfdb839f5ba78ddf094552ca38ccbd784ae4f74a4e1419fc6e3"},
     {file = "markdown_it_py-1.1.0-py3-none-any.whl", hash = "sha256:98080fc0bc34c4f2bcf0846a096a9429acbd9d5d8e67ed34026c03c61c464389"},
@@ -5494,7 +5452,6 @@ pandocfilters = [
     {file = "pandocfilters-1.5.0-py2.py3-none-any.whl", hash = "sha256:33aae3f25fd1a026079f5d27bdd52496f0e0803b3469282162bafdcbdf6ef14f"},
     {file = "pandocfilters-1.5.0.tar.gz", hash = "sha256:0b679503337d233b4339a817bfc8c50064e2eff681314376a47cb582305a7a38"},
 ]
-papermill = []
 parso = [
     {file = "parso-0.8.3-py2.py3-none-any.whl", hash = "sha256:c001d4636cd3aecdaf33cbb40aebb59b094be2a74c556778ef5576c175e19e75"},
     {file = "parso-0.8.3.tar.gz", hash = "sha256:8c07be290bb59f03588915921e29e8a50002acaf2cdc5fa0e0114f91709fafa0"},
@@ -6092,6 +6049,8 @@ robin-stocks = [
     {file = "robin_stocks-2.1.0-py3-none-any.whl", hash = "sha256:f746640e08d138fda2e1da42444e2881c3fb1ce43485f332e5079a42b0a78d57"},
     {file = "robin_stocks-2.1.0.tar.gz", hash = "sha256:3d6b1d97ecf3191897d09c9dc430b57c6183a38d4c66a64f9c62a8f015bb0ae9"},
 ]
+"ruamel.yaml" = []
+"ruamel.yaml.clib" = []
 scikit-learn = []
 scipy = [
     {file = "scipy-1.8.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:65b77f20202599c51eb2771d11a6b899b97989159b7975e9b5259594f1d35ef4"},
@@ -6261,10 +6220,6 @@ tenacity = [
 terminado = [
     {file = "terminado-0.15.0-py3-none-any.whl", hash = "sha256:0d5f126fbfdb5887b25ae7d9d07b0d716b1cc0ccaacc71c1f3c14d228e065197"},
     {file = "terminado-0.15.0.tar.gz", hash = "sha256:ab4eeedccfcc1e6134bfee86106af90852c69d602884ea3a1e8ca6d4486e9bfe"},
-]
-textwrap3 = [
-    {file = "textwrap3-0.9.2-py2.py3-none-any.whl", hash = "sha256:bf5f4c40faf2a9ff00a9e0791fed5da7415481054cef45bb4a3cfb1f69044ae0"},
-    {file = "textwrap3-0.9.2.zip", hash = "sha256:5008eeebdb236f6303dcd68f18b856d355f6197511d952ba74bc75e40e0c3414"},
 ]
 thepassiveinvestor = [
     {file = "thepassiveinvestor-1.0.10-py3-none-any.whl", hash = "sha256:41fd07e5db0fde3587955d5ca86c52079c10c8f6e6572e3c213bded46f6969cf"},

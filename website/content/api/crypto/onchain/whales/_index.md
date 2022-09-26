@@ -1,9 +1,7 @@
-# crypto.onchain.whales
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.onchain.whales(min_value: int = 800000, limit: int = 100, sortby: str = 'date', ascend: bool = False) -> pandas.core.frame.DataFrame
+### crypto.onchain.whales(min_value: int = 800000, limit: int = 100, sortby: str = 'date', ascend: bool = False) -> pandas.core.frame.DataFrame
 
 Whale Alert's API allows you to retrieve live and historical transaction data from major blockchains.
     Supported blockchain: Bitcoin, Ethereum, Ripple, NEO, EOS, Stellar and Tron. [Source: https://docs.whale-alert.io/]
@@ -25,7 +23,7 @@ Whale Alert's API allows you to retrieve live and historical transaction data fr
         Crypto wales transactions
 
 ## Getting charts 
-###crypto.onchain.whales(min_value: int = 800000, top: int = 100, sortby: str = 'date', ascend: bool = False, show_address: bool = False, export: str = '', chart=True) -> None
+### crypto.onchain.whales(min_value: int = 800000, limit: int = 100, sortby: str = 'date', ascend: bool = False, show_address: bool = False, export: str = '', chart=True) -> None
 
 Display huge value transactions from major blockchains. [Source: https://docs.whale-alert.io/]
 
@@ -33,7 +31,7 @@ Display huge value transactions from major blockchains. [Source: https://docs.wh
     ----------
     min_value: int
         Minimum value of trade to track.
-    top: int
+    limit: int
         Limit of transactions. Maximum 100
     sortby: str
         Key to sort by.

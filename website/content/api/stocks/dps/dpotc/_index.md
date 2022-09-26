@@ -1,9 +1,7 @@
-# stocks.dps.dpotc
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.dps.dpotc(symbol: str) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
+### stocks.dps.dpotc(symbol: str) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
 
 Get all FINRA data associated with a ticker
 
@@ -20,7 +18,7 @@ Get all FINRA data associated with a ticker
         OTC (Non-ATS) Data
 
 ## Getting charts 
-###stocks.dps.dpotc(symbol: str, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.dps.dpotc(symbol: str, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display barchart of dark pool (ATS) and OTC (Non ATS) data. [Source: FINRA]
 
