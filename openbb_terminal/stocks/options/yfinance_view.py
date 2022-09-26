@@ -224,12 +224,7 @@ def display_chains(
         title=f"Yahoo Option Chain (15 min delayed) for {expiry} (Greeks calculated by OpenBB)",
         headers=[header_fmt(x) for x in option_chains.columns],
     )
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "chains_yf",
-        option_chains,
-    )
+    op_helpers.export_yf_options(export, option_chains, "chains_yf")
 
 
 @log_start_end(log=logger)
@@ -265,12 +260,7 @@ def plot_oi(
         External axes (1 axis is expected in the list), by default None
     """
     options = yfinance_model.get_option_chain(symbol, expiry)
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "oi_yf",
-        options,
-    )
+    op_helpers.export_yf_options(export, options, "oi_yf")
     calls = options.calls
     puts = options.puts
     current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
@@ -424,12 +414,8 @@ def plot_vol(
     theme.style_primary_axis(ax)
     if external_axes is None:
         theme.visualize_output()
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "vol_yf",
-        options,
-    )
+
+    op_helpers.export_yf_options(export, options, "vol_yf")
 
 
 @log_start_end(log=logger)
@@ -651,12 +637,7 @@ def plot_volume_open_interest(
     if external_axes is None:
         theme.visualize_output()
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "voi_yf",
-        options,
-    )
+    op_helpers.export_yf_options(export, options, "voi_yf")
 
 
 @log_start_end(log=logger)
