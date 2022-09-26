@@ -25,12 +25,8 @@ from openbb_terminal.core.config.paths import (
     REPOSITORY_DIRECTORY,
     USER_ENV_FILE,
     REPOSITORY_ENV_FILE,
-<<<<<<< HEAD
-    HOME_DIRECTORY,
-    ROUTINES_DIRECTORY
-=======
     USER_EXPORTS_DIRECTORY,
->>>>>>> 98ab28200f1ed28b9682ecd8cf5d52343af563b9
+    ROUTINES_DIRECTORY
 )
 from openbb_terminal.core.log.generation.path_tracking_file_handler import (
     PathTrackingFileHandler,

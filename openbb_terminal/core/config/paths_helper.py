@@ -8,12 +8,8 @@ from openbb_terminal.core.config.paths import (
     USER_ENV_FILE,
     REPOSITORY_ENV_FILE,
     CUSTOM_IMPORTS_DIRECTORY,
-<<<<<<< HEAD
-    REPOSITORY_DIRECTORY,
-    ROUTINES_DIRECTORY
-=======
     USER_EXPORTS_DIRECTORY,
->>>>>>> 98ab28200f1ed28b9682ecd8cf5d52343af563b9
+    ROUTINES_DIRECTORY
 )
 
 
@@ -43,20 +39,12 @@ dirs_list = [
     USER_DATA_DIRECTORY / "styles",
     CUSTOM_IMPORTS_DIRECTORY,
     CUSTOM_IMPORTS_DIRECTORY / "econometrics",
-<<<<<<< HEAD
-    ROUTINES_DIRECTORY
-=======
     CUSTOM_IMPORTS_DIRECTORY / "stocks",
     CUSTOM_IMPORTS_DIRECTORY / "dashboards",
     USER_EXPORTS_DIRECTORY,
     USER_EXPORTS_DIRECTORY / "reports",
->>>>>>> 98ab28200f1ed28b9682ecd8cf5d52343af563b9
+    ROUTINES_DIRECTORY,
 ]
 dirs_files = [USER_ENV_FILE, REPOSITORY_ENV_FILE]
 create_paths(dirs_list)
 create_files(dirs_files)
-<<<<<<< HEAD
-copy_files(REPOSITORY_DIRECTORY / "custom_imports", CUSTOM_IMPORTS_DIRECTORY)
-copy_files(REPOSITORY_DIRECTORY / "routines", ROUTINES_DIRECTORY)
-=======
->>>>>>> 98ab28200f1ed28b9682ecd8cf5d52343af563b9
