@@ -34,7 +34,11 @@ from screeninfo import get_monitors
 import yfinance as yf
 import numpy as np
 
-import pyautogui
+from pyautogui import (
+    getActiveWindowTitle,
+    getWindowsWithTitle,
+)
+from pyautogui import screenshot as pyscreenshot
 from PIL import Image, ImageDraw
 
 from openbb_terminal.rich_config import console
@@ -1681,14 +1685,14 @@ def screenshot(terminal_window_target: bool = False) -> None:
     try:
         if terminal_window_target:
             if sys.platform == "win32":
-                win_name = pyautogui.getActiveWindowTitle()
-                window = pyautogui.getWindowsWithTitle(win_name)[0]
+                win_name = getActiveWindowTitle()
+                window = getWindowsWithTitle(win_name)[0]
                 header = 40
                 x = window.topleft.x + 10
                 y = window.topleft.y + header
                 width = window.width - 50
                 height = window.height - 10 - header
-                shot = pyautogui.screenshot(region=(x, y, width, height))
+                shot = pyscreenshot(region=(x, y, width, height))
                 screenshot_to_canvas(shot)
                 console.print("")
             else:
