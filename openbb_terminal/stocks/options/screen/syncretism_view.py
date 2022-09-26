@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import configparser
 import logging
 import os
+from pathlib import Path
 from typing import List, Optional
 
 import matplotlib.pyplot as plt
@@ -24,25 +25,18 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def view_available_presets(
-    preset: str = "high_IV",
-    presets_path: str = os.path.join(
-        os.path.abspath(os.path.dirname(__file__)), "..", "presets/"
-    ),
-):
+def view_available_presets(preset_path: Path):
     """View available presets.
 
     Parameters
     ----------
-    preset: str
-       Preset to look at
-    presets_path: str
-        Path to presets folder
+    preset_path: Path
+        Path to chosen preset
     """
-    if preset:
+    if preset_path:
         preset_filter = configparser.RawConfigParser()
         preset_filter.optionxform = str  # type: ignore
-        preset_filter.read(os.path.join(presets_path, preset + ".ini"))
+        preset_filter.read(preset_path)
         filters_headers = ["FILTER"]
         console.print("")
 
@@ -63,10 +57,7 @@ def view_available_presets(
 
 @log_start_end(log=logger)
 def view_screener_output(
-    preset: str = "high_IV",
-    presets_path: str = os.path.join(
-        os.path.abspath(os.path.dirname(__file__)), "..", "presets/"
-    ),
+    preset_path: Path,
     limit: int = 20,
     export: str = "",
 ) -> List:
@@ -74,10 +65,8 @@ def view_screener_output(
 
     Parameters
     ----------
-    preset: str
-        Preset file to screen for
-    presets_path: str
-        Path to preset folder
+    preset_path: Path
+        Path to chosen preset
     limit: int
         Number of randomly sorted rows to display
     export: str
@@ -88,7 +77,7 @@ def view_screener_output(
     List
         List of tickers screened
     """
-    df_res, error_msg = syncretism_model.get_screener_output(preset, presets_path)
+    df_res, error_msg = syncretism_model.get_screener_output(preset_path)
     if error_msg:
         console.print(error_msg, "\n")
         return []

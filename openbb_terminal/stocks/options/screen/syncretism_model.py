@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import configparser
 import logging
-import os
+from pathlib import Path
 from typing import Tuple
 
 import pandas as pd
@@ -113,20 +113,13 @@ def get_historical_greeks(
 
 
 @log_start_end(log=logger)
-def get_screener_output(
-    preset: str = "high_IV",
-    presets_path: str = os.path.join(
-        os.path.abspath(os.path.dirname(__file__)), "..", "presets/"
-    ),
-) -> Tuple[pd.DataFrame, str]:
+def get_screener_output(preset_path: Path) -> Tuple[pd.DataFrame, str]:
     """Screen options based on preset filters
 
     Parameters
     ----------
-    preset: str
-        Preset file to screen for
-    presets_path: str
-        Path to preset folder
+    preset_path: Path
+        Path to chosen preset
     Returns
     -------
     pd.DataFrame:
@@ -160,7 +153,7 @@ def get_screener_output(
 
     preset_filter = configparser.RawConfigParser()
     preset_filter.optionxform = str  # type: ignore
-    preset_filter.read(presets_path + preset + ".ini")
+    preset_filter.read(preset_path)
 
     d_filters = {k: v for k, v in dict(preset_filter["FILTER"]).items() if v}
     s_filters = str(d_filters)
@@ -189,7 +182,7 @@ def get_screener_output(
         df_res = pd.DataFrame(res.json())
 
         if df_res.empty:
-            return df_res, f"No options data found for preset: {preset}"
+            return df_res, f"No options data found for preset: {preset_path.name}"
 
         df_res = df_res.rename(columns=d_cols)[list(d_cols.values())[:17]]
         df_res["Exp ∨"] = df_res["Exp ∨"].apply(

@@ -5,6 +5,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal.etf.screener import screener_model
+from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY
 
 
 @pytest.fixture(scope="module")
@@ -16,12 +17,12 @@ def vcr_config():
 
 @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "preset",
+    "preset_path",
     [
-        "etf_config",
+        REPOSITORY_DIRECTORY / "etf" / "screener" / "presets" / "etf_config.ini",
     ],
 )
-def test_etf_screener(recorder, preset):
-    result = screener_model.etf_screener(preset)
+def test_etf_screener(recorder, preset_path):
+    result = screener_model.etf_screener(preset_path)
 
     recorder.capture(result)

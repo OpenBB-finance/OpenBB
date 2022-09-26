@@ -1,6 +1,7 @@
 import configparser
 import logging
 import os
+from pathlib import Path
 import textwrap
 from datetime import datetime
 from typing import Dict, List
@@ -1104,7 +1105,7 @@ def check_open_insider_screener(
 
 
 @log_start_end(log=logger)
-def get_open_insider_link(preset_loaded: str) -> str:
+def get_open_insider_link(preset_path: Path) -> str:
     """Get open insider link
 
     Parameters
@@ -1119,7 +1120,7 @@ def get_open_insider_link(preset_loaded: str) -> str:
     """
     preset = configparser.RawConfigParser()
     preset.optionxform = str  # type: ignore
-    preset.read(presets_path + preset_loaded + ".ini")
+    preset.read(preset_path)
 
     d_general = dict(preset["General"])
     d_date = dict(preset["Date"])

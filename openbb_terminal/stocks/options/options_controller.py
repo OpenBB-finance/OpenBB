@@ -3,8 +3,8 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-import os
 from datetime import datetime, timedelta
+from pathlib import Path
 from typing import Any, List
 
 import pandas as pd
@@ -21,6 +21,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
+from openbb_terminal.core.config.paths import PRESETS_DIRECTORY
 from openbb_terminal.rich_config import MenuText, console, get_ordered_list_sources
 from openbb_terminal.stocks.options import (
     alphaquery_view,
@@ -48,6 +49,8 @@ from openbb_terminal.stocks.options.screen import screener_controller, syncretis
 
 
 logger = logging.getLogger(__name__)
+
+PRESETS_PATH = PRESETS_DIRECTORY / "stocks" / "options"
 
 
 class OptionsController(BaseController):
@@ -78,10 +81,20 @@ class OptionsController(BaseController):
         "hedge",
     ]
 
-    PRESET_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
+    PRESETS_PATH_DEFAULT = Path(__file__).parent / "presets"
 
-    presets = [f.split(".")[0] for f in os.listdir(PRESET_PATH) if f.endswith(".ini")]
-
+    preset_choices = {
+        filepath.name: filepath
+        for filepath in PRESETS_PATH.iterdir()
+        if filepath.suffix == ".ini"
+    }
+    preset_choices.update(
+        {
+            filepath.name: filepath
+            for filepath in PRESETS_PATH_DEFAULT.iterdir()
+            if filepath.suffix == ".ini"
+        }
+    )
     grhist_greeks_choices = [
         "iv",
         "gamma",
@@ -135,8 +148,8 @@ class OptionsController(BaseController):
             choices: dict = {c: {} for c in self.controller_choices}
             choices["unu"]["-s"] = {c: {} for c in self.unu_sortby_choices}
             choices["pcr"] = {c: {} for c in self.pcr_length_choices}
-            choices["disp"] = {c: {} for c in self.presets}
-            choices["scr"] = {c: {} for c in self.presets}
+            choices["disp"] = {c: {} for c in self.preset_choices}
+            choices["scr"] = {c: {} for c in self.preset_choices}
             choices["grhist"]["-g"] = {c: {} for c in self.grhist_greeks_choices}
             choices["plot"]["-x"] = {c: {} for c in self.plot_vars_choices}
             choices["plot"]["-y"] = {c: {} for c in self.plot_vars_choices}

@@ -5,12 +5,13 @@ __docformat__ = "numpy"
 import argparse
 import configparser
 import logging
-import os
+from pathlib import Path
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.config.paths import PRESETS_DIRECTORY
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.etf import financedatabase_model, financedatabase_view
 from openbb_terminal.etf.screener import screener_view
@@ -24,7 +25,7 @@ from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
 
-presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
+PRESETS_PATH = PRESETS_DIRECTORY / "etf" / "screener"
 
 
 class ScreenerController(BaseController):
@@ -37,10 +38,19 @@ class ScreenerController(BaseController):
         "sbc",
     ]
 
-    presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
-    preset_choices = [
-        f.split(".")[0] for f in os.listdir(presets_path) if f.endswith(".ini")
-    ]
+    PRESETS_PATH_DEFAULT = Path(__file__).parent / "presets"
+    preset_choices = {
+        filepath.name: filepath
+        for filepath in PRESETS_PATH.iterdir()
+        if filepath.suffix == ".ini"
+    }
+    preset_choices.update(
+        {
+            filepath.name: filepath
+            for filepath in PRESETS_PATH_DEFAULT.iterdir()
+            if filepath.suffix == ".ini"
+        }
+    )
 
     sortby_screen_choices = [
         "Assets",
@@ -119,7 +129,7 @@ class ScreenerController(BaseController):
             if ns_parser.preset:
                 preset_filter = configparser.RawConfigParser()
                 preset_filter.optionxform = str  # type: ignore
-                preset_filter.read(presets_path + ns_parser.preset + ".ini")
+                preset_filter.read(presets_path[ns_parser.preset])
 
                 headers = [
                     "Price",
@@ -152,7 +162,7 @@ class ScreenerController(BaseController):
                 console.print("\nPresets:")
                 for preset in self.preset_choices:
                     with open(
-                        presets_path + preset + ".ini",
+                        self.preset_choices[preset],
                         encoding="utf8",
                     ) as f:
                         description = ""
@@ -230,7 +240,7 @@ class ScreenerController(BaseController):
         )
         if ns_parser:
             screener_view.view_screener(
-                preset=self.preset,
+                preset_path=self.preset_choices[self.preset],
                 num_to_show=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.ascend,

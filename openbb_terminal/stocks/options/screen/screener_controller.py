@@ -3,12 +3,13 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-import os
+from pathlib import Path
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.config.paths import PRESETS_DIRECTORY
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import EXPORT_ONLY_RAW_DATA_ALLOWED, check_positive
 from openbb_terminal.menu import session
@@ -21,6 +22,7 @@ from openbb_terminal.stocks.options.screen import syncretism_view
 
 
 logger = logging.getLogger(__name__)
+PRESETS_PATH = PRESETS_DIRECTORY / "stocks" / "options"
 
 
 class ScreenerController(BaseController):
@@ -31,12 +33,19 @@ class ScreenerController(BaseController):
         "ca",
     ]
 
-    presets_path = os.path.join(
-        os.path.abspath(os.path.dirname(__file__)), "..", "presets/"
+    PRESETS_PATH_DEFAULT = Path(__file__).parent.parent / "presets"
+    preset_choices = {
+        filepath.name: filepath
+        for filepath in PRESETS_PATH.iterdir()
+        if filepath.suffix == ".ini"
+    }
+    preset_choices.update(
+        {
+            filepath.name: filepath
+            for filepath in PRESETS_PATH_DEFAULT.iterdir()
+            if filepath.suffix == ".ini"
+        }
     )
-    preset_choices = [
-        f.split(".")[0] for f in os.listdir(presets_path) if f.endswith(".ini")
-    ]
     PATH = "/stocks/options/screen/"
 
     def __init__(self, queue: List[str] = None):
@@ -91,7 +100,7 @@ class ScreenerController(BaseController):
         if ns_parser:
             if ns_parser.preset:
                 syncretism_view.view_available_presets(
-                    preset=ns_parser.preset, presets_path=self.presets_path
+                    preset_path=self.preset_choices[ns_parser.preset]
                 )
 
             else:
@@ -164,8 +173,7 @@ class ScreenerController(BaseController):
         )
         if ns_parser:
             self.screen_tickers = syncretism_view.view_screener_output(
-                preset=ns_parser.preset,
-                presets_path=self.presets_path,
+                preset_path=self.preset_choices[ns_parser.preset],
                 limit=ns_parser.limit,
                 export=ns_parser.export,
             )

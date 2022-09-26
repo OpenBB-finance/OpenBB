@@ -1,5 +1,4 @@
 # IMPORTATION STANDARD
-import os
 from typing import List
 
 from openbb_terminal.core.config.paths import (
@@ -10,6 +9,7 @@ from openbb_terminal.core.config.paths import (
     CUSTOM_IMPORTS_DIRECTORY,
     USER_EXPORTS_DIRECTORY,
     PORTFOLIO_DATA_DIRECTORY,
+    PRESETS_DIRECTORY,
 )
 
 
@@ -19,8 +19,10 @@ def create_paths(list_dirs: List):
     terminal if they don't exist
     """
     for dirs in list_dirs:
-        if not os.path.exists(dirs):
-            os.mkdir(dirs)
+        if not dirs.exists():
+            dirs.mkdir(
+                parents=True,
+            )
 
 
 def create_files(list_files: List):
@@ -48,6 +50,11 @@ dirs_list = [
     PORTFOLIO_DATA_DIRECTORY / "holdings",
     PORTFOLIO_DATA_DIRECTORY / "allocation",
     PORTFOLIO_DATA_DIRECTORY / "optimization",
+    PRESETS_DIRECTORY,
+    PRESETS_DIRECTORY / "stocks" / "options",
+    PRESETS_DIRECTORY / "stocks" / "screener",
+    PRESETS_DIRECTORY / "stocks" / "insider",
+    PRESETS_DIRECTORY / "etf" / "screener",
 ]
 dirs_files = [USER_ENV_FILE, REPOSITORY_ENV_FILE]
 create_paths(dirs_list)

@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import configparser
 import logging
-import os
+from pathlib import Path
 
 import pandas as pd
 
@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def etf_screener(preset: str):
+def etf_screener(preset_path: Path):
     """
     Screens the etfs pulled from my repo (https://github.com/jmaslek/etf_scraper),
     which is updated hourly through the market day
@@ -37,11 +37,8 @@ def etf_screener(preset: str):
     )
 
     cf = configparser.ConfigParser()
-    path = os.path.join(
-        os.path.abspath(os.path.dirname(__file__)), "presets", preset + ".ini"
-    )
 
-    cf.read(path)
+    cf.read(preset_path)
     cols = cf.sections()
 
     for col in cols:
