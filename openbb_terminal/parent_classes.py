@@ -15,7 +15,6 @@ import json
 from typing import Union, Any, List, Dict
 from datetime import datetime, timedelta
 
-import matplotlib.pyplot as plt
 from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML

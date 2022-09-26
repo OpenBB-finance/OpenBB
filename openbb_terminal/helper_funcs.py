@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 # pylint: disable=too-many-lines
 import argparse
-from email.header import Header
 import io
 import logging
 from pathlib import Path
