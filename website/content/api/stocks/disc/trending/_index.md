@@ -1,7 +1,5 @@
-# stocks.disc.trending
-
 ## Get underlying data 
-###stocks.disc.trending(limit: int = 5) -> list
+### stocks.disc.trending(limit: int = 5) -> list
 
 Returns a list of trending articles
 

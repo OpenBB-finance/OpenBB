@@ -1,9 +1,7 @@
-# stocks.ta.recom
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.ta.recom(symbol: str, screener: str = 'america', exchange: str = '', interval: str = '') -> pandas.core.frame.DataFrame
+### stocks.ta.recom(symbol: str, screener: str = 'america', exchange: str = '', interval: str = '') -> pandas.core.frame.DataFrame
 
 Get tradingview recommendation based on technical indicators
 
@@ -24,7 +22,7 @@ Get tradingview recommendation based on technical indicators
         Dataframe of tradingview recommendations based on technical indicators
 
 ## Getting charts 
-###stocks.ta.recom(symbol: str, screener: str = 'america', exchange: str = '', interval: str = '', export: str = '', chart=True)
+### stocks.ta.recom(symbol: str, screener: str = 'america', exchange: str = '', interval: str = '', export: str = '', chart=True)
 
 Print tradingview recommendation based on technical indicators
 

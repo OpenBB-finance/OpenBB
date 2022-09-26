@@ -1175,7 +1175,6 @@ def display_omega(
     threshold_end: float
         annualized target return threshold end of plotted threshold range
     """
-
     df = qa_model.get_omega(data, threshold_start, threshold_end)
 
     # Plotting

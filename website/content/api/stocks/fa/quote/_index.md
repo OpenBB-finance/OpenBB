@@ -1,7 +1,5 @@
-# stocks.fa.quote
-
 ## Get underlying data 
-###stocks.fa.quote(symbol: str) -> pandas.core.frame.DataFrame
+### stocks.fa.quote(symbol: str) -> pandas.core.frame.DataFrame
 
 Gets ticker quote from FMP
 

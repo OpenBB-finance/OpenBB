@@ -1,9 +1,7 @@
-# common.ta.stoch
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###common.ta.stoch(high_vals: pandas.core.series.Series, low_vals: pandas.core.series.Series, close_vals: pandas.core.series.Series, fastkperiod: int = 14, slowdperiod: int = 3, slowkperiod: int = 3)
+### common.ta.stoch(high_vals: pandas.core.series.Series, low_vals: pandas.core.series.Series, close_vals: pandas.core.series.Series, fastkperiod: int = 14, slowdperiod: int = 3, slowkperiod: int = 3)
 
 Stochastic oscillator
 
@@ -27,7 +25,7 @@ Stochastic oscillator
         Dataframe of technical indicator
 
 ## Getting charts 
-###common.ta.stoch(data: pandas.core.frame.DataFrame, fastkperiod: int = 14, slowdperiod: int = 3, slowkperiod: int = 3, symbol: str = '', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
+### common.ta.stoch(data: pandas.core.frame.DataFrame, fastkperiod: int = 14, slowdperiod: int = 3, slowkperiod: int = 3, symbol: str = '', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
 
 Plot stochastic oscillator signal
 

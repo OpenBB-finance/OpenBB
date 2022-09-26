@@ -13,6 +13,7 @@ from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import parent_classes
+from openbb_terminal.core.config.paths import USER_EXPORTS_DIRECTORY
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     check_non_negative,
@@ -4016,17 +4017,10 @@ class PortfolioOptimizationController(BaseController):
                 return
 
             if len(ns_parser.download) > 0:
-                file = os.path.abspath(
-                    os.path.join(
-                        self.DEFAULT_ALLOCATION_PATH,
-                        "..",
-                        "..",
-                        "exports",
-                        "portfolio",
-                        "views",
-                        ns_parser.download,
-                    )
+                file = (
+                    USER_EXPORTS_DIRECTORY / "portfolio" / "views" / ns_parser.download
                 )
+
                 excel_model.excel_bl_views(file=file, stocks=self.tickers, n=1)
                 return
 

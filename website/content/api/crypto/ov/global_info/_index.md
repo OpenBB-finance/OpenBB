@@ -1,7 +1,5 @@
-# crypto.ov.global_info
-
 ## Get underlying data 
-###crypto.ov.global_info() -> pandas.core.frame.DataFrame
+### crypto.ov.global_info() -> pandas.core.frame.DataFrame
 
 Get global statistics about crypto from CoinGecko API like:
         - market cap change

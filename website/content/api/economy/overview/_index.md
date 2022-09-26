@@ -1,7 +1,5 @@
-# economy.overview
-
 ## Get underlying data 
-###economy.overview() -> pandas.core.frame.DataFrame
+### economy.overview() -> pandas.core.frame.DataFrame
 
 Scrape data for market overview
 

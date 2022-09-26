@@ -1,7 +1,5 @@
-# stocks.ca.balance
-
 ## Get underlying data 
-###stocks.ca.balance(similar: List[str], timeframe: str = '2021', quarter: bool = False)
+### stocks.ca.balance(similar: List[str], timeframe: str = '2021', quarter: bool = False)
 
 Get balance data. [Source: Marketwatch]
 

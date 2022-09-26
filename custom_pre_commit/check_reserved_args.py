@@ -46,9 +46,7 @@ def process_file(file_path: str, exp: str):
 
 # pylint:disable=anomalous-backslash-in-string
 def main():
-    expressions = []
-    for sa in RESERVED_ARGS:
-        expressions.append(rf'("-{sa}(.|\n)*?\--.*?\S*)')  # noqa: W605
+    expressions = [f'("-{sa}(.|\n)*?\\--.*?\\S*)' for sa in RESERVED_ARGS]
     exp = f"""({"|".join(expressions)})"""
 
     base = os.path.abspath(os.path.dirname(__file__))

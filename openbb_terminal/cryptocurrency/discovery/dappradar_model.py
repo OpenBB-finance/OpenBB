@@ -135,16 +135,16 @@ def get_top_dexes(sortby: str = "", limit: int = 10) -> pd.DataFrame:
         "oaGJtZGxjeVp6YjNKMFBYUnZkR0ZzVm05c2RXMWxTVzVHYVdGMEptOXlaR1Z5UFdSbGMyTW1iR2x0YVhROU1qWT0="
     )
     if data:
-        arr = []
-        for dex in data["dapps"]:
-            arr.append(
-                [
-                    dex["name"],
-                    dex["category"],
-                    dex["statistic"]["userActivity"],
-                    dex["statistic"]["totalVolumeInFiat"],
-                ]
-            )
+        arr = [
+            [
+                dex["name"],
+                dex["category"],
+                dex["statistic"]["userActivity"],
+                dex["statistic"]["totalVolumeInFiat"],
+            ]
+            for dex in data["dapps"]
+        ]
+
         df = pd.DataFrame(arr, columns=DEX_COLUMNS)
         if sortby in DEX_COLUMNS:
             df = df.sort_values(by=sortby, ascending=False)
@@ -177,16 +177,16 @@ def get_top_games(sortby: str = "", limit: int = 10) -> pd.DataFrame:
         "oYldWekpuTnZjblE5ZFhObGNpWnZjbVJsY2oxa1pYTmpKbXhwYldsMFBUSTI="
     )
     if data:
-        arr = []
-        for dex in data["dapps"]:
-            arr.append(
-                [
-                    dex["name"],
-                    dex["category"],
-                    dex["statistic"]["userActivity"],
-                    dex["statistic"]["totalVolumeInFiat"],
-                ]
-            )
+        arr = [
+            [
+                dex["name"],
+                dex["category"],
+                dex["statistic"]["userActivity"],
+                dex["statistic"]["totalVolumeInFiat"],
+            ]
+            for dex in data["dapps"]
+        ]
+
         df = pd.DataFrame(
             arr,
             columns=DEX_COLUMNS,
@@ -220,17 +220,17 @@ def get_top_dapps(sortby: str = "", limit: int = 10) -> pd.DataFrame:
         "2Y21SbGNqMWtaWE5qSm14cGJXbDBQVEky"
     )
     if data:
-        arr = []
-        for dex in data["dapps"]:
-            arr.append(
-                [
-                    dex["name"],
-                    dex["category"],
-                    dex["activeProtocols"],
-                    dex["statistic"]["userActivity"],
-                    dex["statistic"]["totalVolumeInFiat"],
-                ]
-            )
+        arr = [
+            [
+                dex["name"],
+                dex["category"],
+                dex["activeProtocols"],
+                dex["statistic"]["userActivity"],
+                dex["statistic"]["totalVolumeInFiat"],
+            ]
+            for dex in data["dapps"]
+        ]
+
         df = pd.DataFrame(
             arr,
             columns=DAPPS_COLUMNS,

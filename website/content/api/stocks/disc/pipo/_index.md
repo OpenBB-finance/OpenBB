@@ -1,7 +1,5 @@
-# stocks.disc.pipo
-
 ## Get underlying data 
-###stocks.disc.pipo(num_days_behind: int = 5, start_date: Optional[str] = None)
+### stocks.disc.pipo(num_days_behind: int = 5, start_date: Optional[str] = None)
 
 Past IPOs dates. [Source: Finnhub]
 

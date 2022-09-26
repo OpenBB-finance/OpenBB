@@ -1,7 +1,5 @@
-# etf.symbols
-
 ## Get underlying data 
-###etf.symbols() -> Tuple[List[str], List[str]]
+### etf.symbols() -> Tuple[List[str], List[str]]
 
 Gets all etf names and symbols
 
