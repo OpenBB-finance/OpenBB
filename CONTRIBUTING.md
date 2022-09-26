@@ -1410,6 +1410,7 @@ This is storing every logged message inside the following location :
 `$HOME/OpenBBUserData/logs`
 
 Where $HOME is the user home directory, for instance:
+
 - `C:\Users\foo` if your are in Windows and your name is foo
 - `/home/bar/` if you are is macOS or Linux and your name is bar
 
@@ -1513,5 +1514,6 @@ A thorough introduction on the usage of unit tests in OpenBBTerminal can be foun
 [README.md](tests/README.md)
 
 In short:
+
 - Pytest: is the tool we are using to run our tests, with the command: `pytest tests/`
 - Coverage: can be checked like running `coverage run -m pytest` or `coverage html`
