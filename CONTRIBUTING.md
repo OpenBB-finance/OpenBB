@@ -1428,7 +1428,7 @@ def your_function() -> pd.DataFrame:
     logger.fatal("Some log message with the level FATAL")
 ```
 
-You can also use the decorator `@log_start_end` to automatically record a message everytime a function starts and ends, like this:
+You can also use the decorator `@log_start_end` to automatically record a message every time a function starts and ends, like this:
 
 ```python
 import logging
