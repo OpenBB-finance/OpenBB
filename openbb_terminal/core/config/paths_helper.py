@@ -9,7 +9,7 @@ from openbb_terminal.core.config.paths import (
     REPOSITORY_ENV_FILE,
     CUSTOM_IMPORTS_DIRECTORY,
     USER_EXPORTS_DIRECTORY,
-    ROUTINES_DIRECTORY
+    ROUTINES_DIRECTORY,
 )
 
 
