@@ -5,15 +5,17 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-import os
-from pathlib import Path
 from typing import List, Dict
 
 from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import parent_classes
-from openbb_terminal.core.config.paths import USER_EXPORTS_DIRECTORY
+from openbb_terminal.core.config.paths import (
+    USER_EXPORTS_DIRECTORY,
+    PORTFOLIO_DATA_DIRECTORY,
+    REPOSITORY_DIRECTORY,
+)
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     check_non_negative,
@@ -303,31 +305,42 @@ class PortfolioOptimizationController(BaseController):
             "nco",
         ]
         self.file_types = ["xlsx", "ini"]
-        self.DEFAULT_ALLOCATION_PATH = os.path.abspath(
-            os.path.join(
-                os.path.dirname(__file__), "..", "..", "..", "portfolio", "allocation"
-            )
-        )
+        self.DEFAULT_ALLOCATION_PATH = PORTFOLIO_DATA_DIRECTORY / "allocation"
 
         self.DATA_ALLOCATION_FILES = {
             filepath.name: filepath
             for file_type in self.file_types
-            for filepath in Path(self.DEFAULT_ALLOCATION_PATH).rglob(f"*.{file_type}")
-            if filepath.is_file()
+            for filepath in self.DEFAULT_ALLOCATION_PATH.rglob(f"*.{file_type}")
         }
 
-        self.current_file = ""
-        self.DEFAULT_OPTIMIZATION_PATH = os.path.abspath(
-            os.path.join(
-                os.path.dirname(__file__), "..", "..", "..", "portfolio", "optimization"
-            )
+        self.DATA_ALLOCATION_FILES.update(
+            {
+                filepath.name: filepath
+                for file_type in self.file_types
+                for filepath in (
+                    REPOSITORY_DIRECTORY / "portfolio" / "allocation"
+                ).rglob(f"*.{file_type}")
+            }
         )
+
+        self.current_file = ""
+        self.DEFAULT_OPTIMIZATION_PATH = PORTFOLIO_DATA_DIRECTORY / "optimization"
+
         self.DATA_OPTIMIZATION_FILES = {
             filepath.name: filepath
             for file_type in self.file_types
-            for filepath in Path(self.DEFAULT_OPTIMIZATION_PATH).rglob(f"*.{file_type}")
-            if filepath.is_file()
+            for filepath in self.DEFAULT_OPTIMIZATION_PATH.rglob(f"*.{file_type}")
         }
+
+        self.DATA_OPTIMIZATION_FILES.update(
+            {
+                filepath.name: filepath
+                for file_type in self.file_types
+                for filepath in (
+                    REPOSITORY_DIRECTORY / "portfolio" / "optimization"
+                ).rglob(f"*.{file_type}")
+            }
+        )
 
         self.params: Dict = {}
 
@@ -4025,11 +4038,7 @@ class PortfolioOptimizationController(BaseController):
                 return
 
             if ns_parser.file:
-                excel_file = os.path.abspath(
-                    os.path.join(
-                        self.DEFAULT_ALLOCATION_PATH, "..", "views", ns_parser.file
-                    )
-                )
+                excel_file = PORTFOLIO_DATA_DIRECTORY / "views" / ns_parser.file
                 p_views, q_views = excel_model.load_bl_views(excel_file=excel_file)
             else:
                 p_views = ns_parser.p_views
@@ -4076,14 +4085,7 @@ class PortfolioOptimizationController(BaseController):
 
             if table is False:
                 if ns_parser.file_sa:
-                    excel_file = os.path.abspath(
-                        os.path.join(
-                            self.DEFAULT_ALLOCATION_PATH,
-                            "..",
-                            "views",
-                            ns_parser.file_sa,
-                        )
-                    )
+                    excel_file = PORTFOLIO_DATA_DIRECTORY / "views" / ns_parser.file_sa
                     p_views_sa, q_views_sa = excel_model.load_bl_views(
                         excel_file=excel_file
                     )
