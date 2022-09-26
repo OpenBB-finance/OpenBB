@@ -119,7 +119,8 @@ def display_chains(
         console.print("[red]Option chains not found.[/red]")
         return
 
-    # There are 3 possibilities.  Calls only, puts only or both.  If calls only or puts only, we are actually set
+    # There are 3 possibilities.  Calls only, puts only or both.
+    # If calls only or puts only, we are actually set
     # because the columns are nicely named
     if calls_only or puts_only:
         title = "Call " if calls_only else "Put "
@@ -178,8 +179,8 @@ def display_chains(
             ]
         ]
 
-        # In order to add color to call/put, the numbers will have to be strings.  So floatfmt will not work in
-        # print_rich_table, so lets format them now.
+        # In order to add color to call/put, the numbers will have to be strings.
+        # So floatfmt will not work in print_rich_table, so lets format them now.
 
         float_fmt = [
             ".3f",
@@ -224,7 +225,12 @@ def display_chains(
         title=f"Yahoo Option Chain (15 min delayed) for {expiry} (Greeks calculated by OpenBB)",
         headers=[header_fmt(x) for x in option_chains.columns],
     )
-    op_helpers.export_yf_options(export, option_chains, "chains_yf")
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "chains_yf",
+        option_chains,
+    )
 
 
 @log_start_end(log=logger)
