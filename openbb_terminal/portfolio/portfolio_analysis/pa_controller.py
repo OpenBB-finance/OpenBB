@@ -3,13 +3,14 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-import os
+from pathlib import Path
 from typing import List
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.config.paths import PORTFOLIO_DATA_DIRECTORY
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -21,12 +22,21 @@ from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-portfolios_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "portfolios")
-possible_paths = [
-    port
-    for port in os.listdir(portfolios_path)
-    if port.endswith(".csv") or port.endswith(".json") or port.endswith(".xlsx")
-]
+portfolios_path = PORTFOLIO_DATA_DIRECTORY / "portfolios"
+port_types = [".csv", ".json", ".xlsx"]
+possible_paths = {
+    portpath.name: portpath
+    for port_type in port_types
+    for portpath in portfolios_path.rglob(f"*.{port_type}")
+}
+
+possible_paths.update(
+    {
+        portpath.name: portpath
+        for port_type in port_types
+        for portpath in (Path(__file__).parent / "portfolios").rglob(f"*.{port_type}")
+    }
+)
 
 
 class PortfolioAnalysisController(BaseController):
@@ -123,7 +133,7 @@ class PortfolioAnalysisController(BaseController):
         if ns_parser:
             self.portfolio_name = ns_parser.path
             self.portfolio = portfolio_model.load_portfolio(
-                full_path=os.path.join(portfolios_path, ns_parser.path),
+                full_path=possible_paths[ns_parser.path],
                 sector=ns_parser.sector,
                 country=ns_parser.country,
                 last_price=ns_parser.last_price,
@@ -193,7 +203,7 @@ class PortfolioAnalysisController(BaseController):
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            available_ports = os.listdir(portfolios_path)
+            available_ports = list(possible_paths)
             if ns_parser.file_format != "all":
                 available_ports = [
                     port
