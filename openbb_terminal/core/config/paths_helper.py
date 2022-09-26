@@ -9,6 +9,8 @@ from openbb_terminal.core.config.paths import (
     REPOSITORY_ENV_FILE,
     CUSTOM_IMPORTS_DIRECTORY,
     USER_EXPORTS_DIRECTORY,
+    PORTFOLIO_DATA_DIRECTORY,
+    ROUTINES_DIRECTORY,
 )
 
 
@@ -42,6 +44,12 @@ dirs_list = [
     CUSTOM_IMPORTS_DIRECTORY / "dashboards",
     USER_EXPORTS_DIRECTORY,
     USER_EXPORTS_DIRECTORY / "reports",
+    PORTFOLIO_DATA_DIRECTORY,
+    PORTFOLIO_DATA_DIRECTORY / "views",
+    PORTFOLIO_DATA_DIRECTORY / "holdings",
+    PORTFOLIO_DATA_DIRECTORY / "allocation",
+    PORTFOLIO_DATA_DIRECTORY / "optimization",
+    ROUTINES_DIRECTORY,
 ]
 dirs_files = [USER_ENV_FILE, REPOSITORY_ENV_FILE]
 create_paths(dirs_list)
