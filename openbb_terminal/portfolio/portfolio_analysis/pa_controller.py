@@ -203,7 +203,7 @@ class PortfolioAnalysisController(BaseController):
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            available_ports = [portname for portname in possible_paths]
+            available_ports = list(possible_paths)
             if ns_parser.file_format != "all":
                 available_ports = [
                     port
