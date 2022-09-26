@@ -1403,7 +1403,44 @@ In this case, this method is called as soon as the user successfully loads a new
 
 ### Logging
 
-TO BE ADDED
+A logging system is used to help tracking errors inside the OpenBBTerminal.
+
+This is storing every logged message inside the following location :
+
+`$HOME/OpenBBUserData/logs`
+
+Where $HOME is the user home directory, for instance:
+- `C:\Users\foo` if your are in Windows and your name is foo
+- `/home/bar/` if you are is macOS or Linux and your name is bar
+
+The user can override this location using the settings key `OPENBB_USER_DATA_DIRECTORY`.
+
+If you want to log a particular message inside a function you can do like so:
+
+```python
+import logging
+
+logger = logging.getLogger(__name__)
+
+def your_function() -> pd.DataFrame:
+    logger.info("Some log message with the level INFO")
+    logger.warning("Some log message with the level WARNING")
+    logger.fatal("Some log message with the level FATAL")
+```
+
+You can also use the decorator `@log_start_end` to automatically record a message everytime a function starts and ends, like this:
+
+```python
+import logging
+
+from openbb_terminal.decorators import log_start_end
+
+logger = logging.getLogger(__name__)
+
+@log_start_end(log=logger)
+def your_function() -> pd.DataFrame:
+    pass
+```
 
 ### Internationalization
   
@@ -1471,21 +1508,10 @@ Network model.
 
 Unit tests minimize errors in code and quickly find errors when they do arise.
 
-### Pytest
+A thorough introduction on the usage of unit tests in OpenBBTerminal can be found on the following page:
 
-Pytest allows users to quickly create unit tests in Python. To use pytest run `pytest tests/`.
+[README.md](tests/README.md)
 
-### Coverage
-
-Coverage allows users to see how complete unit tests are for Python. To use coverage do the following:
-
-1. `coverage run -m pytest`
-2. `coverage html`
-
-To view the tests find the htmlcov folder in the main directory and open the _index.html_ file. This will show a detailed
-report of testing coverage.
-
-### VCR
-
-VCRPY allows us to save data from request methods to a .YAML file. This increases test integrity and significantly
-speeds up the time it takes to run tests. To use VCRPY add **@pytest.mark.vcr** above any function you write.
+In short:
+- Pytest: is the tool we are using to run our tests, with the command: `pytest tests/`
+- Coverage: can be checked like running `coverage run -m pytest` or `coverage html`
