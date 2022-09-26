@@ -26,6 +26,7 @@ from openbb_terminal.core.config.paths import (
     USER_ENV_FILE,
     REPOSITORY_ENV_FILE,
     USER_EXPORTS_DIRECTORY,
+    ROUTINES_DIRECTORY,
 )
 from openbb_terminal.core.log.generation.path_tracking_file_handler import (
     PathTrackingFileHandler,
@@ -89,13 +90,16 @@ class TerminalController(BaseController):
     ]
 
     PATH = "/"
-    ROUTINE_CHOICES = {
-        file: None
-        for file in os.listdir(
-            os.path.join(os.path.abspath(os.path.dirname(__file__)), "routines")
-        )
-        if file.endswith(".openbb")
+
+    ROUTINE_FILES = {
+        filepath.name: filepath
+        for filepath in (REPOSITORY_DIRECTORY / "routines").rglob("*.openbb")
     }
+    ROUTINE_FILES.update(
+        {filepath.name: filepath for filepath in ROUTINES_DIRECTORY.rglob("*.openbb")}
+    )
+
+    ROUTINE_CHOICES = {filename: None for filename in ROUTINE_FILES}
 
     GUESS_TOTAL_TRIES = 0
     GUESS_NUMBER_TRIES_LEFT = 0
@@ -485,11 +489,7 @@ class TerminalController(BaseController):
         if ns_parser_exe:
             if ns_parser_exe.path:
                 if ns_parser_exe.path in self.ROUTINE_CHOICES:
-                    path = os.path.join(
-                        os.path.abspath(os.path.dirname(__file__)),
-                        "routines",
-                        ns_parser_exe.path,
-                    )
+                    path = self.ROUTINE_FILES[ns_parser_exe.path]
                 else:
                     path = ns_parser_exe.path
 

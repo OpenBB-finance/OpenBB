@@ -295,6 +295,8 @@ class ReportController(BaseController):
             notebook_output = notebook_output.replace("\\\\", "\\")
             report_output_path = notebook_output + ".html"
 
+            params.remove("report_name")  # remove report_name
+
             os.remove(notebook_file_copy + ".ipynb")
             os.remove(notebook_file_copy + ".py")
 
