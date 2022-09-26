@@ -90,7 +90,7 @@ class TerminalController(BaseController):
     ]
 
     PATH = "/"
-    
+
     ROUTINE_FILES = {
         filepath.name: filepath
         for filepath in (REPOSITORY_DIRECTORY / "routines").rglob("*.openbb")
@@ -99,9 +99,7 @@ class TerminalController(BaseController):
         {filepath.name: filepath for filepath in ROUTINES_DIRECTORY.rglob("*.openbb")}
     )
 
-    ROUTINE_CHOICES = {
-        filename : None for filename in ROUTINE_FILES
-    }
+    ROUTINE_CHOICES = {filename: None for filename in ROUTINE_FILES}
 
     GUESS_TOTAL_TRIES = 0
     GUESS_NUMBER_TRIES_LEFT = 0
