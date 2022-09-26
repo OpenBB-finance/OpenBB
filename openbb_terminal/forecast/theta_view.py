@@ -2,10 +2,11 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Union, Optional
+from typing import Union, Optional, List
 from datetime import datetime
 
 import pandas as pd
+import matplotlib.pyplot as plt
 
 from openbb_terminal.forecast import theta_model
 from openbb_terminal.decorators import log_start_end
@@ -32,6 +33,7 @@ def display_theta_forecast(
     start_date: Optional[datetime] = None,
     end_date: Optional[datetime] = None,
     naive: bool = False,
+    external_axes: Optional[List[plt.axes]] = None,
 ):
     """Display Theta forecast
 
@@ -68,6 +70,8 @@ def display_theta_forecast(
     naive: bool
         Whether to show the naive baseline. This just assumes the closing price will be the same
         as the previous day's closing price. Defaults to False.
+    external_axes:Optional[List[plt.axes]]
+        External axes to plot on
     """
 
     data = helpers.clean_data(data, start_date, end_date, target_column, None)
@@ -106,6 +110,7 @@ def display_theta_forecast(
         export,
         forecast_only=forecast_only,
         naive=naive,
+        external_axes=external_axes,
     )
     if residuals:
         # TODO: Figure out why residuals do not work with Theta

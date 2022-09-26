@@ -472,30 +472,26 @@ def plot_forecast(
     high_quantile: float = None,
     forecast_only: bool = False,
     naive: bool = False,
+    external_axes: Optional[List[plt.axes]] = None,
 ):
     quant_kwargs = {}
     if low_quantile:
         quant_kwargs["low_quantile"] = low_quantile
     if high_quantile:
         quant_kwargs["high_quantile"] = high_quantile
-    external_axes = None
     if not external_axes:
-        fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
-        if len(external_axes) != 1:
-            logger.error("Expected list of one axis item.")
-            console.print("[red]Expected list of one axis item.\n[/red]")
-            return
-        ax = external_axes
+        ax = external_axes[0]
 
     # ax = fig.get_axes()[0] # fig gives list of axes (only one for this case)
     naive_fcast = ticker_series.shift(1)
     if forecast_only:
         ticker_series = ticker_series.drop_before(historical_fcast.start_time())
-    ticker_series.plot(label=target_col, figure=fig)
+    ticker_series.plot(label=target_col, ax=ax)
     historical_fcast.plot(
         label=f"Backtest {forecast_horizon}-Steps ahead forecast",
-        figure=fig,
+        ax=ax,
         **quant_kwargs,
     )
 
@@ -506,14 +502,14 @@ def plot_forecast(
 
         naive_fcast.plot(
             label=f"Naive+1: {naive_precision:.2f}%",
-            figure=fig,
+            ax=ax,
             **quant_kwargs,
         )
 
     pred_label = f"{name} Forecast"
     if past_covariates:
         pred_label += " w/ past covs"
-    predicted_values.plot(label=pred_label, figure=fig, **quant_kwargs, color="#00AAFF")
+    predicted_values.plot(label=pred_label, ax=ax, **quant_kwargs, color="#00AAFF")
     ax.set_title(
         f"{name} for ${ticker_name} for next [{n_predict}] days (MAPE={precision:.2f}%)"
     )

@@ -1729,7 +1729,6 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             other_args.insert(0, "-k")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            print(type(ns_parser.key))
             os.environ["OPENBB_API_COINGLASS_KEY"] = ns_parser.key
             dotenv.set_key(self.env_file, "OPENBB_API_COINGLASS_KEY", ns_parser.key)
             cfg.API_COINGLASS_KEY = ns_parser.key

@@ -508,3 +508,37 @@ def rename_column(df: pd.DataFrame, old_column: str, new_column: str) -> pd.Data
         )
         return df
     return df.rename(columns={old_column: new_column})
+
+
+@log_start_end(log=logger)
+def describe_df(df: pd.DataFrame) -> pd.DataFrame:
+    """Returns statistics for a given df
+
+    Parameters
+    ----------
+    df: pd.DataFrame
+        The df to produce statistics for
+
+    Returns
+    ----------
+    df: pd.DataFrame
+        The df with the new data
+    """
+    return df.describe()
+
+
+@log_start_end(log=logger)
+def corr_df(df: pd.DataFrame) -> pd.DataFrame:
+    """Returns correlation for a given df
+
+    Parameters
+    ----------
+    df: pd.DataFrame
+        The df to produce statistics for
+
+    Returns
+    ----------
+    df: pd.DataFrame
+        The df with the new data
+    """
+    return df.corr()

@@ -200,7 +200,7 @@ def display_corr(
         ax = external_axes[0]
 
     # correlation
-    correlation = dataset.corr()
+    correlation = forecast_model.corr_df(dataset)
     sns.heatmap(correlation, vmax=1, square=True, annot=True, cmap="cubehelix")
     ax.set_title("Correlation Matrix")
     theme.style_primary_axis(ax)
@@ -232,8 +232,9 @@ def show_df(df: pd.DataFrame, limit: int = 15, name: str = "", export: str = "")
 
 @log_start_end(log=logger)
 def describe_df(df: pd.DataFrame, name: str = "", export: str = ""):
+    new_df = forecast_model.describe_df(df)
     print_rich_table(
-        df.describe(),
+        new_df,
         headers=list(df.describe().columns),
         show_index=True,
         title=f"Showing Descriptive Statistics for Dataset {name}",

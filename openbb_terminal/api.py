@@ -1927,8 +1927,14 @@ forecast_extras = {
     "forecast.combine": {
         "model": "openbb_terminal.forecast.forecast_model.combine_dfs"
     },
-    "forecast.desc": {"model": "openbb_terminal.forecast.forecast_view.describe_df"},
-    "forecast.corr": {"model": "openbb_terminal.forecast.forecast_view.display_corr"},
+    "forecast.desc": {
+        "view": "openbb_terminal.forecast.forecast_view.describe_df",
+        "model": "openbb_terminal.forecast.forecast_model.describe_df",
+    },
+    "forecast.corr": {
+        "view": "openbb_terminal.forecast.forecast_view.display_corr",
+        "model": "openbb_terminal.forecast.forecast_model.corr_df",
+    },
     "forecast.season": {
         "model": "openbb_terminal.forecast.forecast_view.display_seasonality"
     },
