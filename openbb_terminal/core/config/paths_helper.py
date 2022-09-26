@@ -10,6 +10,7 @@ from openbb_terminal.core.config.paths import (
     USER_EXPORTS_DIRECTORY,
     PORTFOLIO_DATA_DIRECTORY,
     PRESETS_DIRECTORY,
+    ROUTINES_DIRECTORY,
 )
 
 
@@ -55,6 +56,7 @@ dirs_list = [
     PRESETS_DIRECTORY / "stocks" / "screener",
     PRESETS_DIRECTORY / "stocks" / "insider",
     PRESETS_DIRECTORY / "etf" / "screener",
+    ROUTINES_DIRECTORY,
 ]
 dirs_files = [USER_ENV_FILE, REPOSITORY_ENV_FILE]
 create_paths(dirs_list)
