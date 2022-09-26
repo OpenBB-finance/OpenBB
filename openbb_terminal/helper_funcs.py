@@ -34,11 +34,11 @@ from screeninfo import get_monitors
 import yfinance as yf
 import numpy as np
 
-from pyautogui import (
+from pygetwindow import (
     getActiveWindowTitle,
     getWindowsWithTitle,
 )
-from pyautogui import screenshot as pyscreenshot
+from pyscreeze import screenshot as pyscreenshot
 from PIL import Image, ImageDraw
 
 from openbb_terminal.rich_config import console
