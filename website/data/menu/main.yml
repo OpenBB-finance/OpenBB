@@ -1671,6 +1671,67 @@ main:
   - name: api
     ref: /api
     sub:
+      - name: forecast
+        ref: /api/forecast
+        sub:
+          - name: delta
+            ref: /api/forecast/delta
+          - name: ema
+            ref: /api/forecast/ema
+          - name: tcn
+            ref: /api/forecast/tcn
+          - name: plot
+            ref: /api/forecast/plot
+          - name: combine
+            ref: /api/forecast/combine
+          - name: brnn
+            ref: /api/forecast/brnn
+          - name: delete
+            ref: /api/forecast/delete
+          - name: desc
+            ref: /api/forecast/desc
+          - name: rsi
+            ref: /api/forecast/rsi
+          - name: linregr
+            ref: /api/forecast/linregr
+          - name: regr
+            ref: /api/forecast/regr
+          - name: show
+            ref: /api/forecast/show
+          - name: nbeats
+            ref: /api/forecast/nbeats
+          - name: expo
+            ref: /api/forecast/expo
+          - name: roc
+            ref: /api/forecast/roc
+          - name: clean
+            ref: /api/forecast/clean
+          - name: load
+            ref: /api/forecast/load
+          - name: tft
+            ref: /api/forecast/tft
+          - name: corr
+            ref: /api/forecast/corr
+          - name: rename
+            ref: /api/forecast/rename
+          - name: atr
+            ref: /api/forecast/atr
+          - name: season
+            ref: /api/forecast/season
+          - name: trans
+            ref: /api/forecast/trans
+          - name: export
+            ref: /api/forecast/export
+          - name: theta
+            ref: /api/forecast/theta
+          - name: signal
+            ref: /api/forecast/signal
+          - name: sto
+            ref: /api/forecast/sto
+          - name: rnn
+            ref: /api/forecast/rnn
+          - name: mom
+            ref: /api/forecast/mom
       - name: crypto
         ref: /api/crypto
         sub:

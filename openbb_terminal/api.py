@@ -1,7 +1,7 @@
 """OpenBB Terminal API."""
 # flake8: noqa
 # pylint: disable=unused-import,wrong-import-order
-# pylint: disable=C0302,W0611,not-callable
+# pylint: disable=C0302,W0611,not-callable,ungrouped-imports
 from inspect import signature, Parameter
 import types
 import functools
@@ -21,7 +21,7 @@ from .portfolio import portfolio_api as portfolio
 from openbb_terminal.rich_config import console
 
 try:
-    from .forecast import forecast_api as forecast
+    import darts
 
     forecasting = True
 except ImportError:

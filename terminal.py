@@ -16,6 +16,7 @@ from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
+import pandas as pd
 
 from openbb_terminal.core.config import (  # pylint: disable=unused-import  # noqa
     paths_helper,
@@ -86,6 +87,7 @@ class TerminalController(BaseController):
         "alternative",
         "econometrics",
         "sources",
+        "forecast",
     ]
 
     PATH = "/"
@@ -152,6 +154,7 @@ class TerminalController(BaseController):
         mt.add_raw("\n")
         mt.add_info("_others_")
         mt.add_menu("econometrics")
+        mt.add_menu("forecast")
         mt.add_menu("portfolio")
         mt.add_menu("dashboards")
         mt.add_menu("reports")
@@ -413,6 +416,14 @@ class TerminalController(BaseController):
         )
 
         self.queue = EconometricsController(self.queue).menu()
+
+    def call_forecast(self, _):
+        """Process forecast command"""
+        from openbb_terminal.forecast.forecast_controller import (
+            ForecastController,
+        )
+
+        self.queue = self.load_class(ForecastController, "", pd.DataFrame(), self.queue)
 
     def call_portfolio(self, _):
         """Process portfolio command"""
