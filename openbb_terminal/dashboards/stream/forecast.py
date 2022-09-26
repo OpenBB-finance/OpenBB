@@ -24,18 +24,18 @@ model_opts = {
     "trans": api.forecast.models.trans.get_trans_data,  # type: ignore
     "tft": api.forecast.models.tft.get_tft_data,  # type: ignore
 }
-# pylint: enable=E1101
 
 feat_engs = {
-    "ema": api.forecast.ema,
-    "sto": api.forecast.sto,
-    "rsi": api.forecast.rsi,
-    "roc": api.forecast.roc,
-    "mom": api.forecast.mom,
-    "atr": api.forecast.atr,
-    "delta": api.forecast.delta,
-    "signal": api.forecast.signal,
+    "ema": api.forecast.ema,  # type: ignore
+    "sto": api.forecast.sto,  # type: ignore
+    "rsi": api.forecast.rsi,  # type: ignore
+    "roc": api.forecast.roc,  # type: ignore
+    "mom": api.forecast.mom,  # type: ignore
+    "atr": api.forecast.atr,  # type: ignore
+    "delta": api.forecast.delta,  # type: ignore
+    "signal": api.forecast.signal,  # type: ignore
 }
+# pylint: enable=E1101
 
 # Add these: "1m", "2m", "5m", "15m", "30m", "60m", "90m", "1h",
 
@@ -164,7 +164,7 @@ class Handler:
                 target_column = st.session_state["df"].columns[0]
             with patch.object(console, "print", special_st):
                 if helpers.check_data(result, target_column):
-                    final_df = helpers.clean_data(result, None, None)
+                    final_df = helpers.clean_data(result)
                     hist_fcast, tick_series, pred_vals = run_forecast(
                         final_df, model, target_column, past_covariates, n_predict
                     )
@@ -238,10 +238,11 @@ class Handler:
         with r0c1:
             st.title("Forecast")
         with r0c2:
-            st.image(
-                "https://wp-api.zipmex.com/wp-content/uploads/2022/05/FS0apkragAAnItM-min-842x1024.jpeg",
-                width=100,
+            image = (
+                "https://wp-api.zipmex.com/wp-content/uploads/2022/05/"
+                "FS0apkragAAnItM-min-842x1024.jpeg"
             )
+            st.image(image, width=100)
         with r1c1:
             ticker = st.text_input(
                 "Ticker", "", key="ticker", on_change=self.on_ticker_change

@@ -773,10 +773,10 @@ def filter_dates(
 
 def clean_data(
     data: Union[pd.DataFrame, pd.Series],
-    start_date: Optional[datetime],
-    end_date: Optional[datetime],
-    target_column: Optional[str],
-    past_covariates: Optional[str],
+    start_date: Optional[datetime] = None,
+    end_date: Optional[datetime] = None,
+    target_column: Optional[str] = None,
+    past_covariates: Optional[str] = None,
 ) -> Union[pd.DataFrame, pd.Series]:
     # check if target column is in data and if the target_column has any inf
     # replace all inf with nan. This is because darts does not handle inf
@@ -840,7 +840,7 @@ def clean_covariates(parser, dataset: pd.DataFrame) -> Optional[str]:
 
 
 def check_data(
-    data: pd.DataFrame, target_column: str, past_covariates: Optional[str]
+    data: pd.DataFrame, target_column: str, past_covariates: Optional[str] = None
 ) -> bool:
     if target_column not in data.columns:
         console.print(
