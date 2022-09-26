@@ -119,7 +119,8 @@ def display_chains(
         console.print("[red]Option chains not found.[/red]")
         return
 
-    # There are 3 possibilities.  Calls only, puts only or both.  If calls only or puts only, we are actually set
+    # There are 3 possibilities.  Calls only, puts only or both.
+    # If calls only or puts only, we are actually set
     # because the columns are nicely named
     if calls_only or puts_only:
         title = "Call " if calls_only else "Put "
@@ -178,8 +179,8 @@ def display_chains(
             ]
         ]
 
-        # In order to add color to call/put, the numbers will have to be strings.  So floatfmt will not work in
-        # print_rich_table, so lets format them now.
+        # In order to add color to call/put, the numbers will have to be strings.
+        # So floatfmt will not work in print_rich_table, so lets format them now.
 
         float_fmt = [
             ".3f",
@@ -265,12 +266,7 @@ def plot_oi(
         External axes (1 axis is expected in the list), by default None
     """
     options = yfinance_model.get_option_chain(symbol, expiry)
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "oi_yf",
-        options,
-    )
+    op_helpers.export_yf_options(export, options, "oi_yf")
     calls = options.calls
     puts = options.puts
     current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
@@ -424,12 +420,8 @@ def plot_vol(
     theme.style_primary_axis(ax)
     if external_axes is None:
         theme.visualize_output()
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "vol_yf",
-        options,
-    )
+
+    op_helpers.export_yf_options(export, options, "vol_yf")
 
 
 @log_start_end(log=logger)
@@ -651,12 +643,7 @@ def plot_volume_open_interest(
     if external_axes is None:
         theme.visualize_output()
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "voi_yf",
-        options,
-    )
+    op_helpers.export_yf_options(export, options, "voi_yf")
 
 
 @log_start_end(log=logger)
