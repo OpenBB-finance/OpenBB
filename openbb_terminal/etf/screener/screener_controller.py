@@ -129,7 +129,7 @@ class ScreenerController(BaseController):
             if ns_parser.preset:
                 preset_filter = configparser.RawConfigParser()
                 preset_filter.optionxform = str  # type: ignore
-                preset_filter.read(presets_path[ns_parser.preset])
+                preset_filter.read(self.preset_choices[ns_parser.preset])
 
                 headers = [
                     "Price",
