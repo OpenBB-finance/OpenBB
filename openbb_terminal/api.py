@@ -522,8 +522,11 @@ functions = {
         "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_active_addresses",
         "view": "openbb_terminal.cryptocurrency.due_diligence.glassnode_view.display_active_addresses",
     },
-    "crypto.dd.btcrb": {
+    "crypto.dd.close": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_close_price",
+    },
+    "crypto.dd.btcrb": {
+        "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_btc_rainbow",
         "view": "openbb_terminal.cryptocurrency.due_diligence.glassnode_view.display_btc_rainbow",
     },
     "crypto.dd.eb": {
@@ -1974,7 +1977,7 @@ def change_docstring(api_callable, model: Callable, view=None):
         index = view.__doc__.find("Parameters")
         all_parameters = (
             "\nAPI function, use the chart kwarg for getting the view model and it's plot. "
-            "See every parmater below:\n\n\t"
+            "See every parmater below:\n\n    "
             + view.__doc__[index:]
             + """chart: bool
     If the view and its chart shall be used"""
