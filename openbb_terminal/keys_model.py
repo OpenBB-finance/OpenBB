@@ -1422,10 +1422,10 @@ def check_si_key(show_output: bool = False) -> str:
                 status = "defined, test passed"
             else:
                 logger.warning("Sentiment Investor key defined, test failed")
-                status = "defined, test unsuccessful"
+                status = "defined, test failed"
         except Exception:
             logger.warning("Sentiment Investor key defined, test failed")
-            status = "defined, test unsuccessful"
+            status = "defined, test failed"
 
     if show_output:
         console.print(status + "\n")
@@ -1509,7 +1509,7 @@ def check_coinbase_key(show_output: bool = False) -> str:
             resp = None
         if not resp:
             logger.warning("Coinbase key defined, test failed")
-            status = "defined, test unsuccessful"
+            status = "defined, test failed"
         else:
             logger.info("Coinbase key defined, test passed")
             status = "defined, test passed"
@@ -1579,13 +1579,13 @@ def check_walert_key(show_output: bool = False) -> str:
             response = requests.get(url, timeout=2)
             if not 200 <= response.status_code < 300:
                 logger.warning("Walert key defined, test failed")
-                status = "defined, test unsuccessful"
+                status = "defined, test failed"
             else:
                 logger.info("Walert key defined, test passed")
                 status = "defined, test passed"
         except Exception:
             logger.exception("Walert key defined, test failed")
-            status = "defined, test unsuccessful"
+            status = "defined, test failed"
 
     if show_output:
         console.print(status + "\n")
@@ -1660,7 +1660,7 @@ def check_glassnode_key(show_output: bool = False) -> str:
             status = "defined, test passed"
         else:
             logger.warning("Glassnode key defined, test failed")
-            status = "defined, test unsuccessful"
+            status = "defined, test failed"
 
     if show_output:
         console.print(status + "\n")
@@ -1730,7 +1730,7 @@ def check_coinglass_key(show_output: bool = False) -> str:
             status = "defined, test passed"
         else:
             logger.warning("Coinglass key defined, test failed")
-            status = "defined, test unsuccessful"
+            status = "defined, test failed"
 
     if show_output:
         console.print(status + "\n")
@@ -1794,13 +1794,13 @@ def check_cpanic_key(show_output: bool = False) -> str:
 
         if not 200 <= response.status_code < 300:
             logger.warning("cpanic key defined, test failed")
-            status = "defined, test unsuccessful"
+            status = "defined, test failed"
         try:
             logger.info("cpanic key defined, test passed")
             status = "defined, test passed"
         except Exception as _:  # noqa: F841
             logger.warning("cpanic key defined, test failed")
-            status = "defined, test unsuccessful"
+            status = "defined, test failed"
 
     if show_output:
         console.print(status + "\n")
@@ -1868,10 +1868,10 @@ def check_ethplorer_key(show_output: bool = False) -> str:
                 status = "defined, test passed"
             else:
                 logger.warning("ethplorer key defined, test failed")
-                status = "defined, test unsuccessful"
+                status = "defined, test failed"
         except Exception as _:  # noqa: F841
             logger.exception("ethplorer key defined, test failed")
-            status = "defined, test unsuccessful"
+            status = "defined, test failed"
 
     if show_output:
         console.print(status + "\n")
