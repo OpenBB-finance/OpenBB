@@ -5,16 +5,10 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-import os
 from typing import Dict, List
 
-import dotenv
-import pyEX
-import requests
 from prompt_toolkit.completion import NestedCompleter
-from pyEX.common.exception import PyEXception
 
-from openbb_terminal import config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import keys_model
 from openbb_terminal.core.config.paths import USER_ENV_FILE
