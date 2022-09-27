@@ -1,6 +1,3 @@
-# IMPORTATION STANDARD
-import os
-
 # IMPORTATION THIRDPARTY
 import pytest
 import requests
