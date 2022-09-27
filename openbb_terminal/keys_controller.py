@@ -246,28 +246,12 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.check_glassnode_key(show_output=show_output)
         self.key_dict["GLASSNODE"] = status
 
-    def check_coinglass_key(self, show_output: bool = False) -> None:
+    def check_coinglass_key(self, status: str = "", show_output: bool = False) -> None:
         """Check coinglass key"""
         self.cfg_dict["COINGLASS"] = "coinglass"
-        if cfg.API_COINGLASS_KEY == "REPLACE_ME":
-            logger.info("Coinglass key not defined")
-            self.key_dict["COINGLASS"] = "not defined"
-        else:
-            url = "https://open-api.coinglass.com/api/pro/v1/futures/openInterest/chart?&symbol=BTC&interval=0"
-
-            headers = {"coinglassSecret": cfg.API_COINGLASS_KEY}
-
-            response = requests.request("GET", url, headers=headers)
-
-            if response.status_code == 200:
-                logger.info("Coinglass key defined, test passed")
-                self.key_dict["COINGLASS"] = "defined, test passed"
-            else:
-                logger.warning("Coinglass key defined, test failed")
-                self.key_dict["COINGLASS"] = "defined, test unsuccessful"
-
-        if show_output:
-            console.print(self.key_dict["COINGLASS"] + "\n")
+        if not status:
+            status = keys_model.check_coinglass_key(show_output=show_output)
+        self.key_dict["COINGLASS"] = status
 
     def check_cpanic_key(self, show_output: bool = False) -> None:
         """Check cpanic key"""
@@ -1265,12 +1249,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             other_args.insert(0, "-k")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            print(type(ns_parser.key))
-            os.environ["OPENBB_API_COINGLASS_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "OPENBB_API_COINGLASS_KEY", ns_parser.key)
-            cfg.API_COINGLASS_KEY = ns_parser.key
-
-            self.check_coinglass_key(show_output=True)
+            status = keys_model.set_coinglass_key(
+                key=ns_parser.key, persist=True, show_output=True
+            )
+            self.check_coinglass_key(status, show_output=False)
 
     @log_start_end(log=logger)
     def call_cpanic(self, other_args: List[str]):

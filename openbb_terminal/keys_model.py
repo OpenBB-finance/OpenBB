@@ -1666,3 +1666,73 @@ def check_glassnode_key(show_output: bool = False) -> str:
         console.print(status + "\n")
 
     return status
+
+
+def set_coinglass_key(key: str, persist: bool = False, show_output: bool = False):
+    """Set Coinglass key.
+
+    Parameters
+    ----------
+        key: str
+            API key
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+    """
+
+    set_key("OPENBB_API_COINGLASS_KEY", key, persist)
+    status = check_coinglass_key(show_output)
+
+    return status
+
+
+def check_coinglass_key(show_output: bool = False) -> str:
+    """Check Coinglass key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+
+    """
+
+    if cfg.API_COINGLASS_KEY == "REPLACE_ME":
+        logger.info("Coinglass key not defined")
+        status = "not defined"
+    else:
+        url = "https://open-api.coinglass.com/api/pro/v1/futures/openInterest/chart?&symbol=BTC&interval=0"
+
+        headers = {"coinglassSecret": cfg.API_COINGLASS_KEY}
+
+        response = requests.request("GET", url, headers=headers)
+
+        if response.status_code == 200:
+            logger.info("Coinglass key defined, test passed")
+            status = "defined, test passed"
+        else:
+            logger.warning("Coinglass key defined, test failed")
+            status = "defined, test unsuccessful"
+
+    if show_output:
+        console.print(status + "\n")
+
+    return status
