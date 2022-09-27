@@ -64,8 +64,12 @@ def get_ordered_list_sources(command_path: str):
     """
     try:
         with open(obbff.PREFERRED_DATA_SOURCE_FILE) as f:
-            # Load the file as a JSON document
-            json_doc = json.load(f)
+            if not f.read():
+                with open("data_sources_default.json") as f2:
+                    json_doc = json.load(f2)
+            else:
+                f.seek(0)
+                json_doc = json.load(f)
 
             # We are going to iterate through each command as if it is broken up by period characters (.)
             path_objects = command_path.split("/")[1:]
