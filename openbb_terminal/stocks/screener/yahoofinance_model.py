@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 import configparser
 import datetime
 import logging
-import os
+from pathlib import Path
 import random
 
 import numpy as np
@@ -16,6 +16,7 @@ from sklearn.preprocessing import MinMaxScaler
 
 from openbb_terminal.decorators import log_start_end
 
+from openbb_terminal.core.config.paths import PRESETS_DIRECTORY
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.screener import finviz_model
 
@@ -23,7 +24,20 @@ logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
-presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
+PRESETS_PATH = PRESETS_DIRECTORY / "stocks" / "screener"
+PRESETS_PATH_DEFAULT = Path(__file__).parent / "presets"
+preset_choices = {
+    filepath.name: filepath
+    for filepath in PRESETS_PATH.iterdir()
+    if filepath.suffix == ".ini"
+}
+preset_choices.update(
+    {
+        filepath.name: filepath
+        for filepath in PRESETS_PATH_DEFAULT.iterdir()
+        if filepath.suffix == ".ini"
+    }
+)
 
 d_candle_types = {
     "o": "Open",
@@ -75,7 +89,7 @@ def historical(
     else:
         preset_filter = configparser.RawConfigParser()
         preset_filter.optionxform = str  # type: ignore
-        preset_filter.read(presets_path + preset_loaded + ".ini")
+        preset_filter.read(preset_choices[preset_loaded])
 
         d_general = preset_filter["General"]
         d_filters = {
