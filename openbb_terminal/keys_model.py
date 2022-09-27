@@ -1806,3 +1806,74 @@ def check_cpanic_key(show_output: bool = False) -> str:
         console.print(status + "\n")
 
     return status
+
+
+def set_ethplorer_key(key: str, persist: bool = False, show_output: bool = False):
+    """Set Ethplorer key.
+
+    Parameters
+    ----------
+        key: str
+            API key
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+    """
+
+    set_key("OPENBB_API_ETHPLORER_KEY", key, persist)
+    status = check_cpanic_key(show_output)
+
+    return status
+
+
+def check_ethplorer_key(show_output: bool = False) -> str:
+    """Check Ethplorer key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+
+    """
+
+    if cfg.API_ETHPLORER_KEY == "REPLACE_ME":
+        logger.info("ethplorer key not defined")
+        status = "not defined"
+    else:
+        ethplorer_url = "https://api.ethplorer.io/getTokenInfo/0x1f9840a85d5af5bf1d1762f925bdaddc4201f984?apiKey="
+        ethplorer_url += cfg.API_ETHPLORER_KEY
+        response = requests.get(ethplorer_url)
+        try:
+            if response.status_code == 200:
+                logger.info("ethplorer key defined, test passed")
+                status = "defined, test passed"
+            else:
+                logger.warning("ethplorer key defined, test failed")
+                status = "defined, test unsuccessful"
+        except Exception as _:  # noqa: F841
+            logger.exception("ethplorer key defined, test failed")
+            status = "defined, test unsuccessful"
+
+    if show_output:
+        console.print(status + "\n")
+
+    return status

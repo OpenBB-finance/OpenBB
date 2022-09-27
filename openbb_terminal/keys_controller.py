@@ -259,29 +259,12 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.check_cpanic_key(show_output=show_output)
         self.key_dict["CRYPTO_PANIC"] = status
 
-    def check_ethplorer_key(self, show_output: bool = False) -> None:
+    def check_ethplorer_key(self, status: str = "", show_output: bool = False) -> None:
         """Check ethplorer key"""
         self.cfg_dict["ETHPLORER"] = "ethplorer"
-        if cfg.API_ETHPLORER_KEY == "REPLACE_ME":
-            logger.info("ethplorer key not defined")
-            self.key_dict["ETHPLORER"] = "not defined"
-        else:
-            ethplorer_url = "https://api.ethplorer.io/getTokenInfo/0x1f9840a85d5af5bf1d1762f925bdaddc4201f984?apiKey="
-            ethplorer_url += cfg.API_ETHPLORER_KEY
-            response = requests.get(ethplorer_url)
-            try:
-                if response.status_code == 200:
-                    logger.info("ethplorer key defined, test passed")
-                    self.key_dict["ETHPLORER"] = "defined, test passed"
-                else:
-                    logger.warning("ethplorer key defined, test failed")
-                    self.key_dict["ETHPLORER"] = "defined, test unsuccessful"
-            except Exception as _:  # noqa: F841
-                logger.exception("ethplorer key defined, test failed")
-                self.key_dict["ETHPLORER"] = "defined, test unsuccessful"
-
-        if show_output:
-            console.print(self.key_dict["ETHPLORER"] + "\n")
+        if not status:
+            status = keys_model.check_ethplorer_key(show_output=show_output)
+        self.key_dict["ETHPLORER"] = status
 
     def check_smartstake_key(self, show_output: bool = False) -> None:
         """Check Smartstake key"""
@@ -1292,11 +1275,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             other_args.insert(0, "-k")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            os.environ["OPENBB_API_ETHPLORER_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "OPENBB_API_ETHPLORER_KEY", ns_parser.key)
-            cfg.API_ETHPLORER_KEY = ns_parser.key
-
-            self.check_ethplorer_key(show_output=True)
+            status = keys_model.set_ethplorer_key(
+                key=ns_parser.key, persist=True, show_output=True
+            )
+            self.check_ethplorer_key(status, show_output=False)
 
     @log_start_end(log=logger)
     def call_smartstake(self, other_args: List[str]):
