@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import configparser
 from pathlib import Path
-from typing import Union
 
 from openbb_terminal.rich_config import console
 from openbb_terminal.core.config.paths import PRESETS_DIRECTORY
@@ -25,11 +24,11 @@ preset_choices.update(
 )
 
 
-def display_presets(preset_path: Union[Path, None]):
-    if preset_path:
+def display_presets(preset: str):
+    if preset:
         preset_filter = configparser.RawConfigParser()
         preset_filter.optionxform = str  # type: ignore
-        preset_filter.read(preset_path)
+        preset_filter.read(preset_choices[preset])
 
         filters_headers = ["General", "Descriptive", "Fundamental", "Technical"]
 

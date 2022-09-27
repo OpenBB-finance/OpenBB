@@ -223,16 +223,13 @@ class ScreenerController(BaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if self.preset in self.preset_choices:
-            screener_view.view_screener(
-                preset=self.preset,
-                num_to_show=ns_parser.limit,
-                sortby=ns_parser.sortby,
-                ascend=ns_parser.ascend,
-                export=ns_parser.export,
-            )
-        else:
-            console.print("Preset not found")
+        screener_view.view_screener(
+            preset=self.preset,
+            num_to_show=ns_parser.limit,
+            sortby=ns_parser.sortby,
+            ascend=ns_parser.ascend,
+            export=ns_parser.export,
+        )
 
     @log_start_end(log=logger)
     def call_sbc(self, other_args: List[str]):
