@@ -11,7 +11,15 @@ rm -rf build/terminal && rm -rf dist && rm -rf DMG
 # Clean up local logging id
 rm -rf openbb_terminal/logs
 
-pyinstaller build/pyinstaller/terminal.spec
+echo "Removing Sigtool Package"
+if conda remove --force sigtool -y &> /dev/null
+    then
+        echo "Succesfully Removed Sigtool Package"
+else
+    echo "Sigtool Already Removed"
+fi
+
+pyinstaller build/pyinstaller/terminal.spec --clean
 
 # Assign icons to the built folder and launcher
 osascript build/pyinstaller/setup_icons.applescript

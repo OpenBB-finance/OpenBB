@@ -79,6 +79,7 @@ hidden_imports = [
     "feedparser",
     "pymongo",
     "bson",
+    "_sysconfigdata__darwin_darwin",
 ]
 
 analysis_kwargs = dict(
@@ -87,7 +88,7 @@ analysis_kwargs = dict(
     binaries=[],
     datas=added_files,
     hiddenimports=hidden_imports,
-    hookspath=[],
+    hookspath=["build/pyinstaller/hooks"],
     hooksconfig={},
     runtime_hooks=[],
     excludes=[],
