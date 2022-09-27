@@ -10,6 +10,9 @@ import i18n
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import USER_ENV_FILE, REPOSITORY_ENV_FILE, DATA_SOURCES_DEFAULT_FILE
+from openbb_terminal.core.config import paths_helper
+
+paths_helper.init_userdata()
 
 # pylint: disable=no-member,c-extension-no-member
 

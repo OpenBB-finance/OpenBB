@@ -82,7 +82,7 @@ def view_comparisons(symbols: List[str], export: str = ""):
     for etf in symbols:
         if etf not in etf_list:
             console.print(f"{etf} not a known symbol.\n")
-            etf_list.remove(etf)
+            symbols.remove(etf)
 
     data = stockanalysis_model.compare_etfs(symbols)
     if data.empty:
