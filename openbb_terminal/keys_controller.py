@@ -259,37 +259,19 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.check_smartstake_key(show_output=show_output)
         self.key_dict["SMARTSTAKE"] = status
 
-    def check_github_key(self, show_output: bool = False) -> None:
+    def check_github_key(self, status: str = "", show_output: bool = False) -> None:
         """Check GitHub key"""
         self.cfg_dict["GITHUB"] = "github"
         if not status:
             status = keys_model.check_github_key(show_output=show_output)
         self.key_dict["GITHUB"] = status
 
-    def check_messari_key(self, show_output: bool = False) -> None:
+    def check_messari_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Messari key"""
         self.cfg_dict["MESSARI"] = "messari"
-        if (
-            cfg.API_MESSARI_KEY == "REPLACE_ME"  # pragma: allowlist secret
-        ):  # pragma: allowlist secret
-            logger.info("Messari key not defined")
-            self.key_dict["MESSARI"] = "not defined"
-        else:
-
-            url = "https://data.messari.io/api/v2/assets/bitcoin/profile"
-            headers = {"x-messari-api-key": cfg.API_MESSARI_KEY}
-            params = {"fields": "profile/general/overview/official_links"}
-            r = requests.get(url, headers=headers, params=params)
-
-            if r.status_code == 200:
-                logger.info("FMessari key defined, test passed")
-                self.key_dict["MESSARI"] = "defined, test passed"
-            else:
-                logger.warning("Messari key defined, test failed")
-                self.key_dict["MESSARI"] = "defined, test failed"
-
-        if show_output:
-            console.print(self.key_dict["MESSARI"] + "\n")
+        if not status:
+            status = keys_model.check_messari_key(show_output=show_output)
+        self.key_dict["MESSARI"] = status
 
     def check_eodhd_key(self, show_output: bool = False) -> None:
         """Check End of Day Historical Data key"""
@@ -1308,10 +1290,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             other_args.insert(0, "-k")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            os.environ["OPENBB_API_MESSARI_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "OPENBB_API_MESSARI_KEY", ns_parser.key)
-            cfg.API_MESSARI_KEY = ns_parser.key
-            self.check_messari_key(show_output=True)
+            status = keys_model.set_messari_key(
+                key=ns_parser.key, persist=True, show_output=True
+            )
+            self.check_messari_key(status, show_output=False)
 
     @log_start_end(log=logger)
     def call_eodhd(self, other_args: List[str]):

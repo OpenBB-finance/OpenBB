@@ -2020,3 +2020,75 @@ def check_github_key(show_output: bool = False) -> str:
         console.print(status + "\n")
 
     return status
+
+
+def set_messari_key(key: str, persist: bool = False, show_output: bool = False):
+    """Set Messari key.
+
+    Parameters
+    ----------
+        key: str
+            API key
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+    """
+
+    set_key("OPENBB_API_MESSARI_KEY", key, persist)
+    status = check_messari_key(show_output)
+
+    return status
+
+
+def check_messari_key(show_output: bool = False) -> str:
+    """Check Messari key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+
+    """
+
+    if (
+        cfg.API_MESSARI_KEY == "REPLACE_ME"  # pragma: allowlist secret
+    ):  # pragma: allowlist secret
+        logger.info("Messari key not defined")
+        status = "not defined"
+    else:
+
+        url = "https://data.messari.io/api/v2/assets/bitcoin/profile"
+        headers = {"x-messari-api-key": cfg.API_MESSARI_KEY}
+        params = {"fields": "profile/general/overview/official_links"}
+        r = requests.get(url, headers=headers, params=params)
+
+        if r.status_code == 200:
+            logger.info("Messari key defined, test passed")
+            status = "defined, test passed"
+        else:
+            logger.warning("Messari key defined, test failed")
+            status = "defined, test failed"
+
+    if show_output:
+        console.print(status + "\n")
+
+    return status

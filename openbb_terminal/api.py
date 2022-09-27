@@ -1914,7 +1914,7 @@ functions = {
     "keys.ethplorer": {"model": "openbb_terminal.keys_model.set_ethplorer_key"},
     "keys.smartstake": {"model": "openbb_terminal.keys_model.set_smartstake_key"},
     "keys.github": {"model": "openbb_terminal.keys_model.set_github_key"},
-    # "keys.messari": {"model": "openbb_terminal.keys_model.set_messari_key"},
+    "keys.messari": {"model": "openbb_terminal.keys_model.set_messari_key"},
     # "keys.eodhd": {"model": "openbb_terminal.keys_model.set_eodhd_key"},
     # "keys.santiment": {"model": "openbb_terminal.keys_model.set_santiment_key"},
     "keys.mykeys": {"model": "openbb_terminal.keys_model.get_keys"},
