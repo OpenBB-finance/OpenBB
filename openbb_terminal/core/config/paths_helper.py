@@ -11,6 +11,7 @@ from openbb_terminal.core.config.paths import (
     PORTFOLIO_DATA_DIRECTORY,
     PRESETS_DIRECTORY,
     ROUTINES_DIRECTORY,
+    DATA_SOURCES_DEFAULT_FILE,
 )
 
 # pylint: disable=W0603
@@ -60,7 +61,7 @@ dirs_list = [
     PRESETS_DIRECTORY / "etf" / "screener",
     ROUTINES_DIRECTORY,
 ]
-dirs_files = [USER_ENV_FILE, REPOSITORY_ENV_FILE]
+dirs_files = [USER_ENV_FILE, REPOSITORY_ENV_FILE, DATA_SOURCES_DEFAULT_FILE]
 initialized = False
 
 
