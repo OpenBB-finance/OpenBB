@@ -120,7 +120,7 @@ def test_check_open_insider_company_totals(d_company_totals, recorder):
 
 @pytest.mark.vcr(record_mode="none")
 def test_get_open_insider_link(recorder):
-    link = openinsider_model.get_open_insider_link(preset_loaded="template")
+    link = openinsider_model.get_open_insider_link(preset_loaded="template.ini")
     recorder.capture(link)
 
 
