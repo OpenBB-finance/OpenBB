@@ -7,7 +7,6 @@
     active             most active stocks by intraday trade volumest                   [YahooFinance]
     ulc                potentially undervalued large cap stocks                        [YahooFinance]
     asc                small cap stocks with earnings growth rates better than 25%     [YahooFinance]
-    ford               orders by Fidelity Customers                                    [Fidelity]
     arkord             orders by ARK Investment Management LLC                         [CathiesArk]
     upcoming           upcoming earnings release dates                                 [SeekingAlpha]
     trending           trending news                                                   [SeekingAlpha]
