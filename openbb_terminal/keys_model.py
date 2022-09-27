@@ -1877,3 +1877,84 @@ def check_ethplorer_key(show_output: bool = False) -> str:
         console.print(status + "\n")
 
     return status
+
+
+
+def set_smartstake_key(key: str, token: str, persist: bool = False, show_output: bool = False):
+    """Set Smartstake key.
+
+    Parameters
+    ----------
+        key: str
+            API key
+        token: str
+            API token
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+    """
+
+    set_key("OPENBB_API_SMARTSTAKE_KEY", key, persist)
+    set_key("OPENBB_API_SMARTSTAKE_TOKEN", token, persist)
+    status = check_smartstake_key(show_output)
+
+    return status
+
+
+def check_smartstake_key(show_output: bool = False) -> str:
+    """Check Smartstake key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+
+    """
+
+    if "REPLACE_ME" in [
+        cfg.API_SMARTSTAKE_TOKEN,
+        cfg.API_SMARTSTAKE_KEY,
+    ]:
+        status = "not defined"
+    else:
+        payload = {
+            "type": "history",
+            "dayCount": 30,
+            "key": cfg.API_SMARTSTAKE_KEY,
+            "token": cfg.API_SMARTSTAKE_TOKEN,
+        }
+
+        smartstake_url = "https://prod.smartstakeapi.com/listData?app=TERRA"
+        response = requests.get(smartstake_url, params=payload)  # type: ignore
+
+        try:
+            if response.status_code == 200:
+                status = "defined, test passed"
+            else:
+                status = "defined, test failed"
+        except Exception as _:  # noqa: F841
+            status = "defined, test failed"
+
+    if show_output:
+        console.print(status + "\n")
+
+    return status
