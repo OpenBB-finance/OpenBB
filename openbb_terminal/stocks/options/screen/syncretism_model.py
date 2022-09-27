@@ -4,13 +4,14 @@ __docformat__ = "numpy"
 import configparser
 import logging
 from pathlib import Path
-from typing import Tuple
+from typing import Dict, Tuple
 
 import pandas as pd
 import requests
 import yfinance as yf
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.core.config.paths import PRESETS_DIRECTORY
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import yfinance_model
 
@@ -113,13 +114,38 @@ def get_historical_greeks(
 
 
 @log_start_end(log=logger)
-def get_screener_output(preset_path: Path) -> Tuple[pd.DataFrame, str]:
+def get_preset_choices() -> Dict:
+    """
+    Return a dict containing keys as name of preset and
+    filepath as value
+    """
+
+    PRESETS_PATH = PRESETS_DIRECTORY / "stocks" / "options"
+    PRESETS_PATH_DEFAULT = Path(__file__).parent.parent / "presets"
+    preset_choices = {
+        filepath.name: filepath
+        for filepath in PRESETS_PATH.iterdir()
+        if filepath.suffix == ".ini"
+    }
+    preset_choices.update(
+        {
+            filepath.name: filepath
+            for filepath in PRESETS_PATH_DEFAULT.iterdir()
+            if filepath.suffix == ".ini"
+        }
+    )
+
+    return preset_choices
+
+
+@log_start_end(log=logger)
+def get_screener_output(preset: str) -> Tuple[pd.DataFrame, str]:
     """Screen options based on preset filters
 
     Parameters
     ----------
-    preset_path: Path
-        Path to chosen preset
+    preset: str
+        Chosen preset
     Returns
     -------
     pd.DataFrame:
@@ -153,7 +179,7 @@ def get_screener_output(preset_path: Path) -> Tuple[pd.DataFrame, str]:
 
     preset_filter = configparser.RawConfigParser()
     preset_filter.optionxform = str  # type: ignore
-    preset_filter.read(preset_path)
+    preset_filter.read(get_preset_choices()[preset])
 
     d_filters = {k: v for k, v in dict(preset_filter["FILTER"]).items() if v}
     s_filters = str(d_filters)
@@ -182,7 +208,7 @@ def get_screener_output(preset_path: Path) -> Tuple[pd.DataFrame, str]:
         df_res = pd.DataFrame(res.json())
 
         if df_res.empty:
-            return df_res, f"No options data found for preset: {preset_path.name}"
+            return df_res, f"No options data found for preset: {preset}"
 
         df_res = df_res.rename(columns=d_cols)[list(d_cols.values())[:17]]
         df_res["Exp ∨"] = df_res["Exp ∨"].apply(
