@@ -11,6 +11,7 @@ from openbb_terminal.core.config.paths import (
     USER_EXPORTS_DIRECTORY,
     PORTFOLIO_DATA_DIRECTORY,
     ROUTINES_DIRECTORY,
+    DATA_SOURCES_DEFAULT_FILE,
 )
 
 
@@ -51,6 +52,6 @@ dirs_list = [
     PORTFOLIO_DATA_DIRECTORY / "optimization",
     ROUTINES_DIRECTORY,
 ]
-dirs_files = [USER_ENV_FILE, REPOSITORY_ENV_FILE]
+dirs_files = [USER_ENV_FILE, REPOSITORY_ENV_FILE, DATA_SOURCES_DEFAULT_FILE]
 create_paths(dirs_list)
 create_files(dirs_files)
