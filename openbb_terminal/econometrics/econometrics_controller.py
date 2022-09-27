@@ -483,6 +483,9 @@ class EconometricsController(BaseController):
             other_args.insert(0, "-n")
         ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT)
 
+        if not ns_parser:
+            return
+
         if not ns_parser.name:
             console.print("Please enter a valid dataset.\n")
             return

@@ -32,7 +32,7 @@ def test_print_insider_filter(mocker):
     mocker.patch(target="openbb_terminal.stocks.insider.openinsider_view.export_data")
 
     openinsider_view.print_insider_filter(
-        preset_loaded="whales",
+        preset="whales",
         symbol="PM",
         limit=5,
         links=False,
@@ -49,7 +49,7 @@ def test_print_insider_filter_no_table(mocker):
     )
 
     openinsider_view.print_insider_filter(
-        preset_loaded="whales",
+        preset="whales",
         symbol="",
         limit=10,
         links=False,
