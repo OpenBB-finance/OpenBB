@@ -103,40 +103,28 @@ If you wish to install the Terminal, there are currently four options:
 
 ## Contributing
 
-There are 3 main ways of contributing to this project.
+There are 3 main ways of contributing to this project. (Hopefully you have starred the project by now ⭐️)
 
-For a 1 hour coding session where the architecture of the repo is explained while a new feature is added, check
-[here](https://www.youtube.com/watch?v=9BMI9cleTTg).
-
-**Become a Contributor 🦍**
-
-Recommended if you bought the dip, and the share price keeps dipping. You may as well keep yourself busy while stonks
-go up.
+**Become a Contributor**
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Install the pre-commit hooks by running:
-   `pre-commit install`.
-   Any time you commit a change, linters will be run automatically. On changes, you will have to re-commit.
+3. Install the pre-commit hooks by running: `pre-commit install`
+      Any time you commit a change, linters will be run automatically. On changes, you will have to re-commit
 4. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 5. Push to your Branch (`git push origin feature/AmazingFeature`)
 6. Open a Pull Request
 
-**Raise an Issue**
+You can read more details about adding a feature in our [CONTRIBUTING GUIDELINES](/CONTRIBUTING.md).
 
-Recommended if you adopted a strategy of buying high and selling low.
+**Raise an issue or Request a feature**
 
-We are interested in your view on what sort of [features](https://github.com/OpenBB-finance/OpenBBTerminal/issues)
-would make you buy even higher and sell even lower.
+- Raise an issue by opening a [bug ticket](https://github.com/OpenBB-finance/OpenBBTerminal/issues).
+- Request a new  feature through a [feature request ticket](https://github.com/OpenBB-finance/OpenBBTerminal/issues).
 
-Also, if somehow you're sitting in several mils due to this terminal, don't forget to report a
-[bug](https://github.com/OpenBB-finance/OpenBBTerminal/issues) so that the team can fix, and keep the old ways.
+**Join us**
 
-**Join Us and Contribute**
-
-Welcome to the club, and feel free to support the developers behind this amazing open-source project.
-
-If you're interested in contributing, fork us! Grab an issue or enhancement and put in a PR request with the fix.
+Join [our Discord](https://openbb.co/discord) and provide us any feedback on The OpenBB Terminal.
 
 ## License
 
