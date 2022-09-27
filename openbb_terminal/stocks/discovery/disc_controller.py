@@ -23,7 +23,6 @@ from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks.discovery import (
     ark_view,
-    fidelity_view,
     finnhub_view,
     nasdaq_view,
     seeking_alpha_view,
@@ -51,7 +50,6 @@ class DiscoveryController(BaseController):
         "active",
         "ulc",
         "asc",
-        "ford",
         "arkord",
         "upcoming",
         "trending",
@@ -144,7 +142,6 @@ class DiscoveryController(BaseController):
         mt.add_cmd("active", "Yahoo Finance")
         mt.add_cmd("ulc", "Yahoo Finance")
         mt.add_cmd("asc", "Yahoo Finance")
-        mt.add_cmd("ford", "Fidelity")
         mt.add_cmd("arkord", "Cathies Ark")
         mt.add_cmd("upcoming", "Seeking Alpha")
         mt.add_cmd("trending", "Seeking Alpha")
@@ -528,40 +525,6 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             yahoofinance_view.display_asc(
-                limit=ns_parser.limit,
-                export=ns_parser.export,
-            )
-
-    @log_start_end(log=logger)
-    def call_ford(self, other_args: List[str]):
-        """Process ford command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ford",
-            description="""
-                Orders by Fidelity customers. Information shown in the table below
-                is based on the volume of orders entered on the "as of" date shown. Securities
-                identified are not recommended or endorsed by Fidelity and are displayed for
-                informational purposes only. [Source: Fidelity]
-            """,
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="limit",
-            type=check_int_range(1, 25),
-            default=5,
-            help="Limit of stocks to display.",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            fidelity_view.orders_view(
                 limit=ns_parser.limit,
                 export=ns_parser.export,
             )
