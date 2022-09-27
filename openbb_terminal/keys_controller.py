@@ -273,23 +273,12 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.check_messari_key(show_output=show_output)
         self.key_dict["MESSARI"] = status
 
-    def check_eodhd_key(self, show_output: bool = False) -> None:
+    def check_eodhd_key(self, status: str = "", show_output: bool = False) -> None:
         """Check End of Day Historical Data key"""
         self.cfg_dict["EODHD"] = "eodhd"
-        if cfg.API_EODHD_TOKEN == "REPLACE_ME":  # nosec
-            logger.info("End of Day Historical Data key not defined")
-            self.key_dict["EODHD"] = "not defined"
-        else:
-            try:
-                pyEX.Client(api_token=cfg.API_EODHD_TOKEN, version="v1")
-                logger.info("End of Day Historical Data key defined, test passed")
-                self.key_dict["EODHD"] = "defined, test passed"
-            except PyEXception:
-                logger.exception("End of Day Historical Data key defined, test failed")
-                self.key_dict["EODHD"] = "defined, test failed"
-
-        if show_output:
-            console.print(self.key_dict["EODHD"] + "\n")
+        if not status:
+            status = keys_model.check_eodhd_key(show_output=show_output)
+        self.key_dict["EODHD"] = status
 
     def check_santiment_key(self, show_output: bool = False) -> None:
         """Check Santiment key"""
@@ -1320,10 +1309,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             other_args.insert(0, "-k")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            os.environ["API_EODHD_TOKEN"] = ns_parser.key
-            dotenv.set_key(self.env_file, "API_EODHD_TOKEN", ns_parser.key)
-            cfg.API_EODHD_TOKEN = ns_parser.key
-            self.check_eodhd_key(show_output=True)
+            status = keys_model.set_eodhd_key(
+                key=ns_parser.key, persist=True, show_output=True
+            )
+            self.check_eodhd_key(status, show_output=False)
 
     def call_santiment(self, other_args: List[str]):
         """Process santiment command"""

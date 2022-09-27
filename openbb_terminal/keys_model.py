@@ -2092,3 +2092,68 @@ def check_messari_key(show_output: bool = False) -> str:
         console.print(status + "\n")
 
     return status
+
+
+def set_eodhd_key(key: str, persist: bool = False, show_output: bool = False):
+    """Set Eodhd key.
+
+    Parameters
+    ----------
+        key: str
+            API key
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+    """
+
+    set_key("API_EODHD_KEY", key, persist)
+    status = check_eodhd_key(show_output)
+
+    return status
+
+
+def check_eodhd_key(show_output: bool = False) -> str:
+    """Check Eodhd key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+
+    """
+
+    if cfg.API_EODHD_KEY == "REPLACE_ME":  # nosec
+        logger.info("End of Day Historical Data key not defined")
+        status = "not defined"
+    else:
+        try:
+            pyEX.Client(api_token=cfg.API_EODHD_KEY, version="v1")
+            logger.info("End of Day Historical Data key defined, test passed")
+            status = "defined, test passed"
+        except PyEXception:
+            logger.exception("End of Day Historical Data key defined, test failed")
+            status = "defined, test failed"
+
+    if show_output:
+        console.print(status + "\n")
+
+    return status
