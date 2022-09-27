@@ -1,15 +1,13 @@
-# crypto.ov.cgstables
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.ov.cgstables(top: int = 20, sortby: str = 'rank', ascend: bool = False) -> pandas.core.frame.DataFrame
+### crypto.ov.cgstables(limit: int = 20, sortby: str = 'rank', ascend: bool = False) -> pandas.core.frame.DataFrame
 
 Returns top stable coins [Source: CoinGecko]
 
     Parameters
     ----------
-    top: int
+    limit: int
         How many rows to show
     sortby: str
         Key by which to sort data
@@ -22,13 +20,13 @@ Returns top stable coins [Source: CoinGecko]
         Rank, Name, Symbol, Price, Change_24h, Exchanges, Market_Cap, Change_30d, Url
 
 ## Getting charts 
-###crypto.ov.cgstables(top: int = 15, export: str = '', sortby: str = 'rank', ascend: bool = False, pie: bool = False, chart=True) -> None
+### crypto.ov.cgstables(limit: int = 15, export: str = '', sortby: str = 'rank', ascend: bool = False, pie: bool = False, chart=True) -> None
 
 Shows stablecoins data [Source: CoinGecko]
 
     Parameters
     ----------
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data

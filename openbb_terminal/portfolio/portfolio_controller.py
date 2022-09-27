@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-from pathlib import Path
 from typing import List
 
 import pandas as pd
@@ -20,6 +19,7 @@ from openbb_terminal.helper_funcs import (
 )
 
 from openbb_terminal.menu import session
+from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.portfolio import portfolio_model
 from openbb_terminal.portfolio import statics
@@ -32,8 +32,6 @@ from openbb_terminal.common.quantitative_analysis import qa_view
 # pylint: disable=R1710,E1101,C0415,W0212,too-many-function-args,C0302,too-many-instance-attributes
 
 logger = logging.getLogger(__name__)
-
-portfolios_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "portfolios")
 
 
 class PortfolioController(BaseController):
@@ -102,9 +100,17 @@ class PortfolioController(BaseController):
         self.DATA_HOLDINGS_FILES = {
             filepath.name: filepath
             for file_type in self.file_types
-            for filepath in Path(self.DEFAULT_HOLDINGS_PATH).rglob(f"*.{file_type}")
-            if filepath.is_file()
+            for filepath in self.DEFAULT_HOLDINGS_PATH.rglob(f"*.{file_type}")
         }
+        self.DATA_HOLDINGS_FILES.update(
+            {
+                filepath.name: filepath
+                for file_type in self.file_types
+                for filepath in (REPOSITORY_DIRECTORY / "portfolio" / "holdings").rglob(
+                    f"*.{file_type}"
+                )
+            }
+        )
 
         self.portfolio_df = pd.DataFrame(
             columns=[
@@ -140,12 +146,13 @@ class PortfolioController(BaseController):
 
         self.DEFAULT_HOLDINGS_PATH = portfolio_helper.DEFAULT_HOLDINGS_PATH
 
-        self.DATA_HOLDINGS_FILES = {
-            filepath.name: filepath
-            for file_type in self.file_types
-            for filepath in Path(self.DEFAULT_HOLDINGS_PATH).rglob(f"*.{file_type}")
-            if filepath.is_file()
-        }
+        self.DATA_HOLDINGS_FILES.update(
+            {
+                filepath.name: filepath
+                for file_type in self.file_types
+                for filepath in self.DEFAULT_HOLDINGS_PATH.rglob(f"*.{file_type}")
+            }
+        )
 
         choices: dict = {c: {} for c in self.controller_choices}
         choices["load"]["-f"] = {c: None for c in self.DATA_HOLDINGS_FILES}
@@ -341,7 +348,8 @@ class PortfolioController(BaseController):
             self.portfolio.generate_portfolio_data()
 
             # Add in the Risk-free rate
-            self.portfolio.set_risk_free_rate(ns_parser.risk_free_rate)
+            self.portfolio.set_risk_free_rate(ns_parser.risk_free_rate / 100)
+            self.risk_free_rate = ns_parser.risk_free_rate / 100
 
             # Load benchmark
             self.call_bench(["-b", "SPDR S&P 500 ETF Trust (SPY)"])
@@ -350,7 +358,7 @@ class PortfolioController(BaseController):
                 f"\n[bold][param]Portfolio:[/param][/bold] {self.portfolio_name}"
             )
             console.print(
-                f"[bold][param]Risk Free Rate:[/param][/bold] {self.portfolio.risk_free_rate}"
+                f"[bold][param]Risk Free Rate:[/param][/bold] {self.risk_free_rate:.2%}"
             )
             console.print(
                 f"[bold][param]Benchmark:[/param][/bold] {self.benchmark_name}\n"
@@ -371,12 +379,13 @@ class PortfolioController(BaseController):
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
             limit=10,
         )
-        portfolio_view.display_orderbook(
-            self.portfolio,
-            show_index=False,
-            limit=ns_parser.limit,
-            export=ns_parser.export,
-        )
+        if ns_parser and self.portfolio is not None:
+            portfolio_view.display_orderbook(
+                self.portfolio,
+                show_index=False,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
     @log_start_end(log=logger)
     def call_bench(self, other_args: List[str]):
@@ -1025,7 +1034,7 @@ class PortfolioController(BaseController):
                 portfolio_view.display_rolling_sharpe(
                     self.portfolio,
                     window=ns_parser.period,
-                    risk_free_rate=ns_parser.risk_free_rate,
+                    risk_free_rate=ns_parser.risk_free_rate / 100,
                     export=ns_parser.export,
                 )
 
@@ -1065,9 +1074,9 @@ class PortfolioController(BaseController):
                 self.portfolio_name, self.benchmark_name
             ):
                 portfolio_view.display_rolling_sortino(
-                    portfolio=self.portfolio.benchmark_returns,
+                    portfolio=self.portfolio,
                     window=ns_parser.period,
-                    risk_free_rate=ns_parser.risk_free_rate,
+                    risk_free_rate=ns_parser.risk_free_rate / 100,
                     export=ns_parser.export,
                 )
 

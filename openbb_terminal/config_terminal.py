@@ -6,9 +6,7 @@ from distutils.util import strtobool
 import dotenv
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.config import (  # pylint: disable=unused-import  # noqa
-    make_paths,
-)
+
 from openbb_terminal.core.config.paths import USER_ENV_FILE, REPOSITORY_ENV_FILE
 from .helper_classes import TerminalStyle as _TerminalStyle
 
@@ -17,9 +15,9 @@ dotenv.load_dotenv(REPOSITORY_ENV_FILE, override=True)
 
 # Terminal UX section
 theme = _TerminalStyle(
-    os.getenv("OPENBB_MPLSTYLE") or "light",
-    os.getenv("OPENBB_MPFSTYLE") or "light",
-    os.getenv("OPENBB_RICHSTYLE") or "light",
+    os.getenv("OPENBB_MPLSTYLE") or "dark",
+    os.getenv("OPENBB_MPFSTYLE") or "dark",
+    os.getenv("OPENBB_RICHSTYLE") or "dark",
 )
 
 # Set to True to see full stack traces for debugging/error reporting

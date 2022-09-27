@@ -1,7 +1,5 @@
-# common.ta.ema
-
 ## Get underlying data 
-###common.ta.ema(data: pandas.core.frame.DataFrame, length: int = 50, offset: int = 0) -> pandas.core.frame.DataFrame
+### common.ta.ema(data: pandas.core.frame.DataFrame, length: int = 50, offset: int = 0) -> pandas.core.frame.DataFrame
 
 Gets exponential moving average (EMA) for stock
 

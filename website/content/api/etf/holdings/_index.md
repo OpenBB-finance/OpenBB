@@ -1,9 +1,7 @@
-# etf.holdings
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###etf.holdings(symbol: str) -> pandas.core.frame.DataFrame
+### etf.holdings(symbol: str) -> pandas.core.frame.DataFrame
 
 Get ETF holdings
 
@@ -18,7 +16,7 @@ Get ETF holdings
         Dataframe of holdings
 
 ## Getting charts 
-###etf.holdings(symbol: str, limit: int = 10, export: str = '', chart=True)
+### etf.holdings(symbol: str, limit: int = 10, export: str = '', chart=True)
 
 
 

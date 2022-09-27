@@ -3,12 +3,14 @@ __docformat__ = "numpy"
 
 from math import e, log
 from typing import Union
+import os
 
 from datetime import datetime, timedelta
 import numpy as np
 import pandas as pd
 from scipy.stats import norm
 
+from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.rich_config import console
 
 
@@ -85,10 +87,7 @@ def calculate_max_pain(chain: pd.DataFrame) -> Union[int, float]:
         console.print("Incorrect columns.  Unable to parse max pain")
         return np.nan
 
-    loss = []
-    for price_at_exp in strikes:
-        loss.append(get_loss_at_strike(price_at_exp, chain))
-
+    loss = [get_loss_at_strike(price_at_exp, chain) for price_at_exp in strikes]
     chain["loss"] = loss
     max_pain = chain["loss"].idxmin()
 
@@ -141,6 +140,29 @@ def rn_payoff(x: str, df: pd.DataFrame, put: bool, delta: int, rf: float) -> flo
     df["Vals"] = df["Chance"] * df["Gain"]
     risk_free = (1 + rf) ** (delta / 365)
     return sum(df["Vals"]) / risk_free
+
+
+def export_yf_options(export: str, options, file_name: str):
+    """Special function to assist in exporting yf options
+
+    Parameters
+    ----------
+    export: str
+        Format to export file
+    options: Options
+        The yfinance Options object
+    file_name: str
+        The file_name to export to
+
+    """
+    for option_name in ["calls", "puts"]:
+        option = getattr(options, option_name)
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            f"{file_name}_{option_name}",
+            option,
+        )
 
 
 opt_chain_cols = {

@@ -70,20 +70,21 @@ def get_management(symbol: str) -> pd.DataFrame:
         console.print("")
         return pd.DataFrame()
 
-    l_titles = []
-    for s_title in found_h2s["Management"].findAll(
-        "td", {"class": "table__td text-right"}
-    ):
-        if any(c.isalpha() for c in s_title.text.strip()) and (
-            "USD" not in s_title.text.strip()
-        ):
-            l_titles.append(s_title.text.strip())
+    l_titles = [
+        s_title.text.strip()
+        for s_title in found_h2s["Management"].findAll(
+            "td", {"class": "table__td text-right"}
+        )
+        if any(c.isalpha() for c in s_title.text.strip())
+        and ("USD" not in s_title.text.strip())
+    ]
 
-    l_names = []
-    for s_name in found_h2s["Management"].findAll(
-        "td", {"class": "table__td table--allow-wrap"}
-    ):
-        l_names.append(s_name.text.strip())
+    l_names = [
+        s_name.text.strip()
+        for s_name in found_h2s["Management"].findAll(
+            "td", {"class": "table__td table--allow-wrap"}
+        )
+    ]
 
     df_management = pd.DataFrame(
         {"Name": l_names[-len(l_titles) :], "Title": l_titles},  # noqa: E203

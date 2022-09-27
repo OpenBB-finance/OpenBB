@@ -1,9 +1,7 @@
-# funds.info
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###funds.info(name: str, country: str = 'united states') -> pandas.core.frame.DataFrame
+### funds.info(name: str, country: str = 'united states') -> pandas.core.frame.DataFrame
 
 
 
@@ -20,7 +18,7 @@ To obtain charts, make sure to add `chart=True` as the last parameter
         Dataframe of fund information
 
 ## Getting charts 
-###funds.info(name: str, country: str = 'united states', chart=True)
+### funds.info(name: str, country: str = 'united states', chart=True)
 
 Display fund information.  Finds name from symbol first if name is false
 

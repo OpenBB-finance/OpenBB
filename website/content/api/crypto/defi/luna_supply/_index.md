@@ -1,9 +1,7 @@
-# crypto.defi.luna_supply
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.defi.luna_supply(supply_type: str = 'lunaSupplyChallengeStats', days: int = 30) -> pandas.core.frame.DataFrame
+### crypto.defi.luna_supply(supply_type: str = 'lunaSupplyChallengeStats', days: int = 30) -> pandas.core.frame.DataFrame
 
 Get supply history of the Terra ecosystem
 
@@ -22,7 +20,7 @@ Get supply history of the Terra ecosystem
         Dataframe of supply history data
 
 ## Getting charts 
-###crypto.defi.luna_supply(days: int = 30, export: str = '', supply_type: str = 'lunaSupplyChallengeStats', limit: int = 5, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### crypto.defi.luna_supply(days: int = 30, export: str = '', supply_type: str = 'lunaSupplyChallengeStats', limit: int = 5, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display Luna circulating supply stats
 

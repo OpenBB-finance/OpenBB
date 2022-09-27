@@ -1,9 +1,7 @@
-# common.ta.cci
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###common.ta.cci(data: pandas.core.frame.DataFrame, window: int = 14, scalar: float = 0.0015) -> pandas.core.frame.DataFrame
+### common.ta.cci(data: pandas.core.frame.DataFrame, window: int = 14, scalar: float = 0.0015) -> pandas.core.frame.DataFrame
 
 Commodity channel index
 
@@ -26,7 +24,7 @@ Commodity channel index
         Dataframe of technical indicator
 
 ## Getting charts 
-###common.ta.cci(data: pandas.core.frame.DataFrame, window: int = 14, scalar: float = 0.0015, symbol: str = '', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### common.ta.cci(data: pandas.core.frame.DataFrame, window: int = 14, scalar: float = 0.0015, symbol: str = '', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display CCI Indicator
 

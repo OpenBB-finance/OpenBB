@@ -1,7 +1,5 @@
-# stocks.fa.divs
-
 ## Get underlying data 
-###stocks.fa.divs(symbol: str) -> pandas.core.frame.DataFrame
+### stocks.fa.divs(symbol: str) -> pandas.core.frame.DataFrame
 
 Get historical dividend for ticker
 

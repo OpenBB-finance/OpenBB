@@ -295,7 +295,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "openinsider_view.print_insider_filter",
             [],
             dict(
-                preset_loaded="whales",
+                preset="whales",
                 symbol="",
                 limit=1,
                 links=True,
@@ -315,7 +315,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "openinsider_view.print_insider_filter",
             [],
             dict(
-                preset_loaded="",
+                preset="",
                 symbol="MOCK_TICKER",
                 limit=1,
                 links=True,

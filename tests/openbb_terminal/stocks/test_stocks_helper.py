@@ -8,6 +8,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks import stocks_helper
+from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY
 from openbb_terminal import helper_funcs
 
 
@@ -107,7 +108,7 @@ def test_load_week_or_month(recorder, weekly, monthly):
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "path",
-    ["none", os.path.join(os.path.join("custom_imports", "stocks"), "test.csv")],
+    ["none", REPOSITORY_DIRECTORY / "custom_imports" / "stocks" / "test.csv"],
 )
 def test_load_custom_output(path):
     stocks_helper.load_custom(path)
@@ -126,7 +127,7 @@ def test_load_custom_output_wrong_path(path):
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "path",
-    [os.path.join(os.path.join("custom_imports", "stocks"), "test.csv")],
+    [REPOSITORY_DIRECTORY / "custom_imports" / "stocks" / "test.csv"],
 )
 def test_load_custom_output_df(path):
     df = stocks_helper.load_custom(path)
@@ -162,7 +163,7 @@ def test_display_candle(mocker, use_matplotlib):
     )
 
     # PROCESS DATA
-    df_stock = stocks_helper.process_candle(df=df_stock)
+    df_stock = stocks_helper.process_candle(data=df_stock)
 
     # DISPLAY CANDLE
     s_ticker = "GME"

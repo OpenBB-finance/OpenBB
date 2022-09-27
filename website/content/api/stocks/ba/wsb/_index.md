@@ -1,7 +1,5 @@
-# stocks.ba.wsb
-
 ## Get underlying data 
-###stocks.ba.wsb(limit: int = 10, new: bool = False) -> pandas.core.frame.DataFrame
+### stocks.ba.wsb(limit: int = 10, new: bool = False) -> pandas.core.frame.DataFrame
 
 Get wsb posts [Source: reddit]
 

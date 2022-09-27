@@ -1,7 +1,5 @@
-# stocks.disc.lowfloat
-
 ## Get underlying data 
-###stocks.disc.lowfloat() -> pandas.core.frame.DataFrame
+### stocks.disc.lowfloat() -> pandas.core.frame.DataFrame
 
 Returns low float DataFrame
 

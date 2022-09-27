@@ -1,9 +1,7 @@
-# economy.index
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###economy.index(indices: list, interval: str = '1d', start_date: int = None, end_date: int = None, column: str = 'Adj Close', returns: bool = False) -> pandas.core.frame.DataFrame
+### economy.index(indices: list, interval: str = '1d', start_date: int = None, end_date: int = None, column: str = 'Adj Close', returns: bool = False) -> pandas.core.frame.DataFrame
 
 Get data on selected indices over time [Source: Yahoo Finance]
     Parameters
@@ -27,7 +25,7 @@ Get data on selected indices over time [Source: Yahoo Finance]
         Dataframe with historical data on selected indices.
 
 ## Getting charts 
-###economy.index(indices: list, interval: str = '1d', start_date: int = None, end_date: int = None, column: str = 'Adj Close', returns: bool = False, raw: bool = False, external_axes: Optional[List[axes]] = None, export: str = '', chart=True)
+### economy.index(indices: list, interval: str = '1d', start_date: int = None, end_date: int = None, column: str = 'Adj Close', returns: bool = False, raw: bool = False, external_axes: Optional[List[axes]] = None, export: str = '', chart=True)
 
 Load (and show) the selected indices over time [Source: Yahoo Finance]
     Parameters

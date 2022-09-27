@@ -1,7 +1,5 @@
-# portfolio.trackerr
-
 ## Get underlying data 
-###portfolio.trackerr(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: int = 252)
+### portfolio.trackerr(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: int = 252)
 
 Get tracking error
 

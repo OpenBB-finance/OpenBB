@@ -1,9 +1,7 @@
-# common.qa.spread
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###common.qa.spread(data: pandas.core.frame.DataFrame, window: int = 14) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
+### common.qa.spread(data: pandas.core.frame.DataFrame, window: int = 14) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
 
 Standard Deviation and Variance
 
@@ -22,7 +20,7 @@ Standard Deviation and Variance
         Dataframe of rolling standard deviation
 
 ## Getting charts 
-###common.qa.spread(data: pandas.core.frame.DataFrame, target: str, symbol: str = '', window: int = 14, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### common.qa.spread(data: pandas.core.frame.DataFrame, target: str, symbol: str = '', window: int = 14, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 View rolling spread
 

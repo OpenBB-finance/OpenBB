@@ -1,7 +1,5 @@
-# stocks.search
-
 ## Get underlying data 
-###stocks.search(query: str = '', country: str = '', sector: str = '', industry: str = '', exchange_country: str = '', limit: int = 0, export: str = '') -> None
+### stocks.search(query: str = '', country: str = '', sector: str = '', industry: str = '', exchange_country: str = '', limit: int = 0, export: str = '') -> None
 
 Search selected query for tickers.
 

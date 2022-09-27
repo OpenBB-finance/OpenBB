@@ -14,6 +14,7 @@ import pandas as pd
 import numpy as np
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.core.config.paths import PORTFOLIO_DATA_DIRECTORY
 from openbb_terminal.rich_config import console
 from openbb_terminal.portfolio.statics import REGIONS, PERIODS
 
@@ -21,6 +22,7 @@ logger = logging.getLogger(__name__)
 
 
 # pylint: disable=too-many-return-statements, too-many-lines, too-many-statements
+# pylint: disable=C0302
 
 
 now = datetime.now()
@@ -44,9 +46,7 @@ PERIODS_DAYS = {
     "10y": 10 * 12 * 21,
 }
 
-DEFAULT_HOLDINGS_PATH = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "..", "..", "portfolio", "holdings")
-)
+DEFAULT_HOLDINGS_PATH = PORTFOLIO_DATA_DIRECTORY / "holdings"
 
 
 def is_ticker(ticker: str) -> bool:

@@ -1,7 +1,5 @@
-# econometrics.comparison
-
 ## Get underlying data 
-###econometrics.comparison(regressions, export: str = '')
+### econometrics.comparison(regressions, export: str = '')
 
 Compare regression results between Panel Data regressions.
 
