@@ -649,6 +649,10 @@ class ForecastController(BaseController):
                 data["date"] = data["date"].apply(helpers.dt_format)
                 data["date"] = pd.to_datetime(data["date"])
 
+            # if we import a custom dataset, remove the old index "unnamed:_0"
+            if "unnamed:_0" in data.columns:
+                data = data.drop(columns=["unnamed:_0"])
+
             self.files.append(ticker)
             self.datasets[ticker] = data
 
