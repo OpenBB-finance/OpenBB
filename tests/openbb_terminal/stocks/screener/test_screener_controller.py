@@ -217,7 +217,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         (
             "call_view",
             [
-                "oversold",
+                "oversold.ini",
             ],
             "",
             [],
@@ -233,7 +233,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         (
             "call_set",
             [
-                "oversold",
+                "oversold.ini",
             ],
             "",
             [],

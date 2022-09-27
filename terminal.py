@@ -18,10 +18,7 @@ from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 import pandas as pd
 
-from openbb_terminal.core.config import (  # pylint: disable=unused-import  # noqa
-    paths_helper,
-)
-from openbb_terminal.common import feedparser_view
+
 from openbb_terminal.core.config.paths import (
     REPOSITORY_DIRECTORY,
     USER_ENV_FILE,
@@ -54,6 +51,7 @@ from openbb_terminal.terminal_helper import (
     welcome_message,
 )
 from openbb_terminal.helper_funcs import parse_and_split_input
+from openbb_terminal.common import feedparser_view
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel,too-many-branches,no-member,C0302
 

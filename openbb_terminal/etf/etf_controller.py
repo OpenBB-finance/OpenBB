@@ -568,11 +568,17 @@ class ETFController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.names:
-                create_ETF_report(
-                    ns_parser.names,
-                    filename=ns_parser.filename,
-                    folder=ns_parser.folder,
-                )
+                try:
+                    create_ETF_report(
+                        ns_parser.names,
+                        filename=ns_parser.filename,
+                        folder=ns_parser.folder,
+                    )
+                except FileNotFoundError:
+                    console.print(
+                        f"[red]Could not find the file: {ns_parser.filename}[/red]\n"
+                    )
+                    return
                 console.print(
                     f"Created ETF report as {ns_parser.filename} in folder {ns_parser.folder} \n"
                 )
