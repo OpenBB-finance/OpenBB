@@ -280,37 +280,12 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.check_eodhd_key(show_output=show_output)
         self.key_dict["EODHD"] = status
 
-    def check_santiment_key(self, show_output: bool = False) -> None:
+    def check_santiment_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Santiment key"""
         self.cfg_dict["SANTIMENT"] = "santiment"
-        if cfg.API_SANTIMENT_KEY == "REPLACE_ME":
-            logger.info("santiment key not defined")
-            self.key_dict["SANTIMENT"] = "not defined"
-        else:
-            headers = {
-                "Content-Type": "application/graphql",
-                "Authorization": f"Apikey {cfg.API_SANTIMENT_KEY}",
-            }
-
-            # pylint: disable=line-too-long
-            data = '\n{{ getMetric(metric: "dev_activity"){{ timeseriesData( slug: "ethereum" from: ""2020-02-10T07:00:00Z"" to: "2020-03-10T07:00:00Z" interval: "1w"){{ datetime value }} }} }}'  # noqa: E501
-
-            response = requests.post(
-                "https://api.santiment.net/graphql", headers=headers, data=data
-            )
-            try:
-                if response.status_code == 200:
-                    logger.info("santiment key defined, test passed")
-                    self.key_dict["SANTIMENT"] = "defined, test passed"
-                else:
-                    logger.warning("santiment key defined, test failed")
-                    self.key_dict["SANTIMENT"] = "defined, test failed"
-            except Exception as _:  # noqa: F841
-                logger.exception("santiment key defined, test failed")
-                self.key_dict["SANTIMENT"] = "defined, test failed"
-
-        if show_output:
-            console.print(self.key_dict["SANTIMENT"] + "\n")
+        if not status:
+            status = keys_model.check_santiment_key(show_output=show_output)
+        self.key_dict["SANTIMENT"] = status
 
     def check_keys_status(self) -> None:
         """Check keys status"""
@@ -1339,7 +1314,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             other_args.insert(0, "-k")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            os.environ["OPENBB_API_SANTIMENT_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "OPENBB_API_SANTIMENT_KEY", ns_parser.key)
-            cfg.API_SANTIMENT_KEY = ns_parser.key
-            self.check_santiment_key(show_output=True)
+            status = keys_model.set_santiment_key(
+                key=ns_parser.key, persist=True, show_output=True
+            )
+            self.check_santiment_key(status, show_output=False)

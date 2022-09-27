@@ -2157,3 +2157,82 @@ def check_eodhd_key(show_output: bool = False) -> str:
         console.print(status + "\n")
 
     return status
+
+
+def set_santiment_key(key: str, persist: bool = False, show_output: bool = False):
+    """Set Santiment key.
+
+    Parameters
+    ----------
+        key: str
+            API key
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+    """
+
+    set_key("OPENBB_API_SANTIMENT_KEY", key, persist)
+    status = check_santiment_key(show_output)
+
+    return status
+
+
+def check_santiment_key(show_output: bool = False) -> str:
+    """Check Santiment key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+
+    """
+
+    if cfg.API_SANTIMENT_KEY == "REPLACE_ME":
+        logger.info("santiment key not defined")
+        status = "not defined"
+    else:
+        headers = {
+            "Content-Type": "application/graphql",
+            "Authorization": f"Apikey {cfg.API_SANTIMENT_KEY}",
+        }
+
+        # pylint: disable=line-too-long
+        data = '\n{{ getMetric(metric: "dev_activity"){{ timeseriesData( slug: "ethereum" from: ""2020-02-10T07:00:00Z"" to: "2020-03-10T07:00:00Z" interval: "1w"){{ datetime value }} }} }}'  # noqa: E501
+
+        response = requests.post(
+            "https://api.santiment.net/graphql", headers=headers, data=data
+        )
+        try:
+            if response.status_code == 200:
+                logger.info("santiment key defined, test passed")
+                status = "defined, test passed"
+            else:
+                logger.warning("santiment key defined, test failed")
+                status = "defined, test failed"
+        except Exception as _:  # noqa: F841
+            logger.exception("santiment key defined, test failed")
+            status = "defined, test failed"
+
+    if show_output:
+        console.print(status + "\n")
+
+    return status
