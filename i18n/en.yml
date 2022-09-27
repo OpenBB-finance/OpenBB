@@ -181,7 +181,6 @@ en:
   stocks/disc/active: most active stocks by intraday trade volumest
   stocks/disc/ulc: potentially undervalued large cap stocks
   stocks/disc/asc: small cap stocks with earnings growth rates better than 25%
-  stocks/disc/ford: orders by Fidelity Customers
   stocks/disc/arkord: orders by ARK Investment Management LLC
   stocks/disc/upcoming: upcoming earnings release dates
   stocks/disc/trending: trending news
