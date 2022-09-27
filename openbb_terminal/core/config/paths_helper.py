@@ -13,6 +13,8 @@ from openbb_terminal.core.config.paths import (
     ROUTINES_DIRECTORY,
 )
 
+# pylint: disable=W0603
+
 
 def create_paths(list_dirs: List):
     """
@@ -59,5 +61,15 @@ dirs_list = [
     ROUTINES_DIRECTORY,
 ]
 dirs_files = [USER_ENV_FILE, REPOSITORY_ENV_FILE]
-create_paths(dirs_list)
-create_files(dirs_files)
+initialized = False
+
+
+def init_userdata():
+    """
+    Initializes the user data folder
+    """
+    global initialized
+    if not initialized:
+        create_paths(dirs_list)
+        create_files(dirs_files)
+        initialized = True
