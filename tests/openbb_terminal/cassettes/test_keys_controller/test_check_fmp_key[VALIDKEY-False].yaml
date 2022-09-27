@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - python-requests/2.27.1
     method: GET
-    uri: https://financialmodelingprep.com/api/v3/profile/AAPL?apikey=558d30cc931e42e8e3ba1b65c792c96b
+    uri: https://financialmodelingprep.com/api/v3/profile/AAPL?apikey=VALIDKEY
   response:
     body:
       string: !!binary |

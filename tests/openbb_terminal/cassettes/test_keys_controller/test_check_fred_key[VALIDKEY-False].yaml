@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - python-requests/2.27.1
     method: GET
-    uri: https://api.stlouisfed.org/fred/series?series_id=GNPCA&api_key=bab7cd9f2e102922da9a091760829093
+    uri: https://api.stlouisfed.org/fred/series?series_id=GNPCA&api_key=VALIDKEY
   response:
     body:
       string: !!binary |

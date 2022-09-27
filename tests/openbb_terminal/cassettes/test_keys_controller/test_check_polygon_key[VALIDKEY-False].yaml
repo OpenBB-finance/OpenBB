@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - python-requests/2.28.1
     method: GET
-    uri: https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/2020-06-01/2020-06-17?apiKey=ZROwkktUXgxk0UcjMm4_4QeFNDH3KIYx
+    uri: https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/2020-06-01/2020-06-17?apiKey=VALIDKEY
   response:
     body:
       string: !!binary |
