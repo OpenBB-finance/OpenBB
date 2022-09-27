@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import configparser
 import logging
 import os
-from pathlib import Path
 from typing import List, Optional
 
 import matplotlib.pyplot as plt
@@ -25,18 +24,19 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def view_available_presets(preset_path: Path):
+def view_available_presets(preset: str):
     """View available presets.
 
     Parameters
     ----------
-    preset_path: Path
-        Path to chosen preset
+    preset: str
+        Chosen preset
     """
-    if preset_path:
+    if preset:
         preset_filter = configparser.RawConfigParser()
         preset_filter.optionxform = str  # type: ignore
-        preset_filter.read(preset_path)
+        preset_choices = syncretism_model.get_preset_choices()
+        preset_filter.read(preset_choices[preset])
         filters_headers = ["FILTER"]
         console.print("")
 
@@ -57,7 +57,7 @@ def view_available_presets(preset_path: Path):
 
 @log_start_end(log=logger)
 def view_screener_output(
-    preset_path: Path,
+    preset: str,
     limit: int = 20,
     export: str = "",
 ) -> List:
@@ -65,8 +65,8 @@ def view_screener_output(
 
     Parameters
     ----------
-    preset_path: Path
-        Path to chosen preset
+    preset: str
+        Chosen preset
     limit: int
         Number of randomly sorted rows to display
     export: str
@@ -77,7 +77,7 @@ def view_screener_output(
     List
         List of tickers screened
     """
-    df_res, error_msg = syncretism_model.get_screener_output(preset_path)
+    df_res, error_msg = syncretism_model.get_screener_output(preset)
     if error_msg:
         console.print(error_msg, "\n")
         return []

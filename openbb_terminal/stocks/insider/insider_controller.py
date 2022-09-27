@@ -4,14 +4,12 @@ __docformat__ = "numpy"
 import argparse
 import configparser
 import logging
-from pathlib import Path
 from typing import List
 
 import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.core.config.paths import PRESETS_DIRECTORY
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -24,11 +22,10 @@ from openbb_terminal.stocks.insider import (
     businessinsider_view,
     finviz_view,
     openinsider_view,
+    openinsider_model,
 )
 
 logger = logging.getLogger(__name__)
-
-PRESETS_PATH = PRESETS_DIRECTORY / "stocks" / "insider"
 
 # pylint: disable=,inconsistent-return-statements
 
@@ -70,20 +67,8 @@ class InsiderController(StockBaseController):
         "stats",
     ]
 
-    PRESETS_PATH_DEFAULT = Path(__file__).parent / "presets"
+    preset_choices = openinsider_model.get_preset_choices()
 
-    preset_choices = {
-        filepath.name: filepath
-        for filepath in PRESETS_PATH.iterdir()
-        if filepath.suffix == ".ini"
-    }
-    preset_choices.update(
-        {
-            filepath.name: filepath
-            for filepath in PRESETS_PATH_DEFAULT.iterdir()
-            if filepath.suffix == ".ini"
-        }
-    )
     PATH = "/stocks/ins/"
 
     def __init__(
@@ -280,7 +265,7 @@ class InsiderController(StockBaseController):
         )
         if ns_parser:
             openinsider_view.print_insider_filter(
-                preset_path=self.preset_choices[self.preset],
+                preset=self.preset,
                 symbol="",
                 limit=ns_parser.limit,
                 links=ns_parser.urls,
@@ -321,7 +306,7 @@ class InsiderController(StockBaseController):
         if ns_parser:
             if self.ticker:
                 openinsider_view.print_insider_filter(
-                    preset_path=Path(""),
+                    preset="",
                     symbol=self.ticker,
                     limit=ns_parser.limit,
                     links=ns_parser.urls,

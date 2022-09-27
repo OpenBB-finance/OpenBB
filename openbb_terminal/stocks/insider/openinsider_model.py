@@ -1,6 +1,5 @@
 import configparser
-import logging
-import os
+import logging 
 from pathlib import Path
 import textwrap
 from datetime import datetime
@@ -11,11 +10,10 @@ import requests
 from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.core.config.paths import PRESETS_DIRECTORY
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
-
-presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
 
 # pylint: disable=too-many-branches,line-too-long,C0302
@@ -1103,9 +1101,32 @@ def check_open_insider_screener(
 
     return error
 
+@log_start_end(log=logger)
+def get_preset_choices() -> Dict:
+    """
+    Return a dict containing keys as name of preset and
+    filepath as value
+    """
+
+    PRESETS_PATH = PRESETS_DIRECTORY / "stocks" / "insider"
+    PRESETS_PATH_DEFAULT = Path(__file__).parent / "presets"
+    preset_choices = {
+        filepath.name: filepath
+        for filepath in PRESETS_PATH.iterdir()
+        if filepath.suffix == ".ini"
+    }
+    preset_choices.update(
+        {
+            filepath.name: filepath
+            for filepath in PRESETS_PATH_DEFAULT.iterdir()
+            if filepath.suffix == ".ini"
+        }
+    )
+
+    return preset_choices
 
 @log_start_end(log=logger)
-def get_open_insider_link(preset_path: Path) -> str:
+def get_open_insider_link(preset_loaded: str) -> str:
     """Get open insider link
 
     Parameters
@@ -1120,7 +1141,7 @@ def get_open_insider_link(preset_path: Path) -> str:
     """
     preset = configparser.RawConfigParser()
     preset.optionxform = str  # type: ignore
-    preset.read(preset_path)
+    preset.read(get_preset_choices()[preset_loaded])
 
     d_general = dict(preset["General"])
     d_date = dict(preset["Date"])

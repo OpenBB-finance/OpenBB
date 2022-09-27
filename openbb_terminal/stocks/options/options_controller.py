@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from datetime import datetime, timedelta
-from pathlib import Path
 from typing import Any, List
 
 import pandas as pd
@@ -21,7 +20,6 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.core.config.paths import PRESETS_DIRECTORY
 from openbb_terminal.rich_config import MenuText, console, get_ordered_list_sources
 from openbb_terminal.stocks.options import (
     alphaquery_view,
@@ -39,7 +37,7 @@ from openbb_terminal.stocks.options import (
 )
 from openbb_terminal.stocks.options.hedge import hedge_controller
 from openbb_terminal.stocks.options.pricing import pricing_controller
-from openbb_terminal.stocks.options.screen import screener_controller, syncretism_view
+from openbb_terminal.stocks.options.screen import screener_controller, syncretism_view, syncretism_model
 
 # pylint: disable=R1710,C0302,R0916
 
@@ -49,8 +47,6 @@ from openbb_terminal.stocks.options.screen import screener_controller, syncretis
 
 
 logger = logging.getLogger(__name__)
-
-PRESETS_PATH = PRESETS_DIRECTORY / "stocks" / "options"
 
 
 class OptionsController(BaseController):
@@ -81,20 +77,8 @@ class OptionsController(BaseController):
         "hedge",
     ]
 
-    PRESETS_PATH_DEFAULT = Path(__file__).parent / "presets"
-
-    preset_choices = {
-        filepath.name: filepath
-        for filepath in PRESETS_PATH.iterdir()
-        if filepath.suffix == ".ini"
-    }
-    preset_choices.update(
-        {
-            filepath.name: filepath
-            for filepath in PRESETS_PATH_DEFAULT.iterdir()
-            if filepath.suffix == ".ini"
-        }
-    )
+    preset_choices = syncretism_model.get_preset_choices()
+    
     grhist_greeks_choices = [
         "iv",
         "gamma",

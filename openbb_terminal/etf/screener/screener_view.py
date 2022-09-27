@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from pathlib import Path
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.etf.screener import screener_model
@@ -17,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def view_screener(
-    preset_path: Path, num_to_show: int, sortby: str, ascend: bool, export: str = ""
+    preset: str, num_to_show: int, sortby: str, ascend: bool, export: str = ""
 ):
     """Display screener output
 
@@ -35,7 +34,7 @@ def view_screener(
         Output format of export
 
     """
-    screened_data = screener_model.etf_screener(preset_path)
+    screened_data = screener_model.etf_screener(preset)
 
     screened_data = screened_data.sort_values(by=sortby, ascending=ascend)
 

@@ -5,16 +5,15 @@ __docformat__ = "numpy"
 import argparse
 import configparser
 import logging
-from pathlib import Path
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.core.config.paths import PRESETS_DIRECTORY
+
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.etf import financedatabase_model, financedatabase_view
-from openbb_terminal.etf.screener import screener_view
+from openbb_terminal.etf.screener import screener_view, screener_model
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
@@ -24,8 +23,6 @@ from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
 
 logger = logging.getLogger(__name__)
-
-PRESETS_PATH = PRESETS_DIRECTORY / "etf" / "screener"
 
 
 class ScreenerController(BaseController):
@@ -38,19 +35,7 @@ class ScreenerController(BaseController):
         "sbc",
     ]
 
-    PRESETS_PATH_DEFAULT = Path(__file__).parent / "presets"
-    preset_choices = {
-        filepath.name: filepath
-        for filepath in PRESETS_PATH.iterdir()
-        if filepath.suffix == ".ini"
-    }
-    preset_choices.update(
-        {
-            filepath.name: filepath
-            for filepath in PRESETS_PATH_DEFAULT.iterdir()
-            if filepath.suffix == ".ini"
-        }
-    )
+    preset_choices = screener_model.get_preset_choices()
 
     sortby_screen_choices = [
         "Assets",
@@ -238,14 +223,16 @@ class ScreenerController(BaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        if ns_parser:
+        if self.preset in self.preset_choices:
             screener_view.view_screener(
-                preset_path=self.preset_choices[self.preset],
+                preset=self.preset,
                 num_to_show=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.ascend,
                 export=ns_parser.export,
             )
+        else:
+            console.print("Preset not found")
 
     @log_start_end(log=logger)
     def call_sbc(self, other_args: List[str]):

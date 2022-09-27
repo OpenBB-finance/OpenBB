@@ -1,7 +1,6 @@
 import itertools
 import logging
 import os
-from pathlib import Path
 from typing import List
 
 import numpy as np
@@ -142,7 +141,7 @@ def print_insider_data(type_insider: str = "lcb", limit: int = 10, export: str =
 
 @log_start_end(log=logger)
 def print_insider_filter(
-    preset_path: Path,
+    preset: str,
     symbol: str,
     limit: int = 10,
     links: bool = False,
@@ -152,7 +151,7 @@ def print_insider_filter(
 
     Parameters
     ----------
-    preset_path : Path
+    preset : str
         Loaded preset filter
     symbol : str
         Stock ticker symbol
@@ -166,7 +165,7 @@ def print_insider_filter(
     if symbol:
         link = f"http://openinsider.com/screener?s={symbol}"
     else:
-        link = get_open_insider_link(preset_path)
+        link = get_open_insider_link(preset)
 
     if not link:
         console.print("")
