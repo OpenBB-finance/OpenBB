@@ -102,7 +102,7 @@ def test_historical_no_d_signals(mocker):
     )
 
     yahoofinance_view.historical(
-        preset_loaded="oversold",
+        preset_loaded="oversold.ini",
         limit=2,
         start_date="2022-01-03",
         type_candle="a",

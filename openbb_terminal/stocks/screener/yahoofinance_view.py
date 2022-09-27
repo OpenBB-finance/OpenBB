@@ -23,8 +23,6 @@ logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
-presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
-
 
 @log_start_end(log=logger)
 def historical(
