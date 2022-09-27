@@ -16,12 +16,10 @@ def vcr_config():
 
 @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "preset",
-    [
-        "etf_config",
-    ],
+    "preset_path",
+    ["etf_config.ini"],
 )
-def test_etf_screener(recorder, preset):
-    result = screener_model.etf_screener(preset)
+def test_etf_screener(recorder, preset_path):
+    result = screener_model.etf_screener(preset_path)
 
     recorder.capture(result)

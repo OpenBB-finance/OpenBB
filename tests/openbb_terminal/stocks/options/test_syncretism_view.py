@@ -1,5 +1,4 @@
 # IMPORTATION STANDARD
-import os
 
 # IMPORTATION THIRDPARTY
 import pytest
@@ -25,15 +24,11 @@ def vcr_config():
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "preset",
-    ["high_IV", ""],
+    ["high_IV.ini"],
 )
 def test_view_available_presets(preset):
-    presets_path = os.path.join(
-        os.path.dirname(syncretism_view.__file__), "..", "presets/"
-    )
     syncretism_view.view_available_presets(
         preset=preset,
-        presets_path=presets_path,
     )
 
 
@@ -43,12 +38,8 @@ def test_view_available_presets(preset):
 def test_view_screener_output(mocker):
     # MOCK VISUALIZE_OUTPUT
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
-    presets_path = os.path.join(
-        os.path.dirname(syncretism_view.__file__), "..", "presets/"
-    )
     syncretism_view.view_screener_output(
-        preset="high_IV",
-        presets_path=presets_path,
+        preset="high_IV.ini",
         limit=5,
         export="",
     )
@@ -61,12 +52,8 @@ def test_view_screener_output_error(mocker):
         target="openbb_terminal.stocks.options.screen.syncretism_view.syncretism_model.get_screener_output",
         return_value=(pd.DataFrame(), "MOCK_ERROR_MESSAGE"),
     )
-    presets_path = os.path.join(
-        os.path.dirname(syncretism_view.__file__), "..", "presets/"
-    )
     syncretism_view.view_screener_output(
-        preset="high_IV",
-        presets_path=presets_path,
+        preset="high_IV.ini",
         limit=5,
         export="",
     )
