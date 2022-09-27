@@ -1879,8 +1879,9 @@ def check_ethplorer_key(show_output: bool = False) -> str:
     return status
 
 
-
-def set_smartstake_key(key: str, token: str, persist: bool = False, show_output: bool = False):
+def set_smartstake_key(
+    key: str, token: str, persist: bool = False, show_output: bool = False
+):
     """Set Smartstake key.
 
     Parameters
@@ -1953,6 +1954,67 @@ def check_smartstake_key(show_output: bool = False) -> str:
                 status = "defined, test failed"
         except Exception as _:  # noqa: F841
             status = "defined, test failed"
+
+    if show_output:
+        console.print(status + "\n")
+
+    return status
+
+
+def set_github_key(key: str, persist: bool = False, show_output: bool = False):
+    """Set GitHub key.
+
+    Parameters
+    ----------
+        key: str
+            API key
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+    """
+
+    set_key("OPENBB_API_GITHUB_KEY", key, persist)
+    status = check_github_key(show_output)
+
+    return status
+
+
+def check_github_key(show_output: bool = False) -> str:
+    """Check GitHub key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+
+    """
+
+    if cfg.API_GITHUB_KEY == "REPLACE_ME":  # pragma: allowlist secret
+        logger.info("GitHub key not defined")
+        status = "not defined"
+    else:
+        status = "defined"
+        # github api will not fail for the first requests without key
+        # only after certain amount of requests the user will get rate limited
 
     if show_output:
         console.print(status + "\n")

@@ -84,20 +84,6 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
                 self.completer = NestedCompleter.from_nested_dict(choices)
 
-    def check_github_key(self, show_output: bool = False) -> None:
-        """Check GitHub key"""
-        self.cfg_dict["GITHUB"] = "github"
-        if cfg.API_GITHUB_KEY == "REPLACE_ME":  # pragma: allowlist secret
-            logger.info("GitHub key not defined")
-            self.key_dict["GITHUB"] = "not defined"
-        else:
-            self.key_dict["GITHUB"] = "defined"
-            # github api will not fail for the first requests without key
-            # only after certain amount of requests the user will get rate limited
-
-        if show_output:
-            console.print(self.key_dict["GITHUB"] + "\n")
-
     def check_av_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Alpha Vantage key"""
         self.cfg_dict["ALPHA_VANTAGE"] = "av"
@@ -273,6 +259,13 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.check_smartstake_key(show_output=show_output)
         self.key_dict["SMARTSTAKE"] = status
 
+    def check_github_key(self, show_output: bool = False) -> None:
+        """Check GitHub key"""
+        self.cfg_dict["GITHUB"] = "github"
+        if not status:
+            status = keys_model.check_github_key(show_output=show_output)
+        self.key_dict["GITHUB"] = status
+
     def check_messari_key(self, show_output: bool = False) -> None:
         """Check Messari key"""
         self.cfg_dict["MESSARI"] = "messari"
@@ -403,37 +396,6 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             )
 
         console.print(text=mt.menu_text, menu="Keys")
-
-    @log_start_end(log=logger)
-    def call_github(self, other_args: List[str]):
-        """Process github command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="github",
-            description="Set GitHub API key.",
-        )
-        parser.add_argument(
-            "-k",
-            "--key",
-            type=str,
-            dest="key",
-            help="key",
-        )
-        if not other_args:
-            console.print(
-                "For your API Key, visit: https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api\n"
-            )
-            return
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-k")
-        ns_parser = parse_simple_args(parser, other_args)
-        if ns_parser:
-            os.environ["OPENBB_API_GITHUB_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "OPENBB_API_GITHUB_KEY", ns_parser.key)
-            cfg.API_GITHUB_KEY = ns_parser.key
-            self.check_github_key(show_output=True)
 
     @log_start_end(log=logger)
     def call_av(self, other_args: List[str]):
@@ -1287,12 +1249,40 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
         if ns_parser:
             status = keys_model.set_smartstake_key(
-                key=ns_parser.key,
-                token=ns_parser.token,
-                persist=True, 
-                show_output=True
+                key=ns_parser.key, token=ns_parser.token, persist=True, show_output=True
             )
             self.check_smartstake_key(status, show_output=False)
+
+    @log_start_end(log=logger)
+    def call_github(self, other_args: List[str]):
+        """Process github command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="github",
+            description="Set GitHub API key.",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="key",
+        )
+        if not other_args:
+            console.print(
+                "For your API Key, visit: https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api\n"
+            )
+            return
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-k")
+        ns_parser = parse_simple_args(parser, other_args)
+        if ns_parser:
+            status = keys_model.set_github_key(
+                key=ns_parser.key, persist=True, show_output=True
+            )
+            self.check_github_key(status, show_output=False)
 
     @log_start_end(log=logger)
     def call_messari(self, other_args: List[str]):
