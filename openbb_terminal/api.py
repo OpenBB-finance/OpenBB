@@ -1445,9 +1445,6 @@ functions = {
     "stocks.disc.arkord": {
         "model": "openbb_terminal.stocks.discovery.ark_model.get_ark_orders"
     },
-    "stocks.disc.ford": {
-        "model": "openbb_terminal.stocks.discovery.fidelity_model.get_orders"
-    },
     "stocks.disc.ipo": {
         "model": "openbb_terminal.stocks.discovery.finnhub_model.get_ipo_calendar"
     },
