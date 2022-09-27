@@ -232,31 +232,12 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.check_coinbase_key(show_output=show_output)
         self.key_dict["COINBASE"] = status
 
-    def check_walert_key(self, show_output: bool = False) -> None:
+    def check_walert_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Walert key"""
         self.cfg_dict["WHALE_ALERT"] = "walert"
-        if cfg.API_WHALE_ALERT_KEY == "REPLACE_ME":
-            logger.info("Walert key not defined")
-            self.key_dict["WHALE_ALERT"] = "not defined"
-        else:
-            url = (
-                "https://api.whale-alert.io/v1/transactions?api_key="
-                + cfg.API_WHALE_ALERT_KEY
-            )
-            try:
-                response = requests.get(url, timeout=2)
-                if not 200 <= response.status_code < 300:
-                    logger.warning("Walert key defined, test failed")
-                    self.key_dict["WHALE_ALERT"] = "defined, test unsuccessful"
-                else:
-                    logger.info("Walert key defined, test passed")
-                    self.key_dict["WHALE_ALERT"] = "defined, test passed"
-            except Exception:
-                logger.exception("Walert key defined, test failed")
-                self.key_dict["WHALE_ALERT"] = "defined, test unsuccessful"
-
-        if show_output:
-            console.print(self.key_dict["WHALE_ALERT"] + "\n")
+        if not status:
+            status = keys_model.check_walert_key(show_output=show_output)
+        self.key_dict["WHALE_ALERT"] = status
 
     def check_glassnode_key(self, status: str = "", show_output: bool = False) -> None:
         """Check glassnode key"""
@@ -1224,11 +1205,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             other_args.insert(0, "-k")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            os.environ["OPENBB_API_WHALE_ALERT_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "OPENBB_API_WHALE_ALERT_KEY", ns_parser.key)
-            cfg.API_WHALE_ALERT_KEY = ns_parser.key
-
-            self.check_walert_key(show_output=True)
+            status = keys_model.set_walert_key(
+                key=ns_parser.key, persist=True, show_output=True
+            )
+            self.check_walert_key(status, show_output=False)
 
     @log_start_end(log=logger)
     def call_glassnode(self, other_args: List[str]):

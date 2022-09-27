@@ -76,7 +76,7 @@ def get_keys() -> Dict:
 
 
 def set_av_key(key: str, persist: bool = False, show_output: bool = False):
-    """Set Alphavantage key.
+    """Set Alphavantage key
 
     Parameters
     ----------
@@ -143,7 +143,7 @@ def check_av_key(show_output: bool = False) -> str:
 
 
 def set_fmp_key(key: str, persist: bool = False, show_output: bool = False):
-    """Set Financial Modeling Prep key.
+    """Set Financial Modeling Prep key
 
     Parameters
     ----------
@@ -215,7 +215,7 @@ def check_fmp_key(show_output: bool = False) -> str:
 
 
 def set_quandl_key(key: str, persist: bool = False, show_output: bool = False):
-    """Set Quandl key.
+    """Set Quandl key
 
     Parameters
     ----------
@@ -287,7 +287,7 @@ def check_quandl_key(show_output: bool = False) -> str:
 
 
 def set_polygon_key(key: str, persist: bool = False, show_output: bool = False):
-    """Set Polygon key.
+    """Set Polygon key
 
     Parameters
     ----------
@@ -358,7 +358,7 @@ def check_polygon_key(show_output: bool = False) -> str:
 
 
 def set_fred_key(key: str, persist: bool = False, show_output: bool = False) -> str:
-    """Set FRED key.
+    """Set FRED key
 
     Parameters
     ----------
@@ -427,7 +427,7 @@ def check_fred_key(show_output: bool = False) -> str:
 
 
 def set_news_key(key: str, persist: bool = False, show_output: bool = False):
-    """Set News key.
+    """Set News key
 
     Parameters
     ----------
@@ -497,7 +497,7 @@ def check_news_key(show_output: bool = False) -> str:
 
 
 def set_tradier_key(key: str, persist: bool = False, show_output: bool = False):
-    """Set Tradier key.
+    """Set Tradier key
 
     Parameters
     ----------
@@ -572,7 +572,7 @@ def check_tradier_key(show_output: bool = False) -> str:
 
 
 def set_cmc_key(key: str, persist: bool = False, show_output: bool = False):
-    """Set Coinmarketcap key.
+    """Set Coinmarketcap key
 
     Parameters
     ----------
@@ -639,7 +639,7 @@ def check_cmc_key(show_output: bool = False) -> str:
 
 
 def set_finnhub_key(key: str, persist: bool = False, show_output: bool = False):
-    """Set Finnhub key.
+    """Set Finnhub key
 
     Parameters
     ----------
@@ -709,7 +709,7 @@ def check_finnhub_key(show_output: bool = False) -> str:
 
 
 def set_iex_key(key: str, persist: bool = False, show_output: bool = False):
-    """Set IEX Cloud key.
+    """Set IEX Cloud key
 
     Parameters
     ----------
@@ -782,7 +782,7 @@ def set_reddit_key(
     persist: bool = False,
     show_output: bool = False,
 ):
-    """Set Reddit key.
+    """Set Reddit key
 
     Parameters
     ----------
@@ -884,7 +884,7 @@ def check_reddit_key(show_output: bool = False) -> str:
 
 
 def set_bitquery_key(key: str, persist: bool = False, show_output: bool = False):
-    """Set Bitquery key.
+    """Set Bitquery key
 
     Parameters
     ----------
@@ -967,7 +967,7 @@ def set_twitter_key(
     persist: bool = False,
     show_output: bool = False,
 ):
-    """Set Twitter key.
+    """Set Twitter key
 
     Parameters
     ----------
@@ -1058,7 +1058,7 @@ def set_rh_key(
     persist: bool = False,
     show_output: bool = False,
 ):
-    """Set Robinhood key.
+    """Set Robinhood key
 
     Parameters
     ----------
@@ -1127,7 +1127,7 @@ def set_degiro_key(
     persist: bool = False,
     show_output: bool = False,
 ):
-    """Set Degiro key.
+    """Set Degiro key
 
     Parameters
     ----------
@@ -1198,7 +1198,7 @@ def set_oanda_key(
     persist: bool = False,
     show_output: bool = False,
 ):
-    """Set Oanda key.
+    """Set Oanda key
 
     Parameters
     ----------
@@ -1281,7 +1281,7 @@ def set_binance_key(
     persist: bool = False,
     show_output: bool = False,
 ):
-    """Set Binance key.
+    """Set Binance key
 
     Parameters
     ----------
@@ -1440,7 +1440,7 @@ def set_coinbase_key(
     persist: bool = False,
     show_output: bool = False,
 ):
-    """Set Coinbase key.
+    """Set Coinbase key
 
     Parameters
     ----------
@@ -1513,6 +1513,79 @@ def check_coinbase_key(show_output: bool = False) -> str:
         else:
             logger.info("Coinbase key defined, test passed")
             status = "defined, test passed"
+
+    if show_output:
+        console.print(status + "\n")
+
+    return status
+
+
+def set_walert_key(key: str, persist: bool = False, show_output: bool = False):
+    """Set Walert key
+
+    Parameters
+    ----------
+        key: str
+            API key
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+    """
+
+    set_key("OPENBB_API_WHALE_ALERT_KEY", key, persist)
+    status = check_walert_key(show_output)
+
+    return status
+
+
+def check_walert_key(show_output: bool = False) -> str:
+    """Check Walert key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+
+    """
+
+    if cfg.API_WHALE_ALERT_KEY == "REPLACE_ME":
+        logger.info("Walert key not defined")
+        status = "not defined"
+    else:
+        url = (
+            "https://api.whale-alert.io/v1/transactions?api_key="
+            + cfg.API_WHALE_ALERT_KEY
+        )
+        try:
+            response = requests.get(url, timeout=2)
+            if not 200 <= response.status_code < 300:
+                logger.warning("Walert key defined, test failed")
+                status = "defined, test unsuccessful"
+            else:
+                logger.info("Walert key defined, test passed")
+                status = "defined, test passed"
+        except Exception:
+            logger.exception("Walert key defined, test failed")
+            status = "defined, test unsuccessful"
 
     if show_output:
         console.print(status + "\n")
