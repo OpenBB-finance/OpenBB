@@ -124,6 +124,7 @@ issues.
    ```bash
    conda env create -n obb --file build/conda/conda-3-9-env.yaml
    ```
+
    Note: Using python 3.10 can lead to undesirable functionality for certain commands.
 
 6. Activate the virtual environment
