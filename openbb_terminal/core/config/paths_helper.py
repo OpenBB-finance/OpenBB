@@ -1,7 +1,6 @@
 # IMPORTATION STANDARD
 import os
 from typing import List
-import shutil
 
 from openbb_terminal.core.config.paths import (
     SETTINGS_DIRECTORY,
@@ -9,7 +8,9 @@ from openbb_terminal.core.config.paths import (
     USER_ENV_FILE,
     REPOSITORY_ENV_FILE,
     CUSTOM_IMPORTS_DIRECTORY,
-    REPOSITORY_DIRECTORY,
+    USER_EXPORTS_DIRECTORY,
+    PORTFOLIO_DATA_DIRECTORY,
+    ROUTINES_DIRECTORY,
 )
 
 
@@ -33,23 +34,23 @@ def create_files(list_files: List):
                 pass
 
 
-def copy_files(from_dir, to_dir):
-    """
-    Copy default/example files from the repo
-    to the user data folder"""
-
-    if from_dir.exists():
-        shutil.copytree(from_dir, to_dir, dirs_exist_ok=True)
-
-
 dirs_list = [
     SETTINGS_DIRECTORY,
     USER_DATA_DIRECTORY,
     USER_DATA_DIRECTORY / "styles",
     CUSTOM_IMPORTS_DIRECTORY,
     CUSTOM_IMPORTS_DIRECTORY / "econometrics",
+    CUSTOM_IMPORTS_DIRECTORY / "stocks",
+    CUSTOM_IMPORTS_DIRECTORY / "dashboards",
+    USER_EXPORTS_DIRECTORY,
+    USER_EXPORTS_DIRECTORY / "reports",
+    PORTFOLIO_DATA_DIRECTORY,
+    PORTFOLIO_DATA_DIRECTORY / "views",
+    PORTFOLIO_DATA_DIRECTORY / "holdings",
+    PORTFOLIO_DATA_DIRECTORY / "allocation",
+    PORTFOLIO_DATA_DIRECTORY / "optimization",
+    ROUTINES_DIRECTORY,
 ]
 dirs_files = [USER_ENV_FILE, REPOSITORY_ENV_FILE]
 create_paths(dirs_list)
 create_files(dirs_files)
-copy_files(REPOSITORY_DIRECTORY / "custom_imports", CUSTOM_IMPORTS_DIRECTORY)

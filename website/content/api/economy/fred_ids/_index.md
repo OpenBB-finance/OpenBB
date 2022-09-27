@@ -1,7 +1,5 @@
-# economy.fred_ids
-
 ## Get underlying data 
-###economy.fred_ids(search_query: str, limit: int = -1) -> pandas.core.frame.DataFrame
+### economy.fred_ids(search_query: str, limit: int = -1) -> pandas.core.frame.DataFrame
 
 Get Series IDs. [Source: FRED]
     Parameters

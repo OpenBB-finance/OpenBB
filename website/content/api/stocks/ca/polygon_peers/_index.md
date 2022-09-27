@@ -1,7 +1,5 @@
-# stocks.ca.polygon_peers
-
 ## Get underlying data 
-###stocks.ca.polygon_peers(symbol: str, us_only: bool = False) -> List[str]
+### stocks.ca.polygon_peers(symbol: str, us_only: bool = False) -> List[str]
 
 Get similar companies from Polygon
 

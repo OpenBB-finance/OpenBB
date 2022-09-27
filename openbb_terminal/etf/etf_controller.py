@@ -277,10 +277,11 @@ class ETFController(BaseController):
                 self.etf_holdings = holdings.index[: ns_parser.limit].tolist()
 
                 if "n/a" in self.etf_holdings:
-                    na_tix_idx = []
-                    for idx, item in enumerate(self.etf_holdings):
-                        if item == "n/a":
-                            na_tix_idx.append(str(idx))
+                    na_tix_idx = [
+                        str(idx)
+                        for idx, item in enumerate(self.etf_holdings)
+                        if item == "n/a"
+                    ]
 
                     console.print(
                         f"n/a tickers found at position {','.join(na_tix_idx)}. "
@@ -560,7 +561,7 @@ class ETFController(BaseController):
             default=compose_export_path(
                 func_name=parser.prog,
                 dir_path=os.path.dirname(os.path.abspath(__file__)),
-            )[0],
+            ).parent,
             dest="folder",
             help="Folder where the excel ETF report will be saved",
         )

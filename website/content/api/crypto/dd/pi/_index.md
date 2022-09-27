@@ -1,9 +1,7 @@
-# crypto.dd.pi
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.dd.pi(symbol: str) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame, pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
+### crypto.dd.pi(symbol: str) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame, pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
 
 Returns coin product info
     [Source: https://messari.io/]
@@ -25,7 +23,7 @@ Returns coin product info
         coin known exploits/vulns
 
 ## Getting charts 
-###crypto.dd.pi(symbol: str, export: str = '', chart=True) -> None
+### crypto.dd.pi(symbol: str, export: str = '', chart=True) -> None
 
 Display project info
     [Source: https://messari.io/]

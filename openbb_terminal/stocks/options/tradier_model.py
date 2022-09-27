@@ -204,10 +204,7 @@ def process_chains(response: requests.models.Response) -> pd.DataFrame:
     opt_chain = pd.DataFrame(columns=df_columns)
     for idx, option in enumerate(options):
         # initialize empty dictionary
-        d = {}
-        for col in df_columns:
-            d[col] = ""
-
+        d = {col: "" for col in df_columns}
         # populate main dictionary values
         for col in option_columns:
             if col in option:

@@ -1,9 +1,7 @@
-# alt.oss.summary
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###alt.oss.summary(repo: str) -> pandas.core.frame.DataFrame
+### alt.oss.summary(repo: str) -> pandas.core.frame.DataFrame
 
 Get repository summary
 
@@ -17,7 +15,7 @@ Get repository summary
     pd.DataFrame - Columns: Metric, Value
 
 ## Getting charts 
-###alt.oss.summary(repo: str, export: str = '', chart=True) -> None
+### alt.oss.summary(repo: str, export: str = '', chart=True) -> None
 
 Display repo summary [Source: https://api.github.com]
 

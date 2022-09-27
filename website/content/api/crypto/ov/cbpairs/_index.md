@@ -1,9 +1,7 @@
-# crypto.ov.cbpairs
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.ov.cbpairs(top: int = 50, sortby: str = 'quote_increment', ascend: bool = True) -> pandas.core.frame.DataFrame
+### crypto.ov.cbpairs(limit: int = 50, sortby: str = 'quote_increment', ascend: bool = True) -> pandas.core.frame.DataFrame
 
 Get a list of available currency pairs for trading. [Source: Coinbase]
 
@@ -14,7 +12,7 @@ Get a list of available currency pairs for trading. [Source: Coinbase]
 
     Parameters
     ----------
-    top: int
+    limit: int
         Top n of pairs
     sortby: str
         Key to sortby data
@@ -27,13 +25,13 @@ Get a list of available currency pairs for trading. [Source: Coinbase]
         Available trading pairs on Coinbase
 
 ## Getting charts 
-###crypto.ov.cbpairs(top: int = 20, sortby: str = 'quote_increment', ascend: bool = True, export: str = '', chart=True) -> None
+### crypto.ov.cbpairs(limit: int = 20, sortby: str = 'quote_increment', ascend: bool = True, export: str = '', chart=True) -> None
 
 Displays a list of available currency pairs for trading. [Source: Coinbase]
 
     Parameters
     ----------
-    top: int
+    limit: int
         Top n of pairs
     sortby: str
         Key to sortby data

@@ -1,7 +1,5 @@
-# stocks.fa.enterprise
-
 ## Get underlying data 
-###stocks.fa.enterprise(symbol: str, limit: int = 5, quarterly: bool = False) -> pandas.core.frame.DataFrame
+### stocks.fa.enterprise(symbol: str, limit: int = 5, quarterly: bool = False) -> pandas.core.frame.DataFrame
 
 Financial Modeling Prep ticker enterprise
 

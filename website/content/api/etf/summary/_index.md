@@ -1,9 +1,7 @@
-# etf.summary
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###etf.summary(name: str) -> str
+### etf.summary(name: str) -> str
 
 Return summary description of ETF. [Source: Yahoo Finance]
 
@@ -18,7 +16,7 @@ Return summary description of ETF. [Source: Yahoo Finance]
         Summary description of the ETF
 
 ## Getting charts 
-###etf.summary(name: str, chart=True)
+### etf.summary(name: str, chart=True)
 
 Display ETF description summary. [Source: Yahoo Finance]
 

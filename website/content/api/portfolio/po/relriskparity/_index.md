@@ -1,9 +1,7 @@
-# portfolio.po.relriskparity
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###portfolio.po.relriskparity(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', version: str = 'A', risk_cont: List[str] = None, penal_factor: float = 1, target_return: float = -1, mean: str = 'hist', covariance: str = 'hist', d_ewma: float = 0.94, value: float = 1.0) -> Tuple
+### portfolio.po.relriskparity(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', version: str = 'A', risk_cont: List[str] = None, penal_factor: float = 1, target_return: float = -1, mean: str = 'hist', covariance: str = 'hist', d_ewma: float = 0.94, value: float = 1.0) -> Tuple
 
 Builds a relaxed risk parity portfolio using the least squares approach
 
@@ -92,7 +90,7 @@ Builds a relaxed risk parity portfolio using the least squares approach
         Dictionary of portfolio weights and DataFrame of stock returns
 
 ## Getting charts 
-###portfolio.po.relriskparity(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', version: str = 'A', risk_cont: List[str] = None, penal_factor: float = 1, target_return: float = -1, mean: str = 'hist', covariance: str = 'hist', d_ewma: float = 0.94, value: float = 1.0, table: bool = False, chart=True) -> Dict
+### portfolio.po.relriskparity(symbols: List[str], interval: str = '3y', start_date: str = '', end_date: str = '', log_returns: bool = False, freq: str = 'D', maxnan: float = 0.05, threshold: float = 0, method: str = 'time', version: str = 'A', risk_cont: List[str] = None, penal_factor: float = 1, target_return: float = -1, mean: str = 'hist', covariance: str = 'hist', d_ewma: float = 0.94, value: float = 1.0, table: bool = False, chart=True) -> Dict
 
 
     Builds a relaxed risk parity portfolio using the least squares approach

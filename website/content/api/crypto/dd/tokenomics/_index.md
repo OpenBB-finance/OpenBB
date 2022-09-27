@@ -1,7 +1,5 @@
-# crypto.dd.tokenomics
-
 ## Get underlying data 
-###crypto.dd.tokenomics(symbol: str = '') -> pandas.core.frame.DataFrame
+### crypto.dd.tokenomics(symbol: str = '') -> pandas.core.frame.DataFrame
 
 Get tokenomics for given coin. [Source: CoinGecko]
 

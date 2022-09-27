@@ -27,7 +27,6 @@ Quandl = "^3.6.0"
 pytrends = "^4.7.3"
 matplotlib = "^3.3.3"
 plotly = "^5.0.0"
-papermill = "^2.3.2"
 prompt-toolkit = "^3.0.16"
 jupyter = "^1.0.0"
 jupyterlab = "^3.2.4"
@@ -97,6 +96,7 @@ jupyterlab-lsp = {version = "^3.10.1", optional = true}
 jedi-language-server = {version = "^0.35.1", optional = true}
 charset-normalizer = "2.1.0"
 pythclient = "^0.1.2"
+"ruamel.yaml" = "^0.17.21"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
