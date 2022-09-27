@@ -1,5 +1,5 @@
 import configparser
-import logging 
+import logging
 from pathlib import Path
 import textwrap
 from datetime import datetime
@@ -1101,6 +1101,7 @@ def check_open_insider_screener(
 
     return error
 
+
 @log_start_end(log=logger)
 def get_preset_choices() -> Dict:
     """
@@ -1124,6 +1125,7 @@ def get_preset_choices() -> Dict:
     )
 
     return preset_choices
+
 
 @log_start_end(log=logger)
 def get_open_insider_link(preset_loaded: str) -> str:

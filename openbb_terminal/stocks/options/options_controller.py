@@ -37,7 +37,11 @@ from openbb_terminal.stocks.options import (
 )
 from openbb_terminal.stocks.options.hedge import hedge_controller
 from openbb_terminal.stocks.options.pricing import pricing_controller
-from openbb_terminal.stocks.options.screen import screener_controller, syncretism_view, syncretism_model
+from openbb_terminal.stocks.options.screen import (
+    screener_controller,
+    syncretism_view,
+    syncretism_model,
+)
 
 # pylint: disable=R1710,C0302,R0916
 
@@ -78,7 +82,7 @@ class OptionsController(BaseController):
     ]
 
     preset_choices = syncretism_model.get_preset_choices()
-    
+
     grhist_greeks_choices = [
         "iv",
         "gamma",

@@ -85,9 +85,7 @@ class ScreenerController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.preset:
-                syncretism_view.view_available_presets(
-                    preset = ns_parser.preset
-                )
+                syncretism_view.view_available_presets(preset=ns_parser.preset)
 
             else:
                 for preset in self.preset_choices:
@@ -159,7 +157,7 @@ class ScreenerController(BaseController):
         )
         if ns_parser:
             self.screen_tickers = syncretism_view.view_screener_output(
-                preset = ns_parser.preset,
+                preset=ns_parser.preset,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
             )
