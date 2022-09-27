@@ -5,7 +5,7 @@ from inspect import signature
 import streamlit as st
 import pandas as pd
 import yfinance as yf
-from openbb_terminal import api
+from openbb_terminal.api import openbb
 from openbb_terminal.forecast import helpers
 from openbb_terminal.rich_config import console
 
@@ -13,27 +13,27 @@ st.set_page_config(layout="wide")
 
 # pylint: disable=E1101
 model_opts = {
-    "expo": api.forecast.models.expo.get_expo_data,  # type: ignore
-    "theta": api.forecast.models.theta.get_theta_data,  # type: ignore
-    "linregr": api.forecast.models.linregr.get_linear_regression_data,  # type: ignore
-    "regr": api.forecast.models.regr.get_regression_data,  # type: ignore
-    "rnn": api.forecast.models.rnn.get_rnn_data,  # type: ignore
-    "brnn": api.forecast.models.brnn.get_brnn_data,  # type: ignore
-    "nbeats": api.forecast.models.nbeats.get_NBEATS_data,  # type: ignore
-    "tcn": api.forecast.models.tcn.get_tcn_data,  # type: ignore
-    "trans": api.forecast.models.trans.get_trans_data,  # type: ignore
-    "tft": api.forecast.models.tft.get_tft_data,  # type: ignore
+    "expo": openbb.forecast.expo,  # type: ignore
+    "theta": openbb.forecast.theta,  # type: ignore
+    "linregr": openbb.forecast.linregr,  # type: ignore
+    "regr": openbb.forecast.regr,  # type: ignore
+    "rnn": openbb.forecast.rnn,  # type: ignore
+    "brnn": openbb.forecast.brnn,  # type: ignore
+    "nbeats": openbb.forecast.nbeats,  # type: ignore
+    "tcn": openbb.forecast.tcn,  # type: ignore
+    "trans": openbb.forecast.trans,  # type: ignore
+    "tft": openbb.forecast.tft,  # type: ignore
 }
 
 feat_engs = {
-    "ema": api.forecast.ema,  # type: ignore
-    "sto": api.forecast.sto,  # type: ignore
-    "rsi": api.forecast.rsi,  # type: ignore
-    "roc": api.forecast.roc,  # type: ignore
-    "mom": api.forecast.mom,  # type: ignore
-    "atr": api.forecast.atr,  # type: ignore
-    "delta": api.forecast.delta,  # type: ignore
-    "signal": api.forecast.signal,  # type: ignore
+    "ema": openbb.forecast.ema,  # type: ignore
+    "sto": openbb.forecast.sto,  # type: ignore
+    "rsi": openbb.forecast.rsi,  # type: ignore
+    "roc": openbb.forecast.roc,  # type: ignore
+    "mom": openbb.forecast.mom,  # type: ignore
+    "atr": openbb.forecast.atr,  # type: ignore
+    "delta": openbb.forecast.delta,  # type: ignore
+    "signal": openbb.forecast.signal,  # type: ignore
 }
 # pylint: enable=E1101
 
