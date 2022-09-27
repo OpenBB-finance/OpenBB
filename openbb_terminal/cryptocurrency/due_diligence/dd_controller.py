@@ -528,9 +528,9 @@ class DueDiligenceController(CryptoBaseController):
             "-i",
             "--interval",
             dest="interval",
-            type=int,
+            type=str,
             help="Frequency interval. Default: 0",
-            default=0,
+            default="0",
             choices=coinglass_model.INTERVALS,
         )
 
@@ -538,10 +538,15 @@ class DueDiligenceController(CryptoBaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
+        try:
+            interval = int(ns_parser.interval)
+        except ValueError:
+            console.print("[red]Interval must be an integer value[/red]\n")
+
         if ns_parser:
             coinglass_view.display_open_interest(
                 symbol=self.symbol.upper(),
-                interval=ns_parser.interval,
+                interval=interval,
                 export=ns_parser.export,
             )
 

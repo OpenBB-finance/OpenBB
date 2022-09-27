@@ -13,7 +13,8 @@ logger = logging.getLogger(__name__)
 
 api_url = "https://open-api.coinglass.com/api/pro/v1/"
 
-INTERVALS = [0, 1, 2, 4]
+intervals = [0, 1, 2, 4]
+INTERVALS = [str(x) for x in intervals]
 
 
 @log_start_end(log=logger)
