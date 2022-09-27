@@ -11,7 +11,7 @@ from openbb_terminal.core.config.paths import (
     USER_EXPORTS_DIRECTORY,
     PORTFOLIO_DATA_DIRECTORY,
     ROUTINES_DIRECTORY,
-    DATA_SOURCES_DEFAULT_FILE
+    DATA_SOURCES_DEFAULT_FILE,
 )
 
 
