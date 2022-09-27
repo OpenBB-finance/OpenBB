@@ -52,7 +52,10 @@ def get_tradingview_recommendation(
     if not exchange:
         s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={symbol}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
         result = requests.get(s_req, stream=True)
-        exchange = result.json()["Exchange"]
+        data = result.json()
+        if not data:
+            return pd.DataFrame()
+        exchange = data["Exchange"]
 
     if interval:
         intervals = [interval]
