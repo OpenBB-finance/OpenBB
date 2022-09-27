@@ -1910,7 +1910,7 @@ functions = {
     "keys.walert": {"model": "openbb_terminal.keys_model.set_walert_key"},
     "keys.glassnode": {"model": "openbb_terminal.keys_model.set_glassnode_key"},
     "keys.coinglass": {"model": "openbb_terminal.keys_model.set_coinglass_key"},
-    # "keys.cpanic": {"model": "openbb_terminal.keys_model.set_cpanic_key"},
+    "keys.cpanic": {"model": "openbb_terminal.keys_model.set_cpanic_key"},
     # "keys.ethplorer": {"model": "openbb_terminal.keys_model.set_ethplorer_key"},
     # "keys.smartstake": {"model": "openbb_terminal.keys_model.set_smartstake_key"},
     # "keys.github": {"model": "openbb_terminal.keys_model.set_github_key"},

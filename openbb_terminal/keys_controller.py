@@ -23,7 +23,6 @@ from openbb_terminal.helper_funcs import parse_simple_args
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText, translate
-from openbb_terminal.terminal_helper import suppress_stdout
 
 logger = logging.getLogger(__name__)
 
@@ -240,41 +239,25 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         self.key_dict["WHALE_ALERT"] = status
 
     def check_glassnode_key(self, status: str = "", show_output: bool = False) -> None:
-        """Check glassnode key"""
+        """Check Glassnode key"""
         self.cfg_dict["GLASSNODE"] = "glassnode"
         if not status:
             status = keys_model.check_glassnode_key(show_output=show_output)
         self.key_dict["GLASSNODE"] = status
 
     def check_coinglass_key(self, status: str = "", show_output: bool = False) -> None:
-        """Check coinglass key"""
+        """Check Coinglass key"""
         self.cfg_dict["COINGLASS"] = "coinglass"
         if not status:
             status = keys_model.check_coinglass_key(show_output=show_output)
         self.key_dict["COINGLASS"] = status
 
-    def check_cpanic_key(self, show_output: bool = False) -> None:
-        """Check cpanic key"""
+    def check_cpanic_key(self, status: str = "", show_output: bool = False) -> None:
+        """Check Cpanic key"""
         self.cfg_dict["CRYPTO_PANIC"] = "cpanic"
-        if cfg.API_CRYPTO_PANIC_KEY == "REPLACE_ME":
-            logger.info("cpanic key not defined")
-            self.key_dict["CRYPTO_PANIC"] = "not defined"
-        else:
-            crypto_panic_url = f"https://cryptopanic.com/api/v1/posts/?auth_token={cfg.API_CRYPTO_PANIC_KEY}&kind=all"
-            response = requests.get(crypto_panic_url)
-
-            if not 200 <= response.status_code < 300:
-                logger.warning("cpanic key defined, test failed")
-                self.key_dict["CRYPTO_PANIC"] = "defined, test unsuccessful"
-            try:
-                logger.info("cpanic key defined, test passed")
-                self.key_dict["CRYPTO_PANIC"] = "defined, test passed"
-            except Exception as _:  # noqa: F841
-                logger.warning("cpanic key defined, test failed")
-                self.key_dict["CRYPTO_PANIC"] = "defined, test unsuccessful"
-
-        if show_output:
-            console.print(self.key_dict["CRYPTO_PANIC"] + "\n")
+        if not status:
+            status = keys_model.check_cpanic_key(show_output=show_output)
+        self.key_dict["CRYPTO_PANIC"] = status
 
     def check_ethplorer_key(self, show_output: bool = False) -> None:
         """Check ethplorer key"""
@@ -1279,11 +1262,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             other_args.insert(0, "-k")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            os.environ["OPENBB_API_CRYPTO_PANIC_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "OPENBB_API_CRYPTO_PANIC_KEY", ns_parser.key)
-            cfg.API_CRYPTO_PANIC_KEY = ns_parser.key
-
-            self.check_cpanic_key(show_output=True)
+            status = keys_model.set_cpanic_key(
+                key=ns_parser.key, persist=True, show_output=True
+            )
+            self.check_cpanic_key(status, show_output=False)
 
     @log_start_end(log=logger)
     def call_ethplorer(self, other_args: List[str]):

@@ -47,7 +47,7 @@ def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> Non
         os.environ[env_var_name] = env_var_value
         dotenv.set_key(str(USER_ENV_FILE), env_var_name, env_var_value)
 
-    # Remove OPENBB_ prefix from env_var
+    # Remove "OPENBB_" prefix from env_var
     if env_var_name.startswith("OPENBB_"):
         env_var_name = env_var_name[7:]
 
@@ -1730,6 +1730,76 @@ def check_coinglass_key(show_output: bool = False) -> str:
             status = "defined, test passed"
         else:
             logger.warning("Coinglass key defined, test failed")
+            status = "defined, test unsuccessful"
+
+    if show_output:
+        console.print(status + "\n")
+
+    return status
+
+
+def set_cpanic_key(key: str, persist: bool = False, show_output: bool = False):
+    """Set Cpanic key.
+
+    Parameters
+    ----------
+        key: str
+            API key
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+    """
+
+    set_key("OPENBB_API_CRYPTO_PANIC_KEY", key, persist)
+    status = check_cpanic_key(show_output)
+
+    return status
+
+
+def check_cpanic_key(show_output: bool = False) -> str:
+    """Check Cpanic key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not.
+
+    Returns
+    -------
+    str
+        API key status. One of the following:
+            not defined
+            defined, test failed
+            defined, test passed
+            defined, test inconclusive
+
+    """
+
+    if cfg.API_CRYPTO_PANIC_KEY == "REPLACE_ME":
+        logger.info("cpanic key not defined")
+        status = "not defined"
+    else:
+        crypto_panic_url = f"https://cryptopanic.com/api/v1/posts/?auth_token={cfg.API_CRYPTO_PANIC_KEY}&kind=all"
+        response = requests.get(crypto_panic_url)
+
+        if not 200 <= response.status_code < 300:
+            logger.warning("cpanic key defined, test failed")
+            status = "defined, test unsuccessful"
+        try:
+            logger.info("cpanic key defined, test passed")
+            status = "defined, test passed"
+        except Exception as _:  # noqa: F841
+            logger.warning("cpanic key defined, test failed")
             status = "defined, test unsuccessful"
 
     if show_output:
