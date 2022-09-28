@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     """Keys Controller class"""
 
-    CHOICES_COMMANDS: List[str] = [
+    API_LIST: List[str] = [
         "av",
         "fmp",
         "quandl",
@@ -55,9 +55,40 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         "messari",
         "santiment",
     ]
+    CHOICES_COMMANDS: List[str] = API_LIST + []
     PATH = "/keys/"
     key_dict: Dict = {}
-    cfg_dict: Dict = {}
+    alias_dict: Dict = {
+        "av": "ALPHA_VANTAGE",
+        "fmp": "FINANCIAL_MODELING_PREP",
+        "quandl": "QUANDL",
+        "polygon": "POLYGON",
+        "fred": "FRED",
+        "news": "NEWSAPI",
+        "tradier": "TRADIER",
+        "cmc": "COINMARKETCAP",
+        "finnhub": "FINNHUB",
+        "iex": "IEXCLOUD",
+        "reddit": "REDDIT",
+        "twitter": "TWITTER",
+        "rh": "ROBINHOOD",
+        "degiro": "DEGIRO",
+        "oanda": "OANDA",
+        "binance": "BINANCE",
+        "bitquery": "BITQUERY",
+        "si": "SENTIMENT_INVESTOR",
+        "coinbase": "COINBASE",
+        "walert": "WHALE_ALERT",
+        "glassnode": "GLASSNODE",
+        "coinglass": "COINGLASS",
+        "cpanic": "CRYPTO_PANIC",
+        "ethplorer": "ETHPLORER",
+        "smartstake": "SMARTSTAKE",
+        "github": "GITHUB",
+        "eodhd": "EODHD",
+        "messari": "MESSARI",
+        "santiment": "SANTIMENT",
+    }
 
     def __init__(
         self,
@@ -78,240 +109,73 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
                 self.completer = NestedCompleter.from_nested_dict(choices)
 
-    def check_av_key(self, status: int = 0, show_output: bool = False) -> None:
-        """Check Alpha Vantage key"""
-        self.cfg_dict["ALPHA_VANTAGE"] = "av"
-        if not status:
-            status = keys_model.check_av_key(show_output=show_output)
-        self.key_dict["ALPHA_VANTAGE"] = keys_model.EXIT_MSG[status]
-
-    def check_fmp_key(self, status: int = 0, show_output: bool = False) -> None:
-        """Check Financial Modeling Prep key"""
-        self.cfg_dict["FINANCIAL_MODELING_PREP"] = "fmp"
-        if not status:
-            status = keys_model.check_fmp_key(show_output=show_output)
-        self.key_dict["FINANCIAL_MODELING_PREP"] = keys_model.EXIT_MSG[status]
-
-    def check_quandl_key(self, status: int = 0, show_output: bool = False) -> None:
-        """Check Quandl key"""
-        self.cfg_dict["QUANDL"] = "quandl"
-        if not status:
-            status = keys_model.check_quandl_key(show_output=show_output)
-        self.key_dict["QUANDL"] = keys_model.EXIT_MSG[status]
-
-    def check_polygon_key(self, status: int = 0, show_output: bool = False) -> None:
-        """Check Polygon key"""
-        self.cfg_dict["POLYGON"] = "polygon"
-        if not status:
-            status = keys_model.check_polygon_key(show_output=show_output)
-        self.key_dict["POLYGON"] = keys_model.EXIT_MSG[status]
-
-    def check_fred_key(self, status: int = 0, show_output: bool = False) -> None:
-        """Check FRED key and update menu accordingly"""
-        self.cfg_dict["FRED"] = "fred"
-        if not status:
-            status = keys_model.check_fred_key(show_output=show_output)
-        self.key_dict["FRED"] = keys_model.EXIT_MSG[status]
-
-    def check_news_key(self, status: int = 0, show_output: bool = False) -> None:
-        """Check News API key"""
-        self.cfg_dict["NEWSAPI"] = "news"
-        if not status:
-            status = keys_model.check_news_key(show_output=show_output)
-        self.key_dict["NEWSAPI"] = keys_model.EXIT_MSG[status]
-
-    def check_tradier_key(self, status: int = 0, show_output: bool = False) -> None:
-        """Check Tradier key"""
-        self.cfg_dict["TRADIER"] = "tradier"
-        if not status:
-            status = keys_model.check_tradier_key(show_output=show_output)
-        self.key_dict["TRADIER"] = keys_model.EXIT_MSG[status]
-
-    def check_cmc_key(self, status: int = 0, show_output: bool = False) -> None:
-        """Check Coinmarketcap key"""
-        self.cfg_dict["COINMARKETCAP"] = "cmc"
-        if not status:
-            status = keys_model.check_cmc_key(show_output=show_output)
-        self.key_dict["COINMARKETCAP"] = keys_model.EXIT_MSG[status]
-
-    def check_finnhub_key(self, status: int = 0, show_output: bool = False) -> None:
-        """Check Finnhub key"""
-        self.cfg_dict["FINNHUB"] = "finnhub"
-        if not status:
-            status = keys_model.check_finnhub_key(show_output=show_output)
-        self.key_dict["FINNHUB"] = keys_model.EXIT_MSG[status]
-
-    def check_iex_key(self, status: int = 0, show_output: bool = False) -> None:
-        """Check IEX Cloud key"""
-        self.cfg_dict["IEXCLOUD"] = "iex"
-        if not status:
-            status = keys_model.check_iex_key(show_output=show_output)
-        self.key_dict["IEXCLOUD"] = keys_model.EXIT_MSG[status]
-
-    def check_reddit_key(self, status: int = 0, show_output: bool = False) -> None:
-        """Check Reddit key"""
-        self.cfg_dict["REDDIT"] = "reddit"
-        if not status:
-            status = keys_model.check_reddit_key(show_output=show_output)
-        self.key_dict["REDDIT"] = keys_model.EXIT_MSG[status]
-
-    def check_twitter_key(self, status: int = 0, show_output: bool = False) -> None:
-        """Check Twitter key"""
-        self.cfg_dict["TWITTER"] = "twitter"
-        if not status:
-            status = keys_model.check_twitter_key(show_output=show_output)
-        self.key_dict["TWITTER"] = keys_model.EXIT_MSG[status]
-
-    def check_rh_key(self, status: int = 0, show_output: bool = False) -> None:
-        """Check Robinhood key"""
-        self.cfg_dict["ROBINHOOD"] = "rh"
-        if not status:
-            status = keys_model.check_rh_key(show_output=show_output)
-        self.key_dict["ROBINHOOD"] = keys_model.EXIT_MSG[status]
-
-    def check_degiro_key(self, status: int = 0, show_output: bool = False) -> None:
-        """Check Degiro key"""
-        self.cfg_dict["DEGIRO"] = "degiro"
-        if not status:
-            status = keys_model.check_degiro_key(show_output=show_output)
-        self.key_dict["DEGIRO"] = keys_model.EXIT_MSG[status]
-
-    def check_oanda_key(self, status: int = 0, show_output: bool = False) -> None:
-        """Check Oanda key"""
-        self.cfg_dict["OANDA"] = "oanda"
-        if not status:
-            status = keys_model.check_degiro_key(show_output=show_output)
-        self.key_dict["OANDA"] = keys_model.EXIT_MSG[status]
-
-    def check_binance_key(self, status: int = 0, show_output: bool = False) -> None:
-        """Check Binance key"""
-        self.cfg_dict["BINANCE"] = "binance"
-        if not status:
-            status = keys_model.check_binance_key(show_output=show_output)
-        self.key_dict["BINANCE"] = keys_model.EXIT_MSG[status]
-
-    def check_bitquery_key(self, status: int = 0, show_output: bool = False) -> None:
-        """Check Bitquery key"""
-        self.cfg_dict["BITQUERY"] = "bitquery"
-        if not status:
-            status = keys_model.check_bitquery_key(show_output=show_output)
-        self.key_dict["BITQUERY"] = keys_model.EXIT_MSG[status]
-
-    def check_si_key(self, status: int = 0, show_output: bool = False) -> None:
-        """Check Sentiment Investor key"""
-        self.cfg_dict["SENTIMENT_INVESTOR"] = "si"
-        if not status:
-            status = keys_model.check_si_key(show_output=show_output)
-        self.key_dict["SENTIMENT_INVESTOR"] = keys_model.EXIT_MSG[status]
-
-    def check_coinbase_key(self, status: int = 0, show_output: bool = False) -> None:
-        """Check Coinbase key"""
-        self.cfg_dict["COINBASE"] = "coinbase"
-        if not status:
-            status = keys_model.check_coinbase_key(show_output=show_output)
-        self.key_dict["COINBASE"] = keys_model.EXIT_MSG[status]
-
-    def check_walert_key(self, status: int = 0, show_output: bool = False) -> None:
-        """Check Walert key"""
-        self.cfg_dict["WHALE_ALERT"] = "walert"
-        if not status:
-            status = keys_model.check_walert_key(show_output=show_output)
-        self.key_dict["WHALE_ALERT"] = keys_model.EXIT_MSG[status]
-
-    def check_glassnode_key(self, status: int = 0, show_output: bool = False) -> None:
-        """Check Glassnode key"""
-        self.cfg_dict["GLASSNODE"] = "glassnode"
-        if not status:
-            status = keys_model.check_glassnode_key(show_output=show_output)
-        self.key_dict["GLASSNODE"] = keys_model.EXIT_MSG[status]
-
-    def check_coinglass_key(self, status: int = 0, show_output: bool = False) -> None:
-        """Check Coinglass key"""
-        self.cfg_dict["COINGLASS"] = "coinglass"
-        if not status:
-            status = keys_model.check_coinglass_key(show_output=show_output)
-        self.key_dict["COINGLASS"] = keys_model.EXIT_MSG[status]
-
-    def check_cpanic_key(self, status: int = 0, show_output: bool = False) -> None:
-        """Check Cpanic key"""
-        self.cfg_dict["CRYPTO_PANIC"] = "cpanic"
-        if not status:
-            status = keys_model.check_cpanic_key(show_output=show_output)
-        self.key_dict["CRYPTO_PANIC"] = keys_model.EXIT_MSG[status]
-
-    def check_ethplorer_key(self, status: int = 0, show_output: bool = False) -> None:
-        """Check ethplorer key"""
-        self.cfg_dict["ETHPLORER"] = "ethplorer"
-        if not status:
-            status = keys_model.check_ethplorer_key(show_output=show_output)
-        self.key_dict["ETHPLORER"] = keys_model.EXIT_MSG[status]
-
-    def check_smartstake_key(self, status: int = 0, show_output: bool = False) -> None:
-        """Check Smartstake key"""
-        self.cfg_dict["SMARTSTAKE"] = "smartstake"
-        if not status:
-            status = keys_model.check_smartstake_key(show_output=show_output)
-        self.key_dict["SMARTSTAKE"] = keys_model.EXIT_MSG[status]
-
-    def check_github_key(self, status: int = 0, show_output: bool = False) -> None:
-        """Check GitHub key"""
-        self.cfg_dict["GITHUB"] = "github"
-        if not status:
-            status = keys_model.check_github_key(show_output=show_output)
-        self.key_dict["GITHUB"] = keys_model.EXIT_MSG[status]
-
-    def check_messari_key(self, status: int = 0, show_output: bool = False) -> None:
-        """Check Messari key"""
-        self.cfg_dict["MESSARI"] = "messari"
-        if not status:
-            status = keys_model.check_messari_key(show_output=show_output)
-        self.key_dict["MESSARI"] = keys_model.EXIT_MSG[status]
-
-    def check_eodhd_key(self, status: int = 0, show_output: bool = False) -> None:
-        """Check End of Day Historical Data key"""
-        self.cfg_dict["EODHD"] = "eodhd"
-        if not status:
-            status = keys_model.check_eodhd_key(show_output=show_output)
-        self.key_dict["EODHD"] = keys_model.EXIT_MSG[status]
-
-    def check_santiment_key(self, status: int = 0, show_output: bool = False) -> None:
-        """Check Santiment key"""
-        self.cfg_dict["SANTIMENT"] = "santiment"
-        if not status:
-            status = keys_model.check_santiment_key(show_output=show_output)
-        self.key_dict["SANTIMENT"] = keys_model.EXIT_MSG[status]
+    @staticmethod
+    def check_key(api: str) -> int:
+        if api == "av":
+            return keys_model.check_av_key()
+        elif api == "fmp":
+            return keys_model.check_fmp_key()
+        elif api == "quandl":
+            return keys_model.check_quandl_key()
+        elif api == "polygon":
+            return keys_model.check_polygon_key()
+        elif api == "fred":
+            return keys_model.check_fred_key()
+        elif api == "news":
+            return keys_model.check_news_key()
+        elif api == "tradier":
+            return keys_model.check_tradier_key()
+        elif api == "cmc":
+            return keys_model.check_cmc_key()
+        elif api == "finnhub":
+            return keys_model.check_finnhub_key()
+        elif api == "iex":
+            return keys_model.check_iex_key()
+        elif api == "reddit":
+            return keys_model.check_reddit_key()
+        elif api == "twitter":
+            return keys_model.check_twitter_key()
+        elif api == "rh":
+            return keys_model.check_rh_key()
+        elif api == "degiro":
+            return keys_model.check_degiro_key()
+        elif api == "oanda":
+            return keys_model.check_fred_key()
+        elif api == "binance":
+            return keys_model.check_oanda_key()
+        elif api == "bitquery":
+            return keys_model.check_bitquery_key()
+        elif api == "si":
+            return keys_model.check_si_key()
+        elif api == "coinbase":
+            return keys_model.check_coinbase_key()
+        elif api == "walert":
+            return keys_model.check_walert_key()
+        elif api == "glassnode":
+            return keys_model.check_glassnode_key()
+        elif api == "coinglass":
+            return keys_model.check_coinglass_key()
+        elif api == "cpanic":
+            return keys_model.check_cpanic_key()
+        elif api == "ethplorer":
+            return keys_model.check_ethplorer_key()
+        elif api == "smartstake":
+            return keys_model.check_smartstake_key()
+        elif api == "github":
+            return keys_model.check_github_key()
+        elif api == "eodhd":
+            return keys_model.check_eodhd_key()
+        elif api == "messari":
+            return keys_model.check_messari_key()
+        elif api == "santiment":
+            return keys_model.check_santiment_key()
 
     def check_keys_status(self) -> None:
         """Check keys status"""
-        self.check_av_key()
-        self.check_fmp_key()
-        self.check_quandl_key()
-        self.check_polygon_key()
-        self.check_fred_key()
-        self.check_news_key()
-        self.check_tradier_key()
-        self.check_cmc_key()
-        self.check_finnhub_key()
-        self.check_iex_key()
-        self.check_reddit_key()
-        self.check_twitter_key()
-        self.check_rh_key()
-        self.check_degiro_key()
-        self.check_oanda_key()
-        self.check_binance_key()
-        self.check_bitquery_key()
-        self.check_si_key()
-        self.check_coinbase_key()
-        self.check_walert_key()
-        self.check_glassnode_key()
-        self.check_coinglass_key()
-        self.check_cpanic_key()
-        self.check_ethplorer_key()
-        self.check_smartstake_key()
-        self.check_github_key()
-        self.check_messari_key()
-        self.check_eodhd_key()
-        self.check_santiment_key()
+
+        for api in self.API_LIST:
+            status = KeysController.check_key(api)
+            self.key_dict[api] = keys_model.EXIT_MSG[status]
 
     def print_help(self):
         """Print help"""
@@ -320,7 +184,8 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         mt.add_info("_keys_")
         mt.add_raw("\n")
         for k, v in self.key_dict.items():
-            cmd_name = self.cfg_dict[k]
+            cmd_name = k
+            alias_name = self.alias_dict[k]
             c = "red"
             if v == "defined, test passed":
                 c = "green"
@@ -332,7 +197,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 c = "grey30"
             mt.add_raw(
                 f"   [cmds]{cmd_name}[/cmds] {(20 - len(cmd_name)) * ' '}"
-                f" [{c}] {k} {(25 - len(k)) * ' '} {translate(v)} [/{c}]\n"
+                f" [{c}] {alias_name} {(25 - len(alias_name)) * ' '} {translate(v)} [/{c}]\n"
             )
 
         console.print(text=mt.menu_text, menu="Keys")
@@ -366,7 +231,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_av_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.check_av_key(status, show_output=False)
+            self.key_dict["av"] = keys_model.EXIT_MSG[status]
 
     @log_start_end(log=logger)
     def call_fmp(self, other_args: List[str]):
@@ -397,7 +262,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_fmp_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.check_fmp_key(status, show_output=False)
+            self.key_dict["fmp"] = keys_model.EXIT_MSG[status]
 
     @log_start_end(log=logger)
     def call_quandl(self, other_args: List[str]):
@@ -426,7 +291,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_quandl_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.check_quandl_key(status, show_output=False)
+            self.key_dict["quandl"] = keys_model.EXIT_MSG[status]
 
     @log_start_end(log=logger)
     def call_polygon(self, other_args: List[str]):
@@ -455,7 +320,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_polygon_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.check_polygon_key(status, show_output=False)
+            self.key_dict["polygon"] = keys_model.EXIT_MSG[status]
 
     @log_start_end(log=logger)
     def call_fred(self, other_args: List[str]):
@@ -484,7 +349,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_fred_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.check_fred_key(status, show_output=False)
+            self.key_dict["fred"] = keys_model.EXIT_MSG[status]
 
     @log_start_end(log=logger)
     def call_news(self, other_args: List[str]):
@@ -513,7 +378,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_news_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.check_news_key(status, show_output=False)
+            self.key_dict["news"] = keys_model.EXIT_MSG[status]
 
     @log_start_end(log=logger)
     def call_tradier(self, other_args: List[str]):
@@ -542,7 +407,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_tradier_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.check_tradier_key(status, show_output=False)
+            self.key_dict["tradier"] = keys_model.EXIT_MSG[status]
 
     @log_start_end(log=logger)
     def call_cmc(self, other_args: List[str]):
@@ -570,7 +435,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_cmc_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.check_cmc_key(status, show_output=False)
+            self.key_dict["cmc"] = keys_model.EXIT_MSG[status]
 
     @log_start_end(log=logger)
     def call_finnhub(self, other_args: List[str]):
@@ -598,7 +463,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_finnhub_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.check_finnhub_key(status, show_output=False)
+            self.key_dict["finnhub"] = keys_model.EXIT_MSG[status]
 
     @log_start_end(log=logger)
     def call_iex(self, other_args: List[str]):
@@ -626,7 +491,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_iex_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.check_iex_key(status, show_output=False)
+            self.key_dict["iex"] = keys_model.EXIT_MSG[status]
 
     @log_start_end(log=logger)
     def call_reddit(self, other_args: List[str]):
@@ -698,7 +563,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 persist=True,
                 show_output=True,
             )
-            self.check_reddit_key(status, show_output=False)
+            self.key_dict["reddit"] = keys_model.EXIT_MSG[status]
 
     @log_start_end(log=logger)
     def call_twitter(self, other_args: List[str]):
@@ -745,7 +610,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 persist=True,
                 show_output=True,
             )
-            self.check_twitter_key(status, show_output=False)
+            self.key_dict["twitter"] = keys_model.EXIT_MSG[status]
 
     @log_start_end(log=logger)
     def call_rh(self, other_args: List[str]):
@@ -781,7 +646,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 persist=True,
                 show_output=True,
             )
-            self.check_rh_key(status, show_output=False)
+            self.key_dict["rh"] = keys_model.EXIT_MSG[status]
 
     @log_start_end(log=logger)
     def call_degiro(self, other_args: List[str]):
@@ -826,8 +691,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 persist=True,
                 show_output=True,
             )
-
-            self.check_degiro_key(status, show_output=False)
+            self.key_dict["degiro"] = keys_model.EXIT_MSG[status]
 
     @log_start_end(log=logger)
     def call_oanda(self, other_args: List[str]):
@@ -871,8 +735,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 persist=True,
                 show_output=True,
             )
-
-            self.check_oanda_key(status, show_output=False)
+            self.key_dict["oanda"] = keys_model.EXIT_MSG[status]
 
     @log_start_end(log=logger)
     def call_binance(self, other_args: List[str]):
@@ -908,8 +771,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 persist=True,
                 show_output=True,
             )
-
-            self.check_binance_key(status, show_output=False)
+            self.key_dict["binance"] = keys_model.EXIT_MSG[status]
 
     @log_start_end(log=logger)
     def call_bitquery(self, other_args: List[str]):
@@ -937,7 +799,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_bitquery_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.check_bitquery_key(status, show_output=False)
+            self.key_dict["bitquery"] = keys_model.EXIT_MSG[status]
 
     @log_start_end(log=logger)
     def call_si(self, other_args: List[str]):
@@ -965,7 +827,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_si_key(
                 access_token=ns_parser.token, persist=True, show_output=True
             )
-            self.check_si_key(status, show_output=False)
+            self.key_dict["si"] = keys_model.EXIT_MSG[status]
 
     @log_start_end(log=logger)
     def call_coinbase(self, other_args: List[str]):
@@ -1009,7 +871,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 persist=True,
                 show_output=True,
             )
-            self.check_coinbase_key(status, show_output=False)
+            self.key_dict["coinbase"] = keys_model.EXIT_MSG[status]
 
     @log_start_end(log=logger)
     def call_walert(self, other_args: List[str]):
@@ -1037,7 +899,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_walert_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.check_walert_key(status, show_output=False)
+            self.key_dict["walert"] = keys_model.EXIT_MSG[status]
 
     @log_start_end(log=logger)
     def call_glassnode(self, other_args: List[str]):
@@ -1046,7 +908,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="glassnode",
-            description="Set Whale Alert API key.",
+            description="Set Glassnode API key.",
         )
         parser.add_argument(
             "-k",
@@ -1067,7 +929,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_glassnode_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.check_glassnode_key(status, show_output=False)
+            self.key_dict["glassnode"] = keys_model.EXIT_MSG[status]
 
     @log_start_end(log=logger)
     def call_coinglass(self, other_args: List[str]):
@@ -1097,7 +959,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_coinglass_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.check_coinglass_key(status, show_output=False)
+            self.key_dict["coinglass"] = keys_model.EXIT_MSG[status]
 
     @log_start_end(log=logger)
     def call_cpanic(self, other_args: List[str]):
@@ -1127,7 +989,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_cpanic_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.check_cpanic_key(status, show_output=False)
+            self.key_dict["cpanic"] = keys_model.EXIT_MSG[status]
 
     @log_start_end(log=logger)
     def call_ethplorer(self, other_args: List[str]):
@@ -1157,7 +1019,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_ethplorer_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.check_ethplorer_key(status, show_output=False)
+            self.key_dict["ethplorer"] = keys_model.EXIT_MSG[status]
 
     @log_start_end(log=logger)
     def call_smartstake(self, other_args: List[str]):
@@ -1194,7 +1056,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 persist=True,
                 show_output=True,
             )
-            self.check_smartstake_key(status, show_output=False)
+            self.key_dict["smartstake"] = keys_model.EXIT_MSG[status]
 
     @log_start_end(log=logger)
     def call_github(self, other_args: List[str]):
@@ -1225,7 +1087,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_github_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.check_github_key(status, show_output=False)
+            self.key_dict["github"] = keys_model.EXIT_MSG[status]
 
     @log_start_end(log=logger)
     def call_messari(self, other_args: List[str]):
@@ -1254,7 +1116,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_messari_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.check_messari_key(status, show_output=False)
+            self.key_dict["messari"] = keys_model.EXIT_MSG[status]
 
     @log_start_end(log=logger)
     def call_eodhd(self, other_args: List[str]):
@@ -1284,7 +1146,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_eodhd_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.check_eodhd_key(status, show_output=False)
+            self.key_dict["eodhd"] = keys_model.EXIT_MSG[status]
 
     def call_santiment(self, other_args: List[str]):
         """Process santiment command"""
@@ -1314,4 +1176,4 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_santiment_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.check_santiment_key(status, show_output=False)
+            self.key_dict["santiment"] = keys_model.EXIT_MSG[status]
