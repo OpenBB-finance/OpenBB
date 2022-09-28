@@ -78,12 +78,12 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
                 self.completer = NestedCompleter.from_nested_dict(choices)
 
-    def check_av_key(self, status: str = "", show_output: bool = False) -> None:
+    def check_av_key(self, status: int = 0, show_output: bool = False) -> None:
         """Check Alpha Vantage key"""
         self.cfg_dict["ALPHA_VANTAGE"] = "av"
         if not status:
             status = keys_model.check_av_key(show_output=show_output)
-        self.key_dict["ALPHA_VANTAGE"] = status
+        self.key_dict["ALPHA_VANTAGE"] = keys_model.EXIT_MSG[status]
 
     def check_fmp_key(self, status: str = "", show_output: bool = False) -> None:
         """Check Financial Modeling Prep key"""

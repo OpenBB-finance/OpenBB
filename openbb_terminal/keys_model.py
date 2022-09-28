@@ -28,6 +28,14 @@ from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
 
+EXIT_MSG = {
+    -1: "defined, test failed",
+    0: "not defined",
+    1: "defined, test passed",
+    2: "defined, test inconclusive",
+    3: "defined, not tested",
+}
+
 
 def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> None:
     """Set API key.
@@ -75,7 +83,7 @@ def get_keys() -> Dict:
     return current_keys
 
 
-def set_av_key(key: str, persist: bool = False, show_output: bool = False):
+def set_av_key(key: str, persist: bool = False, show_output: bool = False) -> int:
     """Set Alphavantage key
 
     Parameters
@@ -89,12 +97,13 @@ def set_av_key(key: str, persist: bool = False, show_output: bool = False):
 
     Returns
     -------
-    str
+    int
         API key status. One of the following:
-            not defined
-            defined, test failed
-            defined, test passed
-            defined, test inconclusive
+            -1 - defined, test failed
+             0 - not defined
+             1 - defined, test passed
+             2 - defined, test inconclusive
+             3 - defined, not tested
     """
 
     set_key("OPENBB_API_KEY_ALPHAVANTAGE", key, persist)
@@ -103,7 +112,7 @@ def set_av_key(key: str, persist: bool = False, show_output: bool = False):
     return status
 
 
-def check_av_key(show_output: bool = False) -> str:
+def check_av_key(show_output: bool = False) -> int:
     """Check Alpha Vantage key
 
     Parameters
@@ -113,31 +122,31 @@ def check_av_key(show_output: bool = False) -> str:
 
     Returns
     -------
-    str
+    int
         API key status. One of the following:
-            not defined
-            defined, test failed
-            defined, test passed
-            defined, test inconclusive
-
+            -1 - defined, test failed
+             0 - not defined
+             1 - defined, test passed
+             2 - defined, test inconclusive
+             3 - defined, not tested
     """
 
     if cfg.API_KEY_ALPHAVANTAGE == "REPLACE_ME":  # pragma: allowlist secret
         logger.info("Alpha Vantage key not defined")
-        status = "not defined"
+        status = 0
     else:
         df = TimeSeries(
             key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas"
         ).get_intraday(symbol="AAPL")
         if df[0].empty:  # pylint: disable=no-member
             logger.warning("Alpha Vantage key defined, test failed")
-            status = "defined, test failed"
+            status = -1
         else:
             logger.info("Alpha Vantage key defined, test passed")
-            status = "defined, test passed"
+            status = 1
 
     if show_output:
-        console.print(status + "\n")
+        console.print(EXIT_MSG[status] + "\n")
 
     return status
 
