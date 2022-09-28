@@ -561,7 +561,11 @@ def get_macro_data(
             return pd.Series(dtype=float), ""
 
         if start_date or end_date:
-            df = df.loc[start_date:end_date]
+            try:
+                df = df.loc[start_date:end_date]
+            except TypeError:
+                console.print("[red]Invalid date sent. Format as YYYY-MM-DD[/red]\n")
+                return pd.DataFrame(), "NA/NA"
 
         if (
             symbol
