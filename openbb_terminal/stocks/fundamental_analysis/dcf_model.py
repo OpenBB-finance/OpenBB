@@ -426,6 +426,7 @@ def create_dataframe(symbol: str, statement: str, period: str = "annual"):
     else:
         return pd.DataFrame(), None, None
 
+    statement_currency = ""
     for currency in CURRENCIES:
         if currency.lower() in phrase:
             statement_currency = currency
