@@ -1193,7 +1193,7 @@ def check_degiro_key(show_output: bool = False) -> str:
 
 def set_oanda_key(
     account: str,
-    token: str,
+    access_token: str,
     account_type: str = "",
     persist: bool = False,
     show_output: bool = False,
@@ -1203,7 +1203,7 @@ def set_oanda_key(
     Parameters
     ----------
         account: str
-        token: str
+        access_token: str
         account_type: str
         persist: bool
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
@@ -1221,7 +1221,7 @@ def set_oanda_key(
     """
 
     set_key("OPENBB_OANDA_ACCOUNT", account, persist)
-    set_key("OPENBB_OANDA_TOKEN", token, persist)
+    set_key("OPENBB_OANDA_TOKEN", access_token, persist)
     set_key("OPENBB_OANDA_ACCOUNT_TYPE", account_type, persist)
 
     status = check_oanda_key(show_output)
@@ -1356,7 +1356,7 @@ def check_binance_key(show_output: bool = False) -> str:
 
 
 def set_si_key(
-    token: str,
+    access_token: str,
     persist: bool = False,
     show_output: bool = False,
 ):
@@ -1364,7 +1364,7 @@ def set_si_key(
 
     Parameters
     ----------
-        token: str
+        access_token: str
         secret: str
         persist: bool
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
@@ -1381,7 +1381,7 @@ def set_si_key(
             defined, test inconclusive
     """
 
-    set_key("OPENBB_API_SENTIMENTINVESTOR_TOKEN", token, persist)
+    set_key("OPENBB_API_SENTIMENTINVESTOR_TOKEN", access_token, persist)
 
     status = check_si_key(show_output)
 
@@ -1880,7 +1880,7 @@ def check_ethplorer_key(show_output: bool = False) -> str:
 
 
 def set_smartstake_key(
-    key: str, token: str, persist: bool = False, show_output: bool = False
+    key: str, access_token: str, persist: bool = False, show_output: bool = False
 ):
     """Set Smartstake key.
 
@@ -1888,7 +1888,7 @@ def set_smartstake_key(
     ----------
         key: str
             API key
-        token: str
+        access_token: str
             API token
         persist: bool
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
@@ -1906,7 +1906,7 @@ def set_smartstake_key(
     """
 
     set_key("OPENBB_API_SMARTSTAKE_KEY", key, persist)
-    set_key("OPENBB_API_SMARTSTAKE_TOKEN", token, persist)
+    set_key("OPENBB_API_SMARTSTAKE_TOKEN", access_token, persist)
     status = check_smartstake_key(show_output)
 
     return status

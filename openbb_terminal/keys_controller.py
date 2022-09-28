@@ -866,7 +866,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         if ns_parser:
             status = keys_model.set_oanda_key(
                 account=ns_parser.account,
-                token=ns_parser.token,
+                access_token=ns_parser.token,
                 account_type=ns_parser.account_type,
                 persist=True,
                 show_output=True,
@@ -963,7 +963,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             status = keys_model.set_si_key(
-                token=ns_parser.token, persist=True, show_output=True
+                access_token=ns_parser.token, persist=True, show_output=True
             )
             self.check_si_key(status, show_output=False)
 
@@ -1189,7 +1189,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
         if ns_parser:
             status = keys_model.set_smartstake_key(
-                key=ns_parser.key, token=ns_parser.token, persist=True, show_output=True
+                key=ns_parser.key, access_token=ns_parser.token, persist=True, show_output=True
             )
             self.check_smartstake_key(status, show_output=False)
 
