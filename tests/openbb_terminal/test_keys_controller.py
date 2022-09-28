@@ -62,14 +62,14 @@ class MockCFG:
 @pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
 def test_check_av_key(key, output, mocker):
     mocker.patch("openbb_terminal.keys_model.cfg", MockCFG(AV=key))
-    controller.check_av_key(show_output=output)
+    controller.check_key("av")
 
 
 @pytest.mark.vcr
 @pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
 def test_check_fmp_key(key, output, mocker):
     mocker.patch("openbb_terminal.keys_model.cfg", MockCFG(FMP=key))
-    controller.check_fmp_key(show_output=output)
+    controller.check_key("fmp")
 
 
 @pytest.mark.vcr
