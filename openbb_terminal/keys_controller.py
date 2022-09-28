@@ -1189,7 +1189,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
         if ns_parser:
             status = keys_model.set_smartstake_key(
-                key=ns_parser.key, access_token=ns_parser.token, persist=True, show_output=True
+                key=ns_parser.key,
+                access_token=ns_parser.token,
+                persist=True,
+                show_output=True,
             )
             self.check_smartstake_key(status, show_output=False)
 
