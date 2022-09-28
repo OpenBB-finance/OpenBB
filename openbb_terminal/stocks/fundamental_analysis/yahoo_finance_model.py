@@ -379,6 +379,8 @@ def get_financials(symbol: str, statement: str, ratios: bool = False) -> pd.Data
         index += 1
 
     df = pd.DataFrame(final[1:])
+    if df.empty:
+        return pd.DataFrame()
     new_headers = []
 
     if statement == "balance-sheet":
