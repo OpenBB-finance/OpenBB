@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
+from datetime import datetime
 
 import pandas as pd
 import yfinance as yf
@@ -621,17 +622,20 @@ def get_index(
         ticker = index
 
     try:
-        index_data = yf.download(
-            ticker,
-            start=start_date,
-            end=end_date,
-            interval=interval,
-            progress=False,
-            show_errors=False,
-        )
+        datetime.strptime(str(start_date), "%Y-%m-%d")
+        datetime.strptime(str(end_date), "%Y-%m-%d")
     except ValueError:
         console.print("[red]Please format date as YYYY-MM-DD[/red]\n")
-        return pd.Series()
+        return pd.Series(dtype="object")
+
+    index_data = yf.download(
+        ticker,
+        start=start_date,
+        end=end_date,
+        interval=interval,
+        progress=False,
+        show_errors=False,
+    )
 
     if column not in index_data.columns:
         console.print(
