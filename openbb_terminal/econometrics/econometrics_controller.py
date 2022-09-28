@@ -291,6 +291,24 @@ class EconometricsController(BaseController):
             return ["econometrics"] + load_files
         return []
 
+    def update_loaded(self):
+        self.list_dataset_cols = []
+        if not self.files:
+            self.loaded_dataset_cols = "\n"
+            self.list_dataset_cols.append("")
+            return
+
+        maxfile = max(len(file) for file in self.files)
+        self.loaded_dataset_cols = "\n"
+        for dataset, data in self.datasets.items():
+            max_files = (maxfile - len(dataset)) * " "
+            self.loaded_dataset_cols += (
+                f"\t{dataset} {max_files}: {', '.join(data.columns)}\n"
+            )
+
+            for col in data.columns:
+                self.list_dataset_cols.append(f"{dataset}.{col}")
+
     @log_start_end(log=logger)
     def call_load(self, other_args: List[str]):
         """Process load"""
@@ -392,18 +410,7 @@ class EconometricsController(BaseController):
 
                     self.update_runtime_choices()
 
-                    # Process new datasets to be updated
-                    self.list_dataset_cols = list()
-                    maxfile = max(len(file) for file in self.files)
-                    self.loaded_dataset_cols = "\n"
-                    for dataset, data in self.datasets.items():
-                        self.loaded_dataset_cols += (
-                            f"  {dataset} {(maxfile - len(dataset)) * ' '}: "
-                            f"{', '.join(data.columns)}\n"
-                        )
-
-                        for col in data.columns:
-                            self.list_dataset_cols.append(f"{dataset}.{col}")
+                    self.update_loaded()
 
                     console.print()
 
@@ -476,6 +483,9 @@ class EconometricsController(BaseController):
             other_args.insert(0, "-n")
         ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT)
 
+        if not ns_parser:
+            return
+
         if not ns_parser.name:
             console.print("Please enter a valid dataset.\n")
             return
@@ -489,15 +499,7 @@ class EconometricsController(BaseController):
 
         self.update_runtime_choices()
 
-        # Process new datasets to be updated
-        self.list_dataset_cols = list()
-        maxfile = max(len(file) for file in self.files)
-        self.loaded_dataset_cols = "\n"
-        for dataset, data in self.datasets.items():
-            self.loaded_dataset_cols += f"\t{dataset} {(maxfile - len(dataset)) * ' '}: {', '.join(data.columns)}\n"
-
-            for col in data.columns:
-                self.list_dataset_cols.append(f"{dataset}.{col}")
+        self.update_loaded()
 
     @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
@@ -1017,6 +1019,7 @@ class EconometricsController(BaseController):
                 )
 
             self.update_runtime_choices()
+            self.update_loaded()
         console.print()
 
     @log_start_end(log=logger)

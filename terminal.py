@@ -17,10 +17,7 @@ from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 
-from openbb_terminal.core.config import (  # pylint: disable=unused-import  # noqa
-    paths_helper,
-)
-from openbb_terminal.common import feedparser_view
+
 from openbb_terminal.core.config.paths import (
     REPOSITORY_DIRECTORY,
     USER_ENV_FILE,
@@ -53,6 +50,7 @@ from openbb_terminal.terminal_helper import (
     welcome_message,
 )
 from openbb_terminal.helper_funcs import parse_and_split_input
+from openbb_terminal.common import feedparser_view
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel,too-many-branches,no-member,C0302
 
@@ -822,7 +820,8 @@ def main(
     verbose : bool
         Whether to show output from tests
     routines_args : List[str]
-        One or multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD
+        One or multiple inputs to be replaced in the routine and separated by commas.
+        E.g. GME,AMC,BTC-USD
     """
 
     if test:
@@ -883,17 +882,18 @@ def main(
         console.print(
             f"Summary: [green]Successes: {SUCCESSES}[/green] [red]Failures: {FAILURES}[/red]"
         )
+        return
+
+    if debug:
+        os.environ["DEBUG_MODE"] = "true"
+    if isinstance(paths, list) and paths[0].endswith(".openbb"):
+        run_scripts(paths[0], routines_args=routines_args)
+    elif paths:
+        argv_cmds = list([" ".join(paths).replace(" /", "/home/")])
+        argv_cmds = insert_start_slash(argv_cmds) if argv_cmds else argv_cmds
+        terminal(argv_cmds)
     else:
-        if debug:
-            os.environ["DEBUG_MODE"] = "true"
-        if isinstance(paths, list) and paths[0].endswith(".openbb"):
-            run_scripts(paths[0], routines_args=routines_args)
-        elif paths:
-            argv_cmds = list([" ".join(paths).replace(" /", "/home/")])
-            argv_cmds = insert_start_slash(argv_cmds) if argv_cmds else argv_cmds
-            terminal(argv_cmds)
-        else:
-            terminal()
+        terminal()
 
 
 if __name__ == "__main__":
@@ -941,7 +941,10 @@ if __name__ == "__main__":
     parser.add_argument(
         "-i",
         "--input",
-        help="Select multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD",
+        help=(
+            "Select multiple inputs to be replaced in the routine and separated by commas."
+            "E.g. GME,AMC,BTC-USD"
+        ),
         dest="routine_args",
         type=lambda s: [str(item) for item in s.split(",")],
         default=None,
