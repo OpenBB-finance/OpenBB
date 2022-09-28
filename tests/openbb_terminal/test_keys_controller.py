@@ -9,7 +9,7 @@ controller = KeysController(menu_usage=False)
 
 @pytest.fixture(autouse=True)
 def no_change_env(mocker):
-    mocker.patch("openbb_terminal.keys_controller.dotenv.set_key")
+    mocker.patch("openbb_terminal.keys_model.dotenv.set_key")
 
 
 class MockCFG:
@@ -60,16 +60,9 @@ class MockCFG:
 
 @pytest.mark.vcr
 @pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
-def test_check_github_key(key, output, mocker):
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(GITHUB=key))
-    controller.check_github_key(output)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
 def test_check_av_key(key, output, mocker):
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(AV=key))
-    controller.check_av_key(output)
+    mocker.patch("openbb_terminal.keys_model.cfg", MockCFG(AV=key))
+    controller.check_av_key(show_output=output)
 
 
 @pytest.mark.vcr
@@ -423,12 +416,19 @@ def test_call_smartstake(other):
 
 
 @pytest.mark.vcr
-@pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
-def test_call_santiment(other):
-    controller.call_santiment(other)
+@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
+def test_check_github_key(key, output, mocker):
+    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(GITHUB=key))
+    controller.check_github_key(output)
 
 
 @pytest.mark.vcr
 @pytest.mark.parametrize("other", [[], ["-k", "1234", "-t", "456"]])
 def test_call_messari(other):
     controller.call_messari(other)
+
+
+@pytest.mark.vcr
+@pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
+def test_call_santiment(other):
+    controller.call_santiment(other)
