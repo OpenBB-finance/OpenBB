@@ -83,7 +83,7 @@ def get_keys() -> Dict:
     return current_keys
 
 
-def set_av_key(key: str, persist: bool = False, show_output: bool = False) -> int:
+def set_av_key(key: str, persist: bool = False, show_output: bool = True) -> int:
     """Set Alphavantage key
 
     Parameters
@@ -151,7 +151,7 @@ def check_av_key(show_output: bool = False) -> int:
     return status
 
 
-def set_fmp_key(key: str, persist: bool = False, show_output: bool = False) -> int:
+def set_fmp_key(key: str, persist: bool = False, show_output: bool = True) -> int:
     """Set Financial Modeling Prep key
 
     Parameters
@@ -180,7 +180,7 @@ def set_fmp_key(key: str, persist: bool = False, show_output: bool = False) -> i
     return status
 
 
-def check_fmp_key(show_output: bool = False) -> str:
+def check_fmp_key(show_output: bool = False)-> int:
     """Check Financial Modeling Prep key
 
     Parameters
@@ -225,7 +225,7 @@ def check_fmp_key(show_output: bool = False) -> str:
     return status
 
 
-def set_quandl_key(key: str, persist: bool = False, show_output: bool = False) -> int:
+def set_quandl_key(key: str, persist: bool = False, show_output: bool = True) -> int:
     """Set Quandl key
 
     Parameters
@@ -254,7 +254,7 @@ def set_quandl_key(key: str, persist: bool = False, show_output: bool = False) -
     return status
 
 
-def check_quandl_key(show_output: bool = False) -> str:
+def check_quandl_key(show_output: bool = False)-> int:
     """Check Quandl key
 
     Parameters
@@ -299,7 +299,7 @@ def check_quandl_key(show_output: bool = False) -> str:
     return status
 
 
-def set_polygon_key(key: str, persist: bool = False, show_output: bool = False) -> int:
+def set_polygon_key(key: str, persist: bool = False, show_output: bool = True) -> int:
     """Set Polygon key
 
     Parameters
@@ -328,7 +328,7 @@ def set_polygon_key(key: str, persist: bool = False, show_output: bool = False) 
     return status
 
 
-def check_polygon_key(show_output: bool = False) -> str:
+def check_polygon_key(show_output: bool = False)-> int:
     """Check Polygon key
 
     Parameters
@@ -372,7 +372,7 @@ def check_polygon_key(show_output: bool = False) -> str:
     return status
 
 
-def set_fred_key(key: str, persist: bool = False, show_output: bool = False) -> str:
+def set_fred_key(key: str, persist: bool = False, show_output: bool = True)-> int:
     """Set FRED key
 
     Parameters
@@ -401,7 +401,7 @@ def set_fred_key(key: str, persist: bool = False, show_output: bool = False) -> 
     return status
 
 
-def check_fred_key(show_output: bool = False) -> str:
+def check_fred_key(show_output: bool = False)-> int:
     """Check FRED key
 
     Parameters
@@ -443,7 +443,7 @@ def check_fred_key(show_output: bool = False) -> str:
     return status
 
 
-def set_news_key(key: str, persist: bool = False, show_output: bool = False) -> int:
+def set_news_key(key: str, persist: bool = False, show_output: bool = True) -> int:
     """Set News key
 
     Parameters
@@ -472,7 +472,7 @@ def set_news_key(key: str, persist: bool = False, show_output: bool = False) -> 
     return status
 
 
-def check_news_key(show_output: bool = False) -> str:
+def check_news_key(show_output: bool = False)-> int:
     """Check News key
 
     Parameters
@@ -515,7 +515,7 @@ def check_news_key(show_output: bool = False) -> str:
     return status
 
 
-def set_tradier_key(key: str, persist: bool = False, show_output: bool = False) -> int:
+def set_tradier_key(key: str, persist: bool = False, show_output: bool = True) -> int:
     """Set Tradier key
 
     Parameters
@@ -544,7 +544,7 @@ def set_tradier_key(key: str, persist: bool = False, show_output: bool = False) 
     return status
 
 
-def check_tradier_key(show_output: bool = False) -> str:
+def check_tradier_key(show_output: bool = False)-> int:
     """Check Tradier key
 
     Parameters
@@ -592,7 +592,7 @@ def check_tradier_key(show_output: bool = False) -> str:
     return status
 
 
-def set_cmc_key(key: str, persist: bool = False, show_output: bool = False) -> int:
+def set_cmc_key(key: str, persist: bool = False, show_output: bool = True) -> int:
     """Set Coinmarketcap key
 
     Parameters
@@ -621,7 +621,7 @@ def set_cmc_key(key: str, persist: bool = False, show_output: bool = False) -> i
     return status
 
 
-def check_cmc_key(show_output: bool = False) -> str:
+def check_cmc_key(show_output: bool = False)-> int:
     """Check Coinmarketcap key
 
     Parameters
@@ -661,7 +661,7 @@ def check_cmc_key(show_output: bool = False) -> str:
     return status
 
 
-def set_finnhub_key(key: str, persist: bool = False, show_output: bool = False) -> int:
+def set_finnhub_key(key: str, persist: bool = False, show_output: bool = True) -> int:
     """Set Finnhub key
 
     Parameters
@@ -690,7 +690,7 @@ def set_finnhub_key(key: str, persist: bool = False, show_output: bool = False) 
     return status
 
 
-def check_finnhub_key(show_output: bool = False) -> str:
+def check_finnhub_key(show_output: bool = False)-> int:
     """Check Finnhub key
 
     Parameters
@@ -733,7 +733,7 @@ def check_finnhub_key(show_output: bool = False) -> str:
     return status
 
 
-def set_iex_key(key: str, persist: bool = False, show_output: bool = False) -> int:
+def set_iex_key(key: str, persist: bool = False, show_output: bool = True) -> int:
     """Set IEX Cloud key
 
     Parameters
@@ -762,7 +762,7 @@ def set_iex_key(key: str, persist: bool = False, show_output: bool = False) -> i
     return status
 
 
-def check_iex_key(show_output: bool = False) -> str:
+def check_iex_key(show_output: bool = False)-> int:
     """Check IEX Cloud key
 
     Parameters
@@ -807,7 +807,7 @@ def set_reddit_key(
     username: str,
     useragent: str,
     persist: bool = False,
-    show_output: bool = False,
+    show_output: bool = True,
 ):
     """Set Reddit key
 
@@ -845,7 +845,7 @@ def set_reddit_key(
     return status
 
 
-def check_reddit_key(show_output: bool = False) -> str:
+def check_reddit_key(show_output: bool = False)-> int:
     """Check Reddit key
 
     Parameters
@@ -912,7 +912,7 @@ def check_reddit_key(show_output: bool = False) -> str:
     return status
 
 
-def set_bitquery_key(key: str, persist: bool = False, show_output: bool = False) -> int:
+def set_bitquery_key(key: str, persist: bool = False, show_output: bool = True) -> int:
     """Set Bitquery key
 
     Parameters
@@ -941,7 +941,7 @@ def set_bitquery_key(key: str, persist: bool = False, show_output: bool = False)
     return status
 
 
-def check_bitquery_key(show_output: bool = False) -> str:
+def check_bitquery_key(show_output: bool = False)-> int:
     """Check Bitquery key
 
     Parameters
@@ -996,7 +996,7 @@ def set_twitter_key(
     secret: str,
     access_token: str,
     persist: bool = False,
-    show_output: bool = False,
+    show_output: bool = True,
 ):
     """Set Twitter key
 
@@ -1030,7 +1030,7 @@ def set_twitter_key(
     return status
 
 
-def check_twitter_key(show_output: bool = False) -> str:
+def check_twitter_key(show_output: bool = False)-> int:
     """Check Twitter key
 
     Parameters
@@ -1089,7 +1089,7 @@ def set_rh_key(
     username: str,
     password: str,
     persist: bool = False,
-    show_output: bool = False,
+    show_output: bool = True,
 ):
     """Set Robinhood key
 
@@ -1121,7 +1121,7 @@ def set_rh_key(
     return status
 
 
-def check_rh_key(show_output: bool = False) -> str:
+def check_rh_key(show_output: bool = False)-> int:
     """Check Robinhood key
 
     Parameters
@@ -1160,7 +1160,7 @@ def set_degiro_key(
     password: str,
     secret: str = "",
     persist: bool = False,
-    show_output: bool = False,
+    show_output: bool = True,
 ):
     """Set Degiro key
 
@@ -1194,7 +1194,7 @@ def set_degiro_key(
     return status
 
 
-def check_degiro_key(show_output: bool = False) -> str:
+def check_degiro_key(show_output: bool = False)-> int:
     """Check Degiro key
 
     Parameters
@@ -1233,7 +1233,7 @@ def set_oanda_key(
     access_token: str,
     account_type: str = "",
     persist: bool = False,
-    show_output: bool = False,
+    show_output: bool = True,
 ):
     """Set Oanda key
 
@@ -1267,7 +1267,7 @@ def set_oanda_key(
     return status
 
 
-def check_oanda_key(show_output: bool = False) -> str:
+def check_oanda_key(show_output: bool = False)-> int:
     """Check Oanda key
 
     Parameters
@@ -1318,7 +1318,7 @@ def set_binance_key(
     key: str,
     secret: str,
     persist: bool = False,
-    show_output: bool = False,
+    show_output: bool = True,
 ):
     """Set Binance key
 
@@ -1350,7 +1350,7 @@ def set_binance_key(
     return status
 
 
-def check_binance_key(show_output: bool = False) -> str:
+def check_binance_key(show_output: bool = False)-> int:
     """Check Binance key
 
     Parameters
@@ -1399,7 +1399,7 @@ def check_binance_key(show_output: bool = False) -> str:
 def set_si_key(
     access_token: str,
     persist: bool = False,
-    show_output: bool = False,
+    show_output: bool = True,
 ):
     """Set Sentimentinvestor key.
 
@@ -1430,7 +1430,7 @@ def set_si_key(
     return status
 
 
-def check_si_key(show_output: bool = False) -> str:
+def check_si_key(show_output: bool = False)-> int:
     """Check Sentimentinvestor key
 
     Parameters
@@ -1481,7 +1481,7 @@ def set_coinbase_key(
     secret: str,
     passphrase: str,
     persist: bool = False,
-    show_output: bool = False,
+    show_output: bool = True,
 ):
     """Set Coinbase key
 
@@ -1515,7 +1515,7 @@ def set_coinbase_key(
     return status
 
 
-def check_coinbase_key(show_output: bool = False) -> str:
+def check_coinbase_key(show_output: bool = False)-> int:
     """Check Coinbase key
 
     Parameters
@@ -1565,7 +1565,7 @@ def check_coinbase_key(show_output: bool = False) -> str:
     return status
 
 
-def set_walert_key(key: str, persist: bool = False, show_output: bool = False) -> int:
+def set_walert_key(key: str, persist: bool = False, show_output: bool = True) -> int:
     """Set Walert key
 
     Parameters
@@ -1594,7 +1594,7 @@ def set_walert_key(key: str, persist: bool = False, show_output: bool = False) -
     return status
 
 
-def check_walert_key(show_output: bool = False) -> str:
+def check_walert_key(show_output: bool = False)-> int:
     """Check Walert key
 
     Parameters
@@ -1641,7 +1641,7 @@ def check_walert_key(show_output: bool = False) -> str:
 
 
 def set_glassnode_key(
-    key: str, persist: bool = False, show_output: bool = False
+    key: str, persist: bool = False, show_output: bool = True
 ) -> int:
     """Set Glassnode key.
 
@@ -1671,7 +1671,7 @@ def set_glassnode_key(
     return status
 
 
-def check_glassnode_key(show_output: bool = False) -> str:
+def check_glassnode_key(show_output: bool = False)-> int:
     """Check Glassnode key
 
     Parameters
@@ -1720,7 +1720,7 @@ def check_glassnode_key(show_output: bool = False) -> str:
 
 
 def set_coinglass_key(
-    key: str, persist: bool = False, show_output: bool = False
+    key: str, persist: bool = False, show_output: bool = True
 ) -> int:
     """Set Coinglass key.
 
@@ -1750,7 +1750,7 @@ def set_coinglass_key(
     return status
 
 
-def check_coinglass_key(show_output: bool = False) -> str:
+def check_coinglass_key(show_output: bool = False)-> int:
     """Check Coinglass key
 
     Parameters
@@ -1793,7 +1793,7 @@ def check_coinglass_key(show_output: bool = False) -> str:
     return status
 
 
-def set_cpanic_key(key: str, persist: bool = False, show_output: bool = False) -> int:
+def set_cpanic_key(key: str, persist: bool = False, show_output: bool = True) -> int:
     """Set Cpanic key.
 
     Parameters
@@ -1822,7 +1822,7 @@ def set_cpanic_key(key: str, persist: bool = False, show_output: bool = False) -
     return status
 
 
-def check_cpanic_key(show_output: bool = False) -> str:
+def check_cpanic_key(show_output: bool = False)-> int:
     """Check Cpanic key
 
     Parameters
@@ -1866,7 +1866,7 @@ def check_cpanic_key(show_output: bool = False) -> str:
 
 
 def set_ethplorer_key(
-    key: str, persist: bool = False, show_output: bool = False
+    key: str, persist: bool = False, show_output: bool = True
 ) -> int:
     """Set Ethplorer key.
 
@@ -1896,7 +1896,7 @@ def set_ethplorer_key(
     return status
 
 
-def check_ethplorer_key(show_output: bool = False) -> str:
+def check_ethplorer_key(show_output: bool = False)-> int:
     """Check Ethplorer key
 
     Parameters
@@ -1941,7 +1941,7 @@ def check_ethplorer_key(show_output: bool = False) -> str:
 
 
 def set_smartstake_key(
-    key: str, access_token: str, persist: bool = False, show_output: bool = False
+    key: str, access_token: str, persist: bool = False, show_output: bool = True
 ):
     """Set Smartstake key.
 
@@ -1974,7 +1974,7 @@ def set_smartstake_key(
     return status
 
 
-def check_smartstake_key(show_output: bool = False) -> str:
+def check_smartstake_key(show_output: bool = False)-> int:
     """Check Smartstake key
 
     Parameters
@@ -2024,7 +2024,7 @@ def check_smartstake_key(show_output: bool = False) -> str:
     return status
 
 
-def set_github_key(key: str, persist: bool = False, show_output: bool = False) -> int:
+def set_github_key(key: str, persist: bool = False, show_output: bool = True) -> int:
     """Set GitHub key.
 
     Parameters
@@ -2053,7 +2053,7 @@ def set_github_key(key: str, persist: bool = False, show_output: bool = False) -
     return status
 
 
-def check_github_key(show_output: bool = False) -> str:
+def check_github_key(show_output: bool = False)-> int:
     """Check GitHub key
 
     Parameters
@@ -2087,7 +2087,7 @@ def check_github_key(show_output: bool = False) -> str:
     return status
 
 
-def set_messari_key(key: str, persist: bool = False, show_output: bool = False) -> int:
+def set_messari_key(key: str, persist: bool = False, show_output: bool = True) -> int:
     """Set Messari key.
 
     Parameters
@@ -2116,7 +2116,7 @@ def set_messari_key(key: str, persist: bool = False, show_output: bool = False) 
     return status
 
 
-def check_messari_key(show_output: bool = False) -> str:
+def check_messari_key(show_output: bool = False)-> int:
     """Check Messari key
 
     Parameters
@@ -2161,7 +2161,7 @@ def check_messari_key(show_output: bool = False) -> str:
     return status
 
 
-def set_eodhd_key(key: str, persist: bool = False, show_output: bool = False) -> int:
+def set_eodhd_key(key: str, persist: bool = False, show_output: bool = True) -> int:
     """Set Eodhd key.
 
     Parameters
@@ -2190,7 +2190,7 @@ def set_eodhd_key(key: str, persist: bool = False, show_output: bool = False) ->
     return status
 
 
-def check_eodhd_key(show_output: bool = False) -> str:
+def check_eodhd_key(show_output: bool = False)-> int:
     """Check Eodhd key
 
     Parameters
@@ -2229,7 +2229,7 @@ def check_eodhd_key(show_output: bool = False) -> str:
 
 
 def set_santiment_key(
-    key: str, persist: bool = False, show_output: bool = False
+    key: str, persist: bool = False, show_output: bool = True
 ) -> int:
     """Set Santiment key.
 
@@ -2259,7 +2259,7 @@ def set_santiment_key(
     return status
 
 
-def check_santiment_key(show_output: bool = False) -> str:
+def check_santiment_key(show_output: bool = False)-> int:
     """Check Santiment key
 
     Parameters
