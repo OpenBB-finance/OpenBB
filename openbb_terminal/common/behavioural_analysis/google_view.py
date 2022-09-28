@@ -219,8 +219,7 @@ def display_queries(symbol: str, limit: int = 5, export: str = ""):
         None
     """
     # Retrieve a dict with top and rising queries
-    df_related_queries = google_model.get_queries(symbol, limit)
-    df = df_related_queries[symbol]["top"]
+    df = google_model.get_queries(symbol, limit)
 
     print_rich_table(
         df,
