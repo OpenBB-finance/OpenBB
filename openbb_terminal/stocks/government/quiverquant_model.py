@@ -243,7 +243,6 @@ def get_government_buys(
         DataFrame of top government buy trading
     """
     df_gov = get_government_trading(gov_type)
-    print(df_gov)
     if df_gov.empty:
         return pd.DataFrame()
 

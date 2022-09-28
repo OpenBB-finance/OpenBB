@@ -413,6 +413,9 @@ def display_fundamentals(
         fundamentals = yahoo_finance_model.get_financials(symbol, statement, ratios)
         title_str = "Cash Flow Statement"
 
+    if fundamentals is None:
+        return
+
     if fundamentals.empty:
         # The empty data frame error handling done in model
         return
