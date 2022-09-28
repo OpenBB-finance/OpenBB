@@ -85,201 +85,201 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.check_av_key(show_output=show_output)
         self.key_dict["ALPHA_VANTAGE"] = keys_model.EXIT_MSG[status]
 
-    def check_fmp_key(self, status: str = "", show_output: bool = False) -> None:
+    def check_fmp_key(self, status: int = 0, show_output: bool = False) -> None:
         """Check Financial Modeling Prep key"""
         self.cfg_dict["FINANCIAL_MODELING_PREP"] = "fmp"
         if not status:
             status = keys_model.check_fmp_key(show_output=show_output)
-        self.key_dict["FINANCIAL_MODELING_PREP"] = status
+        self.key_dict["FINANCIAL_MODELING_PREP"] = keys_model.EXIT_MSG[status]
 
-    def check_quandl_key(self, status: str = "", show_output: bool = False) -> None:
+    def check_quandl_key(self, status: int = 0, show_output: bool = False) -> None:
         """Check Quandl key"""
         self.cfg_dict["QUANDL"] = "quandl"
         if not status:
             status = keys_model.check_quandl_key(show_output=show_output)
-        self.key_dict["QUANDL"] = status
+        self.key_dict["QUANDL"] = keys_model.EXIT_MSG[status]
 
-    def check_polygon_key(self, status: str = "", show_output: bool = False) -> None:
+    def check_polygon_key(self, status: int = 0, show_output: bool = False) -> None:
         """Check Polygon key"""
         self.cfg_dict["POLYGON"] = "polygon"
         if not status:
             status = keys_model.check_polygon_key(show_output=show_output)
-        self.key_dict["POLYGON"] = status
+        self.key_dict["POLYGON"] = keys_model.EXIT_MSG[status]
 
-    def check_fred_key(self, status: str = "", show_output: bool = False) -> None:
+    def check_fred_key(self, status: int = 0, show_output: bool = False) -> None:
         """Check FRED key and update menu accordingly"""
         self.cfg_dict["FRED"] = "fred"
         if not status:
             status = keys_model.check_fred_key(show_output=show_output)
-        self.key_dict["FRED"] = status
+        self.key_dict["FRED"] = keys_model.EXIT_MSG[status]
 
-    def check_news_key(self, status: str = "", show_output: bool = False) -> None:
+    def check_news_key(self, status: int = 0, show_output: bool = False) -> None:
         """Check News API key"""
         self.cfg_dict["NEWSAPI"] = "news"
         if not status:
             status = keys_model.check_news_key(show_output=show_output)
-        self.key_dict["NEWSAPI"] = status
+        self.key_dict["NEWSAPI"] = keys_model.EXIT_MSG[status]
 
-    def check_tradier_key(self, status: str = "", show_output: bool = False) -> None:
+    def check_tradier_key(self, status: int = 0, show_output: bool = False) -> None:
         """Check Tradier key"""
         self.cfg_dict["TRADIER"] = "tradier"
         if not status:
             status = keys_model.check_tradier_key(show_output=show_output)
-        self.key_dict["TRADIER"] = status
+        self.key_dict["TRADIER"] = keys_model.EXIT_MSG[status]
 
-    def check_cmc_key(self, status: str = "", show_output: bool = False) -> None:
+    def check_cmc_key(self, status: int = 0, show_output: bool = False) -> None:
         """Check Coinmarketcap key"""
         self.cfg_dict["COINMARKETCAP"] = "cmc"
         if not status:
             status = keys_model.check_cmc_key(show_output=show_output)
-        self.key_dict["COINMARKETCAP"] = status
+        self.key_dict["COINMARKETCAP"] = keys_model.EXIT_MSG[status]
 
-    def check_finnhub_key(self, status: str = "", show_output: bool = False) -> None:
+    def check_finnhub_key(self, status: int = 0, show_output: bool = False) -> None:
         """Check Finnhub key"""
         self.cfg_dict["FINNHUB"] = "finnhub"
         if not status:
             status = keys_model.check_finnhub_key(show_output=show_output)
-        self.key_dict["FINNHUB"] = status
+        self.key_dict["FINNHUB"] = keys_model.EXIT_MSG[status]
 
-    def check_iex_key(self, status: str = "", show_output: bool = False) -> None:
+    def check_iex_key(self, status: int = 0, show_output: bool = False) -> None:
         """Check IEX Cloud key"""
         self.cfg_dict["IEXCLOUD"] = "iex"
         if not status:
             status = keys_model.check_iex_key(show_output=show_output)
-        self.key_dict["IEXCLOUD"] = status
+        self.key_dict["IEXCLOUD"] = keys_model.EXIT_MSG[status]
 
-    def check_reddit_key(self, status: str = "", show_output: bool = False) -> None:
+    def check_reddit_key(self, status: int = 0, show_output: bool = False) -> None:
         """Check Reddit key"""
         self.cfg_dict["REDDIT"] = "reddit"
         if not status:
             status = keys_model.check_reddit_key(show_output=show_output)
-        self.key_dict["REDDIT"] = status
+        self.key_dict["REDDIT"] = keys_model.EXIT_MSG[status]
 
-    def check_twitter_key(self, status: str = "", show_output: bool = False) -> None:
+    def check_twitter_key(self, status: int = 0, show_output: bool = False) -> None:
         """Check Twitter key"""
         self.cfg_dict["TWITTER"] = "twitter"
         if not status:
             status = keys_model.check_twitter_key(show_output=show_output)
-        self.key_dict["TWITTER"] = status
+        self.key_dict["TWITTER"] = keys_model.EXIT_MSG[status]
 
-    def check_rh_key(self, status: str = "", show_output: bool = False) -> None:
+    def check_rh_key(self, status: int = 0, show_output: bool = False) -> None:
         """Check Robinhood key"""
         self.cfg_dict["ROBINHOOD"] = "rh"
         if not status:
             status = keys_model.check_rh_key(show_output=show_output)
-        self.key_dict["ROBINHOOD"] = status
+        self.key_dict["ROBINHOOD"] = keys_model.EXIT_MSG[status]
 
-    def check_degiro_key(self, status: str = "", show_output: bool = False) -> None:
+    def check_degiro_key(self, status: int = 0, show_output: bool = False) -> None:
         """Check Degiro key"""
         self.cfg_dict["DEGIRO"] = "degiro"
         if not status:
             status = keys_model.check_degiro_key(show_output=show_output)
-        self.key_dict["DEGIRO"] = status
+        self.key_dict["DEGIRO"] = keys_model.EXIT_MSG[status]
 
-    def check_oanda_key(self, status: str = "", show_output: bool = False) -> None:
+    def check_oanda_key(self, status: int = 0, show_output: bool = False) -> None:
         """Check Oanda key"""
         self.cfg_dict["OANDA"] = "oanda"
         if not status:
             status = keys_model.check_degiro_key(show_output=show_output)
-        self.key_dict["OANDA"] = status
+        self.key_dict["OANDA"] = keys_model.EXIT_MSG[status]
 
-    def check_binance_key(self, status: str = "", show_output: bool = False) -> None:
+    def check_binance_key(self, status: int = 0, show_output: bool = False) -> None:
         """Check Binance key"""
         self.cfg_dict["BINANCE"] = "binance"
         if not status:
             status = keys_model.check_binance_key(show_output=show_output)
-        self.key_dict["BINANCE"] = status
+        self.key_dict["BINANCE"] = keys_model.EXIT_MSG[status]
 
-    def check_bitquery_key(self, status: str = "", show_output: bool = False) -> None:
+    def check_bitquery_key(self, status: int = 0, show_output: bool = False) -> None:
         """Check Bitquery key"""
         self.cfg_dict["BITQUERY"] = "bitquery"
         if not status:
             status = keys_model.check_bitquery_key(show_output=show_output)
-        self.key_dict["BITQUERY"] = status
+        self.key_dict["BITQUERY"] = keys_model.EXIT_MSG[status]
 
-    def check_si_key(self, status: str = "", show_output: bool = False) -> None:
+    def check_si_key(self, status: int = 0, show_output: bool = False) -> None:
         """Check Sentiment Investor key"""
         self.cfg_dict["SENTIMENT_INVESTOR"] = "si"
         if not status:
             status = keys_model.check_si_key(show_output=show_output)
-        self.key_dict["SENTIMENT_INVESTOR"] = status
+        self.key_dict["SENTIMENT_INVESTOR"] = keys_model.EXIT_MSG[status]
 
-    def check_coinbase_key(self, status: str = "", show_output: bool = False) -> None:
+    def check_coinbase_key(self, status: int = 0, show_output: bool = False) -> None:
         """Check Coinbase key"""
         self.cfg_dict["COINBASE"] = "coinbase"
         if not status:
             status = keys_model.check_coinbase_key(show_output=show_output)
-        self.key_dict["COINBASE"] = status
+        self.key_dict["COINBASE"] = keys_model.EXIT_MSG[status]
 
-    def check_walert_key(self, status: str = "", show_output: bool = False) -> None:
+    def check_walert_key(self, status: int = 0, show_output: bool = False) -> None:
         """Check Walert key"""
         self.cfg_dict["WHALE_ALERT"] = "walert"
         if not status:
             status = keys_model.check_walert_key(show_output=show_output)
-        self.key_dict["WHALE_ALERT"] = status
+        self.key_dict["WHALE_ALERT"] = keys_model.EXIT_MSG[status]
 
-    def check_glassnode_key(self, status: str = "", show_output: bool = False) -> None:
+    def check_glassnode_key(self, status: int = 0, show_output: bool = False) -> None:
         """Check Glassnode key"""
         self.cfg_dict["GLASSNODE"] = "glassnode"
         if not status:
             status = keys_model.check_glassnode_key(show_output=show_output)
-        self.key_dict["GLASSNODE"] = status
+        self.key_dict["GLASSNODE"] = keys_model.EXIT_MSG[status]
 
-    def check_coinglass_key(self, status: str = "", show_output: bool = False) -> None:
+    def check_coinglass_key(self, status: int = 0, show_output: bool = False) -> None:
         """Check Coinglass key"""
         self.cfg_dict["COINGLASS"] = "coinglass"
         if not status:
             status = keys_model.check_coinglass_key(show_output=show_output)
-        self.key_dict["COINGLASS"] = status
+        self.key_dict["COINGLASS"] = keys_model.EXIT_MSG[status]
 
-    def check_cpanic_key(self, status: str = "", show_output: bool = False) -> None:
+    def check_cpanic_key(self, status: int = 0, show_output: bool = False) -> None:
         """Check Cpanic key"""
         self.cfg_dict["CRYPTO_PANIC"] = "cpanic"
         if not status:
             status = keys_model.check_cpanic_key(show_output=show_output)
-        self.key_dict["CRYPTO_PANIC"] = status
+        self.key_dict["CRYPTO_PANIC"] = keys_model.EXIT_MSG[status]
 
-    def check_ethplorer_key(self, status: str = "", show_output: bool = False) -> None:
+    def check_ethplorer_key(self, status: int = 0, show_output: bool = False) -> None:
         """Check ethplorer key"""
         self.cfg_dict["ETHPLORER"] = "ethplorer"
         if not status:
             status = keys_model.check_ethplorer_key(show_output=show_output)
-        self.key_dict["ETHPLORER"] = status
+        self.key_dict["ETHPLORER"] = keys_model.EXIT_MSG[status]
 
-    def check_smartstake_key(self, status: str = "", show_output: bool = False) -> None:
+    def check_smartstake_key(self, status: int = 0, show_output: bool = False) -> None:
         """Check Smartstake key"""
         self.cfg_dict["SMARTSTAKE"] = "smartstake"
         if not status:
             status = keys_model.check_smartstake_key(show_output=show_output)
-        self.key_dict["SMARTSTAKE"] = status
+        self.key_dict["SMARTSTAKE"] = keys_model.EXIT_MSG[status]
 
-    def check_github_key(self, status: str = "", show_output: bool = False) -> None:
+    def check_github_key(self, status: int = 0, show_output: bool = False) -> None:
         """Check GitHub key"""
         self.cfg_dict["GITHUB"] = "github"
         if not status:
             status = keys_model.check_github_key(show_output=show_output)
-        self.key_dict["GITHUB"] = status
+        self.key_dict["GITHUB"] = keys_model.EXIT_MSG[status]
 
-    def check_messari_key(self, status: str = "", show_output: bool = False) -> None:
+    def check_messari_key(self, status: int = 0, show_output: bool = False) -> None:
         """Check Messari key"""
         self.cfg_dict["MESSARI"] = "messari"
         if not status:
             status = keys_model.check_messari_key(show_output=show_output)
-        self.key_dict["MESSARI"] = status
+        self.key_dict["MESSARI"] = keys_model.EXIT_MSG[status]
 
-    def check_eodhd_key(self, status: str = "", show_output: bool = False) -> None:
+    def check_eodhd_key(self, status: int = 0, show_output: bool = False) -> None:
         """Check End of Day Historical Data key"""
         self.cfg_dict["EODHD"] = "eodhd"
         if not status:
             status = keys_model.check_eodhd_key(show_output=show_output)
-        self.key_dict["EODHD"] = status
+        self.key_dict["EODHD"] = keys_model.EXIT_MSG[status]
 
-    def check_santiment_key(self, status: str = "", show_output: bool = False) -> None:
+    def check_santiment_key(self, status: int = 0, show_output: bool = False) -> None:
         """Check Santiment key"""
         self.cfg_dict["SANTIMENT"] = "santiment"
         if not status:
             status = keys_model.check_santiment_key(show_output=show_output)
-        self.key_dict["SANTIMENT"] = status
+        self.key_dict["SANTIMENT"] = keys_model.EXIT_MSG[status]
 
     def check_keys_status(self) -> None:
         """Check keys status"""
