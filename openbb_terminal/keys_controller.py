@@ -694,7 +694,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 client_secret=ns_parser.client_secret,
                 password=ns_parser.password,
                 username=ns_parser.username,
-                useragent=ns_parser.useragent,
+                useragent=useragent,
                 persist=True,
                 show_output=True,
             )
@@ -741,7 +741,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_twitter_key(
                 key=ns_parser.key,
                 secret=ns_parser.secret,
-                bearer_token=ns_parser.token,
+                access_token=ns_parser.token,
                 persist=True,
                 show_output=True,
             )

@@ -962,8 +962,8 @@ def check_bitquery_key(show_output: bool = False) -> str:
 
 def set_twitter_key(
     key: str,
-    secret_key: str,
-    bearer_token: str,
+    secret: str,
+    access_token: str,
     persist: bool = False,
     show_output: bool = False,
 ):
@@ -972,8 +972,8 @@ def set_twitter_key(
     Parameters
     ----------
         key: str
-        secret_key: str
-        bearer_token: str
+        secret: str
+        access_token: str
         persist: bool
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
@@ -990,8 +990,8 @@ def set_twitter_key(
     """
 
     set_key("OPENBB_API_TWITTER_KEY", key, persist)
-    set_key("OPENBB_API_TWITTER_SECRET_KEY", secret_key, persist)
-    set_key("OPENBB_API_TWITTER_BEARER_TOKEN", bearer_token, persist)
+    set_key("OPENBB_API_TWITTER_SECRET_KEY", secret, persist)
+    set_key("OPENBB_API_TWITTER_BEARER_TOKEN", access_token, persist)
 
     status = check_twitter_key(show_output)
 
