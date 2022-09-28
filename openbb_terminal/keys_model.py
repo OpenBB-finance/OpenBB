@@ -1831,7 +1831,7 @@ def set_ethplorer_key(key: str, persist: bool = False, show_output: bool = False
     """
 
     set_key("OPENBB_API_ETHPLORER_KEY", key, persist)
-    status = check_cpanic_key(show_output)
+    status = check_ethplorer_key(show_output)
 
     return status
 
