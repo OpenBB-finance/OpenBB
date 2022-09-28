@@ -696,6 +696,12 @@ def plot_plot(
         x = "strike"
         y = "impliedVolatility"
     else:
+        if x is None:
+            console.print("[red]Invalid option sent for x-axis[/red]\n")
+            return
+        if y is None:
+            console.print("[red]Invalid option sent for y-axis[/red]\n")
+            return
         x = convert[x]
         y = convert[y]
     varis = op_helpers.opt_chain_cols

@@ -179,7 +179,10 @@ def get_screener_output(preset: str) -> Tuple[pd.DataFrame, str]:
 
     preset_filter = configparser.RawConfigParser()
     preset_filter.optionxform = str  # type: ignore
-    preset_filter.read(get_preset_choices()[preset])
+    choices = get_preset_choices()
+    if preset not in choices:
+        return pd.DataFrame(), "No data found"
+    preset_filter.read(choices[preset])
 
     d_filters = {k: v for k, v in dict(preset_filter["FILTER"]).items() if v}
     s_filters = str(d_filters)
