@@ -620,14 +620,18 @@ def get_index(
     else:
         ticker = index
 
-    index_data = yf.download(
-        ticker,
-        start=start_date,
-        end=end_date,
-        interval=interval,
-        progress=False,
-        show_errors=False,
-    )
+    try:
+        index_data = yf.download(
+            ticker,
+            start=start_date,
+            end=end_date,
+            interval=interval,
+            progress=False,
+            show_errors=False,
+        )
+    except ValueError:
+        console.print("[red]Please format date as YYYY-MM-DD[/red]\n")
+        return pd.Series()
 
     if column not in index_data.columns:
         console.print(
