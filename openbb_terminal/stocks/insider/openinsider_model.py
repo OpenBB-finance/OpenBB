@@ -1143,7 +1143,11 @@ def get_open_insider_link(preset_loaded: str) -> str:
     """
     preset = configparser.RawConfigParser()
     preset.optionxform = str  # type: ignore
-    preset.read(get_preset_choices()[preset_loaded])
+    choices = get_preset_choices()
+    if preset_loaded not in choices:
+        console.print("[red]Could not find the link[/red]\n")
+        return ""
+    preset.read(choices[preset_loaded])
 
     d_general = dict(preset["General"])
     d_date = dict(preset["Date"])
