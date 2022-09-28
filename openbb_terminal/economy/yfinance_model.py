@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 from datetime import datetime
+from typing import Optional
 
 import pandas as pd
 import yfinance as yf
@@ -591,8 +592,8 @@ INDICES = {
 def get_index(
     index: str,
     interval: str = "1d",
-    start_date: int = None,
-    end_date: int = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     column: str = "Adj Close",
 ) -> pd.Series:
     """Obtain data on any index [Source: Yahoo Finance]
@@ -601,9 +602,9 @@ def get_index(
     ----------
     index: str
         The index you wish to collect data for.
-    start_date : str
+    start_date : Optional[str]
        the selected country
-    end_date : bool
+    end_date : Optional[str]
         The currency you wish to convert the data to.
     interval : str
         Valid intervals: 1m, 2m, 5m, 15m, 30m, 60m, 90m, 1h, 1d, 5d, 1wk, 1mo or 3mo
@@ -622,8 +623,10 @@ def get_index(
         ticker = index
 
     try:
-        datetime.strptime(str(start_date), "%Y-%m-%d")
-        datetime.strptime(str(end_date), "%Y-%m-%d")
+        if start_date:
+            datetime.strptime(str(start_date), "%Y-%m-%d")
+        if end_date:
+            datetime.strptime(str(end_date), "%Y-%m-%d")
     except ValueError:
         console.print("[red]Please format date as YYYY-MM-DD[/red]\n")
         return pd.Series(dtype="object")
