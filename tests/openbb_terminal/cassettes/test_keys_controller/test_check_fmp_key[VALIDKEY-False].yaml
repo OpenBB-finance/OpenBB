@@ -14,31 +14,8 @@ interactions:
     uri: https://financialmodelingprep.com/api/v3/profile/AAPL?apikey=VALIDKEY
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAAA21WTXPbNhC951dgfI1Ek5IcifFJlZPWM4nr1k5y6PQAgZCIMQiwACha6fS/9y1A
-        yh+Jx2NLu4vdt7tvF/iL/fuGsTN/bLZWn7H37Gy9vv10NiFh65SQJCsu5tlyFmVbGXgUZbP5oijK
-        KDxYvT7sSbxcrJbLcrWK4uYhbHhL4tlimS/y+Xx5UeSLqNPchyt1IGWeJS+Om30Md1bMyixfTIvV
-        LCsXCYuoSetJPZ1nxbIsy9kyaWzTcnO84U06vG5bLdm1EdlwsnNOGnGMyi93V4NUPURBjp/5LC/K
-        eZIrr8xgmc+Xq/m8yPOL0ZFXbTo0apJCPiZ0UXezvrta/8F+1XbLNbuTWorw0uyuti6c4Cb7Ibip
-        Oh9cgrqxxneNdOwDuXDWKOGTWS+3XoV0vA6h9e/Pz/u+zzhlnqEeyaySXjjVBmXNq8IwqNTe+Alr
-        uOl2XITOSXzjpoLEPcjgmceH0NbWkKKVzluDfKjYXcC3CQt8q2E4Yb3kjj4PDrgQ0nvrlPSst05X
-        vapkxq4D49pb5qXWnh24U7bzzEnNg6wgdQeQzcPOMF5VilAjRi3Z0F9mdzvEZeqWMCEU08pISJ8j
-        vWSfuXiu+xH4JTzw6rlN0+mgpm3nWuvlmNYlWyt3aysPj4+UGLMH6aZIlfUKqJEiqyWvYtzLmPiz
-        OtS2kT9WgzA4Ith+dD5hqSn3X8dP33gQ9YT9Ijl60DpbdYJq/Bsc4kDyqfCJBduJOmMfO4ciuQlT
-        gcwPqLVPrjbcSea7tgXbTvW9ZELb7qnezAdLZic1+beoGrry1KUWTdpZ1wCIMkJ3FaVAvUEgdhc9
-        hJpTg7XtGeYkAC56FSyrlBdUuei4sr3RlqMqAKgEpyb7pFF7FWKbTJAmTABc1Ix7trX2gXiK2UNj
-        KT07YXsMz8C21lYCqwTEWQ+sAYjjT5kzZjMm+xQklX7tBK8is8g/lNvT/IxnLgfTzwlOXys4GNx3
-        nv5ypO8ipbXySIUqJR9RUIUdJMGdgANmWsmG0DteKYxESJUYvd/I3r8lHC8gGEiHCd3z78TdV6Du
-        v759BQkbRwPpATR3KLB5KvB4BiSJsyDsdIv9WwG3cBKFZAKaRIdkecuP0ZD7OpK/5ccGjkYQE6pj
-        j9mm/+itNB4EUiCxQkBNK6xDeFAUtQjHjN0/axD5iPORNt7QWsw1uaOMVTX16jvAbZEO5tyPVKU2
-        S8wIT/sCgKSjGRumb0/UMxHnsNfiIgIpg1PbjjgeauWqaYsVcnxJSxA+4h+HEJbOdvv6JfFfJvJs
-        w/30KAkdblCV8rIm7qA4g0PSFZaLQFU5ikwQhBwTfYIpEKDT2ERGBmzYB+oV+EV162uLgzhMX1Kk
-        Uz0RgxrhaFaeroKeU4uExfZLvFWGFeVymTZNWnL/dIgrXVJuOuqgMpjDDdcKGI3i410rbbxqPjvU
-        RTU21Ee2wQQnrUdm1kWDeylqY7XdH4eDtjPjxfflLsl2ndZwIj80rbZHmS7/s+JikY8Xb1y+SbrI
-        V2X5rsiLQYU7BPkOR04URq2+8TGkCsNFOyY0oMQ0Jqeb9afrj7//eXO9Tprvw/VfXuTF8CypxO5K
-        7XbxjZPly2L5bhSnd9MqK4eHk8LYvryydxhIIxTXja0kiLBvnWzp+j6PtlPQQjyc03Msa81+eCG0
-        9mqEV5SrfFrM8Dve9zuOq+x6DLQDG+XwqPkQdq9FaxGwGfTxnpaQia+34LqTtnKvD3zsTHWSvfmP
-        /f0/oQBpGDwKAAA=
+      string: '{"Error Message" : "Invalid API KEY. Please retry or visit our documentation
+        to create one FREE https://financialmodelingprep.com/developer/docs"}'
     headers:
       Access-Control-Allow-Headers:
       - origin, content-type, accept, Authorization, authorization
@@ -50,20 +27,14 @@ interactions:
       - '3600'
       Connection:
       - keep-alive
-      Content-Encoding:
-      - gzip
+      Content-Length:
+      - '146'
       Content-Type:
       - application/json;charset=UTF-8
       Date:
-      - Wed, 21 Sep 2022 20:12:27 GMT
+      - Sun, 04 Sep 2022 00:08:30 GMT
       Server:
       - nginx/1.14.0 (Ubuntu)
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept-Encoding
-      X-Frame-Options:
-      - SAMEORIGIN
     status:
       code: 200
       message: ''
