@@ -260,12 +260,7 @@ def rolling_volatility(
         Rolling volatility DataFrame
     """
 
-    if window == "all":
-        # rolling std() needs at least 2 observations
-        length = 2
-    else:
-        length = PERIODS_DAYS[window]
-
+    length = PERIODS_DAYS[window]
     sample_length = len(portfolio_returns)
 
     if length > sample_length:
@@ -274,7 +269,7 @@ def rolling_volatility(
         )
         return pd.DataFrame()
 
-    return portfolio_returns.rolling(length).std()
+    return portfolio_returns.rolling(max(2, length)).std()
 
 
 def sharpe_ratio(portfolio_returns: pd.Series, risk_free_rate: float) -> float:
