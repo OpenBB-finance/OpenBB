@@ -414,10 +414,18 @@ def rolling_beta(
 
     length = PERIODS_DAYS[window]
 
+    sample_length = len(portfolio_returns)
+
+    if length > sample_length:
+        console.print(
+            f"[red] Window length ({length}) is larger than sample length ({sample_length}) [/red]"
+        )
+        return pd.DataFrame()
+
     covs = (
         pd.DataFrame({"Portfolio": portfolio_returns, "Benchmark": benchmark_returns})
         .dropna(axis=0)
-        .rolling(max(1, length))
+        .rolling(max(2, length))  # needs at least 2 observations.
         .cov()
         .unstack()
         .dropna()

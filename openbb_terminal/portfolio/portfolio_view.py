@@ -973,6 +973,11 @@ def display_rolling_beta(
     external_axes: Optional[List[plt.Axes]]
         Optional axes to display plot on
     """
+
+    rolling_beta = portfolio_model.get_rolling_beta(portfolio, window)
+    if rolling_beta.empty:
+        return
+
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
@@ -983,7 +988,6 @@ def display_rolling_beta(
         ax = external_axes[0]
 
     metric = "beta"
-    rolling_beta = portfolio_model.get_rolling_beta(portfolio, window)
     rolling_beta.plot(ax=ax)
 
     ax.set_title(f"Rolling {metric.title()} using {window} window")
