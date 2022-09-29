@@ -424,7 +424,7 @@ def display_fundamentals(
         # The empty data frame error handling done in model
         return
 
-    symbol_currency = "GBP"
+    symbol_currency = yahoo_finance_model.get_currency(symbol)
 
     if plot:
         rows_plot = len(plot)
