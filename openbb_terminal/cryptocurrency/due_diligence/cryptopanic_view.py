@@ -20,7 +20,7 @@ def display_news(
     post_kind: str = "news",
     region: str = "en",
     filter_: Optional[str] = None,
-    source: str = "cp",
+    source: Optional[str] = None,
     symbol: Optional[str] = None,
     limit: int = 25,
     ascend: bool = True,

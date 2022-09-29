@@ -240,15 +240,6 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             {"num_days_ahead": 5, "end_date": None, "limit": 20, "export": "csv"},
         ),
         (
-            "call_ford",
-            "fidelity_view.orders_view",
-            [
-                "--limit=5",
-                "--export=csv",
-            ],
-            {"limit": 5, "export": "csv"},
-        ),
-        (
             "call_gainers",
             "yahoofinance_view.display_gainers",
             ["--limit=5", "--export=csv"],
@@ -350,7 +341,6 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
         "call_asc",
         "call_cnews",
         "call_fipo",
-        "call_ford",
         "call_gainers",
         "call_gtech",
         "call_hotpenny",

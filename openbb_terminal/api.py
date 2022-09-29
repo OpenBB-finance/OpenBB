@@ -7,7 +7,7 @@ from inspect import signature, Parameter
 import types
 import functools
 import importlib
-from typing import Optional, Callable
+from typing import Optional, Callable, List
 
 from openbb_terminal.helper_classes import TerminalStyle  # noqa: F401
 from openbb_terminal import helper_funcs as helper  # noqa: F401
@@ -1421,9 +1421,6 @@ functions = {
     "stocks.disc.arkord": {
         "model": "openbb_terminal.stocks.discovery.ark_model.get_ark_orders"
     },
-    "stocks.disc.ford": {
-        "model": "openbb_terminal.stocks.discovery.fidelity_model.get_orders"
-    },
     "stocks.disc.ipo": {
         "model": "openbb_terminal.stocks.discovery.finnhub_model.get_ipo_calendar"
     },
@@ -2068,12 +2065,14 @@ class Loader:
     def load_menus(self):
         """Creates the API structure (see openbb.stocks.command) by setting attributes and saving the functions"""
 
-        def menu_message(menu: str, function_map: dict):
+        def menu_message(menu: str, full_path: List[str], function_map: dict):
             """Creates a callable function, which prints a menus help message
             Parameters
             ----------
             menu: str
                 Menu for which the help message is generated
+            full_path: List[str]
+                The list to get to the path
             function_map: dict
                 Dictionary with the functions and their virtual paths
             Returns
@@ -2081,7 +2080,8 @@ class Loader:
             Callable:
                 Function which prints help message
             """
-            filtered_dict = {k: v for (k, v) in function_map.items() if menu in k}
+            path_str = ".".join(full_path)
+            filtered_dict = {k: v for (k, v) in function_map.items() if path_str in k}
 
             def f():
                 string = menu.upper() + " Menu\n\nThe api commands of the the menu:"
@@ -2102,7 +2102,12 @@ class Loader:
 
             for menu in virtual_path_split[:-1]:
                 if not hasattr(previous_menu, menu):
-                    next_menu = MenuFiller(function=menu_message(menu, function_map))
+                    partial_path = virtual_path_split[
+                        : virtual_path_split.index(menu) + 1
+                    ]
+                    next_menu = MenuFiller(
+                        function=menu_message(menu, partial_path, function_map)
+                    )
                     setattr(previous_menu, menu, next_menu)
                 previous_menu = getattr(previous_menu, menu)
             setattr(previous_menu, last_virtual_path, function)

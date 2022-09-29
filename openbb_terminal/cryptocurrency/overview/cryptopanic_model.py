@@ -158,8 +158,8 @@ def get_news(
     post_kind: str = "news",
     filter_: Optional[str] = None,
     region: str = "en",
-    source: str = "cp",
-    symbol: str = None,
+    source: Optional[str] = None,
+    symbol: Optional[str] = None,
     sortby: str = "published_at",
     ascend: bool = True,
 ) -> pd.DataFrame:
@@ -192,12 +192,11 @@ def get_news(
 
     results = []
 
+    kwargs = {}
+    if source:
+        kwargs["source"] = source
     response = make_request(
-        post_kind=post_kind,
-        filter_=filter_,
-        region=region,
-        source=source,
-        currency=symbol,
+        post_kind=post_kind, filter_=filter_, region=region, currency=symbol, **kwargs
     )
 
     if response:
