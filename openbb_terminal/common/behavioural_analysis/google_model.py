@@ -7,6 +7,7 @@ import pandas as pd
 from pytrends.request import TrendReq
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -25,9 +26,15 @@ def get_mentions(symbol: str) -> pd.DataFrame:
     pd.DataFrame
         Dataframe of interest over time
     """
-    pytrend = TrendReq()
-    pytrend.build_payload(kw_list=[symbol])
-    return pytrend.interest_over_time()
+    try:
+        pytrend = TrendReq()
+        pytrend.build_payload(kw_list=[symbol])
+        df = pytrend.interest_over_time()
+    except Exception:
+        console.print("[red]Cannot get data.[/red]\n")
+        df = pd.DataFrame()
+
+    return df
 
 
 @log_start_end(log=logger)
@@ -44,10 +51,15 @@ def get_regions(symbol: str) -> pd.DataFrame:
     pd.DataFrame
         Dataframe of interest by region
     """
-    pytrend = TrendReq()
-    pytrend.build_payload(kw_list=[symbol])
-    return pytrend.interest_by_region().sort_values([symbol], ascending=False)
+    try:
+        pytrend = TrendReq()
+        pytrend.build_payload(kw_list=[symbol])
+        df = pytrend.interest_by_region().sort_values([symbol], ascending=False)
+    except Exception:
+        console.print("[red]Cannot get data.[/red]\n")
+        df = pd.DataFrame()
 
+    return df
 
 @log_start_end(log=logger)
 def get_queries(symbol: str, limit: int = 10) -> pd.DataFrame:
@@ -65,14 +77,19 @@ def get_queries(symbol: str, limit: int = 10) -> pd.DataFrame:
     dict : {'top': pd.DataFrame or None, 'rising': pd.DataFrame or None}
 
     """
-    pytrend = TrendReq()
-    pytrend.build_payload(kw_list=[symbol])
-    df_related_queries = pytrend.related_queries()
-    df_related_queries = df_related_queries[symbol]["top"].head(limit)
-    df_related_queries["value"] = df_related_queries["value"].apply(
-        lambda x: str(x) + "%"
-    )
-    return df_related_queries
+    try:
+        pytrend = TrendReq()
+        pytrend.build_payload(kw_list=[symbol])
+        df = pytrend.related_queries()
+        df = df[symbol]["top"].head(limit)
+        df["value"] = df["value"].apply(
+            lambda x: str(x) + "%"
+        )
+    except Exception:
+        console.print("[red]Cannot get data.[/red]\n")
+        df = pd.DataFrame()
+
+    return df
 
 
 @log_start_end(log=logger)
@@ -91,7 +108,13 @@ def get_rise(symbol: str, limit: int = 10) -> pd.DataFrame:
     pd.DataFrame
         Dataframe containing rising related queries
     """
-    pytrend = TrendReq()
-    pytrend.build_payload(kw_list=[symbol])
-    df_related_queries = pytrend.related_queries()
-    return df_related_queries[symbol]["rising"].head(limit)
+    try:
+        pytrend = TrendReq()
+        pytrend.build_payload(kw_list=[symbol])
+        df = pytrend.related_queries()
+        df = df[symbol]["rising"].head(limit)
+    except Exception:
+        console.print("[red]Cannot get data.[/red]\n")
+        df = pd.DataFrame()
+
+    return df
