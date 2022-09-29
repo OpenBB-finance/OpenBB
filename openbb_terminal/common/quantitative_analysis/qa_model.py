@@ -228,7 +228,7 @@ def get_var(
     use_mean: bool = False,
     adjusted_var: bool = False,
     student_t: bool = False,
-    percentile: Union[int, float] = 0.999,
+    percentile: Union[int, float] = 99.9,
     portfolio: bool = False,
 ) -> pd.DataFrame:
     """Gets value at risk for specified stock dataframe
@@ -262,8 +262,10 @@ def get_var(
     else:
         data = data[1:].copy()
         data_return = data
-
+    
     # Distribution percentages
+    percentile = percentile / 100
+    
     percentile_90 = -1.282
     percentile_95 = -1.645
     percentile_99 = -2.326
@@ -343,6 +345,8 @@ def get_var(
         data_dictionary, index=["90.0%", "95.0%", "99.0%", f"{percentile*100}%"]
     )
 
+    df.sort_index(inplace=True)
+
     return df
 
 
@@ -350,7 +354,7 @@ def get_es(
     data: pd.DataFrame,
     use_mean: bool = False,
     distribution: str = "normal",
-    percentile: Union[float, int] = 0.999,
+    percentile: Union[float, int] = 99.9,
     portfolio: bool = False,
 ) -> pd.DataFrame:
     """Gets Expected Shortfall for specified stock dataframe
@@ -384,6 +388,8 @@ def get_es(
         data_return = data
 
     # Distribution percentages
+    percentile = percentile / 100
+    
     percentile_90 = -1.282
     percentile_95 = -1.645
     percentile_99 = -2.326
@@ -516,6 +522,8 @@ def get_es(
     df = pd.DataFrame(
         data_dictionary, index=["90.0%", "95.0%", "99.0%", f"{percentile*100}%"]
     )
+
+    df.sort_index(inplace=True)
 
     return df
 

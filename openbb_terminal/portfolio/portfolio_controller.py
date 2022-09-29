@@ -766,7 +766,7 @@ class PortfolioController(BaseController):
                     portfolio=self.portfolio,
                     use_mean=ns_parser.use_mean,
                     distribution=ns_parser.distribution,
-                    percentile=ns_parser.percentile / 100,
+                    percentile=ns_parser.percentile,
                 )
             else:
                 console.print(

@@ -1659,7 +1659,7 @@ def get_var(
     use_mean: bool = False,
     adjusted_var: bool = False,
     student_t: bool = False,
-    percentile: float = 0.999,
+    percentile: float = 99.9,
 ) -> pd.DataFrame:
 
     """Get portfolio VaR
@@ -1674,8 +1674,8 @@ def get_var(
         if one should have VaR adjusted for skew and kurtosis (Cornish-Fisher-Expansion)
     student_t: bool
         If one should use the student-t distribution
-    percentile: int
-        var percentile
+    percentile: float
+        var percentile (%)
     Returns
     -------
     pd.DataFrame
@@ -1696,7 +1696,7 @@ def get_es(
     portfolio: PortfolioModel,
     use_mean: bool = False,
     distribution: str = "normal",
-    percentile: float = 0.999,
+    percentile: float = 99.9,
 ) -> pd.DataFrame:
     """Get portfolio expected shortfall
 
@@ -1708,8 +1708,8 @@ def get_es(
         if one should use the data mean return
     distribution: str
         choose distribution to use: logistic, laplace, normal
-    percentile: int
-        es percentile
+    percentile: float
+        es percentile (%)
     Returns
     -------
     pd.DataFrame

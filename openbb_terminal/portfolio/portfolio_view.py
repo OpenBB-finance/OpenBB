@@ -1612,7 +1612,7 @@ def display_var(
     use_mean: bool = False,
     adjusted_var: bool = False,
     student_t: bool = False,
-    percentile: float = 0.999,
+    percentile: float = 99.9,
 ):
     """Display portfolio VaR
 
@@ -1626,8 +1626,8 @@ def display_var(
         if one should have VaR adjusted for skew and kurtosis (Cornish-Fisher-Expansion)
     student_t: bool
         If one should use the student-t distribution
-    percentile: int
-        var percentile
+    percentile: float
+        var percentile (%)
     """
     qa_view.display_var(
         data=portfolio.returns,
@@ -1645,7 +1645,7 @@ def display_es(
     portfolio: portfolio_model.PortfolioModel,
     use_mean: bool = False,
     distribution: str = "normal",
-    percentile: float = 0.999,
+    percentile: float = 99.9,
 ):
     """Displays expected shortfall
 
@@ -1653,10 +1653,12 @@ def display_es(
     ----------
     portfolio: Portfolio
         Portfolio object with trades loaded
-    threshold_start: float
-        annualized target return threshold start of plotted threshold range
-    threshold_end: float
-        annualized target return threshold end of plotted threshold range
+    use_mean:
+        if one should use the data mean return
+    distribution: str
+        choose distribution to use: logistic, laplace, normal
+    percentile: float
+        es percentile (%)
     """
 
     qa_view.display_es(
@@ -1681,12 +1683,10 @@ def display_omega(
     ----------
     portfolio: Portfolio
         Portfolio object with trades loaded
-    use_mean:
-        if one should use the data mean return
-    distribution: str
-        choose distribution to use: logistic, laplace, normal
-    percentile: int
-        es percentile
+    threshold_start: float
+        annualized target return threshold start of plotted threshold range
+    threshold_end: float
+        annualized target return threshold end of plotted threshold range
     """
 
     qa_view.display_omega(
