@@ -310,8 +310,8 @@ def load(
     exchange: str = "binance",
     vs_currency: str = "usdt",
     end_date: datetime = datetime.now(),
-    source: str = "ccxt",
-):
+    source: str = "CCXT",
+) -> pd.DataFrame:
     """Load crypto currency to perform analysis on CoinGecko is used as source for price and
     YahooFinance for volume.
 
@@ -410,6 +410,8 @@ def load(
             console.print(f"\nPair {pair} not found in Yahoo Finance\n")
             return pd.DataFrame()
         df.index.name = "date"
+    else:
+        console.print("[red]Invalid source sent[/red]\n")
     return df
 
 
