@@ -81,9 +81,6 @@ hidden_imports = [
     "bson",
 ]
 
-# excluded_binaries = [
-#     pathex + "/_scs_direct.cpython-39-darwin.so",
-# ]
 
 analysis_kwargs = dict(
     scripts=[os.path.join(os.getcwd(), "terminal.py")],
