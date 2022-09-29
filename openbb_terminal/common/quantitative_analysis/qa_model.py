@@ -262,10 +262,10 @@ def get_var(
     else:
         data = data[1:].copy()
         data_return = data
-    
+
     # Distribution percentages
     percentile = percentile / 100
-    
+
     percentile_90 = -1.282
     percentile_95 = -1.645
     percentile_99 = -2.326
@@ -389,7 +389,7 @@ def get_es(
 
     # Distribution percentages
     percentile = percentile / 100
-    
+
     percentile_90 = -1.282
     percentile_95 = -1.645
     percentile_99 = -2.326
