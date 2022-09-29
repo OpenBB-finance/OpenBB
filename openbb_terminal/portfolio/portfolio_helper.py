@@ -261,7 +261,7 @@ def rolling_volatility(
     """
 
     if window == "all":
-        # rolling std() needs at least 2 observations
+        # rolling std() needs at least 2 observations.
         length = 2
     else:
         length = PERIODS_DAYS[window]
