@@ -900,6 +900,8 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     self.start = self.stock.index[0].to_pydatetime()
                 elif ns_parser.source == "EODHD":
                     self.start = self.stock.index[0].to_pydatetime()
+                elif ns_parser.source == "eodhd":
+                    self.start = self.stock.index[0].to_pydatetime()
                 else:
                     self.start = ns_parser.start
                 self.interval = f"{ns_parser.interval}min"
