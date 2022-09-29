@@ -799,6 +799,11 @@ def display_rolling_volatility(
         Optional axes to display plot on
     """
 
+    metric = "volatility"
+    df = portfolio_model.get_rolling_volatility(portfolio, window)
+    if df.empty:
+        return
+
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
@@ -808,8 +813,6 @@ def display_rolling_volatility(
             return
         ax = external_axes[0]
 
-    metric = "volatility"
-    df = portfolio_model.get_rolling_volatility(portfolio, window)
     df_portfolio = df["portfolio"]
     df_benchmark = df["benchmark"]
 

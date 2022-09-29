@@ -32,12 +32,12 @@ PERIODS_DAYS = {
         now
         - datetime(
             now.year,
-            1 if now.month < 4 else 4 if now.month < 7 else 7 if now.month < 7 else 10,
+            1 if now.month < 4 else 4 if now.month < 7 else 7 if now.month < 10 else 10,
             1,
         )
     ).days,
     "ytd": (now - datetime(now.year, 1, 1)).days,
-    "all": 0,
+    "all": 1,
     "3m": 3 * 21,
     "6m": 6 * 21,
     "1y": 12 * 21,
@@ -259,7 +259,21 @@ def rolling_volatility(
     pd.DataFrame
         Rolling volatility DataFrame
     """
-    length = PERIODS_DAYS[window]
+
+    if window == "all":
+        # rolling std() needs at least 2 observations
+        length = 2
+    else:
+        length = PERIODS_DAYS[window]
+
+    sample_length = len(portfolio_returns)
+
+    if length > sample_length:
+        console.print(
+            f"[red] Window length ({length}) is larger than sample length ({sample_length}) [/red]"
+        )
+        return pd.DataFrame()
+
     return portfolio_returns.rolling(length).std()
 
 

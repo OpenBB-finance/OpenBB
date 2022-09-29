@@ -1418,9 +1418,15 @@ def get_rolling_volatility(
     """
 
     portfolio_rvol = portfolio_helper.rolling_volatility(portfolio.returns, window)
+    if portfolio_rvol.empty:
+        return pd.DataFrame()
+
     benchmark_rvol = portfolio_helper.rolling_volatility(
         portfolio.benchmark_returns, window
     )
+    if benchmark_rvol.empty:
+        return pd.DataFrame()
+
     df = pd.DataFrame(portfolio_rvol).join(pd.DataFrame(benchmark_rvol))
     df.columns.values[0] = "portfolio"
     df.columns.values[1] = "benchmark"
