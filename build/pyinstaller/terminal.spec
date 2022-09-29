@@ -81,6 +81,10 @@ hidden_imports = [
     "bson",
 ]
 
+# excluded_binaries = [
+#     pathex + "/_scs_direct.cpython-39-darwin.so",
+# ]
+
 analysis_kwargs = dict(
     scripts=[os.path.join(os.getcwd(), "terminal.py")],
     pathex=[pathex, "."],
@@ -90,7 +94,7 @@ analysis_kwargs = dict(
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
-    excludes=[],
+    excludes=["_scs_direct.cpython-39-darwin.so"],
     win_no_prefer_redirects=False,
     win_private_assemblies=False,
     cipher=None,
