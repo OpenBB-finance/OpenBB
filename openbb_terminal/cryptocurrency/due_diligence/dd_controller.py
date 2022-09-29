@@ -528,9 +528,9 @@ class DueDiligenceController(CryptoBaseController):
             "-i",
             "--interval",
             dest="interval",
-            type=int,
+            type=str,
             help="Frequency interval. Default: 0",
-            default=0,
+            default="0",
             choices=coinglass_model.INTERVALS,
         )
 
@@ -538,10 +538,15 @@ class DueDiligenceController(CryptoBaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
+        try:
+            interval = int(ns_parser.interval)
+        except ValueError:
+            console.print("[red]Interval must be an integer value[/red]\n")
+
         if ns_parser:
             coinglass_view.display_open_interest(
                 symbol=self.symbol.upper(),
-                interval=ns_parser.interval,
+                interval=interval,
                 export=ns_parser.export,
             )
 
@@ -1360,8 +1365,8 @@ class DueDiligenceController(CryptoBaseController):
                 symbol=self.symbol.upper(),
                 interval=ns_parser.interval,
                 dev_activity=ns_parser.dev,
-                start=ns_parser.start.strftime("%Y-%m-%dT%H:%M:%SZ"),
-                end=ns_parser.end.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                start_date=ns_parser.start.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                end_date=ns_parser.end.strftime("%Y-%m-%dT%H:%M:%SZ"),
             )
 
     @log_start_end(log=logger)
@@ -1736,8 +1741,8 @@ class DueDiligenceController(CryptoBaseController):
         if ns_parser:
             cryptopanic_view.display_news(
                 limit=ns_parser.limit,
-                source=self.source,
-                currency=self.symbol,
+                source=None,
+                symbol=self.symbol,
                 export=ns_parser.export,
                 ascend=not ns_parser.descend,
                 post_kind=ns_parser.kind,

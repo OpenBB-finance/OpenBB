@@ -24,10 +24,12 @@ def check_country_code_type(list_of_codes: str) -> List[str]:
             "Code"
         ]
     )
-    valid_codes = []
-    for code in list_of_codes.split(","):
-        if code.upper() in nasdaq_codes:
-            valid_codes.append(code.upper())
+    valid_codes = [
+        code.upper()
+        for code in list_of_codes.split(",")
+        if code.upper() in nasdaq_codes
+    ]
+
     if valid_codes:
         return valid_codes
     raise argparse.ArgumentTypeError("No valid codes provided.")
@@ -93,7 +95,7 @@ def get_big_mac_indices(country_codes: List[str]) -> pd.DataFrame:
     Parameters
     ----------
     country_codes : List[str]
-        List of country codes (ISO-3 letter country code). Codes available through get_country_codes().
+        List of country codes (ISO-3 letter country code). Codes available through economy.country_codes().
 
     Returns
     -------

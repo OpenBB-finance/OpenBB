@@ -5,14 +5,17 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-import os
-from pathlib import Path
 from typing import List, Dict
 
 from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import parent_classes
+from openbb_terminal.core.config.paths import (
+    USER_EXPORTS_DIRECTORY,
+    PORTFOLIO_DATA_DIRECTORY,
+    REPOSITORY_DIRECTORY,
+)
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     check_non_negative,
@@ -302,31 +305,42 @@ class PortfolioOptimizationController(BaseController):
             "nco",
         ]
         self.file_types = ["xlsx", "ini"]
-        self.DEFAULT_ALLOCATION_PATH = os.path.abspath(
-            os.path.join(
-                os.path.dirname(__file__), "..", "..", "..", "portfolio", "allocation"
-            )
-        )
+        self.DEFAULT_ALLOCATION_PATH = PORTFOLIO_DATA_DIRECTORY / "allocation"
 
         self.DATA_ALLOCATION_FILES = {
             filepath.name: filepath
             for file_type in self.file_types
-            for filepath in Path(self.DEFAULT_ALLOCATION_PATH).rglob(f"*.{file_type}")
-            if filepath.is_file()
+            for filepath in self.DEFAULT_ALLOCATION_PATH.rglob(f"*.{file_type}")
         }
 
-        self.current_file = ""
-        self.DEFAULT_OPTIMIZATION_PATH = os.path.abspath(
-            os.path.join(
-                os.path.dirname(__file__), "..", "..", "..", "portfolio", "optimization"
-            )
+        self.DATA_ALLOCATION_FILES.update(
+            {
+                filepath.name: filepath
+                for file_type in self.file_types
+                for filepath in (
+                    REPOSITORY_DIRECTORY / "portfolio" / "allocation"
+                ).rglob(f"*.{file_type}")
+            }
         )
+
+        self.current_file = ""
+        self.DEFAULT_OPTIMIZATION_PATH = PORTFOLIO_DATA_DIRECTORY / "optimization"
+
         self.DATA_OPTIMIZATION_FILES = {
             filepath.name: filepath
             for file_type in self.file_types
-            for filepath in Path(self.DEFAULT_OPTIMIZATION_PATH).rglob(f"*.{file_type}")
-            if filepath.is_file()
+            for filepath in self.DEFAULT_OPTIMIZATION_PATH.rglob(f"*.{file_type}")
         }
+
+        self.DATA_OPTIMIZATION_FILES.update(
+            {
+                filepath.name: filepath
+                for file_type in self.file_types
+                for filepath in (
+                    REPOSITORY_DIRECTORY / "portfolio" / "optimization"
+                ).rglob(f"*.{file_type}")
+            }
+        )
 
         self.params: Dict = {}
 
@@ -338,8 +352,14 @@ class PortfolioOptimizationController(BaseController):
             self.choices["property"]["--property"] = {
                 c: None for c in yahoo_finance_model.yf_info_choices
             }
-            self.choices["file"] = {c: None for c in self.DATA_OPTIMIZATION_FILES}
-            self.choices["load"] = {c: None for c in self.DATA_ALLOCATION_FILES}
+            self.choices["file"]["-f"] = {c: None for c in self.DATA_OPTIMIZATION_FILES}
+            self.choices["file"]["--file"] = {
+                c: None for c in self.DATA_OPTIMIZATION_FILES
+            }
+            self.choices["load"]["-f"] = {c: None for c in self.DATA_ALLOCATION_FILES}
+            self.choices["load"]["--file"] = {
+                c: None for c in self.DATA_ALLOCATION_FILES
+            }
 
             for fn in models:
                 self.choices[fn]["-p"] = {c: None for c in self.PERIOD_CHOICES}
@@ -890,10 +910,10 @@ class PortfolioOptimizationController(BaseController):
             stocks.sort()
 
             _, stock_returns = optimizer_model.get_equal_weights(
-                stocks=stocks,
-                period=ns_parser.historic_period,
-                start=ns_parser.start_period,
-                end=ns_parser.end_period,
+                symbols=stocks,
+                interval=ns_parser.historic_period,
+                start_date=ns_parser.start_period,
+                end_date=ns_parser.end_period,
                 log_returns=ns_parser.log_returns,
                 freq=ns_parser.return_frequency,
                 maxnan=ns_parser.max_nan,
@@ -912,7 +932,7 @@ class PortfolioOptimizationController(BaseController):
                 stocks = list(weights.keys())
                 optimizer_view.additional_plots(
                     weights=weights,
-                    stock_returns=stock_returns[stocks],
+                    data=stock_returns[stocks],
                     category=None,
                     title_opt=i,
                     freq=ns_parser.return_frequency,
@@ -939,7 +959,7 @@ class PortfolioOptimizationController(BaseController):
                         )
                         optimizer_view.additional_plots(
                             weights=weights,
-                            stock_returns=stock_returns[stocks],
+                            data=stock_returns[stocks],
                             category=filtered_categories,
                             title_opt=category + " - " + i,
                             freq=ns_parser.return_frequency,
@@ -1132,10 +1152,10 @@ class PortfolioOptimizationController(BaseController):
                 return
 
             weights = optimizer_view.display_equal_weight(
-                stocks=self.tickers,
-                period=ns_parser.historic_period,
-                start=ns_parser.start_period,
-                end=ns_parser.end_period,
+                symbols=self.tickers,
+                interval=ns_parser.historic_period,
+                start_date=ns_parser.start_period,
+                end_date=ns_parser.end_period,
                 log_returns=ns_parser.log_returns,
                 freq=ns_parser.return_frequency,
                 maxnan=ns_parser.max_nan,
@@ -1327,10 +1347,10 @@ class PortfolioOptimizationController(BaseController):
                 return
 
             weights = optimizer_view.display_property_weighting(
-                stocks=self.tickers,
-                period=ns_parser.historic_period,
-                start=ns_parser.start_period,
-                end=ns_parser.end_period,
+                symbols=self.tickers,
+                interval=ns_parser.historic_period,
+                start_date=ns_parser.start_period,
+                end_date=ns_parser.end_period,
                 log_returns=ns_parser.log_returns,
                 freq=ns_parser.return_frequency,
                 maxnan=ns_parser.max_nan,
@@ -1523,10 +1543,10 @@ class PortfolioOptimizationController(BaseController):
                 return
 
             weights = optimizer_view.display_property_weighting(
-                stocks=self.tickers,
-                period=ns_parser.historic_period,
-                start=ns_parser.start_period,
-                end=ns_parser.end_period,
+                symbols=self.tickers,
+                interval=ns_parser.historic_period,
+                start_date=ns_parser.start_period,
+                end_date=ns_parser.end_period,
                 log_returns=ns_parser.log_returns,
                 freq=ns_parser.return_frequency,
                 maxnan=ns_parser.max_nan,
@@ -1728,10 +1748,10 @@ class PortfolioOptimizationController(BaseController):
                 return
 
             weights = optimizer_view.display_property_weighting(
-                stocks=self.tickers,
-                period=ns_parser.historic_period,
-                start=ns_parser.start_period,
-                end=ns_parser.end_period,
+                symbols=self.tickers,
+                interval=ns_parser.historic_period,
+                start_date=ns_parser.start_period,
+                end_date=ns_parser.end_period,
                 log_returns=ns_parser.log_returns,
                 freq=ns_parser.return_frequency,
                 maxnan=ns_parser.max_nan,
@@ -2036,10 +2056,10 @@ class PortfolioOptimizationController(BaseController):
             console.print("Optimization can take time. Please be patient...")
 
             weights = optimizer_view.display_max_sharpe(
-                stocks=self.tickers,
-                period=ns_parser.historic_period,
-                start=ns_parser.start_period,
-                end=ns_parser.end_period,
+                symbols=self.tickers,
+                interval=ns_parser.historic_period,
+                start_date=ns_parser.start_period,
+                end_date=ns_parser.end_period,
                 log_returns=ns_parser.log_returns,
                 freq=ns_parser.return_frequency,
                 maxnan=ns_parser.max_nan,
@@ -2064,10 +2084,10 @@ class PortfolioOptimizationController(BaseController):
 
             if table is False:
                 weights_sa = optimizer_view.display_max_sharpe(
-                    stocks=self.tickers,
-                    period=ns_parser.historic_period_sa,
-                    start=ns_parser.start_period_sa,
-                    end=ns_parser.end_period_sa,
+                    symbols=self.tickers,
+                    interval=ns_parser.historic_period_sa,
+                    start_date=ns_parser.start_period_sa,
+                    end_date=ns_parser.end_period_sa,
                     log_returns=ns_parser.log_returns_sa,
                     freq=ns_parser.return_frequency_sa,
                     maxnan=ns_parser.max_nan_sa,
@@ -2390,10 +2410,10 @@ class PortfolioOptimizationController(BaseController):
             console.print("Optimization can take time. Please be patient...")
 
             weights = optimizer_view.display_min_risk(
-                stocks=self.tickers,
-                period=ns_parser.historic_period,
-                start=ns_parser.start_period,
-                end=ns_parser.end_period,
+                symbols=self.tickers,
+                interval=ns_parser.historic_period,
+                start_date=ns_parser.start_period,
+                end_date=ns_parser.end_period,
                 log_returns=ns_parser.log_returns,
                 freq=ns_parser.return_frequency,
                 maxnan=ns_parser.max_nan,
@@ -2418,10 +2438,10 @@ class PortfolioOptimizationController(BaseController):
 
             if table is False:
                 weights_sa = optimizer_view.display_min_risk(
-                    stocks=self.tickers,
-                    period=ns_parser.historic_period_sa,
-                    start=ns_parser.start_period_sa,
-                    end=ns_parser.end_period_sa,
+                    symbols=self.tickers,
+                    interval=ns_parser.historic_period_sa,
+                    start_date=ns_parser.start_period_sa,
+                    end_date=ns_parser.end_period_sa,
                     log_returns=ns_parser.log_returns_sa,
                     freq=ns_parser.return_frequency_sa,
                     maxnan=ns_parser.max_nan_sa,
@@ -2756,10 +2776,10 @@ class PortfolioOptimizationController(BaseController):
             console.print("Optimization can take time. Please be patient...")
 
             weights = optimizer_view.display_max_util(
-                stocks=self.tickers,
-                period=ns_parser.historic_period,
-                start=ns_parser.start_period,
-                end=ns_parser.end_period,
+                symbols=self.tickers,
+                interval=ns_parser.historic_period,
+                start_date=ns_parser.start_period,
+                end_date=ns_parser.end_period,
                 log_returns=ns_parser.log_returns,
                 freq=ns_parser.return_frequency,
                 maxnan=ns_parser.max_nan,
@@ -2785,10 +2805,10 @@ class PortfolioOptimizationController(BaseController):
 
             if table is False:
                 weights_sa = optimizer_view.display_max_util(
-                    stocks=self.tickers,
-                    period=ns_parser.historic_period_sa,
-                    start=ns_parser.start_period_sa,
-                    end=ns_parser.end_period_sa,
+                    symbols=self.tickers,
+                    interval=ns_parser.historic_period_sa,
+                    start_date=ns_parser.start_period_sa,
+                    end_date=ns_parser.end_period_sa,
                     log_returns=ns_parser.log_returns_sa,
                     freq=ns_parser.return_frequency_sa,
                     maxnan=ns_parser.max_nan_sa,
@@ -3114,10 +3134,10 @@ class PortfolioOptimizationController(BaseController):
             console.print("Optimization can take time. Please be patient...")
 
             weights = optimizer_view.display_max_ret(
-                stocks=self.tickers,
-                period=ns_parser.historic_period,
-                start=ns_parser.start_period,
-                end=ns_parser.end_period,
+                symbols=self.tickers,
+                interval=ns_parser.historic_period,
+                start_date=ns_parser.start_period,
+                end_date=ns_parser.end_period,
                 log_returns=ns_parser.log_returns,
                 freq=ns_parser.return_frequency,
                 maxnan=ns_parser.max_nan,
@@ -3142,10 +3162,10 @@ class PortfolioOptimizationController(BaseController):
 
             if table is False:
                 weights_sa = optimizer_view.display_max_ret(
-                    stocks=self.tickers,
-                    period=ns_parser.historic_period_sa,
-                    start=ns_parser.start_period_sa,
-                    end=ns_parser.end_period_sa,
+                    symbols=self.tickers,
+                    interval=ns_parser.historic_period_sa,
+                    start_date=ns_parser.start_period_sa,
+                    end_date=ns_parser.end_period_sa,
                     log_returns=ns_parser.log_returns_sa,
                     freq=ns_parser.return_frequency_sa,
                     maxnan=ns_parser.max_nan_sa,
@@ -3399,10 +3419,10 @@ class PortfolioOptimizationController(BaseController):
             console.print("Optimization can take time. Please be patient...")
 
             weights = optimizer_view.display_max_div(
-                stocks=self.tickers,
-                period=ns_parser.historic_period,
-                start=ns_parser.start_period,
-                end=ns_parser.end_period,
+                symbols=self.tickers,
+                interval=ns_parser.historic_period,
+                start_date=ns_parser.start_period,
+                end_date=ns_parser.end_period,
                 log_returns=ns_parser.log_returns,
                 freq=ns_parser.return_frequency,
                 maxnan=ns_parser.max_nan,
@@ -3421,10 +3441,10 @@ class PortfolioOptimizationController(BaseController):
 
             if table is False:
                 weights_sa = optimizer_view.display_max_div(
-                    stocks=self.tickers,
-                    period=ns_parser.historic_period_sa,
-                    start=ns_parser.start_period_sa,
-                    end=ns_parser.end_period_sa,
+                    symbols=self.tickers,
+                    interval=ns_parser.historic_period_sa,
+                    start_date=ns_parser.start_period_sa,
+                    end_date=ns_parser.end_period_sa,
                     log_returns=ns_parser.log_returns_sa,
                     freq=ns_parser.return_frequency_sa,
                     maxnan=ns_parser.max_nan_sa,
@@ -3672,10 +3692,10 @@ class PortfolioOptimizationController(BaseController):
             console.print("Optimization can take time. Please be patient...")
 
             weights = optimizer_view.display_max_decorr(
-                stocks=self.tickers,
-                period=ns_parser.historic_period,
-                start=ns_parser.start_period,
-                end=ns_parser.end_period,
+                symbols=self.tickers,
+                interval=ns_parser.historic_period,
+                start_date=ns_parser.start_period,
+                end_date=ns_parser.end_period,
                 log_returns=ns_parser.log_returns,
                 freq=ns_parser.return_frequency,
                 maxnan=ns_parser.max_nan,
@@ -3694,10 +3714,10 @@ class PortfolioOptimizationController(BaseController):
 
             if table is False:
                 weights_sa = optimizer_view.display_max_decorr(
-                    stocks=self.tickers,
-                    period=ns_parser.historic_period_sa,
-                    start=ns_parser.start_period_sa,
-                    end=ns_parser.end_period_sa,
+                    symbols=self.tickers,
+                    interval=ns_parser.historic_period_sa,
+                    start_date=ns_parser.start_period_sa,
+                    end_date=ns_parser.end_period_sa,
                     log_returns=ns_parser.log_returns_sa,
                     freq=ns_parser.return_frequency_sa,
                     maxnan=ns_parser.max_nan_sa,
@@ -4010,26 +4030,15 @@ class PortfolioOptimizationController(BaseController):
                 return
 
             if len(ns_parser.download) > 0:
-                file = os.path.abspath(
-                    os.path.join(
-                        self.DEFAULT_ALLOCATION_PATH,
-                        "..",
-                        "..",
-                        "exports",
-                        "portfolio",
-                        "views",
-                        ns_parser.download,
-                    )
+                file = (
+                    USER_EXPORTS_DIRECTORY / "portfolio" / "views" / ns_parser.download
                 )
+
                 excel_model.excel_bl_views(file=file, stocks=self.tickers, n=1)
                 return
 
             if ns_parser.file:
-                excel_file = os.path.abspath(
-                    os.path.join(
-                        self.DEFAULT_ALLOCATION_PATH, "..", "views", ns_parser.file
-                    )
-                )
+                excel_file = PORTFOLIO_DATA_DIRECTORY / "views" / ns_parser.file
                 p_views, q_views = excel_model.load_bl_views(excel_file=excel_file)
             else:
                 p_views = ns_parser.p_views
@@ -4047,12 +4056,12 @@ class PortfolioOptimizationController(BaseController):
             console.print("Optimization can take time. Please be patient...")
 
             weights = optimizer_view.display_black_litterman(
-                stocks=self.tickers,
+                symbols=self.tickers,
                 p_views=p_views,
                 q_views=q_views,
-                period=ns_parser.historic_period,
-                start=ns_parser.start_period,
-                end=ns_parser.end_period,
+                interval=ns_parser.historic_period,
+                start_date=ns_parser.start_period,
+                end_date=ns_parser.end_period,
                 log_returns=ns_parser.log_returns,
                 freq=ns_parser.return_frequency,
                 maxnan=ns_parser.max_nan,
@@ -4076,14 +4085,7 @@ class PortfolioOptimizationController(BaseController):
 
             if table is False:
                 if ns_parser.file_sa:
-                    excel_file = os.path.abspath(
-                        os.path.join(
-                            self.DEFAULT_ALLOCATION_PATH,
-                            "..",
-                            "views",
-                            ns_parser.file_sa,
-                        )
-                    )
+                    excel_file = PORTFOLIO_DATA_DIRECTORY / "views" / ns_parser.file_sa
                     p_views_sa, q_views_sa = excel_model.load_bl_views(
                         excel_file=excel_file
                     )
@@ -4092,12 +4094,12 @@ class PortfolioOptimizationController(BaseController):
                     q_views_sa = ns_parser.q_views_sa
 
                 weights_sa = optimizer_view.display_black_litterman(
-                    stocks=self.tickers,
+                    symbols=self.tickers,
                     p_views=p_views_sa,
                     q_views=q_views_sa,
-                    period=ns_parser.historic_period_sa,
-                    start=ns_parser.start_period_sa,
-                    end=ns_parser.end_period_sa,
+                    interval=ns_parser.historic_period_sa,
+                    start_date=ns_parser.start_period_sa,
+                    end_date=ns_parser.end_period_sa,
                     log_returns=ns_parser.log_returns_sa,
                     freq=ns_parser.return_frequency_sa,
                     maxnan=ns_parser.max_nan_sa,
@@ -4349,10 +4351,10 @@ class PortfolioOptimizationController(BaseController):
                 return
 
             optimizer_view.display_ef(
-                stocks=self.tickers,
-                period=ns_parser.historic_period,
-                start=ns_parser.start_period,
-                end=ns_parser.end_period,
+                symbols=self.tickers,
+                interval=ns_parser.historic_period,
+                start_date=ns_parser.start_period,
+                end_date=ns_parser.end_period,
                 log_returns=ns_parser.log_returns,
                 freq=ns_parser.return_frequency,
                 maxnan=ns_parser.max_nan,
@@ -4615,10 +4617,10 @@ class PortfolioOptimizationController(BaseController):
             console.print("Optimization can take time. Please be patient...")
 
             weights = optimizer_view.display_risk_parity(
-                stocks=self.tickers,
-                period=ns_parser.historic_period,
-                start=ns_parser.start_period,
-                end=ns_parser.end_period,
+                symbols=self.tickers,
+                interval=ns_parser.historic_period,
+                start_date=ns_parser.start_period,
+                end_date=ns_parser.end_period,
                 log_returns=ns_parser.log_returns,
                 freq=ns_parser.return_frequency,
                 maxnan=ns_parser.max_nan,
@@ -4639,10 +4641,10 @@ class PortfolioOptimizationController(BaseController):
 
             if table is False:
                 weights_sa = optimizer_view.display_risk_parity(
-                    stocks=self.tickers,
-                    period=ns_parser.historic_period_sa,
-                    start=ns_parser.start_period_sa,
-                    end=ns_parser.end_period_sa,
+                    symbols=self.tickers,
+                    interval=ns_parser.historic_period_sa,
+                    start_date=ns_parser.start_period_sa,
+                    end_date=ns_parser.end_period_sa,
                     log_returns=ns_parser.log_returns_sa,
                     freq=ns_parser.return_frequency_sa,
                     maxnan=ns_parser.max_nan_sa,
@@ -4902,10 +4904,10 @@ class PortfolioOptimizationController(BaseController):
             console.print("Optimization can take time. Please be patient...")
 
             weights = optimizer_view.display_rel_risk_parity(
-                stocks=self.tickers,
-                period=ns_parser.historic_period,
-                start=ns_parser.start_period,
-                end=ns_parser.end_period,
+                symbols=self.tickers,
+                interval=ns_parser.historic_period,
+                start_date=ns_parser.start_period,
+                end_date=ns_parser.end_period,
                 log_returns=ns_parser.log_returns,
                 freq=ns_parser.return_frequency,
                 maxnan=ns_parser.max_nan,
@@ -4926,10 +4928,10 @@ class PortfolioOptimizationController(BaseController):
 
             if table is False:
                 weights_sa = optimizer_view.display_rel_risk_parity(
-                    stocks=self.tickers,
-                    period=ns_parser.historic_period_sa,
-                    start=ns_parser.start_period_sa,
-                    end=ns_parser.end_period_sa,
+                    symbols=self.tickers,
+                    interval=ns_parser.historic_period_sa,
+                    start_date=ns_parser.start_period_sa,
+                    end_date=ns_parser.end_period_sa,
                     log_returns=ns_parser.log_returns_sa,
                     freq=ns_parser.return_frequency_sa,
                     maxnan=ns_parser.max_nan_sa,
@@ -5334,10 +5336,10 @@ class PortfolioOptimizationController(BaseController):
             console.print("Optimization can take time. Please be patient...")
 
             weights = optimizer_view.display_hrp(
-                stocks=self.tickers,
-                period=ns_parser.historic_period,
-                start=ns_parser.start_period,
-                end=ns_parser.end_period,
+                symbols=self.tickers,
+                interval=ns_parser.historic_period,
+                start_date=ns_parser.start_period,
+                end_date=ns_parser.end_period,
                 log_returns=ns_parser.log_returns,
                 freq=ns_parser.return_frequency,
                 maxnan=ns_parser.max_nan,
@@ -5368,10 +5370,10 @@ class PortfolioOptimizationController(BaseController):
 
             if table is False:
                 weights_sa = optimizer_view.display_hrp(
-                    stocks=self.tickers,
-                    period=ns_parser.historic_period_sa,
-                    start=ns_parser.start_period_sa,
-                    end=ns_parser.end_period_sa,
+                    symbols=self.tickers,
+                    interval=ns_parser.historic_period_sa,
+                    start_date=ns_parser.start_period_sa,
+                    end_date=ns_parser.end_period_sa,
                     log_returns=ns_parser.log_returns_sa,
                     freq=ns_parser.return_frequency_sa,
                     maxnan=ns_parser.max_nan_sa,
@@ -5784,10 +5786,10 @@ class PortfolioOptimizationController(BaseController):
             console.print("Optimization can take time. Please be patient...")
 
             weights = optimizer_view.display_herc(
-                stocks=self.tickers,
-                period=ns_parser.historic_period,
-                start=ns_parser.start_period,
-                end=ns_parser.end_period,
+                symbols=self.tickers,
+                interval=ns_parser.historic_period,
+                start_date=ns_parser.start_period,
+                end_date=ns_parser.end_period,
                 log_returns=ns_parser.log_returns,
                 freq=ns_parser.return_frequency,
                 maxnan=ns_parser.max_nan,
@@ -5818,10 +5820,10 @@ class PortfolioOptimizationController(BaseController):
 
             if table is False:
                 weights_sa = optimizer_view.display_herc(
-                    stocks=self.tickers,
-                    period=ns_parser.historic_period_sa,
-                    start=ns_parser.start_period_sa,
-                    end=ns_parser.end_period_sa,
+                    symbols=self.tickers,
+                    interval=ns_parser.historic_period_sa,
+                    start_date=ns_parser.start_period_sa,
+                    end_date=ns_parser.end_period_sa,
                     log_returns=ns_parser.log_returns_sa,
                     freq=ns_parser.return_frequency_sa,
                     maxnan=ns_parser.max_nan_sa,
@@ -6210,10 +6212,10 @@ class PortfolioOptimizationController(BaseController):
             console.print("Optimization can take time. Please be patient...")
 
             weights = optimizer_view.display_nco(
-                stocks=self.tickers,
-                period=ns_parser.historic_period,
-                start=ns_parser.start_period,
-                end=ns_parser.end_period,
+                symbols=self.tickers,
+                interval=ns_parser.historic_period,
+                start_date=ns_parser.start_period,
+                end_date=ns_parser.end_period,
                 log_returns=ns_parser.log_returns,
                 freq=ns_parser.return_frequency,
                 maxnan=ns_parser.max_nan,
@@ -6243,10 +6245,10 @@ class PortfolioOptimizationController(BaseController):
 
             if table is False:
                 weights_sa = optimizer_view.display_nco(
-                    stocks=self.tickers,
-                    period=ns_parser.historic_period_sa,
-                    start=ns_parser.start_period_sa,
-                    end=ns_parser.end_period_sa,
+                    symbols=self.tickers,
+                    interval=ns_parser.historic_period_sa,
+                    start_date=ns_parser.start_period_sa,
+                    end_date=ns_parser.end_period_sa,
                     log_returns=ns_parser.log_returns_sa,
                     freq=ns_parser.return_frequency_sa,
                     maxnan=ns_parser.max_nan_sa,

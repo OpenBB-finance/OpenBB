@@ -9,7 +9,7 @@ from openbb_terminal.helper_classes import ModelsNamespace as _models
 from openbb_terminal.alternative.covid.covid_view import display_covid_ov as ov
 from openbb_terminal.alternative.covid.covid_view import display_covid_stat as stat
 from openbb_terminal.alternative.covid.covid_view import (
-    display_country_slopes as slopes,
+    display_case_slopes as slopes,
 )
 
 

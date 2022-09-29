@@ -109,13 +109,13 @@ def get_categories_keys() -> List[str]:
 
 
 @log_start_end(log=logger)
-def get_coins(top: int = 250, category: str = "", sortby="Symbol") -> pd.DataFrame:
+def get_coins(limit: int = 250, category: str = "", sortby="Symbol") -> pd.DataFrame:
 
     """Get N coins from CoinGecko [Source: CoinGecko]
 
     Parameters
     ----------
-    top: int
+    limit: int
         Number of top coins to grab from CoinGecko
     sortby: str
         Key to sort data
@@ -127,11 +127,11 @@ def get_coins(top: int = 250, category: str = "", sortby="Symbol") -> pd.DataFra
     """
     client = CoinGeckoAPI()
     df = pd.DataFrame()
-    if top <= 250:
+    if limit <= 250:
         kwargs = {
             "vs_currency": "usd",
             "order": "market_cap_desc",
-            "per_page": top,
+            "per_page": limit,
             "sparkline": False,
             "price_change_percentage": "1h,24h,7d,14d,30d,200d,1y",
         }
@@ -142,11 +142,11 @@ def get_coins(top: int = 250, category: str = "", sortby="Symbol") -> pd.DataFra
         # df = df.append(pd.DataFrame(data), ignore_index=True)
     else:
         p = 1
-        while top > 0:
+        while limit > 0:
             kwargs = {
                 "vs_currency": "usd",
                 "order": "market_cap_desc",
-                "per_page": top,
+                "per_page": limit,
                 "sparkline": False,
                 "price_change_percentage": "1h,24h,7d,14d,30d,200d,1y",
                 "page": p,
@@ -157,12 +157,12 @@ def get_coins(top: int = 250, category: str = "", sortby="Symbol") -> pd.DataFra
             data = client.get_coins_markets(**kwargs)
             df = pd.concat([df, pd.DataFrame(data)], ignore_index=True)
             # df = df.append(pd.DataFrame(data), ignore_index=True)
-            top -= 250
+            limit -= 250
             p += 1
     if sortby in COINS_COLUMNS:
         df = df[(df["total_volume"].notna()) & (df["market_cap"].notna())]
         df = df.sort_values(by=sortby.lower(), ascending=False)
-    return df.head(top)
+    return df.head(limit)
 
 
 GAINERS_LOSERS_COLUMNS = [
@@ -177,8 +177,8 @@ GAINERS_LOSERS_COLUMNS = [
 
 @log_start_end(log=logger)
 def get_gainers_or_losers(
-    top: int = 20,
-    period: str = "1h",
+    limit: int = 20,
+    interval: str = "1h",
     typ: str = "gainers",
     sortby: str = "market_cap",
 ) -> pd.DataFrame:
@@ -192,7 +192,7 @@ def get_gainers_or_losers(
     sortby: str
         Key to sort data. The table can be sorted by every of its columns. Refer to
         API documentation (see /coins/markets in https://www.coingecko.com/en/api/documentation)
-    period: str
+    interval: str
         One from {14d,1h,1y,200d,24h,30d,7d}
     typ: str
         Either "gainers" or "losers"
@@ -200,16 +200,16 @@ def get_gainers_or_losers(
     -------
     pandas.DataFrame
         Top Gainers / Top Losers - coins which gain/lost most in price in given period of time.
-        Columns: Symbol, Name, Volume, Price, %Change_{period}, Url
+        Columns: Symbol, Name, Volume, Price, %Change_{interval}, Url
     """
 
-    if period not in API_PERIODS:
+    if interval not in API_PERIODS:
         raise ValueError(
             f"Wrong time period\nPlease chose one from list: {API_PERIODS}"
         )
-    df = get_coins(top)
+    df = get_coins(limit)
     sorted_df = df.sort_values(
-        by=[f"price_change_percentage_{period}_in_currency"],
+        by=[f"price_change_percentage_{interval}_in_currency"],
         ascending=typ != "gainers",
     )
     sorted_df = sorted_df[
@@ -220,11 +220,11 @@ def get_gainers_or_losers(
             "market_cap",
             "market_cap_rank",
             "total_volume",
-            f"price_change_percentage_{period}_in_currency",
+            f"price_change_percentage_{interval}_in_currency",
         ]
     ]
     sorted_df = sorted_df.set_axis(
-        GAINERS_LOSERS_COLUMNS + [f"Change {period} [%]"],
+        GAINERS_LOSERS_COLUMNS + [f"Change {interval} [%]"],
         axis=1,
         inplace=False,
     )
@@ -232,6 +232,62 @@ def get_gainers_or_losers(
         df = df[(df["total_volume"].notna()) & (df["market_cap"].notna())]
         df = df.sort_values(by=sortby, ascending=True)
     return sorted_df
+
+
+def get_gainers(
+    interval: str = "1h",
+    limit: int = 50,
+    sortby: str = "market_cap_rank",
+) -> pd.DataFrame:
+    """Shows Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]
+
+    Parameters
+    ----------
+    interval: str
+        Time interval by which data is displayed. One from [1h, 24h, 7d, 14d, 30d, 60d, 1y]
+    limit: int
+        Number of records to display
+    sortby: str
+        Key to sort data. The table can be sorted by every of its columns. Refer to
+        API documentation (see /coins/markets in https://www.coingecko.com/en/api/documentation)
+
+    Returns
+    -------
+    pd.DataFrame
+        Top Gainers  - coins which gain most in price in given period of time.
+        Columns: Symbol, Name, Volume, Price, %Change_{interval}, Url
+    """
+    return get_gainers_or_losers(
+        limit=limit, interval=interval, typ="gainers", sortby=sortby
+    )
+
+
+def get_losers(
+    interval: str = "1h",
+    limit: int = 50,
+    sortby: str = "market_cap_rank",
+) -> pd.DataFrame:
+    """Shows Largest Losers - coins which lose the most in given period. [Source: CoinGecko]
+
+    Parameters
+    ----------
+    interval: str
+        Time interval by which data is displayed. One from [1h, 24h, 7d, 14d, 30d, 60d, 1y]
+    limit: int
+        Number of records to display
+    sortby: str
+        Key to sort data. The table can be sorted by every of its columns. Refer to
+        API documentation (see /coins/markets in https://www.coingecko.com/en/api/documentation)
+
+    Returns
+    -------
+    pd.DataFrame
+        Top Losers  - coins which lost most in price in given period of time.
+        Columns: Symbol, Name, Volume, Price, %Change_{interval}, Url
+    """
+    return get_gainers_or_losers(
+        limit=limit, interval=interval, typ="losers", sortby=sortby
+    )
 
 
 @log_start_end(log=logger)

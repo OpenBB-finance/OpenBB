@@ -10,8 +10,9 @@ import re
 import os
 import difflib
 import logging
+import json
 
-from typing import Union, List, Dict, Any
+from typing import Union, Any, List, Dict
 from datetime import datetime, timedelta
 
 from prompt_toolkit.completion import NestedCompleter
@@ -21,6 +22,7 @@ from rich.markdown import Markdown
 import pandas as pd
 import numpy as np
 
+from openbb_terminal.core.config.paths import CUSTOM_IMPORTS_DIRECTORY
 from openbb_terminal.decorators import log_start_end
 
 from openbb_terminal.menu import session
@@ -84,8 +86,8 @@ class BaseController(metaclass=ABCMeta):
 
     CHOICES_COMMANDS: List[str] = []
     CHOICES_MENUS: List[str] = []
-    SUPPORT_CHOICES: Dict = {}
-    ABOUT_CHOICES: Dict = {}
+    SUPPORT_CHOICES: dict = {}
+    ABOUT_CHOICES: dict = {}
     COMMAND_SEPARATOR = "/"
     KEYS_MENU = "keys" + COMMAND_SEPARATOR
     TRY_RELOAD = False
@@ -196,7 +198,7 @@ class BaseController(metaclass=ABCMeta):
     def print_help(self) -> None:
         raise NotImplementedError("Must override print_help.")
 
-    def parse_input(self, an_input: str) -> List:
+    def parse_input(self, an_input: str) -> list:
         """Parse controller input
 
         Splits the command chain from user input into a list of individual commands
@@ -215,10 +217,10 @@ class BaseController(metaclass=ABCMeta):
 
         Returns
         -------
-        List
+        list
             Command queue as list
         """
-        custom_filters: List = []
+        custom_filters: list = []
         commands = parse_and_split_input(
             an_input=an_input, custom_filters=custom_filters
         )
@@ -242,13 +244,14 @@ class BaseController(metaclass=ABCMeta):
         self, known_cmd: str, other_args_str: str, the_input: str
     ) -> None:
         if not self.contains_keys(the_input):
-            logger.info(
-                "CMD: {'path': '%s', 'known_cmd': '%s', 'other_args': '%s', 'input': '%s'}",
-                self.PATH,
-                known_cmd,
-                other_args_str,
-                the_input,
-            )
+            cmd = {
+                "path": self.PATH,
+                "known_cmd": known_cmd,
+                "other_args": other_args_str,
+                "input": the_input,
+            }
+            logger.info("CMD: %s", json.dumps(cmd))
+
         if the_input not in self.KEYS_MENU:
             self.log_queue()
 
@@ -259,7 +262,7 @@ class BaseController(metaclass=ABCMeta):
         Returns
         -------
         List[str]
-            List of commands in the queue to execute
+            list of commands in the queue to execute
         """
         actions = self.parse_input(an_input)
 
@@ -510,7 +513,7 @@ class BaseController(metaclass=ABCMeta):
         parser: argparse.ArgumentParser
             Parser with predefined arguments
         other_args: List[str]
-            List of arguments to parse
+            list of arguments to parse
         export_allowed: int
             Choose from NO_EXPORT, EXPORT_ONLY_RAW_DATA_ALLOWED,
             EXPORT_ONLY_FIGURES_ALLOWED and EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -855,10 +858,10 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 # This seems to block the .exe since the folder needs to be manually created
                 # This block makes sure that we only look for the file if the -f flag is used
                 # Adding files in the argparse choices, will fail for the .exe even without -f
+                STOCKS_CUSTOM_IMPORTS = CUSTOM_IMPORTS_DIRECTORY / "stocks"
                 try:
-                    if ns_parser.filepath not in os.listdir(
-                        os.path.join("custom_imports", "stocks")
-                    ):
+                    file_list = [x.name for x in STOCKS_CUSTOM_IMPORTS.iterdir()]
+                    if ns_parser.filepath not in file_list:
                         console.print(
                             f"[red]{ns_parser.filepath} not found in custom_imports/stocks/ "
                             "folder[/red].\n"
@@ -869,9 +872,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     return
 
                 df_stock_candidate = stocks_helper.load_custom(
-                    os.path.join(
-                        os.path.join("custom_imports", "stocks"), ns_parser.filepath
-                    )
+                    str(STOCKS_CUSTOM_IMPORTS / ns_parser.filepath)
                 )
                 if df_stock_candidate.empty:
                     return
@@ -883,6 +884,8 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 console.print(self.add_info)
                 if (
                     ns_parser.interval == 1440
+                    and not ns_parser.weekly
+                    and not ns_parser.monthly
                     and ns_parser.filepath is None
                     and self.PATH == "/stocks/"
                 ):
@@ -896,6 +899,8 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 if ns_parser.source == "IEXCloud":
                     self.start = self.stock.index[0].to_pydatetime()
                 elif ns_parser.source == "EODHD":
+                    self.start = self.stock.index[0].to_pydatetime()
+                elif ns_parser.source == "eodhd":
                     self.start = self.stock.index[0].to_pydatetime()
                 else:
                     self.start = ns_parser.start

@@ -61,9 +61,7 @@ def get_next_earnings(limit: int = 10) -> DataFrame:
         )
 
         for stock_rows in text_soup_earnings.findAll("tr", {"data-exchange": "NASDAQ"}):
-            stocks = []
-            for a_stock in stock_rows.contents[:3]:
-                stocks.append(a_stock.text)
+            stocks = [a_stock.text for a_stock in stock_rows.contents[:3]]
             earnings.append(stocks)
 
         url_next_earnings = (
@@ -198,7 +196,7 @@ def get_news_html(news_type: str = "Top-News") -> dict:
 
 
 @log_start_end(log=logger)
-def get_news(news_type: str = "Top-News", num: int = 5) -> List:
+def get_news(news_type: str = "Top-News", limit: int = 5) -> List:
     """Gets news. [Source: SeekingAlpha]
 
     Parameters
@@ -206,7 +204,7 @@ def get_news(news_type: str = "Top-News", num: int = 5) -> List:
     news_type : str
         From: Top-News, On-The-Move, Market-Pulse, Notable-Calls, Buybacks, Commodities, Crypto, Issuance, Global,
         Guidance, IPOs, SPACs, Politics, M-A, Consumer, Energy, Financials, Healthcare, MLPs, REITs, Technology
-    num : int
+    limit : int
         Number of news to display
 
     Returns
@@ -217,9 +215,9 @@ def get_news(news_type: str = "Top-News", num: int = 5) -> List:
     news_articles: Dict = get_news_html(news_type)
     news_to_display = list()
 
-    if news_articles:
+    if "data" in news_articles:
         for idx, news in enumerate(news_articles["data"]):
-            if idx > num:
+            if idx > limit:
                 break
 
             news_to_display.append(

@@ -51,7 +51,7 @@ def display_top_retail(limit: int = 3, export: str = ""):
 def display_dividend_calendar(
     date: str = datetime.today().strftime("%Y-%m-%d"),
     sortby: str = "Dividend",
-    ascending: bool = False,
+    ascend: bool = False,
     limit: int = 10,
     export: str = "",
 ):
@@ -63,7 +63,7 @@ def display_dividend_calendar(
         Date to get dividend calendar for
     sortby: str
         Column to sort data for
-    ascending: bool
+    ascend: bool
         Flag to sort in ascending order
     limit: int
         Number of results to show
@@ -89,7 +89,7 @@ def display_dividend_calendar(
         return
     calendar = calendar.drop(columns=["announcement_Date"])
     calendar.columns = calendar.columns.map(div_map)
-    calendar = calendar.sort_values(by=sortby, ascending=ascending)
+    calendar = calendar.sort_values(by=sortby, ascending=ascend)
     print_rich_table(
         calendar.head(limit),
         headers=[x.title() for x in calendar.columns],

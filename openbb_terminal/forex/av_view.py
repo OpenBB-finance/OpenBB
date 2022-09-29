@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
-def display_quote(to_symbol: str, from_symbol: str):
+def display_quote(to_symbol: str = "USD", from_symbol: str = "EUR"):
     """Display current forex pair exchange rate.
 
     Parameters

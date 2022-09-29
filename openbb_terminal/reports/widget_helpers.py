@@ -76,7 +76,7 @@ def html_report(title: str = "", stylesheet: str = "", body: str = "") -> str:
         os.path.join(os.path.dirname(os.path.abspath(__file__)), "widgets", "report.j2")
     ) as f:
         template = Template(f.read())
-    return template.render(title=title, stylesheet=stylesheet, body=body)
+    return template.render(title=title, stylesheet=stylesheet, body=body + "</html>")
 
 
 def h(level: int, text: str) -> str:
@@ -166,7 +166,9 @@ def kpi(thresholds: List[float], sentences: List[str], value: float) -> str:
     return ""
 
 
-def add_tab(title: str, htmlcode: str, comment_cell: bool = True) -> str:
+def add_tab(
+    title: str, htmlcode: str, comment_cell: bool = True, commment_text: str = ""
+) -> str:
     """Add new tab section for the report. By default adds an opinion editable box at the start.
 
     Parameters
@@ -185,16 +187,22 @@ def add_tab(title: str, htmlcode: str, comment_cell: bool = True) -> str:
     """
     html_text = f'<div id="{title}" class="tabcontent"></br>'
     if comment_cell:
-        html_text += """<p style="border:3px; border-style:solid;
+        comment = commment_text if commment_text else "No comment."
+        html_text += f"""<p style="border:3px; border-style:solid;
             border-color:#000000; padding: 1em; width: 1050px;" contentEditable="true">
-                No comment.
+                {comment}
         </p>"""
     html_text += f"{htmlcode}</div>"
     return html_text
 
 
-def tab_clickable_evt() -> str:
+def tab_clickable_and_save_evt() -> str:
     """Adds javascript code within HTML at the bottom that allows the interactivity with tabs.
+
+    Parameters
+    ----------
+    report_name : str
+        Report name for the file to be saved
 
     Returns
     -------
@@ -204,25 +212,51 @@ def tab_clickable_evt() -> str:
     return """
         <script>
         function menu(evt, menu_name) {
-          var i, tabcontent, tablinks;
-          tabcontent = document.getElementsByClassName("tabcontent");
-          for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
-          }
-          tablinks = document.getElementsByClassName("tablinks");
-          for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "");
-            tablinks[i].style.backgroundColor = "white";
-            tablinks[i].style.color = "black";
-          }
-          document.getElementById(menu_name).style.display = "block";
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+                tablinks[i].style.backgroundColor = "white";
+                tablinks[i].style.color = "black";
+            }
+            document.getElementById(menu_name).style.display = "block";
 
-          evt.currentTarget.className += " active";
-          evt.currentTarget.style.backgroundColor = "black";
-          evt.currentTarget.style.color = "white";
+            evt.currentTarget.className += " active";
+            evt.currentTarget.style.backgroundColor = "black";
+            evt.currentTarget.style.color = "white";
+        }
+
+        function saveReport() {
+            const markup = document.documentElement.innerHTML;
+            var bl = new Blob([markup], { type: "text/html" });
+            var a = document.createElement("a");
+            a.href = URL.createObjectURL(bl);
+            a.download =  "openbb_report.html";
+            a.hidden = true;
+            document.body.appendChild(a);
+            a.innerHTML = "Download";
+            a.click();
+        }
+
+        function readCommentsAndUpdateValues() {
+            var inputs, index;
+
+            inputs = document.getElementsByTagName('input');
+            for (index = 0; index < inputs.length; ++index) {
+                const elem = inputs[index];
+                elem.addEventListener('input', (e) => {
+                    console.log(elem.name, elem.value, e.target.value);
+                    elem.setAttribute("value", e.target.value)
+                });
+            }
         }
 
         window.onload=function(){
+            readCommentsAndUpdateValues();
             menu(event, 'SUMMARY');
         };
         </script>"""
@@ -251,13 +285,17 @@ def tablinks(tabs: List[str]) -> str:
     return htmlcode
 
 
-def header(img, author, report_date, report_time, report_tz, title) -> str:
+def header(
+    openbb_img, floppy_disk_img, author, report_date, report_time, report_tz, title
+) -> str:
     """Creates reports header
 
     Parameters
     ----------
-    img : str
-        Image for customizable report
+    openbb_img : str
+        Image of OpenBB logo
+    floppy_disk_img : str
+        Image of floppy disk containing the save button
     author : str
         Name of author responsible by report
     report_date : str
@@ -274,17 +312,46 @@ def header(img, author, report_date, report_time, report_tz, title) -> str:
     str
         HTML code for interactive tabs
     """
+    try:
+        with open(openbb_img, "rb") as image_file:
+            openbb_image_encoded = base64.b64encode(image_file.read())
+        openbb_img = f"""
+            <img src="data:image/png;base64,{openbb_image_encoded.decode()}"
+            alt="OpenBB" style="width:144px;">"""
+    except Exception:
+        openbb_img = ""
+
+    try:
+        with open(floppy_disk_img, "rb") as image_file:
+            floppy_disk_encoded = base64.b64encode(image_file.read())
+        flask_disk_save = f"""
+            <center><img src="data:image/png;base64,{floppy_disk_encoded.decode()}"
+            alt="OpenBB" style="width:40px;"></center>"""
+    except Exception:
+        flask_disk_save = ""
+
     return f"""
-        <div style="display:flex; margin-bottom:1cm;">
-            {img}
-            <div style="margin-left:2em">
-                <p><b>Analyst:</b> {author}</p>
-                <p><b>Date   :</b> {report_date}</p>
-                <p><b>Time   :</b> {report_time} {report_tz}</p>
-                <br/>
-                <p>{title}</p>
+            <html lang="en" class="" data-lt-installed="true">
+            <head>
+                <meta charset="UTF-8">
+                <title>OpenBB Terminal Report</title>
+                <meta name="robots" content="noindex">
+            </head>
+            <div style="display:flex; margin-bottom:1cm;">
+                {openbb_img}
+                <div style="margin-left:2em">
+                    <p><b>Analyst:</b> {author}</p>
+                    <p><b>Date   :</b> {report_date}</p>
+                    <p><b>Time   :</b> {report_time} {report_tz}</p>
+                    <br/>
+                    <p>{title}</p>
+                </div>
+                <button style="margin-left:7em; border:0px solid black;
+                    background-color: transparent;" onclick="saveReport()">
+                        {flask_disk_save}Save changes
+                </button>
             </div>
-        </div>"""
+        """
 
 
 def add_external_fig(figloc: str, style: str = "") -> str:

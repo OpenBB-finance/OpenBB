@@ -162,23 +162,22 @@ def get_validators(sortby: str = "votingPower", ascend: bool = True) -> pd.DataF
     """
 
     response = _make_request("staking")["validators"]
-    results = []
-    for validator in response:
-        results.append(
-            {
-                "accountAddress": validator["accountAddress"],
-                "validatorName": validator["description"].get("moniker"),
-                "tokensAmount": denominate_number(validator["tokens"]),
-                "votingPower": round(
-                    (float(validator["votingPower"].get("weight")) * 100), 2
-                ),
-                "commissionRate": round(
-                    (float(validator["commissionInfo"].get("rate", 0)) * 100), 2
-                ),
-                "status": validator["status"],
-                "uptime": round((float(validator.get("upTime", 0)) * 100), 2),
-            }
-        )
+    results = [
+        {
+            "accountAddress": validator["accountAddress"],
+            "validatorName": validator["description"].get("moniker"),
+            "tokensAmount": denominate_number(validator["tokens"]),
+            "votingPower": round(
+                (float(validator["votingPower"].get("weight")) * 100), 2
+            ),
+            "commissionRate": round(
+                (float(validator["commissionInfo"].get("rate", 0)) * 100), 2
+            ),
+            "status": validator["status"],
+            "uptime": round((float(validator.get("upTime", 0)) * 100), 2),
+        }
+        for validator in response
+    ]
 
     df = pd.DataFrame(results)
     if not df.empty:
@@ -188,7 +187,7 @@ def get_validators(sortby: str = "votingPower", ascend: bool = True) -> pd.DataF
 
 @log_start_end(log=logger)
 def get_proposals(
-    status: str = "", sortby: str = "id", ascend: bool = True, top: int = 10
+    status: str = "", sortby: str = "id", ascend: bool = True, limit: int = 10
 ) -> pd.DataFrame:
     """Get terra blockchain governance proposals list [Source: https://fcd.terra.dev/swagger]
 
@@ -200,7 +199,7 @@ def get_proposals(
         Key by which to sort data
     ascend: bool
         Flag to sort data ascending
-    top: int
+    limit: int
         Number of records to display
 
     Returns
@@ -247,7 +246,7 @@ def get_proposals(
 
     if status.title() in statuses:
         df = df[df["status"] == status.title()]
-    df = df.sort_values(by=sortby, ascending=ascend).head(top)
+    df = df.sort_values(by=sortby, ascending=ascend).head(limit)
     df.columns = prettify_column_names(df.columns)
     return df
 
@@ -276,12 +275,12 @@ def get_account_growth(cumulative: bool = True) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_staking_ratio_history(top: int = 200):
+def get_staking_ratio_history(limit: int = 200):
     """Get terra blockchain staking ratio history [Source: https://fcd.terra.dev/swagger]
 
     Parameters
     ----------
-    top: int
+    limit: int
         The number of ratios to show
 
     Returns
@@ -295,18 +294,18 @@ def get_staking_ratio_history(top: int = 200):
     df["date"] = df["datetime"].apply(lambda x: datetime.fromtimestamp(x / 1000).date())
     df["stakingRatio"] = df["stakingRatio"].apply(lambda x: round(float(x) * 100, 2))
     df = df[["date", "stakingRatio"]]
-    df = df.sort_values("date", ascending=False).head(top)
+    df = df.sort_values("date", ascending=False).head(limit)
     df = df.set_index("date")
     return df
 
 
 @log_start_end(log=logger)
-def get_staking_returns_history(top: int = 200):
+def get_staking_returns_history(limit: int = 200):
     """Get terra blockchain staking returns history [Source: https://fcd.terra.dev/v1]
 
     Parameters
     ----------
-    top: int
+    limit: int
         The number of returns to show
 
     Returns
@@ -322,7 +321,7 @@ def get_staking_returns_history(top: int = 200):
         lambda x: round(float(x) * 100, 2)
     )
     df = df[["date", "annualizedReturn"]]
-    df = df.sort_values("date", ascending=False).head(top)
+    df = df.sort_values("date", ascending=False).head(limit)
     df = df.set_index("date")
 
     return df

@@ -30,6 +30,16 @@ def get_rating(symbol: str) -> pd.DataFrame:
     if cfg.API_KEY_FINANCIALMODELINGPREP:
         try:
             df = fa.rating(symbol, cfg.API_KEY_FINANCIALMODELINGPREP)
+            l_recoms = [col for col in df.columns if "Recommendation" in col]
+            l_recoms_show = [
+                recom.replace("rating", "")
+                .replace("Details", "")
+                .replace("Recommendation", "")
+                for recom in l_recoms
+            ]
+            l_recoms_show[0] = "Rating"
+            df = df[l_recoms]
+            df.columns = l_recoms_show
         except ValueError as e:
             console.print(f"[red]{e}[/red]\n")
             logger.exception(str(e))

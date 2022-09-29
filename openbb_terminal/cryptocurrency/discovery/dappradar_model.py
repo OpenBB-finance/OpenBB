@@ -33,6 +33,7 @@ DAPPS_COLUMNS = [
 
 DEX_COLUMNS = [
     "Name",
+    "Category",
     "Daily Users",
     "Daily Volume [$]",
 ]
@@ -70,7 +71,7 @@ def _make_request(url: str) -> Optional[dict]:
 
 
 @log_start_end(log=logger)
-def get_top_nfts(sortby: str = "") -> pd.DataFrame:
+def get_top_nfts(sortby: str = "", limit: int = 10) -> pd.DataFrame:
     """Get top nft collections [Source: https://dappradar.com/]
 
     Parameters
@@ -108,14 +109,14 @@ def get_top_nfts(sortby: str = "") -> pd.DataFrame:
             inplace=False,
         )
         df["Protocols"] = df["Protocols"].apply(lambda x: ",".join(x))
-        return df
     if sortby in NFT_COLUMNS:
         df = df.sort_values(by=sortby, ascending=False)
+        return df.head(limit)
     return pd.DataFrame()
 
 
 @log_start_end(log=logger)
-def get_top_dexes(sortby: str = "") -> pd.DataFrame:
+def get_top_dexes(sortby: str = "", limit: int = 10) -> pd.DataFrame:
     """Get top dexes by daily volume and users [Source: https://dappradar.com/]
 
     Parameters
@@ -134,29 +135,37 @@ def get_top_dexes(sortby: str = "") -> pd.DataFrame:
         "oaGJtZGxjeVp6YjNKMFBYUnZkR0ZzVm05c2RXMWxTVzVHYVdGMEptOXlaR1Z5UFdSbGMyTW1iR2x0YVhROU1qWT0="
     )
     if data:
-        arr = []
-        for dex in data["dapps"]:
-            arr.append(
-                [
-                    dex["name"],
-                    dex["statistic"]["userActivity"],
-                    dex["statistic"]["totalVolumeInFiat"],
-                ]
-            )
+        arr = [
+            [
+                dex["name"],
+                dex["category"],
+                dex["statistic"]["userActivity"],
+                dex["statistic"]["totalVolumeInFiat"],
+            ]
+            for dex in data["dapps"]
+        ]
+
         df = pd.DataFrame(arr, columns=DEX_COLUMNS)
         if sortby in DEX_COLUMNS:
             df = df.sort_values(by=sortby, ascending=False)
-        return df
+        df = df[df["Category"] == "exchanges"]
+        if df.empty:
+            return pd.DataFrame()
+        df.drop("Category", axis=1, inplace=True)
+        return df.head(limit)
     return pd.DataFrame()
 
 
 @log_start_end(log=logger)
-def get_top_games() -> pd.DataFrame:
+def get_top_games(sortby: str = "", limit: int = 10) -> pd.DataFrame:
     """Get top blockchain games by daily volume and users [Source: https://dappradar.com/]
 
     Parameters
     ----------
-
+    limit: int
+        Number of records to display
+    sortby: str
+        Key by which to sort data
     Returns
     -------
     pd.DataFrame
@@ -168,25 +177,30 @@ def get_top_games() -> pd.DataFrame:
         "oYldWekpuTnZjblE5ZFhObGNpWnZjbVJsY2oxa1pYTmpKbXhwYldsMFBUSTI="
     )
     if data:
-        arr = []
-        for dex in data["dapps"]:
-            arr.append(
-                [
-                    dex["name"],
-                    dex["statistic"]["userActivity"],
-                    dex["statistic"]["totalVolumeInFiat"],
-                ]
-            )
+        arr = [
+            [
+                dex["name"],
+                dex["category"],
+                dex["statistic"]["userActivity"],
+                dex["statistic"]["totalVolumeInFiat"],
+            ]
+            for dex in data["dapps"]
+        ]
+
         df = pd.DataFrame(
             arr,
             columns=DEX_COLUMNS,
         ).sort_values("Daily Users", ascending=False)
-        return df
+        if sortby in df.columns:
+            df = df.sort_values(by=sortby, ascending=False)
+        df = df[df["Category"] == "games"]
+        df.drop("Category", axis=1, inplace=True)
+        return df.head(limit)
     return pd.DataFrame()
 
 
 @log_start_end(log=logger)
-def get_top_dapps(sortby: str = "") -> pd.DataFrame:
+def get_top_dapps(sortby: str = "", limit: int = 10) -> pd.DataFrame:
     """Get top decentralized applications by daily volume and users [Source: https://dappradar.com/]
 
     Parameters
@@ -206,17 +220,17 @@ def get_top_dapps(sortby: str = "") -> pd.DataFrame:
         "2Y21SbGNqMWtaWE5qSm14cGJXbDBQVEky"
     )
     if data:
-        arr = []
-        for dex in data["dapps"]:
-            arr.append(
-                [
-                    dex["name"],
-                    dex["category"],
-                    dex["activeProtocols"],
-                    dex["statistic"]["userActivity"],
-                    dex["statistic"]["totalVolumeInFiat"],
-                ]
-            )
+        arr = [
+            [
+                dex["name"],
+                dex["category"],
+                dex["activeProtocols"],
+                dex["statistic"]["userActivity"],
+                dex["statistic"]["totalVolumeInFiat"],
+            ]
+            for dex in data["dapps"]
+        ]
+
         df = pd.DataFrame(
             arr,
             columns=DAPPS_COLUMNS,
@@ -224,5 +238,5 @@ def get_top_dapps(sortby: str = "") -> pd.DataFrame:
         df["Protocols"] = df["Protocols"].apply(lambda x: ",".join(x))
         if sortby in DAPPS_COLUMNS:
             df = df.sort_values(by=sortby, ascending=False)
-        return df
+        return df.head(limit)
     return pd.DataFrame()

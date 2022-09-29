@@ -4,7 +4,6 @@
 # IMPORTATION THIRDPARTY
 # import pandas as pd
 
-import datetime
 import pytest
 
 # IMPORTATION INTERNAL
@@ -24,6 +23,6 @@ def test_display_economic_calendar():
         country="united states",
         importance="high",
         category="Employment",
-        start_date=datetime.date(2022, 7, 7),
-        end_date=datetime.date(2022, 7, 8),
+        start_date="2022-7-7",
+        end_date="2022-7-8",
     )

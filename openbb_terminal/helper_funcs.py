@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from pathlib import Path
-from typing import List, Tuple, Union, Optional, Dict
+from typing import List, Union, Optional, Dict
 from datetime import datetime, timedelta, date as d
 import types
 from collections.abc import Iterable
@@ -36,7 +36,12 @@ import numpy as np
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import config_plot as cfgPlot
-from openbb_terminal.core.config.constants import USER_HOME
+from openbb_terminal.core.config.paths import (
+    HOME_DIRECTORY,
+    USER_ENV_FILE,
+    USER_EXPORTS_DIRECTORY,
+)
+from openbb_terminal.core.config import paths
 
 logger = logging.getLogger(__name__)
 
@@ -71,8 +76,8 @@ def set_command_location(cmd_loc: str):
 
 
 # pylint: disable=global-statement
-def set_export_folder(env_file: str = ".env", path_folder: str = ""):
-    """Set export folder location
+def set_user_data_folder(env_file: str = ".env", path_folder: str = ""):
+    """Set user data folder location
 
     Parameters
     ----------
@@ -81,9 +86,8 @@ def set_export_folder(env_file: str = ".env", path_folder: str = ""):
     path_folder: str
         Path folder location
     """
-    os.environ["OPENBB_EXPORT_FOLDER_PATH"] = path_folder
-    dotenv.set_key(env_file, "OPENBB_EXPORT_FOLDER_PATH", path_folder)
-    obbff.EXPORT_FOLDER_PATH = path_folder
+    dotenv.set_key(env_file, "OPENBB_USER_DATA_DIRECTORY", path_folder)
+    paths.USER_DATA_DIRECTORY = Path(path_folder)
 
 
 def check_path(path: str) -> str:
@@ -103,7 +107,7 @@ def check_path(path: str) -> str:
     if not path:
         return ""
     if path[0] == "~":
-        path = path.replace("~", USER_HOME.as_posix())
+        path = path.replace("~", HOME_DIRECTORY.as_posix())
     # Return string of path if such relative path exists
     if os.path.isfile(path):
         return path
@@ -271,11 +275,13 @@ def print_rich_table(
             row = [str(idx)] if show_index else []
             row += [
                 str(x)
-                if not isinstance(x, float) or not isinstance(x, np.float64)
+                if not isinstance(x, float) and not isinstance(x, np.float64)
                 else (
                     f"{x:{floatfmt[idx]}}"
                     if isinstance(floatfmt, list)
-                    else (f"{x:.2e}" if 0 < abs(x) <= 0.0001 else f"{x:floatfmt}")
+                    else (
+                        f"{x:.2e}" if 0 < abs(float(x)) <= 0.0001 else f"{x:floatfmt}"
+                    )
                 )
                 for idx, x in enumerate(values)
             ]
@@ -656,10 +662,12 @@ def us_market_holidays(years) -> list:
         holiday + " (Observed)" for holiday in market_holidays
     ]
     all_holidays = us_holidays(years=years)
-    valid_holidays = []
-    for date in list(all_holidays):
-        if all_holidays[date] in market_and_observed_holidays:
-            valid_holidays.append(date)
+    valid_holidays = [
+        date
+        for date in list(all_holidays)
+        if all_holidays[date] in market_and_observed_holidays
+    ]
+
     for year in years:
         new_Year = datetime.strptime(f"{year}-01-01", "%Y-%m-%d")
         if new_Year.weekday() != 5:  # ignore saturday
@@ -1052,6 +1060,8 @@ def get_flair() -> str:
         if str(obbff.USE_FLAIR) in flairs
         else str(obbff.USE_FLAIR)
     )
+
+    set_default_timezone()
     if obbff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
         dtime = datetime.now(pytz.timezone(get_user_timezone())).strftime(
             "%Y %b %d, %H:%M"
@@ -1064,6 +1074,15 @@ def get_flair() -> str:
         return f"{dtime} {flair}"
 
     return flair
+
+
+def set_default_timezone() -> None:
+    """Sets a default (America/New_York) timezone if one doesn't exist"""
+
+    dotenv.load_dotenv(USER_ENV_FILE)
+    user_tz = os.getenv("OPENBB_TIMEZONE")
+    if not user_tz:
+        dotenv.set_key(USER_ENV_FILE, "OPENBB_TIMEZONE", "America/New_York")
 
 
 def is_timezone_valid(user_tz: str) -> bool:
@@ -1088,15 +1107,12 @@ def get_user_timezone() -> str:
     Returns
     -------
     str
-        user timezone based on timezone.openbb file
+        user timezone based on .env file
     """
-    filename = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)),
-        "timezone.openbb",
-    )
-    if os.path.isfile(filename):
-        with open(filename) as f:
-            return f.read()
+    dotenv.load_dotenv(USER_ENV_FILE)
+    user_tz = os.getenv("OPENBB_TIMEZONE")
+    if user_tz:
+        return user_tz
     return ""
 
 
@@ -1122,21 +1138,11 @@ def replace_user_timezone(user_tz: str) -> None:
     user_tz: str
         User timezone to set
     """
-    filename = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)),
-        "timezone.openbb",
-    )
-    if os.path.isfile(filename):
-        with open(filename, "w") as f:
-            if is_timezone_valid(user_tz):
-                if f.write(user_tz):
-                    console.print("Timezone successfully updated", "\n")
-                else:
-                    console.print("Timezone not set successfully", "\n")
-            else:
-                console.print("Timezone selected is not valid", "\n")
+    if is_timezone_valid(user_tz):
+        dotenv.set_key(USER_ENV_FILE, "OPENBB_TIMEZONE", user_tz)
+        console.print("Timezone successfully updated", "\n")
     else:
-        console.print("timezone.openbb file does not exist", "\n")
+        console.print("Timezone selected is not valid", "\n")
 
 
 def str_to_bool(value) -> bool:
@@ -1239,7 +1245,7 @@ def check_file_type_saved(valid_types: List[str] = None):
     return check_filenames
 
 
-def compose_export_path(func_name: str, dir_path: str) -> Tuple[str, str]:
+def compose_export_path(func_name: str, dir_path: str) -> Path:
     """Compose export path for data from the terminal
 
     Creates a path to a folder and a filename based on conditions.
@@ -1253,8 +1259,8 @@ def compose_export_path(func_name: str, dir_path: str) -> Tuple[str, str]:
 
     Returns
     -------
-    Tuple[str, str]
-        Tuple containing the folder path and a file name
+    Path
+        Path variable containing the path of the exported file
     """
     now = datetime.now()
     # Resolving all symlinks and also normalizing path.
@@ -1264,29 +1270,13 @@ def compose_export_path(func_name: str, dir_path: str) -> Tuple[str, str]:
     if resolve_path.parts[-2] == "openbb_terminal":
         path_cmd = f"{resolve_path.parts[-1]}"
     else:
-        path_cmd = f"{resolve_path.parts[-2]}_{resolve_path.parts[-1]}"
+        path_cmd = f"{resolve_path.parts[-2]}//{resolve_path.parts[-1]}"
 
-    default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}"
-    if obbff.EXPORT_FOLDER_PATH:
-        full_path_dir = str(obbff.EXPORT_FOLDER_PATH)
-    else:
-        if obbff.PACKAGED_APPLICATION:
-            full_path_dir = os.path.join(
-                USER_HOME.as_posix(), "Desktop", "OPENBB-exports"
-            )
+    default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{func_name}"
 
-            if not os.path.isdir(full_path_dir):
-                try:
-                    os.makedirs(full_path_dir)
-                except Exception:
-                    console.print(
-                        f"[red]Couldn't create a folder in {full_path_dir}. Exporting failed.[/red]"
-                    )
-                    full_path_dir = dir_path.replace("openbb_terminal", "exports")
-        else:
-            default_filename = f"{func_name}_{now.strftime('%Y%m%d_%H%M%S')}"
-            full_path_dir = dir_path.replace("openbb_terminal", "exports")
-    return full_path_dir, default_filename
+    full_path = USER_EXPORTS_DIRECTORY / path_cmd / default_filename
+
+    return full_path
 
 
 def export_data(
@@ -1306,10 +1296,11 @@ def export_data(
         Dataframe of data to save
     """
     if export_type:
-        export_folder, export_filename = compose_export_path(func_name, dir_path)
-
+        export_path = compose_export_path(func_name, dir_path)
+        export_folder = str(export_path.parent)
+        export_filename = export_path.name
+        export_path.parent.mkdir(parents=True, exist_ok=True)
         for exp_type in export_type.split(","):
-
             # In this scenario the path was provided, e.g. --export pt.csv, pt.jpg
             if "." in exp_type:
                 saved_path = os.path.join(export_folder, exp_type)

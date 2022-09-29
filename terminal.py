@@ -10,7 +10,6 @@ import platform
 import sys
 import webbrowser
 from typing import List
-from pathlib import Path
 import dotenv
 
 from prompt_toolkit import PromptSession
@@ -18,8 +17,14 @@ from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 
-from openbb_terminal.common import feedparser_view
-from openbb_terminal.core.config.constants import REPO_DIR, ENV_FILE, USER_HOME
+
+from openbb_terminal.core.config.paths import (
+    REPOSITORY_DIRECTORY,
+    USER_ENV_FILE,
+    REPOSITORY_ENV_FILE,
+    USER_EXPORTS_DIRECTORY,
+    ROUTINES_DIRECTORY,
+)
 from openbb_terminal.core.log.generation.path_tracking_file_handler import (
     PathTrackingFileHandler,
 )
@@ -45,12 +50,13 @@ from openbb_terminal.terminal_helper import (
     welcome_message,
 )
 from openbb_terminal.helper_funcs import parse_and_split_input
+from openbb_terminal.common import feedparser_view
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel,too-many-branches,no-member,C0302
 
 logger = logging.getLogger(__name__)
 
-env_file = str(ENV_FILE)
+env_file = str(USER_ENV_FILE)
 
 
 class TerminalController(BaseController):
@@ -82,13 +88,16 @@ class TerminalController(BaseController):
     ]
 
     PATH = "/"
-    ROUTINE_CHOICES = {
-        file: None
-        for file in os.listdir(
-            os.path.join(os.path.abspath(os.path.dirname(__file__)), "routines")
-        )
-        if file.endswith(".openbb")
+
+    ROUTINE_FILES = {
+        filepath.name: filepath
+        for filepath in (REPOSITORY_DIRECTORY / "routines").rglob("*.openbb")
     }
+    ROUTINE_FILES.update(
+        {filepath.name: filepath for filepath in ROUTINES_DIRECTORY.rglob("*.openbb")}
+    )
+
+    ROUTINE_CHOICES = {filename: None for filename in ROUTINE_FILES}
 
     GUESS_TOTAL_TRIES = 0
     GUESS_NUMBER_TRIES_LEFT = 0
@@ -162,17 +171,17 @@ class TerminalController(BaseController):
             "-t",
             "--term",
             dest="term",
-            default="",
+            default=[""],
             nargs="+",
             help="search for a term on the news",
         )
         parse.add_argument(
-            "-a",
-            "--article",
-            dest="article",
-            default="bloomberg",
+            "-s",
+            "--sources",
+            dest="sources",
+            default=["bloomberg.com"],
             nargs="+",
-            help="articles from where to get news from",
+            help="sources from where to get news from",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
@@ -181,10 +190,10 @@ class TerminalController(BaseController):
         )
         if news_parser:
             feedparser_view.display_news(
-                " ".join(news_parser.term),
-                " ".join(news_parser.article),
-                news_parser.limit,
-                news_parser.export,
+                term=" ".join(news_parser.term),
+                sources=" ".join(news_parser.sources),
+                limit=news_parser.limit,
+                export=news_parser.export,
             )
 
     def call_guess(self, other_args: List[str]) -> None:
@@ -323,7 +332,7 @@ class TerminalController(BaseController):
         """Process settings command"""
         from openbb_terminal.settings_controller import SettingsController
 
-        self.queue = self.load_class(SettingsController, self.queue)
+        self.queue = self.load_class(SettingsController, self.queue, env_file)
 
     def call_featflags(self, _):
         """Process feature flags command"""
@@ -371,17 +380,11 @@ class TerminalController(BaseController):
 
     def call_reports(self, _):
         """Process reports command"""
-        if not obbff.PACKAGED_APPLICATION:
-            from openbb_terminal.reports.reports_controller import (
-                ReportController,
-            )
+        from openbb_terminal.reports.reports_controller import (
+            ReportController,
+        )
 
-            self.queue = self.load_class(ReportController, self.queue)
-        else:
-            console.print("This feature is coming soon.")
-            console.print(
-                "Use the source code and an Anaconda environment if you are familiar with Python."
-            )
+        self.queue = self.load_class(ReportController, self.queue)
 
     def call_dashboards(self, _):
         """Process dashboards command"""
@@ -484,11 +487,7 @@ class TerminalController(BaseController):
         if ns_parser_exe:
             if ns_parser_exe.path:
                 if ns_parser_exe.path in self.ROUTINE_CHOICES:
-                    path = os.path.join(
-                        os.path.abspath(os.path.dirname(__file__)),
-                        "routines",
-                        ns_parser_exe.path,
-                    )
+                    path = self.ROUTINE_FILES[ns_parser_exe.path]
                 else:
                     path = ns_parser_exe.path
 
@@ -550,26 +549,10 @@ class TerminalController(BaseController):
                     ]
 
                     if "export" in self.queue[0]:
-                        export_path = self.queue[0].split(" ")[1]
-                        # If the path selected does not start from the user root, give relative location from root
-                        if export_path[0] == "~":
-                            export_path = export_path.replace("~", USER_HOME.as_posix())
-                        elif export_path[0] != "/":
-                            export_path = os.path.join(
-                                os.path.dirname(os.path.abspath(__file__)), export_path
-                            )
-
-                        # Check if the directory exists
-                        if os.path.isdir(export_path):
-                            console.print(
-                                f"Export data to be saved in the selected folder: '{export_path}'"
-                            )
-                        else:
-                            os.makedirs(export_path)
-                            console.print(
-                                f"[green]Folder '{export_path}' successfully created.[/green]"
-                            )
-                        obbff.EXPORT_FOLDER_PATH = export_path
+                        export_path = USER_EXPORTS_DIRECTORY
+                        console.print(
+                            f"Export data to be saved in the selected folder: '{export_path}'"
+                        )
                         self.queue = self.queue[1:]
 
 
@@ -587,35 +570,12 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
     if jobs_cmds is not None and jobs_cmds:
         logger.info("INPUT: %s", "/".join(jobs_cmds))
 
-    export_path = ""
     if jobs_cmds and "export" in jobs_cmds[0]:
-        export_path = jobs_cmds[0].split("/")[0].split(" ")[1]
         jobs_cmds = ["/".join(jobs_cmds[0].split("/")[1:])]
 
     ret_code = 1
     t_controller = TerminalController(jobs_cmds)
     an_input = ""
-
-    if export_path:
-        # If the path selected does not start from the user root, give relative location from terminal root
-        if export_path[0] == "~":
-            export_path = export_path.replace("~", USER_HOME.as_posix())
-        elif export_path[0] != "/":
-            export_path = os.path.join(
-                os.path.dirname(os.path.abspath(__file__)), export_path
-            )
-
-        # Check if the directory exists
-        if os.path.isdir(export_path):
-            console.print(
-                f"Export data to be saved in the selected folder: '{export_path}'"
-            )
-        else:
-            os.makedirs(export_path)
-            console.print(
-                f"[green]Folder '{export_path}' successfully created.[/green]"
-            )
-        obbff.EXPORT_FOLDER_PATH = export_path
 
     bootup()
     if not jobs_cmds:
@@ -623,14 +583,8 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
         t_controller.print_help()
         check_for_updates()
 
-    env_files = [f for f in os.listdir() if f.endswith(".env")]
-    if env_files:
-        global env_file
-        env_file = env_files[0]
-        dotenv.load_dotenv(env_file)
-    else:
-        # create env file
-        Path(".env")
+    dotenv.load_dotenv(USER_ENV_FILE)
+    dotenv.load_dotenv(REPOSITORY_ENV_FILE, override=True)
 
     while ret_code:
         if obbff.ENABLE_QUICK_EXIT:
@@ -819,18 +773,12 @@ def run_scripts(
             if test_mode and "exit" not in lines[-1]:
                 lines.append("exit")
 
-            export_folder = ""
             if "export" in lines[0]:
-                export_folder = lines[0].split("export ")[1].rstrip()
                 lines = lines[1:]
 
             simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
             file_cmds = simulate_argv.replace("//", "/home/").split()
             file_cmds = insert_start_slash(file_cmds) if file_cmds else file_cmds
-            if export_folder:
-                file_cmds = [f"export {export_folder}{' '.join(file_cmds)}"]
-            else:
-                file_cmds = [" ".join(file_cmds)]
 
             if not test_mode:
                 terminal(file_cmds, appName="openbb_script")
@@ -872,7 +820,8 @@ def main(
     verbose : bool
         Whether to show output from tests
     routines_args : List[str]
-        One or multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD
+        One or multiple inputs to be replaced in the routine and separated by commas.
+        E.g. GME,AMC,BTC-USD
     """
 
     if test:
@@ -905,7 +854,7 @@ def main(
         console.print("[green]OpenBB Terminal Integrated Tests:\n[/green]")
         for file in test_files:
             file = file.replace("//", "/")
-            repo_path_position = file.rfind(REPO_DIR.name)
+            repo_path_position = file.rfind(REPOSITORY_DIRECTORY.name)
             if repo_path_position >= 0:
                 file_name = file[repo_path_position:].replace("\\", "/")
             else:
@@ -923,7 +872,7 @@ def main(
         if fails:
             console.print("\n[red]Failures:[/red]\n")
             for key, value in fails.items():
-                repo_path_position = key.rfind(REPO_DIR.name)
+                repo_path_position = key.rfind(REPOSITORY_DIRECTORY.name)
                 if repo_path_position >= 0:
                     file_name = key[repo_path_position:].replace("\\", "/")
                 else:
@@ -933,17 +882,18 @@ def main(
         console.print(
             f"Summary: [green]Successes: {SUCCESSES}[/green] [red]Failures: {FAILURES}[/red]"
         )
+        return
+
+    if debug:
+        os.environ["DEBUG_MODE"] = "true"
+    if isinstance(paths, list) and paths[0].endswith(".openbb"):
+        run_scripts(paths[0], routines_args=routines_args)
+    elif paths:
+        argv_cmds = list([" ".join(paths).replace(" /", "/home/")])
+        argv_cmds = insert_start_slash(argv_cmds) if argv_cmds else argv_cmds
+        terminal(argv_cmds)
     else:
-        if debug:
-            os.environ["DEBUG_MODE"] = "true"
-        if isinstance(paths, list) and paths[0].endswith(".openbb"):
-            run_scripts(paths[0], routines_args=routines_args)
-        elif paths:
-            argv_cmds = list([" ".join(paths).replace(" /", "/home/")])
-            argv_cmds = insert_start_slash(argv_cmds) if argv_cmds else argv_cmds
-            terminal(argv_cmds)
-        else:
-            terminal()
+        terminal()
 
 
 if __name__ == "__main__":
@@ -991,7 +941,10 @@ if __name__ == "__main__":
     parser.add_argument(
         "-i",
         "--input",
-        help="Select multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD",
+        help=(
+            "Select multiple inputs to be replaced in the routine and separated by commas."
+            "E.g. GME,AMC,BTC-USD"
+        ),
         dest="routine_args",
         type=lambda s: [str(item) for item in s.split(",")],
         default=None,

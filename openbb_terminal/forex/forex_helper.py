@@ -76,7 +76,7 @@ def load(
     interval: str = "1day",
     start_date: str = last_year.strftime("%Y-%m-%d"),
     source: str = "YahooFinance",
-):
+) -> pd.DataFrame:
     """Loads forex for two given symbols
 
     Parameters
@@ -93,6 +93,11 @@ def load(
         When to begin loading in data
     source: str
         Where to get data from
+
+    Returns
+    -------
+    pd.DataFrame
+        The loaded data
     """
     if source in ["YahooFinance", "AlphaVantage"]:
         interval_map = INTERVAL_MAPS[source]
@@ -233,10 +238,7 @@ def display_candle(
             )
         if ma:
             # Manually construct the chart legend
-            colors = []
-
-            for i, _ in enumerate(ma):
-                colors.append(theme.get_colors()[i])
+            colors = [theme.get_colors()[i] for i, _ in enumerate(ma)]
 
             lines = [Line2D([0], [0], color=c) for c in colors]
             labels = ["MA " + str(label) for label in ma]

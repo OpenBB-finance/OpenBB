@@ -16,7 +16,7 @@ def test_display_defipulse(mocker):
     )
 
     defipulse_view.display_defipulse(
-        top=5,
+        limit=5,
         sortby="Rank",
         ascend=False,
         export="",

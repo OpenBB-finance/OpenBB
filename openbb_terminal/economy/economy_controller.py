@@ -310,7 +310,7 @@ class EconomyController(BaseController):
             self.choices["support"] = self.SUPPORT_CHOICES
             self.choices["about"] = self.ABOUT_CHOICES
 
-            self.completer = NestedCompleter.from_nested_dict(self.choices)
+            self.completer = NestedCompleter.from_nested_dict(self.choices)  # type: ignore
 
     def update_runtime_choices(self):
         if session and obbff.USE_PROMPT_TOOLKIT:
@@ -444,7 +444,7 @@ class EconomyController(BaseController):
         parser.add_argument(
             "-s",
             "--sortby",
-            dest="sort_by",
+            dest="sortby",
             type=str,
             choices=self.wsj_sortby_cols_dict.keys(),
             default="ticker",
@@ -467,8 +467,8 @@ class EconomyController(BaseController):
         if ns_parser and ns_parser.commodity:
             finviz_view.display_future(
                 future_type=ns_parser.commodity.capitalize(),
-                sort_by=ns_parser.sort_by,
-                ascending=ns_parser.ascend,
+                sortby=ns_parser.sortby,
+                ascend=ns_parser.ascend,
                 export=ns_parser.export,
             )
         elif ns_parser:
@@ -661,7 +661,7 @@ class EconomyController(BaseController):
                     transform=ns_parser.transform,
                     start_date=ns_parser.start_date,
                     end_date=ns_parser.end_date,
-                    currency=ns_parser.currency,
+                    symbol=ns_parser.currency,
                 )
 
                 if not df.empty:
@@ -691,7 +691,7 @@ class EconomyController(BaseController):
                         transform=ns_parser.transform,
                         start_date=ns_parser.start_date,
                         end_date=ns_parser.end_date,
-                        currency=ns_parser.currency,
+                        symbol=ns_parser.currency,
                         raw=ns_parser.raw,
                         export=ns_parser.export,
                     )
@@ -1182,12 +1182,22 @@ class EconomyController(BaseController):
                 ns_parser.country, investingcom_model.CALENDAR_COUNTRIES
             )
 
+            if ns_parser.start_date:
+                start_date = ns_parser.start_date.strftime("%Y-%m-%d")
+            else:
+                start_date = None
+
+            if ns_parser.end_date:
+                end_date = ns_parser.end_date.strftime("%Y-%m-%d")
+            else:
+                end_date = None
+
             investingcom_view.display_economic_calendar(
                 country=ns_parser.country,
                 importance=ns_parser.importance,
                 category=ns_parser.category,
-                start_date=ns_parser.start_date,
-                end_date=ns_parser.end,
+                start_date=start_date,
+                end_date=end_date,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
             )
@@ -1421,7 +1431,7 @@ class EconomyController(BaseController):
         parser.add_argument(
             "-s",
             "--sortby",
-            dest="sort_by",
+            dest="sortby",
             type=str,
             choices=self.valuation_sort_cols,
             default="Name",
@@ -1449,8 +1459,8 @@ class EconomyController(BaseController):
             )
             finviz_view.display_valuation(
                 group=ns_group,
-                sort_by=ns_parser.sort_by,
-                ascending=ns_parser.ascend,
+                sortby=ns_parser.sortby,
+                ascend=ns_parser.ascend,
                 export=ns_parser.export,
             )
 
@@ -1478,7 +1488,7 @@ class EconomyController(BaseController):
         parser.add_argument(
             "-s",
             "--sortby",
-            dest="sort_by",
+            dest="sortby",
             choices=self.performance_sort_list,
             default="Name",
             help="Column to sort by",
@@ -1504,8 +1514,8 @@ class EconomyController(BaseController):
             )
             finviz_view.display_performance(
                 group=ns_group,
-                sort_by=ns_parser.sort_by,
-                ascending=ns_parser.ascend,
+                sortby=ns_parser.sortby,
+                ascend=ns_parser.ascend,
                 export=ns_parser.export,
             )
 

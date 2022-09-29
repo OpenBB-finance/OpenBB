@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -80,15 +81,78 @@ def get_global_deaths(country: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_case_slopes(days_back: int = 30, threshold: int = 10000) -> pd.DataFrame:
+def get_covid_ov(
+    country,
+    limit: int = 100,
+) -> pd.DataFrame:
+    """Get historical cases and deaths by country
+
+    Parameters
+    ----------
+    country: str
+        Country to get data for
+    limit: int
+        Number of raw data to show
+    """
+    cases = get_global_cases(country)
+    deaths = get_global_deaths(country)
+    data = pd.concat([cases, deaths], axis=1)
+    data.columns = ["Cases", "Deaths"]
+    data.index = [x.strftime("%Y-%m-%d") for x in data.index]
+    return data.tail(limit)
+
+
+@log_start_end(log=logger)
+def get_covid_stat(
+    country,
+    stat: str = "cases",
+    limit: int = 10,
+) -> pd.DataFrame:
+    """Show historical cases and deaths by country
+
+    Parameters
+    ----------
+    country: str
+        Country to get data for
+    stat: str
+        Statistic to get.  Either "cases", "deaths" or "rates"
+    limit: int
+        Number of raw data to show
+    """
+    if stat == "cases":
+        data = get_global_cases(country)
+    elif stat == "deaths":
+        data = get_global_deaths(country)
+    elif stat == "rates":
+        cases = get_global_cases(country)
+        deaths = get_global_deaths(country)
+        data = (deaths / cases).fillna(0) * 100
+    else:
+        console.print("Invalid stat selected.\n")
+        return pd.DataFrame()
+    data.index = [x.strftime("%Y-%m-%d") for x in data.index]
+    return data.tail(limit)
+
+
+@log_start_end(log=logger)
+def get_case_slopes(
+    days_back: int = 30,
+    limit: int = 50,
+    threshold: int = 10000,
+    ascend: bool = False,
+) -> pd.DataFrame:
     """Load cases and find slope over period
 
     Parameters
     ----------
     days_back: int
         Number of historical days to consider
+    limit: int
+        Number of rows to show
     threshold: int
         Threshold for total number of cases
+    ascend: bool
+        Flag to sort in ascending order
     Returns
     -------
     pd.DataFrame
@@ -96,21 +160,26 @@ def get_case_slopes(days_back: int = 30, threshold: int = 10000) -> pd.DataFrame
     """
     # Ignore the pandas warning for setting a slace with a value
     warnings.filterwarnings("ignore")
-    cases = pd.read_csv(global_cases_time_series)
-    cases = cases.rename(columns={"Country/Region": "Country"})
-    cases = (
+    data = pd.read_csv(global_cases_time_series)
+    data = data.rename(columns={"Country/Region": "Country"})
+    data = (
         (
-            cases.drop(columns=["Province/State", "Lat", "Long"])
+            data.drop(columns=["Province/State", "Lat", "Long"])
             .groupby("Country")
             .agg("sum")
         )
         .diff()
         .dropna()
     )
-    hist = cases.iloc[:, -days_back:]
+    hist = data.iloc[:, -days_back:]
     hist["Sum"] = hist.sum(axis=1)
     hist = hist[hist.Sum > threshold].drop(columns="Sum")
     hist["Slope"] = hist.apply(
         lambda x: np.polyfit(np.arange(days_back), x, 1)[0], axis=1
     )
-    return pd.DataFrame(hist["Slope"])
+    hist_slope = pd.DataFrame(hist["Slope"])
+    if ascend:
+        hist_slope.sort_values(by="Slope", ascending=ascend, inplace=True)
+    else:
+        hist_slope.sort_values(by="Slope", ascending=ascend, inplace=True)
+    return hist_slope.head(limit)

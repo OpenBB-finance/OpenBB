@@ -44,7 +44,12 @@ class SourcesController(BaseController):
 
         self.commands_with_sources = dict()
         with open(obbff.PREFERRED_DATA_SOURCE_FILE) as f:
-            self.json_doc = json.load(f)
+            if not f.read():
+                with open("data_sources_default.json") as f2:
+                    self.json_doc = json.load(f2)
+            else:
+                f.seek(0)
+                self.json_doc = json.load(f)
             for context in self.json_doc:
                 for menu in self.json_doc[context]:
                     if isinstance(self.json_doc[context][menu], Dict):
@@ -69,6 +74,9 @@ class SourcesController(BaseController):
             choices: dict = {c: {} for c in self.controller_choices}
             choices["get"] = {c: None for c in list(self.commands_with_sources.keys())}
             choices["set"] = {c: None for c in list(self.commands_with_sources.keys())}
+            for cmd in list(self.commands_with_sources.keys()):
+                choices["set"][cmd] = {c: None for c in self.commands_with_sources[cmd]}
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -190,7 +198,7 @@ class SourcesController(BaseController):
 
             if success:
                 try:
-                    with open("data_sources_default.json", "w") as f:
+                    with open(obbff.PREFERRED_DATA_SOURCE_FILE, "w") as f:
                         json.dump(self.json_doc, f, indent=4)
                     console.print(
                         "[green]The data source was specified successfully.\n[/green]"

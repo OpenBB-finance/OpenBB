@@ -221,7 +221,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         (
             "call_view",
             [
-                "high_IV",
+                "high_IV.ini",
             ],
             "syncretism_view.view_available_presets",
             [],
@@ -230,7 +230,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         (
             "call_set",
             [
-                "high_IV",
+                "high_IV.ini",
             ],
             "",
             [],
@@ -239,7 +239,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         (
             "call_scr",
             [
-                "high_IV",
+                "high_IV.ini",
                 "--limit=1",
             ],
             "syncretism_view.view_screener_output",

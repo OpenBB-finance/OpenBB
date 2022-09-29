@@ -116,6 +116,8 @@ def get_yieldcurve(country: str) -> pd.DataFrame:
 
     data = data.replace(float("NaN"), "")
 
+    data["Change"] = (data["Current"] - data["Previous"]) * 100
+
     for i, row in data.iterrows():
         t = row["Tenor"][-3:].strip()
         data.at[i, "Tenor"] = t
@@ -146,8 +148,8 @@ def get_economic_calendar(
     country: str = "all",
     importance: str = "",
     category: str = "",
-    start_date: datetime.date = None,
-    end_date: datetime.date = None,
+    start_date: str = "",
+    end_date: str = "",
     limit=100,
 ) -> Tuple[pd.DataFrame, str]:
     """Get economic calendar [Source: Investing.com]
@@ -188,21 +190,36 @@ def get_economic_calendar(
         categories_list = [category.title()]
 
     # Joint default for countries and importances
-    if countries_list == ["all"] and not importances_list:
+    if countries_list == ["all"]:
         countries_list = CALENDAR_COUNTRIES[:-1]
-        importances_list = ["high"]
+        if not importances_list:
+            importances_list = ["high"]
     elif importances_list is None:
         importances_list = ["all"]
 
     if start_date and not end_date:
-        end_date_string = format_date(start_date + datetime.timedelta(days=7))
-        start_date_string = format_date(start_date)
+        end_date_string = (
+            datetime.datetime.strptime(start_date, "%Y-%m-%d")
+            + datetime.timedelta(days=7)
+        ).strftime("%d/%m/%Y")
+        start_date_string = (
+            datetime.datetime.strptime(start_date, "%Y-%m-%d")
+        ).strftime("%d/%m/%Y")
     elif end_date and not start_date:
-        start_date_string = format_date(end_date + datetime.timedelta(days=-7))
-        end_date_string = format_date(end_date)
+        start_date_string = (
+            datetime.datetime.strptime(end_date, "%Y-%m-%d")
+            + datetime.timedelta(days=-7)
+        ).strftime("%d/%m/%Y")
+        end_date_string = (datetime.datetime.strptime(end_date, "%Y-%m-%d")).strftime(
+            "%d/%m/%Y"
+        )
     elif end_date and start_date:
-        start_date_string = format_date(start_date)
-        end_date_string = format_date(end_date)
+        start_date_string = (
+            datetime.datetime.strptime(start_date, "%Y-%m-%d")
+        ).strftime("%d/%m/%Y")
+        end_date_string = (datetime.datetime.strptime(end_date, "%Y-%m-%d")).strftime(
+            "%d/%m/%Y"
+        )
     else:
         start_date_string = None
         end_date_string = None
