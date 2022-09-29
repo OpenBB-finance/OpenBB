@@ -149,7 +149,10 @@ class TerminalStyle:
         """
         # To import all styles from terminal repo folder to user data
 
-        for folder in [self.DEFAULT_STYLES_LOCATION, self.USER_STYLES_LOCATION]:
+        for folder in [
+            self.USER_STYLES_LOCATION / "default",
+            self.USER_STYLES_LOCATION / "user",
+        ]:  # self.DEFAULT_STYLES_LOCATION,
             self.load_available_styles_from_folder(folder)
             self.load_custom_fonts_from_folder(folder)
 
