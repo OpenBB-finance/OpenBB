@@ -66,7 +66,7 @@ class ETFController(BaseController):
         "ta",
         "pred",
         "ca",
-        "scr",
+        # "scr",
         "disc",
     ]
     PATH = "/etf/"
@@ -101,7 +101,7 @@ class ETFController(BaseController):
         mt.add_raw("\n")
         mt.add_menu("ca", len(self.etf_holdings))
         mt.add_menu("disc")
-        mt.add_menu("scr")
+        # mt.add_menu("scr")
         mt.add_raw("\n")
         mt.add_cmd("overview", self.etf_name)
         mt.add_cmd("holdings", self.etf_name)
@@ -277,10 +277,11 @@ class ETFController(BaseController):
                 self.etf_holdings = holdings.index[: ns_parser.limit].tolist()
 
                 if "n/a" in self.etf_holdings:
-                    na_tix_idx = []
-                    for idx, item in enumerate(self.etf_holdings):
-                        if item == "n/a":
-                            na_tix_idx.append(str(idx))
+                    na_tix_idx = [
+                        str(idx)
+                        for idx, item in enumerate(self.etf_holdings)
+                        if item == "n/a"
+                    ]
 
                     console.print(
                         f"n/a tickers found at position {','.join(na_tix_idx)}. "
@@ -560,7 +561,7 @@ class ETFController(BaseController):
             default=compose_export_path(
                 func_name=parser.prog,
                 dir_path=os.path.dirname(os.path.abspath(__file__)),
-            )[0],
+            ).parent,
             dest="folder",
             help="Folder where the excel ETF report will be saved",
         )
@@ -569,11 +570,17 @@ class ETFController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.names:
-                create_ETF_report(
-                    ns_parser.names,
-                    filename=ns_parser.filename,
-                    folder=ns_parser.folder,
-                )
+                try:
+                    create_ETF_report(
+                        ns_parser.names,
+                        filename=ns_parser.filename,
+                        folder=ns_parser.folder,
+                    )
+                except FileNotFoundError:
+                    console.print(
+                        f"[red]Could not find the file: {ns_parser.filename}[/red]\n"
+                    )
+                    return
                 console.print(
                     f"Created ETF report as {ns_parser.filename} in folder {ns_parser.folder} \n"
                 )

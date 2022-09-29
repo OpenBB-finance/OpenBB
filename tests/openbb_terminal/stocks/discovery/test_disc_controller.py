@@ -207,7 +207,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             {
                 "limit": 5,
                 "sortby": ["date"],
-                "ascending": False,
+                "ascend": False,
                 "buys_only": False,
                 "sells_only": False,
                 "fund": "ARKK",
@@ -238,15 +238,6 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "finnhub_view.future_ipo",
             ["--days=5", "--limit=20", "--export=csv"],
             {"num_days_ahead": 5, "end_date": None, "limit": 20, "export": "csv"},
-        ),
-        (
-            "call_ford",
-            "fidelity_view.orders_view",
-            [
-                "--limit=5",
-                "--export=csv",
-            ],
-            {"limit": 5, "export": "csv"},
         ),
         (
             "call_gainers",
@@ -350,7 +341,6 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
         "call_asc",
         "call_cnews",
         "call_fipo",
-        "call_ford",
         "call_gainers",
         "call_gtech",
         "call_hotpenny",

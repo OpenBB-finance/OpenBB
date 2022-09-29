@@ -5,7 +5,8 @@
 # IMPORTATION INTERNAL
 
 
-def test_import_api():
-    # pylint: disable=import-outside-toplevel, unused-import
-    # flake8: noqa
+def test_load_api():
+    # pylint: import-outside-toplevel
     from openbb_terminal import api
+
+    print(api)

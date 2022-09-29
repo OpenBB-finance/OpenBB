@@ -426,6 +426,7 @@ def create_dataframe(symbol: str, statement: str, period: str = "annual"):
     else:
         return pd.DataFrame(), None, None
 
+    statement_currency = ""
     for currency in CURRENCIES:
         if currency.lower() in phrase:
             statement_currency = currency
@@ -589,11 +590,10 @@ def generate_path(n: int, symbol: str, date: str) -> Path:
         The path to save a file to
     """
     val = "" if n == 0 else f"({n})"
-    export_folder, _ = compose_export_path(
+    export_folder = compose_export_path(
         func_name="dcf", dir_path=os.path.abspath(os.path.dirname(__file__))
-    )
-    trypath = os.path.join(
-        export_folder,
-        f"{symbol} {date}{val}.xlsx",
-    )
+    ).parent
+    trypath = export_folder / symbol / date / val
+    trypath = str(trypath) + ".xlsx"  # type: ignore
+
     return Path(trypath)

@@ -22,9 +22,12 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format
 from openbb_terminal.rich_config import console
 
+# pylint: disable=unsupported-assignment-operation
+
 logger = logging.getLogger(__name__)
 
 INTERVALS_TIMESERIES = ["5m", "15m", "30m", "1h", "1d", "1w"]
+# pylint: disable=unsupported-assignment-operation
 
 
 @log_start_end(log=logger)

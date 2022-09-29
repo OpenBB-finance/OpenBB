@@ -1,7 +1,7 @@
 name: Tests
 env:
   OPENBB_ENABLE_QUICK_EXIT: true
-  OPENBB_LOG_COLLECTION: false
+  OPENBB_LOG_COLLECT: false
   OPENBB_USE_ION: false
   OPENBB_USE_PROMPT_TOOLKIT: false
   PIP_DEFAULT_TIMEOUT: 100
@@ -28,11 +28,11 @@ jobs:
           restore-keys: ${{ runner.os }}-v1-linting
 
       - run: python custom_pre_commit/check_doc.py --ignore-files=settings_controller.py,keys_controller.py,featflags_controller.py,degiro_controller.py,oanda_controller.py --ignore-commands=login,al_swe,info_swe,goodness,resources,yf,yolo
-      - run: pip install bandit black codespell flake8 mypy pyupgrade safety pylint==2.13.9
+      - run: pip install bandit black codespell flake8 mypy pyupgrade safety pylint==2.15.2
       - run: pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools types-six
       - run: bandit -x ./tests -r . || true
       - run: black --diff --check .
-      - run: codespell --ignore-words-list=commun,ro,zar,zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,vie,hel --quiet-level=2 --skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,./build/pyinstaller
+      - run: codespell --ignore-words-list=commun,statics,ro,zar,zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,vie,hel --quiet-level=2 --skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,./build/pyinstaller
       - run: flake8 . --count --ignore=E203,W503 --max-line-length=122 --show-source --statistics --exclude ./build/pyinstaller
       - run: mypy --ignore-missing-imports --exclude="/setup\.py$" .
       - run: shopt -s globstar && pyupgrade --py38-plus **/*.py
@@ -104,7 +104,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11-dev"]
+        python-version: ["3.8", "3.9", "3.10"]
         os: [ubuntu-latest, macos-latest]
         exclude:
           - os: ubuntu-latest

@@ -483,7 +483,7 @@ def get_macro_data(
     transform: str = "",
     start_date=pd.to_datetime("1900-01-01"),
     end_date=datetime.today().date(),
-    currency: str = "",
+    symbol: str = "",
 ) -> Tuple[Any, Union[str, Any]]:
     """Query the EconDB database to find specific macro data about a company [Source: EconDB]
 
@@ -505,7 +505,7 @@ def get_macro_data(
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : str
         The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
-    currency : str
+    symbol : str
         In what currency you wish to convert all values.
 
     Returns
@@ -561,18 +561,22 @@ def get_macro_data(
             return pd.Series(dtype=float), ""
 
         if start_date or end_date:
-            df = df.loc[start_date:end_date]
+            try:
+                df = df.loc[start_date:end_date]
+            except TypeError:
+                console.print("[red]Invalid date sent. Format as YYYY-MM-DD[/red]\n")
+                return pd.DataFrame(), "NA/NA"
 
         if (
-            currency
-            and country_currency != currency
+            symbol
+            and country_currency != symbol
             and units in COUNTRY_CURRENCIES.values()
         ):
             if units in COUNTRY_CURRENCIES.values():
-                units = currency
+                units = symbol
 
             currency_data = yf.download(
-                f"{country_currency}{currency}=X",
+                f"{country_currency}{symbol}=X",
                 start=df.index[0],
                 end=df.index[-1],
                 progress=False,
@@ -645,23 +649,23 @@ def get_aggregated_macro_data(
     transform: str = "",
     start_date: str = "1900-01-01",
     end_date=datetime.today().date(),
-    currency: str = "",
+    symbol: str = "",
 ) -> Tuple[Any, Dict[Any, Dict[Any, Any]], str]:
     """This functions groups the data queried from the EconDB database [Source: EconDB]
 
     Parameters
     ----------
     parameters: list
-        The type of data you wish to download. Available parameters can be accessed through get_macro_parameters().
+        The type of data you wish to download. Available parameters can be accessed through economy.macro_parameters().
     countries : list
-        The selected country or countries. Available countries can be accessed through get_macro_countries().
+        The selected country or countries. Available countries can be accessed through economy.macro_countries().
     transform : str
         The selected transform. Available transforms can be accessed through get_macro_transform().
     start_date : str
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : str
         The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
-    currency : str
+    symbol : str
         In what currency you wish to convert all values.
 
     Returns
@@ -670,6 +674,8 @@ def get_aggregated_macro_data(
         A DataFrame with the requested macro data of all chosen countries
     Dictionary
         A dictionary containing the units of each country's parameter (e.g. EUR)
+    str
+        Denomination which can be Trillions, Billions, Millions, Thousands
     """
 
     if parameters is None:
@@ -688,7 +694,7 @@ def get_aggregated_macro_data(
                 country_data[country][parameter],
                 units[country][parameter],
             ) = get_macro_data(
-                parameter, country, transform, start_date, end_date, currency
+                parameter, country, transform, start_date, end_date, symbol
             )
 
             if country_data[country][parameter].empty:
@@ -737,9 +743,9 @@ def get_treasuries(
     ----------
     instruments: list
         Type(s) of treasuries, nominal, inflation-adjusted (long term average) or secondary market.
-        Available options can be accessed through get_treasury_maturities().
+        Available options can be accessed through economy.treasury_maturities().
     maturities : list
-        Treasury maturities to get. Available options can be accessed through get_treasury_maturities().
+        Treasury maturities to get. Available options can be accessed through economy.treasury_maturities().
     frequency : str
         Frequency of the data, this can be annually, monthly, weekly or daily.
     start_date : str

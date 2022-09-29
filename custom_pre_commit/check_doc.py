@@ -69,11 +69,7 @@ def main(ignore_files: Optional[str], ignore_commands: Optional[str]):
     with open(main_yaml_filename) as yaml:
         lines = yaml.read()
 
-    undocumented = []
-    for command in clean_commands:
-        if command not in lines:
-            undocumented.append(command)
-
+    undocumented = [command for command in clean_commands if command not in lines]
     if not undocumented:
         sys.exit(0)
     else:

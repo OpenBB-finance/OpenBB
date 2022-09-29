@@ -49,7 +49,7 @@ def test_get_full_option_chain(mocker, recorder):
 
     result_df = yfinance_model.get_full_option_chain(
         symbol="AAPL",
-        expiration="2022-07-29",
+        expiry="2022-07-29",
     )
 
     recorder.capture_list(result_df)

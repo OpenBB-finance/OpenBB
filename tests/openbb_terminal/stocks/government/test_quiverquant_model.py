@@ -44,7 +44,7 @@ def test_get_government_trading(gov_type, recorder, ticker):
 @pytest.mark.vcr
 @pytest.mark.parametrize("analysis", ["total", "upmom", "downmom"])
 def test_analyze_qtr_contracts(analysis, recorder):
-    result_df = quiverquant_model.analyze_qtr_contracts(
+    result_df = quiverquant_model.get_qtr_contracts(
         analysis=analysis,
         limit=10,
     )

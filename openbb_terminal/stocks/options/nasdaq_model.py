@@ -11,8 +11,10 @@ import requests
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
+from openbb_terminal.stocks.options.op_helpers import get_dte_from_expiration as get_dte
 
 logger = logging.getLogger(__name__)
+# pylint: disable=unsupported-assignment-operation
 
 
 @log_start_end(log=logger)
@@ -73,6 +75,9 @@ def get_full_chain(symbol: str) -> pd.DataFrame:
                     }
                 )
             )
+            df["DTE"] = df["expirygroup"].apply(lambda t: get_dte(t))
+            df = df[df.DTE > 0]
+            df = df.drop(columns=["DTE"])
             return df
 
     console.print(f"[red]{symbol} Option Chain not found.[/red]\n")

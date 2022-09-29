@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_forward_rates(to_symbol: str, from_symbol: str):
+def get_forward_rates(to_symbol: str = "USD", from_symbol: str = "EUR"):
     """Gets forward rates from fxempire
 
     Parameters

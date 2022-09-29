@@ -81,6 +81,8 @@ class FundamentalAnalysisController(StockBaseController):
 
     PATH = "/stocks/fa/"
 
+    SHRS_CHOICES = ["major", "institutional", "mutualfund"]
+
     def __init__(
         self,
         ticker: str,
@@ -114,7 +116,7 @@ class FundamentalAnalysisController(StockBaseController):
             choices["cash"]["-p"] = {
                 c: {} for c in stocks_helper.CASH_PLOT[self.default_cash]
             }
-
+            choices["shrs"] = {c: {} for c in self.SHRS_CHOICES}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -177,7 +179,7 @@ class FundamentalAnalysisController(StockBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            eclect_us_view.display_analysis(self.ticker)
+            eclect_us_view.display_analysis(symbol=self.ticker, export=ns_parser.export)
 
     @log_start_end(log=logger)
     def call_mgmt(self, other_args: List[str]):
@@ -226,7 +228,7 @@ class FundamentalAnalysisController(StockBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            finviz_view.display_screen_data(self.ticker)
+            finviz_view.display_screen_data(symbol=self.ticker, export=ns_parser.export)
 
     @log_start_end(log=logger)
     def call_score(self, other_args: List[str]):
@@ -575,13 +577,24 @@ class FundamentalAnalysisController(StockBaseController):
             description="""Print Major, institutional and mutualfunds shareholders.
             [Source: Yahoo Finance]""",
         )
+        parser.add_argument(
+            "--holder",
+            choices=self.SHRS_CHOICES,
+            default="institutional",
+            help="Table of holders to get",
+            dest="holder",
+        )
+
+        if other_args and "--holder" not in other_args[0][0]:
+            other_args.insert(0, "--holder")
+
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if not self.suffix:
             if ns_parser:
                 yahoo_finance_view.display_shareholders(
-                    self.ticker, export=ns_parser.export
+                    self.ticker, holder=ns_parser.holder, export=ns_parser.export
                 )
         else:
             console.print("Only US tickers are recognized.", "\n")
@@ -859,6 +872,7 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    limit=ns_parser.limit,
                 )
             elif ns_parser.source == "EODHD":
                 console.print("Source is EOD Historical Data!")
@@ -967,6 +981,7 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    limit=ns_parser.limit,
                 )
             elif ns_parser.source == "EODHD":
                 console.print("Source is EOD Historical Data!")
@@ -1081,6 +1096,7 @@ class FundamentalAnalysisController(StockBaseController):
                     ratios=ns_parser.ratios,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
+                    limit=ns_parser.limit,
                 )
             elif ns_parser.source == "EODHD":
                 console.print("Source is EOD Historical Data!")
@@ -1289,14 +1305,16 @@ class FundamentalAnalysisController(StockBaseController):
             help="Allow similar companies of any market cap to be shown.",
         )
         parser.add_argument(
-            "-p" "--prediction",
+            "-p",
+            "--prediction",
             type=int,
             dest="prediction",
             default=10,
             help="Number of years to predict before using terminal value.",
         )
         parser.add_argument(
-            "-s" "--similar",
+            "-s",
+            "--similar",
             type=int,
             dest="similar",
             default=6,

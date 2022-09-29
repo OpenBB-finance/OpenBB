@@ -4,12 +4,13 @@ __docformat__ = "numpy"
 import argparse
 import datetime
 import logging
-import os
+from pathlib import Path
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.config.paths import PRESETS_DIRECTORY
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_classes import AllowArgsWithWhiteSpace
 from openbb_terminal.helper_funcs import (
@@ -37,6 +38,7 @@ logger = logging.getLogger(__name__)
 # TODO: HELP WANTED! This menu required some refactoring. Things that can be addressed:
 #       - better preset management (MVC style).
 #       - decoupling view and model in the yfinance_view
+PRESETS_PATH = PRESETS_DIRECTORY / "stocks" / "screener"
 
 
 class ScreenerController(BaseController):
@@ -55,11 +57,20 @@ class ScreenerController(BaseController):
         "ca",
     ]
 
-    preset_choices = [
-        preset.split(".")[0]
-        for preset in os.listdir(screener_view.presets_path)
-        if preset[-4:] == ".ini"
-    ]
+    PRESETS_PATH_DEFAULT = Path(__file__).parent / "presets"
+    preset_choices = {
+        filepath.name: filepath
+        for filepath in PRESETS_PATH.iterdir()
+        if filepath.suffix == ".ini"
+    }
+    preset_choices.update(
+        {
+            filepath.name: filepath
+            for filepath in PRESETS_PATH_DEFAULT.iterdir()
+            if filepath.suffix == ".ini"
+        }
+    )
+    preset_choices.update(finviz_model.d_signals)
 
     historical_candle_choices = ["o", "h", "l", "c", "a"]
     PATH = "/stocks/scr/"
@@ -74,10 +85,7 @@ class ScreenerController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["view"] = {c: None for c in self.preset_choices}
-            choices["set"] = {
-                c: None
-                for c in self.preset_choices + list(finviz_model.d_signals.keys())
-            }
+            choices["set"] = {c: None for c in self.preset_choices}
             choices["historical"]["-t"] = {
                 c: None for c in self.historical_candle_choices
             }
@@ -179,7 +187,7 @@ class ScreenerController(BaseController):
             type=str,
             default="template",
             help="Filter presets",
-            choices=self.preset_choices + list(finviz_model.d_signals.keys()),
+            choices=self.preset_choices,
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
@@ -266,7 +274,7 @@ class ScreenerController(BaseController):
             type=str,
             default=self.preset,
             help="Filter presets",
-            choices=self.preset_choices + list(finviz_model.d_signals.keys()),
+            choices=self.preset_choices,
         )
         parser.add_argument(
             "-l",
@@ -343,7 +351,7 @@ class ScreenerController(BaseController):
             type=str,
             default=self.preset,
             help="Filter presets",
-            choices=self.preset_choices + list(finviz_model.d_signals.keys()),
+            choices=self.preset_choices,
         )
         parser.add_argument(
             "-l",
@@ -420,7 +428,7 @@ class ScreenerController(BaseController):
             type=str,
             default=self.preset,
             help="Filter presets",
-            choices=self.preset_choices + list(finviz_model.d_signals.keys()),
+            choices=self.preset_choices,
         )
         parser.add_argument(
             "-l",
@@ -498,7 +506,7 @@ class ScreenerController(BaseController):
             type=str,
             default=self.preset,
             help="Filter presets",
-            choices=self.preset_choices + list(finviz_model.d_signals.keys()),
+            choices=self.preset_choices,
         )
         parser.add_argument(
             "-l",
@@ -576,7 +584,7 @@ class ScreenerController(BaseController):
             type=str,
             default=self.preset,
             help="Filter presets",
-            choices=self.preset_choices + list(finviz_model.d_signals.keys()),
+            choices=self.preset_choices,
         )
         parser.add_argument(
             "-l",
@@ -654,7 +662,7 @@ class ScreenerController(BaseController):
             type=str,
             default=self.preset,
             help="Filter presets",
-            choices=self.preset_choices + list(finviz_model.d_signals.keys()),
+            choices=self.preset_choices,
         )
         parser.add_argument(
             "-l",

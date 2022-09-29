@@ -14,13 +14,14 @@ from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
+# pylint: disable=unsupported-assignment-operation
 
 
 @log_start_end(log=logger)
 @check_api_key(["API_ETHPLORER_KEY"])
 def display_address_info(
     address: str,
-    top: int = 15,
+    limit: int = 15,
     sortby: str = "index",
     ascend: bool = False,
     export: str = "",
@@ -32,7 +33,7 @@ def display_address_info(
     ----------
     address: str
         Ethereum balance.
-    top: int
+    limit: int
         Limit of transactions. Maximum 100
     sortby: str
         Key to sort by.
@@ -51,7 +52,7 @@ def display_address_info(
     )
 
     print_rich_table(
-        df.head(top),
+        df.head(limit),
         headers=list(df.columns),
         show_index=False,
         title="Blockchain Token Information",
@@ -68,7 +69,7 @@ def display_address_info(
 @log_start_end(log=logger)
 @check_api_key(["API_ETHPLORER_KEY"])
 def display_top_tokens(
-    top: int = 15,
+    limit: int = 15,
     sortby: str = "rank",
     ascend: bool = True,
     export: str = "",
@@ -77,7 +78,7 @@ def display_top_tokens(
 
     Parameters
     ----------
-    top: int
+    limit: int
         Limit of transactions. Maximum 100
     sortby: str
         Key to sort by.
@@ -95,7 +96,7 @@ def display_top_tokens(
             df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
 
     print_rich_table(
-        df.head(top),
+        df.head(limit),
         headers=list(df.columns),
         show_index=False,
         title="Top ERC20 Tokens",
@@ -113,7 +114,7 @@ def display_top_tokens(
 @check_api_key(["API_ETHPLORER_KEY"])
 def display_top_token_holders(
     address: str,
-    top: int = 10,
+    limit: int = 10,
     sortby: str = "balance",
     ascend: bool = True,
     export: str = "",
@@ -124,7 +125,7 @@ def display_top_token_holders(
     ----------
     address: str
         Token balance e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
-    top: int
+    limit: int
         Limit of transactions. Maximum 100
     sortby: str
         Key to sort by.
@@ -139,7 +140,7 @@ def display_top_token_holders(
     df["balance"] = df["balance"].apply(lambda x: lambda_very_long_number_formatter(x))
 
     print_rich_table(
-        df.head(top),
+        df.head(limit),
         headers=list(df.columns),
         show_index=False,
         title="ERC20 Token Holder Info",
@@ -157,7 +158,7 @@ def display_top_token_holders(
 @check_api_key(["API_ETHPLORER_KEY"])
 def display_address_history(
     address: str,
-    top: int = 10,
+    limit: int = 10,
     sortby: str = "timestamp",
     ascend: bool = True,
     export: str = "",
@@ -168,7 +169,7 @@ def display_address_history(
     ----------
     address: str
         Ethereum blockchain balance e.g. 0x3cD751E6b0078Be393132286c442345e5DC49699
-    top: int
+    limit: int
         Limit of transactions. Maximum 100
     sortby: str
         Key to sort by.
@@ -187,7 +188,7 @@ def display_address_history(
     )
 
     print_rich_table(
-        df.head(top),
+        df.head(limit),
         headers=list(df.columns),
         show_index=False,
         title="Historical Transactions Information",
@@ -275,7 +276,7 @@ def display_tx_info(
 @check_api_key(["API_ETHPLORER_KEY"])
 def display_token_history(
     address: str,
-    top: int = 10,
+    limit: int = 10,
     sortby: str = "timestamp",
     ascend: bool = False,
     hash_: bool = False,
@@ -287,7 +288,7 @@ def display_token_history(
     ----------
     address: str
         Token balance e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
-    top: int
+    limit: int
         Limit of transactions. Maximum 100
     sortby: str
         Key to sort by.
@@ -315,7 +316,7 @@ def display_token_history(
         df.drop("transactionHash", inplace=True, axis=1)
 
     print_rich_table(
-        df.head(top),
+        df.head(limit),
         headers=list(df.columns),
         show_index=False,
         title="Token History Information",
@@ -333,7 +334,7 @@ def display_token_history(
 @check_api_key(["API_ETHPLORER_KEY"])
 def display_token_historical_prices(
     address: str,
-    top: int = 30,
+    limit: int = 30,
     sortby: str = "date",
     ascend: bool = False,
     export: str = "",
@@ -345,7 +346,7 @@ def display_token_historical_prices(
     ----------
     address: str
         Token balance e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
-    top: int
+    limit: int
         Limit of transactions. Maximum 100
     sortby: str
         Key to sort by.
@@ -368,7 +369,7 @@ def display_token_historical_prices(
     df.loc[:, "cap"] = df["cap"].apply(lambda x: lambda_very_long_number_formatter(x))
 
     print_rich_table(
-        df.head(top),
+        df.head(limit),
         headers=list(df.columns),
         show_index=False,
         title="Historical Token Prices",

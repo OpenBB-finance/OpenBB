@@ -10,6 +10,7 @@ en:
   featflags: enable and disable feature flags
   sources: select your preferred data sources
   keys: set API keys and check their validity
+  wiki: search for an expression in Wikipedia (https://www.wikipedia.org/)
   _configure_: Configure your own terminal
   _main_menu_: Main menu
   keys/_keys_: This menu allows you to set your own API keys. Type 'about' for more information
@@ -22,7 +23,6 @@ en:
   sources/get: get available data sources associated with command
   sources/set: set default data source for a command
   featflags/_info_: Feature flags through environment variables
-  featflags/logcollection: allow logs to be sent to help OpenBB team
   featflags/retryload: retry misspelled commands with load first
   featflags/tab: use tabulate to print dataframes
   featflags/cls: clear console after each command
@@ -46,7 +46,7 @@ en:
   settings/_flair: Flair
   settings/lang: terminal language
   settings/_language: Language
-  settings/export: select export folder to output data
+  settings/userdata: set folder to store user data
   settings/tz: set different timezone
   settings/dpi: dots per inch
   settings/backend: plotting backend (None, tkAgg, MacOSX, Qt5Agg)
@@ -63,7 +63,7 @@ en:
   settings/_plot_height_pct: Plot height [%]
   settings/_plot_width_pct: Plot width [%]
   settings/_monitor: Monitor
-  settings/_export_folder: Export Folder
+  settings/_user_data_folder: User Data Folder
   settings/_timezone: Timezone
   settings/source: specify data source file
   settings/_data_source: Data sources
@@ -181,7 +181,6 @@ en:
   stocks/disc/active: most active stocks by intraday trade volumest
   stocks/disc/ulc: potentially undervalued large cap stocks
   stocks/disc/asc: small cap stocks with earnings growth rates better than 25%
-  stocks/disc/ford: orders by Fidelity Customers
   stocks/disc/arkord: orders by ARK Investment Management LLC
   stocks/disc/upcoming: upcoming earnings release dates
   stocks/disc/trending: trending news
@@ -190,6 +189,7 @@ en:
   stocks/disc/hotpenny: today's hot penny stocks
   stocks/disc/rtat: top 10 retail traded stocks per day
   stocks/disc/divcal: dividend calendar for selected date
+  stocks/disc/heatmap: heatmap of SP500 tickers
   stocks/sia/load: load a specific ticker and all it's corresponding parameters
   stocks/sia/clear: clear all or one of industry, sector, country and market cap parameters
   stocks/sia/industry: see existing industries, or set industry if arg specified
@@ -487,6 +487,7 @@ en:
   stocks/pred/mc: Monte-Carlo simulations
   crypto/load: load a specific cryptocurrency for analysis
   crypto/find: find coins
+  crypto/price: real-time price and interval of confidence
   crypto/_symbol: Coin
   crypto/_interval: Interval (min)
   crypto/_source: Source
@@ -589,10 +590,6 @@ en:
   crypto/tools/il: calculate impermanent loss
   crypto/nft/fp: collection sales/floor price
   crypto/nft/collections: top ethereum collections
-  crypto/nft/today: today's NFT drops
-  crypto/nft/upcoming: upcoming NFT drops
-  crypto/nft/ongoing: Ongoing NFT drops
-  crypto/nft/newest: Recently NFTs added
   crypto/nft/stats: collection stats
   crypto/dd/_overview_: Overview
   crypto/dd/_market_: Market

@@ -6,6 +6,7 @@ import os
 import os.path
 import argparse
 import logging
+from pathlib import Path
 from typing import List
 import pytz
 
@@ -16,13 +17,14 @@ from prompt_toolkit.completion import NestedCompleter
 # IMPORTATION INTERNAL
 from openbb_terminal import config_plot as cfg_plot
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.config.paths import USER_ENV_FILE, USER_DATA_DIRECTORY
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     get_flair,
     parse_simple_args,
     get_user_timezone_or_invalid,
     replace_user_timezone,
-    set_export_folder,
+    set_user_data_folder,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -49,7 +51,7 @@ class SettingsController(BaseController):
         "monitor",
         "lang",
         "tz",
-        "export",
+        "userdata",
         "source",
         "flair",
     ]
@@ -63,7 +65,7 @@ class SettingsController(BaseController):
         if lang.endswith(".yml")
     ]
 
-    def __init__(self, queue: List[str] = None, env_file: str = ".env"):
+    def __init__(self, queue: List[str] = None, env_file: str = str(USER_ENV_FILE)):
         """Constructor"""
         super().__init__(queue)
         self.env_file = env_file
@@ -88,13 +90,11 @@ class SettingsController(BaseController):
         mt.add_raw("\n")
         mt.add_param("_language", obbff.USE_LANGUAGE)
         mt.add_raw("\n")
-        mt.add_cmd("export")
+        mt.add_cmd("userdata")
         mt.add_raw("\n")
         mt.add_param(
-            "_export_folder",
-            obbff.EXPORT_FOLDER_PATH
-            if obbff.EXPORT_FOLDER_PATH
-            else "DEFAULT (folder: exports/)",
+            "_user_data_folder",
+            USER_DATA_DIRECTORY,
         )
         mt.add_raw("\n")
         mt.add_cmd("tz")
@@ -138,7 +138,7 @@ class SettingsController(BaseController):
     def call_dt(self, _):
         """Process dt command"""
         obbff.USE_DATETIME = not obbff.USE_DATETIME
-        set_key(obbff.ENV_FILE, "OPENBB_USE_DATETIME", str(obbff.USE_DATETIME))
+        set_key(obbff.USER_ENV_FILE, "OPENBB_USE_DATETIME", str(obbff.USE_DATETIME))
         console.print("")
 
     @log_start_end(log=logger)
@@ -175,7 +175,7 @@ class SettingsController(BaseController):
                 console.print(e)
             obbff.PREFERRED_DATA_SOURCE_FILE = ns_parser.value
             set_key(
-                obbff.ENV_FILE,
+                obbff.USER_ENV_FILE,
                 "OPENBB_PREFERRED_DATA_SOURCE_FILE",
                 str(ns_parser.value),
             )
@@ -186,7 +186,7 @@ class SettingsController(BaseController):
         """Process autoscaling command"""
         obbff.USE_PLOT_AUTOSCALING = not obbff.USE_PLOT_AUTOSCALING
         set_key(
-            obbff.ENV_FILE,
+            obbff.USER_ENV_FILE,
             "OPENBB_USE_PLOT_AUTOSCALING",
             str(obbff.USE_PLOT_AUTOSCALING),
         )
@@ -213,7 +213,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser and ns_parser.value:
-            set_key(obbff.ENV_FILE, "OPENBB_PLOT_DPI", str(ns_parser.value))
+            set_key(obbff.USER_ENV_FILE, "OPENBB_PLOT_DPI", str(ns_parser.value))
             cfg_plot.PLOT_DPI = ns_parser.value
             console.print("")
 
@@ -238,7 +238,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            set_key(obbff.ENV_FILE, "OPENBB_PLOT_HEIGHT", str(ns_parser.value))
+            set_key(obbff.USER_ENV_FILE, "OPENBB_PLOT_HEIGHT", str(ns_parser.value))
             cfg_plot.PLOT_HEIGHT = ns_parser.value
             console.print("")
 
@@ -263,7 +263,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            set_key(obbff.ENV_FILE, "OPENBB_PLOT_WIDTH", str(ns_parser.value))
+            set_key(obbff.USER_ENV_FILE, "OPENBB_PLOT_WIDTH", str(ns_parser.value))
             cfg_plot.PLOT_WIDTH = ns_parser.value
             console.print("")
 
@@ -288,7 +288,7 @@ class SettingsController(BaseController):
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             set_key(
-                obbff.ENV_FILE,
+                obbff.USER_ENV_FILE,
                 "OPENBB_PLOT_HEIGHT_PERCENTAGE",
                 str(ns_parser.value),
             )
@@ -316,7 +316,7 @@ class SettingsController(BaseController):
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             set_key(
-                obbff.ENV_FILE,
+                obbff.USER_ENV_FILE,
                 "OPENBB_PLOT_WIDTH_PERCENTAGE",
                 str(ns_parser.value),
             )
@@ -343,7 +343,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            set_key(obbff.ENV_FILE, "OPENBB_MONITOR", str(ns_parser.value))
+            set_key(obbff.USER_ENV_FILE, "OPENBB_MONITOR", str(ns_parser.value))
             cfg_plot.MONITOR = ns_parser.value
             console.print("")
 
@@ -367,7 +367,7 @@ class SettingsController(BaseController):
             other_args.insert(0, "-v")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            set_key(obbff.ENV_FILE, "OPENBB_BACKEND", str(ns_parser.value))
+            set_key(obbff.USER_ENV_FILE, "OPENBB_BACKEND", str(ns_parser.value))
             if ns_parser.value == "None":
                 cfg_plot.BACKEND = None  # type: ignore
             else:
@@ -397,7 +397,9 @@ class SettingsController(BaseController):
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             if ns_parser.value:
-                set_key(obbff.ENV_FILE, "OPENBB_USE_LANGUAGE", str(ns_parser.value))
+                set_key(
+                    obbff.USER_ENV_FILE, "OPENBB_USE_LANGUAGE", str(ns_parser.value)
+                )
                 obbff.USE_LANGUAGE = ns_parser.value
             else:
                 console.print(
@@ -456,25 +458,25 @@ class SettingsController(BaseController):
                 ns_parser.emoji = ""
             else:
                 ns_parser.emoji = " ".join(ns_parser.emoji)
-            set_key(obbff.ENV_FILE, "OPENBB_USE_FLAIR", str(ns_parser.emoji))
+            set_key(obbff.USER_ENV_FILE, "OPENBB_USE_FLAIR", str(ns_parser.emoji))
             obbff.USE_FLAIR = ns_parser.emoji
             console.print("")
 
     @log_start_end(log=logger)
-    def call_export(self, other_args: List[str]):
-        """Process export command"""
+    def call_userdata(self, other_args: List[str]):
+        """Process userdata command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="export",
-            description="Select folder where to export data",
+            prog="userdata",
+            description="Set folder to store user data such as exports, presets, logs",
         )
         parser.add_argument(
             "--folder",
             type=str,
             dest="folder",
-            help="Folder where to export data. 'default' redirects to OpenBB Terminal 'exports'",
-            default="default",
+            help="Folder where to store user data. ",
+            default=f"{str(Path.home() / 'OpenBBUserData')}",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--folder")
@@ -483,72 +485,68 @@ class SettingsController(BaseController):
         if ns_parser:
             if other_args or self.queue:
                 if other_args:
-                    export_path = ""
+                    userdata_path = ""
                 else:
                     # Re-add the initial slash for an absolute directory provided
-                    export_path = "/"
+                    userdata_path = "/"
 
-                export_path += "/".join([ns_parser.folder] + self.queue)
+                userdata_path += "/".join([ns_parser.folder] + self.queue)
                 self.queue = []
 
-                export_path = export_path.replace("'", "").replace('"', "")
+                userdata_path = userdata_path.replace("'", "").replace('"', "")
 
-                base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-                default_path = os.path.join(base_path, "exports")
+                default_path = Path.home() / "OpenBBUserData"
 
-                success_export = False
-                while not success_export:
-                    if export_path.upper() == "DEFAULT":
+                success_userdata = False
+                while not success_userdata:
+                    if userdata_path.upper() == "DEFAULT":
                         console.print(
-                            f"Export data to be saved in the default folder: '{default_path}'"
+                            f"User data to be saved in the default folder: '{default_path}'"
                         )
-                        set_export_folder(self.env_file, path_folder="")
-                        success_export = True
+                        set_user_data_folder(
+                            self.env_file, path_folder=str(default_path)
+                        )
+                        success_userdata = True
                     else:
                         # If the path selected does not start from the user root, give relative location from root
-                        if export_path[0] == "~":
-                            export_path = export_path.replace(
+                        if userdata_path[0] == "~":
+                            userdata_path = userdata_path.replace(
                                 "~", os.path.expanduser("~")
                             )
-                        elif export_path[0] != "/":
-                            export_path = os.path.join(base_path, export_path)
 
                         # Check if the directory exists
-                        if os.path.isdir(export_path):
+                        if os.path.isdir(userdata_path):
                             console.print(
-                                f"Export data to be saved in the selected folder: '{export_path}'"
+                                f"User data to be saved in the selected folder: '{userdata_path}'"
                             )
-                            set_export_folder(self.env_file, path_folder=export_path)
-                            success_export = True
+                            set_user_data_folder(
+                                self.env_file, path_folder=userdata_path
+                            )
+                            success_userdata = True
                         else:
                             console.print(
-                                "[red]The path selected to export data does not exist![/red]\n"
+                                "[red]The path selected to user data does not exist![/red]\n"
                             )
                             user_opt = "None"
                             while user_opt not in ("Y", "N"):
                                 user_opt = input(
-                                    f"Do you wish to create folder: `{export_path}` ? [Y/N]\n"
+                                    f"Do you wish to create folder: `{userdata_path}` ? [Y/N]\n"
                                 ).upper()
 
                             if user_opt == "Y":
-                                os.makedirs(export_path)
+                                os.makedirs(userdata_path)
                                 console.print(
-                                    f"[green]Folder '{export_path}' successfully created.[/green]"
+                                    f"[green]Folder '{userdata_path}' successfully created.[/green]"
                                 )
-                                set_export_folder(
-                                    self.env_file, path_folder=export_path
+                                set_user_data_folder(
+                                    self.env_file, path_folder=userdata_path
                                 )
                             else:
-                                # Do not update export_folder path since we will keep the same as before
-                                path_display = (
-                                    obbff.EXPORT_FOLDER_PATH
-                                    if obbff.EXPORT_FOLDER_PATH
-                                    else "DEFAULT (folder: exports/)"
-                                )
+                                # Do not update userdata_folder path since we will keep the same as before
                                 console.print(
-                                    "[yellow]Export data to keep being saved in"
-                                    + f"the selected folder: {path_display}[/yellow]"
+                                    "[yellow]User data to keep being saved in"
+                                    + f"the selected folder: {str(USER_DATA_DIRECTORY)}[/yellow]"
                                 )
-                            success_export = True
+                            success_userdata = True
 
         console.print()

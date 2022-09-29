@@ -1,0 +1,8 @@
+reports
+
+portfolio Public_Equity_Orderbook.xlsx
+
+# Test with invalid path
+portfolio Public_Equity_Orderbook_test.xlsx
+
+exit

@@ -156,6 +156,8 @@ def display_historical(
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
         ax = external_axes[0]
+    if data.empty:
+        return
     ax.plot(data.index, data.Close)
     ax.set_xlim([data.index[0], data.index[-1]])
     ax.set_xlabel("Date")
