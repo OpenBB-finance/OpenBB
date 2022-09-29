@@ -330,7 +330,7 @@ def load(
         Dataframe consisting of price and volume data
     """
     df = pd.DataFrame()
-    if source == "ccxt":
+    if source == "CCXT":
         pair = f"{symbol.upper()}/{vs_currency.upper()}"
         try:
             df = fetch_ccxt_ohlc(
