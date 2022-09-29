@@ -54,7 +54,7 @@ def get_queries_response():
         }
     }
 
-    return resp
+    return pd.DataFrame(resp)
 
 
 @pytest.mark.default_cassette("test_google_view")
@@ -98,7 +98,5 @@ def test_display_queries(mocker, symbol, limit, export, get_queries_response):
     if export:
         pd.testing.assert_frame_equal(
             export_mock.call_args[0][3],  # fourth positional arg is the df
-            pd.DataFrame(
-                get_queries_response[symbol]["top"].head(limit)
-            ),  # expected DF
+            pd.DataFrame(get_queries_response),  # expected DF
         )

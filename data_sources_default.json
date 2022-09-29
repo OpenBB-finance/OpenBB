@@ -213,19 +213,22 @@
         "YahooFinance",
         "Polygon",
         "AlphaVantage",
-        "FinancialModelingPrep"
+        "FinancialModelingPrep",
+        "EODHD"
       ],
       "balance": [
         "YahooFinance",
         "Polygon",
         "AlphaVantage",
-        "FinancialModelingPrep"
+        "FinancialModelingPrep",
+        "EODHD"
       ],
       "cash": [
         "YahooFinance",
         "Polygon",
         "AlphaVantage",
-        "FinancialModelingPrep"
+        "FinancialModelingPrep",
+        "EODHD"
       ],
       "data": ["Finviz"],
       "mgmt": ["BusinessInsider"],
