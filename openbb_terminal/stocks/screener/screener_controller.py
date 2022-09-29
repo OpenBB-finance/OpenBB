@@ -167,8 +167,9 @@ class ScreenerController(BaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        screener_view.display_presets(ns_parser.preset)
-        console.print("")
+        if ns_parser:
+            screener_view.display_presets(ns_parser.preset)
+            console.print("")
 
     @log_start_end(log=logger)
     def call_set(self, other_args: List[str]):
