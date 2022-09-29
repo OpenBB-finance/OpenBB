@@ -265,7 +265,7 @@ def rolling_volatility(
 
     if length > sample_length:
         console.print(
-            f"[red] Window length ({window}->{length}) is larger than returns length ({sample_length}) [/red]"
+            f"[red]Window length ({window}->{length}) is larger than returns length ({sample_length}). Try a smaller window.[/red]"
         )
         return pd.DataFrame()
 
@@ -320,7 +320,7 @@ def rolling_sharpe(
 
     if length > sample_length:
         console.print(
-            f"[red] Window length ({window}->{length}) is larger than returns length ({sample_length}) [/red]"
+            f"[red]Window length ({window}->{length}) is larger than returns length ({sample_length}). Try a smaller window.[/red]"
         )
         return pd.DataFrame()
 
@@ -377,7 +377,7 @@ def rolling_sortino(
 
     if length > sample_length:
         console.print(
-            f"[red] Window length ({window}->{length}) is larger than returns length ({sample_length}) [/red]"
+            f"[red]Window length ({window}->{length}) is larger than returns length ({sample_length}). Try a smaller window.[/red]"
         )
         return pd.DataFrame()
 
