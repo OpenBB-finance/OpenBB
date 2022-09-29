@@ -421,15 +421,12 @@ def display_fundamentals(
         # The empty data frame error handling done in model
         return
 
-    symbol_currency = yahoo_finance_model.get_currency(symbol)
+    symbol_currency = "GBP"
 
     if plot:
         rows_plot = len(plot)
         fundamentals_plot_data = fundamentals.transpose().fillna(-1)
         fundamentals_plot_data.columns = fundamentals_plot_data.columns.str.lower()
-        fundamentals_plot_data = fundamentals_plot_data.replace(",", "", regex=True)
-        fundamentals_plot_data = fundamentals_plot_data.replace("-", "-1")
-        fundamentals_plot_data = fundamentals_plot_data.astype(float)
         if "ttm" in list(fundamentals_plot_data.index):
             fundamentals_plot_data = fundamentals_plot_data.drop(["ttm"])
         fundamentals_plot_data = fundamentals_plot_data.sort_index()

@@ -1,7 +1,8 @@
 """Denomination Helper functions"""
 
-from typing import Literal, Tuple
+from typing import Literal, Tuple, Callable
 import pandas as pd
+from pandas._typing import Axis
 
 DENOMINATION = Literal["Trillions", "Billions", "Millions", "Thousands", "Units", ""]
 
@@ -11,25 +12,35 @@ def transform(
     sourceDenomination: DENOMINATION = "Units",
     targetDenomination: DENOMINATION = None,
     maxValue: float = None,
+    axis: Axis = 0,
+    skipPredicate: Callable[[pd.Series], bool] = None,
 ) -> Tuple[pd.DataFrame, DENOMINATION]:
-    """Applies denomination to data frame (i.e. divides by it).
+    """Transforms data frame by denomination.
 
     Args:
         df (pd.DataFrame): Source data frame
         sourceDenomination (DENOMINATION, optional): Current denomination. Defaults to Units.
         targetDenomination (DENOMINATION, optional): Desired denomination. Defaults to None, meaning we will find it.
         maxValue (float, optional): Max value of the data frame. Defaults to None, meaning df.max().max() will be used.
-
+        axis (Axis, optional): Axis to apply to skip predicate. Defaults to 0.
+        skipPredicate (Callable[[pd.Series], bool], optional): Predicate for skipping a transform.
     Returns:
         Tuple[pd.DataFrame, DENOMINATION]: Pair of transformed data frame and applied denomination.
     """
+
+    def apply(
+        df: pd.DataFrame, source: DENOMINATION, target: DENOMINATION
+    ) -> pd.DataFrame:
+        return df.apply(
+            lambda row: row
+            if skipPredicate is not None and skipPredicate(row)
+            else row * (get_denominations()[source] / get_denominations()[target]),
+            axis,
+        )
+
     if targetDenomination is not None:
         return (
-            df
-            * (
-                get_denominations()[targetDenomination]
-                / get_denominations()[sourceDenomination]
-            ),
+            apply(df, sourceDenomination, targetDenomination),
             targetDenomination,
         )
 
@@ -39,7 +50,7 @@ def transform(
     foundTargetDenomination = get_denomination(maxValue)
 
     return (
-        df * (foundTargetDenomination[1] / get_denominations()[sourceDenomination]),
+        apply(df, sourceDenomination, foundTargetDenomination[0]),
         foundTargetDenomination[0],
     )
 
@@ -69,4 +80,4 @@ def get_denomination(value: float) -> Tuple[DENOMINATION, float]:
     Returns:
         Tuple[DENOMINATION, int]:Denomination that fits the supplied value
     """
-    return next((x for x in get_denominations().items() if value > x[1]), ("Units", 1))
+    return next((x for x in get_denominations().items() if value >= x[1]), ("Units", 1))

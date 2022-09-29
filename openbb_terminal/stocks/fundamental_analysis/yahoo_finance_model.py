@@ -5,6 +5,7 @@ import logging
 from datetime import datetime, timedelta
 from typing import Tuple
 from urllib.request import Request, urlopen
+import re
 
 import ssl
 import numpy as np
@@ -17,6 +18,9 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
+from openbb_terminal.helpers_denomination import (
+    transform as transform_by_denomination,
+)
 
 logger = logging.getLogger(__name__)
 # pylint: disable=W0212
@@ -405,12 +409,23 @@ def get_financials(symbol: str, statement: str, ratios: bool = False) -> pd.Data
         new_headers[:0] = ["Breakdown", "ttm"]
         df.columns = new_headers
         df.set_index("Breakdown", inplace=True)
+
     df.replace("", np.nan, inplace=True)
+    df.replace("-", np.nan, inplace=True)
+    df = df.dropna(how="all")
+    df = df.replace(",", "", regex=True)
+    df = df.astype("float")
+
+    # Data except EPS is returned in thousands, convert it
+    (df, _) = transform_by_denomination(
+        df,
+        "Thousands",
+        "Units",
+        axis=1,
+        skipPredicate=lambda row: re.search("eps", row.name, re.IGNORECASE) is not None,
+    )
 
     if ratios:
-        df = df.replace(",", "", regex=True)
-        df = df.replace("-", "0")
-        df = df.astype(float)
         types = df.copy().applymap(lambda x: isinstance(x, (float, int)))
         types = types.all(axis=1)
 
@@ -427,7 +442,6 @@ def get_financials(symbol: str, statement: str, ratios: bool = False) -> pd.Data
             df.iloc[i] = df_fa_pc.iloc[j]
             j += 1
 
-    df = df.dropna(how="all")
     return df
 
 
