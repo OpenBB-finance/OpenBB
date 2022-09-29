@@ -61,6 +61,7 @@ def get_regions(symbol: str) -> pd.DataFrame:
 
     return df
 
+
 @log_start_end(log=logger)
 def get_queries(symbol: str, limit: int = 10) -> pd.DataFrame:
     """Get related queries from google api [Source: google]
@@ -82,9 +83,7 @@ def get_queries(symbol: str, limit: int = 10) -> pd.DataFrame:
         pytrend.build_payload(kw_list=[symbol])
         df = pytrend.related_queries()
         df = df[symbol]["top"].head(limit)
-        df["value"] = df["value"].apply(
-            lambda x: str(x) + "%"
-        )
+        df["value"] = df["value"].apply(lambda x: str(x) + "%")
     except Exception:
         console.print("[red]Cannot get data.[/red]\n")
         df = pd.DataFrame()
