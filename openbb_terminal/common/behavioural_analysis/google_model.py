@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import logging
 
 import pandas as pd
+import pytrends
 from pytrends.request import TrendReq
 
 from openbb_terminal.decorators import log_start_end
@@ -46,7 +47,10 @@ def get_regions(symbol: str) -> pd.DataFrame:
     """
     pytrend = TrendReq()
     pytrend.build_payload(kw_list=[symbol])
-    return pytrend.interest_by_region().sort_values([symbol], ascending=False)
+    try:
+        return pytrend.interest_by_region().sort_values([symbol], ascending=False)
+    except pytrends.exceptions.ResponseError:
+        return pd.DataFrame()
 
 
 @log_start_end(log=logger)
