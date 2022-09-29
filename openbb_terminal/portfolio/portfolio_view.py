@@ -837,8 +837,8 @@ def display_rolling_volatility(
 @log_start_end(log=logger)
 def display_rolling_sharpe(
     portfolio: portfolio_model.PortfolioModel,
-    window: str = "1y",
     risk_free_rate: float = 0,
+    window: str = "1y",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -848,10 +848,10 @@ def display_rolling_sharpe(
     ----------
     portfolio : PortfolioModel
         Portfolio object
-    window: str
-        interval for window to consider
     risk_free_rate: float
         Value to use for risk free rate in sharpe/other calculations
+    window: str
+        interval for window to consider
     export: str
         Export to file
     external_axes: Optional[List[plt.Axes]]
@@ -896,8 +896,8 @@ def display_rolling_sharpe(
 @log_start_end(log=logger)
 def display_rolling_sortino(
     portfolio: portfolio_model.PortfolioModel,
-    window: str = "1y",
     risk_free_rate: float = 0,
+    window: str = "1y",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -907,10 +907,10 @@ def display_rolling_sortino(
     ----------
     portfolio : PortfolioModel
         Portfolio object
-    window: str
-        interval for window to consider
     risk_free_rate: float
         Value to use for risk free rate in sharpe/other calculations
+    window: str
+        interval for window to consider
     export: str
         Export to file
     external_axes: Optional[List[plt.Axes]]
