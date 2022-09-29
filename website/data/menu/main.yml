@@ -39,8 +39,6 @@ main:
                 ref: "/terminal/stocks/disc/ulc"
               - name: asc
                 ref: "/terminal/stocks/disc/asc"
-              - name: ford
-                ref: "/terminal/stocks/disc/ford"
               - name: arkord
                 ref: "/terminal/stocks/disc/arkord"
               - name: upcoming
@@ -2400,8 +2398,6 @@ main:
           - name: disc
             ref: /api/stocks/disc
             sub:
-              - name: ford
-                ref: /api/stocks/disc/ford
               - name: asc
                 ref: /api/stocks/disc/asc
               - name: ipo

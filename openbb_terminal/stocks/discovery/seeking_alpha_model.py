@@ -215,7 +215,7 @@ def get_news(news_type: str = "Top-News", limit: int = 5) -> List:
     news_articles: Dict = get_news_html(news_type)
     news_to_display = list()
 
-    if news_articles:
+    if "data" in news_articles:
         for idx, news in enumerate(news_articles["data"]):
             if idx > limit:
                 break
