@@ -1,6 +1,6 @@
+import re
 import pandas as pd
 import requests
-import re
 
 
 from openbb_terminal.helper_funcs import get_user_agent
