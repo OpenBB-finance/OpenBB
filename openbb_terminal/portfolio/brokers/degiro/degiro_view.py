@@ -98,15 +98,20 @@ class DegiroView:
         console.print(f"Following `Order` cancellation failed : {order_id}")
 
     @log_start_end(log=logger)
-    def companynews(self, ns_parser: Namespace):
+    def companynews(
+        self, symbol: str, limit: int = 10, offset: int = 0, languages: str = "en,fr"
+    ):
         # GET ATTRIBUTES
         degiro_model = self.__degiro_model
 
         # FETCH DATA
-        news_by_company = degiro_model.companynews(isin=ns_parser.isin)
+        news_by_company = degiro_model.companynews(
+            symbol=symbol, limit=limit, offset=offset, languages=languages
+        )
 
         # DISPLAY DATA
-        DegiroView.__companynews_display(news_by_company=news_by_company)
+        if news_by_company:
+            DegiroView.__companynews_display(news_by_company=news_by_company)
 
     @staticmethod
     @log_start_end(log=logger)
