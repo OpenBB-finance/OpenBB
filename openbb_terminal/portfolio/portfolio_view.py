@@ -857,6 +857,12 @@ def display_rolling_sharpe(
     external_axes: Optional[List[plt.Axes]]
         Optional axes to display plot on
     """
+
+    metric = "sharpe"
+    df = portfolio_model.get_rolling_sharpe(portfolio, risk_free_rate, window)
+    if df.empty:
+        return
+
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
@@ -866,8 +872,6 @@ def display_rolling_sharpe(
             return
         ax = external_axes[0]
 
-    metric = "sharpe"
-    df = portfolio_model.get_rolling_sharpe(portfolio, risk_free_rate, window)
     df_portfolio = df["portfolio"]
     df_benchmark = df["benchmark"]
 
@@ -912,6 +916,12 @@ def display_rolling_sortino(
     external_axes: Optional[List[plt.Axes]]
         Optional axes to display plot on
     """
+
+    metric = "sortino"
+    df = portfolio_model.get_rolling_sortino(portfolio, risk_free_rate, window)
+    if df.empty:
+        return
+
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
@@ -921,8 +931,6 @@ def display_rolling_sortino(
             return
         ax = external_axes[0]
 
-    metric = "sortino"
-    df = portfolio_model.get_rolling_sharpe(portfolio, risk_free_rate, window)
     df_portfolio = df["portfolio"]
     df_benchmark = df["benchmark"]
 

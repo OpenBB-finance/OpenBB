@@ -1458,9 +1458,15 @@ def get_rolling_sharpe(
     portfolio_rsharpe = portfolio_helper.rolling_sharpe(
         portfolio.returns, risk_free_rate, window
     )
+    if portfolio_rsharpe.empty:
+        return pd.DataFrame()
+
     benchmark_rsharpe = portfolio_helper.rolling_sharpe(
         portfolio.benchmark_returns, risk_free_rate, window
     )
+    if benchmark_rsharpe.empty:
+        return pd.DataFrame()
+
     df = pd.DataFrame(portfolio_rsharpe).join(pd.DataFrame(benchmark_rsharpe))
     df.columns.values[0] = "portfolio"
     df.columns.values[1] = "benchmark"
@@ -1470,8 +1476,8 @@ def get_rolling_sharpe(
 
 def get_rolling_sortino(
     portfolio: PortfolioModel,
-    window: str = "1y",
     risk_free_rate: float = 0,
+    window: str = "1y",
 ) -> pd.DataFrame:
     """Get rolling sortino
 
@@ -1490,13 +1496,19 @@ def get_rolling_sortino(
         Rolling sortino ratio DataFrame
     """
 
-    portfolio_rsharpe = portfolio_helper.rolling_sortino(
+    portfolio_rsortino = portfolio_helper.rolling_sortino(
         portfolio.returns, risk_free_rate, window
     )
-    benchmark_rsharpe = portfolio_helper.rolling_sortino(
+    if portfolio_rsortino.empty:
+        return pd.DataFrame()
+
+    benchmark_rsortino = portfolio_helper.rolling_sortino(
         portfolio.benchmark_returns, risk_free_rate, window
     )
-    df = pd.DataFrame(portfolio_rsharpe).join(pd.DataFrame(benchmark_rsharpe))
+    if benchmark_rsortino.empty:
+        return pd.DataFrame()
+
+    df = pd.DataFrame(portfolio_rsortino).join(pd.DataFrame(benchmark_rsortino))
     df.columns.values[0] = "portfolio"
     df.columns.values[1] = "benchmark"
 

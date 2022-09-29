@@ -269,6 +269,7 @@ def rolling_volatility(
         )
         return pd.DataFrame()
 
+    # max(2, length) -> std needs at least 2 observations
     return portfolio_returns.rolling(max(2, length)).std()
 
 
@@ -315,8 +316,16 @@ def rolling_sharpe(
     """
 
     length = PERIODS_DAYS[window]
+    sample_length = len(portfolio_returns)
 
-    rolling_sharpe_df = portfolio_returns.rolling(length).apply(
+    if length > sample_length:
+        console.print(
+            f"[red] Window length ({length}) is larger than sample length ({sample_length}) [/red]"
+        )
+        return pd.DataFrame()
+
+    # max(2, length) -> std needs at least 2 observations
+    rolling_sharpe_df = portfolio_returns.rolling(max(2, length)).apply(
         lambda x: (x.mean() - risk_free_rate) / x.std()
     )
     return rolling_sharpe_df
@@ -363,7 +372,17 @@ def rolling_sortino(
         Rolling sortino ratio DataFrame
     """
     length = PERIODS_DAYS[window]
-    rolling_sortino_df = portfolio_returns.rolling(length).apply(
+
+    sample_length = len(portfolio_returns)
+
+    if length > sample_length:
+        console.print(
+            f"[red] Window length ({length}) is larger than sample length ({sample_length}) [/red]"
+        )
+        return pd.DataFrame()
+
+    # max(2, length) -> std needs at least 2 observations
+    rolling_sortino_df = portfolio_returns.rolling(max(2, length)).apply(
         lambda x: (x.mean() - risk_free_rate) / x[x < 0].std()
     )
 
