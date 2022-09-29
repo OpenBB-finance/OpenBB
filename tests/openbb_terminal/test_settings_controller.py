@@ -72,4 +72,4 @@ def test_call_backend(controller, other):
 
 
 def test_call_flair(controller):
-    controller.call_flair(["😳"])
+    controller.call_flair(["😀"])
