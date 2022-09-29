@@ -28,7 +28,7 @@ from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
 
-EXIT_MSG = {
+STATUS_MSG = {
     -1: "defined, test failed",
     0: "not defined",
     1: "defined, test passed",
@@ -97,7 +97,7 @@ def set_av_key(key: str, persist: bool = False, show_output: bool = True) -> int
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -122,7 +122,7 @@ def check_av_key(show_output: bool = False) -> int:
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -146,7 +146,7 @@ def check_av_key(show_output: bool = False) -> int:
             status = 1
 
     if show_output:
-        console.print(EXIT_MSG[status] + "\n")
+        console.print(STATUS_MSG[status] + "\n")
 
     return status
 
@@ -165,7 +165,7 @@ def set_fmp_key(key: str, persist: bool = False, show_output: bool = True) -> in
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -180,7 +180,7 @@ def set_fmp_key(key: str, persist: bool = False, show_output: bool = True) -> in
     return status
 
 
-def check_fmp_key(show_output: bool = False)-> int:
+def check_fmp_key(show_output: bool = False) -> int:
     """Check Financial Modeling Prep key
 
     Parameters
@@ -190,7 +190,7 @@ def check_fmp_key(show_output: bool = False)-> int:
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -220,7 +220,7 @@ def check_fmp_key(show_output: bool = False)-> int:
             status = 2
 
     if show_output:
-        console.print(EXIT_MSG[status] + "\n")
+        console.print(STATUS_MSG[status] + "\n")
 
     return status
 
@@ -239,7 +239,7 @@ def set_quandl_key(key: str, persist: bool = False, show_output: bool = True) ->
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -254,7 +254,7 @@ def set_quandl_key(key: str, persist: bool = False, show_output: bool = True) ->
     return status
 
 
-def check_quandl_key(show_output: bool = False)-> int:
+def check_quandl_key(show_output: bool = False) -> int:
     """Check Quandl key
 
     Parameters
@@ -264,7 +264,7 @@ def check_quandl_key(show_output: bool = False)-> int:
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -294,7 +294,7 @@ def check_quandl_key(show_output: bool = False)-> int:
             status = -1
 
     if show_output:
-        console.print(EXIT_MSG[status] + "\n")
+        console.print(STATUS_MSG[status] + "\n")
 
     return status
 
@@ -313,7 +313,7 @@ def set_polygon_key(key: str, persist: bool = False, show_output: bool = True) -
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -328,7 +328,7 @@ def set_polygon_key(key: str, persist: bool = False, show_output: bool = True) -
     return status
 
 
-def check_polygon_key(show_output: bool = False)-> int:
+def check_polygon_key(show_output: bool = False) -> int:
     """Check Polygon key
 
     Parameters
@@ -338,7 +338,7 @@ def check_polygon_key(show_output: bool = False)-> int:
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -367,12 +367,12 @@ def check_polygon_key(show_output: bool = False)-> int:
             status = 2
 
     if show_output:
-        console.print(EXIT_MSG[status] + "\n")
+        console.print(STATUS_MSG[status] + "\n")
 
     return status
 
 
-def set_fred_key(key: str, persist: bool = False, show_output: bool = True)-> int:
+def set_fred_key(key: str, persist: bool = False, show_output: bool = True) -> int:
     """Set FRED key
 
     Parameters
@@ -386,7 +386,7 @@ def set_fred_key(key: str, persist: bool = False, show_output: bool = True)-> in
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -401,7 +401,7 @@ def set_fred_key(key: str, persist: bool = False, show_output: bool = True)-> in
     return status
 
 
-def check_fred_key(show_output: bool = False)-> int:
+def check_fred_key(show_output: bool = False) -> int:
     """Check FRED key
 
     Parameters
@@ -411,7 +411,7 @@ def check_fred_key(show_output: bool = False)-> int:
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -438,7 +438,7 @@ def check_fred_key(show_output: bool = False)-> int:
             status = 2
 
     if show_output:
-        console.print(EXIT_MSG[status] + "\n")
+        console.print(STATUS_MSG[status] + "\n")
 
     return status
 
@@ -457,7 +457,7 @@ def set_news_key(key: str, persist: bool = False, show_output: bool = True) -> i
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -472,7 +472,7 @@ def set_news_key(key: str, persist: bool = False, show_output: bool = True) -> i
     return status
 
 
-def check_news_key(show_output: bool = False)-> int:
+def check_news_key(show_output: bool = False) -> int:
     """Check News key
 
     Parameters
@@ -482,7 +482,7 @@ def check_news_key(show_output: bool = False)-> int:
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -510,7 +510,7 @@ def check_news_key(show_output: bool = False)-> int:
             status = 2
 
     if show_output:
-        console.print(EXIT_MSG[status] + "\n")
+        console.print(STATUS_MSG[status] + "\n")
 
     return status
 
@@ -529,7 +529,7 @@ def set_tradier_key(key: str, persist: bool = False, show_output: bool = True) -
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -544,7 +544,7 @@ def set_tradier_key(key: str, persist: bool = False, show_output: bool = True) -
     return status
 
 
-def check_tradier_key(show_output: bool = False)-> int:
+def check_tradier_key(show_output: bool = False) -> int:
     """Check Tradier key
 
     Parameters
@@ -554,7 +554,7 @@ def check_tradier_key(show_output: bool = False)-> int:
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -587,7 +587,7 @@ def check_tradier_key(show_output: bool = False)-> int:
             status = 2
 
     if show_output:
-        console.print(EXIT_MSG[status] + "\n")
+        console.print(STATUS_MSG[status] + "\n")
 
     return status
 
@@ -606,7 +606,7 @@ def set_cmc_key(key: str, persist: bool = False, show_output: bool = True) -> in
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -621,7 +621,7 @@ def set_cmc_key(key: str, persist: bool = False, show_output: bool = True) -> in
     return status
 
 
-def check_cmc_key(show_output: bool = False)-> int:
+def check_cmc_key(show_output: bool = False) -> int:
     """Check Coinmarketcap key
 
     Parameters
@@ -631,7 +631,7 @@ def check_cmc_key(show_output: bool = False)-> int:
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -656,7 +656,7 @@ def check_cmc_key(show_output: bool = False)-> int:
             status = -1
 
     if show_output:
-        console.print(EXIT_MSG[status] + "\n")
+        console.print(STATUS_MSG[status] + "\n")
 
     return status
 
@@ -675,7 +675,7 @@ def set_finnhub_key(key: str, persist: bool = False, show_output: bool = True) -
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -690,7 +690,7 @@ def set_finnhub_key(key: str, persist: bool = False, show_output: bool = True) -
     return status
 
 
-def check_finnhub_key(show_output: bool = False)-> int:
+def check_finnhub_key(show_output: bool = False) -> int:
     """Check Finnhub key
 
     Parameters
@@ -700,7 +700,7 @@ def check_finnhub_key(show_output: bool = False)-> int:
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -728,7 +728,7 @@ def check_finnhub_key(show_output: bool = False)-> int:
             status = 2
 
     if show_output:
-        console.print(EXIT_MSG[status] + "\n")
+        console.print(STATUS_MSG[status] + "\n")
 
     return status
 
@@ -747,7 +747,7 @@ def set_iex_key(key: str, persist: bool = False, show_output: bool = True) -> in
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -762,7 +762,7 @@ def set_iex_key(key: str, persist: bool = False, show_output: bool = True) -> in
     return status
 
 
-def check_iex_key(show_output: bool = False)-> int:
+def check_iex_key(show_output: bool = False) -> int:
     """Check IEX Cloud key
 
     Parameters
@@ -772,7 +772,7 @@ def check_iex_key(show_output: bool = False)-> int:
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -795,7 +795,7 @@ def check_iex_key(show_output: bool = False)-> int:
             status = -1
 
     if show_output:
-        console.print(EXIT_MSG[status] + "\n")
+        console.print(STATUS_MSG[status] + "\n")
 
     return status
 
@@ -825,7 +825,7 @@ def set_reddit_key(
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -845,7 +845,7 @@ def set_reddit_key(
     return status
 
 
-def check_reddit_key(show_output: bool = False)-> int:
+def check_reddit_key(show_output: bool = False) -> int:
     """Check Reddit key
 
     Parameters
@@ -855,7 +855,7 @@ def check_reddit_key(show_output: bool = False)-> int:
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -907,7 +907,7 @@ def check_reddit_key(show_output: bool = False)-> int:
             status = -1
 
     if show_output:
-        console.print(EXIT_MSG[status] + "\n")
+        console.print(STATUS_MSG[status] + "\n")
 
     return status
 
@@ -926,7 +926,7 @@ def set_bitquery_key(key: str, persist: bool = False, show_output: bool = True) 
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -941,7 +941,7 @@ def set_bitquery_key(key: str, persist: bool = False, show_output: bool = True) 
     return status
 
 
-def check_bitquery_key(show_output: bool = False)-> int:
+def check_bitquery_key(show_output: bool = False) -> int:
     """Check Bitquery key
 
     Parameters
@@ -951,7 +951,7 @@ def check_bitquery_key(show_output: bool = False)-> int:
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -986,7 +986,7 @@ def check_bitquery_key(show_output: bool = False)-> int:
             status = -1
 
     if show_output:
-        console.print(EXIT_MSG[status] + "\n")
+        console.print(STATUS_MSG[status] + "\n")
 
     return status
 
@@ -1012,7 +1012,7 @@ def set_twitter_key(
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -1030,7 +1030,7 @@ def set_twitter_key(
     return status
 
 
-def check_twitter_key(show_output: bool = False)-> int:
+def check_twitter_key(show_output: bool = False) -> int:
     """Check Twitter key
 
     Parameters
@@ -1040,7 +1040,7 @@ def check_twitter_key(show_output: bool = False)-> int:
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -1080,7 +1080,7 @@ def check_twitter_key(show_output: bool = False)-> int:
             status = 2
 
     if show_output:
-        console.print(EXIT_MSG[status] + "\n")
+        console.print(STATUS_MSG[status] + "\n")
 
     return status
 
@@ -1104,7 +1104,7 @@ def set_rh_key(
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -1121,7 +1121,7 @@ def set_rh_key(
     return status
 
 
-def check_rh_key(show_output: bool = False)-> int:
+def check_rh_key(show_output: bool = False) -> int:
     """Check Robinhood key
 
     Parameters
@@ -1131,7 +1131,7 @@ def check_rh_key(show_output: bool = False)-> int:
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -1150,7 +1150,7 @@ def check_rh_key(show_output: bool = False)-> int:
         status = 3
 
     if show_output:
-        console.print(EXIT_MSG[status] + "\n")
+        console.print(STATUS_MSG[status] + "\n")
 
     return status
 
@@ -1176,7 +1176,7 @@ def set_degiro_key(
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -1194,7 +1194,7 @@ def set_degiro_key(
     return status
 
 
-def check_degiro_key(show_output: bool = False)-> int:
+def check_degiro_key(show_output: bool = False) -> int:
     """Check Degiro key
 
     Parameters
@@ -1204,7 +1204,7 @@ def check_degiro_key(show_output: bool = False)-> int:
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -1223,7 +1223,7 @@ def check_degiro_key(show_output: bool = False)-> int:
         status = 3
 
     if show_output:
-        console.print(EXIT_MSG[status] + "\n")
+        console.print(STATUS_MSG[status] + "\n")
 
     return status
 
@@ -1249,7 +1249,7 @@ def set_oanda_key(
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -1267,7 +1267,7 @@ def set_oanda_key(
     return status
 
 
-def check_oanda_key(show_output: bool = False)-> int:
+def check_oanda_key(show_output: bool = False) -> int:
     """Check Oanda key
 
     Parameters
@@ -1277,7 +1277,7 @@ def check_oanda_key(show_output: bool = False)-> int:
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -1309,7 +1309,7 @@ def check_oanda_key(show_output: bool = False)-> int:
             status = -1
 
     if show_output:
-        console.print(EXIT_MSG[status] + "\n")
+        console.print(STATUS_MSG[status] + "\n")
 
     return status
 
@@ -1333,7 +1333,7 @@ def set_binance_key(
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -1350,7 +1350,7 @@ def set_binance_key(
     return status
 
 
-def check_binance_key(show_output: bool = False)-> int:
+def check_binance_key(show_output: bool = False) -> int:
     """Check Binance key
 
     Parameters
@@ -1360,7 +1360,7 @@ def check_binance_key(show_output: bool = False)-> int:
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -1391,7 +1391,7 @@ def check_binance_key(show_output: bool = False)-> int:
             status = -1
 
     if show_output:
-        console.print(EXIT_MSG[status] + "\n")
+        console.print(STATUS_MSG[status] + "\n")
 
     return status
 
@@ -1414,7 +1414,7 @@ def set_si_key(
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -1430,7 +1430,7 @@ def set_si_key(
     return status
 
 
-def check_si_key(show_output: bool = False)-> int:
+def check_si_key(show_output: bool = False) -> int:
     """Check Sentimentinvestor key
 
     Parameters
@@ -1440,7 +1440,7 @@ def check_si_key(show_output: bool = False)-> int:
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -1471,7 +1471,7 @@ def check_si_key(show_output: bool = False)-> int:
             status = -1
 
     if show_output:
-        console.print(EXIT_MSG[status] + "\n")
+        console.print(STATUS_MSG[status] + "\n")
 
     return status
 
@@ -1497,7 +1497,7 @@ def set_coinbase_key(
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -1515,7 +1515,7 @@ def set_coinbase_key(
     return status
 
 
-def check_coinbase_key(show_output: bool = False)-> int:
+def check_coinbase_key(show_output: bool = False) -> int:
     """Check Coinbase key
 
     Parameters
@@ -1525,7 +1525,7 @@ def check_coinbase_key(show_output: bool = False)-> int:
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -1560,7 +1560,7 @@ def check_coinbase_key(show_output: bool = False)-> int:
             status = 1
 
     if show_output:
-        console.print(EXIT_MSG[status] + "\n")
+        console.print(STATUS_MSG[status] + "\n")
 
     return status
 
@@ -1579,7 +1579,7 @@ def set_walert_key(key: str, persist: bool = False, show_output: bool = True) ->
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -1594,7 +1594,7 @@ def set_walert_key(key: str, persist: bool = False, show_output: bool = True) ->
     return status
 
 
-def check_walert_key(show_output: bool = False)-> int:
+def check_walert_key(show_output: bool = False) -> int:
     """Check Walert key
 
     Parameters
@@ -1604,7 +1604,7 @@ def check_walert_key(show_output: bool = False)-> int:
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -1635,14 +1635,12 @@ def check_walert_key(show_output: bool = False)-> int:
             status = -1
 
     if show_output:
-        console.print(EXIT_MSG[status] + "\n")
+        console.print(STATUS_MSG[status] + "\n")
 
     return status
 
 
-def set_glassnode_key(
-    key: str, persist: bool = False, show_output: bool = True
-) -> int:
+def set_glassnode_key(key: str, persist: bool = False, show_output: bool = True) -> int:
     """Set Glassnode key.
 
     Parameters
@@ -1656,7 +1654,7 @@ def set_glassnode_key(
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -1671,7 +1669,7 @@ def set_glassnode_key(
     return status
 
 
-def check_glassnode_key(show_output: bool = False)-> int:
+def check_glassnode_key(show_output: bool = False) -> int:
     """Check Glassnode key
 
     Parameters
@@ -1681,7 +1679,7 @@ def check_glassnode_key(show_output: bool = False)-> int:
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -1714,14 +1712,12 @@ def check_glassnode_key(show_output: bool = False)-> int:
             status = -1
 
     if show_output:
-        console.print(EXIT_MSG[status] + "\n")
+        console.print(STATUS_MSG[status] + "\n")
 
     return status
 
 
-def set_coinglass_key(
-    key: str, persist: bool = False, show_output: bool = True
-) -> int:
+def set_coinglass_key(key: str, persist: bool = False, show_output: bool = True) -> int:
     """Set Coinglass key.
 
     Parameters
@@ -1735,7 +1731,7 @@ def set_coinglass_key(
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -1750,7 +1746,7 @@ def set_coinglass_key(
     return status
 
 
-def check_coinglass_key(show_output: bool = False)-> int:
+def check_coinglass_key(show_output: bool = False) -> int:
     """Check Coinglass key
 
     Parameters
@@ -1760,7 +1756,7 @@ def check_coinglass_key(show_output: bool = False)-> int:
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -1788,7 +1784,7 @@ def check_coinglass_key(show_output: bool = False)-> int:
             status = -1
 
     if show_output:
-        console.print(EXIT_MSG[status] + "\n")
+        console.print(STATUS_MSG[status] + "\n")
 
     return status
 
@@ -1807,7 +1803,7 @@ def set_cpanic_key(key: str, persist: bool = False, show_output: bool = True) ->
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -1822,7 +1818,7 @@ def set_cpanic_key(key: str, persist: bool = False, show_output: bool = True) ->
     return status
 
 
-def check_cpanic_key(show_output: bool = False)-> int:
+def check_cpanic_key(show_output: bool = False) -> int:
     """Check Cpanic key
 
     Parameters
@@ -1832,7 +1828,7 @@ def check_cpanic_key(show_output: bool = False)-> int:
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -1860,14 +1856,12 @@ def check_cpanic_key(show_output: bool = False)-> int:
             status = -1
 
     if show_output:
-        console.print(EXIT_MSG[status] + "\n")
+        console.print(STATUS_MSG[status] + "\n")
 
     return status
 
 
-def set_ethplorer_key(
-    key: str, persist: bool = False, show_output: bool = True
-) -> int:
+def set_ethplorer_key(key: str, persist: bool = False, show_output: bool = True) -> int:
     """Set Ethplorer key.
 
     Parameters
@@ -1881,7 +1875,7 @@ def set_ethplorer_key(
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -1896,7 +1890,7 @@ def set_ethplorer_key(
     return status
 
 
-def check_ethplorer_key(show_output: bool = False)-> int:
+def check_ethplorer_key(show_output: bool = False) -> int:
     """Check Ethplorer key
 
     Parameters
@@ -1906,7 +1900,7 @@ def check_ethplorer_key(show_output: bool = False)-> int:
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -1935,7 +1929,7 @@ def check_ethplorer_key(show_output: bool = False)-> int:
             status = -1
 
     if show_output:
-        console.print(EXIT_MSG[status] + "\n")
+        console.print(STATUS_MSG[status] + "\n")
 
     return status
 
@@ -1958,7 +1952,7 @@ def set_smartstake_key(
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -1974,7 +1968,7 @@ def set_smartstake_key(
     return status
 
 
-def check_smartstake_key(show_output: bool = False)-> int:
+def check_smartstake_key(show_output: bool = False) -> int:
     """Check Smartstake key
 
     Parameters
@@ -1984,7 +1978,7 @@ def check_smartstake_key(show_output: bool = False)-> int:
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -2019,7 +2013,7 @@ def check_smartstake_key(show_output: bool = False)-> int:
             status = -1
 
     if show_output:
-        console.print(EXIT_MSG[status] + "\n")
+        console.print(STATUS_MSG[status] + "\n")
 
     return status
 
@@ -2038,7 +2032,7 @@ def set_github_key(key: str, persist: bool = False, show_output: bool = True) ->
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -2053,7 +2047,7 @@ def set_github_key(key: str, persist: bool = False, show_output: bool = True) ->
     return status
 
 
-def check_github_key(show_output: bool = False)-> int:
+def check_github_key(show_output: bool = False) -> int:
     """Check GitHub key
 
     Parameters
@@ -2063,7 +2057,7 @@ def check_github_key(show_output: bool = False)-> int:
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -2082,7 +2076,7 @@ def check_github_key(show_output: bool = False)-> int:
         # only after certain amount of requests the user will get rate limited
 
     if show_output:
-        console.print(EXIT_MSG[status] + "\n")
+        console.print(STATUS_MSG[status] + "\n")
 
     return status
 
@@ -2101,7 +2095,7 @@ def set_messari_key(key: str, persist: bool = False, show_output: bool = True) -
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -2116,7 +2110,7 @@ def set_messari_key(key: str, persist: bool = False, show_output: bool = True) -
     return status
 
 
-def check_messari_key(show_output: bool = False)-> int:
+def check_messari_key(show_output: bool = False) -> int:
     """Check Messari key
 
     Parameters
@@ -2126,7 +2120,7 @@ def check_messari_key(show_output: bool = False)-> int:
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -2156,7 +2150,7 @@ def check_messari_key(show_output: bool = False)-> int:
             status = -1
 
     if show_output:
-        console.print(EXIT_MSG[status] + "\n")
+        console.print(STATUS_MSG[status] + "\n")
 
     return status
 
@@ -2175,7 +2169,7 @@ def set_eodhd_key(key: str, persist: bool = False, show_output: bool = True) -> 
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -2190,7 +2184,7 @@ def set_eodhd_key(key: str, persist: bool = False, show_output: bool = True) -> 
     return status
 
 
-def check_eodhd_key(show_output: bool = False)-> int:
+def check_eodhd_key(show_output: bool = False) -> int:
     """Check Eodhd key
 
     Parameters
@@ -2200,7 +2194,7 @@ def check_eodhd_key(show_output: bool = False)-> int:
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -2223,14 +2217,12 @@ def check_eodhd_key(show_output: bool = False)-> int:
             status = -1
 
     if show_output:
-        console.print(EXIT_MSG[status] + "\n")
+        console.print(STATUS_MSG[status] + "\n")
 
     return status
 
 
-def set_santiment_key(
-    key: str, persist: bool = False, show_output: bool = True
-) -> int:
+def set_santiment_key(key: str, persist: bool = False, show_output: bool = True) -> int:
     """Set Santiment key.
 
     Parameters
@@ -2244,7 +2236,7 @@ def set_santiment_key(
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -2259,7 +2251,7 @@ def set_santiment_key(
     return status
 
 
-def check_santiment_key(show_output: bool = False)-> int:
+def check_santiment_key(show_output: bool = False) -> int:
     """Check Santiment key
 
     Parameters
@@ -2269,7 +2261,7 @@ def check_santiment_key(show_output: bool = False)-> int:
 
     Returns
     -------
-    int
+    status: int
         API key status. One of the following:
             -1 - defined, test failed
              0 - not defined
@@ -2306,6 +2298,6 @@ def check_santiment_key(show_output: bool = False)-> int:
             status = -1
 
     if show_output:
-        console.print(EXIT_MSG[status] + "\n")
+        console.print(STATUS_MSG[status] + "\n")
 
     return status
