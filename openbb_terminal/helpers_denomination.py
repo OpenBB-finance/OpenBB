@@ -1,6 +1,6 @@
 """Denomination Helper functions"""
 
-from typing import Literal, Tuple, Callable
+from typing import Literal, Tuple, Callable, Dict
 import pandas as pd
 from pandas._typing import Axis
 
@@ -55,11 +55,11 @@ def transform(
     )
 
 
-def get_denominations() -> dict[DENOMINATION, float]:
+def get_denominations() -> Dict[DENOMINATION, float]:
     """Gets all supported denominations and their lower bound value
 
     Returns:
-        dict[DENOMINATION, int]: All supported denominations and their lower bound value
+        Dict[DENOMINATION, int]: All supported denominations and their lower bound value
     """
     return {
         "Trillions": 1_000_000_000_000,
