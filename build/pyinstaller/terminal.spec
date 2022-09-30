@@ -1,4 +1,5 @@
 # -*- mode: python ; coding: utf-8 -*-
+from importlib.resources import path
 import os
 
 from dotenv import set_key
@@ -7,6 +8,10 @@ from PyInstaller.compat import is_darwin, is_win
 from PyInstaller.building.api import PYZ, EXE, COLLECT
 from PyInstaller.building.splash import Splash
 from PyInstaller.building.build_main import Analysis
+from PyInstaller.building.datastruct import TOC
+import subprocess
+
+# import subprocess
 
 from openbb_terminal.loggers import get_commit_hash
 
@@ -18,6 +23,19 @@ build_type = (
 
 # Local python environment packages folder
 pathex = os.path.join(os.path.dirname(os.__file__), "site-packages")
+
+# Binaries to remove from env
+if is_win:
+    location = pathex + "\_scs_direct.cpython-39-darwin.so"  # noqa: W605
+    try:
+        subprocess.run(["Remove-Item", location, "-Recurse"], check=False)
+        print("Removing ARM64 Binary: _scs_direct.cpython-39-darwin.so")
+    except Exception:
+        print("ARM64 Binary Already Removed")
+else:
+    location = pathex + "/_scs_direct.cpython-39-darwin.so"
+    print("Removing ARM64 Binary: \_scs_direct.cpython-39-darwin.so")
+    subprocess.run(["rm", "-rf", location], check=False)
 
 # Get latest commit
 commit_hash = get_commit_hash()
@@ -91,7 +109,7 @@ analysis_kwargs = dict(
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
-    excludes=["_scs_direct.cpython-39-darwin.so"],
+    excludes=[],
     win_no_prefer_redirects=False,
     win_private_assemblies=False,
     cipher=None,
@@ -120,6 +138,7 @@ exe_kwargs = dict(
     codesign_identity=None,
     entitlements_file=None,
 )
+
 
 # Packaging settings
 if build_type == "onefile":
