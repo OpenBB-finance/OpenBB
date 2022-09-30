@@ -29,12 +29,16 @@ def get_mentions(symbol: str) -> pd.DataFrame:
     try:
         pytrend = TrendReq()
         pytrend.build_payload(kw_list=[symbol])
-        df = pytrend.interest_over_time()
-    except Exception:
-        console.print("[red]Cannot get data.[/red]\n")
-        df = pd.DataFrame()
+        return pytrend.interest_over_time()
 
-    return df
+    except Exception:
+        request_limit = pytrend.google_rl
+        if request_limit:
+            console.print(f"[red]Too many requests: {request_limit}[/red]\n")
+        else:
+            console.print("[red]Cannot get data.[/red]\n")
+
+        return pd.DataFrame()
 
 
 @log_start_end(log=logger)
@@ -51,15 +55,20 @@ def get_regions(symbol: str) -> pd.DataFrame:
     pd.DataFrame
         Dataframe of interest by region
     """
+
     try:
         pytrend = TrendReq()
         pytrend.build_payload(kw_list=[symbol])
-        df = pytrend.interest_by_region().sort_values([symbol], ascending=False)
-    except Exception:
-        console.print("[red]Cannot get data.[/red]\n")
-        df = pd.DataFrame()
+        return pytrend.interest_by_region().sort_values([symbol], ascending=False)
 
-    return df
+    except Exception:
+        request_limit = pytrend.google_rl
+        if request_limit:
+            console.print(f"[red]Too many requests: {request_limit}[/red]\n")
+        else:
+            console.print("[red]Cannot get data.[/red]\n")
+
+        return pd.DataFrame()
 
 
 @log_start_end(log=logger)
@@ -84,11 +93,16 @@ def get_queries(symbol: str, limit: int = 10) -> pd.DataFrame:
         df = pytrend.related_queries()
         df = df[symbol]["top"].head(limit)
         df["value"] = df["value"].apply(lambda x: str(x) + "%")
-    except Exception:
-        console.print("[red]Cannot get data.[/red]\n")
-        df = pd.DataFrame()
+        return df
 
-    return df
+    except Exception:
+        request_limit = pytrend.google_rl
+        if request_limit:
+            console.print(f"[red]Too many requests: {request_limit}[/red]\n")
+        else:
+            console.print("[red]Cannot get data.[/red]\n")
+
+        return pd.DataFrame()
 
 
 @log_start_end(log=logger)
@@ -112,8 +126,13 @@ def get_rise(symbol: str, limit: int = 10) -> pd.DataFrame:
         pytrend.build_payload(kw_list=[symbol])
         df = pytrend.related_queries()
         df = df[symbol]["rising"].head(limit)
-    except Exception:
-        console.print("[red]Cannot get data.[/red]\n")
-        df = pd.DataFrame()
+        return df
 
-    return df
+    except Exception:
+        request_limit = pytrend.google_rl
+        if request_limit:
+            console.print(f"[red]Too many requests: {request_limit}[/red]\n")
+        else:
+            console.print("[red]Cannot get data.[/red]\n")
+
+        return pd.DataFrame()
