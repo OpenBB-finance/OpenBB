@@ -471,9 +471,9 @@ def display_fundamentals(
             lambda x: x.replace("_", " ").title()
         )
         # Readable numbers
-        fundamentals = fundamentals.applymap(lambda_long_number_format).fillna("-")
+        formatted_df = fundamentals.applymap(lambda_long_number_format).fillna("-")
         print_rich_table(
-            fundamentals.iloc[:, :limit].applymap(lambda x: "-" if x == "nan" else x),
+            formatted_df.iloc[:, :limit].applymap(lambda x: "-" if x == "nan" else x),
             show_index=True,
             title=f"{symbol} {title_str} Currency: {symbol_currency}",
         )
