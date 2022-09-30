@@ -262,6 +262,9 @@ def load(
             df_stock_candidate = load_stock_polygon(
                 symbol, start_date, end_date, weekly, monthly
             )
+        else:
+            console.print("[red]Invalid source for stock[/red]\n")
+            return
         if df_stock_candidate.empty:
             return df_stock_candidate
 
