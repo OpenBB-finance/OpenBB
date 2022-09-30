@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import logging
 
 import pandas as pd
-import pytrends
 from pytrends.request import TrendReq
 
 from openbb_terminal.decorators import log_start_end
