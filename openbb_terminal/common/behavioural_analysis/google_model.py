@@ -31,11 +31,11 @@ def get_mentions(symbol: str) -> pd.DataFrame:
         pytrend.build_payload(kw_list=[symbol])
         return pytrend.interest_over_time()
 
-    except Exception:
+    except Exception as e:
         if pytrend.google_rl:
             console.print(f"[red]Too many requests: {pytrend.google_rl}[/red]\n")
         else:
-            console.print("[red]Cannot get data.[/red]\n")
+            console.print(f"[red]{str(e)}[/red]\n")
 
         return pd.DataFrame()
 
@@ -60,11 +60,11 @@ def get_regions(symbol: str) -> pd.DataFrame:
         pytrend.build_payload(kw_list=[symbol])
         return pytrend.interest_by_region().sort_values([symbol], ascending=False)
 
-    except Exception:
+    except Exception as e:
         if pytrend.google_rl:
             console.print(f"[red]Too many requests: {pytrend.google_rl}[/red]\n")
         else:
-            console.print("[red]Cannot get data.[/red]\n")
+            console.print(f"[red]{str(e)}[/red]\n")
 
         return pd.DataFrame()
 
@@ -93,11 +93,11 @@ def get_queries(symbol: str, limit: int = 10) -> pd.DataFrame:
         df["value"] = df["value"].apply(lambda x: str(x) + "%")
         return df
 
-    except Exception:
+    except Exception as e:
         if pytrend.google_rl:
             console.print(f"[red]Too many requests: {pytrend.google_rl}[/red]\n")
         else:
-            console.print("[red]Cannot get data.[/red]\n")
+            console.print(f"[red]{str(e)}[/red]\n")
 
         return pd.DataFrame()
 
@@ -125,10 +125,10 @@ def get_rise(symbol: str, limit: int = 10) -> pd.DataFrame:
         df = df[symbol]["rising"].head(limit)
         return df
 
-    except Exception:
+    except Exception as e:
         if pytrend.google_rl:
             console.print(f"[red]Too many requests: {pytrend.google_rl}[/red]\n")
         else:
-            console.print("[red]Cannot get data.[/red]\n")
+            console.print(f"[red]{str(e)}[/red]\n")
 
         return pd.DataFrame()
