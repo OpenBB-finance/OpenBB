@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import logging
 
 import pandas as pd
+import pytrends
 from pytrends.request import TrendReq
 
 from openbb_terminal.decorators import log_start_end
@@ -51,6 +52,7 @@ def get_regions(symbol: str) -> pd.DataFrame:
     pd.DataFrame
         Dataframe of interest by region
     """
+
     try:
         pytrend = TrendReq()
         pytrend.build_payload(kw_list=[symbol])
