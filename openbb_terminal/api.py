@@ -12,6 +12,7 @@ from typing import Optional, Callable, List
 from openbb_terminal.helper_classes import TerminalStyle  # noqa: F401
 from openbb_terminal import helper_funcs as helper  # noqa: F401
 from .reports import widget_helpers as widgets  # noqa: F401
+from openbb_terminal.loggers import setup_logging
 
 from .portfolio.portfolio_model import PortfolioModel as Portfolio
 from .cryptocurrency.due_diligence.pycoingecko_model import Coin
@@ -2001,6 +2002,7 @@ class FunctionFactory:
         -------
         Result from the view or model
         """
+
         if "chart" not in kwargs:
             kwargs["chart"] = False
         if kwargs["chart"] and (not self.model_only):
@@ -2045,6 +2047,7 @@ class Loader:
             "For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/api/"
         )
         self.__function_map = self.build_function_map(funcs=funcs)
+        self.__setup_logging()
         self.load_menus()
 
     def __call__(self):
@@ -2134,6 +2137,10 @@ class Loader:
             return None
 
         return importlib.import_module(module_path)
+
+    @staticmethod
+    def __setup_logging():
+        setup_logging(app_name="gst_sdk")
 
     @classmethod
     def get_function(cls, function_path: str) -> Callable:
