@@ -7,12 +7,13 @@ from openbb_terminal.portfolio.portfolio_optimization import excel_model
 from openbb_terminal.rich_config import console
 
 DEFAULT_RANGE = [value / 1000 for value in range(0, 1001)]
+DEFAULT_BOOL = ["True", "False"]
 
 AVAILABLE_OPTIONS = {
     "historic_period": ["d", "w", "mo", "y", "ytd", "max"],
     "start_period": ["Any"],
     "end_period": ["Any"],
-    "log_returns": ["0", "1"],
+    "log_returns": DEFAULT_BOOL,
     "return_frequency": ["d", "w", "m"],
     "max_nan": DEFAULT_RANGE,
     "threshold_value": DEFAULT_RANGE,
@@ -64,7 +65,7 @@ AVAILABLE_OPTIONS = {
     "risk_aversion": [value / 100 for value in range(-500, 501)],
     "amount_portfolios": range(1, 10001),
     "random_seed": range(1, 10001),
-    "tangency": ["0", "1"],
+    "tangency": DEFAULT_BOOL,
     "risk_parity_model": ["A", "B", "C"],
     "penal_factor": DEFAULT_RANGE + [-x for x in DEFAULT_RANGE],
     "co_dependence": [
@@ -90,7 +91,7 @@ AVAILABLE_OPTIONS = {
     "max_clusters": range(1, 101),
     "amount_bins": ["KN", "FD", "SC", "HGR", "Integer"],
     "alpha_tail": DEFAULT_RANGE,
-    "leaf_order": ["0", "1"],
+    "leaf_order": DEFAULT_BOOL,
     "objective": ["MinRisk", "Utility", "Sharpe", "MaxRet"],
 }
 
