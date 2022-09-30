@@ -1,5 +1,5 @@
 portfolio
-load Public_Equity_Orderbook.xlsx
+load -f Public_Equity_Orderbook.xlsx
 show
 bench SPDR S&P 500 ETF Trust (SPY)
 alloc assets
@@ -11,9 +11,18 @@ perf -t
 rolling
 rmr
 dd
-al
+rvol
+rsharpe
+rsort
+rbeta
+rvol -p mtd
+rsharpe -p qtd
+rsort -p ytd
+rbeta -p all
 var
+var -p 80
 es
+es -p 50
 sh
 so
 om

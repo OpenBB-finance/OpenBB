@@ -860,7 +860,7 @@ class QaController(StockBaseController):
                     ns_parser.use_mean,
                     ns_parser.adjusted,
                     ns_parser.student_t,
-                    ns_parser.percentile / 100,
+                    ns_parser.percentile,
                     ns_parser.data_range,
                     False,
                 )
@@ -913,7 +913,7 @@ class QaController(StockBaseController):
                 self.ticker,
                 ns_parser.use_mean,
                 ns_parser.distributions,
-                ns_parser.percentile / 100,
+                ns_parser.percentile,
                 False,
             )
 
