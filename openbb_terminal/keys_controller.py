@@ -8,6 +8,7 @@ import logging
 from typing import Dict, List
 
 from prompt_toolkit.completion import NestedCompleter
+from tqdm import tqdm
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import keys_model
@@ -57,7 +58,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     ]
     CHOICES_COMMANDS: List[str] = API_LIST + []
     PATH = "/keys/"
-    key_dict: Dict = {}
+    status_dict: Dict = {}
     alias_dict: Dict = {
         "av": "ALPHA_VANTAGE",
         "fmp": "FINANCIAL_MODELING_PREP",
@@ -100,7 +101,6 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         super().__init__(queue)
         self.env_file = env_file
         if menu_usage:
-            self.check_keys_status()
 
             if session and obbff.USE_PROMPT_TOOLKIT:
                 choices: dict = {c: {} for c in self.controller_choices}
@@ -112,9 +112,9 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     def check_keys_status(self) -> None:
         """Check keys status"""
 
-        for api in self.API_LIST:
+        for api in tqdm(self.API_LIST, desc="Checking keys status"):
             status = getattr(keys_model, "check_" + str(api) + "_key")()
-            self.key_dict[api] = keys_model.STATUS_MSG[status]
+            self.status_dict[api] = keys_model.STATUS_MSG[status]
 
     def print_help(self):
         """Print help"""
@@ -122,7 +122,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         mt = MenuText("keys/")
         mt.add_info("_keys_")
         mt.add_raw("\n")
-        for cmd_name, status_msg in self.key_dict.items():
+        for cmd_name, status_msg in self.status_dict.items():
             alias_name = self.alias_dict[cmd_name]
             c = "red"
             if status_msg == "defined, test passed":
@@ -169,7 +169,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_av_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.key_dict["av"] = keys_model.STATUS_MSG[status]
+            self.status_dict["av"] = keys_model.STATUS_MSG[status]
 
     @log_start_end(log=logger)
     def call_fmp(self, other_args: List[str]):
@@ -200,7 +200,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_fmp_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.key_dict["fmp"] = keys_model.STATUS_MSG[status]
+            self.status_dict["fmp"] = keys_model.STATUS_MSG[status]
 
     @log_start_end(log=logger)
     def call_quandl(self, other_args: List[str]):
@@ -229,7 +229,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_quandl_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.key_dict["quandl"] = keys_model.STATUS_MSG[status]
+            self.status_dict["quandl"] = keys_model.STATUS_MSG[status]
 
     @log_start_end(log=logger)
     def call_polygon(self, other_args: List[str]):
@@ -258,7 +258,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_polygon_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.key_dict["polygon"] = keys_model.STATUS_MSG[status]
+            self.status_dict["polygon"] = keys_model.STATUS_MSG[status]
 
     @log_start_end(log=logger)
     def call_fred(self, other_args: List[str]):
@@ -287,7 +287,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_fred_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.key_dict["fred"] = keys_model.STATUS_MSG[status]
+            self.status_dict["fred"] = keys_model.STATUS_MSG[status]
 
     @log_start_end(log=logger)
     def call_news(self, other_args: List[str]):
@@ -316,7 +316,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_news_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.key_dict["news"] = keys_model.STATUS_MSG[status]
+            self.status_dict["news"] = keys_model.STATUS_MSG[status]
 
     @log_start_end(log=logger)
     def call_tradier(self, other_args: List[str]):
@@ -345,7 +345,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_tradier_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.key_dict["tradier"] = keys_model.STATUS_MSG[status]
+            self.status_dict["tradier"] = keys_model.STATUS_MSG[status]
 
     @log_start_end(log=logger)
     def call_cmc(self, other_args: List[str]):
@@ -373,7 +373,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_cmc_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.key_dict["cmc"] = keys_model.STATUS_MSG[status]
+            self.status_dict["cmc"] = keys_model.STATUS_MSG[status]
 
     @log_start_end(log=logger)
     def call_finnhub(self, other_args: List[str]):
@@ -401,7 +401,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_finnhub_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.key_dict["finnhub"] = keys_model.STATUS_MSG[status]
+            self.status_dict["finnhub"] = keys_model.STATUS_MSG[status]
 
     @log_start_end(log=logger)
     def call_iex(self, other_args: List[str]):
@@ -429,7 +429,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_iex_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.key_dict["iex"] = keys_model.STATUS_MSG[status]
+            self.status_dict["iex"] = keys_model.STATUS_MSG[status]
 
     @log_start_end(log=logger)
     def call_reddit(self, other_args: List[str]):
@@ -501,7 +501,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 persist=True,
                 show_output=True,
             )
-            self.key_dict["reddit"] = keys_model.STATUS_MSG[status]
+            self.status_dict["reddit"] = keys_model.STATUS_MSG[status]
 
     @log_start_end(log=logger)
     def call_twitter(self, other_args: List[str]):
@@ -548,7 +548,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 persist=True,
                 show_output=True,
             )
-            self.key_dict["twitter"] = keys_model.STATUS_MSG[status]
+            self.status_dict["twitter"] = keys_model.STATUS_MSG[status]
 
     @log_start_end(log=logger)
     def call_rh(self, other_args: List[str]):
@@ -584,7 +584,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 persist=True,
                 show_output=True,
             )
-            self.key_dict["rh"] = keys_model.STATUS_MSG[status]
+            self.status_dict["rh"] = keys_model.STATUS_MSG[status]
 
     @log_start_end(log=logger)
     def call_degiro(self, other_args: List[str]):
@@ -629,7 +629,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 persist=True,
                 show_output=True,
             )
-            self.key_dict["degiro"] = keys_model.STATUS_MSG[status]
+            self.status_dict["degiro"] = keys_model.STATUS_MSG[status]
 
     @log_start_end(log=logger)
     def call_oanda(self, other_args: List[str]):
@@ -673,7 +673,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 persist=True,
                 show_output=True,
             )
-            self.key_dict["oanda"] = keys_model.STATUS_MSG[status]
+            self.status_dict["oanda"] = keys_model.STATUS_MSG[status]
 
     @log_start_end(log=logger)
     def call_binance(self, other_args: List[str]):
@@ -709,7 +709,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 persist=True,
                 show_output=True,
             )
-            self.key_dict["binance"] = keys_model.STATUS_MSG[status]
+            self.status_dict["binance"] = keys_model.STATUS_MSG[status]
 
     @log_start_end(log=logger)
     def call_bitquery(self, other_args: List[str]):
@@ -737,7 +737,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_bitquery_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.key_dict["bitquery"] = keys_model.STATUS_MSG[status]
+            self.status_dict["bitquery"] = keys_model.STATUS_MSG[status]
 
     @log_start_end(log=logger)
     def call_si(self, other_args: List[str]):
@@ -765,7 +765,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_si_key(
                 access_token=ns_parser.token, persist=True, show_output=True
             )
-            self.key_dict["si"] = keys_model.STATUS_MSG[status]
+            self.status_dict["si"] = keys_model.STATUS_MSG[status]
 
     @log_start_end(log=logger)
     def call_coinbase(self, other_args: List[str]):
@@ -809,7 +809,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 persist=True,
                 show_output=True,
             )
-            self.key_dict["coinbase"] = keys_model.STATUS_MSG[status]
+            self.status_dict["coinbase"] = keys_model.STATUS_MSG[status]
 
     @log_start_end(log=logger)
     def call_walert(self, other_args: List[str]):
@@ -837,7 +837,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_walert_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.key_dict["walert"] = keys_model.STATUS_MSG[status]
+            self.status_dict["walert"] = keys_model.STATUS_MSG[status]
 
     @log_start_end(log=logger)
     def call_glassnode(self, other_args: List[str]):
@@ -867,7 +867,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_glassnode_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.key_dict["glassnode"] = keys_model.STATUS_MSG[status]
+            self.status_dict["glassnode"] = keys_model.STATUS_MSG[status]
 
     @log_start_end(log=logger)
     def call_coinglass(self, other_args: List[str]):
@@ -897,7 +897,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_coinglass_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.key_dict["coinglass"] = keys_model.STATUS_MSG[status]
+            self.status_dict["coinglass"] = keys_model.STATUS_MSG[status]
 
     @log_start_end(log=logger)
     def call_cpanic(self, other_args: List[str]):
@@ -927,7 +927,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_cpanic_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.key_dict["cpanic"] = keys_model.STATUS_MSG[status]
+            self.status_dict["cpanic"] = keys_model.STATUS_MSG[status]
 
     @log_start_end(log=logger)
     def call_ethplorer(self, other_args: List[str]):
@@ -957,7 +957,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_ethplorer_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.key_dict["ethplorer"] = keys_model.STATUS_MSG[status]
+            self.status_dict["ethplorer"] = keys_model.STATUS_MSG[status]
 
     @log_start_end(log=logger)
     def call_smartstake(self, other_args: List[str]):
@@ -994,7 +994,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 persist=True,
                 show_output=True,
             )
-            self.key_dict["smartstake"] = keys_model.STATUS_MSG[status]
+            self.status_dict["smartstake"] = keys_model.STATUS_MSG[status]
 
     @log_start_end(log=logger)
     def call_github(self, other_args: List[str]):
@@ -1025,7 +1025,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_github_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.key_dict["github"] = keys_model.STATUS_MSG[status]
+            self.status_dict["github"] = keys_model.STATUS_MSG[status]
 
     @log_start_end(log=logger)
     def call_messari(self, other_args: List[str]):
@@ -1054,7 +1054,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_messari_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.key_dict["messari"] = keys_model.STATUS_MSG[status]
+            self.status_dict["messari"] = keys_model.STATUS_MSG[status]
 
     @log_start_end(log=logger)
     def call_eodhd(self, other_args: List[str]):
@@ -1084,7 +1084,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_eodhd_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.key_dict["eodhd"] = keys_model.STATUS_MSG[status]
+            self.status_dict["eodhd"] = keys_model.STATUS_MSG[status]
 
     def call_santiment(self, other_args: List[str]):
         """Process santiment command"""
@@ -1114,4 +1114,4 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             status = keys_model.set_santiment_key(
                 key=ns_parser.key, persist=True, show_output=True
             )
-            self.key_dict["santiment"] = keys_model.STATUS_MSG[status]
+            self.status_dict["santiment"] = keys_model.STATUS_MSG[status]
