@@ -32,9 +32,9 @@ def transform(
         df: pd.DataFrame, source: DENOMINATION, target: DENOMINATION
     ) -> pd.DataFrame:
         return df.apply(
-            lambda row: row
-            if skipPredicate is not None and skipPredicate(row)
-            else row * (get_denominations()[source] / get_denominations()[target]),
+            lambda series: series
+            if skipPredicate is not None and skipPredicate(series)
+            else series * (get_denominations()[source] / get_denominations()[target]),
             axis,
         )
 
