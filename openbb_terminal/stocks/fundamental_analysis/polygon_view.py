@@ -15,6 +15,9 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
 )
 from openbb_terminal.stocks.fundamental_analysis import polygon_model
+from openbb_terminal.helpers_denomination import (
+    transform as transform_by_denomination,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -72,21 +75,10 @@ def display_fundamentals(
         ]
 
         if not ratios:
-            maximum_value = fundamentals_plot_data.max().max()
-            if maximum_value > 1_000_000_000_000:
-                df_rounded = fundamentals_plot_data / 1_000_000_000_000
-                denomination = " in Trillions"
-            elif maximum_value > 1_000_000_000:
-                df_rounded = fundamentals_plot_data / 1_000_000_000
-                denomination = " in Billions"
-            elif maximum_value > 1_000_000:
-                df_rounded = fundamentals_plot_data / 1_000_000
-                denomination = " in Millions"
-            elif maximum_value > 1_000:
-                df_rounded = fundamentals_plot_data / 1_000
-                denomination = " in Thousands"
-            else:
-                df_rounded = fundamentals_plot_data
+            (df_rounded, denomination) = transform_by_denomination(
+                fundamentals_plot_data
+            )
+            if denomination == "Units":
                 denomination = ""
         else:
             df_rounded = fundamentals_plot_data
