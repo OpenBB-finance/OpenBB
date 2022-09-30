@@ -53,3 +53,14 @@ def test_get_mktcap(recorder):
     result_list = [df_mktcap, currency]
 
     recorder.capture_list(result_list)
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "ticker, statement",
+    [("ABBV", "cash-flow"), ("ABBV", "financials"), ("ABBV", "balance-sheet")],
+)
+def test_get_financials(ticker, statement, recorder):
+    df = yahoo_finance_model.get_financials(symbol=ticker, statement=statement)
+
+    recorder.capture(df)
