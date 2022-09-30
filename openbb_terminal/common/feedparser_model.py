@@ -67,4 +67,6 @@ def get_news(
             console.print("[red]Could not retrieve data\n[/red]")
             break
 
-    return pd.DataFrame(data.entries, columns=["title", "link", "published"])
+    df = pd.DataFrame(data.entries, columns=["title", "link", "published"])
+    df["published"] = pd.to_datetime(df["published"])
+    return df

@@ -33,6 +33,7 @@ def display_news(
         Export dataframe data to csv,json,xlsx file
     """
     articles = feedparser_model.get_news(term, sources)
+    articles = articles.sort_values(by=["published"], ascending=False)
 
     console.print()
     for _, row in articles.head(limit).iterrows():
