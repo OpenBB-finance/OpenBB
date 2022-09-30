@@ -94,7 +94,8 @@ class ReportController(BaseController):
         for param in range(len(def_params) - 1):
             def_params[param] = def_params[param][:-1]
 
-        l_params.remove("report_name")
+        if "report_name" in l_params:
+            l_params.remove("report_name")
         d_params[report_to_run] = [l_params, def_params]
 
         # On the menu of choices add the parameters necessary for each template report
