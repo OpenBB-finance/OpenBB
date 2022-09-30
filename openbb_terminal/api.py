@@ -8,14 +8,18 @@ import types
 import functools
 import importlib
 from typing import Optional, Callable, List
+import logging
 
 from openbb_terminal.helper_classes import TerminalStyle  # noqa: F401
 from openbb_terminal import helper_funcs as helper  # noqa: F401
 from .reports import widget_helpers as widgets  # noqa: F401
 from openbb_terminal.loggers import setup_logging, log_settings
+from openbb_terminal.decorators import log_start_end
 
 from .portfolio.portfolio_model import PortfolioModel as Portfolio
 from .cryptocurrency.due_diligence.pycoingecko_model import Coin
+
+logger = logging.getLogger(__name__)
 
 functions = {
     "alt.covid.slopes": {
