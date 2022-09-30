@@ -1,5 +1,12 @@
 import os
 
+import dotenv
+
+from openbb_terminal.core.config.paths import USER_ENV_FILE, REPOSITORY_ENV_FILE
+
+dotenv.load_dotenv(USER_ENV_FILE)
+dotenv.load_dotenv(REPOSITORY_ENV_FILE, override=True)
+
 PLOT_DPI = int(os.getenv("OPENBB_PLOT_DPI", "100"))
 
 # Backend to use for plotting
