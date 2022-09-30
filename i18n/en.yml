@@ -14,11 +14,14 @@ en:
   _configure_: Configure your own terminal
   _main_menu_: Main menu
   keys/_keys_: This menu allows you to set your own API keys. Type 'about' for more information
+  keys/mykeys: get your current keys
+  keys/refresh: refresh keys status
+  keys/_status_: Status
   defined, test passed: defined, test passed
   defined, test failed: defined, test failed
   not defined: not defined
   defined, not tested: defined, not tested
-  defined, test unsuccessful: defined, test unsuccessful
+  defined, test inconclusive: defined, test inconclusive
   sources/_info_: Get and set default data sources
   sources/get: get available data sources associated with command
   sources/set: set default data source for a command

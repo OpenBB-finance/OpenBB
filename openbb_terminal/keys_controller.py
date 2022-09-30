@@ -6,6 +6,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from typing import Dict, List
+import pandas as pd
 
 from prompt_toolkit.completion import NestedCompleter
 from tqdm import tqdm
@@ -14,7 +15,7 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal import keys_model
 from openbb_terminal.core.config.paths import USER_ENV_FILE
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import parse_simple_args
+from openbb_terminal.helper_funcs import parse_simple_args, print_rich_table
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText, translate
@@ -56,7 +57,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         "messari",
         "santiment",
     ]
-    CHOICES_COMMANDS: List[str] = API_LIST + []
+    CHOICES_COMMANDS: List[str] = ["mykeys", "refresh"] + API_LIST
     PATH = "/keys/"
     status_dict: Dict = {}
     alias_dict: Dict = {
@@ -101,7 +102,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         super().__init__(queue)
         self.env_file = env_file
         if menu_usage:
-
+            self.check_keys_status()
             if session and obbff.USE_PROMPT_TOOLKIT:
                 choices: dict = {c: {} for c in self.controller_choices}
 
@@ -118,10 +119,13 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
     def print_help(self):
         """Print help"""
-        self.check_keys_status()
         mt = MenuText("keys/")
         mt.add_info("_keys_")
         mt.add_raw("\n")
+        mt.add_cmd("mykeys")
+        mt.add_cmd("refresh")
+        mt.add_raw("\n")
+        mt.add_info("_status_")
         for cmd_name, status_msg in self.status_dict.items():
             alias_name = self.alias_dict[cmd_name]
             c = "red"
@@ -134,11 +138,47 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             elif status_msg == "not defined":
                 c = "grey30"
             mt.add_raw(
-                f"   [cmds]{cmd_name}[/cmds] {(20 - len(cmd_name)) * ' '}"
+                f"    [cmds]{cmd_name}[/cmds] {(20 - len(cmd_name)) * ' '}"
                 f" [{c}] {alias_name} {(25 - len(alias_name)) * ' '} {translate(status_msg)} [/{c}]\n"
             )
 
         console.print(text=mt.menu_text, menu="Keys")
+
+    @log_start_end(log=logger)
+    def call_mykeys(self, other_args: List[str]):
+        """Display current keys"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="mykeys",
+            description="Display current keys.",
+        )
+        ns_parser = parse_simple_args(parser, other_args)
+        if ns_parser:
+            keys_dict = keys_model.get_keys()
+            if keys_dict:
+                df = pd.DataFrame.from_dict(keys_dict, orient="index").reset_index()
+
+                print_rich_table(
+                    df,
+                    headers=["API", "Key"],
+                    show_index=False,
+                    title="Current keys",
+                )
+
+    @log_start_end(log=logger)
+    def call_refresh(self, other_args: List[str]):
+        """Refresh keys status"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="refresh",
+            description="Refresh keys status.",
+        )
+        ns_parser = parse_simple_args(parser, other_args)
+        if ns_parser:
+            self.check_keys_status()
+            self.print_help()
 
     @log_start_end(log=logger)
     def call_av(self, other_args: List[str]):
