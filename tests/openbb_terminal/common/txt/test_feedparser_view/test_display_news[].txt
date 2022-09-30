@@ -1,19 +1,19 @@
 [yellow]Fetching data. Please be patient
 [/yellow]
 
-> Thu, 22 Sep 2022 12:30:00 GMT - William Shatner Admits His Masked Singer Performance as Knight 'Went to Hell' - PEOPLE
+> 2022-09-22 13:04:47+00:00 - Microsoft unveils new research and technology to bridge the disconnect between leaders and employees so companies can thrive amid economic uncertainty - Stories - Microsoft
+https://news.microsoft.com/2022/09/22/microsoft-unveils-new-research-and-technology-to-bridge-the-disconnect-between-leaders-and-employees-so-companies-can-thrive-amid-economic-uncertainty/
+
+> 2022-09-22 13:01:36+00:00 - Apple Watch Ultra and next-generation AirPods Pro available in stores Friday - apple.com
+https://www.apple.com/newsroom/2022/09/apple-watch-ultra-and-next-generation-airpods-pro-available-in-stores-friday/
+
+> 2022-09-22 12:49:20+00:00 - Letter from the Chancellor of the Exchequer to the Governor of the Bank of England 22/09/2022 - GOV.UK
+https://www.gov.uk/government/publications/letter-from-the-chancellor-of-the-exchequer-to-the-governor-of-the-bank-of-england-22092022
+
+> 2022-09-22 12:30:00+00:00 - William Shatner Admits His Masked Singer Performance as Knight 'Went to Hell' - PEOPLE
 https://people.com/tv/masked-singer-william-shatner-says-knight-performance-went-to-hell/
 
-> Thu, 22 Sep 2022 06:05:00 GMT - The Kardashians Season 2 Premiere Recap: Khloe Gives Look into Son's Birth - PEOPLE
-https://people.com/tv/the-kardashians-season-2-premiere-khloe-kardashian-gives-look-into-sons-birth/
-
-> Thu, 22 Sep 2022 01:24:17 GMT - Olivia Cooke Was 'Hungover' on First Day Filming House of the Dragon - PEOPLE
-https://people.com/tv/olivia-cooke-was-very-hungover-on-her-first-day-of-filming-house-of-the-dragon/
-
-> Wed, 21 Sep 2022 14:42:35 GMT - Zelenskyy demands punishment for Russia's war in Ukraine, describes grisly war crimes in stunning UN address - CNBC
-https://www.cnbc.com/2022/09/21/ukrainian-president-volodymyr-zelenskyy-speaks-at-un-general-assembly.html
-
-> Thu, 22 Sep 2022 07:00:00 GMT - This Stick Vacuum Is on Sale for $108 at Amazon - PEOPLE
-https://people.com/home/moolan-cordless-stick-vacuum-sale-amazon/
+> 2022-09-22 12:20:20+00:00 - Building Safety: Levelling Up Secretary's op-ed for The Telegraph - GOV.UK
+https://www.gov.uk/government/news/building-safety-levelling-up-secretarys-op-ed-for-the-telegraph
 
 

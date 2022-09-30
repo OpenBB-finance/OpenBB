@@ -1,19 +1,19 @@
 [yellow]Fetching data. Please be patient
 [/yellow]
 
-> Tue, 20 Sep 2022 10:11:23 GMT - ASDF to train with German Air Force in Japan for first time - NHK WORLD
-https://www3.nhk.or.jp/nhkworld/en/news/20220920_21/
-
-> Thu, 22 Sep 2022 12:55:52 GMT - Alaska Guard Assists with Flood Recovery in Western Alaska - ang.af.mil
+> 2022-09-22 12:55:52+00:00 - Alaska Guard Assists with Flood Recovery in Western Alaska - ang.af.mil
 https://www.ang.af.mil/Media/Article-Display/Article/3167091/alaska-guard-assists-with-flood-recovery-in-western-alaska/
 
-> Thu, 22 Sep 2022 05:13:46 GMT - Riley Hoffman shines in Syracuse's win against Boston College - The Daily Orange
+> 2022-09-22 05:13:46+00:00 - Riley Hoffman shines in Syracuse's win against Boston College - The Daily Orange
 http://asdf.dailyorange.com/2022/09/riley-hoffman-shines-syracuse-volleyball-win-boston-college/
 
-> Mon, 19 Sep 2022 22:07:00 GMT - Vikram Naidu Donates to the Autism Spectrum Disorder Foundation - EIN News
-https://www.einnews.com/pr_news/591731186/vikram-naidu-donates-to-the-autism-spectrum-disorder-foundation
+> 2022-09-21 10:00:00+00:00 - Beaches Need Hereford Inlet Sand | Columns | capemaycountyherald.com - Cape May County Herald
+https://www.capemaycountyherald.com/opinion/columns/beaches-need-hereford-inlet-sand/article_226fb066-390c-11ed-bb91-63fbbabfbc59.html
 
-> Tue, 20 Sep 2022 18:31:49 GMT - Syracuse falls to one spot to No. 11 in latest NFHCA poll - The Daily Orange
+> 2022-09-20 18:31:49+00:00 - Syracuse falls to one spot to No. 11 in latest NFHCA poll - The Daily Orange
 http://asdf.dailyorange.com/2022/09/syracuse-field-hockey-rankings-eleven/
+
+> 2022-09-20 10:11:23+00:00 - ASDF to train with German Air Force in Japan for first time - NHK WORLD
+https://www3.nhk.or.jp/nhkworld/en/news/20220920_21/
 
 
