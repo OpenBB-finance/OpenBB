@@ -194,5 +194,10 @@ def get_fund_historical(
             matching_country,
         )
     except RuntimeError as e:
+        console.print("[red]Error connecting to the data source.[/red]\n")
+        logger.exception(str(e))
+        return pd.DataFrame(), fund_name, fund_symbol, search_country
+    except ConnectionError as e:
+        console.print("[red]Error connecting to the data source.[/red]\n")
         logger.exception(str(e))
         return pd.DataFrame(), fund_name, fund_symbol, search_country
