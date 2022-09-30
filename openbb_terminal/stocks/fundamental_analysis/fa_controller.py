@@ -585,7 +585,7 @@ class FundamentalAnalysisController(StockBaseController):
             dest="holder",
         )
 
-        if other_args and "--holder" not in other_args[0][0]:
+        if other_args and "--holder" not in other_args[0][0] and "-h" not in other_args:
             other_args.insert(0, "--holder")
 
         ns_parser = self.parse_known_args_and_warn(
