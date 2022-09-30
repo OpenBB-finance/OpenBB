@@ -32,9 +32,8 @@ def get_mentions(symbol: str) -> pd.DataFrame:
         return pytrend.interest_over_time()
 
     except Exception:
-        request_limit = pytrend.google_rl
-        if request_limit:
-            console.print(f"[red]Too many requests: {request_limit}[/red]\n")
+        if pytrend.google_rl:
+            console.print(f"[red]Too many requests: {pytrend.google_rl}[/red]\n")
         else:
             console.print("[red]Cannot get data.[/red]\n")
 
@@ -62,9 +61,8 @@ def get_regions(symbol: str) -> pd.DataFrame:
         return pytrend.interest_by_region().sort_values([symbol], ascending=False)
 
     except Exception:
-        request_limit = pytrend.google_rl
-        if request_limit:
-            console.print(f"[red]Too many requests: {request_limit}[/red]\n")
+        if pytrend.google_rl:
+            console.print(f"[red]Too many requests: {pytrend.google_rl}[/red]\n")
         else:
             console.print("[red]Cannot get data.[/red]\n")
 
@@ -96,9 +94,8 @@ def get_queries(symbol: str, limit: int = 10) -> pd.DataFrame:
         return df
 
     except Exception:
-        request_limit = pytrend.google_rl
-        if request_limit:
-            console.print(f"[red]Too many requests: {request_limit}[/red]\n")
+        if pytrend.google_rl:
+            console.print(f"[red]Too many requests: {pytrend.google_rl}[/red]\n")
         else:
             console.print("[red]Cannot get data.[/red]\n")
 
@@ -129,9 +126,8 @@ def get_rise(symbol: str, limit: int = 10) -> pd.DataFrame:
         return df
 
     except Exception:
-        request_limit = pytrend.google_rl
-        if request_limit:
-            console.print(f"[red]Too many requests: {request_limit}[/red]\n")
+        if pytrend.google_rl:
+            console.print(f"[red]Too many requests: {pytrend.google_rl}[/red]\n")
         else:
             console.print("[red]Cannot get data.[/red]\n")
 
