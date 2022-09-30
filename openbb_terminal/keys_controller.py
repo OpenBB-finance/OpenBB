@@ -109,72 +109,11 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
                 self.completer = NestedCompleter.from_nested_dict(choices)
 
-    @staticmethod
-    def check_key(api: str) -> int:
-        if api == "av":
-            return keys_model.check_av_key()
-        elif api == "fmp":
-            return keys_model.check_fmp_key()
-        elif api == "quandl":
-            return keys_model.check_quandl_key()
-        elif api == "polygon":
-            return keys_model.check_polygon_key()
-        elif api == "fred":
-            return keys_model.check_fred_key()
-        elif api == "news":
-            return keys_model.check_news_key()
-        elif api == "tradier":
-            return keys_model.check_tradier_key()
-        elif api == "cmc":
-            return keys_model.check_cmc_key()
-        elif api == "finnhub":
-            return keys_model.check_finnhub_key()
-        elif api == "iex":
-            return keys_model.check_iex_key()
-        elif api == "reddit":
-            return keys_model.check_reddit_key()
-        elif api == "twitter":
-            return keys_model.check_twitter_key()
-        elif api == "rh":
-            return keys_model.check_rh_key()
-        elif api == "degiro":
-            return keys_model.check_degiro_key()
-        elif api == "oanda":
-            return keys_model.check_fred_key()
-        elif api == "binance":
-            return keys_model.check_oanda_key()
-        elif api == "bitquery":
-            return keys_model.check_bitquery_key()
-        elif api == "si":
-            return keys_model.check_si_key()
-        elif api == "coinbase":
-            return keys_model.check_coinbase_key()
-        elif api == "walert":
-            return keys_model.check_walert_key()
-        elif api == "glassnode":
-            return keys_model.check_glassnode_key()
-        elif api == "coinglass":
-            return keys_model.check_coinglass_key()
-        elif api == "cpanic":
-            return keys_model.check_cpanic_key()
-        elif api == "ethplorer":
-            return keys_model.check_ethplorer_key()
-        elif api == "smartstake":
-            return keys_model.check_smartstake_key()
-        elif api == "github":
-            return keys_model.check_github_key()
-        elif api == "eodhd":
-            return keys_model.check_eodhd_key()
-        elif api == "messari":
-            return keys_model.check_messari_key()
-        elif api == "santiment":
-            return keys_model.check_santiment_key()
-
     def check_keys_status(self) -> None:
         """Check keys status"""
 
         for api in self.API_LIST:
-            status = KeysController.check_key(api)
+            status = getattr(keys_model, "check_" + str(api) + "_key")()
             self.key_dict[api] = keys_model.STATUS_MSG[status]
 
     def print_help(self):
