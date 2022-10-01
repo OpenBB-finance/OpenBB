@@ -96,7 +96,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         mt.add_raw("\n")
         mt.add_info("_status_")
         for cmd_name, status_msg in self.status_dict.items():
-            alias_name = self.API_DICT[cmd_name]
+            api_name = self.API_DICT[cmd_name]
             c = "red"
             if status_msg == "defined, test passed":
                 c = "green"
@@ -108,7 +108,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 c = "grey30"
             mt.add_raw(
                 f"    [cmds]{cmd_name}[/cmds] {(20 - len(cmd_name)) * ' '}"
-                f" [{c}] {alias_name} {(25 - len(alias_name)) * ' '} {translate(status_msg)} [/{c}]\n"
+                f" [{c}] {api_name} {(25 - len(api_name)) * ' '} {translate(status_msg)} [/{c}]\n"
             )
 
         console.print(text=mt.menu_text, menu="Keys")
