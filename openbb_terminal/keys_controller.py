@@ -6,7 +6,6 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from typing import Dict, List
-import pandas as pd
 
 from prompt_toolkit.completion import NestedCompleter
 from tqdm import tqdm
@@ -155,13 +154,10 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         )
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            keys_dict = keys_model.get_keys()
-            if keys_dict:
-                df = pd.DataFrame.from_dict(keys_dict, orient="index").reset_index()
-
+            df = keys_model.get_keys()
+            if not df.empty:
                 print_rich_table(
                     df,
-                    headers=["API", "Key"],
                     show_index=False,
                     title="Current keys",
                 )

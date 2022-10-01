@@ -1,8 +1,8 @@
 import logging
 import os
-from typing import Dict
 import binance
 import dotenv
+import pandas as pd
 import quandl
 import requests
 from prawcore.exceptions import ResponseException
@@ -62,11 +62,11 @@ def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> Non
     setattr(cfg, env_var_name, env_var_value)
 
 
-def get_keys() -> Dict:
+def get_keys() -> pd.DataFrame:
     """Get dictionary with currently set API keys.
 
     Returns:
-        Dict: key: API -> values: KEY.
+        pd.DataFrame: currents keys
     """
 
     # TODO: Refactor api variables without prefix API_
@@ -79,7 +79,11 @@ def get_keys() -> Dict:
         cfg_var_value = getattr(cfg, cfg_var_name)
         current_keys[cfg_var_name] = cfg_var_value
 
-    return current_keys
+    if current_keys:
+        df = pd.DataFrame.from_dict(current_keys, orient="index").reset_index()
+        return df.rename(columns={0: "API", 1: "Key"})
+    else:
+        return pd.DataFrame()
 
 
 def set_av_key(key: str, persist: bool = False, show_output: bool = True) -> int:
