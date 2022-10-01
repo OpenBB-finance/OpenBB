@@ -57,6 +57,7 @@ class MockCFG:
         self.API_SANTIMENT_KEY = kwargs.get("SANTIMENT", None)
         self.API_MESSARI_KEY = kwargs.get("MESSARI", None)
 
+
 # TODO: add mykeys test to assert df
 # TODO: add refresh test
 

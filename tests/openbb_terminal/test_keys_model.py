@@ -57,8 +57,10 @@ class MockCFG:
         self.API_SANTIMENT_KEY = kwargs.get("SANTIMENT", None)
         self.API_MESSARI_KEY = kwargs.get("MESSARI", None)
 
+
 # TODO: fix tests for check_api_key
 # TODO: add test for set_key and mykeys
+
 
 @pytest.mark.vcr
 @pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
