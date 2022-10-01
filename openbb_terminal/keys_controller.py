@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     """Keys Controller class"""
 
-    api_dict: Dict = {
+    API_DICT: Dict = {
         "av": "ALPHA_VANTAGE",
         "fmp": "FINANCIAL_MODELING_PREP",
         "quandl": "QUANDL",
@@ -56,7 +56,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         "messari": "MESSARI",
         "santiment": "SANTIMENT",
     }
-    API_LIST = list(api_dict.keys())
+    API_LIST = list(API_DICT.keys())
     CHOICES_COMMANDS: List[str] = ["mykeys", "refresh"] + API_LIST
     PATH = "/keys/"
     status_dict: Dict = {}
@@ -96,7 +96,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         mt.add_raw("\n")
         mt.add_info("_status_")
         for cmd_name, status_msg in self.status_dict.items():
-            alias_name = self.api_dict[cmd_name]
+            alias_name = self.API_DICT[cmd_name]
             c = "red"
             if status_msg == "defined, test passed":
                 c = "green"
