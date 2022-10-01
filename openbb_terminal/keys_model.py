@@ -24,7 +24,6 @@ from openbb_terminal.core.config.paths import USER_ENV_FILE
 from openbb_terminal.rich_config import console
 
 from openbb_terminal.terminal_helper import suppress_stdout
-from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
 
