@@ -25,6 +25,8 @@ from openbb_terminal.rich_config import console
 
 from openbb_terminal.terminal_helper import suppress_stdout
 
+# pylint: disable=too-many-lines
+
 logger = logging.getLogger(__name__)
 
 STATUS_MSG = {
@@ -83,8 +85,8 @@ def get_keys() -> pd.DataFrame:
         df = pd.DataFrame.from_dict(current_keys, orient="index")
         df.index.name = "API"
         return df.rename(columns={0: "Key"})
-    else:
-        return pd.DataFrame()
+
+    return pd.DataFrame()
 
 
 def set_av_key(key: str, persist: bool = False, show_output: bool = True) -> int:
