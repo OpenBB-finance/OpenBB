@@ -77,11 +77,12 @@ def get_keys() -> pd.DataFrame:
 
     for cfg_var_name in var_list:
         cfg_var_value = getattr(cfg, cfg_var_name)
-        current_keys[cfg_var_name] = cfg_var_value
+        current_keys[cfg_var_name[4:]] = cfg_var_value
 
     if current_keys:
-        df = pd.DataFrame.from_dict(current_keys, orient="index").reset_index()
-        return df.rename(columns={"index": "API", 0: "Key"})
+        df = pd.DataFrame.from_dict(current_keys, orient="index")
+        df.index.name = "API"
+        return df.rename(columns={0: "Key"})
     else:
         return pd.DataFrame()
 

@@ -128,7 +128,8 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             if not df.empty:
                 print_rich_table(
                     df,
-                    show_index=False,
+                    show_index=True,
+                    index_name="API",
                     title="Current keys",
                 )
 
