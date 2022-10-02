@@ -68,7 +68,7 @@ def test_print_help(mocker):
     controller.print_help()
 
 
-@pytest.mark.skip
+@pytest.mark.vcr
 @pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
 def test_call_av(other):
     controller.call_av(other)
