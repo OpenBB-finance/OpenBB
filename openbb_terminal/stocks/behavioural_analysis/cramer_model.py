@@ -55,23 +55,20 @@ def get_cramer_daily(inverse: bool = True) -> pd.DataFrame:
         "5": "Buy",
     }
 
-    rec = []
-
-    for tr in trs[1:]:
-        rec.append(recs[tr.find_all("td")[3].find("img")["src"][-5]])
+    rec = [recs[tr.find_all("td")[3].find("img")["src"][-5]] for tr in trs[1:]]
 
     df = pd.read_html(r.text)[0]
     df["Symbol"] = df.Company.apply(lambda x: re.findall(r"[\w]+", x)[-1])
-    last_price = []
-    for ticker in df.Symbol:
-        last_price.append(
-            round(
-                yf.download(ticker, period="1d", interval="1h", progress=False)[
-                    "Close"
-                ][-1],
-                2,
-            )
+    last_price = [
+        round(
+            yf.download(ticker, period="1d", interval="1h", progress=False)["Close"][
+                -1
+            ],
+            2,
         )
+        for ticker in df.Symbol
+    ]
+
     df["LastPrice"] = last_price
     df["Price"] = df.Price.apply(lambda x: float(x.strip("$")))
     df = df.drop(columns=["Segment", "Call", "Portfolio"])

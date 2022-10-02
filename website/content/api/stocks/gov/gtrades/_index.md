@@ -1,9 +1,7 @@
-# stocks.gov.gtrades
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.gov.gtrades(symbol: str, gov_type: str = 'congress', past_transactions_months: int = 6) -> pandas.core.frame.DataFrame
+### stocks.gov.gtrades(symbol: str, gov_type: str = 'congress', past_transactions_months: int = 6) -> pandas.core.frame.DataFrame
 
 Government trading for specific ticker [Source: quiverquant.com]
 
@@ -22,7 +20,7 @@ Government trading for specific ticker [Source: quiverquant.com]
         DataFrame of tickers government trading
 
 ## Getting charts 
-###stocks.gov.gtrades(symbol: str, gov_type: str = 'congress', past_transactions_months: int = 6, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.gov.gtrades(symbol: str, gov_type: str = 'congress', past_transactions_months: int = 6, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Government trading for specific ticker [Source: quiverquant.com]
 

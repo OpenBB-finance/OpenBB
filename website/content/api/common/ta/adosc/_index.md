@@ -1,9 +1,7 @@
-# common.ta.adosc
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###common.ta.adosc(data: pandas.core.frame.DataFrame, use_open: bool = False, fast: int = 3, slow: int = 10) -> pandas.core.frame.DataFrame
+### common.ta.adosc(data: pandas.core.frame.DataFrame, use_open: bool = False, fast: int = 3, slow: int = 10) -> pandas.core.frame.DataFrame
 
 Calculate AD oscillator technical indicator
 
@@ -24,7 +22,7 @@ Calculate AD oscillator technical indicator
         Dataframe with technical indicator
 
 ## Getting charts 
-###common.ta.adosc(data: pandas.core.frame.DataFrame, fast: int = 3, slow: int = 10, use_open: bool = False, symbol: str = '', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### common.ta.adosc(data: pandas.core.frame.DataFrame, fast: int = 3, slow: int = 10, use_open: bool = False, symbol: str = '', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display AD Osc Indicator
 

@@ -447,7 +447,7 @@ class DefiController(BaseController):
         )
 
         if ns_parser:
-            llama_view.display_grouped_defi_protocols(num=ns_parser.limit)
+            llama_view.display_grouped_defi_protocols(limit=ns_parser.limit)
 
     @log_start_end(log=logger)
     def call_dtvl(self, other_args: List[str]):
@@ -535,7 +535,7 @@ class DefiController(BaseController):
             llama_view.display_defi_protocols(
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 description=ns_parser.description,
                 export=ns_parser.export,
             )
@@ -809,7 +809,7 @@ class DefiController(BaseController):
             graph_view.display_uni_pools(
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                escend=not ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 

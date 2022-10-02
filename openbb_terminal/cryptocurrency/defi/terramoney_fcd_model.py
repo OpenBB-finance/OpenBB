@@ -162,23 +162,22 @@ def get_validators(sortby: str = "votingPower", ascend: bool = True) -> pd.DataF
     """
 
     response = _make_request("staking")["validators"]
-    results = []
-    for validator in response:
-        results.append(
-            {
-                "accountAddress": validator["accountAddress"],
-                "validatorName": validator["description"].get("moniker"),
-                "tokensAmount": denominate_number(validator["tokens"]),
-                "votingPower": round(
-                    (float(validator["votingPower"].get("weight")) * 100), 2
-                ),
-                "commissionRate": round(
-                    (float(validator["commissionInfo"].get("rate", 0)) * 100), 2
-                ),
-                "status": validator["status"],
-                "uptime": round((float(validator.get("upTime", 0)) * 100), 2),
-            }
-        )
+    results = [
+        {
+            "accountAddress": validator["accountAddress"],
+            "validatorName": validator["description"].get("moniker"),
+            "tokensAmount": denominate_number(validator["tokens"]),
+            "votingPower": round(
+                (float(validator["votingPower"].get("weight")) * 100), 2
+            ),
+            "commissionRate": round(
+                (float(validator["commissionInfo"].get("rate", 0)) * 100), 2
+            ),
+            "status": validator["status"],
+            "uptime": round((float(validator.get("upTime", 0)) * 100), 2),
+        }
+        for validator in response
+    ]
 
     df = pd.DataFrame(results)
     if not df.empty:

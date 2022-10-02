@@ -1,9 +1,7 @@
-# crypto.disc.gainers
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.disc.gainers(interval: str = '1h', limit: int = 50, sortby: str = 'market_cap_rank') -> pandas.core.frame.DataFrame
+### crypto.disc.gainers(interval: str = '1h', limit: int = 50, sortby: str = 'market_cap_rank') -> pandas.core.frame.DataFrame
 
 Shows Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]
 
@@ -24,7 +22,7 @@ Shows Largest Gainers - coins which gain the most in given period. [Source: Coin
         Columns: Symbol, Name, Volume, Price, %Change_{interval}, Url
 
 ## Getting charts 
-###crypto.disc.gainers(interval: str = '1h', limit: int = 20, sortby: str = 'market_cap_rank', export: str = '', chart=True) -> None
+### crypto.disc.gainers(interval: str = '1h', limit: int = 20, sortby: str = 'market_cap_rank', export: str = '', chart=True) -> None
 
 Shows Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]
 

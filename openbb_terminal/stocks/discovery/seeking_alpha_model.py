@@ -61,9 +61,7 @@ def get_next_earnings(limit: int = 10) -> DataFrame:
         )
 
         for stock_rows in text_soup_earnings.findAll("tr", {"data-exchange": "NASDAQ"}):
-            stocks = []
-            for a_stock in stock_rows.contents[:3]:
-                stocks.append(a_stock.text)
+            stocks = [a_stock.text for a_stock in stock_rows.contents[:3]]
             earnings.append(stocks)
 
         url_next_earnings = (
@@ -217,7 +215,7 @@ def get_news(news_type: str = "Top-News", limit: int = 5) -> List:
     news_articles: Dict = get_news_html(news_type)
     news_to_display = list()
 
-    if news_articles:
+    if "data" in news_articles:
         for idx, news in enumerate(news_articles["data"]):
             if idx > limit:
                 break

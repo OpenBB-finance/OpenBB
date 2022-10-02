@@ -119,7 +119,8 @@ def display_chains(
         console.print("[red]Option chains not found.[/red]")
         return
 
-    # There are 3 possibilities.  Calls only, puts only or both.  If calls only or puts only, we are actually set
+    # There are 3 possibilities.  Calls only, puts only or both.
+    # If calls only or puts only, we are actually set
     # because the columns are nicely named
     if calls_only or puts_only:
         title = "Call " if calls_only else "Put "
@@ -178,8 +179,8 @@ def display_chains(
             ]
         ]
 
-        # In order to add color to call/put, the numbers will have to be strings.  So floatfmt will not work in
-        # print_rich_table, so lets format them now.
+        # In order to add color to call/put, the numbers will have to be strings.
+        # So floatfmt will not work in print_rich_table, so lets format them now.
 
         float_fmt = [
             ".3f",
@@ -265,12 +266,7 @@ def plot_oi(
         External axes (1 axis is expected in the list), by default None
     """
     options = yfinance_model.get_option_chain(symbol, expiry)
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "oi_yf",
-        options,
-    )
+    op_helpers.export_yf_options(export, options, "oi_yf")
     calls = options.calls
     puts = options.puts
     current_price = float(yf.Ticker(symbol).info["regularMarketPrice"])
@@ -422,15 +418,10 @@ def plot_vol(
     ax.legend()
     ax.set_title(f"Volume for {symbol.upper()} expiring {expiry}")
     theme.style_primary_axis(ax)
-    print(calls)
     if external_axes is None:
         theme.visualize_output()
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "vol_yf",
-        options,
-    )
+
+    op_helpers.export_yf_options(export, options, "vol_yf")
 
 
 @log_start_end(log=logger)
@@ -505,25 +496,57 @@ def plot_volume_open_interest(
         min_vol_calls = np.percentile(df_calls["oi+v"], volume_percentile_threshold)
         min_vol_puts = np.percentile(df_puts["oi+v"], volume_percentile_threshold)
 
-        df_calls = df_calls[df_calls["oi+v"] > min_vol_calls]
+        df_calls = df_calls.loc[df_calls.index.intersection(df_puts.index)]
+        df_calls = (
+            df_calls[df_calls["oi+v"] > min_vol_calls]
+            .drop(["strike"], axis=1)
+            .reset_index()
+            .merge(
+                df_calls[df_puts["oi+v"] < min_vol_puts][
+                    ["openInterest", "volume", "type", "oi+v", "spot"]
+                ].reset_index()
+            )
+            .set_index("strike")
+        )
+        df_calls["strike"] = df_calls.index
+
+        df_puts = df_puts.loc[df_puts.index.intersection(df_calls.index)]
+
         df_calls = df_calls[df_calls["strike"] > 0.75 * current_price]
         df_calls = df_calls[df_calls["strike"] < 1.25 * current_price]
-        df_puts = df_puts[df_puts["oi+v"] < min_vol_puts]
         df_puts = df_puts[df_puts["strike"] > 0.75 * current_price]
         df_puts = df_puts[df_puts["strike"] < 1.25 * current_price]
 
     else:
+        df_calls = df_calls.loc[df_calls.index.intersection(df_puts.index)]
         if min_vol > -1:
-            df_calls = df_calls[df_calls["oi+v"] > min_vol]
-            df_puts = df_puts[df_puts["oi+v"] < -min_vol]
+            df_calls = (
+                df_calls[df_calls["oi+v"] > min_vol]
+                .drop(["strike"], axis=1)
+                .reset_index()
+                .merge(
+                    df_calls[df_puts["oi+v"] < min_vol][
+                        ["openInterest", "volume", "type", "oi+v", "spot"]
+                    ].reset_index()
+                )
+                .set_index("strike")
+            )
+            df_calls["strike"] = df_calls.index
+            df_puts = df_puts.loc[df_puts.index.intersection(df_calls.index)]
 
-        if min_sp > -1:
-            df_calls = df_calls[df_calls["strike"] > min_sp]
-            df_puts = df_puts[df_puts["strike"] > min_sp]
+    if min_sp > -1:
+        df_calls = df_calls[df_calls["strike"] > min_sp]
+        df_puts = df_puts[df_puts["strike"] > min_sp]
+    else:
+        df_calls = df_calls[df_calls["strike"] > 0.75 * current_price]
+        df_puts = df_puts[df_puts["strike"] > 0.75 * current_price]
 
-        if max_sp > -1:
-            df_calls = df_calls[df_calls["strike"] < max_sp]
-            df_puts = df_puts[df_puts["strike"] < max_sp]
+    if max_sp > -1:
+        df_calls = df_calls[df_calls["strike"] < max_sp]
+        df_puts = df_puts[df_puts["strike"] < max_sp]
+    else:
+        df_calls = df_calls[df_calls["strike"] < 1.25 * current_price]
+        df_puts = df_puts[df_puts["strike"] < 1.25 * current_price]
 
     if df_calls.empty and df_puts.empty:
         console.print(
@@ -620,12 +643,7 @@ def plot_volume_open_interest(
     if external_axes is None:
         theme.visualize_output()
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "voi_yf",
-        options,
-    )
+    op_helpers.export_yf_options(export, options, "voi_yf")
 
 
 @log_start_end(log=logger)
@@ -678,6 +696,12 @@ def plot_plot(
         x = "strike"
         y = "impliedVolatility"
     else:
+        if x is None:
+            console.print("[red]Invalid option sent for x-axis[/red]\n")
+            return
+        if y is None:
+            console.print("[red]Invalid option sent for y-axis[/red]\n")
+            return
         x = convert[x]
         y = convert[y]
     varis = op_helpers.opt_chain_cols

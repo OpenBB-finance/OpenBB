@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-import os
 from datetime import datetime, timedelta
 from typing import Any, List
 
@@ -39,7 +38,11 @@ from openbb_terminal.stocks.options import (
 )
 from openbb_terminal.stocks.options.hedge import hedge_controller
 from openbb_terminal.stocks.options.pricing import pricing_controller
-from openbb_terminal.stocks.options.screen import screener_controller, syncretism_view
+from openbb_terminal.stocks.options.screen import (
+    screener_controller,
+    syncretism_view,
+    syncretism_model,
+)
 
 # pylint: disable=R1710,C0302,R0916
 
@@ -79,9 +82,7 @@ class OptionsController(BaseController):
         "hedge",
     ]
 
-    PRESET_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
-
-    presets = [f.split(".")[0] for f in os.listdir(PRESET_PATH) if f.endswith(".ini")]
+    preset_choices = syncretism_model.get_preset_choices()
 
     grhist_greeks_choices = [
         "iv",
@@ -136,8 +137,8 @@ class OptionsController(BaseController):
             choices: dict = {c: {} for c in self.controller_choices}
             choices["unu"]["-s"] = {c: {} for c in self.unu_sortby_choices}
             choices["pcr"] = {c: {} for c in self.pcr_length_choices}
-            choices["disp"] = {c: {} for c in self.presets}
-            choices["scr"] = {c: {} for c in self.presets}
+            choices["disp"] = {c: {} for c in self.preset_choices}
+            choices["scr"] = {c: {} for c in self.preset_choices}
             choices["grhist"]["-g"] = {c: {} for c in self.grhist_greeks_choices}
             choices["plot"]["-x"] = {c: {} for c in self.plot_vars_choices}
             choices["plot"]["-y"] = {c: {} for c in self.plot_vars_choices}
@@ -608,20 +609,20 @@ class OptionsController(BaseController):
                     self.update_runtime_choices()
 
                 if self.selected_date:
-                    if self.source == "YahooFinance":
-                        self.chain = yfinance_model.get_option_chain(
+                    if self.source == "Tradier":
+                        df = tradier_model.get_option_chains(
                             self.ticker, self.selected_date
                         )
+                        self.chain = op_helpers.Chain(df)
                     elif self.source == "Nasdaq":
                         df = nasdaq_model.get_chain_given_expiration(
                             self.ticker, self.selected_date
                         )
                         self.chain = op_helpers.Chain(df, self.source)
                     else:
-                        df = tradier_model.get_option_chains(
+                        self.chain = yfinance_model.get_option_chain(
                             self.ticker, self.selected_date
                         )
-                        self.chain = op_helpers.Chain(df)
                     self.update_runtime_choices()
             else:
                 console.print("Please load a ticker using `load <ticker>`.\n")
@@ -1075,7 +1076,7 @@ class OptionsController(BaseController):
             "--x_axis",
             type=str,
             dest="x",
-            default=None,
+            default="s",
             choices=self.plot_vars_choices,
             help=(
                 "ltd- last trade date, s- strike, lp- last price, b- bid, a- ask,"
@@ -1087,7 +1088,7 @@ class OptionsController(BaseController):
             "--y_axis",
             type=str,
             dest="y",
-            default=None,
+            default="y",
             choices=self.plot_vars_choices,
             help=(
                 "ltd- last trade date, s- strike, lp- last price, b- bid, a- ask,"

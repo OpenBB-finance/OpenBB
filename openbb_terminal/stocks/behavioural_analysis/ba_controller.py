@@ -566,7 +566,7 @@ class BehaviouralAnalysisController(StockBaseController):
             "--start",
             type=valid_date,
             dest="start",
-            default=self.start,
+            default=self.start if self.start != "" else "2000-01-01",
             help="starting date (format YYYY-MM-DD) from when we are interested in stock's mentions.",
         )
         if other_args and "-" not in other_args[0][0]:

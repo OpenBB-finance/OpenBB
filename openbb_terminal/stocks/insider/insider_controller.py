@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import argparse
 import configparser
 import logging
-import os
 from typing import List
 
 import pandas as pd
@@ -24,11 +23,10 @@ from openbb_terminal.stocks.insider import (
     businessinsider_view,
     finviz_view,
     openinsider_view,
+    openinsider_model,
 )
 
 logger = logging.getLogger(__name__)
-
-presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
 # pylint: disable=,inconsistent-return-statements
 
@@ -70,11 +68,8 @@ class InsiderController(StockBaseController):
         "stats",
     ]
 
-    preset_choices = [
-        preset.split(".")[0]
-        for preset in os.listdir(presets_path)
-        if preset[-4:] == ".ini"
-    ]
+    preset_choices = openinsider_model.get_preset_choices()
+
     PATH = "/stocks/ins/"
 
     def __init__(
@@ -173,7 +168,7 @@ class InsiderController(StockBaseController):
             if ns_parser.preset:
                 preset_filter = configparser.RawConfigParser()
                 preset_filter.optionxform = str  # type: ignore
-                preset_filter.read(presets_path + ns_parser.preset + ".ini")
+                preset_filter.read(self.preset_choices[ns_parser.preset])
 
                 filters_headers = [
                     "General",
@@ -199,7 +194,7 @@ class InsiderController(StockBaseController):
             else:
                 for preset in self.preset_choices:
                     with open(
-                        presets_path + preset + ".ini",
+                        self.preset_choices[preset],
                         encoding="utf8",
                     ) as f:
                         description = ""
@@ -271,7 +266,7 @@ class InsiderController(StockBaseController):
         )
         if ns_parser:
             openinsider_view.print_insider_filter(
-                preset_loaded=self.preset,
+                preset=self.preset,
                 symbol="",
                 limit=ns_parser.limit,
                 links=ns_parser.urls,
@@ -312,7 +307,7 @@ class InsiderController(StockBaseController):
         if ns_parser:
             if self.ticker:
                 openinsider_view.print_insider_filter(
-                    preset_loaded="",
+                    preset="",
                     symbol=self.ticker,
                     limit=ns_parser.limit,
                     links=ns_parser.urls,

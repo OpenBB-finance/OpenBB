@@ -1,7 +1,5 @@
-# economy.macro_countries
-
 ## Get underlying data 
-###economy.macro_countries() -> Dict[str, str]
+### economy.macro_countries() -> Dict[str, str]
 
 This function returns the available countries and respective currencies.
 

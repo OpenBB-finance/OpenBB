@@ -1,9 +1,7 @@
-# etf.etf_by_category
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###etf.etf_by_category(category: str) -> Dict
+### etf.etf_by_category(category: str) -> Dict
 
 Return a selection of ETFs based on category filtered by total assets.
     [Source: Finance Database]
@@ -19,7 +17,7 @@ Return a selection of ETFs based on category filtered by total assets.
         Dictionary with ETFs that match a certain description
 
 ## Getting charts 
-###etf.etf_by_category(category: str, limit: int = 10, export: str = '', chart=True)
+### etf.etf_by_category(category: str, limit: int = 10, export: str = '', chart=True)
 
 Display a selection of ETFs based on a category filtered by total assets.
     [Source: Finance Database]

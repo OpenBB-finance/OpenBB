@@ -1,7 +1,5 @@
-# stocks.options.hedge.calc_vega
-
 ## Get underlying data 
-###stocks.options.hedge.calc_vega(asset_price: float = 100, asset_volatility: float = 20, strike_price: float = 120, time_to_expiration: float = 30, risk_free_rate: float = 0)
+### stocks.options.hedge.calc_vega(asset_price: float = 100, asset_volatility: float = 20, strike_price: float = 120, time_to_expiration: float = 30, risk_free_rate: float = 0)
 
 The first-order partial-derivative with respect to the underlying asset volatility of
     the Black-Scholes equation is known as vega. Vega refers to how the option value

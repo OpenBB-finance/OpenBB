@@ -726,7 +726,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(
                 symbol="MOCK_TICKER",
                 data=MOCK_STOCK_DF,
-                period=1,
+                limit=1,
                 start_date=datetime.strptime("2021-12-01", "%Y-%m-%d"),
                 end_date=datetime.strptime("2021-12-02", "%Y-%m-%d"),
                 export="csv",

@@ -225,8 +225,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         (
             "call_analysis",
             "eclect_us_view.display_analysis",
-            [],
-            {"TSLA"},
+            ["--export=csv"],
+            dict(symbol="TSLA", export="csv"),
         ),
         (
             "call_mgmt",
@@ -237,8 +237,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
         (
             "call_data",
             "finviz_view.display_screen_data",
-            [],
-            {"TSLA"},
+            ["--export=csv"],
+            dict(symbol="TSLA", export="csv"),
         ),
         (
             "call_score",
@@ -512,6 +512,7 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
         interval="1440min",
         suffix="",
     )
+
     getattr(fa, tested_func)(other_args=other_args)
 
     if isinstance(called_with, dict):

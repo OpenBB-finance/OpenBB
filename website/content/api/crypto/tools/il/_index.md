@@ -1,9 +1,7 @@
-# crypto.tools.il
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.tools.il(price_changeA: float, price_changeB: float, proportion: float, initial_pool_value: float) -> Tuple[pandas.core.frame.DataFrame, str]
+### crypto.tools.il(price_changeA: float, price_changeB: float, proportion: float, initial_pool_value: float) -> Tuple[pandas.core.frame.DataFrame, str]
 
 Calculates Impermanent Loss in a custom liquidity pool
 
@@ -25,7 +23,7 @@ Calculates Impermanent Loss in a custom liquidity pool
         - str: narrative version of results
 
 ## Getting charts 
-###crypto.tools.il(price_changeA: int, price_changeB: int, proportion: int, initial_pool_value: int, narrative: bool = False, export: str = '', chart=True)
+### crypto.tools.il(price_changeA: int, price_changeB: int, proportion: int, initial_pool_value: int, narrative: bool = False, export: str = '', chart=True)
 
 Displays Impermanent Loss in a custom liquidity pool
 

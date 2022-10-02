@@ -1,7 +1,5 @@
-# econometrics.fe
-
 ## Get underlying data 
-###econometrics.fe(regression_variables: List[Tuple], data: Dict[str, pandas.core.frame.DataFrame], entity_effects: bool = False, time_effects: bool = False) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any], Any]
+### econometrics.fe(regression_variables: List[Tuple], data: Dict[str, pandas.core.frame.DataFrame], entity_effects: bool = False, time_effects: bool = False) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any], Any]
 
 When effects are correlated with the regressors the RE and BE estimators are not consistent.
     The usual solution is to use Fixed Effects which are called entity_effects when applied to

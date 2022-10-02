@@ -1,9 +1,7 @@
-# crypto.ov.cr
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###crypto.ov.cr(rate_type: str = 'borrow') -> pandas.core.frame.DataFrame
+### crypto.ov.cr(rate_type: str = 'borrow') -> pandas.core.frame.DataFrame
 
 Returns crypto {borrow,supply} interest rates for cryptocurrencies across several platforms
     [Source: https://loanscan.io/]
@@ -17,7 +15,7 @@ Returns crypto {borrow,supply} interest rates for cryptocurrencies across severa
     pandas.DataFrame: crypto interest rates per platform
 
 ## Getting charts 
-###crypto.ov.cr(symbols: str, platforms: str, rate_type: str = 'borrow', limit: int = 10, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
+### crypto.ov.cr(symbols: str, platforms: str, rate_type: str = 'borrow', limit: int = 10, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
 
 Displays crypto {borrow,supply} interest rates for cryptocurrencies across several platforms
     [Source: https://loanscan.io/]

@@ -69,3 +69,7 @@ def test_call_monitor(controller, other):
 @pytest.mark.parametrize("other", [["GTK3Agg"], ["-v", "GTK3Agg"], ["None"]])
 def test_call_backend(controller, other):
     controller.call_backend(other)
+
+
+def test_call_flair(controller):
+    controller.call_flair(["😀"])

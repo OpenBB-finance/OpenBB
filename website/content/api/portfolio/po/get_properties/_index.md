@@ -1,7 +1,5 @@
-# portfolio.po.get_properties
-
 ## Get underlying data 
-###portfolio.po.get_properties() -> List[str]
+### portfolio.po.get_properties() -> List[str]
 
 Get properties to use on property optimization.
     Returns

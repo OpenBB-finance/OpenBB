@@ -15,6 +15,7 @@ import yfinance as yf
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
+from openbb_terminal.helpers_denomination import transform as transform_by_denomination
 
 logger = logging.getLogger(__name__)
 
@@ -561,7 +562,11 @@ def get_macro_data(
             return pd.Series(dtype=float), ""
 
         if start_date or end_date:
-            df = df.loc[start_date:end_date]
+            try:
+                df = df.loc[start_date:end_date]
+            except TypeError:
+                console.print("[red]Invalid date sent. Format as YYYY-MM-DD[/red]\n")
+                return pd.DataFrame(), "NA/NA"
 
         if (
             symbol
@@ -704,25 +709,13 @@ def get_aggregated_macro_data(
         country_data_df[0].values.tolist(), index=country_data_df.index
     ).T
 
-    maximum_value = country_data_df.max().max()
+    (df_rounded, denomination) = transform_by_denomination(country_data_df)
 
-    if maximum_value > 1_000_000_000_000:
-        df_rounded = country_data_df / 1_000_000_000_000
-        denomination = " [in Trillions]"
-    elif maximum_value > 1_000_000_000:
-        df_rounded = country_data_df / 1_000_000_000
-        denomination = " [in Billions]"
-    elif maximum_value > 1_000_000:
-        df_rounded = country_data_df / 1_000_000
-        denomination = " [in Millions]"
-    elif maximum_value > 1_000:
-        df_rounded = country_data_df / 1_000
-        denomination = " [in Thousands]"
-    else:
-        df_rounded = country_data_df
-        denomination = ""
-
-    return df_rounded, units, denomination
+    return (
+        df_rounded,
+        units,
+        f" [in {denomination}]" if denomination != "Units" else "",
+    )
 
 
 @log_start_end(log=logger)

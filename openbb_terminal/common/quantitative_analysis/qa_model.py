@@ -228,7 +228,7 @@ def get_var(
     use_mean: bool = False,
     adjusted_var: bool = False,
     student_t: bool = False,
-    percentile: Union[int, float] = 0.999,
+    percentile: Union[int, float] = 99.9,
     portfolio: bool = False,
 ) -> pd.DataFrame:
     """Gets value at risk for specified stock dataframe
@@ -264,6 +264,8 @@ def get_var(
         data_return = data
 
     # Distribution percentages
+    percentile = percentile / 100
+
     percentile_90 = -1.282
     percentile_95 = -1.645
     percentile_99 = -2.326
@@ -343,6 +345,8 @@ def get_var(
         data_dictionary, index=["90.0%", "95.0%", "99.0%", f"{percentile*100}%"]
     )
 
+    df.sort_index(inplace=True)
+
     return df
 
 
@@ -350,7 +354,7 @@ def get_es(
     data: pd.DataFrame,
     use_mean: bool = False,
     distribution: str = "normal",
-    percentile: Union[float, int] = 0.999,
+    percentile: Union[float, int] = 99.9,
     portfolio: bool = False,
 ) -> pd.DataFrame:
     """Gets Expected Shortfall for specified stock dataframe
@@ -384,6 +388,8 @@ def get_es(
         data_return = data
 
     # Distribution percentages
+    percentile = percentile / 100
+
     percentile_90 = -1.282
     percentile_95 = -1.645
     percentile_99 = -2.326
@@ -517,6 +523,8 @@ def get_es(
         data_dictionary, index=["90.0%", "95.0%", "99.0%", f"{percentile*100}%"]
     )
 
+    df.sort_index(inplace=True)
+
     return df
 
 
@@ -635,10 +643,7 @@ def get_omega(
     threshold = np.linspace(threshold_start, threshold_end, 50)
     df = pd.DataFrame(threshold, columns=["threshold"])
 
-    omega_list = []
-    for i in threshold:
-        omega_list.append(get_omega_ratio(data, i))
-
+    omega_list = [get_omega_ratio(data, i) for i in threshold]
     df["omega"] = omega_list
 
     return df

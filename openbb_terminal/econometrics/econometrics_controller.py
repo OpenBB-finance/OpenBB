@@ -18,6 +18,7 @@ import openbb_terminal.econometrics.regression_model
 import openbb_terminal.econometrics.regression_view
 from openbb_terminal.core.config.paths import CUSTOM_IMPORTS_DIRECTORY
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.config.paths import USER_EXPORTS_DIRECTORY
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     check_positive,
@@ -160,7 +161,7 @@ class EconometricsController(BaseController):
             filepath.name: filepath
             for file_type in self.file_types
             for filepath in chain(
-                Path(obbff.EXPORT_FOLDER_PATH).rglob(f"*.{file_type}"),
+                Path(USER_EXPORTS_DIRECTORY).rglob(f"*.{file_type}"),
                 Path(CUSTOM_IMPORTS_DIRECTORY / "econometrics").rglob(f"*.{file_type}"),
             )
             if filepath.is_file()
@@ -247,7 +248,7 @@ class EconometricsController(BaseController):
         mt = MenuText("econometrics/")
         mt.add_param(
             "_data_loc",
-            f"\n\t{obbff.EXPORT_FOLDER_PATH}\n\t{str(CUSTOM_IMPORTS_DIRECTORY/'econometrics')}",
+            f"\n\t{str(USER_EXPORTS_DIRECTORY)}\n\t{str(CUSTOM_IMPORTS_DIRECTORY/'econometrics')}",
         )
         mt.add_raw("\n")
         mt.add_cmd("load")
@@ -289,6 +290,24 @@ class EconometricsController(BaseController):
             load_files = [f"load -f {file}" for file in self.files]
             return ["econometrics"] + load_files
         return []
+
+    def update_loaded(self):
+        self.list_dataset_cols = []
+        if not self.files:
+            self.loaded_dataset_cols = "\n"
+            self.list_dataset_cols.append("")
+            return
+
+        maxfile = max(len(file) for file in self.files)
+        self.loaded_dataset_cols = "\n"
+        for dataset, data in self.datasets.items():
+            max_files = (maxfile - len(dataset)) * " "
+            self.loaded_dataset_cols += (
+                f"\t{dataset} {max_files}: {', '.join(data.columns)}\n"
+            )
+
+            for col in data.columns:
+                self.list_dataset_cols.append(f"{dataset}.{col}")
 
     @log_start_end(log=logger)
     def call_load(self, other_args: List[str]):
@@ -391,18 +410,7 @@ class EconometricsController(BaseController):
 
                     self.update_runtime_choices()
 
-                    # Process new datasets to be updated
-                    self.list_dataset_cols = list()
-                    maxfile = max(len(file) for file in self.files)
-                    self.loaded_dataset_cols = "\n"
-                    for dataset, data in self.datasets.items():
-                        self.loaded_dataset_cols += (
-                            f"  {dataset} {(maxfile - len(dataset)) * ' '}: "
-                            f"{', '.join(data.columns)}\n"
-                        )
-
-                        for col in data.columns:
-                            self.list_dataset_cols.append(f"{dataset}.{col}")
+                    self.update_loaded()
 
                     console.print()
 
@@ -475,6 +483,9 @@ class EconometricsController(BaseController):
             other_args.insert(0, "-n")
         ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT)
 
+        if not ns_parser:
+            return
+
         if not ns_parser.name:
             console.print("Please enter a valid dataset.\n")
             return
@@ -488,15 +499,7 @@ class EconometricsController(BaseController):
 
         self.update_runtime_choices()
 
-        # Process new datasets to be updated
-        self.list_dataset_cols = list()
-        maxfile = max(len(file) for file in self.files)
-        self.loaded_dataset_cols = "\n"
-        for dataset, data in self.datasets.items():
-            self.loaded_dataset_cols += f"\t{dataset} {(maxfile - len(dataset)) * ' '}: {', '.join(data.columns)}\n"
-
-            for col in data.columns:
-                self.list_dataset_cols.append(f"{dataset}.{col}")
+        self.update_loaded()
 
     @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
@@ -1016,6 +1019,7 @@ class EconometricsController(BaseController):
                 )
 
             self.update_runtime_choices()
+            self.update_loaded()
         console.print()
 
     @log_start_end(log=logger)
