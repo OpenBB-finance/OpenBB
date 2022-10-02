@@ -81,7 +81,7 @@ def get_keys() -> pd.DataFrame:
 
     if current_keys:
         df = pd.DataFrame.from_dict(current_keys, orient="index").reset_index()
-        return df.rename(columns={0: "API", 1: "Key"})
+        return df.rename(columns={"index": "API", 0: "Key"})
     else:
         return pd.DataFrame()
 
