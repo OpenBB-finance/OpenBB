@@ -10,8 +10,7 @@ from openbb_terminal.rich_config import console
 
 
 def get_news(
-    term: str = "",
-    sources: str = "bloomberg.com",
+    term: str = "", sources: str = "bloomberg.com", sort: str = "published"
 ) -> pd.DataFrame:
     """Get news for a given term and source. [Source: Feedparser]
 
@@ -21,6 +20,8 @@ def get_news(
         term to search on the news articles
     sources: str
         sources to exclusively show news from
+    sort: str
+        the column to sort by
 
     Returns
     ----------
@@ -69,4 +70,5 @@ def get_news(
 
     df = pd.DataFrame(data.entries, columns=["title", "link", "published"])
     df["published"] = pd.to_datetime(df["published"])
+    df = df.sort_values(by=[sort], ascending=False)
     return df
