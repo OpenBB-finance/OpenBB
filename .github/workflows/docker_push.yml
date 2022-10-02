@@ -1,6 +1,9 @@
 name: Update Docker Hub
 
-on: workflow_dispatch
+# TODO: DELETE pull_request and push. THUS MUST HAPPEN BEFORE MERGE> IF YOU REVIEW THIS PR
+# CHECK FOR THIS AND IF ITS THERE COLIN FORGOT TO REMOVE IT AND YOU SHOULD NOT APPORVE
+# NO MATTER WHAT, EVEN IF DIDIER RELEASES AN EXECUTIVE ORDER
+on: [workflow_dispatch, pull_request, push]
 
 jobs:
   push_to_registry:
