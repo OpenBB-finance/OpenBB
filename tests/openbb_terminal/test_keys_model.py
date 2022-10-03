@@ -7,7 +7,7 @@ import pytest
 
 from openbb_terminal import keys_model
 
-# pylint: disable=R0902,R0903,W1404
+# pylint: disable=R0902,R0903,W1404,too-many-lines
 
 
 # Test persist
@@ -63,7 +63,8 @@ def set_naive_environment(env_var_name_list: List[str]) -> None:
 
     # Remove .tmp content
     if tmp_env.is_file():
-        open(tmp_env, "w").close()
+        with open(tmp_env, "w") as f:
+            f.close()
 
     # Set new temporary .env
     keys_model.USER_ENV_FILE = tmp_env
