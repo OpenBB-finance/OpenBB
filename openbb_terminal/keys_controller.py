@@ -741,21 +741,21 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             description="Set Sentiment Investor API key.",
         )
         parser.add_argument(
-            "-t",
-            "--token",
+            "-k",
+            "--key",
             type=str,
-            dest="token",
-            help="token",
+            dest="key",
+            help="key",
         )
         if not other_args:
             console.print("For your API Key, visit: https://sentimentinvestor.com\n")
             return
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-t")
+            other_args.insert(0, "-k")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             status = keys_model.set_si_key(
-                access_token=ns_parser.token, persist=True, show_output=True
+                access_token=ns_parser.key, persist=True, show_output=True
             )
             self.status_dict["si"] = keys_model.STATUS_MSG[status]
 

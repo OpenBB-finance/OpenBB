@@ -1404,7 +1404,7 @@ def check_binance_key(show_output: bool = False) -> int:
 
 
 def set_si_key(
-    access_token: str,
+    key: str,
     persist: bool = False,
     show_output: bool = True,
 ):
@@ -1412,7 +1412,7 @@ def set_si_key(
 
     Parameters
     ----------
-        access_token: str
+        key: str
         secret: str
         persist: bool
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
@@ -1430,7 +1430,7 @@ def set_si_key(
              3 - defined, not tested
     """
 
-    set_key("OPENBB_API_SENTIMENTINVESTOR_TOKEN", access_token, persist)
+    set_key("OPENBB_API_SENTIMENTINVESTOR_TOKEN", key, persist)
 
     status = check_si_key(show_output)
 
