@@ -1,6 +1,5 @@
 import logging
 import os
-import sys
 import binance
 import dotenv
 import pandas as pd
@@ -792,7 +791,7 @@ def check_iex_key(show_output: bool = False) -> int:
             pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1").quote(symbol="AAPL")
             logger.info("IEX Cloud key defined, test passed")
             status = 1
-        except Exception as _:
+        except Exception as _: # noqa: F841
             logger.warning("IEX Cloud key defined, test failed")
             status = -1
 
