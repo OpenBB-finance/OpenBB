@@ -942,14 +942,7 @@ def test_set_reddit_key(
         "OPENBB_API_REDDIT_USER_AGENT",
     ]
 
-    for env_var_name in env_var_name_list:
-        if env_var_name in os.environ:
-            os.environ.pop(env_var_name)
-
-    if Path(".tmp").is_file():
-        open(".tmp", 'w').close()
-    
-    keys_model.USER_ENV_FILE = Path(".tmp")
+    clean_environment(env_var_name_list)
 
     status = keys_model.set_reddit_key(
         client_id=args[0],
@@ -1065,7 +1058,90 @@ def test_set_bitquery_key(
         assert status == expected
 
 
-### def test_set_twitter_key
+@patch.dict(os.environ, {})
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "args, persist, show_output, expected",
+    [
+        (
+            ["test_key", "test_secret", "test_access_token"],
+            False,
+            True,
+            -1,
+        ),
+        (
+            ["test_key", "test_secret", "test_access_token"],
+            False,
+            False,
+            -1,
+        ),
+        (
+            ["test_key", "test_secret", "test_access_token"],
+            True,
+            False,
+            -1,
+        ),
+        (
+            ["test_key", "test_secret", "test_access_token"],
+            False,
+            False,
+            -1,
+        ),
+        (
+            ["REPLACE_ME", "REPLACE_ME", "REPLACE_ME"],
+            False,
+            True,
+            0,
+        ),
+        (
+            ["REPLACE_ME", "REPLACE_ME", "REPLACE_ME"],
+            False,
+            False,
+            0,
+        ),
+    ],
+)
+def test_set_twitter_key(
+    args: List[str], persist: bool, show_output: bool, expected: int
+):
+
+    env_var_name_list = [
+        "OPENBB_API_TWITTER_KEY",
+        "OPENBB_API_TWITTER_SECRET_KEY",
+        "OPENBB_API_TWITTER_BEARER_TOKEN",
+    ]
+
+    clean_environment(env_var_name_list)
+
+    status = keys_model.set_twitter_key(
+        key=args[0],
+        secret=args[1],
+        access_token=args[2],
+        persist=persist,
+        show_output=show_output,
+    )
+
+    for i, env_var_name in enumerate(env_var_name_list):
+
+        dotenv_var = keys_model.dotenv.get_key(
+            str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
+        )
+
+        os_var = os.getenv(env_var_name)
+
+        if env_var_name.startswith("OPENBB_"):
+            env_var_name = env_var_name[7:]
+        cfg_var = getattr(keys_model.cfg, env_var_name)
+
+        if persist is True:
+            assert dotenv_var == os_var == cfg_var == args[i]
+        else:
+            assert (
+                (dotenv_var is None) and (os_var is None) and (cfg_var == args[i])
+            )
+
+        assert status == expected
 
 ### def test_set_rh_key
 
@@ -1073,7 +1149,88 @@ def test_set_bitquery_key(
 
 ### def test_set_oanda_key
 
-### def test_set_binance_key
+@patch.dict(os.environ, {})
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "args, persist, show_output, expected",
+    [
+        (
+            ["test_key", "test_secret"],
+            False,
+            True,
+            -1,
+        ),
+        (
+            ["test_key", "test_secret"],
+            False,
+            False,
+            -1,
+        ),
+        (
+            ["test_key", "test_secret"],
+            True,
+            False,
+            -1,
+        ),
+        (
+            ["test_key", "test_secret"],
+            False,
+            False,
+            -1,
+        ),
+        (
+            ["REPLACE_ME", "REPLACE_ME"],
+            False,
+            True,
+            0,
+        ),
+        (
+            ["REPLACE_ME", "REPLACE_ME"],
+            False,
+            False,
+            0,
+        ),
+    ],
+)
+def test_set_binance_key(
+    args: List[str], persist: bool, show_output: bool, expected: int
+):
+
+    env_var_name_list = [
+        "OPENBB_API_BINANCE_KEY",
+        "OPENBB_API_BINANCE_SECRET",
+    ]
+
+    clean_environment(env_var_name_list)
+
+    status = keys_model.set_binance_key(
+        key=args[0],
+        secret=args[1],
+        persist=persist,
+        show_output=show_output,
+    )
+
+    for i, env_var_name in enumerate(env_var_name_list):
+
+        dotenv_var = keys_model.dotenv.get_key(
+            str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
+        )
+
+        os_var = os.getenv(env_var_name)
+
+        if env_var_name.startswith("OPENBB_"):
+            env_var_name = env_var_name[7:]
+        cfg_var = getattr(keys_model.cfg, env_var_name)
+
+        if persist is True:
+            assert dotenv_var == os_var == cfg_var == args[i]
+        else:
+            assert (
+                (dotenv_var is None) and (os_var is None) and (cfg_var == args[i])
+            )
+
+        assert status == expected
 
 
 @patch.dict(os.environ, {})
@@ -1158,7 +1315,90 @@ def test_set_si_key(
         assert status == expected
 
 
-### def test_set_coinbase_key
+@patch.dict(os.environ, {})
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "args, persist, show_output, expected",
+    [
+        (
+            ["test_key", "test_secret", "test_passphrase"],
+            False,
+            True,
+            -1,
+        ),
+        (
+            ["test_key", "test_secret", "test_passphrase"],
+            False,
+            False,
+            -1,
+        ),
+        (
+            ["test_key", "test_secret", "test_passphrase"],
+            True,
+            False,
+            -1,
+        ),
+        (
+            ["test_key", "test_secret", "test_passphrase"],
+            False,
+            False,
+            -1,
+        ),
+        (
+            ["REPLACE_ME", "REPLACE_ME", "REPLACE_ME"],
+            False,
+            True,
+            0,
+        ),
+        (
+            ["REPLACE_ME", "REPLACE_ME", "REPLACE_ME"],
+            False,
+            False,
+            0,
+        ),
+    ],
+)
+def test_set_coinbase_key(
+    args: List[str], persist: bool, show_output: bool, expected: int
+):
+
+    env_var_name_list = [
+        "OPENBB_API_COINBASE_KEY",
+        "OPENBB_API_COINBASE_SECRET",
+        "OPENBB_API_COINBASE_PASS_PHRASE",
+    ]
+
+    clean_environment(env_var_name_list)
+
+    status = keys_model.set_coinbase_key(
+        key=args[0],
+        secret=args[1],
+        passphrase=args[2],
+        persist=persist,
+        show_output=show_output,
+    )
+
+    for i, env_var_name in enumerate(env_var_name_list):
+
+        dotenv_var = keys_model.dotenv.get_key(
+            str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
+        )
+
+        os_var = os.getenv(env_var_name)
+
+        if env_var_name.startswith("OPENBB_"):
+            env_var_name = env_var_name[7:]
+        cfg_var = getattr(keys_model.cfg, env_var_name)
+
+        if persist is True:
+            assert dotenv_var == os_var == cfg_var == args[i]
+        else:
+            assert (
+                (dotenv_var is None) and (os_var is None) and (cfg_var == args[i])
+            )
+
+        assert status == expected
 
 
 @patch.dict(os.environ, {})
@@ -1571,7 +1811,88 @@ def test_set_ethplorer_key(
         assert status == expected
 
 
-### def test_set_smartstake_key
+@patch.dict(os.environ, {})
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "args, persist, show_output, expected",
+    [
+        (
+            ["test_key", "test_access_token"],
+            False,
+            True,
+            -1,
+        ),
+        (
+            ["test_key", "test_access_token"],
+            False,
+            False,
+            -1,
+        ),
+        (
+            ["test_key", "test_access_token"],
+            True,
+            False,
+            -1,
+        ),
+        (
+            ["test_key", "test_access_token"],
+            False,
+            False,
+            -1,
+        ),
+        (
+            ["REPLACE_ME", "REPLACE_ME"],
+            False,
+            True,
+            0,
+        ),
+        (
+            ["REPLACE_ME", "REPLACE_ME"],
+            False,
+            False,
+            0,
+        ),
+    ],
+)
+def test_set_smartstake_key(
+    args: List[str], persist: bool, show_output: bool, expected: int
+):
+
+    env_var_name_list = [
+        "OPENBB_API_SMARTSTAKE_KEY",
+        "OPENBB_API_SMARTSTAKE_TOKEN",
+    ]
+
+    clean_environment(env_var_name_list)
+
+    status = keys_model.set_smartstake_key(
+        key=args[0],
+        access_token=args[1],
+        persist=persist,
+        show_output=show_output,
+    )
+
+    for i, env_var_name in enumerate(env_var_name_list):
+
+        dotenv_var = keys_model.dotenv.get_key(
+            str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
+        )
+
+        os_var = os.getenv(env_var_name)
+
+        if env_var_name.startswith("OPENBB_"):
+            env_var_name = env_var_name[7:]
+        cfg_var = getattr(keys_model.cfg, env_var_name)
+
+        if persist is True:
+            assert dotenv_var == os_var == cfg_var == args[i]
+        else:
+            assert (
+                (dotenv_var is None) and (os_var is None) and (cfg_var == args[i])
+            )
+
+        assert status == expected
 
 
 @patch.dict(os.environ, {})
@@ -1584,25 +1905,25 @@ def test_set_ethplorer_key(
             ["test_key"],
             False,
             True,
-            -1,
+            3,
         ),
         (
             ["test_key"],
             False,
             False,
-            -1,
+            3,
         ),
         (
             ["test_key"],
             True,
             False,
-            -1,
+            3,
         ),
         (
             ["test_key"],
             False,
             False,
-            -1,
+            3,
         ),
         (
             ["REPLACE_ME"],
