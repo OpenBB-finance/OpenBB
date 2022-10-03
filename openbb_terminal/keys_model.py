@@ -792,7 +792,7 @@ def check_iex_key(show_output: bool = False) -> int:
             pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1").quote(symbol="AAPL")
             logger.info("IEX Cloud key defined, test passed")
             status = 1
-        except PyEXception:
+        except Exception as _:
             logger.warning("IEX Cloud key defined, test failed")
             status = -1
 
