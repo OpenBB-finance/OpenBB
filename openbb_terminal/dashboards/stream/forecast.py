@@ -237,12 +237,12 @@ class Handler:
 
         with r0c1:
             st.title("Forecast")
-        with r0c2:
-            image = (
-                "https://wp-api.zipmex.com/wp-content/uploads/2022/05/"
-                "FS0apkragAAnItM-min-842x1024.jpeg"
-            )
-            st.image(image, width=100)
+        # with r0c2:
+        #     image = (
+        #         "https://wp-api.zipmex.com/wp-content/uploads/2022/05/"
+        #         "FS0apkragAAnItM-min-842x1024.jpeg"
+        #     )
+        #     st.image(image, width=100)
         with r1c1:
             ticker = st.text_input(
                 "Ticker", "", key="ticker", on_change=self.on_ticker_change
