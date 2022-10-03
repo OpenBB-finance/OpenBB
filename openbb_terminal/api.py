@@ -1905,7 +1905,7 @@ from openbb_terminal.api import openbb (or: from openbb_terminal.api import open
 """
 
 
-def copy_func(f) -> Callable:
+def copy_func(f: Callable, logging_decorator: bool = False) -> Callable:
     """Copies the contents and attributes of the entered function. Based on https://stackoverflow.com/a/13503277
     Parameters
     ----------
@@ -1925,6 +1925,10 @@ def copy_func(f) -> Callable:
     )
     g = functools.update_wrapper(g, f)
     g.__kwdefaults__ = f.__kwdefaults__
+
+    if logging_decorator:
+        g = log_start_end(func=g, log=logger)
+
     return g
 
 
@@ -1991,10 +1995,10 @@ class FunctionFactory:
             function has no charting
         """
         self.model_only = view is None
-        self.model = copy_func(model)
+        self.model = copy_func(f=model, logging_decorator=True)
         self.view = None
         if view is not None:
-            self.view = copy_func(view)
+            self.view = copy_func(f=view, logging_decorator=True)
 
     def api_callable(self, *args, **kwargs):
         """This returns the result of the command from the view or the model function based on the chart parameter
