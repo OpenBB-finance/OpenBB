@@ -295,8 +295,6 @@ class BaseController(metaclass=ABCMeta):
         else:
             (known_args, other_args) = self.parser.parse_known_args(an_input.split())
 
-            global RECORD_SESSION
-            global SESSION_RECORDED
             if RECORD_SESSION:
                 SESSION_RECORDED.append(an_input)
 
@@ -549,7 +547,6 @@ class BaseController(metaclass=ABCMeta):
         """Process stop command"""
         global RECORD_SESSION
         global SESSION_RECORDED
-        global SESSION_RECORDED_NAME
 
         if not RECORD_SESSION:
             console.print(
