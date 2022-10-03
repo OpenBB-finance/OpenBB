@@ -55,13 +55,15 @@ def test_get_keys():
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "key, persist, show_output",
+    "key, persist, show_output, expected",
     [
-        ("test_key", False, True),
-        ("test_key", False, False),
+        ("test_key", False, True, -1),
+        ("test_key", False, False, -1),
+        ("REPLACE_ME", False, True, 0),
+        ("REPLACE_ME", False, False, 0),
     ],
 )
-def test_set_fred_key(key, persist, show_output):
+def test_set_fred_key(key, persist, show_output, expected):
 
     # Route .env file location
     # Just for safety, persist=False should not change it
@@ -74,4 +76,4 @@ def test_set_fred_key(key, persist, show_output):
     if keys_model.USER_ENV_FILE.is_file():
         os.remove(keys_model.USER_ENV_FILE)
 
-    assert status == -1
+    assert status == expected
