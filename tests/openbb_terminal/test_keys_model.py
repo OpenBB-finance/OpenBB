@@ -703,7 +703,7 @@ def test_set_finnhub_key(
 def test_set_iex_key(args: List[str], persist: bool, show_output: bool, expected: int):
 
     env_var_name_list = [
-        "OPENBB_API_IEX_KEY",
+        "OPENBB_API_IEX_TOKEN",
     ]
 
     set_naive_environment(env_var_name_list)

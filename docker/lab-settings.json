@@ -347,7 +347,7 @@
           "default": "REPLACE_ME",
           "value": ""
         },
-        "OPENBB_API_IEX_KEY": {
+        "OPENBB_API_IEX_TOKEN": {
           "type": "string",
           "form": "password",
           "title": "IEX Cloud key",

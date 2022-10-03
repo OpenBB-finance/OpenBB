@@ -123,7 +123,7 @@ API_BINANCE_SECRET = os.getenv("OPENBB_API_BINANCE_SECRET") or "REPLACE_ME"
 API_FINNHUB_KEY = os.getenv("OPENBB_API_FINNHUB_KEY") or "REPLACE_ME"
 
 # https://iexcloud.io
-API_IEX_TOKEN = os.getenv("OPENBB_API_IEX_KEY") or "REPLACE_ME"
+API_IEX_TOKEN = os.getenv("OPENBB_API_IEX_TOKEN") or "REPLACE_ME"
 
 # https://www.sentimentinvestor.com
 API_SENTIMENTINVESTOR_TOKEN = (

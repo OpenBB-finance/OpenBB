@@ -1,2 +1,2 @@
-not defined
+defined, test failed
 

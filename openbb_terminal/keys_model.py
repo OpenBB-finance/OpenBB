@@ -758,7 +758,7 @@ def set_iex_key(key: str, persist: bool = False, show_output: bool = True) -> in
              3 - defined, not tested
     """
 
-    set_key("OPENBB_API_IEX_KEY", key, persist)
+    set_key("OPENBB_API_IEX_TOKEN", key, persist)
     status = check_iex_key(show_output)
 
     return status
@@ -789,11 +789,11 @@ def check_iex_key(show_output: bool = False) -> int:
         status = 0
     else:
         try:
-            pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1")
+            pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1").quote(symbol="AAPL")
             logger.info("IEX Cloud key defined, test passed")
             status = 1
         except PyEXception:
-            logger.exception("IEX Cloud key defined, test failed")
+            logger.warning("IEX Cloud key defined, test failed")
             status = -1
 
     if show_output:
