@@ -755,7 +755,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             status = keys_model.set_si_key(
-                access_token=ns_parser.key, persist=True, show_output=True
+                key=ns_parser.key, persist=True, show_output=True
             )
             self.status_dict["si"] = keys_model.STATUS_MSG[status]
 
