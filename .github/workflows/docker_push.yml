@@ -37,7 +37,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: "{{defaultContext}}:docker"
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/openbb-test:latest
             # labels: ${{ steps.meta.outputs.labels }}
