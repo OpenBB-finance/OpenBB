@@ -22,7 +22,7 @@ def test_set_key(env_var_name: str, env_var_value: str, persist: bool):
     # Test
     keys_model.set_key(env_var_name, env_var_value, persist)
 
-    # Get key from .env
+    # Get key from temp .env
     dotenv_key = keys_model.dotenv.get_key(
         str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
     )
@@ -59,6 +59,8 @@ def test_get_keys():
     [
         ("test_key", False, True, -1),
         ("test_key", False, False, -1),
+        ("test_key", True, False, -1),
+        ("test_key", False, False, -1),
         ("REPLACE_ME", False, True, 0),
         ("REPLACE_ME", False, False, 0),
     ],
@@ -72,8 +74,24 @@ def test_set_fred_key(key, persist, show_output, expected):
     # Test
     status = keys_model.set_fred_key(key=key, persist=persist, show_output=show_output)
 
+    # Get key from temp .env
+    dotenv_key = keys_model.dotenv.get_key(
+        str(keys_model.USER_ENV_FILE), key_to_get="OPENBB_API_FRED_KEY"
+    )
+
+    # Get key from patched os.environ
+    os_key = os.getenv("OPENBB_API_FRED_KEY")
+
+    # Get key from config_terminal.py
+    cfg_key = getattr(keys_model.cfg, "API_FRED_KEY")
+
     # Remove temp .env
     if keys_model.USER_ENV_FILE.is_file():
         os.remove(keys_model.USER_ENV_FILE)
+    
+    if persist is True:
+        assert dotenv_key == os_key == cfg_key == key
+    else:
+        assert (dotenv_key is None) and (os_key is None) and (cfg_key == key)
 
     assert status == expected
