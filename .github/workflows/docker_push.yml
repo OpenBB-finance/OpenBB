@@ -20,7 +20,6 @@ jobs:
   # TODO: optimize
   push_to_registry:
     name: Push Docker image to Docker Hub
-    needs: prepare
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
