@@ -12,10 +12,8 @@ jobs:
     - uses: actions/checkout@v3
     - name: Setup Environment
       run: cp docker/compose.env .env && cat .env
-    - name: Load environment
-      run: source .env
     - name: Build Container
-      run: docker compose -f docker/docker-compose.yaml up -d --build
+      run: source .env && docker compose -f docker/docker-compose.yaml up -d --build
 
 
   push_to_registry:
