@@ -65,6 +65,53 @@ def test_get_keys():
         ("REPLACE_ME", False, False, 0),
     ],
 )
+def test_set_av_key(key, persist, show_output, expected):
+
+    # Route .env file location
+    # Just for safety, persist=False should not change it
+    keys_model.USER_ENV_FILE = Path(".tmp")
+
+    # Test
+    status = keys_model.set_av_key(key=key, persist=persist, show_output=show_output)
+
+    # Get key from temp .env
+    dotenv_key = keys_model.dotenv.get_key(
+        str(keys_model.USER_ENV_FILE), key_to_get="OPENBB_API_KEY_ALPHAVANTAGE"
+    )
+
+    # Get key from patched os.environ
+    os_key = os.getenv("OPENBB_API_KEY_ALPHAVANTAGE")
+
+    # Get key from config_terminal.py
+    cfg_key = getattr(keys_model.cfg, "API_KEY_ALPHAVANTAGE")
+
+    # Remove temp .env
+    if keys_model.USER_ENV_FILE.is_file():
+        os.remove(keys_model.USER_ENV_FILE)
+    
+    if persist is True:
+        assert dotenv_key == os_key == cfg_key == key
+    else:
+        assert (dotenv_key is None) and (os_key is None) and (cfg_key == key)
+
+    assert status == expected
+
+
+# Test set_[api]_key with persist=False and dummy key
+@patch.dict(os.environ, {})
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "key, persist, show_output, expected",
+    [
+        ("test_key", False, True, -1),
+        ("test_key", False, False, -1),
+        ("test_key", True, False, -1),
+        ("test_key", False, False, -1),
+        ("REPLACE_ME", False, True, 0),
+        ("REPLACE_ME", False, False, 0),
+    ],
+)
 def test_set_fred_key(key, persist, show_output, expected):
 
     # Route .env file location
