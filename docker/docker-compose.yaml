@@ -1,13 +1,11 @@
 version: '3.8'
 services:
   openbbterminal-python:
-    platform: linux/amd64
     build:
       context: ..
       dockerfile: docker/openbbterminal-python.dockerfile
     image: "${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}/openbbterminal-python:${OPENBBTERMINAL_DOCKER_PYTHON_VERSION}"
   openbbterminal-deps:
-    platform: linux/amd64
     build:
       context: ..
       dockerfile: docker/openbbterminal-deps.dockerfile
@@ -16,7 +14,6 @@ services:
         OPENBBTERMINAL_DOCKER_PYTHON_VERSION: ${OPENBBTERMINAL_DOCKER_PYTHON_VERSION}
     image: "${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}/openbbterminal-deps:${OPENBBTERMINAL_DOCKER_DEPS_VERSION}"
   openbbterminal-poetry-deps:
-    platform: linux/amd64
     build:
       context: ..
       dockerfile: docker/openbbterminal-poetry-deps.dockerfile
@@ -25,7 +22,6 @@ services:
         OPENBBTERMINAL_DOCKER_PYTHON_VERSION: ${OPENBBTERMINAL_DOCKER_PYTHON_VERSION}
     image: "${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}/openbbterminal-poetry-deps:${OPENBBTERMINAL_DOCKER_POETRY_DEPS_VERSION}"
   openbbterminal-poetry-full-deps:
-    platform: linux/amd64
     build:
       context: ..
       dockerfile: docker/openbbterminal-poetry-full-deps.dockerfile
@@ -35,7 +31,6 @@ services:
         OPENBBTERMINAL_DOCKER_POETRY_DEPS_VERSION: ${OPENBBTERMINAL_DOCKER_POETRY_DEPS_VERSION}
     image: "${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}/openbbterminal-poetry-full-deps:${OPENBBTERMINAL_DOCKER_POETRY_FULL_DEPS_VERSION}"
   openbbterminal:
-    platform: linux/amd64
     build:
       context: ..
       dockerfile: docker/openbbterminal.dockerfile
@@ -46,7 +41,6 @@ services:
     tty: true
     env_file: setenv
   openbbterminal-poetry:
-    platform: linux/amd64
     build:
       context: ..
       dockerfile: docker/openbbterminal-poetry.dockerfile
@@ -57,7 +51,6 @@ services:
     tty: true
     env_file: setenv
   openbbterminal-poetry-jupyter:
-    platform: linux/amd64
     build:
       context: ..
       dockerfile: docker/openbbterminal-poetry-jupyter.dockerfile
@@ -68,7 +61,6 @@ services:
     tty: true
     env_file: setenv
   openbbterminal-poetry-full:
-    platform: linux/amd64
     build:
       context: ..
       dockerfile: docker/openbbterminal-poetry-full.dockerfile
