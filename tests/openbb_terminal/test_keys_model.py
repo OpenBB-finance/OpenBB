@@ -22,7 +22,7 @@ def test_get_keys():
 def test_set_key(env_var_name: str, env_var_value: str, persist: bool):
 
     # Route env file location
-    keys_model.USER_ENV_FILE = ".tmp"
+    keys_model.USER_ENV_FILE = Path(".tmp")
     keys_model.set_key(env_var_name, env_var_value, persist)
 
     # Check if key was exported to .env
@@ -31,7 +31,7 @@ def test_set_key(env_var_name: str, env_var_value: str, persist: bool):
     )
 
     # Remove temporary env file
-    if Path(keys_model.USER_ENV_FILE).is_file():
+    if keys_model.USER_ENV_FILE.is_file():
         os.remove(keys_model.USER_ENV_FILE)
 
     # Check if key was exported to os
