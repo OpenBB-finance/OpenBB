@@ -319,8 +319,7 @@ class DegiroView:
 
         degiro_model.login()
 
-        if degiro_model.check_session_id():
-            DegiroView.__login_display_success()
+        DegiroView.__login_display_success()
 
     @staticmethod
     @log_start_end(log=logger)

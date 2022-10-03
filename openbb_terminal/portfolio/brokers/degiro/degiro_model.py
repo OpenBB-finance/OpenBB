@@ -464,11 +464,3 @@ class DegiroModel:
         portfolio_df.to_csv(file_path)
 
         console.print(f"Saved file: {file_path}\n")
-
-    @log_start_end(log=logger)
-    def check_session_id(self):
-        trading_api = self.__trading_api
-
-        if trading_api.connection_storage.session_id:
-            return True
-        return False
