@@ -7,28 +7,12 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-    - uses: actions/checkout@v2
+        - uses: actions/checkout@v2 # Checking out the repo
 
-    - name: Build Image
-      id: build-image
-      uses: redhat-actions/buildah-build@v2
-      with:
-        image: my-app
-        tags: latest ${{ github.sha }}
-        containerfiles: |
-          ./Containerfile
-
-    # Podman Login action (https://github.com/redhat-actions/podman-login) also be used to log in,
-    # in which case 'username' and 'password' can be omitted.
-    - name: Push To quay.io
-      id: push-to-quay
-      uses: redhat-actions/push-to-registry@v2
-      with:
-        image: ${{ steps.build-image.outputs.image }}
-        tags: ${{ steps.build-image.outputs.tags }}
-        registry: quay.io/quay-user
-        username: quay-user
-        password: ${{ secrets.REGISTRY_PASSWORD }}
-
-    - name: Print image url
-      run: echo "Image pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
+        - name: Build and Publish head Docker image
+          uses: VaultVulp/gp-docker-action@1.1.12
+          with:
+              github-token: ${{ secrets.GITHUB_TOKEN }} # Provide GITHUB_TOKEN to login into the GitHub Packages
+              image-name: my-cool-service # Provide Docker image name
+              image-tag: head # Provide Docker image tag
+              build-context: docker/openbbterminal-poetry.dockerfile
