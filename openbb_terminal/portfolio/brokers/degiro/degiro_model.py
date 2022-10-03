@@ -177,27 +177,20 @@ class DegiroModel:
         return self.__trading_api.delete_order(order_id=order_id)
 
     @log_start_end(log=logger)
-    def companynews(
-        self, symbol: str, limit: int = 10, offset: int = 0, languages: str = "en,fr"
-    ) -> NewsByCompany:
+    def companynews(self, isin: str) -> NewsByCompany:
         trading_api = self.__trading_api
         request = NewsByCompany.Request(
-            isin=symbol,
-            limit=limit,
-            offset=offset,
-            languages=languages,
+            isin=isin,
+            limit=10,
+            offset=0,
+            languages="en,fr",
         )
 
         # FETCH DATA
-        try:
-            news = trading_api.get_news_by_company(
-                request=request,
-                raw=False,
-            )
-        except Exception as e:
-            e_str = str(e)
-            console.print(f"[red]{e_str}[/red]")
-            return
+        news = trading_api.get_news_by_company(
+            request=request,
+            raw=False,
+        )
 
         return news
 
