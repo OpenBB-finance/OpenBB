@@ -9,14 +9,14 @@ You can get direct access to normalized financial data from multiple data provid
 To be completed once pip install is available on PyPI
 
 ## Setup
-### 1. Import OpenBB SDK
+### 1. Import OpenBB SDK<img width="652" alt="Screenshot 2022-10-04 at 00 00 14" src="https://user-images.githubusercontent.com/40023817/193700663-b91d57a9-4581-4f7e-a6da-764c0c9de092.png">
+
 
 First off, import OpenBB SDK into your python script or Jupyter Notebook with:
 
 ```
 from openbb_terminal.api import openbb
 ```
-
 
 This imports all Terminal commands at once. To see all the available commands, you can press `tab` in jupyter notebook.
 Another approach is to check out [OpenBB SDK Documentation](https://openbb-finance.github.io/OpenBBTerminal/api/), where you can explore its capabilities
@@ -32,8 +32,7 @@ theme = TerminalStyle("light", "light", "light")
 
 ```
 
-![Screenshot 2022-10-03 at 16 30 31](https://user-images.githubusercontent.com/40023817/193642769-98dcb01e-74a1-4a63-92a6-94ed0da52685.png)
-
+<img width="813" alt="Screenshot 2022-10-03 at 23 56 52" src="https://user-images.githubusercontent.com/40023817/193700307-cbb12edc-0a5d-4804-9f3c-a798efd9e69d.png">
 
 OR
 
@@ -43,8 +42,8 @@ theme = TerminalStyle("dark", "dark", "dark")
 
 ```
 
-![Screenshot 2022-10-03 at 18 40 02](https://user-images.githubusercontent.com/40023817/193643052-6940a553-d291-4033-8c40-24c19183e7ae.png)
 
+<img width="791" alt="Screenshot 2022-10-03 at 23 46 33" src="https://user-images.githubusercontent.com/40023817/193699221-e154995b-653c-40fd-8fc6-a3f8d39638db.png">
 
 
 
@@ -55,11 +54,13 @@ Each and every command of OpenBB SDK has detailed documentation about input para
 This will work out of the box if you're using Jupyter Notebook. In case your IDE is VSCode, you will need to install the [Jupyter PowerToys
 extension](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.vscode-jupyter-powertoys).
 
-[INSERT SCREENSHOTs]
+<img width="788" alt="Screenshot 2022-10-03 at 23 31 55" src="https://user-images.githubusercontent.com/40023817/193697567-e7143252-c560-441e-84fd-cbe38aeaf0ea.png">
 
 
 **Approach 2: Type `help(command)`**
 You can also type `help(command)`, see example below, to see the command' docstring.
+
+<img width="871" alt="Screenshot 2022-10-03 at 23 33 05" src="https://user-images.githubusercontent.com/40023817/193697676-39351008-386d-4c4c-89f2-3de7d8d4e89d.png">
 
 
 **Approach 3: Use OpenBB SDK Documentation page**
@@ -82,8 +83,8 @@ First, you will need to load in the desired ticker. If it's not on the top of yo
 ```
 openbb.stocks.search("apple")
 ```
+<img width="676" alt="Screenshot 2022-10-03 at 23 59 58" src="https://user-images.githubusercontent.com/40023817/193700711-a5784f67-118b-4581-af1e-4032a445f06a.png">
 
-[INSERT CHART]
 
 We want to load `Apple Inc.` listed on US exchange, so our ticker should be `AAPL`. Let's say if you want to load from Brazilian exchange, you should load in `AAPL34.SA`.
 
@@ -121,18 +122,21 @@ Depending on your needs, you can get the outputs in form of data (e.g. `pandas d
 openbb.economy.index(indices = ['sp500', 'nyse_ny', 'russell1000'], start_date = '2010-01-01')
 ```
 
-[INSERT CHART - DF_SD]
+<img width="575" alt="Screenshot 2022-10-04 at 00 02 23" src="https://user-images.githubusercontent.com/40023817/193700891-f4d93440-31e3-411e-9931-3a38782f68e3.png">
+
+
 
 You might be wondering how to find all the available indices. This type of information should be available in the docstring. Let's give it a try.
 
-[INSERT CHART]
+
 
 As mentioned in the docstring, you can access it with the following helper function.
 
 ```
 openbb.economy.available_indices()
 ```
-[INSERT CHART - DF_SD]
+
+<img width="1130" alt="Screenshot 2022-10-04 at 00 06 46" src="https://user-images.githubusercontent.com/40023817/193701439-12f167a1-3f9d-4af4-a230-76b9bde41b6e.png">
 
 
 ### 2. Getting charts
@@ -140,7 +144,8 @@ openbb.economy.available_indices()
 ```
 openbb.economy.index(indices = ['sp500', 'nyse_ny', 'russell1000'], start_date = '2010-01-01', chart=True)
 ```
-[INSERT CHART - DF_VAR]
+
+<img width="741" alt="Screenshot 2022-10-04 at 00 03 57" src="https://user-images.githubusercontent.com/40023817/193701075-796ffabe-3266-4d71-9a81-3042e8ca5fc8.png">
 
 
 ## 2. Toolbox Layer
@@ -159,8 +164,8 @@ Here we will use an example orderbook for illustration purposes. You can totally
 order_book_path = "portfolio/allocation/60_40_Portfolio.xlsx"
 tickers, categories = openbb.portfolio.po.load(excel_file = order_book_path)
 ```
+<img width="896" alt="Screenshot 2022-10-03 at 23 40 33" src="https://user-images.githubusercontent.com/40023817/193698544-7baaf5c7-ecf9-455f-a1a4-0a5bae275002.png">
 
-[INSERT CHART]
 
 
 #### Step 2. Optimizing portfolio
@@ -173,7 +178,9 @@ weights_max_sharpe, data_returns_max_sharpe = openbb.portfolio.po.maxsharpe(tick
 print("Max Sharpe")
 weights_max_sharpe
 ```
-[INSERT CHART]
+<img width="703" alt="Screenshot 2022-10-03 at 23 41 14" src="https://user-images.githubusercontent.com/40023817/193698630-c049dda6-3770-4e34-9bd3-1792d87457a2.png">
+
+
 
 ```
 ## Minimum risk optimization
@@ -183,7 +190,7 @@ print("Min Risk")
 weights_min_risk
 ```
 
-[INSERT CHART]
+<img width="888" alt="Screenshot 2022-10-03 at 23 41 38" src="https://user-images.githubusercontent.com/40023817/193698675-62bb8751-03e1-4d2d-8888-3ef536d294e9.png">
 
 
 These methods are basic because they don't account for concentration risk properly. For instance, you can see that much of the allocation falls on a few stocks.
@@ -200,18 +207,22 @@ weights_hrp
 
 ```
 
+<img width="890" alt="Screenshot 2022-10-03 at 23 42 14" src="https://user-images.githubusercontent.com/40023817/193698737-ad1955c2-13a5-4586-b6fe-3ed7cd139eb9.png">
+
+
 
 ```
 openbb.portfolio.po.plot(data=data_returns_hrp,weights=weights_hrp,heat=True)
 ```
 
-[INSERT CHART]
+<img width="885" alt="Screenshot 2022-10-03 at 23 42 41" src="https://user-images.githubusercontent.com/40023817/193698795-a9ce25c4-4b4b-4cb6-b8ce-921eb60039eb.png">
 
 
 ```
 openbb.portfolio.po.plot(data=data_returns_hrp,weights=weights_hrp,rc_chart=True)
 ```
-[INSERT CHART]
+
+
 
 These functionalities have an extensive list of parameters and thus the optimization process is also highly dependent on these calculations. E.g. see the following documentation.
 
