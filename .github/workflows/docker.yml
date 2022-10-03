@@ -10,7 +10,7 @@ jobs:
         - uses: actions/checkout@v2 # Checking out the repo
 
         - name: Build and Publish head Docker image
-          uses: VaultVulp/gp-docker-action@1.1.12
+          uses: VaultVulp/gp-docker-action@1.2.0
           with:
               github-token: ${{ secrets.GITHUB_TOKEN }} # Provide GITHUB_TOKEN to login into the GitHub Packages
               image-name: my-cool-service # Provide Docker image name
