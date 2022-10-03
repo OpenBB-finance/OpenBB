@@ -15,7 +15,6 @@ en:
   _main_menu_: Main menu
   keys/_keys_: This menu allows you to set your own API keys. Type 'about' for more information
   keys/mykeys: get your current keys
-  keys/refresh: refresh keys status
   keys/_status_: Status
   defined, test passed: defined, test passed
   defined, test failed: defined, test failed
