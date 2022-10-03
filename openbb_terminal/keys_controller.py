@@ -1423,22 +1423,13 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             return
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
+            os.environ["OPENBB_DG_USERNAME"] = ns_parser.username
+            dotenv.set_key(self.env_file, "OPENBB_DG_USERNAME", ns_parser.username)
+            cfg.DG_USERNAME = ns_parser.username
 
-            if ns_parser.username and not ns_parser.password:
-                console.print("Password is required")
-                return
-            if ns_parser.password and not ns_parser.username:
-                console.print("Username is required")
-                return
-
-            if ns_parser.username and ns_parser.password:
-                os.environ["OPENBB_DG_USERNAME"] = ns_parser.username
-                dotenv.set_key(self.env_file, "OPENBB_DG_USERNAME", ns_parser.username)
-                cfg.DG_USERNAME = ns_parser.username
-
-                os.environ["OPENBB_DG_PASSWORD"] = ns_parser.password
-                dotenv.set_key(self.env_file, "OPENBB_DG_PASSWORD", ns_parser.password)
-                cfg.DG_PASSWORD = ns_parser.password
+            os.environ["OPENBB_DG_PASSWORD"] = ns_parser.password
+            dotenv.set_key(self.env_file, "OPENBB_DG_PASSWORD", ns_parser.password)
+            cfg.DG_PASSWORD = ns_parser.password
 
             if ns_parser.secret:
                 os.environ["OPENBB_DG_TOTP_SECRET"] = ns_parser.secret
