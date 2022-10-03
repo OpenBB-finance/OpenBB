@@ -13,7 +13,7 @@ jobs:
     - name: Setup Environment
       run: cp docker/compose.env .env && cat .env
     - name: Build Container
-      run: source .env && docker compose -f docker/docker-compose.yaml --verbose build
+      run: source .env && docker compose --verbose -f docker/docker-compose.yaml build
 
 
   push_to_registry:
