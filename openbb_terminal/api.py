@@ -1911,6 +1911,9 @@ def copy_func(f: Callable, logging_decorator: bool = False) -> Callable:
     ----------
     f: Callable
         Function to be copied
+    logging_decorator: bool
+        If True, the copied function will be decorated with the logging decorator
+
     Returns
     -------
     g: Callable

@@ -133,7 +133,10 @@ def sdk_arg_logger(func=None, log=None):
             value = func(*args, **kwargs)
             locals_dict = locals()
             input_dict = {"args": locals_dict["args"], "kwargs": locals_dict["kwargs"]}
-            log.info(f"INPUT: {json.dumps(input_dict)}")
+            log.info(
+                f"INPUT: {json.dumps(input_dict)}",
+                extra={"func_name_override": func.__name__},
+            )
             return value
 
         except Exception as e:
