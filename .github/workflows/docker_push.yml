@@ -1,7 +1,7 @@
 name: Update Docker Hub
 
 # TODO: DELETE pull_request and push. THUS MUST HAPPEN BEFORE MERGE> IF YOU REVIEW THIS PR
-# CHECK FOR THIS AND IF ITS THERE COLIN FORGOT TO REMOVE IT AND YOU SHOULD NOT APPORVE
+# CHECK FOR THIS AND IF ITS THERE COLIN FORGOT TO REMOVE IT AND YOU SHOULD NOT APPROVE
 # NO MATTER WHAT, EVEN IF DIDIER RELEASES AN EXECUTIVE ORDER
 on: [workflow_dispatch, pull_request, push]
 
@@ -28,7 +28,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
-          context: docker
+          context: docker/
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: colin99d/openbb-test:latest
+            # labels: ${{ steps.meta.outputs.labels }}
