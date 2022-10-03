@@ -4,11 +4,11 @@ from unittest.mock import patch
 from pathlib import Path
 import pandas as pd
 import pytest
-from tomlkit import key
 
 from openbb_terminal import keys_model
 
 # pylint: disable=R0902,R0903,W1404
+
 
 # Test persist
 @patch.dict(os.environ, {}, clear=True)
