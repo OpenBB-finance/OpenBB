@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Build Container
-      run: docker compose -f docker/docker-compose.yaml up -d --build
+      run: docker compose -f ../docker/docker-compose.yaml up -d --build
 
 
   push_to_registry:
