@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 python:3.9-slim-buster
+FROM python:3.9-slim-buster
 
 LABEL org.opencontainers.image.source https://github.com/OpenBB-finance/OpenBBTerminal
 
