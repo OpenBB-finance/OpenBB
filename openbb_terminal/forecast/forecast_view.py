@@ -213,7 +213,9 @@ def display_corr(
 
 @log_start_end(log=logger)
 def show_df(data: pd.DataFrame, limit: int = 15, name: str = "", export: str = ""):
-    console.print(f"[green]{name} has following shape (rowxcolumn): {data.shape}[/green]")
+    console.print(
+        f"[green]{name} has following shape (rowxcolumn): {data.shape}[/green]"
+    )
     if len(data.columns) > 10:
         console.print(
             "[red]Dataframe has more than 10 columns. Please export"
@@ -227,7 +229,9 @@ def show_df(data: pd.DataFrame, limit: int = 15, name: str = "", export: str = "
         title=f"Dataset {name} | Showing {limit} of {len(data)} rows",
     )
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), f"{name}_show", data)
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), f"{name}_show", data
+    )
 
 
 @log_start_end(log=logger)
@@ -245,4 +249,6 @@ def describe_df(data: pd.DataFrame, name: str = "", export: str = ""):
 
 @log_start_end(log=logger)
 def export_df(data: pd.DataFrame, export: str, name: str = "") -> None:
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), name, data)
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), f"{name}_show", data
+    )
