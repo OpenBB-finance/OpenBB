@@ -18,6 +18,7 @@ def display_news(
     sources: str = "",
     limit: int = 5,
     export: str = "",
+    sort: str = "published",
 ):
     """Display news for a given term and source. [Source: Feedparser]
 
@@ -31,8 +32,10 @@ def display_news(
         number of articles to display
     export : str
         Export dataframe data to csv,json,xlsx file
+    sort: str
+        the column to sort by
     """
-    articles = feedparser_model.get_news(term, sources)
+    articles = feedparser_model.get_news(term, sources, sort)
 
     console.print()
     for _, row in articles.head(limit).iterrows():
