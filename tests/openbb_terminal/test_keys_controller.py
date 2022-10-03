@@ -173,7 +173,7 @@ def test_call_bitquery(other):
 
 
 @pytest.mark.vcr
-@pytest.mark.parametrize("other", [[], ["-t", "1234"], ["1234"]])
+@pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
 def test_call_si(other):
     controller.call_si(other)
 
