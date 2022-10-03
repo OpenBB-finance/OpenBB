@@ -1,19 +1,16 @@
-name: Build and Push Image
-on: [ push ]
-
+name: Push to GCR GitHub Action
+on: [push]
 jobs:
-  build:
-    name: Build and push image
-    runs-on: ubuntu-20.04
-
+  build-and-push-to-gcr:
+    runs-on: ubuntu-latest
     steps:
-        - uses: actions/checkout@v2 # Checking out the repo
-
-        - name: Build and Publish head Docker image
-          uses: VaultVulp/gp-docker-action@1.2.0
-          with:
-              github-token: ${{ secrets.GITHUB_TOKEN }} # Provide GITHUB_TOKEN to login into the GitHub Packages
-              image-name: openbbterminal-poetry # Provide Docker image name
-              image-tag: latest # Provide Docker image tag
-              build-context: docker/
-# openbbterminal-poetry.dockerfile
+      - uses: actions/checkout@v2
+      - uses: RafikFarhad/push-to-gcr-github-action@v4.1
+        with:
+          gcloud_service_key: ${{ secrets.GCLOUD_SERVICE_KEY }} # can be base64 encoded or plain text
+          registry: gcr.io
+          project_id: my-awesome-project
+          image_name: backend
+          image_tag: latest,v1
+          dockerfile: ./docker/openbbterminal-poetry.dockerfile
+          context: ./docker
