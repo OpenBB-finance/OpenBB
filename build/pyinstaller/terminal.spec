@@ -1,6 +1,6 @@
 # -*- mode: python ; coding: utf-8 -*-
-from importlib.resources import path
 import os
+import pathlib
 
 from dotenv import set_key
 
@@ -8,8 +8,7 @@ from PyInstaller.compat import is_darwin, is_win
 from PyInstaller.building.api import PYZ, EXE, COLLECT
 from PyInstaller.building.splash import Splash
 from PyInstaller.building.build_main import Analysis
-from PyInstaller.building.datastruct import TOC
-import subprocess
+
 
 # import subprocess
 
@@ -24,18 +23,13 @@ build_type = (
 # Local python environment packages folder
 pathex = os.path.join(os.path.dirname(os.__file__), "site-packages")
 
-# Binaries to remove from env
-if is_win:
-    location = pathex + "\_scs_direct.cpython-39-darwin.so"  # noqa: W605
-    try:
-        subprocess.run(["Remove-Item", location, "-Recurse"], check=False)
-        print("Removing ARM64 Binary: _scs_direct.cpython-39-darwin.so")
-    except Exception:
-        print("ARM64 Binary Already Removed")
-else:
-    location = pathex + "/_scs_direct.cpython-39-darwin.so"
-    print("Removing ARM64 Binary: \_scs_direct.cpython-39-darwin.so")
-    subprocess.run(["rm", "-rf", location], check=False)
+# Removing unused ARM64 binary
+binary_to_remove = pathlib.Path(
+    os.path.join(pathex, "_scs_direct.cpython-39-darwin.so")
+)
+print("Removing ARM64 Binary: _scs_direct.cpython-39-darwin.so")
+binary_to_remove.unlink(missing_ok=True)
+
 
 # Get latest commit
 commit_hash = get_commit_hash()
