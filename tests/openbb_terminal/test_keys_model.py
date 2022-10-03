@@ -1,4 +1,5 @@
 import os
+from typing import List
 from unittest.mock import patch
 from pathlib import Path
 import pandas as pd
@@ -515,7 +516,99 @@ def test_set_iex_key(key, persist, show_output, expected):
     assert status == expected
 
 
-### def test_set_reddit_key
+@patch.dict(os.environ, {})
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "args, persist, show_output, expected",
+    [
+        (
+            ["test_id", "test_secret", "test_pass", "test_user", "test_agent"],
+            False,
+            True,
+            -1,
+        ),
+        (
+            ["test_id", "test_secret", "test_pass", "test_user", "test_agent"],
+            False,
+            False,
+            -1,
+        ),
+        (
+            ["test_id", "test_secret", "test_pass", "test_user", "test_agent"],
+            True,
+            False,
+            -1,
+        ),
+        (
+            ["test_id", "test_secret", "test_pass", "test_user", "test_agent"],
+            False,
+            False,
+            -1,
+        ),
+        (
+            ["REPLACE_ME", "REPLACE_ME", "REPLACE_ME", "REPLACE_ME", "REPLACE_ME"],
+            False,
+            True,
+            0,
+        ),
+        (
+            ["REPLACE_ME", "REPLACE_ME", "REPLACE_ME", "REPLACE_ME", "REPLACE_ME"],
+            False,
+            False,
+            0,
+        ),
+    ],
+)
+def test_set_reddit_key(
+    args: List[str], persist: bool, show_output: bool, expected: int
+):
+
+    env_var_name_list = [
+        "OPENBB_API_REDDIT_CLIENT_ID",
+        "OPENBB_API_REDDIT_CLIENT_SECRET",
+        "OPENBB_API_REDDIT_PASSWORD",
+        "OPENBB_API_REDDIT_USERNAME",
+        "OPENBB_API_REDDIT_USER_AGENT",
+    ]
+
+    for env_var_name in env_var_name_list:
+        if env_var_name in os.environ:
+            os.environ.pop(env_var_name)
+
+    status = keys_model.set_reddit_key(
+        client_id=args[0],
+        client_secret=args[1],
+        password=args[2],
+        username=args[3],
+        useragent=args[4],
+        persist=persist,
+        show_output=show_output,
+    )
+
+    for i, env_var_name in enumerate(env_var_name_list):
+
+        dotenv_var = keys_model.dotenv.get_key(
+            str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
+        )
+
+        os_var = os.getenv(env_var_name)
+
+        if env_var_name.startswith("OPENBB_"):
+            env_var_name = env_var_name[7:]
+            cfg_var = getattr(keys_model.cfg, env_var_name)
+
+        if persist is True:
+            assert dotenv_var == os_var == cfg_var == args[i]
+        else:
+            assert (
+                (dotenv_var is None) and (os_var is None) and (cfg_var == args[i])
+            )
+
+        assert status == expected
+
+    if keys_model.USER_ENV_FILE.is_file():
+        os.remove(keys_model.USER_ENV_FILE)
 
 
 @patch.dict(os.environ, {})
