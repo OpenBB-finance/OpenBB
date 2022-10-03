@@ -15,4 +15,5 @@ jobs:
               github-token: ${{ secrets.GITHUB_TOKEN }} # Provide GITHUB_TOKEN to login into the GitHub Packages
               image-name: my-cool-service # Provide Docker image name
               image-tag: head # Provide Docker image tag
-              build-context: docker/openbbterminal-poetry.dockerfile
+              build-context: docker/
+# openbbterminal-poetry.dockerfile
