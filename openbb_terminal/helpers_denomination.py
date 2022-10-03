@@ -31,10 +31,12 @@ def transform(
     def apply(
         df: pd.DataFrame, source: DENOMINATION, target: DENOMINATION
     ) -> pd.DataFrame:
+        multiplier = get_denominations()[source] / get_denominations()[target]
+        df = df.astype(float)
         return df.apply(
             lambda series: series
             if skipPredicate is not None and skipPredicate(series)
-            else series * (get_denominations()[source] / get_denominations()[target]),
+            else series * multiplier,
             axis,
         )
 
@@ -45,7 +47,7 @@ def transform(
         )
 
     if maxValue is None:
-        maxValue = df.max().max()
+        maxValue = df.max(numeric_only=True).max(numeric_only=True)
 
     foundTargetDenomination = get_denomination(maxValue)
 
