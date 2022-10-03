@@ -1,10 +1,10 @@
 import os
+from unittest.mock import patch
+from pathlib import Path
 import pandas as pd
 import pytest
-from unittest.mock import patch
 
 from openbb_terminal import keys_model
-from openbb_terminal.core.config.paths import USER_ENV_FILE
 
 # pylint: disable=R0902,R0903,W1404
 
@@ -21,11 +21,18 @@ def test_get_keys():
 )
 def test_set_key(env_var_name: str, env_var_value: str, persist: bool):
 
+    # Route env file location
+    keys_model.USER_ENV_FILE = ".tmp"
     keys_model.set_key(env_var_name, env_var_value, persist)
 
-    # TODO: Patch dotenv needed to avoid writing in the .env when testing
     # Check if key was exported to .env
-    dotenv_key = keys_model.dotenv.get_key(str(USER_ENV_FILE), key_to_get=env_var_name)
+    dotenv_key = keys_model.dotenv.get_key(
+        str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
+    )
+
+    # Remove temporary env file
+    if Path(keys_model.USER_ENV_FILE).is_file():
+        os.remove(keys_model.USER_ENV_FILE)
 
     # Check if key was exported to os
     os_key = os.getenv(env_var_name)
