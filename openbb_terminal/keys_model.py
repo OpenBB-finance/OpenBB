@@ -287,13 +287,7 @@ def check_quandl_key(show_output: bool = False) -> int:
     else:
         try:
             quandl.save_key(cfg.API_KEY_QUANDL)
-            quandl.get_table(
-                "ZACKS/FC",
-                paginate=True,
-                ticker=["AAPL", "MSFT"],
-                per_end_date={"gte": "2015-01-01"},
-                qopts={"columns": ["ticker", "per_end_date"]},
-            )
+            quandl.get("EIA/PET_RWTC_D")
             logger.info("Quandl key defined, test passed")
             status = 1
         except Exception as _:  # noqa: F841
