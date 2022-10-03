@@ -1,0 +1,87 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+    method: GET
+    uri: https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=AAPL&interval=15min&outputsize=compact&apikey=test_key&datatype=json
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 75489508bdfc5d47-LIS
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 03 Oct 2022 20:56:02 GMT
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Cookie
+      Via:
+      - 1.1 vegur
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+version: 1

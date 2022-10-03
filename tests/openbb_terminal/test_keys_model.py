@@ -98,6 +98,7 @@ def assert_keys_and_status(
         assert status == expected
 
 
+# Alphavantage api is working with any key you pass, so expected is 1 with dummy keys
 @patch.dict(os.environ, {})
 @pytest.mark.vcr
 @pytest.mark.record_stdout
@@ -108,25 +109,25 @@ def assert_keys_and_status(
             ["test_key"],
             False,
             True,
-            -1,
+            1,
         ),
         (
             ["test_key"],
             False,
             False,
-            -1,
+            1,
         ),
         (
             ["test_key"],
             True,
             False,
-            -1,
+            1,
         ),
         (
             ["test_key"],
             False,
             False,
-            -1,
+            1,
         ),
         (
             ["REPLACE_ME"],
