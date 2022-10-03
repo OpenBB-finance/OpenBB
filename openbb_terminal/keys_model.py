@@ -1,5 +1,6 @@
 import logging
 import os
+import sys
 import binance
 import dotenv
 import pandas as pd
@@ -291,7 +292,7 @@ def check_quandl_key(show_output: bool = False) -> int:
             logger.info("Quandl key defined, test passed")
             status = 1
         except Exception as _:  # noqa: F841
-            logger.exception("Quandl key defined, test failed")
+            logger.warning("Quandl key defined, test failed")
             status = -1
 
     if show_output:
