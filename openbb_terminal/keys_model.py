@@ -2185,7 +2185,7 @@ def set_eodhd_key(key: str, persist: bool = False, show_output: bool = True) -> 
              3 - defined, not tested
     """
 
-    set_key("API_EODHD_KEY", key, persist)
+    set_key("OPENBB_API_EODHD_KEY", key, persist)
     status = check_eodhd_key(show_output)
 
     return status

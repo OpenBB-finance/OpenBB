@@ -52,8 +52,8 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         "ethplorer": "ETHPLORER",
         "smartstake": "SMARTSTAKE",
         "github": "GITHUB",
-        "eodhd": "EODHD",
         "messari": "MESSARI",
+        "eodhd": "EODHD",
         "santiment": "SANTIMENT",
     }
     API_LIST = list(API_DICT.keys())
