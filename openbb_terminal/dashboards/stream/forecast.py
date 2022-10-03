@@ -231,18 +231,12 @@ class Handler:
         ]
 
     def run(self):
-        r0c1, r0c2 = st.columns([4, 1])
+        r0c1 = st.columns([4, 1])
         r1c1, r1c2, r1c3, r1c4, r1c5 = st.columns([2, 1, 1, 1, 1])
         r2c1, r2c2, r2c3 = st.columns([1, 1, 1])
 
         with r0c1:
             st.title("Forecast")
-        # with r0c2:
-        #     image = (
-        #         "https://wp-api.zipmex.com/wp-content/uploads/2022/05/"
-        #         "FS0apkragAAnItM-min-842x1024.jpeg"
-        #     )
-        #     st.image(image, width=100)
         with r1c1:
             ticker = st.text_input(
                 "Ticker", "", key="ticker", on_change=self.on_ticker_change
