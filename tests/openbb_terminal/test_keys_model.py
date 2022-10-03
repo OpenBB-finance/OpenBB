@@ -66,6 +66,8 @@ def test_get_keys():
 )
 def test_set_av_key(key, persist, show_output, expected):
 
+    env_var_name = "OPENBB_API_KEY_ALPHAVANTAGE"
+
     # Route .env file location
     # Just for safety, persist=False should not change it
     keys_model.USER_ENV_FILE = Path(".tmp")
@@ -75,14 +77,16 @@ def test_set_av_key(key, persist, show_output, expected):
 
     # Get key from temp .env
     dotenv_key = keys_model.dotenv.get_key(
-        str(keys_model.USER_ENV_FILE), key_to_get="OPENBB_API_KEY_ALPHAVANTAGE"
+        str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
     )
 
     # Get key from patched os.environ
-    os_key = os.getenv("OPENBB_API_KEY_ALPHAVANTAGE")
+    os_key = os.getenv(env_var_name)
 
     # Get key from config_terminal.py
-    cfg_key = getattr(keys_model.cfg, "API_KEY_ALPHAVANTAGE")
+    if env_var_name.startswith("OPENBB_"):
+        env_var_name = env_var_name[7:]
+        cfg_key = getattr(keys_model.cfg, env_var_name)
 
     # Remove temp .env
     if keys_model.USER_ENV_FILE.is_file():
@@ -110,19 +114,109 @@ def test_set_av_key(key, persist, show_output, expected):
         ("REPLACE_ME", False, False, 0),
     ],
 )
-def test_set_polygon_key(key, persist, show_output, expected):
+def test_set_fmp_key(key, persist, show_output, expected):
+
+    env_var_name = "OPENBB_API_KEY_FINANCIALMODELINGPREP"
 
     keys_model.USER_ENV_FILE = Path(".tmp")
 
-    status = keys_model.set_polygon_key(
-        key=key, persist=persist, show_output=show_output
-    )
+    status = keys_model.set_fmp_key(key=key, persist=persist, show_output=show_output)
 
     dotenv_key = keys_model.dotenv.get_key(
-        str(keys_model.USER_ENV_FILE), key_to_get="OPENBB_API_POLYGON_KEY"
+        str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
     )
-    os_key = os.getenv("OPENBB_API_POLYGON_KEY")
-    cfg_key = getattr(keys_model.cfg, "API_POLYGON_KEY")
+
+    os_key = os.getenv(env_var_name)
+
+    if env_var_name.startswith("OPENBB_"):
+        env_var_name = env_var_name[7:]
+        cfg_key = getattr(keys_model.cfg, env_var_name)
+
+    if keys_model.USER_ENV_FILE.is_file():
+        os.remove(keys_model.USER_ENV_FILE)
+
+    if persist is True:
+        assert dotenv_key == os_key == cfg_key == key
+    else:
+        assert (dotenv_key is None) and (os_key is None) and (cfg_key == key)
+
+    assert status == expected
+
+
+@patch.dict(os.environ, {})
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "key, persist, show_output, expected",
+    [
+        ("test_key", False, True, -1),
+        ("test_key", False, False, -1),
+        ("test_key", True, False, -1),
+        ("test_key", False, False, -1),
+        ("REPLACE_ME", False, True, 0),
+        ("REPLACE_ME", False, False, 0),
+    ],
+)
+def test_set_quandl_key(key, persist, show_output, expected):
+
+    env_var_name = "OPENBB_API_KEY_QUANDL"
+
+    keys_model.USER_ENV_FILE = Path(".tmp")
+
+    status = keys_model.set_quandl_key(key=key, persist=persist, show_output=show_output)
+
+    dotenv_key = keys_model.dotenv.get_key(
+        str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
+    )
+
+    os_key = os.getenv(env_var_name)
+
+    if env_var_name.startswith("OPENBB_"):
+        env_var_name = env_var_name[7:]
+        cfg_key = getattr(keys_model.cfg, env_var_name)
+
+    if keys_model.USER_ENV_FILE.is_file():
+        os.remove(keys_model.USER_ENV_FILE)
+
+    if persist is True:
+        assert dotenv_key == os_key == cfg_key == key
+    else:
+        assert (dotenv_key is None) and (os_key is None) and (cfg_key == key)
+
+    assert status == expected
+
+
+@patch.dict(os.environ, {})
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "key, persist, show_output, expected",
+    [
+        ("test_key", False, True, -1),
+        ("test_key", False, False, -1),
+        ("test_key", True, False, -1),
+        ("test_key", False, False, -1),
+        ("REPLACE_ME", False, True, 0),
+        ("REPLACE_ME", False, False, 0),
+    ],
+)
+def test_set_polygon_key(key, persist, show_output, expected):
+
+    env_var_name = "OPENBB_API_POLYGON_KEY"
+
+    keys_model.USER_ENV_FILE = Path(".tmp")
+
+    status = keys_model.set_polygon_key(key=key, persist=persist, show_output=show_output)
+
+    dotenv_key = keys_model.dotenv.get_key(
+        str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
+    )
+
+    os_key = os.getenv(env_var_name)
+
+    if env_var_name.startswith("OPENBB_"):
+        env_var_name = env_var_name[7:]
+        cfg_key = getattr(keys_model.cfg, env_var_name)
 
     if keys_model.USER_ENV_FILE.is_file():
         os.remove(keys_model.USER_ENV_FILE)
@@ -151,16 +245,29 @@ def test_set_polygon_key(key, persist, show_output, expected):
 )
 def test_set_fred_key(key, persist, show_output, expected):
 
+    env_var_name = "OPENBB_API_FRED_KEY"
+
+    # Route .env file location
+    # Just for safety, persist=False should not change it
     keys_model.USER_ENV_FILE = Path(".tmp")
 
+    # Test
     status = keys_model.set_fred_key(key=key, persist=persist, show_output=show_output)
 
+    # Get key from temp .env
     dotenv_key = keys_model.dotenv.get_key(
-        str(keys_model.USER_ENV_FILE), key_to_get="OPENBB_API_FRED_KEY"
+        str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
     )
-    os_key = os.getenv("OPENBB_API_FRED_KEY")
-    cfg_key = getattr(keys_model.cfg, "API_FRED_KEY")
 
+    # Get key from patched os.environ
+    os_key = os.getenv(env_var_name)
+
+    # Get key from config_terminal.py
+    if env_var_name.startswith("OPENBB_"):
+        env_var_name = env_var_name[7:]
+        cfg_key = getattr(keys_model.cfg, env_var_name)
+
+    # Remove temp .env
     if keys_model.USER_ENV_FILE.is_file():
         os.remove(keys_model.USER_ENV_FILE)
 
