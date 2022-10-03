@@ -6,17 +6,12 @@ name: Update Docker Hub
 on: [workflow_dispatch, pull_request, push]
 
 jobs:
-  environment:
+  prepare:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - name: Setup Environment
       run: cp docker/compose.env .env && cat .env
-
-  # TODO: add tests
-  prepare:
-    runs-on: ubuntu-latest
-    steps:
     - name: show
       run: ls -a
     - name: Build Container
