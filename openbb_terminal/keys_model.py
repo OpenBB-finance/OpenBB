@@ -1778,12 +1778,15 @@ def check_coinglass_key(show_output: bool = False) -> int:
 
         response = requests.request("GET", url, headers=headers)
 
-        if response.status_code == 200:
+        if """success":false""" in str(response.content):
+            logger.warning("Coinglass key defined, test failed")
+            status = -1
+        elif response.status_code == 200:
             logger.info("Coinglass key defined, test passed")
             status = 1
         else:
-            logger.warning("Coinglass key defined, test failed")
-            status = -1
+            logger.warning("Coinglass key defined, test inconclusive")
+            status = 2
 
     if show_output:
         console.print(STATUS_MSG[status] + "\n")
