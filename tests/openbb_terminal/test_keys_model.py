@@ -1053,37 +1053,37 @@ def test_set_degiro_key(
     "args, persist, show_output, expected",
     [
         (
-            ["test_username", "test_password"],
+            ["test_account", "test_access_token", "account_type"],
             False,
             True,
             -1,
         ),
         (
-            ["test_username", "test_password"],
+            ["test_account", "test_access_token", "account_type"],
             False,
             False,
             -1,
         ),
         (
-            ["test_username", "test_password"],
+            ["test_account", "test_access_token", "account_type"],
             True,
             False,
             -1,
         ),
         (
-            ["test_username", "test_password"],
+            ["test_account", "test_access_token", "account_type"],
             False,
             False,
             -1,
         ),
         (
-            ["REPLACE_ME", "REPLACE_ME"],
+            ["REPLACE_ME", "REPLACE_ME", "REPLACE_ME"],
             False,
             True,
             0,
         ),
         (
-            ["REPLACE_ME", "REPLACE_ME"],
+            ["REPLACE_ME", "REPLACE_ME", "REPLACE_ME"],
             False,
             False,
             0,
