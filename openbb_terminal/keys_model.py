@@ -79,7 +79,8 @@ def get_keys() -> pd.DataFrame:
 
     for cfg_var_name in var_list:
         cfg_var_value = getattr(cfg, cfg_var_name)
-        current_keys[cfg_var_name[4:]] = cfg_var_value
+        if cfg_var_value != "REPLACE_ME":
+            current_keys[cfg_var_name[4:]] = cfg_var_value
 
     if current_keys:
         df = pd.DataFrame.from_dict(current_keys, orient="index")
