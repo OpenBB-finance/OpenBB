@@ -15,7 +15,7 @@ jobs:
     - name: show
       run: ls -a
     - name: Build Container
-      run: docker compose -f docker/docker-compose.yaml up -d --build
+      run: source .env && docker compose -f docker/docker-compose.yaml up -d --build
 
 
   push_to_registry:
