@@ -958,9 +958,7 @@ def test_set_twitter_key(
         ),
     ],
 )
-def test_set_rh_key(
-    args: List[str], persist: bool, show_output: bool, expected: int
-):
+def test_set_rh_key(args: List[str], persist: bool, show_output: bool, expected: int):
 
     env_var_name_list = [
         "OPENBB_RH_USERNAME",
