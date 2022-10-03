@@ -57,7 +57,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         "santiment": "SANTIMENT",
     }
     API_LIST = list(API_DICT.keys())
-    CHOICES_COMMANDS: List[str] = ["mykeys", "refresh"] + API_LIST
+    CHOICES_COMMANDS: List[str] = ["mykeys"] + API_LIST
     PATH = "/keys/"
     status_dict: Dict = {}
 
@@ -71,7 +71,6 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         super().__init__(queue)
         self.env_file = env_file
         if menu_usage:
-            self.check_keys_status()
             if session and obbff.USE_PROMPT_TOOLKIT:
                 choices: dict = {c: {} for c in self.controller_choices}
 
@@ -88,11 +87,11 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
     def print_help(self):
         """Print help"""
+        self.check_keys_status()
         mt = MenuText("keys/")
         mt.add_info("_keys_")
         mt.add_raw("\n")
         mt.add_cmd("mykeys")
-        mt.add_cmd("refresh")
         mt.add_raw("\n")
         mt.add_info("_status_")
         for cmd_name, status_msg in self.status_dict.items():
@@ -132,20 +131,6 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                     index_name="API",
                     title="Current keys",
                 )
-
-    @log_start_end(log=logger)
-    def call_refresh(self, other_args: List[str]):
-        """Refresh keys status"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="refresh",
-            description="Refresh keys status.",
-        )
-        ns_parser = parse_simple_args(parser, other_args)
-        if ns_parser:
-            self.check_keys_status()
-            self.print_help()
 
     @log_start_end(log=logger)
     def call_av(self, other_args: List[str]):
