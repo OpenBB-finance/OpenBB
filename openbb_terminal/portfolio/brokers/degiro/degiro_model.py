@@ -261,7 +261,9 @@ class DegiroModel:
 
     @log_start_end(log=logger)
     def hold_positions(self) -> pd.DataFrame:
-        return self.__hold_fetch_current_positions()
+        if self.check_session_id():
+            return self.__hold_fetch_current_positions()
+        return pd.DataFrame()
 
     @log_start_end(log=logger)
     def lastnews(self, limit: int) -> LatestNews:
@@ -472,7 +474,7 @@ class DegiroModel:
         console.print(f"Saved file: {file_path}\n")
 
     @log_start_end(log=logger)
-    def check_session_id(self):
+    def check_session_id(self) -> bool:
         trading_api = self.__trading_api
 
         if trading_api.connection_storage.session_id:
