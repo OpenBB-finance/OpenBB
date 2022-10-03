@@ -646,7 +646,9 @@ def test_set_walert_key(key, persist, show_output, expected):
 
     keys_model.USER_ENV_FILE = Path(".tmp")
 
-    status = keys_model.set_walert_key(key=key, persist=persist, show_output=show_output)
+    status = keys_model.set_walert_key(
+        key=key, persist=persist, show_output=show_output
+    )
 
     dotenv_key = keys_model.dotenv.get_key(
         str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
@@ -691,7 +693,9 @@ def test_set_glassnode_key(key, persist, show_output, expected):
 
     keys_model.USER_ENV_FILE = Path(".tmp")
 
-    status = keys_model.set_glassnode_key(key=key, persist=persist, show_output=show_output)
+    status = keys_model.set_glassnode_key(
+        key=key, persist=persist, show_output=show_output
+    )
 
     dotenv_key = keys_model.dotenv.get_key(
         str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
@@ -736,7 +740,9 @@ def test_set_coinglass_key(key, persist, show_output, expected):
 
     keys_model.USER_ENV_FILE = Path(".tmp")
 
-    status = keys_model.set_coinglass_key(key=key, persist=persist, show_output=show_output)
+    status = keys_model.set_coinglass_key(
+        key=key, persist=persist, show_output=show_output
+    )
 
     dotenv_key = keys_model.dotenv.get_key(
         str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
@@ -781,7 +787,9 @@ def test_set_cpanic_key(key, persist, show_output, expected):
 
     keys_model.USER_ENV_FILE = Path(".tmp")
 
-    status = keys_model.set_cpanic_key(key=key, persist=persist, show_output=show_output)
+    status = keys_model.set_cpanic_key(
+        key=key, persist=persist, show_output=show_output
+    )
 
     dotenv_key = keys_model.dotenv.get_key(
         str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
@@ -826,7 +834,9 @@ def test_set_ethplorer_key(key, persist, show_output, expected):
 
     keys_model.USER_ENV_FILE = Path(".tmp")
 
-    status = keys_model.set_ethplorer_key(key=key, persist=persist, show_output=show_output)
+    status = keys_model.set_ethplorer_key(
+        key=key, persist=persist, show_output=show_output
+    )
 
     dotenv_key = keys_model.dotenv.get_key(
         str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
@@ -874,7 +884,9 @@ def test_set_github_key(key, persist, show_output, expected):
 
     keys_model.USER_ENV_FILE = Path(".tmp")
 
-    status = keys_model.set_github_key(key=key, persist=persist, show_output=show_output)
+    status = keys_model.set_github_key(
+        key=key, persist=persist, show_output=show_output
+    )
 
     dotenv_key = keys_model.dotenv.get_key(
         str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
@@ -919,7 +931,9 @@ def test_set_messari_key(key, persist, show_output, expected):
 
     keys_model.USER_ENV_FILE = Path(".tmp")
 
-    status = keys_model.set_messari_key(key=key, persist=persist, show_output=show_output)
+    status = keys_model.set_messari_key(
+        key=key, persist=persist, show_output=show_output
+    )
 
     dotenv_key = keys_model.dotenv.get_key(
         str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
@@ -1009,7 +1023,9 @@ def test_set_santiment_key(key, persist, show_output, expected):
 
     keys_model.USER_ENV_FILE = Path(".tmp")
 
-    status = keys_model.set_santiment_key(key=key, persist=persist, show_output=show_output)
+    status = keys_model.set_santiment_key(
+        key=key, persist=persist, show_output=show_output
+    )
 
     dotenv_key = keys_model.dotenv.get_key(
         str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
