@@ -74,7 +74,7 @@ def test_set_av_key(key, persist, show_output, expected):
     # Route .env file location to temporary empty file -> naive .env
     keys_model.USER_ENV_FILE = Path(".tmp")
 
-    # Test
+    # Run test
     status = keys_model.set_av_key(key=key, persist=persist, show_output=show_output)
 
     # Get key from temp .env
@@ -622,3 +622,411 @@ def test_set_si_key(key, persist, show_output, expected):
 
 
 ### def test_set_coinbase_key
+
+
+@patch.dict(os.environ, {})
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "key, persist, show_output, expected",
+    [
+        ("test_key", False, True, -1),
+        ("test_key", False, False, -1),
+        ("test_key", True, False, -1),
+        ("test_key", False, False, -1),
+        ("REPLACE_ME", False, True, 0),
+        ("REPLACE_ME", False, False, 0),
+    ],
+)
+def test_set_walert_key(key, persist, show_output, expected):
+
+    env_var_name = "OPENBB_API_WHALE_ALERT_KEY"
+    if env_var_name in os.environ:
+        os.environ.pop(env_var_name)
+
+    keys_model.USER_ENV_FILE = Path(".tmp")
+
+    status = keys_model.set_walert_key(key=key, persist=persist, show_output=show_output)
+
+    dotenv_key = keys_model.dotenv.get_key(
+        str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
+    )
+
+    os_key = os.getenv(env_var_name)
+
+    if env_var_name.startswith("OPENBB_"):
+        env_var_name = env_var_name[7:]
+        cfg_key = getattr(keys_model.cfg, env_var_name)
+
+    if keys_model.USER_ENV_FILE.is_file():
+        os.remove(keys_model.USER_ENV_FILE)
+
+    if persist is True:
+        assert dotenv_key == os_key == cfg_key == key
+    else:
+        assert (dotenv_key is None) and (os_key is None) and (cfg_key == key)
+
+    assert status == expected
+
+
+@patch.dict(os.environ, {})
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "key, persist, show_output, expected",
+    [
+        ("test_key", False, True, -1),
+        ("test_key", False, False, -1),
+        ("test_key", True, False, -1),
+        ("test_key", False, False, -1),
+        ("REPLACE_ME", False, True, 0),
+        ("REPLACE_ME", False, False, 0),
+    ],
+)
+def test_set_glassnode_key(key, persist, show_output, expected):
+
+    env_var_name = "OPENBB_API_GLASSNODE_KEY"
+    if env_var_name in os.environ:
+        os.environ.pop(env_var_name)
+
+    keys_model.USER_ENV_FILE = Path(".tmp")
+
+    status = keys_model.set_glassnode_key(key=key, persist=persist, show_output=show_output)
+
+    dotenv_key = keys_model.dotenv.get_key(
+        str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
+    )
+
+    os_key = os.getenv(env_var_name)
+
+    if env_var_name.startswith("OPENBB_"):
+        env_var_name = env_var_name[7:]
+        cfg_key = getattr(keys_model.cfg, env_var_name)
+
+    if keys_model.USER_ENV_FILE.is_file():
+        os.remove(keys_model.USER_ENV_FILE)
+
+    if persist is True:
+        assert dotenv_key == os_key == cfg_key == key
+    else:
+        assert (dotenv_key is None) and (os_key is None) and (cfg_key == key)
+
+    assert status == expected
+
+
+@patch.dict(os.environ, {})
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "key, persist, show_output, expected",
+    [
+        ("test_key", False, True, -1),
+        ("test_key", False, False, -1),
+        ("test_key", True, False, -1),
+        ("test_key", False, False, -1),
+        ("REPLACE_ME", False, True, 0),
+        ("REPLACE_ME", False, False, 0),
+    ],
+)
+def test_set_coinglass_key(key, persist, show_output, expected):
+
+    env_var_name = "OPENBB_API_COINGLASS_KEY"
+    if env_var_name in os.environ:
+        os.environ.pop(env_var_name)
+
+    keys_model.USER_ENV_FILE = Path(".tmp")
+
+    status = keys_model.set_coinglass_key(key=key, persist=persist, show_output=show_output)
+
+    dotenv_key = keys_model.dotenv.get_key(
+        str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
+    )
+
+    os_key = os.getenv(env_var_name)
+
+    if env_var_name.startswith("OPENBB_"):
+        env_var_name = env_var_name[7:]
+        cfg_key = getattr(keys_model.cfg, env_var_name)
+
+    if keys_model.USER_ENV_FILE.is_file():
+        os.remove(keys_model.USER_ENV_FILE)
+
+    if persist is True:
+        assert dotenv_key == os_key == cfg_key == key
+    else:
+        assert (dotenv_key is None) and (os_key is None) and (cfg_key == key)
+
+    assert status == expected
+
+
+@patch.dict(os.environ, {})
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "key, persist, show_output, expected",
+    [
+        ("test_key", False, True, -1),
+        ("test_key", False, False, -1),
+        ("test_key", True, False, -1),
+        ("test_key", False, False, -1),
+        ("REPLACE_ME", False, True, 0),
+        ("REPLACE_ME", False, False, 0),
+    ],
+)
+def test_set_cpanic_key(key, persist, show_output, expected):
+
+    env_var_name = "OPENBB_API_CRYPTO_PANIC_KEY"
+    if env_var_name in os.environ:
+        os.environ.pop(env_var_name)
+
+    keys_model.USER_ENV_FILE = Path(".tmp")
+
+    status = keys_model.set_cpanic_key(key=key, persist=persist, show_output=show_output)
+
+    dotenv_key = keys_model.dotenv.get_key(
+        str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
+    )
+
+    os_key = os.getenv(env_var_name)
+
+    if env_var_name.startswith("OPENBB_"):
+        env_var_name = env_var_name[7:]
+        cfg_key = getattr(keys_model.cfg, env_var_name)
+
+    if keys_model.USER_ENV_FILE.is_file():
+        os.remove(keys_model.USER_ENV_FILE)
+
+    if persist is True:
+        assert dotenv_key == os_key == cfg_key == key
+    else:
+        assert (dotenv_key is None) and (os_key is None) and (cfg_key == key)
+
+    assert status == expected
+
+
+@patch.dict(os.environ, {})
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "key, persist, show_output, expected",
+    [
+        ("test_key", False, True, -1),
+        ("test_key", False, False, -1),
+        ("test_key", True, False, -1),
+        ("test_key", False, False, -1),
+        ("REPLACE_ME", False, True, 0),
+        ("REPLACE_ME", False, False, 0),
+    ],
+)
+def test_set_ethplorer_key(key, persist, show_output, expected):
+
+    env_var_name = "OPENBB_API_ETHPLORER_KEY"
+    if env_var_name in os.environ:
+        os.environ.pop(env_var_name)
+
+    keys_model.USER_ENV_FILE = Path(".tmp")
+
+    status = keys_model.set_ethplorer_key(key=key, persist=persist, show_output=show_output)
+
+    dotenv_key = keys_model.dotenv.get_key(
+        str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
+    )
+
+    os_key = os.getenv(env_var_name)
+
+    if env_var_name.startswith("OPENBB_"):
+        env_var_name = env_var_name[7:]
+        cfg_key = getattr(keys_model.cfg, env_var_name)
+
+    if keys_model.USER_ENV_FILE.is_file():
+        os.remove(keys_model.USER_ENV_FILE)
+
+    if persist is True:
+        assert dotenv_key == os_key == cfg_key == key
+    else:
+        assert (dotenv_key is None) and (os_key is None) and (cfg_key == key)
+
+    assert status == expected
+
+
+### def test_set_smartstake_key
+
+
+@patch.dict(os.environ, {})
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "key, persist, show_output, expected",
+    [
+        ("test_key", False, True, 3),
+        ("test_key", False, False, 3),
+        ("test_key", True, False, 3),
+        ("test_key", False, False, 3),
+        ("REPLACE_ME", False, True, 0),
+        ("REPLACE_ME", False, False, 0),
+    ],
+)
+def test_set_github_key(key, persist, show_output, expected):
+
+    env_var_name = "OPENBB_API_GITHUB_KEY"
+    if env_var_name in os.environ:
+        os.environ.pop(env_var_name)
+
+    keys_model.USER_ENV_FILE = Path(".tmp")
+
+    status = keys_model.set_github_key(key=key, persist=persist, show_output=show_output)
+
+    dotenv_key = keys_model.dotenv.get_key(
+        str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
+    )
+
+    os_key = os.getenv(env_var_name)
+
+    if env_var_name.startswith("OPENBB_"):
+        env_var_name = env_var_name[7:]
+        cfg_key = getattr(keys_model.cfg, env_var_name)
+
+    if keys_model.USER_ENV_FILE.is_file():
+        os.remove(keys_model.USER_ENV_FILE)
+
+    if persist is True:
+        assert dotenv_key == os_key == cfg_key == key
+    else:
+        assert (dotenv_key is None) and (os_key is None) and (cfg_key == key)
+
+    assert status == expected
+
+
+@patch.dict(os.environ, {})
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "key, persist, show_output, expected",
+    [
+        ("test_key", False, True, -1),
+        ("test_key", False, False, -1),
+        ("test_key", True, False, -1),
+        ("test_key", False, False, -1),
+        ("REPLACE_ME", False, True, 0),
+        ("REPLACE_ME", False, False, 0),
+    ],
+)
+def test_set_messari_key(key, persist, show_output, expected):
+
+    env_var_name = "OPENBB_API_MESSARI_KEY"
+    if env_var_name in os.environ:
+        os.environ.pop(env_var_name)
+
+    keys_model.USER_ENV_FILE = Path(".tmp")
+
+    status = keys_model.set_messari_key(key=key, persist=persist, show_output=show_output)
+
+    dotenv_key = keys_model.dotenv.get_key(
+        str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
+    )
+
+    os_key = os.getenv(env_var_name)
+
+    if env_var_name.startswith("OPENBB_"):
+        env_var_name = env_var_name[7:]
+        cfg_key = getattr(keys_model.cfg, env_var_name)
+
+    if keys_model.USER_ENV_FILE.is_file():
+        os.remove(keys_model.USER_ENV_FILE)
+
+    if persist is True:
+        assert dotenv_key == os_key == cfg_key == key
+    else:
+        assert (dotenv_key is None) and (os_key is None) and (cfg_key == key)
+
+    assert status == expected
+
+
+@patch.dict(os.environ, {})
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "key, persist, show_output, expected",
+    [
+        ("test_key", False, True, -1),
+        ("test_key", False, False, -1),
+        ("test_key", True, False, -1),
+        ("test_key", False, False, -1),
+        ("REPLACE_ME", False, True, 0),
+        ("REPLACE_ME", False, False, 0),
+    ],
+)
+def test_set_eodhd_key(key, persist, show_output, expected):
+
+    env_var_name = "OPENBB_API_EODHD_KEY"
+    if env_var_name in os.environ:
+        os.environ.pop(env_var_name)
+
+    keys_model.USER_ENV_FILE = Path(".tmp")
+
+    status = keys_model.set_eodhd_key(key=key, persist=persist, show_output=show_output)
+
+    dotenv_key = keys_model.dotenv.get_key(
+        str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
+    )
+
+    os_key = os.getenv(env_var_name)
+
+    if env_var_name.startswith("OPENBB_"):
+        env_var_name = env_var_name[7:]
+        cfg_key = getattr(keys_model.cfg, env_var_name)
+
+    if keys_model.USER_ENV_FILE.is_file():
+        os.remove(keys_model.USER_ENV_FILE)
+
+    if persist is True:
+        assert dotenv_key == os_key == cfg_key == key
+    else:
+        assert (dotenv_key is None) and (os_key is None) and (cfg_key == key)
+
+    assert status == expected
+
+
+@patch.dict(os.environ, {})
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+@pytest.mark.parametrize(
+    "key, persist, show_output, expected",
+    [
+        ("test_key", False, True, -1),
+        ("test_key", False, False, -1),
+        ("test_key", True, False, -1),
+        ("test_key", False, False, -1),
+        ("REPLACE_ME", False, True, 0),
+        ("REPLACE_ME", False, False, 0),
+    ],
+)
+def test_set_santiment_key(key, persist, show_output, expected):
+
+    env_var_name = "OPENBB_API_SANTIMENT_KEY"
+    if env_var_name in os.environ:
+        os.environ.pop(env_var_name)
+
+    keys_model.USER_ENV_FILE = Path(".tmp")
+
+    status = keys_model.set_santiment_key(key=key, persist=persist, show_output=show_output)
+
+    dotenv_key = keys_model.dotenv.get_key(
+        str(keys_model.USER_ENV_FILE), key_to_get=env_var_name
+    )
+
+    os_key = os.getenv(env_var_name)
+
+    if env_var_name.startswith("OPENBB_"):
+        env_var_name = env_var_name[7:]
+        cfg_key = getattr(keys_model.cfg, env_var_name)
+
+    if keys_model.USER_ENV_FILE.is_file():
+        os.remove(keys_model.USER_ENV_FILE)
+
+    if persist is True:
+        assert dotenv_key == os_key == cfg_key == key
+    else:
+        assert (dotenv_key is None) and (os_key is None) and (cfg_key == key)
+
+    assert status == expected
