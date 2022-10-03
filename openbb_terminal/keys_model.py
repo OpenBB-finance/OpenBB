@@ -1847,17 +1847,14 @@ def check_cpanic_key(show_output: bool = False) -> int:
         logger.info("cpanic key not defined")
         status = 0
     else:
-        crypto_panic_url = f"https://cryptopanic.com/api/v1/posts/?auth_token={cfg.API_CRYPTO_PANIC_KEY}&kind=all"
+        crypto_panic_url = f"https://cryptopanic.com/api/v1/posts/?auth_token={cfg.API_CRYPTO_PANIC_KEY}"
         response = requests.get(crypto_panic_url)
 
-        if not 200 <= response.status_code < 300:
-            logger.warning("cpanic key defined, test failed")
-            status = -1
-        try:
-            logger.info("cpanic key defined, test passed")
+        if response.status_code == 200:
+            logger.info("Cpanic key defined, test passed")
             status = 1
-        except Exception as _:  # noqa: F841
-            logger.warning("cpanic key defined, test failed")
+        else:
+            logger.warning("Cpanic key defined, test failed")
             status = -1
 
     if show_output:
