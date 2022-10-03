@@ -19,7 +19,7 @@ from openbb_terminal import keys_model
 def test_set_key(env_var_name: str, env_var_value: str, persist: bool):
 
     # Route .env file location
-    keys_model.USER_ENV_FILE = Path(".tmp")
+    keys_model.USER_ENV_FILE = Path(os.path.dirname(__file__), ".tmp")
 
     # Test
     keys_model.set_key(env_var_name, env_var_value, persist)
@@ -54,17 +54,19 @@ def test_get_keys():
 
 def set_naive_environment(env_var_name_list: List[str]) -> None:
 
+    tmp_env = Path(os.path.dirname(__file__), ".tmp")
+
     # Remove keys from patched os.environ
     for env_var_name in env_var_name_list:
         if env_var_name in os.environ:
             os.environ.pop(env_var_name)
 
     # Remove .tmp content
-    if Path(".tmp").is_file():
-        open(".tmp", "w").close()
+    if tmp_env.is_file():
+        open(tmp_env, "w").close()
 
     # Set new temporary .env
-    keys_model.USER_ENV_FILE = Path(".tmp")
+    keys_model.USER_ENV_FILE = tmp_env
 
 
 def assert_keys_and_status(
