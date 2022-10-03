@@ -6,8 +6,6 @@ __docformat__ = "numpy"
 
 from abc import ABCMeta, abstractmethod
 import argparse
-from cmd import Cmd
-from hmac import compare_digest
 import re
 import os
 import difflib
