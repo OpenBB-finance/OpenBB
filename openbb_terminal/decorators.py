@@ -4,6 +4,7 @@ import functools
 import logging
 import os
 import pandas as pd
+import json
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.rich_config import console
@@ -119,3 +120,24 @@ def check_api_key(api_keys):
 
 def disable_check_api():
     obbff.ENABLE_CHECK_API = False
+
+
+def sdk_arg_logger(func=None, log=None):
+    """
+    Wrap function to add the function args to the log entry when using the SDK.
+    """
+
+    @functools.wraps(func)
+    def wrapper_decorator(*args, **kwargs):
+        try:
+            value = func(*args, **kwargs)
+            locals_dict = locals()
+            input_dict = {"args": locals_dict["args"], "kwargs": locals_dict["kwargs"]}
+            log.info(f"INPUT: {json.dumps(input_dict)}")
+            return value
+
+        except Exception as e:
+            console.print(f"[red]Error: {str(e)}[/red]")
+            raise
+
+    return wrapper_decorator

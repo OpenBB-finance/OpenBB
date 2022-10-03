@@ -14,7 +14,7 @@ from openbb_terminal.helper_classes import TerminalStyle  # noqa: F401
 from openbb_terminal import helper_funcs as helper  # noqa: F401
 from .reports import widget_helpers as widgets  # noqa: F401
 from openbb_terminal.loggers import setup_logging, log_settings
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import log_start_end, sdk_arg_logger
 
 from .portfolio.portfolio_model import PortfolioModel as Portfolio
 from .cryptocurrency.due_diligence.pycoingecko_model import Coin
@@ -1927,7 +1927,9 @@ def copy_func(f: Callable, logging_decorator: bool = False) -> Callable:
     g.__kwdefaults__ = f.__kwdefaults__
 
     if logging_decorator:
-        g = log_start_end(func=g, log=logger)
+        log_name = logging.getLogger(g.__module__)
+        g = sdk_arg_logger(func=g, log=log_name)
+        g = log_start_end(func=g, log=log_name)
 
     return g
 
@@ -1970,12 +1972,14 @@ def change_docstring(api_callable, model: Callable, view=None):
                 "chart", Parameter.POSITIONAL_OR_KEYWORD, annotation=bool, default=False
             )
         ]
+        api_callable.__module__ = model.__module__
         api_callable.__signature__ = signature(view).replace(
             parameters=parameters + chart_parameter
         )
     else:
         api_callable.__doc__ = model.__doc__
         api_callable.__name__ = model.__name__
+        api_callable.__module__ = model.__module__
         api_callable.__signature__ = signature(model)
 
     return api_callable
