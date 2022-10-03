@@ -9,8 +9,7 @@ You can get direct access to normalized financial data from multiple data provid
 To be completed once pip install is available on PyPI
 
 ## Setup
-### 1. Import OpenBB SDK<img width="652" alt="Screenshot 2022-10-04 at 00 00 14" src="https://user-images.githubusercontent.com/40023817/193700663-b91d57a9-4581-4f7e-a6da-764c0c9de092.png">
-
+### 1. Import OpenBB SDK
 
 First off, import OpenBB SDK into your python script or Jupyter Notebook with:
 
@@ -83,7 +82,8 @@ First, you will need to load in the desired ticker. If it's not on the top of yo
 ```
 openbb.stocks.search("apple")
 ```
-<img width="676" alt="Screenshot 2022-10-03 at 23 59 58" src="https://user-images.githubusercontent.com/40023817/193700711-a5784f67-118b-4581-af1e-4032a445f06a.png">
+
+<img width="652" alt="Screenshot 2022-10-04 at 00 00 14" src="https://user-images.githubusercontent.com/40023817/193700663-b91d57a9-4581-4f7e-a6da-764c0c9de092.png">
 
 
 We want to load `Apple Inc.` listed on US exchange, so our ticker should be `AAPL`. Let's say if you want to load from Brazilian exchange, you should load in `AAPL34.SA`.
@@ -136,7 +136,9 @@ As mentioned in the docstring, you can access it with the following helper funct
 openbb.economy.available_indices()
 ```
 
-<img width="1130" alt="Screenshot 2022-10-04 at 00 06 46" src="https://user-images.githubusercontent.com/40023817/193701439-12f167a1-3f9d-4af4-a230-76b9bde41b6e.png">
+<img width="1078" alt="Screenshot 2022-10-04 at 00 16 36" src="https://user-images.githubusercontent.com/40023817/193702595-ecbfc84d-3ed1-4f89-9086-e975b01c4b12.png">
+
+
 
 
 ### 2. Getting charts
@@ -164,8 +166,6 @@ Here we will use an example orderbook for illustration purposes. You can totally
 order_book_path = "portfolio/allocation/60_40_Portfolio.xlsx"
 tickers, categories = openbb.portfolio.po.load(excel_file = order_book_path)
 ```
-<img width="896" alt="Screenshot 2022-10-03 at 23 40 33" src="https://user-images.githubusercontent.com/40023817/193698544-7baaf5c7-ecf9-455f-a1a4-0a5bae275002.png">
-
 
 
 #### Step 2. Optimizing portfolio
@@ -178,8 +178,8 @@ weights_max_sharpe, data_returns_max_sharpe = openbb.portfolio.po.maxsharpe(tick
 print("Max Sharpe")
 weights_max_sharpe
 ```
-<img width="703" alt="Screenshot 2022-10-03 at 23 41 14" src="https://user-images.githubusercontent.com/40023817/193698630-c049dda6-3770-4e34-9bd3-1792d87457a2.png">
 
+<img width="739" alt="Screenshot 2022-10-04 at 00 26 27" src="https://user-images.githubusercontent.com/40023817/193703602-12e6baac-462e-4c2e-a682-9fcfee21a06a.png">
 
 
 ```
@@ -189,8 +189,7 @@ weights_min_risk, data_returns_min_risk = openbb.portfolio.po.minrisk(tickers)
 print("Min Risk")
 weights_min_risk
 ```
-
-<img width="888" alt="Screenshot 2022-10-03 at 23 41 38" src="https://user-images.githubusercontent.com/40023817/193698675-62bb8751-03e1-4d2d-8888-3ef536d294e9.png">
+<img width="742" alt="Screenshot 2022-10-04 at 00 28 30" src="https://user-images.githubusercontent.com/40023817/193703591-8b68e417-1969-44da-b3a7-51bb3b37ba7b.png">
 
 
 These methods are basic because they don't account for concentration risk properly. For instance, you can see that much of the allocation falls on a few stocks.
@@ -207,26 +206,24 @@ weights_hrp
 
 ```
 
-<img width="890" alt="Screenshot 2022-10-03 at 23 42 14" src="https://user-images.githubusercontent.com/40023817/193698737-ad1955c2-13a5-4586-b6fe-3ed7cd139eb9.png">
-
-
-
 ```
 openbb.portfolio.po.plot(data=data_returns_hrp,weights=weights_hrp,heat=True)
 ```
+<img width="743" alt="Screenshot 2022-10-04 at 00 32 25" src="https://user-images.githubusercontent.com/40023817/193704055-c220d429-3607-4070-9e8f-e16899badce4.png">
 
-<img width="885" alt="Screenshot 2022-10-03 at 23 42 41" src="https://user-images.githubusercontent.com/40023817/193698795-a9ce25c4-4b4b-4cb6-b8ce-921eb60039eb.png">
 
 
 ```
 openbb.portfolio.po.plot(data=data_returns_hrp,weights=weights_hrp,rc_chart=True)
 ```
 
+<img width="736" alt="Screenshot 2022-10-04 at 00 32 33" src="https://user-images.githubusercontent.com/40023817/193704038-1d43edb5-7eba-40dd-91dc-53209101db11.png">
+
 
 
 These functionalities have an extensive list of parameters and thus the optimization process is also highly dependent on these calculations. E.g. see the following documentation.
+<img width="747" alt="Screenshot 2022-10-04 at 00 35 00" src="https://user-images.githubusercontent.com/40023817/193704210-b75ddee3-1da3-432b-90f8-6966e85bb345.png">
 
-[INSERT CHART]
 
 
 This allows us to alter certain assumption which also alters the outcome, for example.
@@ -242,20 +239,20 @@ weights_hrp_2, data_returns_hrp_2 = openbb.portfolio.po.hrp(
 pd.DataFrame([weights_hrp, weights_hrp_2], index=["Basic", "Extended"]).T
 
 ```
-[INSERT CHART]
+<img width="401" alt="Screenshot 2022-10-04 at 00 37 18" src="https://user-images.githubusercontent.com/40023817/193704462-d006deee-f009-4330-9918-0e0d661636d8.png">
+
+
 
 THe basic method optimized for *variance*. The extended method increases the period of historical data, optimizes for conditional Value at Risk and has a lower risk aversion.
 
 ```openbb.portfolio.po.plot(data=data_returns_hrp,weights=weights_hrp,pie=True)```
 
-[INSERT CHART]
+<img width="737" alt="Screenshot 2022-10-04 at 00 39 03" src="https://user-images.githubusercontent.com/40023817/193704603-4b6fee31-44cb-492c-ba51-04de40d59bb6.png">
 
 
 ```openbb.portfolio.po.plot(data=data_returns_hrp_2,weights=weights_hrp_2,pie=True)```
 
-
-[INSERT CHART]
-
+<img width="738" alt="Screenshot 2022-10-04 at 00 39 18" src="https://user-images.githubusercontent.com/40023817/193704620-fb6b12d5-9c1e-44dc-ad32-384de4c56c85.png">
 
 
 ## Useful tips
