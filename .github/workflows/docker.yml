@@ -13,7 +13,7 @@ jobs:
           uses: VaultVulp/gp-docker-action@1.2.0
           with:
               github-token: ${{ secrets.GITHUB_TOKEN }} # Provide GITHUB_TOKEN to login into the GitHub Packages
-              image-name: my-cool-service # Provide Docker image name
-              image-tag: head # Provide Docker image tag
+              image-name: openbbterminal-poetry # Provide Docker image name
+              image-tag: latest # Provide Docker image tag
               build-context: docker/
 # openbbterminal-poetry.dockerfile
