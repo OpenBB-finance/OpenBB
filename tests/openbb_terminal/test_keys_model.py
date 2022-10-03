@@ -44,4 +44,5 @@ def test_set_key(env_var_name: str, env_var_value: str, persist: bool):
     else:
         assert (dotenv_key is None) and (os_key is None) and (cfg_key == env_var_value)
 
+
 # TODO: Test each set method
