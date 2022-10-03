@@ -17,6 +17,8 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     steps:
+    - name: show
+      run: ls
     - name: Build Container
       run: docker compose -f ../docker/docker-compose.yaml up -d --build
 
