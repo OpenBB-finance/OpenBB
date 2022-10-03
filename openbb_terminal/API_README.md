@@ -29,17 +29,24 @@ With OpenBB SDK, you can customize your chart style. You can switch between `dar
 ```
 from openbb_terminal.api import TerminalStyle
 theme = TerminalStyle("light", "light", "light")
+
 ```
 
-[INSERT CHART HERE]
+![Screenshot 2022-10-03 at 16 30 31](https://user-images.githubusercontent.com/40023817/193642769-98dcb01e-74a1-4a63-92a6-94ed0da52685.png)
+
 
 OR
 
 ```
 from openbb_terminal.api import TerminalStyle
 theme = TerminalStyle("dark", "dark", "dark")
+
 ```
-[INSERT CHART HERE]
+
+![Screenshot 2022-10-03 at 18 40 02](https://user-images.githubusercontent.com/40023817/193643052-6940a553-d291-4033-8c40-24c19183e7ae.png)
+
+
+
 
 ### 3. Access Documentation
 Each and every command of OpenBB SDK has detailed documentation about input parameters and returned outputs. You can access them using multiple ways:
@@ -56,13 +63,11 @@ You can also type `help(command)`, see example below, to see the command' docstr
 
 
 **Approach 3: Use OpenBB SDK Documentation page**
-Finally, if you prefer to check documentation on a web browser, OpenBB SDK Documentation[https://openbb-finance.github.io/OpenBBTerminal/api/] will be your best friend. You can browse available commands and search for any specific one that you need.
+Finally, if you prefer to check documentation on a web browser, [OpenBB SDK Documentation](https://openbb-finance.github.io/OpenBBTerminal/api/) will be your best friend. You can browse available commands and search for any specific one that you need.
+
+<img width="1200" alt="Screenshot 2022-10-03 at 18 41 48" src="https://user-images.githubusercontent.com/40023817/193643316-c063df03-4172-487f-ba47-ee60f36a3fef.png">
 
 
-
-
-
-[INSERT CHART]
 ### 4. Set API Keys
 
 TO BE COMPLETED once we finish the development
