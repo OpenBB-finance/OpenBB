@@ -1,19 +1,19 @@
 [yellow]Fetching data. Please be patient
 [/yellow]
 
-> Thu, 22 Sep 2022 13:01:36 GMT - Apple Watch Ultra and next-generation AirPods Pro available in stores Friday - apple.com
-https://www.apple.com/newsroom/2022/09/apple-watch-ultra-and-next-generation-airpods-pro-available-in-stores-friday/
+> 2022-09-22 14:08:34+00:00 - Apple Watch Ultra first impressions - TechCrunch
+https://techcrunch.com/2022/09/22/apple-watch-ultra-first-impressions/
 
-> Thu, 22 Sep 2022 13:05:15 GMT - AirPods Pro (2nd Gen) review: Welcome updates to Apple’s best buds - TechCrunch
+> 2022-09-22 13:19:34+00:00 - Apple Reportedly Scaling Back iPhone 14 Production as Customers Opt for Pro Models - MacRumors
+https://www.macrumors.com/2022/09/22/iphone-14-production-customers-opt-pro-models/
+
+> 2022-09-22 13:05:15+00:00 - AirPods Pro (2nd Gen) review: Welcome updates to Apple’s best buds - TechCrunch
 https://techcrunch.com/2022/09/22/airpods-pro-2nd-gen-review-welcome-updates-to-apples-best-buds/
 
-> Fri, 16 Sep 2022 07:13:58 GMT - iPhone 14 lineup, Apple Watch Series 8, and new Apple Watch SE arrive worldwide - apple.com
-https://www.apple.com/newsroom/2022/09/iphone-14-lineup-apple-watch-series-8-and-new-apple-watch-se-arrive-worldwide/
+> 2022-09-22 13:01:36+00:00 - Apple Watch Ultra and next-generation AirPods Pro available in stores Friday - apple.com
+https://www.apple.com/newsroom/2022/09/apple-watch-ultra-and-next-generation-airpods-pro-available-in-stores-friday/
 
-> Mon, 12 Sep 2022 07:00:00 GMT - iOS 16 is available today - apple.com
-https://www.apple.com/newsroom/2022/09/ios-16-is-available-today/
-
-> Thu, 22 Sep 2022 14:08:34 GMT - Apple Watch Ultra first impressions - TechCrunch
-https://techcrunch.com/2022/09/22/apple-watch-ultra-first-impressions/
+> 2022-09-22 12:37:00+00:00 - Oops! Apple Forgot to Tell Us About the iPhone 14's Best Feature - The Motley Fool
+https://www.fool.com/investing/2022/09/22/apple-forgot-to-show-a-great-iphone-14-feature/
 
 
