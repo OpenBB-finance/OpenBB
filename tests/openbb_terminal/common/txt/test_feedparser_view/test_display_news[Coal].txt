@@ -1,19 +1,19 @@
 [yellow]Fetching data. Please be patient
 [/yellow]
 
-> Thu, 22 Sep 2022 11:00:00 GMT - Coal To Nuclear Transition To Decarbonize The Grid - Hackaday
-https://hackaday.com/2022/09/22/coal-to-nuclear-transition-to-decarbonize-the-grid/
+> 2022-09-22 14:06:23+00:00 - IEA Sees Natural Gas, Oil, Coal Job Growth Lagging Alternative Sectors - Natural Gas Intelligence
+https://www.naturalgasintel.com/iea-sees-natural-gas-oil-coal-job-growth-lagging-alternative-sectors/
 
-> Tue, 20 Sep 2022 08:34:00 GMT - Coal rush! Energy crisis fires global hunt for polluting fuel - Reuters
-https://www.reuters.com/markets/commodities/coal-rush-energy-crisis-fires-global-hunt-polluting-fuel-2022-09-20/
+> 2022-09-22 14:00:00+00:00 - New Mexico city sues for control of retiring coal plant - Energy News Network
+https://energynews.us/newsletter/new-mexico-city-sues-for-control-of-retiring-coal-plant/
 
-> Thu, 22 Sep 2022 11:51:55 GMT - HSBC Asset Management to Phase Out Thermal Coal in Active Funds - Bloomberg
-https://www.bloomberg.com/news/articles/2022-09-22/hsbc-asset-management-to-phase-out-thermal-coal-in-active-funds
+> 2022-09-22 13:42:52+00:00 - Climate change could be double-edged sword for Australian coal | Mint - Mint
+https://www.livemint.com/industry/energy/climate-change-could-be-double-edged-sword-for-australian-coal-11663682419893.html
 
-> Wed, 21 Sep 2022 17:32:00 GMT - Column: Buoyant coal industry seeks ways to stay in the long-term energy mix - Reuters
-https://www.reuters.com/markets/commodities/buoyant-coal-industry-seeks-ways-stay-long-term-energy-mix-russell-2022-09-21/
+> 2022-09-22 13:01:00+00:00 - EU flip-flop on Russian coal sanctions brings doubts for oil - American Journal of Transportation
+https://ajot.com/news/eu-flip-flop-on-russian-coal-sanctions-brings-doubts-for-oil
 
-> Thu, 22 Sep 2022 13:00:00 GMT - The Coal Unit Britain Can't Afford To Close Down - OilPrice.com
+> 2022-09-22 13:00:00+00:00 - The Coal Unit Britain Can't Afford To Close Down - OilPrice.com
 https://oilprice.com/Latest-Energy-News/World-News/The-Coal-Unit-Britain-Cant-Afford-To-Close-Down.html
 
 
