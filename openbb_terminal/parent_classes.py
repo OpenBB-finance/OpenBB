@@ -1,7 +1,7 @@
 """Parent Classes"""
 __docformat__ = "numpy"
 
-# pylint: disable= C0301,C0302,R0902
+# pylint: disable=C0301,C0302,R0902,global-statement
 
 
 from abc import ABCMeta, abstractmethod
