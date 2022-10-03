@@ -1,2 +1,2 @@
-defined, test passed
+defined, test failed
 
