@@ -216,7 +216,7 @@ def check_fmp_key(show_output: bool = False) -> int:
         r = requests.get(
             f"https://financialmodelingprep.com/api/v3/profile/AAPL?apikey={cfg.API_KEY_FINANCIALMODELINGPREP}"
         )
-        if r.status_code in [403, 401]:
+        if r.status_code in [403, 401] or "Error Message" in str(r.content):
             logger.warning("Financial Modeling Prep key defined, test failed")
             status = -1
         elif r.status_code == 200:
