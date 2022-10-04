@@ -1920,7 +1920,7 @@ def copy_func(f: Callable, logging_decorator: bool = False) -> Callable:
     """
     # Removing the logging decorator
     if hasattr(f, "__wrapped__"):
-        f = f.__wrapped__
+        f = f.__wrapped__  # type: ignore
 
     g = types.FunctionType(
         f.__code__,
