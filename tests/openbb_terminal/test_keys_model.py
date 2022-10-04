@@ -2,7 +2,6 @@ import os
 from typing import List
 from unittest.mock import patch
 from pathlib import Path
-from numpy import True_
 import pandas as pd
 import pytest
 
