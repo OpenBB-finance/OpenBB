@@ -110,7 +110,7 @@ def get_keys(show: bool = False) -> pd.DataFrame:
 
 
 def set_av_key(key: str, persist: bool = False, show_output: bool = False) -> str:
-    """Set Alphavantage key
+    """Set Alpha Vantage key
 
     Parameters
     ----------
