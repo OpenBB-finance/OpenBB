@@ -73,9 +73,9 @@ def set_naive_environment(env_var_name_list: List[str]) -> None:
 def assert_keys_and_status(
     args: List[str],
     persist: bool,
-    expected: int,
+    expected: str,
     env_var_name_list: List[str],
-    status: int,
+    status: str,
 ) -> None:
 
     for i, env_var_name in enumerate(env_var_name_list):
@@ -180,7 +180,7 @@ def test_set_av_key(args: List[str], persist: bool, show_output: bool, expected:
         ),
     ],
 )
-def test_set_fmp_key(args: List[str], persist: bool, show_output: bool, expected: int):
+def test_set_fmp_key(args: List[str], persist: bool, show_output: bool, expected: str):
 
     env_var_name_list = [
         "OPENBB_API_KEY_FINANCIALMODELINGPREP",
@@ -230,7 +230,7 @@ def test_set_fmp_key(args: List[str], persist: bool, show_output: bool, expected
     ],
 )
 def test_set_quandl_key(
-    args: List[str], persist: bool, show_output: bool, expected: int
+    args: List[str], persist: bool, show_output: bool, expected: str
 ):
 
     env_var_name_list = [
@@ -281,7 +281,7 @@ def test_set_quandl_key(
     ],
 )
 def test_set_polygon_key(
-    args: List[str], persist: bool, show_output: bool, expected: int
+    args: List[str], persist: bool, show_output: bool, expected: str
 ):
 
     env_var_name_list = [
@@ -331,7 +331,7 @@ def test_set_polygon_key(
         ),
     ],
 )
-def test_set_fred_key(args: List[str], persist: bool, show_output: bool, expected: int):
+def test_set_fred_key(args: List[str], persist: bool, show_output: bool, expected: str):
 
     env_var_name_list = [
         "OPENBB_API_FRED_KEY",
@@ -380,7 +380,7 @@ def test_set_fred_key(args: List[str], persist: bool, show_output: bool, expecte
         ),
     ],
 )
-def test_set_news_key(args: List[str], persist: bool, show_output: bool, expected: int):
+def test_set_news_key(args: List[str], persist: bool, show_output: bool, expected: str):
 
     env_var_name_list = [
         "OPENBB_API_NEWS_TOKEN",
@@ -430,7 +430,7 @@ def test_set_news_key(args: List[str], persist: bool, show_output: bool, expecte
     ],
 )
 def test_set_tradier_key(
-    args: List[str], persist: bool, show_output: bool, expected: int
+    args: List[str], persist: bool, show_output: bool, expected: str
 ):
 
     env_var_name_list = [
@@ -480,7 +480,7 @@ def test_set_tradier_key(
         ),
     ],
 )
-def test_set_cmc_key(args: List[str], persist: bool, show_output: bool, expected: int):
+def test_set_cmc_key(args: List[str], persist: bool, show_output: bool, expected: str):
 
     env_var_name_list = [
         "OPENBB_API_CMC_KEY",
@@ -530,7 +530,7 @@ def test_set_cmc_key(args: List[str], persist: bool, show_output: bool, expected
     ],
 )
 def test_set_finnhub_key(
-    args: List[str], persist: bool, show_output: bool, expected: int
+    args: List[str], persist: bool, show_output: bool, expected: str
 ):
 
     env_var_name_list = [
@@ -580,7 +580,7 @@ def test_set_finnhub_key(
         ),
     ],
 )
-def test_set_iex_key(args: List[str], persist: bool, show_output: bool, expected: int):
+def test_set_iex_key(args: List[str], persist: bool, show_output: bool, expected: str):
 
     env_var_name_list = [
         "OPENBB_API_IEX_TOKEN",
@@ -630,7 +630,7 @@ def test_set_iex_key(args: List[str], persist: bool, show_output: bool, expected
     ],
 )
 def test_set_reddit_key(
-    args: List[str], persist: bool, show_output: bool, expected: int
+    args: List[str], persist: bool, show_output: bool, expected: str
 ):
 
     env_var_name_list = [
@@ -689,7 +689,7 @@ def test_set_reddit_key(
     ],
 )
 def test_set_bitquery_key(
-    args: List[str], persist: bool, show_output: bool, expected: int
+    args: List[str], persist: bool, show_output: bool, expected: str
 ):
 
     env_var_name_list = [
@@ -740,7 +740,7 @@ def test_set_bitquery_key(
     ],
 )
 def test_set_twitter_key(
-    args: List[str], persist: bool, show_output: bool, expected: int
+    args: List[str], persist: bool, show_output: bool, expected: str
 ):
 
     env_var_name_list = [
@@ -794,7 +794,7 @@ def test_set_twitter_key(
         ),
     ],
 )
-def test_set_rh_key(args: List[str], persist: bool, show_output: bool, expected: int):
+def test_set_rh_key(args: List[str], persist: bool, show_output: bool, expected: str):
 
     env_var_name_list = [
         "OPENBB_RH_USERNAME",
@@ -846,7 +846,7 @@ def test_set_rh_key(args: List[str], persist: bool, show_output: bool, expected:
     ],
 )
 def test_set_degiro_key(
-    args: List[str], persist: bool, show_output: bool, expected: int
+    args: List[str], persist: bool, show_output: bool, expected: str
 ):
 
     env_var_name_list = [
@@ -901,7 +901,7 @@ def test_set_degiro_key(
     ],
 )
 def test_set_oanda_key(
-    args: List[str], persist: bool, show_output: bool, expected: int
+    args: List[str], persist: bool, show_output: bool, expected: str
 ):
 
     env_var_name_list = [
@@ -956,7 +956,7 @@ def test_set_oanda_key(
     ],
 )
 def test_set_binance_key(
-    args: List[str], persist: bool, show_output: bool, expected: int
+    args: List[str], persist: bool, show_output: bool, expected: str
 ):
 
     env_var_name_list = [
@@ -1008,7 +1008,7 @@ def test_set_binance_key(
         ),
     ],
 )
-def test_set_si_key(args: List[str], persist: bool, show_output: bool, expected: int):
+def test_set_si_key(args: List[str], persist: bool, show_output: bool, expected: str):
 
     env_var_name_list = [
         "OPENBB_API_SENTIMENTINVESTOR_TOKEN",
@@ -1058,7 +1058,7 @@ def test_set_si_key(args: List[str], persist: bool, show_output: bool, expected:
     ],
 )
 def test_set_coinbase_key(
-    args: List[str], persist: bool, show_output: bool, expected: int
+    args: List[str], persist: bool, show_output: bool, expected: str
 ):
 
     env_var_name_list = [
@@ -1113,7 +1113,7 @@ def test_set_coinbase_key(
     ],
 )
 def test_set_walert_key(
-    args: List[str], persist: bool, show_output: bool, expected: int
+    args: List[str], persist: bool, show_output: bool, expected: str
 ):
 
     env_var_name_list = [
@@ -1164,7 +1164,7 @@ def test_set_walert_key(
     ],
 )
 def test_set_glassnode_key(
-    args: List[str], persist: bool, show_output: bool, expected: int
+    args: List[str], persist: bool, show_output: bool, expected: str
 ):
 
     env_var_name_list = [
@@ -1215,7 +1215,7 @@ def test_set_glassnode_key(
     ],
 )
 def test_set_coinglass_key(
-    args: List[str], persist: bool, show_output: bool, expected: int
+    args: List[str], persist: bool, show_output: bool, expected: str
 ):
 
     env_var_name_list = [
@@ -1266,7 +1266,7 @@ def test_set_coinglass_key(
     ],
 )
 def test_set_cpanic_key(
-    args: List[str], persist: bool, show_output: bool, expected: int
+    args: List[str], persist: bool, show_output: bool, expected: str
 ):
 
     env_var_name_list = [
@@ -1317,7 +1317,7 @@ def test_set_cpanic_key(
     ],
 )
 def test_set_ethplorer_key(
-    args: List[str], persist: bool, show_output: bool, expected: int
+    args: List[str], persist: bool, show_output: bool, expected: str
 ):
 
     env_var_name_list = [
@@ -1368,7 +1368,7 @@ def test_set_ethplorer_key(
     ],
 )
 def test_set_smartstake_key(
-    args: List[str], persist: bool, show_output: bool, expected: int
+    args: List[str], persist: bool, show_output: bool, expected: str
 ):
 
     env_var_name_list = [
@@ -1421,7 +1421,7 @@ def test_set_smartstake_key(
     ],
 )
 def test_set_github_key(
-    args: List[str], persist: bool, show_output: bool, expected: int
+    args: List[str], persist: bool, show_output: bool, expected: str
 ):
 
     env_var_name_list = [
@@ -1472,7 +1472,7 @@ def test_set_github_key(
     ],
 )
 def test_set_messari_key(
-    args: List[str], persist: bool, show_output: bool, expected: int
+    args: List[str], persist: bool, show_output: bool, expected: str
 ):
 
     env_var_name_list = [
@@ -1523,7 +1523,7 @@ def test_set_messari_key(
     ],
 )
 def test_set_eodhd_key(
-    args: List[str], persist: bool, show_output: bool, expected: int
+    args: List[str], persist: bool, show_output: bool, expected: str
 ):
 
     env_var_name_list = [
@@ -1574,7 +1574,7 @@ def test_set_eodhd_key(
     ],
 )
 def test_set_santiment_key(
-    args: List[str], persist: bool, show_output: bool, expected: int
+    args: List[str], persist: bool, show_output: bool, expected: str
 ):
 
     env_var_name_list = [
