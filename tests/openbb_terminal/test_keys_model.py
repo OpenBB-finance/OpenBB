@@ -7,7 +7,8 @@ import pytest
 
 from openbb_terminal import keys_model
 
-# pylint: disable=R0902,R0903,W1404,too-many-lines
+# pylint: disable=R0902,R0903,W1404
+# pylint: disable=too-many-lines
 
 
 # Test persist
