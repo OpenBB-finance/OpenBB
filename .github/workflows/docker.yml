@@ -1,16 +1,24 @@
-name: Push to GCR GitHub Action
+name: publish
+
 on: [push]
+
 jobs:
-  build-and-push-to-gcr:
+  publish-image:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
-      - uses: RafikFarhad/push-to-gcr-github-action@v4.1
-        with:
-          gcloud_service_key: ${{ secrets.GCLOUD_SERVICE_KEY }} # can be base64 encoded or plain text
-          registry: gcr.io
-          project_id: my-awesome-project
-          image_name: backend
-          image_tag: latest,v1
-          dockerfile: ./docker/openbbterminal-poetry.dockerfile
-          context: ./docker
+    - uses: actions/checkout@v2
+
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build the hello-world Docker image
+      run: |
+        docker build . --tag ghcr.io/jonashackt/hello-world:latest
+        docker run ghcr.io/jonashackt/hello-world:latest
+        docker push ghcr.io/jonashackt/hello-world:latest
+
