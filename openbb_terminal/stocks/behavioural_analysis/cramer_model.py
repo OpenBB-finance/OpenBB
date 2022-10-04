@@ -1,6 +1,7 @@
 """Cramer Model"""
 __docformat__ = "numpy"
 
+import os
 import logging
 import re
 
@@ -9,11 +10,16 @@ import requests
 import numpy as np
 import yfinance as yf
 from bs4 import BeautifulSoup
+import certifi
 
 from openbb_terminal.decorators import log_start_end
 
 
 logger = logging.getLogger(__name__)
+
+# Necessary only for installer to identify where SSL certs are
+os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
+os.environ["SSL_CERT_FILE"] = certifi.where()
 
 
 @log_start_end(log=logger)
