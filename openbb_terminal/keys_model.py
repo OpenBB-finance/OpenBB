@@ -104,7 +104,7 @@ def get_keys(show: bool = False) -> pd.DataFrame:
     return pd.DataFrame()
 
 
-def set_av_key(key: str, persist: bool = False, show_output: bool = True) -> str:
+def set_av_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set Alphavantage key
 
     Parameters
@@ -123,9 +123,7 @@ def set_av_key(key: str, persist: bool = False, show_output: bool = True) -> str
     """
 
     set_key("OPENBB_API_KEY_ALPHAVANTAGE", key, persist)
-    status = check_av_key(show_output)
-
-    return status
+    return check_av_key(show_output)
 
 
 def check_av_key(show_output: bool = False) -> str:
@@ -159,10 +157,10 @@ def check_av_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status + "\n")
 
-    return status
+    return str(status)
 
 
-def set_fmp_key(key: str, persist: bool = False, show_output: bool = True) -> str:
+def set_fmp_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set Financial Modeling Prep key
 
     Parameters
@@ -181,9 +179,7 @@ def set_fmp_key(key: str, persist: bool = False, show_output: bool = True) -> st
     """
 
     set_key("OPENBB_API_KEY_FINANCIALMODELINGPREP", key, persist)
-    status = check_fmp_key(show_output)
-
-    return status
+    return check_fmp_key(show_output)
 
 
 def check_fmp_key(show_output: bool = False) -> str:
@@ -197,7 +193,6 @@ def check_fmp_key(show_output: bool = False) -> str:
     Returns
     -------
     status: str
-
 
     """
 
@@ -223,10 +218,10 @@ def check_fmp_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status + "\n")
 
-    return status
+    return str(status)
 
 
-def set_quandl_key(key: str, persist: bool = False, show_output: bool = True) -> str:
+def set_quandl_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set Quandl key
 
     Parameters
@@ -245,9 +240,7 @@ def set_quandl_key(key: str, persist: bool = False, show_output: bool = True) ->
     """
 
     set_key("OPENBB_API_KEY_QUANDL", key, persist)
-    status = check_quandl_key(show_output)
-
-    return status
+    return check_quandl_key(show_output)
 
 
 def check_quandl_key(show_output: bool = False) -> str:
@@ -280,10 +273,10 @@ def check_quandl_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status + "\n")
 
-    return status
+    return str(status)
 
 
-def set_polygon_key(key: str, persist: bool = False, show_output: bool = True) -> str:
+def set_polygon_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set Polygon key
 
     Parameters
@@ -302,9 +295,7 @@ def set_polygon_key(key: str, persist: bool = False, show_output: bool = True) -
     """
 
     set_key("OPENBB_API_POLYGON_KEY", key, persist)
-    status = check_polygon_key(show_output)
-
-    return status
+    return check_polygon_key(show_output)
 
 
 def check_polygon_key(show_output: bool = False) -> str:
@@ -342,10 +333,10 @@ def check_polygon_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status + "\n")
 
-    return status
+    return str(status)
 
 
-def set_fred_key(key: str, persist: bool = False, show_output: bool = True) -> str:
+def set_fred_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set FRED key
 
     Parameters
@@ -364,9 +355,7 @@ def set_fred_key(key: str, persist: bool = False, show_output: bool = True) -> s
     """
 
     set_key("OPENBB_API_FRED_KEY", key, persist)
-    status = check_fred_key(show_output)
-
-    return status
+    return check_fred_key(show_output)
 
 
 def check_fred_key(show_output: bool = False) -> str:
@@ -403,10 +392,10 @@ def check_fred_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status + "\n")
 
-    return status
+    return str(status)
 
 
-def set_news_key(key: str, persist: bool = False, show_output: bool = True) -> str:
+def set_news_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set News key
 
     Parameters
@@ -425,9 +414,7 @@ def set_news_key(key: str, persist: bool = False, show_output: bool = True) -> s
     """
 
     set_key("OPENBB_API_NEWS_TOKEN", key, persist)
-    status = check_news_key(show_output)
-
-    return status
+    return check_news_key(show_output)
 
 
 def check_news_key(show_output: bool = False) -> str:
@@ -464,10 +451,10 @@ def check_news_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status + "\n")
 
-    return status
+    return str(status)
 
 
-def set_tradier_key(key: str, persist: bool = False, show_output: bool = True) -> str:
+def set_tradier_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set Tradier key
 
     Parameters
@@ -486,9 +473,7 @@ def set_tradier_key(key: str, persist: bool = False, show_output: bool = True) -
     """
 
     set_key("OPENBB_API_TRADIER_TOKEN", key, persist)
-    status = check_tradier_key(show_output)
-
-    return status
+    return check_tradier_key(show_output)
 
 
 def check_tradier_key(show_output: bool = False) -> str:
@@ -530,10 +515,10 @@ def check_tradier_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status + "\n")
 
-    return status
+    return str(status)
 
 
-def set_cmc_key(key: str, persist: bool = False, show_output: bool = True) -> str:
+def set_cmc_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set Coinmarketcap key
 
     Parameters
@@ -552,9 +537,7 @@ def set_cmc_key(key: str, persist: bool = False, show_output: bool = True) -> st
     """
 
     set_key("OPENBB_API_CMC_KEY", key, persist)
-    status = check_cmc_key(show_output)
-
-    return status
+    return check_cmc_key(show_output)
 
 
 def check_cmc_key(show_output: bool = False) -> str:
@@ -588,10 +571,10 @@ def check_cmc_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status + "\n")
 
-    return status
+    return str(status)
 
 
-def set_finnhub_key(key: str, persist: bool = False, show_output: bool = True) -> str:
+def set_finnhub_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set Finnhub key
 
     Parameters
@@ -610,9 +593,7 @@ def set_finnhub_key(key: str, persist: bool = False, show_output: bool = True) -
     """
 
     set_key("OPENBB_API_FINNHUB_KEY", key, persist)
-    status = check_finnhub_key(show_output)
-
-    return status
+    return check_finnhub_key(show_output)
 
 
 def check_finnhub_key(show_output: bool = False) -> str:
@@ -649,10 +630,10 @@ def check_finnhub_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status + "\n")
 
-    return status
+    return str(status)
 
 
-def set_iex_key(key: str, persist: bool = False, show_output: bool = True) -> str:
+def set_iex_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set IEX Cloud key
 
     Parameters
@@ -671,9 +652,7 @@ def set_iex_key(key: str, persist: bool = False, show_output: bool = True) -> st
     """
 
     set_key("OPENBB_API_IEX_TOKEN", key, persist)
-    status = check_iex_key(show_output)
-
-    return status
+    return check_iex_key(show_output)
 
 
 def check_iex_key(show_output: bool = False) -> str:
@@ -705,7 +684,7 @@ def check_iex_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status + "\n")
 
-    return status
+    return str(status)
 
 
 def set_reddit_key(
@@ -715,8 +694,8 @@ def set_reddit_key(
     username: str,
     useragent: str,
     persist: bool = False,
-    show_output: bool = True,
-):
+    show_output: bool = False,
+) -> str:
     """Set Reddit key
 
     Parameters
@@ -743,9 +722,7 @@ def set_reddit_key(
     set_key("OPENBB_API_REDDIT_USERNAME", username, persist)
     set_key("OPENBB_API_REDDIT_USER_AGENT", useragent, persist)
 
-    status = check_reddit_key(show_output)
-
-    return status
+    return check_reddit_key(show_output)
 
 
 def check_reddit_key(show_output: bool = False) -> str:
@@ -806,10 +783,10 @@ def check_reddit_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status + "\n")
 
-    return status
+    return str(status)
 
 
-def set_bitquery_key(key: str, persist: bool = False, show_output: bool = True) -> str:
+def set_bitquery_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set Bitquery key
 
     Parameters
@@ -828,9 +805,7 @@ def set_bitquery_key(key: str, persist: bool = False, show_output: bool = True) 
     """
 
     set_key("OPENBB_API_BITQUERY_KEY", key, persist)
-    status = check_bitquery_key(show_output)
-
-    return status
+    return check_bitquery_key(show_output)
 
 
 def check_bitquery_key(show_output: bool = False) -> str:
@@ -874,7 +849,7 @@ def check_bitquery_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status + "\n")
 
-    return status
+    return str(status)
 
 
 def set_twitter_key(
@@ -882,8 +857,8 @@ def set_twitter_key(
     secret: str,
     access_token: str,
     persist: bool = False,
-    show_output: bool = True,
-):
+    show_output: bool = False,
+) -> str:
     """Set Twitter key
 
     Parameters
@@ -906,9 +881,7 @@ def set_twitter_key(
     set_key("OPENBB_API_TWITTER_SECRET_KEY", secret, persist)
     set_key("OPENBB_API_TWITTER_BEARER_TOKEN", access_token, persist)
 
-    status = check_twitter_key(show_output)
-
-    return status
+    return check_twitter_key(show_output)
 
 
 def check_twitter_key(show_output: bool = False) -> str:
@@ -957,15 +930,15 @@ def check_twitter_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status + "\n")
 
-    return status
+    return str(status)
 
 
 def set_rh_key(
     username: str,
     password: str,
     persist: bool = False,
-    show_output: bool = True,
-):
+    show_output: bool = False,
+) -> str:
     """Set Robinhood key
 
     Parameters
@@ -986,9 +959,7 @@ def set_rh_key(
     set_key("OPENBB_RH_USERNAME", username, persist)
     set_key("OPENBB_RH_PASSWORD", password, persist)
 
-    status = check_rh_key(show_output)
-
-    return status
+    return check_rh_key(show_output)
 
 
 def check_rh_key(show_output: bool = False) -> str:
@@ -1016,7 +987,7 @@ def check_rh_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status + "\n")
 
-    return status
+    return str(status)
 
 
 def set_degiro_key(
@@ -1024,8 +995,8 @@ def set_degiro_key(
     password: str,
     secret: str = "",
     persist: bool = False,
-    show_output: bool = True,
-):
+    show_output: bool = False,
+) -> str:
     """Set Degiro key
 
     Parameters
@@ -1048,9 +1019,7 @@ def set_degiro_key(
     set_key("OPENBB_DG_PASSWORD", password, persist)
     set_key("OPENBB_DG_TOTP_SECRET", secret, persist)
 
-    status = check_degiro_key(show_output)
-
-    return status
+    return check_degiro_key(show_output)
 
 
 def check_degiro_key(show_output: bool = False) -> str:
@@ -1078,7 +1047,7 @@ def check_degiro_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status + "\n")
 
-    return status
+    return str(status)
 
 
 def set_oanda_key(
@@ -1086,8 +1055,8 @@ def set_oanda_key(
     access_token: str,
     account_type: str = "",
     persist: bool = False,
-    show_output: bool = True,
-):
+    show_output: bool = False,
+) -> str:
     """Set Oanda key
 
     Parameters
@@ -1110,9 +1079,7 @@ def set_oanda_key(
     set_key("OPENBB_OANDA_TOKEN", access_token, persist)
     set_key("OPENBB_OANDA_ACCOUNT_TYPE", account_type, persist)
 
-    status = check_oanda_key(show_output)
-
-    return status
+    return check_oanda_key(show_output)
 
 
 def check_oanda_key(show_output: bool = False) -> str:
@@ -1153,15 +1120,15 @@ def check_oanda_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status + "\n")
 
-    return status
+    return str(status)
 
 
 def set_binance_key(
     key: str,
     secret: str,
     persist: bool = False,
-    show_output: bool = True,
-):
+    show_output: bool = False,
+) -> str:
     """Set Binance key
 
     Parameters
@@ -1182,9 +1149,7 @@ def set_binance_key(
     set_key("OPENBB_API_BINANCE_KEY", key, persist)
     set_key("OPENBB_API_BINANCE_SECRET", secret, persist)
 
-    status = check_binance_key(show_output)
-
-    return status
+    return check_binance_key(show_output)
 
 
 def check_binance_key(show_output: bool = False) -> str:
@@ -1218,20 +1183,19 @@ def check_binance_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status + "\n")
 
-    return status
+    return str(status)
 
 
 def set_si_key(
     key: str,
     persist: bool = False,
-    show_output: bool = True,
-):
+    show_output: bool = False,
+) -> str:
     """Set Sentimentinvestor key.
 
     Parameters
     ----------
         key: str
-        secret: str
         persist: bool
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
@@ -1245,9 +1209,7 @@ def set_si_key(
 
     set_key("OPENBB_API_SENTIMENTINVESTOR_TOKEN", key, persist)
 
-    status = check_si_key(show_output)
-
-    return status
+    return check_si_key(show_output)
 
 
 def check_si_key(show_output: bool = False) -> str:
@@ -1288,7 +1250,7 @@ def check_si_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status + "\n")
 
-    return status
+    return str(status)
 
 
 def set_coinbase_key(
@@ -1296,8 +1258,8 @@ def set_coinbase_key(
     secret: str,
     passphrase: str,
     persist: bool = False,
-    show_output: bool = True,
-):
+    show_output: bool = False,
+) -> str:
     """Set Coinbase key
 
     Parameters
@@ -1320,9 +1282,7 @@ def set_coinbase_key(
     set_key("OPENBB_API_COINBASE_SECRET", secret, persist)
     set_key("OPENBB_API_COINBASE_PASS_PHRASE", passphrase, persist)
 
-    status = check_coinbase_key(show_output)
-
-    return status
+    return check_coinbase_key(show_output)
 
 
 def check_coinbase_key(show_output: bool = False) -> str:
@@ -1366,10 +1326,10 @@ def check_coinbase_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status + "\n")
 
-    return status
+    return str(status)
 
 
-def set_walert_key(key: str, persist: bool = False, show_output: bool = True) -> str:
+def set_walert_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set Walert key
 
     Parameters
@@ -1388,9 +1348,7 @@ def set_walert_key(key: str, persist: bool = False, show_output: bool = True) ->
     """
 
     set_key("OPENBB_API_WHALE_ALERT_KEY", key, persist)
-    status = check_walert_key(show_output)
-
-    return status
+    return check_walert_key(show_output)
 
 
 def check_walert_key(show_output: bool = False) -> str:
@@ -1430,10 +1388,12 @@ def check_walert_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status + "\n")
 
-    return status
+    return str(status)
 
 
-def set_glassnode_key(key: str, persist: bool = False, show_output: bool = True) -> str:
+def set_glassnode_key(
+    key: str, persist: bool = False, show_output: bool = False
+) -> str:
     """Set Glassnode key.
 
     Parameters
@@ -1452,9 +1412,7 @@ def set_glassnode_key(key: str, persist: bool = False, show_output: bool = True)
     """
 
     set_key("OPENBB_API_GLASSNODE_KEY", key, persist)
-    status = check_glassnode_key(show_output)
-
-    return status
+    return check_glassnode_key(show_output)
 
 
 def check_glassnode_key(show_output: bool = False) -> str:
@@ -1496,10 +1454,12 @@ def check_glassnode_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status + "\n")
 
-    return status
+    return str(status)
 
 
-def set_coinglass_key(key: str, persist: bool = False, show_output: bool = True) -> str:
+def set_coinglass_key(
+    key: str, persist: bool = False, show_output: bool = False
+) -> str:
     """Set Coinglass key.
 
     Parameters
@@ -1518,9 +1478,7 @@ def set_coinglass_key(key: str, persist: bool = False, show_output: bool = True)
     """
 
     set_key("OPENBB_API_COINGLASS_KEY", key, persist)
-    status = check_coinglass_key(show_output)
-
-    return status
+    return check_coinglass_key(show_output)
 
 
 def check_coinglass_key(show_output: bool = False) -> str:
@@ -1560,10 +1518,10 @@ def check_coinglass_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status + "\n")
 
-    return status
+    return str(status)
 
 
-def set_cpanic_key(key: str, persist: bool = False, show_output: bool = True) -> str:
+def set_cpanic_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set Cpanic key.
 
     Parameters
@@ -1582,9 +1540,7 @@ def set_cpanic_key(key: str, persist: bool = False, show_output: bool = True) ->
     """
 
     set_key("OPENBB_API_CRYPTO_PANIC_KEY", key, persist)
-    status = check_cpanic_key(show_output)
-
-    return status
+    return check_cpanic_key(show_output)
 
 
 def check_cpanic_key(show_output: bool = False) -> str:
@@ -1618,10 +1574,12 @@ def check_cpanic_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status + "\n")
 
-    return status
+    return str(status)
 
 
-def set_ethplorer_key(key: str, persist: bool = False, show_output: bool = True) -> str:
+def set_ethplorer_key(
+    key: str, persist: bool = False, show_output: bool = False
+) -> str:
     """Set Ethplorer key.
 
     Parameters
@@ -1640,9 +1598,7 @@ def set_ethplorer_key(key: str, persist: bool = False, show_output: bool = True)
     """
 
     set_key("OPENBB_API_ETHPLORER_KEY", key, persist)
-    status = check_ethplorer_key(show_output)
-
-    return status
+    return check_ethplorer_key(show_output)
 
 
 def check_ethplorer_key(show_output: bool = False) -> str:
@@ -1680,7 +1636,7 @@ def check_ethplorer_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status + "\n")
 
-    return status
+    return str(status)
 
 
 def set_smartstake_key(
@@ -1707,9 +1663,7 @@ def set_smartstake_key(
 
     set_key("OPENBB_API_SMARTSTAKE_KEY", key, persist)
     set_key("OPENBB_API_SMARTSTAKE_TOKEN", access_token, persist)
-    status = check_smartstake_key(show_output)
-
-    return status
+    return check_smartstake_key(show_output)
 
 
 def check_smartstake_key(show_output: bool = False) -> str:
@@ -1763,10 +1717,10 @@ def check_smartstake_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status + "\n")
 
-    return status
+    return str(status)
 
 
-def set_github_key(key: str, persist: bool = False, show_output: bool = True) -> str:
+def set_github_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set GitHub key.
 
     Parameters
@@ -1785,9 +1739,7 @@ def set_github_key(key: str, persist: bool = False, show_output: bool = True) ->
     """
 
     set_key("OPENBB_API_GITHUB_KEY", key, persist)
-    status = check_github_key(show_output)
-
-    return status
+    return check_github_key(show_output)
 
 
 def check_github_key(show_output: bool = False) -> str:
@@ -1815,10 +1767,10 @@ def check_github_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status + "\n")
 
-    return status
+    return str(status)
 
 
-def set_messari_key(key: str, persist: bool = False, show_output: bool = True) -> str:
+def set_messari_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set Messari key.
 
     Parameters
@@ -1837,9 +1789,7 @@ def set_messari_key(key: str, persist: bool = False, show_output: bool = True) -
     """
 
     set_key("OPENBB_API_MESSARI_KEY", key, persist)
-    status = check_messari_key(show_output)
-
-    return status
+    return check_messari_key(show_output)
 
 
 def check_messari_key(show_output: bool = False) -> str:
@@ -1878,10 +1828,10 @@ def check_messari_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status + "\n")
 
-    return status
+    return str(status)
 
 
-def set_eodhd_key(key: str, persist: bool = False, show_output: bool = True) -> str:
+def set_eodhd_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set Eodhd key.
 
     Parameters
@@ -1900,9 +1850,7 @@ def set_eodhd_key(key: str, persist: bool = False, show_output: bool = True) -> 
     """
 
     set_key("OPENBB_API_EODHD_KEY", key, persist)
-    status = check_eodhd_key(show_output)
-
-    return status
+    return check_eodhd_key(show_output)
 
 
 def check_eodhd_key(show_output: bool = False) -> str:
@@ -1935,10 +1883,12 @@ def check_eodhd_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status + "\n")
 
-    return status
+    return str(status)
 
 
-def set_santiment_key(key: str, persist: bool = False, show_output: bool = True) -> str:
+def set_santiment_key(
+    key: str, persist: bool = False, show_output: bool = False
+) -> str:
     """Set Santiment key.
 
     Parameters
@@ -1957,9 +1907,7 @@ def set_santiment_key(key: str, persist: bool = False, show_output: bool = True)
     """
 
     set_key("OPENBB_API_SANTIMENT_KEY", key, persist)
-    status = check_santiment_key(show_output)
-
-    return status
+    return check_santiment_key(show_output)
 
 
 def check_santiment_key(show_output: bool = False) -> str:
@@ -2005,4 +1953,4 @@ def check_santiment_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status + "\n")
 
-    return status
+    return str(status)
