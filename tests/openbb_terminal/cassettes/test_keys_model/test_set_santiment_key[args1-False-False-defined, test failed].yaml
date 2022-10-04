@@ -29,7 +29,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 754e5a9dfafd5d2b-LIS
+      - 754e832e69a05d2f-LIS
       Cache-Control:
       - max-age=0, private, must-revalidate
       Connection:
@@ -37,11 +37,11 @@ interactions:
       Content-Length:
       - '55'
       Date:
-      - Tue, 04 Oct 2022 13:44:44 GMT
+      - Tue, 04 Oct 2022 14:12:26 GMT
       NEL:
       - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
       Report-To:
-      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=YHAzWzokOhCWB0VISIcSsexFpz8gZ2b26jVMP7gV%2Bkpge8CWL9jtRZF9t3eeUUbOx2QFI6j%2FtfDkm8yWVvAFTsV4I%2BlINytmKRrDEyEgC3DwkbAQwkBKNE%2FuLqWoyTJy94fA"}],"group":"cf-nel","max_age":604800}'
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=73uHjVWlQQnZw5NxPCRh7%2BZsXfbjULPTSI3S9ps5tJx8w8pG8R5ltf8CtdtRTM9Y9sDAarDtYHpg6u5SH7Jz4SlRcV5t1t5HtUwzbZKEykx23Whrrt5FQFFBs%2B0%2BS8i%2FLb4W"}],"group":"cf-nel","max_age":604800}'
       Server:
       - cloudflare
       access-control-allow-credentials:
@@ -51,9 +51,9 @@ interactions:
       access-control-allow-methods:
       - GET, POST, OPTIONS
       set-cookie:
-      - INGRESSCOOKIE=1664891085.64.11246.146835; Path=/.+; Secure; HttpOnly
+      - INGRESSCOOKIE=1664892747.059.11247.844562; Path=/.+; Secure; HttpOnly
       x-request-id:
-      - 37ba73ee400a18a6f363c5ad91ca61a3
+      - 525b7df0250e9951c40efbf9ac28f266
     status:
       code: 400
       message: Bad Request

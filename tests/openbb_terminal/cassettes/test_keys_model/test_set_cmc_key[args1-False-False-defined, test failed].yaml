@@ -18,7 +18,7 @@ interactions:
     uri: https://pro-api.coinmarketcap.com/v1/cryptocurrency/map
   response:
     body:
-      string: "{\n    \"status\": {\n        \"timestamp\": \"2022-10-04T13:44:25.068Z\",\n
+      string: "{\n    \"status\": {\n        \"timestamp\": \"2022-10-04T14:12:03.105Z\",\n
         \       \"error_code\": 1001,\n        \"error_message\": \"This API Key is
         invalid.\",\n        \"elapsed\": 0,\n        \"credit_count\": 0\n    }\n}"
     headers:
@@ -31,7 +31,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 04 Oct 2022 13:44:25 GMT
+      - Tue, 04 Oct 2022 14:12:03 GMT
       Referrer-Policy:
       - origin-when-cross-origin
       Server:
@@ -41,9 +41,9 @@ interactions:
       Vary:
       - origin
       Via:
-      - 1.1 e8ab7200fc07cba060b06bd42dba48f8.cloudfront.net (CloudFront)
+      - 1.1 6cda321fa7ffaa5f463d18f171e22d8e.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - lPlu81AEXiiK9KbAvrcoKExweN6JOmb85ROd797NRlZ13J3QSox1RA==
+      - rmKrPjs7NUkW7LeBxi63gOUCMEym8roHw6VhVdY0d7pUnxZ0MSMfCg==
       X-Amz-Cf-Pop:
       - LIS50-C1
       X-Cache:
@@ -53,7 +53,7 @@ interactions:
       X-Envoy-Decorator-Operation:
       - coinmarketcap-pro-apis.cmc-api.svc.cluster.local:80/*
       X-Envoy-Upstream-Service-Time:
-      - '3'
+      - '2'
       X-Frame-Options:
       - SAMEORIGIN
       X-Traefik-Route:

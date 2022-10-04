@@ -27,12 +27,12 @@ interactions:
       Connection:
       - keep-alive
       Date:
-      - Tue, 04 Oct 2022 13:44:27 GMT
+      - Tue, 04 Oct 2022 14:12:05 GMT
       Server:
       - nginx
       Set-Cookie:
-      - ctoken=b99f97462bbf4b1f981f1bb4ca7b90e6; Max-Age=43200; Path=/; Expires=Wed,
-        05 Oct 2022 01:44:27 GMT
+      - ctoken=aac42812e9ab40a9895fe2f9d125b01b; Max-Age=43200; Path=/; Expires=Wed,
+        05 Oct 2022 02:12:05 GMT
       Strict-Transport-Security:
       - max-age=15768000
       Transfer-Encoding:

@@ -34,7 +34,7 @@ interactions:
       Content-Type:
       - application/json;charset=UTF-8
       Date:
-      - Tue, 04 Oct 2022 13:38:37 GMT
+      - Tue, 04 Oct 2022 14:12:11 GMT
       Expires:
       - '0'
       Pragma:
@@ -44,9 +44,9 @@ interactions:
       Strict-Transport-Security:
       - max-age=31536000; includeSubdomains
       Via:
-      - 1.1 2c10dcf9c9dce806048d7878d8a850dc.cloudfront.net (CloudFront)
+      - 1.1 96d159daae033b1bb1f9f14f4fc55aae.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - JIep4InWNI_jVZnxY-MYOSH6W8LIxYsodUtiqJ1NARld06omt7Qeiw==
+      - 9DQPbCtC_91_5aPUvDoZc_YwPk6pjEFVjlx5GS7peC0Z7VFYlmGC7w==
       X-Amz-Cf-Pop:
       - LIS50-C1
       X-Cache:
@@ -66,7 +66,7 @@ interactions:
       x-mbx-used-weight-1m:
       - '3'
       x-mbx-uuid:
-      - 44db60c2-0e9f-4d42-a559-7f464b4eda9a
+      - db85ea6c-d855-4c94-a1ad-b76c4f1e3759
     status:
       code: 200
       message: OK
@@ -85,7 +85,7 @@ interactions:
       X-MBX-APIKEY:
       - test_key
     method: GET
-    uri: https://api.binance.com/sapi/v1/account/apiRestrictions?timestamp=1664890714803&signature=d51d70c46eeddc8ac5c7cde22e40a2293600ed82e65febd4a95bf1037903c1ce
+    uri: https://api.binance.com/sapi/v1/account/apiRestrictions?timestamp=1664892729222&signature=1996f1d370189ad66ac44603fe80ea1abaa30bc5bf162ee9b85ae984fffbb784
   response:
     body:
       string: '{"code":-2008,"msg":"Invalid Api-Key ID."}'
@@ -101,7 +101,7 @@ interactions:
       Content-Type:
       - application/json;charset=UTF-8
       Date:
-      - Tue, 04 Oct 2022 13:38:37 GMT
+      - Tue, 04 Oct 2022 14:12:11 GMT
       Expires:
       - '0'
       Pragma:
@@ -111,9 +111,9 @@ interactions:
       Strict-Transport-Security:
       - max-age=31536000; includeSubdomains
       Via:
-      - 1.1 2c10dcf9c9dce806048d7878d8a850dc.cloudfront.net (CloudFront)
+      - 1.1 96d159daae033b1bb1f9f14f4fc55aae.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - AD9mVtBdosOKFfZyVcxiYg8VaSCYT-FAKAjn8j5P1KrN-GSsVsAF4A==
+      - vURjjoVoqeFj3Rbn2eg808K2k6l4QBOArL6u_VyKLOh2bP12vKkUFA==
       X-Amz-Cf-Pop:
       - LIS50-C1
       X-Cache:

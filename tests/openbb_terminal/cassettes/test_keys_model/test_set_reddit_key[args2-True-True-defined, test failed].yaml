@@ -31,7 +31,7 @@ interactions:
       Content-Length:
       - '41'
       Date:
-      - Tue, 04 Oct 2022 13:38:32 GMT
+      - Tue, 04 Oct 2022 14:12:07 GMT
       NEL:
       - '{"report_to": "w3-reporting-nel", "max_age": 14400, "include_subdomains":
         false, "success_fraction": 0.2, "failure_fraction": 0.2}'
@@ -43,7 +43,7 @@ interactions:
       Server:
       - snooserv
       Set-Cookie:
-      - edgebucket=3UPs9fGnkt6lcbNlfq; Domain=reddit.com; Max-Age=63071999; Path=/;  secure
+      - edgebucket=iALI4KfWGMoECUNJSL; Domain=reddit.com; Max-Age=63071999; Path=/;  secure
       Strict-Transport-Security:
       - max-age=31536000; includeSubdomains
       Via:

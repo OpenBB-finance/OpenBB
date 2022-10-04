@@ -46,30 +46,30 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 04 Oct 2022 13:44:18 GMT
+      - Tue, 04 Oct 2022 14:11:56 GMT
       Server:
       - openresty
       Set-Cookie:
-      - visid_incap_2170999=KU2ZHWtET5OrICu07tcsh7I4PGMAAAAAQUIPAAAAAAAPR4lRfD3/gF/innh6VMuz;
+      - visid_incap_2170999=1CofJCbpRoWyLby+w6MBqSs/PGMAAAAAQUIPAAAAAAB4QPjOO5THL62c/mw/CPzG;
         expires=Wed, 04 Oct 2023 06:16:11 GMT; HttpOnly; path=/; Domain=.nasdaq.com
-      - nlbi_2170999=m6dcLCBp6GjyS1plKj7S7QAAAACf5F9n3KQIBStGbBwslEsh; path=/; Domain=.nasdaq.com
-      - incap_ses_1170_2170999=xfwKYhMOaHr7M6zSkK08ELI4PGMAAAAAgxqfqmdaQQQqkFEO5yW0gQ==;
+      - nlbi_2170999=u+1bFOPMOW8J8pV/Kj7S7QAAAAD5I9gUHA/pmC6ngTuPTCAf; path=/; Domain=.nasdaq.com
+      - incap_ses_1170_2170999=aZY9QVdZiE8FDrrSkK08ECs/PGMAAAAAy0E8FukUuVhuc9Jh3bkxKQ==;
         path=/; Domain=.nasdaq.com
       Transfer-Encoding:
       - chunked
       X-CDN:
       - Imperva
       X-Iinfo:
-      - 5-142078135-142078159 NNYN CT(6 16 0) RT(1664891058203 129) q(0 0 0 -1) r(0
-        0) U11
+      - 2-69778184-69778213 NNYN CT(56 33 0) RT(1664892715526 129) q(0 0 1 0) r(1
+        1) U11
       X-RateLimit-Limit:
       - '50'
       X-RateLimit-Remaining:
-      - '43'
+      - '40'
       X-Request-Id:
-      - f159a026-3759-4343-ac85-43ed85878178
+      - 5686807e-748a-4a33-a6f8-1ad5de9cc66a
       X-Runtime:
-      - '0.008317'
+      - '0.008569'
     status:
       code: 400
       message: Bad Request

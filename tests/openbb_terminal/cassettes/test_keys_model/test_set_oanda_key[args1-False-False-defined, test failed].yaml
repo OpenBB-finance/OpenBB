@@ -21,7 +21,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 754e51999def950a-LIS
+      - 754e82c97d41da7e-LIS
       Connection:
       - keep-alive
       Content-Length:
@@ -29,14 +29,14 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 04 Oct 2022 13:38:35 GMT
+      - Tue, 04 Oct 2022 14:12:09 GMT
       RequestID:
       - '0'
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=wktUvj7s6LxBzybm5aTzgV4Kn2DaODSYSdcTWsfqxI0-1664890715-0-ARR5OiH9v0ZH9zDw9evivXMIGni7h+Z/4E8jefSBTZUKOkVR3FvLxLNcbLPdBVjNORdNjbIz2MiwkrpU8WxYryQ=;
-        path=/; expires=Tue, 04-Oct-22 14:08:35 GMT; domain=.api-fxpractice.oanda.com;
+      - __cf_bm=q_TOQOf3L2HIMu26EuEwncYIQXT9PB6hu4LAqwISNRA-1664892729-0-ASRBsufjw/Y412F5/ihq02v3kw3I0IIn0B5dIiAp1fGn7zohtWsggcY1b3ZfGZnd2IHaxeFB3MslixHMB+PWci0=;
+        path=/; expires=Tue, 04-Oct-22 14:42:09 GMT; domain=.api-fxpractice.oanda.com;
         HttpOnly; Secure; SameSite=None
       Vary:
       - Origin, Accept-Encoding
