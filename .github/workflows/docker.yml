@@ -18,7 +18,8 @@ jobs:
 
     - name: Build the hello-world Docker image
       run: |
-        docker build . --tag ghcr.io/jonashackt/hello-world:latest
-        docker run ghcr.io/jonashackt/hello-world:latest
-        docker push ghcr.io/jonashackt/hello-world:latest
+        source docker/compose.env && docker-compose build -f docker/openbbterminal-poetry.dockerfile
+        docker build --tag ghcr.io/colin99d/openbb:latest
+        docker run ghcr.io/colin99d/openbb:latest
+        docker push ghcr.io/colin99d/openbb:latest
 
