@@ -1,5 +1,6 @@
 import logging
 import os
+from enum import Enum
 import binance
 import dotenv
 import pandas as pd
@@ -8,7 +9,6 @@ import requests
 from prawcore.exceptions import ResponseException
 import praw
 import pyEX
-from enum import Enum
 import oandapyV20.endpoints.pricing
 from oandapyV20 import API as oanda_API
 from oandapyV20.exceptions import V20Error
@@ -98,9 +98,8 @@ def get_keys(show: bool = False) -> pd.DataFrame:
         df = df.rename(columns={0: "Key"})
         if show:
             return df
-        else:
-            df["Key"] = "*******"
-            return df
+        df["Key"] = "*******"
+        return df
 
     return pd.DataFrame()
 
