@@ -12,8 +12,7 @@ import praw
 import pyEX
 import oandapyV20.endpoints.pricing
 from oandapyV20 import API as oanda_API
-from oandapyV20.exceptions import V20Error
-from coinmarketcapapi import CoinMarketCapAPI, CoinMarketCapAPIError
+from coinmarketcapapi import CoinMarketCapAPI
 from alpha_vantage.timeseries import TimeSeries
 from openbb_terminal.cryptocurrency.coinbase_helpers import (
     CoinbaseProAuth,
