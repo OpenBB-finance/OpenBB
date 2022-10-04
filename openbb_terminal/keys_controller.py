@@ -121,9 +121,15 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             prog="mykeys",
             description="Display current keys.",
         )
+        parser.add_argument(
+            "-s", "--show", type=bool, dest="show", help="show", default=False
+        )
+        if other_args and "-s" in other_args[0]:
+            other_args.insert(1, "True")
+
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            df = keys_model.get_keys()
+            df = keys_model.get_keys(ns_parser.show)
             if not df.empty:
                 print_rich_table(
                     df,

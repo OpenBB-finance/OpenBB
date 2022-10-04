@@ -63,8 +63,14 @@ def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> Non
     setattr(cfg, env_var_name, env_var_value)
 
 
-def get_keys() -> pd.DataFrame:
+def get_keys(show: bool = False) -> pd.DataFrame:
     """Get dictionary with currently set API keys.
+
+    Parameters
+    ----------
+        show: bool
+            Flag to choose wether to show actual keys or not.
+            By default, False.
 
     Returns:
         pd.DataFrame: currents keys
@@ -84,7 +90,12 @@ def get_keys() -> pd.DataFrame:
     if current_keys:
         df = pd.DataFrame.from_dict(current_keys, orient="index")
         df.index.name = "API"
-        return df.rename(columns={0: "Key"})
+        df = df.rename(columns={0: "Key"})
+        if show:
+            return df
+        else:
+            df["Key"] = "*******"
+            return df
 
     return pd.DataFrame()
 
