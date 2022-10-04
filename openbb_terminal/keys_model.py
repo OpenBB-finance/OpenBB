@@ -791,7 +791,7 @@ def check_iex_key(show_output: bool = False) -> int:
             pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1").quote(symbol="AAPL")
             logger.info("IEX Cloud key defined, test passed")
             status = 1
-        except Exception as _: # noqa: F841
+        except Exception as _:  # noqa: F841
             logger.warning("IEX Cloud key defined, test failed")
             status = -1
 
@@ -2006,11 +2006,21 @@ def check_smartstake_key(show_output: bool = False) -> int:
         response = requests.get(smartstake_url, params=payload)  # type: ignore
 
         try:
-            if response.status_code == 200:
+            if (
+                "errors" in str(response.content)
+                or response.status_code < 200
+                or response.status_code >= 300
+            ):
+                logger.warning("Smartstake key defined, test failed")
+                status = -1
+            elif 200 <= response.status_code < 300:
+                logger.info("Smartstake key defined, test passed")
                 status = 1
             else:
-                status = -1
+                logger.warning("Smartstake key defined, test inconclusive")
+                status = 2
         except Exception as _:  # noqa: F841
+            logger.warning("Smartstake key defined, test failed")
             status = -1
 
     if show_output:
