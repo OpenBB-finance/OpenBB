@@ -29,14 +29,6 @@ from openbb_terminal.terminal_helper import suppress_stdout
 
 logger = logging.getLogger(__name__)
 
-STATUS_MSG = {
-    -1: "defined, test failed",
-    0: "not defined",
-    1: "defined, test passed",
-    2: "defined, test inconclusive",
-    3: "defined, not tested",
-}
-
 
 class OutputStatus(str, Enum):
 
