@@ -19,7 +19,7 @@ from openbb_terminal.helper_funcs import export_data
 def mock_compose_export_path(monkeypatch, tmp_path):
     # files in tmp_dir will remain (in separate folders) for 3 sequential runs of pytest
     def mock_return(func_name, *args, **kwargs):
-        return tmp_path, f"{func_name}_20220829_235959"
+        return tmp_path / f"20220829_235959_{func_name}"
 
     monkeypatch.setattr("openbb_terminal.helper_funcs.compose_export_path", mock_return)
 
@@ -76,7 +76,7 @@ def test_export_data_filetypes(
 ):
     export_data(export_type, dir_path, func_name, df)
 
-    assert Path(tmp_path / f"{func_name}_20220829_235959.{export_type}").exists()
+    assert Path(tmp_path / f"20220829_235959_{func_name}.{export_type}").exists()
     # TODO add assertions to check the validity of the files?
 
 

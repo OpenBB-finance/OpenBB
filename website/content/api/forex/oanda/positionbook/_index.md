@@ -1,9 +1,7 @@
-# forex.oanda.positionbook
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###forex.oanda.positionbook(instrument: Optional[str] = None, accountID: str = 'REPLACE_ME') -> Union[pandas.core.frame.DataFrame, bool]
+### forex.oanda.positionbook(instrument: Optional[str] = None, accountID: str = 'REPLACE_ME') -> Union[pandas.core.frame.DataFrame, bool]
 
 Request position book data for plotting.
 
@@ -20,7 +18,7 @@ Request position book data for plotting.
         Position book data or False
 
 ## Getting charts 
-###forex.oanda.positionbook(accountID: str, instrument: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### forex.oanda.positionbook(accountID: str, instrument: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Plot a position book for an instrument if Oanda provides one.
 

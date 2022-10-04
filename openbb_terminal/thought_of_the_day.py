@@ -68,9 +68,10 @@ class ThoughtOfTheDay:
             "div"
         )
 
-        page_count = []
-        for a_page_ref in find_navigation.find_all("a", href=True):
-            page_count.append(a_page_ref.text.strip("\n"))
+        page_count = [
+            a_page_ref.text.strip("\n")
+            for a_page_ref in find_navigation.find_all("a", href=True)
+        ]
 
         ret = {}
         ret["pages"] = page_count[-2]

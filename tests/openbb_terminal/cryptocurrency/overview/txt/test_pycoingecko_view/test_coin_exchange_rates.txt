@@ -1,16 +1,16 @@
-    Index                         Name  Unit       Value    Type
-0       1                      Bitcoin   BTC         1.0  crypto
-1       2                        Ether   ETH      13.641  crypto
-2       3                     Litecoin   LTC     383.413  crypto
-3       4                 Bitcoin Cash   BCH     129.225  crypto
-4       5                 Binance Coin   BNB     102.783  crypto
-5       6                          EOS   EOS   17349.146  crypto
-6       7                          XRP   XRP   56452.556  crypto
-7       8                       Lumens   XLM  209778.484  crypto
-8       9                    Chainlink  LINK    2798.632  crypto
-9      10                     Polkadot   DOT    2154.922  crypto
-10     11                Yearn.finance   YFI       1.978  crypto
-11     12                    US Dollar     $   43929.717    fiat
-12     13  United Arab Emirates Dirham    DH  161358.244    fiat
-13     14               Argentine Peso     $  4913217.13    fiat
-14     15            Australian Dollar    A$   58482.226    fiat
+    Index                         Name  Unit        Value    Type
+0       1                      Bitcoin   BTC          1.0  crypto
+1       2                        Ether   ETH       14.796  crypto
+2       3                     Litecoin   LTC      358.779  crypto
+3       4                 Bitcoin Cash   BCH      168.551  crypto
+4       5                 Binance Coin   BNB       70.969  crypto
+5       6                          EOS   EOS    15482.597  crypto
+6       7                          XRP   XRP    44585.031  crypto
+7       8                       Lumens   XLM   163468.013  crypto
+8       9                    Chainlink  LINK     2752.625  crypto
+9      10                     Polkadot   DOT     2984.971  crypto
+10     11                Yearn.finance   YFI        2.291  crypto
+11     12                    US Dollar     $    18889.034    fiat
+12     13  United Arab Emirates Dirham    DH    69379.517    fiat
+13     14               Argentine Peso     $  2737051.196    fiat
+14     15            Australian Dollar    A$    28578.863    fiat

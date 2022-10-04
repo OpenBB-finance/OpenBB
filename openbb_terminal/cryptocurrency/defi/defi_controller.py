@@ -196,7 +196,9 @@ class DefiController(BaseController):
 
         if ns_parser:
             terramoney_fcd_view.display_account_staking_info(
-                export=ns_parser.export, address=ns_parser.address, top=ns_parser.limit
+                export=ns_parser.export,
+                address=ns_parser.address,
+                limit=ns_parser.limit,
             )
 
     @log_start_end(log=logger)
@@ -306,7 +308,7 @@ class DefiController(BaseController):
                 kind=ns_parser.kind,
                 export=ns_parser.export,
                 cumulative=ns_parser.cumulative,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
             )
 
     @log_start_end(log=logger)
@@ -335,7 +337,7 @@ class DefiController(BaseController):
 
         if ns_parser:
             terramoney_fcd_view.display_staking_ratio_history(
-                export=ns_parser.export, top=ns_parser.limit
+                export=ns_parser.export, limit=ns_parser.limit
             )
 
     @log_start_end(log=logger)
@@ -364,7 +366,7 @@ class DefiController(BaseController):
 
         if ns_parser:
             terramoney_fcd_view.display_staking_returns_history(
-                export=ns_parser.export, top=ns_parser.limit
+                export=ns_parser.export, limit=ns_parser.limit
             )
 
     @log_start_end(log=logger)
@@ -413,7 +415,7 @@ class DefiController(BaseController):
 
         if ns_parser:
             defipulse_view.display_defipulse(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.ascending,
                 export=ns_parser.export,
@@ -445,7 +447,7 @@ class DefiController(BaseController):
         )
 
         if ns_parser:
-            llama_view.display_grouped_defi_protocols(num=ns_parser.limit)
+            llama_view.display_grouped_defi_protocols(limit=ns_parser.limit)
 
     @log_start_end(log=logger)
     def call_dtvl(self, other_args: List[str]):
@@ -531,9 +533,9 @@ class DefiController(BaseController):
 
         if ns_parser:
             llama_view.display_defi_protocols(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 description=ns_parser.description,
                 export=ns_parser.export,
             )
@@ -565,7 +567,7 @@ class DefiController(BaseController):
         )
 
         if ns_parser:
-            llama_view.display_defi_tvl(top=ns_parser.limit, export=ns_parser.export)
+            llama_view.display_defi_tvl(limit=ns_parser.limit, export=ns_parser.export)
 
     @log_start_end(log=logger)
     def call_newsletter(self, other_args: List[str]):
@@ -595,7 +597,7 @@ class DefiController(BaseController):
 
         if ns_parser:
             substack_view.display_newsletters(
-                top=ns_parser.limit, export=ns_parser.export
+                limit=ns_parser.limit, export=ns_parser.export
             )
 
     @log_start_end(log=logger)
@@ -750,12 +752,12 @@ class DefiController(BaseController):
 
         if ns_parser:
             graph_view.display_recently_added(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 days=ns_parser.days,
                 min_volume=ns_parser.vol,
                 min_tx=ns_parser.tx,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -805,9 +807,9 @@ class DefiController(BaseController):
 
         if ns_parser:
             graph_view.display_uni_pools(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -857,9 +859,9 @@ class DefiController(BaseController):
 
         if ns_parser:
             graph_view.display_last_uni_swaps(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -954,7 +956,7 @@ class DefiController(BaseController):
                 chain=ns_parser.chain,
                 kind=ns_parser.kind,
                 protocol=ns_parser.protocol,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
                 link=ns_parser.link,

@@ -1,9 +1,7 @@
-# economy.gdp
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###economy.gdp(interval: str = 'q', start_year: int = 2010) -> pandas.core.frame.DataFrame
+### economy.gdp(interval: str = 'q', start_year: int = 2010) -> pandas.core.frame.DataFrame
 
 Get annual or quarterly Real GDP for US
 
@@ -19,7 +17,7 @@ Get annual or quarterly Real GDP for US
         Dataframe of GDP
 
 ## Getting charts 
-###economy.gdp(interval: str = 'q', start_year: int = 2010, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### economy.gdp(interval: str = 'q', start_year: int = 2010, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display US GDP from AlphaVantage
 

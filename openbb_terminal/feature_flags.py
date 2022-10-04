@@ -9,9 +9,12 @@ from dotenv import load_dotenv
 import i18n
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.config.paths import USER_ENV_FILE, REPOSITORY_ENV_FILE
+from openbb_terminal.core.config.paths import USER_ENV_FILE, REPOSITORY_ENV_FILE, DATA_SOURCES_DEFAULT_FILE
+from openbb_terminal.core.config import paths_helper
 
-# pylint: disable=no-member
+paths_helper.init_userdata()
+
+# pylint: disable=no-member,c-extension-no-member
 
 i18n_dict_location = (
     os.path.join(os.path.dirname(os.path.abspath(__file__)), "i18n")
@@ -88,9 +91,6 @@ ENABLE_CHECK_API = strtobool(os.getenv("OPENBB_ENABLE_CHECK_API", "True"))
 # Send logs to data lake
 LOG_COLLECTION = bool(strtobool(os.getenv("OPENBB_LOG_COLLECT", "True")))
 
-# Provide export folder path. If empty that means default.
-EXPORT_FOLDER_PATH = str(os.getenv("OPENBB_EXPORT_FOLDER_PATH", ""))
-
 # Set a flag if the application is running from a packaged bundle
 PACKAGED_APPLICATION = strtobool(os.getenv("OPENBB_PACKAGED_APPLICATION", "False"))
 
@@ -106,11 +106,7 @@ LOGGING_COMMIT_HASH = str(os.getenv("OPENBB_LOGGING_COMMIT_HASH", "REPLACE_ME"))
 PREFERRED_DATA_SOURCE_FILE = str(
     os.getenv(
         "OPENBB_PREFERRED_DATA_SOURCE_FILE",
-        os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "..",
-            "data_sources_default.json",
-        ),
+        DATA_SOURCES_DEFAULT_FILE,
     )
 )
 

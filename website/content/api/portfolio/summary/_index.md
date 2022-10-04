@@ -1,7 +1,5 @@
-# portfolio.summary
-
 ## Get underlying data 
-###portfolio.summary(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: str = 'all', risk_free_rate: float = 0) -> pandas.core.frame.DataFrame
+### portfolio.summary(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: str = 'all', risk_free_rate: float = 0) -> pandas.core.frame.DataFrame
 
 Get summary portfolio and benchmark returns
 

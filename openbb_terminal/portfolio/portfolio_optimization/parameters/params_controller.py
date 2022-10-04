@@ -21,6 +21,7 @@ from openbb_terminal.portfolio.portfolio_optimization.parameters import params_v
 from openbb_terminal.portfolio.portfolio_optimization.parameters.params_view import (
     AVAILABLE_OPTIONS,
     DEFAULT_PARAMETERS,
+    DEFAULT_BOOL,
     MODEL_PARAMS,
 )
 from openbb_terminal.rich_config import console, MenuText
@@ -381,8 +382,11 @@ class ParametersController(BaseController):
                     value in AVAILABLE_OPTIONS[argument]
                     or "Any" in AVAILABLE_OPTIONS[argument]
                 ):
+                    if AVAILABLE_OPTIONS[argument] == DEFAULT_BOOL:
+                        value = value == "True"
                     self.params[argument] = value
                 else:
+                    options = ", ".join(AVAILABLE_OPTIONS[argument])
                     if len(AVAILABLE_OPTIONS[argument]) > 15:
                         minimum = min(AVAILABLE_OPTIONS[argument])
                         maximum = max(AVAILABLE_OPTIONS[argument])
@@ -395,7 +399,7 @@ class ParametersController(BaseController):
 
                     console.print(
                         f"[red]The value {value} is not an option for {argument}.\n"
-                        f"The value needs to be {options}[/red]"
+                        f"The value needs to be within: {options}.[/red]"
                     )
 
             console.print()

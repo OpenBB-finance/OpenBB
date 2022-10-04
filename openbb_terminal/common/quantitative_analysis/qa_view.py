@@ -1004,7 +1004,7 @@ def display_var(
     use_mean: bool = False,
     adjusted_var: bool = False,
     student_t: bool = False,
-    percentile: float = 0.999,
+    percentile: float = 99.9,
     data_range: int = 0,
     portfolio: bool = False,
 ) -> None:
@@ -1063,7 +1063,7 @@ def display_es(
     symbol: str = "",
     use_mean: bool = False,
     distribution: str = "normal",
-    percentile: float = 0.999,
+    percentile: float = 99.9,
     portfolio: bool = False,
 ) -> None:
     """Displays expected shortfall
@@ -1175,7 +1175,6 @@ def display_omega(
     threshold_end: float
         annualized target return threshold end of plotted threshold range
     """
-
     df = qa_model.get_omega(data, threshold_start, threshold_end)
 
     # Plotting

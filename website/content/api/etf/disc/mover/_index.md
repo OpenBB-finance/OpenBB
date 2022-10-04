@@ -1,9 +1,7 @@
-# etf.disc.mover
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###etf.disc.mover(sort_type: str = 'gainers', export: bool = False) -> pandas.core.frame.DataFrame
+### etf.disc.mover(sort_type: str = 'gainers', export: bool = False) -> pandas.core.frame.DataFrame
 
 
     Scrape data for top etf movers.
@@ -18,7 +16,7 @@ To obtain charts, make sure to add `chart=True` as the last parameter
         Datafame containing the name, price, change and the volume of the etf
 
 ## Getting charts 
-###etf.disc.mover(sort_type: str = 'gainers', limit: int = 10, export='', chart=True)
+### etf.disc.mover(sort_type: str = 'gainers', limit: int = 10, export='', chart=True)
 
 
      Show top ETF movers from wsj.com

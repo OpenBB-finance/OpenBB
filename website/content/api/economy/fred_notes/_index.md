@@ -1,7 +1,5 @@
-# economy.fred_notes
-
 ## Get underlying data 
-###economy.fred_notes(search_query: str, limit: int = -1) -> pandas.core.frame.DataFrame
+### economy.fred_notes(search_query: str, limit: int = -1) -> pandas.core.frame.DataFrame
 
 Get series notes. [Source: FRED]
     Parameters

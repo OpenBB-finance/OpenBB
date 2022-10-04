@@ -25,6 +25,10 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import yahoo_finance_model
+from openbb_terminal.helpers_denomination import (
+    transform as transform_by_denomination,
+)
+
 
 logger = logging.getLogger(__name__)
 
@@ -403,15 +407,18 @@ def display_fundamentals(
     export: str
         Format to export data
     """
+
+    fundamentals = yahoo_finance_model.get_financials(symbol, statement, ratios)
+
     if statement == "balance-sheet":
-        fundamentals = yahoo_finance_model.get_financials(symbol, statement, ratios)
         title_str = "Balance Sheet"
     elif statement == "financials":
-        fundamentals = yahoo_finance_model.get_financials(symbol, statement, ratios)
         title_str = "Income Statement"
     elif statement == "cash-flow":
-        fundamentals = yahoo_finance_model.get_financials(symbol, statement, ratios)
         title_str = "Cash Flow Statement"
+
+    if fundamentals is None:
+        return
 
     if fundamentals.empty:
         # The empty data frame error handling done in model
@@ -423,29 +430,16 @@ def display_fundamentals(
         rows_plot = len(plot)
         fundamentals_plot_data = fundamentals.transpose().fillna(-1)
         fundamentals_plot_data.columns = fundamentals_plot_data.columns.str.lower()
-        fundamentals_plot_data = fundamentals_plot_data.replace(",", "", regex=True)
-        fundamentals_plot_data = fundamentals_plot_data.replace("-", "-1")
-        fundamentals_plot_data = fundamentals_plot_data.astype(float)
         if "ttm" in list(fundamentals_plot_data.index):
             fundamentals_plot_data = fundamentals_plot_data.drop(["ttm"])
         fundamentals_plot_data = fundamentals_plot_data.sort_index()
 
         if not ratios:
             maximum_value = fundamentals_plot_data[plot[0].replace("_", " ")].max()
-            if maximum_value > 1_000_000_000_000:
-                df_rounded = fundamentals_plot_data / 1_000_000_000_000
-                denomination = "in Trillions"
-            elif maximum_value > 1_000_000_000:
-                df_rounded = fundamentals_plot_data / 1_000_000_000
-                denomination = "in Billions"
-            elif maximum_value > 1_000_000:
-                df_rounded = fundamentals_plot_data / 1_000_000
-                denomination = "in Millions"
-            elif maximum_value > 1_000:
-                df_rounded = fundamentals_plot_data / 1_000
-                denomination = "in Thousands"
-            else:
-                df_rounded = fundamentals_plot_data
+            (df_rounded, denomination) = transform_by_denomination(
+                fundamentals_plot_data, maxValue=maximum_value
+            )
+            if denomination == "Units":
                 denomination = ""
         else:
             df_rounded = fundamentals_plot_data
@@ -477,9 +471,9 @@ def display_fundamentals(
             lambda x: x.replace("_", " ").title()
         )
         # Readable numbers
-        fundamentals = fundamentals.applymap(lambda_long_number_format).fillna("-")
+        formatted_df = fundamentals.applymap(lambda_long_number_format).fillna("-")
         print_rich_table(
-            fundamentals.iloc[:, :limit].applymap(lambda x: "-" if x == "nan" else x),
+            formatted_df.iloc[:, :limit].applymap(lambda x: "-" if x == "nan" else x),
             show_index=True,
             title=f"{symbol} {title_str} Currency: {symbol_currency}",
         )

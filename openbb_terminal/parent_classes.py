@@ -1,7 +1,9 @@
 """Parent Classes"""
 __docformat__ = "numpy"
 
-# pylint: disable= C0301,C0302,R0902,R0201
+
+# pylint: disable= C0301,C0302,R0902,R0201,global-statement
+
 
 
 from abc import ABCMeta, abstractmethod
@@ -12,7 +14,7 @@ import difflib
 import logging
 import json
 
-from typing import Union, List, Dict, Any
+from typing import Union, Any, List, Dict
 from datetime import datetime, timedelta
 
 from prompt_toolkit.completion import NestedCompleter
@@ -22,7 +24,10 @@ from rich.markdown import Markdown
 import pandas as pd
 import numpy as np
 
-from openbb_terminal.core.config.paths import CUSTOM_IMPORTS_DIRECTORY
+from openbb_terminal.core.config.paths import (
+    CUSTOM_IMPORTS_DIRECTORY,
+    ROUTINES_DIRECTORY,
+)
 from openbb_terminal.decorators import log_start_end
 
 from openbb_terminal.menu import session
@@ -65,6 +70,10 @@ CRYPTO_SOURCES = {
 
 SUPPORT_TYPE = ["bug", "suggestion", "question", "generic"]
 
+RECORD_SESSION = False
+SESSION_RECORDED = list()
+SESSION_RECORDED_NAME = ""
+
 
 class BaseController(metaclass=ABCMeta):
     CHOICES_COMMON = [
@@ -82,12 +91,14 @@ class BaseController(metaclass=ABCMeta):
         "reset",
         "support",
         "wiki",
+        "record",
+        "stop",
     ]
 
     CHOICES_COMMANDS: List[str] = []
     CHOICES_MENUS: List[str] = []
-    SUPPORT_CHOICES: Dict = {}
-    ABOUT_CHOICES: Dict = {}
+    SUPPORT_CHOICES: dict = {}
+    ABOUT_CHOICES: dict = {}
     COMMAND_SEPARATOR = "/"
     KEYS_MENU = "keys" + COMMAND_SEPARATOR
     TRY_RELOAD = False
@@ -198,7 +209,7 @@ class BaseController(metaclass=ABCMeta):
     def print_help(self) -> None:
         raise NotImplementedError("Must override print_help.")
 
-    def parse_input(self, an_input: str) -> List:
+    def parse_input(self, an_input: str) -> list:
         """Parse controller input
 
         Splits the command chain from user input into a list of individual commands
@@ -217,10 +228,10 @@ class BaseController(metaclass=ABCMeta):
 
         Returns
         -------
-        List
+        list
             Command queue as list
         """
-        custom_filters: List = []
+        custom_filters: list = []
         commands = parse_and_split_input(
             an_input=an_input, custom_filters=custom_filters
         )
@@ -262,7 +273,7 @@ class BaseController(metaclass=ABCMeta):
         Returns
         -------
         List[str]
-            List of commands in the queue to execute
+            list of commands in the queue to execute
         """
         actions = self.parse_input(an_input)
 
@@ -285,6 +296,9 @@ class BaseController(metaclass=ABCMeta):
         # Single command fed, process
         else:
             (known_args, other_args) = self.parser.parse_known_args(an_input.split())
+
+            if RECORD_SESSION:
+                SESSION_RECORDED.append(an_input)
 
             # Redirect commands to their correct functions
             if known_args.cmd:
@@ -469,14 +483,12 @@ class BaseController(metaclass=ABCMeta):
     @log_start_end(log=logger)
     def call_wiki(self, other_args: List[str]) -> None:
         """Process wiki command"""
-
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="wiki",
             description="Search Wikipedia",
         )
-
         parser.add_argument(
             "--expression",
             "-e",
@@ -487,7 +499,6 @@ class BaseController(metaclass=ABCMeta):
             default="",
             help="Expression to search for",
         )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-e")
 
@@ -497,6 +508,77 @@ class BaseController(metaclass=ABCMeta):
             if ns_parser.expression:
                 expression = " ".join(ns_parser.expression)
                 search_wikipedia(expression)
+
+    @log_start_end(log=logger)
+    def call_record(self, other_args) -> None:
+        """Process record command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="record",
+            description="Start recording session into .openbb routine file",
+        )
+        parser.add_argument(
+            "-r",
+            "--routine",
+            action="store",
+            dest="routine_name",
+            type=str,
+            default=datetime.now().strftime("%Y%m%d_%H%M%S_routine.openbb"),
+            help="Routine file name to be saved.",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-r")
+        ns_parser = parse_simple_args(parser, other_args)
+
+        if ns_parser:
+            global SESSION_RECORDED_NAME
+            global RECORD_SESSION
+            if ".openbb" in ns_parser.routine_name:
+                SESSION_RECORDED_NAME = ns_parser.routine_name
+            else:
+                SESSION_RECORDED_NAME = ns_parser.routine_name + ".openbb"
+
+            console.print(
+                "[green]The session is successfully being recorded. Remember to 'stop' before exiting terminal!\n[/green]"
+            )
+            RECORD_SESSION = True
+
+    @log_start_end(log=logger)
+    def call_stop(self, _) -> None:
+        """Process stop command"""
+        global RECORD_SESSION
+        global SESSION_RECORDED
+
+        if not RECORD_SESSION:
+            console.print(
+                "[red]There is no session being recorded. Start one using 'record'[/red]\n"
+            )
+        elif not SESSION_RECORDED:
+            console.print(
+                "[red]There is no session to be saved. Run at least 1 command after starting 'record'[/red]\n"
+            )
+        else:
+            routine_file = os.path.join(ROUTINES_DIRECTORY, SESSION_RECORDED_NAME)
+
+            if os.path.isfile(routine_file):
+                routine_file = os.path.join(
+                    ROUTINES_DIRECTORY,
+                    datetime.now().strftime("%Y%m%d_%H%M%S_") + SESSION_RECORDED_NAME,
+                )
+
+            # Writing to file
+            with open(routine_file, "w") as file1:
+                # Writing data to a file
+                file1.writelines([c + "\n\n" for c in SESSION_RECORDED[:-1]])
+
+            console.print(
+                f"[green]Your routine has been recorded and saved here: {routine_file}[/green]\n"
+            )
+
+            # Clear session to be recorded again
+            RECORD_SESSION = False
+            SESSION_RECORDED = list()
 
     def parse_known_args_and_warn(
         self,
@@ -513,7 +595,7 @@ class BaseController(metaclass=ABCMeta):
         parser: argparse.ArgumentParser
             Parser with predefined arguments
         other_args: List[str]
-            List of arguments to parse
+            list of arguments to parse
         export_allowed: int
             Choose from NO_EXPORT, EXPORT_ONLY_RAW_DATA_ALLOWED,
             EXPORT_ONLY_FIGURES_ALLOWED and EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -884,6 +966,8 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 console.print(self.add_info)
                 if (
                     ns_parser.interval == 1440
+                    and not ns_parser.weekly
+                    and not ns_parser.monthly
                     and ns_parser.filepath is None
                     and self.PATH == "/stocks/"
                 ):
@@ -897,6 +981,8 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 if ns_parser.source == "IEXCloud":
                     self.start = self.stock.index[0].to_pydatetime()
                 elif ns_parser.source == "EODHD":
+                    self.start = self.stock.index[0].to_pydatetime()
+                elif ns_parser.source == "eodhd":
                     self.start = self.stock.index[0].to_pydatetime()
                 else:
                     self.start = ns_parser.start

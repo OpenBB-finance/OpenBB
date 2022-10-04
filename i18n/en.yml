@@ -11,6 +11,8 @@ en:
   sources: select your preferred data sources
   keys: set API keys and check their validity
   wiki: search for an expression in Wikipedia (https://www.wikipedia.org/)
+  record: record session to be converted into a .openbb routine
+  stop: stop session recording
   _configure_: Configure your own terminal
   _main_menu_: Main menu
   keys/_keys_: This menu allows you to set your own API keys. Type 'about' for more information
@@ -46,7 +48,7 @@ en:
   settings/_flair: Flair
   settings/lang: terminal language
   settings/_language: Language
-  settings/export: select export folder to output data
+  settings/userdata: set folder to store user data
   settings/tz: set different timezone
   settings/dpi: dots per inch
   settings/backend: plotting backend (None, tkAgg, MacOSX, Qt5Agg)
@@ -63,7 +65,7 @@ en:
   settings/_plot_height_pct: Plot height [%]
   settings/_plot_width_pct: Plot width [%]
   settings/_monitor: Monitor
-  settings/_export_folder: Export Folder
+  settings/_user_data_folder: User Data Folder
   settings/_timezone: Timezone
   settings/source: specify data source file
   settings/_data_source: Data sources
@@ -181,7 +183,6 @@ en:
   stocks/disc/active: most active stocks by intraday trade volumest
   stocks/disc/ulc: potentially undervalued large cap stocks
   stocks/disc/asc: small cap stocks with earnings growth rates better than 25%
-  stocks/disc/ford: orders by Fidelity Customers
   stocks/disc/arkord: orders by ARK Investment Management LLC
   stocks/disc/upcoming: upcoming earnings release dates
   stocks/disc/trending: trending news

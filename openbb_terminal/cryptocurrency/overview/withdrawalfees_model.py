@@ -117,13 +117,13 @@ POSSIBLE_CRYPTOS = [
 
 
 @log_start_end(log=logger)
-def get_overall_withdrawal_fees(top: int = 100) -> pd.DataFrame:
+def get_overall_withdrawal_fees(limit: int = 100) -> pd.DataFrame:
     """Scrapes top coins withdrawal fees
     [Source: https://withdrawalfees.com/]
 
     Parameters
     ----------
-    top: int
+    limit: int
         Number of coins to search, by default n=100, one page has 100 coins, so 1 page is scraped.
     Returns
     -------
@@ -152,7 +152,7 @@ def get_overall_withdrawal_fees(top: int = 100) -> pd.DataFrame:
         else x
     )
 
-    num_pages = int(math.ceil(top / COINS_PER_PAGE))
+    num_pages = int(math.ceil(limit / COINS_PER_PAGE))
     if num_pages > 1:
         for idx in range(2, num_pages + 1):
             withdrawal_fees_homepage = BeautifulSoup(

@@ -1418,9 +1418,15 @@ def get_rolling_volatility(
     """
 
     portfolio_rvol = portfolio_helper.rolling_volatility(portfolio.returns, window)
+    if portfolio_rvol.empty:
+        return pd.DataFrame()
+
     benchmark_rvol = portfolio_helper.rolling_volatility(
         portfolio.benchmark_returns, window
     )
+    if benchmark_rvol.empty:
+        return pd.DataFrame()
+
     df = pd.DataFrame(portfolio_rvol).join(pd.DataFrame(benchmark_rvol))
     df.columns.values[0] = "portfolio"
     df.columns.values[1] = "benchmark"
@@ -1452,9 +1458,15 @@ def get_rolling_sharpe(
     portfolio_rsharpe = portfolio_helper.rolling_sharpe(
         portfolio.returns, risk_free_rate, window
     )
+    if portfolio_rsharpe.empty:
+        return pd.DataFrame()
+
     benchmark_rsharpe = portfolio_helper.rolling_sharpe(
         portfolio.benchmark_returns, risk_free_rate, window
     )
+    if benchmark_rsharpe.empty:
+        return pd.DataFrame()
+
     df = pd.DataFrame(portfolio_rsharpe).join(pd.DataFrame(benchmark_rsharpe))
     df.columns.values[0] = "portfolio"
     df.columns.values[1] = "benchmark"
@@ -1464,8 +1476,8 @@ def get_rolling_sharpe(
 
 def get_rolling_sortino(
     portfolio: PortfolioModel,
-    window: str = "1y",
     risk_free_rate: float = 0,
+    window: str = "1y",
 ) -> pd.DataFrame:
     """Get rolling sortino
 
@@ -1484,13 +1496,19 @@ def get_rolling_sortino(
         Rolling sortino ratio DataFrame
     """
 
-    portfolio_rsharpe = portfolio_helper.rolling_sortino(
+    portfolio_rsortino = portfolio_helper.rolling_sortino(
         portfolio.returns, risk_free_rate, window
     )
-    benchmark_rsharpe = portfolio_helper.rolling_sortino(
+    if portfolio_rsortino.empty:
+        return pd.DataFrame()
+
+    benchmark_rsortino = portfolio_helper.rolling_sortino(
         portfolio.benchmark_returns, risk_free_rate, window
     )
-    df = pd.DataFrame(portfolio_rsharpe).join(pd.DataFrame(benchmark_rsharpe))
+    if benchmark_rsortino.empty:
+        return pd.DataFrame()
+
+    df = pd.DataFrame(portfolio_rsortino).join(pd.DataFrame(benchmark_rsortino))
     df.columns.values[0] = "portfolio"
     df.columns.values[1] = "benchmark"
 
@@ -1641,7 +1659,7 @@ def get_var(
     use_mean: bool = False,
     adjusted_var: bool = False,
     student_t: bool = False,
-    percentile: float = 0.999,
+    percentile: float = 99.9,
 ) -> pd.DataFrame:
 
     """Get portfolio VaR
@@ -1656,8 +1674,8 @@ def get_var(
         if one should have VaR adjusted for skew and kurtosis (Cornish-Fisher-Expansion)
     student_t: bool
         If one should use the student-t distribution
-    percentile: int
-        var percentile
+    percentile: float
+        var percentile (%)
     Returns
     -------
     pd.DataFrame
@@ -1678,7 +1696,7 @@ def get_es(
     portfolio: PortfolioModel,
     use_mean: bool = False,
     distribution: str = "normal",
-    percentile: float = 0.999,
+    percentile: float = 99.9,
 ) -> pd.DataFrame:
     """Get portfolio expected shortfall
 
@@ -1690,8 +1708,8 @@ def get_es(
         if one should use the data mean return
     distribution: str
         choose distribution to use: logistic, laplace, normal
-    percentile: int
-        es percentile
+    percentile: float
+        es percentile (%)
     Returns
     -------
     pd.DataFrame

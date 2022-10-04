@@ -1,15 +1,13 @@
-# econometrics.root
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###econometrics.root(df: pandas.core.series.Series, fuller_reg: str = 'c', kpss_reg: str = 'c') -> pandas.core.frame.DataFrame
+### econometrics.root(data: pandas.core.series.Series, fuller_reg: str = 'c', kpss_reg: str = 'c') -> pandas.core.frame.DataFrame
 
 Calculate test statistics for unit roots
 
     Parameters
     ----------
-    df : pd.Series
+    data : pd.Series
         Series or column of DataFrame of target variable
     fuller_reg : str
         Type of regression of ADF test
@@ -22,13 +20,13 @@ Calculate test statistics for unit roots
         Dataframe with results of ADF test and KPSS test
 
 ## Getting charts 
-###econometrics.root(df: pandas.core.series.Series, dataset: str = '', column: str = '', fuller_reg: str = 'c', kpss_reg: str = 'c', export: str = '', chart=True)
+### econometrics.root(data: pandas.core.series.Series, dataset: str = '', column: str = '', fuller_reg: str = 'c', kpss_reg: str = 'c', export: str = '', chart=True)
 
 Determine the normality of a timeseries.
 
     Parameters
     ----------
-    df : pd.Series
+    data : pd.Series
         Series of target variable
     dataset: str
         Name of the dataset

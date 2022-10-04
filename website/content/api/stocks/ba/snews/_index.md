@@ -1,9 +1,7 @@
-# stocks.ba.snews
-
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-###stocks.ba.snews(symbol: str) -> pandas.core.frame.DataFrame
+### stocks.ba.snews(symbol: str) -> pandas.core.frame.DataFrame
 
 Get headlines sentiment using VADER model over time. [Source: Finnhub]
 
@@ -13,7 +11,7 @@ Get headlines sentiment using VADER model over time. [Source: Finnhub]
         Ticker of company
 
 ## Getting charts 
-###stocks.ba.snews(symbol: str, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.ba.snews(symbol: str, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display stock price and headlines sentiment using VADER model over time. [Source: Finnhub]
 

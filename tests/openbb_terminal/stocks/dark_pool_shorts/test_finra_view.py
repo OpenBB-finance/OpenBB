@@ -38,7 +38,7 @@ def test_darkpool_otc(mocker):
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 
     finra_view.darkpool_otc(
-        num=2,
+        input_limit=2,
         limit=2,
         tier="T1",
         export="",
