@@ -8,7 +8,6 @@ import requests
 from prawcore.exceptions import ResponseException
 import praw
 import pyEX
-from pyEX.common.exception import PyEXception
 import oandapyV20.endpoints.pricing
 from oandapyV20 import API as oanda_API
 from oandapyV20.exceptions import V20Error
