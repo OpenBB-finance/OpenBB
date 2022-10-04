@@ -1,12 +1,14 @@
 ```text
-usage: ln -n NAME [NAME ...] [-s {sa,fd}] [-l LIMIT] [-h] [--export {csv,json,xlsx}]
+usage: ln -n NAME [NAME ...] [-s {sa,fd}] [-d DESCRIPTION [DESCRIPTION ...]] [-l LIMIT] [-h] [--export {csv,json,xlsx}]
 ```
 
-Search for an ETF by name, using either FinanceDatabase or Stockanalysis.com as the source.
+Search for an ETF by name or description. Using either FinanceDatabase or Stockanalysis.com as the source for the name. And only FinanceDatabase for the description.
 
 ````
 optional arguments:
   -n NAME [NAME ...], --name NAME [NAME ...]
+                        Name to look for ETFs (default: None)
+  -d DESCRIPTION [DESCRIPTION ...], --description DESCRIPTION [DESCRIPTION ...]
                         Name to look for ETFs (default: None)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export raw data into csv, json, xlsx (default: )
@@ -18,7 +20,7 @@ optional arguments:
 Sample output:
 
 ```
-2022 Jan 18, 23:49 (✨) /etf/ $ ln energy -l 10
+2022 Jan 18, 23:49 (✨) /etf/ $ search -n energy -l 10
 ╒══════╤═══════════════════════════════════════════════════════╤═══════════════════════════════════╤════════════════════════════╤════════════════════╕
 │      │ Name                                                  │ Family                            │ Category                   │   Total Assets [M] │
 ╞══════╪═══════════════════════════════════════════════════════╪═══════════════════════════════════╪════════════════════════════╪════════════════════╡
@@ -41,5 +43,33 @@ Sample output:
 │ FENY │ Fidelity MSCI Energy Index ETF                        │ Fidelity Investments              │ Equity Energy              │             889.72 │
 ├──────┼───────────────────────────────────────────────────────┼───────────────────────────────────┼────────────────────────────┼────────────────────┤
 │ MLPX │ Global X MLP & Energy Infrastructure ETF              │ Global X Funds                    │ Energy Limited Partnership │             714.83 │
-╘══════╧═══════════════════════════════════════════════════════╧═══════════════════════════════════╧════════════════════════════╧════════════════════╛ 
+╘══════╧═══════════════════════════════════════════════════════╧═══════════════════════════════════╧════════════════════════════╧════════════════════╛
+```
+
+
+```
+2022 Jan 18, 23:52 (✨) /etf/ $ search -d 3X -l 10
+╒══════╤═════════════════════════════════════════════════════╤══════════════╤═══════════════════════════╤════════════════════╕
+│      │ Name                                                │ Family       │ Category                  │   Total Assets [M] │
+╞══════╪═════════════════════════════════════════════════════╪══════════════╪═══════════════════════════╪════════════════════╡
+│ TQQQ │ ProShares UltraPro QQQ                              │ ProShares    │ Trading--Leveraged Equity │           11266.33 │
+├──────┼─────────────────────────────────────────────────────┼──────────────┼───────────────────────────┼────────────────────┤
+│ UPRO │ ProShares UltraPro S&P500                           │ ProShares    │ Trading--Leveraged Equity │            2007.68 │
+├──────┼─────────────────────────────────────────────────────┼──────────────┼───────────────────────────┼────────────────────┤
+│ SQQQ │ ProShares UltraPro Short QQQ                        │ ProShares    │ Trading--Inverse Equity   │            1515.03 │
+├──────┼─────────────────────────────────────────────────────┼──────────────┼───────────────────────────┼────────────────────┤
+│ UDOW │ ProShares UltraPro Dow30                            │ ProShares    │ Trading--Leveraged Equity │             878.03 │
+├──────┼─────────────────────────────────────────────────────┼──────────────┼───────────────────────────┼────────────────────┤
+│ SPXU │ ProShares UltraPro Short S&P500                     │ ProShares    │ Trading--Inverse Equity   │             510.83 │
+├──────┼─────────────────────────────────────────────────────┼──────────────┼───────────────────────────┼────────────────────┤
+│ NRGU │ MicroSectors U.S. Big Oil Index 3X Leveraged ETNs   │ Microsectors │                           │             448.66 │
+├──────┼─────────────────────────────────────────────────────┼──────────────┼───────────────────────────┼────────────────────┤
+│ URTY │ ProShares UltraPro Russell2000                      │ ProShares    │ Trading--Leveraged Equity │             444.82 │
+├──────┼─────────────────────────────────────────────────────┼──────────────┼───────────────────────────┼────────────────────┤
+│ SDOW │ ProShares UltraPro Short Dow30                      │ ProShares    │ Trading--Inverse Equity   │             380.26 │
+├──────┼─────────────────────────────────────────────────────┼──────────────┼───────────────────────────┼────────────────────┤
+│ SRTY │ ProShares UltraPro Short Russell2000                │ ProShares    │ Trading--Inverse Equity   │             110.51 │
+├──────┼─────────────────────────────────────────────────────┼──────────────┼───────────────────────────┼────────────────────┤
+│ BNKU │ MicroSectors U.S. Big Banks Index 3X Leveraged ETNs │ Microsectors │ Trading--Leveraged Equity │              86.87 │
+╘══════╧═════════════════════════════════════════════════════╧══════════════╧═══════════════════════════╧════════════════════╛
 ```
