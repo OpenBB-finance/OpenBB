@@ -83,7 +83,7 @@ def get_keys(show: bool = False) -> pd.DataFrame:
         pd.DataFrame: currents keys
     """
 
-    # TODO: Refactor api variables without prefix API_
+    # TODO: Refactor api variables without prefix API_ and extend API_SOURCE_KEY format
 
     var_list = [v for v in dir(cfg) if v.startswith("API_")]
 
@@ -257,7 +257,7 @@ def check_quandl_key(show_output: bool = False) -> str:
     Parameters
     ----------
         show_output: bool
-            Display status string or not.
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -314,7 +314,7 @@ def check_polygon_key(show_output: bool = False) -> str:
     Parameters
     ----------
         show_output: bool
-            Display status string or not.
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -376,7 +376,7 @@ def check_fred_key(show_output: bool = False) -> str:
     Parameters
     ----------
         show_output: bool
-            Display status string or not.
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -437,7 +437,7 @@ def check_news_key(show_output: bool = False) -> str:
     Parameters
     ----------
         show_output: bool
-            Display status string or not.
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -498,7 +498,7 @@ def check_tradier_key(show_output: bool = False) -> str:
     Parameters
     ----------
         show_output: bool
-            Display status string or not.
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -564,7 +564,7 @@ def check_cmc_key(show_output: bool = False) -> str:
     Parameters
     ----------
         show_output: bool
-            Display status string or not.
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -622,7 +622,7 @@ def check_finnhub_key(show_output: bool = False) -> str:
     Parameters
     ----------
         show_output: bool
-            Display status string or not.
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -683,7 +683,7 @@ def check_iex_key(show_output: bool = False) -> str:
     Parameters
     ----------
         show_output: bool
-            Display status string or not.
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -755,7 +755,7 @@ def check_reddit_key(show_output: bool = False) -> str:
     Parameters
     ----------
         show_output: bool
-            Display status string or not.
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -840,7 +840,7 @@ def check_bitquery_key(show_output: bool = False) -> str:
     Parameters
     ----------
         show_output: bool
-            Display status string or not.
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -918,7 +918,7 @@ def check_twitter_key(show_output: bool = False) -> str:
     Parameters
     ----------
         show_output: bool
-            Display status string or not.
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -998,7 +998,7 @@ def check_rh_key(show_output: bool = False) -> str:
     Parameters
     ----------
         show_output: bool
-            Display status string or not.
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -1060,7 +1060,7 @@ def check_degiro_key(show_output: bool = False) -> str:
     Parameters
     ----------
         show_output: bool
-            Display status string or not.
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -1122,7 +1122,7 @@ def check_oanda_key(show_output: bool = False) -> str:
     Parameters
     ----------
         show_output: bool
-            Display status string or not.
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -1193,7 +1193,7 @@ def check_binance_key(show_output: bool = False) -> str:
     Parameters
     ----------
         show_output: bool
-            Display status string or not.
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -1255,7 +1255,7 @@ def check_si_key(show_output: bool = False) -> str:
     Parameters
     ----------
         show_output: bool
-            Display status string or not.
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -1330,7 +1330,7 @@ def check_coinbase_key(show_output: bool = False) -> str:
     Parameters
     ----------
         show_output: bool
-            Display status string or not.
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -1398,7 +1398,7 @@ def check_walert_key(show_output: bool = False) -> str:
     Parameters
     ----------
         show_output: bool
-            Display status string or not.
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -1464,7 +1464,7 @@ def check_glassnode_key(show_output: bool = False) -> str:
     Parameters
     ----------
         show_output: bool
-            Display status string or not.
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -1532,7 +1532,7 @@ def check_coinglass_key(show_output: bool = False) -> str:
     Parameters
     ----------
         show_output: bool
-            Display status string or not.
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -1596,7 +1596,7 @@ def check_cpanic_key(show_output: bool = False) -> str:
     Parameters
     ----------
         show_output: bool
-            Display status string or not.
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -1656,7 +1656,7 @@ def check_ethplorer_key(show_output: bool = False) -> str:
     Parameters
     ----------
         show_output: bool
-            Display status string or not.
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -1723,7 +1723,7 @@ def check_smartstake_key(show_output: bool = False) -> str:
     Parameters
     ----------
         show_output: bool
-            Display status string or not.
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -1801,7 +1801,7 @@ def check_github_key(show_output: bool = False) -> str:
     Parameters
     ----------
         show_output: bool
-            Display status string or not.
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -1853,7 +1853,7 @@ def check_messari_key(show_output: bool = False) -> str:
     Parameters
     ----------
         show_output: bool
-            Display status string or not.
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -1916,7 +1916,7 @@ def check_eodhd_key(show_output: bool = False) -> str:
     Parameters
     ----------
         show_output: bool
-            Display status string or not.
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -1975,7 +1975,7 @@ def check_santiment_key(show_output: bool = False) -> str:
     Parameters
     ----------
         show_output: bool
-            Display status string or not.
+            Display status string or not. By default, False.
 
     Returns
     -------
