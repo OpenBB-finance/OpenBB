@@ -2219,12 +2219,13 @@ def check_eodhd_key(show_output: bool = False) -> int:
         logger.info("End of Day Historical Data key not defined")
         status = 0
     else:
-        try:
-            pyEX.Client(api_token=cfg.API_EODHD_KEY, version="v1")
-            logger.info("End of Day Historical Data key defined, test passed")
+        request_url = f"https://eodhistoricaldata.com/api/exchanges-list/?api_token={cfg.API_EODHD_KEY}&fmt=json"
+        r = requests.get(request_url)
+        if r.status_code == 200:
+            logger.info("Eodhd key defined, test passed")
             status = 1
-        except PyEXception:
-            logger.exception("End of Day Historical Data key defined, test failed")
+        else:
+            logger.warning("Eodhd key defined, test failed")
             status = -1
 
     if show_output:
