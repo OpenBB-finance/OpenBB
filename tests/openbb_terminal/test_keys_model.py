@@ -9,6 +9,7 @@ from openbb_terminal import keys_model
 
 # pylint: disable=R0902,R0903,W1404,C0302
 
+
 # Test persist
 @patch.dict(os.environ, {}, clear=True)
 @pytest.mark.parametrize(
