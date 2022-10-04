@@ -1,6 +1,6 @@
 name: Build and Publish Docker
 
-on: [push]
+on: workflow_dispatch
 
 jobs:
   publish-image:
@@ -20,6 +20,6 @@ jobs:
       run: |
         source docker/compose.env 
         docker-compose -f docker/docker-compose.yaml build
-        docker tag `docker images -q ghcr.io/openbb-finance/openbbterminal-poetry` ghcr.io/colin99d/openbbterminal-poetry:$OPENBBTERMINAL_DOCKER_POETRY_VERSION
-        docker run ghcr.io/colin99d/openbbterminal-poetry:$OPENBBTERMINAL_DOCKER_POETRY_VERSION
-        docker push ghcr.io/colin99d/openbbterminal-poetry:$OPENBBTERMINAL_DOCKER_POETRY_VERSION
+        docker tag `docker images -q ghcr.io/openbb-finance/openbbterminal-poetry` ghcr.io/openbb-finance/openbbterminal-poetry:$OPENBBTERMINAL_DOCKER_POETRY_VERSION
+        docker run ghcr.io/openbb-finance/openbbterminal-poetry:$OPENBBTERMINAL_DOCKER_POETRY_VERSION
+        docker push ghcr.io/openbb-finance/openbbterminal-poetry:$OPENBBTERMINAL_DOCKER_POETRY_VERSION
