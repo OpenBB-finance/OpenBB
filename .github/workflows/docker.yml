@@ -1,6 +1,7 @@
-name: publish
+name: Build and Publish Docker
 
-on: [push]
+# TODO: remove the push
+on: [tag, push]
 
 jobs:
   publish-image:
@@ -17,8 +18,9 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build the Docker image
+      # TODO: switch from colin99d's to the real thang
       run: |
         source docker/compose.env && docker-compose -f docker/docker-compose.yaml build
-        docker tag `docker images -q ghcr.io/openbb-finance/openbbterminal-poetry` ghcr.io/colin99d/openbb:latest
-        docker run ghcr.io/colin99d/openbb:latest
-        docker push ghcr.io/colin99d/openbb:latest
+        docker tag `docker images -q ghcr.io/openbb-finance/openbbterminal-poetry` ghcr.io/colin99d/openbbterminal-poetry:${{ env.OPENBBTERMINAL_DOCKER_POETRY_VERSION }}
+        docker run ghcr.io/colin99d/openbbterminal-poetry:${{ env.OPENBBTERMINAL_DOCKER_POETRY_VERSION }}
+        docker push ghcr.io/colin99d/openbbterminal-poetry:${{ env.OPENBBTERMINAL_DOCKER_POETRY_VERSION }}
