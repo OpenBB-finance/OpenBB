@@ -1,8 +1,8 @@
 # OpenBB SDK
 
-OpenBB SDK allows you to access to all OpenBB Terminal's capabilities programmatically. You will now have the building blocks to create tools and applications on top, whether that is a visualization dashboard or your own Python script.
+OpenBB SDK gives you direct and programmatic access to all capabilities from OpenBB Terminal. You will have the necessary building blocks to create your own financial tools and applications, whether that be a visualization dashboard or a custom report on Jupyter Notebook. With OpenBB SDK, you can access to normalized financial data from dozens of data providers, without having to develop your own integrations from scratch. On top of financial data feeds, OpenBB SDK also provides you with a toolbox to perform financial analysis on a variety of asset classes, including stocks, crypto, ETFs, funds; the economy as well as your portfolios.
 
-You can get direct access to normalized financial data from multiple data providers, without having to develop your own integration from scratch. In addition, OpenBB SDK gives you a set of the toolbox to perform financial analysis on a variety of asset classes, including stocks, crypto, ETFs, funds; the economy as well as your portfolios.
+OpenBB SDK is created and maintained by OpenBB team together with the contributions from hundreds of community members. This gives us an unrivaled speed of development and the ability to maintain stable integrations with numerous third-party data providers. Developing and maintaining an full-blown investment research infrastructure from the ground up takes a lot of time and effort. However, it does not have to be. Take advantage of OpenBB SDK with its out-of-the-box data connectors and financial analysis toolkit; so that you can focus on designing and building your financial reports and applications.
 
 ## Installation
 
@@ -47,7 +47,7 @@ theme = TerminalStyle("dark", "dark", "dark")
 
 
 ### 3. Access Documentation
-Each and every command of OpenBB SDK has detailed documentation about input parameters and returned outputs. You can access them using multiple ways:
+Each and every command of OpenBB SDK has detailed documentation about input parameters and returned outputs. You can access them in multiple ways:
 
 **Approach 1: Press `shift + tab`**
 This will work out of the box if you're using Jupyter Notebook. In case your IDE is VSCode, you will need to install the [Jupyter PowerToys
@@ -57,12 +57,14 @@ extension](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.vscode
 
 
 **Approach 2: Type `help(command)`**
+
 You can also type `help(command)`, see example below, to see the command' docstring.
 
 <img width="871" alt="Screenshot 2022-10-03 at 23 33 05" src="https://user-images.githubusercontent.com/40023817/193697676-39351008-386d-4c4c-89f2-3de7d8d4e89d.png">
 
 
 **Approach 3: Use OpenBB SDK Documentation page**
+
 Finally, if you prefer to check documentation on a web browser, [OpenBB SDK Documentation](https://openbb-finance.github.io/OpenBBTerminal/api/) will be your best friend. You can browse available commands and search for any specific one that you need.
 
 <img width="1200" alt="Screenshot 2022-10-03 at 18 41 48" src="https://user-images.githubusercontent.com/40023817/193643316-c063df03-4172-487f-ba47-ee60f36a3fef.png">
@@ -73,6 +75,7 @@ Finally, if you prefer to check documentation on a web browser, [OpenBB SDK Docu
 TO BE COMPLETED once we finish the development
 
 ## Usage
+Now, let's explore what OpenBB SDK can do. At a high level, you can break down OpenBB SDK's functionalities into two main buckets: (1) Data layer and (2) Toolbox layer.
 ### 1. Data Layer
 
 ### **Getting financial data from multiple data sources using one single API**
@@ -86,7 +89,7 @@ openbb.stocks.search("apple")
 <img width="652" alt="Screenshot 2022-10-04 at 00 00 14" src="https://user-images.githubusercontent.com/40023817/193700663-b91d57a9-4581-4f7e-a6da-764c0c9de092.png">
 
 
-We want to load `Apple Inc.` listed on US exchange, so our ticker should be `AAPL`. Let's say if you want to load from Brazilian exchange, you should load in `AAPL34.SA`.
+We want to load `Apple Inc.` listed on US exchange, so our ticker should be `AAPL`. If you want to load `Apple Inc.` from Brazilian exchange, you should load in `AAPL34.SA`.
 
 ```
 df = openbb.stocks.load("AAPL")
@@ -128,7 +131,7 @@ openbb.economy.index(indices = ['sp500', 'nyse_ny', 'russell1000'], start_date =
 
 You might be wondering how to find all the available indices. This type of information should be available in the docstring. Let's give it a try.
 
-
+[INSERT CHART]
 
 As mentioned in the docstring, you can access it with the following helper function.
 
@@ -154,13 +157,13 @@ openbb.economy.index(indices = ['sp500', 'nyse_ny', 'russell1000'], start_date =
 In addition to financial data, you can also get access to a robust and powerful toolbox to perform analysis on different asset classes and on your portfolio.
 
 
-Imagine that you would like to leverage existing financial calculations from OpenBB and apply it on your own data. This can be done easily as OpenBB SDK's commands usually accept a `dataframe` as an input. Here you can load it your data, either via a `csv`, `excel` file, or connecting directly with an `API` or a `database`. The possibilities are endless.
+Imagine that you would like to leverage existing financial calculations from OpenBB and apply them on your own data. This can be done easily - OpenBB SDK's commands usually accept a `dataframe` as an input. Here you can load it your data, either via a `csv`, `excel` file, or connecting directly with an `API` or a `database`. The possibilities are endless.
 
 Let's go through an example to see how we can do it in a few simple steps. Here we shall see how to use `portfolio optimization` functionalities from OpenBB SDK.
 
 #### Step 1. Loading order book
 
-Here we will use an example orderbook for illustration purposes. You can totally upload your own order book
+Here we will use an example orderbook for illustration purposes. You can choose to upload your own orderbook instead.
 
 ```
 order_book_path = "portfolio/allocation/60_40_Portfolio.xlsx"
@@ -169,7 +172,7 @@ tickers, categories = openbb.portfolio.po.load(excel_file = order_book_path)
 
 
 #### Step 2. Optimizing portfolio
-The optimization process has a large variety of options including basic mean-variance techniques like optimizing for the maximum Sharpe ratio, minimizing variance and similar.
+We provide multiple portfolio optimization techniques. For instance, you can utilize basic mean-variance techniques, such as optimizing for the maximum Sharpe ratio, or minimum variance and the likes.
 
 ```
 ## Max Sharpe optimization
@@ -192,9 +195,8 @@ weights_min_risk
 <img width="742" alt="Screenshot 2022-10-04 at 00 28 30" src="https://user-images.githubusercontent.com/40023817/193703591-8b68e417-1969-44da-b3a7-51bb3b37ba7b.png">
 
 
-These methods are basic because they don't account for concentration risk properly. For instance, you can see that much of the allocation falls on a few stocks.
 
-This opens up the portfolio to a lot of unsystematic risk. Therefore, we have much more advanced techniques including Hierarchical Risk Parity and Nested Clustered Optimization.
+Please note that these optimization techniques are rather basic. They don't take into account the fact that majority of portfolio is allocated to a few stocks. you high concentration level of risk. As a result, there would be a high concentration level of risk in the portfolio. For that, we have more advanced, and complex optimization techniques including Hierarchical Risk Parity and Nested Clustered Optimization.
 
 ```
 ## Hierarchical Risk Parity optimization
@@ -221,12 +223,12 @@ openbb.portfolio.po.plot(data=data_returns_hrp,weights=weights_hrp,rc_chart=True
 
 
 
-These functionalities have an extensive list of parameters and thus the optimization process is also highly dependent on these calculations. E.g. see the following documentation.
+These functionalities have an extensive list of parameters and thus the optimization process is highly dependent on the chosen parameters. For instance, you can refer to the documentation below.
 <img width="747" alt="Screenshot 2022-10-04 at 00 35 00" src="https://user-images.githubusercontent.com/40023817/193704210-b75ddee3-1da3-432b-90f8-6966e85bb345.png">
 
 
 
-This allows us to alter certain assumption which also alters the outcome, for example.
+This allows us to alter certain assumption which also modify the asset allocation.
 
 ```
 weights_hrp_2, data_returns_hrp_2 = openbb.portfolio.po.hrp(
@@ -243,7 +245,7 @@ pd.DataFrame([weights_hrp, weights_hrp_2], index=["Basic", "Extended"]).T
 
 
 
-THe basic method optimized for *variance*. The extended method increases the period of historical data, optimizes for conditional Value at Risk and has a lower risk aversion.
+THe basic method was optimized for *variance*. The extended method increases the period of historical data, optimizes for conditional Value at Risk and has a lower risk aversion.
 
 ```openbb.portfolio.po.plot(data=data_returns_hrp,weights=weights_hrp,pie=True)```
 
@@ -257,8 +259,8 @@ THe basic method optimized for *variance*. The extended method increases the per
 
 ## Useful tips
 
-### 1. Display matplotlib charts in Jupyter Notebook**\
-If you copy-paste the code below and use it as your initialization then you're matplotlib graphs will be inside the result cell.
+### 1. Display matplotlib charts in Jupyter Notebook
+To display matplotlib charts inside the Jupyter notebook output cells, you can use the block of code below, and initialize it at the top of the Notebook.
 
 ```python
 import matplotlib.pyplot as plt
