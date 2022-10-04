@@ -1,0 +1,37 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+      x-messari-api-key:
+      - test_key
+    method: GET
+    uri: https://data.messari.io/api/v2/assets/bitcoin/profile?fields=profile%2Fgeneral%2Foverview%2Fofficial_links
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/zTIsc6CMBAH8P17CvKf4ctRGoR7A3cnF3OR0zRS2/SqiSG8u5Prb4NVqS8Db9BV
+        sukCphY1RLUqMYPhyLmup478qR94mNjP/9Po/HiYB39GCy0llcs1LQr2RD+IaiZ3BeP4fMsalkZy
+        aB76aW6pRKnY979vAAAA///L8VPQgAAAAA==
+    headers:
+      content-encoding:
+      - gzip
+      content-length:
+      - '139'
+      content-type:
+      - application/json; charset=UTF-8
+      date:
+      - Tue, 04 Oct 2022 13:38:49 GMT
+      vary:
+      - Accept-Encoding,Origin
+    status:
+      code: 400
+      message: Bad Request
+version: 1
