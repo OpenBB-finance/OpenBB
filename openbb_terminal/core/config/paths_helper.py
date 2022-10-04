@@ -1,4 +1,6 @@
 # IMPORTATION STANDARD
+import os
+import shutil
 from typing import List
 
 from openbb_terminal.core.config.paths import (
@@ -12,6 +14,7 @@ from openbb_terminal.core.config.paths import (
     PRESETS_DIRECTORY,
     ROUTINES_DIRECTORY,
     DATA_SOURCES_DEFAULT_FILE,
+    REPOSITORY_DIRECTORY,
 )
 
 # pylint: disable=W0603
@@ -36,7 +39,13 @@ def create_files(list_files: List):
     for filename in list_files:
         if not filename.is_file():
             with open(str(filename), "w"):
-                pass
+                if filename == DATA_SOURCES_DEFAULT_FILE:
+                    filesize = os.path.getsize(filename)
+                    if filesize == 0:
+                        shutil.copyfile(
+                            REPOSITORY_DIRECTORY / "data_sources_default.json",
+                            filename,
+                        )
 
 
 dirs_list = [
