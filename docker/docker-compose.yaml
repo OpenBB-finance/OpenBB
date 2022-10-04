@@ -19,8 +19,6 @@ services:
     platform: linux/amd64
     build:
       context: ..
-      platforms:
-        - "linux/amd64"
       dockerfile: docker/openbbterminal-poetry-deps.dockerfile
       args:
         OPENBBTERMINAL_DOCKER_IMAGE_PREFIX: ${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}
@@ -30,8 +28,6 @@ services:
     platform: linux/amd64
     build:
       context: ..
-      platforms:
-        - "linux/amd64"
       dockerfile: docker/openbbterminal-poetry-full-deps.dockerfile
       args:
         OPENBBTERMINAL_DOCKER_IMAGE_PREFIX: ${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}
@@ -42,8 +38,6 @@ services:
     platform: linux/amd64
     build:
       context: ..
-      platforms:
-        - "linux/amd64"
       dockerfile: docker/openbbterminal.dockerfile
       args:
         OPENBBTERMINAL_DOCKER_IMAGE_PREFIX: ${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}
@@ -55,8 +49,6 @@ services:
     platform: linux/amd64
     build:
       context: ..
-      platforms:
-        - "linux/amd64"
       dockerfile: docker/openbbterminal-poetry.dockerfile
       args:
         OPENBBTERMINAL_DOCKER_IMAGE_PREFIX: ${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}
@@ -68,8 +60,6 @@ services:
     platform: linux/amd64
     build:
       context: ..
-      platforms:
-        - "linux/amd64"
       dockerfile: docker/openbbterminal-poetry-jupyter.dockerfile
       args:
         OPENBBTERMINAL_DOCKER_IMAGE_PREFIX: ${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}
@@ -81,8 +71,6 @@ services:
     platform: linux/amd64
     build:
       context: ..
-      platforms:
-        - "linux/amd64"
       dockerfile: docker/openbbterminal-poetry-full.dockerfile
       args:
         OPENBBTERMINAL_DOCKER_IMAGE_PREFIX: ${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}
