@@ -20,7 +20,7 @@ jobs:
       run: |
         source docker/compose.env 
         echo ${{ env.OPENBBTERMINAL_DOCKER_POETRY_VERSION  }}
-        source docker/compose.env echo ${{ env.OPENBBTERMINAL_DOCKER_POETRY_VERSION  }}
+        source docker/compose.env && echo ${{ env.OPENBBTERMINAL_DOCKER_POETRY_VERSION  }}
         exit
         source docker/compose.env && docker-compose -f docker/docker-compose.yaml build
         docker tag `docker images -q ghcr.io/openbb-finance/openbbterminal-poetry` ghcr.io/colin99d/openbbterminal-poetry:${{ env.OPENBBTERMINAL_DOCKER_POETRY_VERSION }}
