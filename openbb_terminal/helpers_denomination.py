@@ -4,7 +4,9 @@ from typing import Literal, Tuple, Callable, Dict
 import pandas as pd
 from pandas._typing import Axis
 
-DENOMINATION = Literal["Trillions", "Billions", "Millions", "Thousands", "Units", ""]
+DENOMINATION = Literal[
+    "Trillions", "Billions", "Millions", "Tens of thousands", "Thousands", "Units", ""
+]
 
 
 def transform(
@@ -67,6 +69,7 @@ def get_denominations() -> Dict[DENOMINATION, float]:
         "Trillions": 1_000_000_000_000,
         "Billions": 1_000_000_000,
         "Millions": 1_000_000,
+        "Tens of thousands": 10_000,
         "Thousands": 1_000,
         "Units": 1,
     }

@@ -135,6 +135,8 @@ class TerminalController(BaseController):
         mt.add_cmd("survey")
         mt.add_cmd("update")
         mt.add_cmd("wiki")
+        mt.add_cmd("record")
+        mt.add_cmd("stop")
         mt.add_raw("\n")
         mt.add_info("_configure_")
         mt.add_menu("keys")
