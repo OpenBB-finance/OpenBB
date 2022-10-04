@@ -4,7 +4,9 @@ from typing import Literal, Tuple, Callable, Dict
 import pandas as pd
 from pandas._typing import Axis
 
-DENOMINATION = Literal["Trillions", "Billions", "Millions", "Thousands", "Units", ""]
+DENOMINATION = Literal[
+    "Trillions", "Billions", "Millions", "Tens of thousands", "Thousands", "Units", ""
+]
 
 
 def transform(
@@ -31,10 +33,12 @@ def transform(
     def apply(
         df: pd.DataFrame, source: DENOMINATION, target: DENOMINATION
     ) -> pd.DataFrame:
+        multiplier = get_denominations()[source] / get_denominations()[target]
+        df = df.astype(float)
         return df.apply(
             lambda series: series
             if skipPredicate is not None and skipPredicate(series)
-            else series * (get_denominations()[source] / get_denominations()[target]),
+            else series * multiplier,
             axis,
         )
 
@@ -45,7 +49,7 @@ def transform(
         )
 
     if maxValue is None:
-        maxValue = df.max().max()
+        maxValue = df.max(numeric_only=True).max(numeric_only=True)
 
     foundTargetDenomination = get_denomination(maxValue)
 
@@ -65,6 +69,7 @@ def get_denominations() -> Dict[DENOMINATION, float]:
         "Trillions": 1_000_000_000_000,
         "Billions": 1_000_000_000,
         "Millions": 1_000_000,
+        "Tens of thousands": 10_000,
         "Thousands": 1_000,
         "Units": 1,
     }
