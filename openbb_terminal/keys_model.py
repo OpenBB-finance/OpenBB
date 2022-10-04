@@ -1378,7 +1378,7 @@ def check_binance_key(show_output: bool = False) -> int:
     else:
         try:
             client = binance.Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
-            client.get_account_api_permissions()   
+            client.get_account_api_permissions()
             logger.info("Binance key defined, test passed")
             status = 1
         except Exception:
