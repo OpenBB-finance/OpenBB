@@ -117,6 +117,8 @@ def set_av_key(key: str, persist: bool = False, show_output: bool = False) -> st
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -134,7 +136,7 @@ def check_av_key(show_output: bool = False) -> str:
     Parameters
     ----------
         show_output: bool
-            Display status string or not.
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -173,6 +175,8 @@ def set_fmp_key(key: str, persist: bool = False, show_output: bool = False) -> s
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -190,7 +194,7 @@ def check_fmp_key(show_output: bool = False) -> str:
     Parameters
     ----------
         show_output: bool
-            Display status string or not.
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -234,6 +238,8 @@ def set_quandl_key(key: str, persist: bool = False, show_output: bool = False) -
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -289,6 +295,8 @@ def set_polygon_key(key: str, persist: bool = False, show_output: bool = False) 
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -349,6 +357,8 @@ def set_fred_key(key: str, persist: bool = False, show_output: bool = False) -> 
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -408,6 +418,8 @@ def set_news_key(key: str, persist: bool = False, show_output: bool = False) -> 
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -467,6 +479,8 @@ def set_tradier_key(key: str, persist: bool = False, show_output: bool = False) 
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -531,6 +545,8 @@ def set_cmc_key(key: str, persist: bool = False, show_output: bool = False) -> s
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -587,6 +603,8 @@ def set_finnhub_key(key: str, persist: bool = False, show_output: bool = False) 
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -646,6 +664,8 @@ def set_iex_key(key: str, persist: bool = False, show_output: bool = False) -> s
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -711,6 +731,8 @@ def set_reddit_key(
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -799,6 +821,8 @@ def set_bitquery_key(key: str, persist: bool = False, show_output: bool = False)
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -872,6 +896,8 @@ def set_twitter_key(
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -951,6 +977,8 @@ def set_rh_key(
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -1010,6 +1038,8 @@ def set_degiro_key(
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -1070,6 +1100,8 @@ def set_oanda_key(
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -1140,6 +1172,8 @@ def set_binance_key(
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -1201,6 +1235,8 @@ def set_si_key(
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -1272,6 +1308,8 @@ def set_coinbase_key(
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -1341,6 +1379,8 @@ def set_walert_key(key: str, persist: bool = False, show_output: bool = False) -
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -1405,6 +1445,8 @@ def set_glassnode_key(
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -1471,6 +1513,8 @@ def set_coinglass_key(
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -1533,6 +1577,8 @@ def set_cpanic_key(key: str, persist: bool = False, show_output: bool = False) -
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -1591,6 +1637,8 @@ def set_ethplorer_key(
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -1655,6 +1703,8 @@ def set_smartstake_key(
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -1732,6 +1782,8 @@ def set_github_key(key: str, persist: bool = False, show_output: bool = False) -
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -1782,6 +1834,8 @@ def set_messari_key(key: str, persist: bool = False, show_output: bool = False) 
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -1843,6 +1897,8 @@ def set_eodhd_key(key: str, persist: bool = False, show_output: bool = False) ->
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
 
     Returns
     -------
@@ -1900,6 +1956,8 @@ def set_santiment_key(
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
 
     Returns
     -------
