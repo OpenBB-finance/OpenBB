@@ -19,7 +19,7 @@ jobs:
     - name: Build the Docker image
       run: |
         source docker/compose.env 
-        echo $OPENBBTERMINAL_DOCKER_POETRY_VERSION
+        grep $OPENBBTERMINAL_DOCKER_POETRY_VERSION
         source docker/compose.env && echo ${{ env.OPENBBTERMINAL_DOCKER_POETRY_VERSION  }}
         exit
         source docker/compose.env && docker-compose -f docker/docker-compose.yaml build
