@@ -10,8 +10,6 @@ from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-# pylint: disable= R0201
-
 
 def log_start_end(func=None, log=None):
     """Wrap function to add a log entry at execution start and end.

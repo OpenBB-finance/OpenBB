@@ -1,10 +1,7 @@
 """Parent Classes"""
 __docformat__ = "numpy"
 
-
-# pylint: disable= C0301,C0302,R0902,R0201,global-statement
-
-
+# pylint: disable=C0301,C0302,R0902,global-statement
 
 from abc import ABCMeta, abstractmethod
 import argparse
@@ -540,7 +537,8 @@ class BaseController(metaclass=ABCMeta):
                 SESSION_RECORDED_NAME = ns_parser.routine_name + ".openbb"
 
             console.print(
-                "[green]The session is successfully being recorded. Remember to 'stop' before exiting terminal!\n[/green]"
+                "[green]The session is successfully being recorded."
+                + " Remember to 'stop' before exiting terminal!\n[/green]"
             )
             RECORD_SESSION = True
 

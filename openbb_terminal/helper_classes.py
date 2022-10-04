@@ -13,8 +13,6 @@ from matplotlib import font_manager, ticker
 
 from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY, USER_DATA_DIRECTORY
 
-# pylint: disable= R0201
-
 
 class LineAnnotateDrawer:
     """Line drawing class."""

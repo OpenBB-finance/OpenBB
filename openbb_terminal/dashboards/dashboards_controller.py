@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-import subprocess
+import subprocess  # nosec
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
@@ -16,7 +16,7 @@ from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.helper_funcs import parse_simple_args
 
-# pylint: disable=consider-using-with,R0201
+# pylint: disable=consider-using-with
 
 
 logger = logging.getLogger(__name__)
@@ -150,7 +150,7 @@ def create_call(other_args: List[str], name: str, filename: str = None) -> None:
                 f"{cmd} {file} {args}",
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
-                shell=True,
+                shell=True,  # nosec
             )
         else:
             console.print(f"Type: {cmd} {file}\ninto a terminal to run.")
