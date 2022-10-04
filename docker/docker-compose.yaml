@@ -4,8 +4,6 @@ services:
     platform: linux/amd64
     build:
       context: ..
-      platforms:
-        - "linux/amd64"
       dockerfile: docker/openbbterminal-python.dockerfile
     image: "${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}/openbbterminal-python:${OPENBBTERMINAL_DOCKER_PYTHON_VERSION}"
   openbbterminal-deps:
