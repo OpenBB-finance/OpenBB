@@ -1378,17 +1378,11 @@ def check_binance_key(show_output: bool = False) -> int:
     else:
         try:
             client = binance.Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
-            candles = client.get_klines(
-                symbol="BTCUSDT", interval=client.KLINE_INTERVAL_1DAY
-            )
-            if len(candles) > 0:
-                logger.info("Binance key defined, test passed")
-                status = 1
-            else:
-                logger.info("Binance key defined, test failed")
-                status = -1
+            client.get_account_api_permissions()   
+            logger.info("Binance key defined, test passed")
+            status = 1
         except Exception:
-            logger.info("Binance key defined, test failed")
+            logger.warning("Binance key defined, test failed")
             status = -1
 
     if show_output:
