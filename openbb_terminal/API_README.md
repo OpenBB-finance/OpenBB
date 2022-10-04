@@ -131,7 +131,8 @@ openbb.economy.index(indices = ['sp500', 'nyse_ny', 'russell1000'], start_date =
 
 You might be wondering how to find all the available indices. This type of information should be available in the docstring. Let's give it a try.
 
-[INSERT CHART]
+<img width="906" alt="Screenshot 2022-10-04 at 13 20 58" src="https://user-images.githubusercontent.com/40023817/193817866-b05cacee-a11b-4c44-b8c3-efb51bb9c892.png">
+
 
 As mentioned in the docstring, you can access it with the following helper function.
 
@@ -182,7 +183,7 @@ print("Max Sharpe")
 weights_max_sharpe
 ```
 
-<img width="739" alt="Screenshot 2022-10-04 at 00 26 27" src="https://user-images.githubusercontent.com/40023817/193703602-12e6baac-462e-4c2e-a682-9fcfee21a06a.png">
+<img width="734" alt="Screenshot 2022-10-04 at 13 23 45" src="https://user-images.githubusercontent.com/40023817/193818381-e3e75455-ea91-4bdd-a903-0874ac8700dc.png">
 
 
 ```
@@ -192,7 +193,8 @@ weights_min_risk, data_returns_min_risk = openbb.portfolio.po.minrisk(tickers)
 print("Min Risk")
 weights_min_risk
 ```
-<img width="742" alt="Screenshot 2022-10-04 at 00 28 30" src="https://user-images.githubusercontent.com/40023817/193703591-8b68e417-1969-44da-b3a7-51bb3b37ba7b.png">
+
+<img width="742" alt="Screenshot 2022-10-04 at 13 24 45" src="https://user-images.githubusercontent.com/40023817/193818556-89380c7c-94c3-4e5c-8848-28058c9cf056.png">
 
 
 
@@ -207,20 +209,21 @@ print("Hierarchical Risk Parity")
 weights_hrp
 
 ```
+<img width="736" alt="Screenshot 2022-10-04 at 13 34 39" src="https://user-images.githubusercontent.com/40023817/193820500-1bcde650-f517-4aed-b989-b2bd92bebbb8.png">
+
 
 ```
 openbb.portfolio.po.plot(data=data_returns_hrp,weights=weights_hrp,heat=True)
 ```
-<img width="743" alt="Screenshot 2022-10-04 at 00 32 25" src="https://user-images.githubusercontent.com/40023817/193704055-c220d429-3607-4070-9e8f-e16899badce4.png">
 
+<img width="734" alt="Screenshot 2022-10-04 at 13 35 14" src="https://user-images.githubusercontent.com/40023817/193820624-3e6da926-aea9-4963-bd54-fd1a6df0fda3.png">
 
 
 ```
 openbb.portfolio.po.plot(data=data_returns_hrp,weights=weights_hrp,rc_chart=True)
 ```
 
-<img width="736" alt="Screenshot 2022-10-04 at 00 32 33" src="https://user-images.githubusercontent.com/40023817/193704038-1d43edb5-7eba-40dd-91dc-53209101db11.png">
-
+<img width="737" alt="Screenshot 2022-10-04 at 13 36 10" src="https://user-images.githubusercontent.com/40023817/193820817-82f8727f-0e12-4794-b128-d6ebe20b2c4f.png">
 
 
 These functionalities have an extensive list of parameters and thus the optimization process is highly dependent on the chosen parameters. For instance, you can refer to the documentation below.
@@ -249,12 +252,11 @@ THe basic method was optimized for *variance*. The extended method increases the
 
 ```openbb.portfolio.po.plot(data=data_returns_hrp,weights=weights_hrp,pie=True)```
 
-<img width="737" alt="Screenshot 2022-10-04 at 00 39 03" src="https://user-images.githubusercontent.com/40023817/193704603-4b6fee31-44cb-492c-ba51-04de40d59bb6.png">
-
+<img width="735" alt="Screenshot 2022-10-04 at 13 38 12" src="https://user-images.githubusercontent.com/40023817/193821181-0cb8cc51-3532-4542-b098-b23222330142.png">
 
 ```openbb.portfolio.po.plot(data=data_returns_hrp_2,weights=weights_hrp_2,pie=True)```
 
-<img width="738" alt="Screenshot 2022-10-04 at 00 39 18" src="https://user-images.githubusercontent.com/40023817/193704620-fb6b12d5-9c1e-44dc-ad32-384de4c56c85.png">
+<img width="735" alt="Screenshot 2022-10-04 at 13 38 30" src="https://user-images.githubusercontent.com/40023817/193821231-e92839b5-47d1-4a1a-81c2-61244bb6d925.png">
 
 
 ## Useful tips
