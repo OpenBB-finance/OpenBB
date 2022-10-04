@@ -1,3 +1,4 @@
+import sys
 import logging
 import os
 from enum import Enum
@@ -28,6 +29,8 @@ from openbb_terminal.terminal_helper import suppress_stdout
 # pylint: disable=too-many-lines
 
 logger = logging.getLogger(__name__)
+
+sys.tracebacklimit = 0
 
 
 class OutputStatus(str, Enum):
@@ -564,8 +567,8 @@ def check_cmc_key(show_output: bool = False) -> str:
             cmc.cryptocurrency_map()
             logger.info("Coinmarketcap key defined, test passed")
             status = OutputStatus.DEFINED_TEST_PASSED
-        except CoinMarketCapAPIError:
-            logger.exception("Coinmarketcap key defined, test failed")
+        except Exception:
+            logger.info("Coinmarketcap key defined, test failed")
             status = OutputStatus.DEFINED_TEST_FAILED
 
     if show_output:
@@ -1112,8 +1115,7 @@ def check_oanda_key(show_output: bool = False) -> str:
             logger.info("Oanda key defined, test passed")
             status = OutputStatus.DEFINED_TEST_PASSED
 
-        except V20Error as e:
-            logger.exception(str(e))
+        except Exception:
             logger.info("Oanda key defined, test failed")
             status = OutputStatus.DEFINED_TEST_FAILED
 
@@ -1382,7 +1384,7 @@ def check_walert_key(show_output: bool = False) -> str:
                 logger.info("Walert key defined, test passed")
                 status = OutputStatus.DEFINED_TEST_PASSED
         except Exception:
-            logger.exception("Walert key defined, test failed")
+            logger.info("Walert key defined, test failed")
             status = OutputStatus.DEFINED_TEST_FAILED
 
     if show_output:
@@ -1630,7 +1632,7 @@ def check_ethplorer_key(show_output: bool = False) -> str:
                 logger.warning("ethplorer key defined, test failed")
                 status = OutputStatus.DEFINED_TEST_FAILED
         except Exception as _:  # noqa: F841
-            logger.exception("ethplorer key defined, test failed")
+            logger.info("ethplorer key defined, test failed")
             status = OutputStatus.DEFINED_TEST_FAILED
 
     if show_output:
@@ -1947,7 +1949,7 @@ def check_santiment_key(show_output: bool = False) -> str:
                 logger.warning("santiment key defined, test failed")
                 status = OutputStatus.DEFINED_TEST_FAILED
         except Exception as _:  # noqa: F841
-            logger.exception("santiment key defined, test failed")
+            logger.info("santiment key defined, test failed")
             status = OutputStatus.DEFINED_TEST_FAILED
 
     if show_output:
