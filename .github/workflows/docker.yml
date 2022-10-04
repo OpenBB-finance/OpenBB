@@ -16,10 +16,10 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Build the hello-world Docker image
+    - name: Build the Docker image
       run: |
-        source docker/compose.env && docker-compose build -f docker/openbbterminal-poetry.dockerfile
-        docker build --tag ghcr.io/colin99d/openbb:latest
+        source docker/compose.env && docker-compose -f docker/docker-compose.yaml build
+        docker tag `docker images -q ghcr.io/openbb-finance/openbbterminal-poetry` ghcr.io/colin99d/openbb:latest
         docker run ghcr.io/colin99d/openbb:latest
         docker push ghcr.io/colin99d/openbb:latest
 
