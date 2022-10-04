@@ -22,4 +22,3 @@ jobs:
         docker tag `docker images -q ghcr.io/openbb-finance/openbbterminal-poetry` ghcr.io/colin99d/openbb:latest
         docker run ghcr.io/colin99d/openbb:latest
         docker push ghcr.io/colin99d/openbb:latest
-
