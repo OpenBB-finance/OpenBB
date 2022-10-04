@@ -1,3 +1,6 @@
+"""Keys model"""
+__docformat__ = "numpy"
+
 import sys
 import logging
 import os
@@ -71,7 +74,7 @@ def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> Non
 
 
 def get_keys(show: bool = False) -> pd.DataFrame:
-    """Get dictionary with currently set API keys.
+    """Get currently set API keys.
 
     Parameters
     ----------

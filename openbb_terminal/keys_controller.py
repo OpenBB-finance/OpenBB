@@ -10,11 +10,14 @@ from typing import Dict, List
 from prompt_toolkit.completion import NestedCompleter
 from tqdm import tqdm
 
-from openbb_terminal import feature_flags as obbff
+from openbb_terminal import feature_flags as obbff, keys_view
 from openbb_terminal import keys_model
 from openbb_terminal.core.config.paths import USER_ENV_FILE
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import parse_simple_args, print_rich_table
+from openbb_terminal.helper_funcs import (
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    parse_simple_args,
+)
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText, translate
@@ -127,16 +130,12 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         if other_args and "-s" in other_args[0]:
             other_args.insert(1, "True")
 
-        ns_parser = parse_simple_args(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+
         if ns_parser:
-            df = keys_model.get_keys(ns_parser.show)
-            if not df.empty:
-                print_rich_table(
-                    df,
-                    show_index=True,
-                    index_name="API",
-                    title="Current keys",
-                )
+            keys_view.display_keys(show=ns_parser.show, export=ns_parser.export)
 
     @log_start_end(log=logger)
     def call_av(self, other_args: List[str]):
