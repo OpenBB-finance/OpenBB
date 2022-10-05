@@ -1,2 +1,2 @@
-not defined
+[grey30]not defined[/grey30]
 

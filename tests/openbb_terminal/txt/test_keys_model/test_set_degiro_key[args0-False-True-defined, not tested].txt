@@ -1,2 +1,2 @@
-defined, not tested
+[red]defined, not tested[/red]
 

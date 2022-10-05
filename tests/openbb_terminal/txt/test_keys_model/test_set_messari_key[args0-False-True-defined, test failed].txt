@@ -1,2 +1,2 @@
-defined, test failed
+[red]defined, test failed[/red]
 

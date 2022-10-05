@@ -1,2 +1,2 @@
-defined, test passed
+[green]defined, test passed[/green]
 
