@@ -1918,7 +1918,7 @@ functions = {
     "keys.santiment": {"model": "openbb_terminal.keys_model.set_santiment_key"},
     "keys.mykeys": {"model": "openbb_terminal.keys_model.get_keys"},
     "keys.set_keys": {"model": "openbb_terminal.keys_model.set_keys"},
-    "keys.get_api_list": {"model": "openbb_terminal.keys_model.get_keys_info"},
+    "keys.get_keys_info": {"model": "openbb_terminal.keys_model.get_keys_info"},
 }
 
 
