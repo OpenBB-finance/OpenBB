@@ -130,7 +130,7 @@ def display_daily_volume_for_given_pair(
 
     df_data = df.copy()
 
-    df[["tradeAmount", "trades"]] = df[["tradeAmount", "trades"]].applymap(
+    df[["Trade amount", "Trades"]] = df[["Trade amount", "Trades"]].applymap(
         lambda x: lambda_very_long_number_formatter(x)
     )
 
