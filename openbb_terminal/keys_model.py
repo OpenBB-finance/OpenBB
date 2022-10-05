@@ -5,7 +5,7 @@ import sys
 import logging
 import os
 from enum import Enum
-from typing import Dict, Union
+from typing import Dict, List, Union
 import binance
 import dotenv
 import pandas as pd
@@ -34,6 +34,39 @@ from openbb_terminal.terminal_helper import suppress_stdout
 logger = logging.getLogger(__name__)
 
 sys.tracebacklimit = 0
+
+
+API_DICT: Dict = {
+    "av": "ALPHA_VANTAGE",
+    "fmp": "FINANCIAL_MODELING_PREP",
+    "quandl": "QUANDL",
+    "polygon": "POLYGON",
+    "fred": "FRED",
+    "news": "NEWSAPI",
+    "tradier": "TRADIER",
+    "cmc": "COINMARKETCAP",
+    "finnhub": "FINNHUB",
+    "iex": "IEXCLOUD",
+    "reddit": "REDDIT",
+    "twitter": "TWITTER",
+    "rh": "ROBINHOOD",
+    "degiro": "DEGIRO",
+    "oanda": "OANDA",
+    "binance": "BINANCE",
+    "bitquery": "BITQUERY",
+    "si": "SENTIMENT_INVESTOR",
+    "coinbase": "COINBASE",
+    "walert": "WHALE_ALERT",
+    "glassnode": "GLASSNODE",
+    "coinglass": "COINGLASS",
+    "cpanic": "CRYPTO_PANIC",
+    "ethplorer": "ETHPLORER",
+    "smartstake": "SMARTSTAKE",
+    "github": "GITHUB",
+    "messari": "MESSARI",
+    "eodhd": "EODHD",
+    "santiment": "SANTIMENT",
+}
 
 
 class KeyStatus(str, Enum):
@@ -74,6 +107,7 @@ def set_keys(
     ----------
         keys_dict: Dict[str, Dict[str, Union[str, bool]]]
             E.g. {"fred": {"key":"XXXXX"}, "binance": {"key":"YYYYY", "secret":"ZZZZZ"}}
+            The list of available APIs can be found through get_api_list()
         persist: bool
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
@@ -97,6 +131,17 @@ def set_keys(
         )
 
     return status_dict
+
+
+def get_api_list() -> List[str]:
+    """Get list of available APIs to use in set_keys.
+
+    Returns
+    -------
+    List of APIs: List
+
+    """
+    return list(API_DICT.keys())
 
 
 def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> None:
