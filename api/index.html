@@ -45482,10 +45482,10 @@ the API is leveraged to build a new feature on top of the API.</p>
 <span class="c1"># Fetches data from the api</span>
 <span class="n">gme</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&#34;gme&#34;</span><span class="p">)</span>
 <span class="c1"># Calculates logarithmic returns</span>
-<span class="n">gme</span><span class="p">[</span><span class="s2">&#34;Log Returns&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">gme</span><span class="p">[</span><span class="s2">&#34;Adj Close&#34;</span><span class="p">]</span><span class="o">/</span><span class="n">gme</span><span class="p">[</span><span class="s2">&#34;Adjusted Close&#34;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">gme</span><span class="p">[</span><span class="s2">&#34;Log Returns&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">gme</span><span class="p">[</span><span class="s2">&#34;Adj Close&#34;</span><span class="p">]</span><span class="o">/</span><span class="n">gme</span><span class="p">[</span><span class="s2">&#34;Adj Close&#34;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
 <span class="c1"># Plots the return distributions</span>
 <span class="n">gme</span><span class="p">[</span><span class="s2">&#34;Log Returns&#34;</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">thight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div><p>For more examples see the OpenBB jupyter notebook reports. They all use the API to its fullest extent!</p>
 <hr>
