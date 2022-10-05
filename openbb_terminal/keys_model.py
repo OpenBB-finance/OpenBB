@@ -35,7 +35,8 @@ logger = logging.getLogger(__name__)
 sys.tracebacklimit = 0
 
 
-class OutputStatus(str, Enum):
+class KeyStatus(str, Enum):
+    """Class to handle status messages and colors"""
 
     DEFINED_TEST_FAILED = "defined, test failed"
     NOT_DEFINED = "not defined"
@@ -43,8 +44,19 @@ class OutputStatus(str, Enum):
     DEFINED_TEST_INCONCLUSIVE = "defined, test inconclusive"
     DEFINED_NOT_TESTED = "defined, not tested"
 
-    def __str__(self):
-        return self.value
+    def colorize(self):
+        if self.name == self.DEFINED_TEST_FAILED.name:
+            c = "red"
+        elif self.name == self.NOT_DEFINED.name:
+            c = "grey30"
+        elif self.name == self.DEFINED_TEST_PASSED.name:
+            c = "green"
+        elif self.name == self.DEFINED_TEST_INCONCLUSIVE.name:
+            c = "yellow"
+        elif self.name == self.DEFINED_NOT_TESTED.name:
+            c = "red"
+
+        return f"[{c}]{self.value}[/{c}]"
 
 
 def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> None:
@@ -149,22 +161,22 @@ def check_av_key(show_output: bool = False) -> str:
 
     if cfg.API_KEY_ALPHAVANTAGE == "REPLACE_ME":  # pragma: allowlist secret
         logger.info("Alpha Vantage key not defined")
-        status = OutputStatus.NOT_DEFINED
+        status = KeyStatus.NOT_DEFINED
     else:
         df = TimeSeries(
             key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas"
         ).get_intraday(symbol="AAPL")
         if df[0].empty:  # pylint: disable=no-member
             logger.warning("Alpha Vantage key defined, test failed")
-            status = OutputStatus.DEFINED_TEST_FAILED
+            status = KeyStatus.DEFINED_TEST_FAILED
         else:
             logger.info("Alpha Vantage key defined, test passed")
-            status = OutputStatus.DEFINED_TEST_PASSED
+            status = KeyStatus.DEFINED_TEST_PASSED
 
     if show_output:
-        console.print(status + "\n")
+        console.print(status.colorize() + "\n")
 
-    return str(status)
+    return status
 
 
 def set_fmp_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -209,25 +221,25 @@ def check_fmp_key(show_output: bool = False) -> str:
         cfg.API_KEY_FINANCIALMODELINGPREP == "REPLACE_ME"  # pragma: allowlist secret
     ):  # pragma: allowlist secret
         logger.info("Financial Modeling Prep key not defined")
-        status = OutputStatus.NOT_DEFINED
+        status = KeyStatus.NOT_DEFINED
     else:
         r = requests.get(
             f"https://financialmodelingprep.com/api/v3/profile/AAPL?apikey={cfg.API_KEY_FINANCIALMODELINGPREP}"
         )
         if r.status_code in [403, 401] or "Error Message" in str(r.content):
             logger.warning("Financial Modeling Prep key defined, test failed")
-            status = OutputStatus.DEFINED_TEST_FAILED
+            status = KeyStatus.DEFINED_TEST_FAILED
         elif r.status_code == 200:
             logger.info("Financial Modeling Prep key defined, test passed")
-            status = OutputStatus.DEFINED_TEST_PASSED
+            status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("Financial Modeling Prep key defined, test inconclusive")
-            status = OutputStatus.DEFINED_TEST_INCONCLUSIVE
+            status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status + "\n")
+        console.print(status.colorize() + "\n")
 
-    return str(status)
+    return status
 
 
 def set_quandl_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -270,21 +282,21 @@ def check_quandl_key(show_output: bool = False) -> str:
 
     if cfg.API_KEY_QUANDL == "REPLACE_ME":  # pragma: allowlist secret
         logger.info("Quandl key not defined")
-        status = OutputStatus.NOT_DEFINED
+        status = KeyStatus.NOT_DEFINED
     else:
         try:
             quandl.save_key(cfg.API_KEY_QUANDL)
             quandl.get("EIA/PET_RWTC_D")
             logger.info("Quandl key defined, test passed")
-            status = OutputStatus.DEFINED_TEST_PASSED
+            status = KeyStatus.DEFINED_TEST_PASSED
         except Exception as _:  # noqa: F841
             logger.warning("Quandl key defined, test failed")
-            status = OutputStatus.DEFINED_TEST_FAILED
+            status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status + "\n")
+        console.print(status.colorize() + "\n")
 
-    return str(status)
+    return status
 
 
 def set_polygon_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -327,7 +339,7 @@ def check_polygon_key(show_output: bool = False) -> str:
 
     if cfg.API_POLYGON_KEY == "REPLACE_ME":
         logger.info("Polygon key not defined")
-        status = OutputStatus.NOT_DEFINED
+        status = KeyStatus.NOT_DEFINED
     else:
         r = requests.get(
             "https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/2020-06-01/2020-06-17"
@@ -335,18 +347,18 @@ def check_polygon_key(show_output: bool = False) -> str:
         )
         if r.status_code in [403, 401]:
             logger.warning("Polygon key defined, test failed")
-            status = OutputStatus.DEFINED_TEST_FAILED
+            status = KeyStatus.DEFINED_TEST_FAILED
         elif r.status_code == 200:
             logger.info("Polygon key defined, test passed")
-            status = OutputStatus.DEFINED_TEST_PASSED
+            status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("Polygon key defined, test inconclusive")
-            status = OutputStatus.DEFINED_TEST_INCONCLUSIVE
+            status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status + "\n")
+        console.print(status.colorize() + "\n")
 
-    return str(status)
+    return status
 
 
 def set_fred_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -389,25 +401,25 @@ def check_fred_key(show_output: bool = False) -> str:
 
     if cfg.API_FRED_KEY == "REPLACE_ME":
         logger.info("FRED key not defined")
-        status = OutputStatus.NOT_DEFINED
+        status = KeyStatus.NOT_DEFINED
     else:
         r = requests.get(
             f"https://api.stlouisfed.org/fred/series?series_id=GNPCA&api_key={cfg.API_FRED_KEY}"
         )
         if r.status_code in [403, 401, 400]:
             logger.warning("FRED key defined, test failed")
-            status = OutputStatus.DEFINED_TEST_FAILED
+            status = KeyStatus.DEFINED_TEST_FAILED
         elif r.status_code == 200:
             logger.info("FRED key defined, test passed")
-            status = OutputStatus.DEFINED_TEST_PASSED
+            status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("FRED key defined, test inconclusive")
-            status = OutputStatus.DEFINED_TEST_INCONCLUSIVE
+            status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status + "\n")
+        console.print(status.colorize() + "\n")
 
-    return str(status)
+    return status
 
 
 def set_news_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -450,25 +462,25 @@ def check_news_key(show_output: bool = False) -> str:
 
     if cfg.API_NEWS_TOKEN == "REPLACE_ME":  # nosec
         logger.info("News API key not defined")
-        status = OutputStatus.NOT_DEFINED
+        status = KeyStatus.NOT_DEFINED
     else:
         r = requests.get(
             f"https://newsapi.org/v2/everything?q=keyword&apiKey={cfg.API_NEWS_TOKEN}"
         )
         if r.status_code in [401, 403]:
             logger.warning("News API key defined, test failed")
-            status = OutputStatus.DEFINED_TEST_FAILED
+            status = KeyStatus.DEFINED_TEST_FAILED
         elif r.status_code == 200:
             logger.info("News API key defined, test passed")
-            status = OutputStatus.DEFINED_TEST_PASSED
+            status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("News API key defined, test inconclusive")
-            status = OutputStatus.DEFINED_TEST_INCONCLUSIVE
+            status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status + "\n")
+        console.print(status.colorize() + "\n")
 
-    return str(status)
+    return status
 
 
 def set_tradier_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -511,7 +523,7 @@ def check_tradier_key(show_output: bool = False) -> str:
 
     if cfg.API_TRADIER_TOKEN == "REPLACE_ME":  # nosec
         logger.info("Tradier key not defined")
-        status = OutputStatus.NOT_DEFINED
+        status = KeyStatus.NOT_DEFINED
     else:
         r = requests.get(
             "https://sandbox.tradier.com/v1/markets/quotes",
@@ -523,18 +535,18 @@ def check_tradier_key(show_output: bool = False) -> str:
         )
         if r.status_code in [401, 403]:
             logger.warning("Tradier key not defined, test failed")
-            status = OutputStatus.DEFINED_TEST_FAILED
+            status = KeyStatus.DEFINED_TEST_FAILED
         elif r.status_code == 200:
             logger.info("Tradier key not defined, test passed")
-            status = OutputStatus.DEFINED_TEST_PASSED
+            status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("Tradier key not defined, test inconclusive")
-            status = OutputStatus.DEFINED_TEST_INCONCLUSIVE
+            status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status + "\n")
+        console.print(status.colorize() + "\n")
 
-    return str(status)
+    return status
 
 
 def set_cmc_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -577,22 +589,22 @@ def check_cmc_key(show_output: bool = False) -> str:
 
     if cfg.API_CMC_KEY == "REPLACE_ME":
         logger.info("Coinmarketcap key not defined")
-        status = OutputStatus.NOT_DEFINED
+        status = KeyStatus.NOT_DEFINED
     else:
         cmc = CoinMarketCapAPI(cfg.API_CMC_KEY)
 
         try:
             cmc.cryptocurrency_map()
             logger.info("Coinmarketcap key defined, test passed")
-            status = OutputStatus.DEFINED_TEST_PASSED
+            status = KeyStatus.DEFINED_TEST_PASSED
         except Exception:
             logger.info("Coinmarketcap key defined, test failed")
-            status = OutputStatus.DEFINED_TEST_FAILED
+            status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status + "\n")
+        console.print(status.colorize() + "\n")
 
-    return str(status)
+    return status
 
 
 def set_finnhub_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -635,25 +647,25 @@ def check_finnhub_key(show_output: bool = False) -> str:
 
     if cfg.API_FINNHUB_KEY == "REPLACE_ME":
         logger.info("Finnhub key not defined")
-        status = OutputStatus.NOT_DEFINED
+        status = KeyStatus.NOT_DEFINED
     else:
         r = r = requests.get(
             f"https://finnhub.io/api/v1/quote?symbol=AAPL&token={cfg.API_FINNHUB_KEY}"
         )
         if r.status_code in [403, 401, 400]:
             logger.warning("Finnhub key defined, test failed")
-            status = OutputStatus.DEFINED_TEST_FAILED
+            status = KeyStatus.DEFINED_TEST_FAILED
         elif r.status_code == 200:
             logger.info("Finnhub key defined, test passed")
-            status = OutputStatus.DEFINED_TEST_PASSED
+            status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("Finnhub key defined, test inconclusive")
-            status = OutputStatus.DEFINED_TEST_INCONCLUSIVE
+            status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status + "\n")
+        console.print(status.colorize() + "\n")
 
-    return str(status)
+    return status
 
 
 def set_iex_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -696,20 +708,20 @@ def check_iex_key(show_output: bool = False) -> str:
 
     if cfg.API_IEX_TOKEN == "REPLACE_ME":  # nosec
         logger.info("IEX Cloud key not defined")
-        status = OutputStatus.NOT_DEFINED
+        status = KeyStatus.NOT_DEFINED
     else:
         try:
             pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1").quote(symbol="AAPL")
             logger.info("IEX Cloud key defined, test passed")
-            status = OutputStatus.DEFINED_TEST_PASSED
+            status = KeyStatus.DEFINED_TEST_PASSED
         except Exception as _:  # noqa: F841
             logger.warning("IEX Cloud key defined, test failed")
-            status = OutputStatus.DEFINED_TEST_FAILED
+            status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status + "\n")
+        console.print(status.colorize() + "\n")
 
-    return str(status)
+    return status
 
 
 def set_reddit_key(
@@ -775,7 +787,7 @@ def check_reddit_key(show_output: bool = False) -> str:
     ]
     if "REPLACE_ME" in reddit_keys:
         logger.info("Reddit key not defined")
-        status = OutputStatus.NOT_DEFINED
+        status = KeyStatus.NOT_DEFINED
     else:
 
         try:
@@ -802,15 +814,15 @@ def check_reddit_key(show_output: bool = False) -> str:
 
                 praw_api.user.me()
             logger.info("Reddit key defined, test passed")
-            status = OutputStatus.DEFINED_TEST_PASSED
+            status = KeyStatus.DEFINED_TEST_PASSED
         except (Exception, ResponseException):
             logger.warning("Reddit key defined, test failed")
-            status = OutputStatus.DEFINED_TEST_FAILED
+            status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status + "\n")
+        console.print(status.colorize() + "\n")
 
-    return str(status)
+    return status
 
 
 def set_bitquery_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -854,7 +866,7 @@ def check_bitquery_key(show_output: bool = False) -> str:
     bitquery = cfg.API_BITQUERY_KEY
     if "REPLACE_ME" in bitquery:
         logger.info("Bitquery key not defined")
-        status = OutputStatus.NOT_DEFINED
+        status = KeyStatus.NOT_DEFINED
     else:
         headers = {"x-api-key": cfg.API_BITQUERY_KEY}
         query = """
@@ -870,15 +882,15 @@ def check_bitquery_key(show_output: bool = False) -> str:
         )
         if r.status_code == 200:
             logger.info("Bitquery key defined, test passed")
-            status = OutputStatus.DEFINED_TEST_PASSED
+            status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("Bitquery key defined, test failed")
-            status = OutputStatus.DEFINED_TEST_FAILED
+            status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status + "\n")
+        console.print(status.colorize() + "\n")
 
-    return str(status)
+    return status
 
 
 def set_twitter_key(
@@ -936,7 +948,7 @@ def check_twitter_key(show_output: bool = False) -> str:
     ]
     if "REPLACE_ME" in twitter_keys:
         logger.info("Twitter key not defined")
-        status = OutputStatus.NOT_DEFINED
+        status = KeyStatus.NOT_DEFINED
     else:
         params = {
             "query": "(\\$AAPL) (lang:en)",
@@ -950,18 +962,18 @@ def check_twitter_key(show_output: bool = False) -> str:
         )
         if r.status_code == 200:
             logger.info("Twitter key defined, test passed")
-            status = OutputStatus.DEFINED_TEST_PASSED
+            status = KeyStatus.DEFINED_TEST_PASSED
         elif r.status_code in [401, 403]:
             logger.warning("Twitter key defined, test failed")
-            status = OutputStatus.DEFINED_TEST_FAILED
+            status = KeyStatus.DEFINED_TEST_FAILED
         else:
             logger.warning("Twitter key defined, test failed")
-            status = OutputStatus.DEFINED_TEST_INCONCLUSIVE
+            status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status + "\n")
+        console.print(status.colorize() + "\n")
 
-    return str(status)
+    return status
 
 
 def set_rh_key(
@@ -1012,15 +1024,15 @@ def check_rh_key(show_output: bool = False) -> str:
     rh_keys = [cfg.RH_USERNAME, cfg.RH_PASSWORD]
     if "REPLACE_ME" in rh_keys:
         logger.info("Robinhood key not defined")
-        status = OutputStatus.NOT_DEFINED
+        status = KeyStatus.NOT_DEFINED
     else:
         logger.info("Robinhood key defined, not tested")
-        status = OutputStatus.DEFINED_NOT_TESTED
+        status = KeyStatus.DEFINED_NOT_TESTED
 
     if show_output:
-        console.print(status + "\n")
+        console.print(status.colorize() + "\n")
 
-    return str(status)
+    return status
 
 
 def set_degiro_key(
@@ -1074,15 +1086,15 @@ def check_degiro_key(show_output: bool = False) -> str:
     dg_keys = [cfg.DG_USERNAME, cfg.DG_PASSWORD, cfg.DG_TOTP_SECRET]
     if "REPLACE_ME" in dg_keys:
         logger.info("Degiro key not defined")
-        status = OutputStatus.NOT_DEFINED
+        status = KeyStatus.NOT_DEFINED
     else:
         logger.info("Degiro key defined, not tested")
-        status = OutputStatus.DEFINED_NOT_TESTED
+        status = KeyStatus.DEFINED_NOT_TESTED
 
     if show_output:
-        console.print(status + "\n")
+        console.print(status.colorize() + "\n")
 
-    return str(status)
+    return status
 
 
 def set_oanda_key(
@@ -1136,7 +1148,7 @@ def check_oanda_key(show_output: bool = False) -> str:
     oanda_keys = [cfg.OANDA_TOKEN, cfg.OANDA_ACCOUNT]
     if "REPLACE_ME" in oanda_keys:
         logger.info("Oanda key not defined")
-        status = OutputStatus.NOT_DEFINED
+        status = KeyStatus.NOT_DEFINED
     else:
         client = oanda_API(access_token=cfg.OANDA_TOKEN)
         account = cfg.OANDA_ACCOUNT
@@ -1147,16 +1159,16 @@ def check_oanda_key(show_output: bool = False) -> str:
             )
             client.request(request)
             logger.info("Oanda key defined, test passed")
-            status = OutputStatus.DEFINED_TEST_PASSED
+            status = KeyStatus.DEFINED_TEST_PASSED
 
         except Exception:
             logger.info("Oanda key defined, test failed")
-            status = OutputStatus.DEFINED_TEST_FAILED
+            status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status + "\n")
+        console.print(status.colorize() + "\n")
 
-    return str(status)
+    return status
 
 
 def set_binance_key(
@@ -1206,22 +1218,22 @@ def check_binance_key(show_output: bool = False) -> str:
 
     if "REPLACE_ME" in [cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET]:
         logger.info("Binance key not defined")
-        status = OutputStatus.NOT_DEFINED
+        status = KeyStatus.NOT_DEFINED
 
     else:
         try:
             client = binance.Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
             client.get_account_api_permissions()
             logger.info("Binance key defined, test passed")
-            status = OutputStatus.DEFINED_TEST_PASSED
+            status = KeyStatus.DEFINED_TEST_PASSED
         except Exception:
             logger.warning("Binance key defined, test failed")
-            status = OutputStatus.DEFINED_TEST_FAILED
+            status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status + "\n")
+        console.print(status.colorize() + "\n")
 
-    return str(status)
+    return status
 
 
 def set_si_key(
@@ -1270,7 +1282,7 @@ def check_si_key(show_output: bool = False) -> str:
     si_keys = [cfg.API_SENTIMENTINVESTOR_TOKEN]
     if "REPLACE_ME" in si_keys:
         logger.info("Sentiment Investor key not defined")
-        status = OutputStatus.NOT_DEFINED
+        status = KeyStatus.NOT_DEFINED
     else:
         try:
             account = requests.get(
@@ -1279,18 +1291,18 @@ def check_si_key(show_output: bool = False) -> str:
             )
             if account.ok and account.json().get("success", False):
                 logger.info("Sentiment Investor key defined, test passed")
-                status = OutputStatus.DEFINED_TEST_PASSED
+                status = KeyStatus.DEFINED_TEST_PASSED
             else:
                 logger.warning("Sentiment Investor key defined, test failed")
-                status = OutputStatus.DEFINED_TEST_FAILED
+                status = KeyStatus.DEFINED_TEST_FAILED
         except Exception:
             logger.warning("Sentiment Investor key defined, test failed")
-            status = OutputStatus.DEFINED_TEST_FAILED
+            status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status + "\n")
+        console.print(status.colorize() + "\n")
 
-    return str(status)
+    return status
 
 
 def set_coinbase_key(
@@ -1347,7 +1359,7 @@ def check_coinbase_key(show_output: bool = False) -> str:
         cfg.API_COINBASE_PASS_PHRASE,
     ]:
         logger.info("Coinbase key not defined")
-        status = OutputStatus.NOT_DEFINED
+        status = KeyStatus.NOT_DEFINED
     else:
         auth = CoinbaseProAuth(
             cfg.API_COINBASE_KEY,
@@ -1360,15 +1372,15 @@ def check_coinbase_key(show_output: bool = False) -> str:
             resp = None
         if not resp:
             logger.warning("Coinbase key defined, test failed")
-            status = OutputStatus.DEFINED_TEST_FAILED
+            status = KeyStatus.DEFINED_TEST_FAILED
         else:
             logger.info("Coinbase key defined, test passed")
-            status = OutputStatus.DEFINED_TEST_PASSED
+            status = KeyStatus.DEFINED_TEST_PASSED
 
     if show_output:
-        console.print(status + "\n")
+        console.print(status.colorize() + "\n")
 
-    return str(status)
+    return status
 
 
 def set_walert_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -1411,7 +1423,7 @@ def check_walert_key(show_output: bool = False) -> str:
 
     if cfg.API_WHALE_ALERT_KEY == "REPLACE_ME":
         logger.info("Walert key not defined")
-        status = OutputStatus.NOT_DEFINED
+        status = KeyStatus.NOT_DEFINED
     else:
         url = (
             "https://api.whale-alert.io/v1/transactions?api_key="
@@ -1421,18 +1433,18 @@ def check_walert_key(show_output: bool = False) -> str:
             response = requests.get(url, timeout=2)
             if not 200 <= response.status_code < 300:
                 logger.warning("Walert key defined, test failed")
-                status = OutputStatus.DEFINED_TEST_FAILED
+                status = KeyStatus.DEFINED_TEST_FAILED
             else:
                 logger.info("Walert key defined, test passed")
-                status = OutputStatus.DEFINED_TEST_PASSED
+                status = KeyStatus.DEFINED_TEST_PASSED
         except Exception:
             logger.info("Walert key defined, test failed")
-            status = OutputStatus.DEFINED_TEST_FAILED
+            status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status + "\n")
+        console.print(status.colorize() + "\n")
 
-    return str(status)
+    return status
 
 
 def set_glassnode_key(
@@ -1477,7 +1489,7 @@ def check_glassnode_key(show_output: bool = False) -> str:
 
     if cfg.API_GLASSNODE_KEY == "REPLACE_ME":
         logger.info("Glassnode key not defined")
-        status = OutputStatus.NOT_DEFINED
+        status = KeyStatus.NOT_DEFINED
     else:
         url = "https://api.glassnode.com/v1/metrics/market/price_usd_close"
 
@@ -1492,15 +1504,15 @@ def check_glassnode_key(show_output: bool = False) -> str:
         r = requests.get(url, params=parameters)
         if r.status_code == 200:
             logger.info("Glassnode key defined, test passed")
-            status = OutputStatus.DEFINED_TEST_PASSED
+            status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("Glassnode key defined, test failed")
-            status = OutputStatus.DEFINED_TEST_FAILED
+            status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status + "\n")
+        console.print(status.colorize() + "\n")
 
-    return str(status)
+    return status
 
 
 def set_coinglass_key(
@@ -1545,7 +1557,7 @@ def check_coinglass_key(show_output: bool = False) -> str:
 
     if cfg.API_COINGLASS_KEY == "REPLACE_ME":
         logger.info("Coinglass key not defined")
-        status = OutputStatus.NOT_DEFINED
+        status = KeyStatus.NOT_DEFINED
     else:
         url = "https://open-api.coinglass.com/api/pro/v1/futures/openInterest/chart?&symbol=BTC&interval=0"
 
@@ -1555,18 +1567,18 @@ def check_coinglass_key(show_output: bool = False) -> str:
 
         if """success":false""" in str(response.content):
             logger.warning("Coinglass key defined, test failed")
-            status = OutputStatus.DEFINED_TEST_FAILED
+            status = KeyStatus.DEFINED_TEST_FAILED
         elif response.status_code == 200:
             logger.info("Coinglass key defined, test passed")
-            status = OutputStatus.DEFINED_TEST_PASSED
+            status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("Coinglass key defined, test inconclusive")
-            status = OutputStatus.DEFINED_TEST_INCONCLUSIVE
+            status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:
-        console.print(status + "\n")
+        console.print(status.colorize() + "\n")
 
-    return str(status)
+    return status
 
 
 def set_cpanic_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -1609,22 +1621,22 @@ def check_cpanic_key(show_output: bool = False) -> str:
 
     if cfg.API_CRYPTO_PANIC_KEY == "REPLACE_ME":
         logger.info("cpanic key not defined")
-        status = OutputStatus.NOT_DEFINED
+        status = KeyStatus.NOT_DEFINED
     else:
         crypto_panic_url = f"https://cryptopanic.com/api/v1/posts/?auth_token={cfg.API_CRYPTO_PANIC_KEY}"
         response = requests.get(crypto_panic_url)
 
         if response.status_code == 200:
             logger.info("Cpanic key defined, test passed")
-            status = OutputStatus.DEFINED_TEST_PASSED
+            status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("Cpanic key defined, test failed")
-            status = OutputStatus.DEFINED_TEST_FAILED
+            status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status + "\n")
+        console.print(status.colorize() + "\n")
 
-    return str(status)
+    return status
 
 
 def set_ethplorer_key(
@@ -1669,7 +1681,7 @@ def check_ethplorer_key(show_output: bool = False) -> str:
 
     if cfg.API_ETHPLORER_KEY == "REPLACE_ME":
         logger.info("ethplorer key not defined")
-        status = OutputStatus.NOT_DEFINED
+        status = KeyStatus.NOT_DEFINED
     else:
         ethplorer_url = "https://api.ethplorer.io/getTokenInfo/0x1f9840a85d5af5bf1d1762f925bdaddc4201f984?apiKey="
         ethplorer_url += cfg.API_ETHPLORER_KEY
@@ -1677,18 +1689,18 @@ def check_ethplorer_key(show_output: bool = False) -> str:
         try:
             if response.status_code == 200:
                 logger.info("ethplorer key defined, test passed")
-                status = OutputStatus.DEFINED_TEST_PASSED
+                status = KeyStatus.DEFINED_TEST_PASSED
             else:
                 logger.warning("ethplorer key defined, test failed")
-                status = OutputStatus.DEFINED_TEST_FAILED
+                status = KeyStatus.DEFINED_TEST_FAILED
         except Exception as _:  # noqa: F841
             logger.info("ethplorer key defined, test failed")
-            status = OutputStatus.DEFINED_TEST_FAILED
+            status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status + "\n")
+        console.print(status.colorize() + "\n")
 
-    return str(status)
+    return status
 
 
 def set_smartstake_key(
@@ -1738,7 +1750,7 @@ def check_smartstake_key(show_output: bool = False) -> str:
         cfg.API_SMARTSTAKE_TOKEN,
         cfg.API_SMARTSTAKE_KEY,
     ]:
-        status = OutputStatus.NOT_DEFINED
+        status = KeyStatus.NOT_DEFINED
     else:
         payload = {
             "type": "history",
@@ -1757,21 +1769,21 @@ def check_smartstake_key(show_output: bool = False) -> str:
                 or response.status_code >= 300
             ):
                 logger.warning("Smartstake key defined, test failed")
-                status = OutputStatus.DEFINED_TEST_FAILED
+                status = KeyStatus.DEFINED_TEST_FAILED
             elif 200 <= response.status_code < 300:
                 logger.info("Smartstake key defined, test passed")
-                status = OutputStatus.DEFINED_TEST_PASSED
+                status = KeyStatus.DEFINED_TEST_PASSED
             else:
                 logger.warning("Smartstake key defined, test inconclusive")
-                status = OutputStatus.DEFINED_TEST_INCONCLUSIVE
+                status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
         except Exception as _:  # noqa: F841
             logger.warning("Smartstake key defined, test failed")
-            status = OutputStatus.DEFINED_TEST_FAILED
+            status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status + "\n")
+        console.print(status.colorize() + "\n")
 
-    return str(status)
+    return status
 
 
 def set_github_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -1814,16 +1826,16 @@ def check_github_key(show_output: bool = False) -> str:
 
     if cfg.API_GITHUB_KEY == "REPLACE_ME":  # pragma: allowlist secret
         logger.info("GitHub key not defined")
-        status = OutputStatus.NOT_DEFINED
+        status = KeyStatus.NOT_DEFINED
     else:
-        status = OutputStatus.DEFINED_NOT_TESTED
+        status = KeyStatus.DEFINED_NOT_TESTED
         # github api will not fail for the first requests without key
         # only after certain amount of requests the user will get rate limited
 
     if show_output:
-        console.print(status + "\n")
+        console.print(status.colorize() + "\n")
 
-    return str(status)
+    return status
 
 
 def set_messari_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -1868,7 +1880,7 @@ def check_messari_key(show_output: bool = False) -> str:
         cfg.API_MESSARI_KEY == "REPLACE_ME"  # pragma: allowlist secret
     ):  # pragma: allowlist secret
         logger.info("Messari key not defined")
-        status = OutputStatus.NOT_DEFINED
+        status = KeyStatus.NOT_DEFINED
     else:
 
         url = "https://data.messari.io/api/v2/assets/bitcoin/profile"
@@ -1878,15 +1890,15 @@ def check_messari_key(show_output: bool = False) -> str:
 
         if r.status_code == 200:
             logger.info("Messari key defined, test passed")
-            status = OutputStatus.DEFINED_TEST_PASSED
+            status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("Messari key defined, test failed")
-            status = OutputStatus.DEFINED_TEST_FAILED
+            status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status + "\n")
+        console.print(status.colorize() + "\n")
 
-    return str(status)
+    return status
 
 
 def set_eodhd_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -1929,21 +1941,21 @@ def check_eodhd_key(show_output: bool = False) -> str:
 
     if cfg.API_EODHD_KEY == "REPLACE_ME":  # nosec
         logger.info("End of Day Historical Data key not defined")
-        status = OutputStatus.NOT_DEFINED
+        status = KeyStatus.NOT_DEFINED
     else:
         request_url = f"https://eodhistoricaldata.com/api/exchanges-list/?api_token={cfg.API_EODHD_KEY}&fmt=json"
         r = requests.get(request_url)
         if r.status_code == 200:
             logger.info("Eodhd key defined, test passed")
-            status = OutputStatus.DEFINED_TEST_PASSED
+            status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("Eodhd key defined, test failed")
-            status = OutputStatus.DEFINED_TEST_FAILED
+            status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status + "\n")
+        console.print(status.colorize() + "\n")
 
-    return str(status)
+    return status
 
 
 def set_santiment_key(
@@ -1988,7 +2000,7 @@ def check_santiment_key(show_output: bool = False) -> str:
 
     if cfg.API_SANTIMENT_KEY == "REPLACE_ME":
         logger.info("santiment key not defined")
-        status = OutputStatus.NOT_DEFINED
+        status = KeyStatus.NOT_DEFINED
     else:
         headers = {
             "Content-Type": "application/graphql",
@@ -2004,15 +2016,15 @@ def check_santiment_key(show_output: bool = False) -> str:
         try:
             if response.status_code == 200:
                 logger.info("santiment key defined, test passed")
-                status = OutputStatus.DEFINED_TEST_PASSED
+                status = KeyStatus.DEFINED_TEST_PASSED
             else:
                 logger.warning("santiment key defined, test failed")
-                status = OutputStatus.DEFINED_TEST_FAILED
+                status = KeyStatus.DEFINED_TEST_FAILED
         except Exception as _:  # noqa: F841
             logger.info("santiment key defined, test failed")
-            status = OutputStatus.DEFINED_TEST_FAILED
+            status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status + "\n")
+        console.print(status.colorize() + "\n")
 
-    return str(status)
+    return status

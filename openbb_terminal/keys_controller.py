@@ -96,17 +96,22 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         mt.add_cmd("mykeys")
         mt.add_raw("\n")
         mt.add_info("_status_")
+
         for cmd_name, status_msg in self.status_dict.items():
             api_name = self.API_DICT[cmd_name]
-            c = "red"
-            if status_msg == "defined, test passed":
+
+            c = "grey30"
+            if status_msg == keys_model.KeyStatus.DEFINED_TEST_PASSED:
                 c = "green"
-            elif status_msg == "defined":
-                c = "green"
-            elif status_msg == "defined, test inconclusive":
+            elif status_msg == keys_model.KeyStatus.DEFINED_TEST_FAILED:
+                c = "red"
+            elif status_msg == keys_model.KeyStatus.DEFINED_NOT_TESTED:
+                c = "red"
+            elif status_msg == keys_model.KeyStatus.DEFINED_TEST_INCONCLUSIVE:
                 c = "yellow"
-            elif status_msg == "not defined":
+            elif status_msg == keys_model.KeyStatus.NOT_DEFINED:
                 c = "grey30"
+
             mt.add_raw(
                 f"    [cmds]{cmd_name}[/cmds] {(20 - len(cmd_name)) * ' '}"
                 f" [{c}] {api_name} {(25 - len(api_name)) * ' '} {translate(status_msg)} [/{c}]\n"
