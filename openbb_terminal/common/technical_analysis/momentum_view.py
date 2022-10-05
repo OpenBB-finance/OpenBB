@@ -544,6 +544,7 @@ def display_cg(
 @log_start_end(log=logger)
 def display_clenow_momentum(
     data: pd.Series,
+    symbol: str = "",
     window: int = 90,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -554,6 +555,8 @@ def display_clenow_momentum(
     ----------
     data : pd.Series
         Series of values
+    symbol : str
+        Symbol that the data corresponds to
     window : int
         Length of window
     export : str
@@ -579,7 +582,7 @@ def display_clenow_momentum(
         df,
         show_index=True,
         headers=[""],
-        title="Clenow Exponential Regression Factor",
+        title=f"Clenow Exponential Regression Factor on {symbol}",
         show_header=False,
     )
 
@@ -595,7 +598,7 @@ def display_clenow_momentum(
     ax1.plot(data.index, np.log(data.values))
     ax1.plot(data.index[-window:], fit_data, linewidth=2)
 
-    ax1.set_title("Clenow Momentum Exponential Regression")
+    ax1.set_title(f"Clenow Momentum Exponential Regression on {symbol}")
     ax1.set_xlim(data.index[0], data.index[-1])
     ax1.set_ylabel("Log Price")
     theme.style_primary_axis(
