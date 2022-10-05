@@ -278,18 +278,12 @@ git stash pop
    To run the image and save your keys and settings first create two files. I called them `keys` and `data`,
    but you may call them whatever you like. Then run the following command:
 
-   `docker run \
-      -v /path/to/keys:/home/python/.openbb_terminal \
-      -v /path/to/data:/home/python/OpenBBUserData \
-      -it --rm ghcr.io/openbb-finance/openbbterminal-poetry:1.6.0`
+   `docker run -v /path/to/keys:/home/python/.openbb_terminal -v /path/to/data:/home/python/OpenBBUserData -it --rm ghcr.io/openbb-finance/openbbterminal-poetry:1.6.0`
 
    If you have previously used the OpenBB Conda or Installer and would like to use the existing keys run the
    following command:
 
-   `docker run \
-      -v /path/to/.openbb_terminal:/home/python/.openbb_terminal \
-      -v /path/to/OpenBBUserData:/home/python/OpenBBUserData \
-      -it --rm ghcr.io/openbb-finance/openbbterminal-poetry:1.6.0`
+   `docker run -v ~/.openbb_terminal:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm ghcr.io/openbb-finance/openbbterminal-poetry:1.6.0`
 
    **Note:** The default path for the `.openbb_terminal` and `OpenBBUserData` files are in the root directory.
    You can access this using `~/` or `/Users/yourusername`.
