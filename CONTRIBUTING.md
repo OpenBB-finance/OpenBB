@@ -1163,7 +1163,7 @@ def check_iex_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(status + "\n")
+        console.print(status.colorize() + "\n")
 
     return status
 ```
