@@ -28,6 +28,9 @@ from openbb_terminal.config_terminal import (
     LOGGING_HANDLERS,
     LOGGING_ROLLING_CLOCK,
     LOGGING_VERBOSITY,
+    MPL_STYLE,
+    PMF_STYLE,
+    RICH_STYLE,
 )
 from openbb_terminal.core.log.generation.settings import (
     AppSettings,
@@ -42,6 +45,7 @@ from openbb_terminal.core.log.generation.formatter_with_exceptions import (
     FormatterWithExceptions,
 )
 from openbb_terminal.core.log.generation.directories import get_log_dir
+from openbb_terminal.keys_controller import KeysController
 
 logging.getLogger("requests").setLevel(LOGGING_VERBOSITY)
 logging.getLogger("urllib3").setLevel(LOGGING_VERBOSITY)
@@ -224,6 +228,12 @@ def log_settings() -> None:
     settings_dict["packaged"] = "True" if obbff.PACKAGED_APPLICATION else "False"
     settings_dict["python"] = str(platform.python_version())
     settings_dict["os"] = str(platform.system())
+    settings_dict["theme"] = {
+        "mpl_style": MPL_STYLE,
+        "pmf_style": PMF_STYLE,
+        "rich_style": RICH_STYLE,
+    }
+    settings_dict["keys"] = get_defined_keys()
 
     logger.info("SETTINGS: %s ", json.dumps(settings_dict))
 
@@ -236,3 +246,19 @@ def do_rollover():
     for handler in logging.getLogger().handlers:
         if isinstance(handler, PathTrackingFileHandler):
             handler.doRollover()
+
+
+def get_defined_keys():
+    """Retrieves the defined keys in order to log them."""
+
+    # TODO: this awaits the merge of the following PR:
+    # https://github.com/OpenBB-finance/OpenBBTerminal/pull/2642
+    # to check for a better way to do this.
+
+    keys_controller = KeysController()
+    defined_keys = {
+        key: value
+        for key, value in keys_controller.key_dict.items()
+        if "not defined" not in value
+    }
+    return defined_keys
