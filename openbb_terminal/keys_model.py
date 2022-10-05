@@ -5,6 +5,7 @@ import sys
 import logging
 import os
 from enum import Enum
+from typing import Dict, Union
 import binance
 import dotenv
 import pandas as pd
@@ -44,6 +45,9 @@ class KeyStatus(str, Enum):
     DEFINED_TEST_INCONCLUSIVE = "defined, test inconclusive"
     DEFINED_NOT_TESTED = "defined, not tested"
 
+    def __str__(self):
+        return self.value
+
     def colorize(self):
         if self.name == self.DEFINED_TEST_FAILED.name:
             c = "red"
@@ -57,6 +61,42 @@ class KeyStatus(str, Enum):
             c = "red"
 
         return f"[{c}]{self.value}[/{c}]"
+
+
+def set_keys(
+    keys_dict: Dict[str, Dict[str, Union[str, bool]]],
+    persist: bool = False,
+    show_output: bool = False,
+) -> Dict:
+    """Set API keys in bundle.
+
+    Parameters
+    ----------
+        keys_dict: Dict[str, Dict[str, Union[str, bool]]]
+            E.g. {"fred": {"key":"XXXXX"}, "binance": {"key":"YYYYY", "secret":"ZZZZZ"}}
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
+
+    Returns
+    -------
+    status_dict: Dict
+
+    """
+
+    status_dict = {}
+
+    for api, kwargs in keys_dict.items():
+        kwargs["persist"] = persist
+        kwargs["show_output"] = show_output
+        status_dict[api] = str(
+            getattr(sys.modules[__name__], "set_" + str(api) + "_key")(**kwargs)
+        )
+
+    return status_dict
 
 
 def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> None:
