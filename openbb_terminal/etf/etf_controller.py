@@ -127,7 +127,7 @@ class ETFController(BaseController):
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ln",
+            prog="search",
             description="Search ETF by name [Source: FinanceDatabase/StockAnalysis.com]",
         )
         parser.add_argument(
