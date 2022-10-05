@@ -107,7 +107,7 @@ def set_keys(
     ----------
         keys_dict: Dict[str, Dict[str, Union[str, bool]]]
             E.g. {"fred": {"key":"XXXXX"}, "binance": {"key":"YYYYY", "secret":"ZZZZZ"}}
-            The list of available APIs can be found through get_api_list()
+            More info on APIs can be found through get_api_info().
         persist: bool
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
@@ -124,7 +124,7 @@ def set_keys(
     status_dict = {}
 
     for api, kwargs in keys_dict.items():
-        expected_args_dict = get_api_list()
+        expected_args_dict = get_api_info()
 
         if api in expected_args_dict:
 
@@ -143,18 +143,18 @@ def set_keys(
                 )
         else:
             console.print(
-                f"[red]API '{api}' was not recognized. Please check get_api_list().[/red]"
+                f"[red]API '{api}' was not recognized. Please check get_api_info().[/red]"
             )
 
     return status_dict
 
 
-def get_api_list() -> List[str]:
-    """Get list of available APIs to use in set_keys.
+def get_api_info() -> Dict[List[str]]:
+    """Get info on available APIs to use in set_keys.
 
     Returns
     -------
-    List of APIs: List
+    Dictionary of expected API keys and arguments:  Dict[List[str]]
 
     """
     args_dict = {}
