@@ -439,8 +439,7 @@
     }
   },
   "etf": {
-    "ln": ["StockAnalysis", "FinanceDatabase"],
-    "ld": ["FinanceDatabase"],
+    "search": ["FinanceDatabase", "StockAnalysis"],
     "load": ["YahooFinance"],
     "overview": ["StockAnalysis"],
     "holdings": ["StockAnalysis"],
