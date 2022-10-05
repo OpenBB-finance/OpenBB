@@ -124,12 +124,12 @@ def set_keys(
     status_dict = {}
 
     for api, kwargs in keys_dict.items():
-        args_dict = get_api_list()
+        expected_args_dict = get_api_list()
 
-        if api in args_dict:
+        if api in expected_args_dict:
 
             received_kwargs_list = list(kwargs.keys())
-            expected_kwargs_list = args_dict[api]
+            expected_kwargs_list = expected_args_dict[api]
 
             if received_kwargs_list == expected_kwargs_list:
                 kwargs["persist"] = persist
