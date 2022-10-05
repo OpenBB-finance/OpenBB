@@ -159,7 +159,7 @@ def get_keys_info() -> Dict[str, List[str]]:
     """
     args_dict = {}
 
-    for api in API_DICT.keys():
+    for api in API_DICT:
         arg_list = list(
             getattr(
                 sys.modules[__name__], "set_" + str(api) + "_key"
