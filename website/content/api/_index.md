@@ -136,10 +136,10 @@ from openbb_terminal.api import openbb
 # Fetches data from the api
 gme = openbb.stocks.load("gme")
 # Calculates logarithmic returns
-gme["Log Returns"] = np.log(gme["Adj Close"]/gme["Adjusted Close"].shift(1))
+gme["Log Returns"] = np.log(gme["Adj Close"]/gme["Adj Close"].shift(1))
 # Plots the return distributions
 gme["Log Returns"].hist(bins=1000)
-plt.thight_layout()
+plt.tight_layout()
 plt.show()
 ```
 

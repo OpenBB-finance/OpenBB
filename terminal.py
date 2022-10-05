@@ -18,6 +18,7 @@ from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 import pandas as pd
 
+from openbb_terminal import feature_flags as obbff
 
 from openbb_terminal.core.config.paths import (
     REPOSITORY_DIRECTORY,
@@ -29,7 +30,7 @@ from openbb_terminal.core.config.paths import (
 from openbb_terminal.core.log.generation.path_tracking_file_handler import (
     PathTrackingFileHandler,
 )
-from openbb_terminal import feature_flags as obbff
+
 from openbb_terminal.helper_funcs import (
     check_positive,
     get_flair,

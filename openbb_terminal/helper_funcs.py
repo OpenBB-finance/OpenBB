@@ -290,7 +290,6 @@ def print_rich_table(
             table.add_row(*row)
         console.print()
         console.print(table)
-        console.print()
     else:
         console.print(df.to_string(col_space=0))
 
