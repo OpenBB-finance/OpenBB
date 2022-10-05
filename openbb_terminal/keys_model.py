@@ -124,15 +124,26 @@ def set_keys(
     status_dict = {}
 
     for api, kwargs in keys_dict.items():
-        if api in get_api_list():
-            kwargs["persist"] = persist
-            kwargs["show_output"] = show_output
-            status_dict[api] = str(
-                getattr(sys.modules[__name__], "set_" + str(api) + "_key")(**kwargs)
-            )
+        args_dict = get_api_list()
+
+        if api in args_dict:
+
+            received_kwargs_list = list(kwargs.keys())
+            expected_kwargs_list = args_dict[api]
+
+            if received_kwargs_list == expected_kwargs_list:
+                kwargs["persist"] = persist
+                kwargs["show_output"] = show_output
+                status_dict[api] = str(
+                    getattr(sys.modules[__name__], "set_" + str(api) + "_key")(**kwargs)
+                )
+            else:
+                console.print(
+                    f"[red]'{api}' kwargs: {received_kwargs_list} don't match expected: {expected_kwargs_list}.[/red]"
+                )
         else:
             console.print(
-                f"API '{api}' was not recognized. Please check get_api_list()."
+                f"[red]API '{api}' was not recognized. Please check get_api_list().[/red]"
             )
 
     return status_dict
@@ -146,7 +157,19 @@ def get_api_list() -> List[str]:
     List of APIs: List
 
     """
-    return list(API_DICT.keys())
+    args_dict = {}
+
+    for api in API_DICT.keys():
+        arg_list = list(
+            getattr(
+                sys.modules[__name__], "set_" + str(api) + "_key"
+            ).__code__.co_varnames
+        )
+        arg_list.remove("persist")
+        arg_list.remove("show_output")
+        args_dict[api] = arg_list
+
+    return args_dict
 
 
 def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> None:
