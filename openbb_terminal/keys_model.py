@@ -149,12 +149,12 @@ def set_keys(
     return status_dict
 
 
-def get_api_info() -> Dict[List[str]]:
+def get_api_info() -> Dict[str, List[str]]:
     """Get info on available APIs to use in set_keys.
 
     Returns
     -------
-    Dictionary of expected API keys and arguments:  Dict[List[str]]
+    Dictionary of expected API keys and arguments:  Dict[str, List[str]]
 
     """
     args_dict = {}
