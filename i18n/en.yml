@@ -11,6 +11,8 @@ en:
   sources: select your preferred data sources
   keys: set API keys and check their validity
   wiki: search for an expression in Wikipedia (https://www.wikipedia.org/)
+  record: record session to be converted into a .openbb routine
+  stop: stop session recording
   _configure_: Configure your own terminal
   _main_menu_: Main menu
   keys/_keys_: This menu allows you to set your own API keys. Type 'about' for more information

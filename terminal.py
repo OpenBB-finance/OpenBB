@@ -17,6 +17,7 @@ from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 
+from openbb_terminal import feature_flags as obbff
 
 from openbb_terminal.core.config.paths import (
     REPOSITORY_DIRECTORY,
@@ -28,7 +29,7 @@ from openbb_terminal.core.config.paths import (
 from openbb_terminal.core.log.generation.path_tracking_file_handler import (
     PathTrackingFileHandler,
 )
-from openbb_terminal import feature_flags as obbff
+
 from openbb_terminal.helper_funcs import (
     check_positive,
     get_flair,
@@ -133,6 +134,8 @@ class TerminalController(BaseController):
         mt.add_cmd("survey")
         mt.add_cmd("update")
         mt.add_cmd("wiki")
+        mt.add_cmd("record")
+        mt.add_cmd("stop")
         mt.add_raw("\n")
         mt.add_info("_configure_")
         mt.add_menu("keys")
