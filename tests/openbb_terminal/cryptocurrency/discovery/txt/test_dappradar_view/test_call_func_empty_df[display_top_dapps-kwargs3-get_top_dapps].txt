@@ -1,2 +1,2 @@
-Failed to fetch data from DappRadar
+[red]Failed to fetch data from DappRadar[/red]
 
