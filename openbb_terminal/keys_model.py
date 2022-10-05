@@ -124,11 +124,16 @@ def set_keys(
     status_dict = {}
 
     for api, kwargs in keys_dict.items():
-        kwargs["persist"] = persist
-        kwargs["show_output"] = show_output
-        status_dict[api] = str(
-            getattr(sys.modules[__name__], "set_" + str(api) + "_key")(**kwargs)
-        )
+        if api in get_api_list():
+            kwargs["persist"] = persist
+            kwargs["show_output"] = show_output
+            status_dict[api] = str(
+                getattr(sys.modules[__name__], "set_" + str(api) + "_key")(**kwargs)
+            )
+        else:
+            console.print(
+                f"API '{api}' was not recognized. Please check get_api_list()."
+            )
 
     return status_dict
 
