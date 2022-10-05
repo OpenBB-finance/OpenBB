@@ -1152,15 +1152,15 @@ def check_iex_key(show_output: bool = False) -> str:
 
     if cfg.API_IEX_TOKEN == "REPLACE_ME":  # nosec
         logger.info("IEX Cloud key not defined")
-        status = OutputStatus.NOT_DEFINED
+        status = KeyStatus.NOT_DEFINED
     else:
         try:
             pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1").quote(symbol="AAPL")
             logger.info("IEX Cloud key defined, test passed")
-            status = OutputStatus.DEFINED_TEST_PASSED
+            status = KeyStatus.DEFINED_TEST_PASSED
         except Exception as _:  # noqa: F841
             logger.warning("IEX Cloud key defined, test failed")
-            status = OutputStatus.DEFINED_TEST_FAILED
+            status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
         console.print(status + "\n")
