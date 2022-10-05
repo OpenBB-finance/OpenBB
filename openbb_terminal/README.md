@@ -135,7 +135,7 @@ issues.
    Or, to include machine learning type:
 
    ```bash
-   conda env create -n obb --file build/conda/conda-3-9-env-full.yaml
+   conda create -n obb --file build/conda/conda-3-9-env-full.yaml
    ```
 
    Note: Using python 3.10 can lead to undesirable functionality for certain commands.
