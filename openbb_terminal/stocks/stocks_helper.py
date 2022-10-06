@@ -19,6 +19,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import pytz
 import requests
+from requests.exceptions import ReadTimeout
 
 import yfinance as yf
 from numpy.core.fromnumeric import transpose
@@ -95,15 +96,29 @@ def search(
     if industry:
         kwargs["industry"] = industry
 
-    data = fd.select_equities(**kwargs)
+    try:
+        data = fd.select_equities(**kwargs)
+    except ReadTimeout:
+        console.print(
+            "[red]Could not connect to Github data. Check that you have a valid"
+            "connection and that you are not using a vpn"
+        )
+        return
     if not data:
         console.print("No companies found.\n")
         return
 
     if query:
-        d = fd.search_products(
-            data, query, search="long_name", case_sensitive=False, new_database=None
-        )
+        try:
+            d = fd.search_products(
+                data, query, search="long_name", case_sensitive=False, new_database=None
+            )
+        except ReadTimeout:
+            console.print(
+                "[red]Could not connect to Github data. Check that you have a valid"
+                "connection and that you are not using a vpn"
+            )
+            return
     else:
         d = data
 
