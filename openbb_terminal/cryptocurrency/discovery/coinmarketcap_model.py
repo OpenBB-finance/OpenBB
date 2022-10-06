@@ -24,6 +24,7 @@ sort_map = {
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_CMC_KEY"])
 def get_cmc_top_n(sortby: str = "CMC_Rank", ascend: bool = True) -> pd.DataFrame:
     """Shows top n coins. [Source: CoinMarketCap]
 
