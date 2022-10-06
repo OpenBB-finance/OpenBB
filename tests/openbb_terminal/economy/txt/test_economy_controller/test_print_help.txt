@@ -19,6 +19,7 @@ Databases:
 
 Stored datasets: 
 
+    eval               create new series by performing operations on loaded data
     plot               plot data from the above commands together
 
 >   pred               Open the prediction menu to analyse stored data
