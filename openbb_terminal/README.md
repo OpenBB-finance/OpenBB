@@ -288,15 +288,18 @@ git stash pop
 
 3. Run a container
 
-   You are now ready to run the terminal (every time you want to use the terminal you need to run this command):
+   To launch the container you need to run the following command:
 
-   `docker run -it --rm ghcr.io/openbb-finance/openbbterminal-poetry:latest`
+   `docker run -v ~/.openbb_terminal/:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm ghcr.io/openbb-finance/openbbterminal-poetry:1.6.0`
 
-   This will open up the terminal in your command prompt or terminal. Note that this has provided now environment file,
-   so you will not be able to view plots or use keys at this stage.
+   **NOTE FOR WINDOWS**
 
-   At this point, you should be able to use the majority of the features using Docker. To read more on adding the
-   environment keys and how to configure your X-server to show plots, hop over to the
+   Replace `~` by `%USERPROFILE%` in the command above.
+   This applies if you are using the builtin Windows interpreter.
+   You won't have to do this inside Powershell or more evolved interpreters.
+
+   At this point, you should be able to use the majority of the features using Docker. To read more on how to configure
+   your X-server to show plots, hop over to the
    [Advanced Docker Setup](/DOCKER_ADVANCED.md).
 
 ## Web UI - Docker
