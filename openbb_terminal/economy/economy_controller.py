@@ -34,7 +34,7 @@ from openbb_terminal.economy import (
     investingcom_view,
     plot_view,
     commodity_view,
-    economy_helper
+    economy_helper,
 )
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -1578,7 +1578,7 @@ class EconomyController(BaseController):
             # # after saving it and displaying it to the user
             os.remove(self.d_GROUPS[ns_group] + ".jpg")
 
-    def call_eval(self,other_args):
+    def call_eval(self, other_args):
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -1593,16 +1593,17 @@ class EconomyController(BaseController):
             dest="query",
         )
         if other_args and "-q" not in other_args[0][0]:
-            other_args.insert(0,"-q")
+            other_args.insert(0, "-q")
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
         if ns_parser:
-            self.DATASETS = economy_helper.create_new_entry(self.DATASETS," ".join(ns_parser.query))
-            self.stored_datasets = (
-                economy_helpers.update_stored_datasets_string(self.DATASETS)
+            self.DATASETS = economy_helper.create_new_entry(
+                self.DATASETS, " ".join(ns_parser.query)
             )
-
+            self.stored_datasets = economy_helpers.update_stored_datasets_string(
+                self.DATASETS
+            )
 
     @log_start_end(log=logger)
     def call_pred(self, _):

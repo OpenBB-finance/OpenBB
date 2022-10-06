@@ -19,6 +19,7 @@ def update_stored_datasets_string(datasets) -> str:
                     )
                     stored_datasets_string += col
                 else:
+                    print(col)
                     stored_datasets_string += ", " + col
 
     return stored_datasets_string
