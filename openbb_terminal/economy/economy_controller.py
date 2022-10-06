@@ -1578,6 +1578,7 @@ class EconomyController(BaseController):
             # # after saving it and displaying it to the user
             os.remove(self.d_GROUPS[ns_group] + ".jpg")
 
+    @log_start_end(log=logger)
     def call_eval(self, other_args):
         parser = argparse.ArgumentParser(
             add_help=False,

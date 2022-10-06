@@ -27,6 +27,9 @@ def create_new_entry(dataset: Dict[str, pd.DataFrame], query: str) -> Dict:
         if not df.empty:
             columns.extend(df.columns)
             data = pd.concat([data, df])
+    # In order to account for potentially different index time steps, lets dropNans here.
+    # Potentially problematic down the road
+    data = data.dropna(axis=0)
     # Eval the query to generate new sequence
     # if there is an = in the query, then there will be a new named column
     if "=" in query:
