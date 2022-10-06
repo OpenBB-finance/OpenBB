@@ -44,6 +44,9 @@ class KeyStatus(str, Enum):
     DEFINED_TEST_INCONCLUSIVE = "defined, test inconclusive"
     DEFINED_NOT_TESTED = "defined, not tested"
 
+    def __str__(self):
+        return self.value
+
     def colorize(self):
         if self.name == self.DEFINED_TEST_FAILED.name:
             c = "red"
@@ -176,7 +179,7 @@ def check_av_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status.colorize() + "\n")
 
-    return status
+    return str(status)
 
 
 def set_fmp_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -239,7 +242,7 @@ def check_fmp_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status.colorize() + "\n")
 
-    return status
+    return str(status)
 
 
 def set_quandl_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -296,7 +299,7 @@ def check_quandl_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status.colorize() + "\n")
 
-    return status
+    return str(status)
 
 
 def set_polygon_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -358,7 +361,7 @@ def check_polygon_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status.colorize() + "\n")
 
-    return status
+    return str(status)
 
 
 def set_fred_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -419,7 +422,7 @@ def check_fred_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status.colorize() + "\n")
 
-    return status
+    return str(status)
 
 
 def set_news_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -480,7 +483,7 @@ def check_news_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status.colorize() + "\n")
 
-    return status
+    return str(status)
 
 
 def set_tradier_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -546,7 +549,7 @@ def check_tradier_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status.colorize() + "\n")
 
-    return status
+    return str(status)
 
 
 def set_cmc_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -604,7 +607,7 @@ def check_cmc_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status.colorize() + "\n")
 
-    return status
+    return str(status)
 
 
 def set_finnhub_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -665,7 +668,7 @@ def check_finnhub_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status.colorize() + "\n")
 
-    return status
+    return str(status)
 
 
 def set_iex_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -721,7 +724,7 @@ def check_iex_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status.colorize() + "\n")
 
-    return status
+    return str(status)
 
 
 def set_reddit_key(
@@ -822,7 +825,7 @@ def check_reddit_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status.colorize() + "\n")
 
-    return status
+    return str(status)
 
 
 def set_bitquery_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -890,7 +893,7 @@ def check_bitquery_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status.colorize() + "\n")
 
-    return status
+    return str(status)
 
 
 def set_twitter_key(
@@ -973,7 +976,7 @@ def check_twitter_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status.colorize() + "\n")
 
-    return status
+    return str(status)
 
 
 def set_rh_key(
@@ -1032,7 +1035,7 @@ def check_rh_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status.colorize() + "\n")
 
-    return status
+    return str(status)
 
 
 def set_degiro_key(
@@ -1094,7 +1097,7 @@ def check_degiro_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status.colorize() + "\n")
 
-    return status
+    return str(status)
 
 
 def set_oanda_key(
@@ -1168,7 +1171,7 @@ def check_oanda_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status.colorize() + "\n")
 
-    return status
+    return str(status)
 
 
 def set_binance_key(
@@ -1233,7 +1236,7 @@ def check_binance_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status.colorize() + "\n")
 
-    return status
+    return str(status)
 
 
 def set_si_key(
@@ -1302,7 +1305,7 @@ def check_si_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status.colorize() + "\n")
 
-    return status
+    return str(status)
 
 
 def set_coinbase_key(
@@ -1380,7 +1383,7 @@ def check_coinbase_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status.colorize() + "\n")
 
-    return status
+    return str(status)
 
 
 def set_walert_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -1444,7 +1447,7 @@ def check_walert_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status.colorize() + "\n")
 
-    return status
+    return str(status)
 
 
 def set_glassnode_key(
@@ -1512,7 +1515,7 @@ def check_glassnode_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status.colorize() + "\n")
 
-    return status
+    return str(status)
 
 
 def set_coinglass_key(
@@ -1578,7 +1581,7 @@ def check_coinglass_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status.colorize() + "\n")
 
-    return status
+    return str(status)
 
 
 def set_cpanic_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -1636,7 +1639,7 @@ def check_cpanic_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status.colorize() + "\n")
 
-    return status
+    return str(status)
 
 
 def set_ethplorer_key(
@@ -1685,8 +1688,9 @@ def check_ethplorer_key(show_output: bool = False) -> str:
     else:
         ethplorer_url = "https://api.ethplorer.io/getTokenInfo/0x1f9840a85d5af5bf1d1762f925bdaddc4201f984?apiKey="
         ethplorer_url += cfg.API_ETHPLORER_KEY
-        response = requests.get(ethplorer_url)
+
         try:
+            response = requests.get(ethplorer_url)
             if response.status_code == 200:
                 logger.info("ethplorer key defined, test passed")
                 status = KeyStatus.DEFINED_TEST_PASSED
@@ -1700,7 +1704,7 @@ def check_ethplorer_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status.colorize() + "\n")
 
-    return status
+    return str(status)
 
 
 def set_smartstake_key(
@@ -1783,7 +1787,7 @@ def check_smartstake_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status.colorize() + "\n")
 
-    return status
+    return str(status)
 
 
 def set_github_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -1835,7 +1839,7 @@ def check_github_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status.colorize() + "\n")
 
-    return status
+    return str(status)
 
 
 def set_messari_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -1898,7 +1902,7 @@ def check_messari_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status.colorize() + "\n")
 
-    return status
+    return str(status)
 
 
 def set_eodhd_key(key: str, persist: bool = False, show_output: bool = False) -> str:
@@ -1955,7 +1959,7 @@ def check_eodhd_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status.colorize() + "\n")
 
-    return status
+    return str(status)
 
 
 def set_santiment_key(
@@ -2027,4 +2031,4 @@ def check_santiment_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status.colorize() + "\n")
 
-    return status
+    return str(status)

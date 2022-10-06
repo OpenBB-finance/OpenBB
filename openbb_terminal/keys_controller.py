@@ -101,15 +101,15 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             api_name = self.API_DICT[cmd_name]
 
             c = "grey30"
-            if status_msg == keys_model.KeyStatus.DEFINED_TEST_PASSED:
+            if status_msg == str(keys_model.KeyStatus.DEFINED_TEST_PASSED):
                 c = "green"
-            elif status_msg == keys_model.KeyStatus.DEFINED_TEST_FAILED:
+            elif status_msg == str(keys_model.KeyStatus.DEFINED_TEST_FAILED):
                 c = "red"
-            elif status_msg == keys_model.KeyStatus.DEFINED_NOT_TESTED:
+            elif status_msg == str(keys_model.KeyStatus.DEFINED_NOT_TESTED):
                 c = "red"
-            elif status_msg == keys_model.KeyStatus.DEFINED_TEST_INCONCLUSIVE:
+            elif status_msg == str(keys_model.KeyStatus.DEFINED_TEST_INCONCLUSIVE):
                 c = "yellow"
-            elif status_msg == keys_model.KeyStatus.NOT_DEFINED:
+            elif status_msg == str(keys_model.KeyStatus.NOT_DEFINED):
                 c = "grey30"
 
             mt.add_raw(
