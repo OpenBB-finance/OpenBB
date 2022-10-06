@@ -142,7 +142,7 @@ def load_stock_eodhd(
     df_stock_candidate.sort_index(ascending=True, inplace=True)
     return df_stock_candidate
 
-
+@check_api_key(["API_IEX_TOKEN"])
 def load_stock_iex_cloud(symbol: str, iexrange: str) -> pd.DataFrame:
     df_stock_candidate = pd.DataFrame()
 
