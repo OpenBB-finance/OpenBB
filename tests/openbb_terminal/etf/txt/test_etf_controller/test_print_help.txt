@@ -1,5 +1,4 @@
-    ln                 lookup by name                                                  [StockAnalysis, FinanceDatabase]
-    ld                 lookup by description                                           [FinanceDatabase]
+    search             search ETF by name or description                               [FinanceDatabase, StockAnalysis]
     load               load ETF data                                                   [YahooFinance]
 
 Symbol: 
