@@ -280,6 +280,7 @@ git stash pop
    `docker run -v ~/.openbb_terminal/:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm ghcr.io/openbb-finance/openbbterminal-poetry:1.6.0`
 
    **NOTE FOR WINDOWS**
+
    ```
    Replace `~` by `%USERPROFILE%` in the command above.
    This applies if you are using the builtin Windows interpreter.
