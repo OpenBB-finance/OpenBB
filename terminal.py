@@ -25,9 +25,6 @@ from openbb_terminal.core.config.paths import (
     USER_EXPORTS_DIRECTORY,
     ROUTINES_DIRECTORY,
 )
-from openbb_terminal.core.log.generation.path_tracking_file_handler import (
-    PathTrackingFileHandler,
-)
 
 from openbb_terminal.helper_funcs import (
     check_positive,
