@@ -10,7 +10,7 @@ from openbb_terminal.rich_config import console
 
 # pylint: disable=unsupported-assignment-operation
 
-
+@check_api_key(["API_POLYGON_KEY"])
 def get_historical(
     fx_pair: str,
     multiplier: int = 1,

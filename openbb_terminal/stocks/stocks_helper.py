@@ -26,6 +26,7 @@ from plotly.subplots import make_subplots
 from scipy import stats
 
 from openbb_terminal import config_terminal as cfg
+from openbb_terminal.decorators import check_api_key
 
 # pylint: disable=unused-import
 from openbb_terminal.stocks.stock_statics import market_coverage_suffix
@@ -158,7 +159,7 @@ def search(
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "search", df)
 
-
+@check_api_key(["API_POLYGON_KEY"])
 def load(
     symbol: str,
     start_date: datetime = None,
@@ -985,7 +986,7 @@ def clean_function(entry: str) -> Union[str, float]:
         return float(entry.replace("$", "").replace(",", ""))
     return entry
 
-
+@check_api_key(["API_POLYGON_KEY"])
 def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
     """Show quick performance stats of stock prices.  Daily prices expected"""
     closes = stock_df["Adj Close"]
