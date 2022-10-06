@@ -101,7 +101,7 @@ def search(
     except ReadTimeout:
         console.print(
             "[red]Could not connect to Github data. Check that you have a valid"
-            "connection and that you are not using a vpn"
+            "connection and that you are not using a vpn[/red]\n"
         )
         return
     if not data:
@@ -116,7 +116,7 @@ def search(
         except ReadTimeout:
             console.print(
                 "[red]Could not connect to Github data. Check that you have a valid"
-                "connection and that you are not using a vpn"
+                "connection and that you are not using a vpn[/red]\n"
             )
             return
     else:
