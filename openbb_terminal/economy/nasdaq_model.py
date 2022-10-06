@@ -10,13 +10,14 @@ import pandas as pd
 import requests
 
 from openbb_terminal.config_terminal import API_KEY_QUANDL
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_QUANDL"])
 def check_country_code_type(list_of_codes: str) -> List[str]:
     """Check that codes are valid for NASDAQ API"""
     nasdaq_codes = list(
@@ -36,6 +37,7 @@ def check_country_code_type(list_of_codes: str) -> List[str]:
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_QUANDL"])
 def get_country_codes() -> List[str]:
     """Get available country codes for Bigmac index
 
@@ -50,6 +52,7 @@ def get_country_codes() -> List[str]:
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_QUANDL"])
 def get_big_mac_index(country_code: str) -> pd.DataFrame:
     """Gets the Big Mac index calculated by the Economist
 
@@ -89,6 +92,7 @@ def get_big_mac_index(country_code: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_QUANDL"])
 def get_big_mac_indices(country_codes: List[str]) -> pd.DataFrame:
     """Display Big Mac Index for given countries
 
