@@ -23,7 +23,7 @@ repos:
       - id: check-merge-conflict
       - id: detect-private-key
   - repo: https://github.com/psf/black
-    rev: 22.6.0
+    rev: 22.8.0
     hooks:
       - id: black
   - repo: https://github.com/pycqa/flake8
@@ -43,13 +43,13 @@ repos:
             "--skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,build/pyinstaller/*",
           ]
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: "v0.971"
+    rev: "v0.982"
     hooks:
       - id: mypy
         args: ["--ignore-missing-imports", '--exclude=/setup\.py$']
         additional_dependencies: [types-all]
   - repo: https://github.com/kynan/nbstripout
-    rev: 0.6.0
+    rev: 0.6.1
     hooks:
       - id: nbstripout
         name: Strip notebooks output
@@ -61,14 +61,14 @@ repos:
         language: system
         types: [python]
   - repo: https://github.com/Yelp/detect-secrets
-    rev: v1.3.0
+    rev: v1.4.0
     hooks:
       - id: detect-secrets
         args:
           ["--baseline", ".secrets.baseline", "--exclude-files", "cassettes/*"]
         exclude: package.lock.json
   - repo: https://github.com/asottile/pyupgrade
-    rev: v2.37.3
+    rev: v3.0.0
     hooks:
       - id: pyupgrade
         args: [--py38-plus]
