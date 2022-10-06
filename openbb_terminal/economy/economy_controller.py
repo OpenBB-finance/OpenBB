@@ -367,7 +367,7 @@ class EconomyController(BaseController):
         mt.add_raw("\n")
         mt.add_param("_stored", self.stored_datasets)
         mt.add_raw("\n")
-        mt.add_raw("eval")
+        mt.add_cmd("eval")
         mt.add_cmd("plot")
         mt.add_raw("\n")
         mt.add_menu("pred")
@@ -1593,10 +1593,11 @@ class EconomyController(BaseController):
             nargs="+",
             dest="query",
         )
-        if other_args and "-q" not in other_args[0][0]:
+        if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-q")
+
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             self.DATASETS = economy_helper.create_new_entry(
@@ -1605,6 +1606,7 @@ class EconomyController(BaseController):
             self.stored_datasets = economy_helpers.update_stored_datasets_string(
                 self.DATASETS
             )
+        console.print()
 
     @log_start_end(log=logger)
     def call_pred(self, _):

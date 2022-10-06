@@ -1007,6 +1007,8 @@ main:
             ref: "/terminal/economy/performance"
           - name: spectrum
             ref: "/terminal/economy/spectrum"
+          - name: eval
+            ref: "/terminal/economy/eval"
           - name: prediction techniques
             ref: "/terminal/common/pred"
             sub:
