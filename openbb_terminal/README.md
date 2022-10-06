@@ -275,7 +275,7 @@ git stash pop
 
 3. Run a container
 
-   To launch the contrainer you need to run the following command:
+   To launch the container you need to run the following command:
 
    `docker run -v ~/.openbb_terminal/:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm ghcr.io/openbb-finance/openbbterminal-poetry:1.6.0`
 
