@@ -1582,10 +1582,8 @@ class EconomyController(BaseController):
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="spectrum",
-            description="""
-                        View group (sectors, industry or country) spectrum data. [Source: Finviz]
-                    """,
+            prog="eval",
+            description="""Create custom data column from loaded datasets.""",
         )
         parser.add_argument(
             "-q",
@@ -1599,10 +1597,11 @@ class EconomyController(BaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_FIGURES_ALLOWED
         )
-        self.DATASETS = economy_helper.create_new_entry(self.DATASETS," ".join(ns_parser.query))
-        self.stored_datasets = (
-            economy_helpers.update_stored_datasets_string(self.DATASETS)
-        )
+        if ns_parser:
+            self.DATASETS = economy_helper.create_new_entry(self.DATASETS," ".join(ns_parser.query))
+            self.stored_datasets = (
+                economy_helpers.update_stored_datasets_string(self.DATASETS)
+            )
 
 
     @log_start_end(log=logger)

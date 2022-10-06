@@ -30,8 +30,14 @@ def create_new_entry(dataset:Dict[str, pd.DataFrame], query:str) -> Dict:
     # if there is an = in the query, then there will be a new named column
     if "=" in query:
         new_df = data.eval(query)
-        new_columns = [col for col in new_df if col not in columns]
-        dataset["custom"] = new_df[new_columns]
+        new_columns = [col for col in new_df if col not in columns][0]
+        if "custom" in dataset:
+            if new_columns in dataset["custom"].columns:
+                new_df = new_df.rename(columns={new_columns:new_columns+"_duplicate"})
+                new_columns += "_duplicate"
+            dataset["custom"] = pd.concat([dataset["custom"],new_df[new_columns]])
+        else:
+            dataset["custom"] = new_df[new_columns]
         return dataset
 
     #If there is not an equal (namely  .eval(colA + colB), the result will be a series
