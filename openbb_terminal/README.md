@@ -281,11 +281,9 @@ git stash pop
 
    **NOTE FOR WINDOWS**
 
-   ```
    Replace `~` by `%USERPROFILE%` in the command above.
    This applies if you are using the builtin Windows interpreter.
    You won't have to do this inside Powershell or more evolved interpreters.
-   ```
 
    At this point, you should be able to use the majority of the features using Docker. To read more on how to configure
    your X-server to show plots, hop over to the
