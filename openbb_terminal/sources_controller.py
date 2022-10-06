@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
 import argparse
+from pathlib import Path
 import json
 import logging
 from typing import List, Dict
@@ -43,32 +44,37 @@ class SourcesController(BaseController):
         super().__init__(queue)
 
         self.commands_with_sources = dict()
-        with open(obbff.PREFERRED_DATA_SOURCE_FILE) as f:
-            if not f.read():
-                with open("data_sources_default.json") as f2:
-                    self.json_doc = json.load(f2)
-            else:
-                f.seek(0)
-                self.json_doc = json.load(f)
-            for context in self.json_doc:
-                for menu in self.json_doc[context]:
-                    if isinstance(self.json_doc[context][menu], Dict):
-                        for submenu in self.json_doc[context][menu]:
-                            if isinstance(self.json_doc[context][menu][submenu], Dict):
-                                for subsubmenu in self.json_doc[context][menu][submenu]:
-                                    self.commands_with_sources[
-                                        f"{context}_{menu}_{submenu}_{subsubmenu}"
-                                    ] = self.json_doc[context][menu][submenu][
-                                        subsubmenu
-                                    ]
-                            else:
+
+        # Loading in both source files: default sources and user sources
+        default_data_source = Path(__file__).parent.parent / "data_sources_default.json"
+        user_data_source = Path(obbff.PREFERRED_DATA_SOURCE_FILE)
+
+        # Opening default sources file from the repository root
+        with open(str(default_data_source)) as json_file:
+            self.json_doc = json.load(json_file)
+
+        # If the user has added sources to their own sources file in OpenBBUserData, then use that
+        if user_data_source.exists() and user_data_source.stat().st_size > 0:
+            with open(str(user_data_source)) as json_file:
+                self.json_doc = json.load(json_file)
+
+        for context in self.json_doc:
+            for menu in self.json_doc[context]:
+                if isinstance(self.json_doc[context][menu], Dict):
+                    for submenu in self.json_doc[context][menu]:
+                        if isinstance(self.json_doc[context][menu][submenu], Dict):
+                            for subsubmenu in self.json_doc[context][menu][submenu]:
                                 self.commands_with_sources[
-                                    f"{context}_{menu}_{submenu}"
-                                ] = self.json_doc[context][menu][submenu]
-                    else:
-                        self.commands_with_sources[f"{context}_{menu}"] = self.json_doc[
-                            context
-                        ][menu]
+                                    f"{context}_{menu}_{submenu}_{subsubmenu}"
+                                ] = self.json_doc[context][menu][submenu][subsubmenu]
+                        else:
+                            self.commands_with_sources[
+                                f"{context}_{menu}_{submenu}"
+                            ] = self.json_doc[context][menu][submenu]
+                else:
+                    self.commands_with_sources[f"{context}_{menu}"] = self.json_doc[
+                        context
+                    ][menu]
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}

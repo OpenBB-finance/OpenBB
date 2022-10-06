@@ -1072,10 +1072,8 @@ main:
       - name: ETFs
         ref: "/terminal/etf"
         sub:
-          - name: ln
-            ref: "/terminal/etf/ln"
-          - name: ld
-            ref: "/terminal/etf/ld"
+          - name: search
+            ref: "/terminal/etf/search"
           - name: load
             ref: "/terminal/etf/load"
           - name: overview
