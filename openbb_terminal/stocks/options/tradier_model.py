@@ -41,6 +41,7 @@ default_columns = [
 
 
 @log_start_end(log=logger)
+@check_api_key(["TRADIER_TOKEN"])
 def get_historical_options(
     symbol: str,
     expiry: str,
@@ -114,6 +115,7 @@ def get_historical_options(
 
 
 @log_start_end(log=logger)
+@check_api_key(["TRADIER_TOKEN"])
 def option_expirations(symbol: str) -> List[str]:
     """Get available expiration dates for given ticker
 
@@ -149,6 +151,7 @@ def option_expirations(symbol: str) -> List[str]:
 
 
 @log_start_end(log=logger)
+@check_api_key(["TRADIER_TOKEN"])
 def get_option_chains(symbol: str, expiry: str) -> pd.DataFrame:
     """Display option chains [Source: Tradier]"
 
@@ -222,6 +225,7 @@ def process_chains(response: requests.models.Response) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
+@check_api_key(["TRADIER_TOKEN"])
 def last_price(symbol: str):
     """Makes api request for last price
 
