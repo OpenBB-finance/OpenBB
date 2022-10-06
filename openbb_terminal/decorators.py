@@ -122,7 +122,7 @@ def disable_check_api():
     obbff.ENABLE_CHECK_API = False
 
 
-def sdk_arg_logger(func=None, log=None):
+def sdk_arg_logger(func=None, log=None, virtual_path: str = ""):
     """
     Wrap function to add the function args to the log entry when using the SDK.
     """
@@ -131,10 +131,17 @@ def sdk_arg_logger(func=None, log=None):
     def wrapper_decorator(*args, **kwargs):
         try:
             value = func(*args, **kwargs)
+
             locals_dict = locals()
             input_dict = {"args": locals_dict["args"], "kwargs": locals_dict["kwargs"]}
+
+            logging_info = {"INPUT": input_dict}
+
+            if virtual_path:
+                logging_info["VIRTUAL_PATH"] = virtual_path
+
             log.info(
-                f"INPUT: {json.dumps(input_dict)}",
+                f"{json.dumps(logging_info)}",
                 extra={"func_name_override": func.__name__},
             )
             return value

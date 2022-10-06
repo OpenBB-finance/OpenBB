@@ -248,17 +248,24 @@ def do_rollover():
             handler.doRollover()
 
 
-def get_defined_keys():
+def get_defined_keys() -> dict:
     """Retrieves the defined keys in order to log them."""
 
     # TODO: this awaits the merge of the following PR:
     # https://github.com/OpenBB-finance/OpenBBTerminal/pull/2642
     # to check for a better way to do this.
 
-    keys_controller = KeysController()
-    defined_keys = {
-        key: value
-        for key, value in keys_controller.key_dict.items()
-        if "not defined" not in value
-    }
-    return defined_keys
+    try:
+        keys_controller = KeysController()
+    except Exception:
+        return {}
+
+    if keys_controller:
+        defined_keys = {
+            key: value
+            for key, value in keys_controller.key_dict.items()
+            if "not defined" not in value
+        }
+        return defined_keys
+
+    return {}

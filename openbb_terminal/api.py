@@ -1904,7 +1904,9 @@ from openbb_terminal.api import openbb (or: from openbb_terminal.api import open
 """
 
 
-def copy_func(f: Callable, logging_decorator: bool = False) -> Callable:
+def copy_func(
+    f: Callable, logging_decorator: bool = False, virtual_path: str = ""
+) -> Callable:
     """Copies the contents and attributes of the entered function. Based on https://stackoverflow.com/a/13503277
     Parameters
     ----------
@@ -1934,7 +1936,7 @@ def copy_func(f: Callable, logging_decorator: bool = False) -> Callable:
 
     if logging_decorator:
         log_name = logging.getLogger(g.__module__)
-        g = sdk_arg_logger(func=g, log=log_name)
+        g = sdk_arg_logger(func=g, log=log_name, virtual_path=virtual_path)
         g = log_start_end(func=g, log=log_name)
 
     return g
@@ -1994,7 +1996,9 @@ def change_docstring(api_callable, model: Callable, view=None):
 class FunctionFactory:
     """The API Function Factory, which creates the callable instance"""
 
-    def __init__(self, model: Callable, view: Optional[Callable] = None):
+    def __init__(
+        self, model: Callable, view: Optional[Callable] = None, virtual_path: str = ""
+    ):
         """Initialises the FunctionFactory instance
         Parameters
         ----------
@@ -2004,11 +2008,16 @@ class FunctionFactory:
             The original view function from the terminal, this shall be set to None if the
             function has no charting
         """
+        self.virtual_path = virtual_path
         self.model_only = view is None
-        self.model = copy_func(f=model, logging_decorator=True)
+        self.model = copy_func(
+            f=model, logging_decorator=True, virtual_path=virtual_path
+        )
         self.view = None
         if view is not None:
-            self.view = copy_func(f=view, logging_decorator=True)
+            self.view = copy_func(
+                f=view, logging_decorator=True, virtual_path=virtual_path
+            )
 
     def api_callable(self, *args, **kwargs):
         """This returns the result of the command from the view or the model function based on the chart parameter
@@ -2211,7 +2220,7 @@ class Loader:
 
             if model_function is not None:
                 function_factory = FunctionFactory(
-                    model=model_function, view=view_function
+                    model=model_function, view=view_function, virtual_path=virtual_path
                 )
                 function_with_doc = change_docstring(
                     types.FunctionType(function_factory.api_callable.__code__, {}),
