@@ -12,6 +12,13 @@ from openbb_terminal.portfolio.portfolio_optimization import po_controller
 # pylint: disable=E1111
 
 
+def test_update_runtime_choices():
+    cont = po_controller.PortfolioOptimizationController(
+        tickers=["TSLA", "AAPL"], portfolios={"port": 1}, categories={"cat": 1}
+    )
+    cont.update_runtime_choices()
+
+
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "queue, expected",
