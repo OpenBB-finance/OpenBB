@@ -106,7 +106,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             elif status_msg == str(keys_model.KeyStatus.DEFINED_TEST_FAILED):
                 c = "red"
             elif status_msg == str(keys_model.KeyStatus.DEFINED_NOT_TESTED):
-                c = "red"
+                c = "yellow"
             elif status_msg == str(keys_model.KeyStatus.DEFINED_TEST_INCONCLUSIVE):
                 c = "yellow"
             elif status_msg == str(keys_model.KeyStatus.NOT_DEFINED):

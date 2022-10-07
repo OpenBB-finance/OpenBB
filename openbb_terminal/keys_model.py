@@ -57,7 +57,7 @@ class KeyStatus(str, Enum):
         elif self.name == self.DEFINED_TEST_INCONCLUSIVE.name:
             c = "yellow"
         elif self.name == self.DEFINED_NOT_TESTED.name:
-            c = "red"
+            c = "yellow"
 
         return f"[{c}]{self.value}[/{c}]"
 
@@ -1708,7 +1708,7 @@ def check_ethplorer_key(show_output: bool = False) -> str:
 
 
 def set_smartstake_key(
-    key: str, access_token: str, persist: bool = False, show_output: bool = True
+    key: str, access_token: str, persist: bool = False, show_output: bool = False
 ):
     """Set Smartstake key.
 
