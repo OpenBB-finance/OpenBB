@@ -100,8 +100,9 @@ def search(
         data = fd.select_equities(**kwargs)
     except ReadTimeout:
         console.print(
-            "[red]Could not connect to Github data. Check that you have a valid"
-            "connection and that you are not using a vpn[/red]\n"
+            "[red]Unable to retrieve company data from GitHub which limits the search"
+            " capabilities. This tends to be due to access restrictions for GitHub.com,"
+            " please check if you can access this website without a VPN.[/red]\n"
         )
         data = {}
     if not data:
