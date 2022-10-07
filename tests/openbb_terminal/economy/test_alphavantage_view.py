@@ -5,7 +5,6 @@ import pytest
 from openbb_terminal.economy import alphavantage_view
 
 
-@pytest.mark.skip
 @pytest.fixture(scope="module")
 def vcr_config():
     return {
@@ -14,6 +13,7 @@ def vcr_config():
     }
 
 
+@pytest.mark.skip
 @pytest.mark.default_cassette("test_realtime_performance_sector")
 @pytest.mark.vcr
 @pytest.mark.parametrize(
