@@ -3,6 +3,7 @@
 # pylint: disable=unused-import,wrong-import-order
 # pylint: disable=C0302,W0611,not-callable,ungrouped-imports
 from inspect import signature, Parameter
+import warnings
 import types
 import functools
 import importlib
@@ -26,9 +27,9 @@ try:
     forecasting = True
 except ImportError:
     forecasting = False
-    console.print(
-        "[red]Forecast dependencies not installed,"
-        " will not load this component of API[/red]"
+    warnings.warn(
+        "Forecasting dependencies are not installed."
+        " This part of the SDK will noy be usable"
     )
 
 from .config_terminal import theme
