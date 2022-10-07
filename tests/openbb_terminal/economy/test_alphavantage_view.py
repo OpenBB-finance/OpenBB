@@ -5,6 +5,7 @@ import pytest
 from openbb_terminal.economy import alphavantage_view
 
 
+@pytest.mark.skip
 @pytest.fixture(scope="module")
 def vcr_config():
     return {
