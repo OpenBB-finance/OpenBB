@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-import subprocess
+import subprocess  # nosec
 from typing import List
 
 from prompt_toolkit.completion import NestedCompleter
@@ -164,7 +164,7 @@ def create_call_voila(other_args: List[str], name: str, filename: str = None) ->
                 f"{cmd} {file} {args}",
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT,
-                shell=True,
+                shell=True,  # nosec
             )
         else:
             console.print(f"Type: {cmd} voila/{file}\ninto a terminal to run.")
