@@ -13,7 +13,6 @@ def vcr_config():
     }
 
 
-@pytest.mark.skip
 @pytest.mark.default_cassette("test_realtime_performance_sector")
 @pytest.mark.vcr
 @pytest.mark.parametrize(
@@ -21,7 +20,7 @@ def vcr_config():
     [True, True, False],
 )
 @pytest.mark.record_stdout
-def test_realtime_performance_sector(mocker, raw):
+def est_realtime_performance_sector(mocker, raw):
     # MOCK VISUALIZE_OUTPUT
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 
