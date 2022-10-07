@@ -103,22 +103,15 @@ def search(
             "[red]Could not connect to Github data. Check that you have a valid"
             "connection and that you are not using a vpn[/red]\n"
         )
-        return
+        data = {}
     if not data:
         console.print("No companies found.\n")
         return
 
     if query:
-        try:
-            d = fd.search_products(
-                data, query, search="long_name", case_sensitive=False, new_database=None
-            )
-        except ReadTimeout:
-            console.print(
-                "[red]Could not connect to Github data. Check that you have a valid"
-                "connection and that you are not using a vpn[/red]\n"
-            )
-            return
+        d = fd.search_products(
+            data, query, search="long_name", case_sensitive=False, new_database=None
+        )
     else:
         d = data
 
