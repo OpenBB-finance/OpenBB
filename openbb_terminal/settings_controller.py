@@ -31,7 +31,7 @@ from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
-# pylint:disable=import-outside-toplevel
+# pylint: disable=import-outside-toplevel
 
 logger = logging.getLogger(__name__)
 
