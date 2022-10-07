@@ -16,7 +16,7 @@ en:
   _configure_: Configure your own terminal
   _main_menu_: Main menu
   keys/_keys_: This menu allows you to set your own API keys. Type 'about' for more information
-  keys/mykeys: get your current keys
+  keys/mykeys: get your defined keys
   keys/_status_: Status
   defined, test passed: defined, test passed
   defined, test failed: defined, test failed
@@ -711,8 +711,7 @@ en:
   crypto/qa/raw: print raw data
   crypto/qa/decompose: decomposition in cyclic-trend, season, and residuals of prices
   crypto/qa/cusum: detects abrupt changes using cumulative sum algorithm of prices
-  etf/ln: lookup by name
-  etf/ld: lookup by description
+  etf/search: search ETF by name or description
   etf/load: load ETF data
   etf/_symbol: Symbol
   etf/_major_holdings: Major holdings
