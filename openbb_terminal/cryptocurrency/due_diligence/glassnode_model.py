@@ -3,7 +3,6 @@ import logging
 from datetime import datetime
 
 import pandas as pd
-import pytz
 import requests
 
 from openbb_terminal import config_terminal as cfg
