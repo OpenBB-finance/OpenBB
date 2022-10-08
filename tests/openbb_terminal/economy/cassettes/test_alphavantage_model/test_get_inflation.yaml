@@ -1,0 +1,61 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.alphavantage.co/query?apikey=MOCK_API_KEY&function=INFLATION
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//lJg7j1tHDIV7/4oL1d4LPg9Jt6nSBTBSBSkERwEWWF8Ha60bw//dGCW7
+        SEdREAQ9rj6NyHNIznx/t23bdjrOny+nD9vp1+Pvp/P18cuxPWy/f9x++XJ8ffl8ed5+e378dPl6
+        ev/v1Y/H9fL87fy0vnE+jpfz0+snL8fjdb37z+X50+W4vr791/l6Pn3Y/ri9Wrfvb89eP7/9vJDw
+        A637f998u+Lb+enldontqEjPhEJD6/R23Y/3d+CpwfMuqp6mBSVozPBcLT5ZhInCBcQ+xGeDl91M
+        PFUKJck5xEeLZyVmIlJ4QYd49LEHr9WTB/k49t7gaWdOSLC6u5hOg2/t8iHrVhFGKTzEa4s3WKrA
+        ff0JG+KlzS2hVEOwlOlDX3FnW93ZkbYeIEIY4nvbwohMzUSzcrh66mz7QPsSjUEAqYqhdCjb6KQW
+        E0kBzjSUDvW+TReEWLIT6zD4hHb1Il5mq6yR0dC35C1eS8KQ5lZuU7y1wUGEKFBKxTEsaqQtXoKo
+        rEIVzFO8tML3BClD4ASa4rlXjoCDmTPdSIZ46lMbSI9Vz6pmFZmrqu9XmSTBhQr1HOKzj72LRFFl
+        mEKG+N61uqJTpaEUxkM8WnwpC9mKo5oN6d4Lh9y4kOkKn2b2DtNSmLGXsBuG9N6z5QxHAZru09hI
+        q3qSTC5EslUM6f2ALGoFLZhrug7xnWV914pymFaRylD0We3qc9VLJSXKshris8VTRBjzUo/RsCJk
+        tJkFzKHC4YwaWjb7ATkrySJE1CSGpsq+0bo5lquESjGNvbWxVyJXt/Db8od47acQXlO9qDIIQ91n
+        Z1rsrGxLmyRhNawJ2bmWaVe1YFcjiZgqp52PV25rbVDDCjlcfbTbWt7FzYJZSqKGwozOtbFDqaCp
+        mQ4a1pyINrVOjNQqC0kd6j7QVswwSxaoW1FOg9O5tnY2ZUPCCq7T1FqfWnJLer0P8drbKiJA66wl
+        aDrkRN9qJUQixeAuOSwKcUevLQkAmaxk09T2vTY1xV01LWXaylEt3iCaWNuMnHYT9K1WgqPALmsG
+        HOoS/XQcIZGOtfdUGnYT9HtaYqfwNYGv08Ah3u/Ytq0JQVZRw7TVoj+KkshidhjWeeAQr3cckhZQ
+        JmwZw+kb/ZZ2TVqharmOPKe6bDvtTkEhxhawkGls+pMo86jwWkeNkf8Pzu3Zn+9+/AQAAP//AwBA
+        ACNLdBcAAA==
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 756ec4053b6098c4-LUX
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 08 Oct 2022 12:09:06 GMT
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Cookie
+      Via:
+      - 1.1 vegur
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+version: 1

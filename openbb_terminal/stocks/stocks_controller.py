@@ -49,7 +49,6 @@ class StocksController(StockBaseController):
         "ta",
         "ba",
         "qa",
-        "pred",
         "disc",
         "dps",
         "scr",
@@ -63,6 +62,7 @@ class StocksController(StockBaseController):
         "ca",
         "options",
         "th",
+        "forecast",
     ]
 
     PATH = "/stocks/"
@@ -138,7 +138,7 @@ class StocksController(StockBaseController):
         mt.add_menu("bt", self.ticker)
         mt.add_menu("ta", self.ticker)
         mt.add_menu("qa", self.ticker)
-        mt.add_menu("pred", self.ticker)
+        mt.add_menu("forecast", self.ticker)
         console.print(text=mt.menu_text, menu="Stocks")
 
     def custom_reset(self):
@@ -688,48 +688,13 @@ class StocksController(StockBaseController):
             console.print("Use 'load <ticker>' prior to this command!", "\n")
 
     @log_start_end(log=logger)
-    def call_pred(self, _):
-        """Process pred command"""
-        # IMPORTANT: 8/11/22 prediction was discontinued on the installer packages
-        # because forecasting in coming out soon.
-        # This if statement disallows installer package users from using 'pred'
-        # even if they turn on the OPENBB_ENABLE_PREDICT feature flag to true
-        # however it does not prevent users who clone the repo from using it
-        # if they have ENABLE_PREDICT set to true.
-        if obbff.PACKAGED_APPLICATION or not obbff.ENABLE_PREDICT:
-            console.print(
-                "Predict is disabled. Forecasting coming soon!",
-                "\n",
-            )
-        else:
-            if self.ticker:
-                if self.interval == "1440min":
-                    try:
-                        from openbb_terminal.stocks.prediction_techniques import (
-                            pred_controller,
-                        )
+    def call_forecast(self, _):
+        """Process forecast command"""
+        from openbb_terminal.forecast import forecast_controller
 
-                        self.queue = self.load_class(
-                            pred_controller.PredictionTechniquesController,
-                            self.ticker,
-                            self.start,
-                            self.interval,
-                            self.stock,
-                            self.queue,
-                        )
-                    except ModuleNotFoundError as e:
-                        logger.exception(
-                            "One of the optional packages seems to be missing: %s",
-                            str(e),
-                        )
-                        console.print(
-                            "One of the optional packages seems to be missing: ",
-                            e,
-                            "\n",
-                        )
-
-                # TODO: This menu should work regardless of data being daily or not!
-                else:
-                    console.print("Load daily data to use this menu!", "\n")
-            else:
-                console.print("Use 'load <ticker>' prior to this command!", "\n")
+        self.queue = self.load_class(
+            forecast_controller.ForecastController,
+            self.ticker,
+            self.stock,
+            self.queue,
+        )
