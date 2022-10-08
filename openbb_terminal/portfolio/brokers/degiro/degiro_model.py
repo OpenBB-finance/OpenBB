@@ -480,3 +480,8 @@ class DegiroModel:
         if trading_api.connection_storage.session_id:
             return True
         return False
+
+    @log_start_end(log=logger)
+    def reset_session_id(self):
+        trading_api = self.__trading_api
+        trading_api.connection_storage.session_id = None

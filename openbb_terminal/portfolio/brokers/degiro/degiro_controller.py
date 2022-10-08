@@ -61,7 +61,7 @@ class DegiroController(BaseController):
         # PARSE ARGS
         parser = argparse.ArgumentParser(
             add_help=False,
-            prog="companynews",
+            prog="cancel",
         )
         parser.add_argument(
             "id",
