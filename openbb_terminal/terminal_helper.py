@@ -126,8 +126,6 @@ def open_openbb_documentation(
         path = "terminal/common/ba/"
     elif "qa" in path:
         path = "terminal/common/qa/"
-    elif "pred" in path:
-        path = "terminal/common/pred/"
     elif "keys" in path:
         path = "#accessing-other-sources-of-data-via-api-keys"
         command = ""
@@ -138,7 +136,7 @@ def open_openbb_documentation(
         path = f"terminal/{path}"
 
     if command:
-        if command in ["ta", "ba", "qa", "pred"]:
+        if command in ["ta", "ba", "qa"]:
             path = "terminal/common/"
         elif "keys" == command:
             path = "#accessing-other-sources-of-data-via-api-keys"
