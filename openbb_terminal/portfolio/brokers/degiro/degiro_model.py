@@ -482,6 +482,10 @@ class DegiroModel:
         return False
 
     @log_start_end(log=logger)
-    def reset_session_id(self):
+    def reset_sessionid_and_creds(self):
+        # Setting the session_id to None
         trading_api = self.__trading_api
         trading_api.connection_storage.session_id = None
+
+        # Resetting the object after logout
+        self.__init__()

@@ -340,7 +340,7 @@ class DegiroView:
         # CALL API
         if degiro_model.logout():
             DegiroView.__logout_display_success()
-            DegiroModel.reset_session_id(self.__degiro_model)
+            DegiroModel.reset_sessionid_and_creds(self.__degiro_model)
         else:
             DegiroView.__logout_display_fail()
 
