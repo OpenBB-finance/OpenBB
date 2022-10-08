@@ -104,7 +104,7 @@ openbb.keys.fmp(key="example", persist=True)
 ```python
 d = {
     "fed": {
-        "key":"1de491a83938c33575e2da44b3fcccb8"
+        "key":"XXXXX"
         }, 
     "binance": {
         "key":"YYYYY", 
