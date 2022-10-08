@@ -1,0 +1,76 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+      accept:
+      - application/json
+      request-source:
+      - python
+      request-source-version:
+      - 3.7.0
+      x-api-token:
+      - test_key
+    method: GET
+    uri: https://data.nasdaq.com/api/v3/datasets/EIA/PET_RWTC_D/data?order=asc
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/1WNsQ7CMAxEf8XyjCpYu3VgYCsTYqqixISoxRaOI7VU/XeCmDrd6emdbsV3cRym
+        gVRFsV3RSyBs8Xru5uMJD/iinF38oRuBlzIFYDFQ8hI5fQgWKQpdf4GRlhaMsg21NdBP5HKdPMmP
+        OwnqIZjWjC5xA3cp4B3DI1W+EwsH0j9yvn6zQSazxDE3uG1feayDMb0AAAA=
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - '*'
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - X-RateLimit-Limit, X-RateLimit-Remaining
+      Access-Control-Max-Age:
+      - '1728000'
+      Allow:
+      - GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 04 Oct 2022 14:11:56 GMT
+      Server:
+      - openresty
+      Set-Cookie:
+      - visid_incap_2170999=1CofJCbpRoWyLby+w6MBqSs/PGMAAAAAQUIPAAAAAAB4QPjOO5THL62c/mw/CPzG;
+        expires=Wed, 04 Oct 2023 06:16:13 GMT; HttpOnly; path=/; Domain=.nasdaq.com
+      - nlbi_2170999=npScGs0UgVIcm/ZuKj7S7QAAAAB2bM3KAgW1BDafFCheDnqn; path=/; Domain=.nasdaq.com
+      - incap_ses_1170_2170999=1T4rBDeDQUIFDrrSkK08ECw/PGMAAAAAwrsYYgk442gkR+t88eggpA==;
+        path=/; Domain=.nasdaq.com
+      Transfer-Encoding:
+      - chunked
+      X-CDN:
+      - Imperva
+      X-Iinfo:
+      - 0-34837951-34837955 NNYY CT(7 20 0) RT(1664892716021 122) q(0 0 0 0) r(0 0)
+        U11
+      X-RateLimit-Limit:
+      - '50'
+      X-RateLimit-Remaining:
+      - '39'
+      X-Request-Id:
+      - 6e10972d-46cf-437e-8d22-8a0ee1442a0a
+      X-Runtime:
+      - '0.007796'
+    status:
+      code: 400
+      message: Bad Request
+version: 1
