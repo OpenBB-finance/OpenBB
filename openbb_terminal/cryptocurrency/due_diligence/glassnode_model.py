@@ -203,7 +203,7 @@ def get_close_price(
     """
 
     dt_start_date = int(
-    datetime.strptime(
+        datetime.strptime(
             start_date + " 00:00:00+0000", "%Y-%m-%d %H:%M:%S%z"
         ).timestamp()
     )
