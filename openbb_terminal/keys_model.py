@@ -5,6 +5,7 @@ import sys
 import logging
 import os
 from enum import Enum
+
 from typing import Dict, List, Union
 import binance
 import dotenv
