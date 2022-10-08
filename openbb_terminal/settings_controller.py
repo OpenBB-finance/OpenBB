@@ -140,7 +140,7 @@ class SettingsController(BaseController):
     def call_colors(self, _):
         """Process colors command"""
         console.print(
-            "\n1. Play with the terminal coloring embedded in our website http://openbb.co/products/terminal?customizeMenu=true#terminal\n"
+            "\n1. Play with the terminal coloring embedded in our website https://openbb.co/customize\n"
         )
         console.print("2. Once happy, click 'Download Theme'\n")
         console.print(
