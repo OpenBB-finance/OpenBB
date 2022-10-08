@@ -577,7 +577,7 @@ def get_btc_rainbow(
     )
     dt_end_date = int(
         datetime.strptime(
-            start_date + " 00:00:00+0000", "%Y-%m-%d %H:%M:%S%z"
+            end_date + " 00:00:00+0000", "%Y-%m-%d %H:%M:%S%z"
         ).timestamp()
     )
 
