@@ -1,0 +1,38 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer test_key
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+    method: GET
+    uri: https://sandbox.tradier.com/v1/markets/quotes?symbols=AAPL
+  response:
+    body:
+      string: Invalid Access Token
+    headers:
+      Access-Control-Allow-Headers:
+      - accept, authorization
+      Access-Control-Allow-Methods:
+      - GET, PUT, POST, DELETE
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '20'
+      Content-Type:
+      - plain/text
+      Date:
+      - Tue, 04 Oct 2022 14:12:02 GMT
+    status:
+      code: 401
+      message: Unauthorized
+version: 1

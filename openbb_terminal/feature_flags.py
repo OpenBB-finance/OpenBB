@@ -95,6 +95,9 @@ ENABLE_CHECK_API = strtobool(os.getenv("OPENBB_ENABLE_CHECK_API", "True"))
 # Send logs to data lake
 LOG_COLLECTION = bool(strtobool(os.getenv("OPENBB_LOG_COLLECT", "True")))
 
+# Provide export folder path. If empty that means default.
+EXPORT_FOLDER_PATH = str(os.getenv("OPENBB_EXPORT_FOLDER_PATH", ""))
+
 # Set a flag if the application is running from a packaged bundle
 PACKAGED_APPLICATION = strtobool(os.getenv("OPENBB_PACKAGED_APPLICATION", "False"))
 
@@ -125,5 +128,5 @@ GUESS_EASTER_EGG_FILE = str(
 try:
     version = pkg_resources.get_distribution("OpenBBTerminal").version
 except Exception:
-    version = "1.8.0m"
+    version = "1.9.0m"
 VERSION = str(os.getenv("OPENBB_VERSION", version))
