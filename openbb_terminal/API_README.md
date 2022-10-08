@@ -161,20 +161,16 @@ What's extremely powerful about OpenBB SDK is that you can specify the data sour
 ## From YahooFinance
 df_yf = openbb.stocks.load("AAPL", source='YahooFinance')
 
-
 ## From AlphaVantage
 df_av = openbb.stocks.load("AAPL", source='AlphaVantage')
 
-
 ## From IEXCloud
 df_iex = openbb.stocks.load("AAPL", source='IEXCloud')
-
 
 ## From Polygon
 df_pol = openbb.stocks.load("AAPL", source='Polygon')
 
 ```
-
 
 ### **Easy option to switch between obtaining underlying data and charts**
 Depending on your needs, you can get the outputs in form of data (e.g. `pandas dataframe`) or charts. If the latter is what you want, simple add `chart=True` as the last parameter.
@@ -186,8 +182,6 @@ openbb.economy.index(indices = ['sp500', 'nyse_ny', 'russell1000'], start_date =
 ```
 
 <img width="575" alt="Screenshot 2022-10-04 at 00 02 23" src="https://user-images.githubusercontent.com/40023817/193700891-f4d93440-31e3-411e-9931-3a38782f68e3.png">
-
-
 
 You might be wondering how to find all the available indices. This type of information should be available in the docstring. Let's give it a try.
 
@@ -202,9 +196,6 @@ openbb.economy.available_indices()
 
 <img width="1078" alt="Screenshot 2022-10-04 at 00 16 36" src="https://user-images.githubusercontent.com/40023817/193702595-ecbfc84d-3ed1-4f89-9086-e975b01c4b12.png">
 
-
-
-
 ### 2. Getting charts
 
 ```
@@ -212,7 +203,6 @@ openbb.economy.index(indices = ['sp500', 'nyse_ny', 'russell1000'], start_date =
 ```
 
 <img width="741" alt="Screenshot 2022-10-04 at 00 03 57" src="https://user-images.githubusercontent.com/40023817/193701075-796ffabe-3266-4d71-9a81-3042e8ca5fc8.png">
-
 
 ## 2. Toolbox Layer
 In addition to financial data, you can also get access to a robust and powerful toolbox to perform analysis on different asset classes and on your portfolio.
@@ -231,7 +221,6 @@ order_book_path = "portfolio/allocation/60_40_Portfolio.xlsx"
 tickers, categories = openbb.portfolio.po.load(excel_file = order_book_path)
 ```
 
-
 #### Step 2. Optimizing portfolio
 We provide multiple portfolio optimization techniques. You can utilize basic mean-variance techniques, such as optimizing for the maximum Sharpe ratio, or minimum variance, as well as advanced optimization techniques including Hierarchical Risk Parity and Nested Clustered Optimization.
 
@@ -245,7 +234,6 @@ weights_max_sharpe
 
 <img width="734" alt="Screenshot 2022-10-04 at 13 23 45" src="https://user-images.githubusercontent.com/40023817/193818381-e3e75455-ea91-4bdd-a903-0874ac8700dc.png">
 
-
 ```
 ## Minimum risk optimization
 weights_min_risk, data_returns_min_risk = openbb.portfolio.po.minrisk(tickers)
@@ -255,7 +243,6 @@ weights_min_risk
 ```
 
 <img width="742" alt="Screenshot 2022-10-04 at 13 24 45" src="https://user-images.githubusercontent.com/40023817/193818556-89380c7c-94c3-4e5c-8848-28058c9cf056.png">
-
 
 ```
 ## Hierarchical Risk Parity optimization
@@ -276,17 +263,14 @@ openbb.portfolio.po.plot(data=data_returns_hrp,weights=weights_hrp,heat=True)
 
 <img width="734" alt="Screenshot 2022-10-04 at 13 35 14" src="https://user-images.githubusercontent.com/40023817/193820624-3e6da926-aea9-4963-bd54-fd1a6df0fda3.png">
 
-
 ```
 openbb.portfolio.po.plot(data=data_returns_hrp,weights=weights_hrp,rc_chart=True)
 ```
 
 <img width="737" alt="Screenshot 2022-10-04 at 13 36 10" src="https://user-images.githubusercontent.com/40023817/193820817-82f8727f-0e12-4794-b128-d6ebe20b2c4f.png">
 
-
 These techniques have an extensive list of parameters and thus the optimization outcome is highly dependent on the chosen parameters. For instance, you can refer to the documentation below.
 <img width="747" alt="Screenshot 2022-10-04 at 00 35 00" src="https://user-images.githubusercontent.com/40023817/193704210-b75ddee3-1da3-432b-90f8-6966e85bb345.png">
-
 
 
 This allows us to alter certain assumption which also modify the asset allocation.
@@ -320,6 +304,7 @@ The basic method was optimized for *variance*. The extended method increases the
 ## Useful tips
 
 ### 1. Display matplotlib charts in Jupyter Notebook
+
 To display matplotlib charts inside the Jupyter notebook output cells, you can use the block of code below, and initialize it at the top of the Notebook.
 
 ```python
@@ -332,6 +317,7 @@ matplotlib_inline.backend_inline.set_matplotlib_formats("svg")
 
 
 ### 2. Take advantage of `external_axes`
+
 The code below utilizes the `external_axes` parameter to get two axis in one chart.
 
 ```python
@@ -348,5 +334,4 @@ fig.tight_layout()
 
 You can also do this to save output charts in a variable for later uses.
 
-
-### For more examples, we'd recommend checking out our [curated Jupyter Notebook reports](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/reports). They are excellent demonstration on how to use the SDK to its fullest extent!
+### For more examples, we'd recommend checking out our [curated Jupyter Notebook reports](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/reports). They are excellent demonstration on how to use the SDK to its fullest extent
