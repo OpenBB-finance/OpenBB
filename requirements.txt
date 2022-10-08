@@ -29,7 +29,7 @@ blinker==1.5; python_version >= "3.7" and python_full_version < "3.0.0" or pytho
 bs4==0.0.1
 bt==0.2.9; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.6.0")
 cachetools==5.2.0; python_version >= "3.7" and python_version < "4.0" and (python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7")
-ccxt==1.95.21
+ccxt==1.95.24
 certifi==2022.9.24; python_version >= "3.8" and python_version < "4" and python_full_version >= "3.7.1" and python_full_version < "4.0.0" and (python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7")
 cffi==1.15.1
 charset-normalizer==2.1.0; python_full_version >= "3.6.0"
@@ -61,7 +61,7 @@ fastjsonschema==2.16.2; python_full_version >= "3.7.0" and python_version >= "3.
 feedparser==6.0.10; python_version >= "3.6"
 ffn==0.3.6; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
 financedatabase==1.0.2
-finnhub-python==2.4.14
+finnhub-python==2.4.15
 finviz==1.4.4
 finvizfinance==0.14.3; python_version >= "3.5"
 flake8==3.9.2; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.5.0")
@@ -122,7 +122,7 @@ multidict==6.0.2; python_version >= "3.7" and python_full_version >= "3.7.0"
 multitasking==0.0.11
 mypy-extensions==0.4.3; python_version >= "3.8"
 mypy==0.930; python_version >= "3.6"
-nbclassic==0.4.4; python_version >= "3.7"
+nbclassic==0.4.5; python_version >= "3.7"
 nbclient==0.5.13; python_full_version >= "3.7.0" and python_version >= "3.7"
 nbconvert==6.5.4; python_version >= "3.7"
 nbformat==5.6.1; python_full_version >= "3.7.0" and python_version >= "3.7"
@@ -275,6 +275,6 @@ wrapt==1.14.1; python_full_version >= "3.7.1" and python_full_version < "4.0.0" 
 wsproto==1.2.0; python_version >= "3.7" and python_version < "4.0" and python_full_version >= "3.7.0"
 xlsxwriter==3.0.3; python_version >= "3.7"
 yarl==1.7.2; python_version >= "3.6" and python_full_version >= "3.7.0"
-yfinance==0.1.75
+yfinance==0.1.77
 zipp==3.8.1; python_version >= "3.7" and python_full_version < "3.9.7" and python_version < "3.10" or python_full_version > "3.9.7" and python_version >= "3.7" and python_version < "3.10"
 zope.interface==5.4.0; python_version >= "3.5" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.5"
