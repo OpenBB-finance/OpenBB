@@ -769,7 +769,6 @@ def log_settings() -> None:
     settings_dict["cls"] = "True" if obbff.USE_CLEAR_AFTER_CMD else "False"
     settings_dict["color"] = "True" if obbff.USE_COLOR else "False"
     settings_dict["promptkit"] = "True" if obbff.USE_PROMPT_TOOLKIT else "False"
-    settings_dict["predict"] = "True" if obbff.ENABLE_PREDICT else "False"
     settings_dict["thoughts"] = "True" if obbff.ENABLE_THOUGHTS_DAY else "False"
     settings_dict["reporthtml"] = "True" if obbff.OPEN_REPORT_AS_HTML else "False"
     settings_dict["exithelp"] = "True" if obbff.ENABLE_EXIT_AUTO_HELP else "False"
@@ -806,7 +805,8 @@ def run_scripts(
     verbose : bool
         Whether to run tests in verbose mode
     routines_args : List[str]
-        One or multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD
+        One or multiple inputs to be replaced in the routine and separated by commas.
+        E.g. GME,AMC,BTC-USD
     """
     if os.path.isfile(path):
         with open(path) as fp:
