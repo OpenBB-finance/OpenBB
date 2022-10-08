@@ -815,7 +815,6 @@ class BaseController(metaclass=ABCMeta):
                     an_input = "home"
 
                 # Process the input command
-                print(an_input)
                 self.queue = self.switch(an_input)
 
             except SystemExit:
