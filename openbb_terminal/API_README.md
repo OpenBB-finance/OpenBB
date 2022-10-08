@@ -90,7 +90,7 @@ openbb.keys.reddit(
 ![image](https://user-images.githubusercontent.com/79287829/194706829-dd720d06-9027-4da6-87f1-f39c7d2d725a.png)
 
 
-* API key setup with persistance: `persist=True` means that your key will be saved and can be reused after, otherwise it will be lost when you restart the kernel.
+* API key setup with persistence: `persist=True` means that your key will be saved and can be reused after, otherwise it will be lost when you restart the kernel.
 
 ```python
 openbb.keys.fmp(key="example", persist=True)
@@ -236,7 +236,7 @@ tickers, categories = openbb.portfolio.po.load(excel_file = order_book_path)
 
 
 #### Step 2. Optimizing portfolio
-We provide multiple portfolio optimization techniques. For instance, you can utilize basic mean-variance techniques, such as optimizing for the maximum Sharpe ratio, or minimum variance and the likes.
+We provide multiple portfolio optimization techniques. You can utilize basic mean-variance techniques, such as optimizing for the maximum Sharpe ratio, or minimum variance, as well as advanced optimization techniques including Hierarchical Risk Parity and Nested Clustered Optimization.
 
 ```
 ## Max Sharpe optimization
@@ -260,9 +260,6 @@ weights_min_risk
 <img width="742" alt="Screenshot 2022-10-04 at 13 24 45" src="https://user-images.githubusercontent.com/40023817/193818556-89380c7c-94c3-4e5c-8848-28058c9cf056.png">
 
 
-
-Please note that these optimization techniques are rather basic. They don't take into account the fact that majority of portfolio is allocated to a few stocks. you high concentration level of risk. As a result, there would be a high concentration level of risk in the portfolio. For that, we have more advanced, and complex optimization techniques including Hierarchical Risk Parity and Nested Clustered Optimization.
-
 ```
 ## Hierarchical Risk Parity optimization
 
@@ -274,6 +271,7 @@ weights_hrp
 ```
 <img width="736" alt="Screenshot 2022-10-04 at 13 34 39" src="https://user-images.githubusercontent.com/40023817/193820500-1bcde650-f517-4aed-b989-b2bd92bebbb8.png">
 
+After having obtained the asset allocation outcomes, you can plot a correlation heatmap across tickers, as well as their individual risk contributition.
 
 ```
 openbb.portfolio.po.plot(data=data_returns_hrp,weights=weights_hrp,heat=True)
@@ -289,7 +287,7 @@ openbb.portfolio.po.plot(data=data_returns_hrp,weights=weights_hrp,rc_chart=True
 <img width="737" alt="Screenshot 2022-10-04 at 13 36 10" src="https://user-images.githubusercontent.com/40023817/193820817-82f8727f-0e12-4794-b128-d6ebe20b2c4f.png">
 
 
-These functionalities have an extensive list of parameters and thus the optimization process is highly dependent on the chosen parameters. For instance, you can refer to the documentation below.
+These techniques have an extensive list of parameters and thus the optimization outcome is highly dependent on the chosen parameters. For instance, you can refer to the documentation below.
 <img width="747" alt="Screenshot 2022-10-04 at 00 35 00" src="https://user-images.githubusercontent.com/40023817/193704210-b75ddee3-1da3-432b-90f8-6966e85bb345.png">
 
 
@@ -311,7 +309,7 @@ pd.DataFrame([weights_hrp, weights_hrp_2], index=["Basic", "Extended"]).T
 
 
 
-THe basic method was optimized for *variance*. The extended method increases the period of historical data, optimizes for conditional Value at Risk and has a lower risk aversion.
+The basic method was optimized for *variance*. The extended method increases the period of historical data, optimizes for conditional Value at Risk and has a lower risk aversion.
 
 ```openbb.portfolio.po.plot(data=data_returns_hrp,weights=weights_hrp,pie=True)```
 
