@@ -10,7 +10,7 @@ import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.config_terminal import TRADIER_TOKEN
+from openbb_terminal.config_terminal import API_TRADIER_TOKEN
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -121,7 +121,7 @@ class OptionsController(BaseController):
         self.source = ""
 
         if ticker:
-            if TRADIER_TOKEN == "REPLACE_ME":  # nosec
+            if API_TRADIER_TOKEN == "REPLACE_ME":  # nosec
                 console.print("Loaded expiry dates from Yahoo Finance")
                 self.expiry_dates = yfinance_model.option_expirations(self.ticker)
             else:
@@ -696,7 +696,7 @@ class OptionsController(BaseController):
                     ns_parser.export,
                 )
 
-            elif TRADIER_TOKEN != "REPLACE_ME":  # nosec
+            elif API_TRADIER_TOKEN != "REPLACE_ME":  # nosec
                 tradier_view.display_historical(
                     symbol=self.ticker,
                     expiry=self.selected_date,
@@ -766,7 +766,7 @@ class OptionsController(BaseController):
             if self.ticker:
                 if self.selected_date:
                     if ns_parser.source == "Tradier" or self.source == "Tradier":
-                        if TRADIER_TOKEN != "REPLACE_ME":  # nosec
+                        if API_TRADIER_TOKEN != "REPLACE_ME":  # nosec
                             tradier_view.display_chains(
                                 symbol=self.ticker,
                                 expiry=self.selected_date,
@@ -852,7 +852,7 @@ class OptionsController(BaseController):
                 if self.selected_date:
                     if (
                         ns_parser.source == "Tradier"
-                        and TRADIER_TOKEN != "REPLACE_ME"  # nosec
+                        and API_TRADIER_TOKEN != "REPLACE_ME"  # nosec
                     ) or self.source == "Tradier":
                         tradier_view.plot_vol(
                             symbol=self.ticker,
@@ -930,7 +930,7 @@ class OptionsController(BaseController):
                 if self.selected_date:
                     if (
                         ns_parser.source == "Tradier"
-                        and TRADIER_TOKEN != "REPLACE_ME"  # nosec
+                        and API_TRADIER_TOKEN != "REPLACE_ME"  # nosec
                     ) or self.source == "Tradier":
                         tradier_view.plot_volume_open_interest(
                             symbol=self.ticker,
@@ -1018,7 +1018,7 @@ class OptionsController(BaseController):
                 if self.selected_date:
                     if (
                         ns_parser.source == "Tradier"
-                        and TRADIER_TOKEN != "REPLACE_ME"  # nosec
+                        and API_TRADIER_TOKEN != "REPLACE_ME"  # nosec
                     ) or self.source == "Tradier":
                         tradier_view.plot_oi(
                             symbol=self.ticker,
