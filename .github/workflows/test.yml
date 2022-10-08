@@ -79,7 +79,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/
+          pytest tests/ -vvvv
 
       - name: Start Terminal and exit
         run: |
