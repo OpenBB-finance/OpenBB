@@ -512,6 +512,7 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
         interval="1440min",
         suffix="",
     )
+
     getattr(fa, tested_func)(other_args=other_args)
 
     if isinstance(called_with, dict):

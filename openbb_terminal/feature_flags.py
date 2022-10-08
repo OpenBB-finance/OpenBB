@@ -9,7 +9,11 @@ from dotenv import load_dotenv
 import i18n
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.config.paths import USER_ENV_FILE, REPOSITORY_ENV_FILE, DATA_SOURCES_DEFAULT_FILE
+from openbb_terminal.core.config.paths import (
+    USER_ENV_FILE,
+    REPOSITORY_ENV_FILE,
+    DATA_SOURCES_DEFAULT_FILE,
+)
 from openbb_terminal.core.config import paths_helper
 
 paths_helper.init_userdata()
@@ -121,5 +125,5 @@ GUESS_EASTER_EGG_FILE = str(
 try:
     version = pkg_resources.get_distribution("OpenBBTerminal").version
 except Exception:
-    version = "1.8.0m"
+    version = "1.9.0m"
 VERSION = str(os.getenv("OPENBB_VERSION", version))

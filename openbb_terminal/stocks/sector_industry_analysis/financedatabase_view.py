@@ -167,13 +167,13 @@ def display_bars_financials(
             else:
                 unit = " KMBTP"[magnitude] if magnitude != 0 else ""
 
-            colors = iter(theme.get_colors())
             for name, metric, ticker in zip(
                 company_name[::-1], company_metric[::-1], company_ticker[::-1]
             ):
                 if len(name.split(" ")) > 6 and len(name) > 40:
                     name = f'{" ".join(name.split(" ")[:4])}\n{" ".join(name.split(" ")[4:])}'
-                ax.barh(f"{name} ({ticker})", metric, label=ticker, color=next(colors))
+
+                ax.barh(f"{name} ({ticker})", metric, label=ticker)
 
             metric_title = (
                 "".join(

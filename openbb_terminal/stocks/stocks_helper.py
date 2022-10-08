@@ -19,6 +19,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import pytz
 import requests
+from requests.exceptions import ReadTimeout
 
 import yfinance as yf
 from numpy.core.fromnumeric import transpose
@@ -95,7 +96,15 @@ def search(
     if industry:
         kwargs["industry"] = industry
 
-    data = fd.select_equities(**kwargs)
+    try:
+        data = fd.select_equities(**kwargs)
+    except ReadTimeout:
+        console.print(
+            "[red]Unable to retrieve company data from GitHub which limits the search"
+            " capabilities. This tends to be due to access restrictions for GitHub.com,"
+            " please check if you can access this website without a VPN.[/red]\n"
+        )
+        data = {}
     if not data:
         console.print("No companies found.\n")
         return
@@ -262,6 +271,9 @@ def load(
             df_stock_candidate = load_stock_polygon(
                 symbol, start_date, end_date, weekly, monthly
             )
+        else:
+            console.print("[red]Invalid source for stock[/red]\n")
+            return
         if df_stock_candidate.empty:
             return df_stock_candidate
 

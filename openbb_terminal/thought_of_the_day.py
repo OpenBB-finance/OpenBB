@@ -137,6 +137,8 @@ def get_thought_of_the_day():
         quotes = quotes + metadata["quotes"]
 
     console.print("Thought of the day:")
-    console.print(totd.quote_to_str(quotes[random.randint(0, len(quotes) - 1)]))
+    console.print(
+        totd.quote_to_str(quotes[random.randint(0, len(quotes) - 1)])  # nosec
+    )
 
     console.print("")

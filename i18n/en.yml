@@ -11,6 +11,8 @@ en:
   sources: select your preferred data sources
   keys: set API keys and check their validity
   wiki: search for an expression in Wikipedia (https://www.wikipedia.org/)
+  record: record session to be converted into a .openbb routine
+  stop: stop session recording
   _configure_: Configure your own terminal
   _main_menu_: Main menu
   keys/_keys_: This menu allows you to set your own API keys. Type 'about' for more information
@@ -707,8 +709,7 @@ en:
   crypto/qa/raw: print raw data
   crypto/qa/decompose: decomposition in cyclic-trend, season, and residuals of prices
   crypto/qa/cusum: detects abrupt changes using cumulative sum algorithm of prices
-  etf/ln: lookup by name
-  etf/ld: lookup by description
+  etf/search: search ETF by name or description
   etf/load: load ETF data
   etf/_symbol: Symbol
   etf/_major_holdings: Major holdings
