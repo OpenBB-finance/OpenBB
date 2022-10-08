@@ -2088,4 +2088,7 @@ def check_token_terminal_key(show_output: bool = False) -> str:
             logger.info("token terminal key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
 
+    if show_output:
+        console.print(status.colorize() + "\n")
+
     return str(status)
