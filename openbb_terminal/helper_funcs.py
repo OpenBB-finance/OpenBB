@@ -1710,7 +1710,6 @@ def screenshot_to_canvas(shot, plot_exists: bool = False):
         Variable to say whether the image is a plot or screenshot of terminal
     """
 
-    CURRENT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__)))
     WHITE_LINE_WIDTH = 3
     OUTSIDE_CANVAS_WIDTH = shot.width + 4 * WHITE_LINE_WIDTH + 5
     OUTSIDE_CANVAS_HEIGHT = shot.height + 4 * WHITE_LINE_WIDTH + 5
