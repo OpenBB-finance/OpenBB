@@ -118,7 +118,7 @@ def get_keys(show: bool = False) -> pd.DataFrame:
         df = df.rename(columns={0: "Key"})
         if show:
             return df
-        df["Key"] = "*******"
+        df.loc[:, "Key"] = "*******"
         return df
 
     return pd.DataFrame()
@@ -714,7 +714,9 @@ def check_iex_key(show_output: bool = False) -> str:
         status = KeyStatus.NOT_DEFINED
     else:
         try:
-            pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1").quote(symbol="AAPL")
+            pyEX.Client(  # pylint: disable=no-member
+                api_token=cfg.API_IEX_TOKEN, version="v1"
+            ).quote(symbol="AAPL")
             logger.info("IEX Cloud key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
         except Exception as _:  # noqa: F841
