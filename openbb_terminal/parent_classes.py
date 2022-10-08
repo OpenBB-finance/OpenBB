@@ -39,6 +39,7 @@ from openbb_terminal.helper_funcs import (
     support_message,
     check_file_type_saved,
     check_positive,
+    load_json,
     parse_and_split_input,
     search_wikipedia,
     screenshot,
@@ -88,6 +89,7 @@ class BaseController(metaclass=ABCMeta):
         "r",
         "reset",
         "support",
+        "glossary",
         "wiki",
         "record",
         "stop",
@@ -189,6 +191,13 @@ class BaseController(metaclass=ABCMeta):
         # goes into "TA", the "TSLA" ticker will appear. If that condition doesn't exist
         # the previous class will be loaded and even if the user changes the ticker on
         # the stocks context it will not impact the one of TA menu - unless changes are done.
+        # An exception is made for forecasting because it is built to handle multiple loaded
+        # tickers.
+        if class_ins.PATH in controllers and class_ins.PATH == "/forecast/":
+            old_class = controllers[class_ins.PATH]
+            old_class.queue = self.queue
+            old_class.load(*args[:-1], **kwargs)
+            return old_class.menu()
         if class_ins.PATH in controllers and arguments == 1 and obbff.REMEMBER_CONTEXTS:
             old_class = controllers[class_ins.PATH]
             old_class.queue = self.queue
@@ -480,6 +489,42 @@ class BaseController(metaclass=ABCMeta):
             )
 
     @log_start_end(log=logger)
+    def call_glossary(self, other_args: List[str]) -> None:
+        """Process glossary command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="support",
+            description="Submit your support request",
+        )
+        parser.add_argument(
+            "-w",
+            "--word",
+            action="store",
+            dest="word",
+            type=str,
+            required="-h" not in other_args,
+            help="Word that you want defined",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-w")
+
+        ns_parser = parse_simple_args(parser, other_args)
+
+        glossary_file = os.path.join(os.path.dirname(__file__), "glossary.json")
+        glossary_dict = load_json(glossary_file)
+
+        if ns_parser:
+            word = glossary_dict.get(ns_parser.word, "")
+            word = word.lower()
+            word = word.replace("--", "")
+            word = word.replace("-", " ")
+            if word:
+                console.print(word + "\n")
+            else:
+                console.print("Word is not in the glossary.\n")
+
+    @log_start_end(log=logger)
     def call_wiki(self, other_args: List[str]) -> None:
         """Process wiki command"""
         parser = argparse.ArgumentParser(
@@ -714,6 +759,7 @@ class BaseController(metaclass=ABCMeta):
             if self.queue and len(self.queue) > 0:
                 # If the command is quitting the menu we want to return in here
                 if self.queue[0] in ("q", "..", "quit"):
+                    self.save_class()
                     # Go back to the root in order to go to the right directory because
                     # there was a jump between indirect menus
                     if custom_path_menu_above:

@@ -1,0 +1,12 @@
+                    Sector  % Chg
+0                   Energy  -0.72
+1         Consumer Staples  -1.55
+2              Industrials  -1.92
+3                Utilities  -2.09
+4              Health Care  -2.12
+5               Financials  -2.34
+6              Real Estate  -2.49
+7                Materials  -2.54
+8   Communication Services  -2.84
+9   Consumer Discretionary  -3.54
+10  Information Technology  -4.14

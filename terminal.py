@@ -16,6 +16,7 @@ from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
+import pandas as pd
 
 from openbb_terminal import feature_flags as obbff
 
@@ -23,7 +24,7 @@ from openbb_terminal.core.config.paths import (
     REPOSITORY_DIRECTORY,
     USER_ENV_FILE,
     REPOSITORY_ENV_FILE,
-    USER_EXPORTS_DIRECTORY,
+    HOME_DIRECTORY,
     ROUTINES_DIRECTORY,
 )
 from openbb_terminal.core.log.generation.path_tracking_file_handler import (
@@ -86,6 +87,7 @@ class TerminalController(BaseController):
         "alternative",
         "econometrics",
         "sources",
+        "forecast",
     ]
 
     PATH = "/"
@@ -157,6 +159,7 @@ class TerminalController(BaseController):
         mt.add_raw("\n")
         mt.add_info("_others_")
         mt.add_menu("econometrics")
+        mt.add_menu("forecast")
         mt.add_menu("portfolio")
         mt.add_menu("dashboards")
         mt.add_menu("reports")
@@ -419,6 +422,14 @@ class TerminalController(BaseController):
 
         self.queue = EconometricsController(self.queue).menu()
 
+    def call_forecast(self, _):
+        """Process forecast command"""
+        from openbb_terminal.forecast.forecast_controller import (
+            ForecastController,
+        )
+
+        self.queue = self.load_class(ForecastController, "", pd.DataFrame(), self.queue)
+
     def call_portfolio(self, _):
         """Process portfolio command"""
         from openbb_terminal.portfolio.portfolio_controller import (
@@ -552,10 +563,28 @@ class TerminalController(BaseController):
                     ]
 
                     if "export" in self.queue[0]:
-                        export_path = USER_EXPORTS_DIRECTORY
-                        console.print(
-                            f"Export data to be saved in the selected folder: '{export_path}'"
-                        )
+                        export_path = self.queue[0].split(" ")[1]
+                        # If the path selected does not start from the user root, give relative location from root
+                        if export_path[0] == "~":
+                            export_path = export_path.replace(
+                                "~", HOME_DIRECTORY.as_posix()
+                            )
+                        elif export_path[0] != "/":
+                            export_path = os.path.join(
+                                os.path.dirname(os.path.abspath(__file__)), export_path
+                            )
+
+                        # Check if the directory exists
+                        if os.path.isdir(export_path):
+                            console.print(
+                                f"Export data to be saved in the selected folder: '{export_path}'"
+                            )
+                        else:
+                            os.makedirs(export_path)
+                            console.print(
+                                f"[green]Folder '{export_path}' successfully created.[/green]"
+                            )
+                        obbff.EXPORT_FOLDER_PATH = export_path
                         self.queue = self.queue[1:]
 
 
@@ -573,12 +602,35 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
     if jobs_cmds is not None and jobs_cmds:
         logger.info("INPUT: %s", "/".join(jobs_cmds))
 
+    export_path = ""
     if jobs_cmds and "export" in jobs_cmds[0]:
+        export_path = jobs_cmds[0].split("/")[0].split(" ")[1]
         jobs_cmds = ["/".join(jobs_cmds[0].split("/")[1:])]
 
     ret_code = 1
     t_controller = TerminalController(jobs_cmds)
     an_input = ""
+
+    if export_path:
+        # If the path selected does not start from the user root, give relative location from terminal root
+        if export_path[0] == "~":
+            export_path = export_path.replace("~", HOME_DIRECTORY.as_posix())
+        elif export_path[0] != "/":
+            export_path = os.path.join(
+                os.path.dirname(os.path.abspath(__file__)), export_path
+            )
+
+        # Check if the directory exists
+        if os.path.isdir(export_path):
+            console.print(
+                f"Export data to be saved in the selected folder: '{export_path}'"
+            )
+        else:
+            os.makedirs(export_path)
+            console.print(
+                f"[green]Folder '{export_path}' successfully created.[/green]"
+            )
+        obbff.EXPORT_FOLDER_PATH = export_path
 
     bootup()
     if not jobs_cmds:
@@ -776,12 +828,18 @@ def run_scripts(
             if test_mode and "exit" not in lines[-1]:
                 lines.append("exit")
 
+            export_folder = ""
             if "export" in lines[0]:
+                export_folder = lines[0].split("export ")[1].rstrip()
                 lines = lines[1:]
 
             simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
             file_cmds = simulate_argv.replace("//", "/home/").split()
             file_cmds = insert_start_slash(file_cmds) if file_cmds else file_cmds
+            if export_folder:
+                file_cmds = [f"export {export_folder}{' '.join(file_cmds)}"]
+            else:
+                file_cmds = [" ".join(file_cmds)]
 
             if not test_mode:
                 terminal(file_cmds, appName="openbb_script")
