@@ -569,8 +569,8 @@ def get_btc_rainbow(
         Final date timestamp. Default is current BTC timestamp
     """
 
-    dt_start_date = int(datetime.strptime(start_date, "%Y-%m-%d").timestamp())
-    dt_end_date = int(datetime.strptime(end_date, "%Y-%m-%d").timestamp())
+    dt_start_date = int(datetime.fromisoformat(start_date).timestamp())
+    dt_end_date = int(datetime.fromisoformat(end_date).timestamp())
 
     df_data = get_close_price("BTC", dt_start_date, dt_end_date)
 
