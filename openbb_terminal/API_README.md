@@ -4,9 +4,6 @@ OpenBB SDK gives you direct and programmatic access to all capabilities from Ope
 
 OpenBB SDK is created and maintained by OpenBB team together with the contributions from hundreds of community members. This gives us an unrivaled speed of development and the ability to maintain stable integrations with numerous third-party data providers. Developing and maintaining an full-blown investment research infrastructure from the ground up takes a lot of time and effort. However, it does not have to be. Take advantage of OpenBB SDK with its out-of-the-box data connectors and financial analysis toolkit; so that you can focus on designing and building your financial reports and applications.
 
-## Installation
-
-To be completed once pip install is available on PyPI
 
 ## Setup
 ### 1. Import OpenBB SDK
