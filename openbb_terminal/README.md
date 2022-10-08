@@ -121,8 +121,21 @@ issues.
    or `diamondhands`, we recommend something simple and intuitive like `obb`. This is because this name will be used
    from now onwards.
 
+   Please note, the following setup has been confirmed to work for all OS (including M1) with the standard
+   miniconda distribution.
+
+   `https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh`
+
+   If you are using a different distribution, you will need to install it manually before proceeding.
+
    ```bash
    conda env create -n obb --file build/conda/conda-3-9-env.yaml
+   ```
+
+   Or, to include machine learning type:
+
+   ```bash
+   conda env create -n obb --file build/conda/conda-3-9-env-full.yaml
    ```
 
    Note: Using python 3.10 can lead to undesirable functionality for certain commands.
@@ -143,10 +156,10 @@ issues.
    poetry install
    ```
 
-   To enable the `prediction` menu install additional dependencies after installing main dependencies:
+   For machine learning instead type:
 
    ```bash
-   conda install -c conda-forge tensorflow
+   poetry install -E prediction
    ```
 
    If you are having trouble with Poetry (e.g. on a non-conda python), simply install requirements.txt with pip
@@ -189,7 +202,7 @@ before you call `python terminal.py` again.
 ## Advanced User Install - Custom installation procedures
 
 By default we advice using `conda` and `poetry` for environment setup and dependency management.
-Conda ships binaries for packages like `numpy` and `tensorflow` so these dependencies are
+Conda ships binaries for packages like `numpy` so these dependencies are
 not built from source locally by `pip`.
 Poetry solves the dependency tree in a way that the dependencies of dependencies of dependencies
 use versions that are compatible with each other.
