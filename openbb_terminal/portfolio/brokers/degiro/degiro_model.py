@@ -193,12 +193,11 @@ class DegiroModel:
                 request=request,
                 raw=False,
             )
+            return news
         except Exception as e:
             e_str = str(e)
             console.print(f"[red]{e_str}[/red]")
             return
-
-        return news
 
     @log_start_end(log=logger)
     def create_calculate_product_id(
@@ -493,4 +492,8 @@ class DegiroModel:
     @log_start_end(log=logger)
     def check_credentials(self):
         self.login()
-        return self.check_session_id()
+        if self.check_session_id():
+            self.logout()
+            return True
+        else:
+            return False

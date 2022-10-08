@@ -6,6 +6,7 @@ __docformat__ = "numpy"
 import sys
 import logging
 import os
+import contextlib
 from enum import Enum
 import binance
 import dotenv
@@ -29,6 +30,7 @@ from openbb_terminal.core.config.paths import USER_ENV_FILE
 from openbb_terminal.rich_config import console
 
 from openbb_terminal.terminal_helper import suppress_stdout
+from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
 
 logger = logging.getLogger(__name__)
 
@@ -1093,8 +1095,20 @@ def check_degiro_key(show_output: bool = False) -> str:
         logger.info("Degiro key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
-        logger.info("Degiro key defined, not tested")
-        status = KeyStatus.DEFINED_NOT_TESTED
+        dg = DegiroModel()
+        try:
+            with open(os.devnull, "w") as devnull:  # suppress stdout
+                with contextlib.redirect_stdout(devnull):
+                    if not dg.check_credentials():  # pylint: disable=no-member
+                        raise Exception
+                    logger.info("Degiro key defined, test passed")
+                    status = KeyStatus.DEFINED_TEST_PASSED
+
+        except Exception:
+            logger.info("Degiro key defined, test failed")
+            status = KeyStatus.DEFINED_TEST_FAILED
+
+        del dg  # ensure the object is destroyed explicitly
 
     if show_output:
         console.print(status.colorize() + "\n")
