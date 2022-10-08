@@ -90,6 +90,7 @@ class BaseController(metaclass=ABCMeta):
         "wiki",
         "record",
         "stop",
+        "close",
     ]
 
     CHOICES_COMMANDS: List[str] = []

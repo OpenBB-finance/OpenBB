@@ -100,7 +100,7 @@ class TerminalStyle:
     """
 
     DEFAULT_STYLES_LOCATION = REPOSITORY_DIRECTORY / "styles" / "default"
-    USER_STYLES_LOCATION = USER_DATA_DIRECTORY / "styles"
+    USER_STYLES_LOCATION = USER_DATA_DIRECTORY / "styles" / "user"
 
     mpl_styles_available: Dict[str, str] = {}
     mpl_style: str = ""
@@ -174,7 +174,10 @@ class TerminalStyle:
                 self.mpf_style = json.load(stylesheet)
             self.mpf_style["base_mpl_style"] = self.mpl_style
 
-        if console_style in self.console_styles_available:
+        if "openbb_config" in self.console_styles_available:
+            with open(self.console_styles_available["openbb_config"]) as stylesheet:
+                self.console_style = json.load(stylesheet)
+        elif console_style in self.console_styles_available:
             with open(self.console_styles_available[console_style]) as stylesheet:
                 self.console_style = json.load(stylesheet)
         else:
