@@ -71,7 +71,9 @@ class EconomyController(BaseController):
         "edebt",
     ]
 
-    CHOICES_MENUS = ["pred", "qa"]
+    CHOICES_MENUS = [
+        "qa",
+    ]
 
     wsj_sortby_cols_dict = {c: None for c in ["ticker", "last", "change", "prevClose"]}
     map_period_list = ["1d", "1w", "1m", "3m", "6m", "1y"]
@@ -367,7 +369,6 @@ class EconomyController(BaseController):
         mt.add_raw("\n")
         mt.add_cmd("plot")
         mt.add_raw("\n")
-        mt.add_menu("pred")
         mt.add_menu("qa")
         console.print(text=mt.menu_text, menu="Economy")
 
@@ -1626,20 +1627,8 @@ class EconomyController(BaseController):
 
     @log_start_end(log=logger)
     def call_qa(self, _):
-        """Process pred command"""
-
-        data: Dict = {}
-        all_datasets_empty = True
-        for source, _ in self.DATASETS.items():
-            if not self.DATASETS[source].empty:
-                all_datasets_empty = False
-                if len(self.DATASETS[source].columns) == 1:
-                    data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
-                else:
-                    for col in list(self.DATASETS[source].columns):
-                        data[col] = self.DATASETS[source][col].to_frame()
-
-        if all_datasets_empty:
+        """Process qa command"""
+        if not self.DATASETS:
             console.print(
                 "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
                 "'treasury' command in combination with the -st argument to be able to plot data.\n"
@@ -1649,5 +1638,14 @@ class EconomyController(BaseController):
         from openbb_terminal.economy.quantitative_analysis.qa_controller import (
             QaController,
         )
+
+        data: Dict = {}
+        for source, _ in self.DATASETS.items():
+            if not self.DATASETS[source].empty:
+                if len(self.DATASETS[source].columns) == 1:
+                    data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
+                else:
+                    for col in list(self.DATASETS[source].columns):
+                        data[col] = self.DATASETS[source][col].to_frame()
 
         self.queue = self.load_class(QaController, data, self.queue)

@@ -1,6 +1,8 @@
 """Keys model"""
 __docformat__ = "numpy"
 
+# pylint: disable=too-many-lines
+
 import sys
 import logging
 import os
@@ -27,8 +29,6 @@ from openbb_terminal.core.config.paths import USER_ENV_FILE
 from openbb_terminal.rich_config import console
 
 from openbb_terminal.terminal_helper import suppress_stdout
-
-# pylint: disable=too-many-lines
 
 logger = logging.getLogger(__name__)
 
