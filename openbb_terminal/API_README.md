@@ -173,7 +173,7 @@ tickers, categories = openbb.portfolio.po.load(excel_file = order_book_path)
 
 
 #### Step 2. Optimizing portfolio
-We provide multiple portfolio optimization techniques. For instance, you can utilize basic mean-variance techniques, such as optimizing for the maximum Sharpe ratio, or minimum variance and the likes.
+We provide multiple portfolio optimization techniques. For instance, you can utilize basic mean-variance techniques, e.g. optimizing for the maximum Sharpe ratio and minimum variance, as well as more advanced methods including techniques including Hierarchical Risk Parity and Nested Clustered Optimization.
 
 ```
 ## Max Sharpe optimization
@@ -196,9 +196,6 @@ weights_min_risk
 
 <img width="742" alt="Screenshot 2022-10-04 at 13 24 45" src="https://user-images.githubusercontent.com/40023817/193818556-89380c7c-94c3-4e5c-8848-28058c9cf056.png">
 
-
-
-Please note that these optimization techniques are rather basic. They don't take into account the fact that majority of portfolio is allocated to a few stocks. you high concentration level of risk. As a result, there would be a high concentration level of risk in the portfolio. For that, we have more advanced, and complex optimization techniques including Hierarchical Risk Parity and Nested Clustered Optimization.
 
 ```
 ## Hierarchical Risk Parity optimization
@@ -226,12 +223,12 @@ openbb.portfolio.po.plot(data=data_returns_hrp,weights=weights_hrp,rc_chart=True
 <img width="737" alt="Screenshot 2022-10-04 at 13 36 10" src="https://user-images.githubusercontent.com/40023817/193820817-82f8727f-0e12-4794-b128-d6ebe20b2c4f.png">
 
 
-These functionalities have an extensive list of parameters and thus the optimization process is highly dependent on the chosen parameters. For instance, you can refer to the documentation below.
+These optimization methods have an extensive list of parameters and thus the final result is highly dependent on the chosen parameters. For instance, you can refer to the documentation below.
 <img width="747" alt="Screenshot 2022-10-04 at 00 35 00" src="https://user-images.githubusercontent.com/40023817/193704210-b75ddee3-1da3-432b-90f8-6966e85bb345.png">
 
 
 
-This allows us to alter certain assumption which also modify the asset allocation.
+This allows us to alter certain assumption which also modify the asset allocation outcomes.
 
 ```
 weights_hrp_2, data_returns_hrp_2 = openbb.portfolio.po.hrp(
@@ -248,7 +245,7 @@ pd.DataFrame([weights_hrp, weights_hrp_2], index=["Basic", "Extended"]).T
 
 
 
-THe basic method was optimized for *variance*. The extended method increases the period of historical data, optimizes for conditional Value at Risk and has a lower risk aversion.
+The basic method was optimized for *variance*. The extended method increases the period of historical data, optimizes for conditional Value at Risk and has a lower risk aversion.
 
 ```openbb.portfolio.po.plot(data=data_returns_hrp,weights=weights_hrp,pie=True)```
 
