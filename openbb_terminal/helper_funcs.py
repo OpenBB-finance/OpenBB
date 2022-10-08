@@ -34,11 +34,6 @@ from screeninfo import get_monitors
 import yfinance as yf
 import numpy as np
 
-from pygetwindow import (
-    getActiveWindowTitle,
-    getWindowsWithTitle,
-)
-from pyscreeze import screenshot as pyscreenshot
 from PIL import Image, ImageDraw
 
 from openbb_terminal.rich_config import console
@@ -1672,7 +1667,7 @@ def search_wikipedia(expression: str) -> None:
     )
 
 
-def screenshot(terminal_window_target: bool = False) -> None:
+def screenshot() -> None:
     """
     Screenshot the terminal window or the plot window
 
@@ -1682,24 +1677,7 @@ def screenshot(terminal_window_target: bool = False) -> None:
         Target the terminal window
     """
     try:
-        if terminal_window_target:
-            if sys.platform == "win32":
-                win_name = getActiveWindowTitle()
-                window = getWindowsWithTitle(win_name)[0]
-                header = 40
-                x = window.topleft.x + 10
-                y = window.topleft.y + header
-                width = window.width - 50
-                height = window.height - 10 - header
-                shot = pyscreenshot(region=(x, y, width, height))
-                screenshot_to_canvas(shot)
-                console.print("")
-            else:
-                console.print(
-                    "Terminal 'screenshot' currently only supports Windows. You can use it for plots instead."
-                )
-
-        elif plt.get_fignums():
+        if plt.get_fignums():
             img_buf = io.BytesIO()
             plt.savefig(img_buf, format="png")
             shot = Image.open(img_buf)
@@ -1724,18 +1702,19 @@ def screenshot_to_canvas(shot, plot_exists: bool = False):
     plot_exists: bool
         Variable to say whether the image is a plot or screenshot of terminal
     """
+    
+    CURRENT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__)))
+    WHITE_LINE_WIDTH = 3
+    OUTSIDE_CANVAS_WIDTH = shot.width + 4 * WHITE_LINE_WIDTH + 5
+    OUTSIDE_CANVAS_HEIGHT = shot.height + 4 * WHITE_LINE_WIDTH + 5
+    UPPER_SPACE = 50
+    BACKGROUND_WIDTH_SLACK = 200
+    BACKGROUND_HEIGHT_SLACK = 200
+
+    background = Image.open(Path(str(CURRENT_PATH), "terminal.png"))
+    logo = Image.open(Path(str(CURRENT_PATH), "openbb_logo.png"))
+    
     try:
-        CURRENT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__)))
-        WHITE_LINE_WIDTH = 3
-        OUTSIDE_CANVAS_WIDTH = shot.width + 4 * WHITE_LINE_WIDTH + 5
-        OUTSIDE_CANVAS_HEIGHT = shot.height + 4 * WHITE_LINE_WIDTH + 5
-        UPPER_SPACE = 50
-        BACKGROUND_WIDTH_SLACK = 200
-        BACKGROUND_HEIGHT_SLACK = 200
-
-        background = Image.open(Path(str(CURRENT_PATH), "terminal.png"))
-        logo = Image.open(Path(str(CURRENT_PATH), "openbb_logo.png"))
-
         if plot_exists:
             HEADER_HEIGHT = 0
             RADIUS = 8
@@ -1763,103 +1742,30 @@ def screenshot_to_canvas(shot, plot_exists: bool = False):
                 radius=RADIUS,
             )
             background.paste(shot, (x + WHITE_LINE_WIDTH + 5, y + WHITE_LINE_WIDTH + 5))
-
-        else:
-            HEADER_HEIGHT = 32
-            RADIUS = 8
-
-            background = background.resize(
-                (
-                    shot.width + BACKGROUND_WIDTH_SLACK,
-                    shot.height + BACKGROUND_HEIGHT_SLACK + HEADER_HEIGHT,
-                )
-            )
-
-            x = int((background.width - OUTSIDE_CANVAS_WIDTH) / 2)
-            y = UPPER_SPACE
-
-            img = ImageDraw.Draw(background)
-
-            # Frame line
-            shape = [
-                (x, y),
-                (x + OUTSIDE_CANVAS_WIDTH, y + OUTSIDE_CANVAS_HEIGHT + HEADER_HEIGHT),
-            ]
-            img.rounded_rectangle(
-                shape,
-                fill="black",
-                outline="white",
-                width=WHITE_LINE_WIDTH,
-                radius=RADIUS,
-            )
-
-            # Header upper half
-            shape = [(x, y), (x + OUTSIDE_CANVAS_WIDTH, y + HEADER_HEIGHT)]
-            img.rounded_rectangle(
-                shape,
-                fill="white",
-                outline="white",
-                width=WHITE_LINE_WIDTH,
-                radius=RADIUS,
-            )
-
-            # Header lower half
-            shape = [
-                (x, y + int(HEADER_HEIGHT / 2)),
-                (x + OUTSIDE_CANVAS_WIDTH, y + HEADER_HEIGHT),
-            ]
-            img.rounded_rectangle(
-                shape,
-                fill="white",
-                outline="white",
-                width=WHITE_LINE_WIDTH,
-            )
-
-            # Left icons
-            SIZE = 12
-            CENTER = int(HEADER_HEIGHT / 2 - SIZE / 2)
-            INDENT = 8
-            SPACING = 8
-
-            for i in range(3):
-                img.ellipse(
-                    (
-                        x + INDENT + SPACING * (i + 1) + SIZE * i,
-                        y + CENTER,
-                        x + INDENT + (SPACING + SIZE) * (i + 1),
-                        y + SIZE + CENTER,
-                    ),
-                    fill="#DADADA",
-                )
-
-            # Paste window screenshot
+        
+            # Logo
             background.paste(
-                shot,
-                (x + WHITE_LINE_WIDTH + 5, y + WHITE_LINE_WIDTH + 5 + HEADER_HEIGHT),
+                logo,
+                (
+                    int((background.width - logo.width) / 2),
+                    UPPER_SPACE
+                    + OUTSIDE_CANVAS_HEIGHT
+                    + HEADER_HEIGHT
+                    + int(
+                        (
+                            background.height
+                            - UPPER_SPACE
+                            - OUTSIDE_CANVAS_HEIGHT
+                            - HEADER_HEIGHT
+                            - logo.height
+                        )
+                        / 2
+                    ),
+                ),
+                logo,
             )
 
-        # Logo
-        background.paste(
-            logo,
-            (
-                int((background.width - logo.width) / 2),
-                UPPER_SPACE
-                + OUTSIDE_CANVAS_HEIGHT
-                + HEADER_HEIGHT
-                + int(
-                    (
-                        background.height
-                        - UPPER_SPACE
-                        - OUTSIDE_CANVAS_HEIGHT
-                        - HEADER_HEIGHT
-                        - logo.height
-                    )
-                    / 2
-                ),
-            ),
-            logo,
-        )
-
-        background.show()
+            background.show()
+    
     except Exception:
         console.print("Shot failed.")

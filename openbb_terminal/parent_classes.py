@@ -591,18 +591,10 @@ class BaseController(metaclass=ABCMeta):
             "Default target is plot if there is one open, otherwise it's terminal window. "
             " In case the user wants the terminal window, it can be forced with '-t` or '--terminal' flag passed.",
         )
-        parser.add_argument(
-            "-t",
-            "--terminal",
-            dest="terminal",
-            help="Flag direct screenshot target to terminal window.",
-            action="store_true",
-            default=False,
-        )
         ns_parser = parse_simple_args(parser, other_args)
 
         if ns_parser:
-            screenshot(ns_parser.terminal)
+            screenshot()
 
     def parse_known_args_and_warn(
         self,
