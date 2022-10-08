@@ -521,8 +521,11 @@ functions = {
         "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_active_addresses",
         "view": "openbb_terminal.cryptocurrency.due_diligence.glassnode_view.display_active_addresses",
     },
-    "crypto.dd.btcrb": {
+    "crypto.dd.close": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_close_price",
+    },
+    "crypto.dd.btcrb": {
+        "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_btc_rainbow",
         "view": "openbb_terminal.cryptocurrency.due_diligence.glassnode_view.display_btc_rainbow",
     },
     "crypto.dd.eb": {
@@ -1884,6 +1887,36 @@ functions = {
     "etf.candle": {"model": "openbb_terminal.stocks.stocks_helper.display_candle"},
     "forex.candle": {"model": "openbb_terminal.forex.forex_helper.display_candle"},
     "forex.load": {"model": "openbb_terminal.forex.forex_helper.load"},
+    "keys.av": {"model": "openbb_terminal.keys_model.set_av_key"},
+    "keys.fmp": {"model": "openbb_terminal.keys_model.set_fmp_key"},
+    "keys.quandl": {"model": "openbb_terminal.keys_model.set_quandl_key"},
+    "keys.polygon": {"model": "openbb_terminal.keys_model.set_polygon_key"},
+    "keys.fred": {"model": "openbb_terminal.keys_model.set_fred_key"},
+    "keys.news": {"model": "openbb_terminal.keys_model.set_news_key"},
+    "keys.tradier": {"model": "openbb_terminal.keys_model.set_tradier_key"},
+    "keys.cmc": {"model": "openbb_terminal.keys_model.set_cmc_key"},
+    "keys.finnhub": {"model": "openbb_terminal.keys_model.set_finnhub_key"},
+    "keys.iex": {"model": "openbb_terminal.keys_model.set_iex_key"},
+    "keys.reddit": {"model": "openbb_terminal.keys_model.set_reddit_key"},
+    "keys.twitter": {"model": "openbb_terminal.keys_model.set_twitter_key"},
+    "keys.rh": {"model": "openbb_terminal.keys_model.set_rh_key"},
+    "keys.degiro": {"model": "openbb_terminal.keys_model.set_degiro_key"},
+    "keys.oanda": {"model": "openbb_terminal.keys_model.set_oanda_key"},
+    "keys.binance": {"model": "openbb_terminal.keys_model.set_binance_key"},
+    "keys.bitquery": {"model": "openbb_terminal.keys_model.set_bitquery_key"},
+    "keys.si": {"model": "openbb_terminal.keys_model.set_si_key"},
+    "keys.coinbase": {"model": "openbb_terminal.keys_model.set_coinbase_key"},
+    "keys.walert": {"model": "openbb_terminal.keys_model.set_walert_key"},
+    "keys.glassnode": {"model": "openbb_terminal.keys_model.set_glassnode_key"},
+    "keys.coinglass": {"model": "openbb_terminal.keys_model.set_coinglass_key"},
+    "keys.cpanic": {"model": "openbb_terminal.keys_model.set_cpanic_key"},
+    "keys.ethplorer": {"model": "openbb_terminal.keys_model.set_ethplorer_key"},
+    "keys.smartstake": {"model": "openbb_terminal.keys_model.set_smartstake_key"},
+    "keys.github": {"model": "openbb_terminal.keys_model.set_github_key"},
+    "keys.messari": {"model": "openbb_terminal.keys_model.set_messari_key"},
+    "keys.eodhd": {"model": "openbb_terminal.keys_model.set_eodhd_key"},
+    "keys.santiment": {"model": "openbb_terminal.keys_model.set_santiment_key"},
+    "keys.mykeys": {"model": "openbb_terminal.keys_model.get_keys"},
 }
 
 
@@ -1941,7 +1974,7 @@ def change_docstring(api_callable, model: Callable, view=None):
         index = view.__doc__.find("Parameters")
         all_parameters = (
             "\nAPI function, use the chart kwarg for getting the view model and it's plot. "
-            "See every parmater below:\n\n\t"
+            "See every parmater below:\n\n    "
             + view.__doc__[index:]
             + """chart: bool
     If the view and its chart shall be used"""
