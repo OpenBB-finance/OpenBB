@@ -388,45 +388,6 @@ class CryptoController(CryptoBaseController):
             )
 
     @log_start_end(log=logger)
-    def call_pred(self, _):
-        """Process pred command"""
-        # IMPORTANT: 8/11/22 prediction was discontinued on the installer packages
-        # because forecasting in coming out soon.
-        # This if statement disallows installer package users from using 'pred'
-        # even if they turn on the OPENBB_ENABLE_PREDICT feature flag to true
-        # however it does not prevent users who clone the repo from using it
-        # if they have ENABLE_PREDICT set to true.
-        if obbff.PACKAGED_APPLICATION or not obbff.ENABLE_PREDICT:
-            console.print(
-                "Predict is disabled. Forecasting coming soon!",
-                "\n",
-            )
-        else:
-            if self.symbol:
-                try:
-                    from openbb_terminal.cryptocurrency.prediction_techniques import (
-                        pred_controller,
-                    )
-
-                    if self.current_interval != "1440":
-                        console.print("Only interval `1day` is possible for now.\n")
-                    else:
-                        self.queue = self.load_class(
-                            pred_controller.PredictionTechniquesController,
-                            self.symbol,
-                            self.current_df,
-                            self.queue,
-                        )
-                except ImportError:
-                    logger.exception("Tensorflow not available")
-                    console.print("[red]Run pip install tensorflow to continue[/red]\n")
-
-            else:
-                console.print(
-                    "No coin selected. Use 'load' to load the coin you want to look at.\n"
-                )
-
-    @log_start_end(log=logger)
     def call_onchain(self, _):
         """Process onchain command"""
         from openbb_terminal.cryptocurrency.onchain.onchain_controller import (
