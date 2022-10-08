@@ -570,8 +570,16 @@ def get_btc_rainbow(
         Final date timestamp. Default is current BTC timestamp
     """
 
-    dt_start_date = int(datetime.strptime(start_date + " 01:00:00", "%Y-%m-%d %H:%M:%S").astimezone(pytz.utc).timestamp())
-    dt_end_date = int(datetime.strptime(end_date + " 01:00:00", "%Y-%m-%d %H:%M:%S").astimezone(pytz.utc).timestamp())
+    dt_start_date = int(
+        datetime.strptime(
+            start_date + " 00:00:00+0000", "%Y-%m-%d %H:%M:%S%z"
+        ).timestamp()
+    )
+    dt_end_date = int(
+        datetime.strptime(
+            start_date + " 00:00:00+0000", "%Y-%m-%d %H:%M:%S%z"
+        ).timestamp()
+    )
 
     df_data = get_close_price("BTC", dt_start_date, dt_end_date)
 
