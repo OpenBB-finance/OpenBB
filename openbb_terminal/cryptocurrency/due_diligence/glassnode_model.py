@@ -3,6 +3,7 @@ import logging
 from datetime import datetime
 
 import pandas as pd
+import pytz
 import requests
 
 from openbb_terminal import config_terminal as cfg
@@ -569,8 +570,8 @@ def get_btc_rainbow(
         Final date timestamp. Default is current BTC timestamp
     """
 
-    dt_start_date = int(datetime.fromisoformat(start_date).timestamp())
-    dt_end_date = int(datetime.fromisoformat(end_date).timestamp())
+    dt_start_date = int(datetime.strptime(start_date + " 01:00:00", "%Y-%m-%d %H:%M:%S").astimezone(pytz.utc).timestamp())
+    dt_end_date = int(datetime.strptime(end_date + " 01:00:00", "%Y-%m-%d %H:%M:%S").astimezone(pytz.utc).timestamp())
 
     df_data = get_close_price("BTC", dt_start_date, dt_end_date)
 
