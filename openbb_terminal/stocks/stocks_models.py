@@ -99,7 +99,7 @@ def load_stock_eodhd(
         f"{start_date.strftime('%Y-%m-%d')}&"
         f"to={end_date.strftime('%Y-%m-%d')}&"
         f"period={int_}&"
-        f"api_token={cfg.API_EODHD_TOKEN}&"
+        f"api_token={cfg.API_EODHD_KEY}&"
         f"fmt=json&"
         f"order=d"
     )
