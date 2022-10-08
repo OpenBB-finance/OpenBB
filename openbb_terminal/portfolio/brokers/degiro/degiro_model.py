@@ -489,3 +489,8 @@ class DegiroModel:
 
         # Resetting the object after logout
         self.__init__()
+
+    @log_start_end(log=logger)
+    def check_credentials(self):
+        self.login()
+        return self.check_session_id()
