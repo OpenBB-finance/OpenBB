@@ -160,7 +160,7 @@ The OpenBB Terminal is based off the <a href="https://en.wikipedia.org/wiki/Comm
 which is installed by default on every computer. By opening the application you have installed via "Accessing the OpenBB Terminal",
 you are greeted with the following interface:
 
-<a target="_blank" href="https://user-images.githubusercontent.com/46355364/169503071-ffb2d88d-0786-4568-94c0-ad55c8f8f3e7.png"><img src="https://user-images.githubusercontent.com/46355364/169503071-ffb2d88d-0786-4568-94c0-ad55c8f8f3e7.png" alt="Main Menu" width="800"/></a>
+<a target="_blank" href="https://user-images.githubusercontent.com/85772166/194683764-ae1c6c0a-8d50-4533-b930-ec4b601017b8.png"><img src="https://user-images.githubusercontent.com/85772166/194683764-ae1c6c0a-8d50-4533-b930-ec4b601017b8.png" alt="Main Menu" width="800"/></a>
 
 The OpenBB Terminal is centered around keyboard input. To navigate and perform analysis you will have to type in the name of the command followed by an `ENTER` (⏎). If you wish to see information about the OpenBB Terminal you can do so by typing `about` and then press `ENTER` (⏎). As you are typing, you will notice that you receive suggestions, by using the `DOWN` (⌄) arrow and pressing `ENTER` (⏎) you can select the command and execute it.
 
@@ -178,7 +178,7 @@ Menus, depicted in <b><span style="color:#005CA9">Dark Blue</span></b>, take you
 to as a menu. For example, if you wish to view information about stocks, you can do so by typing `stocks` and pressing `ENTER` (⏎).
 This opens a new menu as depicted below.
 
-<a target="_blank" href="https://user-images.githubusercontent.com/46355364/169503240-922357c8-5e2b-41f0-aca2-c1fc849dcd1c.png"><img src="https://user-images.githubusercontent.com/46355364/169503240-922357c8-5e2b-41f0-aca2-c1fc849dcd1c.png" alt="Stocks Menu" width="800"/></a>
+<a target="_blank" href="https://user-images.githubusercontent.com/85772166/194683870-7888ad2f-5d38-4484-96a5-cbe95bf52d5b.png"><img src="https://user-images.githubusercontent.com/85772166/194683870-7888ad2f-5d38-4484-96a5-cbe95bf52d5b.png" alt="Stocks Menu" width="800"/></a>
 
 Depending on the menu you are in, you are presented with a new set of commands (see <a href="#explanation-of-commands">Explanation of Commands</a>)
 and menus you can select. There are interactions in place between each menu. For example, when selecting a company within
@@ -321,7 +321,7 @@ Within this menu you can define your, often free, API key from various platforms
 
 You can access this menu from the homepage with `keys` which will open the menu as shown below:
 
-<a target="_blank" href="https://user-images.githubusercontent.com/46355364/169802651-6e752a4c-9cfd-4ce1-a99c-978eee5a0aca.png"><img src="https://user-images.githubusercontent.com/46355364/169802651-6e752a4c-9cfd-4ce1-a99c-978eee5a0aca.png" width="800"/></a>
+<a target="_blank" href="https://user-images.githubusercontent.com/85772166/194684312-f12b7f26-8a04-4efe-bc94-fa516b7186d3.png"><img src="https://user-images.githubusercontent.com/85772166/194684312-f12b7f26-8a04-4efe-bc94-fa516b7186d3.png" width="800"/></a>
 
 Within this menu you are able to set your API keys to access the commands that require that key. You can do so by typing the command followed by the API key, for example: `fred a215egade08a8d47cfd49c849658a2be`. When you press `ENTER` (⏎) the terminal will test whether this API key works. If it does, you receive the message `defined, test passed` and if it does not, you receive the message `defined, test failed`.
 
@@ -356,6 +356,7 @@ To figure out where you can obtain the API key, you can enter the command (e.g. 
 | github     | GitHub                                   | https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api           |
 | messari    | Messari                                  | https://messari.io/api/docs                                                        |
 | cpanic     | Crypto Panic                             | https://cryptopanic.com/developers/api/                                            |
+| eodhd      | EODHD                                    | https://eodhistoricaldata.com/                                                     |
 | santiment  | Santiment                                | https://app.santiment.net/                                                         |
 
 ## Available menus within the OpenBB Terminal
