@@ -1802,4 +1802,3 @@ def load_json(path: str) -> Dict[str, str]:
         )
         console.print(f"[red]{e}[/red]")
         return {}
-
