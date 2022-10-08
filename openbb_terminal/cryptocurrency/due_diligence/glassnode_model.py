@@ -9,7 +9,10 @@ from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
+# pylint: disable=unsupported-assignment-operation
+
 logger = logging.getLogger(__name__)
+# pylint: disable=unsupported-assignment-operation
 
 api_url = "https://api.glassnode.com/v1/metrics/"
 
@@ -547,3 +550,28 @@ def get_exchange_net_position_change(
         console.print(r.text)
 
     return df
+
+
+@log_start_end(log=logger)
+def get_btc_rainbow(
+    start_date: str = "2010-01-01",
+    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+):
+    """Get bitcoin price data
+    [Price data from source: https://glassnode.com]
+    [Inspired by: https://blockchaincenter.net]
+
+    Parameters
+    ----------
+    start_date : int
+        Initial date timestamp. Default is initial BTC timestamp: 1_325_376_000
+    end_date : int
+        Final date timestamp. Default is current BTC timestamp
+    """
+
+    dt_start_date = int(datetime.strptime(start_date, "%Y-%m-%d").timestamp())
+    dt_end_date = int(datetime.strptime(end_date, "%Y-%m-%d").timestamp())
+
+    df_data = get_close_price("BTC", dt_start_date, dt_end_date)
+
+    return df_data

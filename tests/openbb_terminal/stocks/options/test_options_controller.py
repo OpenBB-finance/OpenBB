@@ -445,7 +445,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 limit=1,
                 sortby=["Vol"],
                 export="csv",
-                ascending=True,
+                ascend=True,
                 calls_only=False,
                 puts_only=True,
             ),
@@ -661,7 +661,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 "--max=2",
                 "--calls",
                 "--puts",
-                "--source=yf",
+                "--source=YahooFinance",
                 "--export=csv",
             ],
             "yfinance_view.plot_vol",
@@ -706,7 +706,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 "--minv=1",
                 "--min=2",
                 "--max=3",
-                "--source=yf",
+                "--source=YahooFinance",
                 "--export=csv",
             ],
             "yfinance_view.plot_volume_open_interest",
@@ -749,7 +749,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 "--max=2",
                 "--calls",
                 "--puts",
-                "--source=yf",
+                "--source=YahooFinance",
                 "--export=csv",
             ],
             "yfinance_view.plot_oi",
@@ -874,10 +874,10 @@ def test_call_func(
 ):
     path_controller = "openbb_terminal.stocks.options.options_controller"
 
-    # MOCK TRADIER_TOKEN
+    # MOCK API_TRADIER_TOKEN
     mocker.patch.object(
         target=options_controller,
-        attribute="TRADIER_TOKEN",
+        attribute="API_TRADIER_TOKEN",
         new="MOCK_TRADIER_TOKEN",
     )
 
@@ -998,7 +998,7 @@ def test_call_func_no_selected_date(func, mocker):
     "other_args",
     [
         ["TSLA"],
-        ["TSLA", "--source=yf"],
+        ["TSLA", "--source=YahooFinance"],
     ],
 )
 def test_call_load(mocker, other_args):

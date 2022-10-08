@@ -182,55 +182,6 @@ class SectorIndustryAnalysisController(BaseController):
         self.tickers: List = list()
         self.currency: str = ""
 
-        if ticker:
-            data = yf.utils.get_json(f"https://finance.yahoo.com/quote/{ticker}")
-
-            if "summaryProfile" in data:
-                self.country = data["summaryProfile"]["country"]
-                if self.country not in financedatabase_model.get_countries():
-                    similar_cmd = difflib.get_close_matches(
-                        self.country,
-                        financedatabase_model.get_countries(),
-                        n=1,
-                        cutoff=0.7,
-                    )
-                    if similar_cmd:
-                        self.country = similar_cmd[0]
-                self.sector = data["summaryProfile"]["sector"]
-                if self.sector not in financedatabase_model.get_sectors():
-                    similar_cmd = difflib.get_close_matches(
-                        self.sector,
-                        financedatabase_model.get_sectors(),
-                        n=1,
-                        cutoff=0.7,
-                    )
-                    if similar_cmd:
-                        self.sector = similar_cmd[0]
-                self.industry = data["summaryProfile"]["industry"]
-                if self.industry not in financedatabase_model.get_industries():
-                    similar_cmd = difflib.get_close_matches(
-                        self.industry,
-                        financedatabase_model.get_industries(),
-                        n=1,
-                        cutoff=0.7,
-                    )
-                    if similar_cmd:
-                        self.industry = similar_cmd[0]
-            if "price" in data:
-                mktcap = data["price"]["marketCap"]
-                if mktcap < 50_000_000:
-                    self.mktcap = "Nano"
-                elif mktcap < 300_000_000:
-                    self.mktcap = "Micro"
-                elif mktcap < 2_000_000_000:
-                    self.mktcap = "Small"
-                elif mktcap > 200_000_000_000:
-                    self.mktcap = "Mega"
-                elif mktcap > 10_000_000_000:
-                    self.mktcap = "Large"
-                else:
-                    self.mktcap = "Mid"
-
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["mktcap"] = {c: None for c in self.mktcap_choices}
@@ -243,7 +194,7 @@ class SectorIndustryAnalysisController(BaseController):
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
 
-            self.update_runtime_choices()
+        self.__load()
 
     def update_runtime_choices(self):
         """Update runtime choices"""
@@ -279,7 +230,7 @@ class SectorIndustryAnalysisController(BaseController):
         mt.add_cmd("country")
         mt.add_cmd("mktcap")
         mt.add_cmd("exchange")
-        mt.add_cmd("period", "StockAnalysis")
+        mt.add_cmd("period")
         mt.add_raw("\n")
         mt.add_param("_industry", self.industry, 18)
         mt.add_param("_sector", self.sector, 18)
@@ -289,20 +240,20 @@ class SectorIndustryAnalysisController(BaseController):
         mt.add_param("_period", self.period, 18)
         mt.add_raw("\n")
         mt.add_info("_statistics_")
-        mt.add_cmd("cps", "", self.country)
-        mt.add_cmd("cpic", "", self.country)
-        mt.add_cmd("cpis", "", self.sector)
-        mt.add_cmd("cpcs", "", self.sector)
-        mt.add_cmd("cpci", "", self.industry)
+        mt.add_cmd("cps", self.country)
+        mt.add_cmd("cpic", self.country)
+        mt.add_cmd("cpis", self.sector)
+        mt.add_cmd("cpcs", self.sector)
+        mt.add_cmd("cpci", self.industry)
         mt.add_raw("\n")
         if self.stocks_data:
             mt.add_info("_financials_")
         else:
             mt.add_info("_financials_loaded_")
-        mt.add_cmd("sama", "Yahoo Finance")
-        mt.add_cmd("metric", "Yahoo Finance")
-        mt.add_cmd("satma", "StockAnalysis")
-        mt.add_cmd("vis", "StockAnalysis")
+        mt.add_cmd("sama")
+        mt.add_cmd("metric")
+        mt.add_cmd("satma")
+        mt.add_cmd("vis")
         mt.add_raw("\n")
         mt.add_param("_returned_tickers", ", ".join(self.tickers))
         mt.add_menu("ca", self.tickers)
@@ -345,61 +296,80 @@ class SectorIndustryAnalysisController(BaseController):
                 else:
                     self.ticker = ns_parser.ticker.upper()
 
-                data = yf.utils.get_json(
-                    f"https://finance.yahoo.com/quote/{self.ticker}"
+                self.__load()
+
+    def __load(self):
+        if self.ticker:
+            data = yf.utils.get_json(f"https://finance.yahoo.com/quote/{self.ticker}")
+
+            if "summaryProfile" not in data or data["summaryProfile"] is None:
+                raise Exception(
+                    f"Failed to load {self.ticker} Summary Profile from Yahoo Finance"
                 )
 
-                if "summaryProfile" in data:
-                    self.country = data["summaryProfile"]["country"]
-                    if self.country not in financedatabase_model.get_countries():
-                        similar_cmd = difflib.get_close_matches(
-                            self.country,
-                            financedatabase_model.get_countries(),
-                            n=1,
-                            cutoff=0.7,
-                        )
-                        if similar_cmd:
-                            self.country = similar_cmd[0]
+            if not data["summaryProfile"]["country"]:
+                raise Exception(
+                    f"Failed to load {self.ticker} Country from Yahoo Finance"
+                )
 
-                    self.sector = data["summaryProfile"]["sector"]
-                    if self.sector not in financedatabase_model.get_sectors():
-                        similar_cmd = difflib.get_close_matches(
-                            self.sector,
-                            financedatabase_model.get_sectors(),
-                            n=1,
-                            cutoff=0.7,
-                        )
-                        if similar_cmd:
-                            self.sector = similar_cmd[0]
+            if not data["summaryProfile"]["sector"]:
+                raise Exception(
+                    f"Failed to load {self.ticker} Sector from Yahoo Finance"
+                )
 
-                    self.industry = data["summaryProfile"]["industry"]
-                    if self.industry not in financedatabase_model.get_industries():
-                        similar_cmd = difflib.get_close_matches(
-                            self.industry,
-                            financedatabase_model.get_industries(),
-                            n=1,
-                            cutoff=0.7,
-                        )
-                        if similar_cmd:
-                            self.industry = similar_cmd[0]
+            if not data["summaryProfile"]["industry"]:
+                raise Exception(
+                    f"Failed to load {self.ticker} Industry from Yahoo Finance"
+                )
 
-                if "price" in data:
-                    mktcap = data["price"]["marketCap"]
-                    if mktcap < 50_000_000:
-                        self.mktcap = "Nano"
-                    elif mktcap < 300_000_000:
-                        self.mktcap = "Micro"
-                    elif mktcap < 2_000_000_000:
-                        self.mktcap = "Small"
-                    elif mktcap > 200_000_000_000:
-                        self.mktcap = "Mega"
-                    elif mktcap > 10_000_000_000:
-                        self.mktcap = "Large"
-                    else:
-                        self.mktcap = "Mid"
+            self.country = data["summaryProfile"]["country"]
+            if self.country not in financedatabase_model.get_countries():
+                similar_cmd = difflib.get_close_matches(
+                    self.country,
+                    financedatabase_model.get_countries(),
+                    n=1,
+                    cutoff=0.7,
+                )
+                if similar_cmd:
+                    self.country = similar_cmd[0]
+            self.sector = data["summaryProfile"]["sector"]
+            if self.sector not in financedatabase_model.get_sectors():
+                similar_cmd = difflib.get_close_matches(
+                    self.sector,
+                    financedatabase_model.get_sectors(),
+                    n=1,
+                    cutoff=0.7,
+                )
+                if similar_cmd:
+                    self.sector = similar_cmd[0]
+            self.industry = data["summaryProfile"]["industry"]
+            if self.industry not in financedatabase_model.get_industries():
+                similar_cmd = difflib.get_close_matches(
+                    self.industry,
+                    financedatabase_model.get_industries(),
+                    n=1,
+                    cutoff=0.7,
+                )
+                if similar_cmd:
+                    self.industry = similar_cmd[0]
 
-                self.stocks_data = {}
-                self.update_runtime_choices()
+            if "price" in data:
+                mktcap = data["price"]["marketCap"]
+                if mktcap < 50_000_000:
+                    self.mktcap = "Nano"
+                elif mktcap < 300_000_000:
+                    self.mktcap = "Micro"
+                elif mktcap < 2_000_000_000:
+                    self.mktcap = "Small"
+                elif mktcap > 200_000_000_000:
+                    self.mktcap = "Mega"
+                elif mktcap > 10_000_000_000:
+                    self.mktcap = "Large"
+                else:
+                    self.mktcap = "Mid"
+
+            self.stocks_data = {}
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_industry(self, other_args: List[str]):

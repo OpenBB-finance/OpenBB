@@ -191,58 +191,58 @@ class DueDiligenceController(CryptoBaseController):
         mt.add_raw("\n")
 
         mt.add_info("_overview_")
-        mt.add_cmd("info", "CoinGecko")
-        mt.add_cmd("basic", "CoinPaprika")
-        mt.add_cmd("ath", "CoinGecko")
-        mt.add_cmd("atl", "CoinGecko")
-        mt.add_cmd("web", "CoinGecko")
-        mt.add_cmd("pi", "Messari")
-        mt.add_cmd("gov", "Messari")
-        mt.add_cmd("stats", "Coinbase")
-        mt.add_cmd("bc", "CoinGecko")
-        mt.add_cmd("desc", "TokenTerminal")
+        mt.add_cmd("info")
+        mt.add_cmd("ath")
+        mt.add_cmd("atl")
+        mt.add_cmd("web")
+        mt.add_cmd("bc")
+        mt.add_cmd("pi")
+        mt.add_cmd("gov")
+        mt.add_cmd("basic")
+        mt.add_cmd("stats")
+        mt.add_cmd("desc")
 
         mt.add_info("_market_")
-        mt.add_cmd("market", "CoinGecko")
-        mt.add_cmd("mkt", "CoinPaprika")
-        mt.add_cmd("balance", "Binance")
-        mt.add_cmd("ex", "CoinPaprika")
-        mt.add_cmd("oi", "Coinglass")
-        mt.add_cmd("fundrate", "Coinglass")
-        mt.add_cmd("liquidations", "Coinglass")
-        mt.add_cmd("eb", "Glassnode")
-        mt.add_cmd("trades", "CCXT")
-        mt.add_cmd("ob", "CCXT")
+        mt.add_cmd("market")
+        mt.add_cmd("mkt")
+        mt.add_cmd("ex")
+        mt.add_cmd("balance")
+        mt.add_cmd("oi")
+        mt.add_cmd("fundrate")
+        mt.add_cmd("liquidations")
+        mt.add_cmd("eb")
+        mt.add_cmd("trades")
+        mt.add_cmd("ob")
 
         mt.add_info("_metrics_")
-        mt.add_cmd("mcapdom", "Messari")
-        mt.add_cmd("active", "Glassnode")
-        mt.add_cmd("nonzero", "Glassnode")
-        mt.add_cmd("change", "Glassnode")
-        mt.add_cmd("ps", "CoinPaprika")
-        mt.add_cmd("mt", "Messari")
-        mt.add_cmd("funot", "TokenTerminal")
+        mt.add_cmd("active")
+        mt.add_cmd("nonzero")
+        mt.add_cmd("change")
+        mt.add_cmd("ps")
+        mt.add_cmd("mcapdom")
+        mt.add_cmd("mt")
+        mt.add_cmd("funot")
 
         mt.add_info("_contributors_")
-        mt.add_cmd("team", "Messari")
-        mt.add_cmd("inv", "Messari")
+        mt.add_cmd("team")
+        mt.add_cmd("inv")
 
         mt.add_info("_tokenomics_")
-        mt.add_cmd("tk", "Messari")
-        mt.add_cmd("fr", "Messari")
+        mt.add_cmd("tk")
+        mt.add_cmd("fr")
 
         mt.add_info("_roadmap_")
-        mt.add_cmd("rm", "Messari")
-        mt.add_cmd("events", "CoinPaprika")
-        mt.add_cmd("news", "CryptoPanic")
+        mt.add_cmd("rm")
+        mt.add_cmd("events")
+        mt.add_cmd("news")
 
         mt.add_info("_activity_")
-        mt.add_cmd("links", "Messari")
-        mt.add_cmd("social", "CoinGecko")
-        mt.add_cmd("twitter", "CoinPaprika")
-        mt.add_cmd("score", "CoinGecko")
-        mt.add_cmd("dev", "CoinGecko")
-        mt.add_cmd("gh", "Santiment")
+        mt.add_cmd("links")
+        mt.add_cmd("twitter")
+        mt.add_cmd("social")
+        mt.add_cmd("score")
+        mt.add_cmd("dev")
+        mt.add_cmd("gh")
         console.print(text=mt.menu_text, menu="Crypto - Due Diligence")
 
     def custom_reset(self):
@@ -542,9 +542,9 @@ class DueDiligenceController(CryptoBaseController):
             "-i",
             "--interval",
             dest="interval",
-            type=int,
+            type=str,
             help="Frequency interval. Default: 0",
-            default=0,
+            default="0",
             choices=coinglass_model.INTERVALS,
         )
 
@@ -552,10 +552,15 @@ class DueDiligenceController(CryptoBaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
+        try:
+            interval = int(ns_parser.interval)
+        except ValueError:
+            console.print("[red]Interval must be an integer value[/red]\n")
+
         if ns_parser:
             coinglass_view.display_open_interest(
                 symbol=self.symbol.upper(),
-                interval=ns_parser.interval,
+                interval=interval,
                 export=ns_parser.export,
             )
 
@@ -1374,8 +1379,8 @@ class DueDiligenceController(CryptoBaseController):
                 symbol=self.symbol.upper(),
                 interval=ns_parser.interval,
                 dev_activity=ns_parser.dev,
-                start=ns_parser.start.strftime("%Y-%m-%dT%H:%M:%SZ"),
-                end=ns_parser.end.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                start_date=ns_parser.start.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                end_date=ns_parser.end.strftime("%Y-%m-%dT%H:%M:%SZ"),
             )
 
     @log_start_end(log=logger)
@@ -1750,8 +1755,8 @@ class DueDiligenceController(CryptoBaseController):
         if ns_parser:
             cryptopanic_view.display_news(
                 limit=ns_parser.limit,
-                source=self.source,
-                currency=self.symbol,
+                source=None,
+                symbol=self.symbol,
                 export=ns_parser.export,
                 ascend=not ns_parser.descend,
                 post_kind=ns_parser.kind,

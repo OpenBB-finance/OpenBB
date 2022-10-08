@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.28.1
+      - python-requests/2.27.1
     method: GET
     uri: https://api.whale-alert.io/v1/transactions?api_key=VALIDKEY
   response:
@@ -21,7 +21,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 72920ffc188d1c9c-SOF
+      - 74527dd4fbafe67c-LHR
       Connection:
       - keep-alive
       Content-Length:
@@ -29,13 +29,11 @@ interactions:
       Content-Type:
       - text/plain; charset=utf-8
       Date:
-      - Mon, 11 Jul 2022 13:59:55 GMT
-      Expect-CT:
-      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      - Sun, 04 Sep 2022 00:08:35 GMT
       NEL:
       - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
       Report-To:
-      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=51JByi6dTjyG4uhHGo3MdXtLqCz1wDbP1emC3wjOQ3oCrQT7F3N6OQ%2F007u7P7rGe5ZqbavEI2K8UAX5b2IyqPvTMFlyqlt76NOYTT2VOzK4sMTNlWsi4%2FlnStGqJEDxPVw9Ooo%3D"}],"group":"cf-nel","max_age":604800}'
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=88vCXvn6%2FNXbONcPSWHNO%2B%2BYMuI4tqN0Rcy9g5r%2B2ehYpuGArUdvk86pKvezKb9%2BZp%2Fg1gfOtj1UvR%2FykLHyiCfAl1Vfur%2F5tsXfd%2BdgvEmn2uXV77zPNZd3hwAX10qKmiiZEKnqVo%2F5y9d04tkIELA%3D"}],"group":"cf-nel","max_age":604800}'
       Server:
       - cloudflare
       alt-svc:

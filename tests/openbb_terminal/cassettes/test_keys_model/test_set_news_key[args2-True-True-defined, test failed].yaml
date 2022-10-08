@@ -1,0 +1,50 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+    method: GET
+    uri: https://newsapi.org/v2/everything?q=keyword&apiKey=test_key
+  response:
+    body:
+      string: '{"status":"error","code":"apiKeyInvalid","message":"Your API key is
+        invalid or incorrect. Check your key, or go to https://newsapi.org to create
+        a free API key."}'
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 754e8290989a94e9-LIS
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '162'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 04 Oct 2022 14:12:00 GMT
+      Expires:
+      - '-1'
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Pragma:
+      - no-cache
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=Gzu7JsPRszgutgQgmKZn37C8vZutiW6ja%2BjcEtsxxafx5RTA1HMbz2z9fVq%2Btt1jwuHHkeSoKOrTEyKYAePDecCT7Ncy7BY0yGdndOlD1enL961k9XN%2BGyISvo9f"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      X-Cached-Result:
+      - 'false'
+    status:
+      code: 401
+      message: Unauthorized
+version: 1

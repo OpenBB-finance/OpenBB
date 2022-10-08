@@ -27,8 +27,7 @@ from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.portfolio import portfolio_helper
 
-# pylint: disable=no-member
-# pylint: disable=no-else-return
+# pylint: disable=no-member,no-else-return
 
 
 logger = logging.getLogger(__name__)
@@ -404,13 +403,14 @@ class DegiroModel:
         products_df["productId"] = products_df["productId"].astype("int")
         transactions_full_df = pd.merge(
             transactions_df,
-            products_df[{"productId", "symbol", "productType"}],
+            products_df[{"productId", "symbol", "productType", "isin"}],
             on="productId",
         )
 
         portfolio_df = transactions_full_df.rename(
             columns={
                 "date": "Date",
+                "isin": "ISIN",
                 "symbol": "Ticker",
                 "productType": "Type",  # STOCK or ETF
                 "price": "Price",
@@ -428,6 +428,7 @@ class DegiroModel:
         ).dt.date
         columns = [
             "Date",
+            "ISIN",
             "Ticker",
             "Type",
             "Price",

@@ -1,17 +1,17 @@
 ```text
-usage: cashflow [-q] [-t S_TIMEFRAME] [--export {csv,json,xlsx}] [-h]
+usage: cashflow [-q] [-t S_TIMEFRAME] [-h] [--export EXPORT]
 ```
 
-Compares the cashflow statements of the selected companies. 
+Prints either yearly or quarterly cashflow statement the company, and compares it against similar companies. 
 
 ```
 optional arguments:
   -q, --quarter         Quarter financial data flag. (default: False)
   -t S_TIMEFRAME, --timeframe S_TIMEFRAME
-                        Specify yearly/quarterly timeframe. Default is last. (default: None)
-  --export {csv,json,xlsx}
-                        Export dataframe data to csv,json,xlsx file (default: )
+                        Specify year/quarter of the cashflow statement to be retrieved. The format for year is YYYY and for quarter is DD-MMM-YYY (for example,
+                        30-Sep-2021). Default is last year/quarter. (default: None)
   -h, --help            show this help message (default: False)
+  --export EXPORT       Export raw data into csv, json, xlsx (default: )
 ```
 
 Example:

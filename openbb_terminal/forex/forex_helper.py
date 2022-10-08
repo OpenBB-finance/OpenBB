@@ -19,14 +19,14 @@ from openbb_terminal.config_terminal import theme
 
 
 FOREX_SOURCES: Dict = {
-    "yf": "YahooFinance",
-    "av": "AlphaAdvantage",
-    "oanda": "Oanda",
-    "polygon": "Polygon",
+    "YahooFinance": "YahooFinance",
+    "AlphaVantage": "AlphaAdvantage",
+    "Oanda": "Oanda",
+    "Polygon": "Polygon",
 }
 
 SOURCES_INTERVALS: Dict = {
-    "yf": [
+    "YahooFinance": [
         "1min",
         "2min",
         "5min",
@@ -41,11 +41,11 @@ SOURCES_INTERVALS: Dict = {
         "1month",
         "3month",
     ],
-    "av": ["1min", "5min", "15min", "30min", "60min"],
+    "AlphaVantage": ["1min", "5min", "15min", "30min", "60min"],
 }
 
 INTERVAL_MAPS: Dict = {
-    "yf": {
+    "YahooFinance": {
         "1min": "1m",
         "2min": "2m",
         "5min": "5m",
@@ -60,7 +60,7 @@ INTERVAL_MAPS: Dict = {
         "1month": "1mo",
         "3month": "3mo",
     },
-    "av": {"1min": 1, "5min": 5, "15min": 15, "30min": 30, "60min": 60},
+    "AlphaVantage": {"1min": 1, "5min": 5, "15min": 15, "30min": 30, "60min": 60},
 }
 
 logger = logging.getLogger(__name__)
@@ -75,8 +75,8 @@ def load(
     resolution: str = "d",
     interval: str = "1day",
     start_date: str = last_year.strftime("%Y-%m-%d"),
-    source: str = "yf",
-):
+    source: str = "YahooFinance",
+) -> pd.DataFrame:
     """Loads forex for two given symbols
 
     Parameters
@@ -93,8 +93,13 @@ def load(
         When to begin loading in data
     source: str
         Where to get data from
+
+    Returns
+    -------
+    pd.DataFrame
+        The loaded data
     """
-    if source in ["yf", "av"]:
+    if source in ["YahooFinance", "AlphaVantage"]:
         interval_map = INTERVAL_MAPS[source]
 
         if interval not in interval_map.keys():
@@ -105,7 +110,7 @@ def load(
             )
             return pd.DataFrame()
 
-        if source == "av":
+        if source == "AlphaVantage":
 
             df = av_model.get_historical(
                 to_symbol=to_symbol,
@@ -115,7 +120,7 @@ def load(
                 start_date=start_date,
             )
 
-        if source == "yf":
+        if source == "YahooFinance":
 
             df = yf.download(
                 f"{from_symbol}{to_symbol}=X",
@@ -125,7 +130,7 @@ def load(
                 progress=False,
             )
 
-    if source == "polygon":
+    if source == "Polygon":
         # Interval for polygon gets broken into mulltiplier and timeframe
         temp = re.split(r"(\d+)", interval)
         multiplier = int(temp[1])
@@ -233,10 +238,7 @@ def display_candle(
             )
         if ma:
             # Manually construct the chart legend
-            colors = []
-
-            for i, _ in enumerate(ma):
-                colors.append(theme.get_colors()[i])
+            colors = [theme.get_colors()[i] for i, _ in enumerate(ma)]
 
             lines = [Line2D([0], [0], color=c) for c in colors]
             labels = ["MA " + str(label) for label in ma]

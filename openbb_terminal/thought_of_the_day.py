@@ -1,9 +1,9 @@
 """ Thought of The Day """
-__docformat__ = "numpy"
+
+from __future__ import annotations
 
 import random
 import re
-from typing import Dict
 
 import requests
 from bs4 import BeautifulSoup
@@ -11,14 +11,16 @@ from bs4 import BeautifulSoup
 from openbb_terminal.helper_funcs import get_user_agent
 from openbb_terminal.rich_config import console
 
+__docformat__ = "numpy"
+
 
 class ThoughtOfTheDay:
     """ThoughtOfTheDay class"""
 
-    def __init__(self, urls: Dict[str, str] = None):
+    def __init__(self, urls: dict[str, str] = None):
         """Constructor"""
 
-        self.metadata = {}  # type: Dict
+        self.metadata: dict = {}
 
         if urls is None:
             self.urls = {
@@ -64,9 +66,10 @@ class ThoughtOfTheDay:
             "div"
         )
 
-        page_count = []
-        for a_page_ref in find_navigation.find_all("a", href=True):
-            page_count.append(a_page_ref.text.strip("\n"))
+        page_count = [
+            a_page_ref.text.strip("\n")
+            for a_page_ref in find_navigation.find_all("a", href=True)
+        ]
 
         ret = {}
         ret["pages"] = page_count[-2]
@@ -134,6 +137,8 @@ def get_thought_of_the_day():
         quotes = quotes + metadata["quotes"]
 
     console.print("Thought of the day:")
-    console.print(totd.quote_to_str(quotes[random.randint(0, len(quotes) - 1)]))
+    console.print(
+        totd.quote_to_str(quotes[random.randint(0, len(quotes) - 1)])  # nosec
+    )
 
     console.print("")

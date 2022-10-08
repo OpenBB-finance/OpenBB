@@ -7,14 +7,16 @@ import logging
 import financedatabase as fd
 import yfinance as yf
 from tqdm import tqdm
+from requests.exceptions import ReadTimeout
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_countries(industry: str = "", sector: str = ""):
+def get_countries(industry: str = "", sector: str = "") -> list:
     """Get all countries in Yahoo Finance data based on sector or industry. [Source: Finance Database]
 
     Parameters
@@ -39,7 +41,7 @@ def get_countries(industry: str = "", sector: str = ""):
 
 
 @log_start_end(log=logger)
-def get_sectors(industry: str = "", country: str = ""):
+def get_sectors(industry: str = "", country: str = "") -> list:
     """Get all sectors in Yahoo Finance data based on country or industry. [Source: Finance Database]
 
     Parameters
@@ -64,7 +66,7 @@ def get_sectors(industry: str = "", country: str = ""):
 
 
 @log_start_end(log=logger)
-def get_industries(country: str = "", sector: str = ""):
+def get_industries(country: str = "", sector: str = "") -> list:
     """Get all industries in Yahoo Finance data based on country or sector. [Source: Finance Database]
 
     Parameters
@@ -92,7 +94,7 @@ def get_industries(country: str = "", sector: str = ""):
 
 
 @log_start_end(log=logger)
-def get_marketcap():
+def get_marketcap() -> list:
     """Get all market cap division in Yahoo Finance data. [Source: Finance Database]
 
     Returns
@@ -100,7 +102,7 @@ def get_marketcap():
     list
         List of possible market caps
     """
-    return list(["Small Cap", "Mid Cap", "Large Cap"])
+    return ["Small Cap", "Mid Cap", "Large Cap"]
 
 
 @log_start_end(log=logger)
@@ -110,8 +112,9 @@ def filter_stocks(
     industry: str = None,
     marketcap: str = "",
     exclude_exchanges: bool = True,
-):
-    """Filter stocks based on country, sector, industry, market cap and exclude exchanges. [Source: Finance Database]
+) -> list:
+    """Filter stocks based on country, sector, industry, market cap and exclude exchanges.
+    [Source: Finance Database]
 
     Parameters
     ----------
@@ -131,58 +134,15 @@ def filter_stocks(
     list
         List of filtered stocks
     """
+    kwargs = {}
+    if country:
+        kwargs["country"] = country
+    if sector:
+        kwargs["sector"] = sector
+    if industry:
+        kwargs["industry"] = industry
     try:
-        if country:
-            if sector:
-                if industry:
-                    data = fd.select_equities(
-                        country=country,
-                        sector=sector,
-                        industry=industry,
-                        exclude_exchanges=exclude_exchanges,
-                    )
-                else:  # no industry
-                    data = fd.select_equities(
-                        country=country,
-                        sector=sector,
-                        exclude_exchanges=exclude_exchanges,
-                    )
-            else:  # no sector
-                if industry:
-                    data = fd.select_equities(
-                        country=country,
-                        industry=industry,
-                        exclude_exchanges=exclude_exchanges,
-                    )
-                else:  # no industry
-                    data = fd.select_equities(
-                        country=country,
-                        exclude_exchanges=exclude_exchanges,
-                    )
-
-        else:  # no country
-            if sector:
-                if industry:
-                    data = fd.select_equities(
-                        sector=sector,
-                        industry=industry,
-                        exclude_exchanges=exclude_exchanges,
-                    )
-                else:  # no industry
-                    data = fd.select_equities(
-                        sector=sector,
-                        exclude_exchanges=exclude_exchanges,
-                    )
-            else:  # no sector
-                if industry:
-                    data = fd.select_equities(
-                        industry=industry,
-                        exclude_exchanges=exclude_exchanges,
-                    )
-                else:  # no industry
-                    data = fd.select_equities(
-                        exclude_exchanges=exclude_exchanges,
-                    )
+        data = fd.select_equities(exclude_exchanges=exclude_exchanges, **kwargs)
 
         if marketcap:
             data = fd.search_products(data, query=marketcap, search="market_cap")
@@ -191,18 +151,27 @@ def filter_stocks(
 
     except ValueError as e:
         logger.exception(str(e))
-        return list()
+        return []
+
+    except ReadTimeout:
+        console.print(
+            "[red]Unable to retrieve company data from GitHub which limits the search"
+            " capabilities. This tends to be due to access restrictions for GitHub.com,"
+            " please check if you can access this website without a VPN.[/red]\n"
+        )
+        return []
 
 
 @log_start_end(log=logger)
 def get_stocks_data(
-    country: str = None,
-    sector: str = None,
-    industry: str = None,
-    marketcap: str = "",
+    country: str = "United States",
+    sector: str = "Communication Services",
+    industry: str = "Internet Content & Information",
+    marketcap: str = "Mega Cap",
     exclude_exchanges: bool = True,
-):
-    """Get stocks data based on country, sector, industry, market cap and exclude exchanges. [Source: Finance Database]
+) -> dict:
+    """Get stocks data based on country, sector, industry, market cap and exclude exchanges.
+    [Source: Finance Database]
 
     Parameters
     ----------
@@ -224,19 +193,20 @@ def get_stocks_data(
     """
     stocks = filter_stocks(country, sector, industry, marketcap, exclude_exchanges)
 
-    stocks_data = {}
-    for symbol in tqdm(stocks):
-        stocks_data[symbol] = yf.utils.get_json(
-            f"https://finance.yahoo.com/quote/{symbol}"
-        )
+    stocks_data = {
+        symbol: yf.utils.get_json(f"https://finance.yahoo.com/quote/{symbol}")
+        for symbol in tqdm(stocks)
+    }
 
     return stocks_data
 
 
 @log_start_end(log=logger)
 def get_companies_per_sector_in_country(
-    country: str, mktcap: str = "", exclude_exchanges: bool = True
-):
+    country: str = "United States",
+    mktcap: str = "Large",
+    exclude_exchanges: bool = True,
+) -> dict:
     """Get number of companies per sector in a specific country (and specific market cap). [Source: Finance Database]
 
     Parameters
@@ -270,14 +240,25 @@ def get_companies_per_sector_in_country(
             except ValueError as e:
                 logger.exception(str(e))
 
+            except ReadTimeout:
+                console.print(
+                    "[red]Unable to retrieve company data from GitHub which limits the search"
+                    " capabilities. This tends to be due to access restrictions for GitHub.com,"
+                    " please check if you can access this website without a VPN.[/red]\n"
+                )
+                return {}
+
     return companies_per_sector
 
 
 @log_start_end(log=logger)
 def get_companies_per_industry_in_country(
-    country: str, mktcap: str = "", exclude_exchanges: bool = True
+    country: str = "United States",
+    mktcap: str = "Large",
+    exclude_exchanges: bool = True,
 ):
-    """Get number of companies per industry in a specific country (and specific market cap). [Source: Finance Database]
+    """Get number of companies per industry in a specific country (and specific market cap).
+    [Source: Finance Database]
 
     Parameters
     ----------
@@ -313,14 +294,23 @@ def get_companies_per_industry_in_country(
             except ValueError as e:
                 logger.exception(str(e))
 
+            except ReadTimeout:
+                console.print(
+                    "[red]Unable to retrieve company data from GitHub which limits the search"
+                    " capabilities. This tends to be due to access restrictions for GitHub.com,"
+                    " please check if you can access this website without a VPN.[/red]\n"
+                )
+                return {}
+
     return companies_per_industry
 
 
 @log_start_end(log=logger)
 def get_companies_per_industry_in_sector(
-    sector: str, mktcap: str = "", exclude_exchanges: bool = True
-):
-    """Get number of companies per industry in a specific sector (and specific market cap). [Source: Finance Database]
+    sector: str = "Technology", mktcap: str = "Large", exclude_exchanges: bool = True
+) -> dict:
+    """Get number of companies per industry in a specific sector (and specific market cap).
+    [Source: Finance Database]
 
     Parameters
     ----------
@@ -355,14 +345,23 @@ def get_companies_per_industry_in_sector(
             except ValueError as e:
                 logger.exception(str(e))
 
+            except ReadTimeout:
+                console.print(
+                    "[red]Unable to retrieve company data from GitHub which limits the search"
+                    " capabilities. This tends to be due to access restrictions for GitHub.com,"
+                    " please check if you can access this website without a VPN.[/red]\n"
+                )
+                return {}
+
     return companies_per_industry
 
 
 @log_start_end(log=logger)
 def get_companies_per_country_in_sector(
-    sector: str, mktcap: str = "", exclude_exchanges: bool = True
-):
-    """Get number of companies per country in a specific sector (and specific market cap). [Source: Finance Database]
+    sector: str = "Technology", mktcap: str = "Large", exclude_exchanges: bool = True
+) -> dict:
+    """Get number of companies per country in a specific sector (and specific market cap).
+    [Source: Finance Database]
 
     Parameters
     ----------
@@ -397,14 +396,25 @@ def get_companies_per_country_in_sector(
             except ValueError as e:
                 logger.exception(str(e))
 
+            except ReadTimeout:
+                console.print(
+                    "[red]Unable to retrieve company data from GitHub which limits the search"
+                    " capabilities. This tends to be due to access restrictions for GitHub.com,"
+                    " please check if you can access this website without a VPN.[/red]\n"
+                )
+                return {}
+
     return companies_per_country
 
 
 @log_start_end(log=logger)
 def get_companies_per_country_in_industry(
-    industry: str, mktcap: str = "", exclude_exchanges: bool = True
-):
-    """Get number of companies per country in a specific industry (and specific market cap). [Source: Finance Database]
+    industry: str = "Internet Content & Information",
+    mktcap: str = "Large",
+    exclude_exchanges: bool = True,
+) -> dict:
+    """Get number of companies per country in a specific industry (and specific market cap).
+    [Source: Finance Database]
 
     Parameters
     ----------
@@ -438,5 +448,13 @@ def get_companies_per_country_in_industry(
 
             except ValueError as e:
                 logger.exception(str(e))
+
+            except ReadTimeout:
+                console.print(
+                    "[red]Unable to retrieve company data from GitHub which limits the search"
+                    " capabilities. This tends to be due to access restrictions for GitHub.com,"
+                    " please check if you can access this website without a VPN.[/red]\n"
+                )
+                return {}
 
     return companies_per_country

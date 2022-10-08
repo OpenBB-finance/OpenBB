@@ -33,7 +33,7 @@ COINS_COLUMNS = [
 
 @log_start_end(log=logger)
 def display_coins(
-    category: str, top: int = 250, sortby: str = "Symbol", export: str = ""
+    category: str, limit: int = 250, sortby: str = "Symbol", export: str = ""
 ) -> None:
     """Display top coins [Source: CoinGecko]
 
@@ -41,14 +41,14 @@ def display_coins(
     ----------
     category: str
         If no category is passed it will search for all coins. (E.g., smart-contract-platform)
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key to sort data
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    df = pycoingecko_model.get_coins(top=top, category=category, sortby=sortby)
+    df = pycoingecko_model.get_coins(limit=limit, category=category, sortby=sortby)
     if not df.empty:
         df = df[
             [
@@ -70,7 +70,7 @@ def display_coins(
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
         print_rich_table(
-            df.head(top),
+            df.head(limit),
             headers=list(df.columns),
             show_index=False,
         )
@@ -87,15 +87,18 @@ def display_coins(
 
 @log_start_end(log=logger)
 def display_gainers(
-    period: str = "1h", top: int = 20, sortby: str = "market_cap_rank", export: str = ""
+    interval: str = "1h",
+    limit: int = 20,
+    sortby: str = "market_cap_rank",
+    export: str = "",
 ) -> None:
     """Shows Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]
 
     Parameters
     ----------
-    period: str
+    interval: str
         Time period by which data is displayed. One from [1h, 24h, 7d, 14d, 30d, 60d, 1y]
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key to sort data. The table can be sorted by every of its columns. Refer to
@@ -104,9 +107,7 @@ def display_gainers(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = pycoingecko_model.get_gainers_or_losers(
-        top=top, period=period, typ="gainers", sortby=sortby
-    )
+    df = pycoingecko_model.get_gainers(limit=limit, interval=interval, sortby=sortby)
     if not df.empty:
         if sortby in COINS_COLUMNS:
             df = df[
@@ -116,7 +117,7 @@ def display_gainers(
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
         print_rich_table(
-            df.head(top),
+            df.head(limit),
             headers=list(df.columns),
             show_index=False,
         )
@@ -133,15 +134,18 @@ def display_gainers(
 
 @log_start_end(log=logger)
 def display_losers(
-    period: str = "1h", top: int = 20, export: str = "", sortby: str = "Market Cap Rank"
+    interval: str = "1h",
+    limit: int = 20,
+    export: str = "",
+    sortby: str = "Market Cap Rank",
 ) -> None:
     """Shows Largest Losers - coins which lost the most in given period of time. [Source: CoinGecko]
 
     Parameters
     ----------
-    period: str
+    interval: str
         Time period by which data is displayed. One from [1h, 24h, 7d, 14d, 30d, 60d, 1y]
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key to sort data. The table can be sorted by every of its columns. Refer to
@@ -150,15 +154,13 @@ def display_losers(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = pycoingecko_model.get_gainers_or_losers(
-        top=top, period=period, typ="losers", sortby=sortby
-    )
+    df = pycoingecko_model.get_losers(limit=limit, interval=interval, sortby=sortby)
     if not df.empty:
         for col in ["Volume [$]", "Market Cap"]:
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
         print_rich_table(
-            df.head(top),
+            df.head(limit),
             headers=list(df.columns),
             show_index=False,
         )

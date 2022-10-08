@@ -56,14 +56,14 @@ class DiscoveryController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["cggainers"]["-p"] = {c: {} for c in pycoingecko_model.API_PERIODS}
+            choices["cggainers"]["-i"] = {c: {} for c in pycoingecko_model.API_PERIODS}
             choices["cggainers"]["--sort"] = {
                 c: {} for c in pycoingecko_model.GAINERS_LOSERS_COLUMNS
             }
             choices["cglosers"]["--sort"] = {
                 c: {} for c in pycoingecko_model.GAINERS_LOSERS_COLUMNS
             }
-            choices["cglosers"]["-p"] = {c: {} for c in pycoingecko_model.API_PERIODS}
+            choices["cglosers"]["-i"] = {c: {} for c in pycoingecko_model.API_PERIODS}
             choices["cgtop"] = {
                 c: None for c in pycoingecko_model.get_categories_keys()
             }
@@ -91,16 +91,16 @@ class DiscoveryController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("crypto/disc/")
-        mt.add_cmd("cgtop", "CoinGecko")
-        mt.add_cmd("cgtrending", "CoinGecko")
-        mt.add_cmd("cggainers", "CoinGecko")
-        mt.add_cmd("cglosers", "CoinGecko")
-        mt.add_cmd("cpsearch", "CoinPaprika")
-        mt.add_cmd("cmctop", "CoinMarketCap")
-        mt.add_cmd("drnft", "DappRadar")
-        mt.add_cmd("drgames", "DappRadar")
-        mt.add_cmd("drdapps", "DappRadar")
-        mt.add_cmd("drdex", "DappRadar")
+        mt.add_cmd("cgtop")
+        mt.add_cmd("cgtrending")
+        mt.add_cmd("cggainers")
+        mt.add_cmd("cglosers")
+        mt.add_cmd("cpsearch")
+        mt.add_cmd("cmctop")
+        mt.add_cmd("drnft")
+        mt.add_cmd("drgames")
+        mt.add_cmd("drdapps")
+        mt.add_cmd("drdex")
         console.print(text=mt.menu_text, menu="Cryptocurrency - Discovery")
 
     @log_start_end(log=logger)
@@ -154,7 +154,7 @@ class DiscoveryController(BaseController):
             pycoingecko_view.display_coins(
                 sortby=" ".join(ns_parser.sortby),
                 category=ns_parser.category,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -194,7 +194,7 @@ class DiscoveryController(BaseController):
         if ns_parser:
             dappradar_view.display_top_dapps(
                 sortby=" ".join(ns_parser.sortby),
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -234,7 +234,7 @@ class DiscoveryController(BaseController):
         if ns_parser:
             dappradar_view.display_top_games(
                 sortby=" ".join(ns_parser.sortby),
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -274,7 +274,7 @@ class DiscoveryController(BaseController):
         if ns_parser:
             dappradar_view.display_top_dexes(
                 sortby=" ".join(ns_parser.sortby),
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -315,7 +315,7 @@ class DiscoveryController(BaseController):
         if ns_parser:
             dappradar_view.display_top_nfts(
                 sortby=" ".join(ns_parser.sortby),
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -328,16 +328,16 @@ class DiscoveryController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
             Shows Largest Gainers - coins which gain the most in given period.
-            You can use parameter --period to set which timeframe are you interested in: {14d,1h,1y,200d,24h,30d,7d}
+            You can use parameter --interval to set which timeframe are you interested in: {14d,1h,1y,200d,24h,30d,7d}
             You can look on only N number of records with --limit,
             You can sort by {Symbol,Name,Price [$],Market Cap,Market Cap Rank,Volume [$]} with --sort.
             """,
         )
 
         parser.add_argument(
-            "-p",
-            "--period",
-            dest="period",
+            "-i",
+            "--interval",
+            dest="interval",
             type=str,
             help="time period, one from {14d,1h,1y,200d,24h,30d,7d}",
             default="1h",
@@ -367,8 +367,8 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             pycoingecko_view.display_gainers(
-                period=ns_parser.period,
-                top=ns_parser.limit,
+                interval=ns_parser.interval,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=" ".join(ns_parser.sortby),
             )
@@ -382,16 +382,16 @@ class DiscoveryController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
            Shows Largest Losers - coins which price dropped the most in given period
-           You can use parameter --period to set which timeframe are you interested in: {14d,1h,1y,200d,24h,30d,7d}
+           You can use parameter --interval to set which timeframe are you interested in: {14d,1h,1y,200d,24h,30d,7d}
            You can look on only N number of records with --limit,
            You can sort by {Symbol,Name,Price [$],Market Cap,Market Cap Rank,Volume [$]} with --sort.
             """,
         )
 
         parser.add_argument(
-            "-p",
-            "--period",
-            dest="period",
+            "-i",
+            "--interval",
+            dest="interval",
             type=str,
             help="time period, one from {14d,1h,1y,200d,24h,30d,7d}",
             default="1h",
@@ -422,8 +422,8 @@ class DiscoveryController(BaseController):
 
         if ns_parser:
             pycoingecko_view.display_losers(
-                period=ns_parser.period,
-                top=ns_parser.limit,
+                interval=ns_parser.interval,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=" ".join(ns_parser.sortby),
             )
@@ -483,7 +483,7 @@ class DiscoveryController(BaseController):
             action="store_false",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
-            default=True,
+            default=False,
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -491,9 +491,9 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             coinmarketcap_view.display_cmc_top_coins(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=not ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -569,7 +569,7 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             coinpaprika_view.display_search_results(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
                 export=ns_parser.export,

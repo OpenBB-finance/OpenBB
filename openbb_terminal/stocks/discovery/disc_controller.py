@@ -23,12 +23,12 @@ from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks.discovery import (
     ark_view,
-    fidelity_view,
     finnhub_view,
     nasdaq_view,
     seeking_alpha_view,
     shortinterest_view,
     yahoofinance_view,
+    finviz_view,
 )
 
 # pylint:disable=C0302
@@ -50,7 +50,6 @@ class DiscoveryController(BaseController):
         "active",
         "ulc",
         "asc",
-        "ford",
         "arkord",
         "upcoming",
         "trending",
@@ -59,6 +58,7 @@ class DiscoveryController(BaseController):
         "cnews",
         "rtat",
         "divcal",
+        "heatmap",
     ]
 
     arkord_sortby_choices = [
@@ -110,6 +110,7 @@ class DiscoveryController(BaseController):
         "Annual Dividend",
         "Announcement Date",
     ]
+    heatmap_timeframes = ["day", "week", "month", "3month", "6month", "year", "ytd"]
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -126,7 +127,7 @@ class DiscoveryController(BaseController):
             choices["cnews"]["--type"] = {c: None for c in self.cnews_type_choices}
             choices["divcal"]["-s"] = {c: None for c in self.dividend_columns}
             choices["divcal"]["--sort"] = {c: None for c in self.dividend_columns}
-
+            choices["heatmap"]["-t"] = {c: None for c in self.heatmap_timeframes}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -141,7 +142,6 @@ class DiscoveryController(BaseController):
         mt.add_cmd("active", "Yahoo Finance")
         mt.add_cmd("ulc", "Yahoo Finance")
         mt.add_cmd("asc", "Yahoo Finance")
-        mt.add_cmd("ford", "Fidelity")
         mt.add_cmd("arkord", "Cathies Ark")
         mt.add_cmd("upcoming", "Seeking Alpha")
         mt.add_cmd("trending", "Seeking Alpha")
@@ -150,6 +150,7 @@ class DiscoveryController(BaseController):
         mt.add_cmd("hotpenny", "Shortinterest")
         mt.add_cmd("rtat", "NASDAQ Data Link")
         mt.add_cmd("divcal", "NASDAQ Data Link")
+        mt.add_cmd("heatmap", "Finviz")
         console.print(text=mt.menu_text, menu="Stocks - Discovery")
 
     # TODO Add flag for adding last price to the following table
@@ -198,9 +199,9 @@ class DiscoveryController(BaseController):
                 console.print(f"{sort_col} not a valid selection for sorting.\n")
                 return
             nasdaq_view.display_dividend_calendar(
-                ns_parser.date.strftime("%Y-%m-%d"),
+                date=ns_parser.date.strftime("%Y-%m-%d"),
                 sortby=sort_col,
-                ascending=ns_parser.ascend,
+                ascend=ns_parser.ascend,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
             )
@@ -529,40 +530,6 @@ class DiscoveryController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_ford(self, other_args: List[str]):
-        """Process ford command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ford",
-            description="""
-                Orders by Fidelity customers. Information shown in the table below
-                is based on the volume of orders entered on the "as of" date shown. Securities
-                identified are not recommended or endorsed by Fidelity and are displayed for
-                informational purposes only. [Source: Fidelity]
-            """,
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="limit",
-            type=check_int_range(1, 25),
-            default=5,
-            help="Limit of stocks to display.",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            fidelity_view.orders_view(
-                limit=ns_parser.limit,
-                export=ns_parser.export,
-            )
-
-    @log_start_end(log=logger)
     def call_arkord(self, other_args: List[str]):
         """Process arkord command"""
         parser = argparse.ArgumentParser(
@@ -632,7 +599,7 @@ class DiscoveryController(BaseController):
             ark_view.ark_orders_view(
                 limit=ns_parser.limit,
                 sortby=ns_parser.sort_col,
-                ascending=ns_parser.ascend,
+                ascend=ns_parser.ascend,
                 buys_only=ns_parser.buys_only,
                 sells_only=ns_parser.sells_only,
                 fund=ns_parser.fund,
@@ -835,7 +802,7 @@ class DiscoveryController(BaseController):
 
     @log_start_end(log=logger)
     def call_rtat(self, other_args: List[str]):
-        """Process fds command"""
+        """Process rtat command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -864,3 +831,28 @@ class DiscoveryController(BaseController):
             nasdaq_view.display_top_retail(
                 limit=ns_parser.limit, export=ns_parser.export
             )
+
+    @log_start_end(log=logger)
+    def call_heatmap(self, other_args: List[str]):
+        """Process heatmap command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="heatmap",
+            description="""
+                    Get the SP 500 heatmap from finviz and display in interactive treemap
+                """,
+        )
+        parser.add_argument(
+            "-t",
+            "--timeframe",
+            default="day",
+            choices=self.heatmap_timeframes,
+            help="Timeframe to get heatmap data for",
+            dest="timeframe",
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            finviz_view.display_heatmap(ns_parser.timeframe, ns_parser.export)

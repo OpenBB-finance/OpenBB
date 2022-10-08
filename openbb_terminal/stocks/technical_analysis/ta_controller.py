@@ -119,10 +119,10 @@ class TechnicalAnalysisController(StockBaseController):
         mt = MenuText("stocks/ta/", 90)
         mt.add_param("_ticker", stock_str)
         mt.add_raw("\n")
-        mt.add_cmd("tv", "TradingView")
-        mt.add_cmd("view", "Finviz")
-        mt.add_cmd("summary", "FinBrain")
-        mt.add_cmd("recom", "TradingView")
+        mt.add_cmd("tv")
+        mt.add_cmd("recom")
+        mt.add_cmd("view")
+        mt.add_cmd("summary")
         mt.add_raw("\n")
         mt.add_info("_overlap_")
         mt.add_cmd("ema")
@@ -318,7 +318,7 @@ class TechnicalAnalysisController(StockBaseController):
             overlap_view.view_ma(
                 ma_type="EMA",
                 symbol=self.ticker,
-                series=self.stock["Adj Close"],
+                data=self.stock["Adj Close"],
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -370,7 +370,7 @@ class TechnicalAnalysisController(StockBaseController):
             overlap_view.view_ma(
                 ma_type="SMA",
                 symbol=self.ticker,
-                series=self.stock["Adj Close"],
+                data=self.stock["Adj Close"],
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -419,7 +419,7 @@ class TechnicalAnalysisController(StockBaseController):
             overlap_view.view_ma(
                 ma_type="WMA",
                 symbol=self.ticker,
-                series=self.stock["Adj Close"],
+                data=self.stock["Adj Close"],
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -468,7 +468,7 @@ class TechnicalAnalysisController(StockBaseController):
             overlap_view.view_ma(
                 ma_type="HMA",
                 symbol=self.ticker,
-                series=self.stock["Adj Close"],
+                data=self.stock["Adj Close"],
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -520,7 +520,7 @@ class TechnicalAnalysisController(StockBaseController):
             overlap_view.view_ma(
                 ma_type="ZLMA",
                 symbol=self.ticker,
-                series=self.stock["Adj Close"],
+                data=self.stock["Adj Close"],
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
@@ -685,7 +685,7 @@ class TechnicalAnalysisController(StockBaseController):
         if ns_parser:
             momentum_view.display_macd(
                 symbol=self.ticker,
-                series=self.stock["Adj Close"],
+                data=self.stock["Adj Close"],
                 n_fast=ns_parser.n_fast,
                 n_slow=ns_parser.n_slow,
                 n_signal=ns_parser.n_signal,
@@ -745,7 +745,7 @@ class TechnicalAnalysisController(StockBaseController):
         if ns_parser:
             momentum_view.display_rsi(
                 symbol=self.ticker,
-                series=self.stock["Adj Close"],
+                data=self.stock["Adj Close"],
                 window=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
@@ -920,7 +920,7 @@ class TechnicalAnalysisController(StockBaseController):
         if ns_parser:
             momentum_view.display_cg(
                 symbol=self.ticker,
-                series=self.stock["Adj Close"],
+                data=self.stock["Adj Close"],
                 window=ns_parser.n_length,
                 export=ns_parser.export,
             )
@@ -1380,7 +1380,7 @@ class TechnicalAnalysisController(StockBaseController):
             custom_indicators_view.fibonacci_retracement(
                 symbol=self.ticker,
                 data=self.stock,
-                period=ns_parser.period,
+                limit=ns_parser.period,
                 start_date=ns_parser.start,
                 end_date=ns_parser.end,
                 export=ns_parser.export,
@@ -1415,5 +1415,8 @@ class TechnicalAnalysisController(StockBaseController):
         )
         if ns_parser:
             momentum_view.display_clenow_momentum(
-                self.stock["Adj Close"], ns_parser.period, ns_parser.export
+                self.stock["Adj Close"],
+                self.ticker.upper(),
+                ns_parser.period,
+                ns_parser.export,
             )

@@ -1,8 +1,7 @@
 """Parent Classes"""
 __docformat__ = "numpy"
 
-# pylint: disable= C0301,C0302,R0902
-
+# pylint: disable=C0301,C0302,R0902,global-statement
 
 from abc import ABCMeta, abstractmethod
 import argparse
@@ -10,8 +9,9 @@ import re
 import os
 import difflib
 import logging
+import json
 
-from typing import Union, List, Dict, Any
+from typing import Union, Any, List, Dict
 from datetime import datetime, timedelta
 
 from prompt_toolkit.completion import NestedCompleter
@@ -21,6 +21,10 @@ from rich.markdown import Markdown
 import pandas as pd
 import numpy as np
 
+from openbb_terminal.core.config.paths import (
+    CUSTOM_IMPORTS_DIRECTORY,
+    ROUTINES_DIRECTORY,
+)
 from openbb_terminal.decorators import log_start_end
 
 from openbb_terminal.menu import session
@@ -35,11 +39,12 @@ from openbb_terminal.helper_funcs import (
     support_message,
     check_file_type_saved,
     check_positive,
-    get_ordered_list_sources,
+    load_json,
     parse_and_split_input,
+    search_wikipedia,
 )
 from openbb_terminal.config_terminal import theme
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console, get_ordered_list_sources
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.terminal_helper import open_openbb_documentation
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
@@ -55,13 +60,17 @@ controllers: Dict[str, Any] = {}
 
 CRYPTO_SOURCES = {
     "bin": "Binance",
-    "cg": "CoinGecko",
+    "CoinGecko": "CoinGecko",
     "cp": "CoinPaprika",
     "cb": "Coinbase",
-    "yf": "YahooFinance",
+    "YahooFinance": "YahooFinance",
 }
 
 SUPPORT_TYPE = ["bug", "suggestion", "question", "generic"]
+
+RECORD_SESSION = False
+SESSION_RECORDED = list()
+SESSION_RECORDED_NAME = ""
 
 
 class BaseController(metaclass=ABCMeta):
@@ -79,12 +88,16 @@ class BaseController(metaclass=ABCMeta):
         "r",
         "reset",
         "support",
+        "glossary",
+        "wiki",
+        "record",
+        "stop",
     ]
 
     CHOICES_COMMANDS: List[str] = []
     CHOICES_MENUS: List[str] = []
-    SUPPORT_CHOICES: Dict = {}
-    ABOUT_CHOICES: Dict = {}
+    SUPPORT_CHOICES: dict = {}
+    ABOUT_CHOICES: dict = {}
     COMMAND_SEPARATOR = "/"
     KEYS_MENU = "keys" + COMMAND_SEPARATOR
     TRY_RELOAD = False
@@ -176,6 +189,13 @@ class BaseController(metaclass=ABCMeta):
         # goes into "TA", the "TSLA" ticker will appear. If that condition doesn't exist
         # the previous class will be loaded and even if the user changes the ticker on
         # the stocks context it will not impact the one of TA menu - unless changes are done.
+        # An exception is made for forecasting because it is built to handle multiple loaded
+        # tickers.
+        if class_ins.PATH in controllers and class_ins.PATH == "/forecast/":
+            old_class = controllers[class_ins.PATH]
+            old_class.queue = self.queue
+            old_class.load(*args[:-1], **kwargs)
+            return old_class.menu()
         if class_ins.PATH in controllers and arguments == 1 and obbff.REMEMBER_CONTEXTS:
             old_class = controllers[class_ins.PATH]
             old_class.queue = self.queue
@@ -195,7 +215,7 @@ class BaseController(metaclass=ABCMeta):
     def print_help(self) -> None:
         raise NotImplementedError("Must override print_help.")
 
-    def parse_input(self, an_input: str) -> List:
+    def parse_input(self, an_input: str) -> list:
         """Parse controller input
 
         Splits the command chain from user input into a list of individual commands
@@ -214,10 +234,10 @@ class BaseController(metaclass=ABCMeta):
 
         Returns
         -------
-        List
+        list
             Command queue as list
         """
-        custom_filters: List = []
+        custom_filters: list = []
         commands = parse_and_split_input(
             an_input=an_input, custom_filters=custom_filters
         )
@@ -241,13 +261,14 @@ class BaseController(metaclass=ABCMeta):
         self, known_cmd: str, other_args_str: str, the_input: str
     ) -> None:
         if not self.contains_keys(the_input):
-            logger.info(
-                "CMD: {'path': '%s', 'known_cmd': '%s', 'other_args': '%s', 'input': '%s'}",
-                self.PATH,
-                known_cmd,
-                other_args_str,
-                the_input,
-            )
+            cmd = {
+                "path": self.PATH,
+                "known_cmd": known_cmd,
+                "other_args": other_args_str,
+                "input": the_input,
+            }
+            logger.info("CMD: %s", json.dumps(cmd))
+
         if the_input not in self.KEYS_MENU:
             self.log_queue()
 
@@ -258,7 +279,7 @@ class BaseController(metaclass=ABCMeta):
         Returns
         -------
         List[str]
-            List of commands in the queue to execute
+            list of commands in the queue to execute
         """
         actions = self.parse_input(an_input)
 
@@ -281,6 +302,9 @@ class BaseController(metaclass=ABCMeta):
         # Single command fed, process
         else:
             (known_args, other_args) = self.parser.parse_known_args(an_input.split())
+
+            if RECORD_SESSION:
+                SESSION_RECORDED.append(an_input)
 
             # Redirect commands to their correct functions
             if known_args.cmd:
@@ -462,6 +486,143 @@ class BaseController(metaclass=ABCMeta):
                 path=self.PATH,
             )
 
+    @log_start_end(log=logger)
+    def call_glossary(self, other_args: List[str]) -> None:
+        """Process glossary command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="support",
+            description="Submit your support request",
+        )
+        parser.add_argument(
+            "-w",
+            "--word",
+            action="store",
+            dest="word",
+            type=str,
+            required="-h" not in other_args,
+            help="Word that you want defined",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-w")
+
+        ns_parser = parse_simple_args(parser, other_args)
+
+        glossary_file = os.path.join(os.path.dirname(__file__), "glossary.json")
+        glossary_dict = load_json(glossary_file)
+
+        if ns_parser:
+            word = glossary_dict.get(ns_parser.word, "")
+            word = word.lower()
+            word = word.replace("--", "")
+            word = word.replace("-", " ")
+            if word:
+                console.print(word + "\n")
+            else:
+                console.print("Word is not in the glossary.\n")
+
+    @log_start_end(log=logger)
+    def call_wiki(self, other_args: List[str]) -> None:
+        """Process wiki command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="wiki",
+            description="Search Wikipedia",
+        )
+        parser.add_argument(
+            "--expression",
+            "-e",
+            action="store",
+            nargs="+",
+            dest="expression",
+            required=True,
+            default="",
+            help="Expression to search for",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-e")
+
+        ns_parser = parse_simple_args(parser, other_args)
+
+        if ns_parser:
+            if ns_parser.expression:
+                expression = " ".join(ns_parser.expression)
+                search_wikipedia(expression)
+
+    @log_start_end(log=logger)
+    def call_record(self, other_args) -> None:
+        """Process record command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="record",
+            description="Start recording session into .openbb routine file",
+        )
+        parser.add_argument(
+            "-r",
+            "--routine",
+            action="store",
+            dest="routine_name",
+            type=str,
+            default=datetime.now().strftime("%Y%m%d_%H%M%S_routine.openbb"),
+            help="Routine file name to be saved.",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-r")
+        ns_parser = parse_simple_args(parser, other_args)
+
+        if ns_parser:
+            global SESSION_RECORDED_NAME
+            global RECORD_SESSION
+            if ".openbb" in ns_parser.routine_name:
+                SESSION_RECORDED_NAME = ns_parser.routine_name
+            else:
+                SESSION_RECORDED_NAME = ns_parser.routine_name + ".openbb"
+
+            console.print(
+                "[green]The session is successfully being recorded."
+                + " Remember to 'stop' before exiting terminal!\n[/green]"
+            )
+            RECORD_SESSION = True
+
+    @log_start_end(log=logger)
+    def call_stop(self, _) -> None:
+        """Process stop command"""
+        global RECORD_SESSION
+        global SESSION_RECORDED
+
+        if not RECORD_SESSION:
+            console.print(
+                "[red]There is no session being recorded. Start one using 'record'[/red]\n"
+            )
+        elif not SESSION_RECORDED:
+            console.print(
+                "[red]There is no session to be saved. Run at least 1 command after starting 'record'[/red]\n"
+            )
+        else:
+            routine_file = os.path.join(ROUTINES_DIRECTORY, SESSION_RECORDED_NAME)
+
+            if os.path.isfile(routine_file):
+                routine_file = os.path.join(
+                    ROUTINES_DIRECTORY,
+                    datetime.now().strftime("%Y%m%d_%H%M%S_") + SESSION_RECORDED_NAME,
+                )
+
+            # Writing to file
+            with open(routine_file, "w") as file1:
+                # Writing data to a file
+                file1.writelines([c + "\n\n" for c in SESSION_RECORDED[:-1]])
+
+            console.print(
+                f"[green]Your routine has been recorded and saved here: {routine_file}[/green]\n"
+            )
+
+            # Clear session to be recorded again
+            RECORD_SESSION = False
+            SESSION_RECORDED = list()
+
     def parse_known_args_and_warn(
         self,
         parser: argparse.ArgumentParser,
@@ -477,7 +638,7 @@ class BaseController(metaclass=ABCMeta):
         parser: argparse.ArgumentParser
             Parser with predefined arguments
         other_args: List[str]
-            List of arguments to parse
+            list of arguments to parse
         export_allowed: int
             Choose from NO_EXPORT, EXPORT_ONLY_RAW_DATA_ALLOWED,
             EXPORT_ONLY_FIGURES_ALLOWED and EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -534,7 +695,8 @@ class BaseController(metaclass=ABCMeta):
                 type=check_positive,
             )
         sources = get_ordered_list_sources(f"{self.PATH}{parser.prog}")
-        if sources:
+        # Allow to change source if there is more than one
+        if len(sources) > 1:
             parser.add_argument(
                 "--source",
                 action="store",
@@ -579,6 +741,7 @@ class BaseController(metaclass=ABCMeta):
             if self.queue and len(self.queue) > 0:
                 # If the command is quitting the menu we want to return in here
                 if self.queue[0] in ("q", "..", "quit"):
+                    self.save_class()
                     # Go back to the root in order to go to the right directory because
                     # there was a jump between indirect menus
                     if custom_path_menu_above:
@@ -821,10 +984,10 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 # This seems to block the .exe since the folder needs to be manually created
                 # This block makes sure that we only look for the file if the -f flag is used
                 # Adding files in the argparse choices, will fail for the .exe even without -f
+                STOCKS_CUSTOM_IMPORTS = CUSTOM_IMPORTS_DIRECTORY / "stocks"
                 try:
-                    if ns_parser.filepath not in os.listdir(
-                        os.path.join("custom_imports", "stocks")
-                    ):
+                    file_list = [x.name for x in STOCKS_CUSTOM_IMPORTS.iterdir()]
+                    if ns_parser.filepath not in file_list:
                         console.print(
                             f"[red]{ns_parser.filepath} not found in custom_imports/stocks/ "
                             "folder[/red].\n"
@@ -835,9 +998,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     return
 
                 df_stock_candidate = stocks_helper.load_custom(
-                    os.path.join(
-                        os.path.join("custom_imports", "stocks"), ns_parser.filepath
-                    )
+                    str(STOCKS_CUSTOM_IMPORTS / ns_parser.filepath)
                 )
                 if df_stock_candidate.empty:
                     return
@@ -849,6 +1010,8 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 console.print(self.add_info)
                 if (
                     ns_parser.interval == 1440
+                    and not ns_parser.weekly
+                    and not ns_parser.monthly
                     and ns_parser.filepath is None
                     and self.PATH == "/stocks/"
                 ):
@@ -859,7 +1022,9 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     self.ticker = ns_parser.ticker.upper()
                     self.suffix = ""
 
-                if ns_parser.source == "iex":
+                if ns_parser.source == "IEXCloud":
+                    self.start = self.stock.index[0].to_pydatetime()
+                elif ns_parser.source == "EODHD":
                     self.start = self.stock.index[0].to_pydatetime()
                 elif ns_parser.source == "eodhd":
                     self.start = self.stock.index[0].to_pydatetime()
@@ -965,22 +1130,13 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
             type=str,
         )
 
-        parser.add_argument(
-            "--source",
-            action="store",
-            dest="source",
-            choices=["ccxt", "yf", "cg"],
-            default="yf",
-            help="Data source to select from",
-        )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
 
-        ns_parser = parse_simple_args(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
-            if ns_parser.source in ("yf", "cg"):
+            if ns_parser.source in ("YahooFinance", "CoinGecko"):
                 if ns_parser.vs == "usdt":
                     ns_parser.vs = "usd"
             (self.current_df) = cryptocurrency_helpers.load(

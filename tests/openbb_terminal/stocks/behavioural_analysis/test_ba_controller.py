@@ -392,45 +392,6 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             ),
         ),
         (
-            "call_hist",
-            [
-                "--start=2020-12-01",
-                "--end=2020-12-07",
-                "--export=csv",
-                "--number=100",
-                "--raw",
-                "--limit=10",
-            ],
-            "sentimentinvestor_view.display_historical",
-            [],
-            dict(
-                symbol="MOCK_TICKER",
-                start_date=datetime(2020, 12, 1),
-                end_date=datetime(2020, 12, 7),
-                number=100,
-                export="csv",
-                raw=True,
-                limit=10,
-            ),
-        ),
-        (
-            "call_trend",
-            [
-                "--start=2020-12-01",
-                "--hour=9",
-                "--export=csv",
-                "--number=20",
-            ],
-            "sentimentinvestor_view.display_trending",
-            [],
-            dict(
-                start_date=datetime(2020, 12, 1),
-                hour=9,
-                export="csv",
-                number=20,
-            ),
-        ),
-        (
             "call_popular",
             ["--num=1", "--limit=2", "--sub=MOCK_SUB"],
             "reddit_view.display_popular_tickers",
@@ -508,8 +469,6 @@ def test_call_func(
         "call_rise",
         "call_headlines",
         "call_snews",
-        "call_hist",
-        "call_trend",
         "call_popular",
         "call_getdd",
     ],
@@ -535,7 +494,6 @@ def test_call_func_no_parser(func, mocker):
 @pytest.mark.parametrize(
     "func",
     [
-        "call_hist",
         "call_headlines",
         "call_sentiment",
         "call_infer",
@@ -581,6 +539,6 @@ def test_call_load(mocker):
     other_args = [
         "TSLA",
         "--start=2021-12-17",
-        "--source=yf",
+        "--source=YahooFinance",
     ]
     controller.call_load(other_args=other_args)

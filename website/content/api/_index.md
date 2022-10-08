@@ -9,10 +9,6 @@ commands follow the same convention as the terminal.
 
 For example `stocks/load aapl` becomes `openbb.stocks.load("aapl")`.
 
-<a target="_blank" href="https://user-images.githubusercontent.com/11668535/157916097-f9c5af6f-b97f-476d-943e-49eea4283bed.png"><img width="500" alt="image" src="https://user-images.githubusercontent.com/11668535/157916097-f9c5af6f-b97f-476d-943e-49eea4283bed.png"></a>
-
-{{< toc >}}
-
 ---
 
 ## Python environment setup
@@ -20,8 +16,21 @@ For example `stocks/load aapl` becomes `openbb.stocks.load("aapl")`.
 Import the OpenBB API into your python script or notebook with
 
 ```python
-from openbb_terminal import api as openbb
+from openbb_terminal.api import openbb
 ```
+This imports all the commands at once. Now you can directly begin to use it. The api function is structured in the way that it always retrieves the underlying data. For charts add the `chart=True` parameter.
+
+For example see:
+
+```python
+# Returns data:
+openbb.stocks.ba.snews("aapl")
+# Returns charts:
+openbb.stocks.ba.snews("aapl", chart=True)
+```
+
+This allows easy integration to the jupyter notebook and allows you to build new applications on top of the terminal. The api also has new functionalities that are used in the backend of the Terminal (CLI). With these backend functions you can develop new functionalities and avoid copy-pasting the code from the repository.
+
 
 ## Understanding the API functions
 
@@ -49,90 +58,91 @@ external_axes : Optional[List[plt.Axes]], optional
 
 ## Usage examples
 
-Load stock data into a dataframe:
+We'd recommend checking our example notebook reports to understand how to use OpenBB API. You can find inside [reports menu](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/reports).
+
+### Jupyter Notebook Tricks
+
+**Get  matplotlib charts in the output cells**\
+If you copy-paste the code below and use it as your initialization then you're matplotlib graphs will be inside
+the result cell.
 
 ```python
-aapl_data = openbb.stocks.load(
-    ticker="aapl",
-    start="2021-06-10",
+import matplotlib.pyplot as plt
+import matplotlib_inline.backend_inline
+from openbb_terminal.api import openbb
+%matplotlib inline
+matplotlib_inline.backend_inline.set_matplotlib_formats("svg")
+```
+
+**Get function signature and docstring**\
+When you press `shift + tab` in jupyter notebook while having the mouse parser in an API function, you get the
+signature and docstring of the function.
+
+### Visual Studio Code Tricks
+
+**Get function docstring and signature**\
+In order to get the docstrings and function signatures for the API when opening a Jupyter Notebook in VSCode,
+you have to install the [Jupyter PowerToys
+extension](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.vscode-jupyter-powertoys).
+
+## Code Examples
+
+Just copy-paste the code examples below into a python script or jupyter notebook, and you're ready to go.
+
+**Basic Stock Information**\
+Prints general information about the selected stock (in this case Gamsetop)
+
+```python
+from openbb_terminal.api import openbb
+gme_info = openbb.stocks.fa.info("gme").transpose()
+print("-- Gamstop Stock --\n\n- Basic Info -")
+print(f"Sector: {gme_info['Sector'].iloc[0]}")
+print(f"Country: {gme_info['Country'].iloc[0]}")
+print(f"Description: {gme_info['Long business summary'].iloc[0]}")
+print("\n- Financial Info -")
+print(f"Ebitda Margins: {gme_info['Ebitda margins'].iloc[0]}")
+print(f"Profit Margins: {gme_info['Profit margins'].iloc[0]}")
+print(f"Revenue growth: {gme_info['Revenue growth'].iloc[0]}")
+print("\n- Target Price -")
+print(f"Current price: {gme_info['Current price'].iloc[0]}")
+print(f"Target mean price: {gme_info['Target mean price'].iloc[0]}")
+print(f"Target high price: {gme_info['Target high price'].iloc[0]}")
+print(f"Target low price: {gme_info['Target low price'].iloc[0]}")
+```
+
+**Use external axis**\
+The code below utilises the `external_axes` parameter to get two axis in one chart
+
+```python
+import matplotlib.pyplot as plt
+from openbb_terminal.api import openbb
+fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(11, 5), dpi=150)
+openbb.stocks.dps.dpotc(
+    "aapl",
+    external_axes=[ax1, ax2],
+    chart=True,
 )
-aapl_data = openbb.stocks.process_candle(aapl_data)
+fig.tight_layout()
 ```
 
-Plot candle chart
+**Stocks Return Distribution** \
+Fetches data from the OpenBB API and then plots the return distribution. This is a good example, where the data from
+the API is leveraged to build a new feature on top of the API.
 
 ```python
-openbb.stocks.candle("AAPL", aapl_data, True)
+import numpy as np
+import matplotlib.pyplot as plt
+from openbb_terminal.api import openbb
+# Fetches data from the api
+gme = openbb.stocks.load("gme")
+# Calculates logarithmic returns
+gme["Log Returns"] = np.log(gme["Adj Close"]/gme["Adj Close"].shift(1))
+# Plots the return distributions
+gme["Log Returns"].hist(bins=1000)
+plt.tight_layout()
+plt.show()
 ```
 
-Call the "What if" command of the backtesting menu
-
-```python
-openbb.stocks.bt.whatif("aapl", 10, datetime.strptime("2012-03-03", "%Y-%m-%d"))
-```
-
-Get sentiment for a list of tickers
-
-```python
-openbb.stocks.ca.models.finbrain.get_sentiments(tickers=["aapl"])
-```
-
-Print key fundamental metrics for past 2 years
-
-```python
-openbb.stocks.fa.fmp.metrics(ticker="AAPL", number=2)
-```
-
-Get fundamental metrics for past 3 years as a pandas dataframe
-
-```python
-openbb.stocks.fa.fmp.models.fmp.get_key_metrics(ticker="AAPL", number=3)
-```
-
-Perform an OLS regression on multiple custom datasets
-
-```python
-openbb.econometrics.ols(
-    regression_variables=[
-    'close-tsla', 'volume-aapl'
-    ],
-    data={"aapl":aapl_data,"tsla":tsla_data},
-    datasets={
-        "close-tsla":{"Close": None, "tsla": None},
-        "volume-aapl":{"Volume": None, "aapl": None}
-    }
-)
-```
-
-## External matplotlib axes support
-
-Most of the functions of the terminal that generate matplotlib charts support passing
-external axes into them. This is very handy when you want a chart that is generated by
-OpenBB to appear in another chart that you are creating in a notebook.
-
-Example:
-
-```python
-# Load stock data
-ticker = "AAPL"
-stock_data = openbb.stocks.load(ticker="aapl")
-
-# Create a matplotlib figure
-fig, axes = plt.subplots(3, 1, figsize=(10, 7))
-
-# Use OpenBB to add charts to the axes of the created figure
-openbb.stocks.ta.macd(s_ticker=ticker, series=aapl["Close"], external_axes=axes[0:2])
-openbb.stocks.options.voi_yf(
-    ticker=ticker,
-    expiry="2022-03-11",
-    min_sp=110,
-    max_sp=210,
-    min_vol=0.3,
-    external_axes=[axes[2]],
-)
-
-# Show the figure with charts
-fig.show()
-```
+For more examples see the OpenBB jupyter notebook reports. They all use the API to its fullest extent!
 
 ---

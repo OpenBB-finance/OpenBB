@@ -157,33 +157,33 @@ class OverviewController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("crypto/ov/", 105)
-        mt.add_cmd("cgglobal", "CoinGecko")
-        mt.add_cmd("cgdefi", "CoinGecko")
-        mt.add_cmd("cgstables", "CoinGecko")
-        mt.add_cmd("cgexchanges", "CoinGecko")
-        mt.add_cmd("cgexrates", "CoinGecko")
-        mt.add_cmd("cgindexes", "CoinGecko")
-        mt.add_cmd("cgderivatives", "CoinGecko")
-        mt.add_cmd("cgcategories", "CoinGecko")
-        mt.add_cmd("cghold", "CoinGecko")
-        mt.add_cmd("hm", "CoinGecko")
-        mt.add_cmd("cpglobal", "CoinPaprika")
-        mt.add_cmd("cpinfo", "CoinPaprika")
-        mt.add_cmd("cpmarkets", "CoinPaprika")
-        mt.add_cmd("cpexchanges", "CoinPaprika")
-        mt.add_cmd("cpexmarkets", "CoinPaprika")
-        mt.add_cmd("cpplatforms", "CoinPaprika")
-        mt.add_cmd("cpcontracts", "CoinPaprika")
-        mt.add_cmd("cbpairs", "Coinbase")
-        mt.add_cmd("news", "CryptoPanic")
-        mt.add_cmd("wf", "WithdrawalFees")
-        mt.add_cmd("ewf", "WithdrawalFees")
-        mt.add_cmd("wfpe", "WithdrawalFees")
-        mt.add_cmd("altindex", "BlockchainCenter")
-        mt.add_cmd("btcrb", "BlockchainCenter")
-        mt.add_cmd("ch", "Rekt")
-        mt.add_cmd("cr", "LoanScan")
-        mt.add_cmd("fun", "TokenTerminal")
+        mt.add_cmd("cgglobal")
+        mt.add_cmd("cgdefi")
+        mt.add_cmd("cgstables")
+        mt.add_cmd("cgexchanges")
+        mt.add_cmd("cgexrates")
+        mt.add_cmd("cgindexes")
+        mt.add_cmd("cgderivatives")
+        mt.add_cmd("cgcategories")
+        mt.add_cmd("cghold")
+        mt.add_cmd("hm")
+        mt.add_cmd("cpglobal")
+        mt.add_cmd("cpinfo")
+        mt.add_cmd("cpmarkets")
+        mt.add_cmd("cpexchanges")
+        mt.add_cmd("cpexmarkets")
+        mt.add_cmd("cpplatforms")
+        mt.add_cmd("cpcontracts")
+        mt.add_cmd("cbpairs")
+        mt.add_cmd("news")
+        mt.add_cmd("wf")
+        mt.add_cmd("ewf")
+        mt.add_cmd("wfpe")
+        mt.add_cmd("altindex")
+        mt.add_cmd("btcrb")
+        mt.add_cmd("ch")
+        mt.add_cmd("cr")
+        mt.add_cmd("fun")
         console.print(text=mt.menu_text, menu="Cryptocurrency - Overview")
 
     @log_start_end(log=logger)
@@ -223,7 +223,7 @@ class OverviewController(BaseController):
         if ns_parser:
             pycoingecko_view.display_crypto_heatmap(
                 category=ns_parser.category,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -348,7 +348,7 @@ class OverviewController(BaseController):
         if ns_parser:
             rekt_view.display_crypto_hacks(
                 slug=ns_parser.slug,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=" ".join(ns_parser.sortby),
                 ascend=not ns_parser.descend,
@@ -386,9 +386,12 @@ class OverviewController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
+            start_date = ns_parser.since.strftime("%Y-%m-%d")
+            end_date = ns_parser.until.strftime("%Y-%m-%d")
+
             display_btc_rainbow(
-                start_date=int(ns_parser.since.timestamp()),
-                end_date=int(ns_parser.until.timestamp()),
+                start_date=start_date,
+                end_date=end_date,
                 export=ns_parser.export,
             )
 
@@ -444,8 +447,8 @@ class OverviewController(BaseController):
 
         if ns_parser:
             blockchaincenter_view.display_altcoin_index(
-                since=ns_parser.since.timestamp(),
-                until=ns_parser.until.timestamp(),
+                start_date=ns_parser.since.timestamp(),
+                end_date=ns_parser.until.timestamp(),
                 period=ns_parser.period,
                 export=ns_parser.export,
             )
@@ -478,7 +481,7 @@ class OverviewController(BaseController):
 
         if ns_parser:
             withdrawalfees_view.display_overall_withdrawal_fees(
-                top=ns_parser.limit, export=ns_parser.export
+                limit=ns_parser.limit, export=ns_parser.export
             )
 
     @log_start_end(log=logger)
@@ -617,7 +620,7 @@ class OverviewController(BaseController):
                 symbol=ns_parser.coin,
                 export=ns_parser.export,
                 show_bar=ns_parser.bar,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
             )
 
     @log_start_end(log=logger)
@@ -664,7 +667,7 @@ class OverviewController(BaseController):
         )
         if ns_parser:
             pycoingecko_view.display_categories(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
                 pie=ns_parser.pie,
@@ -725,7 +728,7 @@ class OverviewController(BaseController):
         )
         if ns_parser:
             pycoingecko_view.display_stablecoins(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
@@ -834,7 +837,7 @@ class OverviewController(BaseController):
             "--urls",
             dest="urls",
             action="store_true",
-            help="Flag to show urls. If you will use that flag you will additional column with urls",
+            help="Flag to add a url column",
             default=False,
         )
 
@@ -843,7 +846,7 @@ class OverviewController(BaseController):
         )
         if ns_parser:
             pycoingecko_view.display_exchanges(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
@@ -896,7 +899,7 @@ class OverviewController(BaseController):
         if ns_parser:
             pycoingecko_view.display_exchange_rates(
                 sortby=ns_parser.sortby,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
@@ -950,7 +953,7 @@ class OverviewController(BaseController):
         )
         if ns_parser:
             pycoingecko_view.display_indexes(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
                 export=ns_parser.export,
@@ -1007,7 +1010,7 @@ class OverviewController(BaseController):
         )
         if ns_parser:
             pycoingecko_view.display_derivatives(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
                 export=ns_parser.export,
@@ -1136,7 +1139,7 @@ class OverviewController(BaseController):
         if ns_parser:
             coinpaprika_view.display_all_coins_market_info(
                 symbol=ns_parser.vs,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 ascend=not ns_parser.descend,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
@@ -1214,7 +1217,7 @@ class OverviewController(BaseController):
         if ns_parser:
             coinpaprika_view.display_exchange_markets(
                 exchange=ns_parser.exchange,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
@@ -1282,7 +1285,7 @@ class OverviewController(BaseController):
         if ns_parser:
             coinpaprika_view.display_all_coins_info(
                 symbol=ns_parser.vs,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 ascend=not ns_parser.descend,
                 sortby=ns_parser.sortby,
                 export=ns_parser.export,
@@ -1347,7 +1350,7 @@ class OverviewController(BaseController):
         if ns_parser:
             coinpaprika_view.display_all_exchanges(
                 symbol=ns_parser.vs,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 ascend=not ns_parser.descend,
                 sortby=ns_parser.sortby,
                 export=ns_parser.export,
@@ -1435,7 +1438,7 @@ class OverviewController(BaseController):
         if ns_parser:
             coinpaprika_view.display_contracts(
                 symbol=ns_parser.platform,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 ascend=not ns_parser.descend,
                 sortby=ns_parser.sortby,
                 export=ns_parser.export,
@@ -1483,7 +1486,7 @@ class OverviewController(BaseController):
         )
         if ns_parser:
             coinbase_view.display_trading_pairs(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
@@ -1572,7 +1575,7 @@ class OverviewController(BaseController):
 
         if ns_parser:
             cryptopanic_view.display_news(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,

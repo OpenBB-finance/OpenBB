@@ -1,4 +1,4 @@
-    load               load new ticker
+    load               load new ticker                                                 [YahooFinance, IEXCloud, AlphaVantage, Polygon, EODHD]
     pick               pick target column for analysis
 
 Ticker: Intraday  

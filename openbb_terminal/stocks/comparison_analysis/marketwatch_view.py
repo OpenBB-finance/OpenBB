@@ -42,8 +42,8 @@ def display_income_comparison(
     export : str, optional
         Format to export data
     """
-    df_financials_compared = marketwatch_model.get_financial_comparisons(
-        symbols, "income", timeframe, quarter
+    df_financials_compared = marketwatch_model.get_income_comparison(
+        symbols, timeframe, quarter
     )
 
     if len(df_financials_compared) == 0 or df_financials_compared.empty:
@@ -146,7 +146,7 @@ def display_cashflow_comparison(
         You can also get a list of comparable peers with
         finnhub_peers(), finviz_peers(), polygon_peers().
     timeframe : str
-        What year to look at
+        What year/quarter to look at
     quarter : bool, optional
         Whether to use quarterly statements, by default False
     export : str, optional

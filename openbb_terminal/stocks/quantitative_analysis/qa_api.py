@@ -46,6 +46,21 @@ from openbb_terminal.common.quantitative_analysis.qa_view import (
 from openbb_terminal.common.quantitative_analysis.qa_view import (
     display_unitroot as unitroot,
 )
+from openbb_terminal.common.quantitative_analysis.qa_view import (
+    display_es as es,
+)
+from openbb_terminal.common.quantitative_analysis.qa_view import (
+    display_omega as omega,
+)
+from openbb_terminal.common.quantitative_analysis.qa_view import (
+    display_sharpe as sharpe,
+)
+from openbb_terminal.common.quantitative_analysis.qa_view import (
+    display_sortino as sortino,
+)
+from openbb_terminal.common.quantitative_analysis.qa_view import (
+    display_var as var,
+)
 from .factors_view import capm_view as capm
 
 # Models

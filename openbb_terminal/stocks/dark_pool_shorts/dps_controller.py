@@ -78,19 +78,19 @@ class DarkPoolShortsController(StockBaseController):
         mt = MenuText("stocks/dps/")
         mt.add_cmd("load")
         mt.add_raw("\n")
-        mt.add_cmd("shorted", "Yahoo Finance")
-        mt.add_cmd("ctb", "Interactive Broker")
-        mt.add_cmd("hsi", "Shortinterest")
-        mt.add_cmd("prom", "FINRA")
-        mt.add_cmd("pos", "Stockgrid")
-        mt.add_cmd("sidtc", "Stockgrid")
+        mt.add_cmd("shorted")
+        mt.add_cmd("ctb")
+        mt.add_cmd("hsi")
+        mt.add_cmd("prom")
+        mt.add_cmd("pos")
+        mt.add_cmd("sidtc")
         mt.add_raw("\n")
         mt.add_param("_ticker", self.ticker or "")
         mt.add_raw("\n")
-        mt.add_cmd("dpotc", "FINRA", self.ticker)
-        mt.add_cmd("ftd", "SEC", self.ticker)
-        mt.add_cmd("spos", "Stockgrid", self.ticker)
-        mt.add_cmd("psi", "Quandl/Stockgrid", self.ticker)
+        mt.add_cmd("dpotc", self.ticker)
+        mt.add_cmd("ftd", self.ticker)
+        mt.add_cmd("spos", self.ticker)
+        mt.add_cmd("psi", self.ticker)
         console.print(text=mt.menu_text, menu="Stocks - Dark Pool and Short data")
 
     @log_start_end(log=logger)
@@ -147,7 +147,7 @@ class DarkPoolShortsController(StockBaseController):
         )
         if ns_parser:
             ibkr_view.display_cost_to_borrow(
-                num_stocks=ns_parser.number,
+                limit=ns_parser.number,
                 export=ns_parser.export,
             )
 
@@ -228,8 +228,8 @@ class DarkPoolShortsController(StockBaseController):
         )
         if ns_parser:
             finra_view.darkpool_otc(
-                num=ns_parser.n_num,
-                promising=ns_parser.limit,
+                input_limit=ns_parser.n_num,
+                limit=ns_parser.limit,
                 tier=ns_parser.tier,
                 export=ns_parser.export,
             )
@@ -268,7 +268,7 @@ class DarkPoolShortsController(StockBaseController):
             "--ascending",
             action="store_true",
             default=False,
-            dest="ascending",
+            dest="ascend",
             help="Data in ascending order",
         )
         ns_parser = self.parse_known_args_and_warn(
@@ -278,7 +278,7 @@ class DarkPoolShortsController(StockBaseController):
             stockgrid_view.dark_pool_short_positions(
                 limit=ns_parser.limit,
                 sortby=ns_parser.sort_field,
-                ascending=ns_parser.ascending,
+                ascend=ns_parser.ascend,
                 export=ns_parser.export,
             )
 
@@ -461,7 +461,7 @@ class DarkPoolShortsController(StockBaseController):
         )
         if ns_parser:
             if self.ticker:
-                if ns_parser.source == "quandl":
+                if ns_parser.source == "Quandl":
                     quandl_view.short_interest(
                         symbol=self.ticker,
                         nyse=ns_parser.b_nyse,

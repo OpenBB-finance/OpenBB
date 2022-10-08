@@ -14,7 +14,6 @@ from openbb_terminal.common.behavioural_analysis import (
     finbrain_view,
     google_view,
     reddit_view,
-    sentimentinvestor_view,
     stocktwits_view,
     twitter_view,
 )
@@ -26,7 +25,6 @@ from openbb_terminal.helper_funcs import (
     check_int_range,
     check_positive,
     valid_date,
-    valid_hour,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
@@ -62,8 +60,6 @@ class BehaviouralAnalysisController(StockBaseController):
         "headlines",
         "popular",
         "getdd",
-        "hist",
-        "trend",
         "snews",
         "jcdr",
         "jctr",
@@ -93,30 +89,30 @@ class BehaviouralAnalysisController(StockBaseController):
         mt.add_raw("\n")
         mt.add_param("_ticker", self.ticker.upper())
         mt.add_raw("\n")
-        mt.add_cmd("headlines", "FinBrain", self.ticker)
-        mt.add_cmd("snews", "Finnhub", self.ticker)
-        mt.add_cmd("wsb", "Reddit")
-        mt.add_cmd("watchlist", "Reddit")
-        mt.add_cmd("popular", "Reddit")
-        mt.add_cmd("spac_c", "Reddit")
-        mt.add_cmd("spac", "Reddit")
-        mt.add_cmd("getdd", "Reddit", self.ticker)
-        mt.add_cmd("reddit_sent", "Reddit", self.ticker)
-        mt.add_cmd("trending", "Stocktwits")
-        mt.add_cmd("stalker", "Stocktwits")
-        mt.add_cmd("bullbear", "Stocktwits", self.ticker)
-        mt.add_cmd("messages", "Stocktwits", self.ticker)
-        mt.add_cmd("infer", "Twitter", self.ticker)
-        mt.add_cmd("sentiment", "Twitter", self.ticker)
-        mt.add_cmd("mentions", "Google", self.ticker)
-        mt.add_cmd("regions", "Google", self.ticker)
-        mt.add_cmd("interest", "Google", self.ticker)
-        mt.add_cmd("queries", "Google", self.ticker)
-        mt.add_cmd("rise", "Google", self.ticker)
-        mt.add_cmd("trend", "SentimentInvestor")
-        mt.add_cmd("hist", "SentimentInvestor", self.ticker)
-        mt.add_cmd("jcdr", "Jim Cramer")
-        mt.add_cmd("jctr", "Jim Cramer", self.ticker)
+        mt.add_cmd("headlines", self.ticker)
+        mt.add_cmd("snews", self.ticker)
+        mt.add_cmd("wsb")
+        mt.add_cmd("watchlist")
+        mt.add_cmd("popular")
+        mt.add_cmd("spac_c")
+        mt.add_cmd("spac")
+        mt.add_cmd("getdd", self.ticker)
+        mt.add_cmd("reddit_sent", self.ticker)
+        mt.add_cmd("trending")
+        mt.add_cmd("stalker")
+        mt.add_cmd("bullbear", self.ticker)
+        mt.add_cmd("messages", self.ticker)
+        mt.add_cmd("infer", self.ticker)
+        mt.add_cmd("sentiment", self.ticker)
+        mt.add_cmd("mentions", self.ticker)
+        mt.add_cmd("regions", self.ticker)
+        mt.add_cmd("interest", self.ticker)
+        mt.add_cmd("queries", self.ticker)
+        mt.add_cmd("rise", self.ticker)
+        mt.add_cmd("trend")
+        mt.add_cmd("hist", self.ticker)
+        mt.add_cmd("jcdr")
+        mt.add_cmd("jctr", self.ticker)
         console.print(text=mt.menu_text, menu="Stocks - Behavioural Analysis")
 
     def custom_reset(self):
@@ -569,7 +565,7 @@ class BehaviouralAnalysisController(StockBaseController):
             "--start",
             type=valid_date,
             dest="start",
-            default=self.start,
+            default=self.start if self.start != "" else "2000-01-01",
             help="starting date (format YYYY-MM-DD) from when we are interested in stock's mentions.",
         )
         if other_args and "-" not in other_args[0][0]:
@@ -858,109 +854,6 @@ class BehaviouralAnalysisController(StockBaseController):
             else:
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
-    @log_start_end(log=logger)
-    def call_hist(self, other_args: List[str]):
-        """Process hist command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="hist",
-            description="Plot historical sentiment data of RHI and AHI by hour",
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            type=valid_date,
-            default=(datetime.utcnow() - timedelta(days=7)).strftime("%Y-%m-%d"),
-            dest="start",
-            required="--end" in other_args,
-            help="The starting date (format YYYY-MM-DD) of the stock. Default: 7 days ago",
-        )
-
-        parser.add_argument(
-            "-e",
-            "--end",
-            type=valid_date,
-            default=datetime.utcnow().strftime("%Y-%m-%d"),
-            dest="end",
-            required="--start" in other_args,
-            help="The ending date (format YYYY-MM-DD) of the stock. Default: today",
-        )
-        parser.add_argument(
-            "-n",
-            "--number",
-            default=100,
-            type=check_positive,
-            dest="number",
-            help="Number of results returned from Sentiment Investor. Default: 100",
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True, limit=10
-        )
-
-        if ns_parser:
-            if self.ticker:
-                sentimentinvestor_view.display_historical(
-                    symbol=self.ticker,
-                    start_date=ns_parser.start,
-                    end_date=ns_parser.end,
-                    number=ns_parser.number,
-                    export=ns_parser.export,
-                    raw=ns_parser.raw,
-                    limit=ns_parser.limit,
-                )
-            else:
-                console.print("No ticker loaded. Please load using 'load <ticker>'\n")
-
-    @log_start_end(log=logger)
-    def call_trend(self, other_args: List[str]):
-        """Process trend command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="trend",
-            description="Show most talked about tickers within the last one hour",
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            type=valid_date,
-            default=datetime.utcnow().strftime("%Y-%m-%d"),
-            dest="start",
-            help="The starting date (format YYYY-MM-DD). Default: Today",
-        )
-
-        parser.add_argument(
-            "-hr",
-            "--hour",
-            type=valid_hour,
-            default=0,
-            dest="hour",
-            help="Hour of the day in the 24-hour notation. Example: 14",
-        )
-
-        parser.add_argument(
-            "-n",
-            "--number",
-            default=10,
-            type=check_positive,
-            dest="number",
-            help="Number of results returned from Sentiment Investor. Default: 10",
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
-        )
-
-        if ns_parser:
-            sentimentinvestor_view.display_trending(
-                start_date=ns_parser.start,
-                hour=ns_parser.hour,
-                export=ns_parser.export,
-                number=ns_parser.number,
-            )
-
-    @log_start_end(log=logger)
     def call_jcdr(self, other_args: List[str]):
         """Process jcdr command"""
         parser = argparse.ArgumentParser(

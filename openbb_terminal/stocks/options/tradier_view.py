@@ -112,7 +112,7 @@ def check_valid_option_chains_headers(headers: str) -> List[str]:
 
 
 @log_start_end(log=logger)
-def display_expirations(ticker: str, source: str = "yf"):
+def display_expirations(ticker: str, source: str = "YahooFinance"):
     """Displays the expirations for a ticker
 
     Parameters
@@ -122,9 +122,9 @@ def display_expirations(ticker: str, source: str = "yf"):
     source: str
         Where to get the data from. Options: yf (yahoo finance) or tr (tradier)
     """
-    if source == "yf":
+    if source == "YahooFinance":
         exps = yfinance_model.option_expirations(ticker)
-    elif source == "tr":
+    elif source == "Tradier":
         exps = tradier_model.option_expirations(ticker)
     else:
         raise ValueError("Invalid source. Please select 'yf' or 'tr'")

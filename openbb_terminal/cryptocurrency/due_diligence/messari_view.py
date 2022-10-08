@@ -628,6 +628,7 @@ def display_governance(
 def display_fundraising(
     symbol: str,
     export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Display coin fundraising
     [Source: https://messari.io/]
@@ -638,6 +639,8 @@ def display_fundraising(
         Crypto symbol to check coin fundraising
     export : str
         Export dataframe data to csv,json,xlsx file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
     """
     (summary, df_sales_rounds, df_treasury_accs, df_details) = get_fundraising(symbol)
     if summary:
@@ -689,7 +692,10 @@ def display_fundraising(
             values.append(airdrops[0])
             labels.append("Rewards/Airdrops")
         if len(values) > 0 and sum(values) > 0:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+            if not external_axes:
+                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
+            elif is_valid_axes_count(external_axes, 1):
+                (ax,) = external_axes
             ax.pie(
                 [s / 100 for s in values],
                 normalize=False,

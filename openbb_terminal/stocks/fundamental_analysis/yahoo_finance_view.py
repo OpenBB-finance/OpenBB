@@ -25,6 +25,10 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import yahoo_finance_model
+from openbb_terminal.helpers_denomination import (
+    transform as transform_by_denomination,
+)
+
 
 logger = logging.getLogger(__name__)
 
@@ -89,54 +93,34 @@ def display_info(symbol: str, export: str = ""):
 
 
 @log_start_end(log=logger)
-def display_shareholders(symbol: str, export: str = ""):
+def display_shareholders(symbol: str, holder: str = "institutional", export: str = ""):
     """Yahoo Finance ticker shareholders
     Parameters
     ----------
     symbol : str
         Fundamental analysis ticker symbol
+    holder: str
+        Shareholder table to get.  Can be major/institutional/mutualfund
     export: str
         Format to export data
     """
-    (
-        df_major_holders,
-        df_institutional_shareholders,
-        df_mutualfund_shareholders,
-    ) = yahoo_finance_model.get_shareholders(symbol)
-    df_major_holders.columns = ["", ""]
-    dfs = [df_major_holders, df_institutional_shareholders, df_mutualfund_shareholders]
-    titles = ["Major Holders", "Institutional Holders", "Mutual Fund Holders"]
-    console.print()
-
-    for df, title in zip(dfs, titles):
-        if "Date Reported" in df.columns:
-            df["Date Reported"] = df["Date Reported"].apply(
-                lambda x: x.strftime("%Y-%m-%d")
-            )
-        print_rich_table(
-            df,
-            headers=list(df.columns),
-            show_index=False,
-            title=f"{symbol.upper()} {title}",
+    df = yahoo_finance_model.get_shareholders(symbol, holder)
+    if holder == "major":
+        df.columns = ["", ""]
+    if "Date Reported" in df.columns:
+        df["Date Reported"] = df["Date Reported"].apply(
+            lambda x: x.strftime("%Y-%m-%d")
         )
+    title = f"{holder.title()} Holders"
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title=f"{symbol.upper()} {title}",
+    )
 
     export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "major_holders",
-        df_major_holders,
-    )
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "institutional_holders",
-        df_institutional_shareholders,
-    )
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "mutualfunds_holders",
-        df_major_holders,
+        export, os.path.dirname(os.path.abspath(__file__)), f"{holder}_holders", df
     )
 
 
@@ -186,7 +170,7 @@ def display_calendar_earnings(symbol: str, export: str = ""):
     export: str
         Format to export data
     """
-    df_calendar = yahoo_finance_model.get_calendar_earnings(symbol).T
+    df_calendar = yahoo_finance_model.get_calendar_earnings(symbol)
     if df_calendar.empty:
         console.print("No calendar events found.\n")
         return
@@ -399,7 +383,7 @@ def display_mktcap(
 def display_fundamentals(
     symbol: str,
     statement: str,
-    limit: int = 120,
+    limit: int = 12,
     ratios: bool = False,
     plot: list = None,
     export: str = "",
@@ -411,7 +395,10 @@ def display_fundamentals(
     symbol: str
         Stock ticker symbol
     statement: str
-        Either balance or financials for income or cash-flow
+        can be:
+            cash-flow
+            financials for Income
+            balance-sheet
     limit: int
     ratios: bool
         Shows percentage change
@@ -420,46 +407,39 @@ def display_fundamentals(
     export: str
         Format to export data
     """
+
+    fundamentals = yahoo_finance_model.get_financials(symbol, statement, ratios)
+
     if statement == "balance-sheet":
-        fundamentals = yahoo_finance_model.get_financials(symbol, statement, ratios)
         title_str = "Balance Sheet"
     elif statement == "financials":
-        fundamentals = yahoo_finance_model.get_financials(symbol, statement, ratios)
         title_str = "Income Statement"
     elif statement == "cash-flow":
-        fundamentals = yahoo_finance_model.get_financials(symbol, statement, ratios)
         title_str = "Cash Flow Statement"
+
+    if fundamentals is None:
+        return
 
     if fundamentals.empty:
         # The empty data frame error handling done in model
         return
+
+    symbol_currency = yahoo_finance_model.get_currency(symbol)
+
     if plot:
         rows_plot = len(plot)
         fundamentals_plot_data = fundamentals.transpose().fillna(-1)
         fundamentals_plot_data.columns = fundamentals_plot_data.columns.str.lower()
-        fundamentals_plot_data = fundamentals_plot_data.replace(",", "", regex=True)
-        fundamentals_plot_data = fundamentals_plot_data.replace("-", "-1")
-        fundamentals_plot_data = fundamentals_plot_data.astype(float)
         if "ttm" in list(fundamentals_plot_data.index):
             fundamentals_plot_data = fundamentals_plot_data.drop(["ttm"])
         fundamentals_plot_data = fundamentals_plot_data.sort_index()
 
         if not ratios:
             maximum_value = fundamentals_plot_data[plot[0].replace("_", " ")].max()
-            if maximum_value > 1_000_000_000_000:
-                df_rounded = fundamentals_plot_data / 1_000_000_000_000
-                denomination = "in Trillions"
-            elif maximum_value > 1_000_000_000:
-                df_rounded = fundamentals_plot_data / 1_000_000_000
-                denomination = "in Billions"
-            elif maximum_value > 1_000_000:
-                df_rounded = fundamentals_plot_data / 1_000_000
-                denomination = "in Millions"
-            elif maximum_value > 1_000:
-                df_rounded = fundamentals_plot_data / 1_000
-                denomination = "in Thousands"
-            else:
-                df_rounded = fundamentals_plot_data
+            (df_rounded, denomination) = transform_by_denomination(
+                fundamentals_plot_data, maxValue=maximum_value
+            )
+            if denomination == "Units":
                 denomination = ""
         else:
             df_rounded = fundamentals_plot_data
@@ -490,14 +470,42 @@ def display_fundamentals(
         fundamentals.index = fundamentals.index.to_series().apply(
             lambda x: x.replace("_", " ").title()
         )
-
         # Readable numbers
-        fundamentals = fundamentals.applymap(lambda_long_number_format).fillna("-")
+        formatted_df = fundamentals.applymap(lambda_long_number_format).fillna("-")
         print_rich_table(
-            fundamentals.iloc[:, :limit].applymap(lambda x: "-" if x == "nan" else x),
+            formatted_df.iloc[:, :limit].applymap(lambda x: "-" if x == "nan" else x),
             show_index=True,
-            title=f"{symbol} {title_str}",
+            title=f"{symbol} {title_str} Currency: {symbol_currency}",
         )
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), statement, fundamentals
+    )
+
+
+@log_start_end(log=logger)
+def display_earnings(symbol: str, limit: int, export: str):
+    """
+
+    Parameters
+    ----------
+    symbol
+    limit
+    export
+
+    Returns
+    -------
+
+    """
+    earnings = yahoo_finance_model.get_earnings_history(symbol)
+    if earnings.empty:
+        console.print("")
+        return
+    earnings = earnings.drop(columns={"Symbol", "Company"}).fillna("-")
+    print_rich_table(
+        earnings.head(limit),
+        headers=earnings.columns,
+        title=f"Historical Earnings for {symbol}",
+    )
+    export_data(
+        export, os.path.dirname(os.path.abspath(__file__)), "earnings_yf", earnings
     )
