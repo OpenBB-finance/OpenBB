@@ -1702,7 +1702,7 @@ def screenshot_to_canvas(shot, plot_exists: bool = False):
     plot_exists: bool
         Variable to say whether the image is a plot or screenshot of terminal
     """
-    
+
     CURRENT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__)))
     WHITE_LINE_WIDTH = 3
     OUTSIDE_CANVAS_WIDTH = shot.width + 4 * WHITE_LINE_WIDTH + 5
@@ -1713,7 +1713,7 @@ def screenshot_to_canvas(shot, plot_exists: bool = False):
 
     background = Image.open(Path(str(CURRENT_PATH), "terminal.png"))
     logo = Image.open(Path(str(CURRENT_PATH), "openbb_logo.png"))
-    
+
     try:
         if plot_exists:
             HEADER_HEIGHT = 0
@@ -1742,7 +1742,7 @@ def screenshot_to_canvas(shot, plot_exists: bool = False):
                 radius=RADIUS,
             )
             background.paste(shot, (x + WHITE_LINE_WIDTH + 5, y + WHITE_LINE_WIDTH + 5))
-        
+
             # Logo
             background.paste(
                 logo,
@@ -1766,6 +1766,6 @@ def screenshot_to_canvas(shot, plot_exists: bool = False):
             )
 
             background.show()
-    
+
     except Exception:
         console.print("Shot failed.")
