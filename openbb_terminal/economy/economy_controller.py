@@ -322,7 +322,7 @@ class EconomyController(BaseController):
         See `BaseController.parse_input()` for details.
         """
         # Filtering out sorting parameters with forward slashes like P/E
-        sort_filter = r"((\ -s |\ --sort ).*?(P\/E|Fwd P\/E|P\/S|P\/B|P\/C|P\/FCF)*)"
+        sort_filter = r"((\ -s |\ --sortby ).*?(P\/E|Fwd P\/E|P\/S|P\/B|P\/C|P\/FCF)*)"
 
         custom_filters = [sort_filter]
 
