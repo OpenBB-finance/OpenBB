@@ -27,6 +27,7 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
+    export_data,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import CryptoBaseController
@@ -67,8 +68,8 @@ class CryptoController(CryptoBaseController):
         "defi",
         "tools",
         "nft",
-        "pred",
         "qa",
+        "forecast",
     ]
 
     DD_VIEWS_MAPPING = {
@@ -133,8 +134,8 @@ class CryptoController(CryptoBaseController):
         mt.add_menu("nft")
         mt.add_menu("dd", self.symbol)
         mt.add_menu("ta", self.symbol)
-        mt.add_menu("pred", self.symbol)
         mt.add_menu("qa", self.symbol)
+        mt.add_menu("forecast", self.symbol)
         console.print(text=mt.menu_text, menu="Cryptocurrency")
 
     @log_start_end(log=logger)
@@ -249,11 +250,16 @@ class CryptoController(CryptoBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-
         if ns_parser:
             if not self.symbol:
                 console.print("No coin loaded. First use `load {symbol}`\n")
                 return
+            export_data(
+                ns_parser.export,
+                os.path.join(os.path.dirname(os.path.abspath(__file__))),
+                f"{self.symbol}",
+                self.current_df,
+            )
 
             plot_chart(
                 exchange=self.exchange,
@@ -368,7 +374,7 @@ class CryptoController(CryptoBaseController):
 
     @log_start_end(log=logger)
     def call_qa(self, _):
-        """Process pred command"""
+        """Process qa command"""
         if self.symbol:
             from openbb_terminal.cryptocurrency.quantitative_analysis import (
                 qa_controller,
@@ -380,45 +386,6 @@ class CryptoController(CryptoBaseController):
                 self.current_df,
                 self.queue,
             )
-
-    @log_start_end(log=logger)
-    def call_pred(self, _):
-        """Process pred command"""
-        # IMPORTANT: 8/11/22 prediction was discontinued on the installer packages
-        # because forecasting in coming out soon.
-        # This if statement disallows installer package users from using 'pred'
-        # even if they turn on the OPENBB_ENABLE_PREDICT feature flag to true
-        # however it does not prevent users who clone the repo from using it
-        # if they have ENABLE_PREDICT set to true.
-        if obbff.PACKAGED_APPLICATION or not obbff.ENABLE_PREDICT:
-            console.print(
-                "Predict is disabled. Forecasting coming soon!",
-                "\n",
-            )
-        else:
-            if self.symbol:
-                try:
-                    from openbb_terminal.cryptocurrency.prediction_techniques import (
-                        pred_controller,
-                    )
-
-                    if self.current_interval != "1440":
-                        console.print("Only interval `1day` is possible for now.\n")
-                    else:
-                        self.queue = self.load_class(
-                            pred_controller.PredictionTechniquesController,
-                            self.symbol,
-                            self.current_df,
-                            self.queue,
-                        )
-                except ImportError:
-                    logger.exception("Tensorflow not available")
-                    console.print("[red]Run pip install tensorflow to continue[/red]\n")
-
-            else:
-                console.print(
-                    "No coin selected. Use 'load' to load the coin you want to look at.\n"
-                )
 
     @log_start_end(log=logger)
     def call_onchain(self, _):
@@ -521,3 +488,16 @@ class CryptoController(CryptoBaseController):
                 show_all=bool("ALL" in other_args),
                 export=ns_parser.export,
             )
+
+    @log_start_end(log=logger)
+    def call_forecast(self, _):
+        """Process forecast command"""
+        from openbb_terminal.forecast import forecast_controller
+
+        console.print(self.symbol)
+        self.queue = self.load_class(
+            forecast_controller.ForecastController,
+            self.symbol,
+            self.current_df,
+            self.queue,
+        )

@@ -1,0 +1,59 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.alphavantage.co/query?apikey=MOCK_API_KEY&function=REAL_GDP&interval=quarterly
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//nJm9iltJEEZzP8VFseej/rva8cKmZlOzgezRgkAzwpLGYIzffZG8Mzi6
+        tSVFV3Tr0Byqq+/X+vFuWZZl87x92m0+LJu/dtvD8ufpeD4vfxyfdufL/svy8XR8fPly2bz/NXX/
+        fNmdvm0P1+lfX7any+50+P46+PK8v1wHPu8Ph/3x+bwc/1kej4fD9nR+nfK4vWw3H5ZPt2/Xz4+3
+        p9fx21KERB7IHoj/++XbjG/bw8ttis10jOmbt/Gf7/8fllex6Y700cTyA9Ma1pkJ07mNpbEugQNG
+        0seuu81JSPU+dt1tTEaINbFUuLU0RUSbWqgdxGDKPnZdrapjsvexhVpJWNMBz8rsJMac2sZWamdA
+        hPvYdbXDFSTex66r9TQkN6uWs3I7hoCD29jCbeTEJO9j192GBVL71EItETib7YtHpTYiocPb2EKt
+        e2B69LHrap0JTqOPXXerRneUbVRuXR3UdhuVW7OJIO1j190aDUhGH7vuVjKh3a3rlVozg4u0sYVa
+        vXYE9z62OMhMIdP62EItC1y6hWCVWx0MotnGFm4lB6TdxK1yy9MgYX3sulsaE87dTqOVWwlCtler
+        lVsehMF9aqGWDNJuNFqq5QFvr1YqtawJaquVSi3lPW9KZSQjC7hqH7vqVmcG1Lp7t4pkRiNh7QZW
+        RTKdqZjt47yKZDp9oJt2uUpkmoPB7fe6MpGRBIZlG1upNQdLf7WVWiK091iVyHSMQFcBVYlMpwQi
+        RhtbmE1RBN2BXTc7UuDmfWyhlhRmzTqgKpFpTgfbaGOrqmWCzv5qq6pVQ7j0sUWzJcHoOigTGbFD
+        craxldpbn7E+1opCCAzpU4uqTQdz10GUHYED2b1ZpCg7giqiXbVRqtUAxR2rLdzKhGq323rZESTB
+        Q9vYwu2IgWyXrZfdlhjevU2hKpFpkKJ94lSBTIcwYmQbW6gNHnecj1UgUx8O797aUhXI1K5Xi9pd
+        bRXI1OeAdt9oqApkajMx+Q7suluTCRqzj113e73/4uju3SqRqQWBfbaxlVtitLduFchUQ+Dd/zCo
+        DGQSiozfHdye/n73818AAAD//wMAQKZ4eFMcAAA=
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 756ec8e6dae198c4-LUX
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 08 Oct 2022 12:12:26 GMT
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Cookie
+      Via:
+      - 1.1 vegur
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -5,7 +5,9 @@ import argparse
 import logging
 from pathlib import Path
 from typing import List, Union, Optional, Dict
-from datetime import datetime, timedelta, date as d
+from functools import lru_cache
+from datetime import datetime, timedelta
+from datetime import date as d
 import types
 from collections.abc import Iterable
 import os
@@ -241,7 +243,6 @@ def print_rich_table(
     show_header: bool
         Whether to show the header row.
     """
-
     if obbff.USE_TABULATE_DF:
         table = Table(title=title, show_lines=True, show_header=show_header)
 
@@ -272,6 +273,7 @@ def print_rich_table(
             floatfmt = [floatfmt for _ in range(len(df.columns))]
 
         for idx, values in zip(df.index.tolist(), df.values.tolist()):
+            # remove hour/min/sec from timestamp index - Format: YYYY-MM-DD # make better
             row = [str(idx)] if show_index else []
             row += [
                 str(x)
@@ -777,21 +779,26 @@ def get_next_stock_market_days(last_stock_day, n_next_days) -> list:
     l_pred_days = []
     years: list = []
     holidays: list = []
-    while n_days < n_next_days:
-        last_stock_day += timedelta(hours=24)
-        year = last_stock_day.date().year
-        if year not in years:
-            years.append(year)
-            holidays += us_market_holidays(year)
-        # Check if it is a weekend
-        if last_stock_day.date().weekday() > 4:
-            continue
-        # Check if it is a holiday
-        if last_stock_day.strftime("%Y-%m-%d") in holidays:
-            continue
-        # Otherwise stock market is open
-        n_days += 1
-        l_pred_days.append(last_stock_day)
+    if isinstance(last_stock_day, datetime):
+        while n_days < n_next_days:
+            last_stock_day += timedelta(hours=24)
+            year = last_stock_day.date().year
+            if year not in years:
+                years.append(year)
+                holidays += us_market_holidays(year)
+            # Check if it is a weekend
+            if last_stock_day.date().weekday() > 4:
+                continue
+            # Check if it is a holiday
+            if last_stock_day.strftime("%Y-%m-%d") in holidays:
+                continue
+            # Otherwise stock market is open
+            n_days += 1
+            l_pred_days.append(last_stock_day)
+    else:
+        while n_days < n_next_days:
+            l_pred_days.append(last_stock_day + 1 + n_days)
+            n_days += 1
 
     return l_pred_days
 
@@ -1662,3 +1669,29 @@ def search_wikipedia(expression: str) -> None:
         show_index=False,
         title=f"Wikipedia results for {expression}",
     )
+
+
+@lru_cache
+def load_json(path: str) -> Dict[str, str]:
+    """Loads a dictionary from a json file path
+
+    Parameter
+    ----------
+    path : str
+        The path for the json file
+
+    Returns
+    ----------
+    Dict[str, str]
+        The dictionary loaded from json
+    """
+    try:
+        with open(path) as file:
+            return json.load(file)
+    except Exception as e:
+        console.print(
+            f"[red]Failed to load preferred source from file: "
+            f"{obbff.PREFERRED_DATA_SOURCE_FILE}[/red]"
+        )
+        console.print(f"[red]{e}[/red]")
+        return {}
