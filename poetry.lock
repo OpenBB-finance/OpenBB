@@ -2763,17 +2763,6 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
-name = "pygetwindow"
-version = "0.0.9"
-description = "A simple, cross-platform module for obtaining GUI information on application's windows."
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-pyrect = "*"
-
-[[package]]
 name = "pygls"
 version = "0.11.3"
 description = "a pythonic generic language server (pronounced like \"pie glass\")."
@@ -2961,14 +2950,6 @@ optionals = ["matplotlib (>=3.5.2,<4.0.0)", "scikit-learn (>=1.1.1,<2.0.0)"]
 name = "pyprind"
 version = "2.11.3"
 description = "Python Progress Bar and Percent Indicator Utility"
-category = "main"
-optional = false
-python-versions = "*"
-
-[[package]]
-name = "pyrect"
-version = "0.2.0"
-description = "PyRect is a simple module with a Rect class for Pygame-like rectangular areas."
 category = "main"
 optional = false
 python-versions = "*"
@@ -4550,7 +4531,7 @@ prediction-m1-mac = ["tensorflow-macos", "tensorflow-metal"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11"
-content-hash = "bfe67d4a0430e16c623cfb3ce2cd1be18eb8e25e57df3f51fe504db93e22ec8f"
+content-hash = "6df16f32d4241c007b543e6dc22a7fcd8c1730e89dead37b65bad54c1720ab19"
 
 [metadata.files]
 absl-py = []
@@ -4769,7 +4750,6 @@ pydantic = []
 pyerfa = []
 pyex = []
 pyflakes = []
-pygetwindow = []
 pygls = []
 pygments = []
 pyhdfe = []
@@ -4785,7 +4765,6 @@ pyotp = []
 pyparsing = []
 pyportfolioopt = []
 pyprind = []
-pyrect = []
 pyrsistent = []
 pyscreeze = []
 pysocks = []
