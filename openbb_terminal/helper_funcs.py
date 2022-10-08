@@ -1707,9 +1707,9 @@ def screenshot_to_canvas(shot, plot_exists: bool = False):
     WHITE_LINE_WIDTH = 3
     OUTSIDE_CANVAS_WIDTH = shot.width + 4 * WHITE_LINE_WIDTH + 5
     OUTSIDE_CANVAS_HEIGHT = shot.height + 4 * WHITE_LINE_WIDTH + 5
-    UPPER_SPACE = 50
-    BACKGROUND_WIDTH_SLACK = 200
-    BACKGROUND_HEIGHT_SLACK = 200
+    UPPER_SPACE = 40
+    BACKGROUND_WIDTH_SLACK = 150
+    BACKGROUND_HEIGHT_SLACK = 150
 
     background = Image.open(Path(str(CURRENT_PATH), "terminal.png"))
     logo = Image.open(Path(str(CURRENT_PATH), "openbb_logo.png"))
@@ -1765,7 +1765,7 @@ def screenshot_to_canvas(shot, plot_exists: bool = False):
                 logo,
             )
 
-            background.show()
+            background.show(title="screenshot")
 
     except Exception:
         console.print("Shot failed.")
