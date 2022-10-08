@@ -10,6 +10,7 @@ import contextlib
 from enum import Enum
 import binance
 import dotenv
+import io
 import pandas as pd
 import quandl
 import requests
@@ -1097,12 +1098,18 @@ def check_degiro_key(show_output: bool = False) -> str:
     else:
         dg = DegiroModel()
         try:
-            with open(os.devnull, "w") as devnull:  # suppress stdout
-                with contextlib.redirect_stdout(devnull):
-                    if not dg.check_credentials():  # pylint: disable=no-member
-                        raise Exception
-                    logger.info("Degiro key defined, test passed")
-                    status = KeyStatus.DEFINED_TEST_PASSED
+            f = io.StringIO()  # suppress stdout
+            with contextlib.redirect_stdout(f):
+                check_creds = dg.check_credentials()  # pylint: disable=no-member
+
+            if "2FA is enabled" in f.getvalue() or check_creds:
+                logger.info("Degiro key defined, test passed")
+                status = KeyStatus.DEFINED_TEST_PASSED
+            else:
+                raise Exception
+
+            logger.info("Degiro key defined, test passed")
+            status = KeyStatus.DEFINED_TEST_PASSED
 
         except Exception:
             logger.info("Degiro key defined, test failed")
