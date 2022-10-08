@@ -4,6 +4,10 @@ OpenBB SDK gives you direct and programmatic access to all capabilities from Ope
 
 OpenBB SDK is created and maintained by OpenBB team together with the contributions from hundreds of community members. This gives us an unrivaled speed of development and the ability to maintain stable integrations with numerous third-party data providers. Developing and maintaining an full-blown investment research infrastructure from the ground up takes a lot of time and effort. However, it does not have to be. Take advantage of OpenBB SDK with its out-of-the-box data connectors and financial analysis toolkit; so that you can focus on designing and building your financial reports and applications.
 
+## Installation
+
+To be completed once pip install is available on PyPI
+
 ## Setup
 ### 1. Import OpenBB SDK
 
@@ -68,7 +72,23 @@ Finally, if you prefer to check documentation on a web browser, [OpenBB SDK Docu
 
 ### 4. Set API Keys
 
-TO BE COMPLETED once we finish the development
+You can set your external API keys through OpenBB SDK.
+ 
+* Single API setup
+![image](https://user-images.githubusercontent.com/79287829/194706829-dd720d06-9027-4da6-87f1-f39c7d2d725a.png)
+
+* API key setup with persistance: `persist=True` means that your key will be saved and can be reused after, otherwise it will be lost when you restart the kernel.
+![image](https://user-images.githubusercontent.com/79287829/194706848-80302ffa-6e75-4f7a-b8ce-788e083977d4.png)
+
+* Set multiple keys from dictionary
+![image](https://user-images.githubusercontent.com/79287829/194706945-f1e6937f-74e2-4702-9e5e-c463287d61bd.png)
+
+* Get info about API setup arguments
+![image](https://user-images.githubusercontent.com/79287829/194706740-54bcc166-460a-410d-b34d-23e8b6c7aaf2.png)
+
+* Get your defined keys
+![image](https://user-images.githubusercontent.com/79287829/194706907-239fe861-31c3-47c0-9051-7717cd026b76.png)
+
 
 ## Usage
 Now, let's explore what OpenBB SDK can do. At a high level, you can break down OpenBB SDK's functionalities into two main buckets: (1) Data layer and (2) Toolbox layer.
@@ -169,7 +189,7 @@ tickers, categories = openbb.portfolio.po.load(excel_file = order_book_path)
 
 
 #### Step 2. Optimizing portfolio
-We provide multiple portfolio optimization techniques. For instance, you can utilize basic mean-variance techniques, e.g. optimizing for the maximum Sharpe ratio and minimum variance, as well as more advanced methods including techniques including Hierarchical Risk Parity and Nested Clustered Optimization.
+We provide multiple portfolio optimization techniques. For instance, you can utilize basic mean-variance techniques, such as optimizing for the maximum Sharpe ratio, or minimum variance and the likes.
 
 ```
 ## Max Sharpe optimization
@@ -192,6 +212,9 @@ weights_min_risk
 
 <img width="742" alt="Screenshot 2022-10-04 at 13 24 45" src="https://user-images.githubusercontent.com/40023817/193818556-89380c7c-94c3-4e5c-8848-28058c9cf056.png">
 
+
+
+Please note that these optimization techniques are rather basic. They don't take into account the fact that majority of portfolio is allocated to a few stocks. you high concentration level of risk. As a result, there would be a high concentration level of risk in the portfolio. For that, we have more advanced, and complex optimization techniques including Hierarchical Risk Parity and Nested Clustered Optimization.
 
 ```
 ## Hierarchical Risk Parity optimization
@@ -219,12 +242,12 @@ openbb.portfolio.po.plot(data=data_returns_hrp,weights=weights_hrp,rc_chart=True
 <img width="737" alt="Screenshot 2022-10-04 at 13 36 10" src="https://user-images.githubusercontent.com/40023817/193820817-82f8727f-0e12-4794-b128-d6ebe20b2c4f.png">
 
 
-These optimization methods have an extensive list of parameters and thus the final result is highly dependent on the chosen parameters. For instance, you can refer to the documentation below.
+These functionalities have an extensive list of parameters and thus the optimization process is highly dependent on the chosen parameters. For instance, you can refer to the documentation below.
 <img width="747" alt="Screenshot 2022-10-04 at 00 35 00" src="https://user-images.githubusercontent.com/40023817/193704210-b75ddee3-1da3-432b-90f8-6966e85bb345.png">
 
 
 
-This allows us to alter certain assumption which also modify the asset allocation outcomes.
+This allows us to alter certain assumption which also modify the asset allocation.
 
 ```
 weights_hrp_2, data_returns_hrp_2 = openbb.portfolio.po.hrp(
@@ -241,7 +264,7 @@ pd.DataFrame([weights_hrp, weights_hrp_2], index=["Basic", "Extended"]).T
 
 
 
-The basic method was optimized for *variance*. The extended method increases the period of historical data, optimizes for conditional Value at Risk and has a lower risk aversion.
+THe basic method was optimized for *variance*. The extended method increases the period of historical data, optimizes for conditional Value at Risk and has a lower risk aversion.
 
 ```openbb.portfolio.po.plot(data=data_returns_hrp,weights=weights_hrp,pie=True)```
 
