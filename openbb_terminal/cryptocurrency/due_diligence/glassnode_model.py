@@ -189,9 +189,9 @@ def get_close_price(
     ----------
     symbol : str
         Crypto to check close price (BTC or ETH)
-    start_date : int
+    start_date : str
         Initial date, format YYYY-MM-DD
-    end_date : int
+    end_date : str
         Final date, format YYYY-MM-DD
     print_errors: bool
         Flag to print errors. Default: True
@@ -575,9 +575,9 @@ def get_btc_rainbow(
     Parameters
     ----------
     start_date : str
-        Initial date. Default is initial BTC timestamp.
+        Initial date, format YYYY-MM-DD
     end_date : str
-        Final date. Default is current BTC timestamp.
+        Final date, format YYYY-MM-DD
     """
 
     df_data = get_close_price("BTC", start_date, end_date)
