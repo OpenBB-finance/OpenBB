@@ -18,6 +18,6 @@ Interval (min):
 >   nft                non-fungible tokens,                    today drops
 [unvl]>   dd                 due-diligence for loaded coin,          coin information, social media, market stats[/unvl]
 [unvl]>   ta                 technical analysis for loaded coin,     ema, macd, rsi, adx, bbands, obv[/unvl]
-[unvl]>   pred               prediction techniques,                  regression, arima, rnn, lstm, conv1d, monte carlo[/unvl]
 [unvl]>   qa                 quantitative analysis                   decompose, cusum, residuals analysis[/unvl]
+[unvl]>   forecast           forecast techniques,                 rnn, nbeats, transformer, block rnn[/unvl]
 

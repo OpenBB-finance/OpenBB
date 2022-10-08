@@ -1,5 +1,5 @@
 ## Get underlying data 
-### stocks.fa.analysis(symbol: str) -> str
+### stocks.fa.analysis(symbol: str) -> pandas.core.frame.DataFrame
 
 Save time reading SEC filings with the help of machine learning. [Source: https://eclect.us]
 
