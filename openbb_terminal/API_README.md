@@ -6,6 +6,7 @@ OpenBB SDK is created and maintained by OpenBB team together with the contributi
 
 
 ## Setup
+
 ### 1. Import OpenBB SDK
 
 First off, import OpenBB SDK into your python script or Jupyter Notebook with:
@@ -19,6 +20,7 @@ Another approach is to check out [OpenBB SDK Documentation](https://openbb-finan
 
 
 ### 2. Customize chart style
+
 With OpenBB SDK, you can customize your chart style. You can switch between `dark` and `light` easily using this block of code:
 
 
@@ -38,12 +40,10 @@ theme = TerminalStyle("dark", "dark", "dark")
 
 ```
 
-
 <img width="791" alt="Screenshot 2022-10-03 at 23 46 33" src="https://user-images.githubusercontent.com/40023817/193699221-e154995b-653c-40fd-8fc6-a3f8d39638db.png">
 
-
-
 ### 3. Access Documentation
+
 Each and every command of OpenBB SDK has detailed documentation about input parameters and returned outputs. You can access them in multiple ways:
 
 **Approach 1: Press `shift + tab`**
@@ -52,20 +52,17 @@ extension](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.vscode
 
 <img width="788" alt="Screenshot 2022-10-03 at 23 31 55" src="https://user-images.githubusercontent.com/40023817/193697567-e7143252-c560-441e-84fd-cbe38aeaf0ea.png">
 
-
 **Approach 2: Type `help(command)`**
 
 You can also type `help(command)`, see example below, to see the command' docstring.
 
 <img width="871" alt="Screenshot 2022-10-03 at 23 33 05" src="https://user-images.githubusercontent.com/40023817/193697676-39351008-386d-4c4c-89f2-3de7d8d4e89d.png">
 
-
 **Approach 3: Use OpenBB SDK Documentation page**
 
 Finally, if you prefer to check documentation on a web browser, [OpenBB SDK Documentation](https://openbb-finance.github.io/OpenBBTerminal/api/) will be your best friend. You can browse available commands and search for any specific one that you need.
 
 <img width="1200" alt="Screenshot 2022-10-03 at 18 41 48" src="https://user-images.githubusercontent.com/40023817/193643316-c063df03-4172-487f-ba47-ee60f36a3fef.png">
-
 
 ### 4. Set API Keys
 
@@ -95,7 +92,6 @@ openbb.keys.fmp(key="example", persist=True)
 
 ![image](https://user-images.githubusercontent.com/79287829/194706848-80302ffa-6e75-4f7a-b8ce-788e083977d4.png)
 
-
 * Set multiple keys from dictionary
 
 ```python
@@ -114,7 +110,6 @@ openbb.keys.set_keys(d)
 
 ![image](https://user-images.githubusercontent.com/79287829/194706945-f1e6937f-74e2-4702-9e5e-c463287d61bd.png)
 
-
 * Get info about API setup arguments
 
 ```python
@@ -122,7 +117,6 @@ openbb.keys.get_keys_info()
 ```
 
 ![image](https://user-images.githubusercontent.com/79287829/194706740-54bcc166-460a-410d-b34d-23e8b6c7aaf2.png)
-
 
 * Get your defined keys
 
@@ -133,12 +127,14 @@ openbb.keys.mykeys(show=True)
 
 ![image](https://user-images.githubusercontent.com/79287829/194706907-239fe861-31c3-47c0-9051-7717cd026b76.png)
 
-
 ## Usage
+
 Now, let's explore what OpenBB SDK can do. At a high level, you can break down OpenBB SDK's functionalities into two main buckets: (1) Data layer and (2) Toolbox layer.
+
 ### 1. Data Layer
 
 ### **Getting financial data from multiple data sources using one single API**
+
 OpenBB SDK provides you access to normalized financial data from dozens of data sources, without having to built your own integration or relying on multiple third-party packages. Let's explore how we can do that.
 
 First, you will need to load in the desired ticker. If it's not on the top of your mind, make use of our search functionality.
@@ -147,7 +143,6 @@ openbb.stocks.search("apple")
 ```
 
 <img width="652" alt="Screenshot 2022-10-04 at 00 00 14" src="https://user-images.githubusercontent.com/40023817/193700663-b91d57a9-4581-4f7e-a6da-764c0c9de092.png">
-
 
 We want to load `Apple Inc.` listed on US exchange, so our ticker should be `AAPL`. If you want to load `Apple Inc.` from Brazilian exchange, you should load in `AAPL34.SA`.
 
@@ -173,6 +168,7 @@ df_pol = openbb.stocks.load("AAPL", source='Polygon')
 ```
 
 ### **Easy option to switch between obtaining underlying data and charts**
+
 Depending on your needs, you can get the outputs in form of data (e.g. `pandas dataframe`) or charts. If the latter is what you want, simple add `chart=True` as the last parameter.
 
 ### 1. Getting underlying data
@@ -186,7 +182,6 @@ openbb.economy.index(indices = ['sp500', 'nyse_ny', 'russell1000'], start_date =
 You might be wondering how to find all the available indices. This type of information should be available in the docstring. Let's give it a try.
 
 <img width="906" alt="Screenshot 2022-10-04 at 13 20 58" src="https://user-images.githubusercontent.com/40023817/193817866-b05cacee-a11b-4c44-b8c3-efb51bb9c892.png">
-
 
 As mentioned in the docstring, you can access it with the following helper function.
 
@@ -205,8 +200,8 @@ openbb.economy.index(indices = ['sp500', 'nyse_ny', 'russell1000'], start_date =
 <img width="741" alt="Screenshot 2022-10-04 at 00 03 57" src="https://user-images.githubusercontent.com/40023817/193701075-796ffabe-3266-4d71-9a81-3042e8ca5fc8.png">
 
 ## 2. Toolbox Layer
-In addition to financial data, you can also get access to a robust and powerful toolbox to perform analysis on different asset classes and on your portfolio.
 
+In addition to financial data, you can also get access to a robust and powerful toolbox to perform analysis on different asset classes and on your portfolio.
 
 Imagine that you would like to leverage existing financial calculations from OpenBB and apply them on your own data. This can be done easily - OpenBB SDK's commands usually accept a `dataframe` as an input. Here you can load it your data, either via a `csv`, `excel` file, or connecting directly with an `API` or a `database`. The possibilities are endless.
 
@@ -222,6 +217,7 @@ tickers, categories = openbb.portfolio.po.load(excel_file = order_book_path)
 ```
 
 #### Step 2. Optimizing portfolio
+
 We provide multiple portfolio optimization techniques. You can utilize basic mean-variance techniques, such as optimizing for the maximum Sharpe ratio, or minimum variance, as well as advanced optimization techniques including Hierarchical Risk Parity and Nested Clustered Optimization.
 
 ```
@@ -272,7 +268,6 @@ openbb.portfolio.po.plot(data=data_returns_hrp,weights=weights_hrp,rc_chart=True
 These techniques have an extensive list of parameters and thus the optimization outcome is highly dependent on the chosen parameters. For instance, you can refer to the documentation below.
 <img width="747" alt="Screenshot 2022-10-04 at 00 35 00" src="https://user-images.githubusercontent.com/40023817/193704210-b75ddee3-1da3-432b-90f8-6966e85bb345.png">
 
-
 This allows us to alter certain assumption which also modify the asset allocation.
 
 ```
@@ -287,8 +282,6 @@ pd.DataFrame([weights_hrp, weights_hrp_2], index=["Basic", "Extended"]).T
 
 ```
 <img width="401" alt="Screenshot 2022-10-04 at 00 37 18" src="https://user-images.githubusercontent.com/40023817/193704462-d006deee-f009-4330-9918-0e0d661636d8.png">
-
-
 
 The basic method was optimized for *variance*. The extended method increases the period of historical data, optimizes for conditional Value at Risk and has a lower risk aversion.
 
@@ -314,7 +307,6 @@ from openbb_terminal.api import openbb
 %matplotlib inline
 matplotlib_inline.backend_inline.set_matplotlib_formats("svg")
 ```
-
 
 ### 2. Take advantage of `external_axes`
 
