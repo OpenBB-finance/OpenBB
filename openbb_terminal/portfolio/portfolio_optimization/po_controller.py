@@ -1,7 +1,7 @@
 """ Portfolio Optimization Controller Module """
 __docformat__ = "numpy"
 
-# pylint: disable=C0302, protected-access, too-many-instance-attributes
+# pylint: disable=too-many-lines
 
 import argparse
 import logging
@@ -747,6 +747,8 @@ class PortfolioOptimizationController(BaseController):
             dest="file",
             help="Parameter file to be used",
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--file")
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
