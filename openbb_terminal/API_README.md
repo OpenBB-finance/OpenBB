@@ -1,9 +1,19 @@
 # OpenBB SDK
 
-OpenBB SDK gives you direct and programmatic access to all capabilities from OpenBB Terminal. You will have the necessary building blocks to create your own financial tools and applications, whether that be a visualization dashboard or a custom report on Jupyter Notebook. With OpenBB SDK, you can access to normalized financial data from dozens of data providers, without having to develop your own integrations from scratch. On top of financial data feeds, OpenBB SDK also provides you with a toolbox to perform financial analysis on a variety of asset classes, including stocks, crypto, ETFs, funds; the economy as well as your portfolios.
+OpenBB SDK gives you direct and programmatic access to all capabilities from OpenBB Terminal.
+You will have the necessary building blocks to create your own financial tools and applications,
+whether that be a visualization dashboard or a custom report on Jupyter Notebook. 
 
-OpenBB SDK is created and maintained by OpenBB team together with the contributions from hundreds of community members. This gives us an unrivaled speed of development and the ability to maintain stable integrations with numerous third-party data providers. Developing and maintaining an full-blown investment research infrastructure from the ground up takes a lot of time and effort. However, it does not have to be. Take advantage of OpenBB SDK with its out-of-the-box data connectors and financial analysis toolkit; so that you can focus on designing and building your financial reports and applications.
+With OpenBB SDK, you can access to normalized financial data from dozens of data providers,
+without having to develop your own integrations from scratch. 
+On top of financial data feeds, OpenBB SDK also provides you with a toolbox to perform financial analysis
+on a variety of asset classes, including stocks, crypto, ETFs, funds; the economy as well as your portfolios.
 
+OpenBB SDK is created and maintained by OpenBB team together with the contributions from hundreds of community members.
+This gives us an unrivaled speed of development and the ability to maintain stable integrations with numerous third-party data providers.
+Developing and maintaining an full-blown investment research infrastructure from the ground up takes a lot of time and effort.
+However, it does not have to be. Take advantage of OpenBB SDK with its out-of-the-box data connectors and financial analysis toolkit.
+So that you can focus on designing and building your financial reports and applications.
 
 ## Setup
 
@@ -11,33 +21,29 @@ OpenBB SDK is created and maintained by OpenBB team together with the contributi
 
 First off, import OpenBB SDK into your python script or Jupyter Notebook with:
 
-```
+```python
 from openbb_terminal.api import openbb
 ```
 
 This imports all Terminal commands at once. To see all the available commands, you can press `tab` in jupyter notebook.
 Another approach is to check out [OpenBB SDK Documentation](https://openbb-finance.github.io/OpenBBTerminal/api/), where you can explore its capabilities
 
-
 ### 2. Customize chart style
 
 With OpenBB SDK, you can customize your chart style. You can switch between `dark` and `light` easily using this block of code:
 
-
-```
+```python
 from openbb_terminal.api import TerminalStyle
 theme = TerminalStyle("light", "light", "light")
-
 ```
 
 <img width="813" alt="Screenshot 2022-10-03 at 23 56 52" src="https://user-images.githubusercontent.com/40023817/193700307-cbb12edc-0a5d-4804-9f3c-a798efd9e69d.png">
 
 OR
 
-```
+```python
 from openbb_terminal.api import TerminalStyle
 theme = TerminalStyle("dark", "dark", "dark")
-
 ```
 
 <img width="791" alt="Screenshot 2022-10-03 at 23 46 33" src="https://user-images.githubusercontent.com/40023817/193699221-e154995b-653c-40fd-8fc6-a3f8d39638db.png">
@@ -82,7 +88,6 @@ openbb.keys.reddit(
 ```
 
 ![image](https://user-images.githubusercontent.com/79287829/194706829-dd720d06-9027-4da6-87f1-f39c7d2d725a.png)
-
 
 * API key setup with persistence: `persist=True` means that your key will be saved and can be reused after, otherwise it will be lost when you restart the kernel.
 
@@ -138,7 +143,7 @@ Now, let's explore what OpenBB SDK can do. At a high level, you can break down O
 OpenBB SDK provides you access to normalized financial data from dozens of data sources, without having to built your own integration or relying on multiple third-party packages. Let's explore how we can do that.
 
 First, you will need to load in the desired ticker. If it's not on the top of your mind, make use of our search functionality.
-```
+```python
 openbb.stocks.search("apple")
 ```
 
@@ -146,13 +151,13 @@ openbb.stocks.search("apple")
 
 We want to load `Apple Inc.` listed on US exchange, so our ticker should be `AAPL`. If you want to load `Apple Inc.` from Brazilian exchange, you should load in `AAPL34.SA`.
 
-```
+```python
 df = openbb.stocks.load("AAPL")
 ```
 
 What's extremely powerful about OpenBB SDK is that you can specify the data source. Depending on the asset class, we have a list of available data sources and it's only getting bigger with contributions from our open-source community.
 
-```
+```python
 ## From YahooFinance
 df_yf = openbb.stocks.load("AAPL", source='YahooFinance')
 
@@ -164,7 +169,6 @@ df_iex = openbb.stocks.load("AAPL", source='IEXCloud')
 
 ## From Polygon
 df_pol = openbb.stocks.load("AAPL", source='Polygon')
-
 ```
 
 ### **Easy option to switch between obtaining underlying data and charts**
@@ -173,7 +177,7 @@ Depending on your needs, you can get the outputs in form of data (e.g. `pandas d
 
 ### 1. Getting underlying data
 
-```
+```python
 openbb.economy.index(indices = ['sp500', 'nyse_ny', 'russell1000'], start_date = '2010-01-01')
 ```
 
@@ -185,7 +189,7 @@ You might be wondering how to find all the available indices. This type of infor
 
 As mentioned in the docstring, you can access it with the following helper function.
 
-```
+```python
 openbb.economy.available_indices()
 ```
 
@@ -193,7 +197,7 @@ openbb.economy.available_indices()
 
 ### 2. Getting charts
 
-```
+```python
 openbb.economy.index(indices = ['sp500', 'nyse_ny', 'russell1000'], start_date = '2010-01-01', chart=True)
 ```
 
@@ -211,7 +215,7 @@ Let's go through an example to see how we can do it in a few simple steps. Here 
 
 Here we will use an example orderbook for illustration purposes. You can choose to upload your own orderbook instead.
 
-```
+```python
 order_book_path = "portfolio/allocation/60_40_Portfolio.xlsx"
 tickers, categories = openbb.portfolio.po.load(excel_file = order_book_path)
 ```
@@ -220,7 +224,7 @@ tickers, categories = openbb.portfolio.po.load(excel_file = order_book_path)
 
 We provide multiple portfolio optimization techniques. You can utilize basic mean-variance techniques, such as optimizing for the maximum Sharpe ratio, or minimum variance, as well as advanced optimization techniques including Hierarchical Risk Parity and Nested Clustered Optimization.
 
-```
+```python
 ## Max Sharpe optimization
 weights_max_sharpe, data_returns_max_sharpe = openbb.portfolio.po.maxsharpe(tickers)
 
@@ -230,7 +234,7 @@ weights_max_sharpe
 
 <img width="734" alt="Screenshot 2022-10-04 at 13 23 45" src="https://user-images.githubusercontent.com/40023817/193818381-e3e75455-ea91-4bdd-a903-0874ac8700dc.png">
 
-```
+```python
 ## Minimum risk optimization
 weights_min_risk, data_returns_min_risk = openbb.portfolio.po.minrisk(tickers)
 
@@ -240,26 +244,26 @@ weights_min_risk
 
 <img width="742" alt="Screenshot 2022-10-04 at 13 24 45" src="https://user-images.githubusercontent.com/40023817/193818556-89380c7c-94c3-4e5c-8848-28058c9cf056.png">
 
-```
+```python
 ## Hierarchical Risk Parity optimization
 
 weights_hrp, data_returns_hrp = openbb.portfolio.po.hrp(tickers)
 
 print("Hierarchical Risk Parity")
 weights_hrp
-
 ```
+
 <img width="736" alt="Screenshot 2022-10-04 at 13 34 39" src="https://user-images.githubusercontent.com/40023817/193820500-1bcde650-f517-4aed-b989-b2bd92bebbb8.png">
 
 After having obtained the asset allocation outcomes, you can plot a correlation heatmap across tickers, as well as their individual risk contributition.
 
-```
+```python
 openbb.portfolio.po.plot(data=data_returns_hrp,weights=weights_hrp,heat=True)
 ```
 
 <img width="734" alt="Screenshot 2022-10-04 at 13 35 14" src="https://user-images.githubusercontent.com/40023817/193820624-3e6da926-aea9-4963-bd54-fd1a6df0fda3.png">
 
-```
+```python
 openbb.portfolio.po.plot(data=data_returns_hrp,weights=weights_hrp,rc_chart=True)
 ```
 
@@ -270,7 +274,7 @@ These techniques have an extensive list of parameters and thus the optimization 
 
 This allows us to alter certain assumption which also modify the asset allocation.
 
-```
+```python
 weights_hrp_2, data_returns_hrp_2 = openbb.portfolio.po.hrp(
     tickers,
     interval="5y",
@@ -279,20 +283,23 @@ weights_hrp_2, data_returns_hrp_2 = openbb.portfolio.po.hrp(
 )
 
 pd.DataFrame([weights_hrp, weights_hrp_2], index=["Basic", "Extended"]).T
-
 ```
+
 <img width="401" alt="Screenshot 2022-10-04 at 00 37 18" src="https://user-images.githubusercontent.com/40023817/193704462-d006deee-f009-4330-9918-0e0d661636d8.png">
 
 The basic method was optimized for *variance*. The extended method increases the period of historical data, optimizes for conditional Value at Risk and has a lower risk aversion.
 
-```openbb.portfolio.po.plot(data=data_returns_hrp,weights=weights_hrp,pie=True)```
+```python
+openbb.portfolio.po.plot(data=data_returns_hrp,weights=weights_hrp,pie=True)
+```
 
 <img width="735" alt="Screenshot 2022-10-04 at 13 38 12" src="https://user-images.githubusercontent.com/40023817/193821181-0cb8cc51-3532-4542-b098-b23222330142.png">
 
-```openbb.portfolio.po.plot(data=data_returns_hrp_2,weights=weights_hrp_2,pie=True)```
+```python
+openbb.portfolio.po.plot(data=data_returns_hrp_2,weights=weights_hrp_2,pie=True)
+```
 
 <img width="735" alt="Screenshot 2022-10-04 at 13 38 30" src="https://user-images.githubusercontent.com/40023817/193821231-e92839b5-47d1-4a1a-81c2-61244bb6d925.png">
-
 
 ## Useful tips
 
