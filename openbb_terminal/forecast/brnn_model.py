@@ -30,7 +30,6 @@ def get_brnn_data(
     output_chunk_length: int = 5,
     model_type: str = "LSTM",
     n_rnn_layers: int = 1,
-    hidden_size: int = 20,
     dropout: float = 0.0,
     batch_size: int = 32,
     n_epochs: int = 100,
@@ -62,8 +61,6 @@ def get_brnn_data(
             Either a string specifying the RNN module type ("RNN", "LSTM" or "GRU"). Defaults to "LSTM".
         n_rnn_layers (int, optional):
              Number of layers in the RNN module. Defaults to 1.
-        hidden_size (int, optional):
-            Size for feature maps for each hidden RNN layer. Defaults to 20.
         dropout (float, optional):
             Fraction of neurons afected by Dropout. Defaults to 0.0.
         batch_size (int, optional):
@@ -121,7 +118,6 @@ def get_brnn_data(
         output_chunk_length=output_chunk_length,
         model=model_type,
         n_rnn_layers=n_rnn_layers,
-        hidden_size=hidden_size,
         dropout=dropout,
         batch_size=batch_size,
         n_epochs=n_epochs,
