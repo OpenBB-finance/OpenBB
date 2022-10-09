@@ -1,0 +1,39 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series?series_id=GNPCA&api_key=test_key
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="utf-8" ?>
+
+        <error code="400" message="Bad Request.  The value for variable api_key is
+        not a 32 character alpha-numeric lower-case string.  Read https://fred.stlouisfed.org/docs/api/api_key.html
+        for more information." />
+
+
+
+
+        '
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '252'
+      Content-Type:
+      - text/xml; charset=UTF-8
+      Date:
+      - Tue, 04 Oct 2022 14:12:00 GMT
+    status:
+      code: 400
+      message: Bad Request
+version: 1

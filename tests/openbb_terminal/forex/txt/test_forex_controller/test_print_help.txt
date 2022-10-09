@@ -10,7 +10,6 @@ Source: YahooFinance
 
 [unvl]>   ta                 technical analysis,          ema, macd, rsi, adx, bbands, obv[/unvl]
 [unvl]>   qa                 quantitative analysis,       decompose, cusum, residuals analysis[/unvl]
-[unvl]>   pred               prediction techniques        regression, arima, rnn, lstm, conv1d, monte carlo[/unvl]
 
 Forex brokerages:
 >   oanda              Oanda menu
