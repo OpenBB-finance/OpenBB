@@ -331,7 +331,9 @@
       "altindex": ["BlockchainCenter"],
       "btcrb": ["BlockchainCenter"],
       "ch": ["Rekt"],
-      "cr": ["LoanScan"]
+      "cr": ["LoanScan"],
+
+      "fun": ["TokenTerminal"]
     },
     "onchain": {
       "hr": ["Glassnode"],
@@ -425,7 +427,9 @@
       "social": ["CoinGecko"],
       "score": ["CoinGecko"],
       "dev": ["CoinGecko"],
-      "gh": ["Santiment"]
+      "gh": ["Santiment"],
+      "desc": ["TokenTerminal"],
+      "funot": ["TokenTerminal"]
     },
     "ta": {
       "load": ["YahooFinance", "CoinGecko", "CCXT"],
