@@ -2,10 +2,13 @@
 __docformat__ = "numpy"
 # pylint: disable=too-many-lines
 import argparse
+import io
 import logging
 from pathlib import Path
 from typing import List, Union, Optional, Dict
-from datetime import datetime, timedelta, date as d
+from functools import lru_cache
+from datetime import datetime, timedelta
+from datetime import date as d
 import types
 from collections.abc import Iterable
 import os
@@ -32,6 +35,8 @@ import requests
 from screeninfo import get_monitors
 import yfinance as yf
 import numpy as np
+
+from PIL import Image, ImageDraw
 
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
@@ -241,7 +246,6 @@ def print_rich_table(
     show_header: bool
         Whether to show the header row.
     """
-
     if obbff.USE_TABULATE_DF:
         table = Table(title=title, show_lines=True, show_header=show_header)
 
@@ -272,6 +276,7 @@ def print_rich_table(
             floatfmt = [floatfmt for _ in range(len(df.columns))]
 
         for idx, values in zip(df.index.tolist(), df.values.tolist()):
+            # remove hour/min/sec from timestamp index - Format: YYYY-MM-DD # make better
             row = [str(idx)] if show_index else []
             row += [
                 str(x)
@@ -777,21 +782,26 @@ def get_next_stock_market_days(last_stock_day, n_next_days) -> list:
     l_pred_days = []
     years: list = []
     holidays: list = []
-    while n_days < n_next_days:
-        last_stock_day += timedelta(hours=24)
-        year = last_stock_day.date().year
-        if year not in years:
-            years.append(year)
-            holidays += us_market_holidays(year)
-        # Check if it is a weekend
-        if last_stock_day.date().weekday() > 4:
-            continue
-        # Check if it is a holiday
-        if last_stock_day.strftime("%Y-%m-%d") in holidays:
-            continue
-        # Otherwise stock market is open
-        n_days += 1
-        l_pred_days.append(last_stock_day)
+    if isinstance(last_stock_day, datetime):
+        while n_days < n_next_days:
+            last_stock_day += timedelta(hours=24)
+            year = last_stock_day.date().year
+            if year not in years:
+                years.append(year)
+                holidays += us_market_holidays(year)
+            # Check if it is a weekend
+            if last_stock_day.date().weekday() > 4:
+                continue
+            # Check if it is a holiday
+            if last_stock_day.strftime("%Y-%m-%d") in holidays:
+                continue
+            # Otherwise stock market is open
+            n_days += 1
+            l_pred_days.append(last_stock_day)
+    else:
+        while n_days < n_next_days:
+            l_pred_days.append(last_stock_day + 1 + n_days)
+            n_days += 1
 
     return l_pred_days
 
@@ -1662,3 +1672,132 @@ def search_wikipedia(expression: str) -> None:
         show_index=False,
         title=f"Wikipedia results for {expression}",
     )
+
+
+def screenshot() -> None:
+    """
+    Screenshot the terminal window or the plot window
+
+    Parameters
+    ----------
+    terminal_window_target: bool
+        Target the terminal window
+    """
+    try:
+        if plt.get_fignums():
+            img_buf = io.BytesIO()
+            plt.savefig(img_buf, format="png")
+            shot = Image.open(img_buf)
+            screenshot_to_canvas(shot, plot_exists=True)
+            console.print("")
+
+        else:
+            console.print("No plots found.\n")
+
+    except Exception as e:
+        console.print(f"Cannot reach window - {e}\n")
+
+
+def screenshot_to_canvas(shot, plot_exists: bool = False):
+    """
+    Frame image to OpenBB canvas.
+
+    Parameters
+    ----------
+    shot
+        Image to frame with OpenBB Canvas
+    plot_exists: bool
+        Variable to say whether the image is a plot or screenshot of terminal
+    """
+
+    WHITE_LINE_WIDTH = 3
+    OUTSIDE_CANVAS_WIDTH = shot.width + 4 * WHITE_LINE_WIDTH + 5
+    OUTSIDE_CANVAS_HEIGHT = shot.height + 4 * WHITE_LINE_WIDTH + 5
+    UPPER_SPACE = 40
+    BACKGROUND_WIDTH_SLACK = 150
+    BACKGROUND_HEIGHT_SLACK = 150
+
+    background = Image.open(Path("images/background.png"))
+    logo = Image.open(Path("images/openbb_horizontal_logo.png"))
+
+    try:
+        if plot_exists:
+            HEADER_HEIGHT = 0
+            RADIUS = 8
+
+            background = background.resize(
+                (
+                    shot.width + BACKGROUND_WIDTH_SLACK,
+                    shot.height + BACKGROUND_HEIGHT_SLACK,
+                )
+            )
+
+            x = int((background.width - OUTSIDE_CANVAS_WIDTH) / 2)
+            y = UPPER_SPACE
+
+            white_shape = (
+                (x, y),
+                (x + OUTSIDE_CANVAS_WIDTH, y + OUTSIDE_CANVAS_HEIGHT),
+            )
+            img = ImageDraw.Draw(background)
+            img.rounded_rectangle(
+                white_shape,
+                fill="black",
+                outline="white",
+                width=WHITE_LINE_WIDTH,
+                radius=RADIUS,
+            )
+            background.paste(shot, (x + WHITE_LINE_WIDTH + 5, y + WHITE_LINE_WIDTH + 5))
+
+            # Logo
+            background.paste(
+                logo,
+                (
+                    int((background.width - logo.width) / 2),
+                    UPPER_SPACE
+                    + OUTSIDE_CANVAS_HEIGHT
+                    + HEADER_HEIGHT
+                    + int(
+                        (
+                            background.height
+                            - UPPER_SPACE
+                            - OUTSIDE_CANVAS_HEIGHT
+                            - HEADER_HEIGHT
+                            - logo.height
+                        )
+                        / 2
+                    ),
+                ),
+                logo,
+            )
+
+            background.show(title="screenshot")
+
+    except Exception:
+        console.print("Shot failed.")
+
+
+@lru_cache
+def load_json(path: str) -> Dict[str, str]:
+    """Loads a dictionary from a json file path
+
+    Parameter
+    ----------
+    path : str
+        The path for the json file
+
+    Returns
+    ----------
+    Dict[str, str]
+        The dictionary loaded from json
+    """
+    try:
+        with open(path) as file:
+            return json.load(file)
+    except Exception as e:
+        console.print(
+            f"[red]Failed to load preferred source from file: "
+            f"{obbff.PREFERRED_DATA_SOURCE_FILE}[/red]"
+        )
+        console.print(f"[red]{e}[/red]")
+        return {}
