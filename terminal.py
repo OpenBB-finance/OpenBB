@@ -33,10 +33,7 @@ from openbb_terminal.helper_funcs import (
     parse_simple_args,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
 )
-from openbb_terminal.loggers import (
-    setup_logging,
-    log_settings,
-)
+from openbb_terminal.loggers import setup_logging
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText, translate
@@ -52,6 +49,7 @@ from openbb_terminal.terminal_helper import (
 )
 from openbb_terminal.helper_funcs import parse_and_split_input
 from openbb_terminal.common import feedparser_view
+from openbb_terminal.core.log.generation.settings_logger import log_settings
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel,too-many-branches,no-member,C0302
 
