@@ -2,9 +2,9 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.9
+  - python=3.9.6
   - pip
+  - pytorch-lightning=1.6.5
+  - u8darts[torch]=0.22.0 
   - poetry=1.1.13
-  - conda-forge:lightgbm
-  - conda-forge:pytorch-lightning=1.6.5
   - cvxpy=1.2.1
