@@ -62,7 +62,6 @@ python-i18n = "^0.3.9"
 thepassiveinvestor = "^1.0.10"
 pymongo = "^3.11"
 pandas-ta = "^0.3.14-beta.0"
-pmdarima = "^1.8.4"
 pyrsistent = "^0.18.0"
 openpyxl = "^3.0.9"
 jsonschema = "^3.2.0"
@@ -92,13 +91,15 @@ jupyterlab-code-formatter = {version = "^1.4.10", optional = true}
 jupyterlab-lsp = {version = "^3.10.1", optional = true}
 jedi-language-server = {version = "^0.35.1", optional = true}
 kaleido = {version = "<=0.2.1", optional = true}
-torch = {version = "1.11.0", optional = true}
 streamlit = "^1.12.2"
 charset-normalizer = "2.1.0"
 watchdog = "^2.1.9"
 pythclient = "^0.1.2"
 ipyflex = "^0.2.4"
 "ruamel.yaml" = "^0.17.21"
+torch = {version = "1.11.0", optional = true}
+pytorch-lightning = {version = "1.6.5", optional = true}
+u8darts = {version = "0.22.0", extras = ["torch"], optional = true}
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
@@ -127,7 +128,7 @@ types-six = "^1.16.12"
 nbmake = ">0.5.0"
 
 [tool.poetry.extras]
-prediction = ["torch"]
+prediction = ["torch", "pytorch-lightning", "u8darts"]
 jupyterlab = ["jupyterlab-code-formatter", "jupyterlab-lsp", "jedi-language-server"]
 installer = ["pyinstaller"]
 
