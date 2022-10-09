@@ -39,7 +39,7 @@ from openbb_terminal.helper_classes import TerminalStyle  # noqa: F401
 from openbb_terminal import helper_funcs as helper  # noqa: F401
 from openbb_terminal.loggers import setup_logging
 from openbb_terminal.decorators import log_start_end, sdk_arg_logger
-from openbb_terminal.core.log.generation.settings_logger import log_settings
+from openbb_terminal.core.log.generation.settings_logger import log_all_settings
 from .reports import widget_helpers as widgets  # noqa: F401
 
 from .portfolio.portfolio_model import PortfolioModel as Portfolio
@@ -2302,7 +2302,7 @@ class Loader:
     @staticmethod
     def __initialize_logging():
         setup_logging(app_name="gst_sdk")
-        log_settings()
+        log_all_settings()
 
     @classmethod
     def get_function(cls, function_path: str) -> Callable:

@@ -49,7 +49,7 @@ from openbb_terminal.terminal_helper import (
 )
 from openbb_terminal.helper_funcs import parse_and_split_input
 from openbb_terminal.common import feedparser_view
-from openbb_terminal.core.log.generation.settings_logger import log_settings
+from openbb_terminal.core.log.generation.settings_logger import log_all_settings
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel,too-many-branches,no-member,C0302
 
@@ -600,7 +600,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
 
     setup_logging(appName)
     logger.info("START")
-    log_settings()
+    log_all_settings()
 
     if jobs_cmds is not None and jobs_cmds:
         logger.info("INPUT: %s", "/".join(jobs_cmds))

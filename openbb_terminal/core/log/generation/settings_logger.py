@@ -2,24 +2,30 @@
 import platform
 import json
 import logging
+from types import FunctionType, ModuleType
 
 # IMPORTATION THIRDPARTY
 
 
 # IMPORTATION INTERNAL
 import openbb_terminal.feature_flags as obbff
-from openbb_terminal.config_terminal import (
-    MPL_STYLE,
-    PMF_STYLE,
-    RICH_STYLE,
-)
-from openbb_terminal.keys_model import get_keys
+from openbb_terminal import config_terminal as cfg
 from openbb_terminal.core.log.generation.path_tracking_file_handler import (
     PathTrackingFileHandler,
 )
 
 
 logger = logging.getLogger(__name__)
+
+
+def log_all_settings() -> None:
+    """Log all settings"""
+    log_settings()
+    log_config_terminal()
+    log_feature_flags()
+    log_keys()
+
+    do_rollover()
 
 
 def log_settings() -> None:
@@ -42,18 +48,63 @@ def log_settings() -> None:
     settings_dict["packaged"] = "True" if obbff.PACKAGED_APPLICATION else "False"
     settings_dict["python"] = str(platform.python_version())
     settings_dict["os"] = str(platform.system())
-    settings_dict["theme"] = json.dumps(
-        {
-            "mpl_style": MPL_STYLE,
-            "pmf_style": PMF_STYLE,
-            "rich_style": RICH_STYLE,
-        }
-    )
-    settings_dict["keys"] = get_keys().index.tolist()
 
     logger.info("SETTINGS: %s ", json.dumps(settings_dict))
 
-    do_rollover()
+
+def log_config_terminal() -> None:
+    """Log config_terminal"""
+
+    config_terminal_dict = {}
+
+    for item in dir(cfg):
+        prop = getattr(cfg, item)
+        if (
+            not item.startswith("__")
+            and not isinstance(prop, FunctionType)
+            and not isinstance(prop, ModuleType)
+            and not "API" in item
+            and not "DG_" in item
+        ):
+            config_terminal_dict[item] = str(prop)
+
+    logger.info("CONFIG_TERMINAL: %s ", json.dumps(config_terminal_dict))
+
+
+def log_feature_flags() -> None:
+    """Log feature flags"""
+
+    feature_flags_dict = {}
+
+    for item in dir(obbff):
+        prop = getattr(obbff, item)
+        if (
+            not item.startswith("__")
+            and not isinstance(prop, FunctionType)
+            and not isinstance(prop, ModuleType)
+        ):
+            feature_flags_dict[item] = str(prop)
+
+    logger.info("FEATURE_FLAGS: %s ", json.dumps(feature_flags_dict))
+
+
+def log_keys() -> None:
+    """Log keys"""
+
+    var_list = [v for v in dir(cfg) if v.startswith("API_")]
+
+    current_keys = {}
+
+    for cfg_var_name in var_list:
+
+        cfg_var_value = getattr(cfg, cfg_var_name)
+
+        if cfg_var_value != "REPLACE_ME":
+            current_keys[cfg_var_name] = "defined"
+        else:
+            current_keys[cfg_var_name] = "not_defined"
+
+    logger.info("KEYS: %s ", json.dumps(current_keys))
 
 
 def do_rollover():
