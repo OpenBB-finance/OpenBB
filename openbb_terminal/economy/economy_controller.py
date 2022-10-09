@@ -1659,8 +1659,6 @@ class EconomyController(BaseController):
             )
 
     @log_start_end(log=logger)
-
-
     def call_qa(self, _):
         """Process qa command"""
         if not self.DATASETS:
