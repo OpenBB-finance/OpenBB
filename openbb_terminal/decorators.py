@@ -132,10 +132,7 @@ def sdk_arg_logger(func=None, log=None, virtual_path: str = ""):
         try:
             value = func(*args, **kwargs)
 
-            locals_dict = locals()
-            input_dict = {"args": locals_dict["args"], "kwargs": locals_dict["kwargs"]}
-
-            logging_info = {"INPUT": input_dict}
+            logging_info = {"INPUT": {"args": args, "kwargs": kwargs}}
 
             if virtual_path:
                 logging_info["VIRTUAL_PATH"] = virtual_path
