@@ -120,3 +120,6 @@ def display_linear_regression(
         helpers.plot_residuals(
             _model, past_covariates, ticker_series, forecast_horizon=forecast_horizon
         )
+
+    # SHAP
+    helpers.plot_explainability(_model)

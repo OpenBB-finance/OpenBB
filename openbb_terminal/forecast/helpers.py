@@ -18,6 +18,7 @@ from darts.dataprocessing.transformers import MissingValuesFiller, Scaler
 from darts.utils.statistics import plot_residuals_analysis
 from darts import TimeSeries
 from darts.metrics import mape
+from darts.explainability.shap_explainer import ShapExplainer
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from openbb_terminal.rich_config import console
 from openbb_terminal.config_terminal import theme
@@ -530,6 +531,25 @@ def plot_forecast(
     print_pretty_prediction(numeric_forecast, data[target_col].iloc[-1])
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "expo")
+
+
+def plot_explainability(model, external_axes: Optional[List[plt.axes]] = None):
+    """Use SHAP to explain the model's predictions.
+    Args:
+        model (Linregr or Regr): Trained model
+    """
+    if not external_axes:
+        _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        ax1 = external_axes[0]
+
+    shap_explain = ShapExplainer(model)
+    shap_explain.summary_plot()
+
+    theme.style_primary_axis(ax1)
+
+    if not external_axes:
+        theme.visualize_output()
 
 
 def dt_format(x) -> str:
