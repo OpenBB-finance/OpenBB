@@ -9,20 +9,10 @@ import functools
 import importlib
 from typing import Optional, Callable, List
 
-from .stocks import stocks_api as stocks
-from .alternative import alt_api as alt
-from .cryptocurrency import crypto_api as crypto
-from .economy import economy_api as economy
-from .econometrics import econometrics_api as econometrics
-from .etf import etf_api as etf
-from .forex import forex_api as forex
-from .mutual_funds import mutual_fund_api as funds
-from .portfolio import portfolio_api as portfolio
-
 from openbb_terminal.rich_config import console
 
 try:
-    import darts
+    import darts  # pyright: reportMissingImports=false
 
     forecasting = True
 except ImportError:
@@ -2032,8 +2022,10 @@ if forecasting:
 
 
 def copy_func(f) -> Callable:
-    """Copies the contents and attributes of the entered function. Based on
-    https://stackoverflow.com/a/13503277
+    """Copy the contents and attributes of the entered function.
+
+    Based on https://stackoverflow.com/a/13503277
+
     Parameters
     ----------
     f: Callable
@@ -2056,7 +2048,8 @@ def copy_func(f) -> Callable:
 
 
 def change_docstring(api_callable, model: Callable, view=None):
-    """Changes docstring of the entered api_callable
+    """Change docstring of the entered api_callable.
+
     Parameters
     ----------
     api_callable: Callable
@@ -2074,7 +2067,7 @@ def change_docstring(api_callable, model: Callable, view=None):
         index = view.__doc__.find("Parameters")
         all_parameters = (
             "\nAPI function, use the chart kwarg for getting the view model and it's plot. "
-            "See every parmater below:\n\n    "
+            "See every parameter below:\n\n    "
             + view.__doc__[index:]
             + """chart: bool
     If the view and its chart shall be used"""
@@ -2105,10 +2098,11 @@ def change_docstring(api_callable, model: Callable, view=None):
 
 
 class FunctionFactory:
-    """The API Function Factory, which creates the callable instance"""
+    """The API Function Factory, which creates the callable instance."""
 
     def __init__(self, model: Callable, view: Optional[Callable] = None):
-        """Initialises the FunctionFactory instance
+        """Initialise the FunctionFactory instance.
+
         Parameters
         ----------
         model: Callable
@@ -2124,11 +2118,13 @@ class FunctionFactory:
             self.view = copy_func(view)
 
     def api_callable(self, *args, **kwargs):
-        """This returns the result of the command from the view or the model function based on the chart parameter
+        """Return a result of the command from the view or the model function based on the chart parameter.
+
         Parameters
         ----------
         args
         kwargs
+
         Returns
         -------
         Result from the view or model
@@ -2143,24 +2139,30 @@ class FunctionFactory:
 
 
 class MenuFiller:
-    """Creates a filler callable for the menus"""
+    """A filler callable for the menus."""
 
     def __init__(self, function: Callable):
+        """Instantiate the function."""
         self.__function = function
 
     def __call__(self, *args, **kwargs):
+        """Override the __call__."""
         print(self.__function(*args, **kwargs))
 
     def __repr__(self):
+        """Get human readable representation."""
         return self.__function()
 
 
 class MainMenu:
+    """Main menu."""
+
     def __call__(self):
-        """Prints help message"""
+        """Print help message."""
         print(self.__repr__())
 
     def __repr__(self):
+        """Get human readable representation."""
         return """This is the API of the OpenBB Terminal.
         Use the API to get data directly into your jupyter notebook or directly use it in your application.
         ...
@@ -2169,7 +2171,7 @@ class MainMenu:
 
 
 class Loader:
-    """The Loader class"""
+    """The Loader class."""
 
     def __init__(self, funcs: dict):
         print(
@@ -2180,10 +2182,11 @@ class Loader:
         self.load_menus()
 
     def __call__(self):
-        """Prints help message"""
+        """Print help message."""
         print(self.__repr__())
 
     def __repr__(self):
+        """Get human readable representation."""
         return """This is the API of the OpenBB Terminal.
         Use the API to get data directly into your jupyter notebook or directly use it in your application.
         ...
@@ -2192,13 +2195,18 @@ class Loader:
 
     # TODO: Add settings
     def settings(self):
-        pass
+        """Add setting."""
+        # pass
 
     def load_menus(self):
-        """Creates the API structure (see openbb.stocks.command) by setting attributes and saving the functions"""
+        """Create the API structure by setting attributes and saving the functions.
+
+        See openbb.stocks.command
+        """
 
         def menu_message(menu: str, full_path: List[str], function_map: dict):
-            """Creates a callable function, which prints a menus help message
+            """Create a callable function, which prints a menus help message.
+
             Parameters
             ----------
             menu: str
@@ -2207,6 +2215,7 @@ class Loader:
                 The list to get to the path
             function_map: dict
                 Dictionary with the functions and their virtual paths
+
             Returns
             -------
             Callable:
@@ -2249,16 +2258,17 @@ class Loader:
     @staticmethod
     def __load_module(module_path: str) -> Optional[types.ModuleType]:
         """Load a module from a path.
+
         Parameters
         ----------
         module_path: str
             Module"s path.
+
         Returns
         -------
         Optional[ModuleType]:
             Loaded module or None.
         """
-
         try:
             spec = importlib.util.find_spec(module_path)
             del spec
@@ -2269,13 +2279,15 @@ class Loader:
 
     @classmethod
     def get_function(cls, function_path: str) -> Callable:
-        """Get function from string path
+        """Get function from string path.
+
         Parameters
         ----------
         cls
             Class
         function_path: str
             Function path from repository base root
+
         Returns
         -------
         Callable
@@ -2296,12 +2308,15 @@ class Loader:
 
     @classmethod
     def build_function_map(cls, funcs: dict) -> dict:
-        """Builds dictionary with FunctionFactory instances as items
+        """Build dictionary with FunctionFactory instances as items.
+
         Parameters
         ----------
         funcs: dict
-            Dictionary which has string path of view and model functions as keys. The items is dictionary with
-            the view and model function as items of the respectivee "view" and "model" keys
+            Dictionary which has string path of view and model functions as keys.
+            The items is dictionary with the view and model function as items of the
+            respective "view" and "model" keys
+
         Returns
         -------
         dict
