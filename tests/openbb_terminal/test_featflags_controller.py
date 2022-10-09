@@ -37,10 +37,6 @@ def test_call_promptkit(controller):
     controller.call_promptkit(None)
 
 
-def test_call_predict(controller):
-    controller.call_predict(None)
-
-
 def test_call_thoughts(controller):
     controller.call_thoughts(None)
 
