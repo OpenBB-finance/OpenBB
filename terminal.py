@@ -92,16 +92,6 @@ class TerminalController(BaseController):
 
     PATH = "/"
 
-    ROUTINE_FILES = {
-        filepath.name: filepath
-        for filepath in (REPOSITORY_DIRECTORY / "routines").rglob("*.openbb")
-    }
-    ROUTINE_FILES.update(
-        {filepath.name: filepath for filepath in ROUTINES_DIRECTORY.rglob("*.openbb")}
-    )
-
-    ROUTINE_CHOICES = {filename: None for filename in ROUTINE_FILES}
-
     GUESS_TOTAL_TRIES = 0
     GUESS_NUMBER_TRIES_LEFT = 0
     GUESS_SUM_SCORE = 0.0
@@ -111,13 +101,6 @@ class TerminalController(BaseController):
         """Constructor"""
         super().__init__(jobs_cmds)
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["exe"] = self.ROUTINE_CHOICES
-
-            self.completer = NestedCompleter.from_nested_dict(choices)
-
         self.queue: List[str] = list()
 
         if jobs_cmds:
@@ -126,6 +109,28 @@ class TerminalController(BaseController):
             )
 
         self.update_success = False
+
+        self.update_runtime_choices()
+
+    def update_runtime_choices(self):
+        """Update runtime choices"""
+        self.ROUTINE_FILES = {
+            filepath.name: filepath
+            for filepath in (REPOSITORY_DIRECTORY / "routines").rglob("*.openbb")
+        }
+        self.ROUTINE_FILES.update(
+            {
+                filepath.name: filepath
+                for filepath in ROUTINES_DIRECTORY.rglob("*.openbb")
+            }
+        )
+        self.ROUTINE_CHOICES = {filename: None for filename in self.ROUTINE_FILES}
+        if session and obbff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
+            choices["support"] = self.SUPPORT_CHOICES
+            choices["exe"] = self.ROUTINE_CHOICES
+
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
@@ -165,6 +170,7 @@ class TerminalController(BaseController):
         mt.add_menu("reports")
         mt.add_raw("\n")
         console.print(text=mt.menu_text, menu="Home")
+        self.update_runtime_choices()
 
     def call_news(self, other_args: List[str]) -> None:
         """Process news command"""
@@ -755,7 +761,6 @@ def insert_start_slash(cmds: List[str]) -> List[str]:
 
 def do_rollover():
     """RollOver the log file."""
-
     for handler in logging.getLogger().handlers:
         if isinstance(handler, PathTrackingFileHandler):
             handler.doRollover()
@@ -768,7 +773,6 @@ def log_settings() -> None:
     settings_dict["cls"] = "True" if obbff.USE_CLEAR_AFTER_CMD else "False"
     settings_dict["color"] = "True" if obbff.USE_COLOR else "False"
     settings_dict["promptkit"] = "True" if obbff.USE_PROMPT_TOOLKIT else "False"
-    settings_dict["predict"] = "True" if obbff.ENABLE_PREDICT else "False"
     settings_dict["thoughts"] = "True" if obbff.ENABLE_THOUGHTS_DAY else "False"
     settings_dict["reporthtml"] = "True" if obbff.OPEN_REPORT_AS_HTML else "False"
     settings_dict["exithelp"] = "True" if obbff.ENABLE_EXIT_AUTO_HELP else "False"
@@ -805,7 +809,8 @@ def run_scripts(
     verbose : bool
         Whether to run tests in verbose mode
     routines_args : List[str]
-        One or multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD
+        One or multiple inputs to be replaced in the routine and separated by commas.
+        E.g. GME,AMC,BTC-USD
     """
     if os.path.isfile(path):
         with open(path) as fp:
@@ -961,7 +966,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="terminal",
-        description="The gamestonk terminal.",
+        description="The OpenBB Terminal.",
     )
     parser.add_argument(
         "-d",

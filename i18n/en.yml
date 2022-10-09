@@ -32,7 +32,6 @@ en:
   featflags/cls: clear console after each command
   featflags/color: use coloring features
   featflags/promptkit: enable prompt toolkit (autocomplete and history)
-  featflags/predict: prediction features
   featflags/thoughts: thoughts of the day
   featflags/reporthtml: open report as HTML otherwise notebook
   featflags/exithelp: automatically print help when quitting menu
@@ -44,6 +43,7 @@ en:
   featflags/cmdloc: command location displayed in figures
   featflags/tbhint: displays usage hints in a bottom toolbar
   settings/_info_: Settings through environment variables
+  settings/colors: set your own terminal colors
   settings/autoscaling: plot autoscaling
   settings/dt: add or remove datetime from flair
   settings/flair: set the flair emoji to be used

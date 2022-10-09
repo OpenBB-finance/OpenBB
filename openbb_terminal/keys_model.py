@@ -7,6 +7,8 @@ import sys
 import logging
 import os
 from enum import Enum
+
+from typing import Dict, List, Union
 import binance
 import dotenv
 import pandas as pd
@@ -33,6 +35,39 @@ from openbb_terminal.terminal_helper import suppress_stdout
 logger = logging.getLogger(__name__)
 
 sys.tracebacklimit = 0
+
+
+API_DICT: Dict = {
+    "av": "ALPHA_VANTAGE",
+    "fmp": "FINANCIAL_MODELING_PREP",
+    "quandl": "QUANDL",
+    "polygon": "POLYGON",
+    "fred": "FRED",
+    "news": "NEWSAPI",
+    "tradier": "TRADIER",
+    "cmc": "COINMARKETCAP",
+    "finnhub": "FINNHUB",
+    "iex": "IEXCLOUD",
+    "reddit": "REDDIT",
+    "twitter": "TWITTER",
+    "rh": "ROBINHOOD",
+    "degiro": "DEGIRO",
+    "oanda": "OANDA",
+    "binance": "BINANCE",
+    "bitquery": "BITQUERY",
+    "si": "SENTIMENT_INVESTOR",
+    "coinbase": "COINBASE",
+    "walert": "WHALE_ALERT",
+    "glassnode": "GLASSNODE",
+    "coinglass": "COINGLASS",
+    "cpanic": "CRYPTO_PANIC",
+    "ethplorer": "ETHPLORER",
+    "smartstake": "SMARTSTAKE",
+    "github": "GITHUB",
+    "messari": "MESSARI",
+    "eodhd": "EODHD",
+    "santiment": "SANTIMENT",
+}
 
 
 class KeyStatus(str, Enum):
@@ -62,9 +97,84 @@ class KeyStatus(str, Enum):
         return f"[{c}]{self.value}[/{c}]"
 
 
+def set_keys(
+    keys_dict: Dict[str, Dict[str, Union[str, bool]]],
+    persist: bool = False,
+    show_output: bool = False,
+) -> Dict:
+    """Set API keys in bundle.
+
+    Parameters
+    ----------
+        keys_dict: Dict[str, Dict[str, Union[str, bool]]]
+            E.g. {"fred": {"key":"XXXXX"}, "binance": {"key":"YYYYY", "secret":"ZZZZZ"}}
+            More info on APIs can be found through get_keys_info().
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
+
+    Returns
+    -------
+    status_dict: Dict
+
+    """
+
+    status_dict = {}
+
+    for api, kwargs in keys_dict.items():
+        expected_args_dict = get_keys_info()
+
+        if api in expected_args_dict:
+
+            received_kwargs_list = list(kwargs.keys())
+            expected_kwargs_list = expected_args_dict[api]
+
+            if received_kwargs_list == expected_kwargs_list:
+                kwargs["persist"] = persist
+                kwargs["show_output"] = show_output
+                status_dict[api] = str(
+                    getattr(sys.modules[__name__], "set_" + str(api) + "_key")(**kwargs)
+                )
+            else:
+                console.print(
+                    f"[red]'{api}' kwargs: {received_kwargs_list} don't match expected: {expected_kwargs_list}.[/red]"
+                )
+        else:
+            console.print(
+                f"[red]API '{api}' was not recognized. Please check get_keys_info().[/red]"
+            )
+
+    return status_dict
+
+
+def get_keys_info() -> Dict[str, List[str]]:
+    """Get info on available APIs to use in set_keys.
+
+    Returns
+    -------
+    Dictionary of expected API keys and arguments:  Dict[str, List[str]]
+
+    """
+    args_dict = {}
+
+    for api in API_DICT:
+        arg_list = list(
+            getattr(
+                sys.modules[__name__], "set_" + str(api) + "_key"
+            ).__code__.co_varnames
+        )
+        arg_list.remove("persist")
+        arg_list.remove("show_output")
+        args_dict[api] = arg_list
+
+    return args_dict
+
+
 def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> None:
     """Set API key.
-
     Parameters
     ----------
         env_var_name: str
@@ -90,13 +200,11 @@ def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> Non
 
 def get_keys(show: bool = False) -> pd.DataFrame:
     """Get currently set API keys.
-
     Parameters
     ----------
         show: bool
             Flag to choose whether to show actual keys or not.
             By default, False.
-
     Returns:
         pd.DataFrame: currents keys
     """
@@ -126,7 +234,6 @@ def get_keys(show: bool = False) -> pd.DataFrame:
 
 def set_av_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set Alpha Vantage key
-
     Parameters
     ----------
         key: str
@@ -137,11 +244,9 @@ def set_av_key(key: str, persist: bool = False, show_output: bool = False) -> st
             By default, False.
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     set_key("OPENBB_API_KEY_ALPHAVANTAGE", key, persist)
@@ -150,16 +255,13 @@ def set_av_key(key: str, persist: bool = False, show_output: bool = False) -> st
 
 def check_av_key(show_output: bool = False) -> str:
     """Check Alpha Vantage key
-
     Parameters
     ----------
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     if cfg.API_KEY_ALPHAVANTAGE == "REPLACE_ME":  # pragma: allowlist secret
@@ -184,7 +286,6 @@ def check_av_key(show_output: bool = False) -> str:
 
 def set_fmp_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set Financial Modeling Prep key
-
     Parameters
     ----------
         key: str
@@ -195,11 +296,9 @@ def set_fmp_key(key: str, persist: bool = False, show_output: bool = False) -> s
             By default, False.
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     set_key("OPENBB_API_KEY_FINANCIALMODELINGPREP", key, persist)
@@ -208,16 +307,13 @@ def set_fmp_key(key: str, persist: bool = False, show_output: bool = False) -> s
 
 def check_fmp_key(show_output: bool = False) -> str:
     """Check Financial Modeling Prep key
-
     Parameters
     ----------
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     if (
@@ -247,7 +343,6 @@ def check_fmp_key(show_output: bool = False) -> str:
 
 def set_quandl_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set Quandl key
-
     Parameters
     ----------
         key: str
@@ -258,11 +353,9 @@ def set_quandl_key(key: str, persist: bool = False, show_output: bool = False) -
             By default, False.
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     set_key("OPENBB_API_KEY_QUANDL", key, persist)
@@ -271,16 +364,13 @@ def set_quandl_key(key: str, persist: bool = False, show_output: bool = False) -
 
 def check_quandl_key(show_output: bool = False) -> str:
     """Check Quandl key
-
     Parameters
     ----------
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     if cfg.API_KEY_QUANDL == "REPLACE_ME":  # pragma: allowlist secret
@@ -304,7 +394,6 @@ def check_quandl_key(show_output: bool = False) -> str:
 
 def set_polygon_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set Polygon key
-
     Parameters
     ----------
         key: str
@@ -315,11 +404,9 @@ def set_polygon_key(key: str, persist: bool = False, show_output: bool = False) 
             By default, False.
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     set_key("OPENBB_API_POLYGON_KEY", key, persist)
@@ -328,16 +415,13 @@ def set_polygon_key(key: str, persist: bool = False, show_output: bool = False) 
 
 def check_polygon_key(show_output: bool = False) -> str:
     """Check Polygon key
-
     Parameters
     ----------
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     if cfg.API_POLYGON_KEY == "REPLACE_ME":
@@ -366,7 +450,6 @@ def check_polygon_key(show_output: bool = False) -> str:
 
 def set_fred_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set FRED key
-
     Parameters
     ----------
         key: str
@@ -377,11 +460,9 @@ def set_fred_key(key: str, persist: bool = False, show_output: bool = False) -> 
             By default, False.
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     set_key("OPENBB_API_FRED_KEY", key, persist)
@@ -390,16 +471,13 @@ def set_fred_key(key: str, persist: bool = False, show_output: bool = False) -> 
 
 def check_fred_key(show_output: bool = False) -> str:
     """Check FRED key
-
     Parameters
     ----------
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     if cfg.API_FRED_KEY == "REPLACE_ME":
@@ -427,7 +505,6 @@ def check_fred_key(show_output: bool = False) -> str:
 
 def set_news_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set News key
-
     Parameters
     ----------
         key: str
@@ -438,11 +515,9 @@ def set_news_key(key: str, persist: bool = False, show_output: bool = False) -> 
             By default, False.
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     set_key("OPENBB_API_NEWS_TOKEN", key, persist)
@@ -451,16 +526,13 @@ def set_news_key(key: str, persist: bool = False, show_output: bool = False) -> 
 
 def check_news_key(show_output: bool = False) -> str:
     """Check News key
-
     Parameters
     ----------
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     if cfg.API_NEWS_TOKEN == "REPLACE_ME":  # nosec
@@ -488,7 +560,6 @@ def check_news_key(show_output: bool = False) -> str:
 
 def set_tradier_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set Tradier key
-
     Parameters
     ----------
         key: str
@@ -499,11 +570,9 @@ def set_tradier_key(key: str, persist: bool = False, show_output: bool = False) 
             By default, False.
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     set_key("OPENBB_API_TRADIER_TOKEN", key, persist)
@@ -512,16 +581,13 @@ def set_tradier_key(key: str, persist: bool = False, show_output: bool = False) 
 
 def check_tradier_key(show_output: bool = False) -> str:
     """Check Tradier key
-
     Parameters
     ----------
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     if cfg.API_TRADIER_TOKEN == "REPLACE_ME":  # nosec
@@ -554,7 +620,6 @@ def check_tradier_key(show_output: bool = False) -> str:
 
 def set_cmc_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set Coinmarketcap key
-
     Parameters
     ----------
         key: str
@@ -565,11 +630,9 @@ def set_cmc_key(key: str, persist: bool = False, show_output: bool = False) -> s
             By default, False.
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     set_key("OPENBB_API_CMC_KEY", key, persist)
@@ -578,16 +641,13 @@ def set_cmc_key(key: str, persist: bool = False, show_output: bool = False) -> s
 
 def check_cmc_key(show_output: bool = False) -> str:
     """Check Coinmarketcap key
-
     Parameters
     ----------
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     if cfg.API_CMC_KEY == "REPLACE_ME":
@@ -612,7 +672,6 @@ def check_cmc_key(show_output: bool = False) -> str:
 
 def set_finnhub_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set Finnhub key
-
     Parameters
     ----------
         key: str
@@ -623,11 +682,9 @@ def set_finnhub_key(key: str, persist: bool = False, show_output: bool = False) 
             By default, False.
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     set_key("OPENBB_API_FINNHUB_KEY", key, persist)
@@ -636,16 +693,13 @@ def set_finnhub_key(key: str, persist: bool = False, show_output: bool = False) 
 
 def check_finnhub_key(show_output: bool = False) -> str:
     """Check Finnhub key
-
     Parameters
     ----------
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     if cfg.API_FINNHUB_KEY == "REPLACE_ME":
@@ -673,7 +727,6 @@ def check_finnhub_key(show_output: bool = False) -> str:
 
 def set_iex_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set IEX Cloud key
-
     Parameters
     ----------
         key: str
@@ -684,11 +737,9 @@ def set_iex_key(key: str, persist: bool = False, show_output: bool = False) -> s
             By default, False.
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     set_key("OPENBB_API_IEX_TOKEN", key, persist)
@@ -697,16 +748,13 @@ def set_iex_key(key: str, persist: bool = False, show_output: bool = False) -> s
 
 def check_iex_key(show_output: bool = False) -> str:
     """Check IEX Cloud key
-
     Parameters
     ----------
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     if cfg.API_IEX_TOKEN == "REPLACE_ME":  # nosec
@@ -739,7 +787,6 @@ def set_reddit_key(
     show_output: bool = False,
 ) -> str:
     """Set Reddit key
-
     Parameters
     ----------
         client_id: str
@@ -753,11 +800,9 @@ def set_reddit_key(
             By default, False.
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     set_key("OPENBB_API_REDDIT_CLIENT_ID", client_id, persist)
@@ -771,16 +816,13 @@ def set_reddit_key(
 
 def check_reddit_key(show_output: bool = False) -> str:
     """Check Reddit key
-
     Parameters
     ----------
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     reddit_keys = [
@@ -832,7 +874,6 @@ def check_reddit_key(show_output: bool = False) -> str:
 
 def set_bitquery_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set Bitquery key
-
     Parameters
     ----------
         key: str
@@ -843,11 +884,9 @@ def set_bitquery_key(key: str, persist: bool = False, show_output: bool = False)
             By default, False.
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     set_key("OPENBB_API_BITQUERY_KEY", key, persist)
@@ -856,16 +895,13 @@ def set_bitquery_key(key: str, persist: bool = False, show_output: bool = False)
 
 def check_bitquery_key(show_output: bool = False) -> str:
     """Check Bitquery key
-
     Parameters
     ----------
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     bitquery = cfg.API_BITQUERY_KEY
@@ -906,7 +942,6 @@ def set_twitter_key(
     show_output: bool = False,
 ) -> str:
     """Set Twitter key
-
     Parameters
     ----------
         key: str
@@ -918,11 +953,9 @@ def set_twitter_key(
             By default, False.
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     set_key("OPENBB_API_TWITTER_KEY", key, persist)
@@ -934,16 +967,13 @@ def set_twitter_key(
 
 def check_twitter_key(show_output: bool = False) -> str:
     """Check Twitter key
-
     Parameters
     ----------
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     twitter_keys = [
@@ -988,7 +1018,6 @@ def set_rh_key(
     show_output: bool = False,
 ) -> str:
     """Set Robinhood key
-
     Parameters
     ----------
         username: str
@@ -999,11 +1028,9 @@ def set_rh_key(
             By default, False.
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     set_key("OPENBB_RH_USERNAME", username, persist)
@@ -1014,16 +1041,13 @@ def set_rh_key(
 
 def check_rh_key(show_output: bool = False) -> str:
     """Check Robinhood key
-
     Parameters
     ----------
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     rh_keys = [cfg.RH_USERNAME, cfg.RH_PASSWORD]
@@ -1048,7 +1072,6 @@ def set_degiro_key(
     show_output: bool = False,
 ) -> str:
     """Set Degiro key
-
     Parameters
     ----------
         username: str
@@ -1060,11 +1083,9 @@ def set_degiro_key(
             By default, False.
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     set_key("OPENBB_DG_USERNAME", username, persist)
@@ -1076,16 +1097,13 @@ def set_degiro_key(
 
 def check_degiro_key(show_output: bool = False) -> str:
     """Check Degiro key
-
     Parameters
     ----------
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     dg_keys = [cfg.DG_USERNAME, cfg.DG_PASSWORD, cfg.DG_TOTP_SECRET]
@@ -1110,7 +1128,6 @@ def set_oanda_key(
     show_output: bool = False,
 ) -> str:
     """Set Oanda key
-
     Parameters
     ----------
         account: str
@@ -1122,11 +1139,9 @@ def set_oanda_key(
             By default, False.
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     set_key("OPENBB_OANDA_ACCOUNT", account, persist)
@@ -1138,16 +1153,13 @@ def set_oanda_key(
 
 def check_oanda_key(show_output: bool = False) -> str:
     """Check Oanda key
-
     Parameters
     ----------
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     oanda_keys = [cfg.OANDA_TOKEN, cfg.OANDA_ACCOUNT]
@@ -1183,7 +1195,6 @@ def set_binance_key(
     show_output: bool = False,
 ) -> str:
     """Set Binance key
-
     Parameters
     ----------
         key: str
@@ -1194,11 +1205,9 @@ def set_binance_key(
             By default, False.
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     set_key("OPENBB_API_BINANCE_KEY", key, persist)
@@ -1209,16 +1218,13 @@ def set_binance_key(
 
 def check_binance_key(show_output: bool = False) -> str:
     """Check Binance key
-
     Parameters
     ----------
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     if "REPLACE_ME" in [cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET]:
@@ -1247,7 +1253,6 @@ def set_si_key(
     show_output: bool = False,
 ) -> str:
     """Set Sentimentinvestor key.
-
     Parameters
     ----------
         key: str
@@ -1257,11 +1262,9 @@ def set_si_key(
             By default, False.
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     set_key("OPENBB_API_SENTIMENTINVESTOR_TOKEN", key, persist)
@@ -1271,17 +1274,13 @@ def set_si_key(
 
 def check_si_key(show_output: bool = False) -> str:
     """Check Sentimentinvestor key
-
     Parameters
     ----------
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
-
     """
 
     si_keys = [cfg.API_SENTIMENTINVESTOR_TOKEN]
@@ -1318,7 +1317,6 @@ def set_coinbase_key(
     show_output: bool = False,
 ) -> str:
     """Set Coinbase key
-
     Parameters
     ----------
         key: str
@@ -1330,11 +1328,9 @@ def set_coinbase_key(
             By default, False.
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     set_key("OPENBB_API_COINBASE_KEY", key, persist)
@@ -1346,16 +1342,13 @@ def set_coinbase_key(
 
 def check_coinbase_key(show_output: bool = False) -> str:
     """Check Coinbase key
-
     Parameters
     ----------
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     if "REPLACE_ME" in [
@@ -1390,7 +1383,6 @@ def check_coinbase_key(show_output: bool = False) -> str:
 
 def set_walert_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set Walert key
-
     Parameters
     ----------
         key: str
@@ -1401,11 +1393,9 @@ def set_walert_key(key: str, persist: bool = False, show_output: bool = False) -
             By default, False.
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     set_key("OPENBB_API_WHALE_ALERT_KEY", key, persist)
@@ -1414,16 +1404,13 @@ def set_walert_key(key: str, persist: bool = False, show_output: bool = False) -
 
 def check_walert_key(show_output: bool = False) -> str:
     """Check Walert key
-
     Parameters
     ----------
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     if cfg.API_WHALE_ALERT_KEY == "REPLACE_ME":
@@ -1456,7 +1443,6 @@ def set_glassnode_key(
     key: str, persist: bool = False, show_output: bool = False
 ) -> str:
     """Set Glassnode key.
-
     Parameters
     ----------
         key: str
@@ -1467,11 +1453,9 @@ def set_glassnode_key(
             By default, False.
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     set_key("OPENBB_API_GLASSNODE_KEY", key, persist)
@@ -1480,16 +1464,13 @@ def set_glassnode_key(
 
 def check_glassnode_key(show_output: bool = False) -> str:
     """Check Glassnode key
-
     Parameters
     ----------
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     if cfg.API_GLASSNODE_KEY == "REPLACE_ME":
@@ -1524,7 +1505,6 @@ def set_coinglass_key(
     key: str, persist: bool = False, show_output: bool = False
 ) -> str:
     """Set Coinglass key.
-
     Parameters
     ----------
         key: str
@@ -1535,11 +1515,9 @@ def set_coinglass_key(
             By default, False.
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     set_key("OPENBB_API_COINGLASS_KEY", key, persist)
@@ -1548,16 +1526,13 @@ def set_coinglass_key(
 
 def check_coinglass_key(show_output: bool = False) -> str:
     """Check Coinglass key
-
     Parameters
     ----------
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     if cfg.API_COINGLASS_KEY == "REPLACE_ME":
@@ -1588,7 +1563,6 @@ def check_coinglass_key(show_output: bool = False) -> str:
 
 def set_cpanic_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set Cpanic key.
-
     Parameters
     ----------
         key: str
@@ -1599,11 +1573,9 @@ def set_cpanic_key(key: str, persist: bool = False, show_output: bool = False) -
             By default, False.
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     set_key("OPENBB_API_CRYPTO_PANIC_KEY", key, persist)
@@ -1612,16 +1584,13 @@ def set_cpanic_key(key: str, persist: bool = False, show_output: bool = False) -
 
 def check_cpanic_key(show_output: bool = False) -> str:
     """Check Cpanic key
-
     Parameters
     ----------
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     if cfg.API_CRYPTO_PANIC_KEY == "REPLACE_ME":
@@ -1648,7 +1617,6 @@ def set_ethplorer_key(
     key: str, persist: bool = False, show_output: bool = False
 ) -> str:
     """Set Ethplorer key.
-
     Parameters
     ----------
         key: str
@@ -1659,11 +1627,9 @@ def set_ethplorer_key(
             By default, False.
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     set_key("OPENBB_API_ETHPLORER_KEY", key, persist)
@@ -1672,16 +1638,13 @@ def set_ethplorer_key(
 
 def check_ethplorer_key(show_output: bool = False) -> str:
     """Check Ethplorer key
-
     Parameters
     ----------
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     if cfg.API_ETHPLORER_KEY == "REPLACE_ME":
@@ -1713,7 +1676,6 @@ def set_smartstake_key(
     key: str, access_token: str, persist: bool = False, show_output: bool = False
 ):
     """Set Smartstake key.
-
     Parameters
     ----------
         key: str
@@ -1726,11 +1688,9 @@ def set_smartstake_key(
             By default, False.
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     set_key("OPENBB_API_SMARTSTAKE_KEY", key, persist)
@@ -1740,16 +1700,13 @@ def set_smartstake_key(
 
 def check_smartstake_key(show_output: bool = False) -> str:
     """Check Smartstake key
-
     Parameters
     ----------
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     if "REPLACE_ME" in [
@@ -1794,7 +1751,6 @@ def check_smartstake_key(show_output: bool = False) -> str:
 
 def set_github_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set GitHub key.
-
     Parameters
     ----------
         key: str
@@ -1805,11 +1761,9 @@ def set_github_key(key: str, persist: bool = False, show_output: bool = False) -
             By default, False.
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     set_key("OPENBB_API_GITHUB_KEY", key, persist)
@@ -1818,16 +1772,13 @@ def set_github_key(key: str, persist: bool = False, show_output: bool = False) -
 
 def check_github_key(show_output: bool = False) -> str:
     """Check GitHub key
-
     Parameters
     ----------
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     if cfg.API_GITHUB_KEY == "REPLACE_ME":  # pragma: allowlist secret
@@ -1846,7 +1797,6 @@ def check_github_key(show_output: bool = False) -> str:
 
 def set_messari_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set Messari key.
-
     Parameters
     ----------
         key: str
@@ -1857,11 +1807,9 @@ def set_messari_key(key: str, persist: bool = False, show_output: bool = False) 
             By default, False.
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     set_key("OPENBB_API_MESSARI_KEY", key, persist)
@@ -1870,16 +1818,13 @@ def set_messari_key(key: str, persist: bool = False, show_output: bool = False) 
 
 def check_messari_key(show_output: bool = False) -> str:
     """Check Messari key
-
     Parameters
     ----------
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     if (
@@ -1909,7 +1854,6 @@ def check_messari_key(show_output: bool = False) -> str:
 
 def set_eodhd_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set Eodhd key.
-
     Parameters
     ----------
         key: str
@@ -1920,11 +1864,9 @@ def set_eodhd_key(key: str, persist: bool = False, show_output: bool = False) ->
             By default, False.
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     set_key("OPENBB_API_EODHD_KEY", key, persist)
@@ -1933,16 +1875,13 @@ def set_eodhd_key(key: str, persist: bool = False, show_output: bool = False) ->
 
 def check_eodhd_key(show_output: bool = False) -> str:
     """Check Eodhd key
-
     Parameters
     ----------
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     if cfg.API_EODHD_KEY == "REPLACE_ME":  # nosec
@@ -1968,7 +1907,6 @@ def set_santiment_key(
     key: str, persist: bool = False, show_output: bool = False
 ) -> str:
     """Set Santiment key.
-
     Parameters
     ----------
         key: str
@@ -1979,11 +1917,9 @@ def set_santiment_key(
             By default, False.
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     set_key("OPENBB_API_SANTIMENT_KEY", key, persist)
@@ -1992,16 +1928,13 @@ def set_santiment_key(
 
 def check_santiment_key(show_output: bool = False) -> str:
     """Check Santiment key
-
     Parameters
     ----------
         show_output: bool
             Display status string or not. By default, False.
-
     Returns
     -------
     status: str
-
     """
 
     if cfg.API_SANTIMENT_KEY == "REPLACE_ME":

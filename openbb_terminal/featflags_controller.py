@@ -34,7 +34,6 @@ class FeatureFlagsController(BaseController):
         "watermark",
         "cmdloc",
         "promptkit",
-        "predict",
         "thoughts",
         "reporthtml",
         "exithelp",
@@ -63,7 +62,6 @@ class FeatureFlagsController(BaseController):
         mt.add_setting("cls", obbff.USE_CLEAR_AFTER_CMD)
         mt.add_setting("color", obbff.USE_COLOR)
         mt.add_setting("promptkit", obbff.USE_PROMPT_TOOLKIT)
-        mt.add_setting("predict", obbff.ENABLE_PREDICT)
         mt.add_setting("thoughts", obbff.ENABLE_THOUGHTS_DAY)
         mt.add_setting("reporthtml", obbff.OPEN_REPORT_AS_HTML)
         mt.add_setting("exithelp", obbff.ENABLE_EXIT_AUTO_HELP)
@@ -121,13 +119,6 @@ class FeatureFlagsController(BaseController):
             "OPENBB_USE_PROMPT_TOOLKIT",
             str(obbff.USE_PROMPT_TOOLKIT),
         )
-        console.print("")
-
-    @log_start_end(log=logger)
-    def call_predict(self, _):
-        """Process predict command"""
-        obbff.ENABLE_PREDICT = not obbff.ENABLE_PREDICT
-        set_key(obbff.USER_ENV_FILE, "OPENBB_ENABLE_PREDICT", str(obbff.ENABLE_PREDICT))
         console.print("")
 
     @log_start_end(log=logger)
