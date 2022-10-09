@@ -306,6 +306,8 @@ As mentioned in the <a href="#explanation-of-menus">Explanation of Menus</a>, so
 loaded market data from <a href="terminal/stocks/load" target="_blank">load</a>.
 So, if you would visit the `ta` menu (which stands for <a href="https://www.investopedia.com/terms/t/technicalanalysis.asp" target="_blank">Technical Analysis</a>) you will see that, by running any command, the selected period above is depicted again. Return to the Stocks menu again by using `q` and use it again to return to the home screen which can be shown with `?`.
 
+---
+
 ### Explanation of Scripts
 
 The `.openbb` scripts offer the ability to automatically run a set of commands in the form of a **routine**. Furthermore,
@@ -314,6 +316,8 @@ to do (and repeat). This can fundamental research, understanding market movement
 doing advanced statistical/econometric research.
 
 <b><span style="color:white">For a thorough guide on how to setup these files, please see the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/scripts/" target="_blank">Scripts & Routines guide</a>.</span></b>
+
+---
 
 ## Accessing other sources of data via API keys
 
@@ -359,6 +363,8 @@ To figure out where you can obtain the API key, you can enter the command (e.g. 
 | eodhd      | EODHD                                    | https://eodhistoricaldata.com/                                                     |
 | santiment  | Santiment                                | https://app.santiment.net/                                                         |
 
+---
+
 ## Available menus within the OpenBB Terminal
 
 There is a large collection of (sub) menus available. Here, the asset class and other menus are described. To find a detailed description and explanation of its usage for each menu, click on the corresponding link to visit the introduction page.
@@ -390,6 +396,8 @@ The other menus are as follows:
 - <a href="terminal/jupyter" target="_blank">Introduction to Dashboards</a>: see interactive dashboards using voila and
   jupyter notebooks.
 - Introduction to Reports <b>(Work in Progress)</b>: create customizable research reports through jupyter notebooks.
+
+---
 
 ## Customizing the terminal
 
@@ -455,6 +463,8 @@ The data source was specified successfully.
 Default   : iex
 Available : iex, yf, av, polygon
 ```
+
+---
 
 ## Obtaining support and/or giving feedback
 

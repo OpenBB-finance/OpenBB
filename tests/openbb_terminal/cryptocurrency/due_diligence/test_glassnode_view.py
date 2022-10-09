@@ -14,7 +14,6 @@ def vcr_config():
 
 
 @pytest.mark.vcr
-@pytest.mark.record_stdout
 def test_display_btc_rainbow(mocker):
     # MOCK VISUALIZE_OUTPUT
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")

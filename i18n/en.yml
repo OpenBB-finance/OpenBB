@@ -32,7 +32,6 @@ en:
   featflags/cls: clear console after each command
   featflags/color: use coloring features
   featflags/promptkit: enable prompt toolkit (autocomplete and history)
-  featflags/predict: prediction features
   featflags/thoughts: thoughts of the day
   featflags/reporthtml: open report as HTML otherwise notebook
   featflags/exithelp: automatically print help when quitting menu
