@@ -5,6 +5,7 @@ from typing import List, Optional
 
 from matplotlib import pyplot as plt
 
+from openbb_terminal import config_terminal as cfg
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.cryptocurrency.overview.tokenterminal_model import (
@@ -96,23 +97,34 @@ def display_fundamental_metrics(
             magnitude += 1
             num /= 1000.0
 
+        colors = iter(cfg.theme.get_colors(reverse=True))
+
         ax.bar(
             metric_series[:limit].index,
             metric_series[:limit].values
             if magnitude == 0
             else metric_series[:limit].values / (1000.0**magnitude),
+            # color=colors[:limit],
         )
 
         if category:
             ax.set_xlabel(category)
         else:
             ax.set_xlabel("Dapps and Blockchains")
-        if metric != "twitter_followers":
-            if max(metric_series[:limit].values) < 10000:
-                labeltouse = "[$]"
+
+        if metric == "twitter_followers":
+            if max(metric_series[:limit].values) < 10_000:
+                labeltouse = "Followers"
             else:
-                labeltouse = f"[1{' KMBTP'[magnitude]} $]"
-            ax.set_ylabel(f"{metric.replace('_', ' ').capitalize()} {labeltouse}")
+                labeltouse = f"[1{' KMBTP'[magnitude]}] Followers"
+        else:
+            if max(metric_series[:limit].values) < 10_000:
+                labeltouse = "[USD]"
+            else:
+                labeltouse = f"[1{' KMBTP'[magnitude]} USD]"
+
+        ax.set_ylabel(f"{metric.replace('_', ' ').capitalize()} {labeltouse}")
+
         ax.set_title(f"{metric.replace('_', ' ').capitalize()} from past {timeline}")
         plt.xticks(rotation=45)
 
