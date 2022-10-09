@@ -284,6 +284,7 @@ thepassiveinvestor==1.0.10
 threadpoolctl==3.1.0; python_version >= "3.8" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.8"
 tinycss2==1.1.1; python_version >= "3.7"
 tokenize-rt==4.2.1; python_version >= "3.7" and python_full_version >= "3.6.1"
+tokenterminal==1.0.1
 toml==0.10.2; python_version >= "3.7" and python_full_version < "3.9.7" and python_full_version >= "3.7.0" or python_full_version > "3.9.7" and python_version >= "3.7" and python_full_version < "4.0.0"
 tomli==2.0.1; python_full_version <= "3.11.0a6" and python_version >= "3.8" and python_version < "3.11" and python_full_version >= "3.7.2"
 tomlkit==0.11.5; python_version >= "3.6" and python_version < "4.0" and python_full_version >= "3.7.2"

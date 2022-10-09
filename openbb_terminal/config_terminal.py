@@ -175,3 +175,6 @@ API_SANTIMENT_KEY = os.getenv("OPENBB_API_SANTIMENT_KEY") or "REPLACE_ME"
 
 # https://eodhistoricaldata.com/r/?ref=869U7F4J
 API_EODHD_KEY = os.getenv("OPENBB_API_EODHD_KEY") or "REPLACE_ME"
+
+# https://tokenterminal.com
+API_TOKEN_TERMINAL_KEY = os.getenv("OPENBB_API_TOKEN_TERMINAL_KEY") or "REPLACE_ME"
