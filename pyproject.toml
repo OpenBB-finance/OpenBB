@@ -100,7 +100,6 @@ watchdog = "^2.1.9"
 pythclient = "^0.1.2"
 ipyflex = "^0.2.4"
 "ruamel.yaml" = "^0.17.21"
-setuptools = "^65.4.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
