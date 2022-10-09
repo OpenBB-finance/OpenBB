@@ -7,6 +7,8 @@ import sys
 import logging
 import os
 from enum import Enum
+
+from typing import Dict, List, Union
 import binance
 import dotenv
 import pandas as pd
@@ -35,6 +37,39 @@ logger = logging.getLogger(__name__)
 sys.tracebacklimit = 0
 
 
+API_DICT: Dict = {
+    "av": "ALPHA_VANTAGE",
+    "fmp": "FINANCIAL_MODELING_PREP",
+    "quandl": "QUANDL",
+    "polygon": "POLYGON",
+    "fred": "FRED",
+    "news": "NEWSAPI",
+    "tradier": "TRADIER",
+    "cmc": "COINMARKETCAP",
+    "finnhub": "FINNHUB",
+    "iex": "IEXCLOUD",
+    "reddit": "REDDIT",
+    "twitter": "TWITTER",
+    "rh": "ROBINHOOD",
+    "degiro": "DEGIRO",
+    "oanda": "OANDA",
+    "binance": "BINANCE",
+    "bitquery": "BITQUERY",
+    "si": "SENTIMENT_INVESTOR",
+    "coinbase": "COINBASE",
+    "walert": "WHALE_ALERT",
+    "glassnode": "GLASSNODE",
+    "coinglass": "COINGLASS",
+    "cpanic": "CRYPTO_PANIC",
+    "ethplorer": "ETHPLORER",
+    "smartstake": "SMARTSTAKE",
+    "github": "GITHUB",
+    "messari": "MESSARI",
+    "eodhd": "EODHD",
+    "santiment": "SANTIMENT",
+}
+
+
 class KeyStatus(str, Enum):
     """Class to handle status messages and colors"""
 
@@ -60,6 +95,82 @@ class KeyStatus(str, Enum):
             c = "yellow"
 
         return f"[{c}]{self.value}[/{c}]"
+
+
+def set_keys(
+    keys_dict: Dict[str, Dict[str, Union[str, bool]]],
+    persist: bool = False,
+    show_output: bool = False,
+) -> Dict:
+    """Set API keys in bundle.
+
+    Parameters
+    ----------
+        keys_dict: Dict[str, Dict[str, Union[str, bool]]]
+            E.g. {"fred": {"key":"XXXXX"}, "binance": {"key":"YYYYY", "secret":"ZZZZZ"}}
+            More info on APIs can be found through get_keys_info().
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
+
+    Returns
+    -------
+    status_dict: Dict
+
+    """
+
+    status_dict = {}
+
+    for api, kwargs in keys_dict.items():
+        expected_args_dict = get_keys_info()
+
+        if api in expected_args_dict:
+
+            received_kwargs_list = list(kwargs.keys())
+            expected_kwargs_list = expected_args_dict[api]
+
+            if received_kwargs_list == expected_kwargs_list:
+                kwargs["persist"] = persist
+                kwargs["show_output"] = show_output
+                status_dict[api] = str(
+                    getattr(sys.modules[__name__], "set_" + str(api) + "_key")(**kwargs)
+                )
+            else:
+                console.print(
+                    f"[red]'{api}' kwargs: {received_kwargs_list} don't match expected: {expected_kwargs_list}.[/red]"
+                )
+        else:
+            console.print(
+                f"[red]API '{api}' was not recognized. Please check get_keys_info().[/red]"
+            )
+
+    return status_dict
+
+
+def get_keys_info() -> Dict[str, List[str]]:
+    """Get info on available APIs to use in set_keys.
+
+    Returns
+    -------
+    Dictionary of expected API keys and arguments:  Dict[str, List[str]]
+
+    """
+    args_dict = {}
+
+    for api in API_DICT:
+        arg_list = list(
+            getattr(
+                sys.modules[__name__], "set_" + str(api) + "_key"
+            ).__code__.co_varnames
+        )
+        arg_list.remove("persist")
+        arg_list.remove("show_output")
+        args_dict[api] = arg_list
+
+    return args_dict
 
 
 def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> None:
