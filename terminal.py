@@ -15,6 +15,7 @@ from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
+import pandas as pd
 
 from openbb_terminal import feature_flags as obbff
 
@@ -22,7 +23,7 @@ from openbb_terminal.core.config.paths import (
     REPOSITORY_DIRECTORY,
     USER_ENV_FILE,
     REPOSITORY_ENV_FILE,
-    USER_EXPORTS_DIRECTORY,
+    HOME_DIRECTORY,
     ROUTINES_DIRECTORY,
 )
 
@@ -85,19 +86,10 @@ class TerminalController(BaseController):
         "alternative",
         "econometrics",
         "sources",
+        "forecast",
     ]
 
     PATH = "/"
-
-    ROUTINE_FILES = {
-        filepath.name: filepath
-        for filepath in (REPOSITORY_DIRECTORY / "routines").rglob("*.openbb")
-    }
-    ROUTINE_FILES.update(
-        {filepath.name: filepath for filepath in ROUTINES_DIRECTORY.rglob("*.openbb")}
-    )
-
-    ROUTINE_CHOICES = {filename: None for filename in ROUTINE_FILES}
 
     GUESS_TOTAL_TRIES = 0
     GUESS_NUMBER_TRIES_LEFT = 0
@@ -108,13 +100,6 @@ class TerminalController(BaseController):
         """Constructor"""
         super().__init__(jobs_cmds)
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["exe"] = self.ROUTINE_CHOICES
-
-            self.completer = NestedCompleter.from_nested_dict(choices)
-
         self.queue: List[str] = list()
 
         if jobs_cmds:
@@ -123,6 +108,28 @@ class TerminalController(BaseController):
             )
 
         self.update_success = False
+
+        self.update_runtime_choices()
+
+    def update_runtime_choices(self):
+        """Update runtime choices"""
+        self.ROUTINE_FILES = {
+            filepath.name: filepath
+            for filepath in (REPOSITORY_DIRECTORY / "routines").rglob("*.openbb")
+        }
+        self.ROUTINE_FILES.update(
+            {
+                filepath.name: filepath
+                for filepath in ROUTINES_DIRECTORY.rglob("*.openbb")
+            }
+        )
+        self.ROUTINE_CHOICES = {filename: None for filename in self.ROUTINE_FILES}
+        if session and obbff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
+            choices["support"] = self.SUPPORT_CHOICES
+            choices["exe"] = self.ROUTINE_CHOICES
+
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
@@ -156,11 +163,13 @@ class TerminalController(BaseController):
         mt.add_raw("\n")
         mt.add_info("_others_")
         mt.add_menu("econometrics")
+        mt.add_menu("forecast")
         mt.add_menu("portfolio")
         mt.add_menu("dashboards")
         mt.add_menu("reports")
         mt.add_raw("\n")
         console.print(text=mt.menu_text, menu="Home")
+        self.update_runtime_choices()
 
     def call_news(self, other_args: List[str]) -> None:
         """Process news command"""
@@ -418,6 +427,14 @@ class TerminalController(BaseController):
 
         self.queue = EconometricsController(self.queue).menu()
 
+    def call_forecast(self, _):
+        """Process forecast command"""
+        from openbb_terminal.forecast.forecast_controller import (
+            ForecastController,
+        )
+
+        self.queue = self.load_class(ForecastController, "", pd.DataFrame(), self.queue)
+
     def call_portfolio(self, _):
         """Process portfolio command"""
         from openbb_terminal.portfolio.portfolio_controller import (
@@ -551,10 +568,28 @@ class TerminalController(BaseController):
                     ]
 
                     if "export" in self.queue[0]:
-                        export_path = USER_EXPORTS_DIRECTORY
-                        console.print(
-                            f"Export data to be saved in the selected folder: '{export_path}'"
-                        )
+                        export_path = self.queue[0].split(" ")[1]
+                        # If the path selected does not start from the user root, give relative location from root
+                        if export_path[0] == "~":
+                            export_path = export_path.replace(
+                                "~", HOME_DIRECTORY.as_posix()
+                            )
+                        elif export_path[0] != "/":
+                            export_path = os.path.join(
+                                os.path.dirname(os.path.abspath(__file__)), export_path
+                            )
+
+                        # Check if the directory exists
+                        if os.path.isdir(export_path):
+                            console.print(
+                                f"Export data to be saved in the selected folder: '{export_path}'"
+                            )
+                        else:
+                            os.makedirs(export_path)
+                            console.print(
+                                f"[green]Folder '{export_path}' successfully created.[/green]"
+                            )
+                        obbff.EXPORT_FOLDER_PATH = export_path
                         self.queue = self.queue[1:]
 
 
@@ -572,12 +607,35 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
     if jobs_cmds is not None and jobs_cmds:
         logger.info("INPUT: %s", "/".join(jobs_cmds))
 
+    export_path = ""
     if jobs_cmds and "export" in jobs_cmds[0]:
+        export_path = jobs_cmds[0].split("/")[0].split(" ")[1]
         jobs_cmds = ["/".join(jobs_cmds[0].split("/")[1:])]
 
     ret_code = 1
     t_controller = TerminalController(jobs_cmds)
     an_input = ""
+
+    if export_path:
+        # If the path selected does not start from the user root, give relative location from terminal root
+        if export_path[0] == "~":
+            export_path = export_path.replace("~", HOME_DIRECTORY.as_posix())
+        elif export_path[0] != "/":
+            export_path = os.path.join(
+                os.path.dirname(os.path.abspath(__file__)), export_path
+            )
+
+        # Check if the directory exists
+        if os.path.isdir(export_path):
+            console.print(
+                f"Export data to be saved in the selected folder: '{export_path}'"
+            )
+        else:
+            os.makedirs(export_path)
+            console.print(
+                f"[green]Folder '{export_path}' successfully created.[/green]"
+            )
+        obbff.EXPORT_FOLDER_PATH = export_path
 
     bootup()
     if not jobs_cmds:
@@ -718,7 +776,8 @@ def run_scripts(
     verbose : bool
         Whether to run tests in verbose mode
     routines_args : List[str]
-        One or multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD
+        One or multiple inputs to be replaced in the routine and separated by commas.
+        E.g. GME,AMC,BTC-USD
     """
     if os.path.isfile(path):
         with open(path) as fp:
@@ -740,12 +799,18 @@ def run_scripts(
             if test_mode and "exit" not in lines[-1]:
                 lines.append("exit")
 
+            export_folder = ""
             if "export" in lines[0]:
+                export_folder = lines[0].split("export ")[1].rstrip()
                 lines = lines[1:]
 
             simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
             file_cmds = simulate_argv.replace("//", "/home/").split()
             file_cmds = insert_start_slash(file_cmds) if file_cmds else file_cmds
+            if export_folder:
+                file_cmds = [f"export {export_folder}{' '.join(file_cmds)}"]
+            else:
+                file_cmds = [" ".join(file_cmds)]
 
             if not test_mode:
                 terminal(file_cmds, appName="openbb_script")
@@ -868,7 +933,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="terminal",
-        description="The gamestonk terminal.",
+        description="The OpenBB Terminal.",
     )
     parser.add_argument(
         "-d",

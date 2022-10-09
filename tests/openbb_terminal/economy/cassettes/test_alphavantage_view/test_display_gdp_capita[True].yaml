@@ -1,0 +1,48 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.alphavantage.co/query?apikey=MOCK_API_KEY&function=REAL_GDP_PER_CAPITA
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//bI6xEoIwEAV7vuLJBwANjZ2ljVI49jfkIDeEBJOLDOP4747aWNjuFruP
+        AgDKU1Au9ygvlvyELWQMISIn8SMObrGEK3mlkXc454ik5A1Fg0N3RE/OYYh8y+z7DZLQfljCwhGz
+        +KwM8gZt0/wIQ1uFzjElxl2SKKzqkvZ1va5rRe/o/dus+lAvkWfJcw0ZPntryM7AycTQAKU4soJg
+        ZbQc/2xVZfF8AQAA//8DAM4bfHPsAAAA
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 756ec4659ef398c4-LUX
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 08 Oct 2022 12:09:21 GMT
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Cookie
+      Via:
+      - 1.1 vegur
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+version: 1

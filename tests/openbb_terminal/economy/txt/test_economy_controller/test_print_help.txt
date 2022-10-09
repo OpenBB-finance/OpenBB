@@ -21,6 +21,5 @@ Stored datasets:
 
     plot               plot data from the above commands together
 
->   pred               Open the prediction menu to analyse stored data
 >   qa                 Open quantitative analysis menu with stored data
 

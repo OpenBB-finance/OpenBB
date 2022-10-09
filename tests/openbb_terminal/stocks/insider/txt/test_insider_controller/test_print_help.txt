@@ -5,13 +5,6 @@ Preset: whales
 
     filter             filter insiders based on preset             [OpenInsider]
 
-
-Ticker: 
-
-[unvl]    stats              insider stats of the company[/unvl]                [OpenInsider]
-[unvl]    act                insider activity over time[/unvl]                  [BusinessInsider]
-[unvl]    lins               last insider trading of the company[/unvl]         [Finviz]
-
 Last Insiders:
     lcb                latest cluster buys                         [OpenInsider]
     lpsb               latest penny stock buys                     [OpenInsider]
@@ -35,4 +28,10 @@ Top Insiders:
     tist               top insider sales today                     [OpenInsider]
     tispw              top insider sales past week                 [OpenInsider]
     tispm              top insider sales past month                [OpenInsider]
+
+Ticker: 
+
+[unvl]    stats              insider stats of the company[/unvl]                [OpenInsider]
+[unvl]    act                insider activity over time[/unvl]                  [BusinessInsider]
+[unvl]    lins               last insider trading of the company[/unvl]         [Finviz]
 
