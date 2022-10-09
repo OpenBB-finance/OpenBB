@@ -14,8 +14,6 @@ Perform BRNN forecast (Vanilla RNN, LSTM, GRU)
 optional arguments:
   --n-rnn-layers N_RNN_LAYERS
                         Number of layers in the RNN module. (default: 1)
-  --hidden-size HIDDEN_SIZE
-                        Size for feature maps for each hidden RNN layer (h_n) (default: 20)
   --past-covariates PAST_COVARIATES
                         Past covariates(columns/features) in same dataset. Comma separated. (default: None)
   --all-past-covariates
