@@ -36,14 +36,32 @@ logger = logging.getLogger(__name__)
 class DegiroModel:
     @log_start_end(log=logger)
     def __init__(self):
-        self.__default_credentials = Credentials(
+        self.__default_credentials = self.get_default_credentials()
+        self.__trading_api = self.get_default_trading_api()
+
+    def get_default_credentials(self):
+        """
+        Generate default credentials object from config file
+
+        Returns:
+            Credentials: credentials object with default settings
+        """
+        return Credentials(
             int_account=None,
             username=config.DG_USERNAME,
             password=config.DG_PASSWORD,
             one_time_password=None,
             totp_secret_key=config.DG_TOTP_SECRET,
         )
-        self.__trading_api = TradingAPI(
+
+    def get_default_trading_api(self):
+        """
+        Generate default trading api object from config file
+
+        Returns:
+            TradingAPI: trading api object with default settings
+        """
+        return TradingAPI(
             credentials=self.__default_credentials,
         )
 
@@ -193,11 +211,12 @@ class DegiroModel:
                 request=request,
                 raw=False,
             )
-            return news
         except Exception as e:
             e_str = str(e)
             console.print(f"[red]{e_str}[/red]")
-            return
+            news = None
+
+        return news
 
     @log_start_end(log=logger)
     def create_calculate_product_id(
@@ -487,7 +506,8 @@ class DegiroModel:
         trading_api.connection_storage.session_id = None
 
         # Resetting the object after logout
-        self.__init__()
+        self.__default_credentials = self.get_default_credentials()
+        self.__trading_api = self.get_default_trading_api()
 
     @log_start_end(log=logger)
     def check_credentials(self):
