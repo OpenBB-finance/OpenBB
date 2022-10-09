@@ -60,6 +60,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         "santiment": "SANTIMENT",
         "tokenterminal": "TOKEN_TERMINAL",
     }
+
     API_LIST = list(API_DICT.keys())
     CHOICES_COMMANDS: List[str] = ["mykeys"] + API_LIST
     PATH = "/keys/"
