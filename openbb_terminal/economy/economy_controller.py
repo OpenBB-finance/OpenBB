@@ -34,7 +34,6 @@ from openbb_terminal.economy import (
     investingcom_view,
     plot_view,
     commodity_view,
-    economy_helper,
 )
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -1618,9 +1617,10 @@ class EconomyController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            self.DATASETS = economy_helper.create_new_entry(
+            self.DATASETS = economy_helpers.create_new_entry(
                 self.DATASETS, " ".join(ns_parser.query)
             )
+
             self.stored_datasets = economy_helpers.update_stored_datasets_string(
                 self.DATASETS
             )
