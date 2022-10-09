@@ -1659,12 +1659,14 @@ class EconomyController(BaseController):
             )
 
     @log_start_end(log=logger)
+
+
     def call_qa(self, _):
         """Process qa command"""
         if not self.DATASETS:
             console.print(
-                "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
-                "'treasury' command in combination with the -st argument to be able to plot data.\n"
+                "There is no data stored. Please use either the 'macro', 'fred', 'index' and/or "
+                "'treasury' command in combination with the -st argument to plot data.\n"
             )
             return
 
