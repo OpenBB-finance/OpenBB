@@ -88,6 +88,7 @@ class TerminalController(BaseController):
         "econometrics",
         "sources",
         "forecast",
+        "futures",
     ]
 
     PATH = "/"
@@ -160,6 +161,7 @@ class TerminalController(BaseController):
         mt.add_menu("economy")
         mt.add_menu("forex")
         mt.add_menu("funds")
+        mt.add_menu("futures")
         mt.add_menu("alternative")
         mt.add_raw("\n")
         mt.add_info("_others_")
@@ -168,7 +170,6 @@ class TerminalController(BaseController):
         mt.add_menu("portfolio")
         mt.add_menu("dashboards")
         mt.add_menu("reports")
-        mt.add_raw("\n")
         console.print(text=mt.menu_text, menu="Home")
         self.update_runtime_choices()
 
@@ -443,6 +444,12 @@ class TerminalController(BaseController):
         )
 
         self.queue = self.load_class(PortfolioController, self.queue)
+
+    def call_futures(self, _):
+        """Process futures command"""
+        from openbb_terminal.futures.futures_controller import FuturesController
+
+        self.queue = self.load_class(FuturesController, self.queue)
 
     def call_sources(self, _):
         """Process sources command"""
