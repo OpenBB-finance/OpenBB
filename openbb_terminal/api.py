@@ -1,13 +1,38 @@
 """OpenBB Terminal API."""
 # flake8: noqa
-# pylint: disable=unused-import
-
-# pylint: disable=C0302,W0611,not-callable
+# pylint: disable=unused-import,wrong-import-order
+# pylint: disable=C0302,W0611,not-callable,ungrouped-imports
 from inspect import signature, Parameter
+import warnings
 import types
 import functools
 import importlib
 from typing import Optional, Callable, List
+
+from .stocks import stocks_api as stocks
+from .alternative import alt_api as alt
+from .cryptocurrency import crypto_api as crypto
+from .economy import economy_api as economy
+from .econometrics import econometrics_api as econometrics
+from .etf import etf_api as etf
+from .forex import forex_api as forex
+from .mutual_funds import mutual_fund_api as funds
+from .portfolio import portfolio_api as portfolio
+
+from openbb_terminal.rich_config import console
+
+try:
+    import darts
+
+    forecasting = True
+except ImportError:
+    forecasting = False
+    warnings.warn(
+        "Forecasting dependencies are not installed."
+        " This part of the SDK will noy be usable"
+    )
+
+from .config_terminal import theme
 
 from openbb_terminal.helper_classes import TerminalStyle  # noqa: F401
 from openbb_terminal import helper_funcs as helper  # noqa: F401
@@ -144,7 +169,6 @@ functions = {
     },
     "common.news": {
         "model": "openbb_terminal.common.feedparser_model.get_news",
-        "view": "openbb_terminal.common.feedparser_view.display_news",
     },
     "common.qa.bw": {
         "model": "openbb_terminal.common.quantitative_analysis.qa_view.display_bw",
@@ -522,8 +546,11 @@ functions = {
         "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_active_addresses",
         "view": "openbb_terminal.cryptocurrency.due_diligence.glassnode_view.display_active_addresses",
     },
-    "crypto.dd.btcrb": {
+    "crypto.dd.close": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_close_price",
+    },
+    "crypto.dd.btcrb": {
+        "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_btc_rainbow",
         "view": "openbb_terminal.cryptocurrency.due_diligence.glassnode_view.display_btc_rainbow",
     },
     "crypto.dd.eb": {
@@ -1885,23 +1912,128 @@ functions = {
     "etf.candle": {"model": "openbb_terminal.stocks.stocks_helper.display_candle"},
     "forex.candle": {"model": "openbb_terminal.forex.forex_helper.display_candle"},
     "forex.load": {"model": "openbb_terminal.forex.forex_helper.load"},
+    "keys.av": {"model": "openbb_terminal.keys_model.set_av_key"},
+    "keys.fmp": {"model": "openbb_terminal.keys_model.set_fmp_key"},
+    "keys.quandl": {"model": "openbb_terminal.keys_model.set_quandl_key"},
+    "keys.polygon": {"model": "openbb_terminal.keys_model.set_polygon_key"},
+    "keys.fred": {"model": "openbb_terminal.keys_model.set_fred_key"},
+    "keys.news": {"model": "openbb_terminal.keys_model.set_news_key"},
+    "keys.tradier": {"model": "openbb_terminal.keys_model.set_tradier_key"},
+    "keys.cmc": {"model": "openbb_terminal.keys_model.set_cmc_key"},
+    "keys.finnhub": {"model": "openbb_terminal.keys_model.set_finnhub_key"},
+    "keys.iex": {"model": "openbb_terminal.keys_model.set_iex_key"},
+    "keys.reddit": {"model": "openbb_terminal.keys_model.set_reddit_key"},
+    "keys.twitter": {"model": "openbb_terminal.keys_model.set_twitter_key"},
+    "keys.rh": {"model": "openbb_terminal.keys_model.set_rh_key"},
+    "keys.degiro": {"model": "openbb_terminal.keys_model.set_degiro_key"},
+    "keys.oanda": {"model": "openbb_terminal.keys_model.set_oanda_key"},
+    "keys.binance": {"model": "openbb_terminal.keys_model.set_binance_key"},
+    "keys.bitquery": {"model": "openbb_terminal.keys_model.set_bitquery_key"},
+    "keys.si": {"model": "openbb_terminal.keys_model.set_si_key"},
+    "keys.coinbase": {"model": "openbb_terminal.keys_model.set_coinbase_key"},
+    "keys.walert": {"model": "openbb_terminal.keys_model.set_walert_key"},
+    "keys.glassnode": {"model": "openbb_terminal.keys_model.set_glassnode_key"},
+    "keys.coinglass": {"model": "openbb_terminal.keys_model.set_coinglass_key"},
+    "keys.cpanic": {"model": "openbb_terminal.keys_model.set_cpanic_key"},
+    "keys.ethplorer": {"model": "openbb_terminal.keys_model.set_ethplorer_key"},
+    "keys.smartstake": {"model": "openbb_terminal.keys_model.set_smartstake_key"},
+    "keys.github": {"model": "openbb_terminal.keys_model.set_github_key"},
+    "keys.messari": {"model": "openbb_terminal.keys_model.set_messari_key"},
+    "keys.eodhd": {"model": "openbb_terminal.keys_model.set_eodhd_key"},
+    "keys.santiment": {"model": "openbb_terminal.keys_model.set_santiment_key"},
+    "keys.mykeys": {"model": "openbb_terminal.keys_model.get_keys"},
+    "keys.set_keys": {"model": "openbb_terminal.keys_model.set_keys"},
+    "keys.get_keys_info": {"model": "openbb_terminal.keys_model.get_keys_info"},
+}
+forecast_extras = {
+    "forecast.load": {"model": "openbb_terminal.forecast.forecast_model.load"},
+    "forecast.show": {
+        "model": "openbb_terminal.forecast.forecast_view.show_df",
+        "view": "openbb_terminal.forecast.forecast_view.show_df",
+    },
+    "forecast.plot": {
+        "model": "openbb_terminal.forecast.forecast_view.display_plot",
+        "view": "openbb_terminal.forecast.forecast_view.display_plot",
+    },
+    "forecast.clean": {"model": "openbb_terminal.forecast.forecast_model.clean"},
+    "forecast.combine": {
+        "model": "openbb_terminal.forecast.forecast_model.combine_dfs"
+    },
+    "forecast.desc": {
+        "view": "openbb_terminal.forecast.forecast_view.describe_df",
+        "model": "openbb_terminal.forecast.forecast_model.describe_df",
+    },
+    "forecast.corr": {
+        "view": "openbb_terminal.forecast.forecast_view.display_corr",
+        "model": "openbb_terminal.forecast.forecast_model.corr_df",
+    },
+    "forecast.season": {
+        "model": "openbb_terminal.forecast.forecast_view.display_seasonality"
+    },
+    "forecast.delete": {
+        "model": "openbb_terminal.forecast.forecast_model.delete_column"
+    },
+    "forecast.rename": {
+        "model": "openbb_terminal.forecast.forecast_model.rename_column"
+    },
+    "forecast.export": {"model": "openbb_terminal.forecast.forecast_view.export_df"},
+    "forecast.signal": {"model": "openbb_terminal.forecast.forecast_model.add_signal"},
+    "forecast.atr": {"model": "openbb_terminal.forecast.forecast_model.add_atr"},
+    "forecast.ema": {"model": "openbb_terminal.forecast.forecast_model.add_ema"},
+    "forecast.sto": {"model": "openbb_terminal.forecast.forecast_model.add_sto"},
+    "forecast.rsi": {"model": "openbb_terminal.forecast.forecast_model.add_rsi"},
+    "forecast.roc": {"model": "openbb_terminal.forecast.forecast_model.add_roc"},
+    "forecast.mom": {"model": "openbb_terminal.forecast.forecast_model.add_momentum"},
+    "forecast.delta": {"model": "openbb_terminal.forecast.forecast_model.add_delta"},
+    "forecast.expo": {
+        "model": "openbb_terminal.forecast.expo_model.get_expo_data",
+        "view": "openbb_terminal.forecast.expo_view.display_expo_forecast",
+    },
+    "forecast.theta": {
+        "model": "openbb_terminal.forecast.theta_model.get_theta_data",
+        "view": "openbb_terminal.forecast.theta_view.display_theta_forecast",
+    },
+    "forecast.linregr": {
+        "model": "openbb_terminal.forecast.linregr_model.get_linear_regression_data",
+        "view": "openbb_terminal.forecast.linregr_view.display_linear_regression",
+    },
+    "forecast.regr": {
+        "model": "openbb_terminal.forecast.regr_model.get_regression_data",
+        "view": "openbb_terminal.forecast.regr_view.display_regression",
+    },
+    "forecast.rnn": {
+        "model": "openbb_terminal.forecast.rnn_model.get_rnn_data",
+        "view": "openbb_terminal.forecast.rnn_view.display_rnn_forecast",
+    },
+    "forecast.brnn": {
+        "model": "openbb_terminal.forecast.brnn_model.get_brnn_data",
+        "view": "openbb_terminal.forecast.brnn_view.display_brnn_forecast",
+    },
+    "forecast.nbeats": {
+        "model": "openbb_terminal.forecast.nbeats_model.get_NBEATS_data",
+        "view": "openbb_terminal.forecast.nbeats_view.display_nbeats_forecast",
+    },
+    "forecast.tcn": {
+        "model": "openbb_terminal.forecast.tcn_model.get_tcn_data",
+        "view": "openbb_terminal.forecast.tcn_view.display_tcn_forecast",
+    },
+    "forecast.trans": {
+        "model": "openbb_terminal.forecast.trans_model.get_trans_data",
+        "view": "openbb_terminal.forecast.trans_view.display_trans_forecast",
+    },
+    "forecast.tft": {
+        "model": "openbb_terminal.forecast.tft_model.get_tft_data",
+        "view": "openbb_terminal.forecast.tft_view.display_tft_forecast",
+    },
 }
 
-
-"""
-api = Loader(functions=functions)
-api.stocks.get_news()
-api.economy.bigmac(chart=True)
-api.economy.bigmac(chart=False)
-
-
-TO USE THE API DIRECTLY JUST IMPORT IT:
-from openbb_terminal.api import openbb (or: from openbb_terminal.api import openbb as api)
-"""
+if forecasting:
+    functions = {**functions, **forecast_extras}
 
 
 def copy_func(f) -> Callable:
-    """Copies the contents and attributes of the entered function. Based on https://stackoverflow.com/a/13503277
+    """Copies the contents and attributes of the entered function. Based on
+    https://stackoverflow.com/a/13503277
     Parameters
     ----------
     f: Callable
@@ -1942,7 +2074,7 @@ def change_docstring(api_callable, model: Callable, view=None):
         index = view.__doc__.find("Parameters")
         all_parameters = (
             "\nAPI function, use the chart kwarg for getting the view model and it's plot. "
-            "See every parmater below:\n\n\t"
+            "See every parmater below:\n\n    "
             + view.__doc__[index:]
             + """chart: bool
     If the view and its chart shall be used"""
@@ -2152,7 +2284,15 @@ class Loader:
         module_path, function_name = function_path.rsplit(sep=".", maxsplit=1)
         module = cls.__load_module(module_path=module_path)
 
-        return getattr(module, function_name)
+        try:
+            function = getattr(module, function_name)
+        except AttributeError:
+            function = None
+            console.print("[red]Could not find the item below:[red]")
+            console.print(f"function: {function_name}")
+            console.print(f"module path: {module_path}")
+            console.print(f"module: {module}")
+        return function
 
     @classmethod
     def build_function_map(cls, funcs: dict) -> dict:
@@ -2204,4 +2344,6 @@ class Loader:
         return function_map
 
 
+# TO USE THE API DIRECTLY JUST IMPORT IT:
+# from openbb_terminal.api import openbb (or: from openbb_terminal.api import openbb as api)
 openbb = Loader(funcs=functions).openbb

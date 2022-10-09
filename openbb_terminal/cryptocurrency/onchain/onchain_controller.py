@@ -1071,7 +1071,7 @@ class OnchainController(BaseController):
             bitquery_view.display_dex_trades(
                 kind=ns_parser.kind,
                 trade_amount_currency=ns_parser.vs,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 days=ns_parser.days,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
@@ -1149,7 +1149,7 @@ class OnchainController(BaseController):
 
         if ns_parser:
             bitquery_view.display_daily_volume_for_given_pair(
-                token=ns_parser.coin,
+                symbol=ns_parser.coin,
                 to_symbol=ns_parser.vs,
                 limit=ns_parser.days,
                 sortby=ns_parser.sortby,
@@ -1470,7 +1470,7 @@ class OnchainController(BaseController):
             if ns_parser.coin:
                 if ns_parser.coin in bitquery_model.POSSIBLE_CRYPTOS:
                     bitquery_view.display_spread_for_crypto_pair(
-                        token=ns_parser.coin,
+                        symbol=ns_parser.coin,
                         to_symbol=ns_parser.vs,
                         days=ns_parser.days,
                         sortby=ns_parser.sortby,

@@ -44,7 +44,7 @@ class ForexController(BaseController):
     """Forex Controller class."""
 
     CHOICES_COMMANDS = ["load", "quote", "candle", "resources", "fwd"]
-    CHOICES_MENUS = ["ta", "qa", "Oanda", "pred"]
+    CHOICES_MENUS = ["ta", "qa", "Oanda"]
     PATH = "/forex/"
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
@@ -83,7 +83,6 @@ class ForexController(BaseController):
         mt.add_raw("\n")
         mt.add_menu("ta", self.fx_pair)
         mt.add_menu("qa", self.fx_pair)
-        mt.add_menu("pred", self.fx_pair)
         mt.add_raw("\n")
         mt.add_info("forex")
         mt.add_menu("oanda")
@@ -324,49 +323,6 @@ class ForexController(BaseController):
 
         else:
             console.print("No currency pair data is loaded. Use 'load' to load data.\n")
-
-    @log_start_end(log=logger)
-    def call_pred(self, _):
-        """Process pred command"""
-        # IMPORTANT: 8/11/22 prediction was discontinued on the installer packages
-        # because forecasting in coming out soon.
-        # This if statement disallows installer package users from using 'pred'
-        # even if they turn on the OPENBB_ENABLE_PREDICT feature flag to true
-        # however it does not prevent users who clone the repo from using it
-        # if they have ENABLE_PREDICT set to true.
-        if obbff.PACKAGED_APPLICATION or not obbff.ENABLE_PREDICT:
-            console.print(
-                "Predict is disabled. Forecasting coming soon!",
-                "\n",
-            )
-        else:
-            if self.from_symbol and self.to_symbol:
-                if self.data.empty:
-                    console.print(
-                        "No currency pair data is loaded. Use 'load' to load data.\n"
-                    )
-                else:
-                    try:
-                        from openbb_terminal.forex.prediction_techniques import (
-                            pred_controller,
-                        )
-
-                        self.queue = self.load_class(
-                            pred_controller.PredictionTechniquesController,
-                            self.from_symbol,
-                            self.to_symbol,
-                            self.data.index[0],
-                            "1440min",
-                            self.data,
-                            self.queue,
-                        )
-                    except ImportError:
-                        logger.exception("Tensorflow not available")
-                        console.print(
-                            "[red]Run pip install tensorflow to continue[/red]\n"
-                        )
-            else:
-                console.print("No pair selected.\n")
 
     @log_start_end(log=logger)
     def call_qa(self, _):

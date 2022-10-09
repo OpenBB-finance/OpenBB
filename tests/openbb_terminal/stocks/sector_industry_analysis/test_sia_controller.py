@@ -39,6 +39,39 @@ DF_STOCK = pd.DataFrame.from_dict(
     },
     orient="index",
 )
+VALID_SUMMARY_PROFILE = {
+    "country": "United States",
+    "industry": "Auto Manufacturers",
+    "sector": "Consumer Cyclical",
+}
+
+MOCK_TUPLE_SHORT = (["MOCK_COUN"], ["MOCK_SEC"], ["MOCK_INDUS"])
+MOCK_TUPLE = (["MOCK_COUNTRY"], ["MOCK_SECTOR"], ["MOCK_INDUSTRY"])
+MOCK_TUPLE_NONE = (["MOCK_COUNTRY"], ["MOCK_SECTOR"], ["MOCK_INDUSTRY"], None)
+
+MOCK_SUMMARY_PROFILE = (
+    {
+        "country": "MOCK_COUNTRY",
+        "sector": "MOCK_SECTOR",
+        "industry": "MOCK_INDUSTRY",
+    },
+)
+MOCK_SUMMARY_PROFILE_SHORT = (
+    {
+        "country": "MOCK_COUNTRY",
+        "sector": "MOCK_SECTOR",
+        "industry": "MOCK_INDUSTRY",
+    },
+)
+MOCK_SUMMARY_PROFILE_MISSING_COUNTRY = (
+    {"country": "", "sector": "MOCK_SECTOR", "industry": "MOCK_INDUSTRY"},
+)
+MOCK_SUMMARY_PROFILE_MISSING_INDUSTRY = (
+    {"country": "MOCK_COUNTRY", "sector": "MOCK_SECTOR", "industry": ""},
+)
+MOCK_SUMMARY_PROFILE_MISSING_SECTOR = (
+    {"country": "MOCK_COUNTRY", "sector": "", "industry": "MOCK_INDUSTRY"},
+)
 
 
 @pytest.fixture(scope="module")
@@ -509,13 +542,19 @@ def test_call_func_no_parser(func, mocker):
 
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
-    "countries, sectors, industries",
+    "countries, sectors, industries, summaryProfile",
     [
-        (["MOCK_COUNTRY"], ["MOCK_SECTOR"], ["MOCK_INDUSTRY"]),
-        (["MOCK_COUN"], ["MOCK_SEC"], ["MOCK_INDUS"]),
+        MOCK_TUPLE + MOCK_SUMMARY_PROFILE,
+        MOCK_TUPLE_SHORT + MOCK_SUMMARY_PROFILE_SHORT,
+        MOCK_TUPLE_NONE,
+        MOCK_TUPLE + MOCK_SUMMARY_PROFILE_MISSING_COUNTRY,
+        MOCK_TUPLE + MOCK_SUMMARY_PROFILE_MISSING_INDUSTRY,
+        MOCK_TUPLE + MOCK_SUMMARY_PROFILE_MISSING_SECTOR,
     ],
 )
-def test_controller_init_summary_profile(countries, industries, mocker, sectors):
+def test_controller_init_summary_profile(
+    countries, industries, mocker, sectors, summaryProfile
+):
     path_controller = "openbb_terminal.stocks.sector_industry_analysis.sia_controller"
 
     # MOCK OBBFF
@@ -530,13 +569,7 @@ def test_controller_init_summary_profile(countries, industries, mocker, sectors)
     )
 
     # MOCK GET_JSON
-    mock_get_json = {
-        "summaryProfile": {
-            "country": "MOCK_COUNTRY",
-            "sector": "MOCK_SECTOR",
-            "industry": "MOCK_INDUSTRY",
-        },
-    }
+    mock_get_json = {"summaryProfile": summaryProfile}
     target = f"{path_controller}.financedatabase_model.yf.utils.get_json"
     mocker.patch(target=target, return_value=mock_get_json)
 
@@ -552,7 +585,20 @@ def test_controller_init_summary_profile(countries, industries, mocker, sectors)
     target = f"{path_controller}.financedatabase_model.get_industries"
     mocker.patch(target=target, return_value=industries)
 
-    sia_controller.SectorIndustryAnalysisController(ticker="MOCK_TICKER", queue=None)
+    if (
+        summaryProfile is None
+        or not summaryProfile["country"]
+        or not summaryProfile["sector"]
+        or not summaryProfile["industry"]
+    ):
+        with pytest.raises(Exception):
+            sia_controller.SectorIndustryAnalysisController(
+                ticker="MOCK_TICKER", queue=None
+            )
+    else:
+        sia_controller.SectorIndustryAnalysisController(
+            ticker="MOCK_TICKER", queue=None
+        )
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -565,10 +611,28 @@ def test_controller_init_summary_profile(countries, industries, mocker, sectors)
     ],
 )
 def test_controller_init_market_cap(market_cap, mocker):
+    path_controller = "openbb_terminal.stocks.sector_industry_analysis.sia_controller"
+
     # MOCK GET_JSON
-    mock_get_json = {"price": {"marketCap": market_cap}}
-    target = "openbb_terminal.stocks.sector_industry_analysis.financedatabase_model.yf.utils.get_json"
+    mock_get_json = {
+        "price": {"marketCap": market_cap},
+        "summaryProfile": VALID_SUMMARY_PROFILE,
+    }
+
+    target = f"{path_controller}.financedatabase_model.yf.utils.get_json"
     mocker.patch(target=target, return_value=mock_get_json)
+
+    # MOCK GET_COUNTRIES
+    target = f"{path_controller}.financedatabase_model.get_countries"
+    mocker.patch(target=target, return_value=[VALID_SUMMARY_PROFILE["country"]])
+
+    # MOCK GET_SECTORS
+    target = f"{path_controller}.financedatabase_model.get_sectors"
+    mocker.patch(target=target, return_value=[VALID_SUMMARY_PROFILE["sector"]])
+
+    # MOCK GET_INDUSTRIES
+    target = f"{path_controller}.financedatabase_model.get_industries"
+    mocker.patch(target=target, return_value=[VALID_SUMMARY_PROFILE["industry"]])
 
     sia_controller.SectorIndustryAnalysisController(ticker="MOCK_TICKER", queue=None)
 
@@ -697,13 +761,17 @@ def test_custom_reset(expected, ticker):
 
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
-    "countries, sectors, industries",
+    "countries, sectors, industries, summaryProfile",
     [
-        (["MOCK_COUNTRY"], ["MOCK_SECTOR"], ["MOCK_INDUSTRY"]),
-        (["MOCK_COUN"], ["MOCK_SEC"], ["MOCK_INDUS"]),
+        MOCK_TUPLE + MOCK_SUMMARY_PROFILE,
+        MOCK_TUPLE_SHORT + MOCK_SUMMARY_PROFILE_SHORT,
+        MOCK_TUPLE_NONE,
+        MOCK_TUPLE + MOCK_SUMMARY_PROFILE_MISSING_COUNTRY,
+        MOCK_TUPLE + MOCK_SUMMARY_PROFILE_MISSING_INDUSTRY,
+        MOCK_TUPLE + MOCK_SUMMARY_PROFILE_MISSING_SECTOR,
     ],
 )
-def test_call_load(countries, industries, mocker, sectors):
+def test_call_load(countries, industries, mocker, sectors, summaryProfile):
     path_controller = "openbb_terminal.stocks.sector_industry_analysis.sia_controller"
 
     # MOCK LOAD
@@ -711,13 +779,7 @@ def test_call_load(countries, industries, mocker, sectors):
     mocker.patch(target=target, return_value=DF_STOCK)
 
     # MOCK GET_JSON
-    mock_get_json = {
-        "summaryProfile": {
-            "country": "MOCK_COUNTRY",
-            "sector": "MOCK_SECTOR",
-            "industry": "MOCK_INDUSTRY",
-        },
-    }
+    mock_get_json = {"summaryProfile": summaryProfile}
     target = f"{path_controller}.financedatabase_model.yf.utils.get_json"
     mocker.patch(target=target, return_value=mock_get_json)
 
@@ -747,7 +809,17 @@ def test_call_load(countries, industries, mocker, sectors):
         "--start=2021-12-17",
         "--end=2021-12-18",
     ]
-    controller.call_load(other_args=other_args)
+
+    if (
+        summaryProfile is None
+        or not summaryProfile["country"]
+        or not summaryProfile["sector"]
+        or not summaryProfile["industry"]
+    ):
+        with pytest.raises(Exception):
+            controller.call_load(other_args=other_args)
+    else:
+        controller.call_load(other_args=other_args)
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -767,9 +839,24 @@ def test_call_load_market_cap(market_cap, mocker):
     mocker.patch(target=target, return_value=DF_STOCK)
 
     # MOCK GET_JSON
-    mock_get_json = {"price": {"marketCap": market_cap}}
+    mock_get_json = {
+        "price": {"marketCap": market_cap},
+        "summaryProfile": VALID_SUMMARY_PROFILE,
+    }
     target = f"{path_controller}.financedatabase_model.yf.utils.get_json"
     mocker.patch(target=target, return_value=mock_get_json)
+
+    # MOCK GET_COUNTRIES
+    target = f"{path_controller}.financedatabase_model.get_countries"
+    mocker.patch(target=target, return_value=[VALID_SUMMARY_PROFILE["country"]])
+
+    # MOCK GET_SECTORS
+    target = f"{path_controller}.financedatabase_model.get_sectors"
+    mocker.patch(target=target, return_value=[VALID_SUMMARY_PROFILE["sector"]])
+
+    # MOCK GET_INDUSTRIES
+    target = f"{path_controller}.financedatabase_model.get_industries"
+    mocker.patch(target=target, return_value=[VALID_SUMMARY_PROFILE["industry"]])
 
     # MOCK UPDATE_RUNTIME_CHOICES
     mocker.patch(

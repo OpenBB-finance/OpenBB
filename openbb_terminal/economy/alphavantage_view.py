@@ -106,7 +106,7 @@ def display_real_gdp(
         return
 
     int_string = "Annual" if interval == "a" else "Quarterly"
-    year_str = str(start_year) if interval == "a" else str(list(gdp.date)[-1].year)
+    year_str = str(start_year) if interval == "a" else str(list(gdp["date"])[-1].year)
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
@@ -115,7 +115,7 @@ def display_real_gdp(
     else:
         return
 
-    ax.plot(gdp.date, gdp.GDP, marker="o")
+    ax.plot(gdp["date"], gdp["GDP"], marker="o")
     ax.set_title(f"{int_string} US GDP ($B) from {year_str}")
     ax.set_ylabel("US GDP ($B) ")
     theme.style_primary_axis(ax)
@@ -168,7 +168,7 @@ def display_gdp_capita(
     else:
         return
 
-    ax.plot(gdp.date, gdp.GDP, marker="o")
+    ax.plot(gdp["date"], gdp["GDP"], marker="o")
     ax.set_title(f"US GDP per Capita (Chained 2012 USD) from {start_year}")
     ax.set_ylabel("US GDP (Chained 2012 USD) ")
     theme.style_primary_axis(ax)
@@ -223,8 +223,8 @@ def display_inflation(
     else:
         return
 
-    ax.plot(inf.date, inf.Inflation, marker="o")
-    ax.set_title(f"US Inflation from {list(inf.date)[-1].year}")
+    ax.plot(inf["date"], inf["Inflation"], marker="o")
+    ax.set_title(f"US Inflation from {list(inf['date'])[-1].year}")
     ax.set_ylabel("Inflation (%)")
     theme.style_primary_axis(ax)
     if external_axes is None:
@@ -275,7 +275,7 @@ def display_cpi(
         return
 
     int_string = "Semi-Annual" if interval == "s" else "Monthly"
-    year_str = str(list(cpi.date)[-1].year)
+    year_str = str(list(cpi["date"])[-1].year)
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
@@ -284,7 +284,7 @@ def display_cpi(
     else:
         return
 
-    ax.plot(cpi.date, cpi.CPI, marker="o")
+    ax.plot(cpi["date"], cpi["CPI"], marker="o")
     ax.set_title(f"{int_string} Consumer Price Index from {year_str}")
     ax.set_ylabel("CPI")
     theme.style_primary_axis(ax)
@@ -343,7 +343,7 @@ def display_treasury_yield(
     else:
         return
 
-    ax.plot(yld.date, yld.Yield, marker="o")
+    ax.plot(yld["date"], yld["Yield"], marker="o")
     ax.set_title(f"{d_maturity[maturity]} Treasury Yield")
     ax.set_ylabel("Yield (%)")
     theme.style_primary_axis(ax)
@@ -360,7 +360,7 @@ def display_treasury_yield(
         print_rich_table(
             yld.head(20),
             headers=["Date", "Yield"],
-            title="Historical Treasurey Yield",
+            title="Historical Treasury Yield",
             show_index=False,
         )
 
@@ -400,7 +400,7 @@ def display_unemployment(
     else:
         return
 
-    ax.plot(un.date, un.unemp, marker="o")
+    ax.plot(un["date"], un["unemp"], marker="o")
     ax.set_title(f"US Unemployment from {start_year}")
     ax.set_ylabel("US Unemployment (%)")
     theme.style_primary_axis(ax)

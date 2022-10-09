@@ -1416,5 +1416,8 @@ class TechnicalAnalysisController(StockBaseController):
         )
         if ns_parser:
             momentum_view.display_clenow_momentum(
-                self.stock["Adj Close"], ns_parser.period, ns_parser.export
+                self.stock["Adj Close"],
+                self.ticker.upper(),
+                ns_parser.period,
+                ns_parser.export,
             )

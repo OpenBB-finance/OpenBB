@@ -1,5 +1,6 @@
 # -*- mode: python ; coding: utf-8 -*-
 import os
+import pathlib
 
 from dotenv import set_key
 
@@ -7,6 +8,9 @@ from PyInstaller.compat import is_darwin, is_win
 from PyInstaller.building.api import PYZ, EXE, COLLECT
 from PyInstaller.building.splash import Splash
 from PyInstaller.building.build_main import Analysis
+
+
+# import subprocess
 
 from openbb_terminal.loggers import get_commit_hash
 
@@ -18,6 +22,14 @@ build_type = (
 
 # Local python environment packages folder
 pathex = os.path.join(os.path.dirname(os.__file__), "site-packages")
+
+# Removing unused ARM64 binary
+binary_to_remove = pathlib.Path(
+    os.path.join(pathex, "_scs_direct.cpython-39-darwin.so")
+)
+print("Removing ARM64 Binary: _scs_direct.cpython-39-darwin.so")
+binary_to_remove.unlink(missing_ok=True)
+
 
 # Get latest commit
 commit_hash = get_commit_hash()
@@ -79,7 +91,9 @@ hidden_imports = [
     "feedparser",
     "pymongo",
     "bson",
+    "_sysconfigdata__darwin_darwin",
 ]
+
 
 analysis_kwargs = dict(
     scripts=[os.path.join(os.getcwd(), "terminal.py")],
@@ -87,7 +101,7 @@ analysis_kwargs = dict(
     binaries=[],
     datas=added_files,
     hiddenimports=hidden_imports,
-    hookspath=[],
+    hookspath=["build/pyinstaller/hooks"],
     hooksconfig={},
     runtime_hooks=[],
     excludes=[],
@@ -119,6 +133,7 @@ exe_kwargs = dict(
     codesign_identity=None,
     entitlements_file=None,
 )
+
 
 # Packaging settings
 if build_type == "onefile":

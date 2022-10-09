@@ -1,0 +1,37 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+    method: GET
+    uri: https://api.glassnode.com/v1/metrics/market/price_usd_close?api_key=test_key&a=BTC&i=24h&s=1614556800&u=1641227783561
+  response:
+    body:
+      string: "<html>\r\n<head><title>401 Authorization Required</title></head>\r\n<body>\r\n<center><h1>401
+        Authorization Required</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n"
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Origin:
+      - https://studio.glassnode.com
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '172'
+      Content-Type:
+      - text/html
+      Date:
+      - Tue, 04 Oct 2022 14:12:15 GMT
+      Strict-Transport-Security:
+      - max-age=15724800; includeSubDomains
+    status:
+      code: 401
+      message: Unauthorized
+version: 1
