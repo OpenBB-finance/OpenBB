@@ -63,8 +63,8 @@ def log_config_terminal() -> None:
             not item.startswith("__")
             and not isinstance(prop, FunctionType)
             and not isinstance(prop, ModuleType)
-            and not "API" in item
-            and not "DG_" in item
+            and "API" not in item
+            and "DG_" not in item
         ):
             config_terminal_dict[item] = str(prop)
 
