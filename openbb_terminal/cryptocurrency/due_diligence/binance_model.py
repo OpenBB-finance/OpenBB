@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-@check_api_key(["OPENBB_API_BINANCE_KEY", "OPENBB_API_BINANCE_SECRET"])
+@check_api_key(["API_BINANCE_KEY", "API_BINANCE_SECRET"])
 def _get_trading_pairs() -> List[dict]:
     """Helper method that return all trading pairs on binance. Methods ause this data for input for e.g
     building dataframe with all coins, or to build dict of all trading pairs. [Source: Binance]
@@ -55,7 +55,7 @@ def _get_trading_pairs() -> List[dict]:
 
 
 @log_start_end(log=logger)
-@check_api_key(["OPENBB_API_BINANCE_KEY", "OPENBB_API_BINANCE_SECRET"])
+@check_api_key(["API_BINANCE_KEY", "API_BINANCE_SECRET"])
 def get_all_binance_trading_pairs() -> pd.DataFrame:
     """Returns all available pairs on Binance in DataFrame format. DataFrame has 3 columns symbol, baseAsset, quoteAsset
     example row: ETHBTC | ETH | BTC
@@ -74,7 +74,7 @@ def get_all_binance_trading_pairs() -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-@check_api_key(["OPENBB_API_BINANCE_KEY", "OPENBB_API_BINANCE_SECRET"])
+@check_api_key(["API_BINANCE_KEY", "API_BINANCE_SECRET"])
 def get_binance_available_quotes_for_each_coin() -> dict:
     """Helper methods that for every coin available on Binance add all quote assets. [Source: Binance]
 
@@ -93,7 +93,7 @@ def get_binance_available_quotes_for_each_coin() -> dict:
 
 
 @log_start_end(log=logger)
-@check_api_key(["OPENBB_API_BINANCE_KEY", "OPENBB_API_BINANCE_SECRET"])
+@check_api_key(["API_BINANCE_KEY", "API_BINANCE_SECRET"])
 def check_valid_binance_str(symbol: str) -> str:
     """Check if symbol is in defined binance. [Source: Binance]"""
     client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
@@ -108,7 +108,7 @@ def check_valid_binance_str(symbol: str) -> str:
 
 
 @log_start_end(log=logger)
-@check_api_key(["OPENBB_API_BINANCE_KEY", "OPENBB_API_BINANCE_SECRET"])
+@check_api_key(["API_BINANCE_KEY", "API_BINANCE_SECRET"])
 def show_available_pairs_for_given_symbol(
     symbol: str = "ETH",
 ) -> Tuple[Union[str, None], list]:
@@ -136,7 +136,7 @@ def show_available_pairs_for_given_symbol(
 
 
 @log_start_end(log=logger)
-@check_api_key(["OPENBB_API_BINANCE_KEY", "OPENBB_API_BINANCE_SECRET"])
+@check_api_key(["API_BINANCE_KEY", "API_BINANCE_SECRET"])
 def get_order_book(
     from_symbol: str,
     limit: int = 100,
@@ -172,7 +172,7 @@ def get_order_book(
 
 
 @log_start_end(log=logger)
-@check_api_key(["OPENBB_API_BINANCE_KEY", "OPENBB_API_BINANCE_SECRET"])
+@check_api_key(["API_BINANCE_KEY", "API_BINANCE_SECRET"])
 def get_balance(
     from_symbol: str,
     to_symbol: str = "USDT",

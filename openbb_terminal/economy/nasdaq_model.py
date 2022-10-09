@@ -17,7 +17,6 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-@check_api_key(["API_KEY_QUANDL"])
 def check_country_code_type(list_of_codes: str) -> List[str]:
     """Check that codes are valid for NASDAQ API"""
     nasdaq_codes = list(
@@ -37,7 +36,6 @@ def check_country_code_type(list_of_codes: str) -> List[str]:
 
 
 @log_start_end(log=logger)
-@check_api_key(["API_KEY_QUANDL"])
 def get_country_codes() -> List[str]:
     """Get available country codes for Bigmac index
 

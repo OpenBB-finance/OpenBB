@@ -27,7 +27,7 @@ register_matplotlib_converters()
 
 @log_start_end(log=logger)
 def display_yieldcurve(
-    country: str,
+    country: str = "United States",
     external_axes: Optional[List[plt.Axes]] = None,
     raw: bool = False,
     export: str = "",
