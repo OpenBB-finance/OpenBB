@@ -91,7 +91,7 @@ def get_historical_options(
         "https://sandbox.tradier.com/v1/markets/history",
         params={"symbol": {symbol}, "interval": "daily"},
         headers={
-            "Authorization": f"Bearer {cfg.TRADIER_TOKEN}",
+            "Authorization": f"Bearer {cfg.API_TRADIER_TOKEN}",
             "Accept": "application/json",
         },
     )
@@ -133,7 +133,7 @@ def option_expirations(symbol: str) -> List[str]:
         "https://sandbox.tradier.com/v1/markets/options/expirations",
         params={"symbol": symbol, "includeAllRoots": "true", "strikes": "false"},
         headers={
-            "Authorization": f"Bearer {cfg.TRADIER_TOKEN}",
+            "Authorization": f"Bearer {cfg.API_TRADIER_TOKEN}",
             "Accept": "application/json",
         },
     )
@@ -170,7 +170,7 @@ def get_option_chains(symbol: str, expiry: str) -> pd.DataFrame:
     params = {"symbol": symbol, "expiration": expiry, "greeks": "true"}
 
     headers = {
-        "Authorization": f"Bearer {cfg.TRADIER_TOKEN}",
+        "Authorization": f"Bearer {cfg.API_TRADIER_TOKEN}",
         "Accept": "application/json",
     }
 
@@ -180,7 +180,7 @@ def get_option_chains(symbol: str, expiry: str) -> pd.DataFrame:
         headers=headers,
     )
     if response.status_code != 200:
-        console.print("Error in request. Check TRADIER_TOKEN\n")
+        console.print("Error in request. Check API_TRADIER_TOKEN\n")
         return pd.DataFrame()
 
     chains = process_chains(response)
@@ -243,7 +243,7 @@ def last_price(symbol: str):
         "https://sandbox.tradier.com/v1/markets/quotes",
         params={"symbols": symbol, "includeAllRoots": "true", "strikes": "false"},
         headers={
-            "Authorization": f"Bearer {cfg.TRADIER_TOKEN}",
+            "Authorization": f"Bearer {cfg.API_TRADIER_TOKEN}",
             "Accept": "application/json",
         },
     )

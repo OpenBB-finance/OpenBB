@@ -27,8 +27,7 @@ from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.portfolio import portfolio_helper
 
-# pylint: disable=no-member
-# pylint: disable=no-else-return
+# pylint: disable=no-member,no-else-return
 
 
 logger = logging.getLogger(__name__)
