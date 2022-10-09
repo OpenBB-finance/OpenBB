@@ -2027,7 +2027,6 @@ if forecasting:
     functions = {**functions, **forecast_extras}
 
 
-
 def copy_func(
     f: Callable, logging_decorator: bool = False, virtual_path: str = ""
 ) -> Callable:
