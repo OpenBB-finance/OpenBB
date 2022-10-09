@@ -2,10 +2,10 @@
 
 OpenBB SDK gives you direct and programmatic access to all capabilities from OpenBB Terminal.
 You will have the necessary building blocks to create your own financial tools and applications,
-whether that be a visualization dashboard or a custom report on Jupyter Notebook. 
+whether that be a visualization dashboard or a custom report on Jupyter Notebook.
 
 With OpenBB SDK, you can access to normalized financial data from dozens of data providers,
-without having to develop your own integrations from scratch. 
+without having to develop your own integrations from scratch.
 On top of financial data feeds, OpenBB SDK also provides you with a toolbox to perform financial analysis
 on a variety of asset classes, including stocks, crypto, ETFs, funds; the economy as well as your portfolios.
 
@@ -73,7 +73,7 @@ Finally, if you prefer to check documentation on a web browser, [OpenBB SDK Docu
 ### 4. Set API Keys
 
 You can set your external API keys through OpenBB SDK.
- 
+
 * Single API setup
 
 ```python
@@ -143,6 +143,7 @@ Now, let's explore what OpenBB SDK can do. At a high level, you can break down O
 OpenBB SDK provides you access to normalized financial data from dozens of data sources, without having to built your own integration or relying on multiple third-party packages. Let's explore how we can do that.
 
 First, you will need to load in the desired ticker. If it's not on the top of your mind, make use of our search functionality.
+
 ```python
 openbb.stocks.search("apple")
 ```
@@ -211,7 +212,7 @@ Imagine that you would like to leverage existing financial calculations from Ope
 
 Let's go through an example to see how we can do it in a few simple steps. Here we shall see how to use `portfolio optimization` functionalities from OpenBB SDK.
 
-#### Step 1. Loading order book
+### Step 1. Loading order book
 
 Here we will use an example orderbook for illustration purposes. You can choose to upload your own orderbook instead.
 
@@ -220,7 +221,7 @@ order_book_path = "portfolio/allocation/60_40_Portfolio.xlsx"
 tickers, categories = openbb.portfolio.po.load(excel_file = order_book_path)
 ```
 
-#### Step 2. Optimizing portfolio
+### Step 2. Optimizing portfolio
 
 We provide multiple portfolio optimization techniques. You can utilize basic mean-variance techniques, such as optimizing for the maximum Sharpe ratio, or minimum variance, as well as advanced optimization techniques including Hierarchical Risk Parity and Nested Clustered Optimization.
 
