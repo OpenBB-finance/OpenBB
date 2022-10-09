@@ -1735,10 +1735,10 @@ def screenshot_to_canvas(shot, plot_exists: bool = False):
             x = int((background.width - OUTSIDE_CANVAS_WIDTH) / 2)
             y = UPPER_SPACE
 
-            white_shape = [
+            white_shape = (
                 (x, y),
                 (x + OUTSIDE_CANVAS_WIDTH, y + OUTSIDE_CANVAS_HEIGHT),
-            ]
+            )
             img = ImageDraw.Draw(background)
             img.rounded_rectangle(
                 white_shape,
