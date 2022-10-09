@@ -227,11 +227,13 @@ def log_settings() -> None:
     settings_dict["packaged"] = "True" if obbff.PACKAGED_APPLICATION else "False"
     settings_dict["python"] = str(platform.python_version())
     settings_dict["os"] = str(platform.system())
-    settings_dict["theme"] = {
-        "mpl_style": MPL_STYLE,
-        "pmf_style": PMF_STYLE,
-        "rich_style": RICH_STYLE,
-    }
+    settings_dict["theme"] = json.dumps(
+        {
+            "mpl_style": MPL_STYLE,
+            "pmf_style": PMF_STYLE,
+            "rich_style": RICH_STYLE,
+        }
+    )
     settings_dict["keys"] = get_keys().index.tolist()
 
     logger.info("SETTINGS: %s ", json.dumps(settings_dict))
