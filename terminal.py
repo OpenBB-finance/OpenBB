@@ -471,7 +471,7 @@ class TerminalController(BaseController):
             if path_dir in ("-i", "--input"):
                 args = [path_routine[1:]] + other_args_processed[idx:]
                 break
-            if path_dir not in ("-f", "--file"):
+            if path_dir not in ("--file"):
                 path_routine += f"/{path_dir}"
 
         if not args:
@@ -484,7 +484,6 @@ class TerminalController(BaseController):
             description="Execute automated routine script.",
         )
         parser_exe.add_argument(
-            "-f",
             "--file",
             help="The path or .openbb file to run.",
             dest="path",
@@ -499,7 +498,7 @@ class TerminalController(BaseController):
             type=lambda s: [str(item) for item in s.split(",")],
         )
         if args and "-" not in args[0][0]:
-            args.insert(0, "-f")
+            args.insert(0, "--file")
         ns_parser_exe = parse_simple_args(parser_exe, args)
         if ns_parser_exe:
             if ns_parser_exe.path:
@@ -942,7 +941,6 @@ if __name__ == "__main__":
         help="Runs the terminal in debug mode.",
     )
     parser.add_argument(
-        "-f",
         "--file",
         help="The path or .openbb file to run.",
         dest="path",
@@ -981,7 +979,7 @@ if __name__ == "__main__":
     )
 
     if sys.argv[1:] and "-" not in sys.argv[1][0]:
-        sys.argv.insert(1, "-f")
+        sys.argv.insert(1, "--file")
     ns_parser = parser.parse_args()
     main(
         ns_parser.debug,
