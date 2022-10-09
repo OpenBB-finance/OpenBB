@@ -7,7 +7,7 @@ import argparse
 import logging
 from typing import List
 
-from prompt_toolkit.completion import NestedCompleter
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.defi import (
@@ -20,7 +20,6 @@ from openbb_terminal.cryptocurrency.defi import (
     llama_model,
     llama_view,
     substack_view,
-    terraengineer_model,
     terramoney_fcd_model,
     terramoney_fcd_view,
     smartstake_view,
@@ -55,8 +54,6 @@ class DefiController(BaseController):
         "swaps",
         "stats",
         "vaults",
-        "ayr",
-        "aterra",
         "sinfo",
         "validators",
         "gacc",
@@ -73,21 +70,115 @@ class DefiController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["ldapps"]["-s"] = {c: {} for c in llama_model.LLAMA_FILTERS}
-            choices["aterra"]["--asset"] = {c: {} for c in terraengineer_model.ASSETS}
-            choices["aterra"] = {c: {} for c in terraengineer_model.ASSETS}
-            choices["tokens"]["-s"] = {c: {} for c in graph_model.TOKENS_FILTERS}
-            choices["pairs"]["-s"] = {c: {} for c in graph_model.PAIRS_FILTERS}
-            choices["pools"]["-s"] = {c: {} for c in graph_model.POOLS_FILTERS}
-            choices["swaps"]["-s"] = {c: {} for c in graph_model.SWAPS_FILTERS}
-            choices["vaults"]["-s"] = {c: {} for c in coindix_model.VAULTS_FILTERS}
-            choices["vaults"]["-k"] = {c: {} for c in coindix_model.VAULT_KINDS}
-            choices["vaults"]["-c"] = {c: {} for c in coindix_model.CHAINS}
-            choices["vaults"]["-p"] = {c: {} for c in coindix_model.PROTOCOLS}
-            choices["validators"]["-s"] = {
-                c: {} for c in terramoney_fcd_model.VALIDATORS_COLUMNS
+            choices["newspaper"] = {
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
             }
-
+            choices["dpi"] = {
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--sort": {c: {} for c in ["Rank", "Name", "Chain", "Category", "TVL", "Change_1D"]},
+                "-s": "--sort",
+                "--ascend": {},
+            }
+            choices["vaults"] = {
+                "--chain": {c: {} for c in coindix_model.CHAINS},
+                "-c": "--chain",
+                "--sort": {c: {} for c in coindix_model.VAULTS_FILTERS},
+                "-s": "--sort",
+                "--kind": {c: {} for c in coindix_model.VAULT_KINDS},
+                "-k": "--kind",
+                "--top": {str(c): {} for c in range(1, 1000)},
+                "-t": "--top",
+                "--protocol": {c: {} for c in coindix_model.PROTOCOLS},
+                "-p": "--protocol",
+                "--descend": {},
+            }
+            choices["tokens"] = {
+                "--sort": {c: {} for c in graph_model.TOKENS_FILTERS},
+                "-s": "--sort",
+                "--skip": {str(c): {} for c in range(1, 1000)},
+                "--limit": {str(c): {} for c in range(1, 1000)},
+                "--descend": {}
+            }
+            choices["pairs"] = {
+                "--sort": {c: {} for c in graph_model.PAIRS_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 1000)},
+                "-l": "--limit",
+                "--vol": {str(c): {} for c in range(1, 1000)},
+                "-v": "--vol",
+                "--tx": {str(c): {} for c in range(1, 1000)},
+                "-tx": "--tx",
+                "--days": {str(c): {} for c in range(1, 1000)},
+                "--descend": {},
+            }
+            choices["pools"] = {
+                "--sort": {c: {} for c in graph_model.POOLS_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 1000)},
+                "-l": "--limit",
+                "--descend": {},
+            }
+            choices["swaps"] = {
+                "--sort": {c: {} for c in graph_model.SWAPS_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 1000)},
+                "-l": "--limit",
+                "--descend": {},
+            }
+            choices["ldapps"] = {
+                "--sort": {c: {} for c in llama_model.LLAMA_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+                "--desc": {},
+            }
+            choices["gdapps"] = {
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+            }
+            choices["stvl"] = {
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+            }
+            choices["dtvl"] = {"--dapps": {}, "-d": "--dapps"}
+            choices["sinfo"] = {
+                "--address": None,
+                "-a": "--address",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+            }
+            choices["validators"] = {
+                "--sort": {c: {} for c in terramoney_fcd_model.VALIDATORS_COLUMNS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+            }
+            choices["gacc"] = {
+                "--kind": {c: {} for c in ["active", "total"]},
+                "-k": "--kind",
+                "--cumulative": {},
+                "--descend": {},
+                "--limit": {str(c): {} for c in range(1, 1000)},
+                "-l": "--limit",
+            }
+            choices["sreturn"] = {
+                "--limit": {str(c): {} for c in range(1, 1000)},
+                "-l": "--limit",
+            }
+            choices["lcsc"] = {
+                "--days": {str(c): {} for c in range(1, 1000)},
+                "-d": "--days",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+            }
+            choices["anchor"] = {
+                "--adress": None,
+                "--transactions": {},
+            }
             choices["support"] = self.SUPPORT_CHOICES
             choices["about"] = self.ABOUT_CHOICES
 
@@ -108,8 +199,6 @@ class DefiController(BaseController):
         mt.add_cmd("gdapps")
         mt.add_cmd("stvl")
         mt.add_cmd("dtvl")
-        mt.add_cmd("aterra")
-        mt.add_cmd("ayr")
         mt.add_cmd("sinfo")
         mt.add_cmd("validators")
         mt.add_cmd("gacc")
