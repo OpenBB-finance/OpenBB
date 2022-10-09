@@ -676,12 +676,12 @@ class OptionsController(BaseController):
                 (
                     ns_parser.put
                     and ns_parser.strike
-                    in [float(strike) for strike in self.chain.puts["strike"]]
+                    not in [float(strike) for strike in self.chain.puts["strike"]]
                 )
                 or (
                     not ns_parser.put
                     and ns_parser.strike
-                    in [float(strike) for strike in self.chain.calls["strike"]]
+                    not in [float(strike) for strike in self.chain.calls["strike"]]
                 )
             ):
                 console.print("No correct strike input\n")
