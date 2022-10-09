@@ -22,6 +22,7 @@ import pyEX
 import oandapyV20.endpoints.pricing
 from oandapyV20 import API as oanda_API
 from coinmarketcapapi import CoinMarketCapAPI
+from tokenterminal import TokenTerminal
 from alpha_vantage.timeseries import TimeSeries
 from openbb_terminal.cryptocurrency.coinbase_helpers import (
     CoinbaseProAuth,
@@ -1983,6 +1984,63 @@ def check_santiment_key(show_output: bool = False) -> str:
         except Exception as _:  # noqa: F841
             logger.info("santiment key defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
+
+    if show_output:
+        console.print(status.colorize() + "\n")
+
+    return str(status)
+
+
+def set_token_terminal_key(
+    key: str, persist: bool = False, show_output: bool = False
+) -> str:
+    """Set Token Terminal key.
+
+    Parameters
+    ----------
+        key: str
+            API key
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
+
+    Returns
+    -------
+    status: str
+
+    """
+    set_key("OPENBB_API_TOKEN_TERMINAL_KEY", key, persist)
+    return check_token_terminal_key(show_output)
+
+
+def check_token_terminal_key(show_output: bool = False) -> str:
+    """Check Token Terminal key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not. By default, False.
+
+    Returns
+    -------
+    status: str
+
+    """
+    if cfg.API_TOKEN_TERMINAL_KEY == "REPLACE_ME":
+        logger.info("token terminal key not defined")
+        status = KeyStatus.NOT_DEFINED
+    else:
+        token_terminal = TokenTerminal(key=cfg.API_TOKEN_TERMINAL_KEY)
+
+        if "message" in token_terminal.get_all_projects():
+            logger.info("token terminal key defined, test failed")
+            status = KeyStatus.DEFINED_TEST_FAILED
+        else:
+            logger.info("token terminal key defined, test passed")
+            status = KeyStatus.DEFINED_TEST_PASSED
 
     if show_output:
         console.print(status.colorize() + "\n")
