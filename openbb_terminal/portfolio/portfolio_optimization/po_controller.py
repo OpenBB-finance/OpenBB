@@ -1,7 +1,7 @@
 """ Portfolio Optimization Controller Module """
 __docformat__ = "numpy"
 
-# pylint: disable=too-many-lines
+# pylint: disable=too-many-lines,too-many-instance-attributes
 
 import argparse
 import logging
