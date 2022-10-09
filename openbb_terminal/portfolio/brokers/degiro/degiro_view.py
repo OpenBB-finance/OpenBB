@@ -449,7 +449,8 @@ class DegiroView:
         top_news = degiro_model.topnews()
 
         # DISPLAY DATA
-        DegiroView.__topnews_display(top_news=top_news)
+        if top_news:
+            DegiroView.__topnews_display(top_news=top_news)
 
     @staticmethod
     @log_start_end(log=logger)
