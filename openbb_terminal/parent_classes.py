@@ -42,6 +42,7 @@ from openbb_terminal.helper_funcs import (
     load_json,
     parse_and_split_input,
     search_wikipedia,
+    screenshot,
 )
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.rich_config import console, get_ordered_list_sources
@@ -92,6 +93,7 @@ class BaseController(metaclass=ABCMeta):
         "wiki",
         "record",
         "stop",
+        "screenshot",
     ]
 
     CHOICES_COMMANDS: List[str] = []
@@ -622,6 +624,22 @@ class BaseController(metaclass=ABCMeta):
             # Clear session to be recorded again
             RECORD_SESSION = False
             SESSION_RECORDED = list()
+
+    @log_start_end(log=logger)
+    def call_screenshot(self, other_args: List[str]) -> None:
+        """Process screenshot command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="screenshot",
+            description="Screenshot terminal window or plot figure open into an OpenBB frame. "
+            "Default target is plot if there is one open, otherwise it's terminal window. "
+            " In case the user wants the terminal window, it can be forced with '-t` or '--terminal' flag passed.",
+        )
+        ns_parser = parse_simple_args(parser, other_args)
+
+        if ns_parser:
+            screenshot()
 
     def parse_known_args_and_warn(
         self,
