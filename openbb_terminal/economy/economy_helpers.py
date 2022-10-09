@@ -40,7 +40,7 @@ def create_new_entry(dataset: Dict[str, pd.DataFrame], query: str) -> Dict:
         if new_column in data.columns:
             query = query.replace(new_column, new_column + "_duplicate")
             new_column += "_duplicate"
-        # Wrap the eval in a syntax error incase the user does something not allowed
+        # Wrap the eval in a syntax error in case the user does something not allowed
         try:
             new_df = data.eval(query)
         except SyntaxError:
