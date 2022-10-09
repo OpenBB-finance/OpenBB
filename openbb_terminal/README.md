@@ -121,8 +121,21 @@ issues.
    or `diamondhands`, we recommend something simple and intuitive like `obb`. This is because this name will be used
    from now onwards.
 
+   Please note, the following setup has been confirmed to work for all OS (including M1) with the standard
+   miniconda distribution.
+
+   `https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh`
+
+   If you are using a different distribution, you will need to install it manually before proceeding.
+
    ```bash
    conda env create -n obb --file build/conda/conda-3-9-env.yaml
+   ```
+
+   Or, to include machine learning type:
+
+   ```bash
+   conda env create -n obb --file build/conda/conda-3-9-env-full.yaml
    ```
 
    Note: Using python 3.10 can lead to undesirable functionality for certain commands.
@@ -143,10 +156,10 @@ issues.
    poetry install
    ```
 
-   To enable the `prediction` menu install additional dependencies after installing main dependencies:
+   For machine learning instead type:
 
    ```bash
-   conda install -c conda-forge tensorflow
+   poetry install -E prediction
    ```
 
    If you are having trouble with Poetry (e.g. on a non-conda python), simply install requirements.txt with pip
@@ -189,7 +202,7 @@ before you call `python terminal.py` again.
 ## Advanced User Install - Custom installation procedures
 
 By default we advice using `conda` and `poetry` for environment setup and dependency management.
-Conda ships binaries for packages like `numpy` and `tensorflow` so these dependencies are
+Conda ships binaries for packages like `numpy` so these dependencies are
 not built from source locally by `pip`.
 Poetry solves the dependency tree in a way that the dependencies of dependencies of dependencies
 use versions that are compatible with each other.
@@ -275,15 +288,18 @@ git stash pop
 
 3. Run a container
 
-   You are now ready to run the terminal (every time you want to use the terminal you need to run this command):
+   To launch the container you need to run the following command:
 
-   `docker run -it --rm ghcr.io/openbb-finance/openbbterminal-poetry:latest`
+   `docker run -v ~/.openbb_terminal/:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm ghcr.io/openbb-finance/openbbterminal-poetry:1.6.0`
 
-   This will open up the terminal in your command prompt or terminal. Note that this has provided now environment file,
-   so you will not be able to view plots or use keys at this stage.
+   **NOTE FOR WINDOWS**
 
-   At this point, you should be able to use the majority of the features using Docker. To read more on adding the
-   environment keys and how to configure your X-server to show plots, hop over to the
+   Replace `~` by `%USERPROFILE%` in the command above.
+   This applies if you are using the builtin Windows interpreter.
+   You won't have to do this inside Powershell or more evolved interpreters.
+
+   At this point, you should be able to use the majority of the features using Docker. To read more on how to configure
+   your X-server to show plots, hop over to the
    [Advanced Docker Setup](/DOCKER_ADVANCED.md).
 
 ## Web UI - Docker

@@ -79,7 +79,7 @@ def test_bad_parameters():
     if all_overlaps:
         for overlaps, func_name, func_path, overlap_str in all_overlaps:
             final_str += (
-                f"Forbidden parameter{'s' if len(overlaps) > 1 else ''} in funcition"
+                f"Forbidden parameter{'s' if len(overlaps) > 1 else ''} in function"
                 f" '{func_name}' at {func_path}. Replace the following: {overlap_str}\n\n"
             )
 

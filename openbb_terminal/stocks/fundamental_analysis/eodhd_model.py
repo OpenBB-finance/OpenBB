@@ -42,7 +42,7 @@ def get_financials(
     request_url = (
         "https://eodhistoricaldata.com/api/fundamentals/"
         f"{symbol}?"
-        f"api_token={cfg.API_EODHD_TOKEN}"
+        f"api_token={cfg.API_EODHD_KEY}"
         f"&filter=Financials::{statement}"
         f"::{['yearly', 'quarterly'][quarterly]}"
     )
