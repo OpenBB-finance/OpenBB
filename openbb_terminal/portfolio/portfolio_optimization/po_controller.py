@@ -887,6 +887,8 @@ class PortfolioOptimizationController(BaseController):
             dest="file",
             help="Allocation file to be used",
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--file")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
