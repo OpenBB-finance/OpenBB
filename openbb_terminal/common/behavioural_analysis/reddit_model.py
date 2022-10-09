@@ -1022,15 +1022,6 @@ def get_comments(
 
 
 @log_start_end(log=logger)
-@check_api_key(
-    [
-        "API_REDDIT_CLIENT_ID",
-        "API_REDDIT_CLIENT_SECRET",
-        "API_REDDIT_USERNAME",
-        "API_REDDIT_USER_AGENT",
-        "API_REDDIT_PASSWORD",
-    ]
-)
 def clean_reddit_text(docs: List[str]) -> List[str]:
     """Tokenizes and cleans a list of documents for sentiment analysis
 
