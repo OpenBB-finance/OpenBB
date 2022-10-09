@@ -9,7 +9,7 @@ import pandas as pd
 import requests
 
 from openbb_terminal import config_terminal as cfg
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import log_start_end, check_api_key
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -76,6 +76,7 @@ def get_historical(
 
     return df
 
+
 @check_api_key(["API_SENTIMENTINVESTOR_TOKEN"])
 def check_supported_ticker(symbol: str) -> bool:
     """Check if the ticker is supported
@@ -123,6 +124,7 @@ def check_supported_ticker(symbol: str) -> bool:
             console.print({response_json["error"]})
 
     return result
+
 
 @check_api_key(["API_SENTIMENTINVESTOR_TOKEN"])
 def get_trending(
