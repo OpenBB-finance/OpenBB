@@ -97,14 +97,12 @@ def display_fundamental_metrics(
             magnitude += 1
             num /= 1000.0
 
-        colors = iter(cfg.theme.get_colors(reverse=True))
-
         ax.bar(
             metric_series[:limit].index,
             metric_series[:limit].values
             if magnitude == 0
             else metric_series[:limit].values / (1000.0**magnitude),
-            # color=colors[:limit],
+            color=cfg.theme.get_colors(reverse=True)[:limit],
         )
 
         if category:
