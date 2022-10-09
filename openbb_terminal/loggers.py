@@ -214,7 +214,6 @@ def log_settings() -> None:
     settings_dict["cls"] = "True" if obbff.USE_CLEAR_AFTER_CMD else "False"
     settings_dict["color"] = "True" if obbff.USE_COLOR else "False"
     settings_dict["promptkit"] = "True" if obbff.USE_PROMPT_TOOLKIT else "False"
-    settings_dict["predict"] = "True" if obbff.ENABLE_PREDICT else "False"
     settings_dict["thoughts"] = "True" if obbff.ENABLE_THOUGHTS_DAY else "False"
     settings_dict["reporthtml"] = "True" if obbff.OPEN_REPORT_AS_HTML else "False"
     settings_dict["exithelp"] = "True" if obbff.ENABLE_EXIT_AUTO_HELP else "False"
