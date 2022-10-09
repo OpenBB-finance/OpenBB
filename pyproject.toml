@@ -134,3 +134,7 @@ installer = ["pyinstaller"]
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pydocstyle]
+convention = "numpy"
+match = '((?!test_).)*\.py'
