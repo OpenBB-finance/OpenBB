@@ -1784,7 +1784,7 @@ class DueDiligenceController(CryptoBaseController):
         parser.add_argument(
             "-p",
             "--project",
-            default=self.symbol,
+            required=True,
             choices=tokenterminal_model.get_project_ids(),
             dest="project",
             help="Choose project of interest",

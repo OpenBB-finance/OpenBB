@@ -77,15 +77,18 @@ def get_fundamental_metric_from_project(
     metric_date = list()
     metric_value = list()
     for proj in project_metrics:
-        val = proj[metric]
-        if isinstance(val, (float, int)):
-            metric_value.append(val)
-            metric_date.append(proj["datetime"])
+        if metric in proj:
+            val = proj[metric]
+            if isinstance(val, (float, int)):
+                metric_value.append(val)
+                metric_date.append(proj["datetime"])
+        else:
+            return pd.Series(dtype="float64")
 
     if metric_value:
         return pd.Series(index=pd.to_datetime(metric_date), data=metric_value)[::-1]
 
-    return pd.Series()
+    return pd.Series(dtype="float64")
 
 
 @log_start_end(log=logger)
