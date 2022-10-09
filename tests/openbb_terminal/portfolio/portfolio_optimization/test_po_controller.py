@@ -12,6 +12,26 @@ from openbb_terminal.portfolio.portfolio_optimization import po_controller
 # pylint: disable=E1111
 
 
+def test_update_runtime_choices(mocker):
+    mocker.patch(
+        "openbb_terminal.portfolio.portfolio_optimization.po_controller.session", True
+    )
+    mocker.patch("openbb_terminal.feature_flags.USE_PROMPT_TOOLKIT", True)
+    cont = po_controller.PortfolioOptimizationController(
+        tickers=["TSLA", "AAPL"], portfolios={"port": 1}, categories={"cat": 1}
+    )
+    cont.update_runtime_choices()
+
+
+def test_custom_reset():
+    cont = po_controller.PortfolioOptimizationController()
+    cont.current_portfolio = {"po": 1}
+    cont.current_file = "somefile.csv"
+    command = cont.custom_reset()
+    assert command[2][:4] == "load"
+    assert command[3][:4] == "file"
+
+
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "queue, expected",
@@ -237,6 +257,104 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "call_ef",
             [],
             "optimizer_view.display_ef",
+            [],
+            dict(),
+        ),
+        (
+            "call_file",
+            ["-f=hello"],
+            "",
+            [],
+            dict(),
+        ),
+        (
+            "call_show",
+            ["-ct=ASSET_CLASS"],
+            "",
+            [],
+            dict(),
+        ),
+        (
+            "call_maxutil",
+            [],
+            "optimizer_view.display_max_util",
+            [],
+            dict(),
+        ),
+        (
+            "call_maxret",
+            [],
+            "optimizer_view.display_max_ret",
+            [],
+            dict(),
+        ),
+        (
+            "call_maxdiv",
+            [],
+            "optimizer_view.display_max_div",
+            [],
+            dict(),
+        ),
+        (
+            "call_maxdecorr",
+            [],
+            "optimizer_view.display_max_decorr",
+            [],
+            dict(),
+        ),
+        (
+            "call_blacklitterman",
+            [],
+            "optimizer_view.display_black_litterman",
+            [],
+            dict(),
+        ),
+        (
+            "call_riskparity",
+            [],
+            "optimizer_view.display_risk_parity",
+            [],
+            dict(),
+        ),
+        (
+            "call_relriskparity",
+            [],
+            "optimizer_view.display_rel_risk_parity",
+            [],
+            dict(),
+        ),
+        (
+            "call_hrp",
+            [],
+            "optimizer_view.display_hrp",
+            [],
+            dict(),
+        ),
+        (
+            "call_herc",
+            [],
+            "optimizer_view.display_herc",
+            [],
+            dict(),
+        ),
+        (
+            "call_nco",
+            [],
+            "optimizer_view.display_nco",
+            [],
+            dict(),
+        ),
+        (
+            "call_load",
+            [],
+            "",
+            [],
+            dict(),
+        ),
+        (
+            "call_plot",
+            ["-pf=[]"],
+            "",
             [],
             dict(),
         ),
