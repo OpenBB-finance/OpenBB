@@ -549,6 +549,14 @@ def plot_explainability(model, external_axes: Optional[List[plt.axes]] = None):
     ax.yaxis.set_label_position("left")
     ax.yaxis.tick_left()
 
+    # change the colour of the y axis tick labels
+    for t in ax.get_yticklabels():
+        t.set_color("white")
+
+    # change the colour of the x axis tick labels
+    for t in ax.get_xticklabels():
+        t.set_color("white")
+
     theme.style_primary_axis(ax)
 
     if not external_axes:
