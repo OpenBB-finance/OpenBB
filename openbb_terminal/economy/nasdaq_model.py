@@ -91,7 +91,7 @@ def get_big_mac_index(country_code: str = "USA") -> pd.DataFrame:
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_QUANDL"])
-def get_big_mac_indices(country_codes: List[str] = ["USA"]) -> pd.DataFrame:
+def get_big_mac_indices(country_codes: List[str] = None) -> pd.DataFrame:
     """Display Big Mac Index for given countries
 
     Parameters
@@ -104,6 +104,9 @@ def get_big_mac_indices(country_codes: List[str] = ["USA"]) -> pd.DataFrame:
     pd.DataFrame
         Dataframe with Big Mac indices converted to USD equivalent.
     """
+
+    if country_codes is None:
+        country_codes = ["USA"]
 
     df_cols = ["Date"]
     df_cols.extend(country_codes)

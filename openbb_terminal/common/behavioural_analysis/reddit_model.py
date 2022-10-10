@@ -21,6 +21,8 @@ from openbb_terminal.common.behavioural_analysis.reddit_helpers import find_tick
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
 
+# pylint: disable=too-many-lines
+
 logger = logging.getLogger(__name__)
 
 l_sub_reddits = [
