@@ -108,9 +108,9 @@ def check_api_key(api_keys):
                         "Set API Keys in config_terminal.py or under keys menu.[/red]\n"
                     )  # pragma: allowlist secret
                 else:
-                    func(*args, **kwargs)
+                    return func(*args, **kwargs)
             else:
-                func(*args, **kwargs)
+                return func(*args, **kwargs)
 
         return wrapper_decorator
 
