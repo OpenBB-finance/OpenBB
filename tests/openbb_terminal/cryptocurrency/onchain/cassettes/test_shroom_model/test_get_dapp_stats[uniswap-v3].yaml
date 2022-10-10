@@ -1,0 +1,136 @@
+interactions:
+- request:
+    body: '{"sql": "select\n      date_trunc(''week'', s.block_timestamp) as date,\n      sum(t.fee_usd)
+      as fee,\n      count(distinct(s.from_address)) as n_users,\n      count(distinct(s.amount_usd))
+      as volume\n    from ethereum.dex_swaps s\n    join ethereum.transactions t\n      on
+      s.tx_id = t.tx_id\n    where platform = ''uniswap-v3''\n    group by date\n    order
+      by date asc\n    ", "ttlMinutes": 15}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '393'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.28.1
+      x-api-key:
+      - f5857482-1185-4d7c-98f0-e537d2335130
+    method: POST
+    uri: https://node-api.flipsidecrypto.com/queries
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAE/6tWKsnPTs1TslIqLE0tqgwqzdNNSzY2NjA3TDE2Nk1ONLOwSEs1MTQzT0pONk80
+        TjEyNVDSUUpOTM5ITVGyKikqTa0FAFcJBi1DAAAA
+    headers:
+      connection:
+      - keep-alive
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Mon, 10 Oct 2022 10:22:18 GMT
+      etag:
+      - W/"43-YXSdVSomTVod7CBsfttMVpizbvI"
+      fly-request-id:
+      - 01GF0PNCBM4RXG8AD34ATNTAXS-cdg
+      keep-alive:
+      - timeout=5
+      server:
+      - Fly/54d1d920f (2022-09-30)
+      transfer-encoding:
+      - chunked
+      vary:
+      - Origin
+      via:
+      - 1.1 fly.io
+      x-powered-by:
+      - Express
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.28.1
+      x-api-key:
+      - f5857482-1185-4d7c-98f0-e537d2335130
+    method: GET
+    uri: https://node-api.flipsidecrypto.com/queries/queryRun-fc33071d335ca688fe4167bcc7a3d250?pageNumber=1&pageSize=100000
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      connection:
+      - keep-alive
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Mon, 10 Oct 2022 10:22:18 GMT
+      etag:
+      - W/"b4f-KgwzwsKNMhsr7nBbQ37PwRZfLQ8"
+      fly-request-id:
+      - 01GF0PNCGTNX1NPF2A1VWBAYBS-cdg
+      keep-alive:
+      - timeout=5
+      server:
+      - Fly/54d1d920f (2022-09-30)
+      transfer-encoding:
+      - chunked
+      vary:
+      - Origin
+      via:
+      - 1.1 fly.io
+      x-powered-by:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1
