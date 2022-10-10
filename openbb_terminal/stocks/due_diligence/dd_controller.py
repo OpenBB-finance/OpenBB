@@ -19,7 +19,6 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
-from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.due_diligence import (
     ark_view,
     business_insider_view,

@@ -13,7 +13,6 @@ from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common.quantitative_analysis import qa_view, rolling_view
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.cryptocurrency import cryptocurrency_helpers as c_help
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
