@@ -539,14 +539,17 @@ def plot_explainability(model, external_axes: Optional[List[plt.axes]] = None):
         model (Linregr or Regr): Trained model
     """
     if not external_axes:
-        _, ax1 = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
-        ax1 = external_axes[0]
+        ax = external_axes[0]
 
     shap_explain = ShapExplainer(model)
-    shap_explain.summary_plot()
+    shap_explain.summary_plot(horizons=1)
 
-    theme.style_primary_axis(ax1)
+    ax.yaxis.set_label_position("left")
+    ax.yaxis.tick_left()
+
+    theme.style_primary_axis(ax)
 
     if not external_axes:
         theme.visualize_output()
