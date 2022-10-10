@@ -28,7 +28,39 @@ logger = logging.getLogger(__name__)
 class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     """Keys Controller class"""
 
-    API_DICT = keys_model.API_DICT
+    API_DICT: Dict = {
+        "av": "ALPHA_VANTAGE",
+        "fmp": "FINANCIAL_MODELING_PREP",
+        "quandl": "QUANDL",
+        "polygon": "POLYGON",
+        "fred": "FRED",
+        "news": "NEWSAPI",
+        "tradier": "TRADIER",
+        "cmc": "COINMARKETCAP",
+        "finnhub": "FINNHUB",
+        "iex": "IEXCLOUD",
+        "reddit": "REDDIT",
+        "twitter": "TWITTER",
+        "rh": "ROBINHOOD",
+        "degiro": "DEGIRO",
+        "oanda": "OANDA",
+        "binance": "BINANCE",
+        "bitquery": "BITQUERY",
+        "si": "SENTIMENT_INVESTOR",
+        "coinbase": "COINBASE",
+        "walert": "WHALE_ALERT",
+        "glassnode": "GLASSNODE",
+        "coinglass": "COINGLASS",
+        "cpanic": "CRYPTO_PANIC",
+        "ethplorer": "ETHPLORER",
+        "smartstake": "SMARTSTAKE",
+        "github": "GITHUB",
+        "messari": "MESSARI",
+        "eodhd": "EODHD",
+        "santiment": "SANTIMENT",
+        "tokenterminal": "TOKEN_TERMINAL",
+    }
+
     API_LIST = list(API_DICT.keys())
     CHOICES_COMMANDS: List[str] = ["mykeys"] + API_LIST
     PATH = "/keys/"

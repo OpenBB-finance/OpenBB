@@ -7,7 +7,7 @@ from distutils.util import strtobool
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
-import pkg_resources
+import importlib_metadata
 import pytest
 from _pytest.capture import MultiCapture, SysCapture
 from _pytest.config import Config
@@ -338,8 +338,7 @@ def pytest_addoption(parser: Parser):
 
 
 def brotli_check():
-    installed_packages = pkg_resources.working_set
-    for item in list(installed_packages):
+    for item in importlib_metadata.packages_distributions():
         if "brotli" in str(item).lower():
             pytest.exit("Uninstall brotli and brotlipy before running tests")
 
