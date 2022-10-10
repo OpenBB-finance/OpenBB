@@ -242,6 +242,7 @@ terminado==0.16.0; python_version >= "3.7"
 thepassiveinvestor==1.0.10
 threadpoolctl==3.1.0; python_version >= "3.8" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.8"
 tinycss2==1.1.1; python_version >= "3.7"
+tokenterminal==1.0.1
 toml==0.10.2; python_version >= "3.7" and python_full_version < "3.0.0" or python_version >= "3.7" and python_full_version < "3.9.7" and python_full_version >= "3.3.0" or python_full_version > "3.9.7"
 tomli==2.0.1; python_full_version < "3.11.0a7" and python_version >= "3.8"
 toolz==0.12.0; python_version >= "3.8" and python_version < "4.0" and python_full_version >= "3.7.0" and (python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7" and python_version >= "3.7")
