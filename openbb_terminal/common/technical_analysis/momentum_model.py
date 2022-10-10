@@ -229,5 +229,6 @@ def clenow_momentum(
 
     r2 = lr.score(X, y)
     coef = lr.coef_[0]
+    annualized_coef = (np.exp(coef) ** 252) - 1
 
-    return r2, coef, pd.Series(lr.predict(X))
+    return r2, annualized_coef, pd.Series(lr.predict(X))
