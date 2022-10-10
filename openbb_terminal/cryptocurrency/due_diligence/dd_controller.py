@@ -11,6 +11,7 @@ from prompt_toolkit.completion import NestedCompleter
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.overview import cryptopanic_model
+from openbb_terminal.cryptocurrency.due_diligence import tokenterminal_model
 from openbb_terminal.cryptocurrency.due_diligence import (
     binance_model,
     binance_view,
@@ -28,6 +29,7 @@ from openbb_terminal.cryptocurrency.due_diligence import (
     messari_view,
     santiment_view,
     cryptopanic_view,
+    tokenterminal_view,
 )
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -65,6 +67,8 @@ class DueDiligenceController(CryptoBaseController):
         "change",
         "nonzero",
         "eb",
+        "funot",
+        "desc",
     ]
 
     SPECIFIC_CHOICES = {
@@ -163,6 +167,14 @@ class DueDiligenceController(CryptoBaseController):
             choices["news"]["--filter"] = {c: None for c in cryptopanic_model.FILTERS}
             choices["news"]["-r"] = {c: None for c in cryptopanic_model.REGIONS}
             choices["news"]["-s"] = {c: None for c in cryptopanic_model.SORT_FILTERS}
+            choices["funot"]["-m"] = {c: None for c in tokenterminal_model.METRICS}
+            choices["funot"]["-p"] = {
+                c: None for c in tokenterminal_model.get_project_ids()
+            }
+            choices["desc"]["-p"] = {
+                c: None for c in tokenterminal_model.get_project_ids()
+            }
+            choices["desc"] = {c: None for c in tokenterminal_model.get_project_ids()}
 
             choices["support"] = self.SUPPORT_CHOICES
             choices["about"] = self.ABOUT_CHOICES
@@ -188,6 +200,7 @@ class DueDiligenceController(CryptoBaseController):
         mt.add_cmd("gov")
         mt.add_cmd("basic")
         mt.add_cmd("stats")
+        mt.add_cmd("desc")
 
         mt.add_info("_market_")
         mt.add_cmd("market")
@@ -208,6 +221,7 @@ class DueDiligenceController(CryptoBaseController):
         mt.add_cmd("ps")
         mt.add_cmd("mcapdom")
         mt.add_cmd("mt")
+        mt.add_cmd("funot")
 
         mt.add_info("_contributors_")
         mt.add_cmd("team")
@@ -1749,3 +1763,67 @@ class DueDiligenceController(CryptoBaseController):
                 filter_=ns_parser.filter,
                 region=ns_parser.region,
             )
+
+    @log_start_end(log=logger)
+    def call_funot(self, other_args):
+        """Process fun command"""
+        parser = argparse.ArgumentParser(
+            prog="funot",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""Display fundamental metric over time [Source: Token Terminal]""",
+        )
+        parser.add_argument(
+            "-m",
+            "--metric",
+            default="",
+            choices=tokenterminal_model.METRICS,
+            dest="metric",
+            help="Choose metric of interest",
+        )
+        parser.add_argument(
+            "-p",
+            "--project",
+            required=True,
+            choices=tokenterminal_model.get_project_ids(),
+            dest="project",
+            help="Choose project of interest",
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            tokenterminal_view.display_fundamental_metric_from_project_over_time(
+                metric=ns_parser.metric,
+                project=ns_parser.project,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_desc(self, other_args):
+        """Process desc command"""
+        parser = argparse.ArgumentParser(
+            prog="desc",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""Display project description [Source: Token Terminal]""",
+        )
+        parser.add_argument(
+            "-p",
+            "--project",
+            choices=tokenterminal_model.get_project_ids(),
+            required=True,
+            dest="project",
+            help="Choose project of interest",
+        )
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-p")
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            if ns_parser.project in tokenterminal_model.get_project_ids():
+                tokenterminal_view.display_description(
+                    project=ns_parser.project,
+                    export=ns_parser.export,
+                )

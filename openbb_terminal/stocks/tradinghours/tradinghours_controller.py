@@ -195,7 +195,7 @@ class TradingHoursController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             bursa_view.display_open()
-
+        else:
             logger.error("No open exchanges right now.")
             console.print("[red]No open exchanges right now.[/red]\n")
 
