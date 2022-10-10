@@ -16,10 +16,8 @@ interactions:
       - '414'
       Content-Type:
       - application/json
-      User-Agent:
-      - python-requests/2.28.1
       x-api-key:
-      - f5857482-1185-4d7c-98f0-e537d2335130
+      - MOCK_AUTHORIZATION
     method: POST
     uri: https://node-api.flipsidecrypto.com/queries
   response:
@@ -35,19 +33,19 @@ interactions:
       content-type:
       - application/json; charset=utf-8
       date:
-      - Mon, 10 Oct 2022 10:04:38 GMT
+      - Mon, 10 Oct 2022 11:32:36 GMT
       etag:
       - W/"44-s2PPX6EWKS6gFs7IgeKrrq0b9Rc"
       fly-request-id:
-      - 01GF0NN10F9V7154SCNSTA6JP8-cdg
+      - 01GF0TP3FVTJTTSM519PV4FVF9-cdg
       keep-alive:
       - timeout=5
       ratelimit-limit:
       - '10000'
       ratelimit-remaining:
-      - '9993'
+      - '9978'
       ratelimit-reset:
-      - '85419'
+      - '80141'
       server:
       - Fly/54d1d920f (2022-09-30)
       transfer-encoding:
@@ -72,10 +70,8 @@ interactions:
       - keep-alive
       Content-Type:
       - application/json
-      User-Agent:
-      - python-requests/2.28.1
       x-api-key:
-      - f5857482-1185-4d7c-98f0-e537d2335130
+      - MOCK_AUTHORIZATION
     method: GET
     uri: https://node-api.flipsidecrypto.com/queries/queryRun-761e4533e5814c58e84bd1c43a0faf37?pageNumber=1&pageSize=100000
   response:
@@ -90,11 +86,11 @@ interactions:
       content-type:
       - application/json; charset=utf-8
       date:
-      - Mon, 10 Oct 2022 10:04:38 GMT
+      - Mon, 10 Oct 2022 11:32:36 GMT
       etag:
       - W/"14-gfn4m/4htgMx1Nnl9+2EBDZ+o8g"
       fly-request-id:
-      - 01GF0NN1652A023MTGWDSAX93E-cdg
+      - 01GF0TP3QGBX48JR6MK2Z6NCSB-ams
       keep-alive:
       - timeout=5
       server:
@@ -121,10 +117,8 @@ interactions:
       - keep-alive
       Content-Type:
       - application/json
-      User-Agent:
-      - python-requests/2.28.1
       x-api-key:
-      - f5857482-1185-4d7c-98f0-e537d2335130
+      - MOCK_AUTHORIZATION
     method: GET
     uri: https://node-api.flipsidecrypto.com/queries/queryRun-761e4533e5814c58e84bd1c43a0faf37?pageNumber=1&pageSize=100000
   response:
@@ -132,8 +126,8 @@ interactions:
       string: !!binary |
         H4sIAAAAAAAE/6tWKkotLs0pKVayio7VUUrOzynNzfNJTErNAYko+bqGBHk6x7s4hrgq6SgFR/o6
         +fso6Sg5+vqH+oXEhwa7KME1hVQWpIL1pCSWpCrpKBWXFGXmpSvpKOWV5ialFoEUFpckFpWkpjiW
-        KFkpGRkYGekaGugaGoQYGlgZmFgZW+gZGBhEKekopealEFZUkJie6gcx2cpQRwnEDc6sSlWyMjQA
-        AZD9iSWlxUpWSmmZeZnFGakpSrUAhq87qO0AAAA=
+        KFkpGRkYGekaGugaGoQYGloZG1kZm+kZGBhEKekopeal4FRkAVNUkJie6gcx2cpQRwnEDc6sSlWy
+        MjQAAZD9iSWlxUpWSmmZeZnFGakpSrUAu0TkMu0AAAA=
     headers:
       connection:
       - keep-alive
@@ -142,11 +136,11 @@ interactions:
       content-type:
       - application/json; charset=utf-8
       date:
-      - Mon, 10 Oct 2022 10:04:49 GMT
+      - Mon, 10 Oct 2022 11:32:47 GMT
       etag:
-      - W/"ed-HSgNDkFGIYkqXq8Aw/+fV4evWXE"
+      - W/"ed-fhfNu3Lmjm2FyGdzfm0tVbLc5Fk"
       fly-request-id:
-      - 01GF0NNBC083Z9EA78W72BQGAH-cdg
+      - 01GF0TPDQ1AEJBQYFPXF7599EH-lhr
       keep-alive:
       - timeout=5
       server:
