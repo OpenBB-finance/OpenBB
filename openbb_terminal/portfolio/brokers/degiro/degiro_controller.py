@@ -4,8 +4,7 @@ import datetime
 import logging
 from typing import List
 
-# IMPORTATION THIRDPARTY
-from prompt_toolkit.completion import NestedCompleter
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 # IMPORTATION INTERNAL
 from openbb_terminal import feature_flags as obbff
@@ -48,6 +47,54 @@ class DegiroController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+
+            zero_to_hundred = {str(c): {} for c in range(0, 100)}
+            one_to_hundred = {str(c): {} for c in range(1, 100)}
+            choices["login"] = {
+                "--one-time-password": None,
+                "-otp": "--one-time-password",
+            }
+            choices["lookup"] = {
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+                "--offset": zero_to_hundred,
+                "-o": "--offset",
+            }
+            choices["create"] = {
+                "--action": {c: {} for c in DegiroView.ORDER_ACTION.keys()},
+                "-a": "--action",
+                "--product": None,
+                "-prod": "--product",
+                "--symbol": None,
+                "-sym": "--symbol",
+                "--price": None,
+                "-p": "--price",
+                "--size": None,
+                "-s": "--size",
+                "--up-to": None,
+                "-up": "--up-to",
+                "--duration": {c: {} for c in DegiroView.ORDER_DURATION.keys()},
+                "-d": "--duration",
+                "--type": {c: {} for c in DegiroView.ORDER_TYPE.keys()},
+                "-t": "--type",
+            }
+            choices["update"] = {
+                "--price": None,
+                "-p": "--price",
+            }
+            choices["lastnews"] = {
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["paexport"] = {
+                "--start": None,
+                "-s": "--start",
+                "--end": None,
+                "-e": "--end",
+                "--currency": None,
+                "-c": "--currency",
+            }
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

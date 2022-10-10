@@ -88,7 +88,18 @@ class CryptoController(CryptoBaseController):
             choices: dict = {c: {} for c in self.controller_choices}
             choices["load"] = {
                 "--interval": {
-                    c: {} for c in ["1", "5", "15", "30", "60", "240", "1440", "10080", "43200"]
+                    c: {}
+                    for c in [
+                        "1",
+                        "5",
+                        "15",
+                        "30",
+                        "60",
+                        "240",
+                        "1440",
+                        "10080",
+                        "43200",
+                    ]
                 },
                 "-i": "--interval",
                 "--exchange": {c: {} for c in self.exchanges},
@@ -106,7 +117,16 @@ class CryptoController(CryptoBaseController):
                 "-l": "--limit",
                 "--skip": {str(c): {} for c in range(1, 300)},
                 "-s": "--skip",
-                "--source": {c: {} for c in ["CoinGecko", "CoinPaprika", "Binance", "Coinbase", "YahooFinance"]}
+                "--source": {
+                    c: {}
+                    for c in [
+                        "CoinGecko",
+                        "CoinPaprika",
+                        "Binance",
+                        "Coinbase",
+                        "YahooFinance",
+                    ]
+                },
             }
             choices["price"] = {c: {} for c in pyth_model.ASSETS.keys()}
             choices["headlines"] = {c: {} for c in finbrain_crypto_view.COINS}

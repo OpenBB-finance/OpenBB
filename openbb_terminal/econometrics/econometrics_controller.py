@@ -12,7 +12,8 @@ from typing import List, Dict, Any
 
 import numpy as np
 import pandas as pd
-from prompt_toolkit.completion import NestedCompleter
+
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 import openbb_terminal.econometrics.regression_model
 import openbb_terminal.econometrics.regression_view
@@ -171,14 +172,12 @@ class EconometricsController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["load"]["-f"] = {c: None for c in self.DATA_FILES.keys()}
-            choices["show"] = {c: None for c in self.files}
+            choices["load"]["-f"] = {c: {} for c in self.DATA_FILES.keys()}
 
             for feature in ["export", "show", "desc", "clear", "index"]:
-                choices[feature] = {c: None for c in self.files}
+                choices[feature] = {c: {} for c in self.files}
 
             for feature in [
-                "general",
                 "type",
                 "plot",
                 "norm",
@@ -198,13 +197,12 @@ class EconometricsController(BaseController):
     def update_runtime_choices(self):
         if session and obbff.USE_PROMPT_TOOLKIT:
             dataset_columns = {
-                f"{dataset}.{column}": {column: None, dataset: None}
+                f"{dataset}.{column}": {}
                 for dataset, dataframe in self.datasets.items()
                 for column in dataframe.columns
             }
 
             for feature in [
-                "general",
                 "plot",
                 "norm",
                 "root",
@@ -224,13 +222,13 @@ class EconometricsController(BaseController):
                 "combine",
                 "rename",
             ]:
-                self.choices[feature] = {c: None for c in self.files}
+                self.choices[feature] = {c: {} for c in self.files}
 
             self.choices["type"] = {
-                c: None for c in self.files + list(dataset_columns.keys())
+                c: {} for c in self.files + list(dataset_columns.keys())
             }
             self.choices["desc"] = {
-                c: None for c in self.files + list(dataset_columns.keys())
+                c: {} for c in self.files + list(dataset_columns.keys())
             }
 
             pairs_timeseries = list()
@@ -241,7 +239,7 @@ class EconometricsController(BaseController):
                     if dataset_col != dataset_col2
                 ]
 
-            self.choices["granger"] = {c: None for c in pairs_timeseries}
+            self.choices["granger"] = {c: {} for c in pairs_timeseries}
 
             self.completer = NestedCompleter.from_nested_dict(self.choices)
 

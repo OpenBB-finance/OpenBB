@@ -91,8 +91,54 @@ class InsiderController(StockBaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["view"] = {c: None for c in self.preset_choices}
-            choices["set"] = {c: None for c in self.preset_choices}
+
+            one_to_hundred = {str(c): {} for c in range(1, 100)}
+            choices["view"] = {c: {} for c in self.preset_choices}
+            choices["set"] = {c: {} for c in self.preset_choices}
+            choices["filter"] = {
+                "--urls": {},
+                "-u": "--urls",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            limit = {
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["lcb"] = limit
+            choices["lpsb"] = limit
+            choices["lit"] = limit
+            choices["lip"] = limit
+            choices["blip"] = limit
+            choices["blop"] = limit
+            choices["blcp"] = limit
+            choices["lis"] = limit
+            choices["blis"] = limit
+            choices["blos"] = limit
+            choices["blcs"] = limit
+            choices["topt"] = limit
+            choices["toppw"] = limit
+            choices["toppm"] = limit
+            choices["tipt"] = limit
+            choices["lcb"] = limit
+            choices["tippw"] = limit
+            choices["tippm"] = limit
+            choices["tist"] = limit
+            choices["tispw"] = limit
+            choices["tispm"] = limit
+            choices["stats"] = {
+                "--urls": {},
+                "-u": "--urls",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["act"] = {
+                "--raw": {},
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["lins"] = limit
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

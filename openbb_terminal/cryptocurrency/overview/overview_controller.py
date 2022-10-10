@@ -97,7 +97,9 @@ class OverviewController(BaseController):
             choices: dict = {c: {} for c in self.controller_choices}
             choices["cgglobal"]["--pie"] = {}
             choices["cr"] = {c: {} for c in ["borrow", "supply"]}
-            choices["cr"]["--cryptocurrrencies"] = {c: None for c in loanscan_model.CRYPTOS}
+            choices["cr"]["--cryptocurrrencies"] = {
+                c: None for c in loanscan_model.CRYPTOS
+            }
             choices["cr"]["-c"] = "--cryptocurrrencies"
             choices["cr"]["--platforms"] = {c: None for c in loanscan_model.PLATFORMS}
             choices["cr"]["-p"] = "--platforms"
@@ -228,7 +230,7 @@ class OverviewController(BaseController):
                 "-s": "--sort",
                 "--descend": {},
                 "--urls": {},
-                "-u": "--urls"
+                "-u": "--urls",
             }
             choices["wf"] = {
                 "--limit": {str(c): {} for c in range(10, 100)},

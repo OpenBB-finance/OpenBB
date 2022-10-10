@@ -37,7 +37,6 @@ logger = logging.getLogger(__name__)
 
 # TODO: HELP WANTED! This menu required some refactoring. Things that can be addressed:
 #       - better preset management (MVC style).
-#       - decoupling view and model in the yfinance_view
 PRESETS_PATH = PRESETS_DIRECTORY / "stocks" / "screener"
 
 
@@ -84,29 +83,36 @@ class ScreenerController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["view"] = {c: None for c in self.preset_choices}
-            choices["set"] = {c: None for c in self.preset_choices}
-            choices["historical"]["-t"] = {
-                c: None for c in self.historical_candle_choices
+
+            one_to_hundred = {str(c): {} for c in range(1, 100)}
+            choices["view"] = {c: {} for c in self.preset_choices}
+            choices["set"] = {c: {} for c in self.preset_choices}
+            choices["historical"] = {
+                "--start": None,
+                "-s": "--start",
+                "--type": {c: {} for c in self.historical_candle_choices},
+                "--no-scale": {},
+                "-n": "--no-scale",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
             }
-            choices["overview"]["-s"] = {
-                c: None for c in finviz_view.d_cols_to_sort["overview"]
+            screener_standard = {
+                "--preset": {c: {} for c in self.preset_choices},
+                "-p": "--preset",
+                "--sort": {c: {} for c in finviz_view.d_cols_to_sort["overview"]},
+                "-s": "--sort",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+                "--ascend": {},
+                "-a": "--ascend",
             }
-            choices["valuation"]["-s"] = {
-                c: None for c in finviz_view.d_cols_to_sort["valuation"]
-            }
-            choices["financial"]["-s"] = {
-                c: None for c in finviz_view.d_cols_to_sort["financial"]
-            }
-            choices["ownership"]["-s"] = {
-                c: None for c in finviz_view.d_cols_to_sort["ownership"]
-            }
-            choices["performance"]["-s"] = {
-                c: None for c in finviz_view.d_cols_to_sort["performance"]
-            }
-            choices["technical"]["-s"] = {
-                c: None for c in finviz_view.d_cols_to_sort["technical"]
-            }
+            choices["overview"] = screener_standard
+            choices["valuation"] = screener_standard
+            choices["financial"] = screener_standard
+            choices["ownership"] = screener_standard
+            choices["performance"] = screener_standard
+            choices["technical"] = screener_standard
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def parse_input(self, an_input: str) -> List:

@@ -6,6 +6,7 @@ import difflib
 import logging
 from typing import List
 
+import numpy as np
 import yfinance as yf
 
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -19,7 +20,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.comparison_analysis import ca_controller
 from openbb_terminal.stocks.sector_industry_analysis import (
@@ -95,6 +96,7 @@ class SectorIndustryAnalysisController(BaseController):
         "ev",
         "fpe",
     ]
+    satma_choices = ["BS", "bs", "IS", "is", "CF", "cf", ""]
     metric_yf_keys = {
         "roa": ("financialData", "returnOnAssets"),
         "roe": ("financialData", "returnOnEquity"),
@@ -185,12 +187,56 @@ class SectorIndustryAnalysisController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["mktcap"] = {c: None for c in self.mktcap_choices}
-            choices["period"] = {c: None for c in self.period_choices}
-            choices["clear"] = {c: None for c in self.clear_choices}
-            choices["metric"] = {c: None for c in self.metric_choices}
+
+            one_to_hundred = {str(c): {} for c in range(1, 100)}
+            zero_to_one_detailed = {str(c): {} for c in np.arange(0.0, 1.0, 0.005)}
+            choices["load"] = {
+                "--ticker": None,
+                "-t": "--ticker",
+                "--source": {
+                    c: {} for c in get_ordered_list_sources(f"{self.PATH}load")
+                },
+            }
+            choices["mktcap"] = {c: {} for c in self.mktcap_choices}
+            choices["period"] = {c: {} for c in self.period_choices}
+            choices["clear"] = {c: {} for c in self.clear_choices}
+            standard_cp = {
+                "--max": one_to_hundred,
+                "-M": "--max",
+                "--min": zero_to_one_detailed,
+                "-m": "--min",
+                "--raw": {},
+                "-r": "--raw",
+            }
+            choices["cps"] = standard_cp
+            choices["cpic"] = standard_cp
+            choices["cpis"] = standard_cp
+            choices["cpcs"] = standard_cp
+            choices["cpci"] = standard_cp
+            choices["metric"] = {
+                "--metric": {c: {} for c in self.metric_choices},
+                "-m": "--metric",
+                "--raw": {},
+                "-r": "--raw",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["satma"] = {c: {} for c in self.satma_choices}
+            choices["vis"] = {
+                "--metric": {c: {} for c in self.metric_choices},
+                "-m": "--metric",
+                "--period": one_to_hundred,
+                "-p": "--period",
+                "--currency": None,
+                "-c": "--currency",
+                "--raw": {},
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+
             choices["support"] = self.SUPPORT_CHOICES
             choices["about"] = self.ABOUT_CHOICES
+
             # This menu contains dynamic choices that may change during runtime
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -201,19 +247,19 @@ class SectorIndustryAnalysisController(BaseController):
         """Update runtime choices"""
         if session and obbff.USE_PROMPT_TOOLKIT:
             self.choices["industry"] = {
-                i: None
+                i: {}
                 for i in financedatabase_model.get_industries(
                     country=self.country, sector=self.sector
                 )
             }
             self.choices["sector"] = {
-                s: None
+                s: {}
                 for s in financedatabase_model.get_sectors(
                     industry=self.industry, country=self.country
                 )
             }
             self.choices["country"] = {
-                c: None
+                c: {}
                 for c in financedatabase_model.get_countries(
                     industry=self.industry, sector=self.sector
                 )
@@ -814,7 +860,7 @@ class SectorIndustryAnalysisController(BaseController):
             "--statement",
             dest="statement",
             help="See all metrics available for the given choice",
-            choices=["BS", "bs", "IS", "is", "CF", "cf", ""],
+            choices=self.satma_choices,
         )
 
         if other_args and "-" not in other_args[0][0]:

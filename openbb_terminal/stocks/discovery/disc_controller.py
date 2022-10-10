@@ -20,7 +20,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
 from openbb_terminal.stocks.discovery import (
     ark_view,
     finnhub_view,
@@ -118,16 +118,92 @@ class DiscoveryController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["arkord"]["-s"] = {c: None for c in self.arkord_sortby_choices}
-            choices["arkord"]["--sortby"] = {
-                c: None for c in self.arkord_sortby_choices
+
+            one_to_hundred = {str(c): {} for c in range(1, 100)}
+            choices["pipo"] = {
+                "--days": one_to_hundred,
+                "-d": "--days",
+                "--start": None,
+                "-s": "--start",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
             }
-            choices["arkord"]["--fund"] = {c: None for c in self.arkord_fund_choices}
-            choices["cnews"]["-t"] = {c: None for c in self.cnews_type_choices}
-            choices["cnews"]["--type"] = {c: None for c in self.cnews_type_choices}
-            choices["divcal"]["-s"] = {c: None for c in self.dividend_columns}
-            choices["divcal"]["--sort"] = {c: None for c in self.dividend_columns}
-            choices["heatmap"]["-t"] = {c: None for c in self.heatmap_timeframes}
+            choices["fipo"] = {
+                "--days": one_to_hundred,
+                "-d": "--days",
+                "--end": None,
+                "-e": "--end",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            limit = {
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["gainers"] = limit
+            choices["losers"] = limit
+            choices["ugs"] = limit
+            choices["gtech"] = limit
+            choices["active"] = limit
+            choices["ulc"] = limit
+            choices["asc"] = limit
+            choices["arkord"] = {
+                "--sortby": {c: {} for c in self.arkord_sortby_choices},
+                "-s": "--sortby",
+                "--ascend": {},
+                "-a": "--ascend",
+                "--buy_only": {},
+                "-b": "--buy_only",
+                "--sell_only": {},
+                "-c": "--sell_only",
+                "--fund": {c: {} for c in self.arkord_fund_choices},
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["upcoming"] = {
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+                "--pages": one_to_hundred,
+                "-p": "--pages",
+            }
+            choices["trending"] = {
+                "--id": None,
+                "-i": "--id",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+                "--date": None,
+                "-d": "--date",
+            }
+            choices["cnews"] = {
+                "--type": {c: {} for c in self.cnews_type_choices},
+                "-t": "--type",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["lowfloat"] = limit
+            choices["hotpenny"] = {
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+                "--source": {
+                    c: {} for c in get_ordered_list_sources(f"{self.PATH}hotpenny")
+                },
+            }
+            choices["rtat"] = limit
+            choices["divcal"] = {
+                "--date": None,
+                "-d": "--date",
+                "--sort": {c: {} for c in self.dividend_columns},
+                "-s": "--sort",
+                "--ascend": {},
+                "-a": "--ascend",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["heatmap"]["--timeframe"] = {
+                c: None for c in self.heatmap_timeframes
+            }
+            choices["heatmap"]["-t"] = "--timeframe"
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

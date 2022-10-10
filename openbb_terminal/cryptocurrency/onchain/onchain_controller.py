@@ -107,7 +107,9 @@ class OnchainController(BaseController):
                 "-a": {},
             }
             choices["hr"] = {c: {} for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS}
-            choices["hr"]["--coin"] = {c: {} for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS}
+            choices["hr"]["--coin"] = {
+                c: {} for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS
+            }
             choices["hr"]["-c"] = "--coin"
             choices["hr"]["--interval"] = {c: {} for c in INTERVALS_HASHRATE}
             choices["hr"]["-i"] = "--interval"
@@ -129,9 +131,7 @@ class OnchainController(BaseController):
             }
             choices["ttcp"] = {c: {} for c in bitquery_model.DECENTRALIZED_EXCHANGES}
             choices["baas"]["-c"] = {c: {} for c in bitquery_model.POSSIBLE_CRYPTOS}
-            choices["baas"]["--coin"] = {
-                c: {} for c in bitquery_model.POSSIBLE_CRYPTOS
-            }
+            choices["baas"]["--coin"] = {c: {} for c in bitquery_model.POSSIBLE_CRYPTOS}
             choices["balance"] = {
                 "--sort": {c: None for c in ethplorer_model.BALANCE_FILTERS},
                 "-s": "--sort",
@@ -203,7 +203,7 @@ class OnchainController(BaseController):
             choices["ueat"] = {
                 "--sort": {c: None for c in bitquery_model.UEAT_FILTERS},
                 "-s": "--sort",
-                "--interval": {c: {}for c in bitquery_model.INTERVALS},
+                "--interval": {c: {} for c in bitquery_model.INTERVALS},
                 "-i": "--interval",
                 "--limit": {str(c): {} for c in range(1, 90)},
                 "-l": "--limit",

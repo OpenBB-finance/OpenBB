@@ -72,16 +72,12 @@ class DiscoveryController(BaseController):
                 "--limit": {str(c): {} for c in range(1, 100)},
                 "-l": "--limit",
             }
-            choices["cgtop"] = {
-                c: {} for c in pycoingecko_model.get_categories_keys()
-            }
+            choices["cgtop"] = {c: {} for c in pycoingecko_model.get_categories_keys()}
             choices["cgtop"]["--category"] = {
                 c: {} for c in pycoingecko_model.get_categories_keys()
             }
             choices["cgtop"]["-c"] = "--category"
-            choices["cgtop"]["--sort"] = {
-                c: {} for c in pycoingecko_view.COINS_COLUMNS
-            }
+            choices["cgtop"]["--sort"] = {c: {} for c in pycoingecko_view.COINS_COLUMNS}
             choices["cgtop"]["-s"] = "--sort"
             choices["cgtop"]["--limit"] = {str(c): {} for c in range(1, 100)}
             choices["cgtop"]["-l"] = "--limit"
@@ -90,7 +86,7 @@ class DiscoveryController(BaseController):
                 "-s": "--sort",
                 "--limit": {str(c): {} for c in range(1, 100)},
                 "-l": "--limit",
-                "--descend": {}
+                "--descend": {},
             }
             choices["cpsearch"] = {
                 "--query": None,

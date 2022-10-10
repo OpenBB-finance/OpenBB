@@ -26,7 +26,12 @@ from openbb_terminal.helper_classes import AllowArgsWithWhiteSpace
 from openbb_terminal.helper_funcs import choice_check_after_action
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console, translate, MenuText
+from openbb_terminal.rich_config import (
+    console,
+    translate,
+    MenuText,
+    get_ordered_list_sources,
+)
 from openbb_terminal.stocks import stocks_helper
 
 # pylint: disable=R1710,import-outside-toplevel,R0913,R1702,no-member
@@ -81,17 +86,73 @@ class StocksController(StockBaseController):
 
             choices: dict = {c: {} for c in self.controller_choices}
 
-            choices["search"]["--country"] = {c: None for c in self.country}
-            choices["search"]["-c"] = {c: None for c in self.country}
-            choices["search"]["--sector"] = {c: None for c in self.sector}
-            choices["search"]["-s"] = {c: None for c in self.sector}
-            choices["search"]["--industry"] = {c: None for c in self.industry}
-            choices["search"]["-i"] = {c: None for c in self.industry}
-            choices["search"]["--exchange"] = {
-                c: None for c in stocks_helper.market_coverage_suffix
+            one_to_hundred = {str(c): {} for c in range(1, 100)}
+            choices["load"] = {
+                "--ticker": None,
+                "-t": "--ticker",
+                "--start": None,
+                "-s": "--start",
+                "--end": None,
+                "-e": "--end",
+                "--interval": {c: {} for c in ["1", "5", "15", "30", "60"]},
+                "-i": "--interval",
+                "--prepost": {},
+                "-p": "--prepost",
+                "--file": None,
+                "-f": "--file",
+                "--monthly": {},
+                "-m": "--monthly",
+                "--weekly": {},
+                "-w": "--weekly",
+                "--iexrange": {c: {} for c in ["ytd", "1y", "2y", "5y", "6m"]},
+                "-r": "--iexrange",
+                "--source": {
+                    c: {} for c in get_ordered_list_sources(f"{self.PATH}load")
+                },
             }
-            choices["search"]["-e"] = {
-                c: None for c in stocks_helper.market_coverage_suffix
+            choices["quote"] = {
+                "--ticker": None,
+                "-t": "--ticker",
+            }
+            choices["search"] = {
+                "--query": None,
+                "-q": "--query",
+                "--country": {c: {} for c in self.country},
+                "-c": "--country",
+                "--sector": {c: {} for c in self.sector},
+                "-s": "--sector",
+                "--industry": {c: {} for c in self.industry},
+                "-i": "--industry",
+                "--exchange": {c: {} for c in stocks_helper.market_coverage_suffix},
+                "-e": "--exchange",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["candle"] = {
+                "--sort": {c: {} for c in stocks_helper.CANDLE_SORT},
+                "--plotly": {},
+                "-p": "--plotly",
+                "--descending": {},
+                "-d": "--descending",
+                "--raw": {},
+                "--trend": {},
+                "-t": "--trend",
+                "--ma": None,
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["news"] = {
+                "--date": None,
+                "-d": "--date",
+                "--oldest": {},
+                "-o": "--oldest",
+                "--sources": None,
+                "-s": "--sources",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+                "--source": {
+                    c: {} for c in get_ordered_list_sources(f"{self.PATH}news")
+                },
             }
 
             choices["support"] = self.SUPPORT_CHOICES
@@ -296,16 +357,7 @@ class StocksController(StockBaseController):
         )
         parser.add_argument(
             "--sort",
-            choices=[
-                "AdjClose",
-                "Open",
-                "Close",
-                "High",
-                "Low",
-                "Volume",
-                "Returns",
-                "LogRet",
-            ],
+            choices=stocks_helper.CANDLE_SORT,
             default="",
             type=str,
             dest="sort",

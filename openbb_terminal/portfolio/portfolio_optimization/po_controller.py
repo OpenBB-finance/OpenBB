@@ -7,7 +7,7 @@ import argparse
 import logging
 from typing import List, Dict
 
-from prompt_toolkit.completion import NestedCompleter
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import parent_classes
@@ -303,6 +303,10 @@ class PortfolioOptimizationController(BaseController):
             "hrp",
             "herc",
             "nco",
+            "equal",
+            "mktcap",
+            "dividend",
+            "property",
         ]
         self.file_types = ["xlsx", "ini"]
         self.DEFAULT_ALLOCATION_PATH = PORTFOLIO_DATA_DIRECTORY / "allocation"
@@ -352,39 +356,42 @@ class PortfolioOptimizationController(BaseController):
             self.choices["property"]["--property"] = {
                 c: None for c in yahoo_finance_model.yf_info_choices
             }
-            self.choices["file"]["-f"] = {c: None for c in self.DATA_OPTIMIZATION_FILES}
             self.choices["file"]["--file"] = {
-                c: None for c in self.DATA_OPTIMIZATION_FILES
+                c: {} for c in self.DATA_OPTIMIZATION_FILES
             }
-            self.choices["load"]["-f"] = {c: None for c in self.DATA_ALLOCATION_FILES}
-            self.choices["load"]["--file"] = {
-                c: None for c in self.DATA_ALLOCATION_FILES
-            }
-
+            self.choices["file"]["-f"] = "--file"
+            self.choices["load"] = {c: {} for c in self.DATA_ALLOCATION_FILES}
+            self.choices["load"]["--file"] = {c: {} for c in self.DATA_ALLOCATION_FILES}
+            self.choices["load"]["-f"] = "--file"
             for fn in models:
-                self.choices[fn]["-p"] = {c: None for c in self.PERIOD_CHOICES}
-                self.choices[fn]["--period"] = {c: None for c in self.PERIOD_CHOICES}
-                self.choices[fn]["--freq"] = {c: None for c in self.FREQ_CHOICES}
-                self.choices[fn]["-mt"] = {c: None for c in self.METHOD_CHOICES}
-                self.choices[fn]["--method"] = {c: None for c in self.METHOD_CHOICES}
+                self.choices[fn]["-p"] = {c: {} for c in self.PERIOD_CHOICES}
+                self.choices[fn]["--period"] = {c: {} for c in self.PERIOD_CHOICES}
+                self.choices[fn]["--freq"] = {c: {} for c in self.FREQ_CHOICES}
+                self.choices[fn]["-mt"] = {c: {} for c in self.METHOD_CHOICES}
+                self.choices[fn]["--method"] = {c: {} for c in self.METHOD_CHOICES}
+                self.choices[fn]["--name"] = None
+                self.choices[fn]["--start"] = None
+                self.choices[fn]["-s"] = "--start"
+                self.choices[fn]["--end"] = None
+                self.choices[fn]["-e"] = "--end"
 
             for fn in ["maxsharpe", "minrisk", "maxutil", "maxret", "nco", "ef"]:
-                self.choices[fn]["-rm"] = {c: None for c in self.MEAN_RISK_CHOICES}
+                self.choices[fn]["-rm"] = {c: {} for c in self.MEAN_RISK_CHOICES}
                 self.choices[fn]["--risk-measure"] = {
-                    c: None for c in self.MEAN_RISK_CHOICES
+                    c: {} for c in self.MEAN_RISK_CHOICES
                 }
 
             self.choices["riskparity"]["-rm"] = {
-                c: None for c in self.RISK_PARITY_CHOICES
+                c: {} for c in self.RISK_PARITY_CHOICES
             }
             self.choices["riskparity"]["--risk-measure"] = {
-                c: None for c in self.RISK_PARITY_CHOICES
+                c: {} for c in self.RISK_PARITY_CHOICES
             }
             self.choices["relriskparity"]["-ve"] = {
-                c: None for c in self.RISK_PARITY_CHOICES
+                c: {} for c in self.RISK_PARITY_CHOICES
             }
             self.choices["relriskparity"]["--version"] = {
-                c: None for c in self.RISK_PARITY_CHOICES
+                c: {} for c in self.RISK_PARITY_CHOICES
             }
 
             for fn in [
@@ -395,54 +402,54 @@ class PortfolioOptimizationController(BaseController):
                 "riskparity",
                 "relriskparity",
             ]:
-                self.choices[fn]["-m"] = {c: None for c in self.MEAN_CHOICES}
-                self.choices[fn]["--mean"] = {c: None for c in self.MEAN_CHOICES}
-                self.choices[fn]["-cv"] = {c: None for c in self.COVARIANCE_CHOICES}
+                self.choices[fn]["-m"] = {c: {} for c in self.MEAN_CHOICES}
+                self.choices[fn]["--mean"] = {c: {} for c in self.MEAN_CHOICES}
+                self.choices[fn]["-cv"] = {c: {} for c in self.COVARIANCE_CHOICES}
                 self.choices[fn]["--covariance"] = {
-                    c: None for c in self.COVARIANCE_CHOICES
+                    c: {} for c in self.COVARIANCE_CHOICES
                 }
 
             for fn in ["maxdiv", "maxdecorr"]:
-                self.choices[fn]["-cv"] = {c: None for c in self.COVARIANCE_CHOICES}
+                self.choices[fn]["-cv"] = {c: {} for c in self.COVARIANCE_CHOICES}
                 self.choices[fn]["--covariance"] = {
-                    c: None for c in self.COVARIANCE_CHOICES
+                    c: {} for c in self.COVARIANCE_CHOICES
                 }
 
             for fn in ["hrp", "herc"]:
-                self.choices[fn]["-rm"] = {c: None for c in self.HCP_CHOICES}
-                self.choices[fn]["--risk-measure"] = {c: None for c in self.HCP_CHOICES}
+                self.choices[fn]["-rm"] = {c: {} for c in self.HCP_CHOICES}
+                self.choices[fn]["--risk-measure"] = {c: {} for c in self.HCP_CHOICES}
 
             for fn in ["hrp", "herc", "nco"]:
-                self.choices[fn]["-cd"] = {c: None for c in self.CODEPENDENCE_CHOICES}
+                self.choices[fn]["-cd"] = {c: {} for c in self.CODEPENDENCE_CHOICES}
                 self.choices[fn]["--codependence"] = {
-                    c: None for c in self.CODEPENDENCE_CHOICES
+                    c: {} for c in self.CODEPENDENCE_CHOICES
                 }
-                self.choices[fn]["-cv"] = {c: None for c in self.COVARIANCE_CHOICES}
+                self.choices[fn]["-cv"] = {c: {} for c in self.COVARIANCE_CHOICES}
                 self.choices[fn]["--covariance"] = {
-                    c: None for c in self.COVARIANCE_CHOICES
+                    c: {} for c in self.COVARIANCE_CHOICES
                 }
-                self.choices[fn]["-lk"] = {c: None for c in self.LINKAGE_CHOICES}
-                self.choices[fn]["--linkage"] = {c: None for c in self.LINKAGE_CHOICES}
-                self.choices[fn]["-bi"] = {c: None for c in self.BINS_CHOICES}
-                self.choices[fn]["--bins-info"] = {c: None for c in self.BINS_CHOICES}
+                self.choices[fn]["-lk"] = {c: {} for c in self.LINKAGE_CHOICES}
+                self.choices[fn]["--linkage"] = {c: {} for c in self.LINKAGE_CHOICES}
+                self.choices[fn]["-bi"] = {c: {} for c in self.BINS_CHOICES}
+                self.choices[fn]["--bins-info"] = {c: {} for c in self.BINS_CHOICES}
 
             self.choices["blacklitterman"]["-o"] = {
-                c: None for c in self.OBJECTIVE_CHOICES
+                c: {} for c in self.OBJECTIVE_CHOICES
             }
             self.choices["blacklitterman"]["--objective"] = {
-                c: None for c in self.OBJECTIVE_CHOICES
+                c: {} for c in self.OBJECTIVE_CHOICES
             }
-            self.choices["nco"]["-o"] = {c: None for c in self.NCO_OBJECTIVE_CHOICES}
+            self.choices["nco"]["-o"] = {c: {} for c in self.NCO_OBJECTIVE_CHOICES}
             self.choices["nco"]["--objective"] = {
-                c: None for c in self.NCO_OBJECTIVE_CHOICES
+                c: {} for c in self.NCO_OBJECTIVE_CHOICES
             }
             self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def update_runtime_choices(self):
         if session and obbff.USE_PROMPT_TOOLKIT:
             if self.portfolios:
-                self.choices["show"] = {c: None for c in list(self.portfolios.keys())}
-                self.choices["plot"] = {c: None for c in list(self.portfolios.keys())}
+                self.choices["show"] = {c: {} for c in list(self.portfolios.keys())}
+                self.choices["plot"] = {c: {} for c in list(self.portfolios.keys())}
 
                 self.choices = {**self.choices, **self.SUPPORT_CHOICES}
                 self.completer = NestedCompleter.from_nested_dict(self.choices)

@@ -77,7 +77,10 @@ class DefiController(BaseController):
             choices["dpi"] = {
                 "--limit": {str(c): {} for c in range(1, 100)},
                 "-l": "--limit",
-                "--sort": {c: {} for c in ["Rank", "Name", "Chain", "Category", "TVL", "Change_1D"]},
+                "--sort": {
+                    c: {}
+                    for c in ["Rank", "Name", "Chain", "Category", "TVL", "Change_1D"]
+                },
                 "-s": "--sort",
                 "--ascend": {},
             }
@@ -99,7 +102,7 @@ class DefiController(BaseController):
                 "-s": "--sort",
                 "--skip": {str(c): {} for c in range(1, 1000)},
                 "--limit": {str(c): {} for c in range(1, 1000)},
-                "--descend": {}
+                "--descend": {},
             }
             choices["pairs"] = {
                 "--sort": {c: {} for c in graph_model.PAIRS_FILTERS},

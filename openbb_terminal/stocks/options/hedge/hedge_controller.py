@@ -85,9 +85,15 @@ class HedgeController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: None for c in self.controller_choices}
             choices["pick"] = {c: None for c in self.PICK_CHOICES}
+            choices["pick"]["--amount"] = None
+            choices["pick"]["-a"] = "--amount"
             choices["add"] = {
                 str(c): {} for c in list(range(max(len(self.puts), len(self.calls))))
             }
+            choices["add"]["--put"] = {}
+            choices["add"]["-p"] = "--put"
+            choices["add"]["--short"] = {}
+            choices["add"]["-s"] = "--short"
             # This menu contains dynamic choices that may change during runtime
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -96,6 +102,8 @@ class HedgeController(BaseController):
         """Update runtime choices"""
         if self.options and session and obbff.USE_PROMPT_TOOLKIT:
             self.choices["rmv"] = {c: None for c in ["Option A", "Option B"]}
+            self.choices["rmv"]["--all"] = {}
+            self.choices["rmv"]["-a"] = "--all"
             self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
@@ -391,7 +399,7 @@ class HedgeController(BaseController):
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="long",
+            prog="pick",
             description="This function plots option hedge diagrams",
         )
         parser.add_argument(

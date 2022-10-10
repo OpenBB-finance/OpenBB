@@ -71,6 +71,7 @@ class ComparisonAnalysisController(BaseController):
         "technical",
         "tsne",
     ]
+    choices_ohlca = ["o", "h", "l", "c", "a"]
     CHOICES_MENUS: List = list()
     PATH = "/stocks/ca/"
 
@@ -90,6 +91,79 @@ class ComparisonAnalysisController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+
+            one_to_hundred = {str(c): {} for c in range(1, 100)}
+            one_to_three_hundred = {str(c): {} for c in range(1, 300)}
+            choices["load"] = {
+                "--ticker": None,
+                "-t": "--ticker",
+            }
+            choices["tsne"] = {
+                "--learnrate": one_to_three_hundred,
+                "-r": "--learnrate",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["getpoly"] = {
+                "--us_only": {},
+                "-u": "--us_only",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            limit = {
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["getfinnhub"] = limit
+            choices["getfinviz"] = {
+                "--nocountry": {},
+                "-n": "--nocountry",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            complete_similar = {
+                "--similar": None,
+                "-s": "--similar",
+            }
+            choices["set"] = complete_similar
+            choices["add"] = complete_similar
+            choices["rmv"] = complete_similar
+            choices["historical"] = {
+                "--type": {c: {} for c in self.choices_ohlca},
+                "-t": "--type",
+                "--normalize": {},
+                "-n": "--normalize",
+                "--start": None,
+                "-s": "--start",
+            }
+            choices["hcorr"] = {
+                "--type": {c: {} for c in self.choices_ohlca},
+                "-t": "--type",
+                "--start": None,
+                "-s": "--start",
+                "--display-full-matrix": {},
+                "--raw": {},
+            }
+            choices["volume"] = {
+                "--start": None,
+                "-s": "--start",
+            }
+            statements = {
+                "--timeframe": None,
+                "-t": "--timeframe",
+                "--quarter": {},
+                "-q": "--quarter",
+            }
+            choices["income"] = statements
+            choices["balance"] = statements
+            choices["cashflow"] = statements
+            raw = {
+                "--raw": {},
+                "-r": "--raw",
+            }
+            choices["sentiment"] = raw
+            choices["scorr"] = raw
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -506,7 +580,7 @@ class ComparisonAnalysisController(BaseController):
             action="store",
             dest="type_candle",
             type=str,
-            choices=["o", "h", "l", "c", "a"],
+            choices=self.choices_ohlca,
             default="a",  # in case it's adjusted close
             help="Candle data to use: o-open, h-high, l-low, c-close, a-adjusted close.",
         )

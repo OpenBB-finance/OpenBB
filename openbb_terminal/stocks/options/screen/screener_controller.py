@@ -43,8 +43,15 @@ class ScreenerController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["view"] = {c: None for c in self.preset_choices}
-            choices["set"] = {c: None for c in self.preset_choices}
+
+            one_to_hundred = {str(c): {} for c in range(1, 100)}
+            presets = {c: {} for c in self.preset_choices}
+            choices["view"] = presets
+            choices["set"] = presets
+            choices["scr"] = presets
+            choices["scr"]["--limit"] = one_to_hundred
+            choices["scr"]["-l"] = "--limit"
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

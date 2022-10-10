@@ -5,6 +5,7 @@ import argparse
 import logging
 from typing import List
 
+import numpy as np
 import pandas as pd
 
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -47,6 +48,31 @@ class PricingController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+
+            zero_to_one_detailed = {str(c): {} for c in np.arange(0.0, 1.0, 0.005)}
+            choices["add"] = {
+                "--price": None,
+                "-p": "--price",
+                "--chance": zero_to_one_detailed,
+                "-c": "--chance",
+            }
+            choices["rmv"] = {
+                "--price": None,
+                "-p": "--price",
+                "--all": {},
+                "-a": "--all",
+            }
+            choices["rnval"] = {
+                "--put": {},
+                "-p": "--put",
+                "--min": None,
+                "-m": "--min",
+                "--max": None,
+                "-M": "--max",
+                "--risk": zero_to_one_detailed,
+                "-r": "--risk",
+            }
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

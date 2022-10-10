@@ -74,11 +74,15 @@ class TradingHoursController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+
             choices["exchange"] = {c: None for c in self.all_exchange_short_names}
-            choices["exchange"]["-n"] = {c: None for c in self.all_exchange_short_names}
             choices["exchange"]["--name"] = {
-                c: None for c in self.all_exchange_short_names
+                c: {} for c in self.all_exchange_short_names
             }
+            choices["exchange"]["-n"] = "--name"
+            choices["symbol"]["--name"] = None
+            choices["symbol"]["-n"] = "--name"
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

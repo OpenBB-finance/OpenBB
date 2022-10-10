@@ -36,30 +36,30 @@ class OSSController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["rossidx"] = {"--sortby": {c: {} for c in runa_model.SORT_COLUMNS},
-                                  "-s": "--sortby",
-                                  "--descend": {},
-                                  "--chart": {},
-                                  "-c": "--chart",
-                                  "--growth": {},
-                                  "-g": "--growth",
-                                  "--chart-type": {c: {} for c in ["stars", "forks"]},
-                                  "-t": "--chart-type",
-                                  "--limit": {str(c): {} for c in range(1, 50)},
-                                  "-l": "--limit"}
-            choices["tr"] = {"--sortby": {c: {} for c in ["stars", "forks"]},
-                             "-s": "--sortby",
-                             "--categories": None,
-                             "-c": "--categories",
-                             "--raw": {},
-                             "--limit": {str(c): {} for c in range(1, 100)},
-                             "-l": "--limit"}
-            choices["rs"] = {"--raw": {},
-                             "--repo": None,
-                             "-r": "--repo"}
-            choices["sh"] = {"--raw": {},
-                             "--repo": None,
-                             "-r": "--repo"}
+            choices["rossidx"] = {
+                "--sortby": {c: {} for c in runa_model.SORT_COLUMNS},
+                "-s": "--sortby",
+                "--descend": {},
+                "--chart": {},
+                "-c": "--chart",
+                "--growth": {},
+                "-g": "--growth",
+                "--chart-type": {c: {} for c in ["stars", "forks"]},
+                "-t": "--chart-type",
+                "--limit": {str(c): {} for c in range(1, 50)},
+                "-l": "--limit",
+            }
+            choices["tr"] = {
+                "--sortby": {c: {} for c in ["stars", "forks"]},
+                "-s": "--sortby",
+                "--categories": None,
+                "-c": "--categories",
+                "--raw": {},
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+            }
+            choices["rs"] = {"--raw": {}, "--repo": None, "-r": "--repo"}
+            choices["sh"] = {"--raw": {}, "--repo": None, "-r": "--repo"}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def parse_input(self, an_input: str) -> List:

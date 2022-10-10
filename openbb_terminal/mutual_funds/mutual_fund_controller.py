@@ -9,7 +9,8 @@ from typing import List
 
 import investpy
 import pandas as pd
-from prompt_toolkit.completion import NestedCompleter
+
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
@@ -79,11 +80,38 @@ class FundController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["country"] = {c: None for c in self.fund_countries}
-            choices["search"]["-b"] = {c: None for c in self.search_by_choices}
-            choices["search"]["--by"] = {c: None for c in self.search_by_choices}
-            choices["search"]["-s"] = {c: None for c in self.search_cols}
-            choices["search"]["--sortby"] = {c: None for c in self.search_cols}
+
+            one_to_hundred = {str(c): {} for c in range(1, 100)}
+            choices["country"] = {c: {} for c in self.fund_countries}
+            choices["overview"] = {
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["search"] = {
+                "--by": {c: {} for c in self.search_by_choices},
+                "-b": "--by",
+                "--fund": None,
+                "--sortby": {c: None for c in self.search_cols},
+                "-s": "--sortby",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+                "--ascend": {},
+                "-a": "--ascend",
+            }
+            choices["load"] = {
+                "--fund": None,
+                "--name": {},
+                "-n": "--name",
+                "--start": None,
+                "-s": "--start",
+                "--end": None,
+                "-e": "--end",
+            }
+            choices["sector"] = {
+                "--min": one_to_hundred,
+                "-m": "--min",
+            }
+            choices["al_swe"] = {"--focus": {c: {} for c in self.focus_choices}}
 
             choices["support"] = self.SUPPORT_CHOICES
             choices["about"] = self.ABOUT_CHOICES
