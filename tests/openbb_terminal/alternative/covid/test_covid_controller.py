@@ -222,7 +222,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         (
             "call_slopes",
             [],
-            "covid_view.display_country_slopes",
+            "covid_view.display_case_slopes",
             [],
             dict(),
         ),

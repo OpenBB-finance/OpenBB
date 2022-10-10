@@ -310,8 +310,8 @@ def load(
     exchange: str = "binance",
     vs_currency: str = "usdt",
     end_date: datetime = datetime.now(),
-    source: str = "ccxt",
-):
+    source: str = "CCXT",
+) -> pd.DataFrame:
     """Load crypto currency to perform analysis on CoinGecko is used as source for price and
     YahooFinance for volume.
 
@@ -330,7 +330,7 @@ def load(
         Dataframe consisting of price and volume data
     """
     df = pd.DataFrame()
-    if source == "ccxt":
+    if source == "CCXT":
         pair = f"{symbol.upper()}/{vs_currency.upper()}"
         try:
             df = fetch_ccxt_ohlc(
@@ -410,6 +410,8 @@ def load(
             console.print(f"\nPair {pair} not found in Yahoo Finance\n")
             return pd.DataFrame()
         df.index.name = "date"
+    else:
+        console.print("[red]Invalid source sent[/red]\n")
     return df
 
 
@@ -1272,11 +1274,12 @@ def display_all_coins(
 
 def plot_chart(
     prices_df: pd.DataFrame,
-    symbol: str = "",
-    currency: str = "",
+    to_symbol: str = "",
+    from_symbol: str = "",
     source: str = "",
     exchange: str = "",
-    interval: str = "",  # pylint: disable=unused-argument
+    interval: str = "",
+    external_axes: list[plt.Axes] | None = None,
 ) -> None:
     """Load data for Technical Analysis
 
@@ -1284,11 +1287,12 @@ def plot_chart(
     ----------
     prices_df: pd.DataFrame
         Cryptocurrency
-    symbol: str
+    to_symbol: str
         Coin (only used for chart title), by default ""
-    currency: str
+    from_symbol: str
         Currency (only used for chart title), by default ""
     """
+    del interval
 
     if prices_df.empty:
         console.print("There is not data to plot chart\n")
@@ -1296,7 +1300,8 @@ def plot_chart(
 
     exchange_str = f"/{exchange}" if source == "ccxt" else ""
     title = (
-        f"{source}{exchange_str} - {symbol.upper()}/{currency.upper()} from {prices_df.index[0].strftime('%Y/%m/%d')} "
+        f"{source}{exchange_str} - {to_symbol.upper()}/{from_symbol.upper()}"
+        f" from {prices_df.index[0].strftime('%Y/%m/%d')} "
         f"to {prices_df.index[-1].strftime('%Y/%m/%d')}"
     )
 
@@ -1309,6 +1314,7 @@ def plot_chart(
         title=title,
         volume=True,
         ylabel="Volume [1M]" if volume_mean > 1_000_000 else "Volume",
+        external_axes=external_axes,
     )
 
     console.print("")

@@ -8,7 +8,7 @@ import os
 from typing import List
 from prompt_toolkit.completion import NestedCompleter
 
-from openbb_terminal.cryptocurrency import cryptocurrency_helpers
+from openbb_terminal.cryptocurrency import cryptocurrency_helpers, pyth_model, pyth_view
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import (
     FIND_KEYS,
@@ -27,6 +27,7 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
+    export_data,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import CryptoBaseController
@@ -56,6 +57,7 @@ class CryptoController(CryptoBaseController):
         "find",
         "prt",
         "resources",
+        "price",
     ]
     CHOICES_MENUS = [
         "ta",
@@ -66,8 +68,8 @@ class CryptoController(CryptoBaseController):
         "defi",
         "tools",
         "nft",
-        "pred",
         "qa",
+        "forecast",
     ]
 
     DD_VIEWS_MAPPING = {
@@ -94,6 +96,7 @@ class CryptoController(CryptoBaseController):
             }
             choices["load"]["--vs"] = {c: {} for c in ["usd", "eur"]}
             choices["find"]["-k"] = {c: {} for c in FIND_KEYS}
+            choices["price"] = {c: {} for c in pyth_model.ASSETS.keys()}
             choices["headlines"] = {c: {} for c in finbrain_crypto_view.COINS}
             # choices["prt"]["--vs"] = {c: {} for c in coingecko_coin_ids} # list is huge. makes typing buggy
 
@@ -107,6 +110,7 @@ class CryptoController(CryptoBaseController):
         mt = MenuText("crypto/")
         mt.add_cmd("load")
         mt.add_cmd("find")
+        mt.add_cmd("price", "Pyth")
         mt.add_raw("\n")
         mt.add_param(
             "_symbol", f"{self.symbol.upper()}/{self.vs.upper()}" if self.symbol else ""
@@ -130,8 +134,8 @@ class CryptoController(CryptoBaseController):
         mt.add_menu("nft")
         mt.add_menu("dd", self.symbol)
         mt.add_menu("ta", self.symbol)
-        mt.add_menu("pred", self.symbol)
         mt.add_menu("qa", self.symbol)
+        mt.add_menu("forecast", self.symbol)
         console.print(text=mt.menu_text, menu="Cryptocurrency")
 
     @log_start_end(log=logger)
@@ -200,6 +204,38 @@ class CryptoController(CryptoBaseController):
                     )
 
     @log_start_end(log=logger)
+    def call_price(self, other_args):
+        """Process price command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="price",
+            description="""Display price and interval of confidence in real-time. [Source: Pyth]""",
+        )
+        parser.add_argument(
+            "-s",
+            "--symbol",
+            required="-h" not in other_args,
+            type=str,
+            dest="symbol",
+            help="Symbol of coin to load data for, ~100 symbols are available",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-s")
+
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+
+        if ns_parser:
+
+            if ns_parser.symbol in pyth_model.ASSETS.keys():
+                console.print(
+                    "[param]If it takes too long, you can use 'Ctrl + C' to cancel.\n[/param]"
+                )
+                pyth_view.display_price(ns_parser.symbol)
+            else:
+                console.print("[red]The symbol selected does not exist.[/red]\n")
+
+    @log_start_end(log=logger)
     def call_candle(self, other_args):
         """Process candle command"""
 
@@ -214,17 +250,22 @@ class CryptoController(CryptoBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-
         if ns_parser:
             if not self.symbol:
                 console.print("No coin loaded. First use `load {symbol}`\n")
                 return
+            export_data(
+                ns_parser.export,
+                os.path.join(os.path.dirname(os.path.abspath(__file__))),
+                f"{self.symbol}",
+                self.current_df,
+            )
 
             plot_chart(
                 exchange=self.exchange,
                 source=self.source,
-                symbol=self.symbol,
-                currency=self.current_currency,
+                to_symbol=self.symbol,
+                from_symbol=self.current_currency,
                 prices_df=self.current_df,
                 interval=self.current_interval,
             )
@@ -333,60 +374,18 @@ class CryptoController(CryptoBaseController):
 
     @log_start_end(log=logger)
     def call_qa(self, _):
-        """Process pred command"""
+        """Process qa command"""
         if self.symbol:
             from openbb_terminal.cryptocurrency.quantitative_analysis import (
                 qa_controller,
             )
 
-            if self.current_interval != "1440":
-                console.print("Only interval `1day` is possible for now.\n")
-            else:
-                self.queue = self.load_class(
-                    qa_controller.QaController,
-                    self.symbol,
-                    self.current_df,
-                    self.queue,
-                )
-
-    @log_start_end(log=logger)
-    def call_pred(self, _):
-        """Process pred command"""
-        # IMPORTANT: 8/11/22 prediction was discontinued on the installer packages
-        # because forecasting in coming out soon.
-        # This if statement disallows installer package users from using 'pred'
-        # even if they turn on the OPENBB_ENABLE_PREDICT feature flag to true
-        # however it does not prevent users who clone the repo from using it
-        # if they have ENABLE_PREDICT set to true.
-        if obbff.PACKAGED_APPLICATION or not obbff.ENABLE_PREDICT:
-            console.print(
-                "Predict is disabled. Forecasting coming soon!",
-                "\n",
+            self.queue = self.load_class(
+                qa_controller.QaController,
+                self.symbol,
+                self.current_df,
+                self.queue,
             )
-        else:
-            if self.symbol:
-                try:
-                    from openbb_terminal.cryptocurrency.prediction_techniques import (
-                        pred_controller,
-                    )
-
-                    if self.current_interval != "1440":
-                        console.print("Only interval `1day` is possible for now.\n")
-                    else:
-                        self.queue = self.load_class(
-                            pred_controller.PredictionTechniquesController,
-                            self.symbol,
-                            self.current_df,
-                            self.queue,
-                        )
-                except ImportError:
-                    logger.exception("Tensorflow not available")
-                    console.print("[red]Run pip install tensorflow to continue[/red]\n")
-
-            else:
-                console.print(
-                    "No coin selected. Use 'load' to load the coin you want to look at.\n"
-                )
 
     @log_start_end(log=logger)
     def call_onchain(self, _):
@@ -489,3 +488,16 @@ class CryptoController(CryptoBaseController):
                 show_all=bool("ALL" in other_args),
                 export=ns_parser.export,
             )
+
+    @log_start_end(log=logger)
+    def call_forecast(self, _):
+        """Process forecast command"""
+        from openbb_terminal.forecast import forecast_controller
+
+        console.print(self.symbol)
+        self.queue = self.load_class(
+            forecast_controller.ForecastController,
+            self.symbol,
+            self.current_df,
+            self.queue,
+        )

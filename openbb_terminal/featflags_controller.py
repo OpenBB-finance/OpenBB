@@ -26,7 +26,6 @@ class FeatureFlagsController(BaseController):
     """Feature Flags Controller class"""
 
     CHOICES_COMMANDS: List[str] = [
-        "logcollection",
         "retryload",
         "tab",
         "cls",
@@ -35,7 +34,6 @@ class FeatureFlagsController(BaseController):
         "watermark",
         "cmdloc",
         "promptkit",
-        "predict",
         "thoughts",
         "reporthtml",
         "exithelp",
@@ -59,13 +57,11 @@ class FeatureFlagsController(BaseController):
         mt = MenuText("featflags/")
         mt.add_info("_info_")
         mt.add_raw("\n")
-        mt.add_setting("logcollection", obbff.LOG_COLLECTION)
         mt.add_setting("retryload", obbff.RETRY_WITH_LOAD)
         mt.add_setting("tab", obbff.USE_TABULATE_DF)
         mt.add_setting("cls", obbff.USE_CLEAR_AFTER_CMD)
         mt.add_setting("color", obbff.USE_COLOR)
         mt.add_setting("promptkit", obbff.USE_PROMPT_TOOLKIT)
-        mt.add_setting("predict", obbff.ENABLE_PREDICT)
         mt.add_setting("thoughts", obbff.ENABLE_THOUGHTS_DAY)
         mt.add_setting("reporthtml", obbff.OPEN_REPORT_AS_HTML)
         mt.add_setting("exithelp", obbff.ENABLE_EXIT_AUTO_HELP)
@@ -78,13 +74,6 @@ class FeatureFlagsController(BaseController):
         mt.add_setting("tbhint", obbff.TOOLBAR_HINT)
 
         console.print(text=mt.menu_text, menu="Feature Flags")
-
-    @log_start_end(log=logger)
-    def call_logcollection(self, _):
-        """Process logcollection command"""
-        obbff.LOG_COLLECTION = not obbff.LOG_COLLECTION
-        set_key(obbff.USER_ENV_FILE, "OPENBB_LOG_COLLECTION", str(obbff.LOG_COLLECTION))
-        console.print("")
 
     def call_retryload(self, _):
         """Process retryload command"""
@@ -130,13 +119,6 @@ class FeatureFlagsController(BaseController):
             "OPENBB_USE_PROMPT_TOOLKIT",
             str(obbff.USE_PROMPT_TOOLKIT),
         )
-        console.print("")
-
-    @log_start_end(log=logger)
-    def call_predict(self, _):
-        """Process predict command"""
-        obbff.ENABLE_PREDICT = not obbff.ENABLE_PREDICT
-        set_key(obbff.USER_ENV_FILE, "OPENBB_ENABLE_PREDICT", str(obbff.ENABLE_PREDICT))
         console.print("")
 
     @log_start_end(log=logger)

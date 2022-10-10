@@ -16,19 +16,21 @@ from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
+import pandas as pd
 
-from openbb_terminal.common import feedparser_view
-from openbb_terminal.core.config.make_paths import create_paths
+from openbb_terminal import feature_flags as obbff
+
 from openbb_terminal.core.config.paths import (
-    REPO_DIRECTORY,
+    REPOSITORY_DIRECTORY,
     USER_ENV_FILE,
-    ENV_FILE_REPOSITORY,
+    REPOSITORY_ENV_FILE,
     HOME_DIRECTORY,
+    ROUTINES_DIRECTORY,
 )
 from openbb_terminal.core.log.generation.path_tracking_file_handler import (
     PathTrackingFileHandler,
 )
-from openbb_terminal import feature_flags as obbff
+
 from openbb_terminal.helper_funcs import (
     check_positive,
     get_flair,
@@ -50,13 +52,13 @@ from openbb_terminal.terminal_helper import (
     welcome_message,
 )
 from openbb_terminal.helper_funcs import parse_and_split_input
+from openbb_terminal.common import feedparser_view
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel,too-many-branches,no-member,C0302
 
 logger = logging.getLogger(__name__)
 
 env_file = str(USER_ENV_FILE)
-create_paths()
 
 
 class TerminalController(BaseController):
@@ -85,16 +87,10 @@ class TerminalController(BaseController):
         "alternative",
         "econometrics",
         "sources",
+        "forecast",
     ]
 
     PATH = "/"
-    ROUTINE_CHOICES = {
-        file: None
-        for file in os.listdir(
-            os.path.join(os.path.abspath(os.path.dirname(__file__)), "routines")
-        )
-        if file.endswith(".openbb")
-    }
 
     GUESS_TOTAL_TRIES = 0
     GUESS_NUMBER_TRIES_LEFT = 0
@@ -105,13 +101,6 @@ class TerminalController(BaseController):
         """Constructor"""
         super().__init__(jobs_cmds)
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["exe"] = self.ROUTINE_CHOICES
-
-            self.completer = NestedCompleter.from_nested_dict(choices)
-
         self.queue: List[str] = list()
 
         if jobs_cmds:
@@ -120,6 +109,28 @@ class TerminalController(BaseController):
             )
 
         self.update_success = False
+
+        self.update_runtime_choices()
+
+    def update_runtime_choices(self):
+        """Update runtime choices"""
+        self.ROUTINE_FILES = {
+            filepath.name: filepath
+            for filepath in (REPOSITORY_DIRECTORY / "routines").rglob("*.openbb")
+        }
+        self.ROUTINE_FILES.update(
+            {
+                filepath.name: filepath
+                for filepath in ROUTINES_DIRECTORY.rglob("*.openbb")
+            }
+        )
+        self.ROUTINE_CHOICES = {filename: None for filename in self.ROUTINE_FILES}
+        if session and obbff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
+            choices["support"] = self.SUPPORT_CHOICES
+            choices["exe"] = self.ROUTINE_CHOICES
+
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
@@ -130,6 +141,8 @@ class TerminalController(BaseController):
         mt.add_cmd("survey")
         mt.add_cmd("update")
         mt.add_cmd("wiki")
+        mt.add_cmd("record")
+        mt.add_cmd("stop")
         mt.add_raw("\n")
         mt.add_info("_configure_")
         mt.add_menu("keys")
@@ -151,11 +164,13 @@ class TerminalController(BaseController):
         mt.add_raw("\n")
         mt.add_info("_others_")
         mt.add_menu("econometrics")
+        mt.add_menu("forecast")
         mt.add_menu("portfolio")
         mt.add_menu("dashboards")
         mt.add_menu("reports")
         mt.add_raw("\n")
         console.print(text=mt.menu_text, menu="Home")
+        self.update_runtime_choices()
 
     def call_news(self, other_args: List[str]) -> None:
         """Process news command"""
@@ -168,17 +183,17 @@ class TerminalController(BaseController):
             "-t",
             "--term",
             dest="term",
-            default="",
+            default=[""],
             nargs="+",
             help="search for a term on the news",
         )
         parse.add_argument(
-            "-a",
-            "--article",
-            dest="article",
-            default="bloomberg",
+            "-s",
+            "--sources",
+            dest="sources",
+            default=["bloomberg.com"],
             nargs="+",
-            help="articles from where to get news from",
+            help="sources from where to get news from",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
@@ -187,10 +202,10 @@ class TerminalController(BaseController):
         )
         if news_parser:
             feedparser_view.display_news(
-                " ".join(news_parser.term),
-                " ".join(news_parser.article),
-                news_parser.limit,
-                news_parser.export,
+                term=" ".join(news_parser.term),
+                sources=" ".join(news_parser.sources),
+                limit=news_parser.limit,
+                export=news_parser.export,
             )
 
     def call_guess(self, other_args: List[str]) -> None:
@@ -377,17 +392,11 @@ class TerminalController(BaseController):
 
     def call_reports(self, _):
         """Process reports command"""
-        if not obbff.PACKAGED_APPLICATION:
-            from openbb_terminal.reports.reports_controller import (
-                ReportController,
-            )
+        from openbb_terminal.reports.reports_controller import (
+            ReportController,
+        )
 
-            self.queue = self.load_class(ReportController, self.queue)
-        else:
-            console.print("This feature is coming soon.")
-            console.print(
-                "Use the source code and an Anaconda environment if you are familiar with Python."
-            )
+        self.queue = self.load_class(ReportController, self.queue)
 
     def call_dashboards(self, _):
         """Process dashboards command"""
@@ -418,6 +427,14 @@ class TerminalController(BaseController):
         )
 
         self.queue = EconometricsController(self.queue).menu()
+
+    def call_forecast(self, _):
+        """Process forecast command"""
+        from openbb_terminal.forecast.forecast_controller import (
+            ForecastController,
+        )
+
+        self.queue = self.load_class(ForecastController, "", pd.DataFrame(), self.queue)
 
     def call_portfolio(self, _):
         """Process portfolio command"""
@@ -457,7 +474,7 @@ class TerminalController(BaseController):
             if path_dir in ("-i", "--input"):
                 args = [path_routine[1:]] + other_args_processed[idx:]
                 break
-            if path_dir not in ("-f", "--file"):
+            if path_dir not in ("--file"):
                 path_routine += f"/{path_dir}"
 
         if not args:
@@ -470,7 +487,6 @@ class TerminalController(BaseController):
             description="Execute automated routine script.",
         )
         parser_exe.add_argument(
-            "-f",
             "--file",
             help="The path or .openbb file to run.",
             dest="path",
@@ -485,16 +501,12 @@ class TerminalController(BaseController):
             type=lambda s: [str(item) for item in s.split(",")],
         )
         if args and "-" not in args[0][0]:
-            args.insert(0, "-f")
+            args.insert(0, "--file")
         ns_parser_exe = parse_simple_args(parser_exe, args)
         if ns_parser_exe:
             if ns_parser_exe.path:
                 if ns_parser_exe.path in self.ROUTINE_CHOICES:
-                    path = os.path.join(
-                        os.path.abspath(os.path.dirname(__file__)),
-                        "routines",
-                        ns_parser_exe.path,
-                    )
+                    path = self.ROUTINE_FILES[ns_parser_exe.path]
                 else:
                     path = ns_parser_exe.path
 
@@ -632,7 +644,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
         check_for_updates()
 
     dotenv.load_dotenv(USER_ENV_FILE)
-    dotenv.load_dotenv(ENV_FILE_REPOSITORY, override=True)
+    dotenv.load_dotenv(REPOSITORY_ENV_FILE, override=True)
 
     while ret_code:
         if obbff.ENABLE_QUICK_EXIT:
@@ -749,7 +761,6 @@ def insert_start_slash(cmds: List[str]) -> List[str]:
 
 def do_rollover():
     """RollOver the log file."""
-
     for handler in logging.getLogger().handlers:
         if isinstance(handler, PathTrackingFileHandler):
             handler.doRollover()
@@ -762,7 +773,6 @@ def log_settings() -> None:
     settings_dict["cls"] = "True" if obbff.USE_CLEAR_AFTER_CMD else "False"
     settings_dict["color"] = "True" if obbff.USE_COLOR else "False"
     settings_dict["promptkit"] = "True" if obbff.USE_PROMPT_TOOLKIT else "False"
-    settings_dict["predict"] = "True" if obbff.ENABLE_PREDICT else "False"
     settings_dict["thoughts"] = "True" if obbff.ENABLE_THOUGHTS_DAY else "False"
     settings_dict["reporthtml"] = "True" if obbff.OPEN_REPORT_AS_HTML else "False"
     settings_dict["exithelp"] = "True" if obbff.ENABLE_EXIT_AUTO_HELP else "False"
@@ -799,7 +809,8 @@ def run_scripts(
     verbose : bool
         Whether to run tests in verbose mode
     routines_args : List[str]
-        One or multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD
+        One or multiple inputs to be replaced in the routine and separated by commas.
+        E.g. GME,AMC,BTC-USD
     """
     if os.path.isfile(path):
         with open(path) as fp:
@@ -874,7 +885,8 @@ def main(
     verbose : bool
         Whether to show output from tests
     routines_args : List[str]
-        One or multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD
+        One or multiple inputs to be replaced in the routine and separated by commas.
+        E.g. GME,AMC,BTC-USD
     """
 
     if test:
@@ -907,7 +919,7 @@ def main(
         console.print("[green]OpenBB Terminal Integrated Tests:\n[/green]")
         for file in test_files:
             file = file.replace("//", "/")
-            repo_path_position = file.rfind(REPO_DIRECTORY.name)
+            repo_path_position = file.rfind(REPOSITORY_DIRECTORY.name)
             if repo_path_position >= 0:
                 file_name = file[repo_path_position:].replace("\\", "/")
             else:
@@ -925,7 +937,7 @@ def main(
         if fails:
             console.print("\n[red]Failures:[/red]\n")
             for key, value in fails.items():
-                repo_path_position = key.rfind(REPO_DIRECTORY.name)
+                repo_path_position = key.rfind(REPOSITORY_DIRECTORY.name)
                 if repo_path_position >= 0:
                     file_name = key[repo_path_position:].replace("\\", "/")
                 else:
@@ -935,17 +947,18 @@ def main(
         console.print(
             f"Summary: [green]Successes: {SUCCESSES}[/green] [red]Failures: {FAILURES}[/red]"
         )
+        return
+
+    if debug:
+        os.environ["DEBUG_MODE"] = "true"
+    if isinstance(paths, list) and paths[0].endswith(".openbb"):
+        run_scripts(paths[0], routines_args=routines_args)
+    elif paths:
+        argv_cmds = list([" ".join(paths).replace(" /", "/home/")])
+        argv_cmds = insert_start_slash(argv_cmds) if argv_cmds else argv_cmds
+        terminal(argv_cmds)
     else:
-        if debug:
-            os.environ["DEBUG_MODE"] = "true"
-        if isinstance(paths, list) and paths[0].endswith(".openbb"):
-            run_scripts(paths[0], routines_args=routines_args)
-        elif paths:
-            argv_cmds = list([" ".join(paths).replace(" /", "/home/")])
-            argv_cmds = insert_start_slash(argv_cmds) if argv_cmds else argv_cmds
-            terminal(argv_cmds)
-        else:
-            terminal()
+        terminal()
 
 
 if __name__ == "__main__":
@@ -953,7 +966,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="terminal",
-        description="The gamestonk terminal.",
+        description="The OpenBB Terminal.",
     )
     parser.add_argument(
         "-d",
@@ -964,7 +977,6 @@ if __name__ == "__main__":
         help="Runs the terminal in debug mode.",
     )
     parser.add_argument(
-        "-f",
         "--file",
         help="The path or .openbb file to run.",
         dest="path",
@@ -993,14 +1005,17 @@ if __name__ == "__main__":
     parser.add_argument(
         "-i",
         "--input",
-        help="Select multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD",
+        help=(
+            "Select multiple inputs to be replaced in the routine and separated by commas."
+            "E.g. GME,AMC,BTC-USD"
+        ),
         dest="routine_args",
         type=lambda s: [str(item) for item in s.split(",")],
         default=None,
     )
 
     if sys.argv[1:] and "-" not in sys.argv[1][0]:
-        sys.argv.insert(1, "-f")
+        sys.argv.insert(1, "--file")
     ns_parser = parser.parse_args()
     main(
         ns_parser.debug,

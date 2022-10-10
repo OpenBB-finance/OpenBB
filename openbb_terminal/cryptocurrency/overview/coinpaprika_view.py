@@ -106,7 +106,7 @@ def display_all_coins_market_info(
     symbol: str,
     sortby: str = "rank",
     ascend: bool = True,
-    top: int = 15,
+    limit: int = 15,
     export: str = "",
 ) -> None:
     """Displays basic market information for all coins from CoinPaprika API. [Source: CoinPaprika]
@@ -115,7 +115,7 @@ def display_all_coins_market_info(
     ----------
     symbol: str
         Quoted currency
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data
@@ -141,7 +141,7 @@ def display_all_coins_market_info(
     console.print(f"\nDisplaying data vs {symbol}")
 
     print_rich_table(
-        df.head(top),
+        df.head(limit),
         headers=list(df.columns),
         show_index=False,
         title="Basic Market Information",
@@ -160,7 +160,7 @@ def display_all_coins_info(
     symbol: str,
     sortby: str = "rank",
     ascend: bool = True,
-    top: int = 15,
+    limit: int = 15,
     export: str = "",
 ) -> None:
     """Displays basic coin information for all coins from CoinPaprika API. [Source: CoinPaprika]
@@ -169,7 +169,7 @@ def display_all_coins_info(
     ----------
     symbol: str
         Quoted currency
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data
@@ -195,7 +195,7 @@ def display_all_coins_info(
     console.print(f"\nDisplaying data vs {symbol}")
 
     print_rich_table(
-        df.head(top),
+        df.head(limit),
         headers=list(df.columns),
         show_index=False,
         title="Basic Coin Information",
@@ -214,7 +214,7 @@ def display_all_exchanges(
     symbol: str,
     sortby: str = "rank",
     ascend: bool = True,
-    top: int = 15,
+    limit: int = 15,
     export: str = "",
 ) -> None:
     """List exchanges from CoinPaprika API. [Source: CoinPaprika]
@@ -223,7 +223,7 @@ def display_all_exchanges(
     ----------
     currency: str
         Quoted currency
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data
@@ -249,7 +249,10 @@ def display_all_exchanges(
     console.print(f"\nDisplaying data vs {symbol}")
 
     print_rich_table(
-        df.head(top), headers=list(df.columns), show_index=False, title="List Exchanges"
+        df.head(limit),
+        headers=list(df.columns),
+        show_index=False,
+        title="List Exchanges",
     )
 
     export_data(
@@ -265,7 +268,7 @@ def display_exchange_markets(
     exchange: str = "binance",
     sortby: str = "pair",
     ascend: bool = True,
-    top: int = 15,
+    limit: int = 15,
     links: bool = False,
     export: str = "",
 ) -> None:
@@ -275,7 +278,7 @@ def display_exchange_markets(
     ----------
     exchange: str
         Exchange identifier e.g Binance
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data
@@ -303,7 +306,7 @@ def display_exchange_markets(
         df.drop("market_url", axis=1, inplace=True)
 
     print_rich_table(
-        df.head(top),
+        df.head(limit),
         headers=list(df.columns),
         show_index=False,
         title="Exchange Markets",
@@ -347,7 +350,7 @@ def display_contracts(
     symbol: str,
     sortby: str = "active",
     ascend: bool = True,
-    top: int = 15,
+    limit: int = 15,
     export: str = "",
 ) -> None:
     """Gets all contract addresses for given platform. [Source: CoinPaprika]
@@ -356,7 +359,7 @@ def display_contracts(
     ----------
     platform: str
         Blockchain platform like eth-ethereum
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data
@@ -373,7 +376,7 @@ def display_contracts(
         return
 
     print_rich_table(
-        df.head(top),
+        df.head(limit),
         headers=list(df.columns),
         show_index=False,
         title="Contract Addresses",

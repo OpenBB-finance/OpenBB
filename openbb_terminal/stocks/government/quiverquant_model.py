@@ -5,7 +5,6 @@ __docformat__ = "numpy"
 import logging
 import textwrap
 from datetime import datetime, timedelta
-from typing import Any, Union, Tuple
 
 import numpy as np
 import pandas as pd
@@ -101,6 +100,67 @@ def get_government_trading(
 
 
 @log_start_end(log=logger)
+def get_contracts(
+    symbol: str,
+    past_transaction_days: int = 10,
+) -> pd.DataFrame:
+    """Get government contracts for ticker [Source: quiverquant.com]
+
+    Parameters
+    ----------
+    symbol: str
+        Ticker to get congress trading data from
+    past_transaction_days: int
+        Number of days to get transactions for
+
+    Returns
+    -------
+    pd.DataFrame
+        Most recent transactions by members of U.S. Congress
+    """
+    df_contracts = get_government_trading("contracts", symbol)
+
+    if df_contracts.empty:
+        console.print("No government contracts found\n")
+        return pd.DataFrame()
+
+    df_contracts["Date"] = pd.to_datetime(df_contracts["Date"]).dt.date
+
+    df_contracts = df_contracts[
+        df_contracts["Date"].isin(df_contracts["Date"].unique()[:past_transaction_days])
+    ]
+
+    df_contracts.drop_duplicates(inplace=True)
+
+    return df_contracts
+
+
+@log_start_end(log=logger)
+def get_hist_contracts(
+    symbol: str,
+) -> pd.DataFrame:
+    """Get historical quarterly government contracts [Source: quiverquant.com]
+
+    Parameters
+    ----------
+    symbol: str
+        Ticker symbol to get congress trading data from
+
+    Returns
+    -------
+    pd.DataFrame
+        Historical quarterly government contracts
+    """
+    df_contracts = get_government_trading("quarter-contracts", symbol=symbol)
+
+    if df_contracts.empty:
+        console.print("No quarterly government contracts found\n")
+        return pd.DataFrame()
+
+    return df_contracts
+
+
+@log_start_end(log=logger)
 def get_last_government(
     gov_type: str = "congress", limit: int = -1, representative: str = ""
 ) -> pd.DataFrame:
@@ -183,7 +243,6 @@ def get_government_buys(
         DataFrame of top government buy trading
     """
     df_gov = get_government_trading(gov_type)
-
     if df_gov.empty:
         return pd.DataFrame()
 
@@ -192,7 +251,8 @@ def get_government_buys(
 
     df_gov["TransactionDate"] = pd.to_datetime(df_gov["TransactionDate"])
 
-    df_gov = df_gov[df_gov["TransactionDate"] > start_date].dropna()
+    df_gov = df_gov[df_gov["TransactionDate"] > start_date].dropna(axis=1)
+
     # Catch bug where error shown for purchase of >5,000,000
     df_gov["Range"] = df_gov["Range"].apply(
         lambda x: "$5,000,001-$5,000,001" if x == ">$5,000,000" else x
@@ -295,50 +355,62 @@ def get_government_sells(
 
 
 @log_start_end(log=logger)
+def get_top_lobbying() -> pd.DataFrame:
+    """Corporate lobbying details
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of top corporate lobbying
+
+    """
+    df_lobbying = get_government_trading("corporate-lobbying")
+
+    if df_lobbying.empty:
+        console.print("No corporate lobbying found\n")
+        return pd.DataFrame()
+
+    return df_lobbying
+
+
+@log_start_end(log=logger)
 def get_last_contracts(
-    past_transaction_days: int = -1,
-    limit: int = -1,
-) -> Union[Tuple[pd.DataFrame, pd.DataFrame], Tuple[Any, pd.DataFrame]]:
+    past_transaction_days: int = 2,
+) -> pd.DataFrame:
     """Get last government contracts [Source: quiverquant.com]
 
     Parameters
     ----------
     past_transaction_days: int
         Number of days to look back
-    limit: int
-        Number of contracts to show
 
     Returns
     -------
     pd.DataFrame
         DataFrame of government contracts
-    pd.DataFrame
-        DataFrame for plotting
     """
     df_contracts = get_government_trading("contracts")
 
     if df_contracts.empty:
         console.print("No government contracts found\n")
-        return pd.DataFrame(), pd.DataFrame()
+        return pd.DataFrame()
 
     df_contracts.sort_values("Date", ascending=False)
 
     df_contracts["Date"] = pd.to_datetime(df_contracts["Date"])
 
     df_contracts.drop_duplicates(inplace=True)
-    df = df_contracts.copy()
+
     df_contracts = df_contracts[
         df_contracts["Date"].isin(df_contracts["Date"].unique()[:past_transaction_days])
     ]
 
-    df_contracts = df_contracts[["Date", "Ticker", "Amount", "Description", "Agency"]][
-        :limit
-    ]
+    df_contracts = df_contracts[["Date", "Ticker", "Amount", "Description", "Agency"]]
     df_contracts["Description"] = df_contracts["Description"].apply(
         lambda x: "\n".join(textwrap.wrap(x, 50))
     )
 
-    return df_contracts, df
+    return df_contracts
 
 
 def get_cleaned_government_trading(
@@ -407,7 +479,7 @@ def get_cleaned_government_trading(
 
 
 @log_start_end(log=logger)
-def analyze_qtr_contracts(analysis: str = "total", limit: int = 5) -> pd.DataFrame:
+def get_qtr_contracts(analysis: str = "total", limit: int = 5) -> pd.DataFrame:
     """Analyzes quarterly contracts by ticker
 
     Parameters
@@ -423,6 +495,10 @@ def analyze_qtr_contracts(analysis: str = "total", limit: int = 5) -> pd.DataFra
         Dataframe with tickers and total amount if total selected.
     """
     df_contracts = get_government_trading("quarter-contracts")
+
+    if df_contracts.empty:
+        console.print("No quarterly government contracts found\n")
+        return pd.DataFrame()
 
     if analysis == "total":
         df_groups = (
@@ -449,3 +525,30 @@ def analyze_qtr_contracts(analysis: str = "total", limit: int = 5) -> pd.DataFra
             "Ticker"
         ][:limit]
     return pd.DataFrame()
+
+
+@log_start_end(log=logger)
+def get_lobbying(symbol: str, limit: int = 10) -> pd.DataFrame:
+    """Corporate lobbying details
+
+    Parameters
+    ----------
+    symbol: str
+        Ticker symbol to get corporate lobbying data from
+    limit: int
+        Number of events to show
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe with corporate lobbying data
+    """
+    df_lobbying = get_government_trading("corporate-lobbying", symbol=symbol)
+
+    if df_lobbying.empty:
+        console.print("No corporate lobbying found\n")
+        return pd.DataFrame()
+
+    df_lobbying.sort_values(by=["Date"], ascending=False)
+
+    return df_lobbying.head(limit)

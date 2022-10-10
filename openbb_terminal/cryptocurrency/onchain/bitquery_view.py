@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 def display_dex_trades(
     trade_amount_currency: str = "USD",
     kind: str = "dex",
-    top: int = 20,
+    limit: int = 20,
     days: int = 90,
     sortby: str = "tradeAmount",
     ascend: bool = True,
@@ -38,7 +38,7 @@ def display_dex_trades(
         Aggregate trades by dex or time
     trade_amount_currency: str
         Currency of displayed trade amount. Default: USD
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data
@@ -69,7 +69,7 @@ def display_dex_trades(
         )
 
         print_rich_table(
-            df.head(top),
+            df.head(limit),
             headers=list(df.columns),
             show_index=False,
             title="Trades on Decentralized Exchanges",
@@ -87,8 +87,8 @@ def display_dex_trades(
 @check_api_key(["API_BITQUERY_KEY"])
 def display_daily_volume_for_given_pair(
     symbol: str = "WBTC",
-    vs: str = "USDT",
-    top: int = 20,
+    to_symbol: str = "USDT",
+    limit: int = 20,
     sortby: str = "date",
     ascend: bool = True,
     export: str = "",
@@ -100,9 +100,9 @@ def display_daily_volume_for_given_pair(
     ----------
     symbol: str
         ERC20 token symbol or address
-    vs: str
+    to_symbol: str
         Quote currency.
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data
@@ -119,8 +119,8 @@ def display_daily_volume_for_given_pair(
 
     df = bitquery_model.get_daily_dex_volume_for_given_pair(
         symbol=symbol,
-        vs=vs,
-        limit=top,
+        to_symbol=to_symbol,
+        limit=limit,
         sortby=sortby,
         ascend=ascend,
     )
@@ -130,12 +130,12 @@ def display_daily_volume_for_given_pair(
 
     df_data = df.copy()
 
-    df[["tradeAmount", "trades"]] = df[["tradeAmount", "trades"]].applymap(
+    df[["Trade amount", "Trades"]] = df[["Trade amount", "Trades"]].applymap(
         lambda x: lambda_very_long_number_formatter(x)
     )
 
     print_rich_table(
-        df.head(top),
+        df.head(limit),
         headers=list(df.columns),
         show_index=False,
         title="Daily Volume for Pair",
@@ -154,7 +154,7 @@ def display_daily_volume_for_given_pair(
 def display_dex_volume_for_token(
     symbol: str = "WBTC",
     trade_amount_currency: str = "USD",
-    top: int = 10,
+    limit: int = 10,
     sortby: str = "tradeAmount",
     ascend: bool = True,
     export: str = "",
@@ -168,7 +168,7 @@ def display_dex_volume_for_token(
         ERC20 token symbol or address
     trade_amount_currency: str
         Currency of displayed trade amount. Default: USD
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data
@@ -199,7 +199,7 @@ def display_dex_volume_for_token(
         )
 
         print_rich_table(
-            df.head(top),
+            df.head(limit),
             headers=list(df.columns),
             show_index=False,
             title="Token Volume on Exchanges",
@@ -278,7 +278,7 @@ def display_ethereum_unique_senders(
 def display_most_traded_pairs(
     exchange="Uniswap",
     days: int = 10,
-    top: int = 10,
+    limit: int = 10,
     sortby: str = "tradeAmount",
     ascend: bool = True,
     export: str = "",
@@ -318,7 +318,7 @@ def display_most_traded_pairs(
         )
 
         print_rich_table(
-            df.head(top),
+            df.head(limit),
             headers=list(df.columns),
             show_index=False,
             title="Most Traded Crypto Pairs",
@@ -336,7 +336,7 @@ def display_most_traded_pairs(
 @check_api_key(["API_BITQUERY_KEY"])
 def display_spread_for_crypto_pair(
     symbol="ETH",
-    vs="USDC",
+    to_symbol="USDC",
     days: int = 10,
     sortby: str = "date",
     ascend: bool = True,
@@ -351,7 +351,7 @@ def display_spread_for_crypto_pair(
         Last n days to query data
     symbol: str
         ERC20 token symbol
-    vs: str
+    to_symbol: str
         Quoted currency.
     sortby: str
         Key by which to sort data
@@ -367,7 +367,7 @@ def display_spread_for_crypto_pair(
     """
 
     df = bitquery_model.get_spread_for_crypto_pair(
-        symbol=symbol, vs=vs, limit=days, sortby=sortby, ascend=ascend
+        symbol=symbol, to_symbol=to_symbol, limit=days, sortby=sortby, ascend=ascend
     )
     if not df.empty:
 

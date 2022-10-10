@@ -5,6 +5,7 @@ import logging
 from datetime import datetime, timedelta
 from typing import Tuple
 from urllib.request import Request, urlopen
+import re
 
 import ssl
 import numpy as np
@@ -17,6 +18,9 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
+from openbb_terminal.helpers_denomination import (
+    transform as transform_by_denomination,
+)
 
 logger = logging.getLogger(__name__)
 # pylint: disable=W0212
@@ -68,22 +72,20 @@ def get_info(symbol: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_shareholders(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+def get_shareholders(symbol: str, holder: str = "institutional") -> pd.DataFrame:
     """Get shareholders from yahoo
 
     Parameters
     ----------
     symbol : str
         Stock ticker symbol
+    holder : str
+        Which holder to get table for
 
     Returns
     -------
     pd.DataFrame
         Major holders
-    pd.DataFrame
-        Institutional holders
-    pd.DataFrame
-        Mutual Fund holders
     """
     stock = yf.Ticker(symbol)
 
@@ -123,7 +125,13 @@ def get_shareholders(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFr
         lambda x: str(f"{100 * x:.2f}") + " %"
     )
 
-    return df_major_holders, df_institutional_shareholders, df_mutualfund_shareholders
+    if holder == "major":
+        return df_major_holders
+    if holder == "institutional":
+        return df_institutional_shareholders
+    if holder == "mutualfund":
+        return df_mutualfund_shareholders
+    return pd.DataFrame()
 
 
 @log_start_end(log=logger)
@@ -195,7 +203,7 @@ def get_calendar_earnings(symbol: str) -> pd.DataFrame:
         lambda x: lambda_long_number_format(x)
     )
 
-    return df_calendar
+    return df_calendar.T
 
 
 @log_start_end(log=logger)
@@ -375,6 +383,8 @@ def get_financials(symbol: str, statement: str, ratios: bool = False) -> pd.Data
         index += 1
 
     df = pd.DataFrame(final[1:])
+    if df.empty:
+        return pd.DataFrame()
     new_headers = []
 
     if statement == "balance-sheet":
@@ -401,12 +411,23 @@ def get_financials(symbol: str, statement: str, ratios: bool = False) -> pd.Data
         new_headers[:0] = ["Breakdown", "ttm"]
         df.columns = new_headers
         df.set_index("Breakdown", inplace=True)
+
     df.replace("", np.nan, inplace=True)
+    df.replace("-", np.nan, inplace=True)
+    df = df.dropna(how="all")
+    df = df.replace(",", "", regex=True)
+    df = df.astype("float")
+
+    # Data except EPS is returned in thousands, convert it
+    (df, _) = transform_by_denomination(
+        df,
+        "Thousands",
+        "Units",
+        axis=1,
+        skipPredicate=lambda row: re.search("eps", row.name, re.IGNORECASE) is not None,
+    )
 
     if ratios:
-        df = df.replace(",", "", regex=True)
-        df = df.replace("-", "0")
-        df = df.astype(float)
         types = df.copy().applymap(lambda x: isinstance(x, (float, int)))
         types = types.all(axis=1)
 
@@ -423,7 +444,6 @@ def get_financials(symbol: str, statement: str, ratios: bool = False) -> pd.Data
             df.iloc[i] = df_fa_pc.iloc[j]
             j += 1
 
-    df = df.dropna(how="all")
     return df
 
 

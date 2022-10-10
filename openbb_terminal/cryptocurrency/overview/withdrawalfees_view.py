@@ -15,19 +15,19 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_overall_withdrawal_fees(top: int = 15, export: str = "") -> None:
+def display_overall_withdrawal_fees(limit: int = 15, export: str = "") -> None:
     """Top coins withdrawal fees
     [Source: https://withdrawalfees.com/]
 
     Parameters
     ----------
-    top: int
+    limit: int
         Number of coins to search
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df_fees = get_overall_withdrawal_fees(top)
+    df_fees = get_overall_withdrawal_fees(limit)
 
     if df_fees.empty:
         console.print("\nError in withdrawal fees request\n")
@@ -35,7 +35,7 @@ def display_overall_withdrawal_fees(top: int = 15, export: str = "") -> None:
         console.print("\nWithdrawal fees on exchanges:")
 
         print_rich_table(
-            df_fees.head(top),
+            df_fees.head(limit),
             headers=list(df_fees.columns),
             show_index=False,
             title="Top Withdrawal Fees",

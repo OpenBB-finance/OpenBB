@@ -54,9 +54,8 @@ def display_cci(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
     """
-    df_ta = momentum_model.cci(
-        data["High"], data["Low"], data["Adj Close"], window, scalar
-    )
+
+    df_ta = momentum_model.cci(data, window, scalar)
     plot_data = pd.merge(data, df_ta, how="outer", left_index=True, right_index=True)
     plot_data = reindex_dates(plot_data)
 
@@ -119,7 +118,7 @@ def display_cci(
 
 @log_start_end(log=logger)
 def display_macd(
-    series: pd.Series,
+    data: pd.Series,
     n_fast: int = 12,
     n_slow: int = 26,
     n_signal: int = 9,
@@ -131,7 +130,7 @@ def display_macd(
 
     Parameters
     ----------
-    series : pd.Series
+    data : pd.Series
         Values to input
     n_fast : int
         Fast period
@@ -146,8 +145,8 @@ def display_macd(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
     """
-    df_ta = momentum_model.macd(series, n_fast, n_slow, n_signal)
-    plot_data = pd.merge(series, df_ta, how="outer", left_index=True, right_index=True)
+    df_ta = momentum_model.macd(data, n_fast, n_slow, n_signal)
+    plot_data = pd.merge(data, df_ta, how="outer", left_index=True, right_index=True)
     plot_data = reindex_dates(plot_data)
 
     # This plot has 2 axes
@@ -206,7 +205,7 @@ def display_macd(
 
 @log_start_end(log=logger)
 def display_rsi(
-    series: pd.Series,
+    data: pd.Series,
     window: int = 14,
     scalar: float = 100.0,
     drift: int = 1,
@@ -218,7 +217,7 @@ def display_rsi(
 
     Parameters
     ----------
-    series : pd.Series
+    data : pd.Series
         Values to input
     window : int
         Length of window
@@ -233,7 +232,7 @@ def display_rsi(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
     """
-    df_ta = momentum_model.rsi(series, window, scalar, drift)
+    df_ta = momentum_model.rsi(data, window, scalar, drift)
 
     # This plot has 2 axes
     if external_axes is None:
@@ -246,7 +245,7 @@ def display_rsi(
     else:
         return
 
-    plot_data = pd.merge(series, df_ta, how="outer", left_index=True, right_index=True)
+    plot_data = pd.merge(data, df_ta, how="outer", left_index=True, right_index=True)
     plot_data = reindex_dates(plot_data)
 
     ax1.plot(plot_data.index, plot_data.iloc[:, 1].values)
@@ -473,7 +472,7 @@ def display_fisher(
 
 @log_start_end(log=logger)
 def display_cg(
-    series: pd.Series,
+    data: pd.Series,
     window: int = 14,
     symbol: str = "",
     export: str = "",
@@ -483,7 +482,7 @@ def display_cg(
 
     Parameters
     ----------
-    series : pd.Series
+    data : pd.Series
         Series of values
     window : int
         Length of window
@@ -494,8 +493,8 @@ def display_cg(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
     """
-    df_ta = momentum_model.cg(series, window)
-    plot_data = pd.merge(series, df_ta, how="outer", left_index=True, right_index=True)
+    df_ta = momentum_model.cg(data, window)
+    plot_data = pd.merge(data, df_ta, how="outer", left_index=True, right_index=True)
     plot_data = reindex_dates(plot_data)
 
     # This plot has 2 axes
@@ -510,7 +509,7 @@ def display_cg(
         return
 
     ax1.set_title(f"{symbol} Centre of Gravity")
-    ax1.plot(plot_data.index, plot_data[series.name].values)
+    ax1.plot(plot_data.index, plot_data[data.name].values)
     ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
     ax1.set_ylabel("Share Price ($)")
     theme.style_primary_axis(
@@ -544,7 +543,8 @@ def display_cg(
 
 @log_start_end(log=logger)
 def display_clenow_momentum(
-    series: pd.Series,
+    data: pd.Series,
+    symbol: str = "",
     window: int = 90,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -553,8 +553,10 @@ def display_clenow_momentum(
 
     Parameters
     ----------
-    series : pd.Series
+    data : pd.Series
         Series of values
+    symbol : str
+        Symbol that the data corresponds to
     window : int
         Length of window
     export : str
@@ -566,7 +568,7 @@ def display_clenow_momentum(
     -------
 
     """
-    r2, coef, fit_data = momentum_model.clenow_momentum(series, window)
+    r2, coef, fit_data = momentum_model.clenow_momentum(data, window)
 
     df = pd.DataFrame.from_dict(
         {
@@ -580,7 +582,7 @@ def display_clenow_momentum(
         df,
         show_index=True,
         headers=[""],
-        title="Clenow Exponential Regression Factor",
+        title=f"Clenow Exponential Regression Factor on {symbol}",
         show_header=False,
     )
 
@@ -593,11 +595,11 @@ def display_clenow_momentum(
     else:
         return
 
-    ax1.plot(series.index, np.log(series.values))
-    ax1.plot(series.index[-window:], fit_data, linewidth=2)
+    ax1.plot(data.index, np.log(data.values))
+    ax1.plot(data.index[-window:], fit_data, linewidth=2)
 
-    ax1.set_title("Clenow Momentum Exponential Regression")
-    ax1.set_xlim(series.index[0], series.index[-1])
+    ax1.set_title(f"Clenow Momentum Exponential Regression on {symbol}")
+    ax1.set_xlim(data.index[0], data.index[-1])
     ax1.set_ylabel("Log Price")
     theme.style_primary_axis(
         ax1,

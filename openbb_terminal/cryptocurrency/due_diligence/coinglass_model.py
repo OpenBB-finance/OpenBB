@@ -13,7 +13,9 @@ logger = logging.getLogger(__name__)
 
 api_url = "https://open-api.coinglass.com/api/pro/v1/"
 
-INTERVALS = [0, 1, 2, 4]
+# Prompt toolkit does not allow integers, so these items need to be strings
+intervals = [0, 1, 2, 4]
+INTERVALS = [str(x) for x in intervals]
 
 
 @log_start_end(log=logger)

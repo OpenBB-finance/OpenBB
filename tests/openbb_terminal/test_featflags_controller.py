@@ -21,10 +21,6 @@ def test_print_help(controller):
     controller.print_help()
 
 
-def test_call_logcollection(controller):
-    controller.call_logcollection(None)
-
-
 def test_call_tab(controller):
     controller.call_tab(None)
 
@@ -39,10 +35,6 @@ def test_call_color(controller):
 
 def test_call_promptkit(controller):
     controller.call_promptkit(None)
-
-
-def test_call_predict(controller):
-    controller.call_predict(None)
 
 
 def test_call_thoughts(controller):

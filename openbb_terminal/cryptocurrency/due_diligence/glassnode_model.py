@@ -9,7 +9,10 @@ from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
+# pylint: disable=unsupported-assignment-operation
+
 logger = logging.getLogger(__name__)
+# pylint: disable=unsupported-assignment-operation
 
 api_url = "https://api.glassnode.com/v1/metrics/"
 
@@ -175,8 +178,8 @@ INTERVALS_ACTIVE_ADDRESSES = ["24h", "1w", "1month"]
 @log_start_end(log=logger)
 def get_close_price(
     symbol: str,
-    start_date: int = int(datetime(2010, 1, 1).timestamp()),
-    end_date: int = int(datetime.now().timestamp()),
+    start_date: str = "2010-01-01",
+    end_date: str = datetime.now().strftime("%Y-%m-%d"),
     print_errors: bool = True,
 ) -> pd.DataFrame:
     """Returns the price of a cryptocurrency
@@ -186,10 +189,10 @@ def get_close_price(
     ----------
     symbol : str
         Crypto to check close price (BTC or ETH)
-    start_date : int
-        Initial date timestamp (e.g., 1_614_556_800)
-    end_date : int
-        End date timestamp (e.g., 1_641_227_783_561)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
     print_errors: bool
         Flag to print errors. Default: True
 
@@ -199,14 +202,25 @@ def get_close_price(
         price over time
     """
 
+    dt_start_date = int(
+        datetime.strptime(
+            start_date + " 00:00:00+0000", "%Y-%m-%d %H:%M:%S%z"
+        ).timestamp()
+    )
+    dt_end_date = int(
+        datetime.strptime(
+            end_date + " 00:00:00+0000", "%Y-%m-%d %H:%M:%S%z"
+        ).timestamp()
+    )
+
     url = api_url + "market/price_usd_close"
 
     parameters = {
         "api_key": cfg.API_GLASSNODE_KEY,
         "a": symbol,
         "i": "24h",
-        "s": str(start_date),
-        "u": str(end_date),
+        "s": str(dt_start_date),
+        "u": str(dt_end_date),
     }
 
     r = requests.get(url, params=parameters)
@@ -547,3 +561,25 @@ def get_exchange_net_position_change(
         console.print(r.text)
 
     return df
+
+
+@log_start_end(log=logger)
+def get_btc_rainbow(
+    start_date: str = "2010-01-01",
+    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+):
+    """Get bitcoin price data
+    [Price data from source: https://glassnode.com]
+    [Inspired by: https://blockchaincenter.net]
+
+    Parameters
+    ----------
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
+    """
+
+    df_data = get_close_price("BTC", start_date, end_date)
+
+    return df_data

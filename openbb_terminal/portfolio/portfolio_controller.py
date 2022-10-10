@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-from pathlib import Path
 from typing import List
 
 import pandas as pd
@@ -20,8 +19,10 @@ from openbb_terminal.helper_funcs import (
 )
 
 from openbb_terminal.menu import session
+from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.portfolio import portfolio_model
+from openbb_terminal.portfolio import statics
 from openbb_terminal.portfolio import portfolio_view
 from openbb_terminal.portfolio import portfolio_helper
 from openbb_terminal.portfolio.portfolio_optimization import po_controller
@@ -31,8 +32,6 @@ from openbb_terminal.common.quantitative_analysis import qa_view
 # pylint: disable=R1710,E1101,C0415,W0212,too-many-function-args,C0302,too-many-instance-attributes
 
 logger = logging.getLogger(__name__)
-
-portfolios_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "portfolios")
 
 
 class PortfolioController(BaseController):
@@ -101,9 +100,17 @@ class PortfolioController(BaseController):
         self.DATA_HOLDINGS_FILES = {
             filepath.name: filepath
             for file_type in self.file_types
-            for filepath in Path(self.DEFAULT_HOLDINGS_PATH).rglob(f"*.{file_type}")
-            if filepath.is_file()
+            for filepath in self.DEFAULT_HOLDINGS_PATH.rglob(f"*.{file_type}")
         }
+        self.DATA_HOLDINGS_FILES.update(
+            {
+                filepath.name: filepath
+                for file_type in self.file_types
+                for filepath in (REPOSITORY_DIRECTORY / "portfolio" / "holdings").rglob(
+                    f"*.{file_type}"
+                )
+            }
+        )
 
         self.portfolio_df = pd.DataFrame(
             columns=[
@@ -139,17 +146,18 @@ class PortfolioController(BaseController):
 
         self.DEFAULT_HOLDINGS_PATH = portfolio_helper.DEFAULT_HOLDINGS_PATH
 
-        self.DATA_HOLDINGS_FILES = {
-            filepath.name: filepath
-            for file_type in self.file_types
-            for filepath in Path(self.DEFAULT_HOLDINGS_PATH).rglob(f"*.{file_type}")
-            if filepath.is_file()
-        }
+        self.DATA_HOLDINGS_FILES.update(
+            {
+                filepath.name: filepath
+                for file_type in self.file_types
+                for filepath in self.DEFAULT_HOLDINGS_PATH.rglob(f"*.{file_type}")
+            }
+        )
 
         choices: dict = {c: {} for c in self.controller_choices}
         choices["load"]["-f"] = {c: None for c in self.DATA_HOLDINGS_FILES}
         choices["load"]["--file"] = {c: None for c in self.DATA_HOLDINGS_FILES}
-        choices["bench"] = {c: None for c in portfolio_helper.BENCHMARK_LIST}
+        choices["bench"] = {c: None for c in statics.BENCHMARK_LIST}
         choices["alloc"] = {c: None for c in self.AGGREGATION_METRICS}
         choices["metric"] = {c: None for c in self.VALID_METRICS}
         self.choices = choices
@@ -340,7 +348,8 @@ class PortfolioController(BaseController):
             self.portfolio.generate_portfolio_data()
 
             # Add in the Risk-free rate
-            self.portfolio.set_risk_free_rate(ns_parser.risk_free_rate)
+            self.portfolio.set_risk_free_rate(ns_parser.risk_free_rate / 100)
+            self.risk_free_rate = ns_parser.risk_free_rate / 100
 
             # Load benchmark
             self.call_bench(["-b", "SPDR S&P 500 ETF Trust (SPY)"])
@@ -349,7 +358,7 @@ class PortfolioController(BaseController):
                 f"\n[bold][param]Portfolio:[/param][/bold] {self.portfolio_name}"
             )
             console.print(
-                f"[bold][param]Risk Free Rate:[/param][/bold] {self.portfolio.risk_free_rate}"
+                f"[bold][param]Risk Free Rate:[/param][/bold] {self.risk_free_rate:.2%}"
             )
             console.print(
                 f"[bold][param]Benchmark:[/param][/bold] {self.benchmark_name}\n"
@@ -370,12 +379,13 @@ class PortfolioController(BaseController):
             export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
             limit=10,
         )
-        portfolio_view.display_orderbook(
-            self.portfolio,
-            show_index=False,
-            limit=ns_parser.limit,
-            export=ns_parser.export,
-        )
+        if ns_parser and self.portfolio is not None:
+            portfolio_view.display_orderbook(
+                self.portfolio,
+                show_index=False,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
     @log_start_end(log=logger)
     def call_bench(self, other_args: List[str]):
@@ -413,8 +423,8 @@ class PortfolioController(BaseController):
             if self.portfolio_name:
                 chosen_benchmark = " ".join(ns_parser.benchmark)
 
-                if chosen_benchmark in portfolio_helper.BENCHMARK_LIST:
-                    benchmark_ticker = portfolio_helper.BENCHMARK_LIST[chosen_benchmark]
+                if chosen_benchmark in statics.BENCHMARK_LIST:
+                    benchmark_ticker = statics.BENCHMARK_LIST[chosen_benchmark]
                     self.original_benchmark_name = chosen_benchmark
                 else:
                     benchmark_ticker = chosen_benchmark
@@ -487,9 +497,9 @@ class PortfolioController(BaseController):
                     if self.portfolio.portfolio_sectors_allocation.empty:
                         self.portfolio.calculate_allocations("sector")
                     portfolio_view.display_category_allocation(
-                        ns_parser.agg,
                         self.portfolio.portfolio_sectors_allocation,
                         self.portfolio.benchmark_sectors_allocation,
+                        ns_parser.agg,
                         ns_parser.limit,
                         ns_parser.tables,
                     )
@@ -497,9 +507,9 @@ class PortfolioController(BaseController):
                     if self.portfolio.portfolio_country_allocation.empty:
                         self.portfolio.calculate_allocations("country")
                     portfolio_view.display_category_allocation(
-                        ns_parser.agg,
                         self.portfolio.portfolio_country_allocation,
                         self.portfolio.benchmark_country_allocation,
+                        ns_parser.agg,
                         ns_parser.limit,
                         ns_parser.tables,
                     )
@@ -507,9 +517,9 @@ class PortfolioController(BaseController):
                     if self.portfolio.portfolio_region_allocation.empty:
                         self.portfolio.calculate_allocations("region")
                     portfolio_view.display_category_allocation(
-                        ns_parser.agg,
                         self.portfolio.portfolio_region_allocation,
                         self.portfolio.benchmark_region_allocation,
+                        ns_parser.agg,
                         ns_parser.limit,
                         ns_parser.tables,
                     )
@@ -558,8 +568,7 @@ class PortfolioController(BaseController):
             ):
 
                 portfolio_view.display_performance_vs_benchmark(
-                    self.portfolio.portfolio_trades,
-                    self.portfolio.benchmark_trades,
+                    self.portfolio,
                     ns_parser.period,
                     ns_parser.show_trades,
                 )
@@ -696,14 +705,12 @@ class PortfolioController(BaseController):
                         "Select either the adjusted or the student_t parameter.\n"
                     )
                 else:
-                    qa_view.display_var(
-                        self.portfolio.returns,
-                        "Portfolio",
-                        ns_parser.use_mean,
-                        ns_parser.adjusted,
-                        ns_parser.student_t,
-                        ns_parser.percentile / 100,
-                        True,
+                    portfolio_view.display_var(
+                        portfolio=self.portfolio,
+                        use_mean=ns_parser.use_mean,
+                        adjusted_var=ns_parser.adjusted,
+                        student_t=ns_parser.student_t,
+                        percentile=ns_parser.percentile,
                     )
             else:
                 console.print(
@@ -733,7 +740,7 @@ class PortfolioController(BaseController):
             "-d",
             "--dist",
             "--distributions",
-            dest="distributions",
+            dest="distribution",
             type=str,
             choices=self.VALID_DISTRIBUTIONS,
             default="normal",
@@ -755,13 +762,11 @@ class PortfolioController(BaseController):
 
         if ns_parser and self.portfolio is not None:
             if self.portfolio_name:
-                qa_view.display_es(
-                    self.portfolio.returns,
-                    "Portfolio",
-                    ns_parser.use_mean,
-                    ns_parser.distributions,
-                    ns_parser.percentile / 100,
-                    True,
+                portfolio_view.display_es(
+                    portfolio=self.portfolio,
+                    use_mean=ns_parser.use_mean,
+                    distribution=ns_parser.distribution,
+                    percentile=ns_parser.percentile,
                 )
             else:
                 console.print(
@@ -847,8 +852,7 @@ class PortfolioController(BaseController):
                 self.portfolio_name, self.benchmark_name
             ):
                 portfolio_view.display_yearly_returns(
-                    self.portfolio.returns,
-                    self.portfolio.benchmark_returns,
+                    self.portfolio,
                     ns_parser.period,
                     ns_parser.raw,
                     ns_parser.export,
@@ -894,8 +898,7 @@ class PortfolioController(BaseController):
                 self.portfolio_name, self.benchmark_name
             ):
                 portfolio_view.display_monthly_returns(
-                    self.portfolio.returns,
-                    self.portfolio.benchmark_returns,
+                    self.portfolio,
                     ns_parser.period,
                     ns_parser.raw,
                     ns_parser.show_vals,
@@ -935,8 +938,7 @@ class PortfolioController(BaseController):
                 self.portfolio_name, self.benchmark_name
             ):
                 portfolio_view.display_daily_returns(
-                    self.portfolio.returns,
-                    self.portfolio.benchmark_returns,
+                    self.portfolio,
                     ns_parser.period,
                     ns_parser.raw,
                     ns_parser.limit,
@@ -959,7 +961,7 @@ class PortfolioController(BaseController):
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):
-                portfolio_view.display_maximum_drawdown(self.portfolio.portfolio_value)
+                portfolio_view.display_maximum_drawdown(self.portfolio)
 
     @log_start_end(log=logger)
     def call_rvol(self, other_args: List[str]):
@@ -989,9 +991,8 @@ class PortfolioController(BaseController):
                 self.portfolio_name, self.benchmark_name
             ):
                 portfolio_view.display_rolling_volatility(
-                    self.portfolio.benchmark_returns,
-                    self.portfolio.returns,
-                    period=ns_parser.period,
+                    self.portfolio,
+                    window=ns_parser.period,
                     export=ns_parser.export,
                 )
 
@@ -1031,10 +1032,9 @@ class PortfolioController(BaseController):
                 self.portfolio_name, self.benchmark_name
             ):
                 portfolio_view.display_rolling_sharpe(
-                    self.portfolio.benchmark_returns,
-                    self.portfolio.returns,
-                    period=ns_parser.period,
-                    risk_free_rate=ns_parser.risk_free_rate,
+                    self.portfolio,
+                    risk_free_rate=ns_parser.risk_free_rate / 100,
+                    window=ns_parser.period,
                     export=ns_parser.export,
                 )
 
@@ -1074,10 +1074,9 @@ class PortfolioController(BaseController):
                 self.portfolio_name, self.benchmark_name
             ):
                 portfolio_view.display_rolling_sortino(
-                    self.portfolio.benchmark_returns,
-                    self.portfolio.returns,
-                    period=ns_parser.period,
-                    risk_free_rate=ns_parser.risk_free_rate,
+                    portfolio=self.portfolio,
+                    risk_free_rate=ns_parser.risk_free_rate / 100,
+                    window=ns_parser.period,
                     export=ns_parser.export,
                 )
 
@@ -1109,9 +1108,8 @@ class PortfolioController(BaseController):
                 self.portfolio_name, self.benchmark_name
             ):
                 portfolio_view.display_rolling_beta(
-                    self.portfolio.returns,
-                    self.portfolio.benchmark_returns,
-                    period=ns_parser.period,
+                    self.portfolio,
+                    window=ns_parser.period,
                     export=ns_parser.export,
                 )
 
@@ -1241,8 +1239,7 @@ class PortfolioController(BaseController):
                 self.portfolio_name, self.benchmark_name
             ):
                 portfolio_view.display_distribution_returns(
-                    self.portfolio.returns,
-                    self.portfolio.benchmark_returns,
+                    self.portfolio,
                     ns_parser.period,
                     ns_parser.raw,
                     ns_parser.export,
@@ -1286,9 +1283,8 @@ class PortfolioController(BaseController):
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):
-                portfolio_view.display_summary_portfolio_benchmark(
-                    self.portfolio.returns,
-                    self.portfolio.benchmark_returns,
+                portfolio_view.display_summary(
+                    self.portfolio,
                     ns_parser.period,
                     ns_parser.risk_free_rate,
                     ns_parser.export,

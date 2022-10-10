@@ -2,16 +2,22 @@
 import os
 import os.path
 from distutils.util import strtobool
-import pkg_resources
 
 # IMPORTATION THIRDPARTY
 from dotenv import load_dotenv
 import i18n
 
 # IMPORTATION INTERNAL
-from openbb_terminal.core.config.paths import USER_ENV_FILE, ENV_FILE_REPOSITORY
+from openbb_terminal.core.config.paths import (
+    USER_ENV_FILE,
+    REPOSITORY_ENV_FILE,
+    DATA_SOURCES_DEFAULT_FILE,
+)
+from openbb_terminal.core.config import paths_helper
 
-# pylint: disable=no-member
+paths_helper.init_userdata()
+
+# pylint: disable=no-member,c-extension-no-member
 
 i18n_dict_location = (
     os.path.join(os.path.dirname(os.path.abspath(__file__)), "i18n")
@@ -23,7 +29,7 @@ i18n.set("locale", "en")
 i18n.set("filename_format", "{locale}.{format}")
 
 load_dotenv(USER_ENV_FILE)
-load_dotenv(ENV_FILE_REPOSITORY, override=True)
+load_dotenv(REPOSITORY_ENV_FILE, override=True)
 
 # Retry unknown commands with `load`
 RETRY_WITH_LOAD = strtobool(os.getenv("OPENBB_RETRY_WITH_LOAD", "False"))
@@ -55,9 +61,6 @@ USE_CMD_LOCATION_FIGURE = strtobool(os.getenv("OPENBB_USE_CMD_LOCATION_FIGURE", 
 # Enable Prompt Toolkit
 USE_PROMPT_TOOLKIT = strtobool(os.getenv("OPENBB_USE_PROMPT_TOOLKIT", "True"))
 
-# Enable Prediction features
-ENABLE_PREDICT = strtobool(os.getenv("OPENBB_ENABLE_PREDICT", "True"))
-
 # Enable plot autoscaling
 USE_PLOT_AUTOSCALING = strtobool(os.getenv("OPENBB_USE_PLOT_AUTOSCALING", "False"))
 
@@ -86,7 +89,7 @@ ENABLE_RICH_PANEL = strtobool(os.getenv("OPENBB_ENABLE_RICH_PANEL", "True"))
 ENABLE_CHECK_API = strtobool(os.getenv("OPENBB_ENABLE_CHECK_API", "True"))
 
 # Send logs to data lake
-LOG_COLLECTION = bool(strtobool(os.getenv("OPENBB_LOG_COLLECTION", "True")))
+LOG_COLLECTION = bool(strtobool(os.getenv("OPENBB_LOG_COLLECT", "True")))
 
 # Provide export folder path. If empty that means default.
 EXPORT_FOLDER_PATH = str(os.getenv("OPENBB_EXPORT_FOLDER_PATH", ""))
@@ -106,11 +109,7 @@ LOGGING_COMMIT_HASH = str(os.getenv("OPENBB_LOGGING_COMMIT_HASH", "REPLACE_ME"))
 PREFERRED_DATA_SOURCE_FILE = str(
     os.getenv(
         "OPENBB_PREFERRED_DATA_SOURCE_FILE",
-        os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "..",
-            "data_sources_default.json",
-        ),
+        DATA_SOURCES_DEFAULT_FILE,
     )
 )
 
@@ -122,8 +121,4 @@ GUESS_EASTER_EGG_FILE = str(
     )
 )
 
-try:
-    version = pkg_resources.get_distribution("OpenBBTerminal").version
-except Exception:
-    version = "1.8.0m"
-VERSION = str(os.getenv("OPENBB_VERSION", version))
+VERSION = str(os.getenv("OPENBB_VERSION", "1.9.0m"))

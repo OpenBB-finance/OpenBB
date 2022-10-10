@@ -445,7 +445,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 limit=1,
                 sortby=["Vol"],
                 export="csv",
-                ascending=True,
+                ascend=True,
                 calls_only=False,
                 puts_only=True,
             ),
@@ -874,10 +874,10 @@ def test_call_func(
 ):
     path_controller = "openbb_terminal.stocks.options.options_controller"
 
-    # MOCK TRADIER_TOKEN
+    # MOCK API_TRADIER_TOKEN
     mocker.patch.object(
         target=options_controller,
-        attribute="TRADIER_TOKEN",
+        attribute="API_TRADIER_TOKEN",
         new="MOCK_TRADIER_TOKEN",
     )
 

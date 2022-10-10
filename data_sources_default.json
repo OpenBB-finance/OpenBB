@@ -213,19 +213,22 @@
         "YahooFinance",
         "Polygon",
         "AlphaVantage",
-        "FinancialModelingPrep"
+        "FinancialModelingPrep",
+        "EODHD"
       ],
       "balance": [
         "YahooFinance",
         "Polygon",
         "AlphaVantage",
-        "FinancialModelingPrep"
+        "FinancialModelingPrep",
+        "EODHD"
       ],
       "cash": [
         "YahooFinance",
         "Polygon",
         "AlphaVantage",
-        "FinancialModelingPrep"
+        "FinancialModelingPrep",
+        "EODHD"
       ],
       "data": ["Finviz"],
       "mgmt": ["BusinessInsider"],
@@ -328,7 +331,8 @@
       "altindex": ["BlockchainCenter"],
       "btcrb": ["BlockchainCenter"],
       "ch": ["Rekt"],
-      "cr": ["LoanScan"]
+      "cr": ["LoanScan"],
+      "fun": ["TokenTerminal"]
     },
     "onchain": {
       "hr": ["Glassnode"],
@@ -382,10 +386,6 @@
       "il": []
     },
     "nft": {
-      "today": ["NFTCalendar"],
-      "upcoming": ["NFTCalendar"],
-      "ongoing": ["NFTCalendar"],
-      "newest": ["NFTCalendar"],
       "stats": ["OpenSea"],
       "fp": ["NFTPriceFloor"],
       "collections": ["NFTPriceFloor"]
@@ -429,7 +429,9 @@
       "social": ["CoinGecko"],
       "score": ["CoinGecko"],
       "dev": ["CoinGecko"],
-      "gh": ["Santiment"]
+      "gh": ["Santiment"],
+      "desc": ["TokenTerminal"],
+      "funot": ["TokenTerminal"]
     },
     "ta": {
       "load": ["YahooFinance", "CoinGecko", "CCXT"],
@@ -443,8 +445,7 @@
     }
   },
   "etf": {
-    "ln": ["StockAnalysis", "FinanceDatabase"],
-    "ld": ["FinanceDatabase"],
+    "search": ["FinanceDatabase", "StockAnalysis"],
     "load": ["YahooFinance"],
     "overview": ["StockAnalysis"],
     "holdings": ["StockAnalysis"],

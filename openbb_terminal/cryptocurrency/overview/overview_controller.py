@@ -30,6 +30,8 @@ from openbb_terminal.cryptocurrency.overview import (
     rekt_view,
     withdrawalfees_model,
     withdrawalfees_view,
+    tokenterminal_model,
+    tokenterminal_view,
 )
 from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import (
     get_categories_keys,
@@ -84,6 +86,7 @@ class OverviewController(BaseController):
         "altindex",
         "ch",
         "cr",
+        "fun",
     ]
 
     PATH = "/crypto/ov/"
@@ -141,6 +144,10 @@ class OverviewController(BaseController):
             choices["news"]["-r"] = {c: None for c in cryptopanic_model.REGIONS}
             choices["news"]["-s"] = {c: None for c in cryptopanic_model.SORT_FILTERS}
             choices["wfpe"] = {c: None for c in withdrawalfees_model.POSSIBLE_CRYPTOS}
+            choices["fun"] = {c: None for c in tokenterminal_model.METRICS}
+            choices["fun"]["-m"] = {c: None for c in tokenterminal_model.METRICS}
+            choices["fun"]["-c"] = {c: None for c in tokenterminal_model.CATEGORIES}
+            choices["fun"]["-t"] = {c: None for c in tokenterminal_model.TIMELINES}
 
             choices["support"] = self.SUPPORT_CHOICES
             choices["about"] = self.ABOUT_CHOICES
@@ -176,6 +183,7 @@ class OverviewController(BaseController):
         mt.add_cmd("btcrb")
         mt.add_cmd("ch")
         mt.add_cmd("cr")
+        mt.add_cmd("fun")
         console.print(text=mt.menu_text, menu="Cryptocurrency - Overview")
 
     @log_start_end(log=logger)
@@ -191,7 +199,6 @@ class OverviewController(BaseController):
             You can look on only top N number of records with --limit.
             """,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -216,7 +223,72 @@ class OverviewController(BaseController):
         if ns_parser:
             pycoingecko_view.display_crypto_heatmap(
                 category=ns_parser.category,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_fun(self, other_args):
+        """Process fun command"""
+        parser = argparse.ArgumentParser(
+            prog="fun",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""Display fundamental metrics overview [Source: Token Terminal]""",
+        )
+        parser.add_argument(
+            "-m",
+            "--metric",
+            required=True,
+            choices=tokenterminal_model.METRICS,
+            dest="metric",
+            help="Choose metric of interest",
+        )
+        parser.add_argument(
+            "-c",
+            "--category",
+            default="",
+            choices=tokenterminal_model.CATEGORIES,
+            dest="category",
+            help="Choose category of interest",
+        )
+        parser.add_argument(
+            "-t",
+            "--timeline",
+            default="24h",
+            choices=tokenterminal_model.TIMELINES,
+            dest="timeline",
+            help="Choose timeline of interest",
+        )
+        parser.add_argument(
+            "-a",
+            "--ascend",
+            action="store_true",
+            help="Flag to sort in ascending order",
+            dest="ascend",
+            default=False,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            type=int,
+            help="Display N items",
+            default=10,
+        )
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-m")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
+        )
+        if ns_parser:
+            tokenterminal_view.display_fundamental_metrics(
+                metric=ns_parser.metric,
+                category=ns_parser.category,
+                timeline=ns_parser.timeline,
+                ascend=ns_parser.ascend,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -258,7 +330,6 @@ class OverviewController(BaseController):
             dest="descend",
             default=False,
         )
-
         parser.add_argument(
             "-s",
             "--slug",
@@ -277,7 +348,7 @@ class OverviewController(BaseController):
         if ns_parser:
             rekt_view.display_crypto_hacks(
                 slug=ns_parser.slug,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=" ".join(ns_parser.sortby),
                 ascend=not ns_parser.descend,
@@ -315,9 +386,12 @@ class OverviewController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
+            start_date = ns_parser.since.strftime("%Y-%m-%d")
+            end_date = ns_parser.until.strftime("%Y-%m-%d")
+
             display_btc_rainbow(
-                start_date=int(ns_parser.since.timestamp()),
-                end_date=int(ns_parser.until.timestamp()),
+                start_date=start_date,
+                end_date=end_date,
                 export=ns_parser.export,
             )
 
@@ -373,8 +447,8 @@ class OverviewController(BaseController):
 
         if ns_parser:
             blockchaincenter_view.display_altcoin_index(
-                since=ns_parser.since.timestamp(),
-                until=ns_parser.until.timestamp(),
+                start_date=ns_parser.since.timestamp(),
+                end_date=ns_parser.until.timestamp(),
                 period=ns_parser.period,
                 export=ns_parser.export,
             )
@@ -407,7 +481,7 @@ class OverviewController(BaseController):
 
         if ns_parser:
             withdrawalfees_view.display_overall_withdrawal_fees(
-                top=ns_parser.limit, export=ns_parser.export
+                limit=ns_parser.limit, export=ns_parser.export
             )
 
     @log_start_end(log=logger)
@@ -546,7 +620,7 @@ class OverviewController(BaseController):
                 symbol=ns_parser.coin,
                 export=ns_parser.export,
                 show_bar=ns_parser.bar,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
             )
 
     @log_start_end(log=logger)
@@ -593,7 +667,7 @@ class OverviewController(BaseController):
         )
         if ns_parser:
             pycoingecko_view.display_categories(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
                 pie=ns_parser.pie,
@@ -654,7 +728,7 @@ class OverviewController(BaseController):
         )
         if ns_parser:
             pycoingecko_view.display_stablecoins(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
@@ -763,7 +837,7 @@ class OverviewController(BaseController):
             "--urls",
             dest="urls",
             action="store_true",
-            help="Flag to show urls. If you will use that flag you will additional column with urls",
+            help="Flag to add a url column",
             default=False,
         )
 
@@ -772,7 +846,7 @@ class OverviewController(BaseController):
         )
         if ns_parser:
             pycoingecko_view.display_exchanges(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
@@ -825,7 +899,7 @@ class OverviewController(BaseController):
         if ns_parser:
             pycoingecko_view.display_exchange_rates(
                 sortby=ns_parser.sortby,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
@@ -879,7 +953,7 @@ class OverviewController(BaseController):
         )
         if ns_parser:
             pycoingecko_view.display_indexes(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
                 export=ns_parser.export,
@@ -936,7 +1010,7 @@ class OverviewController(BaseController):
         )
         if ns_parser:
             pycoingecko_view.display_derivatives(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
                 export=ns_parser.export,
@@ -1065,7 +1139,7 @@ class OverviewController(BaseController):
         if ns_parser:
             coinpaprika_view.display_all_coins_market_info(
                 symbol=ns_parser.vs,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 ascend=not ns_parser.descend,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
@@ -1143,7 +1217,7 @@ class OverviewController(BaseController):
         if ns_parser:
             coinpaprika_view.display_exchange_markets(
                 exchange=ns_parser.exchange,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
@@ -1211,7 +1285,7 @@ class OverviewController(BaseController):
         if ns_parser:
             coinpaprika_view.display_all_coins_info(
                 symbol=ns_parser.vs,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 ascend=not ns_parser.descend,
                 sortby=ns_parser.sortby,
                 export=ns_parser.export,
@@ -1276,7 +1350,7 @@ class OverviewController(BaseController):
         if ns_parser:
             coinpaprika_view.display_all_exchanges(
                 symbol=ns_parser.vs,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 ascend=not ns_parser.descend,
                 sortby=ns_parser.sortby,
                 export=ns_parser.export,
@@ -1364,7 +1438,7 @@ class OverviewController(BaseController):
         if ns_parser:
             coinpaprika_view.display_contracts(
                 symbol=ns_parser.platform,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 ascend=not ns_parser.descend,
                 sortby=ns_parser.sortby,
                 export=ns_parser.export,
@@ -1412,7 +1486,7 @@ class OverviewController(BaseController):
         )
         if ns_parser:
             coinbase_view.display_trading_pairs(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
@@ -1501,7 +1575,7 @@ class OverviewController(BaseController):
 
         if ns_parser:
             cryptopanic_view.display_news(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,

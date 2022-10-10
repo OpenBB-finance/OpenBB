@@ -42,7 +42,7 @@ def get_heatmap_data(timeframe: str) -> pd.DataFrame:
     ).json()
     df_change = pd.DataFrame.from_dict(r.json()["nodes"], orient="index")
     df_change.columns = ["Change"]
-    df_change["Change"] = df_change.Change / 100
+    df_change["Change"] = df_change.Change
     changes_dict = df_change.to_dict()
 
     dfs = pd.DataFrame()

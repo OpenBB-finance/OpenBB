@@ -14,6 +14,9 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table, plot_autoscale
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import fmp_model
+from openbb_terminal.helpers_denomination import (
+    transform as transform_by_denomination,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -192,25 +195,12 @@ def display_income_statement(
         if plot:
             income_plot_data = income[income.columns[::-1]]
             rows_plot = len(plot)
-            maximum_value = income_plot_data.max().max()
             income_plot_data = income_plot_data.transpose()
             income_plot_data.columns = income_plot_data.columns.str.lower()
 
             if not ratios:
-                if maximum_value > 1_000_000_000_000:
-                    df_rounded = income_plot_data / 1_000_000_000_000
-                    denomination = " in Trillions"
-                elif maximum_value > 1_000_000_000:
-                    df_rounded = income_plot_data / 1_000_000_000
-                    denomination = " in Billions"
-                elif maximum_value > 1_000_000:
-                    df_rounded = income_plot_data / 1_000_000
-                    denomination = " in Millions"
-                elif maximum_value > 1_000:
-                    df_rounded = income_plot_data / 1_000
-                    denomination = " in Thousands"
-                else:
-                    df_rounded = income_plot_data
+                (df_rounded, denomination) = transform_by_denomination(income_plot_data)
+                if denomination == "Units":
                     denomination = ""
             else:
                 df_rounded = income_plot_data
@@ -291,25 +281,14 @@ def display_balance_sheet(
         if plot:
             balance_plot_data = balance[balance.columns[::-1]]
             rows_plot = len(plot)
-            maximum_value = balance_plot_data.max().max()
             balance_plot_data = balance_plot_data.transpose()
             balance_plot_data.columns = balance_plot_data.columns.str.lower()
 
             if not ratios:
-                if maximum_value > 1_000_000_000_000:
-                    df_rounded = balance_plot_data / 1_000_000_000_000
-                    denomination = " in Trillions"
-                elif maximum_value > 1_000_000_000:
-                    df_rounded = balance_plot_data / 1_000_000_000
-                    denomination = " in Billions"
-                elif maximum_value > 1_000_000:
-                    df_rounded = balance_plot_data / 1_000_000
-                    denomination = " in Millions"
-                elif maximum_value > 1_000:
-                    df_rounded = balance_plot_data / 1_000
-                    denomination = " in Thousands"
-                else:
-                    df_rounded = balance_plot_data
+                (df_rounded, denomination) = transform_by_denomination(
+                    balance_plot_data
+                )
+                if denomination == "Units":
                     denomination = ""
             else:
                 df_rounded = balance_plot_data
@@ -389,25 +368,12 @@ def display_cash_flow(
         if plot:
             cash_plot_data = cash[cash.columns[::-1]]
             rows_plot = len(plot)
-            maximum_value = cash_plot_data.max().max()
             cash_plot_data = cash_plot_data.transpose()
             cash_plot_data.columns = cash_plot_data.columns.str.lower()
 
             if not ratios:
-                if maximum_value > 1_000_000_000_000:
-                    df_rounded = cash_plot_data / 1_000_000_000_000
-                    denomination = " in Trillions"
-                elif maximum_value > 1_000_000_000:
-                    df_rounded = cash_plot_data / 1_000_000_000
-                    denomination = " in Billions"
-                elif maximum_value > 1_000_000:
-                    df_rounded = cash_plot_data / 1_000_000
-                    denomination = " in Millions"
-                elif maximum_value > 1_000:
-                    df_rounded = cash_plot_data / 1_000
-                    denomination = " in Thousands"
-                else:
-                    df_rounded = cash_plot_data
+                (df_rounded, denomination) = transform_by_denomination(cash_plot_data)
+                if denomination == "Units":
                     denomination = ""
             else:
                 df_rounded = cash_plot_data

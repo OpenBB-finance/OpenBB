@@ -501,7 +501,6 @@ def test_call_func_no_parser(func, mocker):
         "call_bt",
         "call_ta",
         "call_qa",
-        "call_pred",
     ],
 )
 def test_call_func_no_ticker(func, mocker):

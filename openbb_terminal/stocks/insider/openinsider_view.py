@@ -141,17 +141,17 @@ def print_insider_data(type_insider: str = "lcb", limit: int = 10, export: str =
 
 @log_start_end(log=logger)
 def print_insider_filter(
-    preset_loaded: str,
+    preset: str,
     symbol: str,
     limit: int = 10,
     links: bool = False,
     export: str = "",
-):
+) -> None:
     """Print insider filter based on loaded preset. [Source: OpenInsider]
 
     Parameters
     ----------
-    preset_loaded : str
+    preset : str
         Loaded preset filter
     symbol : str
         Stock ticker symbol
@@ -165,7 +165,7 @@ def print_insider_filter(
     if symbol:
         link = f"http://openinsider.com/screener?s={symbol}"
     else:
-        link = get_open_insider_link(preset_loaded)
+        link = get_open_insider_link(preset)
 
     if not link:
         console.print("")
@@ -228,10 +228,10 @@ def print_insider_filter(
     )
 
     if export:
-        if preset_loaded:
-            cmd = "filter"
         if symbol:
             cmd = "lis"
+        else:
+            cmd = "filter"
 
         export_data(export, os.path.dirname(os.path.abspath(__file__)), cmd, df_insider)
 

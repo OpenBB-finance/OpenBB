@@ -20,7 +20,7 @@ def vcr_config():
 @pytest.mark.parametrize(
     "asset,since,until",
     [
-        ("BTC", 1_601_596_800, 1_641_573_787),
+        ("BTC", "2020-10-02", "2022-01-07"),
     ],
 )
 def test_get_close_price(asset, since, until, recorder):

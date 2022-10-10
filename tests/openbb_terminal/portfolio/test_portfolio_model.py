@@ -6,7 +6,7 @@ import pandas as pd
 import pytest
 
 # IMPORTATION INTERNAL
-from openbb_terminal.portfolio import portfolio_model
+from openbb_terminal.portfolio import portfolio_helper
 
 
 def build_csv_path(csv_name: str):
@@ -30,7 +30,7 @@ benchmark_trades = benchmark_trades.set_index("Date")
 
 @pytest.mark.vcr(record_mode="none")
 def test_tracking_error(recorder):
-    result_df, _ = portfolio_model.get_tracking_error(
+    result_df, _ = portfolio_helper.get_tracking_error(
         portfolio_returns, benchmark_returns
     )
 
@@ -39,7 +39,7 @@ def test_tracking_error(recorder):
 
 @pytest.mark.vcr(record_mode="none")
 def test_tail_ratio():
-    result_df, _, _ = portfolio_model.get_tail_ratio(
+    result_df, _, _ = portfolio_helper.get_tail_ratio(
         portfolio_returns, benchmark_returns
     )
 
