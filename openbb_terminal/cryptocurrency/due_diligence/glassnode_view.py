@@ -47,9 +47,9 @@ def display_btc_rainbow(
     Parameters
     ----------
     start_date : int
-        Initial date timestamp. Default is initial BTC timestamp: 1_325_376_000
+        Initial date, format YYYY-MM-DD
     end_date : int
-        Final date timestamp. Default is current BTC timestamp
+        Final date, format YYYY-MM-DD
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional

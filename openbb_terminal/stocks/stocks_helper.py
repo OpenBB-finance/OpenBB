@@ -8,7 +8,7 @@ __docformat__ = "numpy"
 import logging
 import os
 from datetime import datetime, timedelta, date
-from typing import Any, Union, Optional, Iterable, List
+from typing import Any, Union, Optional, Iterable, List, Dict
 
 import financedatabase as fd
 import matplotlib.pyplot as plt
@@ -89,7 +89,7 @@ def search(
     export : str
         Export data
     """
-    kwargs: dict[str, Any] = {"exclude_exchanges": False}
+    kwargs: Dict[str, Any] = {"exclude_exchanges": False}
     if country:
         kwargs["country"] = country
     if sector:

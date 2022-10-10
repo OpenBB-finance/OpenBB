@@ -43,6 +43,7 @@ en:
   featflags/cmdloc: command location displayed in figures
   featflags/tbhint: displays usage hints in a bottom toolbar
   settings/_info_: Settings through environment variables
+  settings/colors: set your own terminal colors
   settings/autoscaling: plot autoscaling
   settings/dt: add or remove datetime from flair
   settings/flair: set the flair emoji to be used
@@ -531,6 +532,7 @@ en:
   crypto/ov/btcrb: display bitcoin rainbow price chart (logarithmic regression)
   crypto/ov/ch: lists major crypto-related hacks
   crypto/ov/cr: crypto supply or borrow interest rates
+  crypto/ov/fun: explore projects based on fundamental metrics
   crypto/onchain/hr: check blockchain hashrate over time (BTC or ETH)
   crypto/onchain/btccp: displays BTC circulating supply
   crypto/onchain/btcct: displays BTC confirmed transactions
@@ -591,7 +593,7 @@ en:
   crypto/dd/load: load a specific cryptocurrency for analysis
   crypto/dd/_symbol: Coin
   crypto/dd/_source: Source
-  crypto/dd/info: basic information about loaded coin
+  crypto/dd/info: information about loaded coin
   crypto/dd/market: market stats about loaded coin
   crypto/dd/ath: all time high related stats for loaded coin
   crypto/dd/atl: all time low related stats for loaded coin
@@ -600,6 +602,7 @@ en:
   crypto/dd/score: different kind of scores for loaded coin, e.g developer score, sentiment score
   crypto/dd/dev: github, bitbucket coin development statistics
   crypto/dd/bc: links to blockchain explorers for loaded coin
+  crypto/dd/desc: description on project - why, how, what
   crypto/dd/active: active addresses
   crypto/dd/nonzero: addresses with non-zero balances
   crypto/dd/change: 30d change of supply held on exchange wallets
@@ -629,6 +632,7 @@ en:
   crypto/dd/links: links e.g. whitepaper, github, twitter, youtube, reddit, telegram
   crypto/dd/gh: github activity over time
   crypto/dd/news: loaded coin's most recent news
+  crypto/dd/funot: fundamental metric over time
   crypto/ta/_ticker: Coin loaded
   crypto/ta/tv: open interactive chart on
   crypto/ta/_overlap_: Overlap

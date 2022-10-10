@@ -92,16 +92,6 @@ class TerminalController(BaseController):
 
     PATH = "/"
 
-    ROUTINE_FILES = {
-        filepath.name: filepath
-        for filepath in (REPOSITORY_DIRECTORY / "routines").rglob("*.openbb")
-    }
-    ROUTINE_FILES.update(
-        {filepath.name: filepath for filepath in ROUTINES_DIRECTORY.rglob("*.openbb")}
-    )
-
-    ROUTINE_CHOICES = {filename: None for filename in ROUTINE_FILES}
-
     GUESS_TOTAL_TRIES = 0
     GUESS_NUMBER_TRIES_LEFT = 0
     GUESS_SUM_SCORE = 0.0
@@ -111,13 +101,6 @@ class TerminalController(BaseController):
         """Constructor"""
         super().__init__(jobs_cmds)
 
-        if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["exe"] = self.ROUTINE_CHOICES
-
-            self.completer = NestedCompleter.from_nested_dict(choices)
-
         self.queue: List[str] = list()
 
         if jobs_cmds:
@@ -126,6 +109,28 @@ class TerminalController(BaseController):
             )
 
         self.update_success = False
+
+        self.update_runtime_choices()
+
+    def update_runtime_choices(self):
+        """Update runtime choices"""
+        self.ROUTINE_FILES = {
+            filepath.name: filepath
+            for filepath in (REPOSITORY_DIRECTORY / "routines").rglob("*.openbb")
+        }
+        self.ROUTINE_FILES.update(
+            {
+                filepath.name: filepath
+                for filepath in ROUTINES_DIRECTORY.rglob("*.openbb")
+            }
+        )
+        self.ROUTINE_CHOICES = {filename: None for filename in self.ROUTINE_FILES}
+        if session and obbff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
+            choices["support"] = self.SUPPORT_CHOICES
+            choices["exe"] = self.ROUTINE_CHOICES
+
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
         """Print help"""
@@ -165,6 +170,7 @@ class TerminalController(BaseController):
         mt.add_menu("reports")
         mt.add_raw("\n")
         console.print(text=mt.menu_text, menu="Home")
+        self.update_runtime_choices()
 
     def call_news(self, other_args: List[str]) -> None:
         """Process news command"""
@@ -468,7 +474,7 @@ class TerminalController(BaseController):
             if path_dir in ("-i", "--input"):
                 args = [path_routine[1:]] + other_args_processed[idx:]
                 break
-            if path_dir not in ("-f", "--file"):
+            if path_dir not in ("--file"):
                 path_routine += f"/{path_dir}"
 
         if not args:
@@ -481,7 +487,6 @@ class TerminalController(BaseController):
             description="Execute automated routine script.",
         )
         parser_exe.add_argument(
-            "-f",
             "--file",
             help="The path or .openbb file to run.",
             dest="path",
@@ -496,7 +501,7 @@ class TerminalController(BaseController):
             type=lambda s: [str(item) for item in s.split(",")],
         )
         if args and "-" not in args[0][0]:
-            args.insert(0, "-f")
+            args.insert(0, "--file")
         ns_parser_exe = parse_simple_args(parser_exe, args)
         if ns_parser_exe:
             if ns_parser_exe.path:
@@ -756,7 +761,6 @@ def insert_start_slash(cmds: List[str]) -> List[str]:
 
 def do_rollover():
     """RollOver the log file."""
-
     for handler in logging.getLogger().handlers:
         if isinstance(handler, PathTrackingFileHandler):
             handler.doRollover()
@@ -962,7 +966,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="terminal",
-        description="The gamestonk terminal.",
+        description="The OpenBB Terminal.",
     )
     parser.add_argument(
         "-d",
@@ -973,7 +977,6 @@ if __name__ == "__main__":
         help="Runs the terminal in debug mode.",
     )
     parser.add_argument(
-        "-f",
         "--file",
         help="The path or .openbb file to run.",
         dest="path",
@@ -1012,7 +1015,7 @@ if __name__ == "__main__":
     )
 
     if sys.argv[1:] and "-" not in sys.argv[1][0]:
-        sys.argv.insert(1, "-f")
+        sys.argv.insert(1, "--file")
     ns_parser = parser.parse_args()
     main(
         ns_parser.debug,

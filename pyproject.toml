@@ -70,7 +70,7 @@ pandas = "^1.5.0"
 pandas-market-calendars = "~3.2"
 ipympl = "^0.8.2"
 voila = "^0.3.0"
-rich = "^10.16.1"
+rich = "^12.6.0"
 investpy = "^1.0.7"
 dnspython = "^2.1.0"
 numpy = "^1.21.2"
@@ -91,7 +91,8 @@ pyinstaller = {version = "^4.10", optional = true}
 jupyterlab-code-formatter = {version = "^1.4.10", optional = true}
 jupyterlab-lsp = {version = "^3.10.1", optional = true}
 jedi-language-server = {version = "^0.35.1", optional = true}
-kaleido = {version = "<=0.2.1", optional = true}
+tokenterminal = "^1.0.1"
+kaleido = {version = "^0.2.1", optional = true}
 torch = {version = "1.11.0", optional = true}
 streamlit = "^1.12.2"
 charset-normalizer = "2.1.0"
@@ -134,3 +135,7 @@ installer = ["pyinstaller"]
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pydocstyle]
+convention = "numpy"
+match = '((?!test_).)*\.py'
