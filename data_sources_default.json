@@ -332,7 +332,6 @@
       "btcrb": ["BlockchainCenter"],
       "ch": ["Rekt"],
       "cr": ["LoanScan"],
-
       "fun": ["TokenTerminal"]
     },
     "onchain": {
@@ -355,7 +354,10 @@
       "holders": ["Ethplorer"],
       "th": ["Ethplorer"],
       "prices": ["Ethplorer"],
-      "tx": ["Ethplorer"]
+      "tx": ["Ethplorer"],
+      "dt": ["Shroom"],
+      "ds": ["Shroom"],
+      "tvl": ["Shroom"]
     },
     "defi": {
       "newsletter": ["Substack"],
