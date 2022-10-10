@@ -1,5 +1,6 @@
 """Reddit Model"""
 __docformat__ = "numpy"
+# pylint:disable=too-many-lines
 
 import logging
 from datetime import datetime, timedelta
@@ -20,8 +21,6 @@ from openbb_terminal import config_terminal as cfg
 from openbb_terminal.common.behavioural_analysis.reddit_helpers import find_tickers
 from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
-
-# pylint: disable=too-many-lines
 
 logger = logging.getLogger(__name__)
 
