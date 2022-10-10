@@ -68,6 +68,7 @@ class EconomyController(BaseController):
         "rtps",
         "bigmac",
         "ycrv",
+        "matrix",
         "events",
         "edebt",
     ]
@@ -209,6 +210,10 @@ class EconomyController(BaseController):
                     "investpy": None,
                     "FRED": None,
                 },
+            }
+            self.choices["matrix"] = {
+                "--countries": {c: None for c in investingcom_model.MATRIX_CHOICES},
+                "-c": "--countries",
             }
             self.choices["events"] = {
                 "--country": {c: None for c in investingcom_model.CALENDAR_COUNTRIES},
@@ -368,6 +373,7 @@ class EconomyController(BaseController):
         mt.add_cmd("map")
         mt.add_cmd("bigmac")
         mt.add_cmd("ycrv")
+        mt.add_cmd("matrix")
         mt.add_cmd("events")
         mt.add_cmd("edebt")
         mt.add_raw("\n")
@@ -1132,6 +1138,37 @@ class EconomyController(BaseController):
                     country=ns_parser.country,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
+                )
+
+    @log_start_end(log=logger)
+    def call_matrix(self, other_args: List[str]):
+        """Process matrix command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="matrix",
+            description="Generate country yield curve. The yield curve shows the bond rates"
+            " at different maturities.",
+        )
+        parser.add_argument(
+            "-c",
+            "--countries",
+            action="store",
+            dest="countries",
+            choices=investingcom_model.MATRIX_CHOICES,
+            default="g7",
+            help="Display yield matrix for set of countries.",
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            raw=True,
+        )
+        if ns_parser:
+            if ns_parser.countries:
+                investingcom_view.display_matrix(
+                    investingcom_model.MATRIX_COUNTRIES[ns_parser.countries]
                 )
 
     @log_start_end(log=logger)

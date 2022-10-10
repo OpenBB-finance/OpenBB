@@ -6,7 +6,7 @@ import argparse
 
 import datetime
 import math
-from typing import Tuple
+from typing import Dict, List, Tuple
 import pandas as pd
 
 import pytz
@@ -32,6 +32,96 @@ CATEGORIES = [
     "confidence_index",
 ]
 IMPORTANCES = ["high", "medium", "low", "all"]
+MATRIX_CHOICES = ["eurozone", "g7"]
+MATRIX_COUNTRIES = {
+    "eurozone": [
+        "Portugal",
+        "Spain",
+        "Italy",
+        "France",
+        "Germany",
+        "Austria",
+        "Netherlands",
+    ],
+    "g7": [
+        "United states",
+        "Canada",
+        "United Kingdom",
+        "Japan",
+        "Germany",
+        "France",
+        "Italy",
+    ],
+}
+
+
+@log_start_end(log=logger)
+def create_matrix(dict: Dict[str, Dict[str, float]]) -> pd.DataFrame:
+
+    tenor = list(dict.keys())[0]
+    d = dict[tenor]
+    countries = list(d.keys())
+
+    # Create empty matrix
+    matrix = []
+    N = len(d)
+    for i in range(N):
+        matrix.append([0] * N)
+
+    for i, country_i in enumerate(countries):
+        for j, country_j in enumerate(countries):
+            matrix[i][j] = round((d[country_i] - d[country_j]) * 100, 1)
+
+    matrixdf = pd.DataFrame(matrix)
+
+    matrixdf.columns = list(d.keys())
+    matrixdf = matrixdf.set_index(matrixdf.columns)
+
+    matrixdf.insert(0, "Yield " + tenor, pd.DataFrame.from_dict(d, orient="index"))
+    # matrixdf = matrixdf.to_string(float_format='{:.1f}'.format)
+
+    return matrixdf
+
+
+@log_start_end(log=logger)
+def get_matrix(
+    countries: List[str], tenor: str = "10Y", change: bool = False
+) -> pd.DataFrame:
+
+    # d0 = {}
+    # d1 = {}
+    # for country in countries:
+    #     df = investpy.bonds.get_bonds_overview(country)
+    #     d0[tenor][country] = df[df["name"]==country+" "+tenor]["last_close"].iloc[0]
+    #     d1[tenor][country] = df[df["name"]==country+" "+tenor]["previous"].iloc[0]
+
+    d0 = {
+        "5Y": {
+            "Portugal": 2.646,
+            "Spain": 2.753,
+            "Italy": 3.888,
+            "France": 2.289,
+            "Germany": 2.045,
+            "Austria": 2.419,
+            "Netherlands": 2.189,
+        }
+    }
+
+    d1 = {
+        "5Y": {
+            "Portugal": 2.6,
+            "Spain": 2.7,
+            "Italy": 3.8,
+            "France": 2.2,
+            "Germany": 2.0,
+            "Austria": 2.4,
+            "Netherlands": 2.1,
+        }
+    }
+
+    if change:
+        return create_matrix(d0) - create_matrix(d1)
+    return create_matrix(d0)
 
 
 @log_start_end(log=logger)

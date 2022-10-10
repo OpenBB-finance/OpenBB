@@ -26,6 +26,19 @@ register_matplotlib_converters()
 
 
 @log_start_end(log=logger)
+def display_matrix(countries: List[str], tenor: str = "10Y", change: bool = False):
+
+    df = investingcom_model.get_matrix(countries, tenor, change)
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        show_index=True,
+        title=f"Yield Curve Matrix",
+        floatfmt=".1f",
+    )
+
+
+@log_start_end(log=logger)
 def display_yieldcurve(
     country: str,
     external_axes: Optional[List[plt.Axes]] = None,
