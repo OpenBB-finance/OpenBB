@@ -116,12 +116,15 @@ class SourcesController(BaseController):
             other_args.insert(0, "-c")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            console.print(
-                f"\n[param]Default   :[/param] {self.commands_with_sources[ns_parser.cmd][0]}"
-            )
-            console.print(
-                f"[param]Available :[/param] {', '.join(self.commands_with_sources[ns_parser.cmd])}\n"
-            )
+            if self.commands_with_sources[ns_parser.cmd]:
+                console.print(
+                    f"\n[param]Default   :[/param] {self.commands_with_sources[ns_parser.cmd][0]}"
+                )
+                console.print(
+                    f"[param]Available :[/param] {', '.join(self.commands_with_sources[ns_parser.cmd])}\n"
+                )
+            else:
+                console.print("This command has no data sources available.\n")
 
     # pylint: disable=R0912
     @log_start_end(log=logger)

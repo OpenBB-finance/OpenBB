@@ -2,7 +2,6 @@
 import os
 import os.path
 from distutils.util import strtobool
-import pkg_resources
 
 # IMPORTATION THIRDPARTY
 from dotenv import load_dotenv
@@ -122,8 +121,4 @@ GUESS_EASTER_EGG_FILE = str(
     )
 )
 
-try:
-    version = pkg_resources.get_distribution("OpenBBTerminal").version
-except Exception:
-    version = "1.9.0m"
-VERSION = str(os.getenv("OPENBB_VERSION", version))
+VERSION = str(os.getenv("OPENBB_VERSION", "1.9.0m"))
