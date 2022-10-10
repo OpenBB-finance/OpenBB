@@ -398,8 +398,14 @@ main:
                 ref: /terminal/crypto/onchain/ueat
               - name: whales
                 ref: /terminal/crypto/onchain/whales
-          - name: overview
-            ref: /terminal/crypto/ov
+              - name: tvl
+                ref: /terminal/crypto/onchain/tvl
+              - name: ds
+                ref: /terminal/crypto/onchain/ds
+              - name: dt
+                ref: /terminal/crypto/onchain/dt
+          - name: nft
+            ref: "/terminal/crypto/nft"
             sub:
               - name: altindex
                 ref: /terminal/crypto/ov/altindex
