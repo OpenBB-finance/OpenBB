@@ -30,6 +30,16 @@ binary_to_remove = pathlib.Path(
 print("Removing ARM64 Binary: _scs_direct.cpython-39-darwin.so")
 binary_to_remove.unlink(missing_ok=True)
 
+if "torch" in os.listdir(pathex):
+    torch_binaries = [
+        (
+            os.path.abspath(os.path.join(pathex, "torch", "lib", dylib)),
+            os.path.join(".", "torch", "lib"),
+        )
+        for dylib in os.listdir(os.path.join(pathex, "torch", "lib"))
+    ]
+else:
+    torch_binaries = []
 
 # Get latest commit
 commit_hash = get_commit_hash()
@@ -46,6 +56,7 @@ added_files = [
     (os.path.join(os.getcwd(), "i18n"), "i18n"),
     (os.path.join(os.getcwd(), "styles"), "styles"),
     (os.path.join(pathex, "property_cached"), "property_cached"),
+    (os.path.join(pathex, "prophet"), "prophet"),
     (os.path.join(pathex, "user_agent"), "user_agent"),
     (os.path.join(pathex, "vaderSentiment"), "vaderSentiment"),
     (os.path.join(pathex, "frozendict", "VERSION"), "frozendict"),
@@ -85,9 +96,8 @@ hidden_imports = [
     "user_agent",
     "vaderSentiment",
     "frozendict",
-    "textwrap3",
     "pyEX",
-    "tensorflow",
+    "prophet",
     "feedparser",
     "pymongo",
     "bson",
@@ -98,7 +108,7 @@ hidden_imports = [
 analysis_kwargs = dict(
     scripts=[os.path.join(os.getcwd(), "terminal.py")],
     pathex=[pathex, "."],
-    binaries=[],
+    binaries=torch_binaries,
     datas=added_files,
     hiddenimports=hidden_imports,
     hookspath=["build/pyinstaller/hooks"],
@@ -129,7 +139,7 @@ exe_kwargs = dict(
     upx_exclude=[],
     console=True,
     disable_windowed_traceback=False,
-    target_arch="x86_64",
+    target_arch="arm64",
     codesign_identity=None,
     entitlements_file=None,
 )
