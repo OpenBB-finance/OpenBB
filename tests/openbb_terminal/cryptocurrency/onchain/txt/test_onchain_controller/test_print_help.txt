@@ -9,6 +9,9 @@
     ueat               unique ethereum addresses which made a transaction              [BitQuery]
     ttcp               top traded crypto pairs on given decentralized exchange         [BitQuery]
     baas               bid, ask prices, average spread for given crypto pair           [BitQuery]
+    dt                 daily transactions of eth tokens                                [Shroom]
+    ds                 stats of eth platform (daily users; fees)                       [Shroom]
+    tvl                total value locked of ERC20 tokens                              [Shroom]
 
 Ethereum address: 
 Address type: 

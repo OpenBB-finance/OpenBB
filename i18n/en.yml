@@ -544,6 +544,9 @@ en:
   crypto/onchain/ueat: unique ethereum addresses which made a transaction
   crypto/onchain/ttcp: top traded crypto pairs on given decentralized exchange
   crypto/onchain/baas: bid, ask prices, average spread for given crypto pair
+  crypto/onchain/dt: daily transactions of eth tokens
+  crypto/onchain/ds: stats of eth platform (daily users; fees)
+  crypto/onchain/tvl: total value locked of ERC20 tokens
   crypto/onchain/_address: Ethereum address
   crypto/onchain/_type: Address type
   crypto/onchain/_ethereum_: Ethereum
