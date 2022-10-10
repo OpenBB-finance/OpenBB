@@ -72,7 +72,7 @@ voila = "^0.3.0"
 rich = "^12.6.0"
 investpy = "^1.0.7"
 dnspython = "^2.1.0"
-numpy = "^1.21.2"
+numpy = "1.21.6"
 python-dotenv = "^0.19.2"
 Pygments = "^2.11.2"
 ascii-magic = "^1.6"
@@ -97,9 +97,9 @@ watchdog = "^2.1.9"
 pythclient = "^0.1.2"
 ipyflex = "^0.2.4"
 "ruamel.yaml" = "^0.17.21"
-torch = {version = "1.11.0", optional = true}
 pytorch-lightning = {version = "1.6.5", optional = true}
 u8darts = {version = "0.22.0", extras = ["torch"], optional = true}
+torch = {version = "1.12.1", optional = true}
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
@@ -126,6 +126,7 @@ pre-commit = "^2.16.0"
 pytest-cov = "^3.0.0"
 types-six = "^1.16.12"
 nbmake = ">0.5.0"
+pydocstyle = "^6.1.1"
 
 [tool.poetry.extras]
 prediction = ["torch", "pytorch-lightning", "u8darts"]

@@ -5,6 +5,10 @@ dependencies:
   - python=3.9
   - pip
   - poetry=1.1.13
+  - numpy=1.21.6
+  - scipy=1.8.1
+  - pytorch:pytorch=1.12.1
   - conda-forge:lightgbm
   - conda-forge:pytorch-lightning=1.6.5
   - cvxpy=1.2.1
+  - lxml=4.9.1
