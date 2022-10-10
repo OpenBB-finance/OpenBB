@@ -245,7 +245,7 @@ def get_aggregated_series_data(
 
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
-def get_yield_curve(date: datetime = datetime.today()) -> Tuple[pd.DataFrame, datetime]:
+def get_yield_curve(date: datetime = datetime.today()) -> Tuple[pd.DataFrame, str]:
     """Gets yield curve data from FRED
 
     Parameters
@@ -299,7 +299,7 @@ def get_yield_curve(date: datetime = datetime.today()) -> Tuple[pd.DataFrame, da
         date_of_yield = date
         series = df[df.index == date]
         if series.empty:
-            return pd.DataFrame(), date.strftime("%Y-%m-%d")
+            return pd.DataFrame(), date_of_yield
         rates = pd.DataFrame(series.values.T, columns=["Rate"])
 
     rates.insert(
