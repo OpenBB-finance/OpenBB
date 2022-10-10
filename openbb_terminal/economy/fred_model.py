@@ -245,7 +245,7 @@ def get_aggregated_series_data(
 
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
-def get_yield_curve(date: datetime = datetime.today()) -> Tuple[pd.DataFrame, str]:
+def get_yield_curve(date: datetime = datetime.today()) -> Tuple[pd.DataFrame, datetime]:
     """Gets yield curve data from FRED
 
     Parameters
