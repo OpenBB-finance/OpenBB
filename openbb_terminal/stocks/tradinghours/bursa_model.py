@@ -153,15 +153,15 @@ def all_bursa():
     return bursa
 
 
-def check_if_open(bursa, exchange):
+def check_if_open(bursa: pd.DataFrame, exchange: str) -> bool:
     """Check if market open helper function
 
     Parameters
     __________
-    bursa
+    bursa : pd.DataFrame
         pd.DataFrame of all exchanges
-    exchange
-        bursa pd.DataFrame index value for exchande
+    exchange : str
+        bursa pd.DataFrame index value for exchange
 
     Returns
     _______
@@ -178,94 +178,30 @@ def check_if_open(bursa, exchange):
         exchange_df = exchange_df.iloc[0].transpose()
     utcmoment_naive = datetime.utcnow()
     utcmoment = utcmoment_naive.replace(tzinfo=pytz.utc)
-    localDatetime = utcmoment.astimezone(pytz.timezone(tz))
+    local_datetime = utcmoment.astimezone(pytz.timezone(tz))
     market_open = datetime.strptime(exchange_df["market_open"], "%H:%M:%S")
     market_close = datetime.strptime(exchange_df["market_close"], "%H:%M:%S")
+    after_market_open = local_datetime.time() >= market_open.time()
+    before_market_close = local_datetime.time() <= market_close.time()
     try:
         lunchbreak_start = datetime.strptime(
             exchange_df["lunchbreak_start"], "%H:%M:%S"
         )
         lunchbreak_end = datetime.strptime(exchange_df["lunchbreak_end"], "%H:%M:%S")
-    except Exception:
-        lunchbreak_end = None
-        lunchbreak_start = None
 
-    if localDatetime.weekday() >= 5:
+        after_lunch_start = local_datetime.time() >= lunchbreak_start.time()
+        before_lunch_end = local_datetime.time() <= lunchbreak_end.time()
+    except Exception:
+        after_lunch_start = False
+        before_lunch_end = False
+
+    if local_datetime.weekday() >= 5:
         result = False
-    elif (
-        localDatetime.hour > market_open.hour and localDatetime.hour < market_close.hour
-    ):
-        if lunchbreak_start is not None and lunchbreak_end is not None:
-            if (
-                localDatetime.hour > lunchbreak_start.hour
-                and localDatetime.hour < lunchbreak_end.hour
-            ):
-                result = False
-            elif (
-                localDatetime.hour > lunchbreak_start.hour
-                and localDatetime.hour == lunchbreak_end.hour
-                and localDatetime.minute < lunchbreak_end.minute
-            ):
-                result = False
-            elif (
-                localDatetime.hour == lunchbreak_start.hour
-                and localDatetime.minute >= lunchbreak_start.minute
-            ):
-                result = False
-        else:
-            result = True
-    elif (
-        localDatetime.hour > market_open.hour
-        and localDatetime.hour == market_close.hour
-        and localDatetime.minute < market_close.minute
-    ):
-        if lunchbreak_start is not None and lunchbreak_end is not None:
-            if (
-                localDatetime.hour > lunchbreak_start.hour
-                and localDatetime.hour < lunchbreak_end.hour
-            ):
-                result = False
-            elif (
-                localDatetime.hour > lunchbreak_start.hour
-                and localDatetime.hour == lunchbreak_end.hour
-                and localDatetime.minute < lunchbreak_end.minute
-            ):
-                result = False
-            elif (
-                localDatetime.hour == lunchbreak_start.hour
-                and localDatetime.minute >= lunchbreak_start.minute
-            ):
-                result = False
-            else:
-                result = True
-        else:
-            result = True
-    elif (
-        localDatetime.hour == market_open.hour
-        and localDatetime.minute >= market_open.minute
-    ):
-        if lunchbreak_start is not None and lunchbreak_end is not None:
-            if (
-                localDatetime.hour > lunchbreak_start.hour
-                and localDatetime.hour < lunchbreak_end.hour
-            ):
-                result = False
-            elif (
-                localDatetime.hour > lunchbreak_start.hour
-                and localDatetime.hour == lunchbreak_end.hour
-                and localDatetime.minute < lunchbreak_end.minute
-            ):
-                result = False
-            elif (
-                localDatetime.hour == lunchbreak_start.hour
-                and localDatetime.minute >= lunchbreak_start.minute
-            ):
-                result = False
-            else:
-                result = True
-        else:
-            result = True
     else:
-        result = False
+        result = (
+            after_market_open
+            and before_market_close
+            and not (after_lunch_start and before_lunch_end)
+        )
 
     return result
