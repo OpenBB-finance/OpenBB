@@ -113,7 +113,7 @@ def display_dapp_stats(
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfgPlot.PLOT_DPI)
         elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
-        df["fees"] = df["fees"] / 1_000_000
+
         ax.bar(df.index, df["n_users"], color=theme.down_color, label="Number of Users")
         ax.set_xlim(
             df.index[0],
@@ -121,7 +121,7 @@ def display_dapp_stats(
         )
 
         ax2 = ax.twinx()
-        ax2.plot(df["fees"], color=theme.up_color, label="Platform Fees")
+        ax2.plot(df["fees"] / 1_000_000, color=theme.up_color, label="Platform Fees")
         # ax2.plot(df["volume"], label="Volume")
         ax2.set_ylabel("Number of Users", labelpad=30)
         ax2.set_zorder(ax2.get_zorder() + 1)

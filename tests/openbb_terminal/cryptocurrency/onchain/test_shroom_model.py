@@ -3,6 +3,16 @@ import pytest
 from openbb_terminal.cryptocurrency.onchain import shroom_model
 
 
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "filter_headers": [
+            ("User-Agent", None),
+            ("x-api-key", "MOCK_AUTHORIZATION"),
+        ],
+    }
+
+
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "user_address, address_name",

@@ -59,7 +59,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         "eodhd": "EODHD",
         "santiment": "SANTIMENT",
         "tokenterminal": "TOKEN_TERMINAL",
-        "shroom": "SHROOM"
+        "shroom": "SHROOM",
     }
 
     API_LIST = list(API_DICT.keys())
@@ -83,7 +83,6 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
                 choices["support"] = self.SUPPORT_CHOICES
 
                 self.completer = NestedCompleter.from_nested_dict(choices)
-
 
     def check_keys_status(self) -> None:
         """Check keys status"""
@@ -171,10 +170,9 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             other_args.insert(0, "-k")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            os.environ["OPENBB_API_SHROOM_KEY"] = ns_parser.key
-            dotenv.set_key(self.env_file, "OPENBB_API_SHROOM_KEY", ns_parser.key)
-            cfg.API_SHROOM_KEY = ns_parser.key
-            self.check_shroom_key(show_output=True)
+            self.status_dict["shroom"] = keys_model.set_shroom_key(
+                key=ns_parser.key, persist=True, show_output=True
+            )
 
     @log_start_end(log=logger)
     def call_av(self, other_args: List[str]):

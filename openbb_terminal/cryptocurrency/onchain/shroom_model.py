@@ -98,8 +98,6 @@ def get_dapp_stats(
     df["timeframe"] = pd.to_datetime(df["timeframe"])
     df = df.set_index("timeframe")
 
-    print("crlhestd 22 ", df)
-
     return df
 
 
