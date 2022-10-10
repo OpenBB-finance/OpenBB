@@ -1147,8 +1147,7 @@ class EconomyController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="matrix",
-            description="Generate country yield curve. The yield curve shows the bond rates"
-            " at different maturities.",
+            description="Generate bond rates matrix"
         )
         parser.add_argument(
             "-c",
@@ -1157,7 +1156,7 @@ class EconomyController(BaseController):
             dest="countries",
             choices=investingcom_model.MATRIX_CHOICES,
             default="g7",
-            help="Display yield matrix for set of countries.",
+            help="Show bond rates matrix for set of countries.",
         )
         ns_parser = self.parse_known_args_and_warn(
             parser,

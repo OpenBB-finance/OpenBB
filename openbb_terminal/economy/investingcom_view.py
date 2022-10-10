@@ -8,6 +8,7 @@ from typing import Optional, List
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FormatStrFormatter
 from pandas.plotting import register_matplotlib_converters
+import seaborn as sns
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
@@ -17,6 +18,7 @@ from openbb_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
     print_rich_table,
+    is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
 
@@ -26,16 +28,55 @@ register_matplotlib_converters()
 
 
 @log_start_end(log=logger)
-def display_matrix(countries: List[str], tenor: str = "10Y", change: bool = False):
+def display_matrix(
+    countries: List[str],
+    tenor: str = "10Y",
+    change: bool = False,
+    raw: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
+    export: str = "",
+):
 
     df = investingcom_model.get_matrix(countries, tenor, change)
-    print_rich_table(
-        df,
-        headers=list(df.columns),
-        show_index=True,
-        title=f"Yield Curve Matrix",
-        floatfmt=".1f",
-    )
+    if not df.empty:
+        # This plot has 1 axis
+        if not external_axes:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        elif is_valid_axes_count(external_axes, 1):
+            (ax,) = external_axes
+        else:
+            return
+
+        if raw:
+            print_rich_table(
+                df,
+                headers=list(df.columns),
+                show_index=True,
+                title=f"Yield Curve Matrix",
+                floatfmt=".1f",
+            )
+
+        sns.heatmap(
+            df,
+            cbar_kws={"ticks": [-1.0, -0.5, 0.0, 0.5, 1.0]},
+            cmap="RdYlGn",
+            linewidths=1,
+            annot=True,
+            annot_kws={"fontsize": 10},
+            vmin=-1,
+            vmax=1,
+            mask=None,
+            ax=ax,
+        )
+        ax.set_title(f"Interest rates heatmap")
+
+        if not external_axes:
+            theme.visualize_output()
+
+        export_data(
+            export, os.path.dirname(os.path.abspath(__file__)), "hcorr", df_similar
+        )
+        console.print("")
 
 
 @log_start_end(log=logger)
