@@ -217,8 +217,11 @@ class OnchainController(BaseController):
             dest="interval",
             type=int,
             help="Interval in months",
-            default="1",
+            default=12,
         )
+
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-u")
 
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -241,7 +244,8 @@ class OnchainController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="ds",
             description="""
-                Lorem ipsum [Source: https://api.blockchain.info/]
+            Get daily transactions for certain symbols in ethereum blockchain
+            [Source: https://sdk.flipsidecrypto.xyz/shroomdk]
             """,
         )
 
@@ -278,7 +282,8 @@ class OnchainController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="dt",
             description="""
-                Display BTC confirmed transactions [Source: https://api.blockchain.info/]
+                Get daily transactions for certain symbols in ethereum blockchain
+                [Source: https://sdk.flipsidecrypto.xyz/shroomdk]
             """,
         )
 

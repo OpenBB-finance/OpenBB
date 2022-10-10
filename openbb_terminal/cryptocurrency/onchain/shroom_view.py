@@ -146,6 +146,8 @@ def display_dapp_stats(
     )
 
 
+@log_start_end(log=logger)
+@check_api_key(["API_SHROOM_KEY"])
 def display_total_value_locked(
     user_address: str,
     address_name: str,

@@ -6,7 +6,7 @@ import time
 import pandas as pd
 import requests
 
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import log_start_end, check_api_key
 from openbb_terminal import config_terminal as cfg
 
 logger = logging.getLogger(__name__)
@@ -73,6 +73,7 @@ def get_shroom_data(sql: str):
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_SHROOM_KEY"])
 def get_dapp_stats(
     platform: str = "curve",
 ):
@@ -93,13 +94,17 @@ def get_dapp_stats(
     df = pd.DataFrame(
         data["results"], columns=["timeframe", "fees", "n_users", "volume"]
     )
+
     df["timeframe"] = pd.to_datetime(df["timeframe"])
-    df.set_index("timeframe", inplace=True)
+    df = df.set_index("timeframe")
+
+    print("crlhestd 22 ", df)
 
     return df
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_SHROOM_KEY"])
 def get_daily_transactions(symbols: List[str]) -> pd.DataFrame:
     """Get daily transactions for certain symbols in ethereum blockchain
     [Source: https://sdk.flipsidecrypto.xyz/shroomdk]
@@ -141,6 +146,8 @@ def get_daily_transactions(symbols: List[str]) -> pd.DataFrame:
     return df
 
 
+@log_start_end(log=logger)
+@check_api_key(["API_SHROOM_KEY"])
 def get_total_value_locked(
     user_address: str,
     address_name: str,
