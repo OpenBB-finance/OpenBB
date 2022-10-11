@@ -61,7 +61,7 @@ class DegiroController(BaseController):
                 "-o": "--offset",
             }
             choices["create"] = {
-                "--action": {c: {} for c in DegiroView.ORDER_ACTION.keys()},
+                "--action": {c: {} for c in DegiroView.ORDER_ACTION},
                 "-a": "--action",
                 "--product": None,
                 "-prod": "--product",
@@ -73,9 +73,9 @@ class DegiroController(BaseController):
                 "-s": "--size",
                 "--up-to": None,
                 "-up": "--up-to",
-                "--duration": {c: {} for c in DegiroView.ORDER_DURATION.keys()},
+                "--duration": {c: {} for c in DegiroView.ORDER_DURATION},
                 "-d": "--duration",
-                "--type": {c: {} for c in DegiroView.ORDER_TYPE.keys()},
+                "--type": {c: {} for c in DegiroView.ORDER_TYPE},
                 "-t": "--type",
             }
             choices["update"] = {
