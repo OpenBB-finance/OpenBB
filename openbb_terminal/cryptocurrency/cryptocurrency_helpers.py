@@ -15,7 +15,7 @@ import numpy as np
 import ccxt
 from binance.client import Client
 import matplotlib.pyplot as plt
-from matplotlib.ticker import LogFormatter, ScalarFormatter
+from matplotlib.ticker import LogLocator, ScalarFormatter
 import yfinance as yf
 import mplfinance as mpf
 from pycoingecko import CoinGeckoAPI
