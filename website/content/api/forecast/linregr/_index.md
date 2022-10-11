@@ -38,7 +38,7 @@ Perform Linear Regression Forecasting
             Best Linear Regression Model
 
 ## Getting charts 
-### forecast.linregr(data: Union[pandas.core.series.Series, pandas.core.frame.DataFrame], target_column: str = 'close', dataset_name: str = '', n_predict: int = 5, past_covariates: str = None, train_split: float = 0.85, forecast_horizon: int = 5, output_chunk_length: int = 1, lags: Union[int, List[int]] = 72, export: str = '', residuals: bool = False, forecast_only: bool = False, start_date: Optional[datetime.datetime] = None, end_date: Optional[datetime.datetime] = None, naive: bool = False, chart=True)
+### forecast.linregr(data: Union[pandas.core.series.Series, pandas.core.frame.DataFrame], target_column: str = 'close', dataset_name: str = '', n_predict: int = 5, past_covariates: str = None, train_split: float = 0.85, forecast_horizon: int = 5, output_chunk_length: int = 1, lags: Union[int, List[int]] = 72, export: str = '', residuals: bool = False, forecast_only: bool = False, start_date: Optional[datetime.datetime] = None, end_date: Optional[datetime.datetime] = None, naive: bool = False, external_axes: Optional[List[axes]] = None, chart=True)
 
 Display Linear Regression Forecasting
 
@@ -74,3 +74,5 @@ Display Linear Regression Forecasting
         naive: bool
             Whether to show the naive baseline. This just assumes the closing price will be the
             same as the previous day's closing price. Defaults to False.
+        external_axes:Optional[List[plt.axes]]
+            External axes to plot on

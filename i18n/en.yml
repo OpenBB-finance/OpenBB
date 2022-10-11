@@ -1063,4 +1063,5 @@ en:
   forecast/tcn: Temporal Convolutional Neural Network (feat. Past covariates)
   forecast/trans: Transformer model (feat. Past covariates)
   forecast/tft: Temporal Fusion Transformer (feat. Past covariates)
+  forecast/nhits: Neural Hierarchical Interpolation for Time Series Forecasting (feat. Past covariates)
   forecast/_comingsoon_: Coming Soon
