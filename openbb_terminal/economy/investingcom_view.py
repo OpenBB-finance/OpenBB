@@ -8,6 +8,7 @@ from typing import Optional, List, Union
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FormatStrFormatter
 import numpy as np
+import pandas as pd
 from pandas.plotting import register_matplotlib_converters
 import seaborn as sns
 
@@ -41,56 +42,102 @@ def display_matrix(
     df = investingcom_model.get_matrix(countries, maturity, change)
 
     if not df.empty:
-        # This plot has 1 axis
-        if not external_axes:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        elif is_valid_axes_count(external_axes, 1):
-            (ax,) = external_axes
-        else:
-            return
-
-        mask = np.zeros((df.shape[0], df.shape[1]), dtype=bool)
-        mask[np.tril_indices(len(mask))] = True
-        mask[:, 0] = False
-        for i in range(df.shape[0]):
-            mask[i][i + 1] = True
-
-        sns.heatmap(
-            df,
-            cmap="RdYlGn",
-            annot=True,
-            annot_kws={
-                "fontsize": 12,
-            },
-            fmt=".2f",
-            linewidths=0.5,
-            mask=mask,
-            ax=ax,
-        )
-
-        ax.yaxis.tick_left()
-        plt.yticks(rotation=0)
-        ax.xaxis.tick_top()
-        plt.xticks(rotation=45, ha="center")
-
-        if isinstance(countries, str):
-            ax.set_title(f"{countries} - Interest rates heatmap", loc="center")
-            title = f"{countries} - Yield Curve Matrix"
-        else:
-            ax.set_title("Interest rates heatmap", loc="center")
-            title = "Yield Curve Matrix"
-
-        if not external_axes:
-            theme.visualize_output()
 
         if raw:
+            pretty_df = df.copy()
+
+            # Convert to string
+            pretty_df[list(pretty_df.columns)[1:]] = pretty_df[
+                list(pretty_df.columns)[1:]
+            ].applymap(lambda x: f"{x:.1f}" if x != 0 else "")
+
+            # Convert to string
+            pretty_df[list(pretty_df.columns)[0]] = pd.DataFrame(
+                df[list(pretty_df.columns)[0]]
+            ).applymap(lambda x: f"{x/100:.3f}")
+
+            # Add colors
+            pretty_df[list(pretty_df.columns)[1:]] = pretty_df[
+                list(pretty_df.columns)[1:]
+            ].applymap(
+                lambda x: f"[{theme.down_color}]{x}[/{theme.down_color}]"
+                if "-" in x
+                else f"[{theme.up_color}]{x}[/{theme.up_color}]"
+            )
+
+            # Add colors
+            pretty_df[list(pretty_df.columns)[0]] = pd.DataFrame(
+                pretty_df[list(pretty_df.columns)[0]]
+            ).applymap(lambda x: f"[yellow]{x}[/yellow]")
+
+            if isinstance(countries, str):
+                title = f"{countries} - Yield Curve Matrix"
+            else:
+                title = "Yield Curve Matrix"
+
             print_rich_table(
-                df,
+                pretty_df,
                 headers=list(df.columns),
                 show_index=True,
                 title=title,
-                floatfmt=".3f",
             )
+
+        else:
+            # This plot has 1 axis
+            if not external_axes:
+                _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+            elif is_valid_axes_count(external_axes, 1):
+                (ax,) = external_axes
+            else:
+                return
+
+            mask = np.zeros((df.shape[0], df.shape[1]), dtype=bool)
+            mask[np.tril_indices(len(mask))] = True
+            mask[:, 0] = False
+            for i in range(df.shape[0]):
+                mask[i][i + 1] = True
+
+            heatmap = sns.heatmap(
+                df,
+                cmap="RdYlGn_r",
+                annot=True,
+                annot_kws={
+                    "fontsize": 12,
+                },
+                fmt=".1f",
+                linewidths=0.5,
+                mask=mask,
+                ax=ax,
+            )
+
+            ax.yaxis.tick_left()
+            plt.yticks(rotation=0)
+            ax.xaxis.tick_top()
+            plt.xticks(rotation=45, ha="center")
+
+            # Set 3 decimal places for yield and 1 spread
+            spacing = df.shape[1] - 1
+            k = 0
+            for index, t in enumerate(heatmap.texts):
+                current_text = t.get_text()
+
+                if index == k:
+                    k += spacing
+                    spacing -= 1
+
+                    text_transform = lambda x: f"{round(float(x)/100, 3)}"
+                    t.set_text(text_transform(current_text))
+                else:
+                    t.set_text(current_text)
+
+            if isinstance(countries, str):
+                ax.set_title(f"{countries} - Interest rates heatmap", loc="center")
+            else:
+                ax.set_title("Interest rates heatmap", loc="center")
+
+            if not external_axes:
+                theme.visualize_output()
+
         export_data(export, os.path.dirname(os.path.abspath(__file__)), "matrix", df)
         console.print("")
 

@@ -123,7 +123,9 @@ def create_matrix(dict: Dict[str, Dict[str, float]]) -> pd.DataFrame:
     matrixdf = pd.DataFrame(matrix)
     matrixdf.columns = list(d.keys())
     matrixdf = matrixdf.set_index(matrixdf.columns)
-    matrixdf.insert(0, "Yield " + maturity, pd.DataFrame.from_dict(d, orient="index"))
+    matrixdf.insert(
+        0, "Yield " + maturity, pd.DataFrame.from_dict(d, orient="index") * 100
+    )
 
     return matrixdf
 
