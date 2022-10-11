@@ -37,6 +37,14 @@ logger = logging.getLogger(__name__)
 
 sys.tracebacklimit = 0
 
+# README PLEASE:
+# The API_DICT keys must match the set and check functions format.
+#
+# This format is used by the KeysController and get_keys_info().
+# E.g. tokenterminal -> set_tokenterminal_key & check_tokenterminal_key
+#
+# Don't forget to add the set function to api.py endpoints dictionary.
+# E.g.  "keys.tokenterminal": {"model": "openbb_terminal.keys_model.set_tokenterminal_key"},
 
 API_DICT: Dict = {
     "av": "ALPHA_VANTAGE",
@@ -68,6 +76,8 @@ API_DICT: Dict = {
     "messari": "MESSARI",
     "eodhd": "EODHD",
     "santiment": "SANTIMENT",
+    "tokenterminal": "TOKEN_TERMINAL",
+    "shroom": "SHROOM",
 }
 
 
@@ -233,27 +243,6 @@ def get_keys(show: bool = False) -> pd.DataFrame:
     return pd.DataFrame()
 
 
-def set_shroom_key(key: str, persist: bool = False, show_output: bool = False) -> str:
-    """Set Shroom key
-    Parameters
-    ----------
-        key: str
-            API key
-        persist: bool
-            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
-            If True, api key change will be global, i.e. it will affect terminal environment variables.
-            By default, False.
-        show_output: bool
-            Display status string or not. By default, False.
-    Returns
-    -------
-    status: str
-    """
-
-    set_key("OPENBB_API_SHROOM_KEY", key, persist)
-    return check_av_key(show_output)
-
-
 def set_av_key(key: str, persist: bool = False, show_output: bool = False) -> str:
     """Set Alpha Vantage key
     Parameters
@@ -273,36 +262,6 @@ def set_av_key(key: str, persist: bool = False, show_output: bool = False) -> st
 
     set_key("OPENBB_API_KEY_ALPHAVANTAGE", key, persist)
     return check_av_key(show_output)
-
-
-def check_shroom_key(show_output: bool = False) -> str:
-    """Check Shroom key"""
-    if cfg.API_SHROOM_KEY == "REPLACE_ME":
-        logger.info("Shroom key not defined")
-        status = KeyStatus.NOT_DEFINED
-    else:
-        try:
-            response = requests.post(
-                "https://node-api.flipsidecrypto.com/queries",
-                headers={"x-api-key": cfg.API_SHROOM_KEY},
-            )
-            if response.status_code == 400:
-                # this is expected because shroom returns 400 when query is not passed
-                logger.info("Shroom key defined, test passed")
-                status = KeyStatus.DEFINED_TEST_PASSED
-            elif response.status_code == 401:
-                logger.warning("Shroom key defined, test failed")
-                status = KeyStatus.DEFINED_TEST_FAILED
-            else:
-                logger.warning("Shroom key defined, test failed")
-                status = KeyStatus.DEFINED_TEST_FAILED
-        except requests.exceptions.RequestException:
-            logger.warning("Shroom key defined, test failed")
-            status = KeyStatus.DEFINED_TEST_FAILED
-    if show_output:
-        console.print(status.colorize() + "\n")
-
-    return str(status)
 
 
 def check_av_key(show_output: bool = False) -> str:
@@ -2021,7 +1980,58 @@ def check_santiment_key(show_output: bool = False) -> str:
     return str(status)
 
 
-def set_token_terminal_key(
+def set_shroom_key(key: str, persist: bool = False, show_output: bool = False) -> str:
+    """Set Shroom key
+    Parameters
+    ----------
+        key: str
+            API key
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
+    Returns
+    -------
+    status: str
+    """
+
+    set_key("OPENBB_API_SHROOM_KEY", key, persist)
+    return check_shroom_key(show_output)
+
+
+def check_shroom_key(show_output: bool = False) -> str:
+    """Check Shroom key"""
+    if cfg.API_SHROOM_KEY == "REPLACE_ME":
+        logger.info("Shroom key not defined")
+        status = KeyStatus.NOT_DEFINED
+    else:
+        try:
+            response = requests.post(
+                "https://node-api.flipsidecrypto.com/queries",
+                headers={"x-api-key": cfg.API_SHROOM_KEY},
+            )
+            if response.status_code == 400:
+                # this is expected because shroom returns 400 when query is not passed
+                logger.info("Shroom key defined, test passed")
+                status = KeyStatus.DEFINED_TEST_PASSED
+            elif response.status_code == 401:
+                logger.warning("Shroom key defined, test failed")
+                status = KeyStatus.DEFINED_TEST_FAILED
+            else:
+                logger.warning("Shroom key defined, test failed")
+                status = KeyStatus.DEFINED_TEST_FAILED
+        except requests.exceptions.RequestException:
+            logger.warning("Shroom key defined, test failed")
+            status = KeyStatus.DEFINED_TEST_FAILED
+    if show_output:
+        console.print(status.colorize() + "\n")
+
+    return str(status)
+
+
+def set_tokenterminal_key(
     key: str, persist: bool = False, show_output: bool = False
 ) -> str:
     """Set Token Terminal key.
@@ -2060,16 +2070,16 @@ def check_tokenterminal_key(show_output: bool = False) -> str:
 
     """
     if cfg.API_TOKEN_TERMINAL_KEY == "REPLACE_ME":
-        logger.info("token terminal key not defined")
+        logger.info("Token Terminal key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
         token_terminal = TokenTerminal(key=cfg.API_TOKEN_TERMINAL_KEY)
 
         if "message" in token_terminal.get_all_projects():
-            logger.info("token terminal key defined, test failed")
+            logger.warning("Token Terminal key defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
         else:
-            logger.info("token terminal key defined, test passed")
+            logger.info("Token Terminal key defined, test passed")
             status = KeyStatus.DEFINED_TEST_PASSED
 
     if show_output:
