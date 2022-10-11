@@ -9,7 +9,7 @@ controller = KeysController(menu_usage=False)
 
 @pytest.fixture(autouse=True)
 def no_change_env(mocker):
-    mocker.patch("openbb_terminal.keys_controller.dotenv.set_key")
+    mocker.patch("openbb_terminal.keys_model.dotenv.set_key")
 
 
 class MockCFG:
@@ -21,7 +21,7 @@ class MockCFG:
         self.API_POLYGON_KEY = kwargs.get("POLYGON", None)
         self.API_FRED_KEY = kwargs.get("FRED", None)
         self.API_NEWS_TOKEN = kwargs.get("NEWS", None)
-        self.TRADIER_TOKEN = kwargs.get("TRADIER", None)
+        self.API_TRADIER_TOKEN = kwargs.get("TRADIER", None)
         self.API_CMC_KEY = kwargs.get("CMC", None)
         self.API_FINNHUB_KEY = kwargs.get("FINNHUB", None)
         self.API_IEX_TOKEN = kwargs.get("IEX", None)
@@ -54,223 +54,19 @@ class MockCFG:
         self.API_ETHPLORER_KEY = kwargs.get("ETHPLOR", None)
         self.API_SMARTSTAKE_TOKEN = kwargs.get("SMARTSTAKE", None)
         self.API_SMARTSTAKE_KEY = kwargs.get("SMARTSTAKE", None)
-        self.API_SANTIMENT_KEY = kwargs.get("SANTIMENT", None)
         self.API_MESSARI_KEY = kwargs.get("MESSARI", None)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
-def test_check_github_key(key, output, mocker):
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(GITHUB=key))
-    controller.check_github_key(output)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
-def test_check_av_key(key, output, mocker):
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(AV=key))
-    controller.check_av_key(output)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
-def test_check_fmp_key(key, output, mocker):
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(FMP=key))
-    controller.check_fmp_key(output)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
-def test_check_quandl_key(key, output, mocker):
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(QUANDL=key))
-    controller.check_quandl_key(output)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
-def test_check_polygon_key(key, output, mocker):
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(POLYGON=key))
-    controller.check_polygon_key(output)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
-def test_check_fred_key(key, output, mocker):
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(FRED=key))
-    controller.check_fred_key(output)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
-def test_check_news_key(key, output, mocker):
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(NEWS=key))
-    controller.check_news_key(output)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
-def test_check_tradier_key(key, output, mocker):
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(TRADIER=key))
-    controller.check_tradier_key(output)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
-def test_check_cmc_key(key, output, mocker):
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(CMC=key))
-    controller.check_cmc_key(output)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
-def test_check_finnhub_key(key, output, mocker):
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(FINNHUB=key))
-    controller.check_finnhub_key(output)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
-def test_check_iex_key(key, output, mocker):
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(IEX=key))
-    controller.check_iex_key(output)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
-def test_check_reddit_key(key, output, mocker):
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(REDDIT_CLIENT=key))
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(REDDIT_SECRET=key))
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(REDDIT_USERNAME=key))
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(REDDIT_PASSWORD=key))
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(REDDIT_USER=key))
-    controller.check_cmc_key(output)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
-def test_check_twitter_key(key, output, mocker):
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(TWITTER=key))
-    controller.check_twitter_key(output)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
-def test_check_rh_key(key, output, mocker):
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(RH=key))
-    controller.check_rh_key(output)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
-def test_check_degiro_key(key, output, mocker):
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(DEGIRO=key))
-    controller.check_degiro_key(output)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
-def test_check_oanda_key(key, output, mocker):
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(OANDA=key))
-    controller.check_oanda_key(output)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
-def test_check_binance_key(key, output, mocker):
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(BINANCE=key))
-    controller.check_binance_key(output)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
-def test_check_bitquery_key(key, output, mocker):
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(BITQUERY=key))
-    controller.check_bitquery_key(output)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
-def test_check_si_key(key, output, mocker):
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(SI=key))
-    controller.check_si_key(output)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
-def test_check_coinbase_key(key, output, mocker):
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(COINBASE=key))
-    controller.check_coinbase_key(output)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
-def test_check_walert_key(key, output, mocker):
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(WALERT=key))
-    controller.check_walert_key(output)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
-def test_check_glassnode_key(key, output, mocker):
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(GLASSNODE=key))
-    controller.check_glassnode_key(output)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
-def test_check_coinglass_key(key, output, mocker):
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(COINGLASS=key))
-    controller.check_coinglass_key(output)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
-def test_check_cpanic_key(key, output, mocker):
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(CPANIC=key))
-    controller.check_cpanic_key(output)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
-def test_check_ethplorer_key(key, output, mocker):
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(ETHPLOR=key))
-    controller.check_ethplorer_key(output)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
-def test_check_smartstake_key(key, output, mocker):
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(SMARTSTAKE=key))
-    controller.check_smartstake_key(output)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
-def test_check_santiment_key(key, output, mocker):
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(SANTIMENT=key))
-    controller.check_santiment_key(output)
-
-
-@pytest.mark.vcr
-@pytest.mark.parametrize("key, output", [("REPLACE_ME", True), ("VALIDKEY", False)])
-def test_check_messari_key(key, output, mocker):
-    mocker.patch("openbb_terminal.keys_controller.cfg", MockCFG(MESSARI=key))
-    controller.check_messari_key(output)
+        self.API_SANTIMENT_KEY = kwargs.get("SANTIMENT", None)
+        self.API_TOKENTERMINAL_KEY = kwargs.get("TOKENTERMINAL", None)
+        self.API_SHROOM_KEY = kwargs.get("SHROOM", None)
 
 
 @pytest.mark.skip
 def test_print_help(mocker):
-    mocker.patch("openbb_terminal.keys_controller.KeysController.check_coinbase_key")
+    mocker.patch("openbb_terminal.keys_controller.KeysController.check_keys_status")
     controller.print_help()
 
 
 @pytest.mark.vcr
-@pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
-def test_call_github(other):
-    controller.call_github(other)
-
-
-@pytest.mark.skip
 @pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
 def test_call_av(other):
     controller.call_av(other)
@@ -424,6 +220,12 @@ def test_call_smartstake(other):
 
 @pytest.mark.vcr
 @pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
+def test_call_github(other):
+    controller.call_github(other)
+
+
+@pytest.mark.vcr
+@pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
 def test_call_santiment(other):
     controller.call_santiment(other)
 
@@ -432,3 +234,15 @@ def test_call_santiment(other):
 @pytest.mark.parametrize("other", [[], ["-k", "1234", "-t", "456"]])
 def test_call_messari(other):
     controller.call_messari(other)
+
+
+@pytest.mark.vcr
+@pytest.mark.parametrize("other", [[], ["-k", "1234", "-t", "456"]])
+def test_call_tokenterminal(other):
+    controller.call_tokenterminal(other)
+
+
+@pytest.mark.vcr
+@pytest.mark.parametrize("other", [[], ["-k", "1234", "-t", "456"]])
+def test_call_shroom(other):
+    controller.call_shroom(other)

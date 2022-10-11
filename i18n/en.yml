@@ -11,14 +11,18 @@ en:
   sources: select your preferred data sources
   keys: set API keys and check their validity
   wiki: search for an expression in Wikipedia (https://www.wikipedia.org/)
+  record: record session to be converted into a .openbb routine
+  stop: stop session recording
   _configure_: Configure your own terminal
   _main_menu_: Main menu
   keys/_keys_: This menu allows you to set your own API keys. Type 'about' for more information
+  keys/mykeys: get your defined keys
+  keys/_status_: Status
   defined, test passed: defined, test passed
   defined, test failed: defined, test failed
   not defined: not defined
   defined, not tested: defined, not tested
-  defined, test unsuccessful: defined, test unsuccessful
+  defined, test inconclusive: defined, test inconclusive
   sources/_info_: Get and set default data sources
   sources/get: get available data sources associated with command
   sources/set: set default data source for a command
@@ -28,7 +32,6 @@ en:
   featflags/cls: clear console after each command
   featflags/color: use coloring features
   featflags/promptkit: enable prompt toolkit (autocomplete and history)
-  featflags/predict: prediction features
   featflags/thoughts: thoughts of the day
   featflags/reporthtml: open report as HTML otherwise notebook
   featflags/exithelp: automatically print help when quitting menu
@@ -40,6 +43,7 @@ en:
   featflags/cmdloc: command location displayed in figures
   featflags/tbhint: displays usage hints in a bottom toolbar
   settings/_info_: Settings through environment variables
+  settings/colors: set your own terminal colors
   settings/autoscaling: plot autoscaling
   settings/dt: add or remove datetime from flair
   settings/flair: set the flair emoji to be used
@@ -76,6 +80,7 @@ en:
   funds: mutual funds search, overview, holdings and sector weights
   alternative: alternative datasets, such as COVID and open source metrics
   econometrics: statistical and quantitative methods for relationships between datasets
+  forecast: timeseries forecasting with machine learning
   portfolio: perform portfolio optimization and look at portfolio performance and attribution
   dashboards: interactive dashboards using voila and jupyter notebooks
   reports: customizable research reports through jupyter notebooks
@@ -120,7 +125,7 @@ en:
   stocks/bt: strategy backtester,          simple ema, ema cross, rsi strategies
   stocks/ta: technical analysis,           ema, macd, rsi, adx, bbands, obv
   stocks/qa: quantitative analysis,        decompose, cusum, residuals analysis
-  stocks/pred: prediction techniques,        regression, arima, rnn, lstm
+  stocks/forecast: forecast techniques,          rnn, nbeats, transformer, block rnn
   stocks/options/unu: show unusual options activity
   stocks/options/calc: basic call/put PnL calculator
   stocks/options/screen: screens tickers based on preset
@@ -471,20 +476,6 @@ en:
   stocks/qa/cusum: detects abrupt changes using cumulative sum algorithm of prices
   stocks/qa/capm: capital asset pricing model
   stocks/qa/beta: display beta w.r.t to any reference ticker
-  stocks/pred/load: load new ticker
-  stocks/pred/pick: pick target column for analysis
-  stocks/pred/_ticker: Ticker
-  stocks/pred/_target: Target Column
-  stocks/pred/_models_: Models
-  stocks/pred/ets: exponential smoothing (e.g. Holt-Winters)
-  stocks/pred/knn: k-Nearest Neighbors
-  stocks/pred/regression: polynomial regression
-  stocks/pred/arima: autoregressive integrated moving average
-  stocks/pred/mlp: MultiLayer Perceptron
-  stocks/pred/rnn: Recurrent Neural Network
-  stocks/pred/lstm: Long-Short Term Memory
-  stocks/pred/conv1d: 1D Convolutional Neural Network
-  stocks/pred/mc: Monte-Carlo simulations
   crypto/load: load a specific cryptocurrency for analysis
   crypto/find: find coins
   crypto/price: real-time price and interval of confidence
@@ -503,7 +494,7 @@ en:
   crypto/nft: non-fungible tokens,                    today drops
   crypto/dd: due-diligence for loaded coin,          coin information, social media, market stats
   crypto/ta: technical analysis for loaded coin,     ema, macd, rsi, adx, bbands, obv
-  crypto/pred: prediction techniques,                  regression, arima, rnn, lstm, conv1d, monte carlo
+  crypto/forecast: forecast techniques,                 rnn, nbeats, transformer, block rnn
   crypto/qa: quantitative analysis                   decompose, cusum, residuals analysis
   crypto/disc/cgtop: top coins (with or without category)
   crypto/disc/cgtrending: trending coins
@@ -541,6 +532,7 @@ en:
   crypto/ov/btcrb: display bitcoin rainbow price chart (logarithmic regression)
   crypto/ov/ch: lists major crypto-related hacks
   crypto/ov/cr: crypto supply or borrow interest rates
+  crypto/ov/fun: explore projects based on fundamental metrics
   crypto/onchain/hr: check blockchain hashrate over time (BTC or ETH)
   crypto/onchain/btccp: displays BTC circulating supply
   crypto/onchain/btcct: displays BTC confirmed transactions
@@ -552,6 +544,9 @@ en:
   crypto/onchain/ueat: unique ethereum addresses which made a transaction
   crypto/onchain/ttcp: top traded crypto pairs on given decentralized exchange
   crypto/onchain/baas: bid, ask prices, average spread for given crypto pair
+  crypto/onchain/dt: daily transactions of eth tokens
+  crypto/onchain/ds: stats of eth platform (daily users; fees)
+  crypto/onchain/tvl: total value locked of ERC20 tokens
   crypto/onchain/_address: Ethereum address
   crypto/onchain/_type: Address type
   crypto/onchain/_ethereum_: Ethereum
@@ -601,7 +596,7 @@ en:
   crypto/dd/load: load a specific cryptocurrency for analysis
   crypto/dd/_symbol: Coin
   crypto/dd/_source: Source
-  crypto/dd/info: basic information about loaded coin
+  crypto/dd/info: information about loaded coin
   crypto/dd/market: market stats about loaded coin
   crypto/dd/ath: all time high related stats for loaded coin
   crypto/dd/atl: all time low related stats for loaded coin
@@ -610,6 +605,7 @@ en:
   crypto/dd/score: different kind of scores for loaded coin, e.g developer score, sentiment score
   crypto/dd/dev: github, bitbucket coin development statistics
   crypto/dd/bc: links to blockchain explorers for loaded coin
+  crypto/dd/desc: description on project - why, how, what
   crypto/dd/active: active addresses
   crypto/dd/nonzero: addresses with non-zero balances
   crypto/dd/change: 30d change of supply held on exchange wallets
@@ -639,6 +635,7 @@ en:
   crypto/dd/links: links e.g. whitepaper, github, twitter, youtube, reddit, telegram
   crypto/dd/gh: github activity over time
   crypto/dd/news: loaded coin's most recent news
+  crypto/dd/funot: fundamental metric over time
   crypto/ta/_ticker: Coin loaded
   crypto/ta/tv: open interactive chart on
   crypto/ta/_overlap_: Overlap
@@ -668,20 +665,6 @@ en:
   crypto/ta/obv: on balance volume
   crypto/ta/_custom_: Custom
   crypto/ta/fib: fibonacci retracement
-  crypto/pred/load: load new ticker
-  crypto/pred/pick: pick target column for analysis
-  crypto/pred/_ticker: Coin loaded
-  crypto/pred/_target: Target column
-  crypto/pred/_models_: Models
-  crypto/pred/ets: exponential smoothing (e.g. Holt-Winters)
-  crypto/pred/knn: k-Nearest Neighbors
-  crypto/pred/regression: polynomial regression
-  crypto/pred/arima: autoregressive integrated moving average
-  crypto/pred/mlp: MultiLayer Perceptron
-  crypto/pred/rnn: Recurrent Neural Network
-  crypto/pred/lstm: Long-Short Term Memory
-  crypto/pred/conv1d: 1D Convolutional Neural Network
-  crypto/pred/mc: Monte-Carlo simulations
   crypto/qa/load: load new ticker
   crypto/qa/pick: pick target column for analysis
   crypto/qa/_ticker: Ticker
@@ -707,8 +690,7 @@ en:
   crypto/qa/raw: print raw data
   crypto/qa/decompose: decomposition in cyclic-trend, season, and residuals of prices
   crypto/qa/cusum: detects abrupt changes using cumulative sum algorithm of prices
-  etf/ln: lookup by name
-  etf/ld: lookup by description
+  etf/search: search ETF by name or description
   etf/load: load ETF data
   etf/_symbol: Symbol
   etf/_major_holdings: Major holdings
@@ -724,7 +706,6 @@ en:
   etf/pir: create (multiple) passive investor excel report(s)
   etf/compare: compare multiple different ETFs
   etf/ta: technical analysis,           ema, macd, rsi, adx, bbands, obv
-  etf/pred: prediction techniques,        regression, arima, rnn, lstm
   etf/disc/gainers: top gainers
   etf/disc/decliners: top decliners
   etf/disc/active: most active
@@ -761,20 +742,6 @@ en:
   etf/ta/obv: on balance volume
   etf/ta/_custom_: Custom
   etf/ta/fib: fibonacci retracement
-  etf/pred/load: load new ticker
-  etf/pred/pick: pick target column for analysis
-  etf/pred/_ticker: Ticker loaded
-  etf/pred/_target: Target column
-  etf/pred/_models_: Models
-  etf/pred/ets: exponential smoothing (e.g. Holt-Winters)
-  etf/pred/knn: k-Nearest Neighbors
-  etf/pred/regression: polynomial regression
-  etf/pred/arima: autoregressive integrated moving average
-  etf/pred/mlp: MultiLayer Perceptron
-  etf/pred/rnn: Recurrent Neural Network
-  etf/pred/lstm: Long-Short Term Memory
-  etf/pred/conv1d: 1D Convolutional Neural Network
-  etf/pred/mc: Monte-Carlo simulations
   economy/_database_: Databases
   economy/_stored: Stored datasets
   economy/overview: show a market overview of either indices, bonds or currencies
@@ -793,7 +760,7 @@ en:
   economy/valuation: valuation of sectors, industry, country
   economy/performance: performance of sectors, industry, country
   economy/spectrum: spectrum of sectors, industry, country
-  economy/pred: Open the prediction menu to analyse stored data
+  economy/forecast: forecast techniques; rnn, nbeats, transformer, block rnn
   economy/qa: Open quantitative analysis menu with stored data
   economy/qa/pick: pick new series from stored economy data
   economy/qa/_series: Selected series
@@ -818,18 +785,6 @@ en:
   economy/qa/raw: print raw data
   economy/qa/decompose: decomposition in cyclic-trend, season, and residuals of prices
   economy/qa/cusum: detects abrupt changes using cumulative sum algorithm of prices
-  economy/pred/pick: pick new series from stored economy data
-  economy/pred/_series: Selected series
-  economy/pred/_models_: Models
-  economy/pred/ets: exponential smoothing (e.g. Holt-Winters)
-  economy/pred/knn: k-Nearest Neighbors
-  economy/pred/regression: polynomial regression
-  economy/pred/arima: autoregressive integrated moving average
-  economy/pred/mlp: MultiLayer Perceptron
-  economy/pred/rnn: Recurrent Neural Network
-  economy/pred/lstm: Long-Short Term Memory
-  economy/pred/conv1d: 1D Convolutional Neural Network
-  economy/pred/mc: Monte-Carlo simulations
   forex/_ticker: Ticker
   forex/_from: From
   forex/_to: To
@@ -840,7 +795,6 @@ en:
   forex/fwd: get forward rates for loaded pair
   forex/ta: technical analysis,          ema, macd, rsi, adx, bbands, obv
   forex/qa: quantitative analysis,       decompose, cusum, residuals analysis
-  forex/pred: prediction techniques        regression, arima, rnn, lstm, conv1d, monte carlo
   forex/forex: Forex brokerages
   forex/oanda: Oanda menu
   forex/ta/_currency: Currency pair loaded
@@ -888,19 +842,6 @@ en:
   forex/qa/raw: print raw data
   forex/qa/decompose: decomposition in cyclic-trend, season, and residuals of prices
   forex/qa/cusum: detects abrupt changes using cumulative sum algorithm of prices
-  forex/pred/pick: pick new target variable
-  forex/pred/_pair: Pair loaded
-  forex/pred/_target: Target column
-  forex/pred/_models_: Models
-  forex/pred/ets: exponential smoothing (e.g. Holt-Winters)
-  forex/pred/knn: k-Nearest Neighbors
-  forex/pred/regression: polynomial regression
-  forex/pred/arima: autoregressive integrated moving average
-  forex/pred/mlp: MultiLayer Perceptron
-  forex/pred/rnn: Recurrent Neural Network
-  forex/pred/lstm: Long-Short Term Memory
-  forex/pred/conv1d: 1D Convolutional Neural Network
-  forex/pred/mc: Monte-Carlo simulations
   forex/oanda/summary: shows account summary
   forex/oanda/calendar: show calendar
   forex/oanda/list: list order history
@@ -1076,6 +1017,8 @@ en:
   portfolio/po/params/arg: set a different value for an argument
   portfolio/po/params/_parameters_: Parameters
   dashboards/stocks: historic stock information
+  dashboards/forecast: forecasting for timeseries datasets
+  dashboards/forecasting: forecasting for timeseries datasets
   dashboards/correlation: stock correlations
   dashboards/vsurf: options volatility surface
   dashboards/chains: options chain analysis
@@ -1083,3 +1026,40 @@ en:
   dashboards/crypto: cryptocurrency exchange rates against USD
   dashboards/futures: historical futures performance
   reports/_reports_: Select one of the following report
+  forecast/_disclaimer_: DISCLAIMER
+  forecast/_data_loc: Looking for data in
+  forecast/load: load a dataset from csv
+  forecast/_loaded: Loaded files and data columns
+  forecast/_exploration_: Exploration
+  forecast/show: Show a portion of a loaded dataset
+  forecast/plot: Plot a specific column of a loaded dataset
+  forecast/clean: Clean a dataset by filling or dropping NaNs
+  forecast/desc: Show descriptive statistics of a dataset
+  forecast/corr: Plot the correlation coefficients for dataset features
+  forecast/season: Plot the seasonality for a dataset column
+  forecast/combine: Combine columns from different datasets
+  forecast/delete: Delete columns from dataset
+  forecast/rename: Rename columns from dataset
+  forecast/export: Export a processed dataset
+  forecast/_feateng_: Feature Engineering
+  forecast/ema: Add Exponentially Weighted Moving Average
+  forecast/sto: Add Stochastic Oscillator %K and %D
+  forecast/rsi: Add Relative Strength Index
+  forecast/roc: Add Rate of Change
+  forecast/mom: Add Momentum
+  forecast/delta: Add % Change
+  forecast/atr: Add Average True Range
+  forecast/signal: Add Price Signal (short vs. long term)
+  forecast/_tsforecasting_: TimeSeries Forecasting
+  forecast/arima: Arima (Non-darts)
+  forecast/expo: Probabilistic Exponential Smoothing
+  forecast/theta: Theta Method
+  forecast/linregr: Probabilistic Linear Regression
+  forecast/regr: Regression
+  forecast/rnn: Probabilistic Recurrent Neural Network (RNN, LSTM, GRU)
+  forecast/brnn: Block Recurrent Neural Network (RNN, LSTM, GRU) (feat. Past covariates)
+  forecast/nbeats: Neural Bayesian Estimation (feat. Past covariates)
+  forecast/tcn: Temporal Convolutional Neural Network (feat. Past covariates)
+  forecast/trans: Transformer model (feat. Past covariates)
+  forecast/tft: Temporal Fusion Transformer (feat. Past covariates)
+  forecast/_comingsoon_: Coming Soon

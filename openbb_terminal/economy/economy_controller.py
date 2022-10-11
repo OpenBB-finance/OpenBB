@@ -41,6 +41,7 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     print_rich_table,
     valid_date,
+    parse_and_split_input,
 )
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
@@ -71,7 +72,9 @@ class EconomyController(BaseController):
         "edebt",
     ]
 
-    CHOICES_MENUS = ["pred", "qa"]
+    CHOICES_MENUS = [
+        "qa",
+    ]
 
     wsj_sortby_cols_dict = {c: None for c in ["ticker", "last", "change", "prevClose"]}
     map_period_list = ["1d", "1w", "1m", "3m", "6m", "1y"]
@@ -312,6 +315,22 @@ class EconomyController(BaseController):
 
             self.completer = NestedCompleter.from_nested_dict(self.choices)  # type: ignore
 
+    def parse_input(self, an_input: str) -> List:
+        """Parse controller input
+
+        Overrides the parent class function to handle github org/repo path convention.
+        See `BaseController.parse_input()` for details.
+        """
+        # Filtering out sorting parameters with forward slashes like P/E
+        sort_filter = r"((\ -s |\ --sortby ).*?(P\/E|Fwd P\/E|P\/S|P\/B|P\/C|P\/FCF)*)"
+
+        custom_filters = [sort_filter]
+
+        commands = parse_and_split_input(
+            an_input=an_input, custom_filters=custom_filters
+        )
+        return commands
+
     def update_runtime_choices(self):
         if session and obbff.USE_PROMPT_TOOLKIT:
             if not self.fred_query.empty:
@@ -367,7 +386,6 @@ class EconomyController(BaseController):
         mt.add_raw("\n")
         mt.add_cmd("plot")
         mt.add_raw("\n")
-        mt.add_menu("pred")
         mt.add_menu("qa")
         console.print(text=mt.menu_text, menu="Economy")
 
@@ -1576,78 +1594,26 @@ class EconomyController(BaseController):
             os.remove(self.d_GROUPS[ns_group] + ".jpg")
 
     @log_start_end(log=logger)
-    def call_pred(self, _):
-
-        """Process pred command"""
-        # IMPORTANT: 8/11/22 prediction was discontinued on the installer packages
-        # because forecasting in coming out soon.
-        # This if statement disallows installer package users from using 'pred'
-        # even if they turn on the OPENBB_ENABLE_PREDICT feature flag to true
-        # however it does not prevent users who clone the repo from using it
-        # if they have ENABLE_PREDICT set to true.
-        if obbff.PACKAGED_APPLICATION or not obbff.ENABLE_PREDICT:
-            console.print(
-                "Predict is disabled. Forecasting coming soon!",
-                "\n",
-            )
-        else:
-            if not self.DATASETS:
-                console.print(
-                    "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
-                    "'treasury' command in combination with the -st argument to be able to plot data.\n"
-                )
-                return
-
-            data: Dict = {}
-            all_datasets_empty = True
-            for source, _ in self.DATASETS.items():
-                if not self.DATASETS[source].empty:
-                    all_datasets_empty = False
-                    if len(self.DATASETS[source].columns) == 1:
-                        data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
-                    else:
-                        for col in list(self.DATASETS[source].columns):
-                            data[col] = self.DATASETS[source][col].to_frame()
-
-            if all_datasets_empty:
-                console.print(
-                    "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
-                    "'treasury' command in combination with the -st argument to be able to plot data.\n"
-                )
-                return
-
-            from openbb_terminal.economy.prediction.pred_controller import (
-                PredictionTechniquesController,
-            )
-
-            self.queue = self.load_class(
-                PredictionTechniquesController, data, self.queue
-            )
-
-    @log_start_end(log=logger)
     def call_qa(self, _):
-        """Process pred command"""
-
-        data: Dict = {}
-        all_datasets_empty = True
-        for source, _ in self.DATASETS.items():
-            if not self.DATASETS[source].empty:
-                all_datasets_empty = False
-                if len(self.DATASETS[source].columns) == 1:
-                    data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
-                else:
-                    for col in list(self.DATASETS[source].columns):
-                        data[col] = self.DATASETS[source][col].to_frame()
-
-        if all_datasets_empty:
+        """Process qa command"""
+        if not self.DATASETS:
             console.print(
-                "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
-                "'treasury' command in combination with the -st argument to be able to plot data.\n"
+                "There is no data stored. Please use either the 'macro', 'fred', 'index' and/or "
+                "'treasury' command in combination with the -st argument to plot data.\n"
             )
             return
 
         from openbb_terminal.economy.quantitative_analysis.qa_controller import (
             QaController,
         )
+
+        data: Dict = {}
+        for source, _ in self.DATASETS.items():
+            if not self.DATASETS[source].empty:
+                if len(self.DATASETS[source].columns) == 1:
+                    data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
+                else:
+                    for col in list(self.DATASETS[source].columns):
+                        data[col] = self.DATASETS[source][col].to_frame()
 
         self.queue = self.load_class(QaController, data, self.queue)

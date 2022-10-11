@@ -30,6 +30,8 @@ from openbb_terminal.cryptocurrency.overview import (
     rekt_view,
     withdrawalfees_model,
     withdrawalfees_view,
+    tokenterminal_model,
+    tokenterminal_view,
 )
 from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import (
     get_categories_keys,
@@ -84,6 +86,7 @@ class OverviewController(BaseController):
         "altindex",
         "ch",
         "cr",
+        "fun",
     ]
 
     PATH = "/crypto/ov/"
@@ -141,6 +144,10 @@ class OverviewController(BaseController):
             choices["news"]["-r"] = {c: None for c in cryptopanic_model.REGIONS}
             choices["news"]["-s"] = {c: None for c in cryptopanic_model.SORT_FILTERS}
             choices["wfpe"] = {c: None for c in withdrawalfees_model.POSSIBLE_CRYPTOS}
+            choices["fun"] = {c: None for c in tokenterminal_model.METRICS}
+            choices["fun"]["-m"] = {c: None for c in tokenterminal_model.METRICS}
+            choices["fun"]["-c"] = {c: None for c in tokenterminal_model.CATEGORIES}
+            choices["fun"]["-t"] = {c: None for c in tokenterminal_model.TIMELINES}
 
             choices["support"] = self.SUPPORT_CHOICES
             choices["about"] = self.ABOUT_CHOICES
@@ -176,6 +183,7 @@ class OverviewController(BaseController):
         mt.add_cmd("btcrb")
         mt.add_cmd("ch")
         mt.add_cmd("cr")
+        mt.add_cmd("fun")
         console.print(text=mt.menu_text, menu="Cryptocurrency - Overview")
 
     @log_start_end(log=logger)
@@ -191,7 +199,6 @@ class OverviewController(BaseController):
             You can look on only top N number of records with --limit.
             """,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -216,6 +223,71 @@ class OverviewController(BaseController):
         if ns_parser:
             pycoingecko_view.display_crypto_heatmap(
                 category=ns_parser.category,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_fun(self, other_args):
+        """Process fun command"""
+        parser = argparse.ArgumentParser(
+            prog="fun",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""Display fundamental metrics overview [Source: Token Terminal]""",
+        )
+        parser.add_argument(
+            "-m",
+            "--metric",
+            required=True,
+            choices=tokenterminal_model.METRICS,
+            dest="metric",
+            help="Choose metric of interest",
+        )
+        parser.add_argument(
+            "-c",
+            "--category",
+            default="",
+            choices=tokenterminal_model.CATEGORIES,
+            dest="category",
+            help="Choose category of interest",
+        )
+        parser.add_argument(
+            "-t",
+            "--timeline",
+            default="24h",
+            choices=tokenterminal_model.TIMELINES,
+            dest="timeline",
+            help="Choose timeline of interest",
+        )
+        parser.add_argument(
+            "-a",
+            "--ascend",
+            action="store_true",
+            help="Flag to sort in ascending order",
+            dest="ascend",
+            default=False,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            type=int,
+            help="Display N items",
+            default=10,
+        )
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-m")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
+        )
+        if ns_parser:
+            tokenterminal_view.display_fundamental_metrics(
+                metric=ns_parser.metric,
+                category=ns_parser.category,
+                timeline=ns_parser.timeline,
+                ascend=ns_parser.ascend,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
             )
@@ -258,7 +330,6 @@ class OverviewController(BaseController):
             dest="descend",
             default=False,
         )
-
         parser.add_argument(
             "-s",
             "--slug",
@@ -315,9 +386,12 @@ class OverviewController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
+            start_date = ns_parser.since.strftime("%Y-%m-%d")
+            end_date = ns_parser.until.strftime("%Y-%m-%d")
+
             display_btc_rainbow(
-                start_date=int(ns_parser.since.timestamp()),
-                end_date=int(ns_parser.until.timestamp()),
+                start_date=start_date,
+                end_date=end_date,
                 export=ns_parser.export,
             )
 

@@ -40,13 +40,15 @@ DEX_COLUMNS = [
 
 
 @log_start_end(log=logger)
-def _make_request(url: str) -> Optional[dict]:
+def _make_request(url: str, verbose: bool = True) -> Optional[dict]:
     """Helper method handles dappradar api requests. [Source: https://dappradar.com/]
 
     Parameters
     ----------
     url: str
         endpoint url
+    verbose: bool
+        whether to print the text from the response
     Returns
     -------
     dict:
@@ -60,13 +62,15 @@ def _make_request(url: str) -> Optional[dict]:
     }
     response = requests.get(url, headers=headers)
     if not 200 <= response.status_code < 300:
-        console.print(f"[red]dappradar api exception: {response.text}[/red]")
+        if verbose:
+            console.print(f"[red]dappradar api exception: {response.text}[/red]")
         return None
     try:
         return response.json()
     except Exception as e:  # noqa: F841
         logger.exception("Invalid Response: %s", str(e))
-        console.print(f"[red]Invalid Response:: {response.text}[/red]")
+        if verbose:
+            console.print(f"[red]Invalid Response:: {response.text}[/red]")
         return None
 
 
@@ -217,7 +221,8 @@ def get_top_dapps(sortby: str = "", limit: int = 10) -> pd.DataFrame:
     data = _make_request(
         "https://dappradar.com/v2/api/dapps?params=WkdGd2NISmhaR0Z5Y0dGblpUMHhKbk5uY205MWNEMX"
         "RZWGdtWTNWeWNtVnVZM2s5VlZORUptWmxZWFIxY21Wa1BURW1jbUZ1WjJVOVpHRjVKbk52Y25ROWRYTmxjaVp"
-        "2Y21SbGNqMWtaWE5qSm14cGJXbDBQVEky"
+        "2Y21SbGNqMWtaWE5qSm14cGJXbDBQVEky",
+        False,
     )
     if data:
         arr = [

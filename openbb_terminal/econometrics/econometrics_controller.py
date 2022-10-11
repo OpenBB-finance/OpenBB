@@ -71,7 +71,9 @@ class EconometricsController(BaseController):
         "granger",
         "coint",
     ]
-    CHOICES_MENUS: List[str] = ["qa", "pred"]
+    CHOICES_MENUS: List[str] = [
+        "qa",
+    ]
     pandas_plot_choices = [
         "line",
         "scatter",
@@ -316,7 +318,7 @@ class EconometricsController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
-            description="Load custom dataset (from previous export, custom imports or StatsModels).",
+            description="Load dataset (from previous export, custom imports or StatsModels).",
         )
         parser.add_argument(
             "-f",
