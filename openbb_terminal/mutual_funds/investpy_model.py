@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 from typing import Tuple
 
 import investpy
+import investiny
 import pandas as pd
 
 from openbb_terminal.decorators import log_start_end
@@ -184,15 +185,28 @@ def get_fund_historical(
     from_date = start_date.strftime("%d/%m/%Y")
     to_date = end_date.strftime("%d/%m/%Y")
     search_country = matching_country if matching_country else country
+
+    # Using investiny to get around the 403 error with investment.com api
+    # We need to get an ID number
+
+    id_number = int(investiny.search_assets(name, limit=1)[0]["ticker"])
+
     try:
-        return (
-            investpy.funds.get_fund_historical_data(
-                fund_name, search_country, from_date=from_date, to_date=to_date
-            ),
-            fund_name,
-            fund_symbol,
-            matching_country,
-        )
+        # return (
+        #     investpy.funds.get_fund_historical_data(
+        #         fund_name, search_country, from_date=from_date, to_date=to_date
+        #     ),
+        #     fund_name,
+        #     fund_symbol,
+        #     matching_country,
+        # )
+        df = pd.DataFrame.from_dict(
+            investiny.historical_data(id_number, from_date=from_date, to_date=to_date)
+        ).set_index("date")
+        df.columns = [col.title() for col in df.columns]
+        df.index = pd.to_datetime(df.index)
+        return (df, fund_name, fund_symbol, matching_country)
+
     except RuntimeError as e:
         console.print("[red]Error connecting to the data source.[/red]\n")
         logger.exception(str(e))
