@@ -26,6 +26,8 @@ from openbb_terminal.cryptocurrency.onchain import (
     ethgasstation_view,
     ethplorer_model,
     ethplorer_view,
+    shroom_model,
+    shroom_view,
     whale_alert_model,
     whale_alert_view,
 )
@@ -82,6 +84,9 @@ class OnchainController(BaseController):
         "baas",
         "btccp",
         "btcct",
+        "dt",
+        "ds",
+        "tvl",
     ]
 
     PATH = "/crypto/onchain/"
@@ -107,6 +112,7 @@ class OnchainController(BaseController):
                 "-a": {},
             }
             choices["hr"] = {c: {} for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS}
+            choices["ds"] = {c: None for c in shroom_model.DAPP_STATS_PLATFORM_CHOICES}
             choices["hr"]["--coin"] = {
                 c: {} for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS
             }
@@ -264,6 +270,9 @@ class OnchainController(BaseController):
         mt.add_cmd("ueat")
         mt.add_cmd("ttcp")
         mt.add_cmd("baas")
+        mt.add_cmd("dt")
+        mt.add_cmd("ds")
+        mt.add_cmd("tvl")
         mt.add_raw("\n")
         mt.add_param("_address", self.address or "")
         mt.add_param("_type", self.address_type or "")
@@ -279,6 +288,130 @@ class OnchainController(BaseController):
         mt.add_cmd("prices", self.address_type == "token")
         mt.add_cmd("tx", self.address_type == "tx")
         console.print(text=mt.menu_text, menu="Cryptocurrency - Onchain")
+
+    @log_start_end(log=logger)
+    def call_tvl(self, other_args: List[str]):
+        """Process tvl command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="tvl",
+            description="""
+                Total value locked (TVL) metric - Ethereum ERC20
+                [Source:https://docs.flipsidecrypto.com/]
+                useraddress OR addressname must be provided
+            """,
+        )
+
+        parser.add_argument(
+            "-u",
+            "--useraddress",
+            dest="useraddress",
+            type=str,
+            help="User address we'd like to take a balance reading of against the contract",
+        )
+
+        parser.add_argument(
+            "-a",
+            "--addressname",
+            dest="addressname",
+            type=str,
+            help="Address name corresponding to the user address",
+        )
+
+        parser.add_argument(
+            "-s",
+            "--symbol",
+            dest="symbol",
+            type=str,
+            help="Contract symbol",
+            default="USDC",
+        )
+
+        parser.add_argument(
+            "-i",
+            "--interval",
+            dest="interval",
+            type=int,
+            help="Interval in months",
+            default=12,
+        )
+
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-u")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if ns_parser:
+            shroom_view.display_total_value_locked(
+                user_address=ns_parser.useraddress,
+                address_name=ns_parser.addressname,
+                interval=ns_parser.interval,
+                symbol=ns_parser.symbol,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_ds(self, other_args: List[str]):
+        """Process ds command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ds",
+            description="""
+            Get daily transactions for certain symbols in ethereum blockchain
+            [Source: https://sdk.flipsidecrypto.xyz/shroomdk]
+            """,
+        )
+
+        parser.add_argument(
+            "-p",
+            "--platform",
+            dest="platform",
+            type=str,
+            help="Ethereum platform to check fees/number of users over time",
+            default="curve",
+            choices=shroom_model.DAPP_STATS_PLATFORM_CHOICES,
+        )
+
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-p")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True, limit=10
+        )
+
+        if ns_parser:
+            shroom_view.display_dapp_stats(
+                raw=ns_parser.raw,
+                limit=ns_parser.limit,
+                platform=ns_parser.platform,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_dt(self, other_args: List[str]):
+        """Process dt command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="dt",
+            description="""
+                Get daily transactions for certain symbols in ethereum blockchain
+                [Source: https://sdk.flipsidecrypto.xyz/shroomdk]
+            """,
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if ns_parser:
+            shroom_view.display_daily_transactions(
+                export=ns_parser.export,
+            )
 
     @log_start_end(log=logger)
     def call_btcct(self, other_args: List[str]):
