@@ -37,9 +37,14 @@ logger = logging.getLogger(__name__)
 
 sys.tracebacklimit = 0
 
-# README PLEASE: The API_DICT keys must match the set and check functions format.
+# README PLEASE:
+# The API_DICT keys must match the set and check functions format.
+#
 # This format is used by the KeysController and get_keys_info().
 # E.g. tokenterminal -> set_tokenterminal_key & check_tokenterminal_key
+#
+# Don't forget to add the set function to api.py endpoints dictionary.
+# E.g.  "keys.tokenterminal": {"model": "openbb_terminal.keys_model.set_tokenterminal_key"},
 
 API_DICT: Dict = {
     "av": "ALPHA_VANTAGE",
@@ -2071,7 +2076,7 @@ def check_tokenterminal_key(show_output: bool = False) -> str:
         token_terminal = TokenTerminal(key=cfg.API_TOKEN_TERMINAL_KEY)
 
         if "message" in token_terminal.get_all_projects():
-            logger.info("Token Terminal key defined, test failed")
+            logger.warning("Token Terminal key defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
         else:
             logger.info("Token Terminal key defined, test passed")
