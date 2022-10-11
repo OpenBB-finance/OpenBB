@@ -188,8 +188,8 @@ class SectorIndustryAnalysisController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
 
-            one_to_hundred = {str(c): {} for c in range(1, 100)}
-            zero_to_one_detailed = {str(c): {} for c in np.arange(0.0, 1.0, 0.005)}
+            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
+            zero_to_one_detailed: dict = {str(c): {} for c in np.arange(0.0, 1.0, 0.005)}
             choices["load"] = {
                 "--ticker": None,
                 "-t": "--ticker",

@@ -44,8 +44,8 @@ class ScreenerController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
 
-            one_to_hundred = {str(c): {} for c in range(1, 100)}
-            presets = {c: {} for c in self.preset_choices}
+            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
+            presets: dict = {c: {} for c in self.preset_choices}
             choices["view"] = presets
             choices["set"] = presets
             choices["scr"] = presets

@@ -56,7 +56,7 @@ class GovController(StockBaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
 
-            one_to_hundred = {str(c): {} for c in range(1, 100)}
+            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
             choices["lasttrades"] = {c: {} for c in self.gov_type_choices}
             choices["lasttrades"]["--past_transactions_days"] = one_to_hundred
             choices["lasttrades"]["-p"] = "--past_transactions_days"

@@ -40,7 +40,7 @@ class ToolsController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
 
-            one_to_hundred_one = {str(c): {} for c in range(1, 101)}
+            one_to_hundred_one: dict = {str(c): {} for c in range(1, 101)}
             choices["aprtoapy"] = {
                 "--apr": one_to_hundred_one,
                 "--compounding": "--apr",

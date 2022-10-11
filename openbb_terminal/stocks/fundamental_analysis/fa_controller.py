@@ -106,7 +106,7 @@ class FundamentalAnalysisController(StockBaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
 
-            one_to_hundred = {str(c): {} for c in range(1, 100)}
+            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
             choices["load"] = {
                 "--ticker": None,
                 "-t": "--ticker",

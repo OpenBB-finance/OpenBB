@@ -104,8 +104,8 @@ class QaController(StockBaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
 
-            zero_to_hundred = {str(c): {} for c in range(0, 100)}
-            zero_to_hundred_detailed = {str(c): {} for c in np.arange(0.0, 100.0, 0.1)}
+            zero_to_hundred: dict = {str(c): {} for c in range(0, 100)}
+            zero_to_hundred_detailed: dict = {str(c): {} for c in np.arange(0.0, 100.0, 0.1)}
             choices["pick"] = {c: {} for c in list(stock.columns)}
             choices["load"] = {
                 "--ticker": None,

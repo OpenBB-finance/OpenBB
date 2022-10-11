@@ -49,7 +49,7 @@ class PricingController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
 
-            zero_to_one_detailed = {str(c): {} for c in np.arange(0.0, 1.0, 0.005)}
+            zero_to_one_detailed: dict = {str(c): {} for c in np.arange(0.0, 1.0, 0.005)}
             choices["add"] = {
                 "--price": None,
                 "-p": "--price",
