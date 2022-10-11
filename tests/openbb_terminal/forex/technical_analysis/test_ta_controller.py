@@ -430,7 +430,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [
                 "1",
                 "--std=2",
-                "--mamode=MOCK_MAMODE",
+                "--mamode=ema",
                 "--export=csv",
             ],
             "volatility_view.display_bbands",

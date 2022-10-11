@@ -9,7 +9,7 @@ import logging
 from datetime import datetime, timedelta
 from typing import List
 
-from prompt_toolkit.completion import NestedCompleter
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.due_diligence.glassnode_model import (
@@ -100,39 +100,156 @@ class OnchainController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+            choices["whales"] = {
+                "--sort": {c: {} for c in whale_alert_model.FILTERS},
+                "-s": "--sort",
+                "--min": None,
+                "-m": "--min",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+                "--adress": {},
+                "-a": {},
+            }
+            choices["hr"] = {c: {} for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS}
             choices["ds"] = {c: None for c in shroom_model.DAPP_STATS_PLATFORM_CHOICES}
-            choices["whales"]["-s"] = {c: None for c in whale_alert_model.FILTERS}
-            choices["hr"] = {c: None for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS}
-            choices["hr"]["-c"] = {c: None for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS}
             choices["hr"]["--coin"] = {
-                c: None for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS
+                c: {} for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS
             }
-            choices["hr"]["-i"] = {c: None for c in INTERVALS_HASHRATE}
-            choices["ttcp"] = {c: None for c in bitquery_model.DECENTRALIZED_EXCHANGES}
-            choices["baas"]["-c"] = {c: None for c in bitquery_model.POSSIBLE_CRYPTOS}
-            choices["baas"]["--coin"] = {
-                c: None for c in bitquery_model.POSSIBLE_CRYPTOS
+            choices["hr"]["-c"] = "--coin"
+            choices["hr"]["--interval"] = {c: {} for c in INTERVALS_HASHRATE}
+            choices["hr"]["-i"] = "--interval"
+            choices["hr"]["--until"] = None
+            choices["hr"]["-u"] = "--until"
+            choices["hr"]["--since"] = None
+            choices["hr"]["-s"] = "--since"
+            choices["btccp"] = {
+                "--until": None,
+                "-u": "--until",
+                "--since": None,
+                "-s": "--since",
             }
-            choices["balance"]["-s"] = {
-                c: None for c in ethplorer_model.BALANCE_FILTERS
+            choices["btcct"] = {
+                "--until": None,
+                "-u": "--until",
+                "--since": None,
+                "-s": "--since",
             }
-            choices["holders"]["-s"] = {
-                c: None for c in ethplorer_model.HOLDERS_FILTERS
+            choices["ttcp"] = {c: {} for c in bitquery_model.DECENTRALIZED_EXCHANGES}
+            choices["baas"]["-c"] = {c: {} for c in bitquery_model.POSSIBLE_CRYPTOS}
+            choices["baas"]["--coin"] = {c: {} for c in bitquery_model.POSSIBLE_CRYPTOS}
+            choices["balance"] = {
+                "--sort": {c: None for c in ethplorer_model.BALANCE_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
             }
-            choices["hist"]["-s"] = {c: None for c in ethplorer_model.HIST_FILTERS}
-            choices["top"]["-s"] = {c: None for c in ethplorer_model.TOP_FILTERS}
+            choices["holders"] = {
+                "--sort": {c: None for c in ethplorer_model.HOLDERS_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+            }
+            choices["hist"] = {
+                "--sort": {c: None for c in ethplorer_model.HIST_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+            }
+            choices["top"] = {
+                "--sort": {c: None for c in ethplorer_model.TOP_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+            }
             choices["th"]["-s"] = {c: None for c in ethplorer_model.TH_FILTERS}
-            choices["prices"]["-s"] = {c: None for c in ethplorer_model.PRICES_FILTERS}
-            choices["lt"]["-s"] = {c: None for c in bitquery_model.LT_FILTERS}
-            choices["tv"]["-s"] = {c: None for c in bitquery_model.LT_FILTERS}
-            choices["ueat"]["-s"] = {c: None for c in bitquery_model.UEAT_FILTERS}
-            choices["ueat"]["-i"] = {c: None for c in bitquery_model.INTERVALS}
-            choices["dvcp"]["-s"] = {c: None for c in bitquery_model.DVCP_FILTERS}
-            choices["lt"]["-k"] = {c: None for c in bitquery_model.LT_KIND}
-            choices["lt"]["-vs"] = {c: None for c in bitquery_model.CURRENCIES}
-            choices["ttcp"] = {c: None for c in bitquery_model.DECENTRALIZED_EXCHANGES}
-            choices["ttcp"]["-s"] = {c: None for c in bitquery_model.TTCP_FILTERS}
-            choices["baas"]["-s"] = {c: None for c in bitquery_model.BAAS_FILTERS}
+            choices["th"] = {
+                "--sort": {c: None for c in ethplorer_model.TH_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+                "--hash": {},
+            }
+            choices["prices"] = {
+                "--sort": {c: None for c in ethplorer_model.PRICES_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+            }
+            choices["lt"] = {
+                "--kind": {c: {} for c in bitquery_model.LT_KIND},
+                "-k": "--kind",
+                "--vs": {c: {} for c in bitquery_model.CURRENCIES},
+                "-vs": "--vs",
+                "--sort": {c: {} for c in bitquery_model.LT_FILTERS},
+                "-s": "--sort",
+                "--days": {str(c): {} for c in range(1, 360)},
+                "-d": "--days",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+            }
+            choices["tv"] = {
+                "--coin": None,
+                "-c": "--coin",
+                "--vs": {c: {} for c in bitquery_model.CURRENCIES},
+                "-vs": "--vs",
+                "--sort": {c: {} for c in bitquery_model.LT_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+            }
+            choices["ueat"] = {
+                "--sort": {c: None for c in bitquery_model.UEAT_FILTERS},
+                "-s": "--sort",
+                "--interval": {c: {} for c in bitquery_model.INTERVALS},
+                "-i": "--interval",
+                "--limit": {str(c): {} for c in range(1, 90)},
+                "-l": "--limit",
+                "--descend": {},
+            }
+            choices["dvcp"] = {
+                "--coin": None,
+                "-c": "--coin",
+                "--vs": {c: {} for c in bitquery_model.CURRENCIES},
+                "-vs": "--vs",
+                "--days": {str(c): {} for c in range(1, 100)},
+                "-d": "--days",
+                "--sort": {c: {} for c in bitquery_model.DVCP_FILTERS},
+                "-s": "--sort",
+                "--descend": {},
+            }
+            choices["ttcp"] = {c: {} for c in bitquery_model.DECENTRALIZED_EXCHANGES}
+            choices["ttcp"]["--sort"] = {c: None for c in bitquery_model.TTCP_FILTERS}
+            choices["ttcp"]["-s"] = "--sort"
+            choices["ttcp"]["--days"] = {str(c): {} for c in range(1, 100)}
+            choices["ttcp"]["-d"] = "--days"
+            choices["ttcp"]["--limit"] = {str(c): {} for c in range(1, 100)}
+            choices["ttcp"]["-l"] = "--limit"
+            choices["ttcp"]["--descend"] = {}
+            choices["baas"] = {
+                "--coin": None,
+                "-c": "--coin",
+                "--vs": {c: {} for c in bitquery_model.CURRENCIES},
+                "-vs": "--vs",
+                "--sort": {c: {} for c in bitquery_model.BAAS_FILTERS},
+                "-s": "--sort",
+                "--descend": {},
+            }
+            choices["address"] = {
+                "-a": {},
+                "-t": {},
+                "-tx": {},
+                "--address": None,
+            }
+            choices["info"]["--social"] = {}
 
             choices["support"] = self.SUPPORT_CHOICES
             choices["about"] = self.ABOUT_CHOICES
