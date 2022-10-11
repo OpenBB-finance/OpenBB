@@ -9,9 +9,8 @@ import os
 import contextlib
 from enum import Enum
 import io
-import dotenv
-
 from typing import Dict, List, Union
+import dotenv
 import binance
 import pandas as pd
 import quandl
