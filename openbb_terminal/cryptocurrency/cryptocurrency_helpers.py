@@ -15,7 +15,7 @@ import numpy as np
 import ccxt
 from binance.client import Client
 import matplotlib.pyplot as plt
-from matplotlib.ticker import FormatStrFormatter
+from matplotlib.ticker import LogFormatter, ScalarFormatter
 import yfinance as yf
 import mplfinance as mpf
 from pycoingecko import CoinGeckoAPI
@@ -1384,8 +1384,11 @@ def plot_candles(
         )
         lambda_long_number_format_y_axis(candles_df, "Volume", ax)
         if yscale == "log":
-            ax[0].yaxis.set_major_formatter(FormatStrFormatter("%.2f"))
-            ax[0].yaxis.set_minor_formatter(FormatStrFormatter("%.2f"))
+            ax[0].yaxis.set_major_formatter(ScalarFormatter())
+            ax[0].yaxis.set_major_locator(
+                LogLocator(base=100, subs=[1.0, 2.0, 5.0, 10.0])
+            )
+            ax[0].ticklabel_format(style="plain", axis="y")
         theme.visualize_output(force_tight_layout=False)
     else:
         nr_external_axes = 2 if volume else 1

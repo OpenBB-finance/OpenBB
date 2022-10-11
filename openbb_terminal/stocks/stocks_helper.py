@@ -13,7 +13,7 @@ from typing import Any, Union, Optional, Iterable, List, Dict
 import financedatabase as fd
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
-from matplotlib.ticker import FormatStrFormatter
+from matplotlib.ticker import LogLocator, ScalarFormatter
 import mplfinance as mpf
 import numpy as np
 import pandas as pd
@@ -533,8 +533,12 @@ def display_candle(
                     ax[0].legend(lines, labels)
 
                 if yscale == "log":
-                    ax[0].yaxis.set_major_formatter(FormatStrFormatter("%.2f"))
-                    ax[0].yaxis.set_minor_formatter(FormatStrFormatter("%.2f"))
+                    ax[0].yaxis.set_major_formatter(ScalarFormatter())
+                    ax[0].yaxis.set_major_locator(
+                        LogLocator(base=100, subs=[1.0, 2.0, 5.0, 10.0])
+                    )
+                    ax[0].ticklabel_format(style="plain", axis="y")
+
                 cfg.theme.visualize_output(force_tight_layout=False)
             else:
                 if len(external_axes) != 2:
