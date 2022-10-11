@@ -10,8 +10,8 @@
 
 
     <meta name="description" content="To obtain charts, make sure to add chart=True as the last parameter
-Get underlying data    stocks.options.screen.screener_output(preset: str = &lsquo;high_IV&rsquo;, presets_path: str = &lsquo;/Users/colindelahunty/OpenBBTerminal/openbb_terminal/stocks/options/screen/../presets/&#39;) -&gt; Tuple[pandas.core.frame.DataFrame, str]    Screen options based on preset filters
-Parameters ---------- preset: str Preset file to screen for presets_path: str Path to preset folder Returns ------- pd.DataFrame: DataFrame with screener data, or empty if errors str: String containing error message if supplied  Getting charts    stocks.">
+Get underlying data    stocks.options.screen.screener_output(preset: str) -&gt; Tuple[pandas.core.frame.DataFrame, str]    Screen options based on preset filters
+Parameters ---------- preset: str Chosen preset Returns ------- pd.DataFrame: DataFrame with screener data, or empty if errors str: String containing error message if supplied  Getting charts    stocks.options.screen.screener_output(preset: str, limit: int = 20, export: str = &lsquo;&rsquo;, chart=True) -&gt; List    Print the output of screener">
 
 
 
@@ -2621,37 +2621,6 @@ code, img {
                 <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/common/ta/cg/"
                     class="gdoc-nav__entry ">
                     cg
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/common/ta/demark/"
-                    class="gdoc-nav__entry ">
-                    demark
                 </a>
             </span>
             
@@ -12416,6 +12385,37 @@ code, img {
                 <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/forecast/nbeats/"
                     class="gdoc-nav__entry ">
                     nbeats
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/forecast/nhits/"
+                    class="gdoc-nav__entry ">
+                    nhits
                 </a>
             </span>
             
@@ -25511,6 +25511,37 @@ code, img {
                 <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/common/ta/clenow/"
                     class="gdoc-nav__entry ">
                     clenow
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/common/ta/demark/"
+                    class="gdoc-nav__entry ">
+                    demark
                 </a>
             </span>
             
@@ -46277,9 +46308,9 @@ code, img {
         </a>
     </h2>
 </div><div class="gdoc-page__anchorwrap">
-    <h3 id="stocksoptionsscreenscreener_outputpreset-str--high_iv-presets_path-str--userscolindelahuntyopenbbterminalopenbb_terminalstocksoptionsscreenpresets---tuplepandascoreframedataframe-str">
-        stocks.options.screen.screener_output(preset: str = &lsquo;high_IV&rsquo;, presets_path: str = &lsquo;/Users/colindelahunty/OpenBBTerminal/openbb_terminal/stocks/options/screen/../presets/') -&gt; Tuple[pandas.core.frame.DataFrame, str]
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/api/stocks/options/screen/screener_output/#stocksoptionsscreenscreener_outputpreset-str--high_iv-presets_path-str--userscolindelahuntyopenbbterminalopenbb_terminalstocksoptionsscreenpresets---tuplepandascoreframedataframe-str" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor stocks.options.screen.screener_output(preset: str = &lsquo;high_IV&rsquo;, presets_path: str = &lsquo;/Users/colindelahunty/OpenBBTerminal/openbb_terminal/stocks/options/screen/../presets/&#39;) -&gt; Tuple[pandas.core.frame.DataFrame, str]" href="#stocksoptionsscreenscreener_outputpreset-str--high_iv-presets_path-str--userscolindelahuntyopenbbterminalopenbb_terminalstocksoptionsscreenpresets---tuplepandascoreframedataframe-str">
+    <h3 id="stocksoptionsscreenscreener_outputpreset-str---tuplepandascoreframedataframe-str">
+        stocks.options.screen.screener_output(preset: str) -&gt; Tuple[pandas.core.frame.DataFrame, str]
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/api/stocks/options/screen/screener_output/#stocksoptionsscreenscreener_outputpreset-str---tuplepandascoreframedataframe-str" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor stocks.options.screen.screener_output(preset: str) -&gt; Tuple[pandas.core.frame.DataFrame, str]" href="#stocksoptionsscreenscreener_outputpreset-str---tuplepandascoreframedataframe-str">
             <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
         </a>
     </h3>
@@ -46287,9 +46318,7 @@ code, img {
 <pre><code>Parameters
 ----------
 preset: str
-    Preset file to screen for
-presets_path: str
-    Path to preset folder
+    Chosen preset
 Returns
 -------
 pd.DataFrame:
@@ -46305,9 +46334,9 @@ str:
         </a>
     </h2>
 </div><div class="gdoc-page__anchorwrap">
-    <h3 id="stocksoptionsscreenscreener_outputpreset-str--high_iv-presets_path-str--userscolindelahuntyopenbbterminalopenbb_terminalstocksoptionsscreenpresets-limit-int--20-export-str---charttrue---list">
-        stocks.options.screen.screener_output(preset: str = &lsquo;high_IV&rsquo;, presets_path: str = &lsquo;/Users/colindelahunty/OpenBBTerminal/openbb_terminal/stocks/options/screen/../presets/&rsquo;, limit: int = 20, export: str = &lsquo;&rsquo;, chart=True) -&gt; List
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/api/stocks/options/screen/screener_output/#stocksoptionsscreenscreener_outputpreset-str--high_iv-presets_path-str--userscolindelahuntyopenbbterminalopenbb_terminalstocksoptionsscreenpresets-limit-int--20-export-str---charttrue---list" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor stocks.options.screen.screener_output(preset: str = &lsquo;high_IV&rsquo;, presets_path: str = &lsquo;/Users/colindelahunty/OpenBBTerminal/openbb_terminal/stocks/options/screen/../presets/&rsquo;, limit: int = 20, export: str = &lsquo;&rsquo;, chart=True) -&gt; List" href="#stocksoptionsscreenscreener_outputpreset-str--high_iv-presets_path-str--userscolindelahuntyopenbbterminalopenbb_terminalstocksoptionsscreenpresets-limit-int--20-export-str---charttrue---list">
+    <h3 id="stocksoptionsscreenscreener_outputpreset-str-limit-int--20-export-str---charttrue---list">
+        stocks.options.screen.screener_output(preset: str, limit: int = 20, export: str = &lsquo;&rsquo;, chart=True) -&gt; List
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/api/stocks/options/screen/screener_output/#stocksoptionsscreenscreener_outputpreset-str-limit-int--20-export-str---charttrue---list" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor stocks.options.screen.screener_output(preset: str, limit: int = 20, export: str = &lsquo;&rsquo;, chart=True) -&gt; List" href="#stocksoptionsscreenscreener_outputpreset-str-limit-int--20-export-str---charttrue---list">
             <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
         </a>
     </h3>
@@ -46315,9 +46344,7 @@ str:
 <pre><code>Parameters
 ----------
 preset: str
-    Preset file to screen for
-presets_path: str
-    Path to preset folder
+    Chosen preset
 limit: int
     Number of randomly sorted rows to display
 export: str
@@ -48043,25 +48070,6 @@ List
         
         
     
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
 
         
     
@@ -53368,8 +53376,27 @@ List
         
             
     
+    
+
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
 
+        
+        
     
         
         
@@ -61456,7 +61483,26 @@ List
             
     
     
+
+    
+        
+        
 
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
     
         
         

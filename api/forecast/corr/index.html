@@ -9,8 +9,9 @@
 
 
 
-    <meta name="description" content="Get underlying data    forecast.corr(dataset: pandas.core.frame.DataFrame, export: str = &lsquo;&rsquo;, external_axes: Optional[List[axes]] = None)    Plot correlation coefficients for dataset features
-Parameters ---------- dataset : pd.DataFrame The dataset fore calculating correlation coefficients export: str Format to export image external_axes:Optional[List[plt.axes]] External axes to plot on  ">
+    <meta name="description" content="To obtain charts, make sure to add chart=True as the last parameter
+Get underlying data    forecast.corr(df: pandas.core.frame.DataFrame) -&gt; pandas.core.frame.DataFrame    Returns correlation for a given df
+Parameters ---------- df: pd.DataFrame The df to produce statistics for Returns ---------- df: pd.DataFrame The df with the new data  Getting charts    forecast.corr(dataset: pandas.core.frame.DataFrame, export: str = &lsquo;&rsquo;, external_axes: Optional[List[axes]] = None, chart=True)    Plot correlation coefficients for dataset features">
 
 
 
@@ -2620,37 +2621,6 @@ code, img {
                 <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/common/ta/cg/"
                     class="gdoc-nav__entry ">
                     cg
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/common/ta/demark/"
-                    class="gdoc-nav__entry ">
-                    demark
                 </a>
             </span>
             
@@ -12415,6 +12385,37 @@ code, img {
                 <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/forecast/nbeats/"
                     class="gdoc-nav__entry ">
                     nbeats
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/forecast/nhits/"
+                    class="gdoc-nav__entry ">
+                    nhits
                 </a>
             </span>
             
@@ -25510,6 +25511,37 @@ code, img {
                 <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/common/ta/clenow/"
                     class="gdoc-nav__entry ">
                     clenow
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/common/ta/demark/"
+                    class="gdoc-nav__entry ">
+                    demark
                 </a>
             </span>
             
@@ -46251,7 +46283,8 @@ code, img {
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Corr</h1>
-        <div class="gdoc-page__anchorwrap">
+        <p>To obtain charts, make sure to add <code>chart=True</code> as the last parameter</p>
+<div class="gdoc-page__anchorwrap">
     <h2 id="get-underlying-data">
         Get underlying data
         <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/api/forecast/corr/#get-underlying-data" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Get underlying data" href="#get-underlying-data">
@@ -46259,9 +46292,34 @@ code, img {
         </a>
     </h2>
 </div><div class="gdoc-page__anchorwrap">
-    <h3 id="forecastcorrdataset-pandascoreframedataframe-export-str---external_axes-optionallistaxes--none">
-        forecast.corr(dataset: pandas.core.frame.DataFrame, export: str = &lsquo;&rsquo;, external_axes: Optional[List[axes]] = None)
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/api/forecast/corr/#forecastcorrdataset-pandascoreframedataframe-export-str---external_axes-optionallistaxes--none" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor forecast.corr(dataset: pandas.core.frame.DataFrame, export: str = &lsquo;&rsquo;, external_axes: Optional[List[axes]] = None)" href="#forecastcorrdataset-pandascoreframedataframe-export-str---external_axes-optionallistaxes--none">
+    <h3 id="forecastcorrdf-pandascoreframedataframe---pandascoreframedataframe">
+        forecast.corr(df: pandas.core.frame.DataFrame) -&gt; pandas.core.frame.DataFrame
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/api/forecast/corr/#forecastcorrdf-pandascoreframedataframe---pandascoreframedataframe" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor forecast.corr(df: pandas.core.frame.DataFrame) -&gt; pandas.core.frame.DataFrame" href="#forecastcorrdf-pandascoreframedataframe---pandascoreframedataframe">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h3>
+</div><p>Returns correlation for a given df</p>
+<pre><code>Parameters
+----------
+df: pd.DataFrame
+    The df to produce statistics for
+
+Returns
+----------
+df: pd.DataFrame
+    The df with the new data
+</code></pre>
+<div class="gdoc-page__anchorwrap">
+    <h2 id="getting-charts">
+        Getting charts
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/api/forecast/corr/#getting-charts" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Getting charts" href="#getting-charts">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h2>
+</div><div class="gdoc-page__anchorwrap">
+    <h3 id="forecastcorrdataset-pandascoreframedataframe-export-str---external_axes-optionallistaxes--none-charttrue">
+        forecast.corr(dataset: pandas.core.frame.DataFrame, export: str = &lsquo;&rsquo;, external_axes: Optional[List[axes]] = None, chart=True)
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/api/forecast/corr/#forecastcorrdataset-pandascoreframedataframe-export-str---external_axes-optionallistaxes--none-charttrue" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor forecast.corr(dataset: pandas.core.frame.DataFrame, export: str = &lsquo;&rsquo;, external_axes: Optional[List[axes]] = None, chart=True)" href="#forecastcorrdataset-pandascoreframedataframe-export-str---external_axes-optionallistaxes--none-charttrue">
             <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
         </a>
     </h3>
@@ -47990,25 +48048,6 @@ external_axes:Optional[List[plt.axes]]
         
         
     
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
 
         
     
@@ -53315,8 +53354,27 @@ external_axes:Optional[List[plt.axes]]
         
             
     
+    
+
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
 
+        
+        
     
         
         
@@ -61403,7 +61461,26 @@ external_axes:Optional[List[plt.axes]]
             
     
     
+
+    
+        
+        
 
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
     
         
         
