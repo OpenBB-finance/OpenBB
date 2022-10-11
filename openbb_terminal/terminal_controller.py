@@ -889,6 +889,7 @@ def main(
         E.g. GME,AMC,BTC-USD
     """
 
+    # paths = ["openbb_terminal/" + path for path in paths]
     if test:
         os.environ["DEBUG_MODE"] = "true"
 

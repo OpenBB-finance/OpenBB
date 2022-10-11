@@ -357,7 +357,7 @@ class PortfolioOptimizationController(BaseController):
                 filepath.name: filepath
                 for file_type in self.file_types
                 for filepath in (
-                    REPOSITORY_DIRECTORY / "portfolio" / "optimization"
+                    REPOSITORY_DIRECTORY / "portfolios" / "optimization"
                 ).rglob(f"*.{file_type}")
             }
         )
