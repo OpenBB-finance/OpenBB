@@ -52,6 +52,7 @@ from openbb_terminal.forecast import (
     tft_view,
     helpers,
     trans_view,
+    nhits_view,
 )
 
 logger = logging.getLogger(__name__)
@@ -104,6 +105,7 @@ class ForecastController(BaseController):
         "tft",
         "season",
         "which",
+        "nhits",
     ]
     pandas_plot_choices = [
         "line",
@@ -247,6 +249,7 @@ class ForecastController(BaseController):
                 "trans",
                 "tft",
                 "season",
+                "nhits",
             ]:
                 self.choices[feature] = {c: None for c in self.files}
 
@@ -321,6 +324,7 @@ class ForecastController(BaseController):
         mt.add_cmd("tcn", self.files)
         mt.add_cmd("trans", self.files)
         mt.add_cmd("tft", self.files)
+        mt.add_cmd("nhits", self.files)
         # mt.add_info("_comingsoon_")
 
         console.print(text=mt.menu_text, menu="Forecast")
@@ -2336,8 +2340,6 @@ class ForecastController(BaseController):
                 naive=ns_parser.naive,
             )
 
-    # Below this is ports to the old pred menu
-
     @log_start_end(log=logger)
     def call_tft(self, other_args: List[str]):
         """Process TFT command"""
@@ -2437,6 +2439,133 @@ class ForecastController(BaseController):
                 hidden_continuous_size=ns_parser.hidden_continuous_size,
                 n_epochs=ns_parser.n_epochs,
                 batch_size=ns_parser.batch_size,
+                model_save_name=ns_parser.model_save_name,
+                force_reset=ns_parser.force_reset,
+                save_checkpoints=ns_parser.save_checkpoints,
+                export=ns_parser.export,
+                residuals=ns_parser.residuals,
+                forecast_only=ns_parser.forecast_only,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
+                naive=ns_parser.naive,
+            )
+
+    @log_start_end(log=logger)
+    def call_nhits(self, other_args: List[str]):
+        """Process nhits command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="nhits",
+            description="Perform nhits forecast",
+        )
+        parser.add_argument(
+            "--num-stacks",
+            dest="num_stacks",
+            type=check_positive,
+            default=3,
+            help="The number of stacks that make up the model",
+        )
+        parser.add_argument(
+            "--num-blocks",
+            dest="num_blocks",
+            type=check_positive,
+            default=1,
+            help="The number of blocks making up every stack",
+        )
+        parser.add_argument(
+            "--num-layers",
+            dest="num_layers",
+            type=check_positive,
+            default=2,
+            help="The number of fully connected layers",
+        )
+        parser.add_argument(
+            "--layer_widths",
+            dest="layer_widths",
+            type=check_positive,
+            default=3,
+            help="The number of neurons in each layer",
+        )
+        parser.add_argument(
+            "--activation",
+            dest="activation",
+            type=str,
+            default="ReLU",
+            choices=[
+                "ReLU",
+                "RReLU",
+                "PReLU",
+                "Softplus",
+                "Tanh",
+                "SELU",
+                "LeakyReLU",
+                "Sigmoid",
+            ],
+            help="The desired activation",
+        )
+        parser.add_argument(
+            "--maxpool1d",
+            action="store_true",
+            dest="maxpool1d",
+            default=False,
+            help="Whethet to use MaxPool1d or AvgPool1d",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--target-dataset")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+            save_checkpoints=True,
+            target_dataset=True,
+            n_days=True,
+            force_reset=True,
+            model_save_name="tft_model",
+            train_split=True,
+            dropout=0.1,
+            input_chunk_length=True,
+            output_chunk_length=True,
+            batch_size=32,
+            n_epochs=True,
+            past_covariates=True,
+            all_past_covariates=True,
+            target_column=True,
+            residuals=True,
+            forecast_only=True,
+            start=True,
+            end=True,
+            naive=True,
+        )
+
+        if ns_parser:
+            if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+
+            covariates = helpers.clean_covariates(
+                ns_parser, self.datasets[ns_parser.target_dataset]
+            )
+
+            nhits_view.display_nhits_forecast(
+                data=self.datasets[ns_parser.target_dataset],
+                dataset_name=ns_parser.target_dataset,
+                n_predict=ns_parser.n_days,
+                target_column=ns_parser.target_column,
+                past_covariates=covariates,
+                train_split=ns_parser.train_split,
+                forecast_horizon=ns_parser.n_days,
+                input_chunk_length=ns_parser.input_chunk_length,
+                output_chunk_length=ns_parser.output_chunk_length,
+                num_stacks=ns_parser.num_stacks,
+                num_blocks=ns_parser.num_blocks,
+                num_layers=ns_parser.num_layers,
+                layer_widths=ns_parser.layer_widths,
+                activation=ns_parser.activation,
+                MaxPool1d=ns_parser.maxpool1d,
+                batch_size=ns_parser.batch_size,
+                n_epochs=ns_parser.n_epochs,
+                dropout=ns_parser.dropout,
                 model_save_name=ns_parser.model_save_name,
                 force_reset=ns_parser.force_reset,
                 save_checkpoints=ns_parser.save_checkpoints,

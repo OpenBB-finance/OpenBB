@@ -1706,6 +1706,8 @@ main:
             ref: /api/forecast/load
           - name: tft
             ref: /api/forecast/tft
+          - name: nhits
+            ref: /api/forecast/nhits
           - name: corr
             ref: /api/forecast/corr
           - name: rename
@@ -1909,6 +1911,8 @@ main:
                 ref: /api/crypto/dd/mt
               - name: gh
                 ref: /api/crypto/dd/gh
+              - name: close
+                ref: /api/crypto/dd/close
               - name: ohlc_historical
                 ref: /api/crypto/dd/ohlc_historical
               - name: exchanges
@@ -2836,6 +2840,73 @@ main:
             ref: /api/portfolio/summary
           - name: holdv
             ref: /api/portfolio/holdv
+      - name: keys
+        ref: /api/keys
+        sub:
+          - name: cmc
+            ref: /api/keys/cmc
+          - name: get_keys_info
+            ref: /api/keys/get_keys_info
+          - name: twitter
+            ref: /api/keys/twitter
+          - name: tradier
+            ref: /api/keys/tradier
+          - name: eodhd
+            ref: /api/keys/eodhd
+          - name: av
+            ref: /api/keys/av
+          - name: ethplorer
+            ref: /api/keys/ethplorer
+          - name: bitquery
+            ref: /api/keys/bitquery
+          - name: set_keys
+            ref: /api/keys/set_keys
+          - name: walert
+            ref: /api/keys/walert
+          - name: mykeys
+            ref: /api/keys/mykeys
+          - name: coinbase
+            ref: /api/keys/coinbase
+          - name: glassnode
+            ref: /api/keys/glassnode
+          - name: fred
+            ref: /api/keys/fred
+          - name: polygon
+            ref: /api/keys/polygon
+          - name: rh
+            ref: /api/keys/rh
+          - name: finnhub
+            ref: /api/keys/finnhub
+          - name: coinglass
+            ref: /api/keys/coinglass
+          - name: cpanic
+            ref: /api/keys/cpanic
+          - name: github
+            ref: /api/keys/github
+          - name: news
+            ref: /api/keys/news
+          - name: oanda
+            ref: /api/keys/oanda
+          - name: si
+            ref: /api/keys/si
+          - name: messari
+            ref: /api/keys/messari
+          - name: smartstake
+            ref: /api/keys/smartstake
+          - name: reddit
+            ref: /api/keys/reddit
+          - name: santiment
+            ref: /api/keys/santiment
+          - name: quandl
+            ref: /api/keys/quandl
+          - name: fmp
+            ref: /api/keys/fmp
+          - name: degiro
+            ref: /api/keys/degiro
+          - name: iex
+            ref: /api/keys/iex
+          - name: binance
+            ref: /api/keys/binance
       - name: etf
         ref: /api/etf
         sub:

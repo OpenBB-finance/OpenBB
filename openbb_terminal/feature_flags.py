@@ -2,10 +2,10 @@
 import os
 import os.path
 from distutils.util import strtobool
-import pkg_resources
 
 # IMPORTATION THIRDPARTY
 from dotenv import load_dotenv
+import pkg_resources
 import i18n
 
 # IMPORTATION INTERNAL
