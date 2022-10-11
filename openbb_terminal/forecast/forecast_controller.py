@@ -53,6 +53,10 @@ from openbb_terminal.forecast import (
     helpers,
     trans_view,
 )
+from openbb_terminal.core.config.paths import (
+    USER_EXPORTS_DIRECTORY,
+    CUSTOM_IMPORTS_DIRECTORY,
+)
 
 logger = logging.getLogger(__name__)
 empty_df = pd.DataFrame()
@@ -171,8 +175,8 @@ class ForecastController(BaseController):
             filepath.name: filepath
             for file_type in self.file_types
             for filepath in chain(
-                Path("exports").rglob(f"*.{file_type}"),
-                Path("custom_imports").rglob(f"*.{file_type}"),
+                USER_EXPORTS_DIRECTORY.rglob(f"*.{file_type}"),
+                CUSTOM_IMPORTS_DIRECTORY.rglob(f"*.{file_type}"),
             )
             if filepath.is_file()
         }
