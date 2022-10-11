@@ -11,7 +11,7 @@ argon2-cffi-bindings==21.2.0; python_version >= "3.7"
 argon2-cffi==21.3.0; python_version >= "3.7"
 ascii-magic==1.6; python_version >= "3.5"
 astor==0.8.1; python_full_version >= "3.7.1" and python_full_version < "4.0.0" and python_version >= "3.8"
-astroid==2.12.10; python_full_version >= "3.7.2"
+astroid==2.12.11; python_full_version >= "3.7.2"
 astropy==5.1; python_version >= "3.8"
 asttokens==2.0.8; python_version >= "3.8" and python_full_version >= "3.7.0" and python_full_version < "4.0.0"
 async-generator==1.10; python_version >= "3.7" and python_version < "4.0"
@@ -32,7 +32,7 @@ blinker==1.5; python_version >= "3.7" and python_full_version < "3.0.0" or pytho
 bs4==0.0.1
 bt==0.2.9; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.6.0")
 cachetools==5.2.0; python_version >= "3.7" and python_version < "4.0" and (python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7")
-ccxt==1.95.26
+ccxt==1.95.35
 certifi==2022.9.24; python_version >= "3.8" and python_version < "4" and python_full_version >= "3.7.1" and python_full_version < "4.0.0" and (python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7")
 cffi==1.15.1
 cfgv==3.3.1; python_full_version >= "3.6.1" and python_version >= "3.7"
@@ -84,7 +84,7 @@ frozenlist==1.3.1; python_version >= "3.7" and python_full_version >= "3.7.0"
 fundamentalanalysis==0.2.14
 future==0.18.2; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
 gitdb==4.0.9; python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7" and python_version >= "3.7"
-gitpython==3.1.28; python_version >= "3.7"
+gitpython==3.1.29; python_version >= "3.7"
 grpcio==1.49.1; python_full_version >= "3.7.1" and python_full_version < "4.0.0" and python_version >= "3.7"
 h11==0.12.0; python_version >= "3.8" and python_version < "4.0" and python_full_version >= "3.7.0"
 hijri-converter==2.2.4; python_version >= "3.7"
@@ -147,7 +147,7 @@ myst-parser==0.15.2; python_version >= "3.6"
 nbclassic==0.4.5; python_version >= "3.7"
 nbclient==0.5.13; python_full_version >= "3.7.0" and python_version >= "3.7" and python_full_version < "4.0.0"
 nbconvert==6.5.4; python_version >= "3.7"
-nbformat==5.6.1; python_full_version >= "3.7.0" and python_full_version < "4.0.0" and python_version >= "3.7"
+nbformat==5.7.0; python_full_version >= "3.7.0" and python_full_version < "4.0.0" and python_version >= "3.7"
 nbmake==1.3.0; python_full_version >= "3.7.0" and python_full_version < "4.0.0"
 nest-asyncio==1.5.6; python_full_version >= "3.7.0" and python_full_version < "4.0.0" and python_version >= "3.7"
 networkx==2.8.7; python_version >= "3.8"
@@ -169,7 +169,7 @@ pandas==1.5.0; python_version >= "3.8"
 pandocfilters==1.5.0; python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.7"
 parso==0.8.3; python_version >= "3.8" and python_full_version >= "3.7.0" and python_full_version < "4.0.0"
 pathspec==0.10.1; python_version >= "3.7"
-patsy==0.5.2; python_version >= "3.8"
+patsy==0.5.3; python_version >= "3.8"
 pbr==5.10.0; python_version >= "3.8"
 pexpect==4.8.0; sys_platform != "win32" and python_version >= "3.8" and python_full_version >= "3.7.0" and python_full_version < "4.0.0"
 pickleshare==0.7.5; python_version >= "3.8" and python_full_version >= "3.7.0" and python_full_version < "4.0.0"
@@ -334,4 +334,4 @@ xlsxwriter==3.0.3; python_version >= "3.7"
 yarl==1.8.1; python_version >= "3.7" and python_full_version >= "3.7.0"
 yfinance==0.1.74
 zipp==3.9.0; python_version >= "3.7" and python_full_version < "3.9.7" and python_version < "3.10" or python_full_version > "3.9.7" and python_version >= "3.7" and python_version < "3.10"
-zope.interface==5.4.0; python_version >= "3.5" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.5"
+zope.interface==5.5.0; python_version >= "3.5" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.5"
