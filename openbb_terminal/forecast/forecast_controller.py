@@ -6,7 +6,6 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from itertools import chain
-from pathlib import Path
 from typing import Any, Optional, List, Dict
 
 try:
@@ -285,8 +284,7 @@ class ForecastController(BaseController):
         mt.add_param("_disclaimer_", self.disclaimer)
         mt.add_raw("\n")
         mt.add_param(
-            "_data_loc",
-            f"\n\t{obbff.EXPORT_FOLDER_PATH}\n\t{Path('custom_imports').resolve()}/forecast",
+            "_data_loc", f"\n\t{USER_EXPORTS_DIRECTORY}\n\t{CUSTOM_IMPORTS_DIRECTORY}"
         )
         mt.add_raw("\n")
         mt.add_cmd("load")
