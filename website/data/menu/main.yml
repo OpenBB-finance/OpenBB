@@ -19,7 +19,7 @@ main:
                 ref: /terminal/alternative/covid/rates
               - name: slopes
                 ref: /terminal/alternative/covid/slopes
-          - name: os
+          - name: oss
             ref: /terminal/alternative/oss
             sub:
               - name: rossidx
@@ -33,59 +33,59 @@ main:
       - name: common
         ref: /terminal/common
         sub:
-          - name: behavioural analysis
-            ref: /terminal/common/ba
-            sub:
-              - name: bullbear
-                ref: /terminal/common/ba/bullbear
-              - name: getdd
-                ref: /terminal/common/ba/getdd
-              - name: headlines
-                ref: /terminal/common/ba/headlines
-              - name: hist
-                ref: /terminal/common/ba/hist
-              - name: infer
-                ref: /terminal/common/ba/infer
-              - name: interest
-                ref: /terminal/common/ba/interest
-              - name: jcdr
-                ref: /terminal/common/ba/jcdr
-              - name: jctr
-                ref: /terminal/common/ba/jctr
-              - name: mentions
-                ref: /terminal/common/ba/mentions
-              - name: messages
-                ref: /terminal/common/ba/messages
-              - name: popular
-                ref: /terminal/common/ba/popular
-              - name: queries
-                ref: /terminal/common/ba/queries
-              - name: reddit_sent
-                ref: /terminal/common/ba/reddit_sent
-              - name: regions
-                ref: /terminal/common/ba/regions
-              - name: rise
-                ref: /terminal/common/ba/rise
-              - name: sentiment
-                ref: /terminal/common/ba/sentiment
-              - name: snews
-                ref: /terminal/common/ba/snews
-              - name: spac
-                ref: /terminal/common/ba/spac
-              - name: spac_c
-                ref: /terminal/common/ba/spac_c
-              - name: stalker
-                ref: /terminal/common/ba/stalker
-              - name: stats
-                ref: /terminal/common/ba/stats
-              - name: trend
-                ref: /terminal/common/ba/trend
-              - name: trending
-                ref: /terminal/common/ba/trending
-              - name: watchlist
-                ref: /terminal/common/ba/watchlist
-              - name: wsb
-                ref: /terminal/common/ba/wsb
+        - name: behavioural analysis
+          ref: /terminal/common/ba
+          sub:
+            - name: bullbear
+              ref: /terminal/common/ba/bullbear
+            - name: getdd
+              ref: /terminal/common/ba/getdd
+            - name: headlines
+              ref: /terminal/common/ba/headlines
+            - name: hist
+              ref: /terminal/common/ba/hist
+            - name: infer
+              ref: /terminal/common/ba/infer
+            - name: interest
+              ref: /terminal/common/ba/interest
+            - name: jcdr
+              ref: /terminal/common/ba/jcdr
+            - name: jctr
+              ref: /terminal/common/ba/jctr
+            - name: mentions
+              ref: /terminal/common/ba/mentions
+            - name: messages
+              ref: /terminal/common/ba/messages
+            - name: popular
+              ref: /terminal/common/ba/popular
+            - name: queries
+              ref: /terminal/common/ba/queries
+            - name: reddit_sent
+              ref: /terminal/common/ba/reddit_sent
+            - name: regions
+              ref: /terminal/common/ba/regions
+            - name: rise
+              ref: /terminal/common/ba/rise
+            - name: sentiment
+              ref: /terminal/common/ba/sentiment
+            - name: snews
+              ref: /terminal/common/ba/snews
+            - name: spac
+              ref: /terminal/common/ba/spac
+            - name: spac_c
+              ref: /terminal/common/ba/spac_c
+            - name: stalker
+              ref: /terminal/common/ba/stalker
+            - name: stats
+              ref: /terminal/common/ba/stats
+            - name: trend
+              ref: /terminal/common/ba/trend
+            - name: trending
+              ref: /terminal/common/ba/trending
+            - name: watchlist
+              ref: /terminal/common/ba/watchlist
+            - name: wsb
+              ref: /terminal/common/ba/wsb
         - name: quantitative analysis
           ref: /terminal/common/qa
           sub:
