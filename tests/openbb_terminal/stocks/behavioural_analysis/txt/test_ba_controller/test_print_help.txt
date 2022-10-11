@@ -23,7 +23,6 @@ Ticker: TSLA
     queries            top related queries with this stock                             [Google]
     rise               top rising related queries with stock                           [FinBrain]
     trend              most talked about tickers within the last hour                  [SentimentInvestor]
-    hist               plot historical RHI and AHI data by hour                        [SentimentInvestor]
     jcdr               Jim Cramer's daily recommendations                              [JimCramer]
     jctr               Jim Cramer's recommendations by ticker                          [JimCramer]
 

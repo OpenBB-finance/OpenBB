@@ -20,9 +20,9 @@ except ModuleNotFoundError:
     )
 import pandas as pd
 import psutil
-from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     check_positive,
@@ -442,7 +442,7 @@ class ForecastController(BaseController):
                 "--n-days",
                 action="store",
                 dest="n_days",
-                type=check_greater_than_one,
+                type=check_positive,
                 default=5,
                 help="prediction days.",
             )
@@ -937,7 +937,7 @@ class ForecastController(BaseController):
         for datasetcol in ns_parser.values:
             dataset, col = datasetcol.split(".")
             df = self.datasets[dataset]
-            if "date" in df.columns:
+            if "date" in df.columns and col != "date":
                 df = df.set_index("date")
             data[datasetcol] = df[col]
 
