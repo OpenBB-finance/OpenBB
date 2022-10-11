@@ -9,13 +9,13 @@
 
 
 
-    <meta name="description" content="usage: chart [--vs VS] [-d DAYS] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}] Display chart for loaded coin. You can specify currency vs which you want to show chart and also number of days to get data for.
-optional arguments: --vs VS Currency to display vs coin (default: usd) -d DAYS, --days DAYS Number of days to get data for (default: 30) -h, --help show this help message (default: False) --export {csv,json,xlsx,png,jpg,pdf,svg} Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: ) ">
+    <meta name="description" content="usage: candle [--log] [-h] [--export EXPORT] Display chart for loaded coin. You can specify currency vs which you want to show chart and also number of days to get data for.
+--log Plot with y axis on log scale (default: False) -h, --help show this help message (default: False) --export EXPORT Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: ) For more information and examples, use &lsquo;about candle&rsquo; to access the related guide.">
 
 
 
     <title>
-      Chart | OpenBB Terminal Documentation
+      Candle | OpenBB Terminal Documentation
     </title>
 
     <link rel="icon" href="/OpenBBTerminal/favicon/favicon-32x32.png" type="image/x-icon">
@@ -238,7 +238,7 @@ code, img {
 
 </style>
 
-<link rel="alternate" type="application/rss+xml" href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/chart/index.xml" title="OpenBB Terminal Documentation" />
+<link rel="alternate" type="application/rss+xml" href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/candle/index.xml" title="OpenBB Terminal Documentation" />
 
 
 <!-- Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc --> 
@@ -3290,9 +3290,9 @@ code, img {
             
             <span class="flex">
                 
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/crypto/chart/"
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/crypto/candle/"
                     class="gdoc-nav__entry is-active">
-                    chart
+                    candle
                 </a>
             </span>
             
@@ -46225,7 +46225,7 @@ code, img {
         
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>OpenBB Terminal Documentation</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/' href='/OpenBBTerminal/terminal/'><span itemprop='name'>Terminal</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/crypto/' href='/OpenBBTerminal/terminal/crypto/'><span itemprop='name'>Introduction to Cryptocurrency</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Chart</span><meta itemprop='position' content='5' /></li>
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>OpenBB Terminal Documentation</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/' href='/OpenBBTerminal/terminal/'><span itemprop='name'>Terminal</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/terminal/crypto/' href='/OpenBBTerminal/terminal/crypto/'><span itemprop='name'>Introduction to Cryptocurrency</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Candle</span><meta itemprop='position' content='5' /></li>
     
 
     
@@ -46241,7 +46241,7 @@ code, img {
     <div>
         <span class="editpage">
             <svg class="icon gdoc_code" style="color: #C7C7C7;"><use xlink:href="#gdoc_code"></use></svg>
-            <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/website//content/terminal/crypto/chart/_index.md" style="color: #C7C7C7;">
+            <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/website//content/terminal/crypto/candle/_index.md" style="color: #C7C7C7;">
                 Edit this page
             </a>
         </span>
@@ -46250,16 +46250,13 @@ code, img {
 </div>
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
-        <h1>Chart</h1>
-        <pre><code>usage: chart [--vs VS] [-d DAYS] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}]
+        <h1>Candle</h1>
+        <pre><code>usage: candle [--log] [-h] [--export EXPORT]
 </code></pre><p>Display chart for loaded coin. You can specify currency vs which you want to show chart and also number of days to get data for.</p>
-<pre><code>optional arguments:
-  --vs VS               Currency to display vs coin (default: usd)
-  -d DAYS, --days DAYS  Number of days to get data for (default: 30)
-  -h, --help            show this help message (default: False)
-  --export {csv,json,xlsx,png,jpg,pdf,svg}
-                        Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
-</code></pre><p><img src="https://user-images.githubusercontent.com/46355364/154048383-6011faa5-0c68-41eb-b4dd-41923ff7da43.png" alt="chart"  /></p>
+<pre><code class="language-optional" data-lang="optional">  --log            Plot with y axis on log scale (default: False)
+  -h, --help       show this help message (default: False)
+  --export EXPORT  Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
+</code></pre><p>For more information and examples, use &lsquo;about candle&rsquo; to access the related guide.</p>
 
     </article>
  
