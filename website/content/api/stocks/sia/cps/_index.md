@@ -1,7 +1,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### stocks.sia.cps(country: str = 'United States', mktcap: str = 'Large', exclude_exchanges: bool = True)
+### stocks.sia.cps(country: str = 'United States', mktcap: str = 'Large', exclude_exchanges: bool = True) -> dict
 
 Get number of companies per sector in a specific country (and specific market cap). [Source: Finance Database]
 

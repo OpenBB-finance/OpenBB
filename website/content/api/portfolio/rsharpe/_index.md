@@ -21,7 +21,7 @@ Get rolling sharpe ratio
         Rolling sharpe ratio DataFrame
 
 ## Getting charts 
-### portfolio.rsharpe(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, window: str = '1y', risk_free_rate: float = 0, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### portfolio.rsharpe(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, risk_free_rate: float = 0, window: str = '1y', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display rolling sharpe
 
@@ -29,10 +29,10 @@ Display rolling sharpe
     ----------
     portfolio : PortfolioModel
         Portfolio object
-    window: str
-        interval for window to consider
     risk_free_rate: float
         Value to use for risk free rate in sharpe/other calculations
+    window: str
+        interval for window to consider
     export: str
         Export to file
     external_axes: Optional[List[plt.Axes]]

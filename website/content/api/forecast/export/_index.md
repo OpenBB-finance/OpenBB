@@ -1,4 +1,4 @@
 ## Get underlying data 
-### forecast.export(df: pandas.core.frame.DataFrame, export: str, name: str = '') -> None
+### forecast.export(data: pandas.core.frame.DataFrame, export: str, name: str = '') -> None
 
 
