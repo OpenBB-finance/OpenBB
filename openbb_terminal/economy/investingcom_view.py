@@ -7,6 +7,7 @@ from typing import Optional, List, Union
 
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FormatStrFormatter
+from matplotlib.colors import ListedColormap
 import numpy as np
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
@@ -70,7 +71,7 @@ def display_matrix(
 
             print_rich_table(
                 pretty_df,
-                headers=list(df.columns),
+                headers=list(pretty_df.columns),
                 show_index=True,
                 title=title,
             )
@@ -90,15 +91,22 @@ def display_matrix(
             for i in range(df.shape[0]):
                 mask[i][i + 1] = True
 
+            labels = list(df.columns)
+            labels[1] = ""
+
             heatmap = sns.heatmap(
                 df,
-                cmap="RdYlGn_r",
+                cmap=ListedColormap([theme.up_color, theme.down_color]),
+                cbar=False,
                 annot=True,
                 annot_kws={
                     "fontsize": 12,
                 },
+                center=0,
                 fmt=".1f",
                 linewidths=0.5,
+                linecolor="black",
+                xticklabels=labels,
                 mask=mask,
                 ax=ax,
             )
@@ -107,6 +115,7 @@ def display_matrix(
             plt.yticks(rotation=0)
             ax.xaxis.tick_top()
             plt.xticks(rotation=45, ha="center")
+            plt.tick_params(labelright=True)
 
             # Set 3 decimal places for yield and 1 spread
             if not change:
@@ -126,10 +135,10 @@ def display_matrix(
 
             if isinstance(countries, str):
                 ax.set_title(
-                    f"{countries} - Interest rates heatmap - {maturity}", loc="center"
+                    f"{countries} - Interest rates matrix - {maturity}", loc="center"
                 )
             else:
-                ax.set_title(f"Interest rates heatmap - {maturity}", loc="center")
+                ax.set_title(f"Interest rates matrix - {maturity}", loc="center")
 
             if not external_axes:
                 theme.visualize_output()
