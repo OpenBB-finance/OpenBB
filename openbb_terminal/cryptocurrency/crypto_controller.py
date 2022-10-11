@@ -6,7 +6,7 @@ import argparse
 import logging
 import os
 from typing import List
-from prompt_toolkit.completion import NestedCompleter
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers, pyth_model, pyth_view
 from openbb_terminal import feature_flags as obbff
@@ -86,16 +86,48 @@ class CryptoController(CryptoBaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["load"]["-i"] = {
-                c: {}
-                for c in ["1", "5", "15", "30", "60", "240", "1440", "10080", "43200"]
+            choices["load"] = {
+                "--interval": {
+                    c: {}
+                    for c in [
+                        "1",
+                        "5",
+                        "15",
+                        "30",
+                        "60",
+                        "240",
+                        "1440",
+                        "10080",
+                        "43200",
+                    ]
+                },
+                "-i": "--interval",
+                "--exchange": {c: {} for c in self.exchanges},
+                "--source": {c: {} for c in ["CCXT", "YahooFinance", "CoingGecko"]},
+                "--vs": {c: {} for c in ["usd", "eur"]},
+                "--start": None,
+                "-s": "--start",
+                "--end": None,
+                "-e": "--end",
             }
-            choices["load"]["--exchange"] = {c: {} for c in self.exchanges}
-            choices["load"]["--source"] = {
-                c: {} for c in ["CCXT", "YahooFinance", "CoingGecko"]
+            choices["find"] = {
+                "--key": {c: {} for c in FIND_KEYS},
+                "-k": "--key",
+                "--limit": {str(c): {} for c in range(1, 300)},
+                "-l": "--limit",
+                "--skip": {str(c): {} for c in range(1, 300)},
+                "-s": "--skip",
+                "--source": {
+                    c: {}
+                    for c in [
+                        "CoinGecko",
+                        "CoinPaprika",
+                        "Binance",
+                        "Coinbase",
+                        "YahooFinance",
+                    ]
+                },
             }
-            choices["load"]["--vs"] = {c: {} for c in ["usd", "eur"]}
-            choices["find"]["-k"] = {c: {} for c in FIND_KEYS}
             choices["price"] = {c: {} for c in pyth_model.ASSETS.keys()}
             choices["headlines"] = {c: {} for c in finbrain_crypto_view.COINS}
             # choices["prt"]["--vs"] = {c: {} for c in coingecko_coin_ids} # list is huge. makes typing buggy

@@ -5,7 +5,7 @@ import argparse
 import logging
 from typing import List
 
-from prompt_toolkit.completion import NestedCompleter
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
@@ -43,8 +43,15 @@ class ScreenerController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["view"] = {c: None for c in self.preset_choices}
-            choices["set"] = {c: None for c in self.preset_choices}
+
+            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
+            presets: dict = {c: {} for c in self.preset_choices}
+            choices["view"] = presets
+            choices["set"] = presets
+            choices["scr"] = presets
+            choices["scr"]["--limit"] = one_to_hundred
+            choices["scr"]["-l"] = "--limit"
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
