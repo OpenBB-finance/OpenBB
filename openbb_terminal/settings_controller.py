@@ -12,12 +12,12 @@ import pytz
 
 # IMPORTATION THIRDPARTY
 from dotenv import set_key
-from prompt_toolkit.completion import NestedCompleter
 
 # IMPORTATION INTERNAL
 from openbb_terminal import config_plot as cfg_plot
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.core.config.paths import USER_ENV_FILE, USER_DATA_DIRECTORY
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     get_flair,

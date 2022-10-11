@@ -7,7 +7,8 @@ from datetime import datetime, timedelta
 from typing import List
 
 import yfinance as yf
-from prompt_toolkit.completion import NestedCompleter
+
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common.behavioural_analysis import (
@@ -28,7 +29,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
 
 # pylint:disable=R0904,C0302
 
@@ -69,6 +70,8 @@ class BehaviouralAnalysisController(StockBaseController):
     historical_sort = ["date", "value"]
     historical_direction = ["asc", "desc"]
     historical_metric = ["sentiment", "AHI", "RHI", "SGP"]
+    reddit_sort = ["relevance", "hot", "top", "new", "comments"]
+    reddit_time = ["hour", "day", "week", "month", "year", "all"]
     PATH = "/stocks/ba/"
 
     def __init__(self, ticker: str, start: datetime, queue: List[str] = None):
@@ -80,6 +83,116 @@ class BehaviouralAnalysisController(StockBaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+
+            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
+            choices["load"] = {
+                "--ticker": None,
+                "-t": "--ticker",
+                "--start": None,
+                "-s": "--start",
+                "--end": None,
+                "-e": "--end",
+                "--interval": {c: {} for c in ["1", "5", "15", "30", "60"]},
+                "-i": "--interval",
+                "--prepost": {},
+                "-p": "--prepost",
+                "--file": None,
+                "-f": "--file",
+                "--monthly": {},
+                "-m": "--monthly",
+                "--weekly": {},
+                "-w": "--weekly",
+                "--iexrange": {c: {} for c in ["ytd", "1y", "2y", "5y", "6m"]},
+                "-r": "--iexrange",
+                "--source": {
+                    c: {} for c in get_ordered_list_sources(f"{self.PATH}load")
+                },
+            }
+            choices["headlines"]["--raw"] = {}
+            choices["wsb"] = {
+                "--new": {},
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            limit = {
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["watchlist"] = limit
+            choices["popular"] = {
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+                "--num": one_to_hundred,
+                "-n": "--num",
+                "--sub": None,
+                "-s": "--sub",
+            }
+            choices["spac_c"] = {
+                "--popular": {},
+                "-p": "--popular",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["spac"] = limit
+            choices["getdd"] = {
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+                "--days": one_to_hundred,
+                "-d": "--days",
+                "--all": {},
+                "-a": "--all",
+            }
+            choices["reddit_sent"] = {
+                "--sort": {c: {} for c in self.reddit_sort},
+                "-s": "--sort",
+                "--company": None,
+                "-c": "--company",
+                "--subreddits": None,
+                "--time": {c: {} for c in self.reddit_time},
+                "-t": "--time",
+                "--full": {},
+                "--graphic": {},
+                "-g": "--graphic",
+                "--display": {},
+                "-d": "--display",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["stalker"] = {
+                "--user": None,
+                "-u": "--user",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["messages"] = limit
+            choices["infer"] = limit
+            choices["sentiment"] = {
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+                "--days": one_to_hundred,
+                "-d": "--days",
+                "--compare": {},
+                "-c": "--compare",
+            }
+            choices["mentions"] = {
+                "--start": None,
+                "-s": "--start",
+            }
+            choices["regions"] = limit
+            choices["mentions"] = {
+                "--start": None,
+                "-s": "--start",
+                "--words": None,
+                "-w": "--words",
+            }
+            choices["queries"] = limit
+            choices["rise"] = limit
+            choices["jcdr"] = {
+                "--inverse": {},
+                "-i": "--inverse",
+            }
+            choices["jctr"]["--raw"] = {}
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -110,7 +223,6 @@ class BehaviouralAnalysisController(StockBaseController):
         mt.add_cmd("queries", self.ticker)
         mt.add_cmd("rise", self.ticker)
         mt.add_cmd("trend")
-        mt.add_cmd("hist", self.ticker)
         mt.add_cmd("jcdr")
         mt.add_cmd("jctr", self.ticker)
         console.print(text=mt.menu_text, menu="Stocks - Behavioural Analysis")
@@ -369,7 +481,7 @@ class BehaviouralAnalysisController(StockBaseController):
             "--sort",
             action="store",
             dest="sort",
-            choices=["relevance", "hot", "top", "new", "comments"],
+            choices=self.reddit_sort,
             default="relevance",
             help="search sorting type",
         )
@@ -403,7 +515,7 @@ class BehaviouralAnalysisController(StockBaseController):
             action="store",
             dest="time",
             default="week",
-            choices=["hour", "day", "week", "month", "year", "all"],
+            choices=self.reddit_time,
             help="time period to get posts from -- all, year, month, week, or day; defaults to week",
         )
         parser.add_argument(

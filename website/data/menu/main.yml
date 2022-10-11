@@ -146,6 +146,8 @@ main:
               ref: /terminal/common/ta/cci
             - name: cg
               ref: /terminal/common/ta/cg
+            - name: demark
+              ref: /terminal/common/ta/demark
             - name: donchian
               ref: /terminal/common/ta/donchian
             - name: ema
@@ -185,8 +187,8 @@ main:
       - name: Cryptocurrency
         ref: /terminal/crypto
         sub:
-          - name: chart
-            ref: /terminal/crypto/chart
+          - name: candle
+            ref: /terminal/crypto/candle
           - name: defi
             ref: /terminal/crypto/defi
             sub:
