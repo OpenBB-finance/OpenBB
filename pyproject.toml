@@ -4,11 +4,11 @@ version = "1.9.0"
 description = ""
 authors = ["Didier Rodrigues Lopes"]
 packages = [
-    { include = "openbb_terminal" },
+    { include = "openbb_terminal/**/*.py" },
 ]
 
 [tool.poetry.scripts]
-openbb = 'terminal:terminal'
+openbb = 'openbb_terminal.terminal_controller:parse_args_and_run'
 
 [tool.poetry.dependencies]
 python = "^3.8,<3.11, !=3.9.7"
