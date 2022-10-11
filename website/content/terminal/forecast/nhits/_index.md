@@ -83,4 +83,4 @@ NHITS model obtains MAPE: 7.45%
 │ 2022-07-25 │ 123.72     │
 └────────────┴────────────┘
 ```
-![nbeats](https://user-images.githubusercontent.com/72827203/180615396-d29126ae-ad75-4f84-9f67-2121dc4e695a.png)
+![nbeats](https://user-images.githubusercontent.com/72827203/195015203-3644fe8c-e1f7-49ab-9595-a19b474948cc.png)
