@@ -38,6 +38,7 @@ def display_matrix(
 ):
 
     df = investingcom_model.get_matrix(countries, tenor, change)
+
     if not df.empty:
         # This plot has 1 axis
         if not external_axes:
@@ -56,26 +57,24 @@ def display_matrix(
                 floatfmt=".1f",
             )
 
-        sns.heatmap(
-            df,
-            cbar_kws={"ticks": [-1.0, -0.5, 0.0, 0.5, 1.0]},
-            cmap="RdYlGn",
-            linewidths=1,
-            annot=True,
-            annot_kws={"fontsize": 10},
-            vmin=-1,
-            vmax=1,
-            mask=None,
-            ax=ax,
-        )
-        ax.set_title(f"Interest rates heatmap")
+        # sns.heatmap(
+        #     df,
+        #     cbar_kws={"ticks": [-1.0, -0.5, 0.0, 0.5, 1.0]},
+        #     cmap="RdYlGn",
+        #     linewidths=1,
+        #     annot=True,
+        #     annot_kws={"fontsize": 10},
+        #     vmin=-1,
+        #     vmax=1,
+        #     mask=None,
+        #     ax=ax,
+        # )
+        # ax.set_title(f"Interest rates heatmap")
 
-        if not external_axes:
-            theme.visualize_output()
+        # if not external_axes:
+        #     theme.visualize_output()
 
-        export_data(
-            export, os.path.dirname(os.path.abspath(__file__)), "hcorr", df_similar
-        )
+        export_data(export, os.path.dirname(os.path.abspath(__file__)), "matrix", df)
         console.print("")
 
 

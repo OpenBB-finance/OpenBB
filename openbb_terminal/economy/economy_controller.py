@@ -212,7 +212,9 @@ class EconomyController(BaseController):
                 },
             }
             self.choices["matrix"] = {
-                "--countries": {c: None for c in investingcom_model.MATRIX_CHOICES},
+                "--group": {c: None for c in investingcom_model.MATRIX_CHOICES},
+                "-g": "--group",
+                "--countries": {c: None for c in investingcom_model.BOND_COUNTRIES},
                 "-c": "--countries",
             }
             self.choices["events"] = {
@@ -1147,27 +1149,46 @@ class EconomyController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="matrix",
-            description="Generate bond rates matrix"
+            description="Generate bond rates matrix",
+        )
+        parser.add_argument(
+            "-g",
+            "--group",
+            action="store",
+            dest="group",
+            choices=investingcom_model.MATRIX_CHOICES,
+            default="g7",
+            help="Show bond rates matrix for group of countries.",
         )
         parser.add_argument(
             "-c",
             "--countries",
             action="store",
             dest="countries",
-            choices=investingcom_model.MATRIX_CHOICES,
-            default="g7",
-            help="Show bond rates matrix for set of countries.",
+            choices=investingcom_model.BOND_COUNTRIES,
+            type=investingcom_model.countries_string_to_list,
+            help="Show bond rates matrix for explicit list of countries.",
         )
+
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
             raw=True,
         )
+
         if ns_parser:
-            if ns_parser.countries:
+            if ns_parser.group:
                 investingcom_view.display_matrix(
-                    investingcom_model.MATRIX_COUNTRIES[ns_parser.countries]
+                    investingcom_model.MATRIX_COUNTRIES[ns_parser.group],
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                )
+            elif ns_parser.countries:
+                investingcom_view.display_matrix(
+                    ns_parser.countries,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
                 )
 
     @log_start_end(log=logger)
@@ -1231,10 +1252,6 @@ class EconomyController(BaseController):
         if ns_parser:
             if isinstance(ns_parser.country, list):
                 ns_parser.country = " ".join(ns_parser.country)
-
-            investingcom_model.check_correct_country(
-                ns_parser.country, investingcom_model.CALENDAR_COUNTRIES
-            )
 
             if ns_parser.start_date:
                 start_date = ns_parser.start_date.strftime("%Y-%m-%d")

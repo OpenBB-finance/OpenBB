@@ -56,6 +56,32 @@ MATRIX_COUNTRIES = {
 
 
 @log_start_end(log=logger)
+def check_correct_country(country: str, countries: list) -> bool:
+    """Check if country is in list and warn if not."""
+    if country.lower() not in countries:
+        console.print(
+            f"[red]'{country}' is an invalid country. Choose from {', '.join(countries)}[/red]"
+        )
+        return False
+    return True
+
+
+@log_start_end(log=logger)
+def countries_string_to_list(countries_list: str) -> List[str]:
+    """Transform countries string to list if countries valid"""
+
+    valid_countries = [
+        country.upper()
+        for country in countries_list.split(",")
+        if check_correct_country(country, BOND_COUNTRIES)
+    ]
+
+    if valid_countries:
+        return valid_countries
+    raise argparse.ArgumentTypeError("No valid countries provided.")
+
+
+@log_start_end(log=logger)
 def create_matrix(dict: Dict[str, Dict[str, float]]) -> pd.DataFrame:
 
     tenor = list(dict.keys())[0]
@@ -78,46 +104,23 @@ def create_matrix(dict: Dict[str, Dict[str, float]]) -> pd.DataFrame:
     matrixdf = matrixdf.set_index(matrixdf.columns)
 
     matrixdf.insert(0, "Yield " + tenor, pd.DataFrame.from_dict(d, orient="index"))
-    # matrixdf = matrixdf.to_string(float_format='{:.1f}'.format)
 
     return matrixdf
 
 
 @log_start_end(log=logger)
 def get_matrix(
-    countries: List[str], tenor: str = "10Y", change: bool = False
+    countries: List[str] = MATRIX_COUNTRIES["g7"], tenor: str = "10Y", change: bool = False
 ) -> pd.DataFrame:
 
-    # d0 = {}
-    # d1 = {}
-    # for country in countries:
-    #     df = investpy.bonds.get_bonds_overview(country)
-    #     d0[tenor][country] = df[df["name"]==country+" "+tenor]["last_close"].iloc[0]
-    #     d1[tenor][country] = df[df["name"]==country+" "+tenor]["previous"].iloc[0]
-
-    d0 = {
-        "5Y": {
-            "Portugal": 2.646,
-            "Spain": 2.753,
-            "Italy": 3.888,
-            "France": 2.289,
-            "Germany": 2.045,
-            "Austria": 2.419,
-            "Netherlands": 2.189,
-        }
-    }
-
-    d1 = {
-        "5Y": {
-            "Portugal": 2.6,
-            "Spain": 2.7,
-            "Italy": 3.8,
-            "France": 2.2,
-            "Germany": 2.0,
-            "Austria": 2.4,
-            "Netherlands": 2.1,
-        }
-    }
+    d0 = {tenor: {}}
+    d1 = {tenor: {}}
+    for country in countries:
+        df = investpy.bonds.get_bonds_overview(country)
+        d0[tenor][country] = df[df["name"].str.contains(tenor)]["last"].iloc[
+            0
+        ]
+        d1[tenor][country] = df[df["name"].str.contains(tenor)]["last_close"].iloc[0]
 
     if change:
         return create_matrix(d0) - create_matrix(d1)
@@ -155,18 +158,6 @@ def get_events_categories() -> list:
 
 
 @log_start_end(log=logger)
-def check_correct_country(country: str, countries: list) -> str:
-    """Check if country is in list and warn if not."""
-    if country.lower() not in countries:
-        log_and_raise(
-            argparse.ArgumentTypeError(
-                f"{country} is an invalid country. Choose from {', '.join(countries)}"
-            )
-        )
-    return country
-
-
-@log_start_end(log=logger)
 def get_yieldcurve(country: str) -> pd.DataFrame:
     """Get yield curve for specified country. [Source: Investing.com]
 
@@ -181,7 +172,7 @@ def get_yieldcurve(country: str) -> pd.DataFrame:
         Country yield curve
     """
 
-    if check_correct_country(country, BOND_COUNTRIES) != country:
+    if not check_correct_country(country, BOND_COUNTRIES):
         return pd.DataFrame()
 
     try:
@@ -263,7 +254,7 @@ def get_economic_calendar(
         Economic calendar Dataframe and detail string about country/time zone.
     """
 
-    if check_correct_country(country, CALENDAR_COUNTRIES) != country:
+    if not check_correct_country(country, CALENDAR_COUNTRIES):
         return pd.DataFrame(), ""
 
     time_filter = "time_only"
