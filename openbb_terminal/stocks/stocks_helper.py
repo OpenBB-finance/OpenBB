@@ -13,6 +13,7 @@ from typing import Any, Union, Optional, Iterable, List, Dict
 import financedatabase as fd
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
+from matplotlib.ticker import FormatStrFormatter
 import mplfinance as mpf
 import numpy as np
 import pandas as pd
@@ -401,6 +402,7 @@ def display_candle(
     monthly: bool = False,
     external_axes: Optional[List[plt.Axes]] = None,
     raw: bool = False,
+    yscale: str = "linear",
 ):
     """Shows candle plot of loaded ticker. [Source: Yahoo Finance, IEX Cloud or Alpha Vantage]
 
@@ -442,6 +444,8 @@ def display_candle(
         Flag to get monthly data
     raw : bool, optional
         Flag to display raw data, by default False
+    yscale: str
+        Linear or log for yscale
     """
 
     if data is None:
@@ -499,6 +503,7 @@ def display_candle(
                     "volume_width": 0.8,
                 },
                 "warn_too_much_data": 10000,
+                "yscale": yscale,
             }
 
             kwargs = {"mav": ma} if ma else {}
@@ -527,6 +532,9 @@ def display_candle(
                     labels = ["MA " + str(label) for label in ma]
                     ax[0].legend(lines, labels)
 
+                if yscale == "log":
+                    ax[0].yaxis.set_major_formatter(FormatStrFormatter("%.2f"))
+                    ax[0].yaxis.set_minor_formatter(FormatStrFormatter("%.2f"))
                 cfg.theme.visualize_output(force_tight_layout=False)
             else:
                 if len(external_axes) != 2:

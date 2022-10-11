@@ -15,6 +15,7 @@ import numpy as np
 import ccxt
 from binance.client import Client
 import matplotlib.pyplot as plt
+from matplotlib.ticker import FormatStrFormatter
 import yfinance as yf
 import mplfinance as mpf
 from pycoingecko import CoinGeckoAPI
@@ -1280,6 +1281,7 @@ def plot_chart(
     exchange: str = "",
     interval: str = "",
     external_axes: list[plt.Axes] | None = None,
+    yscale: str = "linear",
 ) -> None:
     """Load data for Technical Analysis
 
@@ -1291,6 +1293,8 @@ def plot_chart(
         Coin (only used for chart title), by default ""
     from_symbol: str
         Currency (only used for chart title), by default ""
+    yscale: str
+        Scale for y axis of plot Either linear or log
     """
     del interval
 
@@ -1315,9 +1319,10 @@ def plot_chart(
         volume=True,
         ylabel="Volume [1M]" if volume_mean > 1_000_000 else "Volume",
         external_axes=external_axes,
+        yscale=yscale,
     )
 
-    console.print("")
+    console.print()
 
 
 def plot_candles(
@@ -1326,6 +1331,7 @@ def plot_candles(
     ylabel: str = "",
     title: str = "",
     external_axes: list[plt.Axes] | None = None,
+    yscale: str = "linear",
 ) -> None:
     """Plot candle chart from dataframe. [Source: Binance]
 
@@ -1341,6 +1347,8 @@ def plot_candles(
         Title of graph, by default ""
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
+    yscale : str
+        Scaling for y axis.  Either linear or log
     """
     candle_chart_kwargs = {
         "type": "candle",
@@ -1356,6 +1364,7 @@ def plot_candles(
             "volume_width": 0.8,
         },
         "warn_too_much_data": 10000,
+        "yscale": yscale,
     }
 
     # This plot has 2 axes
@@ -1374,6 +1383,9 @@ def plot_candles(
             y=1,
         )
         lambda_long_number_format_y_axis(candles_df, "Volume", ax)
+        if yscale == "log":
+            ax[0].yaxis.set_major_formatter(FormatStrFormatter("%.2f"))
+            ax[0].yaxis.set_minor_formatter(FormatStrFormatter("%.2f"))
         theme.visualize_output(force_tight_layout=False)
     else:
         nr_external_axes = 2 if volume else 1

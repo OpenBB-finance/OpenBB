@@ -246,6 +246,13 @@ class CryptoController(CryptoBaseController):
             description="""Display chart for loaded coin. You can specify currency vs which you want
             to show chart and also number of days to get data for.""",
         )
+        parser.add_argument(
+            "--log",
+            help="Plot with y axis on log scale",
+            action="store_true",
+            default=False,
+            dest="logy",
+        )
 
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
@@ -268,6 +275,7 @@ class CryptoController(CryptoBaseController):
                 from_symbol=self.current_currency,
                 prices_df=self.current_df,
                 interval=self.current_interval,
+                yscale="log" if ns_parser.logy else "linear",
             )
 
     @log_start_end(log=logger)
