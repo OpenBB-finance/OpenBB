@@ -185,8 +185,8 @@ main:
       - name: Cryptocurrency
         ref: /terminal/crypto
         sub:
-          - name: chart
-            ref: /terminal/crypto/chart
+          - name: candle
+            ref: /terminal/crypto/candle
           - name: defi
             ref: /terminal/crypto/defi
             sub:
