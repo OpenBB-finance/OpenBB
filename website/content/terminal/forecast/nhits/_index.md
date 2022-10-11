@@ -18,7 +18,7 @@ optional arguments:
                         The number of neurons in each layer (default: 3)
   --activation {ReLU,RReLU,PReLU,Softplus,Tanh,SELU,LeakyReLU,Sigmoid}
                         The desired activation (default: ReLU)
-  --maxpool1d           Whethet to use MaxPool1d or AvgPool1d (default: False)
+  --maxpool1d           Whethet to use max_pool_1d or AvgPool1d (default: False)
   --past-covariates PAST_COVARIATES
                         Past covariates(columns/features) in same dataset. Comma separated. (default: None)
   --all-past-covariates

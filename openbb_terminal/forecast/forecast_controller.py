@@ -2505,11 +2505,11 @@ class ForecastController(BaseController):
             help="The desired activation",
         )
         parser.add_argument(
-            "--maxpool1d",
+            "--max_pool_1d",
             action="store_true",
             dest="maxpool1d",
             default=False,
-            help="Whethet to use MaxPool1d or AvgPool1d",
+            help="Whether to use max_pool_1d or AvgPool1d",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--target-dataset")
@@ -2562,7 +2562,7 @@ class ForecastController(BaseController):
                 num_layers=ns_parser.num_layers,
                 layer_widths=ns_parser.layer_widths,
                 activation=ns_parser.activation,
-                MaxPool1d=ns_parser.maxpool1d,
+                max_pool_1d=ns_parser.maxpool1d,
                 batch_size=ns_parser.batch_size,
                 n_epochs=ns_parser.n_epochs,
                 dropout=ns_parser.dropout,

@@ -35,7 +35,7 @@ def display_nhits_forecast(
     n_freq_downsample: Optional[Tuple[Tuple[int]]] = None,
     dropout: float = 0.1,
     activation: str = "ReLU",
-    MaxPool1d: bool = True,
+    max_pool_1d: bool = True,
     batch_size: int = 32,
     n_epochs: int = 100,
     learning_rate: float = 1e-3,
@@ -96,8 +96,8 @@ def display_nhits_forecast(
              The dropout probability to be used in fully connected layers.
         activation str:
             Supported activations: [[‘ReLU’,’RReLU’, ‘PReLU’, ‘Softplus’, ‘Tanh’, ‘SELU’, ‘LeakyReLU’, ‘Sigmoid’]
-        MaxPool1d bool:
-            Use MaxPool1d pooling. False uses AvgPool1d.
+        max_pool_1d bool:
+            Use max_pool_1d pooling. False uses AvgPool1d.
         batch_size (int, optional):
             Number of time series (input and output sequences) used in each training pass. Defaults to 32.
         n_epochs (int, optional):
@@ -159,7 +159,7 @@ def display_nhits_forecast(
         n_freq_downsample=n_freq_downsample,
         dropout=dropout,
         activation=activation,
-        MaxPool1d=MaxPool1d,
+        max_pool_1d=max_pool_1d,
         batch_size=batch_size,
         n_epochs=n_epochs,
         learning_rate=learning_rate,
