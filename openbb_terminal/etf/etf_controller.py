@@ -9,13 +9,11 @@ from typing import List
 
 import yfinance as yf
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from thepassiveinvestor import create_ETF_report
-
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common import newsapi_view
 from openbb_terminal.common.quantitative_analysis import qa_view
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.etf import (
     financedatabase_view,
