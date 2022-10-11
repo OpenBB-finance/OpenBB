@@ -393,6 +393,13 @@ class StocksController(StockBaseController):
             help=translate("stocks/CANDLE_mov_avg"),
             default=None,
         )
+        parser.add_argument(
+            "--log",
+            help="Plot with y axis on log scale",
+            action="store_true",
+            default=False,
+            dest="logy",
+        )
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
@@ -455,6 +462,7 @@ class StocksController(StockBaseController):
                         intraday=self.interval != "1440min",
                         add_trend=ns_parser.trendlines,
                         ma=mov_avgs,
+                        yscale="log" if ns_parser.logy else "linear",
                     )
             else:
                 console.print("No ticker loaded. First use `load {ticker}`\n")
