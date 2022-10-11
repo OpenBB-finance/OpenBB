@@ -543,10 +543,9 @@ def corr_df(df: pd.DataFrame) -> pd.DataFrame:
     """
     return df.corr()
 
+
 @log_start_end(log=logger)
-def encode(
-    dataset: pd.DataFrame, target_column: str = "close"
-) -> pd.DataFrame:
+def encode(dataset: pd.DataFrame, target_column: str = "close") -> pd.DataFrame:
     """Converts categorical columns into integers
 
     Parameters
@@ -561,8 +560,6 @@ def encode(
     pd.DataFrame:
         Dataframe with added encoded column
     """
-    dataset[target_column] = (
-        dataset[target_column].astype("category").cat.codes
-    )
+    dataset[target_column] = dataset[target_column].astype("category").cat.codes
 
     return dataset
