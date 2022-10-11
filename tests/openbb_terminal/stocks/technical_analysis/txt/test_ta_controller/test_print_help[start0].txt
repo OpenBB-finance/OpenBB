@@ -21,6 +21,7 @@ Momentum:
     fisher             fisher transform
     cg                 centre of gravity
     clenow             clenow volatility adjusted momentum
+    demark             Tom Demark's sequential indicator
 Trend:
     adx                average directional movement index
     aroon              aroon indicator
