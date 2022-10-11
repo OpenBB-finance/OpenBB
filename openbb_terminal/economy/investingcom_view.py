@@ -71,9 +71,9 @@ def display_matrix(
             ).applymap(lambda x: f"[yellow]{x}[/yellow]")
 
             if isinstance(countries, str):
-                title = f"{countries} - Yield Curve Matrix"
+                title = f"{countries} - Yield Curve Matrix - {maturity}"
             else:
-                title = "Yield Curve Matrix"
+                title = f"Yield Curve Matrix - {maturity}"
 
             print_rich_table(
                 pretty_df,
@@ -131,9 +131,9 @@ def display_matrix(
                     t.set_text(current_text)
 
             if isinstance(countries, str):
-                ax.set_title(f"{countries} - Interest rates heatmap", loc="center")
+                ax.set_title(f"{countries} - Interest rates heatmap - {maturity}", loc="center")
             else:
-                ax.set_title("Interest rates heatmap", loc="center")
+                ax.set_title(f"Interest rates heatmap - {maturity}", loc="center")
 
             if not external_axes:
                 theme.visualize_output()

@@ -216,6 +216,9 @@ class EconomyController(BaseController):
                 "-g": "--group",
                 "--countries": {c: None for c in investingcom_model.BOND_COUNTRIES},
                 "-c": "--countries",
+                "--maturity": None,
+                "-m": "--maturity",
+                "--change": None,
             }
             self.choices["events"] = {
                 "--country": {c: None for c in investingcom_model.CALENDAR_COUNTRIES},
@@ -1168,6 +1171,23 @@ class EconomyController(BaseController):
             type=investingcom_model.countries_string_to_list,
             help="Show bond rates matrix for explicit list of countries.",
         )
+        parser.add_argument(
+            "-m",
+            "--maturity",
+            action="store",
+            dest="maturity",
+            type=str,
+            default="10Y",
+            help="Specify maturity to compare rates.",
+        )
+        parser.add_argument(
+            "--change",
+            action="store",
+            dest="change",
+            type=bool,
+            default=False,
+            help="Get matrix of 1 day change in rates.",
+        )
 
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -1179,13 +1199,17 @@ class EconomyController(BaseController):
         if ns_parser:
             if ns_parser.countries:
                 investingcom_view.display_matrix(
-                    ns_parser.countries,
+                    countries=ns_parser.countries,
+                    maturity=ns_parser.maturity.upper(),
+                    change=ns_parser.change,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
                 )
             elif ns_parser.group:
                 investingcom_view.display_matrix(
-                    ns_parser.group,
+                    countries=ns_parser.group,
+                    maturity=ns_parser.maturity.upper(),
+                    change=ns_parser.change,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
                 )
