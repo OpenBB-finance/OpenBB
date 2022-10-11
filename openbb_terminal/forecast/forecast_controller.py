@@ -1235,7 +1235,6 @@ class ForecastController(BaseController):
             parser,
             other_args,
             NO_EXPORT,
-            period=10,
             target_dataset=True,
             target_column=True,
         )
@@ -1244,14 +1243,11 @@ class ForecastController(BaseController):
             if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
-            self.datasets[ns_parser.target_dataset] = forecast_model.add_ema(
+            self.datasets[ns_parser.target_dataset] = forecast_model.encode(
                 self.datasets[ns_parser.target_dataset],
                 ns_parser.target_column,
-                ns_parser.period,
             )
-            console.print(
-                f"Successfully added 'EMA_{ns_parser.period}' to '{ns_parser.target_dataset}' dataset"
-            )
+            console.print(f"Successfully encoded '{ns_parser.target_column}'")
 
             # update forecast menu with new column on modified dataset
             self.refresh_datasets_on_menu()
