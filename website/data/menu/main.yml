@@ -146,6 +146,8 @@ main:
               ref: /terminal/common/ta/cci
             - name: cg
               ref: /terminal/common/ta/cg
+            - name: demark
+              ref: /terminal/common/ta/demark
             - name: donchian
               ref: /terminal/common/ta/donchian
             - name: ema

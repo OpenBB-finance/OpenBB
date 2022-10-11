@@ -78,6 +78,7 @@ class TechnicalAnalysisController(StockBaseController):
         "fib",
         "tv",
         "clenow",
+        "demark",
     ]
     PATH = "/stocks/ta/"
 
@@ -140,6 +141,7 @@ class TechnicalAnalysisController(StockBaseController):
         mt.add_cmd("fisher")
         mt.add_cmd("cg")
         mt.add_cmd("clenow")
+        mt.add_cmd("demark")
         mt.add_info("_trend_")
         mt.add_cmd("adx")
         mt.add_cmd("aroon")
@@ -1419,4 +1421,33 @@ class TechnicalAnalysisController(StockBaseController):
                 self.ticker.upper(),
                 ns_parser.period,
                 ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_demark(self, other_args: List[str]):
+        """Process demark command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="demark",
+            description="Calculates the Demark sequential indicator.",
+        )
+        parser.add_argument(
+            "-m",
+            "--min",
+            help="Minimum value of indicator to show (declutters plot).",
+            dest="min_to_show",
+            type=check_positive,
+            default=5,
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
+        )
+        if ns_parser:
+            momentum_view.display_demark(
+                self.stock,
+                self.ticker.upper(),
+                min_to_show=ns_parser.min_to_show,
+                export=ns_parser.export,
             )
