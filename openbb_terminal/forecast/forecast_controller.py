@@ -321,10 +321,10 @@ class ForecastController(BaseController):
         mt.add_cmd("rnn", self.files)
         mt.add_cmd("brnn", self.files)
         mt.add_cmd("nbeats", self.files)
+        mt.add_cmd("nhits", self.files)
         mt.add_cmd("tcn", self.files)
         mt.add_cmd("trans", self.files)
         mt.add_cmd("tft", self.files)
-        mt.add_cmd("nhits", self.files)
         # mt.add_info("_comingsoon_")
 
         console.print(text=mt.menu_text, menu="Forecast")
