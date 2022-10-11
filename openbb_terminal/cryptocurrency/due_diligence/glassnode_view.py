@@ -16,7 +16,7 @@ from openbb_terminal.decorators import check_api_key
 from openbb_terminal import config_plot as cfgPlot
 from openbb_terminal.cryptocurrency.due_diligence.glassnode_model import (
     get_active_addresses,
-    get_close_price,
+    get_btc_rainbow,
     get_exchange_balances,
     get_exchange_net_position_change,
     get_hashrate,
@@ -35,8 +35,8 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 @check_api_key(["API_GLASSNODE_KEY"])
 def display_btc_rainbow(
-    start_date: int = int(datetime(2010, 1, 1).timestamp()),
-    end_date: int = int(datetime.now().timestamp()),
+    start_date: str = "2010-01-01",
+    end_date: str = datetime.now().strftime("%Y-%m-%d"),
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -47,15 +47,16 @@ def display_btc_rainbow(
     Parameters
     ----------
     start_date : int
-        Initial date timestamp. Default is initial BTC timestamp: 1_325_376_000
+        Initial date, format YYYY-MM-DD
     end_date : int
-        Final date timestamp. Default is current BTC timestamp
+        Final date, format YYYY-MM-DD
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df_data = get_close_price("BTC", start_date, end_date)
+
+    df_data = get_btc_rainbow(start_date, end_date)
 
     if df_data.empty:
         return
@@ -69,7 +70,7 @@ def display_btc_rainbow(
         return
 
     d0 = datetime.strptime("2012-01-01", "%Y-%m-%d")
-    dend = datetime.fromtimestamp(end_date)
+    dend = datetime.strptime(end_date, "%Y-%m-%d")
 
     x = range((df_data.index[0] - d0).days, (dend - d0).days + 1)
 

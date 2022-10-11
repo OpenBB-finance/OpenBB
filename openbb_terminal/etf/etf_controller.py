@@ -49,8 +49,7 @@ class ETFController(BaseController):
     """ETF Controller class"""
 
     CHOICES_COMMANDS = [
-        "ln",
-        "ld",
+        "search",
         "load",
         "overview",
         "holdings",
@@ -64,7 +63,6 @@ class ETFController(BaseController):
     ]
     CHOICES_MENUS = [
         "ta",
-        "pred",
         "ca",
         # "scr",
         "disc",
@@ -92,8 +90,7 @@ class ETFController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("etf/")
-        mt.add_cmd("ln")
-        mt.add_cmd("ld")
+        mt.add_cmd("search")
         mt.add_cmd("load")
         mt.add_raw("\n")
         mt.add_param("_symbol", self.etf_name)
@@ -114,7 +111,6 @@ class ETFController(BaseController):
         mt.add_cmd("compare", self.etf_name)
         mt.add_raw("\n")
         mt.add_menu("ta", self.etf_name)
-        mt.add_menu("pred", self.etf_name)
         console.print(text=mt.menu_text, menu="ETF")
 
     def custom_reset(self):
@@ -124,13 +120,13 @@ class ETFController(BaseController):
         return []
 
     @log_start_end(log=logger)
-    def call_ln(self, other_args: List[str]):
-        """Process ln command"""
+    def call_search(self, other_args: List[str]):
+        """Process search command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ln",
-            description="Lookup by name [Source: FinanceDatabase/StockAnalysis.com]",
+            prog="search",
+            description="Search ETF by name [Source: FinanceDatabase/StockAnalysis.com]",
         )
         parser.add_argument(
             "-n",
@@ -139,7 +135,22 @@ class ETFController(BaseController):
             dest="name",
             nargs="+",
             help="Name to look for ETFs",
-            required="-h" not in other_args,
+            default="",
+            required="-h" not in other_args
+            and "-d" not in other_args
+            and "--description" not in other_args,
+        )
+        parser.add_argument(
+            "-d",
+            "--description",
+            type=str,
+            dest="description",
+            nargs="+",
+            help="Name to look for ETFs",
+            default="",
+            required="-h" not in other_args
+            and "-n" not in other_args
+            and "--name" not in other_args,
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -153,61 +164,29 @@ class ETFController(BaseController):
         )
         if ns_parser:
             name_to_search = " ".join(ns_parser.name)
-            if ns_parser.source == "FinanceDatabase":
-                financedatabase_view.display_etf_by_name(
-                    name=name_to_search,
-                    limit=ns_parser.limit,
-                    export=ns_parser.export,
-                )
-            elif ns_parser.source == "StockAnalysis":
-                stockanalysis_view.display_etf_by_name(
-                    name=name_to_search,
-                    limit=ns_parser.limit,
-                    export=ns_parser.export,
-                )
+
+            if ns_parser.name:
+                if ns_parser.source == "FinanceDatabase":
+                    financedatabase_view.display_etf_by_name(
+                        name=name_to_search,
+                        limit=ns_parser.limit,
+                        export=ns_parser.export,
+                    )
+                elif ns_parser.source == "StockAnalysis":
+                    stockanalysis_view.display_etf_by_name(
+                        name=name_to_search,
+                        limit=ns_parser.limit,
+                        export=ns_parser.export,
+                    )
+                else:
+                    console.print("Wrong source choice!\n")
             else:
-                console.print("Wrong source choice!\n")
-
-    @log_start_end(log=logger)
-    def call_ld(self, other_args: List[str]):
-        """Process ld command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ld",
-            description="Lookup by description [Source: FinanceDatabase/StockAnalysis.com]",
-        )
-        parser.add_argument(
-            "-d",
-            "--description",
-            type=str,
-            dest="description",
-            nargs="+",
-            help="Name to look for ETFs",
-            required="-h" not in other_args,
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            type=check_positive,
-            dest="limit",
-            help="Limit of ETFs to display",
-            default=5,
-        )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-d")
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            description_to_search = " ".join(ns_parser.description)
-            financedatabase_view.display_etf_by_description(
-                description=description_to_search,
-                limit=ns_parser.limit,
-                export=ns_parser.export,
-            )
+                description_to_search = " ".join(ns_parser.description)
+                financedatabase_view.display_etf_by_description(
+                    description=description_to_search,
+                    limit=ns_parser.limit,
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_load(self, other_args: List[str]):
@@ -570,11 +549,17 @@ class ETFController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.names:
-                create_ETF_report(
-                    ns_parser.names,
-                    filename=ns_parser.filename,
-                    folder=ns_parser.folder,
-                )
+                try:
+                    create_ETF_report(
+                        ns_parser.names,
+                        filename=ns_parser.filename,
+                        folder=ns_parser.folder,
+                    )
+                except FileNotFoundError:
+                    console.print(
+                        f"[red]Could not find the file: {ns_parser.filename}[/red]\n"
+                    )
+                    return
                 console.print(
                     f"Created ETF report as {ns_parser.filename} in folder {ns_parser.folder} \n"
                 )
@@ -647,48 +632,6 @@ class ETFController(BaseController):
             )
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
-
-    @log_start_end(log=logger)
-    def call_pred(self, _):
-        """Process pred command"""
-        # IMPORTANT: 8/11/22 prediction was discontinued on the installer packages
-        # because forecasting in coming out soon.
-        # This if statement disallows installer package users from using 'pred'
-        # even if they turn on the OPENBB_ENABLE_PREDICT feature flag to true
-        # however it does not prevent users who clone the repo from using it
-        # if they have ENABLE_PREDICT set to true.
-        if obbff.PACKAGED_APPLICATION or not obbff.ENABLE_PREDICT:
-            console.print(
-                "Predict is disabled. Forecasting coming soon!",
-                "\n",
-            )
-        else:
-            if self.etf_name:
-                try:
-                    from openbb_terminal.etf.prediction_techniques import (
-                        pred_controller,
-                    )
-
-                    self.queue = self.load_class(
-                        pred_controller.PredictionTechniquesController,
-                        self.etf_name,
-                        self.etf_data.index[0],
-                        "1440min",
-                        self.etf_data,
-                        self.queue,
-                    )
-
-                except ModuleNotFoundError as e:
-                    logger.exception(
-                        "One of the optional packages seems to be missing: %s", str(e)
-                    )
-                    console.print(
-                        "One of the optional packages seems to be missing: ",
-                        e,
-                        "\n",
-                    )
-            else:
-                console.print("Use 'load <ticker>' prior to this command!", "\n")
 
     @log_start_end(log=logger)
     def call_ca(self, _):

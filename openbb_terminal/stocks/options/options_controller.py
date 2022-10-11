@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-import os
 from datetime import datetime, timedelta
 from typing import Any, List
 
@@ -11,7 +10,7 @@ import pandas as pd
 from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.config_terminal import TRADIER_TOKEN
+from openbb_terminal.config_terminal import API_TRADIER_TOKEN
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -38,7 +37,11 @@ from openbb_terminal.stocks.options import (
 )
 from openbb_terminal.stocks.options.hedge import hedge_controller
 from openbb_terminal.stocks.options.pricing import pricing_controller
-from openbb_terminal.stocks.options.screen import screener_controller, syncretism_view
+from openbb_terminal.stocks.options.screen import (
+    screener_controller,
+    syncretism_view,
+    syncretism_model,
+)
 
 # pylint: disable=R1710,C0302,R0916
 
@@ -78,9 +81,7 @@ class OptionsController(BaseController):
         "hedge",
     ]
 
-    PRESET_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
-
-    presets = [f.split(".")[0] for f in os.listdir(PRESET_PATH) if f.endswith(".ini")]
+    preset_choices = syncretism_model.get_preset_choices()
 
     grhist_greeks_choices = [
         "iv",
@@ -120,7 +121,7 @@ class OptionsController(BaseController):
         self.source = ""
 
         if ticker:
-            if TRADIER_TOKEN == "REPLACE_ME":  # nosec
+            if API_TRADIER_TOKEN == "REPLACE_ME":  # nosec
                 console.print("Loaded expiry dates from Yahoo Finance")
                 self.expiry_dates = yfinance_model.option_expirations(self.ticker)
             else:
@@ -135,8 +136,8 @@ class OptionsController(BaseController):
             choices: dict = {c: {} for c in self.controller_choices}
             choices["unu"]["-s"] = {c: {} for c in self.unu_sortby_choices}
             choices["pcr"] = {c: {} for c in self.pcr_length_choices}
-            choices["disp"] = {c: {} for c in self.presets}
-            choices["scr"] = {c: {} for c in self.presets}
+            choices["disp"] = {c: {} for c in self.preset_choices}
+            choices["scr"] = {c: {} for c in self.preset_choices}
             choices["grhist"]["-g"] = {c: {} for c in self.grhist_greeks_choices}
             choices["plot"]["-x"] = {c: {} for c in self.plot_vars_choices}
             choices["plot"]["-y"] = {c: {} for c in self.plot_vars_choices}
@@ -675,12 +676,12 @@ class OptionsController(BaseController):
                 (
                     ns_parser.put
                     and ns_parser.strike
-                    in [float(strike) for strike in self.chain.puts["strike"]]
+                    not in [float(strike) for strike in self.chain.puts["strike"]]
                 )
                 or (
                     not ns_parser.put
                     and ns_parser.strike
-                    in [float(strike) for strike in self.chain.calls["strike"]]
+                    not in [float(strike) for strike in self.chain.calls["strike"]]
                 )
             ):
                 console.print("No correct strike input\n")
@@ -695,7 +696,7 @@ class OptionsController(BaseController):
                     ns_parser.export,
                 )
 
-            elif TRADIER_TOKEN != "REPLACE_ME":  # nosec
+            elif API_TRADIER_TOKEN != "REPLACE_ME":  # nosec
                 tradier_view.display_historical(
                     symbol=self.ticker,
                     expiry=self.selected_date,
@@ -765,7 +766,7 @@ class OptionsController(BaseController):
             if self.ticker:
                 if self.selected_date:
                     if ns_parser.source == "Tradier" or self.source == "Tradier":
-                        if TRADIER_TOKEN != "REPLACE_ME":  # nosec
+                        if API_TRADIER_TOKEN != "REPLACE_ME":  # nosec
                             tradier_view.display_chains(
                                 symbol=self.ticker,
                                 expiry=self.selected_date,
@@ -851,7 +852,7 @@ class OptionsController(BaseController):
                 if self.selected_date:
                     if (
                         ns_parser.source == "Tradier"
-                        and TRADIER_TOKEN != "REPLACE_ME"  # nosec
+                        and API_TRADIER_TOKEN != "REPLACE_ME"  # nosec
                     ) or self.source == "Tradier":
                         tradier_view.plot_vol(
                             symbol=self.ticker,
@@ -929,7 +930,7 @@ class OptionsController(BaseController):
                 if self.selected_date:
                     if (
                         ns_parser.source == "Tradier"
-                        and TRADIER_TOKEN != "REPLACE_ME"  # nosec
+                        and API_TRADIER_TOKEN != "REPLACE_ME"  # nosec
                     ) or self.source == "Tradier":
                         tradier_view.plot_volume_open_interest(
                             symbol=self.ticker,
@@ -1017,7 +1018,7 @@ class OptionsController(BaseController):
                 if self.selected_date:
                     if (
                         ns_parser.source == "Tradier"
-                        and TRADIER_TOKEN != "REPLACE_ME"  # nosec
+                        and API_TRADIER_TOKEN != "REPLACE_ME"  # nosec
                     ) or self.source == "Tradier":
                         tradier_view.plot_oi(
                             symbol=self.ticker,
@@ -1074,7 +1075,7 @@ class OptionsController(BaseController):
             "--x_axis",
             type=str,
             dest="x",
-            default=None,
+            default="s",
             choices=self.plot_vars_choices,
             help=(
                 "ltd- last trade date, s- strike, lp- last price, b- bid, a- ask,"
@@ -1086,7 +1087,7 @@ class OptionsController(BaseController):
             "--y_axis",
             type=str,
             dest="y",
-            default=None,
+            default="y",
             choices=self.plot_vars_choices,
             help=(
                 "ltd- last trade date, s- strike, lp- last price, b- bid, a- ask,"

@@ -1004,7 +1004,7 @@ def display_var(
     use_mean: bool = False,
     adjusted_var: bool = False,
     student_t: bool = False,
-    percentile: float = 0.999,
+    percentile: float = 99.9,
     data_range: int = 0,
     portfolio: bool = False,
 ) -> None:
@@ -1063,7 +1063,7 @@ def display_es(
     symbol: str = "",
     use_mean: bool = False,
     distribution: str = "normal",
-    percentile: float = 0.999,
+    percentile: float = 99.9,
     portfolio: bool = False,
 ) -> None:
     """Displays expected shortfall

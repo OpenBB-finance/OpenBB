@@ -1,5 +1,4 @@
-    ln                 lookup by name                                                  [StockAnalysis, FinanceDatabase]
-    ld                 lookup by description                                           [FinanceDatabase]
+    search             search ETF by name or description                               [FinanceDatabase, StockAnalysis]
     load               load ETF data                                                   [YahooFinance]
 
 Symbol: 
@@ -19,5 +18,4 @@ Major holdings:
 [unvl]    compare            compare multiple different ETFs[/unvl]                                 [StockAnalysis]
 
 [unvl]>   ta                 technical analysis,           ema, macd, rsi, adx, bbands, obv[/unvl]
-[unvl]>   pred               prediction techniques,        regression, arima, rnn, lstm[/unvl]
 

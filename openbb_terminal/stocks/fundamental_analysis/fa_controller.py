@@ -30,6 +30,7 @@ from openbb_terminal.stocks.fundamental_analysis import (
     yahoo_finance_view,
     polygon_view,
     fmp_view,
+    eodhd_view,
 )
 
 # pylint: disable=inconsistent-return-statements,C0302,R0904
@@ -584,7 +585,7 @@ class FundamentalAnalysisController(StockBaseController):
             dest="holder",
         )
 
-        if other_args and "--holder" not in other_args[0][0]:
+        if other_args and "--holder" not in other_args[0][0] and "-h" not in other_args:
             other_args.insert(0, "--holder")
 
         ns_parser = self.parse_known_args_and_warn(
@@ -873,6 +874,16 @@ class FundamentalAnalysisController(StockBaseController):
                     export=ns_parser.export,
                     limit=ns_parser.limit,
                 )
+            elif ns_parser.source == "EODHD":
+                console.print("Source is EOD Historical Data!")
+                eodhd_view.display_fundamentals(
+                    symbol=self.ticker,
+                    statement="Income_Statement",
+                    quarterly=ns_parser.b_quarter,
+                    ratios=ns_parser.ratios,
+                    plot=ns_parser.plot,
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_balance(self, other_args: List[str]):
@@ -971,6 +982,16 @@ class FundamentalAnalysisController(StockBaseController):
                     plot=ns_parser.plot,
                     export=ns_parser.export,
                     limit=ns_parser.limit,
+                )
+            elif ns_parser.source == "EODHD":
+                console.print("Source is EOD Historical Data!")
+                eodhd_view.display_fundamentals(
+                    symbol=self.ticker,
+                    statement="Balance_Sheet",
+                    quarterly=ns_parser.b_quarter,
+                    ratios=ns_parser.ratios,
+                    plot=ns_parser.plot,
+                    export=ns_parser.export,
                 )
 
     @log_start_end(log=logger)
@@ -1076,6 +1097,16 @@ class FundamentalAnalysisController(StockBaseController):
                     plot=ns_parser.plot,
                     export=ns_parser.export,
                     limit=ns_parser.limit,
+                )
+            elif ns_parser.source == "EODHD":
+                console.print("Source is EOD Historical Data!")
+                eodhd_view.display_fundamentals(
+                    symbol=self.ticker,
+                    statement="Cash_Flow",
+                    quarterly=ns_parser.b_quarter,
+                    ratios=ns_parser.ratios,
+                    plot=ns_parser.plot,
+                    export=ns_parser.export,
                 )
 
     @log_start_end(log=logger)

@@ -25,6 +25,9 @@ from openbb_terminal.stocks.sector_industry_analysis import stockanalysis_model
 from openbb_terminal.stocks.sector_industry_analysis.financedatabase_model import (
     filter_stocks,
 )
+from openbb_terminal.helpers_denomination import (
+    transform as transform_by_denomination,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -150,22 +153,15 @@ def display_plots_financials(
         console.print(f"Limiting the amount of companies displayed to {limit}.")
         df = df[df.columns[:limit]]
 
-    maximum_value = df.max().max()
+    (df, foundDenomination) = transform_by_denomination(df)
 
     if currency:
         denomination = f"[{currency} "
     else:
         denomination = "["
 
-    if maximum_value > 1_000_000_000:
-        df = df / 1_000_000_000
-        denomination += "Billions]"
-    elif maximum_value > 1_000_000:
-        df = df / 1_000_000
-        denomination += "Millions]"
-    elif maximum_value > 1_000:
-        df = df / 1_000
-        denomination += "Thousands]"
+    if denomination != "Units":
+        denomination += f"{foundDenomination}]"
     else:
         if currency:
             denomination = f"[{currency}]"
