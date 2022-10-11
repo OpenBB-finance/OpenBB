@@ -60,6 +60,8 @@ main:
             ref: "terminal/forecast/tcn"
           - name: tft
             ref: "terminal/forecast/tft"
+          - name: nhits
+            ref: "terminal/forecast/nhits"
           - name: theta
             ref: "terminal/forecast/theta"
           - name: trans
