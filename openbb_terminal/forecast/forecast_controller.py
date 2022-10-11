@@ -446,7 +446,7 @@ class ForecastController(BaseController):
                 "--n-days",
                 action="store",
                 dest="n_days",
-                type=check_greater_than_one,
+                type=check_positive,
                 default=5,
                 help="prediction days.",
             )
