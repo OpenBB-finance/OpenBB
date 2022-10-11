@@ -510,7 +510,7 @@ def plot_forecast(
     pred_label = f"{name} Forecast"
     if past_covariates:
         pred_label += " w/ past covs"
-    predicted_values.plot(label=pred_label, ax=ax, **quant_kwargs, color="#00AAFF")
+    predicted_values.plot(label=pred_label, **quant_kwargs, color="#00AAFF")
     ax.set_title(
         f"{name} for ${ticker_name} for next [{n_predict}] days (MAPE={precision:.2f}%)"
     )
