@@ -36,6 +36,8 @@ main:
             ref: "terminal/forecast/mom"
           - name: nbeats
             ref: "terminal/forecast/nbeats"
+          - name: nhits
+            ref: "terminal/forecast/nhits"
           - name: plot
             ref: "terminal/forecast/plot"
           - name: regr
@@ -60,8 +62,6 @@ main:
             ref: "terminal/forecast/tcn"
           - name: tft
             ref: "terminal/forecast/tft"
-          - name: nhits
-            ref: "terminal/forecast/nhits"
           - name: theta
             ref: "terminal/forecast/theta"
           - name: trans
