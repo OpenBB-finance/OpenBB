@@ -106,7 +106,7 @@ class PortfolioController(BaseController):
             {
                 filepath.name: filepath
                 for file_type in self.file_types
-                for filepath in (REPOSITORY_DIRECTORY / "portfolio" / "holdings").rglob(
+                for filepath in (REPOSITORY_DIRECTORY / "portfolios" / "holdings").rglob(
                     f"*.{file_type}"
                 )
             }
