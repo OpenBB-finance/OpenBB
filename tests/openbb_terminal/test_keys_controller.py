@@ -54,12 +54,10 @@ class MockCFG:
         self.API_ETHPLORER_KEY = kwargs.get("ETHPLOR", None)
         self.API_SMARTSTAKE_TOKEN = kwargs.get("SMARTSTAKE", None)
         self.API_SMARTSTAKE_KEY = kwargs.get("SMARTSTAKE", None)
-        self.API_SANTIMENT_KEY = kwargs.get("SANTIMENT", None)
         self.API_MESSARI_KEY = kwargs.get("MESSARI", None)
-
-
-# TODO: add mykeys test to assert df
-# TODO: add refresh test
+        self.API_SANTIMENT_KEY = kwargs.get("SANTIMENT", None)
+        self.API_TOKENTERMINAL_KEY = kwargs.get("TOKENTERMINAL", None)
+        self.API_SHROOM_KEY = kwargs.get("SHROOM", None)
 
 
 @pytest.mark.skip
@@ -227,12 +225,24 @@ def test_call_github(other):
 
 
 @pytest.mark.vcr
+@pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
+def test_call_santiment(other):
+    controller.call_santiment(other)
+
+
+@pytest.mark.vcr
 @pytest.mark.parametrize("other", [[], ["-k", "1234", "-t", "456"]])
 def test_call_messari(other):
     controller.call_messari(other)
 
 
 @pytest.mark.vcr
-@pytest.mark.parametrize("other", [[], ["-k", "1234"], ["1234"]])
-def test_call_santiment(other):
-    controller.call_santiment(other)
+@pytest.mark.parametrize("other", [[], ["-k", "1234", "-t", "456"]])
+def test_call_tokenterminal(other):
+    controller.call_tokenterminal(other)
+
+
+@pytest.mark.vcr
+@pytest.mark.parametrize("other", [[], ["-k", "1234", "-t", "456"]])
+def test_call_shroom(other):
+    controller.call_shroom(other)
