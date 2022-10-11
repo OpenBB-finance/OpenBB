@@ -7,7 +7,7 @@ import argparse
 import logging
 from typing import List
 
-from prompt_toolkit.completion import NestedCompleter
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
@@ -39,6 +39,27 @@ class ToolsController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+
+            one_to_hundred_one: dict = {str(c): {} for c in range(1, 101)}
+            choices["aprtoapy"] = {
+                "--apr": one_to_hundred_one,
+                "--compounding": "--apr",
+                "-c": "--compounding",
+                "--narrative": {},
+                "-n": "--narrative",
+            }
+            choices["il"] = {
+                "--priceChangeA": one_to_hundred_one,
+                "-a": "--priceChangeA",
+                "--priceChangeB": "--priceChangeA",
+                "-b": "--priceChangeB",
+                "--proportion": "--priceChangeA",
+                "-p": "--proportion",
+                "--value": None,
+                "-v": "--value",
+                "--narrative": {},
+                "-n": "--narrative",
+            }
 
             choices["support"] = self.SUPPORT_CHOICES
             choices["about"] = self.ABOUT_CHOICES

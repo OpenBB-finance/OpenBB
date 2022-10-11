@@ -6,7 +6,7 @@ import argparse
 import logging
 from typing import List
 
-from prompt_toolkit.completion import NestedCompleter
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
@@ -40,6 +40,7 @@ class CoinbaseController(BaseController):
         "created_at",
         "amount",
     ]
+    deposit_type = ["internal_deposit", "deposit"]
     PATH = "/portfolio/bro/cb/"
 
     def __init__(self, queue: List[str] = None):
@@ -48,10 +49,36 @@ class CoinbaseController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["orders"]["-s"] = {c: None for c in self.order_sortby}
-            choices["orders"]["--sortby"] = {c: None for c in self.order_sortby}
-            choices["deposits"]["-s"] = {c: None for c in self.deposit_sort}
-            choices["deposits"]["--sortby"] = {c: None for c in self.deposit_sort}
+
+            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
+            choices["account"] = {
+                "--all": {},
+                "--currency": None,
+                "-c": "--currency",
+            }
+            choices["history"] = {
+                "--acc": None,
+                "-a": "--acc",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["orders"] = {
+                "--sortby": {c: {} for c in self.order_sortby},
+                "-s": "--sortby",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+                "--descend": {},
+            }
+            choices["deposits"] = {
+                "--type": {c: {} for c in self.deposit_type},
+                "-t": "--type",
+                "--sortby": {c: {} for c in self.deposit_sort},
+                "-s": "--sortby",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+                "--descend": {},
+            }
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -201,7 +228,7 @@ class CoinbaseController(BaseController):
             type=str,
             help="Deposit type. Either: internal_deposits (transfer between portfolios) or deposit",
             default="deposit",
-            choices=["internal_deposit", "deposit"],
+            choices=self.deposit_type,
         )
         parser.add_argument(
             "-l",

@@ -185,8 +185,8 @@ main:
       - name: Cryptocurrency
         ref: /terminal/crypto
         sub:
-          - name: chart
-            ref: /terminal/crypto/chart
+          - name: candle
+            ref: /terminal/crypto/candle
           - name: defi
             ref: /terminal/crypto/defi
             sub:
@@ -775,6 +775,8 @@ main:
             ref: terminal/forecast/mom
           - name: nbeats
             ref: terminal/forecast/nbeats
+          - name: nhits
+            ref: terminal/forecast/nhits
           - name: plot
             ref: terminal/forecast/plot
           - name: regr
@@ -1623,6 +1625,8 @@ main:
                 ref: /terminal/common/ta/cg
               - name: clenow
                 ref: /terminal/common/ta/clenow
+              - name: demark
+                ref: /terminal/common/ta/demark
               - name: donchian
                 ref: /terminal/common/ta/donchian
               - name: ema

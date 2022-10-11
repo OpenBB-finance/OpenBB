@@ -1,5 +1,5 @@
 ## Get underlying data 
-### portfolio.var(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, use_mean: bool = False, adjusted_var: bool = False, student_t: bool = False, percentile: float = 0.999) -> pandas.core.frame.DataFrame
+### portfolio.var(portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, use_mean: bool = False, adjusted_var: bool = False, student_t: bool = False, percentile: float = 99.9) -> pandas.core.frame.DataFrame
 
 Get portfolio VaR
 
@@ -13,8 +13,8 @@ Get portfolio VaR
         if one should have VaR adjusted for skew and kurtosis (Cornish-Fisher-Expansion)
     student_t: bool
         If one should use the student-t distribution
-    percentile: int
-        var percentile
+    percentile: float
+        var percentile (%)
     Returns
     -------
     pd.DataFrame
