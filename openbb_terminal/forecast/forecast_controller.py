@@ -104,6 +104,7 @@ class ForecastController(BaseController):
         "tft",
         "season",
         "which",
+        "encode",
     ]
     pandas_plot_choices = [
         "line",
@@ -247,6 +248,7 @@ class ForecastController(BaseController):
                 "trans",
                 "tft",
                 "season",
+                "encode",
             ]:
                 self.choices[feature] = {c: None for c in self.files}
 
@@ -309,6 +311,7 @@ class ForecastController(BaseController):
         mt.add_cmd("delta", self.files)
         mt.add_cmd("atr", self.files)
         mt.add_cmd("signal", self.files)
+        mt.add_cmd("encode", self.files)
         mt.add_raw("\n")
         mt.add_info("_tsforecasting_")
         mt.add_cmd("expo", self.files)
@@ -1180,6 +1183,48 @@ class ForecastController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="ema",
             description="Add exponential moving average to dataset based on specific column.",
+        )
+
+        # if user does not put in --target-dataset
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--target-dataset")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            NO_EXPORT,
+            period=10,
+            target_dataset=True,
+            target_column=True,
+        )
+        if ns_parser:
+            # check proper file name is provided
+            if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+
+            self.datasets[ns_parser.target_dataset] = forecast_model.add_ema(
+                self.datasets[ns_parser.target_dataset],
+                ns_parser.target_column,
+                ns_parser.period,
+            )
+            console.print(
+                f"Successfully added 'EMA_{ns_parser.period}' to '{ns_parser.target_dataset}' dataset"
+            )
+
+            # update forecast menu with new column on modified dataset
+            self.refresh_datasets_on_menu()
+
+        self.update_runtime_choices()
+        console.print()
+
+    @log_start_end(log=logger)
+    def call_encode(self, other_args: List[str]):
+        """Process encode"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="encode",
+            description="Encode string variables into numbers",
         )
 
         # if user does not put in --target-dataset
