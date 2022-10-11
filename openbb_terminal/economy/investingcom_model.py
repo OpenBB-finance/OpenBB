@@ -6,11 +6,12 @@ import argparse
 
 import datetime
 import math
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Union
 import pandas as pd
 
 import pytz
 import investpy
+from tqdm import tqdm
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import log_and_raise
@@ -32,18 +33,9 @@ CATEGORIES = [
     "confidence_index",
 ]
 IMPORTANCES = ["high", "medium", "low", "all"]
-MATRIX_CHOICES = ["eurozone", "g7"]
+
 MATRIX_COUNTRIES = {
-    "eurozone": [
-        "Portugal",
-        "Spain",
-        "Italy",
-        "France",
-        "Germany",
-        "Austria",
-        "Netherlands",
-    ],
-    "g7": [
+    "G7": [
         "United states",
         "Canada",
         "United Kingdom",
@@ -52,7 +44,37 @@ MATRIX_COUNTRIES = {
         "France",
         "Italy",
     ],
+    "PIIGS": [
+        "Portugal",
+        "Italy",
+        "Ireland",
+        "Greece",
+        "Spain",
+    ],
+    "EUROZONE": [
+        "Austria",
+        "Belgium",
+        "Cyprus",
+        # "Estonia",
+        "Finland",
+        "France",
+        "Germany",
+        "Greece",
+        "Ireland",
+        "Italy",
+        # "Latvia",
+        # "Lithuania",
+        # "Luxembourg",
+        "Malta",
+        "Netherlands",
+        "Portugal",
+        "Slovakia",
+        "Slovenia",
+        "Spain",
+    ],
 }
+
+MATRIX_CHOICES = list(MATRIX_COUNTRIES.keys())
 
 
 @log_start_end(log=logger)
@@ -71,7 +93,7 @@ def countries_string_to_list(countries_list: str) -> List[str]:
     """Transform countries string to list if countries valid"""
 
     valid_countries = [
-        country.upper()
+        country.lower()
         for country in countries_list.split(",")
         if check_correct_country(country, BOND_COUNTRIES)
     ]
@@ -84,8 +106,8 @@ def countries_string_to_list(countries_list: str) -> List[str]:
 @log_start_end(log=logger)
 def create_matrix(dict: Dict[str, Dict[str, float]]) -> pd.DataFrame:
 
-    tenor = list(dict.keys())[0]
-    d = dict[tenor]
+    maturity = list(dict.keys())[0]
+    d = dict[maturity]
     countries = list(d.keys())
 
     # Create empty matrix
@@ -99,28 +121,41 @@ def create_matrix(dict: Dict[str, Dict[str, float]]) -> pd.DataFrame:
             matrix[i][j] = round((d[country_i] - d[country_j]) * 100, 1)
 
     matrixdf = pd.DataFrame(matrix)
-
     matrixdf.columns = list(d.keys())
     matrixdf = matrixdf.set_index(matrixdf.columns)
-
-    matrixdf.insert(0, "Yield " + tenor, pd.DataFrame.from_dict(d, orient="index"))
+    matrixdf.insert(0, "Yield " + maturity, pd.DataFrame.from_dict(d, orient="index"))
 
     return matrixdf
 
 
 @log_start_end(log=logger)
 def get_matrix(
-    countries: List[str] = MATRIX_COUNTRIES["g7"], tenor: str = "10Y", change: bool = False
+    countries: Union[str, List[str]] = "G7",
+    maturity: str = "10Y",
+    change: bool = False,
 ) -> pd.DataFrame:
 
-    d0 = {tenor: {}}
-    d1 = {tenor: {}}
-    for country in countries:
-        df = investpy.bonds.get_bonds_overview(country)
-        d0[tenor][country] = df[df["name"].str.contains(tenor)]["last"].iloc[
-            0
-        ]
-        d1[tenor][country] = df[df["name"].str.contains(tenor)]["last_close"].iloc[0]
+    if isinstance(countries, str) and countries in MATRIX_CHOICES:
+        countries = MATRIX_COUNTRIES[countries]
+
+    d0 = {maturity: {}}
+    d1 = {maturity: {}}
+    no_data_countries = []
+    for country in tqdm(countries, desc="Downloading"):
+        country = country.title()
+        try:
+            df = investpy.bonds.get_bonds_overview(country)
+            d0[maturity][country] = df[df["name"].str.contains(maturity)]["last"].iloc[
+                0
+            ]
+            d1[maturity][country] = df[df["name"].str.contains(maturity)][
+                "last_close"
+            ].iloc[0]
+        except Exception:
+            no_data_countries.append(country)
+
+    if no_data_countries:
+        console.print(f"No data for {no_data_countries}.")
 
     if change:
         return create_matrix(d0) - create_matrix(d1)

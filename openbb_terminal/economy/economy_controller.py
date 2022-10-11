@@ -1157,7 +1157,7 @@ class EconomyController(BaseController):
             action="store",
             dest="group",
             choices=investingcom_model.MATRIX_CHOICES,
-            default="g7",
+            default="G7",
             help="Show bond rates matrix for group of countries.",
         )
         parser.add_argument(
@@ -1165,7 +1165,6 @@ class EconomyController(BaseController):
             "--countries",
             action="store",
             dest="countries",
-            choices=investingcom_model.BOND_COUNTRIES,
             type=investingcom_model.countries_string_to_list,
             help="Show bond rates matrix for explicit list of countries.",
         )
@@ -1178,15 +1177,15 @@ class EconomyController(BaseController):
         )
 
         if ns_parser:
-            if ns_parser.group:
+            if ns_parser.countries:
                 investingcom_view.display_matrix(
-                    investingcom_model.MATRIX_COUNTRIES[ns_parser.group],
+                    ns_parser.countries,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
                 )
-            elif ns_parser.countries:
+            elif ns_parser.group:
                 investingcom_view.display_matrix(
-                    ns_parser.countries,
+                    ns_parser.group,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
                 )

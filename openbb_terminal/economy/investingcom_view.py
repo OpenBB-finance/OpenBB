@@ -3,10 +3,11 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Optional, List
+from typing import Optional, List, Union
 
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FormatStrFormatter
+import numpy as np
 from pandas.plotting import register_matplotlib_converters
 import seaborn as sns
 
@@ -29,15 +30,15 @@ register_matplotlib_converters()
 
 @log_start_end(log=logger)
 def display_matrix(
-    countries: List[str],
-    tenor: str = "10Y",
+    countries: Union[str, List[str]] = "G7",
+    maturity: str = "10Y",
     change: bool = False,
     raw: bool = False,
     external_axes: Optional[List[plt.Axes]] = None,
     export: str = "",
 ):
 
-    df = investingcom_model.get_matrix(countries, tenor, change)
+    df = investingcom_model.get_matrix(countries, maturity, change)
 
     if not df.empty:
         # This plot has 1 axis
@@ -48,32 +49,42 @@ def display_matrix(
         else:
             return
 
+        mask = np.zeros((df.shape[0], df.shape[1]), dtype=bool)
+        mask[np.tril_indices(len(mask))] = True
+        mask[:, 0] = False
+        for i in range(df.shape[0]):
+            mask[i][i + 1] = True
+
+        sns.heatmap(
+            df,
+            cmap="RdYlGn",
+            annot=True,
+            annot_kws={
+                "fontsize": 12,
+            },
+            fmt=".2f",
+            linewidths=0.5,
+            mask=mask,
+            ax=ax,
+        )
+
+        ax.yaxis.tick_left()
+        plt.yticks(rotation=0)
+        ax.xaxis.tick_top()
+        plt.xticks(rotation=45, ha="center")
+        ax.set_title(f"Interest rates heatmap")
+
+        if not external_axes:
+            theme.visualize_output()
+
         if raw:
             print_rich_table(
                 df,
                 headers=list(df.columns),
                 show_index=True,
                 title=f"Yield Curve Matrix",
-                floatfmt=".1f",
+                floatfmt=".3f",
             )
-
-        # sns.heatmap(
-        #     df,
-        #     cbar_kws={"ticks": [-1.0, -0.5, 0.0, 0.5, 1.0]},
-        #     cmap="RdYlGn",
-        #     linewidths=1,
-        #     annot=True,
-        #     annot_kws={"fontsize": 10},
-        #     vmin=-1,
-        #     vmax=1,
-        #     mask=None,
-        #     ax=ax,
-        # )
-        # ax.set_title(f"Interest rates heatmap")
-
-        # if not external_axes:
-        #     theme.visualize_output()
-
         export_data(export, os.path.dirname(os.path.abspath(__file__)), "matrix", df)
         console.print("")
 
