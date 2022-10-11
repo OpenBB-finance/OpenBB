@@ -430,6 +430,7 @@ en:
   stocks/ta/fisher: fisher transform
   stocks/ta/cg: centre of gravity
   stocks/ta/clenow: clenow volatility adjusted momentum
+  stocks/ta/demark: Tom Demark's sequential indicator
   stocks/ta/_trend_: Trend
   stocks/ta/adx: average directional movement index
   stocks/ta/aroon: aroon indicator
