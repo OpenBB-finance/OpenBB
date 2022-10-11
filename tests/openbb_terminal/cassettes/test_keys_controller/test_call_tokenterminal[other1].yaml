@@ -1,0 +1,46 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer 1234
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+    method: GET
+    uri: https://api.tokenterminal.com/v1/projects
+  response:
+    body:
+      string: '{"message":"Invalid authorization header"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-tt-terminal-jwt
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS, PATCH
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - Content-Length,Content-Range,Authorization
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '42'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 11 Oct 2022 08:20:10 GMT
+      ETag:
+      - W/"2a-RRrm54g54+TY/dthY6vcsidw8gA"
+      Server:
+      - openresty
+      X-Powered-By:
+      - Express
+    status:
+      code: 422
+      message: Unprocessable Entity
+version: 1
