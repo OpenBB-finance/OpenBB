@@ -940,7 +940,7 @@ class ForecastController(BaseController):
         for datasetcol in ns_parser.values:
             dataset, col = datasetcol.split(".")
             df = self.datasets[dataset]
-            if "date" in df.columns:
+            if "date" in df.columns and col != "date":
                 df = df.set_index("date")
             data[datasetcol] = df[col]
 
