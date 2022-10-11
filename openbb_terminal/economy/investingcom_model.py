@@ -157,7 +157,7 @@ def get_matrix(
             no_data_countries.append(country)
 
     if no_data_countries:
-        console.print(f"No data for {no_data_countries}.")
+        console.print(f"[red]No data for {no_data_countries}.[/red]")
 
     if change:
         return create_matrix(d0) - create_matrix(d1)
