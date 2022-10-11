@@ -1050,6 +1050,8 @@ main:
             ref: "/terminal/economy/yield"
           - name: ycrv
             ref: "/terminal/economy/ycrv"
+          - name: matrix
+            ref: "/terminal/economy/matrix"
           - name: events
             ref: "/terminal/economy/events"
           - name: plot
