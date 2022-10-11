@@ -701,7 +701,7 @@ def display_demark(
         candle_chart_kwargs["figsize"] = plot_autoscale()
         candle_chart_kwargs["warn_too_much_data"] = 100_000
 
-        fig, ax = mpf.plot(stock_data, **candle_chart_kwargs)
+        fig, _ = mpf.plot(stock_data, **candle_chart_kwargs)
         fig.suptitle(
             f"{symbol} Demark Sequential",
             x=0.055,
@@ -714,7 +714,6 @@ def display_demark(
         if len(external_axes) != 1:
             logger.error("Expected list of one axis item.")
             console.print("[red]Expected list of 1 axis items.\n[/red]")
-            return pd.DataFrame()
         ax1 = external_axes
         candle_chart_kwargs["ax"] = ax1
         mpf.plot(stock_data, **candle_chart_kwargs)
