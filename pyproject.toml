@@ -4,7 +4,7 @@ version = "1.9.0"
 description = ""
 authors = ["Didier Rodrigues Lopes"]
 packages = [
-    { include = "openbb_terminal/**/*.py" },
+    { include = "openbb_terminal" },
 ]
 
 [tool.poetry.scripts]
