@@ -1195,7 +1195,6 @@ class EconomyController(BaseController):
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
             raw=True,
         )
-
         if ns_parser:
             if ns_parser.countries:
                 investingcom_view.display_matrix(

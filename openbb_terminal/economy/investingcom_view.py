@@ -54,21 +54,14 @@ def display_matrix(
             # Convert to string
             pretty_df[list(pretty_df.columns)[0]] = pd.DataFrame(
                 df[list(pretty_df.columns)[0]]
-            ).applymap(lambda x: f"{x/100:.3f}")
+            ).applymap(lambda x: f"{x/100:.3f}" if not change else f"{x:.1f}")
 
             # Add colors
-            pretty_df[list(pretty_df.columns)[1:]] = pretty_df[
-                list(pretty_df.columns)[1:]
-            ].applymap(
+            pretty_df = pretty_df.applymap(
                 lambda x: f"[{theme.down_color}]{x}[/{theme.down_color}]"
                 if "-" in x
                 else f"[{theme.up_color}]{x}[/{theme.up_color}]"
             )
-
-            # Add colors
-            pretty_df[list(pretty_df.columns)[0]] = pd.DataFrame(
-                pretty_df[list(pretty_df.columns)[0]]
-            ).applymap(lambda x: f"[yellow]{x}[/yellow]")
 
             if isinstance(countries, str):
                 title = f"{countries} - Yield Curve Matrix - {maturity}"
@@ -116,22 +109,25 @@ def display_matrix(
             plt.xticks(rotation=45, ha="center")
 
             # Set 3 decimal places for yield and 1 spread
-            spacing = df.shape[1] - 1
-            k = 0
-            for index, t in enumerate(heatmap.texts):
-                current_text = t.get_text()
+            if not change:
+                spacing = df.shape[1] - 1
+                k = 0
+                for index, t in enumerate(heatmap.texts):
+                    current_text = t.get_text()
 
-                if index == k:
-                    k += spacing
-                    spacing -= 1
+                    if index == k:
+                        k += spacing
+                        spacing -= 1
 
-                    text_transform = lambda x: f"{round(float(x)/100, 3)}"
-                    t.set_text(text_transform(current_text))
-                else:
-                    t.set_text(current_text)
+                        text_transform = lambda x: f"{round(float(x)/100, 3)}"
+                        t.set_text(text_transform(current_text))
+                    else:
+                        t.set_text(current_text)
 
             if isinstance(countries, str):
-                ax.set_title(f"{countries} - Interest rates heatmap - {maturity}", loc="center")
+                ax.set_title(
+                    f"{countries} - Interest rates heatmap - {maturity}", loc="center"
+                )
             else:
                 ax.set_title(f"Interest rates heatmap - {maturity}", loc="center")
 
