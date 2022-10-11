@@ -3,7 +3,9 @@ __docformat__ = "numpy"
 
 import logging
 import os
+from turtle import position
 from typing import Optional, List, Union
+from matplotlib import ticker
 
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FormatStrFormatter
@@ -47,15 +49,15 @@ def display_matrix(
         if raw:
             pretty_df = df.copy()
 
-            # Convert to string
+            # Convert to string spreads
             pretty_df[list(pretty_df.columns)[1:]] = pretty_df[
                 list(pretty_df.columns)[1:]
-            ].applymap(lambda x: f"{x:.1f}" if x != 0 else "")
+            ].applymap(lambda x: f"{x:+.1f}" if x != 0 else "")
 
-            # Convert to string
+            # Convert to string yields
             pretty_df[list(pretty_df.columns)[0]] = pd.DataFrame(
                 df[list(pretty_df.columns)[0]]
-            ).applymap(lambda x: f"{x/100:.3f}" if not change else f"{x:.1f}")
+            ).applymap(lambda x: f"{x/100:.3f}%" if not change else f"{x:+.1f}")
 
             # Add colors
             pretty_df = pretty_df.applymap(
@@ -91,8 +93,8 @@ def display_matrix(
             for i in range(df.shape[0]):
                 mask[i][i + 1] = True
 
-            labels = list(df.columns)
-            labels[1] = ""
+            x_labels = list(df.columns)
+            x_labels[1] = ""
 
             heatmap = sns.heatmap(
                 df,
@@ -103,19 +105,34 @@ def display_matrix(
                     "fontsize": 12,
                 },
                 center=0,
-                fmt=".1f",
+                fmt="+.1f",
                 linewidths=0.5,
                 linecolor="black",
-                xticklabels=labels,
+                xticklabels=x_labels,
                 mask=mask,
                 ax=ax,
             )
 
-            ax.yaxis.tick_left()
-            plt.yticks(rotation=0)
             ax.xaxis.tick_top()
-            plt.xticks(rotation=45, ha="center")
-            plt.tick_params(labelright=True)
+            ax.xaxis.set_major_locator(
+                ticker.FixedLocator([x + 0.25 for x in ax.get_xticks().tolist()])
+            )
+            ax.set_xticklabels(x_labels, rotation=45)
+            # plt.xticks(rotation=45, ha="center")
+            # plt.tick_params(labelleft=True)
+            ax.set_yticklabels(list(df.index.values), rotation=0)
+            ax.yaxis.set_label_position("left")
+
+            y_labels = list(df.index.values)
+            y_labels[-1] = ""
+            ax1 = ax.twinx()
+            ticks_loc = ax.get_yticks().tolist()
+            ax1.yaxis.set_major_locator(ticker.FixedLocator(ticks_loc))
+            ax1.set_yticklabels(y_labels, rotation=0)
+            ax1.yaxis.set_label_position("right")
+            ax1.set_ylim(ax.get_ylim())
+            ax1.grid(False)
+            ax1.axis("off")
 
             # Set 3 decimal places for yield and 1 spread
             if not change:
@@ -128,7 +145,7 @@ def display_matrix(
                         k += spacing
                         spacing -= 1
 
-                        text_transform = lambda x: f"{round(float(x)/100, 3)}"
+                        text_transform = lambda x: f"{round(float(x)/100, 3)}%"
                         t.set_text(text_transform(current_text))
                     else:
                         t.set_text(current_text)

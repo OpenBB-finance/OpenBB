@@ -38,11 +38,11 @@ MATRIX_COUNTRIES = {
     "G7": [
         "United states",
         "Canada",
-        "United Kingdom",
         "Japan",
         "Germany",
         "France",
         "Italy",
+        "United Kingdom",
     ],
     "PIIGS": [
         "Portugal",
