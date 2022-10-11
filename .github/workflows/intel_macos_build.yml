@@ -49,7 +49,7 @@ jobs:
           conda init
           exec zsh -l
       - name: Run Poetry
-        shell: bash -l {0}
+        # shell: bash -l {0}
         run: poetry install
       - name: Install Pyinstaller
         shell: bash -l {0}
