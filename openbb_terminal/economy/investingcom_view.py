@@ -72,7 +72,13 @@ def display_matrix(
         plt.yticks(rotation=0)
         ax.xaxis.tick_top()
         plt.xticks(rotation=45, ha="center")
-        ax.set_title(f"Interest rates heatmap")
+
+        if isinstance(countries, str):
+            ax.set_title(f"{countries} - Interest rates heatmap", loc="center")
+            title = f"{countries} - Yield Curve Matrix"
+        else:
+            ax.set_title("Interest rates heatmap", loc="center")
+            title = "Yield Curve Matrix"
 
         if not external_axes:
             theme.visualize_output()
@@ -82,7 +88,7 @@ def display_matrix(
                 df,
                 headers=list(df.columns),
                 show_index=True,
-                title=f"Yield Curve Matrix",
+                title=title,
                 floatfmt=".3f",
             )
         export_data(export, os.path.dirname(os.path.abspath(__file__)), "matrix", df)
