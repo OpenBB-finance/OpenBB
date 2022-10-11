@@ -1,7 +1,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### crypto.dd.nonzero(symbol: str, start_date: int = 1262300400, end_date: int = 1664172183) -> pandas.core.frame.DataFrame
+### crypto.dd.nonzero(symbol: str, start_date: int = 1262304000, end_date: int = 1665471332) -> pandas.core.frame.DataFrame
 
 Returns addresses with non-zero balance of a certain symbol
     [Source: https://glassnode.com]
