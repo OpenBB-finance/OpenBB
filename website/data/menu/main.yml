@@ -833,6 +833,8 @@ main:
                 ref: "/terminal/crypto/dd/mkt"
               - name: ex
                 ref: "/terminal/crypto/dd/ex"
+              - name: funot
+                ref: "/terminal/crypto/dd/funot"
               - name: twitter
                 ref: "/terminal/crypto/dd/twitter"
               - name: events
