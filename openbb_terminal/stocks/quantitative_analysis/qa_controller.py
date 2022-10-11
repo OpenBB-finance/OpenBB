@@ -8,7 +8,8 @@ from typing import List
 
 import numpy as np
 import pandas as pd
-from prompt_toolkit.completion import NestedCompleter
+
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common.quantitative_analysis import qa_view, rolling_view
@@ -22,7 +23,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
 from openbb_terminal.stocks.quantitative_analysis.beta_view import beta_view
 from openbb_terminal.stocks.quantitative_analysis.factors_view import capm_view
 
@@ -68,6 +69,9 @@ class QaController(StockBaseController):
     stock_interval = [1, 5, 15, 30, 60]
     stock_sources = ["YahooFinance", "AlphaVantage", "IEXCloud"]
     distributions = ["laplace", "student_t", "logistic", "normal"]
+    FULLER_REG = ["c", "ct", "ctt", "nc"]
+    KPS_REG = ["c", "ct"]
+    VALID_DISTRIBUTIONS = ["laplace", "student_t", "logistic", "normal"]
     PATH = "/stocks/qa/"
 
     def __init__(
@@ -99,10 +103,135 @@ class QaController(StockBaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["pick"] = {c: None for c in list(stock.columns)}
-            choices["load"]["-i"] = {c: None for c in self.stock_interval}
-            choices["load"]["--interval"] = {c: None for c in self.stock_interval}
-            choices["load"]["--source"] = {c: None for c in self.stock_sources}
+
+            zero_to_hundred: dict = {str(c): {} for c in range(0, 100)}
+            zero_to_hundred_detailed: dict = {
+                str(c): {} for c in np.arange(0.0, 100.0, 0.1)
+            }
+            choices["pick"] = {c: {} for c in list(stock.columns)}
+            choices["load"] = {
+                "--ticker": None,
+                "-t": "--ticker",
+                "--start": None,
+                "-s": "--start",
+                "--end": None,
+                "-e": "--end",
+                "--interval": {c: {} for c in ["1", "5", "15", "30", "60"]},
+                "-i": "--interval",
+                "--prepost": {},
+                "-p": "--prepost",
+                "--file": None,
+                "-f": "--file",
+                "--monthly": {},
+                "-m": "--monthly",
+                "--weekly": {},
+                "-w": "--weekly",
+                "--iexrange": {c: {} for c in ["ytd", "1y", "2y", "5y", "6m"]},
+                "-r": "--iexrange",
+                "--source": {
+                    c: {} for c in get_ordered_list_sources(f"{self.PATH}load")
+                },
+            }
+            choices["unitroot"] = {
+                "--fuller_reg": {c: {} for c in self.FULLER_REG},
+                "-r": "--fuller_reg",
+                "--kps_reg": {c: {} for c in self.KPS_REG},
+                "-k": "--kps_reg",
+            }
+            choices["line"] = {
+                "--log": {},
+                "--draw": {},
+                "-d": "--draw",
+                "--ml": None,
+                "--ms": None,
+            }
+            choices["hist"] = {
+                "--bins": {str(c): {} for c in range(10, 100)},
+                "-b": "--bins",
+            }
+            choices["bw"] = {
+                "--yearly": {},
+                "-y": {},
+            }
+            choices["acf"] = {
+                "--lags": {str(c): {} for c in range(5, 100)},
+                "-l": "--lags",
+            }
+            choices["rolling"] = {
+                "--window": {str(c): {} for c in range(5, 100)},
+                "-w": "--window",
+            }
+            choices["spread"] = {
+                "--window": {str(c): {} for c in range(5, 100)},
+                "-w": "--window",
+            }
+            choices["quantile"] = {
+                "--window": {str(c): {} for c in range(5, 100)},
+                "-w": "--window",
+                "--quantile": {str(c): {} for c in np.arange(0.0, 1.0, 0.01)},
+                "-q": "--quantile",
+            }
+            choices["skew"] = {
+                "--window": {str(c): {} for c in range(5, 100)},
+                "-w": "--window",
+            }
+            choices["kurtosis"] = {
+                "--window": {str(c): {} for c in range(5, 100)},
+                "-w": "--window",
+            }
+            choices["raw"] = {
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+            }
+            choices["decompose"] = {
+                "--multiplicative": None,
+                "-m": "--multiplicative",
+            }
+            choices["cusum"] = {
+                "--threshold": None,
+                "-t": "--threshold",
+                "--drift": None,
+                "-d": "--drift",
+            }
+            choices["var"] = {
+                "--mean": {},
+                "-m": "--mean",
+                "--adjusted": {},
+                "-a": "--adjusted",
+                "--student": {},
+                "-s": "--student",
+                "--percentile": zero_to_hundred_detailed,
+                "-p": "--percentile",
+                "--datarange": zero_to_hundred,
+                "-d": "--datarange",
+            }
+            choices["es"] = {
+                "--mean": {},
+                "-m": "--mean",
+                "--dist": {c: {} for c in self.VALID_DISTRIBUTIONS},
+                "-d": "--dist",
+                "--percentile": zero_to_hundred_detailed,
+                "-p": "--percentile",
+            }
+            choices["om"] = {
+                "--start": zero_to_hundred_detailed,
+                "-s": "--start",
+                "--end": zero_to_hundred_detailed,
+                "-e": "--end",
+            }
+            choices["so"] = {
+                "--target": None,
+                "-t": "--target",
+                "--adjusted": {},
+                "-a": "--adjusted",
+                "--window": {str(c): {} for c in range(1, 960)},
+                "-w": "--window",
+            }
+
+            choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -716,7 +845,7 @@ class QaController(StockBaseController):
             "-r",
             "--fuller_reg",
             help="Type of regression.  Can be ‘c’,’ct’,’ctt’,’nc’ 'c' - Constant and t - trend order",
-            choices=["c", "ct", "ctt", "nc"],
+            choices=self.FULLER_REG,
             default="c",
             type=str,
             dest="fuller_reg",
@@ -725,7 +854,7 @@ class QaController(StockBaseController):
             "-k",
             "--kps_reg",
             help="Type of regression.  Can be ‘c’,’ct'",
-            choices=["c", "ct"],
+            choices=self.KPS_REG,
             type=str,
             dest="kpss_reg",
             default="c",

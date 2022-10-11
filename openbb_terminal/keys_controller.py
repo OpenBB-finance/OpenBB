@@ -7,12 +7,12 @@ import argparse
 import logging
 from typing import Dict, List
 
-from prompt_toolkit.completion import NestedCompleter
 from tqdm import tqdm
 
 from openbb_terminal import feature_flags as obbff, keys_view
 from openbb_terminal import keys_model
 from openbb_terminal.core.config.paths import USER_ENV_FILE
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -28,39 +28,7 @@ logger = logging.getLogger(__name__)
 class KeysController(BaseController):  # pylint: disable=too-many-public-methods
     """Keys Controller class"""
 
-    API_DICT: Dict = {
-        "av": "ALPHA_VANTAGE",
-        "fmp": "FINANCIAL_MODELING_PREP",
-        "quandl": "QUANDL",
-        "polygon": "POLYGON",
-        "fred": "FRED",
-        "news": "NEWSAPI",
-        "tradier": "TRADIER",
-        "cmc": "COINMARKETCAP",
-        "finnhub": "FINNHUB",
-        "iex": "IEXCLOUD",
-        "reddit": "REDDIT",
-        "twitter": "TWITTER",
-        "rh": "ROBINHOOD",
-        "degiro": "DEGIRO",
-        "oanda": "OANDA",
-        "binance": "BINANCE",
-        "bitquery": "BITQUERY",
-        "si": "SENTIMENT_INVESTOR",
-        "coinbase": "COINBASE",
-        "walert": "WHALE_ALERT",
-        "glassnode": "GLASSNODE",
-        "coinglass": "COINGLASS",
-        "cpanic": "CRYPTO_PANIC",
-        "ethplorer": "ETHPLORER",
-        "smartstake": "SMARTSTAKE",
-        "github": "GITHUB",
-        "messari": "MESSARI",
-        "eodhd": "EODHD",
-        "santiment": "SANTIMENT",
-        "tokenterminal": "TOKEN_TERMINAL",
-    }
-
+    API_DICT = keys_model.API_DICT
     API_LIST = list(API_DICT.keys())
     CHOICES_COMMANDS: List[str] = ["mykeys"] + API_LIST
     PATH = "/keys/"
@@ -85,7 +53,6 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
 
     def check_keys_status(self) -> None:
         """Check keys status"""
-
         for api in tqdm(self.API_LIST, desc="Checking keys status"):
             self.status_dict[api] = getattr(keys_model, "check_" + str(api) + "_key")()
 
@@ -1087,5 +1054,63 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             self.status_dict["santiment"] = keys_model.set_santiment_key(
+                key=ns_parser.key, persist=True, show_output=True
+            )
+
+    @log_start_end(log=logger)
+    def call_shroom(self, other_args: List[str]):
+        """Process shroom command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="shroom",
+            description="Set Shroom API key.",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="key",
+        )
+        if not other_args:
+            console.print(
+                "For your API Key, visit: https://sdk.flipsidecrypto.xyz/shroomdk\n"
+            )
+            return
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-k")
+        ns_parser = parse_simple_args(parser, other_args)
+        if ns_parser:
+            self.status_dict["shroom"] = keys_model.set_shroom_key(
+                key=ns_parser.key, persist=True, show_output=True
+            )
+
+    @log_start_end(log=logger)
+    def call_tokenterminal(self, other_args: List[str]):
+        """Process tokenterminal command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="tokenterminal",
+            description="Set Token Terminal API key.",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="key",
+        )
+        if not other_args:
+            console.print("For your API Key, visit: https://tokenterminal.com/\n")
+            return
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-k")
+        ns_parser = parse_simple_args(parser, other_args)
+        if ns_parser:
+            self.status_dict["tokenterminal"] = keys_model.set_tokenterminal_key(
                 key=ns_parser.key, persist=True, show_output=True
             )

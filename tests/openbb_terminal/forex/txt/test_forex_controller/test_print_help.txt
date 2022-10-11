@@ -4,7 +4,6 @@ Ticker:
 Source: YahooFinance
 
 [unvl]    quote              get last quote[/unvl]                              [YahooFinance, AlphaVantage]
-[unvl]    load               get historical data[/unvl]                         [YahooFinance, AlphaVantage, Polygon, Oanda]
 [unvl]    candle             show candle plot for loaded pair[/unvl]
 [unvl]    fwd                get forward rates for loaded pair[/unvl]           [FXEmpire]
 

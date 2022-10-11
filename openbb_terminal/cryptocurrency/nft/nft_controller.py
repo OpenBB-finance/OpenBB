@@ -4,7 +4,7 @@ from typing import List
 
 # flake8: noqa
 
-from prompt_toolkit.completion import NestedCompleter
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.nft import (
@@ -45,6 +45,21 @@ class NFTController(BaseController):
             choices["support"] = self.SUPPORT_CHOICES
             choices["about"] = self.ABOUT_CHOICES
             choices["fp"] = {c: {} for c in nft_price_floor_collections}
+            choices["fp"]["--raw"] = {}
+            choices["fp"]["--limit"] = {str(c): {} for c in range(1, 100)}
+            choices["fp"]["-l"] = "--limit"
+            choices["stats"] = {
+                "--slug": None,
+                "-s": None,
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+            }
+            choices["collections"] = {
+                "--fp": {},
+                "--sales": {},
+                "--limit": {str(c): {} for c in range(1, 50)},
+                "-l": "--limit",
+            }
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 

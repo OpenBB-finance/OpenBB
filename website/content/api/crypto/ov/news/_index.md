@@ -1,7 +1,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### crypto.ov.news(limit: int = 60, post_kind: str = 'news', filter_: Optional[str] = None, region: str = 'en', source: str = 'cp', symbol: str = None, sortby: str = 'published_at', ascend: bool = True) -> pandas.core.frame.DataFrame
+### crypto.ov.news(limit: int = 60, post_kind: str = 'news', filter_: Optional[str] = None, region: str = 'en', source: Optional[str] = None, symbol: Optional[str] = None, sortby: str = 'published_at', ascend: bool = True) -> pandas.core.frame.DataFrame
 
 Get recent posts from CryptoPanic news aggregator platform. [Source: https://cryptopanic.com/]
 
