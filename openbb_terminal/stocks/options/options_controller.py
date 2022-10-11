@@ -138,7 +138,9 @@ class OptionsController(BaseController):
             choices: dict = {c: {} for c in self.controller_choices}
 
             one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
-            zero_to_one_detailed: dict = {str(c): {} for c in np.arange(0.0, 1.0, 0.005)}
+            zero_to_one_detailed: dict = {
+                str(c): {} for c in np.arange(0.0, 1.0, 0.005)
+            }
             one_to_thousand: dict = {str(c): {} for c in range(1, 1000)}
             minus_one_to_thousand: dict = {str(c): {} for c in range(-1, 1000)}
             choices["unu"] = {
