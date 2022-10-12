@@ -34,7 +34,7 @@ CATEGORIES = [
 ]
 IMPORTANCES = ["high", "medium", "low", "all"]
 
-# Commented countries either have no data or are not correctly formated in investpy itself
+# Commented countries either have no data or are not correctly formatted in investpy itself
 MATRIX_COUNTRIES = {
     "G7": [
         "United states",

@@ -1206,7 +1206,7 @@ class EconomyController(BaseController):
             type=str,
             choices=investingcom_view.COLORS,
             default="rgb",
-            help="Set color pallette on heatmap.",
+            help="Set color palette on heatmap.",
         )
 
         ns_parser = self.parse_known_args_and_warn(
