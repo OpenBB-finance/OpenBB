@@ -839,9 +839,8 @@ class DueDiligenceController(CryptoBaseController):
             "--vs",
             help="Quote currency (what to view coin vs)",
             dest="vs",
-            type=str.lower,
             default="usdt",
-            choices=["usdt", "usdc", "btc"],
+            type=str.lower,
         )
 
         if other_args and not other_args[0][0] == "-":
@@ -883,9 +882,8 @@ class DueDiligenceController(CryptoBaseController):
             "--vs",
             help="Quote currency (what to view coin vs)",
             dest="vs",
-            type=str.lower,
             default="usdt",
-            choices=["usdt", "usdc", "btc"],
+            type=str.lower,
         )
 
         if other_args and not other_args[0][0] == "-":
