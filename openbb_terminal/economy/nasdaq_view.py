@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_QUANDL"])
 def display_big_mac_index(
-    country_codes: List[str],
+    country_codes: List[str] = None,
     raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,

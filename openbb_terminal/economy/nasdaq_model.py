@@ -10,7 +10,7 @@ import pandas as pd
 import requests
 
 from openbb_terminal.config_terminal import API_KEY_QUANDL
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -50,7 +50,8 @@ def get_country_codes() -> List[str]:
 
 
 @log_start_end(log=logger)
-def get_big_mac_index(country_code: str) -> pd.DataFrame:
+@check_api_key(["API_KEY_QUANDL"])
+def get_big_mac_index(country_code: str = "USA") -> pd.DataFrame:
     """Gets the Big Mac index calculated by the Economist
 
     Parameters
@@ -89,7 +90,8 @@ def get_big_mac_index(country_code: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_big_mac_indices(country_codes: List[str]) -> pd.DataFrame:
+@check_api_key(["API_KEY_QUANDL"])
+def get_big_mac_indices(country_codes: List[str] = None) -> pd.DataFrame:
     """Display Big Mac Index for given countries
 
     Parameters
@@ -102,6 +104,9 @@ def get_big_mac_indices(country_codes: List[str]) -> pd.DataFrame:
     pd.DataFrame
         Dataframe with Big Mac indices converted to USD equivalent.
     """
+
+    if country_codes is None:
+        country_codes = ["USA"]
 
     df_cols = ["Date"]
     df_cols.extend(country_codes)
