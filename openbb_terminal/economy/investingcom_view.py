@@ -118,8 +118,6 @@ def display_matrix(
                 ticker.FixedLocator([x + 0.25 for x in ax.get_xticks().tolist()])
             )
             ax.set_xticklabels(x_labels, rotation=45)
-            # plt.xticks(rotation=45, ha="center")
-            # plt.tick_params(labelleft=True)
             ax.set_yticklabels(list(df.index.values), rotation=0)
             ax.yaxis.set_label_position("left")
 
