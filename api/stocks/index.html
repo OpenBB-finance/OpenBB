@@ -9,12 +9,15 @@
 
 
 
-    <meta name="description" content="OpenBB Terminal Documentation">
+    <meta name="description" content="The Stocks menu wraps all of the functions from the OpenBB Terminal application into a powerful SDK, enabling users to work with the data in a flexible environment that can be fully customized to meet the needs of any user. Code completion and contextual help makes the SDK is easy to use. Navigation is very similar to operating the CLI Terminal Application.
+How to use the Stocks SDK    Start a Jupyter Notebook with as little as one line of code:">
 
+
+    <meta name="keywords" content="stocks,,stock,,options,,option,,call,,put,,earnings,,calendar,,how-to,,guide,,scripts,,fundamental,,analysis,,technical,,behavioural,,analyst,,equity,,research,,api,,sdk,,application,,python,,notebook,,jupyter">
 
 
     <title>
-      stocks | OpenBB Terminal Documentation
+      Introduction to the Stocks SDK | OpenBB Terminal Documentation
     </title>
 
     <link rel="icon" href="/OpenBBTerminal/favicon/favicon-32x32.png" type="image/x-icon">
@@ -46249,7 +46252,7 @@ code, img {
         
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>OpenBB Terminal Documentation</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/api/' href='/OpenBBTerminal/api/'><span itemprop='name'>OpenBB Python API</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>stocks</span><meta itemprop='position' content='4' /></li>
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>OpenBB Terminal Documentation</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/api/' href='/OpenBBTerminal/api/'><span itemprop='name'>OpenBB Python API</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Introduction to the Stocks SDK</span><meta itemprop='position' content='4' /></li>
     
 
     
@@ -46272,8 +46275,52 @@ code, img {
 </div>
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
-        <h1>stocks</h1>
-        
+        <h1>Introduction to the Stocks SDK</h1>
+        <p>The <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/" target="_blank">Stocks menu</a> wraps all of the functions from the OpenBB Terminal application into a powerful SDK, enabling users to work with the data in a flexible environment that can be fully customized to meet the needs of any user. Code completion and contextual help makes the SDK is easy to use. Navigation is very similar to operating the CLI Terminal Application.</p>
+<div class="gdoc-page__anchorwrap">
+    <h2 id="how-to-use-the-stocks-sdk">
+        How to use the Stocks SDK
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/api/stocks/#how-to-use-the-stocks-sdk" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor How to use the Stocks SDK" href="#how-to-use-the-stocks-sdk">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h2>
+</div><p>Start a Jupyter Notebook with as little as one line of code:</p>
+<p><code>from openbb_terminal.api import openbb</code></br></p>
+<p>In the next cell, the code complete will activate after the <code>.</code> is entered, showing the submenus and functions at the root level of the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/" target="_blank">Stocks menu</a>.</p>
+<p><img src="https://user-images.githubusercontent.com/85772166/195198260-fe1c4c65-2dc2-4001-94ff-f09e0b0ff431.png" alt="Stocks Menu"  /></p>
+<p>The contents of the menu is printed by running a cell with: <code>openbb.stocks</code></p>
+<p><img src="https://user-images.githubusercontent.com/85772166/195198410-0b44ee92-2c79-4efc-8490-a2de3173cfec.png" alt="Stocks Menu"  /></p>
+<p>Docstrings for each function are printed using the <code>help()</code> function of Python: <code>help(openbb.stocks.candle)</code></p>
+<p><img src="https://user-images.githubusercontent.com/85772166/195198556-29513bf4-896d-4d3c-be01-eeec8b05a9fa.png" alt="Calling the Help Dialogue"  /></p>
+<p>Add <code>%matplotlib inline</code> to the first cell for displaying charts in a Notebook file.</p>
+<p>A candle chart is shown with: <code>openbb.stocks.candle(symbol = 'ticker')</code>. The contextual help shows the syntax and arguments for the function.</p>
+<p><img src="https://user-images.githubusercontent.com/85772166/195198631-318fafcd-6fbf-4ce3-9ba9-2e94764020f4.png" alt="Candle Function"  /></p>
+<div class="gdoc-page__anchorwrap">
+    <h2 id="examples">
+        Examples
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/api/stocks/#examples" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Examples" href="#examples">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h2>
+</div><p>Load historical price data into a Pandas DataFrame by declaring a name for the DataFrame:</p>
+<p><code>spy_monthly = openbb.stocks.load(symbol = 'SPY', start_date = '1990-01-01', monthly = True)</code></p>
+<p><img src="https://user-images.githubusercontent.com/85772166/195198733-cc819266-7e26-4870-83db-2c4d0ebaafdf.png" alt="Load as a Pandas DataFrame"  /></p>
+<p>Give the candle chart a custom title:</p>
+<p><code>openbb.stocks.candle(data = spy_monthly, symbol = 'SPY - Monthly Candles')</code></p>
+<p><img src="https://user-images.githubusercontent.com/85772166/195198857-9af40ffe-e7b6-46d3-9887-bca05999fd3f.png" alt="Change the Chart Title"  /></p>
+<p>Get the options data for a specific expiration date:</p>
+<p><img src="https://user-images.githubusercontent.com/85772166/195199095-93657a4a-80b9-4a7b-a462-f7c6507558f0.png" alt="Options Chains"  /></p>
+<p>Search for a company with the <code>search</code> function:</p>
+<p><code>openbb.stocks.search(sector = 'Energy', country = 'United Kingdom', query = 'oil')</code></p>
+<p><img src="https://user-images.githubusercontent.com/85772166/195199177-57eeeba7-72ca-4f5b-a88c-67e35398cace.png" alt="Stocks Search"  /></p>
+<p>Screen stocks reporting earnings this week:</p>
+<p><code>earnings_calendar = openbb.stocks.disc.upcoming(limit = 1)</code></br>
+<code>earnings_tickers = list(earnings_calendar.Ticker)</code></br>
+<code>earnings_screener = openbb.stocks.ca.screener(similar = earnings_tickers, data_type = 'valuation')</code></br>
+<code>pd.DataFrame(earnings_screener).sort_values(by = 'P/B')</code></br></p>
+<p><img src="https://user-images.githubusercontent.com/85772166/195199267-5e30550e-5b31-4615-ad7a-48348040103b.png" alt="Earnings Screener"  /></p>
+<p>Have you created a script using the OpenBB SDK? Show us your examples on social media!</p>
+
     </article>
  
 
