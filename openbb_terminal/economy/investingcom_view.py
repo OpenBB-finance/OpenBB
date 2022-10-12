@@ -42,7 +42,7 @@ def display_matrix(
     export: str = "",
 ):
 
-    df = investingcom_model.get_matrix(countries, maturity, change)
+    df = investingcom_model.get_spread_matrix(countries, maturity, change)
 
     if not df.empty:
 
@@ -149,16 +149,14 @@ def display_matrix(
                         t.set_text(current_text)
 
             if isinstance(countries, str):
-                ax.set_title(
-                    f"{countries} - Interest rates matrix - {maturity}", loc="center"
-                )
+                ax.set_title(f"{countries} - Spread matrix - {maturity}", loc="center")
             else:
-                ax.set_title(f"Interest rates matrix - {maturity}", loc="center")
+                ax.set_title(f"Spread matrix - {maturity}", loc="center")
 
             if not external_axes:
                 theme.visualize_output()
 
-        export_data(export, os.path.dirname(os.path.abspath(__file__)), "matrix", df)
+        export_data(export, os.path.dirname(os.path.abspath(__file__)), "spread", df)
         console.print("")
 
 

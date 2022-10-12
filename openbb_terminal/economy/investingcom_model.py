@@ -34,6 +34,7 @@ CATEGORIES = [
 ]
 IMPORTANCES = ["high", "medium", "low", "all"]
 
+# Commented countries either have no data or are not correctly formated in investpy itself
 MATRIX_COUNTRIES = {
     "G7": [
         "United states",
@@ -87,7 +88,7 @@ MATRIX_COUNTRIES = {
         "Bulgaria",
         "Croatia",
         "Cyprus",
-        "Czech Republic",
+        # "Czech Republic",
         "Finland",
         "France",
         "Germany",
@@ -109,11 +110,11 @@ MATRIX_COUNTRIES = {
         "Spain",
         "Switzerland",
         "Turkey",
-        "Ukraine",
+        # "Ukraine",
         "United Kingdom",
     ],
     "ME": [
-        "Bahrain",
+        # "Bahrain",
         "Egypt",
         "Israel",
         "Jordan",
@@ -123,29 +124,29 @@ MATRIX_COUNTRIES = {
         "Australia",
         "Bangladesh",
         "China",
-        "Hong Kong",
+        # "Hong Kong",
         "India",
         "Indonesia",
         "Japan",
-        "Kazakhstan",
+        # "Kazakhstan",
         "Malaysia",
-        "New Zealand",
+        # "New Zealand",
         "Pakistan",
         "Philippines",
         "Singapore",
-        "South Korea",
-        "Sri Lanka",
+        # "South Korea",
+        # "Sri Lanka",
         "Taiwan",
         "Vietnam",
     ],
     "AFRICA": [
-        "Botswana",
+        # "Botswana",
         "Kenya",
         "Mauritius",
         "Morocco",
         "Namibia",
         "Nigeria",
-        "South Africa",
+        # "South Africa",
         "Uganda",
     ],
 }
@@ -207,7 +208,7 @@ def create_matrix(dict: Dict[str, Dict[str, float]]) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_matrix(
+def get_spread_matrix(
     countries: Union[str, List[str]] = "G7",
     maturity: str = "10Y",
     change: bool = False,

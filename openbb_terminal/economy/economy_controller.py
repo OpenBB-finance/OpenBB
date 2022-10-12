@@ -68,7 +68,7 @@ class EconomyController(BaseController):
         "rtps",
         "bigmac",
         "ycrv",
-        "matrix",
+        "spread",
         "events",
         "edebt",
     ]
@@ -211,7 +211,7 @@ class EconomyController(BaseController):
                     "FRED": None,
                 },
             }
-            self.choices["matrix"] = {
+            self.choices["spread"] = {
                 "--group": {c: None for c in investingcom_model.MATRIX_CHOICES},
                 "-g": "--group",
                 "--countries": {c: None for c in investingcom_model.BOND_COUNTRIES},
@@ -378,7 +378,7 @@ class EconomyController(BaseController):
         mt.add_cmd("map")
         mt.add_cmd("bigmac")
         mt.add_cmd("ycrv")
-        mt.add_cmd("matrix")
+        mt.add_cmd("spread")
         mt.add_cmd("events")
         mt.add_cmd("edebt")
         mt.add_raw("\n")
@@ -1146,13 +1146,13 @@ class EconomyController(BaseController):
                 )
 
     @log_start_end(log=logger)
-    def call_matrix(self, other_args: List[str]):
-        """Process matrix command"""
+    def call_spread(self, other_args: List[str]):
+        """Process spread command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="matrix",
-            description="Generate bond rates matrix",
+            prog="spread",
+            description="Generate bond spread matrix",
         )
         parser.add_argument(
             "-g",
@@ -1161,7 +1161,7 @@ class EconomyController(BaseController):
             dest="group",
             choices=investingcom_model.MATRIX_CHOICES,
             default="G7",
-            help="Show bond rates matrix for group of countries.",
+            help="Show bond spread matrix for group of countries.",
         )
         parser.add_argument(
             "-c",
@@ -1170,7 +1170,7 @@ class EconomyController(BaseController):
             dest="countries",
             nargs="+",
             type=str,
-            help="Show bond rates matrix for explicit list of countries.",
+            help="Show bond spread matrix for explicit list of countries.",
         )
         parser.add_argument(
             "-m",
@@ -1187,7 +1187,7 @@ class EconomyController(BaseController):
             dest="change",
             type=bool,
             default=False,
-            help="Get matrix of 1 day change in rates.",
+            help="Get matrix of 1 day change in rates or spreads.",
         )
 
         ns_parser = self.parse_known_args_and_warn(
