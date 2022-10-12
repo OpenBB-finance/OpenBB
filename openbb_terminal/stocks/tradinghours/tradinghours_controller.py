@@ -8,7 +8,8 @@ import os
 from typing import List
 
 import pandas as pd
-from prompt_toolkit.completion import NestedCompleter
+
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
@@ -73,11 +74,15 @@ class TradingHoursController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+
             choices["exchange"] = {c: None for c in self.all_exchange_short_names}
-            choices["exchange"]["-n"] = {c: None for c in self.all_exchange_short_names}
             choices["exchange"]["--name"] = {
-                c: None for c in self.all_exchange_short_names
+                c: {} for c in self.all_exchange_short_names
             }
+            choices["exchange"]["-n"] = "--name"
+            choices["symbol"]["--name"] = None
+            choices["symbol"]["-n"] = "--name"
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -195,7 +200,7 @@ class TradingHoursController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             bursa_view.display_open()
-
+        else:
             logger.error("No open exchanges right now.")
             console.print("[red]No open exchanges right now.[/red]\n")
 

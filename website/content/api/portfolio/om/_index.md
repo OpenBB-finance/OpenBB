@@ -27,9 +27,7 @@ Display omega ratio
     ----------
     portfolio: Portfolio
         Portfolio object with trades loaded
-    use_mean:
-        if one should use the data mean return
-    distribution: str
-        choose distribution to use: logistic, laplace, normal
-    percentile: int
-        es percentile
+    threshold_start: float
+        annualized target return threshold start of plotted threshold range
+    threshold_end: float
+        annualized target return threshold end of plotted threshold range

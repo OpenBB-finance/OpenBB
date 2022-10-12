@@ -1,0 +1,3 @@
+,name,short_name,timezone,market_open,market_close,lunchbreak_start,lunchbreak_end
+AAA,Exchange With Lunch Hours,AAA,Europe/London,09:30:00,17:30:00,12:15:00,13:30:00
+BBB,Exchange Without Lunch Hours,BBB,Europe/London,09:30:00,17:30:00,,

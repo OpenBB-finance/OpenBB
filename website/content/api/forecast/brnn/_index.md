@@ -1,7 +1,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### forecast.brnn(data: Union[pandas.core.series.Series, pandas.core.frame.DataFrame], target_column: str = 'close', n_predict: int = 5, train_split: float = 0.85, past_covariates: str = None, forecast_horizon: int = 5, input_chunk_length: int = 14, output_chunk_length: int = 5, model_type: str = 'LSTM', n_rnn_layers: int = 1, hidden_size: int = 20, dropout: float = 0.0, batch_size: int = 32, n_epochs: int = 100, learning_rate: float = 0.001, model_save_name: str = 'brnn_model', force_reset: bool = True, save_checkpoints: bool = True) -> Tuple[list[darts.timeseries.TimeSeries], List[darts.timeseries.TimeSeries], List[darts.timeseries.TimeSeries], Optional[float], Any]
+### forecast.brnn(data: Union[pandas.core.series.Series, pandas.core.frame.DataFrame], target_column: str = 'close', n_predict: int = 5, train_split: float = 0.85, past_covariates: str = None, forecast_horizon: int = 5, input_chunk_length: int = 14, output_chunk_length: int = 5, model_type: str = 'LSTM', n_rnn_layers: int = 1, dropout: float = 0.0, batch_size: int = 32, n_epochs: int = 100, learning_rate: float = 0.001, model_save_name: str = 'brnn_model', force_reset: bool = True, save_checkpoints: bool = True) -> Tuple[list[darts.timeseries.TimeSeries], List[darts.timeseries.TimeSeries], List[darts.timeseries.TimeSeries], Optional[float], Any]
 
 Performs Block RNN forecasting
 
@@ -26,8 +26,6 @@ Performs Block RNN forecasting
             Either a string specifying the RNN module type ("RNN", "LSTM" or "GRU"). Defaults to "LSTM".
         n_rnn_layers (int, optional):
              Number of layers in the RNN module. Defaults to 1.
-        hidden_size (int, optional):
-            Size for feature maps for each hidden RNN layer. Defaults to 20.
         dropout (float, optional):
             Fraction of neurons afected by Dropout. Defaults to 0.0.
         batch_size (int, optional):
@@ -57,7 +55,7 @@ Performs Block RNN forecasting
             Best BRNN Model
 
 ## Getting charts 
-### forecast.brnn(data: Union[pandas.core.series.Series, pandas.core.frame.DataFrame], target_column: str = 'close', dataset_name: str = '', n_predict: int = 5, past_covariates: str = None, train_split: float = 0.85, forecast_horizon: int = 5, input_chunk_length: int = 14, output_chunk_length: int = 5, model_type: str = 'LSTM', n_rnn_layers: int = 1, hidden_size: int = 20, dropout: float = 0.0, batch_size: int = 16, n_epochs: int = 100, learning_rate: float = 0.001, model_save_name: str = 'rnn_model', force_reset: bool = True, save_checkpoints: bool = True, export: str = '', residuals: bool = False, forecast_only: bool = False, start_date: Optional[datetime.datetime] = None, end_date: Optional[datetime.datetime] = None, naive: bool = False, chart=True)
+### forecast.brnn(data: Union[pandas.core.series.Series, pandas.core.frame.DataFrame], target_column: str = 'close', dataset_name: str = '', n_predict: int = 5, past_covariates: str = None, train_split: float = 0.85, forecast_horizon: int = 5, input_chunk_length: int = 14, output_chunk_length: int = 5, model_type: str = 'LSTM', n_rnn_layers: int = 1, dropout: float = 0.0, batch_size: int = 16, n_epochs: int = 100, learning_rate: float = 0.001, model_save_name: str = 'rnn_model', force_reset: bool = True, save_checkpoints: bool = True, export: str = '', residuals: bool = False, forecast_only: bool = False, start_date: Optional[datetime.datetime] = None, end_date: Optional[datetime.datetime] = None, naive: bool = False, external_axes: Optional[List[axes]] = None, chart=True)
 
 Display BRNN forecast
 
@@ -85,8 +83,6 @@ Display BRNN forecast
             Either a string specifying the RNN module type ("RNN", "LSTM" or "GRU"). Defaults to "LSTM".
         n_rnn_layers (int, optional):
              Number of layers in the RNN module. Defaults to 1.
-        hidden_size (int, optional):
-            Size for feature maps for each hidden RNN layer. Defaults to 20.
         dropout (float, optional):
             Fraction of neurons afected by Dropout. Defaults to 0.0.
         batch_size (int, optional):
@@ -116,3 +112,5 @@ Display BRNN forecast
         naive: bool
             Whether to show the naive baseline. This just assumes the closing price will be the same
             as the previous day's closing price. Defaults to False.
+        external_axes:Optional[List[plt.axes]]
+            External axes to plot on

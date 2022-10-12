@@ -8,12 +8,12 @@ from datetime import datetime, timedelta
 from typing import List
 
 import yfinance as yf
-from prompt_toolkit.completion import NestedCompleter
-from thepassiveinvestor import create_ETF_report
 
+from thepassiveinvestor import create_ETF_report
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common import newsapi_view
 from openbb_terminal.common.quantitative_analysis import qa_view
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.etf import (
     financedatabase_view,
@@ -35,7 +35,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.comparison_analysis import ca_controller
 
@@ -67,6 +67,17 @@ class ETFController(BaseController):
         # "scr",
         "disc",
     ]
+    CANDLE_COLUMNS = [
+        "AdjClose",
+        "Open",
+        "Close",
+        "High",
+        "Low",
+        "Volume",
+        "Returns",
+        "LogRet",
+    ]
+
     PATH = "/etf/"
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
@@ -81,6 +92,69 @@ class ETFController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+
+            one_to_fifty: dict = {str(c): {} for c in range(1, 50)}
+            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
+            choices["search"] = {
+                "--name": None,
+                "-n": "--name",
+                "--description": None,
+                "-d": "--description",
+                "--source": {
+                    c: {} for c in get_ordered_list_sources(f"{self.PATH}search")
+                },
+                "--limit": one_to_fifty,
+                "-l": "--limit",
+            }
+            choices["load"] = {
+                "--ticker": None,
+                "-t": "--ticker",
+                "--start": None,
+                "-s": "--start",
+                "--end": None,
+                "-e": "--end",
+                "--limit": one_to_fifty,
+                "-l": "--limit",
+            }
+            choices["holdings"] = {
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["weights"] = {"--min": one_to_hundred, "-m": "--min", "--raw": {}}
+            choices["holdings"] = {
+                "--date": None,
+                "-d": "--date",
+                "--oldest": {},
+                "-o": "--oldest",
+                "--sources": None,
+                "-s": "--sources",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["candle"] = {
+                "--sort": {c: {} for c in self.CANDLE_COLUMNS},
+                "-s": "--sort",
+                "--plotly": {},
+                "-p": "--plotly",
+                "--ma": None,
+                "--descending": {},
+                "-d": "--descending",
+                "--trend": {},
+                "-t": "--trend",
+                "--raw": {},
+                "--num": one_to_hundred,
+                "-n": "--num",
+            }
+            choices["pir"] = {
+                "--etfs": None,
+                "-e": "--etfs",
+                "--filename": None,
+                "--folder": None,
+            }
+            choices["compare"] = {
+                "--etfs": None,
+                "-e": "--etfs",
+            }
 
             choices["support"] = self.SUPPORT_CHOICES
             choices["about"] = self.ABOUT_CHOICES
@@ -412,16 +486,7 @@ class ETFController(BaseController):
         )
         parser.add_argument(
             "--sort",
-            choices=[
-                "AdjClose",
-                "Open",
-                "Close",
-                "High",
-                "Low",
-                "Volume",
-                "Returns",
-                "LogRet",
-            ],
+            choices=self.CANDLE_COLUMNS,
             default="",
             type=str,
             dest="sort",

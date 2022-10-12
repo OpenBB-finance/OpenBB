@@ -14,7 +14,6 @@ import json
 from typing import Union, Any, List, Dict
 from datetime import datetime, timedelta
 
-from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 from rich.markdown import Markdown
@@ -27,6 +26,7 @@ from openbb_terminal.core.config.paths import (
 )
 from openbb_terminal.decorators import log_start_end
 
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.menu import session
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.helper_funcs import (
@@ -1164,6 +1164,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 start_date=ns_parser.start,
                 interval=ns_parser.interval,
                 source=ns_parser.source,
+                exchange=ns_parser.exchange,
             )
             if not self.current_df.empty:
                 self.vs = ns_parser.vs

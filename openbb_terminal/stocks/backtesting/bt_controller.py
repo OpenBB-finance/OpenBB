@@ -6,7 +6,8 @@ from typing import List
 import logging
 import matplotlib as mpl
 import pandas as pd
-from prompt_toolkit.completion import NestedCompleter
+
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.helper_funcs import (
@@ -49,6 +50,40 @@ class BacktestingController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+
+            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
+            choices["whatif"] = {
+                "--date": None,
+                "-d": "--date",
+                "--number": one_to_hundred,
+                "-n": "--number",
+            }
+            choices["ema"] = {
+                "-l": one_to_hundred,
+                "--spy": {},
+                "--no_bench": {},
+            }
+            choices["ema_cross"] = {
+                "--long": one_to_hundred,
+                "-l": "--long",
+                "--short": one_to_hundred,
+                "-s": "--short",
+                "--spy": {},
+                "--no_bench": {},
+                "--no_short": {},
+            }
+            choices["rsi"] = {
+                "--periods": one_to_hundred,
+                "-p": "--periods",
+                "--high": one_to_hundred,
+                "-u": "--high",
+                "--low": one_to_hundred,
+                "-l": "--low",
+                "--spy": {},
+                "--no_bench": {},
+                "--no_short": {},
+            }
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

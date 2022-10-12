@@ -1906,6 +1906,9 @@ functions = {
     "etf.candle": {"model": "openbb_terminal.stocks.stocks_helper.display_candle"},
     "forex.candle": {"model": "openbb_terminal.forex.forex_helper.display_candle"},
     "forex.load": {"model": "openbb_terminal.forex.forex_helper.load"},
+    "keys.mykeys": {"model": "openbb_terminal.keys_model.get_keys"},
+    "keys.set_keys": {"model": "openbb_terminal.keys_model.set_keys"},
+    "keys.get_keys_info": {"model": "openbb_terminal.keys_model.get_keys_info"},
     "keys.av": {"model": "openbb_terminal.keys_model.set_av_key"},
     "keys.fmp": {"model": "openbb_terminal.keys_model.set_fmp_key"},
     "keys.quandl": {"model": "openbb_terminal.keys_model.set_quandl_key"},
@@ -1935,9 +1938,8 @@ functions = {
     "keys.messari": {"model": "openbb_terminal.keys_model.set_messari_key"},
     "keys.eodhd": {"model": "openbb_terminal.keys_model.set_eodhd_key"},
     "keys.santiment": {"model": "openbb_terminal.keys_model.set_santiment_key"},
-    "keys.mykeys": {"model": "openbb_terminal.keys_model.get_keys"},
-    "keys.set_keys": {"model": "openbb_terminal.keys_model.set_keys"},
-    "keys.get_keys_info": {"model": "openbb_terminal.keys_model.get_keys_info"},
+    "keys.tokenterminal": {"model": "openbb_terminal.keys_model.set_tokenterminal_key"},
+    "keys.shroom": {"model": "openbb_terminal.keys_model.set_shroom_key"},
 }
 forecast_extras = {
     "forecast.load": {"model": "openbb_terminal.forecast.forecast_model.load"},
@@ -2018,6 +2020,10 @@ forecast_extras = {
     "forecast.tft": {
         "model": "openbb_terminal.forecast.tft_model.get_tft_data",
         "view": "openbb_terminal.forecast.tft_view.display_tft_forecast",
+    },
+    "forecast.nhits": {
+        "model": "openbb_terminal.forecast.nhits_model.get_nhits_data",
+        "view": "openbb_terminal.forecast.nhits_view.display_nhits_forecast",
     },
 }
 
