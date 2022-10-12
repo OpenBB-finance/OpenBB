@@ -10,13 +10,14 @@ import requests
 import pandas as pd
 
 from openbb_terminal import config_terminal as cfg
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
 from openbb_terminal.helper_funcs import get_user_agent
 
 logger = logging.getLogger(__name__)
 
 
+@check_api_key(["API_GITHUB_KEY"])
 def get_github_data(url: str, **kwargs):
     """Get repository stats
 
