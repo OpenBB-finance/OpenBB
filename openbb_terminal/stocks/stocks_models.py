@@ -6,6 +6,7 @@ import requests
 import pandas as pd
 import yfinance as yf
 from alpha_vantage.timeseries import TimeSeries
+from openbb_terminal.decorators import check_api_key
 
 from openbb_terminal.rich_config import console
 from openbb_terminal import config_terminal as cfg
@@ -142,6 +143,7 @@ def load_stock_eodhd(
     return df_stock_candidate
 
 
+@check_api_key(["API_IEX_TOKEN"])
 def load_stock_iex_cloud(symbol: str, iexrange: str) -> pd.DataFrame:
     df_stock_candidate = pd.DataFrame()
 
@@ -180,6 +182,7 @@ def load_stock_iex_cloud(symbol: str, iexrange: str) -> pd.DataFrame:
     return df_stock_candidate
 
 
+@check_api_key(["API_POLYGON_KEY"])
 def load_stock_polygon(
     symbol: str, start_date: datetime, end_date: datetime, weekly: bool, monthly: bool
 ) -> pd.DataFrame:

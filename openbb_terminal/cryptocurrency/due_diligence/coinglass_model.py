@@ -6,7 +6,7 @@ import pandas as pd
 import requests
 
 from openbb_terminal import config_terminal as cfg
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -19,6 +19,7 @@ INTERVALS = [str(x) for x in intervals]
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_COINGLASS_KEY"])
 def get_liquidations(symbol: str) -> pd.DataFrame:
     """Returns liquidations per day for a certain symbol
     [Source: https://coinglass.github.io/API-Reference/#liquidation-chart]
@@ -82,6 +83,7 @@ def get_liquidations(symbol: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_COINGLASS_KEY"])
 def get_funding_rate(symbol: str) -> pd.DataFrame:
     """Returns open interest by exchange for a certain symbol
     [Source: https://coinglass.github.io/API-Reference/]
@@ -144,6 +146,7 @@ def get_funding_rate(symbol: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_COINGLASS_KEY"])
 def get_open_interest_per_exchange(symbol: str, interval: int = 0) -> pd.DataFrame:
     """Returns open interest by exchange for a certain symbol
     [Source: https://coinglass.github.io/API-Reference/]
