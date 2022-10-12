@@ -1164,6 +1164,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 start_date=ns_parser.start,
                 interval=ns_parser.interval,
                 source=ns_parser.source,
+                exchange=ns_parser.exchange,
             )
             if not self.current_df.empty:
                 self.vs = ns_parser.vs
