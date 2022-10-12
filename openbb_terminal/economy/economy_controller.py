@@ -1162,7 +1162,7 @@ class EconomyController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="spread",
-            description="Generate bond spread matrix",
+            description="Generate bond spread matrix.",
         )
         parser.add_argument(
             "-g",

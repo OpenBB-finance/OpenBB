@@ -1,5 +1,7 @@
 ```
-usage: ycrv [-s {FRED,investpy}] [-c COUNTRY [COUNTRY ...]] [-d DATE] [-h] [--export EXPORT] [--raw]
+usage: spread [-g {G7,PIIGS,EZ,AMERICAS,EUROPE,ME,APAC,AFRICA}]
+              [-c COUNTRIES [COUNTRIES ...]] [-m MATURITY] [--change CHANGE]
+              [--color {rgb,binary,openbb}] [-h] [--export EXPORT] [--raw]
 ```
 
 Generate country yield curve. The yield curve shows the bond rates at different maturities.
