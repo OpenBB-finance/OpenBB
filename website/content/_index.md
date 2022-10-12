@@ -362,6 +362,7 @@ To figure out where you can obtain the API key, you can enter the command (e.g. 
 | cpanic     | Crypto Panic                             | https://cryptopanic.com/developers/api/                                            |
 | eodhd      | EODHD                                    | https://eodhistoricaldata.com/                                                     |
 | santiment  | Santiment                                | https://app.santiment.net/                                                         |
+| shroom     | ShroomDK                                 | https://sdk.flipsidecrypto.xyz/shroomdk                                            |
 
 ---
 

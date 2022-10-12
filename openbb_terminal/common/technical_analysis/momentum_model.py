@@ -184,7 +184,7 @@ def cg(values: pd.Series, window: int) -> pd.DataFrame:
         Length for indicator window
     Returns
     ----------
-    d.DataFrame
+    pd.DataFrame
         Dataframe of technical indicator
     """
     return pd.DataFrame(ta.cg(close=values, length=window).dropna())
@@ -229,5 +229,23 @@ def clenow_momentum(
 
     r2 = lr.score(X, y)
     coef = lr.coef_[0]
+    annualized_coef = (np.exp(coef) ** 252) - 1
 
-    return r2, coef, pd.Series(lr.predict(X))
+    return r2, annualized_coef, pd.Series(lr.predict(X))
+
+
+@log_start_end(log=logger)
+def demark_seq(values: pd.Series) -> pd.DataFrame:
+    """Get the integer value for demark sequential indicator
+
+    Parameters
+    ----------
+    values: pd.Series
+        Series of close values
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe of UP and DOWN sequential indicators
+    """
+    return ta.td_seq(values, asint=True)
