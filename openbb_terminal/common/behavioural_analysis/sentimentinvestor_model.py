@@ -9,13 +9,14 @@ import pandas as pd
 import requests
 
 from openbb_terminal import config_terminal as cfg
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import log_start_end, check_api_key
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_SENTIMENTINVESTOR_TOKEN"])
 def get_historical(
     symbol: str,
     start_date: str = (datetime.utcnow() - timedelta(days=7)).strftime("%Y-%m-%d"),
@@ -76,6 +77,7 @@ def get_historical(
     return df
 
 
+@check_api_key(["API_SENTIMENTINVESTOR_TOKEN"])
 def check_supported_ticker(symbol: str) -> bool:
     """Check if the ticker is supported
 
@@ -124,6 +126,7 @@ def check_supported_ticker(symbol: str) -> bool:
     return result
 
 
+@check_api_key(["API_SENTIMENTINVESTOR_TOKEN"])
 def get_trending(
     start_date: datetime = datetime.today(), hour: int = 0, number: int = 10
 ) -> pd.DataFrame:
