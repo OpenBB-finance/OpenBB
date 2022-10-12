@@ -961,8 +961,7 @@ def main(
         terminal()
 
 
-if __name__ == "__main__":
-
+def parse_args_and_run():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="terminal",
@@ -1025,3 +1024,7 @@ if __name__ == "__main__":
         ns_parser.verbose,
         ns_parser.routine_args,
     )
+
+
+if __name__ == "__main__":
+    parse_args_and_run()
