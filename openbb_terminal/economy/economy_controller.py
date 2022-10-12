@@ -496,6 +496,8 @@ class EconomyController(BaseController):
                         "[red]Commodity group must be specified on Finviz.[/red]"
                     )
             elif ns_parser.source == "WallStreetJournal":
+                if ns_parser.commodity:
+                    console.print("[red]Commodity flag valid with Finviz only.[/red]")
                 wsj_view.display_futures(
                     export=ns_parser.export,
                 )
