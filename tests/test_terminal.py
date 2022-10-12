@@ -1,6 +1,6 @@
 from contextlib import contextmanager
 import pytest
-import terminal
+from openbb_terminal import terminal_controller as terminal
 
 
 @pytest.mark.skip
@@ -50,8 +50,6 @@ def no_suppress():
     [
         (True, False, False, None, None),
         (False, False, False, None, ["scripts/test_alt_covid.openbb"]),
-        #       (False, True, False, "alt_covid", ["scripts/"]),
-        #       (False, True, True, "alt_covid", ["scripts/"]),
     ],
 )
 def test_menu(mocker, debug, test, filtert, path, verbose):
