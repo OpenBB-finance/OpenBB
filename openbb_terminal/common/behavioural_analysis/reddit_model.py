@@ -1,5 +1,6 @@
 """Reddit Model"""
 __docformat__ = "numpy"
+# pylint:disable=too-many-lines
 
 import logging
 from datetime import datetime, timedelta
@@ -18,7 +19,7 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.common.behavioural_analysis.reddit_helpers import find_tickers
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -36,6 +37,15 @@ l_sub_reddits = [
 
 
 @log_start_end(log=logger)
+@check_api_key(
+    [
+        "API_REDDIT_CLIENT_ID",
+        "API_REDDIT_CLIENT_SECRET",
+        "API_REDDIT_USERNAME",
+        "API_REDDIT_USER_AGENT",
+        "API_REDDIT_PASSWORD",
+    ]
+)
 def get_watchlists(
     limit: int = 5,
 ) -> Tuple[List[praw.models.reddit.submission.Submission], dict, int]:
@@ -134,6 +144,15 @@ def get_watchlists(
 
 
 @log_start_end(log=logger)
+@check_api_key(
+    [
+        "API_REDDIT_CLIENT_ID",
+        "API_REDDIT_CLIENT_SECRET",
+        "API_REDDIT_USERNAME",
+        "API_REDDIT_USER_AGENT",
+        "API_REDDIT_PASSWORD",
+    ]
+)
 def get_popular_tickers(
     limit: int = 10, post_limit: int = 50, subreddits: str = ""
 ) -> pd.DataFrame:
@@ -297,6 +316,15 @@ def get_popular_tickers(
 
 
 @log_start_end(log=logger)
+@check_api_key(
+    [
+        "API_REDDIT_CLIENT_ID",
+        "API_REDDIT_CLIENT_SECRET",
+        "API_REDDIT_USERNAME",
+        "API_REDDIT_USER_AGENT",
+        "API_REDDIT_PASSWORD",
+    ]
+)
 def get_spac_community(
     limit: int = 10, popular: bool = False
 ) -> Tuple[pd.DataFrame, dict]:
@@ -428,6 +456,15 @@ def get_spac_community(
 
 
 @log_start_end(log=logger)
+@check_api_key(
+    [
+        "API_REDDIT_CLIENT_ID",
+        "API_REDDIT_CLIENT_SECRET",
+        "API_REDDIT_USERNAME",
+        "API_REDDIT_USER_AGENT",
+        "API_REDDIT_PASSWORD",
+    ]
+)
 def get_spac(
     limit: int = 5,
 ) -> Tuple[pd.DataFrame, dict, int]:
@@ -567,6 +604,15 @@ def get_spac(
 
 
 @log_start_end(log=logger)
+@check_api_key(
+    [
+        "API_REDDIT_CLIENT_ID",
+        "API_REDDIT_CLIENT_SECRET",
+        "API_REDDIT_USERNAME",
+        "API_REDDIT_USER_AGENT",
+        "API_REDDIT_PASSWORD",
+    ]
+)
 def get_wsb_community(limit: int = 10, new: bool = False) -> pd.DataFrame:
     """Get wsb posts [Source: reddit]
 
@@ -667,6 +713,15 @@ def get_wsb_community(limit: int = 10, new: bool = False) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
+@check_api_key(
+    [
+        "API_REDDIT_CLIENT_ID",
+        "API_REDDIT_CLIENT_SECRET",
+        "API_REDDIT_USERNAME",
+        "API_REDDIT_USER_AGENT",
+        "API_REDDIT_PASSWORD",
+    ]
+)
 def get_due_dilligence(
     symbol: str, limit: int = 5, n_days: int = 3, show_all_flairs: bool = False
 ) -> pd.DataFrame:
@@ -811,6 +866,15 @@ def get_due_dilligence(
 
 
 @log_start_end(log=logger)
+@check_api_key(
+    [
+        "API_REDDIT_CLIENT_ID",
+        "API_REDDIT_CLIENT_SECRET",
+        "API_REDDIT_USERNAME",
+        "API_REDDIT_USER_AGENT",
+        "API_REDDIT_PASSWORD",
+    ]
+)
 def get_posts_about(
     symbol: str,
     limit: int = 100,
@@ -918,6 +982,15 @@ def get_posts_about(
 
 
 @log_start_end(log=logger)
+@check_api_key(
+    [
+        "API_REDDIT_CLIENT_ID",
+        "API_REDDIT_CLIENT_SECRET",
+        "API_REDDIT_USERNAME",
+        "API_REDDIT_USER_AGENT",
+        "API_REDDIT_PASSWORD",
+    ]
+)
 def get_comments(
     post: praw.models.reddit.submission.Submission,
 ) -> List[praw.models.reddit.comment.Comment]:
@@ -980,6 +1053,15 @@ def clean_reddit_text(docs: List[str]) -> List[str]:
 
 
 @log_start_end(log=logger)
+@check_api_key(
+    [
+        "API_REDDIT_CLIENT_ID",
+        "API_REDDIT_CLIENT_SECRET",
+        "API_REDDIT_USERNAME",
+        "API_REDDIT_USER_AGENT",
+        "API_REDDIT_PASSWORD",
+    ]
+)
 def get_sentiment(post_data: List[str]) -> float:
     """Find the sentiment of a post and related comments
 

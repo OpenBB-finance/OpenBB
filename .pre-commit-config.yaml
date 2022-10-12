@@ -65,7 +65,7 @@ repos:
     hooks:
       - id: detect-secrets
         args:
-          ["--baseline", ".secrets.baseline", "--exclude-files", "cassettes/*"]
+          ["--baseline", ".secrets.baseline", "--exclude-files", "cassettes/*", "--exclude-files", "website/content/api/*"]
         exclude: package.lock.json
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.0.0

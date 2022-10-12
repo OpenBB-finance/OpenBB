@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
+import mplfinance as mpf
 
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.common.technical_analysis import momentum_model
@@ -21,6 +22,7 @@ from openbb_terminal.helper_funcs import (
     is_valid_axes_count,
     print_rich_table,
 )
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -611,4 +613,114 @@ def display_clenow_momentum(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
         "clenow",
+    )
+
+
+def display_demark(
+    data: pd.DataFrame,
+    symbol: str = "",
+    min_to_show: int = 5,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """Display demark squential indicator
+
+    Parameters
+    ----------
+    data : pd.Series
+        Series of values
+    symbol : str
+        Symbol that the data corresponds to
+    min_to_show: int
+        Minimum value to show
+    export : str
+        Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axes are expected in the list), by default None
+
+    Returns
+    -------
+
+    """
+    demark_df = momentum_model.demark_seq(data["Adj Close"])
+    demark_df.index = data.index
+
+    stock_data = data.copy()
+    stock_data["up"] = demark_df.TD_SEQ_UPa
+    stock_data["down"] = demark_df.TD_SEQ_DNa
+
+    # MPLfinance can do series of markers :)
+    markersUP = (
+        stock_data["up"]
+        .apply(lambda x: f"${x}$" if x > min_to_show else None)
+        .to_list()
+    )
+    markersDOWN = (
+        stock_data["down"]
+        .apply(lambda x: f"${x}$" if x > min_to_show else None)
+        .to_list()
+    )
+
+    adp = [
+        mpf.make_addplot(
+            0.98 * stock_data["Low"],
+            type="scatter",
+            markersize=30,
+            marker=markersDOWN,
+            color="r",
+        ),
+        mpf.make_addplot(
+            1.012 * stock_data["High"],
+            type="scatter",
+            markersize=30,
+            marker=markersUP,
+            color="b",
+        ),
+    ]
+
+    # Stuff for mplfinance
+    candle_chart_kwargs = {
+        "type": "ohlc",
+        "style": theme.mpf_style,
+        "volume": False,
+        "addplot": adp,
+        "xrotation": theme.xticks_rotation,
+        "scale_padding": {"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
+        "update_width_config": {
+            "candle_linewidth": 0.6,
+            "candle_width": 0.8,
+            "volume_linewidth": 0.8,
+            "volume_width": 0.8,
+        },
+        "warn_too_much_data": 10000,
+    }
+    if external_axes is None:
+        candle_chart_kwargs["returnfig"] = True
+        candle_chart_kwargs["figratio"] = (10, 7)
+        candle_chart_kwargs["figscale"] = 1.10
+        candle_chart_kwargs["figsize"] = plot_autoscale()
+        candle_chart_kwargs["warn_too_much_data"] = 100_000
+
+        fig, _ = mpf.plot(stock_data, **candle_chart_kwargs)
+        fig.suptitle(
+            f"{symbol} Demark Sequential",
+            x=0.055,
+            y=0.965,
+            horizontalalignment="left",
+        )
+        theme.visualize_output(force_tight_layout=False)
+
+    else:
+        if len(external_axes) != 1:
+            logger.error("Expected list of one axis item.")
+            console.print("[red]Expected list of 1 axis items.\n[/red]")
+        ax1 = external_axes
+        candle_chart_kwargs["ax"] = ax1
+        mpf.plot(stock_data, **candle_chart_kwargs)
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+        "demark",
+        stock_data,
     )

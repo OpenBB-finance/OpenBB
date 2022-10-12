@@ -10,7 +10,7 @@ import os
 from pathlib import Path
 from typing import List, Optional
 
-from prompt_toolkit.completion import NestedCompleter
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as gtff
 from openbb_terminal.decorators import log_start_end
@@ -131,9 +131,20 @@ class ParametersController(BaseController):
         if session and gtff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["set"] = {c: None for c in self.models}
-            choices["set"]["-m"] = {c: None for c in self.models}
+            choices["set"]["--model"] = {c: None for c in self.models}
+            choices["set"]["-m"] = "--model"
             choices["arg"] = {c: None for c in AVAILABLE_OPTIONS}
-            choices["file"] = {c: None for c in self.DATA_FILES}
+            choices["file"] = {c: {} for c in self.DATA_FILES}
+            choices["file"]["--file"] = {c: {} for c in self.DATA_FILES}
+            choices["file"]["-f"] = "--file"
+            choices["save"]["--file"] = None
+            choices["save"]["-f"] = "--file"
+            choices["arg"] = {
+                "--argument": None,
+                "-a": "--argument",
+                "--show_arguments": {},
+                "-s": "--show_arguments",
+            }
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -263,11 +274,6 @@ class ParametersController(BaseController):
     @log_start_end(log=logger)
     def call_clear(self, other_args: List[str]):
         """Process set command"""
-        if not self.current_file:
-            console.print(
-                "[red]Load portfolio risk parameters first using `file`.\n[/red]"
-            )
-            return
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -275,20 +281,18 @@ class ParametersController(BaseController):
             description="Clear selected portfolio optimization models",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
-
         if ns_parser:
+            if not self.current_file:
+                console.print(
+                    "[red]Load portfolio risk parameters first using `file`.\n[/red]"
+                )
+                return
             self.current_model = ""
             console.print("")
 
     @log_start_end(log=logger)
     def call_set(self, other_args: List[str]):
         """Process set command"""
-        if not self.current_file:
-            console.print(
-                "[red]Load portfolio risk parameters first using `file`.\n[/red]"
-            )
-            return
-
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -307,17 +311,17 @@ class ParametersController(BaseController):
             other_args.insert(0, "-m")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
+            if not self.current_file:
+                console.print(
+                    "[red]Load portfolio risk parameters first using `file`.\n[/red]"
+                )
+                return
             self.current_model = ns_parser.model
             console.print("")
 
     @log_start_end(log=logger)
     def call_arg(self, other_args: List[str]):
         """Process arg command"""
-        if not self.current_file:
-            console.print(
-                "[red]Load portfolio risk parameters first using `file`.\n[/red]"
-            )
-            return
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -344,6 +348,11 @@ class ParametersController(BaseController):
             other_args.insert(0, "-a")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
+            if not self.current_file:
+                console.print(
+                    "[red]Load portfolio risk parameters first using `file`.\n[/red]"
+                )
+                return
             if self.current_file.endswith(".ini"):
                 console.print(
                     f"Please adjust the parameters directly in the {self.current_file} file."

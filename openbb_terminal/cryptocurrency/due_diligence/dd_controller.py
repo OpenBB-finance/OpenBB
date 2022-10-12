@@ -6,7 +6,8 @@ import argparse
 import logging
 from datetime import datetime, timedelta
 from typing import List
-from prompt_toolkit.completion import NestedCompleter
+
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal import feature_flags as obbff
@@ -134,25 +135,46 @@ class DueDiligenceController(CryptoBaseController):
             self.messari_timeseries = df_mt.index.to_list()
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["ob"] = {c: None for c in self.ccxt_exchanges}
-            choices["ob"]["-e"] = {c: None for c in self.ccxt_exchanges}
-            choices["trades"] = {c: None for c in self.ccxt_exchanges}
-            choices["trades"]["-e"] = {c: None for c in self.ccxt_exchanges}
+            choices["ob"] = {c: {} for c in self.ccxt_exchanges}
+            choices["ob"]["-e"] = {c: {} for c in self.ccxt_exchanges}
+            choices["trades"] = {c: {} for c in self.ccxt_exchanges}
+            choices["trades"]["-e"] = {c: {} for c in self.ccxt_exchanges}
             choices["active"]["-i"] = {
                 c: None for c in glassnode_model.INTERVALS_ACTIVE_ADDRESSES
             }
             choices["change"] = {
-                c: None for c in glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES
+                c: {} for c in glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES
             }
             choices["eb"] = {
-                c: None for c in glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES
+                c: {} for c in glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES
             }
-            choices["oi"]["-i"] = {c: None for c in coinglass_model.INTERVALS}
-            choices["atl"]["--vs"] = {c: None for c in FILTERS_VS_USD_BTC}
-            choices["ath"]["--vs"] = {c: None for c in FILTERS_VS_USD_BTC}
-            choices["mkt"]["--vs"] = {c: None for c in coinpaprika_view.CURRENCIES}
-            choices["mkt"]["-s"] = {c: None for c in coinpaprika_view.MARKET_FILTERS}
-            choices["ex"]["-s"] = {c: None for c in coinpaprika_view.EX_FILTERS}
+            choices["eb"]["--since"] = None
+            choices["eb"]["-s"] = None
+            choices["eb"]["--until"] = None
+            choices["eb"]["-u"] = None
+            choices["eb"]["--pct"] = {}
+            choices["eb"]["-p"] = {}
+            choices["oi"]["--interval"] = {c: {} for c in coinglass_model.INTERVALS}
+            choices["oi"]["-i"] = "--interval"
+            choices["atl"]["--vs"] = {c: {} for c in FILTERS_VS_USD_BTC}
+            choices["ath"]["--vs"] = {c: {} for c in FILTERS_VS_USD_BTC}
+            choices["mkt"] = {
+                "--vs": {c: {} for c in coinpaprika_view.CURRENCIES},
+                "--sort": {c: {} for c in coinpaprika_view.MARKET_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+                "--urls": {},
+                "-u": "--urls",
+            }
+            choices["ex"] = {
+                "--sort": {c: {} for c in coinpaprika_view.EX_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+            }
             choices["events"]["-s"] = {c: None for c in coinpaprika_view.EVENTS_FILTERS}
             choices["twitter"]["-s"] = {
                 c: None for c in coinpaprika_view.TWEETS_FILTERS
@@ -472,8 +494,9 @@ class DueDiligenceController(CryptoBaseController):
                 "-p",
                 "--pct",
                 dest="percentage",
-                type=bool,
+                action="store_true",
                 help="Show percentage instead of stacked value. Default: False",
+                default=False,
             )
 
             parser.add_argument(
@@ -839,9 +862,8 @@ class DueDiligenceController(CryptoBaseController):
             "--vs",
             help="Quote currency (what to view coin vs)",
             dest="vs",
-            type=str.lower,
             default="usdt",
-            choices=["usdt", "usdc", "btc"],
+            type=str.lower,
         )
 
         if other_args and not other_args[0][0] == "-":
@@ -883,9 +905,8 @@ class DueDiligenceController(CryptoBaseController):
             "--vs",
             help="Quote currency (what to view coin vs)",
             dest="vs",
-            type=str.lower,
             default="usdt",
-            choices=["usdt", "usdc", "btc"],
+            type=str.lower,
         )
 
         if other_args and not other_args[0][0] == "-":

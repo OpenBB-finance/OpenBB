@@ -5,7 +5,7 @@ import argparse
 import logging
 from typing import List
 
-from prompt_toolkit.completion import NestedCompleter
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.alternative.oss import github_view
@@ -36,9 +36,30 @@ class OSSController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["tr"]["-s"] = {c: None for c in ["stars", "forks"]}
-            choices["rossidx"]["-s"] = {c: None for c in runa_model.SORT_COLUMNS}
-            choices["rossidx"]["-t"] = {c: None for c in ["stars", "forks"]}
+            choices["rossidx"] = {
+                "--sortby": {c: {} for c in runa_model.SORT_COLUMNS},
+                "-s": "--sortby",
+                "--descend": {},
+                "--chart": {},
+                "-c": "--chart",
+                "--growth": {},
+                "-g": "--growth",
+                "--chart-type": {c: {} for c in ["stars", "forks"]},
+                "-t": "--chart-type",
+                "--limit": {str(c): {} for c in range(1, 50)},
+                "-l": "--limit",
+            }
+            choices["tr"] = {
+                "--sortby": {c: {} for c in ["stars", "forks"]},
+                "-s": "--sortby",
+                "--categories": None,
+                "-c": "--categories",
+                "--raw": {},
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+            }
+            choices["rs"] = {"--raw": {}, "--repo": None, "-r": "--repo"}
+            choices["sh"] = {"--raw": {}, "--repo": None, "-r": "--repo"}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def parse_input(self, an_input: str) -> List:

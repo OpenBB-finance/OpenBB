@@ -8,8 +8,10 @@ import webbrowser
 from datetime import datetime
 from typing import List
 
+import numpy as np
 import pandas as pd
-from prompt_toolkit.completion import NestedCompleter
+
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common.technical_analysis import (
@@ -87,6 +89,132 @@ class TechnicalAnalysisController(CryptoBaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
+            zero_to_hundred: dict = {str(c): {} for c in range(0, 100)}
+            choices["load"] = {
+                "--interval": {
+                    c: {}
+                    for c in [
+                        "1",
+                        "5",
+                        "15",
+                        "30",
+                        "60",
+                        "240",
+                        "1440",
+                        "10080",
+                        "43200",
+                    ]
+                },
+                "-i": "--interval",
+                "--exchange": {c: {} for c in self.exchanges},
+                "--source": {c: {} for c in ["CCXT", "YahooFinance", "CoingGecko"]},
+                "--vs": {c: {} for c in ["usd", "eur"]},
+                "--start": None,
+                "-s": "--start",
+                "--end": None,
+                "-e": "--end",
+            }
+            ma = {
+                "--length": None,
+                "-l": "--length",
+                "--offset": zero_to_hundred,
+                "-o": "--offset",
+            }
+            choices["ema"] = ma
+            choices["sma"] = ma
+            choices["wma"] = ma
+            choices["hma"] = ma
+            choices["zlma"] = ma
+            choices["vwap"] = {
+                "--offset": zero_to_hundred,
+                "-o": "--offset",
+                "--start": None,
+                "--end": None,
+            }
+            choices["cci"] = {
+                "--length": one_to_hundred,
+                "-l": "--length",
+                "--scalar": None,
+                "-s": "--scalar",
+            }
+            choices["macd"] = {
+                "--fast": one_to_hundred,
+                "--slow": "--fast",
+                "--signal": "--fast",
+            }
+            choices["cci"] = {
+                "--length": one_to_hundred,
+                "-l": "--length",
+                "--scalar": None,
+                "-s": "--scalar",
+                "--drift": "--length",
+                "-d": "--drift",
+            }
+            choices["stoch"] = {
+                "--fastkperiod": one_to_hundred,
+                "-k": "--fastkperiod",
+                "--slowdperiod": "--fastkperiod",
+                "-d": "--slowdperiod",
+                "--slowkperiod": "--fastkperiod",
+            }
+            choices["fisher"] = {
+                "--length": one_to_hundred,
+                "-l": "--length",
+            }
+            choices["cg"] = {
+                "--length": one_to_hundred,
+                "-l": "--length",
+            }
+            choices["adx"] = {
+                "--length": one_to_hundred,
+                "-l": "--length",
+                "--scalar": None,
+                "-s": "--scalar",
+                "--drift": "--length",
+                "-d": "--drift",
+            }
+            choices["aroon"] = {
+                "--length": one_to_hundred,
+                "-l": "--length",
+                "--scalar": None,
+                "-s": "--scalar",
+            }
+            choices["bbands"] = {
+                "--length": one_to_hundred,
+                "-l": "--length",
+                "--std": {str(c): {} for c in np.arange(0.0, 10, 0.25)},
+                "-s": "--std",
+                "--mamode": {c: {} for c in volatility_model.MAMODES},
+                "-m": "--mamode",
+            }
+            choices["donchian"] = {
+                "--length_upper": one_to_hundred,
+                "-u": "--length_upper",
+                "--length_lower": "--length_upper",
+                "-l": "--length_lower",
+            }
+            choices["kc"] = {
+                "--length": one_to_hundred,
+                "-l": "--length",
+                "--scalar": None,
+                "-s": "--scalar",
+                "--mamode": {c: {} for c in volatility_model.MAMODES},
+                "-m": "--mamode",
+                "--offset": zero_to_hundred,
+                "-o": "--offset",
+            }
+            choices["ad"]["--open"] = {}
+            choices["adosc"] = {
+                "--open": {},
+                "--fast": one_to_hundred,
+                "--slow": "--fast",
+            }
+            choices["fib"] = {
+                "--period": {str(c): {} for c in range(1, 960)},
+                "--start": None,
+                "--end": None,
+            }
 
             choices["support"] = self.SUPPORT_CHOICES
             choices["about"] = self.ABOUT_CHOICES
@@ -928,6 +1056,7 @@ class TechnicalAnalysisController(CryptoBaseController):
             action="store",
             dest="s_mamode",
             default="sma",
+            choices=volatility_model.MAMODES,
             help="mamode",
         )
 
