@@ -2023,6 +2023,10 @@ forecast_extras = {
         "model": "openbb_terminal.forecast.tft_model.get_tft_data",
         "view": "openbb_terminal.forecast.tft_view.display_tft_forecast",
     },
+    "forecast.nhits": {
+        "model": "openbb_terminal.forecast.nhits_model.get_nhits_data",
+        "view": "openbb_terminal.forecast.nhits_view.display_nhits_forecast",
+    },
 }
 
 if forecasting:
