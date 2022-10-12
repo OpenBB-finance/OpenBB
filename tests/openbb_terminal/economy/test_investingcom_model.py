@@ -47,49 +47,38 @@ def test_get_economic_calendar(country, importance, category, start_date, end_da
 
 
 @pytest.mark.vcr
-@pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "countries, maturity, change, color",
+    "countries, maturity, change",
     [
         (
             "G7",
             "10Y",
-            False,
-            "rgb",
             False,
         ),
         (
             ["Portugal", "Spain"],
             "5Y",
             True,
-            "rgb",
-            False,
         ),
         (
             "PIIGS",
             "10Y",
             False,
-            "binary",
-            True,
         ),
         (
             "PIIGS",
             "10Y",
-            False,
-            "openbb",
             False,
         ),
     ],
 )
-def test_display_spread_matrix(
-    countries: Union[str, List[str]] = "G7",
-    maturity: str = "10Y",
-    change: bool = False,
-    color: str = "rgb",
-    raw: bool = False,
+def test_get_spread_matrix(
+    countries: Union[str, List[str]],
+    maturity: str,
+    change: bool,
 ):
     df = investingcom_model.get_spread_matrix(
-        countries=countries, maturity=maturity, change=change, color=color, raw=raw
+        countries=countries, maturity=maturity, change=change
     )
 
     assert isinstance(df, pd.DataFrame)

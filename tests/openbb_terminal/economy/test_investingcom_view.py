@@ -46,7 +46,7 @@ def test_display_economic_calendar():
             "5Y",
             True,
             "rgb",
-            False,
+            True,
         ),
         (
             "PIIGS",
@@ -60,14 +60,14 @@ def test_display_economic_calendar():
             "10Y",
             False,
             "openbb",
-            False,
+            True,
         ),
         (
             "G7",
             "20Y",
             True,
             "openbb",
-            False,
+            True,
         ),
     ],
 )
