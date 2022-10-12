@@ -35,7 +35,7 @@ COLORS = ["rgb", "binary", "openbb"]
 
 
 @log_start_end(log=logger)
-def display_matrix(
+def display_spread_matrix(
     countries: Union[str, List[str]] = "G7",
     maturity: str = "10Y",
     change: bool = False,

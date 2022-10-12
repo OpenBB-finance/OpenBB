@@ -1222,7 +1222,7 @@ class EconomyController(BaseController):
                     countries_string
                 )
 
-                investingcom_view.display_matrix(
+                investingcom_view.display_spread_matrix(
                     countries=countries_list,
                     maturity=ns_parser.maturity.upper(),
                     change=ns_parser.change,
@@ -1231,7 +1231,7 @@ class EconomyController(BaseController):
                     export=ns_parser.export,
                 )
             elif ns_parser.group:
-                investingcom_view.display_matrix(
+                investingcom_view.display_spread_matrix(
                     countries=ns_parser.group,
                     maturity=ns_parser.maturity.upper(),
                     change=ns_parser.change,
