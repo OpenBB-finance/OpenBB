@@ -3,7 +3,8 @@ To obtain charts, make sure to add `chart=True` as the last parameter
 ## Get underlying data 
 ### stocks.sia.cpic(country: str = 'United States', mktcap: str = 'Large', exclude_exchanges: bool = True)
 
-Get number of companies per industry in a specific country (and specific market cap). [Source: Finance Database]
+Get number of companies per industry in a specific country (and specific market cap).
+    [Source: Finance Database]
 
     Parameters
     ----------

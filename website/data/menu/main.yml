@@ -146,8 +146,6 @@ main:
               ref: /terminal/common/ta/cci
             - name: cg
               ref: /terminal/common/ta/cg
-            - name: demark
-              ref: /terminal/common/ta/demark
             - name: donchian
               ref: /terminal/common/ta/donchian
             - name: ema
@@ -781,6 +779,8 @@ main:
             ref: terminal/forecast/mom
           - name: nbeats
             ref: terminal/forecast/nbeats
+          - name: nhits
+            ref: terminal/forecast/nhits
           - name: plot
             ref: terminal/forecast/plot
           - name: regr
@@ -1629,6 +1629,8 @@ main:
                 ref: /terminal/common/ta/cg
               - name: clenow
                 ref: /terminal/common/ta/clenow
+              - name: demark
+                ref: /terminal/common/ta/demark
               - name: donchian
                 ref: /terminal/common/ta/donchian
               - name: ema
