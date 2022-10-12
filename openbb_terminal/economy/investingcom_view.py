@@ -8,7 +8,7 @@ from matplotlib import ticker
 
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FormatStrFormatter
-import matplotlib.colors as colors
+from matplotlib import colors
 import numpy as np
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
@@ -31,6 +31,8 @@ logger = logging.getLogger(__name__)
 register_matplotlib_converters()
 
 COLORS = ["rgb", "binary", "openbb"]
+
+# pylint: disable=unnecessary-lambda-assignment
 
 
 @log_start_end(log=logger)
@@ -121,9 +123,7 @@ def display_spread_matrix(
             # https://stackoverflow.com/questions/53754012/create-a-gradient-colormap-matplotlib
             def truncate_colormap(cmap, minval=0.0, maxval=1.0, n=100):
                 new_cmap = colors.LinearSegmentedColormap.from_list(
-                    "trunc({n},{a:.2f},{b:.2f})".format(
-                        n=cmap.name, a=minval, b=maxval
-                    ),
+                    f"trunc({cmap.name},{minval:.2f},{maxval:.2f})",
                     cmap(np.linspace(minval, maxval, n)),
                 )
                 return new_cmap
@@ -259,10 +259,10 @@ def display_yieldcurve(
             ncol=3,
         )
 
-        colors = [
+        colors_ = [
             theme.up_color if x > 0 else theme.down_color for x in df["Change"].values
         ]
-        ax2.bar(df["Tenor"], df["Change"], width=1, color=colors)
+        ax2.bar(df["Tenor"], df["Change"], width=1, color=colors_)
         ax2.set_ylabel("Change (bps)")
         ax2.set_xlabel("Maturity (years)")
         theme.style_primary_axis(ax2)

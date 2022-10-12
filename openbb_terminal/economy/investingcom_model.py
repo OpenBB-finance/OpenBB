@@ -179,10 +179,10 @@ def countries_string_to_list(countries_list: str) -> List[str]:
 
 
 @log_start_end(log=logger)
-def create_matrix(dict: Dict[str, Dict[str, float]]) -> pd.DataFrame:
+def create_matrix(dictionary: Dict[str, Dict[str, float]]) -> pd.DataFrame:
 
-    maturity = list(dict.keys())[0]
-    d = dict[maturity]
+    maturity = list(dictionary.keys())[0]
+    d = dictionary[maturity]
     countries = list(d.keys())
 
     # Create empty matrix
