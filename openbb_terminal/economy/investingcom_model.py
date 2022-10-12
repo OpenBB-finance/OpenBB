@@ -14,7 +14,6 @@ import investpy
 from tqdm import tqdm
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import log_and_raise
 from openbb_terminal import helper_funcs
 from openbb_terminal.rich_config import console
 

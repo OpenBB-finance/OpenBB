@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from turtle import position
 from typing import Optional, List, Union
 from matplotlib import ticker
 
