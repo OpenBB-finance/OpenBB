@@ -186,7 +186,7 @@ def create_matrix(dict: Dict[str, Dict[str, float]]) -> pd.DataFrame:
     countries = list(d.keys())
 
     # Create empty matrix
-    matrix = []
+    matrix: List[List[float]] = []
     N = len(d)
     for i in range(N):
         matrix.append([0] * N)
@@ -233,8 +233,8 @@ def get_spread_matrix(
     if isinstance(countries, str) and countries.upper() in MATRIX_CHOICES:
         countries = MATRIX_COUNTRIES[countries.upper()]
 
-    d0 = {maturity: {}}
-    d1 = {maturity: {}}
+    d0: Dict[str, Dict[str, float]] = {maturity: {}}
+    d1: Dict[str, Dict[str, float]] = {maturity: {}}
     no_data_countries = []
     for country in tqdm(countries, desc="Downloading"):
         country = country.title()
