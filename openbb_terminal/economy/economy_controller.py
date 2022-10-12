@@ -1168,7 +1168,8 @@ class EconomyController(BaseController):
             "--countries",
             action="store",
             dest="countries",
-            type=investingcom_model.countries_string_to_list,
+            nargs="+",
+            type=str,
             help="Show bond rates matrix for explicit list of countries.",
         )
         parser.add_argument(
@@ -1197,8 +1198,13 @@ class EconomyController(BaseController):
         )
         if ns_parser:
             if ns_parser.countries:
+                countries_string = " ".join(ns_parser.countries)
+                countries_list = investingcom_model.countries_string_to_list(
+                    countries_string
+                )
+
                 investingcom_view.display_matrix(
-                    countries=ns_parser.countries,
+                    countries=countries_list,
                     maturity=ns_parser.maturity.upper(),
                     change=ns_parser.change,
                     raw=ns_parser.raw,

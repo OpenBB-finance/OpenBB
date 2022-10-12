@@ -91,11 +91,10 @@ def check_correct_country(country: str, countries: list) -> bool:
 @log_start_end(log=logger)
 def countries_string_to_list(countries_list: str) -> List[str]:
     """Transform countries string to list if countries valid"""
-
     valid_countries = [
-        country.lower()
+        country.lower().strip()
         for country in countries_list.split(",")
-        if check_correct_country(country, BOND_COUNTRIES)
+        if check_correct_country(country.strip(), BOND_COUNTRIES)
     ]
 
     if valid_countries:
@@ -138,8 +137,8 @@ def get_matrix(
     change: bool = False,
 ) -> pd.DataFrame:
 
-    if isinstance(countries, str) and countries in MATRIX_CHOICES:
-        countries = MATRIX_COUNTRIES[countries]
+    if isinstance(countries, str) and countries.upper() in MATRIX_CHOICES:
+        countries = MATRIX_COUNTRIES[countries.upper()]
 
     d0 = {maturity: {}}
     d1 = {maturity: {}}
