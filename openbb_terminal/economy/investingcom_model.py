@@ -289,7 +289,7 @@ def get_events_categories() -> list:
 
 
 @log_start_end(log=logger)
-def get_yieldcurve(country: str) -> pd.DataFrame:
+def get_yieldcurve(country: str = "United States") -> pd.DataFrame:
     """Get yield curve for specified country. [Source: Investing.com]
 
     Parameters
