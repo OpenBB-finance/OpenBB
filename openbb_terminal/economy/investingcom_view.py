@@ -55,7 +55,7 @@ def display_spread_matrix(
     change: bool
         Flag to use 1 day change or not. By default False.
     color: str
-        Color theme to use on heatmap. By default, gradient.
+        Color theme to use on heatmap, from rgb, binary or openbb By default, rgb.
     raw : bool
         Output only raw data.
     export : str
