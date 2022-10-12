@@ -108,7 +108,7 @@ def test_load_week_or_month(recorder, weekly, monthly):
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "path",
-    ["none", REPOSITORY_DIRECTORY / "custom_imports" / "stocks" / "test.csv"],
+    ["none", "test.csv"],
 )
 def test_load_custom_output(path):
     stocks_helper.load_custom(path)
