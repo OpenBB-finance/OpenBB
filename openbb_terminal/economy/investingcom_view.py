@@ -41,6 +41,24 @@ def display_matrix(
     external_axes: Optional[List[plt.Axes]] = None,
     export: str = "",
 ):
+    """Display spread matrix. [Source: Investing.com]
+
+    Parameters
+    ----------
+    countries: Union[str, List[str]]
+        Countries or group of countries. List of available countries is accessible through get_ycrv_countries().
+    maturity: str
+        Maturity to get data. By default 10Y.
+    change: bool
+        Flag to use 1 day change or not. By default False.
+    raw : bool
+        Output only raw data.
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
+
+    """
 
     df = investingcom_model.get_spread_matrix(countries, maturity, change)
 
@@ -67,9 +85,9 @@ def display_matrix(
             )
 
             if isinstance(countries, str):
-                title = f"{countries} - Yield Curve Matrix - {maturity}"
+                title = f"{countries} - Spread Matrix - {maturity}"
             else:
-                title = f"Yield Curve Matrix - {maturity}"
+                title = f"Spread Matrix - {maturity}"
 
             print_rich_table(
                 pretty_df,

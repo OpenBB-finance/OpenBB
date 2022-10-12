@@ -213,6 +213,23 @@ def get_spread_matrix(
     maturity: str = "10Y",
     change: bool = False,
 ) -> pd.DataFrame:
+    """Get spread matrix. [Source: Investing.com]
+
+    Parameters
+    ----------
+    countries: Union[str, List[str]]
+        Countries or group of countries. List of available countries is accessible through get_ycrv_countries().
+    maturity: str
+        Maturity to get data. By default 10Y.
+    change: bool
+        Flag to use 1 day change or not. By default False.
+
+    Returns
+    -------
+    pd.DataFrame
+        Spread matrix.
+
+    """
 
     if isinstance(countries, str) and countries.upper() in MATRIX_CHOICES:
         countries = MATRIX_COUNTRIES[countries.upper()]

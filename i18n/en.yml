@@ -753,7 +753,7 @@ en:
   economy/index: find and plot any (major) index on the market
   economy/treasury: obtain U.S. treasury rates
   economy/ycrv: show sovereign yield curves
-  economy/matrix: show bond rates matrix
+  economy/spread: show bond spread matrix
   economy/events: show economic calendar
   economy/edebt: show external debt statistics for various countries
   economy/plot: plot data from the above commands together
