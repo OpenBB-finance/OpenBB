@@ -12,7 +12,7 @@ import requests
 
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal.rich_config import console
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import prepare_all_coins_df
 from openbb_terminal.parent_classes import CRYPTO_SOURCES
 
@@ -55,6 +55,7 @@ class ApiKeyException(Exception):
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_CRYPTO_PANIC_KEY"])
 def make_request(**kwargs: Any) -> Optional[dict]:
     """Helper methods for requests [Source: https://cryptopanic.com/developers/api/]
 
