@@ -132,7 +132,7 @@ def display_matrix(
             ax1.yaxis.set_label_position("right")
             ax1.set_ylim(ax.get_ylim())
             ax1.grid(False)
-            ax1.axis("off")
+            ax1.set_frame_on(False)
 
             # Set 3 decimal places for yield and 1 spread
             if not change:
