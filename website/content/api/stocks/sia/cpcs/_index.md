@@ -1,9 +1,10 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### stocks.sia.cpcs(sector: str = 'Technology', mktcap: str = 'Large', exclude_exchanges: bool = True)
+### stocks.sia.cpcs(sector: str = 'Technology', mktcap: str = 'Large', exclude_exchanges: bool = True) -> dict
 
-Get number of companies per country in a specific sector (and specific market cap). [Source: Finance Database]
+Get number of companies per country in a specific sector (and specific market cap).
+    [Source: Finance Database]
 
     Parameters
     ----------

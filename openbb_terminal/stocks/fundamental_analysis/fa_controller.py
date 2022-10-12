@@ -6,7 +6,7 @@ import logging
 from datetime import datetime, timedelta
 from typing import List
 
-from prompt_toolkit.completion import NestedCompleter
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
@@ -105,18 +105,128 @@ class FundamentalAnalysisController(StockBaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["load"]["-i"] = {c: {} for c in stocks_helper.INTERVALS}
-            choices["load"]["-s"] = {c: {} for c in stocks_helper.SOURCES}
-            choices["income"]["-p"] = {
-                c: {} for c in stocks_helper.INCOME_PLOT[self.default_income]
+
+            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
+            choices["load"] = {
+                "--ticker": None,
+                "-t": "--ticker",
+                "--start": None,
+                "-s": "--start",
+                "--end": None,
+                "-e": "--end",
+                "--interval": {c: {} for c in ["1", "5", "15", "30", "60"]},
+                "-i": "--interval",
+                "--prepost": {},
+                "-p": "--prepost",
+                "--file": None,
+                "-f": "--file",
+                "--monthly": {},
+                "-m": "--monthly",
+                "--weekly": {},
+                "-w": "--weekly",
+                "--iexrange": {c: {} for c in ["ytd", "1y", "2y", "5y", "6m"]},
+                "-r": "--iexrange",
+                "--source": {
+                    c: {} for c in get_ordered_list_sources(f"{self.PATH}load")
+                },
             }
-            choices["balance"]["-p"] = {
-                c: {} for c in stocks_helper.BALANCE_PLOT[self.default_balance]
+            choices["income"] = {
+                "--plot": {
+                    c: {} for c in stocks_helper.INCOME_PLOT[self.default_income]
+                },
+                "-p": "--plot",
+                "--quarter": {},
+                "-q": "--quarter",
+                "--ratios": {},
+                "-r": "--ratios",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+                "--source": {
+                    c: {} for c in get_ordered_list_sources(f"{self.PATH}income")
+                },
             }
-            choices["cash"]["-p"] = {
-                c: {} for c in stocks_helper.CASH_PLOT[self.default_cash]
+            choices["balance"] = {
+                "--plot": {
+                    c: {} for c in stocks_helper.BALANCE_PLOT[self.default_balance]
+                },
+                "-p": "--plot",
+                "--quarter": {},
+                "-q": "--quarter",
+                "--ratios": {},
+                "-r": "--ratios",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+                "--source": {
+                    c: {} for c in get_ordered_list_sources(f"{self.PATH}balance")
+                },
+            }
+            choices["cash"] = {
+                "--plot": {c: {} for c in stocks_helper.CASH_PLOT[self.default_cash]},
+                "-p": "--plot",
+                "--quarter": {},
+                "-q": "--quarter",
+                "--ratios": {},
+                "-r": "--ratios",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+                "--source": {
+                    c: {} for c in get_ordered_list_sources(f"{self.PATH}cash")
+                },
+            }
+            fmp_standard = {
+                "--quarter": {},
+                "-q": "--quarter",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["enterprise"] = fmp_standard
+            choices["metrics"] = fmp_standard
+            choices["ratios"] = fmp_standard
+            choices["growth"] = fmp_standard
+            choices["warnings"] = {"--debug": {}, "-d": "--debug"}
+            choices["dcf"] = {
+                "--prediction": one_to_hundred,
+                "-p": "--prediction",
+                "--similar": None,
+                "-s": "--similar",
+                "--audit": {},
+                "-a": "--audit",
+                "--growth": {},
+                "-g": "--growth",
+                "--no-ratios": {},
+                "--no-filter": {},
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["dcfc"] = fmp_standard
+            choices["mktcap"] = {
+                "--start": None,
+                "-s": "--start",
+            }
+            choices["divs"] = {
+                "--plot": {},
+                "-p": "--plot",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["earnings"] = {
+                "--quarter": {},
+                "-q": "--quarter",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+                "--source": {
+                    c: {} for c in get_ordered_list_sources(f"{self.PATH}earnings")
+                },
             }
             choices["shrs"] = {c: {} for c in self.SHRS_CHOICES}
+            choices["fraud"] = {
+                "--explanation": {},
+                "-e": "--explanation",
+                "--detail": {},
+                "-d": "--detail",
+            }
+            choices["dupont"]["--raw"] = {}
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
