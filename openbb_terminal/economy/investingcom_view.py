@@ -9,7 +9,7 @@ from matplotlib import ticker
 
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FormatStrFormatter
-from matplotlib.colors import ListedColormap
+import matplotlib.colors as colors
 import numpy as np
 import pandas as pd
 from pandas.plotting import register_matplotlib_converters
@@ -31,12 +31,15 @@ logger = logging.getLogger(__name__)
 
 register_matplotlib_converters()
 
+COLORS = ["rgb", "binary", "openbb"]
+
 
 @log_start_end(log=logger)
 def display_matrix(
     countries: Union[str, List[str]] = "G7",
     maturity: str = "10Y",
     change: bool = False,
+    color: str = "rgb",
     raw: bool = False,
     external_axes: Optional[List[plt.Axes]] = None,
     export: str = "",
@@ -51,6 +54,8 @@ def display_matrix(
         Maturity to get data. By default 10Y.
     change: bool
         Flag to use 1 day change or not. By default False.
+    color: str
+        Color theme to use on heatmap. By default, gradient.
     raw : bool
         Output only raw data.
     export : str
@@ -114,9 +119,27 @@ def display_matrix(
             x_labels = list(df.columns)
             x_labels[1] = ""
 
+            # https://stackoverflow.com/questions/53754012/create-a-gradient-colormap-matplotlib
+            def truncate_colormap(cmap, minval=0.0, maxval=1.0, n=100):
+                new_cmap = colors.LinearSegmentedColormap.from_list(
+                    "trunc({n},{a:.2f},{b:.2f})".format(
+                        n=cmap.name, a=minval, b=maxval
+                    ),
+                    cmap(np.linspace(minval, maxval, n)),
+                )
+                return new_cmap
+
+            # This is not a bool so that we can add different colors in future
+            if color.lower() == "rgb":
+                cmap = truncate_colormap(plt.get_cmap("brg"), 1, 0.4)
+            elif color.lower() == "openbb":
+                cmap = truncate_colormap(plt.get_cmap("magma"), 0.5, 0.1)
+            else:  # binary
+                cmap = colors.ListedColormap([theme.up_color, theme.down_color])
+
             heatmap = sns.heatmap(
                 df,
-                cmap=ListedColormap([theme.up_color, theme.down_color]),
+                cmap=cmap,
                 cbar=False,
                 annot=True,
                 annot_kws={
@@ -125,7 +148,9 @@ def display_matrix(
                 center=0,
                 fmt="+.1f",
                 linewidths=0.5,
-                linecolor="black",
+                linecolor="black"
+                if any(substring in theme.mpl_style for substring in ["dark", "boring"])
+                else "white",
                 xticklabels=x_labels,
                 mask=mask,
                 ax=ax,

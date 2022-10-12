@@ -219,6 +219,7 @@ class EconomyController(BaseController):
                 "--maturity": None,
                 "-m": "--maturity",
                 "--change": None,
+                "--color": {c: None for c in investingcom_view.COLORS},
             }
             self.choices["events"] = {
                 "--country": {c: None for c in investingcom_model.CALENDAR_COUNTRIES},
@@ -1189,6 +1190,15 @@ class EconomyController(BaseController):
             default=False,
             help="Get matrix of 1 day change in rates or spreads.",
         )
+        parser.add_argument(
+            "--color",
+            action="store",
+            dest="color",
+            type=str,
+            choices=investingcom_view.COLORS,
+            default="rgb",
+            help="Set color pallette on heatmap.",
+        )
 
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -1207,6 +1217,7 @@ class EconomyController(BaseController):
                     countries=countries_list,
                     maturity=ns_parser.maturity.upper(),
                     change=ns_parser.change,
+                    color=ns_parser.color,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
                 )
@@ -1215,6 +1226,7 @@ class EconomyController(BaseController):
                     countries=ns_parser.group,
                     maturity=ns_parser.maturity.upper(),
                     change=ns_parser.change,
+                    color=ns_parser.color,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
                 )
