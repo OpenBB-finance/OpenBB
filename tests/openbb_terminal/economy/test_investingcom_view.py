@@ -39,7 +39,7 @@ def test_display_economic_calendar():
             "10Y",
             False,
             "rgb",
-            False,
+            True,
         ),
         (
             ["Portugal", "Spain"],
