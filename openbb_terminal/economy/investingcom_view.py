@@ -161,7 +161,9 @@ def display_matrix(
                         k += spacing
                         spacing -= 1
 
-                        text_transform = lambda x: f"{round(float(x)/100, 3)}%"
+                        text_transform = (
+                            lambda x: f"{round(float(x)/100, 3)}%"
+                        )  # flake8: noqa
                         t.set_text(text_transform(current_text))
                     else:
                         t.set_text(current_text)
