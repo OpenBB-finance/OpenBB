@@ -138,7 +138,7 @@ MATRIX_COUNTRIES = {
         "Taiwan",
         "Vietnam",
     ],
-    "APAC": [
+    "AFRICA": [
         "Botswana",
         "Kenya",
         "Mauritius",
