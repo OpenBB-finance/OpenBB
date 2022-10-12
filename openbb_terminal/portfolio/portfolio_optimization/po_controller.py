@@ -14,7 +14,7 @@ from openbb_terminal import parent_classes
 from openbb_terminal.core.config.paths import (
     USER_EXPORTS_DIRECTORY,
     PORTFOLIO_DATA_DIRECTORY,
-    REPOSITORY_DIRECTORY,
+    PACKAGE_DIRECTORY,
 )
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -342,7 +342,7 @@ class PortfolioOptimizationController(BaseController):
                 filepath.name: filepath
                 for file_type in self.file_types
                 for filepath in (
-                    REPOSITORY_DIRECTORY / "portfolio" / "allocation"
+                    PACKAGE_DIRECTORY / "portfolio_default" / "allocation"
                 ).rglob(f"*.{file_type}")
             }
         )
@@ -361,7 +361,7 @@ class PortfolioOptimizationController(BaseController):
                 filepath.name: filepath
                 for file_type in self.file_types
                 for filepath in (
-                    REPOSITORY_DIRECTORY / "portfolio" / "optimization"
+                    PACKAGE_DIRECTORY / "portfolio_default" / "optimization"
                 ).rglob(f"*.{file_type}")
             }
         )
