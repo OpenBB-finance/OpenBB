@@ -142,7 +142,7 @@ class NestedCompleter(Completer):
         return f"NestedCompleter({self.options!r}, ignore_case={self.ignore_case!r})"
 
     @classmethod
-    def from_nested_dict(cls, data: NestedDict) -> "NestedCompleter":
+    def from_nested_dict(cls, data: dict) -> "NestedCompleter":
         """
         Create a `NestedCompleter`, starting from a nested dictionary data
         structure, like this:

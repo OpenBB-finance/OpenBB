@@ -7,9 +7,8 @@ import os
 import subprocess  # nosec
 from typing import List
 
-from prompt_toolkit.completion import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController

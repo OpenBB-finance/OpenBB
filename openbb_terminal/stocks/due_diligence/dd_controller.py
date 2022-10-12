@@ -6,7 +6,8 @@ import logging
 from typing import List
 
 from pandas.core.frame import DataFrame
-from prompt_toolkit.completion import NestedCompleter
+
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
@@ -17,8 +18,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console, MenuText
-from openbb_terminal.stocks import stocks_helper
+from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
 from openbb_terminal.stocks.due_diligence import (
     ark_view,
     business_insider_view,
@@ -68,9 +68,49 @@ class DueDiligenceController(StockBaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["load"]["-i"] = {c: {} for c in stocks_helper.INTERVALS}
-            choices["load"]["-s"] = {c: {} for c in stocks_helper.SOURCES}
-            choices["est"]["-e"] = {c: {} for c in self.ESTIMATE_CHOICES}
+
+            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
+            choices["load"] = {
+                "--ticker": None,
+                "-t": "--ticker",
+                "--start": None,
+                "-s": "--start",
+                "--end": None,
+                "-e": "--end",
+                "--interval": {c: {} for c in ["1", "5", "15", "30", "60"]},
+                "-i": "--interval",
+                "--prepost": {},
+                "-p": "--prepost",
+                "--file": None,
+                "-f": "--file",
+                "--monthly": {},
+                "-m": "--monthly",
+                "--weekly": {},
+                "-w": "--weekly",
+                "--iexrange": {c: {} for c in ["ytd", "1y", "2y", "5y", "6m"]},
+                "-r": "--iexrange",
+                "--source": {
+                    c: {} for c in get_ordered_list_sources(f"{self.PATH}load")
+                },
+            }
+            limit = {
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["rating"] = limit
+            limit_raw = {"--limit": one_to_hundred, "-l": "--limit", "--raw": {}}
+            choices["rot"] = limit_raw
+            choices["pt"] = limit_raw
+            choices["est"]["--estimate"] = {c: {} for c in self.ESTIMATE_CHOICES}
+            choices["est"]["-e"] = "--estimate"
+            choices["sec"] = limit
+            choices["arktrades"] = {
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+                "--show_symbol": {},
+                "-s": "--show_symbol",
+            }
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

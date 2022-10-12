@@ -310,6 +310,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 intraday=False,
                 add_trend=True,
                 ma=[20, 30],
+                yscale="linear",
             ),
         ),
         (
