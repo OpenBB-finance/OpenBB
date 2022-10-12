@@ -176,7 +176,7 @@ def display_fred_series(
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def display_yield_curve(
-    date: datetime = datetime.today(),
+    date: datetime = None,
     external_axes: Optional[List[plt.Axes]] = None,
     raw: bool = False,
     export: str = "",
