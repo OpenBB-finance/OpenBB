@@ -541,4 +541,5 @@ def corr_df(df: pd.DataFrame) -> pd.DataFrame:
     df: pd.DataFrame
         The df with the new data
     """
-    return df.corr()
+    corr = df.corr(numeric_only=True)
+    return corr
