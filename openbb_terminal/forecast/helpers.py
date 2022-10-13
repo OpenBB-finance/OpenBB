@@ -534,7 +534,7 @@ def plot_forecast(
 
 
 def plot_explainability(
-    model, explainability_df=False, external_axes: Optional[List[plt.axes]] = None
+    model, explainability_raw=False, external_axes: Optional[List[plt.axes]] = None
 ):
     """Use SHAP to explain the model's predictions.
     Args:
@@ -547,7 +547,7 @@ def plot_explainability(
 
     shap_explain = ShapExplainer(model)
     shap_explain.summary_plot(horizons=1)
-    if explainability_df:
+    if explainability_raw:
         console.print("[green]Explainability DataFrame[/green]")
         console.print(shap_explain.explain().get_explanation(horizon=1).pd_dataframe())
 
