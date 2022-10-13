@@ -1,7 +1,7 @@
 ```
 usage: nhits [--num-stacks NUM_STACKS] [--num-blocks NUM_BLOCKS] [--num-layers NUM_LAYERS] [--layer_widths LAYER_WIDTHS] [--activation {ReLU,RReLU,PReLU,Softplus,Tanh,SELU,LeakyReLU,Sigmoid}] [--maxpool1d] [--past-covariates PAST_COVARIATES]
              [--all-past-covariates] [--naive] [-d {}] [-c TARGET_COLUMN] [-n N_DAYS] [-t TRAIN_SPLIT] [-i INPUT_CHUNK_LENGTH] [-o OUTPUT_CHUNK_LENGTH] [--force-reset FORCE_RESET] [--save-checkpoints SAVE_CHECKPOINTS]
-             [--model-save-name MODEL_SAVE_NAME] [--n-epochs N_EPOCHS] [--dropout DROPOUT] [--batch-size BATCH_SIZE] [--end S_END_DATE] [--start S_START_DATE] [--residuals] [--forecast-only] [-h] [--export EXPORT]
+             [--model-save-name MODEL_SAVE_NAME] [--n-epochs N_EPOCHS] [--dropout DROPOUT] [--batch-size BATCH_SIZE] [--end S_END_DATE] [--start S_START_DATE] [--residuals] [--forecast-only] [--use_gpu] [-h] [--export EXPORT]
 ```
 
 Perform NHits forecast (Neural Hierarchical Interpolation for Time Series Forecasting).
@@ -50,6 +50,7 @@ optional arguments:
   --start S_START_DATE  The start date (format YYYY-MM-DD) to select for testing (default: None)
   --residuals           Show the residuals for the model. (default: False)
   --forecast-only       Do not plot the hisotorical data without forecasts. (default: False)
+  --use_gpu             Whether or not to use the GPU if available for models that support it. (default: False)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export figure into png, jpg, pdf, svg (default: )
 

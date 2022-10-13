@@ -4,8 +4,8 @@ usage: brnn [--n-rnn-layers N_RNN_LAYERS] [--hidden-size HIDDEN_SIZE] [--past-co
             [-i INPUT_CHUNK_LENGTH] [-o OUTPUT_CHUNK_LENGTH] [--force-reset FORCE_RESET]
             [--save-checkpoints SAVE_CHECKPOINTS] [--model-save-name MODEL_SAVE_NAME] [--n-epochs N_EPOCHS]
             [--model-type MODEL_TYPE] [--dropout DROPOUT] [--batch-size BATCH_SIZE] [--end S_END_DATE]
-            [--start S_START_DATE] [--learning-rate LEARNING_RATE] [--residuals] [--forecast-only] [-h]
-            [--export EXPORT]
+            [--start S_START_DATE] [--learning-rate LEARNING_RATE] [--residuals] [--forecast-only]
+            [--use-gpu] [-h] [--export EXPORT]
 ```
 
 Perform BRNN forecast (Vanilla RNN, LSTM, GRU)
@@ -50,6 +50,7 @@ optional arguments:
                         Learning rate during training. (default: 0.001)
   --residuals           Show the residuals for the model. (default: False)
   --forecast-only       Do not plot the hisotorical data without forecasts. (default: False)
+  --use_gpu             Whether or not to use the GPU if available for models that support it. (default: False)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export figure into png, jpg, pdf, svg (default: )
 
