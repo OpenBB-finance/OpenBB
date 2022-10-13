@@ -381,6 +381,7 @@ class ForecastController(BaseController):
         residuals: bool = False,
         forecast_only: bool = False,
         naive: bool = False,
+        explainability_df: bool = False,
     ):
         if hidden_size:
             parser.add_argument(
@@ -638,6 +639,15 @@ class ForecastController(BaseController):
                 default=False,
                 dest="forecast_only",
             )
+        if explainability_df:
+            parser.add_argument(
+                "--explainability-df",
+                action="store_true",
+                dest="explainability_df",
+                default=False,
+                help="Prints out a raw dataframe showing explainability results.",
+            )
+
             # if user does not put in --target-dataset
         return super().parse_known_args_and_warn(
             parser, other_args, export_allowed, raw, limit
@@ -2043,6 +2053,7 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
+            explainability_df=True,
         )
 
         if ns_parser:
@@ -2070,6 +2081,7 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
+                explainability_df=ns_parser.explainability_df,
             )
 
     @log_start_end(log=logger)
@@ -2104,6 +2116,7 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
+            explainability_df=True,
         )
 
         if ns_parser:
@@ -2130,6 +2143,7 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
+                explainability_df=ns_parser.explainability_df,
             )
 
     @log_start_end(log=logger)

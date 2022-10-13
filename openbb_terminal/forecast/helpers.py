@@ -533,7 +533,9 @@ def plot_forecast(
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "expo")
 
 
-def plot_explainability(model, external_axes: Optional[List[plt.axes]] = None):
+def plot_explainability(
+    model, explainability_df=False, external_axes: Optional[List[plt.axes]] = None
+):
     """Use SHAP to explain the model's predictions.
     Args:
         model (Linregr or Regr): Trained model
@@ -545,6 +547,9 @@ def plot_explainability(model, external_axes: Optional[List[plt.axes]] = None):
 
     shap_explain = ShapExplainer(model)
     shap_explain.summary_plot(horizons=1)
+    if explainability_df:
+        console.print("[green]Explainability DataFrame[/green]")
+        console.print(shap_explain.explain().get_explanation(horizon=1).pd_dataframe())
 
     ax.yaxis.set_label_position("left")
     ax.yaxis.tick_left()

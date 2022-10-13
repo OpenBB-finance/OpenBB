@@ -33,6 +33,7 @@ def display_linear_regression(
     start_date: Optional[datetime] = None,
     end_date: Optional[datetime] = None,
     naive: bool = False,
+    explainability_df: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """Display Linear Regression Forecasting
@@ -122,4 +123,4 @@ def display_linear_regression(
         )
 
     # SHAP
-    helpers.plot_explainability(_model)
+    helpers.plot_explainability(_model, explainability_df)
