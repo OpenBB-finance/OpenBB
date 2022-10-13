@@ -382,6 +382,7 @@ class ForecastController(BaseController):
         forecast_only: bool = False,
         naive: bool = False,
         use_gpu: bool = False,
+        explainability_raw: bool = False,
     ):
         if hidden_size:
             parser.add_argument(
@@ -639,6 +640,15 @@ class ForecastController(BaseController):
                 default=False,
                 dest="forecast_only",
             )
+        if explainability_raw:
+            parser.add_argument(
+                "--explainability-raw",
+                action="store_true",
+                dest="explainability_raw",
+                default=False,
+                help="Prints out a raw dataframe showing explainability results.",
+            )
+
             # if user does not put in --target-dataset
         if use_gpu:
             parser.add_argument(
@@ -2058,6 +2068,7 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
+            explainability_raw=True,
         )
 
         if ns_parser:
@@ -2085,6 +2096,7 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
+                explainability_raw=ns_parser.explainability_raw,
             )
 
     @log_start_end(log=logger)
@@ -2119,6 +2131,7 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
+            explainability_raw=True,
         )
 
         if ns_parser:
@@ -2145,6 +2158,7 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
+                explainability_raw=ns_parser.explainability_raw,
             )
 
     @log_start_end(log=logger)
