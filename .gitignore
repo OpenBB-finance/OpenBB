@@ -29,7 +29,7 @@ openbb_terminal/portfolio/portfolios/*
 *.http
 .coverage.*
 !openbb_terminal/custom_reports/*/.ipynb
-!openbb_terminal/i18n/help_translation.ipynb
+!openbb_terminal/miscellaneous/i18n/help_translation.ipynb
 
 # pyinstaller artifacts
 *.pyo
