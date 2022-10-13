@@ -490,17 +490,25 @@ class EconomyController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if ns_parser and ns_parser.commodity:
-            finviz_view.display_future(
-                future_type=ns_parser.commodity.capitalize(),
-                sortby=ns_parser.sortby,
-                ascend=ns_parser.ascend,
-                export=ns_parser.export,
-            )
-        elif ns_parser:
-            wsj_view.display_futures(
-                export=ns_parser.export,
-            )
+        if ns_parser:
+            if ns_parser.source == "Finviz":
+                if ns_parser.commodity:
+                    finviz_view.display_future(
+                        future_type=ns_parser.commodity.capitalize(),
+                        sortby=ns_parser.sortby,
+                        ascend=ns_parser.ascend,
+                        export=ns_parser.export,
+                    )
+                else:
+                    console.print(
+                        "[red]Commodity group must be specified on Finviz.[/red]"
+                    )
+            elif ns_parser.source == "WallStreetJournal":
+                if ns_parser.commodity:
+                    console.print("[red]Commodity flag valid with Finviz only.[/red]")
+                wsj_view.display_futures(
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_map(self, other_args: List[str]):

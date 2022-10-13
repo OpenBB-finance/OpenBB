@@ -222,7 +222,6 @@ class BehaviouralAnalysisController(StockBaseController):
         mt.add_cmd("interest", self.ticker)
         mt.add_cmd("queries", self.ticker)
         mt.add_cmd("rise", self.ticker)
-        mt.add_cmd("trend")
         mt.add_cmd("jcdr")
         mt.add_cmd("jctr", self.ticker)
         console.print(text=mt.menu_text, menu="Stocks - Behavioural Analysis")

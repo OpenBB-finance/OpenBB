@@ -43,6 +43,7 @@ from openbb_terminal.helper_funcs import (
     parse_and_split_input,
     search_wikipedia,
     screenshot,
+    export_data,
 )
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.rich_config import console, get_ordered_list_sources
@@ -979,7 +980,9 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
 
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
 
         if ns_parser:
             if ns_parser.weekly and ns_parser.monthly:
@@ -1059,7 +1062,13 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     self.stock = self.stock.rename(columns={"Adj Close": "AdjClose"})
                     self.stock = self.stock.dropna()
                     self.stock.columns = [x.lower() for x in self.stock.columns]
-                    console.print("")
+                    console.print()
+                export_data(
+                    ns_parser.export,
+                    os.path.dirname(os.path.abspath(__file__)),
+                    "load",
+                    self.stock.copy(),
+                )
 
 
 class CryptoBaseController(BaseController, metaclass=ABCMeta):
@@ -1151,7 +1160,9 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
 
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
 
         if ns_parser:
             if ns_parser.source in ("YahooFinance", "CoinGecko"):
@@ -1180,4 +1191,10 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                     ns_parser.source,
                     ns_parser.exchange,
                     self.current_interval,
+                )
+                export_data(
+                    ns_parser.export,
+                    os.path.dirname(os.path.abspath(__file__)),
+                    "load",
+                    self.current_df.copy(),
                 )
