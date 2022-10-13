@@ -530,6 +530,9 @@ def plot_forecast(
 
     print_pretty_prediction(numeric_forecast, data[target_col].iloc[-1])
 
+    # TODO: This needs to get fixed
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "expo")
+
 
 def plot_explainability(
     model, explainability_raw=False, external_axes: Optional[List[plt.axes]] = None
