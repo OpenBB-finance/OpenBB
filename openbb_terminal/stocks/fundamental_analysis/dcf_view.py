@@ -8,14 +8,15 @@ from typing import Any, Dict, List, Union
 import numpy as np
 import pandas as pd
 import yfinance as yf
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import get_rf
-from openbb_terminal.rich_config import console
-from openbb_terminal.stocks.fundamental_analysis import dcf_model, dcf_static
 from openpyxl import Workbook
 from openpyxl.styles import Font
 from openpyxl.styles.numbers import FORMAT_PERCENTAGE_00
 from sklearn.linear_model import LinearRegression
+
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import get_rf
+from openbb_terminal.rich_config import console
+from openbb_terminal.stocks.fundamental_analysis import dcf_model, dcf_static
 
 # pylint: disable=C0302
 
@@ -112,24 +113,20 @@ class CreateExcelFA:
 
         i = 0
         while True:
-            path = dcf_model.generate_path(
-                i, self.info["symbol"], self.data["now"])
+            path = dcf_model.generate_path(i, self.info["symbol"], self.data["now"])
             path.parent.mkdir(parents=True, exist_ok=True)
 
             if not path.is_file():
                 self.wb.save(path)
-                console.print(
-                    f"Analysis for {self.info['symbol']} At:\n{path}.\n")
+                console.print(f"Analysis for {self.info['symbol']} At:\n{path}.\n")
                 break
             i += 1
 
     @log_start_end(log=logger)
     def get_data(self, statement: str, row: int, header: bool) -> pd.DataFrame:
-        df, rounding, _ = dcf_model.create_dataframe(
-            self.info["symbol"], statement)
+        df, rounding, _ = dcf_model.create_dataframe(self.info["symbol"], statement)
         if df.empty:
-            raise ValueError(
-                "Could generate a dataframe for the ticker symbol")
+            raise ValueError("Could generate a dataframe for the ticker symbol")
         self.info["rounding"] = rounding
         if not self.info["len_data"]:
             self.info["len_data"] = len(df.columns)
@@ -286,8 +283,7 @@ class CreateExcelFA:
             [],
         )
         self.get_sum(
-            "Total Assets", "Total Current Assets", [
-                "Total Long-Term Assets"], []
+            "Total Assets", "Total Current Assets", ["Total Long-Term Assets"], []
         )
         self.get_growth("Revenue", "Accounts Payable")
         self.get_growth("Revenue", "Deferred Revenue")
@@ -465,15 +461,13 @@ class CreateExcelFA:
             self.ws[2], f"{c2}{r+2}", 0.08, num_form=FORMAT_PERCENTAGE_00
         )
         self.custom_exp(
-            r +
-            2, "Average return of the S&P 500 is 8% [Investopedia]", 2, f"{c3}"
+            r + 2, "Average return of the S&P 500 is 8% [Investopedia]", 2, f"{c3}"
         )
         dcf_model.set_cell(self.ws[2], f"{c1}{r+3}", "Beta")
         if self.data["info"]["beta"] is None:
             dcf_model.set_cell(self.ws[2], f"{c2}{r+3}", float(1))
             self.custom_exp(
-                r +
-                3, "Warning: Beta not found. Assumed a beta of one.", 2, f"{c3}"
+                r + 3, "Warning: Beta not found. Assumed a beta of one.", 2, f"{c3}"
             )
             self.data["info"]["beta"] = 1
         else:
@@ -525,8 +519,7 @@ class CreateExcelFA:
         )
         dcf_model.set_cell(self.ws[2], f"{c1}{r+10}", "Model")
         dcf_model.set_cell(self.ws[2], f"{c2}{r+10}", "Fama French")
-        dcf_model.set_cell(
-            self.ws[2], f"{c3}{r+10}", "Type 'Fama French' or 'CAPM'")
+        dcf_model.set_cell(self.ws[2], f"{c3}{r+10}", "Type 'Fama French' or 'CAPM'")
         dcf_model.set_cell(self.ws[2], f"{c1}{r+11}", "r")
         dcf_model.set_cell(
             self.ws[2],
@@ -654,8 +647,7 @@ class CreateExcelFA:
             "Audit ensures data integrity. Numbers should be 0 (with slight rounding difference).",
         )
 
-        self.get_sum(start, "Revenue", [], [
-                     "Cost of Revenue", "Gross Profit"], True)
+        self.get_sum(start, "Revenue", [], ["Cost of Revenue", "Gross Profit"], True)
         self.get_sum(
             start + 1,
             "Gross Profit",
@@ -847,8 +839,7 @@ class CreateExcelFA:
                 f" is {strength} with a correlation coefficient of {r:.4f}."
             )
             dcf_model.set_cell(
-                self.ws[1], f"{dcf_static.letters[col]}{row1}", float(
-                    model.coef_)
+                self.ws[1], f"{dcf_static.letters[col]}{row1}", float(model.coef_)
             )
             dcf_model.set_cell(
                 self.ws[1],
@@ -1080,20 +1071,15 @@ class CreateExcelFA:
             for j in range(val[1][0].shape[1] - 1):
                 lt = dcf_static.letters[j + 1]
 
-                cace1 = dcf_model.get_value(
-                    val[1][0], "Cash & Cash Equivalents", j)[1]
+                cace1 = dcf_model.get_value(val[1][0], "Cash & Cash Equivalents", j)[1]
                 ar0, ar1 = dcf_model.get_value(val[1][0], "Receivables", j)
                 inv0, inv1 = dcf_model.get_value(val[1][0], "Inventory", j)
-                ca1 = dcf_model.get_value(
-                    val[1][0], "Total Current Assets", j)[1]
+                ca1 = dcf_model.get_value(val[1][0], "Total Current Assets", j)[1]
                 ta0, ta1 = dcf_model.get_value(val[1][0], "Total Assets", j)
-                ap0, ap1 = dcf_model.get_value(
-                    val[1][0], "Accounts Payable", j)
-                cl1 = dcf_model.get_value(
-                    val[1][0], "Total Current Liabilities", j)[1]
+                ap0, ap1 = dcf_model.get_value(val[1][0], "Accounts Payable", j)
+                cl1 = dcf_model.get_value(val[1][0], "Total Current Liabilities", j)[1]
                 tl1 = dcf_model.get_value(val[1][0], "Total Liabilities", j)[1]
-                te0, te1 = dcf_model.get_value(
-                    val[1][0], "Shareholders' Equity", j)
+                te0, te1 = dcf_model.get_value(val[1][0], "Shareholders' Equity", j)
                 sls1 = dcf_model.get_value(val[1][1], "Revenue", j)[1]
                 cogs1 = dcf_model.get_value(val[1][1], "Cost of Revenue", j)[1]
                 inte1 = dcf_model.get_value(val[1][1], "Interest Expense / Income", j)[
@@ -1101,10 +1087,8 @@ class CreateExcelFA:
                 ]
                 tax1 = dcf_model.get_value(val[1][1], "Income Tax", j)[1]
                 ni1 = dcf_model.get_value(val[1][1], "Net Income", j)[1]
-                pdiv1 = dcf_model.get_value(
-                    val[1][1], "Preferred Dividends", j)[1]
-                opcf1 = dcf_model.get_value(
-                    val[1][2], "Operating Cash Flow", j)[1]
+                pdiv1 = dcf_model.get_value(val[1][1], "Preferred Dividends", j)[1]
+                opcf1 = dcf_model.get_value(val[1][2], "Operating Cash Flow", j)[1]
 
                 info, outstand = self.data["info"], float(
                     self.data["info"]["sharesOutstanding"]
@@ -1143,8 +1127,7 @@ class CreateExcelFA:
                     [27, dcf_model.frac(ni1 + inte1 + tax1, inte1), 0],
                     [
                         30,
-                        dcf_model.frac((ni1 - pdiv1) *
-                                       self.info["rounding"], outstand),
+                        dcf_model.frac((ni1 - pdiv1) * self.info["rounding"], outstand),
                         0,
                     ],
                     [
