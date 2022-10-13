@@ -53,7 +53,6 @@ Use your best judgment, and feel free to propose changes to this document in a p
   - [Installers](#installers)
 
 # BASIC
-
 ## Adding a new command
 
 Before implementing a new command we highly recommend that you go through [Understand Code Structure](#understand-code-structure) and [Follow Coding Guidelines](#follow-coding-guidelines). This will allow you to get your PR merged faster and keep consistency of our code base.
@@ -1514,7 +1513,6 @@ A thorough introduction on the usage of unit tests and integration tests in Open
 [Unit Test README](tests/README.md)
 
 [Integration Test README](scripts/README.md)
-
 
 In short:
 
