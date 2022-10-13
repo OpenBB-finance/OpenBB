@@ -924,7 +924,7 @@ class ForecastController(BaseController):
             "--values",
             help="Dataset.column values to be displayed in a plot",
             dest="values",
-            type=check_list_values(self.choices["plot"]),
+            type=str,
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -939,16 +939,20 @@ class ForecastController(BaseController):
             console.print("[red]Please enter valid dataset.\n[/red]")
             return
 
-        data: dict = {}
-        for datasetcol in ns_parser.values:
-            dataset, col = datasetcol.split(".")
-            df = self.datasets[dataset]
-            if "date" in df.columns and col != "date":
-                df = df.set_index("date")
-            data[datasetcol] = df[col]
+        values = [x.strip() for x in ns_parser.values.split(",")]
+        target_df = values[0].split(".")[0]
+        if target_df not in self.datasets:
+            console.print("[red]Please enter valid dataset.\n[/red]")
+            return
+
+        for value in values:
+            if value.split(".")[0] != target_df:
+                console.print("[red]Please enter values from the same dataset.\n[/red]")
+                return
 
         forecast_view.display_plot(
-            data,
+            self.datasets[target_df],
+            [x.split(".")[1] for x in values],
             ns_parser.export,
         )
 

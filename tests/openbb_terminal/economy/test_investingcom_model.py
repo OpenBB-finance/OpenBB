@@ -1,6 +1,7 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
+from typing import List, Union
 import pandas as pd
 import pytest
 
@@ -43,3 +44,41 @@ def test_get_economic_calendar(country, importance, category, start_date, end_da
     )
 
     assert isinstance(result_df, pd.DataFrame)
+
+
+@pytest.mark.vcr
+@pytest.mark.parametrize(
+    "countries, maturity, change",
+    [
+        (
+            "G7",
+            "10Y",
+            False,
+        ),
+        (
+            ["Portugal", "Spain"],
+            "5Y",
+            True,
+        ),
+        (
+            "PIIGS",
+            "10Y",
+            False,
+        ),
+        (
+            "PIIGS",
+            "10Y",
+            False,
+        ),
+    ],
+)
+def test_get_spread_matrix(
+    countries: Union[str, List[str]],
+    maturity: str,
+    change: bool,
+):
+    df = investingcom_model.get_spread_matrix(
+        countries=countries, maturity=maturity, change=change
+    )
+
+    assert isinstance(df, pd.DataFrame)
