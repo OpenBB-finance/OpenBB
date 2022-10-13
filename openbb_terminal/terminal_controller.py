@@ -117,7 +117,7 @@ class TerminalController(BaseController):
         """Update runtime choices"""
         self.ROUTINE_FILES = {
             filepath.name: filepath
-            for filepath in (REPOSITORY_DIRECTORY / "routines").rglob("*.openbb")
+            for filepath in (MISCELLANEOUS_DIRECTORY / "routines").rglob("*.openbb")
         }
         self.ROUTINE_FILES.update(
             {
