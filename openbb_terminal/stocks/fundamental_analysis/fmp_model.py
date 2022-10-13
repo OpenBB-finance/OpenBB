@@ -14,7 +14,7 @@ import valinvest
 
 from openbb_terminal.rich_config import console
 from openbb_terminal import config_terminal as cfg
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format
 from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 
@@ -22,6 +22,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def get_score(symbol: str) -> Optional[np.number]:
     """Gets value score from fmp
 
@@ -52,6 +53,7 @@ def get_score(symbol: str) -> Optional[np.number]:
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def get_profile(symbol: str) -> pd.DataFrame:
     """Get ticker profile from FMP
 
@@ -79,6 +81,7 @@ def get_profile(symbol: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def get_quote(symbol: str) -> pd.DataFrame:
     """Gets ticker quote from FMP
 
@@ -125,6 +128,7 @@ def get_quote(symbol: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def get_enterprise(
     symbol: str, limit: int = 5, quarterly: bool = False
 ) -> pd.DataFrame:
@@ -166,6 +170,7 @@ def get_enterprise(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def get_dcf(symbol: str, limit: int = 5, quarterly: bool = False) -> pd.DataFrame:
     """Get stocks dcf from FMP
 
@@ -205,6 +210,7 @@ def get_dcf(symbol: str, limit: int = 5, quarterly: bool = False) -> pd.DataFram
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def get_income(
     symbol: str,
     limit: int = 5,
@@ -271,6 +277,7 @@ def get_income(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def get_balance(
     symbol: str,
     limit: int = 5,
@@ -339,6 +346,7 @@ def get_balance(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def get_cash(
     symbol: str,
     limit: int = 5,
@@ -404,6 +412,7 @@ def get_cash(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def get_key_metrics(
     symbol: str, limit: int = 5, quarterly: bool = False
 ) -> pd.DataFrame:
@@ -445,6 +454,7 @@ def get_key_metrics(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def get_key_ratios(
     symbol: str, limit: int = 5, quarterly: bool = False
 ) -> pd.DataFrame:
@@ -486,6 +496,7 @@ def get_key_ratios(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def get_financial_growth(
     symbol: str, limit: int = 5, quarterly: bool = False
 ) -> pd.DataFrame:
@@ -529,6 +540,7 @@ def get_financial_growth(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def clean_metrics_df(data: pd.DataFrame, num: int, mask: bool = True) -> pd.DataFrame:
     """Clean metrics data frame
 

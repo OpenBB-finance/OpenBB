@@ -18,6 +18,7 @@ from openbb_terminal.forex.forex_helper import FOREX_SOURCES, SOURCES_INTERVALS
 from openbb_terminal.helper_funcs import (
     valid_date,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    export_data,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -159,8 +160,7 @@ class ForexController(BaseController):
             other_args.insert(0, "-t")
 
         ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
         if ns_parser:
@@ -192,6 +192,13 @@ class ForexController(BaseController):
                     )
                 else:
                     self.data.index.name = "date"
+
+                export_data(
+                    ns_parser.export,
+                    os.path.dirname(os.path.abspath(__file__)),
+                    "load",
+                    self.data.copy(),
+                )
 
                 self.source = ns_parser.source
 
