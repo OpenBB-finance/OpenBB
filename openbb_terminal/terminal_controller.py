@@ -892,7 +892,7 @@ def main(
     if test:
         os.environ["DEBUG_MODE"] = "true"
 
-        if paths == []:
+        if paths == "":
             console.print("Please send a path when using test mode")
             return
         test_files = []
