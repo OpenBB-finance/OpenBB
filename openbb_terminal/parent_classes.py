@@ -85,6 +85,7 @@ class BaseController(metaclass=ABCMeta):
         "q",
         "quit",
         "..",
+        "e",
         "exit",
         "r",
         "reset",
