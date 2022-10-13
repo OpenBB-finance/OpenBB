@@ -5,6 +5,7 @@ import logging
 import os
 import json
 import pandas as pd
+import inspect
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.rich_config import console
@@ -130,11 +131,19 @@ def sdk_arg_logger(func=None, log=None, virtual_path: str = "", chart: bool = Fa
         try:
             value = func(*args, **kwargs)
 
-            logging_info = {"INPUT": {"args": args, "kwargs": kwargs}}
+            sig = inspect.signature(func)
+            sig_args = {
+                param.name: param.default
+                for param in sig.parameters.values()
+                if param.default is not inspect.Parameter.empty
+            }
+            # merge args with sig_args
+            sig_args.update(dict(zip(sig.parameters, args)))
+            # add kwargs elements to sig_args
+            sig_args.update(kwargs)
 
-            if virtual_path:
-                logging_info["VIRTUAL_PATH"] = virtual_path
-
+            logging_info = {"INPUT": sig_args}
+            logging_info["VIRTUAL_PATH"] = virtual_path
             logging_info["CHART"] = chart
 
             log.info(
