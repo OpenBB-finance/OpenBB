@@ -180,6 +180,19 @@ def countries_string_to_list(countries_list: str) -> List[str]:
 
 @log_start_end(log=logger)
 def create_matrix(dictionary: Dict[str, Dict[str, float]]) -> pd.DataFrame:
+    """Create matrix of yield and spreads.
+
+    Parameters
+    ----------
+    dictionary: Dict[str, Dict[str, float]]
+        Dictionary of yield data by country. E.g. {'10Y': {'United States': 4.009, 'Canada': 3.48}}
+
+    Returns
+    -------
+    pd.DataFrame
+        Spread matrix.
+
+    """
 
     maturity = list(dictionary.keys())[0]
     d = dictionary[maturity]
@@ -201,7 +214,6 @@ def create_matrix(dictionary: Dict[str, Dict[str, float]]) -> pd.DataFrame:
     matrixdf.insert(
         0, "Yield " + maturity, pd.DataFrame.from_dict(d, orient="index") * 100
     )
-    # matrixdf.insert(1, "", 0)
 
     return matrixdf
 
