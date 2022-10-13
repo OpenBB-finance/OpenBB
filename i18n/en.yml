@@ -1057,8 +1057,8 @@ en:
   forecast/arima: Arima (Non-darts)
   forecast/expo: Probabilistic Exponential Smoothing
   forecast/theta: Theta Method
-  forecast/linregr: Probabilistic Linear Regression (feat. Past covariates)
-  forecast/regr: Regression (feat. Past covariates)
+  forecast/linregr: Probabilistic Linear Regression (feat. Past covariates and Explainability)
+  forecast/regr: Regression (feat. Past covariates and Explainability)
   forecast/rnn: Probabilistic Recurrent Neural Network (RNN, LSTM, GRU)
   forecast/brnn: Block Recurrent Neural Network (RNN, LSTM, GRU) (feat. Past covariates)
   forecast/nbeats: Neural Bayesian Estimation (feat. Past covariates)
