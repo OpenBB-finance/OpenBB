@@ -6,21 +6,11 @@ import logging
 # pylint: disable=R1732, R0912
 import os
 from pathlib import Path
-import re
 import webbrowser
 from ast import literal_eval
 from datetime import datetime
 from typing import List
 import papermill as pm
-import importlib
-import contextlib
-import io
-
-from nbconvert.nbconvertapp import NbConvertApp
-from nbconvert.exporters import ScriptExporter
-from nbconvert.writers import FilesWriter
-from matplotlib import pyplot as plt
-
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.core.config.paths import USER_EXPORTS_DIRECTORY
@@ -36,11 +26,13 @@ logger = logging.getLogger(__name__)
 class ReportController(BaseController):
     """Report Controller class."""
 
-    reports_folder = Path(__file__).parent
+    CURRENT_LOCATION = Path(__file__)
+    TEMPLATES_FOLDER = "templates"
+    REPORTS_FOLDER = CURRENT_LOCATION.parent / TEMPLATES_FOLDER
 
     report_names = [
         notebooks[:-6]
-        for notebooks in os.listdir(reports_folder)
+        for notebooks in os.listdir(REPORTS_FOLDER)
         if notebooks.endswith(".ipynb")
     ]
 
@@ -56,7 +48,7 @@ class ReportController(BaseController):
     reports_opts = ""
     for k, report_to_run in d_id_to_report_name.items():
         # Crawl data to look into what
-        notebook_file = Path(__file__).parent / report_to_run
+        notebook_file = REPORTS_FOLDER / report_to_run
 
         # Open notebook with report template
         with open(str(notebook_file) + ".ipynb") as n_file:
