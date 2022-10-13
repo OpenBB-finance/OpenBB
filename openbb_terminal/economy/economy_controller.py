@@ -1149,6 +1149,11 @@ class EconomyController(BaseController):
 
             elif ns_parser.source == "Investing":
 
+                if ns_parser.date:
+                    console.print(
+                        "Date ignored: historical data is only available for source 'FRED' and country 'united states'.\n"
+                    )
+
                 investingcom_view.display_yieldcurve(
                     country=ns_parser.country,
                     raw=ns_parser.raw,
