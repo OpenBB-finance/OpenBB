@@ -53,6 +53,7 @@ Use your best judgment, and feel free to propose changes to this document in a p
   - [Installers](#installers)
 
 # BASIC
+
 ## Adding a new command
 
 Before implementing a new command we highly recommend that you go through [Understand Code Structure](#understand-code-structure) and [Follow Coding Guidelines](#follow-coding-guidelines). This will allow you to get your PR merged faster and keep consistency of our code base.
@@ -1533,4 +1534,7 @@ In short:
 
 ## Installers
 
-When implementing a new feature or fixing something within the codebase, it is necessary to ensure that it is working appropriately on the terminal. However, it is equally as important to ensure that new features or fixes work on the installer terminal too. This is because a large portion of users utilize the installer to use OpenBB Terminal. More information on how to build an installer can be found [here](build/README.md).
+When implementing a new feature or fixing something within the codebase, it is necessary to ensure that it is working
+appropriately on the terminal. However, it is equally as important to ensure that new features or fixes work on the
+installer terminal too. This is because a large portion of users utilize the installer to use OpenBB Terminal.
+More information on how to build an installer can be found [here](build/README.md).
