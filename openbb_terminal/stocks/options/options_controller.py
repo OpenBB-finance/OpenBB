@@ -6,11 +6,13 @@ import logging
 from datetime import datetime, timedelta
 from typing import Any, List
 
+import numpy as np
 import pandas as pd
-from prompt_toolkit.completion import NestedCompleter
+
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.config_terminal import TRADIER_TOKEN
+from openbb_terminal.config_terminal import API_TRADIER_TOKEN
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
@@ -121,7 +123,7 @@ class OptionsController(BaseController):
         self.source = ""
 
         if ticker:
-            if TRADIER_TOKEN == "REPLACE_ME":  # nosec
+            if API_TRADIER_TOKEN == "REPLACE_ME":  # nosec
                 console.print("Loaded expiry dates from Yahoo Finance")
                 self.expiry_dates = yfinance_model.option_expirations(self.ticker)
             else:
@@ -134,14 +136,141 @@ class OptionsController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["unu"]["-s"] = {c: {} for c in self.unu_sortby_choices}
+
+            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
+            zero_to_one_detailed: dict = {
+                str(c): {} for c in np.arange(0.0, 1.0, 0.005)
+            }
+            one_to_thousand: dict = {str(c): {} for c in range(1, 1000)}
+            minus_one_to_thousand: dict = {str(c): {} for c in range(-1, 1000)}
+            choices["unu"] = {
+                "--sort": {c: {} for c in self.unu_sortby_choices},
+                "-s": "--sort",
+                "--ascending": {},
+                "-a": "--ascending",
+                "--puts_only": {},
+                "-p": "--puts_only",
+                "--calls_only": {},
+                "-c": "--calls_only",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["calc"] = {
+                "--put": {},
+                "--sell": {},
+                "--strike": one_to_thousand,
+                "-s": "--strike",
+                "--premium": one_to_hundred,
+                "-p": "--premium",
+                "--min": minus_one_to_thousand,
+                "-m": "--min",
+                "--max": minus_one_to_thousand,
+                "-M": "--max",
+            }
+            choices["load"] = {
+                "--ticker": None,
+                "-t": "--ticker",
+                "--source": {
+                    c: {} for c in get_ordered_list_sources(f"{self.PATH}load")
+                },
+            }
             choices["pcr"] = {c: {} for c in self.pcr_length_choices}
+            choices["pcr"]["--length"] = {c: {} for c in self.pcr_length_choices}
+            choices["pcr"]["-l"] = "--length"
+            choices["pcr"]["--start"] = None
+            choices["pcr"]["-s"] = "--start"
+            choices["chains"] = {
+                "--calls": {},
+                "-c": "--calls",
+                "--puts": {},
+                "-p": "--puts",
+                "--min": minus_one_to_thousand,
+                "-m": "--min",
+                "--max": minus_one_to_thousand,
+                "-M": "--max",
+                "--display": {c: {} for c in tradier_model.default_columns},
+                "-d": "--display",
+                "--source": {
+                    c: {} for c in get_ordered_list_sources(f"{self.PATH}chains")
+                },
+            }
+            plots = {
+                "--calls": {},
+                "-c": "--calls",
+                "--puts": {},
+                "-p": "--puts",
+                "--min": minus_one_to_thousand,
+                "-m": "--min",
+                "--max": minus_one_to_thousand,
+                "-M": "--max",
+                "--raw": {},
+                "--source": {
+                    c: {} for c in get_ordered_list_sources(f"{self.PATH}chains")
+                },
+            }
+            choices["oi"] = plots
+            choices["vol"] = plots
+            choices["voi"] = {
+                "--minv": None,
+                "-v": "--minv",
+                "--min": minus_one_to_thousand,
+                "-m": "--min",
+                "--max": minus_one_to_thousand,
+                "-M": "--max",
+                "--raw": {},
+                "--source": {
+                    c: {} for c in get_ordered_list_sources(f"{self.PATH}chains")
+                },
+            }
+            choices["vsurf"] = {c: {} for c in ["IV", "OI", "LP"]}
             choices["disp"] = {c: {} for c in self.preset_choices}
             choices["scr"] = {c: {} for c in self.preset_choices}
-            choices["grhist"]["-g"] = {c: {} for c in self.grhist_greeks_choices}
-            choices["plot"]["-x"] = {c: {} for c in self.plot_vars_choices}
-            choices["plot"]["-y"] = {c: {} for c in self.plot_vars_choices}
-            choices["plot"]["-c"] = {c: {} for c in self.plot_custom_choices}
+            choices["grhist"] = {
+                "--strike": None,
+                "-s": "--strike",
+                "--put": {},
+                "-p": "--put",
+                "--greek": {c: {} for c in self.grhist_greeks_choices},
+                "-g": "--greek",
+                "--chain": None,
+                "-c": "--chain",
+                "--raw": {},
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["plot"] = {
+                "--x_axis": {c: {} for c in self.plot_vars_choices},
+                "-x": "--x_axis",
+                "--y_axis": "--x_axis",
+                "-y": "--y_axis",
+                "--custom": {c: {} for c in self.plot_custom_choices},
+                "-c": "--custom",
+            }
+            choices["parity"] = {
+                "--put": {},
+                "-p": "--put",
+                "--ask": {},
+                "-a": "--ask",
+                "--min": minus_one_to_thousand,
+                "-m": "--min",
+                "--max": minus_one_to_thousand,
+                "-M": "--max",
+            }
+            choices["greeks"] = {
+                "--risk-free": zero_to_one_detailed,
+                "-r": "--risk-free",
+                "--dividend": one_to_hundred,
+                "-d": "--dividend",
+                "--put": {},
+                "-p": "--put",
+                "--min": minus_one_to_thousand,
+                "-m": "--min",
+                "--max": minus_one_to_thousand,
+                "-M": "--max",
+                "--all": {},
+                "-a": "--all",
+            }
+
             # This menu contains dynamic choices that may change during runtime
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -150,20 +279,43 @@ class OptionsController(BaseController):
         """Update runtime choices"""
         if self.expiry_dates and session and obbff.USE_PROMPT_TOOLKIT:
             self.choices["exp"] = {str(c): {} for c in range(len(self.expiry_dates))}
-            self.choices["exp"]["-d"] = {c: {} for c in self.expiry_dates + [""]}
+            self.choices["exp"]["--date"] = {c: {} for c in self.expiry_dates + [""]}
+            self.choices["exp"]["-d"] = "--date"
+            self.choices["exp"]["--source"] = {
+                c: {} for c in get_ordered_list_sources(f"{self.PATH}exp")
+            }
+
             if self.chain and self.source != "Nasdaq":
+                one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
                 self.choices["hist"] = {
                     str(c): {}
                     for c in self.chain.puts["strike"] + self.chain.calls["strike"]
                 }
-                self.choices["grhist"] = {
+                self.choices["hist"]["--put"] = {}
+                self.choices["hist"]["-p"] = "--put"
+                self.choices["hist"]["--chain"] = None
+                self.choices["hist"]["-c"] = "--chain"
+                self.choices["hist"]["--raw"] = {}
+                self.choices["hist"]["--limit"] = one_to_hundred
+                self.choices["hist"]["-l"] = "--limit"
+                self.choices["grhist"]["--strike"] = {
                     str(c): {}
                     for c in self.chain.puts["strike"] + self.chain.calls["strike"]
                 }
+                self.choices["grhist"]["-s"] = "--strike"
                 self.choices["binom"] = {
                     str(c): {}
                     for c in self.chain.puts["strike"] + self.chain.calls["strike"]
                 }
+                self.choices["binom"]["--put"] = {}
+                self.choices["binom"]["-p"] = "--put"
+                self.choices["binom"]["--european"] = {}
+                self.choices["binom"]["-e"] = "--european"
+                self.choices["binom"]["--xlsx"] = {}
+                self.choices["binom"]["-x"] = "--xlsx"
+                self.choices["binom"]["--plot"] = {}
+                self.choices["binom"]["--volatility"] = None
+                self.choices["binom"]["-v"] = "--volatility"
 
             self.completer = NestedCompleter.from_nested_dict(self.choices)
 
@@ -364,7 +516,7 @@ class OptionsController(BaseController):
         )
         parser.add_argument(
             "-l",
-            "-length",
+            "--length",
             help="Window length to get",
             dest="length",
             choices=self.pcr_length_choices,
@@ -676,12 +828,12 @@ class OptionsController(BaseController):
                 (
                     ns_parser.put
                     and ns_parser.strike
-                    in [float(strike) for strike in self.chain.puts["strike"]]
+                    not in [float(strike) for strike in self.chain.puts["strike"]]
                 )
                 or (
                     not ns_parser.put
                     and ns_parser.strike
-                    in [float(strike) for strike in self.chain.calls["strike"]]
+                    not in [float(strike) for strike in self.chain.calls["strike"]]
                 )
             ):
                 console.print("No correct strike input\n")
@@ -696,7 +848,7 @@ class OptionsController(BaseController):
                     ns_parser.export,
                 )
 
-            elif TRADIER_TOKEN != "REPLACE_ME":  # nosec
+            elif API_TRADIER_TOKEN != "REPLACE_ME":  # nosec
                 tradier_view.display_historical(
                     symbol=self.ticker,
                     expiry=self.selected_date,
@@ -766,7 +918,7 @@ class OptionsController(BaseController):
             if self.ticker:
                 if self.selected_date:
                     if ns_parser.source == "Tradier" or self.source == "Tradier":
-                        if TRADIER_TOKEN != "REPLACE_ME":  # nosec
+                        if API_TRADIER_TOKEN != "REPLACE_ME":  # nosec
                             tradier_view.display_chains(
                                 symbol=self.ticker,
                                 expiry=self.selected_date,
@@ -852,7 +1004,7 @@ class OptionsController(BaseController):
                 if self.selected_date:
                     if (
                         ns_parser.source == "Tradier"
-                        and TRADIER_TOKEN != "REPLACE_ME"  # nosec
+                        and API_TRADIER_TOKEN != "REPLACE_ME"  # nosec
                     ) or self.source == "Tradier":
                         tradier_view.plot_vol(
                             symbol=self.ticker,
@@ -930,7 +1082,7 @@ class OptionsController(BaseController):
                 if self.selected_date:
                     if (
                         ns_parser.source == "Tradier"
-                        and TRADIER_TOKEN != "REPLACE_ME"  # nosec
+                        and API_TRADIER_TOKEN != "REPLACE_ME"  # nosec
                     ) or self.source == "Tradier":
                         tradier_view.plot_volume_open_interest(
                             symbol=self.ticker,
@@ -1018,7 +1170,7 @@ class OptionsController(BaseController):
                 if self.selected_date:
                     if (
                         ns_parser.source == "Tradier"
-                        and TRADIER_TOKEN != "REPLACE_ME"  # nosec
+                        and API_TRADIER_TOKEN != "REPLACE_ME"  # nosec
                     ) or self.source == "Tradier":
                         tradier_view.plot_oi(
                             symbol=self.ticker,

@@ -1,5 +1,5 @@
 ## Get underlying data 
-### forex.load(to_symbol: str, from_symbol: str, resolution: str = 'd', interval: str = '1day', start_date: str = '2021-09-23', source: str = 'YahooFinance') -> pandas.core.frame.DataFrame
+### forex.load(to_symbol: str, from_symbol: str, resolution: str = 'd', interval: str = '1day', start_date: str = '2021-10-11', source: str = 'YahooFinance') -> pandas.core.frame.DataFrame
 
 Loads forex for two given symbols
 

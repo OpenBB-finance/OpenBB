@@ -1,16 +1,14 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### stocks.options.screen.screener_output(preset: str = 'high_IV', presets_path: str = '/Users/colindelahunty/OpenBBTerminal/openbb_terminal/stocks/options/screen/../presets/') -> Tuple[pandas.core.frame.DataFrame, str]
+### stocks.options.screen.screener_output(preset: str) -> Tuple[pandas.core.frame.DataFrame, str]
 
 Screen options based on preset filters
 
     Parameters
     ----------
     preset: str
-        Preset file to screen for
-    presets_path: str
-        Path to preset folder
+        Chosen preset
     Returns
     -------
     pd.DataFrame:
@@ -19,16 +17,14 @@ Screen options based on preset filters
         String containing error message if supplied
 
 ## Getting charts 
-### stocks.options.screen.screener_output(preset: str = 'high_IV', presets_path: str = '/Users/colindelahunty/OpenBBTerminal/openbb_terminal/stocks/options/screen/../presets/', limit: int = 20, export: str = '', chart=True) -> List
+### stocks.options.screen.screener_output(preset: str, limit: int = 20, export: str = '', chart=True) -> List
 
 Print the output of screener
 
     Parameters
     ----------
     preset: str
-        Preset file to screen for
-    presets_path: str
-        Path to preset folder
+        Chosen preset
     limit: int
         Number of randomly sorted rows to display
     export: str

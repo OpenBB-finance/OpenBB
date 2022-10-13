@@ -9,7 +9,8 @@ from typing import List
 
 import financedatabase
 import yfinance as yf
-from prompt_toolkit.completion import NestedCompleter
+
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common import feedparser_view, newsapi_view
@@ -25,7 +26,12 @@ from openbb_terminal.helper_classes import AllowArgsWithWhiteSpace
 from openbb_terminal.helper_funcs import choice_check_after_action
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console, translate, MenuText
+from openbb_terminal.rich_config import (
+    console,
+    translate,
+    MenuText,
+    get_ordered_list_sources,
+)
 from openbb_terminal.stocks import stocks_helper
 
 # pylint: disable=R1710,import-outside-toplevel,R0913,R1702,no-member
@@ -49,7 +55,6 @@ class StocksController(StockBaseController):
         "ta",
         "ba",
         "qa",
-        "pred",
         "disc",
         "dps",
         "scr",
@@ -63,6 +68,7 @@ class StocksController(StockBaseController):
         "ca",
         "options",
         "th",
+        "forecast",
     ]
 
     PATH = "/stocks/"
@@ -80,17 +86,73 @@ class StocksController(StockBaseController):
 
             choices: dict = {c: {} for c in self.controller_choices}
 
-            choices["search"]["--country"] = {c: None for c in self.country}
-            choices["search"]["-c"] = {c: None for c in self.country}
-            choices["search"]["--sector"] = {c: None for c in self.sector}
-            choices["search"]["-s"] = {c: None for c in self.sector}
-            choices["search"]["--industry"] = {c: None for c in self.industry}
-            choices["search"]["-i"] = {c: None for c in self.industry}
-            choices["search"]["--exchange"] = {
-                c: None for c in stocks_helper.market_coverage_suffix
+            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
+            choices["load"] = {
+                "--ticker": None,
+                "-t": "--ticker",
+                "--start": None,
+                "-s": "--start",
+                "--end": None,
+                "-e": "--end",
+                "--interval": {c: {} for c in ["1", "5", "15", "30", "60"]},
+                "-i": "--interval",
+                "--prepost": {},
+                "-p": "--prepost",
+                "--file": None,
+                "-f": "--file",
+                "--monthly": {},
+                "-m": "--monthly",
+                "--weekly": {},
+                "-w": "--weekly",
+                "--iexrange": {c: {} for c in ["ytd", "1y", "2y", "5y", "6m"]},
+                "-r": "--iexrange",
+                "--source": {
+                    c: {} for c in get_ordered_list_sources(f"{self.PATH}load")
+                },
             }
-            choices["search"]["-e"] = {
-                c: None for c in stocks_helper.market_coverage_suffix
+            choices["quote"] = {
+                "--ticker": None,
+                "-t": "--ticker",
+            }
+            choices["search"] = {
+                "--query": None,
+                "-q": "--query",
+                "--country": {c: {} for c in self.country},
+                "-c": "--country",
+                "--sector": {c: {} for c in self.sector},
+                "-s": "--sector",
+                "--industry": {c: {} for c in self.industry},
+                "-i": "--industry",
+                "--exchange": {c: {} for c in stocks_helper.market_coverage_suffix},
+                "-e": "--exchange",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["candle"] = {
+                "--sort": {c: {} for c in stocks_helper.CANDLE_SORT},
+                "--plotly": {},
+                "-p": "--plotly",
+                "--descending": {},
+                "-d": "--descending",
+                "--raw": {},
+                "--trend": {},
+                "-t": "--trend",
+                "--ma": None,
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["news"] = {
+                "--date": None,
+                "-d": "--date",
+                "--oldest": {},
+                "-o": "--oldest",
+                "--sources": None,
+                "-s": "--sources",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+                "--source": {
+                    c: {} for c in get_ordered_list_sources(f"{self.PATH}news")
+                },
             }
 
             choices["support"] = self.SUPPORT_CHOICES
@@ -105,10 +167,9 @@ class StocksController(StockBaseController):
             s_intraday = (f"Intraday {self.interval}", "Daily")[
                 self.interval == "1440min"
             ]
+            stock_text += f"{s_intraday} {self.ticker}"
             if self.start:
-                stock_text = f"{s_intraday} {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
-            else:
-                stock_text = f"{s_intraday} {self.ticker}"
+                stock_text += f" (from {self.start.strftime('%Y-%m-%d')})"
 
         mt = MenuText("stocks/", 100)
         mt.add_cmd("search")
@@ -138,7 +199,7 @@ class StocksController(StockBaseController):
         mt.add_menu("bt", self.ticker)
         mt.add_menu("ta", self.ticker)
         mt.add_menu("qa", self.ticker)
-        mt.add_menu("pred", self.ticker)
+        mt.add_menu("forecast", self.ticker)
         console.print(text=mt.menu_text, menu="Stocks")
 
     def custom_reset(self):
@@ -295,16 +356,7 @@ class StocksController(StockBaseController):
         )
         parser.add_argument(
             "--sort",
-            choices=[
-                "AdjClose",
-                "Open",
-                "Close",
-                "High",
-                "Low",
-                "Volume",
-                "Returns",
-                "LogRet",
-            ],
+            choices=stocks_helper.CANDLE_SORT,
             default="",
             type=str,
             dest="sort",
@@ -339,6 +391,13 @@ class StocksController(StockBaseController):
             type=str,
             help=translate("stocks/CANDLE_mov_avg"),
             default=None,
+        )
+        parser.add_argument(
+            "--log",
+            help="Plot with y axis on log scale",
+            action="store_true",
+            default=False,
+            dest="logy",
         )
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -402,6 +461,7 @@ class StocksController(StockBaseController):
                         intraday=self.interval != "1440min",
                         add_trend=ns_parser.trendlines,
                         ma=mov_avgs,
+                        yscale="log" if ns_parser.logy else "linear",
                     )
             else:
                 console.print("No ticker loaded. First use `load {ticker}`\n")
@@ -682,54 +742,17 @@ class StocksController(StockBaseController):
                 self.stock,
                 self.queue,
             )
-        # TODO: This menu should work regardless of data being daily or not!
-        # James: 5/27 I think it does now
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
 
     @log_start_end(log=logger)
-    def call_pred(self, _):
-        """Process pred command"""
-        # IMPORTANT: 8/11/22 prediction was discontinued on the installer packages
-        # because forecasting in coming out soon.
-        # This if statement disallows installer package users from using 'pred'
-        # even if they turn on the OPENBB_ENABLE_PREDICT feature flag to true
-        # however it does not prevent users who clone the repo from using it
-        # if they have ENABLE_PREDICT set to true.
-        if obbff.PACKAGED_APPLICATION or not obbff.ENABLE_PREDICT:
-            console.print(
-                "Predict is disabled. Forecasting coming soon!",
-                "\n",
-            )
-        else:
-            if self.ticker:
-                if self.interval == "1440min":
-                    try:
-                        from openbb_terminal.stocks.prediction_techniques import (
-                            pred_controller,
-                        )
+    def call_forecast(self, _):
+        """Process forecast command"""
+        from openbb_terminal.forecast import forecast_controller
 
-                        self.queue = self.load_class(
-                            pred_controller.PredictionTechniquesController,
-                            self.ticker,
-                            self.start,
-                            self.interval,
-                            self.stock,
-                            self.queue,
-                        )
-                    except ModuleNotFoundError as e:
-                        logger.exception(
-                            "One of the optional packages seems to be missing: %s",
-                            str(e),
-                        )
-                        console.print(
-                            "One of the optional packages seems to be missing: ",
-                            e,
-                            "\n",
-                        )
-
-                # TODO: This menu should work regardless of data being daily or not!
-                else:
-                    console.print("Load daily data to use this menu!", "\n")
-            else:
-                console.print("Use 'load <ticker>' prior to this command!", "\n")
+        self.queue = self.load_class(
+            forecast_controller.ForecastController,
+            self.ticker,
+            self.stock,
+            self.queue,
+        )

@@ -18,7 +18,7 @@ Gets yield curve data from FRED
         Date for which the yield curve is obtained
 
 ## Getting charts 
-### economy.fred_yield_curve(date: datetime.datetime = datetime.datetime(2022, 9, 23, 15, 38, 2, 959751, chart=True), external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, raw: bool = False, export: str = '')
+### economy.fred_yield_curve(date: datetime.datetime = datetime.datetime(2022, 10, 11, 7, 55, 32, 575569, chart=True), external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, raw: bool = False, export: str = '')
 
 Display yield curve based on US Treasury rates for a specified date.
 

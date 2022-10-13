@@ -9,10 +9,10 @@ import logging
 from typing import List, Dict
 
 # IMPORTATION THIRDPARTY
-from prompt_toolkit.completion import NestedCompleter
 
 # IMPORTATION INTERNAL
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -116,12 +116,15 @@ class SourcesController(BaseController):
             other_args.insert(0, "-c")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            console.print(
-                f"\n[param]Default   :[/param] {self.commands_with_sources[ns_parser.cmd][0]}"
-            )
-            console.print(
-                f"[param]Available :[/param] {', '.join(self.commands_with_sources[ns_parser.cmd])}\n"
-            )
+            if self.commands_with_sources[ns_parser.cmd]:
+                console.print(
+                    f"\n[param]Default   :[/param] {self.commands_with_sources[ns_parser.cmd][0]}"
+                )
+                console.print(
+                    f"[param]Available :[/param] {', '.join(self.commands_with_sources[ns_parser.cmd])}\n"
+                )
+            else:
+                console.print("This command has no data sources available.\n")
 
     # pylint: disable=R0912
     @log_start_end(log=logger)

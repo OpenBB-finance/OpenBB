@@ -1136,23 +1136,36 @@ One of the first steps once adding a new data source that requires an API key is
 The following code allows to check the validity of the IEX Cloud API key.
 
 ```python
-def check_iex_key(self, show_output: bool = False) -> None:
-    """Check IEX Cloud key"""
-    self.cfg_dict["IEXCLOUD"] = "iex"
+def check_iex_key(show_output: bool = False) -> str:
+    """Check IEX Cloud key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not.
+
+    Returns
+    -------
+    status: str
+
+    """
+
     if cfg.API_IEX_TOKEN == "REPLACE_ME":  # nosec
         logger.info("IEX Cloud key not defined")
-        self.key_dict["IEXCLOUD"] = "not defined"
+        status = KeyStatus.NOT_DEFINED
     else:
         try:
-            pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1")
+            pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1").quote(symbol="AAPL")
             logger.info("IEX Cloud key defined, test passed")
-            self.key_dict["IEXCLOUD"] = "defined, test passed"
-        except PyEXception:
-            logger.exception("IEX Cloud key defined, test failed")
-            self.key_dict["IEXCLOUD"] = "defined, test failed"
+            status = KeyStatus.DEFINED_TEST_PASSED
+        except Exception as _:  # noqa: F841
+            logger.warning("IEX Cloud key defined, test failed")
+            status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
-        console.print(self.key_dict["IEXCLOUD"] + "\n")
+        console.print(status.colorize() + "\n")
+
+    return status
 ```
 
 Note that there are usually 3 states:
@@ -1189,10 +1202,9 @@ def call_iex(self, other_args: List[str]):
         other_args.insert(0, "-k")
     ns_parser = parse_simple_args(parser, other_args)
     if ns_parser:
-        os.environ["OPENBB_API_IEX_KEY"] = ns_parser.key
-        dotenv.set_key(self.env_file, "OPENBB_API_IEX_KEY", ns_parser.key)
-        cfg.API_IEX_TOKEN = ns_parser.key
-        self.check_iex_key(show_output=True)
+        self.status_dict["iex"] = keys_model.set_iex_key(
+            key=ns_parser.key, persist=True, show_output=True
+        )
 ```
 
 # ADVANCED

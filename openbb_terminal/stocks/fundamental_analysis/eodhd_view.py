@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-@check_api_key(["API_EODHD_TOKEN"])
+@check_api_key(["API_EODHD_KEY"])
 def display_fundamentals(
     symbol: str,
     statement: str,

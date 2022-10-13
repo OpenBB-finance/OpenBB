@@ -1,0 +1,59 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.alphavantage.co/query?apikey=MOCK_API_KEY&function=REAL_GDP&interval=quarterly
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwAAAP//nNdNi9swEIDhe3+F8XkzzKc02nOh19JrT+5uCgFvTB1noSz97yVpk1s1
+        nc3JQcqLeLDl6O3DMAzDeJxe9uPjMH7ZT/PwaV1Op+Hj8rI/bYen4fO6PJ+ftvHhz9TDcduvr9N8
+        mf7jPK3bfp1/3gbPx8N2Gfh2mOfDcjwNy/fheZnnaT3dpjxP2zQ+Dl+v3y6ft/vVbfy6FEbmHeoO
+        6e8v7zNep/l8naLNDWqz8T7+6+H/stTNuhm41WSWdoS9rBEhNKN0FmsfgQoocj7bt/WG4GL5bN+2
+        NILCmsxiYKuuAqWkqwFtRQJCz2f7tCIGjSyfDWjZQZMG1CLZhgStSTob0bYCzJTP9mmrCSBbPtun
+        NVdwSt615JFtrQxUKJ0NbIs3aGj5bN+2aAGXfDWgRQTy5PZFNaItxUGqpbMBrVmBZiWf7dMaIRjW
+        fLZvK4rvuG1LZGtigGnbEtmqNigo+WzfVrECe8ln+7bsDpJ9dC2iVVUw5nQ2oJXLjmCWzwYvMhXg
+        pvlsQEsMxtkbQSNbqQSILZ0NbNkrcHoT18iWmgIXzWf7tlgbGGV3GolsuSB4erUS2VJFqJSvBrSo
+        wOmNRkJaqmDp1XJES+KAaVqOaNHf808pPJKhFjCRfLZrK80LiGaf3ehIplgdNL2BRUcyaS7Q0q/z
+        6EgmzSpkT7v0rxPZbwAAAP//nJm7bQQxDERzFzPgn1IxLsW9G3eB4egGs9lGD8QDRWm4f9SzDpff
+        dTSRWQy2joxlaqvhoVfL1JpBPmMskeXuQFVgLJHljcHMylhi9kRi7AH2s9k9ga7WsUStJarEPjCW
+        yPLchtfKWNa1bsirV8u6NgvToWPJsLXAqg5oIjNvxLkylql9z5nSsUUaYbChU0nXnoa76mDoRPDB
+        UTeLNnQiZGLkrh2qNgc2D6olbuMiU522TSdCHPimjCVudxZHbtum09YcrW5TjCWyHEvINw4LZLnh
+        mD0ylqgd3wf3Iwtk2dtodWtrLJBlvVaLqVbLAln2XaT6ojEWyLLuwfUH2M9uKy5sr4797Pa1//JR
+        zy5LZFlj8L4ylrk1h3x0WSDLnECr/zCMBrKYxJn/Dt5f318/vwAAAP//AwBApnh4UxwAAA==
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 756ec4026f7295b5-LUX
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Sat, 08 Oct 2022 12:09:05 GMT
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Cookie
+      Via:
+      - 1.1 vegur
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+version: 1

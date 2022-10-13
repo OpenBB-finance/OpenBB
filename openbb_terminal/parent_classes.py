@@ -3,7 +3,6 @@ __docformat__ = "numpy"
 
 # pylint: disable=C0301,C0302,R0902,global-statement
 
-
 from abc import ABCMeta, abstractmethod
 import argparse
 import re
@@ -15,7 +14,6 @@ import json
 from typing import Union, Any, List, Dict
 from datetime import datetime, timedelta
 
-from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 from rich.markdown import Markdown
@@ -28,6 +26,7 @@ from openbb_terminal.core.config.paths import (
 )
 from openbb_terminal.decorators import log_start_end
 
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.menu import session
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.helper_funcs import (
@@ -40,8 +39,11 @@ from openbb_terminal.helper_funcs import (
     support_message,
     check_file_type_saved,
     check_positive,
+    load_json,
     parse_and_split_input,
     search_wikipedia,
+    screenshot,
+    export_data,
 )
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.rich_config import console, get_ordered_list_sources
@@ -88,9 +90,11 @@ class BaseController(metaclass=ABCMeta):
         "r",
         "reset",
         "support",
+        "glossary",
         "wiki",
         "record",
         "stop",
+        "screenshot",
     ]
 
     CHOICES_COMMANDS: List[str] = []
@@ -188,6 +192,13 @@ class BaseController(metaclass=ABCMeta):
         # goes into "TA", the "TSLA" ticker will appear. If that condition doesn't exist
         # the previous class will be loaded and even if the user changes the ticker on
         # the stocks context it will not impact the one of TA menu - unless changes are done.
+        # An exception is made for forecasting because it is built to handle multiple loaded
+        # tickers.
+        if class_ins.PATH in controllers and class_ins.PATH == "/forecast/":
+            old_class = controllers[class_ins.PATH]
+            old_class.queue = self.queue
+            old_class.load(*args[:-1], **kwargs)
+            return old_class.menu()
         if class_ins.PATH in controllers and arguments == 1 and obbff.REMEMBER_CONTEXTS:
             old_class = controllers[class_ins.PATH]
             old_class.queue = self.queue
@@ -479,6 +490,42 @@ class BaseController(metaclass=ABCMeta):
             )
 
     @log_start_end(log=logger)
+    def call_glossary(self, other_args: List[str]) -> None:
+        """Process glossary command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="support",
+            description="Submit your support request",
+        )
+        parser.add_argument(
+            "-w",
+            "--word",
+            action="store",
+            dest="word",
+            type=str,
+            required="-h" not in other_args,
+            help="Word that you want defined",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-w")
+
+        ns_parser = parse_simple_args(parser, other_args)
+
+        glossary_file = os.path.join(os.path.dirname(__file__), "glossary.json")
+        glossary_dict = load_json(glossary_file)
+
+        if ns_parser:
+            word = glossary_dict.get(ns_parser.word, "")
+            word = word.lower()
+            word = word.replace("--", "")
+            word = word.replace("-", " ")
+            if word:
+                console.print(word + "\n")
+            else:
+                console.print("Word is not in the glossary.\n")
+
+    @log_start_end(log=logger)
     def call_wiki(self, other_args: List[str]) -> None:
         """Process wiki command"""
         parser = argparse.ArgumentParser(
@@ -538,7 +585,8 @@ class BaseController(metaclass=ABCMeta):
                 SESSION_RECORDED_NAME = ns_parser.routine_name + ".openbb"
 
             console.print(
-                "[green]The session is successfully being recorded. Remember to 'stop' before exiting terminal!\n[/green]"
+                "[green]The session is successfully being recorded."
+                + " Remember to 'stop' before exiting terminal!\n[/green]"
             )
             RECORD_SESSION = True
 
@@ -577,6 +625,22 @@ class BaseController(metaclass=ABCMeta):
             # Clear session to be recorded again
             RECORD_SESSION = False
             SESSION_RECORDED = list()
+
+    @log_start_end(log=logger)
+    def call_screenshot(self, other_args: List[str]) -> None:
+        """Process screenshot command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="screenshot",
+            description="Screenshot terminal window or plot figure open into an OpenBB frame. "
+            "Default target is plot if there is one open, otherwise it's terminal window. "
+            " In case the user wants the terminal window, it can be forced with '-t` or '--terminal' flag passed.",
+        )
+        ns_parser = parse_simple_args(parser, other_args)
+
+        if ns_parser:
+            screenshot()
 
     def parse_known_args_and_warn(
         self,
@@ -696,6 +760,7 @@ class BaseController(metaclass=ABCMeta):
             if self.queue and len(self.queue) > 0:
                 # If the command is quitting the menu we want to return in here
                 if self.queue[0] in ("q", "..", "quit"):
+                    self.save_class()
                     # Go back to the root in order to go to the right directory because
                     # there was a jump between indirect menus
                     if custom_path_menu_above:
@@ -915,7 +980,9 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
 
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
 
         if ns_parser:
             if ns_parser.weekly and ns_parser.monthly:
@@ -995,7 +1062,13 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     self.stock = self.stock.rename(columns={"Adj Close": "AdjClose"})
                     self.stock = self.stock.dropna()
                     self.stock.columns = [x.lower() for x in self.stock.columns]
-                    console.print("")
+                    console.print()
+                export_data(
+                    ns_parser.export,
+                    os.path.dirname(os.path.abspath(__file__)),
+                    "load",
+                    self.stock.copy(),
+                )
 
 
 class CryptoBaseController(BaseController, metaclass=ABCMeta):
@@ -1087,7 +1160,9 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
 
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
 
         if ns_parser:
             if ns_parser.source in ("YahooFinance", "CoinGecko"):
@@ -1100,6 +1175,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 start_date=ns_parser.start,
                 interval=ns_parser.interval,
                 source=ns_parser.source,
+                exchange=ns_parser.exchange,
             )
             if not self.current_df.empty:
                 self.vs = ns_parser.vs
@@ -1115,4 +1191,10 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                     ns_parser.source,
                     ns_parser.exchange,
                     self.current_interval,
+                )
+                export_data(
+                    ns_parser.export,
+                    os.path.dirname(os.path.abspath(__file__)),
+                    "load",
+                    self.current_df.copy(),
                 )

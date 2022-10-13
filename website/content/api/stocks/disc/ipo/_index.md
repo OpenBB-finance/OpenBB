@@ -1,5 +1,5 @@
 ## Get underlying data 
-### stocks.disc.ipo(start_date: str = '2022-09-18', end_date: str = '2022-09-23') -> pandas.core.frame.DataFrame
+### stocks.disc.ipo(start_date: str = '2022-10-06', end_date: str = '2022-10-11') -> pandas.core.frame.DataFrame
 
 Get IPO calendar
 

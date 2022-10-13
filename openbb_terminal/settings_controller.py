@@ -12,12 +12,12 @@ import pytz
 
 # IMPORTATION THIRDPARTY
 from dotenv import set_key
-from prompt_toolkit.completion import NestedCompleter
 
 # IMPORTATION INTERNAL
 from openbb_terminal import config_plot as cfg_plot
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.core.config.paths import USER_ENV_FILE, USER_DATA_DIRECTORY
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     get_flair,
@@ -31,7 +31,7 @@ from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
 
 # pylint: disable=too-many-lines,no-member,too-many-public-methods,C0302
-# pylint:disable=import-outside-toplevel
+# pylint: disable=import-outside-toplevel
 
 logger = logging.getLogger(__name__)
 
@@ -54,6 +54,7 @@ class SettingsController(BaseController):
         "userdata",
         "source",
         "flair",
+        "colors",
     ]
     PATH = "/settings/"
 
@@ -81,6 +82,7 @@ class SettingsController(BaseController):
         mt = MenuText("settings/")
         mt.add_info("_info_")
         mt.add_raw("\n")
+        mt.add_cmd("colors")
         mt.add_setting("dt", obbff.USE_DATETIME)
         mt.add_cmd("flair")
         mt.add_raw("\n")
@@ -133,6 +135,21 @@ class SettingsController(BaseController):
         mt.add_raw("\n")
 
         console.print(text=mt.menu_text, menu="Settings")
+
+    @log_start_end(log=logger)
+    def call_colors(self, _):
+        """Process colors command"""
+        console.print(
+            "\n1. Play with the terminal coloring embedded in our website https://openbb.co/customize\n"
+        )
+        console.print("2. Once happy, click 'Download Theme'\n")
+        console.print(
+            "3. The file 'openbb_config.richstyle.json' should be downloaded\n"
+        )
+        console.print(
+            "4. Insert that config file inside /OpenBBUserData/styles/user/\n"
+        )
+        console.print("5. Close the terminal and run it again.\n")
 
     @log_start_end(log=logger)
     def call_dt(self, _):
