@@ -262,7 +262,8 @@ def get_spread_matrix(
             no_data_countries.append(country)
 
     if no_data_countries:
-        console.print(f"[red]No data for {no_data_countries}.[/red]")
+        s = ", ".join(no_data_countries)
+        console.print(f"[red]No data for {s}.[/red]")
 
     if change:
         return create_matrix(d0) - create_matrix(d1)
