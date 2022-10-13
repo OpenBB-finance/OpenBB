@@ -7,6 +7,7 @@ import warnings
 from typing import Any, Tuple, Union, List, Optional
 
 import pandas as pd
+import torch
 
 from darts import TimeSeries
 from darts.models import TransformerModel
@@ -100,7 +101,8 @@ def get_trans_data(
             Best transformer Model
     """
 
-    # TODO Check if torch GPU AVAILABLE
+    # Use torch GPU if AVAILABLE
+    accelerator = "gpu" if torch.cuda.is_available() else "cpu"
 
     use_scalers = True
     probabilistic = False
@@ -136,7 +138,7 @@ def get_trans_data(
         optimizer_kwargs={"lr": learning_rate},
         model_name=model_save_name,
         random_state=42,
-        pl_trainer_kwargs=helpers.get_pl_kwargs(accelerator="cpu"),
+        pl_trainer_kwargs=helpers.get_pl_kwargs(accelerator=accelerator),
         force_reset=force_reset,
         save_checkpoints=save_checkpoints,
     )

@@ -4,18 +4,18 @@ __docformat__ = "numpy"
 
 import logging
 from typing import Any, Tuple, Union, List, Optional
-
 import warnings
-from statsmodels.tools.sm_exceptions import ConvergenceWarning
+
 import pandas as pd
+import torch
+
 from darts import TimeSeries
 from darts.models import TFTModel
 from darts.utils.likelihood_models import QuantileRegression
-
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
 
-
+from statsmodels.tools.sm_exceptions import ConvergenceWarning
 warnings.simplefilter("ignore", ConvergenceWarning)
 
 
@@ -113,6 +113,9 @@ def get_tft_data(
         Fit Prob. TFT model object.
     """
 
+    # Use torch GPU if AVAILABLE
+    accelerator = "gpu" if torch.cuda.is_available() else "cpu"
+
     use_scalers = True
     probabilistic = True
 
@@ -167,7 +170,7 @@ def get_tft_data(
         random_state=42,
         n_epochs=n_epochs,
         batch_size=batch_size,
-        pl_trainer_kwargs=helpers.get_pl_kwargs(accelerator="cpu"),
+        pl_trainer_kwargs=helpers.get_pl_kwargs(accelerator=accelerator),
         likelihood=QuantileRegression(
             quantiles=quantiles
         ),  # QuantileRegression is set per default

@@ -7,11 +7,11 @@ import warnings
 from typing import Any, Tuple, Union, List, Optional
 
 import pandas as pd
+import torch
 
 from darts import TimeSeries
 from darts.models import NBEATSModel
 from openbb_terminal.decorators import log_start_end
-
 from openbb_terminal.forecast import helpers
 
 logger = logging.getLogger(__name__)
@@ -95,6 +95,9 @@ def get_NBEATS_data(
             Best NBEATS Model
     """
 
+    # Use torch GPU if AVAILABLE
+    accelerator = "gpu" if torch.cuda.is_available() else "cpu"
+
     use_scalers = True
     probabilistic = False
 
@@ -130,7 +133,7 @@ def get_NBEATS_data(
         force_reset=force_reset,
         save_checkpoints=save_checkpoints,
         random_state=42,
-        pl_trainer_kwargs=helpers.get_pl_kwargs(accelerator="cpu"),
+        pl_trainer_kwargs=helpers.get_pl_kwargs(accelerator=accelerator),
     )
 
     # fit model on train series for historical forecasting

@@ -48,6 +48,7 @@ def display_nhits_forecast(
     start_date: Optional[datetime] = None,
     end_date: Optional[datetime] = None,
     naive: bool = False,
+    use_gpu: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """Display Nhits forecast
@@ -125,6 +126,8 @@ def display_nhits_forecast(
         naive: bool
             Whether to show the naive baseline. This just assumes the closing price will be the same
             as the previous day's closing price. Defaults to False.
+        use_gpu (bool, optional):
+            Whether or not to use the GPU if available. Defaults to False.
         external_axes:Optional[List[plt.axes]]
             External axes to plot on
     """
@@ -166,6 +169,7 @@ def display_nhits_forecast(
         model_save_name=model_save_name,
         force_reset=force_reset,
         save_checkpoints=save_checkpoints,
+        use_gpu=use_gpu,
     )
     if ticker_series == []:
         return

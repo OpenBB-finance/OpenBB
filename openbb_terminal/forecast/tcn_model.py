@@ -93,6 +93,8 @@ def get_tcn_data(
     """
 
     # TODO Check if torch GPU AVAILABLE
+    # TODO Fix CUDNN error on GPU:
+    # Could not load library libcudnn_cnn_infer.so.8. Error: libcuda.so: cannot open shared object file: No such file or directory
 
     use_scalers = True
     probabilistic = False

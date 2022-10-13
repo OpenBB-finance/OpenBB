@@ -381,6 +381,7 @@ class ForecastController(BaseController):
         residuals: bool = False,
         forecast_only: bool = False,
         naive: bool = False,
+        use_gpu: bool = False,
     ):
         if hidden_size:
             parser.add_argument(
@@ -639,6 +640,14 @@ class ForecastController(BaseController):
                 dest="forecast_only",
             )
             # if user does not put in --target-dataset
+        if use_gpu:
+            parser.add_argument(
+                "--use_gpu",
+                action="store_true",
+                dest="use_gpu",
+                default=False,
+                help="""Whether or not to use the GPU if available for models that support it.""",
+            )
         return super().parse_known_args_and_warn(
             parser, other_args, export_allowed, raw, limit
         )
@@ -1766,6 +1775,7 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
+            use_gpu=True,
         )
 
         if ns_parser:
@@ -1796,6 +1806,7 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
+                use_gpu=ns_parser.use_gpu,
             )
 
     @log_start_end(log=logger)

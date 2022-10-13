@@ -7,6 +7,7 @@ import warnings
 from typing import Any, Tuple, Union, List, Optional
 
 import pandas as pd
+import torch
 
 from darts import TimeSeries
 from darts.models import RNNModel
@@ -35,6 +36,7 @@ def get_rnn_data(
     input_chunk_size: int = 14,
     force_reset: bool = True,
     save_checkpoints: bool = True,
+    use_gpu: bool = False,
 ) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], Any]:
     """Perform RNN forecasting
 
@@ -69,6 +71,8 @@ def get_rnn_data(
         save_checkpoints (bool, optional):
             Whether or not to automatically save the untrained model and checkpoints from training.
             Defaults to True.
+        use_gpu (bool, optional):
+            Whether or not to use the GPU if available. Defaults to False.
 
     Returns:
         List[TimeSeries]
@@ -83,7 +87,8 @@ def get_rnn_data(
             Best RNN Model
     """
 
-    # TODO Check if torch GPU AVAILABLE
+    # Use torch GPU if AVAILABLE
+    accelerator = "gpu" if use_gpu and torch.cuda.is_available() else "cpu"
 
     use_scalers = True
     probabilistic = True
@@ -109,7 +114,7 @@ def get_rnn_data(
         random_state=42,
         training_length=training_length,
         input_chunk_length=input_chunk_size,
-        pl_trainer_kwargs=helpers.get_pl_kwargs(accelerator="cpu"),
+        pl_trainer_kwargs=helpers.get_pl_kwargs(accelerator=accelerator),
         force_reset=force_reset,
         save_checkpoints=save_checkpoints,
         likelihood=GaussianLikelihood(),
