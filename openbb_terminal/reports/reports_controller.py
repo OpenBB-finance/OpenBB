@@ -11,6 +11,7 @@ import webbrowser
 from ast import literal_eval
 from datetime import datetime
 from typing import List
+import papermill as pm
 import importlib
 import contextlib
 import io
@@ -209,6 +210,10 @@ class ReportController(BaseController):
                 console.print("")
                 return []
 
+            notebook_template = os.path.join(
+                "openbb_terminal", "reports", report_to_run
+            )
+
             args_to_output = f"_{'_'.join(other_args)}" if "_".join(other_args) else ""
             report_output_name = (
                 f"{datetime.now().strftime('%Y%m%d_%H%M%S')}"
@@ -220,89 +225,28 @@ class ReportController(BaseController):
             )
 
             # only a single backslash appears in the .py file otherwise
-            notebook_output = notebook_output.replace("\\", "\\\\")
-            notebook_output = notebook_output.replace("\\", "\\\\")
+            # notebook_output = notebook_output.replace("\\", "\\\\")
+            # notebook_output = notebook_output.replace("\\", "\\\\")
 
             # gather params from user
             d_report_params = {}
-            for idx, param in enumerate(params):
-                d_report_params[param] = other_args[idx]
+            for idx, args in enumerate(params):
+                d_report_params[args] = other_args[idx]
 
             d_report_params["report_name"] = notebook_output
 
-            notebook_file = str(Path(__file__).parent / report_to_run)
+            result = pm.execute_notebook(
+                notebook_template + ".ipynb",
+                notebook_output + ".ipynb",
+                parameters=d_report_params,
+                kernel_name="python3",
+            )
 
-            with open(notebook_file + ".ipynb") as n_file:
-                notebook_content = n_file.read()
-
-            params.append("report_name")  # re-add report_name
-
-            # replace params in notebook
-            if "parameters" in notebook_content:
-                params_to_change = self.d_params[report_to_run][1]
-                for idx, param in enumerate(params_to_change):
-                    notebook_content = notebook_content.replace(
-                        param, d_report_params[params[idx]], 1
-                    )
-
-                notebook_file_copy = notebook_file + "copy"
-
-                with open(notebook_file_copy + ".ipynb", "w") as file:
-                    file.write(notebook_content)
-
-            # use nbconvert to switch to .py
-            converter = NbConvertApp()
-            converter.log_level = 40
-            converter.export_format = "script"
-            converter.exporter = ScriptExporter()
-            converter.writer = FilesWriter()
-
-            converter.convert_single_notebook(notebook_file_copy + ".ipynb")
-
-            python_file = Path(notebook_file_copy + ".py")
-            python_text = python_file.read_text().split("\n")
-
-            # remove lines with get_ipython
-            lines = [
-                line
-                for line in python_text
-                if len(line) == 0 or "get_ipython()" not in line
-            ]
-            clean_code = "\n".join(lines)
-            clean_code = re.sub(r"\n{2,}", "\n\n", clean_code)
-            python_file.write_text(clean_code.strip())
-
-            # Check for existing matplotlib figures
-            _figures_before = plt.get_fignums()
-
-            # Run the report
-            try:
-                notebook_execution_output = io.StringIO()
-                with contextlib.redirect_stdout(notebook_execution_output):
-                    importlib.import_module(
-                        f"openbb_terminal.reports.{report_to_run}copy"
-                    )
-            except Exception as error:
-                console.print("[red]\nReport wasn't executed correctly.\n[/red]")
-                console.print(f"[red]\nError : {error}\n[/red]")
-
-            # Close the figures that were created during report execution
-            _figures_after = plt.get_fignums()
-            for fig_number in _figures_after:
-                if fig_number not in _figures_before:
-                    plt.close(fig_number)
-
-            notebook_output = notebook_output.replace("\\\\", "\\")
-            notebook_output = notebook_output.replace("\\\\", "\\")
-            report_output_path = notebook_output + ".html"
-
-            params.remove("report_name")  # remove report_name
-
-            os.remove(notebook_file_copy + ".ipynb")
-            os.remove(notebook_file_copy + ".py")
-
-            if Path(report_output_path).is_file():
+            if not result["metadata"]["papermill"]["exception"]:
                 if obbff.OPEN_REPORT_AS_HTML:
+                    report_output_path = os.path.join(
+                        os.path.abspath(os.path.join(".")), notebook_output + ".html"
+                    )
                     console.print(report_output_path)
                     webbrowser.open(f"file://{report_output_path}")
 
