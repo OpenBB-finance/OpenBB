@@ -66,7 +66,11 @@ def get_big_mac_index(country_code: str = "USA") -> pd.DataFrame:
     """
     URL = f"https://data.nasdaq.com/api/v3/datasets/ECONOMIST/BIGMAC_{country_code}"
     URL += f"?column_index=3&api_key={API_KEY_QUANDL}"
-    r = requests.get(URL)
+    try:
+        r = requests.get(URL)
+    except Exception:
+        console.print("[red]Error connecting to NASDAQ API[/red]\n")
+        return pd.DataFrame()
 
     df = pd.DataFrame()
 
