@@ -108,7 +108,6 @@ jobs:
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*/*/*/*/*/*/*.so
           echo "Code Signing DYLIB Files"
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*.dylib
-          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/sklearn/.dylibs/libomp.dylib
           echo "Code Sign OpenBB Executable File"
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/OpenBBTerminal
       - name: Create DMG
