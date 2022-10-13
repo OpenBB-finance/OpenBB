@@ -796,6 +796,7 @@ en:
   forex/ta: technical analysis,          ema, macd, rsi, adx, bbands, obv
   forex/qa: quantitative analysis,       decompose, cusum, residuals analysis
   forex/forex: Forex brokerages
+  forex/forecast: forecast techniques
   forex/oanda: Oanda menu
   forex/ta/_currency: Currency pair loaded
   forex/ta/_source: Source
@@ -873,6 +874,7 @@ en:
   funds/equity: equity holdings
   funds/al_swe: display fund allocation (sector, country, holdings)
   funds/info_swe: get fund information
+  funds/forecast: forecasting techniques
   alternative/covid: COVID menu,                 cases, deaths, rates
   alternative/oss: Open Source menu,           star history, repos information
   alternative/covid/slopes: get countries with highest slope in cases
