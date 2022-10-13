@@ -18,7 +18,7 @@ Generate bond spread matrix.
   --change CHANGE       Get matrix of 1 day change in rates or spreads.
                         (default: False)
   --color {rgb,binary,openbb}
-                        Set color palette on heatmap. (default: rgb)
+                        Set color palette on heatmap. (default: openbb)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export raw data into csv, json, xlsx (default: )
   --raw                 Flag to display raw data (default: False)
