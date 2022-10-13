@@ -642,6 +642,8 @@ main:
             ref: /terminal/economy/valuation
           - name: ycrv
             ref: /terminal/economy/ycrv
+          - name: spread
+            ref: /terminal/economy/spread
           - name: yield
             ref: /terminal/economy/yield
       - name: ETFs
