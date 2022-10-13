@@ -38,7 +38,7 @@ def us_indices() -> pd.DataFrame:
             url,
             headers={"User-Agent": get_user_agent()},
         )
-    except requests.exceptions.InvalidSchema:
+    except requests.exceptions.RequestException:
         console.print("[red]Could not retrieve data from wsj.[/red]\n")
         return pd.DataFrame()
     data = response.json()
@@ -80,7 +80,7 @@ def market_overview() -> pd.DataFrame:
     )
     try:
         response = requests.get(url, headers={"User-Agent": get_user_agent()})
-    except requests.exceptions.InvalidSchema:
+    except requests.exceptions.RequestException:
         console.print("[red]Could not retrieve data from wsj.[/red]\n")
         return pd.DataFrame()
     data = response.json()
@@ -122,7 +122,7 @@ def top_commodities() -> pd.DataFrame:
     )
     try:
         response = requests.get(url, headers={"User-Agent": get_user_agent()})
-    except requests.exceptions.InvalidSchema:
+    except requests.exceptions.RequestException:
         console.print("[red]Could not retrieve data from wsj.[/red]\n")
         return pd.DataFrame()
     data = response.json()
@@ -172,7 +172,7 @@ def us_bonds() -> pd.DataFrame:
 
     try:
         response = requests.get(url, headers={"User-Agent": get_user_agent()})
-    except requests.exceptions.InvalidSchema:
+    except requests.exceptions.RequestException:
         console.print("[red]Could not retrieve data from wsj.[/red]\n")
         return pd.DataFrame()
     data = response.json()
@@ -210,7 +210,7 @@ def global_bonds() -> pd.DataFrame:
     )
     try:
         response = requests.get(url, headers={"User-Agent": get_user_agent()})
-    except requests.exceptions.InvalidSchema:
+    except requests.exceptions.RequestException:
         console.print("[red]Could not retrieve data from wsj.[/red]\n")
         return pd.DataFrame()
     data = response.json()
@@ -253,7 +253,7 @@ def global_currencies() -> pd.DataFrame:
     )
     try:
         response = requests.get(url, headers={"User-Agent": get_user_agent()})
-    except requests.exceptions.InvalidSchema:
+    except requests.exceptions.RequestException:
         console.print("[red]Could not retrieve data from wsj.[/red]\n")
         return pd.DataFrame()
     data = response.json()
