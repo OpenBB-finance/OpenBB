@@ -129,7 +129,7 @@ jobs:
       - name: Deleting Previous Keychain
         run: |
           echo "Deleting Previous Keychain to Clean Instance"
-          rm -rf /Users/ec2-user/Library/Keychains/build.keychain-db
+          rm -rf /Users/openbb/Library/Keychains/build.keychain-db
       - name: Clean up Build Artifacts
         run: |
           rm -rf build/terminal
