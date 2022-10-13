@@ -891,6 +891,8 @@ def find(
         coins_list = coins_df[key].to_list()
         if key in ["symbol", "id"]:
             coin = query.lower()
+        else:
+            coin = query
         sim = difflib.get_close_matches(coin, coins_list, limit)
         df = pd.Series(sim).to_frame().reset_index()
         df.columns = ["index", key]
