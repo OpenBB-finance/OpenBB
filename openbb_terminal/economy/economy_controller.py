@@ -1218,7 +1218,7 @@ class EconomyController(BaseController):
             dest="color",
             type=str,
             choices=investingcom_view.COLORS,
-            default="rgb",
+            default="openbb",
             help="Set color palette on heatmap.",
         )
 
