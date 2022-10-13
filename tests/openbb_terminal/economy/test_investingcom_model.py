@@ -24,6 +24,7 @@ def test_get_yieldcurve(country):
     assert isinstance(result_df, pd.DataFrame)
 
 
+@pytest.mark.vcr
 @pytest.mark.parametrize(
     "country, importance, category, start_date, end_date",
     [

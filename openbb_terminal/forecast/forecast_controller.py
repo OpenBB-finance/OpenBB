@@ -6,7 +6,6 @@ __docformat__ = "numpy"
 import argparse
 import logging
 from itertools import chain
-from pathlib import Path
 from typing import Any, Optional, List, Dict
 
 try:
@@ -53,6 +52,10 @@ from openbb_terminal.forecast import (
     helpers,
     trans_view,
     nhits_view,
+)
+from openbb_terminal.core.config.paths import (
+    USER_EXPORTS_DIRECTORY,
+    CUSTOM_IMPORTS_DIRECTORY,
 )
 
 logger = logging.getLogger(__name__)
@@ -173,8 +176,8 @@ class ForecastController(BaseController):
             filepath.name: filepath
             for file_type in self.file_types
             for filepath in chain(
-                Path("exports").rglob(f"*.{file_type}"),
-                Path("custom_imports").rglob(f"*.{file_type}"),
+                USER_EXPORTS_DIRECTORY.rglob(f"*.{file_type}"),
+                CUSTOM_IMPORTS_DIRECTORY.rglob(f"*.{file_type}"),
             )
             if filepath.is_file()
         }
@@ -284,8 +287,7 @@ class ForecastController(BaseController):
         mt.add_param("_disclaimer_", self.disclaimer)
         mt.add_raw("\n")
         mt.add_param(
-            "_data_loc",
-            f"\n\t{obbff.EXPORT_FOLDER_PATH}\n\t{Path('custom_imports').resolve()}/forecast",
+            "_data_loc", f"\n\t{USER_EXPORTS_DIRECTORY}\n\t{CUSTOM_IMPORTS_DIRECTORY}"
         )
         mt.add_raw("\n")
         mt.add_cmd("load")
@@ -321,10 +323,10 @@ class ForecastController(BaseController):
         mt.add_cmd("rnn", self.files)
         mt.add_cmd("brnn", self.files)
         mt.add_cmd("nbeats", self.files)
+        mt.add_cmd("nhits", self.files)
         mt.add_cmd("tcn", self.files)
         mt.add_cmd("trans", self.files)
         mt.add_cmd("tft", self.files)
-        mt.add_cmd("nhits", self.files)
         # mt.add_info("_comingsoon_")
 
         console.print(text=mt.menu_text, menu="Forecast")
