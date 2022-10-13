@@ -27,8 +27,8 @@ class ReportController(BaseController):
     """Report Controller class."""
 
     CURRENT_LOCATION = Path(__file__)
-    TEMPLATES_FOLDER = "templates"
-    REPORTS_FOLDER = CURRENT_LOCATION.parent / TEMPLATES_FOLDER
+    REPORTS_FOLDER = CURRENT_LOCATION.parent / "templates"
+    OUTPUT_FOLDER = USER_EXPORTS_DIRECTORY / "reports"
 
     report_names = [
         notebooks[:-6]
@@ -202,31 +202,26 @@ class ReportController(BaseController):
                 console.print("")
                 return []
 
-            notebook_template = os.path.join(
-                "openbb_terminal", "reports", report_to_run
-            )
+            # Template
+            notebook_template = str(self.REPORTS_FOLDER / report_to_run)
 
+            # Output
             args_to_output = f"_{'_'.join(other_args)}" if "_".join(other_args) else ""
             report_output_name = (
                 f"{datetime.now().strftime('%Y%m%d_%H%M%S')}"
                 + "_"
                 + f"{report_to_run}{args_to_output}"
             )
-            notebook_output = str(
-                USER_EXPORTS_DIRECTORY / "reports" / report_output_name
-            )
+            notebook_output = str(self.OUTPUT_FOLDER / report_output_name)
 
-            # only a single backslash appears in the .py file otherwise
-            # notebook_output = notebook_output.replace("\\", "\\\\")
-            # notebook_output = notebook_output.replace("\\", "\\\\")
-
-            # gather params from user
+            # Parameters
             d_report_params = {}
             for idx, args in enumerate(params):
                 d_report_params[args] = other_args[idx]
 
             d_report_params["report_name"] = notebook_output
 
+            # Run notebook
             result = pm.execute_notebook(
                 notebook_template + ".ipynb",
                 notebook_output + ".ipynb",
@@ -234,6 +229,7 @@ class ReportController(BaseController):
                 kernel_name="python3",
             )
 
+            # Open notebook
             if not result["metadata"]["papermill"]["exception"]:
                 if obbff.OPEN_REPORT_AS_HTML:
                     report_output_path = os.path.join(
