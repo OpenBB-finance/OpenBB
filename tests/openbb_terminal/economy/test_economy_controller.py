@@ -457,7 +457,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 countries=["united states", "united kingdom", "france"],
                 maturity="10Y",
                 change=False,
-                color="rgb",
+                color="openbb",
                 raw=False,
                 export="csv",
             ),
