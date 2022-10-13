@@ -4,8 +4,8 @@ import functools
 import logging
 import os
 import json
-import pandas as pd
 import inspect
+import pandas as pd
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.rich_config import console
