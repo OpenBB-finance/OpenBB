@@ -16,7 +16,7 @@ from fredapi import Fred
 import certifi
 
 from openbb_terminal import config_terminal as cfg
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import get_user_agent
 from openbb_terminal.rich_config import console
 
@@ -24,6 +24,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
 def check_series_id(series_id: str) -> Tuple[bool, Dict]:
     """Checks if series ID exists in fred
 
@@ -65,6 +66,7 @@ def check_series_id(series_id: str) -> Tuple[bool, Dict]:
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
 def get_series_notes(search_query: str, limit: int = -1) -> pd.DataFrame:
     """Get series notes. [Source: FRED]
     Parameters
@@ -116,6 +118,7 @@ def get_series_notes(search_query: str, limit: int = -1) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
 def get_series_ids(search_query: str, limit: int = -1) -> pd.DataFrame:
     """Get Series IDs. [Source: FRED]
     Parameters
@@ -157,6 +160,7 @@ def get_series_ids(search_query: str, limit: int = -1) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
 def get_series_data(
     series_id: str, start_date: str = None, end_date: str = None
 ) -> pd.DataFrame:
@@ -193,6 +197,7 @@ def get_series_data(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_FRED_KEY"])
 def get_aggregated_series_data(
     series_ids: List[str], start_date: str = None, end_date: str = None
 ) -> pd.DataFrame:
@@ -239,7 +244,10 @@ def get_aggregated_series_data(
 
 
 @log_start_end(log=logger)
-def get_yield_curve(date: datetime = None) -> Tuple[pd.DataFrame, str]:
+@check_api_key(["API_FRED_KEY"])
+def get_yield_curve(
+    date: datetime = None,
+) -> Tuple[pd.DataFrame, datetime]:
     """Gets yield curve data from FRED
 
     Parameters
@@ -293,7 +301,7 @@ def get_yield_curve(date: datetime = None) -> Tuple[pd.DataFrame, str]:
         date_of_yield = date
         series = df[df.index == date]
         if series.empty:
-            return pd.DataFrame(), date.strftime("%Y-%m-%d")
+            return pd.DataFrame(), date_of_yield
         rates = pd.DataFrame(series.values.T, columns=["Rate"])
 
     rates.insert(

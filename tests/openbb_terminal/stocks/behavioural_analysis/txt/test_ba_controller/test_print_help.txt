@@ -22,7 +22,6 @@ Ticker: TSLA
     interest           interest over time of sentences versus stock price              [Google]
     queries            top related queries with this stock                             [Google]
     rise               top rising related queries with stock                           [FinBrain]
-    trend              most talked about tickers within the last hour                  [SentimentInvestor]
     jcdr               Jim Cramer's daily recommendations                              [JimCramer]
     jctr               Jim Cramer's recommendations by ticker                          [JimCramer]
 
