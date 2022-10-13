@@ -48,6 +48,7 @@ jobs:
         run: |
           conda init
           exec zsh -l
+          source ~/.zshrc
       - name: Run Poetry
         shell: bash -l {0}
         run: poetry install
