@@ -886,13 +886,13 @@ def find(
         Export dataframe data to csv,json,xlsx file
     """
 
-    coin = query
-
     if source == "CoinGecko":
         coins_df = get_coin_list()
         coins_list = coins_df[key].to_list()
         if key in ["symbol", "id"]:
-            coin = coin.lower()
+            coin = query.lower()
+        else:
+            coin = query
         sim = difflib.get_close_matches(coin, coins_list, limit)
         df = pd.Series(sim).to_frame().reset_index()
         df.columns = ["index", key]
