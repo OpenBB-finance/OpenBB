@@ -337,7 +337,6 @@ en:
   stocks/ba/interest: interest over time of sentences versus stock price
   stocks/ba/queries: top related queries with this stock
   stocks/ba/rise: top rising related queries with stock
-  stocks/ba/trend: most talked about tickers within the last hour
   stocks/ba/hist: plot historical RHI and AHI data by hour
   stocks/ba/jcdr: Jim Cramer's daily recommendations
   stocks/ba/jctr: Jim Cramer's recommendations by ticker
