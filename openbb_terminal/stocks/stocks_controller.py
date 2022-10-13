@@ -167,10 +167,9 @@ class StocksController(StockBaseController):
             s_intraday = (f"Intraday {self.interval}", "Daily")[
                 self.interval == "1440min"
             ]
+            stock_text += f"{s_intraday} {self.ticker}"
             if self.start:
-                stock_text = f"{s_intraday} {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
-            else:
-                stock_text = f"{s_intraday} {self.ticker}"
+                stock_text += f" (from {self.start.strftime('%Y-%m-%d')})"
 
         mt = MenuText("stocks/", 100)
         mt.add_cmd("search")
@@ -743,8 +742,6 @@ class StocksController(StockBaseController):
                 self.stock,
                 self.queue,
             )
-        # TODO: This menu should work regardless of data being daily or not!
-        # James: 5/27 I think it does now
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
 
