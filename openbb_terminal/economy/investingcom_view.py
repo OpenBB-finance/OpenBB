@@ -40,7 +40,7 @@ def display_spread_matrix(
     countries: Union[str, List[str]] = "G7",
     maturity: str = "10Y",
     change: bool = False,
-    color: str = "rgb",
+    color: str = "openbb",
     raw: bool = False,
     external_axes: Optional[List[plt.Axes]] = None,
     export: str = "",
@@ -56,7 +56,7 @@ def display_spread_matrix(
     change: bool
         Flag to use 1 day change or not. By default False.
     color: str
-        Color theme to use on heatmap, from rgb, binary or openbb By default, rgb.
+        Color theme to use on heatmap, from rgb, binary or openbb By default, openbb.
     raw : bool
         Output only raw data.
     export : str
