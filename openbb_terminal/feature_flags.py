@@ -10,7 +10,7 @@ import i18n
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import (
-    PACKAGE_DIRECTORY,
+    MISCELLANEOUS_DIRECTORY,
     USER_ENV_FILE,
     REPOSITORY_ENV_FILE,
     DATA_SOURCES_DEFAULT_FILE,
@@ -21,7 +21,7 @@ paths_helper.init_userdata()
 
 # pylint: disable=no-member,c-extension-no-member
 
-i18n.load_path.append(PACKAGE_DIRECTORY / "i18n")
+i18n.load_path.append(MISCELLANEOUS_DIRECTORY / "i18n")
 i18n.set("locale", "en")
 i18n.set("filename_format", "{locale}.{format}")
 
