@@ -5,11 +5,11 @@ overview -t usbonds
 overview -t glbonds
 overview -t currencies
 futures
-futures -c energy
-futures -c metals
-futures -c meats
-futures -c grains
-futures -c softs
+futures -c energy --source Finviz
+futures -c metals --source Finviz
+futures -c meats --source Finviz
+futures -c grains --source Finviz
+futures -c softs --source Finviz
 map
 bigmac -c USA,ESP,LVA,DEU,FRA,FIN
 ycrv

@@ -290,6 +290,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "call_futures",
             [
                 "--commodity=energy",
+                "--source=Finviz",
                 "--sortby=ticker",
                 "-a",
                 "--export=csv",
@@ -307,6 +308,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "call_futures",
             [
                 "--commodity=metals",
+                "--source=Finviz",
                 "--sortby=ticker",
                 "-a",
                 "--export=csv",
@@ -324,6 +326,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "call_futures",
             [
                 "--commodity=meats",
+                "--source=Finviz",
                 "--sortby=ticker",
                 "-a",
                 "--export=csv",
@@ -342,6 +345,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [
                 "--commodity=grains",
                 "--sortby=ticker",
+                "--source=Finviz",
                 "-a",
                 "--export=csv",
             ],
@@ -359,6 +363,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [
                 "--commodity=softs",
                 "--sortby=ticker",
+                "--source=Finviz",
                 "-a",
                 "--export=csv",
             ],
