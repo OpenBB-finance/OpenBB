@@ -530,8 +530,6 @@ def plot_forecast(
 
     print_pretty_prediction(numeric_forecast, data[target_col].iloc[-1])
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "expo")
-
 
 def plot_explainability(
     model, explainability_raw=False, external_axes: Optional[List[plt.axes]] = None
@@ -548,8 +546,15 @@ def plot_explainability(
     shap_explain = ShapExplainer(model)
     shap_explain.summary_plot(horizons=1)
     if explainability_raw:
-        console.print("[green]Explainability DataFrame[/green]")
-        console.print(shap_explain.explain().get_explanation(horizon=1).pd_dataframe())
+        console.print("")
+        console.print("[green]Exporting Raw Explainability DataFrame[/green]")
+        raw_df = shap_explain.explain().get_explanation(horizon=1).pd_dataframe()
+        export_data(
+            "csv",
+            os.path.dirname(os.path.abspath(__file__)),
+            "explainability_raw",
+            raw_df,
+        )
 
     ax.yaxis.set_label_position("left")
     ax.yaxis.tick_left()
