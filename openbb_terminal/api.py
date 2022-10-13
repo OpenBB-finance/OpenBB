@@ -2034,7 +2034,10 @@ if forecasting:
 
 
 def copy_func(
-    f: Callable, logging_decorator: bool = False, virtual_path: str = ""
+    f: Callable,
+    logging_decorator: bool = False,
+    virtual_path: str = "",
+    chart: bool = False,
 ) -> Callable:
     """Copy the contents and attributes of the entered function.
 
@@ -2068,7 +2071,7 @@ def copy_func(
 
     if logging_decorator:
         log_name = logging.getLogger(g.__module__)
-        g = sdk_arg_logger(func=g, log=log_name, virtual_path=virtual_path)
+        g = sdk_arg_logger(func=g, log=log_name, virtual_path=virtual_path, chart=chart)
         g = log_start_end(func=g, log=log_name)
 
     return g
@@ -2150,7 +2153,7 @@ class FunctionFactory:
         self.view = None
         if view is not None:
             self.view = copy_func(
-                f=view, logging_decorator=True, virtual_path=virtual_path
+                f=view, logging_decorator=True, virtual_path=virtual_path, chart=True
             )
 
     def api_callable(self, *args, **kwargs):

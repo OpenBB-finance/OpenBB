@@ -120,7 +120,7 @@ def disable_check_api():
     obbff.ENABLE_CHECK_API = False
 
 
-def sdk_arg_logger(func=None, log=None, virtual_path: str = ""):
+def sdk_arg_logger(func=None, log=None, virtual_path: str = "", chart: bool = False):
     """
     Wrap function to add the function args to the log entry when using the SDK.
     """
@@ -134,6 +134,8 @@ def sdk_arg_logger(func=None, log=None, virtual_path: str = ""):
 
             if virtual_path:
                 logging_info["VIRTUAL_PATH"] = virtual_path
+
+            logging_info["CHART"] = chart
 
             log.info(
                 f"{json.dumps(logging_info)}",
