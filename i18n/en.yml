@@ -796,6 +796,7 @@ en:
   forex/ta: technical analysis,          ema, macd, rsi, adx, bbands, obv
   forex/qa: quantitative analysis,       decompose, cusum, residuals analysis
   forex/forex: Forex brokerages
+  forex/forecast: forecast techniques
   forex/oanda: Oanda menu
   forex/ta/_currency: Currency pair loaded
   forex/ta/_source: Source
