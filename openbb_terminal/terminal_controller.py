@@ -21,6 +21,7 @@ import pandas as pd
 from openbb_terminal import feature_flags as obbff
 
 from openbb_terminal.core.config.paths import (
+    MISCELLANEOUS_DIRECTORY,
     REPOSITORY_DIRECTORY,
     USER_ENV_FILE,
     REPOSITORY_ENV_FILE,
@@ -898,10 +899,10 @@ def main(
         test_files = []
         for path in paths:
             if path.endswith(".openbb"):
-                file = os.path.join(os.path.abspath(os.path.dirname(__file__)), path)
+                file = str(MISCELLANEOUS_DIRECTORY / path)
                 test_files.append(file)
             else:
-                folder = os.path.join(os.path.abspath(os.path.dirname(__file__)), path)
+                folder = str(MISCELLANEOUS_DIRECTORY / path)
                 files = [
                     f"{folder}/{name}"
                     for name in os.listdir(folder)
