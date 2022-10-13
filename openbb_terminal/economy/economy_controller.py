@@ -68,6 +68,7 @@ class EconomyController(BaseController):
         "rtps",
         "bigmac",
         "ycrv",
+        "spread",
         "events",
         "edebt",
     ]
@@ -210,6 +211,16 @@ class EconomyController(BaseController):
                     "investpy": {},
                     "FRED": {},
                 },
+            }
+            self.choices["spread"] = {
+                "--group": {c: None for c in investingcom_model.MATRIX_CHOICES},
+                "-g": "--group",
+                "--countries": {c: None for c in investingcom_model.BOND_COUNTRIES},
+                "-c": "--countries",
+                "--maturity": None,
+                "-m": "--maturity",
+                "--change": None,
+                "--color": {c: None for c in investingcom_view.COLORS},
             }
             self.choices["events"] = {
                 "--country": {c: {} for c in investingcom_model.CALENDAR_COUNTRIES},
@@ -376,6 +387,7 @@ class EconomyController(BaseController):
         mt.add_cmd("map")
         mt.add_cmd("bigmac")
         mt.add_cmd("ycrv")
+        mt.add_cmd("spread")
         mt.add_cmd("events")
         mt.add_cmd("edebt")
         mt.add_raw("\n")
@@ -490,17 +502,25 @@ class EconomyController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
 
-        if ns_parser and ns_parser.commodity:
-            finviz_view.display_future(
-                future_type=ns_parser.commodity.capitalize(),
-                sortby=ns_parser.sortby,
-                ascend=ns_parser.ascend,
-                export=ns_parser.export,
-            )
-        elif ns_parser:
-            wsj_view.display_futures(
-                export=ns_parser.export,
-            )
+        if ns_parser:
+            if ns_parser.source == "Finviz":
+                if ns_parser.commodity:
+                    finviz_view.display_future(
+                        future_type=ns_parser.commodity.capitalize(),
+                        sortby=ns_parser.sortby,
+                        ascend=ns_parser.ascend,
+                        export=ns_parser.export,
+                    )
+                else:
+                    console.print(
+                        "[red]Commodity group must be specified on Finviz.[/red]"
+                    )
+            elif ns_parser.source == "WallStreetJournal":
+                if ns_parser.commodity:
+                    console.print("[red]Commodity flag valid with Finviz only.[/red]")
+                wsj_view.display_futures(
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_map(self, other_args: List[str]):
@@ -1137,8 +1157,98 @@ class EconomyController(BaseController):
 
             elif ns_parser.source == "Investing":
 
+                if ns_parser.date:
+                    console.print(
+                        "Date ignored: historical data is only available for source 'FRED' and country 'united states'.\n"
+                    )
+
                 investingcom_view.display_yieldcurve(
                     country=ns_parser.country,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                )
+
+    @log_start_end(log=logger)
+    def call_spread(self, other_args: List[str]):
+        """Process spread command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="spread",
+            description="Generate bond spread matrix.",
+        )
+        parser.add_argument(
+            "-g",
+            "--group",
+            action="store",
+            dest="group",
+            choices=investingcom_model.MATRIX_CHOICES,
+            default="G7",
+            help="Show bond spread matrix for group of countries.",
+        )
+        parser.add_argument(
+            "-c",
+            "--countries",
+            action="store",
+            dest="countries",
+            nargs="+",
+            type=str,
+            help="Show bond spread matrix for explicit list of countries.",
+        )
+        parser.add_argument(
+            "-m",
+            "--maturity",
+            action="store",
+            dest="maturity",
+            type=str,
+            default="10Y",
+            help="Specify maturity to compare rates.",
+        )
+        parser.add_argument(
+            "--change",
+            action="store",
+            dest="change",
+            type=bool,
+            default=False,
+            help="Get matrix of 1 day change in rates or spreads.",
+        )
+        parser.add_argument(
+            "--color",
+            action="store",
+            dest="color",
+            type=str,
+            choices=investingcom_view.COLORS,
+            default="openbb",
+            help="Set color palette on heatmap.",
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            raw=True,
+        )
+        if ns_parser:
+            if ns_parser.countries:
+                countries_string = " ".join(ns_parser.countries)
+                countries_list = investingcom_model.countries_string_to_list(
+                    countries_string
+                )
+
+                investingcom_view.display_spread_matrix(
+                    countries=countries_list,
+                    maturity=ns_parser.maturity.upper(),
+                    change=ns_parser.change,
+                    color=ns_parser.color,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                )
+            elif ns_parser.group:
+                investingcom_view.display_spread_matrix(
+                    countries=ns_parser.group,
+                    maturity=ns_parser.maturity.upper(),
+                    change=ns_parser.change,
+                    color=ns_parser.color,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
                 )
@@ -1204,10 +1314,6 @@ class EconomyController(BaseController):
         if ns_parser:
             if isinstance(ns_parser.country, list):
                 ns_parser.country = " ".join(ns_parser.country)
-
-            investingcom_model.check_correct_country(
-                ns_parser.country, investingcom_model.CALENDAR_COUNTRIES
-            )
 
             if ns_parser.start_date:
                 start_date = ns_parser.start_date.strftime("%Y-%m-%d")

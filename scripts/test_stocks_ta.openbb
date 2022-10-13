@@ -3,6 +3,7 @@ load aapl
 ta
 view
 recom
+summary
 ema
 sma
 wma
@@ -16,6 +17,8 @@ rsp
 stoch
 fisher
 cg
+clenow
+demark
 adx
 aroon
 bbands
