@@ -22,7 +22,7 @@ def test_show_options(tsla_csv, capsys):
 
 def test_display_plot(tsla_csv, mocker):
     mock = mocker.patch(base + "theme.visualize_output")
-    fv.display_plot({"data": tsla_csv})
+    fv.display_plot(tsla_csv, "close")
     mock.assert_called_once()
 
 
@@ -31,7 +31,7 @@ def test_display_plot_multiindex(tsla_csv, mocker, capsys):
     tuples = [("1", x) for x in tsla_csv.index]
     index = pd.MultiIndex.from_tuples(tuples, names=["first", "second"])
     tsla_csv.index = index
-    fv.display_plot({"data": tsla_csv})
+    fv.display_plot(tsla_csv, "close")
     captured = capsys.readouterr()
     assert "multi-index" in captured.out
     mock.assert_not_called()
@@ -40,14 +40,14 @@ def test_display_plot_multiindex(tsla_csv, mocker, capsys):
 def test_display_plot_external_axes(tsla_csv, mocker):
     mock1 = mocker.Mock()
     mock = mocker.patch(base + "theme.visualize_output")
-    fv.display_plot({"data": tsla_csv}, external_axes=[mock1])
+    fv.display_plot(tsla_csv, "close", external_axes=[mock1])
     mock.assert_not_called()
 
 
 def test_display_plot_series(tsla_csv, mocker):
     mock1 = mocker.Mock()
     mock = mocker.patch(base + "theme.visualize_output")
-    fv.display_plot({"data": tsla_csv["close"]}, external_axes=[mock1])
+    fv.display_plot(tsla_csv, "close", external_axes=[mock1])
     mock.assert_not_called()
 
 
