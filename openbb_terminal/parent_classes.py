@@ -26,6 +26,7 @@ from openbb_terminal.core.config.paths import (
 )
 from openbb_terminal.decorators import log_start_end
 
+from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.menu import session
 from openbb_terminal import feature_flags as obbff
@@ -511,8 +512,8 @@ class BaseController(metaclass=ABCMeta):
 
         ns_parser = parse_simple_args(parser, other_args)
 
-        glossary_file = os.path.join(os.path.dirname(__file__), "glossary.json")
-        glossary_dict = load_json(glossary_file)
+        glossary_file = MISCELLANEOUS_DIRECTORY / "glossary.json"
+        glossary_dict = load_json(str(glossary_file))
 
         if ns_parser:
             word = glossary_dict.get(ns_parser.word, "")
