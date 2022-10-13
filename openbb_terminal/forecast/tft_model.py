@@ -14,8 +14,9 @@ from darts.models import TFTModel
 from darts.utils.likelihood_models import QuantileRegression
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
-
 from statsmodels.tools.sm_exceptions import ConvergenceWarning
+
+
 warnings.simplefilter("ignore", ConvergenceWarning)
 
 
