@@ -62,7 +62,7 @@ jobs:
       - name: Build Bundle
         run: |
           conda remove --force sigtool -y
-          pyinstaller build/pyinstaller/terminal.spec
+          pyinstaller build/pyinstaller/terminal.spec --clean
           osascript build/pyinstaller/setup_icons.applescript
           mkdir DMG
           cp -r build/pyinstaller/macOS_package_assets/* DMG/
