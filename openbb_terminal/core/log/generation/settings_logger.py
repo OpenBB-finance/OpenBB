@@ -14,6 +14,18 @@ from openbb_terminal.core.log.generation.path_tracking_file_handler import (
     PathTrackingFileHandler,
 )
 
+SENSITIVE_WORDS = [
+    "API",
+    "DG_",
+    "KEY",
+    "PASSWORD",
+    "SECRET",
+    "TOKEN",
+    "USER",
+    "USERNAME",
+    "ACCOUNT",
+]
+
 
 logger = logging.getLogger(__name__)
 
@@ -63,8 +75,7 @@ def log_config_terminal() -> None:
             not item.startswith("__")
             and not isinstance(prop, FunctionType)
             and not isinstance(prop, ModuleType)
-            and "API" not in item
-            and "DG_" not in item
+            and not any(substring in item for substring in SENSITIVE_WORDS)
         ):
             config_terminal_dict[item] = str(prop)
 
