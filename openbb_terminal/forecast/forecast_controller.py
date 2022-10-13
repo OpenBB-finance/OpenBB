@@ -924,8 +924,7 @@ class ForecastController(BaseController):
             "--values",
             help="Dataset.column values to be displayed in a plot",
             dest="values",
-            nargs="+",
-            type=check_list_values(self.choices["plot"]),
+            type=str,
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -940,7 +939,7 @@ class ForecastController(BaseController):
             console.print("[red]Please enter valid dataset.\n[/red]")
             return
 
-        values = [x[0] for x in ns_parser.values]
+        values = [x.strip() for x in ns_parser.values.split(",")]
         target_df = values[0].split(".")[0]
         if target_df not in self.datasets:
             console.print("[red]Please enter valid dataset.\n[/red]")

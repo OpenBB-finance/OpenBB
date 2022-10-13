@@ -101,13 +101,13 @@ def display_plot(
         data = data.set_index("date")
 
     for column in columns:
-        ax.plot(data[column])
+        ax.plot(data[column], label=column)
 
     theme.style_primary_axis(ax)
     if external_axes is None:
         theme.visualize_output()
 
-    ax.legend(list(data.keys()))
+    ax.legend()
 
     export_data(
         export,
