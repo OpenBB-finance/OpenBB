@@ -21,7 +21,8 @@ paths_helper.init_userdata()
 
 # pylint: disable=no-member,c-extension-no-member
 
-i18n.load_path.append(MISCELLANEOUS_DIRECTORY / "i18n")
+i18n_dict_location = MISCELLANEOUS_DIRECTORY / "i18n"
+i18n.load_path.append(i18n_dict_location)
 i18n.set("locale", "en")
 i18n.set("filename_format", "{locale}.{format}")
 
