@@ -24,8 +24,6 @@ logger = logging.getLogger(__name__)
 class ReportController(BaseController):
     """Report Controller class."""
 
-    CURRENT_LOCATION = reports_model.CURRENT_LOCATION
-    OUTPUT_FOLDER = reports_model.OUTPUT_FOLDER
     CHOICES_COMMANDS = ["run"]
     PATH = "/reports/"
 
@@ -68,7 +66,7 @@ class ReportController(BaseController):
         mt.add_raw("\n")
         mt.add_cmd("run")
         mt.add_raw("\n")
-        mt.add_info("_Available_reports_")
+        mt.add_info("_Available_templates_")
         MAX_LEN_NAME = max(len(name) for name in self.REPORTS) + 2
         templates_string = ""
         for report_name in self.REPORTS:
@@ -83,7 +81,7 @@ class ReportController(BaseController):
             templates_string += (
                 f"    [cmds]>[/cmds] {report_name}"
                 + f"{(MAX_LEN_NAME-len(report_name))*' '} "
-                + f"{args if args != '<>' else ''}\n"
+                + f"[param]{args if args != '<>' else ''}[/param]\n"
             )
         mt.add_raw(f"{templates_string}")
         mt.add_raw("\n")

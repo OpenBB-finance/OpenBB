@@ -1025,9 +1025,9 @@ en:
   dashboards/crypto: cryptocurrency exchange rates against USD
   dashboards/futures: historical futures performance
   reports: customizable research reports through jupyter notebooks
-  reports/_reports_: Run your custom reports or try one of our templates
+  reports/_reports_: Build and run your custom reports or try one of our templates
   reports/run: run a selected report
-  reports/_Available_reports_: Available reports
+  reports/_Available_templates_: Available templates
   reports/_User_reports_: My reports
   forecast/_disclaimer_: DISCLAIMER
   forecast/_data_loc: Looking for data in
