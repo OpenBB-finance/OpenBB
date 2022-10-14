@@ -44,7 +44,6 @@ class ReportController(BaseController):
     parameters_dict: Dict[str, Any] = {}
 
     CHOICES_COMMANDS = ["run"]
-    CHOICES_MENUS = list(reports_dict.keys()) + report_names
     PATH = "/reports/"
 
     def __init__(self, queue: List[str] = None):
@@ -53,6 +52,12 @@ class ReportController(BaseController):
         super().__init__(queue)
         if session and obbff.USE_PROMPT_TOOLKIT:
             self.choices: dict = {c: {} for c in self.controller_choices}
+
+            self.choices["run"] = {
+                "--report": {c: None for c in self.report_names},
+                "-r": "--report",
+            }
+
             self.choices["support"] = self.SUPPORT_CHOICES
             self.choices["about"] = self.ABOUT_CHOICES
             self.completer = NestedCompleter.from_nested_dict(self.choices)
@@ -79,7 +84,6 @@ class ReportController(BaseController):
         mt.add_cmd("run")
         mt.add_raw("\n")
         mt.add_info("_Templates_")
-        mt.add_raw("\n")
         self.report_names = [
             notebooks[:-6]
             for notebooks in os.listdir(self.REPORTS_FOLDER)
@@ -141,7 +145,7 @@ class ReportController(BaseController):
         if ns_parser:
             if "-r" in other_args:
                 other_args.remove("-r")
-            if "--reports" in other_args:
+            if "--report" in other_args:
                 other_args.remove("--report")
 
             other_args.remove(ns_parser.report)

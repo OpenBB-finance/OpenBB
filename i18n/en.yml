@@ -1025,7 +1025,7 @@ en:
   dashboards/crypto: cryptocurrency exchange rates against USD
   dashboards/futures: historical futures performance
   reports: customizable research reports through jupyter notebooks
-  reports/_reports_: Create your custom reports or just run one of our templates
+  reports/_reports_: Run your custom reports or try one of our templates
   reports/run: run a selected report
   reports/_Templates_: OpenBB templates
   reports/_My_reports_: My reports
