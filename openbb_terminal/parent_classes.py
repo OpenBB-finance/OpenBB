@@ -22,7 +22,7 @@ import numpy as np
 
 from openbb_terminal.core.config.paths import (
     USER_CUSTOM_IMPORTS_DIRECTORY,
-    ROUTINES_DIRECTORY,
+    USER_ROUTINES_DIRECTORY,
 )
 from openbb_terminal.decorators import log_start_end
 
@@ -605,11 +605,11 @@ class BaseController(metaclass=ABCMeta):
                 "[red]There is no session to be saved. Run at least 1 command after starting 'record'[/red]\n"
             )
         else:
-            routine_file = os.path.join(ROUTINES_DIRECTORY, SESSION_RECORDED_NAME)
+            routine_file = os.path.join(USER_ROUTINES_DIRECTORY, SESSION_RECORDED_NAME)
 
             if os.path.isfile(routine_file):
                 routine_file = os.path.join(
-                    ROUTINES_DIRECTORY,
+                    USER_ROUTINES_DIRECTORY,
                     datetime.now().strftime("%Y%m%d_%H%M%S_") + SESSION_RECORDED_NAME,
                 )
 

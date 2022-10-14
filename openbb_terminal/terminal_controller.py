@@ -26,7 +26,7 @@ from openbb_terminal.core.config.paths import (
     USER_ENV_FILE,
     REPOSITORY_ENV_FILE,
     HOME_DIRECTORY,
-    ROUTINES_DIRECTORY,
+    USER_ROUTINES_DIRECTORY,
 )
 from openbb_terminal.core.log.generation.path_tracking_file_handler import (
     PathTrackingFileHandler,
@@ -122,7 +122,7 @@ class TerminalController(BaseController):
         self.ROUTINE_FILES.update(
             {
                 filepath.name: filepath
-                for filepath in ROUTINES_DIRECTORY.rglob("*.openbb")
+                for filepath in USER_ROUTINES_DIRECTORY.rglob("*.openbb")
             }
         )
         self.ROUTINE_CHOICES = {filename: None for filename in self.ROUTINE_FILES}
