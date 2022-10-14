@@ -1895,6 +1895,7 @@ functions = {
     },
     "stocks.search": {"model": "openbb_terminal.stocks.stocks_helper.search"},
     "stocks.quote": {"model": "openbb_terminal.stocks.stocks_helper.quote"},
+    "stocks.tob": {"model": "openbb_terminal.stocks.cboe_model.get_top_of_book"},
     "stocks.candle": {"model": "openbb_terminal.stocks.stocks_helper.display_candle"},
     "crypto.load": {
         "model": "openbb_terminal.cryptocurrency.cryptocurrency_helpers.load"
