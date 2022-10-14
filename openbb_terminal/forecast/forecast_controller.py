@@ -55,7 +55,7 @@ from openbb_terminal.forecast import (
 )
 from openbb_terminal.core.config.paths import (
     USER_EXPORTS_DIRECTORY,
-    CUSTOM_IMPORTS_DIRECTORY,
+    USER_CUSTOM_IMPORTS_DIRECTORY,
 )
 
 logger = logging.getLogger(__name__)
@@ -177,7 +177,7 @@ class ForecastController(BaseController):
             for file_type in self.file_types
             for filepath in chain(
                 USER_EXPORTS_DIRECTORY.rglob(f"*.{file_type}"),
-                CUSTOM_IMPORTS_DIRECTORY.rglob(f"*.{file_type}"),
+                USER_CUSTOM_IMPORTS_DIRECTORY.rglob(f"*.{file_type}"),
             )
             if filepath.is_file()
         }
@@ -287,7 +287,8 @@ class ForecastController(BaseController):
         mt.add_param("_disclaimer_", self.disclaimer)
         mt.add_raw("\n")
         mt.add_param(
-            "_data_loc", f"\n\t{USER_EXPORTS_DIRECTORY}\n\t{CUSTOM_IMPORTS_DIRECTORY}"
+            "_data_loc",
+            f"\n\t{USER_EXPORTS_DIRECTORY}\n\t{USER_CUSTOM_IMPORTS_DIRECTORY}",
         )
         mt.add_raw("\n")
         mt.add_cmd("load")
@@ -381,6 +382,7 @@ class ForecastController(BaseController):
         residuals: bool = False,
         forecast_only: bool = False,
         naive: bool = False,
+        explainability_raw: bool = False,
     ):
         if hidden_size:
             parser.add_argument(
@@ -638,6 +640,15 @@ class ForecastController(BaseController):
                 default=False,
                 dest="forecast_only",
             )
+        if explainability_raw:
+            parser.add_argument(
+                "--explainability-raw",
+                action="store_true",
+                dest="explainability_raw",
+                default=False,
+                help="Prints out a raw dataframe showing explainability results.",
+            )
+
             # if user does not put in --target-dataset
         return super().parse_known_args_and_warn(
             parser, other_args, export_allowed, raw, limit
@@ -2047,6 +2058,7 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
+            explainability_raw=True,
         )
 
         if ns_parser:
@@ -2074,6 +2086,7 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
+                explainability_raw=ns_parser.explainability_raw,
             )
 
     @log_start_end(log=logger)
@@ -2108,6 +2121,7 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
+            explainability_raw=True,
         )
 
         if ns_parser:
@@ -2134,6 +2148,7 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
+                explainability_raw=ns_parser.explainability_raw,
             )
 
     @log_start_end(log=logger)
