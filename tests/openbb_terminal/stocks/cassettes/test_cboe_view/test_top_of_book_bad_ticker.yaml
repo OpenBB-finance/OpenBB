@@ -1,0 +1,55 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML,
+        like Gecko) Chrome/106.0.0.0 Safari/537.36
+      referer:
+      - https://www.cboe.com/us/equities/market_statistics/book_viewer/
+    method: GET
+    uri: https://www.cboe.com/json/bzx/book/JBEUCEBFY
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA0yNzQrCMBCEX6XsOWC1txyVevCqHkSkrMmCpU1Sko1aiu9u+oN4m5nd+WYAT61D
+        DTIXoJER5AChN3fXgoTDtjzvyu3+AgK4NhQYTZfy9VoWG1kU2fm4KjEweZs+lDMd2j7do22se9ls
+        AQl4ujYamkac1+TDJDE0SVxvAu61XhTXqqm479IzjKseNS2nh7dolnysVspFyxNp7P/ZufULPgJC
+        VIpCArGPlCwjx3CiN8+42e+cHvGbPP9Fs5UZfL4AAAD//wMAf/v13SoBAAA=
+    headers:
+      CF-Cache-Status:
+      - MISS
+      CF-RAY:
+      - 75a15e4c5aa35e17-IAD
+      Cache-Control:
+      - must-revalidate=False, no-cache=False, max-age=5
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 14 Oct 2022 15:32:33 GMT
+      Last-Modified:
+      - Fri, 14 Oct 2022 15:32:33 GMT
+      Link:
+      - <https://www.cboe.com/json/bzx/book/JBEUCEBFY>; rel="canonical"
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Host,Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+version: 1

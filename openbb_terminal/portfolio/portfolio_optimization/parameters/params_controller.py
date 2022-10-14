@@ -254,9 +254,6 @@ class ParametersController(BaseController):
                 filepath = os.path.abspath(
                     os.path.join(
                         os.path.dirname(__file__),
-                        ".",
-                        "portfolio",
-                        "optimization",
                         ns_parser.file,
                     )
                 )
@@ -403,12 +400,13 @@ class ParametersController(BaseController):
                             f"between {minimum} and {maximum} in steps of "
                             f"{maximum / sum(x > 0 for x in AVAILABLE_OPTIONS[argument])}"
                         )
+
+                        console.print(
+                            f"[red]The value {value} is not an option for {argument}.\n"
+                            f"The value needs to be {options}[/red]"
+                        )
+
                     else:
                         self.params[argument] = str(AVAILABLE_OPTIONS[argument])  # type: ignore
-
-                    console.print(
-                        f"[red]The value {value} is not an option for {argument}.\n"
-                        f"The value needs to be within: {options}.[/red]"
-                    )
 
             console.print()
