@@ -30,24 +30,110 @@ class ReportController(BaseController):
     CURRENT_LOCATION = Path(__file__)
     REPORTS_FOLDER = CURRENT_LOCATION.parent / "templates"
     OUTPUT_FOLDER = USER_EXPORTS_DIRECTORY / "reports"
-    REPORT_NAMES = [
+
+    report_names = [
         notebooks[:-6]
         for notebooks in os.listdir(REPORTS_FOLDER)
         if notebooks.endswith(".ipynb")
     ]
-    REPORTS_DICT = {v + 1: k for v, k in enumerate(REPORT_NAMES)}
-    REPORT_IDS = [str(k) for k in REPORTS_DICT.keys()]
-    MAX_LEN_NAME = max(len(name) for name in REPORT_NAMES) + 2
-    PARAMETERS_DICT = {}
-    MENU_STRING = ""
+    reports_dict = {str(v + 1): k for v, k in enumerate(report_names)}
+    parameters_dict: Dict[str, Any] = {}
 
-    for k, report_to_run in REPORTS_DICT.items():
-        # Crawl data to look into what
-        notebook_file = REPORTS_FOLDER / report_to_run
+    CHOICES_MENUS = list(reports_dict.keys()) + report_names
+    PATH = "/reports/"
 
-        # Open notebook with report template
-        with open(str(notebook_file) + ".ipynb") as n_file:
-            notebook_content = n_file.read()
+    def __init__(self, queue: List[str] = None):
+        """Constructor"""
+
+        super().__init__(queue)
+        if session and obbff.USE_PROMPT_TOOLKIT:
+            self.update_runtime_choices()
+
+            # Extract required parameters per report
+            for _, report_name in self.reports_dict.items():
+
+                notebook_file = self.REPORTS_FOLDER / report_name
+                with open(str(notebook_file) + ".ipynb") as file:
+                    notebook_content = file.read()
+
+                (
+                    parameters_names,
+                    parameters_values,
+                ) = ReportController.extract_parameters(notebook_content)
+                self.parameters_dict[report_name] = [
+                    parameters_names,
+                    parameters_values,
+                ]
+
+    def update_runtime_choices(self):
+        """Update choices by updating reports available on folder."""
+
+        self.controller_choices = (
+            list(self.reports_dict.keys()) + self.report_names + ["r", "reset"]
+        )
+        self.choices: dict = {c: {} for c in self.controller_choices}
+        self.choices["support"] = self.SUPPORT_CHOICES
+        self.choices["about"] = self.ABOUT_CHOICES
+        self.completer = NestedCompleter.from_nested_dict(self.choices)
+
+    def print_help(self):
+        """Print help."""
+
+        mt = MenuText("reports/")
+        mt.add_info("_reports_")
+
+        self.report_names = [
+            notebooks[:-6]
+            for notebooks in os.listdir(self.REPORTS_FOLDER)
+            if notebooks.endswith(".ipynb")
+        ]
+        self.reports_dict = {str(v + 1): k for v, k in enumerate(self.report_names)}
+
+        self.update_runtime_choices()
+
+        MAX_LEN_NAME = max(len(name) for name in self.report_names) + 2
+        menu_string = ""
+        for k, report_name in self.reports_dict.items():
+
+            notebook_file = self.REPORTS_FOLDER / report_name
+            with open(str(notebook_file) + ".ipynb") as file:
+                notebook_content = file.read()
+
+            (
+                parameters_names,
+                parameters_values,
+            ) = ReportController.extract_parameters(notebook_content)
+            self.parameters_dict[report_name] = [
+                parameters_names,
+                parameters_values,
+            ]
+
+            parameters_names = self.parameters_dict[report_name][0]
+            if len(parameters_names) > 1 or not parameters_names:
+                args = f"<{'> <'.join(parameters_names)}>"
+            else:
+                args = f"<{parameters_names[0]}>"
+
+            menu_string += (
+                f"    {k}. {report_name}"
+                + f"{(MAX_LEN_NAME-len(report_name))*' '} "
+                + f"{args if args != '<>' else ''}\n"
+            )
+
+        mt.add_raw(f"[cmds]{menu_string}[/cmds]")
+        console.print(text=mt.menu_text, menu="Reports - WORK IN PROGRESS")
+
+    @staticmethod
+    @log_start_end(log=logger)
+    def extract_parameters(notebook_content: str):
+        """Extract required parameters from notebook content.
+
+        Parameters
+        ----------
+        notebook_content: str
+            Text content of Jupyter notebook.
+
+        """
 
         # Look for the metadata cell to understand if there are parameters required by the report
         metadata_cell = """"metadata": {\n    "tags": [\n     "parameters"\n    ]\n   },\n   "outputs":"""
@@ -62,60 +148,29 @@ class ReportController(BaseController):
         params = metadata[
             start_position : metadata.find(cell_end, start_position) + 1  # noqa: E203
         ]
+
         # Make sure that the parameters provided are relevant
         if "parameters" in notebook_content:
-            l_params = [
+            parameters_names = [
                 param.split("=")[0][:-1]
                 for param in literal_eval(params.strip('source": '))
                 if param[0] not in ["#", "\n"]
             ]
-            def_params = [
+            parameters_values = [
                 param.split("=")[1][2:-1]
                 for param in literal_eval(params.strip('source": '))
                 if param[0] not in ["#", "\n"]
             ]
-        # to ensure default value is correctly selected
+
+        # To ensure default value is correctly selected
         # WHAT'S THE PURPOSE OF THIS BELOW?
-        for param in range(len(def_params) - 1):
-            def_params[param] = def_params[param][:-1]
+        for param in range(len(parameters_values) - 1):
+            parameters_values[param] = parameters_values[param][:-1]
 
-        if "report_name" in l_params:
-            l_params.remove("report_name")
+        if "report_name" in parameters_names:
+            parameters_names.remove("report_name")
 
-        PARAMETERS_DICT[report_to_run] = [l_params, def_params]
-
-        # On the menu of choices add the parameters necessary for each template report
-        if len(l_params) > 1 or not l_params:
-            args = f"<{'> <'.join(l_params)}>"
-        else:
-            args = f"<{l_params[0]}>"
-
-        MENU_STRING += (
-            f"    {k}. {report_to_run}"
-            + f"{(MAX_LEN_NAME-len(report_to_run))*' '} "
-            + f"{args if args != '<>' else ''}\n"
-        )
-    CHOICES_MENUS = REPORT_NAMES + REPORT_IDS + ["r", "reset"]
-    PATH = "/reports/"
-
-    def __init__(self, queue: List[str] = None):
-        """Constructor"""
-        super().__init__(queue)
-
-        if session and obbff.USE_PROMPT_TOOLKIT:
-            choices: dict = {c: {} for c in self.controller_choices}
-
-            choices["support"] = self.SUPPORT_CHOICES
-            choices["about"] = self.ABOUT_CHOICES
-
-            self.completer = NestedCompleter.from_nested_dict(choices)
-
-    def print_help(self):
-        """Print help."""
-        mt = MenuText("reports/")
-        mt.add_info("_reports_")
-        mt.add_raw(f"[cmds]{self.MENU_STRING}[/cmds]")
-        console.print(text=mt.menu_text, menu="Reports - WORK IN PROGRESS")
+        return parameters_names, parameters_values
 
     @log_start_end(log=logger)
     def switch(self, an_input: str):
@@ -183,7 +238,9 @@ class ReportController(BaseController):
         input_path = self.get_input_path(report_to_run)
         output_path = self.get_output_path(report_to_run, other_args)
         parameters = self.get_parameters(report_to_run, other_args, output_path)
-        self.execute_notebook(input_path, output_path, parameters)
+
+        if parameters:
+            self.execute_notebook(input_path, output_path, parameters)
 
     @log_start_end(log=logger)
     def get_report_to_run(self, known_args: Namespace) -> str:
@@ -202,11 +259,9 @@ class ReportController(BaseController):
 
         """
 
-        if known_args.cmd in self.REPORTS_DICT:
-            # Report ID
-            report_to_run = self.REPORTS_DICT[known_args.cmd]
+        if known_args.cmd in self.reports_dict:
+            report_to_run = self.reports_dict[known_args.cmd]
         else:
-            # Report name
             report_to_run = known_args.cmd
 
         return report_to_run
@@ -281,12 +336,8 @@ class ReportController(BaseController):
 
         """
 
-        params = self.PARAMETERS_DICT[report_to_run][0]
+        params = self.parameters_dict[report_to_run][0]
 
-        # Check that the number of arguments match. We can't check validity of the
-        # argument used because this depends on what the user will use it for in
-        # the notebook. This is a downside of allowing the user to have this much
-        # flexibility.
         if len(other_args) != len(params):
             console.print("Wrong number of arguments provided!")
             if len(params):
@@ -298,13 +349,13 @@ class ReportController(BaseController):
             console.print("")
             return {}
 
-        d_report_params = {}
+        report_params = {}
         for idx, args in enumerate(params):
-            d_report_params[args] = other_args[idx]
+            report_params[args] = other_args[idx]
 
-        d_report_params["report_name"] = output_path
+        report_params["report_name"] = output_path
 
-        return d_report_params
+        return report_params
 
     @log_start_end(log=logger)
     def execute_notebook(self, input_path, output_path, parameters):
@@ -321,6 +372,7 @@ class ReportController(BaseController):
             Dictionary with report parameters.
 
         """
+
         result = pm.execute_notebook(
             input_path=input_path + ".ipynb",
             output_path=output_path + ".ipynb",
@@ -328,7 +380,6 @@ class ReportController(BaseController):
             kernel_name="python3",
         )
 
-        # Open notebook
         if not result["metadata"]["papermill"]["exception"]:
             if obbff.OPEN_REPORT_AS_HTML:
                 report_output_path = os.path.join(
