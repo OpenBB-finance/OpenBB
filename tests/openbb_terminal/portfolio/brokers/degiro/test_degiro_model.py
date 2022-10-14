@@ -44,7 +44,7 @@ def vcr_config():
         ),
         (
             "companynews",
-            dict(isin="MOCK_ISIN"),
+            dict(symbol="MOCK_ISIN"),
             "get_news_by_company",
             trading_pb2.NewsByCompany(),
         ),
@@ -214,6 +214,13 @@ def test_hold_positions_empty_update(mocker):
         target=model.__dict__["_DegiroModel__trading_api"],
         attribute="get_update",
         new=mock_func,
+    )
+
+    # MOCK CHECK SESSION ID
+    mocker.patch.object(
+        target=model,
+        attribute="check_session_id",
+        new=mocker.Mock(return_value=False),
     )
 
     result = model.hold_positions()
