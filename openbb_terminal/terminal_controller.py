@@ -6,7 +6,6 @@ import argparse
 import difflib
 import logging
 import os
-import platform
 import sys
 import webbrowser
 from typing import List
@@ -26,9 +25,6 @@ from openbb_terminal.core.config.paths import (
     REPOSITORY_ENV_FILE,
     HOME_DIRECTORY,
     USER_ROUTINES_DIRECTORY,
-)
-from openbb_terminal.core.log.generation.path_tracking_file_handler import (
-    PathTrackingFileHandler,
 )
 
 from openbb_terminal.helper_funcs import (
