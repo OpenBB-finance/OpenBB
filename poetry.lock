@@ -2548,7 +2548,7 @@ python-versions = ">= 3.5"
 
 [[package]]
 name = "protobuf"
-version = "3.20.3"
+version = "3.20.1"
 description = "Protocol Buffers"
 category = "main"
 optional = false
@@ -4449,7 +4449,7 @@ prediction = ["torch"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "5a330ed6d4ca21e04198bc7d65b5ccecbe084e1f1829b80b4e671eb9ff1f5320"
+content-hash = "bae7149ae676b7a1f3c621db7b969aec37200123e3cc4140e31958bdbd463cd3"
 
 [metadata.files]
 aiodns = []
