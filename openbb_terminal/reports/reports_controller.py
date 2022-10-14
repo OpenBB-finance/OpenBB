@@ -1,6 +1,7 @@
 """Reports Controller Module."""
 __docformat__ = "numpy"
 
+from argparse import Namespace
 import logging
 
 # pylint: disable=R1732, R0912
@@ -9,7 +10,7 @@ from pathlib import Path
 import webbrowser
 from ast import literal_eval
 from datetime import datetime
-from typing import List
+from typing import Any, Dict, List
 import papermill as pm
 
 from openbb_terminal import feature_flags as obbff
@@ -124,20 +125,186 @@ class ReportController(BaseController):
         mt.add_raw(f"[cmds]{self.reports_opts}[/cmds]")
         console.print(text=mt.menu_text, menu="Reports - WORK IN PROGRESS")
 
-    @log_start_end(log=logger)
-    def switch(self, an_input: str):
-        """Process and dispatch input.
+    def get_report_to_run(self, known_args: Namespace) -> str:
+        """Get report to run, either by report number or name.
 
         Parameters
         ----------
-        an_input : str
-            string with input arguments
+        known_args: Namespace
+            Namespace containing the known arguments received.
+            E.g. Namespace(cmd='economy') or Namespace(cmd='4')
 
         Returns
         -------
-        List[str]
-            List of commands in the queue to execute
+        str
+            Name of report to run.
+
         """
+
+        if known_args.cmd in self.d_id_to_report_name:
+            # Report number
+            report_to_run = self.d_id_to_report_name[known_args.cmd]
+        else:
+            # Report name
+            report_to_run = known_args.cmd
+
+        return report_to_run
+
+    def get_input_path(self, report_to_run: str) -> str:
+        """Get path of specified report to run, thus the input path.
+
+        Parameters
+        ----------
+        report_to_run: str
+            Name of report to run.
+
+        Returns
+        -------
+        str
+            Path of report to be rendered.
+
+        """
+
+        input_path = str(self.REPORTS_FOLDER / report_to_run)
+
+        return input_path
+
+    def get_output_path(self, report_to_run: str, other_args: List[str]) -> str:
+        """Get path to save rendered report, thus the output path.
+
+        Parameters
+        ----------
+        report_to_run: str
+            Name of report to run.
+        other_args: List[str]
+            List containing others args, for example parameters to be used in report.
+
+        Returns
+        -------
+        str
+            Path of rendered report.
+
+        """
+
+        args_to_output = f"_{'_'.join(other_args)}" if "_".join(other_args) else ""
+        report_output_name = (
+            f"{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+            + "_"
+            + f"{report_to_run}{args_to_output}"
+        )
+        output_path = str(self.OUTPUT_FOLDER / report_output_name)
+
+        return output_path
+
+    @log_start_end(log=logger)
+    def get_parameters(
+        self, report_to_run: str, other_args: List[str], output_path: str
+    ) -> Dict[str, Any]:
+        """Get dictionary of parameters to be used in report.
+
+        Parameters
+        ----------
+        report_to_run: str
+            Name of report to run.
+        other_args: List[str]
+            List containing others args, for example parameters to be used in report.
+        output_path: str
+            Path of rendered report.
+
+        Returns
+        -------
+        Dict[str, Any]
+            Dictionary with report parameters.
+
+        """
+
+        params = self.d_params[report_to_run][0]
+
+        # Check that the number of arguments match. We can't check validity of the
+        # argument used because this depends on what the user will use it for in
+        # the notebook. This is a downside of allowing the user to have this much
+        # flexibility.
+        if len(other_args) != len(params):
+            console.print("Wrong number of arguments provided!")
+            if len(params):
+                console.print("Provide, in order:")
+                for k, v in enumerate(params):
+                    console.print(f"{k+1}. {v}")
+            else:
+                console.print("No argument required.")
+            console.print("")
+            return {}
+
+        # Parameters
+        d_report_params = {}
+        for idx, args in enumerate(params):
+            d_report_params[args] = other_args[idx]
+
+        d_report_params["report_name"] = output_path
+
+        return d_report_params
+
+    @log_start_end(log=logger)
+    def execute_notebook(self, input_path, output_path, parameters):
+        """Execute the input path's notebook with the parameters provided.
+        Then, save it in the output path.
+
+        Parameters
+        ----------
+        input_path: str
+            Path of report to be rendered.
+        output_path: str
+            Path of rendered report.
+        parameters: Dict[str, Any]
+            Dictionary with report parameters.
+
+        """
+        result = pm.execute_notebook(
+            input_path=input_path + ".ipynb",
+            output_path=output_path + ".ipynb",
+            parameters=parameters,
+            kernel_name="python3",
+        )
+
+        # Open notebook
+        if not result["metadata"]["papermill"]["exception"]:
+            if obbff.OPEN_REPORT_AS_HTML:
+                report_output_path = os.path.join(
+                    os.path.abspath(os.path.join(".")), output_path + ".html"
+                )
+                console.print(report_output_path)
+                webbrowser.open(f"file://{report_output_path}")
+
+            console.print("")
+            console.print(
+                f"Exported: {report_output_path}",
+                "\n",
+            )
+        else:
+            console.print("[red]\nReport couldn't be created.\n[/red]")
+
+    @log_start_end(log=logger)
+    def produce_report(self, known_args, other_args):
+        """Here we produce the report end to end.
+
+        Parameters
+        ----------
+        known_args: Namespace
+            Namespace containing the known arguments received.
+            E.g. Namespace(cmd='economy') or Namespace(cmd='4')
+        other_args: List[str]
+            List containing others args, for example parameters to be used in report.
+
+        """
+
+        report_to_run = self.get_report_to_run(known_args)
+        input_path = self.get_input_path(report_to_run)
+        output_path = self.get_output_path(report_to_run, other_args)
+        parameters = self.get_parameters(report_to_run, other_args, output_path)
+        self.execute_notebook(input_path, output_path, parameters)
+
+    @log_start_end(log=logger)
+    def switch(self, an_input: str):
         # Empty command
         if not an_input:
             console.print("")
@@ -179,71 +346,7 @@ class ReportController(BaseController):
 
                 return self.queue
 
-            # Execute the requested report
-            if known_args.cmd in self.d_id_to_report_name:
-                report_to_run = self.d_id_to_report_name[known_args.cmd]
-            else:
-                report_to_run = known_args.cmd
-
-            params = self.d_params[report_to_run][0]
-
-            # Check that the number of arguments match. We can't check validity of the
-            # argument used because this depends on what the user will use it for in
-            # the notebook. This is a downside of allowing the user to have this much
-            # flexibility.
-            if len(other_args) != len(params):
-                console.print("Wrong number of arguments provided!")
-                if len(params):
-                    console.print("Provide, in order:")
-                    for k, v in enumerate(params):
-                        console.print(f"{k+1}. {v}")
-                else:
-                    console.print("No argument required.")
-                console.print("")
-                return []
-
-            # Template
-            notebook_template = str(self.REPORTS_FOLDER / report_to_run)
-
-            # Output
-            args_to_output = f"_{'_'.join(other_args)}" if "_".join(other_args) else ""
-            report_output_name = (
-                f"{datetime.now().strftime('%Y%m%d_%H%M%S')}"
-                + "_"
-                + f"{report_to_run}{args_to_output}"
-            )
-            notebook_output = str(self.OUTPUT_FOLDER / report_output_name)
-
-            # Parameters
-            d_report_params = {}
-            for idx, args in enumerate(params):
-                d_report_params[args] = other_args[idx]
-
-            d_report_params["report_name"] = notebook_output
-
-            # Run notebook
-            result = pm.execute_notebook(
-                notebook_template + ".ipynb",
-                notebook_output + ".ipynb",
-                parameters=d_report_params,
-                kernel_name="python3",
-            )
-
-            # Open notebook
-            if not result["metadata"]["papermill"]["exception"]:
-                if obbff.OPEN_REPORT_AS_HTML:
-                    report_output_path = os.path.join(
-                        os.path.abspath(os.path.join(".")), notebook_output + ".html"
-                    )
-                    console.print(report_output_path)
-                    webbrowser.open(f"file://{report_output_path}")
-
-                console.print("")
-                console.print(
-                    f"Exported: {report_output_path}",
-                    "\n",
-                )
-            else:
-                console.print("[red]\nReport couldn't be created.\n[/red]")
+        # The magic happens here.
+        self.produce_report(known_args, other_args)
 
         return self.queue
