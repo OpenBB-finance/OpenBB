@@ -2144,7 +2144,7 @@ def change_docstring(api_callable, model: Callable, view=None):
     return api_callable
 
 
-def check_suppress_logging(suppress: dict) -> bool:
+def check_suppress_logging(suppress_dict: dict) -> bool:
     """
     Check if logging should be suppressed.
     If the dict contains a value that is found in the stack trace,
@@ -2160,7 +2160,7 @@ def check_suppress_logging(suppress: dict) -> bool:
     bool
         True if logging shall be suppressed, False otherwise
     """
-    for _, value in suppress.items():
+    for _, value in suppress_dict.items():
         for ele in format_stack():
             if value in ele:
                 return True
@@ -2251,14 +2251,15 @@ class MainMenu:
 class Loader:
     """The Loader class."""
 
-    def __init__(self, funcs: dict):
+    def __init__(self, funcs: dict, suppress_logging: bool = False):
         print(
             "WARNING! Breaking changes incoming! Especially avoid using kwargs, since some of them will change.\n"
             "For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/api/"
         )
 
-        self.__check_initialize_logging()
+        self.__suppress_logging = suppress_logging
         self.__function_map = self.build_function_map(funcs=funcs)
+        self.__check_initialize_logging()
         self.load_menus()
 
     def __call__(self):
@@ -2335,6 +2336,10 @@ class Loader:
 
         self.openbb = main_menu
 
+    def __check_initialize_logging(self):
+        if not self.__suppress_logging:
+            self.__initialize_logging()
+
     @staticmethod
     def __load_module(module_path: str) -> Optional[types.ModuleType]:
         """Load a module from a path.
@@ -2361,11 +2366,6 @@ class Loader:
     def __initialize_logging():
         setup_logging(app_name="gst_sdk")
         log_all_settings()
-
-    @classmethod
-    def __check_initialize_logging(cls):
-        if not check_suppress_logging(suppress=SUPPRESS_LOGGING_CLASSES):
-            cls.__initialize_logging()
 
     @classmethod
     def get_function(cls, function_path: str) -> Callable:
@@ -2451,4 +2451,7 @@ class Loader:
 
 # TO USE THE API DIRECTLY JUST IMPORT IT:
 # from openbb_terminal.api import openbb (or: from openbb_terminal.api import openbb as api)
-openbb = Loader(funcs=functions).openbb
+openbb = Loader(
+    funcs=functions,
+    suppress_logging=check_suppress_logging(suppress_dict=SUPPRESS_LOGGING_CLASSES),
+).openbb
