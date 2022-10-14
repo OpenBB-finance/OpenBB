@@ -53,18 +53,14 @@ class ReportController(BaseController):
         metadata_cell = """"metadata": {\n    "tags": [\n     "parameters"\n    ]\n   },\n   "outputs":"""
 
         # Locate position of the data of interest and get parameters
-        notebook_metadata_content = notebook_content[
+        metadata = notebook_content[
             notebook_content.find(metadata_cell) :  # noqa: E203
         ]
         cell_start = 'source": '
         cell_end = "]"
-        params = notebook_metadata_content[
-            notebook_metadata_content.find(
-                cell_start
-            ) : notebook_metadata_content.find(  # noqa: E203
-                cell_end, notebook_metadata_content.find(cell_start)
-            )
-            + 1
+        start_position = metadata.find(cell_start)
+        params = metadata[
+            start_position : metadata.find(cell_end, start_position) + 1  # noqa: E203
         ]
         # Make sure that the parameters provided are relevant
         if "parameters" in notebook_content:
@@ -79,8 +75,9 @@ class ReportController(BaseController):
                 if param[0] not in ["#", "\n"]
             ]
         # to ensure default value is correctly selected
-        for param in range(len(def_params) - 1):
-            def_params[param] = def_params[param][:-1]
+        # WHAT'S THE PURPOSE OF THIS BELOW?
+        # for param in range(len(def_params) - 1):
+        #     def_params[param] = def_params[param][:-1]
 
         if "report_name" in l_params:
             l_params.remove("report_name")
