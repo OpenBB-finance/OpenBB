@@ -551,7 +551,7 @@ functions = {
         "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_exchange_net_position_change",
         "view": "openbb_terminal.cryptocurrency.due_diligence.glassnode_view.display_exchange_net_position_change",
     },
-    "crypto.dd.hr": {
+    "crypto.onchain.hr": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_hashrate",
         "view": "openbb_terminal.cryptocurrency.due_diligence.glassnode_view.display_hashrate",
     },
