@@ -5,10 +5,12 @@ import logging
 import os
 import json
 import inspect
+from typing import Callable
 import pandas as pd
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.rich_config import console  # pragma: allowlist secret
+from openbb_terminal.core.log.generation.settings_logger import log_keys
 
 logger = logging.getLogger(__name__)
 
@@ -130,19 +132,11 @@ def sdk_arg_logger(func=None, log=None, virtual_path: str = "", chart: bool = Fa
     def wrapper_decorator(*args, **kwargs):
         try:
             value = func(*args, **kwargs)
+            merged_args = merge_function_args(func, args, kwargs)
+            merged_args = sdk_remove_key_and_log_state(func.__module__, merged_args)
 
-            sig = inspect.signature(func)
-            sig_args = {
-                param.name: param.default
-                for param in sig.parameters.values()
-                if param.default is not inspect.Parameter.empty
-            }
-            # merge args with sig_args
-            sig_args.update(dict(zip(sig.parameters, args)))
-            # add kwargs elements to sig_args
-            sig_args.update(kwargs)
-
-            logging_info = {"INPUT": sig_args}
+            logging_info = {}
+            logging_info["INPUT"] = merged_args
             logging_info["VIRTUAL_PATH"] = virtual_path
             logging_info["CHART"] = chart
 
@@ -157,3 +151,60 @@ def sdk_arg_logger(func=None, log=None, virtual_path: str = "", chart: bool = Fa
             raise
 
     return wrapper_decorator
+
+
+def merge_function_args(func: Callable, args: tuple, kwargs: dict) -> dict:
+    """
+    Merge user input args and kwargs with signature defaults into a dictionary.
+
+    Parameters
+    ----------
+
+    func : Callable
+        Function to get the args from
+    args : tuple
+        Positional args
+    kwargs : dict
+        Keyword args
+
+    Returns
+    -------
+    dict
+        Merged user args and signature defaults
+    """
+
+    sig = inspect.signature(func)
+    sig_args = {
+        param.name: param.default
+        for param in sig.parameters.values()
+        if param.default is not inspect.Parameter.empty
+    }
+    # merge args with sig_args
+    sig_args.update(dict(zip(sig.parameters, args)))
+    # add kwargs elements to sig_args
+    sig_args.update(kwargs)
+    return sig_args
+
+
+def sdk_remove_key_and_log_state(func_module: str, function_args: dict) -> dict:
+    """
+    Remove API key from the function args and log state of keys.
+
+    Parameters
+    ----------
+    func_module : str
+        Module of the function
+    function_args : dict
+        Function args
+
+    Returns
+    -------
+    dict
+        Function args with API key removed
+    """
+
+    if func_module == "openbb_terminal.keys_model":
+        # remove key if defined
+        function_args.pop("key", None)
+        log_keys()
+    return function_args
