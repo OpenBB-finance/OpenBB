@@ -21,7 +21,7 @@ import pandas as pd
 import numpy as np
 
 from openbb_terminal.core.config.paths import (
-    CUSTOM_IMPORTS_DIRECTORY,
+    USER_CUSTOM_IMPORTS_DIRECTORY,
     ROUTINES_DIRECTORY,
 )
 from openbb_terminal.decorators import log_start_end
@@ -1005,7 +1005,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 # This seems to block the .exe since the folder needs to be manually created
                 # This block makes sure that we only look for the file if the -f flag is used
                 # Adding files in the argparse choices, will fail for the .exe even without -f
-                STOCKS_CUSTOM_IMPORTS = CUSTOM_IMPORTS_DIRECTORY / "stocks"
+                STOCKS_CUSTOM_IMPORTS = USER_CUSTOM_IMPORTS_DIRECTORY / "stocks"
                 try:
                     file_list = [x.name for x in STOCKS_CUSTOM_IMPORTS.iterdir()]
                     if ns_parser.filepath not in file_list:
