@@ -10,49 +10,35 @@ import platform
 import sys
 import webbrowser
 from typing import List
-import dotenv
 
+import dotenv
+import pandas as pd
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import NestedCompleter
-from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
-import pandas as pd
+from prompt_toolkit.styles import Style
 
 from openbb_terminal import feature_flags as obbff
-
-from openbb_terminal.core.config.paths import (
-    REPOSITORY_DIRECTORY,
-    USER_ENV_FILE,
-    REPOSITORY_ENV_FILE,
-    HOME_DIRECTORY,
-    ROUTINES_DIRECTORY,
-)
-from openbb_terminal.core.log.generation.path_tracking_file_handler import (
-    PathTrackingFileHandler,
-)
-
-from openbb_terminal.helper_funcs import (
-    check_positive,
-    get_flair,
-    parse_simple_args,
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
-)
+from openbb_terminal.common import feedparser_view
+from openbb_terminal.core.config.paths import (HOME_DIRECTORY,
+                                               REPOSITORY_DIRECTORY,
+                                               REPOSITORY_ENV_FILE,
+                                               ROUTINES_DIRECTORY,
+                                               USER_ENV_FILE)
+from openbb_terminal.core.log.generation.path_tracking_file_handler import \
+    PathTrackingFileHandler
+from openbb_terminal.helper_funcs import (EXPORT_ONLY_RAW_DATA_ALLOWED,
+                                          check_positive, get_flair,
+                                          parse_and_split_input,
+                                          parse_simple_args)
 from openbb_terminal.loggers import setup_logging
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText, translate
-from openbb_terminal.terminal_helper import (
-    bootup,
-    check_for_updates,
-    is_reset,
-    print_goodbye,
-    reset,
-    suppress_stdout,
-    update_terminal,
-    welcome_message,
-)
-from openbb_terminal.helper_funcs import parse_and_split_input
-from openbb_terminal.common import feedparser_view
+from openbb_terminal.rich_config import MenuText, console, translate
+from openbb_terminal.terminal_helper import (bootup, check_for_updates,
+                                             is_reset, print_goodbye, reset,
+                                             suppress_stdout, update_terminal,
+                                             welcome_message)
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel,too-many-branches,no-member,C0302
 
@@ -210,9 +196,9 @@ class TerminalController(BaseController):
 
     def call_guess(self, other_args: List[str]) -> None:
         """Process guess command"""
-        import time
         import json
         import random
+        import time
 
         if self.GUESS_NUMBER_TRIES_LEFT == 0 and self.GUESS_SUM_SCORE < 0.01:
             parser_exe = argparse.ArgumentParser(
@@ -360,13 +346,15 @@ class TerminalController(BaseController):
 
     def call_crypto(self, _):
         """Process crypto command"""
-        from openbb_terminal.cryptocurrency.crypto_controller import CryptoController
+        from openbb_terminal.cryptocurrency.crypto_controller import \
+            CryptoController
 
         self.queue = self.load_class(CryptoController, self.queue)
 
     def call_economy(self, _):
         """Process economy command"""
-        from openbb_terminal.economy.economy_controller import EconomyController
+        from openbb_terminal.economy.economy_controller import \
+            EconomyController
 
         self.queue = self.load_class(EconomyController, self.queue)
 
@@ -378,9 +366,8 @@ class TerminalController(BaseController):
 
     def call_funds(self, _):
         """Process etf command"""
-        from openbb_terminal.mutual_funds.mutual_fund_controller import (
-            FundController,
-        )
+        from openbb_terminal.mutual_funds.mutual_fund_controller import \
+            FundController
 
         self.queue = self.load_class(FundController, self.queue)
 
@@ -392,18 +379,15 @@ class TerminalController(BaseController):
 
     def call_reports(self, _):
         """Process reports command"""
-        from openbb_terminal.reports.reports_controller import (
-            ReportController,
-        )
+        from openbb_terminal.reports.reports_controller import ReportController
 
         self.queue = self.load_class(ReportController, self.queue)
 
     def call_dashboards(self, _):
         """Process dashboards command"""
         if not obbff.PACKAGED_APPLICATION:
-            from openbb_terminal.dashboards.dashboards_controller import (
-                DashboardsController,
-            )
+            from openbb_terminal.dashboards.dashboards_controller import \
+                DashboardsController
 
             self.queue = self.load_class(DashboardsController, self.queue)
         else:
@@ -414,33 +398,29 @@ class TerminalController(BaseController):
 
     def call_alternative(self, _):
         """Process alternative command"""
-        from openbb_terminal.alternative.alt_controller import (
-            AlternativeDataController,
-        )
+        from openbb_terminal.alternative.alt_controller import \
+            AlternativeDataController
 
         self.queue = self.load_class(AlternativeDataController, self.queue)
 
     def call_econometrics(self, _):
         """Process econometrics command"""
-        from openbb_terminal.econometrics.econometrics_controller import (
-            EconometricsController,
-        )
+        from openbb_terminal.econometrics.econometrics_controller import \
+            EconometricsController
 
         self.queue = EconometricsController(self.queue).menu()
 
     def call_forecast(self, _):
         """Process forecast command"""
-        from openbb_terminal.forecast.forecast_controller import (
-            ForecastController,
-        )
+        from openbb_terminal.forecast.forecast_controller import \
+            ForecastController
 
         self.queue = self.load_class(ForecastController, "", pd.DataFrame(), self.queue)
 
     def call_portfolio(self, _):
         """Process portfolio command"""
-        from openbb_terminal.portfolio.portfolio_controller import (
-            PortfolioController,
-        )
+        from openbb_terminal.portfolio.portfolio_controller import \
+            PortfolioController
 
         self.queue = self.load_class(PortfolioController, self.queue)
 

@@ -10,28 +10,19 @@ from typing import List
 import financedatabase
 import yfinance as yf
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common import feedparser_view, newsapi_view
 from openbb_terminal.common.quantitative_analysis import qa_view
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
-
-from openbb_terminal.helper_funcs import (
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
-    export_data,
-    valid_date,
-)
 from openbb_terminal.helper_classes import AllowArgsWithWhiteSpace
-from openbb_terminal.helper_funcs import choice_check_after_action
+from openbb_terminal.helper_funcs import (EXPORT_ONLY_RAW_DATA_ALLOWED,
+                                          choice_check_after_action,
+                                          export_data, valid_date)
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import (
-    console,
-    translate,
-    MenuText,
-    get_ordered_list_sources,
-)
+from openbb_terminal.rich_config import (MenuText, console,
+                                         get_ordered_list_sources, translate)
 from openbb_terminal.stocks import stocks_helper
 
 # pylint: disable=R1710,import-outside-toplevel,R0913,R1702,no-member
@@ -543,18 +534,16 @@ class StocksController(StockBaseController):
     @log_start_end(log=logger)
     def call_disc(self, _):
         """Process disc command"""
-        from openbb_terminal.stocks.discovery.disc_controller import (
-            DiscoveryController,
-        )
+        from openbb_terminal.stocks.discovery.disc_controller import \
+            DiscoveryController
 
         self.queue = self.load_class(DiscoveryController, self.queue)
 
     @log_start_end(log=logger)
     def call_dps(self, _):
         """Process dps command"""
-        from openbb_terminal.stocks.dark_pool_shorts.dps_controller import (
-            DarkPoolShortsController,
-        )
+        from openbb_terminal.stocks.dark_pool_shorts.dps_controller import \
+            DarkPoolShortsController
 
         self.queue = self.load_class(
             DarkPoolShortsController, self.ticker, self.start, self.stock, self.queue
@@ -563,18 +552,16 @@ class StocksController(StockBaseController):
     @log_start_end(log=logger)
     def call_scr(self, _):
         """Process scr command"""
-        from openbb_terminal.stocks.screener.screener_controller import (
-            ScreenerController,
-        )
+        from openbb_terminal.stocks.screener.screener_controller import \
+            ScreenerController
 
         self.queue = self.load_class(ScreenerController, self.queue)
 
     @log_start_end(log=logger)
     def call_sia(self, _):
         """Process ins command"""
-        from openbb_terminal.stocks.sector_industry_analysis.sia_controller import (
-            SectorIndustryAnalysisController,
-        )
+        from openbb_terminal.stocks.sector_industry_analysis.sia_controller import \
+            SectorIndustryAnalysisController
 
         self.queue = self.load_class(
             SectorIndustryAnalysisController, self.ticker, self.queue
@@ -583,9 +570,8 @@ class StocksController(StockBaseController):
     @log_start_end(log=logger)
     def call_ins(self, _):
         """Process ins command"""
-        from openbb_terminal.stocks.insider.insider_controller import (
-            InsiderController,
-        )
+        from openbb_terminal.stocks.insider.insider_controller import \
+            InsiderController
 
         self.queue = self.load_class(
             InsiderController,
@@ -599,16 +585,16 @@ class StocksController(StockBaseController):
     @log_start_end(log=logger)
     def call_gov(self, _):
         """Process gov command"""
-        from openbb_terminal.stocks.government.gov_controller import GovController
+        from openbb_terminal.stocks.government.gov_controller import \
+            GovController
 
         self.queue = self.load_class(GovController, self.ticker, self.queue)
 
     @log_start_end(log=logger)
     def call_options(self, _):
         """Process options command"""
-        from openbb_terminal.stocks.options.options_controller import (
-            OptionsController,
-        )
+        from openbb_terminal.stocks.options.options_controller import \
+            OptionsController
 
         self.queue = self.load_class(OptionsController, self.ticker, self.queue)
 
@@ -627,9 +613,8 @@ class StocksController(StockBaseController):
     def call_res(self, _):
         """Process res command"""
         if self.ticker:
-            from openbb_terminal.stocks.research.res_controller import (
-                ResearchController,
-            )
+            from openbb_terminal.stocks.research.res_controller import \
+                ResearchController
 
             self.queue = self.load_class(
                 ResearchController, self.ticker, self.start, self.interval, self.queue
@@ -672,7 +657,8 @@ class StocksController(StockBaseController):
     def call_fa(self, _):
         """Process fa command"""
         if self.ticker:
-            from openbb_terminal.stocks.fundamental_analysis import fa_controller
+            from openbb_terminal.stocks.fundamental_analysis import \
+                fa_controller
 
             self.queue = self.load_class(
                 fa_controller.FundamentalAnalysisController,
@@ -730,9 +716,8 @@ class StocksController(StockBaseController):
     def call_qa(self, _):
         """Process qa command"""
         if self.ticker:
-            from openbb_terminal.stocks.quantitative_analysis import (
-                qa_controller,
-            )
+            from openbb_terminal.stocks.quantitative_analysis import \
+                qa_controller
 
             self.queue = self.load_class(
                 qa_controller.QaController,
