@@ -512,7 +512,7 @@ class CryptoController(CryptoBaseController):
             EXPORT_ONLY_RAW_DATA_ALLOWED,
         )
         # TODO: merge find + display_all_coins
-        if ns_parser.coin:
+        if ns_parser and ns_parser.coin:
             find(
                 query=ns_parser.coin,
                 source=ns_parser.source,
