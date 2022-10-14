@@ -7,7 +7,7 @@ import json
 import pandas as pd
 
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.rich_config import console
+from openbb_terminal.rich_config import console  # pragma: allowlist secret
 
 logger = logging.getLogger(__name__)
 
