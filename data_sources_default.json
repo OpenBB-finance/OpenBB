@@ -2,6 +2,7 @@
   "stocks": {
     "search": ["FinanceDatabase"],
     "quote": ["YahooFinance"],
+    "tob": ["CBOE"],
     "candle": [],
     "codes": ["Polygon"],
     "news": ["Feedparser", "NewsApi"],
