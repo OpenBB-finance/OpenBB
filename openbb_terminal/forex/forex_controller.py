@@ -45,7 +45,7 @@ FX_TICKERS = pd.read_csv(forex_data_path).iloc[:, 0].to_list()
 class ForexController(BaseController):
     """Forex Controller class."""
 
-    CHOICES_COMMANDS = ["load", "quote", "candle", "resources", "fwd"]
+    CHOICES_COMMANDS = ["load", "quote", "candle", "resources", "fwd", "forecast"]
     CHOICES_MENUS = ["ta", "qa", "Oanda"]
     RESOLUTION = ["i", "d", "w", "m"]
 
@@ -102,6 +102,7 @@ class ForexController(BaseController):
         mt.add_raw("\n")
         mt.add_info("forex")
         mt.add_menu("oanda")
+        mt.add_menu("forecast")
         console.print(text=mt.menu_text, menu="Forex")
 
     def custom_reset(self):
@@ -315,14 +316,7 @@ class ForexController(BaseController):
         """Enter Oanda menu."""
         from openbb_terminal.forex.oanda.oanda_controller import OandaController
 
-        # if self.to_symbol and self.from_symbol:
-
-        self.queue = self.load_class(
-            OandaController,
-            queue=self.queue,
-        )
-        # else:
-        #     console.print("No currency pair data is loaded. Use 'load' to load data.\n")
+        self.queue = self.load_class(OandaController, queue=self.queue)
 
     @log_start_end(log=logger)
     def call_ta(self, _):
@@ -367,10 +361,14 @@ class ForexController(BaseController):
         else:
             console.print("No pair selected.\n")
 
-    # HELP WANTED!
-    # TODO: Add news and reddit commands back
-    # behavioural analysis and exploratory data analysis would be useful in the
-    # forex menu. The examples of integration of the common ba and eda components
-    # into the stocks context can provide an insight on how this can be done.
-    # The earlier implementation did not work and was deleted in commit
-    # d0e51033f7d5d4da6386b9e0b787892979924dce
+    @log_start_end(log=logger)
+    def call_forecast(self, _):
+        """Process forecast command"""
+        from openbb_terminal.forecast import forecast_controller
+
+        self.queue = self.load_class(
+            forecast_controller.ForecastController,
+            self.fx_pair,
+            self.data,
+            self.queue,
+        )

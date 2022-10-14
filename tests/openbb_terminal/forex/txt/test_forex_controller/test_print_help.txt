@@ -12,4 +12,5 @@ Source: YahooFinance
 
 Forex brokerages:
 >   oanda              Oanda menu
+>   forecast           forecast techniques
 
