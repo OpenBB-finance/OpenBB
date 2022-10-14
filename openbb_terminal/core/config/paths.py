@@ -18,14 +18,15 @@ def get_user_data_directory():
 
 HOME_DIRECTORY = Path.home()
 REPOSITORY_DIRECTORY = Path(__file__).parent.parent.parent.parent
-SETTINGS_DIRECTORY = HOME_DIRECTORY / ".openbb_terminal"
+PACKAGE_DIRECTORY = Path(__file__).parent.parent.parent
+MISCELLANEOUS_DIRECTORY = PACKAGE_DIRECTORY / "miscellaneous"
 REPOSITORY_ENV_FILE = REPOSITORY_DIRECTORY / ".env"
+
+SETTINGS_DIRECTORY = HOME_DIRECTORY / ".openbb_terminal"
 USER_ENV_FILE = SETTINGS_DIRECTORY / ".env"
 
 USER_DATA_DIRECTORY = get_user_data_directory()
-
 USER_EXPORTS_DIRECTORY = USER_DATA_DIRECTORY / "exports"
-
 CUSTOM_IMPORTS_DIRECTORY = USER_DATA_DIRECTORY / "custom_imports"
 PORTFOLIO_DATA_DIRECTORY = USER_DATA_DIRECTORY / "portfolio"
 ROUTINES_DIRECTORY = USER_DATA_DIRECTORY / "routines"

@@ -21,6 +21,7 @@ import pandas as pd
 from openbb_terminal import feature_flags as obbff
 
 from openbb_terminal.core.config.paths import (
+    MISCELLANEOUS_DIRECTORY,
     REPOSITORY_DIRECTORY,
     USER_ENV_FILE,
     REPOSITORY_ENV_FILE,
@@ -116,7 +117,7 @@ class TerminalController(BaseController):
         """Update runtime choices"""
         self.ROUTINE_FILES = {
             filepath.name: filepath
-            for filepath in (REPOSITORY_DIRECTORY / "routines").rglob("*.openbb")
+            for filepath in (MISCELLANEOUS_DIRECTORY / "routines").rglob("*.openbb")
         }
         self.ROUTINE_FILES.update(
             {
@@ -892,16 +893,16 @@ def main(
     if test:
         os.environ["DEBUG_MODE"] = "true"
 
-        if paths == []:
+        if paths == "":
             console.print("Please send a path when using test mode")
             return
         test_files = []
         for path in paths:
             if path.endswith(".openbb"):
-                file = os.path.join(os.path.abspath(os.path.dirname(__file__)), path)
+                file = str(MISCELLANEOUS_DIRECTORY / path)
                 test_files.append(file)
             else:
-                folder = os.path.join(os.path.abspath(os.path.dirname(__file__)), path)
+                folder = str(MISCELLANEOUS_DIRECTORY / path)
                 files = [
                     f"{folder}/{name}"
                     for name in os.listdir(folder)
@@ -961,8 +962,7 @@ def main(
         terminal()
 
 
-if __name__ == "__main__":
-
+def parse_args_and_run():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="terminal",
@@ -1025,3 +1025,7 @@ if __name__ == "__main__":
         ns_parser.verbose,
         ns_parser.routine_args,
     )
+
+
+if __name__ == "__main__":
+    parse_args_and_run()
