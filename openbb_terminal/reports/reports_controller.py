@@ -30,22 +30,20 @@ class ReportController(BaseController):
     CURRENT_LOCATION = Path(__file__)
     REPORTS_FOLDER = CURRENT_LOCATION.parent / "templates"
     OUTPUT_FOLDER = USER_EXPORTS_DIRECTORY / "reports"
-
-    report_names = [
+    REPORT_NAMES = [
         notebooks[:-6]
         for notebooks in os.listdir(REPORTS_FOLDER)
         if notebooks.endswith(".ipynb")
     ]
-
-    ids_reports = [str(val + 1) for val in range(len(report_names))]
+    REPORT_IDS = [str(val + 1) for val in range(len(REPORT_NAMES))]
 
     d_id_to_report_name = {}
-    for id_report, report_name in enumerate(report_names):
+    for id_report, report_name in enumerate(REPORT_NAMES):
         d_id_to_report_name[str(id_report + 1)] = report_name
 
     d_params = {}
 
-    max_len_name = max(len(name) for name in report_names) + 2
+    max_len_name = max(len(name) for name in REPORT_NAMES) + 2
     reports_opts = ""
     for k, report_to_run in d_id_to_report_name.items():
         # Crawl data to look into what
@@ -103,7 +101,7 @@ class ReportController(BaseController):
             + f"{(max_len_name-len(report_to_run))*' '} "
             + f"{args if args != '<>' else ''}\n"
         )
-    CHOICES_MENUS = report_names + ids_reports + ["r", "reset"]
+    CHOICES_MENUS = REPORT_NAMES + REPORT_IDS + ["r", "reset"]
     PATH = "/reports/"
 
     def __init__(self, queue: List[str] = None):
@@ -125,8 +123,9 @@ class ReportController(BaseController):
         mt.add_raw(f"[cmds]{self.reports_opts}[/cmds]")
         console.print(text=mt.menu_text, menu="Reports - WORK IN PROGRESS")
 
+    @log_start_end(log=logger)
     def get_report_to_run(self, known_args: Namespace) -> str:
-        """Get report to run, either by report number or name.
+        """Get report to run, either by report name or ID.
 
         Parameters
         ----------
@@ -142,7 +141,7 @@ class ReportController(BaseController):
         """
 
         if known_args.cmd in self.d_id_to_report_name:
-            # Report number
+            # Report ID
             report_to_run = self.d_id_to_report_name[known_args.cmd]
         else:
             # Report name
@@ -150,6 +149,7 @@ class ReportController(BaseController):
 
         return report_to_run
 
+    @log_start_end(log=logger)
     def get_input_path(self, report_to_run: str) -> str:
         """Get path of specified report to run, thus the input path.
 
@@ -169,6 +169,7 @@ class ReportController(BaseController):
 
         return input_path
 
+    @log_start_end(log=logger)
     def get_output_path(self, report_to_run: str, other_args: List[str]) -> str:
         """Get path to save rendered report, thus the output path.
 
@@ -285,7 +286,7 @@ class ReportController(BaseController):
 
     @log_start_end(log=logger)
     def produce_report(self, known_args, other_args):
-        """Here we produce the report end to end.
+        """Report production end to end.
 
         Parameters
         ----------
