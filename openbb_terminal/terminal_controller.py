@@ -117,7 +117,7 @@ class TerminalController(BaseController):
         """Update runtime choices"""
         self.ROUTINE_FILES = {
             filepath.name: filepath
-            for filepath in (MISCELLANEOUS_DIRECTORY / "routines").rglob("*.openbb")
+            for filepath in (REPOSITORY_DIRECTORY / "routines").rglob("*.openbb")
         }
         self.ROUTINE_FILES.update(
             {
@@ -899,10 +899,10 @@ def main(
         test_files = []
         for path in paths:
             if path.endswith(".openbb"):
-                file = str(MISCELLANEOUS_DIRECTORY / path)
+                file = str(REPOSITORY_DIRECTORY / path)
                 test_files.append(file)
             else:
-                folder = str(MISCELLANEOUS_DIRECTORY / path)
+                folder = str(REPOSITORY_DIRECTORY / path)
                 files = [
                     f"{folder}/{name}"
                     for name in os.listdir(folder)
