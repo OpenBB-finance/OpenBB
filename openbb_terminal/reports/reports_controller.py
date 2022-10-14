@@ -47,7 +47,10 @@ class ReportController(BaseController):
 
         super().__init__(queue)
         if session and obbff.USE_PROMPT_TOOLKIT:
-            self.update_runtime_choices()
+            self.choices: dict = {c: {} for c in self.controller_choices}
+            self.choices["support"] = self.SUPPORT_CHOICES
+            self.choices["about"] = self.ABOUT_CHOICES
+            self.completer = NestedCompleter.from_nested_dict(self.choices)
 
             # Extract required parameters per report
             for _, report_name in self.reports_dict.items():
@@ -65,17 +68,6 @@ class ReportController(BaseController):
                     parameters_values,
                 ]
 
-    def update_runtime_choices(self):
-        """Update choices by updating reports available on folder."""
-
-        self.controller_choices = (
-            list(self.reports_dict.keys()) + self.report_names + ["r", "reset"]
-        )
-        self.choices: dict = {c: {} for c in self.controller_choices}
-        self.choices["support"] = self.SUPPORT_CHOICES
-        self.choices["about"] = self.ABOUT_CHOICES
-        self.completer = NestedCompleter.from_nested_dict(self.choices)
-
     def print_help(self):
         """Print help."""
 
@@ -88,8 +80,6 @@ class ReportController(BaseController):
             if notebooks.endswith(".ipynb")
         ]
         self.reports_dict = {str(v + 1): k for v, k in enumerate(self.report_names)}
-
-        self.update_runtime_choices()
 
         MAX_LEN_NAME = max(len(name) for name in self.report_names) + 2
         menu_string = ""
