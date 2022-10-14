@@ -9,7 +9,7 @@ from openbb_terminal.core.config.paths import (
     USER_CUSTOM_IMPORTS_DIRECTORY,
     USER_EXPORTS_DIRECTORY,
     USER_PORTFOLIO_DATA_DIRECTORY,
-    PRESETS_DIRECTORY,
+    USER_PRESETS_DIRECTORY,
     USER_ROUTINES_DIRECTORY,
     USER_DATA_SOURCES_DEFAULT_FILE,
 )
@@ -54,11 +54,11 @@ dirs_list = [
     USER_PORTFOLIO_DATA_DIRECTORY / "holdings",
     USER_PORTFOLIO_DATA_DIRECTORY / "allocation",
     USER_PORTFOLIO_DATA_DIRECTORY / "optimization",
-    PRESETS_DIRECTORY,
-    PRESETS_DIRECTORY / "stocks" / "options",
-    PRESETS_DIRECTORY / "stocks" / "screener",
-    PRESETS_DIRECTORY / "stocks" / "insider",
-    PRESETS_DIRECTORY / "etf" / "screener",
+    USER_PRESETS_DIRECTORY,
+    USER_PRESETS_DIRECTORY / "stocks" / "options",
+    USER_PRESETS_DIRECTORY / "stocks" / "screener",
+    USER_PRESETS_DIRECTORY / "stocks" / "insider",
+    USER_PRESETS_DIRECTORY / "etf" / "screener",
     USER_ROUTINES_DIRECTORY,
 ]
 dirs_files = [USER_ENV_FILE, REPOSITORY_ENV_FILE, USER_DATA_SOURCES_DEFAULT_FILE]
