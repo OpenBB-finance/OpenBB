@@ -10,7 +10,7 @@ from typing import List
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.core.config.paths import PRESETS_DIRECTORY
+from openbb_terminal.core.config.paths import USER_PRESETS_DIRECTORY
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_classes import AllowArgsWithWhiteSpace
 from openbb_terminal.helper_funcs import (
@@ -37,7 +37,7 @@ logger = logging.getLogger(__name__)
 
 # TODO: HELP WANTED! This menu required some refactoring. Things that can be addressed:
 #       - better preset management (MVC style).
-PRESETS_PATH = PRESETS_DIRECTORY / "stocks" / "screener"
+PRESETS_PATH = USER_PRESETS_DIRECTORY / "stocks" / "screener"
 
 
 class ScreenerController(BaseController):

@@ -823,19 +823,19 @@ def test_set_rh_key(args: List[str], persist: bool, show_output: bool, expected:
             ["test_username", "test_password", "test_secret"],
             False,
             True,
-            keys_model.KeyStatus.DEFINED_NOT_TESTED,
+            keys_model.KeyStatus.DEFINED_TEST_FAILED,
         ),
         (
             ["test_username", "test_password", "test_secret"],
             False,
             False,
-            keys_model.KeyStatus.DEFINED_NOT_TESTED,
+            keys_model.KeyStatus.DEFINED_TEST_FAILED,
         ),
         (
             ["test_username", "test_password", "test_secret"],
             True,
             True,
-            keys_model.KeyStatus.DEFINED_NOT_TESTED,
+            keys_model.KeyStatus.DEFINED_TEST_FAILED,
         ),
         (
             ["REPLACE_ME", "REPLACE_ME", "REPLACE_ME"],
