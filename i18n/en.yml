@@ -1027,8 +1027,8 @@ en:
   reports: customizable research reports through jupyter notebooks
   reports/_reports_: Create your custom reports or just run one of our templates
   reports/run: run a selected report
-  reports/_Templates_: Templates
-  reports/_Your_reports_: Your reports
+  reports/_Templates_: OpenBB templates
+  reports/_My_reports_: My reports
   forecast/_disclaimer_: DISCLAIMER
   forecast/_data_loc: Looking for data in
   forecast/load: load a dataset from csv

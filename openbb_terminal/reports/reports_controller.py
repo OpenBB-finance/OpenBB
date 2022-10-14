@@ -115,7 +115,7 @@ class ReportController(BaseController):
 
         mt.add_raw(f"[cmds]{menu_string}[/cmds]")
         mt.add_raw("\n")
-        mt.add_info("_Your_reports_")
+        mt.add_info("_My_reports_")
         console.print(text=mt.menu_text, menu="Reports")
 
     @log_start_end(log=logger)
