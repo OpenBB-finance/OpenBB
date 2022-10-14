@@ -94,6 +94,7 @@ en:
   stocks/load: load a specific stock ticker and additional info for analysis
   stocks/_ticker: Stock
   stocks/quote: view the current price for a specific stock ticker
+  stocks/tob: view top of book for loaded ticker (US exchanges only)
   stocks/QUOTE: Current quote for stock ticker
   stocks/QUOTE_ticker: Stock ticker
   stocks/candle: view a candle chart for a specific stock ticker
