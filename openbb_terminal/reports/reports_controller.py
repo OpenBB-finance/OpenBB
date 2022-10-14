@@ -76,11 +76,12 @@ class ReportController(BaseController):
             ]
         # to ensure default value is correctly selected
         # WHAT'S THE PURPOSE OF THIS BELOW?
-        # for param in range(len(def_params) - 1):
-        #     def_params[param] = def_params[param][:-1]
+        for param in range(len(def_params) - 1):
+            def_params[param] = def_params[param][:-1]
 
         if "report_name" in l_params:
             l_params.remove("report_name")
+
         PARAMETERS_DICT[report_to_run] = [l_params, def_params]
 
         # On the menu of choices add the parameters necessary for each template report
@@ -115,6 +116,74 @@ class ReportController(BaseController):
         mt.add_info("_reports_")
         mt.add_raw(f"[cmds]{self.MENU_STRING}[/cmds]")
         console.print(text=mt.menu_text, menu="Reports - WORK IN PROGRESS")
+
+    @log_start_end(log=logger)
+    def switch(self, an_input: str):
+        # Empty command
+        if not an_input:
+            console.print("")
+            return self.queue
+
+        # Navigation slash is being used
+        if "/" in an_input:
+            actions = an_input.split("/")
+
+            # Absolute path is specified
+            if not actions[0]:
+                an_input = "home"
+            # Relative path so execute first instruction
+            else:
+                an_input = actions[0]
+
+            # Add all instructions to the queue
+            for cmd in actions[1:][::-1]:
+                if cmd:
+                    self.queue.insert(0, cmd)
+
+        (known_args, other_args) = self.parser.parse_known_args(an_input.split())
+
+        # Redirect commands to their correct functions
+        if known_args.cmd:
+            if known_args.cmd in ("..", "q"):
+                known_args.cmd = "quit"
+            elif known_args.cmd in ("?", "h"):
+                known_args.cmd = "help"
+            elif known_args.cmd == "r":
+                known_args.cmd = "reset"
+
+            if known_args.cmd in ["quit", "help", "reset", "home", "exit", "cls"]:
+                getattr(
+                    self,
+                    "call_" + known_args.cmd,
+                    lambda _: "Command not recognized!",
+                )(other_args)
+
+                return self.queue
+
+        # The magic happens here
+        self.produce_report(known_args, other_args)
+
+        return self.queue
+
+    @log_start_end(log=logger)
+    def produce_report(self, known_args, other_args):
+        """Report production end to end.
+
+        Parameters
+        ----------
+        known_args: Namespace
+            Namespace containing the known arguments received.
+            E.g. Namespace(cmd='economy') or Namespace(cmd='4')
+        other_args: List[str]
+            List containing others args, for example parameters to be used in report.
+
+        """
+
+        report_to_run = self.get_report_to_run(known_args)
+        input_path = self.get_input_path(report_to_run)
+        output_path = self.get_output_path(report_to_run, other_args)
+        parameters = self.get_parameters(report_to_run, other_args, output_path)
+        self.execute_notebook(input_path, output_path, parameters)
 
     @log_start_end(log=logger)
     def get_report_to_run(self, known_args: Namespace) -> str:
@@ -275,71 +344,3 @@ class ReportController(BaseController):
             )
         else:
             console.print("[red]\nReport couldn't be created.\n[/red]")
-
-    @log_start_end(log=logger)
-    def produce_report(self, known_args, other_args):
-        """Report production end to end.
-
-        Parameters
-        ----------
-        known_args: Namespace
-            Namespace containing the known arguments received.
-            E.g. Namespace(cmd='economy') or Namespace(cmd='4')
-        other_args: List[str]
-            List containing others args, for example parameters to be used in report.
-
-        """
-
-        report_to_run = self.get_report_to_run(known_args)
-        input_path = self.get_input_path(report_to_run)
-        output_path = self.get_output_path(report_to_run, other_args)
-        parameters = self.get_parameters(report_to_run, other_args, output_path)
-        self.execute_notebook(input_path, output_path, parameters)
-
-    @log_start_end(log=logger)
-    def switch(self, an_input: str):
-        # Empty command
-        if not an_input:
-            console.print("")
-            return self.queue
-
-        # Navigation slash is being used
-        if "/" in an_input:
-            actions = an_input.split("/")
-
-            # Absolute path is specified
-            if not actions[0]:
-                an_input = "home"
-            # Relative path so execute first instruction
-            else:
-                an_input = actions[0]
-
-            # Add all instructions to the queue
-            for cmd in actions[1:][::-1]:
-                if cmd:
-                    self.queue.insert(0, cmd)
-
-        (known_args, other_args) = self.parser.parse_known_args(an_input.split())
-
-        # Redirect commands to their correct functions
-        if known_args.cmd:
-            if known_args.cmd in ("..", "q"):
-                known_args.cmd = "quit"
-            elif known_args.cmd in ("?", "h"):
-                known_args.cmd = "help"
-            elif known_args.cmd == "r":
-                known_args.cmd = "reset"
-
-            if known_args.cmd in ["quit", "help", "reset", "home", "exit", "cls"]:
-                getattr(
-                    self,
-                    "call_" + known_args.cmd,
-                    lambda _: "Command not recognized!",
-                )(other_args)
-
-                return self.queue
-
-        # The magic happens here
-        self.produce_report(known_args, other_args)
-
-        return self.queue
