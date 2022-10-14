@@ -753,8 +753,9 @@ en:
   economy/index: find and plot any (major) index on the market
   economy/treasury: obtain U.S. treasury rates
   economy/ycrv: show sovereign yield curves
-  economy/events: display economic calendar
-  economy/edebt: shows external debt statistics for various countries
+  economy/spread: show bond spread matrix
+  economy/events: show economic calendar
+  economy/edebt: show external debt statistics for various countries
   economy/plot: plot data from the above commands together
   economy/rtps: real-time performance sectors
   economy/valuation: valuation of sectors, industry, country
@@ -796,6 +797,7 @@ en:
   forex/ta: technical analysis,          ema, macd, rsi, adx, bbands, obv
   forex/qa: quantitative analysis,       decompose, cusum, residuals analysis
   forex/forex: Forex brokerages
+  forex/forecast: forecast techniques
   forex/oanda: Oanda menu
   forex/ta/_currency: Currency pair loaded
   forex/ta/_source: Source
@@ -873,6 +875,7 @@ en:
   funds/equity: equity holdings
   funds/al_swe: display fund allocation (sector, country, holdings)
   funds/info_swe: get fund information
+  funds/forecast: forecasting techniques
   alternative/covid: COVID menu,                 cases, deaths, rates
   alternative/oss: Open Source menu,           star history, repos information
   alternative/covid/slopes: get countries with highest slope in cases
@@ -1054,8 +1057,8 @@ en:
   forecast/arima: Arima (Non-darts)
   forecast/expo: Probabilistic Exponential Smoothing
   forecast/theta: Theta Method
-  forecast/linregr: Probabilistic Linear Regression (feat. Past covariates)
-  forecast/regr: Regression (feat. Past covariates)
+  forecast/linregr: Probabilistic Linear Regression (feat. Past covariates and Explainability)
+  forecast/regr: Regression (feat. Past covariates and Explainability)
   forecast/rnn: Probabilistic Recurrent Neural Network (RNN, LSTM, GRU)
   forecast/brnn: Block Recurrent Neural Network (RNN, LSTM, GRU) (feat. Past covariates)
   forecast/nbeats: Neural Bayesian Estimation (feat. Past covariates)

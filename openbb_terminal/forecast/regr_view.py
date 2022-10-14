@@ -33,6 +33,7 @@ def display_regression(
     start_date: Optional[datetime] = None,
     end_date: Optional[datetime] = None,
     naive: bool = False,
+    explainability_raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """Display Regression Forecasting
@@ -119,3 +120,6 @@ def display_regression(
         helpers.plot_residuals(
             _model, past_covariates, ticker_series, forecast_horizon=forecast_horizon
         )
+
+    # SHAP
+    helpers.plot_explainability(_model, explainability_raw)

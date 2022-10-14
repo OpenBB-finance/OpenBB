@@ -1,0 +1,9 @@
+                               Yield 20Y             United States                   Canada                     Japan                   Germany                    France                     Italy            United Kingdom
+United States    [#e4003a]-0.5[/#e4003a]       [#00ACFF][/#00ACFF]  [#e4003a]-3.1[/#e4003a]   [#00ACFF]+1.2[/#00ACFF]   [#00ACFF]+2.8[/#00ACFF]   [#00ACFF]+2.9[/#00ACFF]   [#00ACFF]+1.9[/#00ACFF]  [#e4003a]-10.9[/#e4003a]
+Canada           [#00ACFF]+2.6[/#00ACFF]   [#00ACFF]+3.1[/#00ACFF]      [#00ACFF][/#00ACFF]   [#00ACFF]+4.3[/#00ACFF]   [#00ACFF]+5.9[/#00ACFF]   [#00ACFF]+6.0[/#00ACFF]   [#00ACFF]+5.0[/#00ACFF]   [#e4003a]-7.8[/#e4003a]
+Japan            [#e4003a]-1.7[/#e4003a]   [#e4003a]-1.2[/#e4003a]  [#e4003a]-4.3[/#e4003a]       [#00ACFF][/#00ACFF]   [#00ACFF]+1.6[/#00ACFF]   [#00ACFF]+1.7[/#00ACFF]   [#00ACFF]+0.7[/#00ACFF]  [#e4003a]-12.1[/#e4003a]
+Germany          [#e4003a]-3.3[/#e4003a]   [#e4003a]-2.8[/#e4003a]  [#e4003a]-5.9[/#e4003a]   [#e4003a]-1.6[/#e4003a]       [#00ACFF][/#00ACFF]   [#00ACFF]+0.1[/#00ACFF]   [#e4003a]-0.9[/#e4003a]  [#e4003a]-13.7[/#e4003a]
+France           [#e4003a]-3.4[/#e4003a]   [#e4003a]-2.9[/#e4003a]  [#e4003a]-6.0[/#e4003a]   [#e4003a]-1.7[/#e4003a]   [#e4003a]-0.1[/#e4003a]       [#00ACFF][/#00ACFF]   [#e4003a]-1.0[/#e4003a]  [#e4003a]-13.8[/#e4003a]
+Italy            [#e4003a]-2.4[/#e4003a]   [#e4003a]-1.9[/#e4003a]  [#e4003a]-5.0[/#e4003a]   [#e4003a]-0.7[/#e4003a]   [#00ACFF]+0.9[/#00ACFF]   [#00ACFF]+1.0[/#00ACFF]       [#00ACFF][/#00ACFF]  [#e4003a]-12.8[/#e4003a]
+United Kingdom  [#00ACFF]+10.4[/#00ACFF]  [#00ACFF]+10.9[/#00ACFF]  [#00ACFF]+7.8[/#00ACFF]  [#00ACFF]+12.1[/#00ACFF]  [#00ACFF]+13.7[/#00ACFF]  [#00ACFF]+13.8[/#00ACFF]  [#00ACFF]+12.8[/#00ACFF]       [#00ACFF][/#00ACFF]
+
