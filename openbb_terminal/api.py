@@ -9,8 +9,10 @@ import functools
 import importlib
 from typing import Optional, Callable, List
 import logging
+from traceback import format_stack
 
 from openbb_terminal.rich_config import console
+from openbb_terminal.reports.reports_controller import ReportController
 
 try:
     import darts  # pyright: reportMissingImports=false
@@ -36,6 +38,11 @@ from .portfolio.portfolio_model import PortfolioModel as Portfolio
 from .cryptocurrency.due_diligence.pycoingecko_model import Coin
 
 logger = logging.getLogger(__name__)
+
+SUPPRESS_LOGGING_CLASSES = {
+    ReportController: "ReportController",
+}
+
 
 functions = {
     "alt.covid.slopes": {
@@ -2049,6 +2056,10 @@ def copy_func(
         Function to be copied
     logging_decorator: bool
         If True, the copied function will be decorated with the logging decorator
+    virtual_path: str
+        If not empty, virtual path will be added to the logging
+    chart: bool
+        If True, the copied function will log info on whether it is a view (chart)
 
     Returns
     -------
@@ -2127,6 +2138,29 @@ def change_docstring(api_callable, model: Callable, view=None):
         api_callable.__signature__ = signature(model)
 
     return api_callable
+
+
+def check_suppress_logging(suppress: dict) -> bool:
+    """
+    Check if logging should be suppressed.
+    If the dict contains a value that is found in the stack trace,
+     the logging should be suppressed.
+
+    Parameters
+    ----------
+    supress_dict: dict
+        Dictionary with values that trigger log suppression
+
+    Returns
+    -------
+    bool
+        True if logging shall be suppressed, False otherwise
+    """
+    for _, value in suppress.items():
+        for ele in format_stack():
+            if value in ele:
+                return True
+    return False
 
 
 class FunctionFactory:
@@ -2218,8 +2252,9 @@ class Loader:
             "WARNING! Breaking changes incoming! Especially avoid using kwargs, since some of them will change.\n"
             "For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/api/"
         )
+
+        self.__check_initialize_logging()
         self.__function_map = self.build_function_map(funcs=funcs)
-        self.__initialize_logging()
         self.load_menus()
 
     def __call__(self):
@@ -2322,6 +2357,11 @@ class Loader:
     def __initialize_logging():
         setup_logging(app_name="gst_sdk")
         log_all_settings()
+
+    @classmethod
+    def __check_initialize_logging(cls):
+        if not check_suppress_logging(suppress=SUPPRESS_LOGGING_CLASSES):
+            cls.__initialize_logging()
 
     @classmethod
     def get_function(cls, function_path: str) -> Callable:
