@@ -7,18 +7,11 @@ import logging
 
 # pylint: disable=R1732, R0912
 import os
-from pathlib import Path
-from tkinter import N
-import webbrowser
-from ast import literal_eval
-from datetime import datetime
 from typing import Any, Dict, List
-import papermill as pm
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.helper_funcs import parse_simple_args
 from openbb_terminal.reports import reports_model
-from openbb_terminal.core.config.paths import USER_EXPORTS_DIRECTORY
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
@@ -32,94 +25,69 @@ class ReportController(BaseController):
     """Report Controller class."""
 
     CURRENT_LOCATION = reports_model.CURRENT_LOCATION
-    REPORTS_FOLDER = reports_model.REPORTS_FOLDER
     OUTPUT_FOLDER = reports_model.OUTPUT_FOLDER
-
-    report_names = [
-        notebooks[:-6]
-        for notebooks in os.listdir(REPORTS_FOLDER)
-        if notebooks.endswith(".ipynb")
-    ]
-    reports_dict = {str(v + 1): k for v, k in enumerate(report_names)}
-    parameters_dict: Dict[str, Any] = {}
-
     CHOICES_COMMANDS = ["run"]
     PATH = "/reports/"
+
+    REPORTS: List[str] = []
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
 
         super().__init__(queue)
-        if session and obbff.USE_PROMPT_TOOLKIT:
-            self.choices: dict = {c: {} for c in self.controller_choices}
+        self.update_choices()
 
+    def update_choices(self):
+        """Update controller choices with reports available under templates folder."""
+
+        if session and obbff.USE_PROMPT_TOOLKIT:
+
+            self.REPORTS = [
+                notebooks[:-6]
+                for notebooks in os.listdir(reports_model.REPORTS_FOLDER)
+                if notebooks.endswith(".ipynb")
+            ]
+
+            self.choices: dict = {c: {} for c in self.controller_choices}
             self.choices["run"] = {
-                "--report": {c: None for c in self.report_names},
+                "--report": {c: None for c in self.REPORTS},
                 "-r": "--report",
             }
-
             self.choices["support"] = self.SUPPORT_CHOICES
             self.choices["about"] = self.ABOUT_CHOICES
-            self.completer = NestedCompleter.from_nested_dict(self.choices)
 
-            # Extract required parameters per report
-            for _, report_name in self.reports_dict.items():
-
-                (
-                    parameters_names,
-                    parameters_values,
-                ) = reports_model.extract_parameters(report_name)
-
-                self.parameters_dict[report_name] = [
-                    parameters_names,
-                    parameters_values,
-                ]
+        self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
         """Print help."""
+
+        self.update_choices()
 
         mt = MenuText("reports/")
         mt.add_info("_reports_")
         mt.add_raw("\n")
         mt.add_cmd("run")
         mt.add_raw("\n")
-        mt.add_info("_Templates_")
-        self.report_names = [
-            notebooks[:-6]
-            for notebooks in os.listdir(self.REPORTS_FOLDER)
-            if notebooks.endswith(".ipynb")
-        ]
-        self.reports_dict = {str(v + 1): k for v, k in enumerate(self.report_names)}
+        mt.add_info("_Available_reports_")
+        MAX_LEN_NAME = max(len(name) for name in self.REPORTS) + 2
+        templates_string = ""
+        for report_name in self.REPORTS:
 
-        MAX_LEN_NAME = max(len(name) for name in self.report_names) + 2
-        menu_string = ""
-        for k, report_name in self.reports_dict.items():
+            parameters_names, _ = reports_model.extract_parameters(report_name)
 
-            (
-                parameters_names,
-                parameters_values,
-            ) = reports_model.extract_parameters(report_name)
-
-            self.parameters_dict[report_name] = [
-                parameters_names,
-                parameters_values,
-            ]
-
-            parameters_names = self.parameters_dict[report_name][0]
             if len(parameters_names) > 1 or not parameters_names:
                 args = f"<{'> <'.join(parameters_names)}>"
             else:
                 args = f"<{parameters_names[0]}>"
 
-            menu_string += (
-                f"    {k}. {report_name}"
+            templates_string += (
+                f"    [cmds]>[/cmds] {report_name}"
                 + f"{(MAX_LEN_NAME-len(report_name))*' '} "
                 + f"{args if args != '<>' else ''}\n"
             )
-
-        mt.add_raw(f"[cmds]{menu_string}[/cmds]")
+        mt.add_raw(f"{templates_string}")
         mt.add_raw("\n")
-        mt.add_info("_My_reports_")
+
         console.print(text=mt.menu_text, menu="Reports")
 
     @log_start_end(log=logger)

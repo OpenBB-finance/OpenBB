@@ -89,33 +89,13 @@ def produce_report(report_to_run: str, other_args: List[str] = None):
 
     """
 
-    input_path = get_input_path(report_to_run)
+    input_path = str(REPORTS_FOLDER / report_to_run)
     output_path = get_output_path(report_to_run, other_args)
     parameters = get_parameters(report_to_run, other_args, output_path)
 
     if parameters:
+        return
         execute_notebook(input_path, output_path, parameters)
-
-
-@log_start_end(log=logger)
-def get_input_path(report_to_run: str) -> str:
-    """Get path of specified report to run, thus the input path.
-
-    Parameters
-    ----------
-    report_to_run: str
-        Name of report to run.
-
-    Returns
-    -------
-    str
-        Path of report to be rendered.
-
-    """
-
-    input_path = str(REPORTS_FOLDER / report_to_run)
-
-    return input_path
 
 
 @log_start_end(log=logger)
