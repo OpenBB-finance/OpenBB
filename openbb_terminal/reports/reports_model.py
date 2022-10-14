@@ -76,34 +76,33 @@ def extract_parameters(report_name: str) -> Tuple[List[str], List[str]]:
 
 
 @log_start_end(log=logger)
-def produce_report(report_to_run: str, other_args: List[str] = None):
+def produce_report(report_name: str, other_args: List[str] = None):
     """Report production end to end.
 
     Parameters
     ----------
-    report_to_run: str
+    report_name: str
         Name of report to run.
     other_args: List[str]
         List containing others args, for example parameters to be used in report.
 
     """
 
-    input_path = str(REPORTS_FOLDER / report_to_run)
-    output_path = get_output_path(report_to_run, other_args)
-    parameters = get_parameters(report_to_run, other_args, output_path)
+    input_path = str(REPORTS_FOLDER / report_name)
+    output_path = get_output_path(report_name, other_args)
+    parameters = get_parameters(report_name, other_args, output_path)
 
     if parameters:
-        return
         execute_notebook(input_path, output_path, parameters)
 
 
 @log_start_end(log=logger)
-def get_output_path(report_to_run: str, other_args: List[str]) -> str:
+def get_output_path(report_name: str, other_args: List[str]) -> str:
     """Get path to save rendered report, thus the output path.
 
     Parameters
     ----------
-    report_to_run: str
+    report_name: str
         Name of report to run.
     other_args: List[str]
         List containing others args, for example parameters to be used in report.
@@ -119,7 +118,7 @@ def get_output_path(report_to_run: str, other_args: List[str]) -> str:
     report_output_name = (
         f"{datetime.now().strftime('%Y%m%d_%H%M%S')}"
         + "_"
-        + f"{report_to_run}{args_to_output}"
+        + f"{report_name}{args_to_output}"
     )
     output_path = str(OUTPUT_FOLDER / report_output_name)
 
@@ -128,13 +127,13 @@ def get_output_path(report_to_run: str, other_args: List[str]) -> str:
 
 @log_start_end(log=logger)
 def get_parameters(
-    report_to_run: str, other_args: List[str], output_path: str
+    report_name: str, other_args: List[str], output_path: str
 ) -> Dict[str, Any]:
     """Get dictionary of parameters to be used in report.
 
     Parameters
     ----------
-    report_to_run: str
+    report_name: str
         Name of report to run.
     other_args: List[str]
         List containing others args, for example parameters to be used in report.
@@ -148,7 +147,7 @@ def get_parameters(
 
     """
 
-    params, _ = extract_parameters(report_to_run)
+    params, _ = extract_parameters(report_name)
 
     if len(other_args) != len(params):
         console.print("Wrong number of arguments provided!")

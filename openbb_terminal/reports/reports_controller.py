@@ -26,7 +26,6 @@ class ReportController(BaseController):
 
     CHOICES_COMMANDS = ["run"]
     PATH = "/reports/"
-
     REPORTS: List[str] = []
 
     def __init__(self, queue: List[str] = None):
