@@ -17,7 +17,7 @@ from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 import openbb_terminal.econometrics.regression_model
 import openbb_terminal.econometrics.regression_view
-from openbb_terminal.core.config.paths import CUSTOM_IMPORTS_DIRECTORY
+from openbb_terminal.core.config.paths import USER_CUSTOM_IMPORTS_DIRECTORY
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.core.config.paths import USER_EXPORTS_DIRECTORY
 from openbb_terminal.decorators import log_start_end
@@ -165,7 +165,9 @@ class EconometricsController(BaseController):
             for file_type in self.file_types
             for filepath in chain(
                 Path(USER_EXPORTS_DIRECTORY).rglob(f"*.{file_type}"),
-                Path(CUSTOM_IMPORTS_DIRECTORY / "econometrics").rglob(f"*.{file_type}"),
+                Path(USER_CUSTOM_IMPORTS_DIRECTORY / "econometrics").rglob(
+                    f"*.{file_type}"
+                ),
             )
             if filepath.is_file()
         }
@@ -248,7 +250,7 @@ class EconometricsController(BaseController):
         mt = MenuText("econometrics/")
         mt.add_param(
             "_data_loc",
-            f"\n\t{str(USER_EXPORTS_DIRECTORY)}\n\t{str(CUSTOM_IMPORTS_DIRECTORY/'econometrics')}",
+            f"\n\t{str(USER_EXPORTS_DIRECTORY)}\n\t{str(USER_CUSTOM_IMPORTS_DIRECTORY/'econometrics')}",
         )
         mt.add_raw("\n")
         mt.add_cmd("load")
