@@ -30,8 +30,8 @@ def extract_parameters(report_name: str) -> Tuple[List[str], List[str]]:
 
     Parameters
     ----------
-    notebook_content: str
-        Text content of Jupyter notebook.
+    report_name: str
+        Name of report to run.
 
     """
 
@@ -81,9 +81,8 @@ def produce_report(report_to_run: str, other_args: List[str] = None):
 
     Parameters
     ----------
-    known_args: Namespace
-        Namespace containing the known arguments received.
-        E.g. Namespace(cmd='economy') or Namespace(cmd='4')
+    report_to_run: str
+        Name of report to run.
     other_args: List[str]
         List containing others args, for example parameters to be used in report.
 
