@@ -6,7 +6,7 @@ import pandas as pd
 import requests
 
 from openbb_terminal import config_terminal as cfg
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import log_start_end, check_api_key
 from openbb_terminal.rich_config import console
 
 # pylint: disable=unsupported-assignment-operation
@@ -176,6 +176,7 @@ INTERVALS_ACTIVE_ADDRESSES = ["24h", "1w", "1month"]
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_GLASSNODE_KEY"])
 def get_close_price(
     symbol: str,
     start_date: str = "2010-01-01",
@@ -248,6 +249,7 @@ def get_close_price(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_GLASSNODE_KEY"])
 def get_non_zero_addresses(
     symbol: str,
     start_date: int = int(datetime(2010, 1, 1).timestamp()),
@@ -303,6 +305,7 @@ def get_non_zero_addresses(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_GLASSNODE_KEY"])
 def get_active_addresses(
     symbol: str,
     interval: str = "24h",
@@ -360,6 +363,7 @@ def get_active_addresses(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_GLASSNODE_KEY"])
 def get_hashrate(
     symbol: str,
     interval: str = "24h",
@@ -428,6 +432,7 @@ def get_hashrate(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_GLASSNODE_KEY"])
 def get_exchange_balances(
     symbol: str,
     exchange: str = "binance",
@@ -507,6 +512,7 @@ def get_exchange_balances(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_GLASSNODE_KEY"])
 def get_exchange_net_position_change(
     symbol: str,
     exchange: str = "binance",

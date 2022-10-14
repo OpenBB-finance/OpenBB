@@ -10,7 +10,7 @@ import requests
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 from openbb_terminal import config_terminal as cfg
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import clean_tweet, get_data
 from openbb_terminal.rich_config import console
 
@@ -20,6 +20,7 @@ analyzer = SentimentIntensityAnalyzer()
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_TWITTER_BEARER_TOKEN"])
 def load_analyze_tweets(
     symbol: str,
     limit: int = 100,

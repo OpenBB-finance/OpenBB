@@ -323,10 +323,10 @@ class ForecastController(BaseController):
         mt.add_cmd("rnn", self.files)
         mt.add_cmd("brnn", self.files)
         mt.add_cmd("nbeats", self.files)
+        mt.add_cmd("nhits", self.files)
         mt.add_cmd("tcn", self.files)
         mt.add_cmd("trans", self.files)
         mt.add_cmd("tft", self.files)
-        mt.add_cmd("nhits", self.files)
         # mt.add_info("_comingsoon_")
 
         console.print(text=mt.menu_text, menu="Forecast")
@@ -381,6 +381,7 @@ class ForecastController(BaseController):
         residuals: bool = False,
         forecast_only: bool = False,
         naive: bool = False,
+        explainability_raw: bool = False,
     ):
         if hidden_size:
             parser.add_argument(
@@ -638,6 +639,15 @@ class ForecastController(BaseController):
                 default=False,
                 dest="forecast_only",
             )
+        if explainability_raw:
+            parser.add_argument(
+                "--explainability-raw",
+                action="store_true",
+                dest="explainability_raw",
+                default=False,
+                help="Prints out a raw dataframe showing explainability results.",
+            )
+
             # if user does not put in --target-dataset
         return super().parse_known_args_and_warn(
             parser, other_args, export_allowed, raw, limit
@@ -924,7 +934,7 @@ class ForecastController(BaseController):
             "--values",
             help="Dataset.column values to be displayed in a plot",
             dest="values",
-            type=check_list_values(self.choices["plot"]),
+            type=str,
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -939,16 +949,20 @@ class ForecastController(BaseController):
             console.print("[red]Please enter valid dataset.\n[/red]")
             return
 
-        data: dict = {}
-        for datasetcol in ns_parser.values:
-            dataset, col = datasetcol.split(".")
-            df = self.datasets[dataset]
-            if "date" in df.columns and col != "date":
-                df = df.set_index("date")
-            data[datasetcol] = df[col]
+        values = [x.strip() for x in ns_parser.values.split(",")]
+        target_df = values[0].split(".")[0]
+        if target_df not in self.datasets:
+            console.print("[red]Please enter valid dataset.\n[/red]")
+            return
+
+        for value in values:
+            if value.split(".")[0] != target_df:
+                console.print("[red]Please enter values from the same dataset.\n[/red]")
+                return
 
         forecast_view.display_plot(
-            data,
+            self.datasets[target_df],
+            [x.split(".")[1] for x in values],
             ns_parser.export,
         )
 
@@ -2043,6 +2057,7 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
+            explainability_raw=True,
         )
 
         if ns_parser:
@@ -2070,6 +2085,7 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
+                explainability_raw=ns_parser.explainability_raw,
             )
 
     @log_start_end(log=logger)
@@ -2104,6 +2120,7 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
+            explainability_raw=True,
         )
 
         if ns_parser:
@@ -2130,6 +2147,7 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
+                explainability_raw=ns_parser.explainability_raw,
             )
 
     @log_start_end(log=logger)
