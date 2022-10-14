@@ -75,8 +75,11 @@ class ReportController(BaseController):
 
         mt = MenuText("reports/")
         mt.add_info("_reports_")
+        mt.add_raw("\n")
         mt.add_cmd("run")
-
+        mt.add_raw("\n")
+        mt.add_info("_Templates_")
+        mt.add_raw("\n")
         self.report_names = [
             notebooks[:-6]
             for notebooks in os.listdir(self.REPORTS_FOLDER)
@@ -111,7 +114,9 @@ class ReportController(BaseController):
             )
 
         mt.add_raw(f"[cmds]{menu_string}[/cmds]")
-        console.print(text=mt.menu_text, menu="Reports - WORK IN PROGRESS")
+        mt.add_raw("\n")
+        mt.add_info("_Your_reports_")
+        console.print(text=mt.menu_text, menu="Reports")
 
     @log_start_end(log=logger)
     def call_run(self, other_args: List[str]):

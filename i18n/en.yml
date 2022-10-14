@@ -83,7 +83,6 @@ en:
   forecast: timeseries forecasting with machine learning
   portfolio: perform portfolio optimization and look at portfolio performance and attribution
   dashboards: interactive dashboards using voila and jupyter notebooks
-  reports: customizable research reports through jupyter notebooks
   stocks/search: search a specific stock ticker for analysis
   stocks/SEARCH: Show companies matching the search query
   stocks/SEARCH_query: The search term used to find company tickers
@@ -1025,7 +1024,11 @@ en:
   dashboards/shortdata: finra shortdata analysis
   dashboards/crypto: cryptocurrency exchange rates against USD
   dashboards/futures: historical futures performance
-  reports/_reports_: Select one of the following report
+  reports: customizable research reports through jupyter notebooks
+  reports/_reports_: Create your custom reports or just run one of our templates
+  reports/run: run a selected report
+  reports/_Templates_: Templates
+  reports/_Your_reports_: Your reports
   forecast/_disclaimer_: DISCLAIMER
   forecast/_data_loc: Looking for data in
   forecast/load: load a dataset from csv
