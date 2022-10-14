@@ -11,7 +11,7 @@ from typing import List
 import pytz
 
 # IMPORTATION THIRDPARTY
-from dotenv import set_key
+from dotenv import set_key, load_dotenv
 
 # IMPORTATION INTERNAL
 from openbb_terminal import config_plot as cfg_plot
@@ -157,6 +157,7 @@ class SettingsController(BaseController):
         obbff.USE_DATETIME = not obbff.USE_DATETIME
         set_key(obbff.USER_ENV_FILE, "OPENBB_USE_DATETIME", str(obbff.USE_DATETIME))
         console.print("")
+        load_dotenv(USER_ENV_FILE)
 
     @log_start_end(log=logger)
     def call_source(self, other_args: List[str]):
@@ -197,6 +198,7 @@ class SettingsController(BaseController):
                 str(ns_parser.value),
             )
             console.print("")
+        load_dotenv(USER_ENV_FILE)
 
     @log_start_end(log=logger)
     def call_autoscaling(self, _):
@@ -208,6 +210,7 @@ class SettingsController(BaseController):
             str(obbff.USE_PLOT_AUTOSCALING),
         )
         console.print("")
+        load_dotenv(USER_ENV_FILE)
 
     @log_start_end(log=logger)
     def call_dpi(self, other_args: List[str]):
@@ -233,6 +236,7 @@ class SettingsController(BaseController):
             set_key(obbff.USER_ENV_FILE, "OPENBB_PLOT_DPI", str(ns_parser.value))
             cfg_plot.PLOT_DPI = ns_parser.value
             console.print("")
+        load_dotenv(USER_ENV_FILE)
 
     @log_start_end(log=logger)
     def call_height(self, other_args: List[str]):
@@ -258,6 +262,7 @@ class SettingsController(BaseController):
             set_key(obbff.USER_ENV_FILE, "OPENBB_PLOT_HEIGHT", str(ns_parser.value))
             cfg_plot.PLOT_HEIGHT = ns_parser.value
             console.print("")
+        load_dotenv(USER_ENV_FILE)
 
     @log_start_end(log=logger)
     def call_width(self, other_args: List[str]):
@@ -283,6 +288,7 @@ class SettingsController(BaseController):
             set_key(obbff.USER_ENV_FILE, "OPENBB_PLOT_WIDTH", str(ns_parser.value))
             cfg_plot.PLOT_WIDTH = ns_parser.value
             console.print("")
+        load_dotenv(USER_ENV_FILE)
 
     @log_start_end(log=logger)
     def call_pheight(self, other_args: List[str]):
@@ -311,6 +317,7 @@ class SettingsController(BaseController):
             )
             cfg_plot.PLOT_HEIGHT_PERCENTAGE = ns_parser.value
             console.print("")
+        load_dotenv(USER_ENV_FILE)
 
     @log_start_end(log=logger)
     def call_pwidth(self, other_args: List[str]):
@@ -339,6 +346,7 @@ class SettingsController(BaseController):
             )
             cfg_plot.PLOT_WIDTH_PERCENTAGE = ns_parser.value
             console.print("")
+        load_dotenv(USER_ENV_FILE)
 
     @log_start_end(log=logger)
     def call_monitor(self, other_args: List[str]):
@@ -363,6 +371,7 @@ class SettingsController(BaseController):
             set_key(obbff.USER_ENV_FILE, "OPENBB_MONITOR", str(ns_parser.value))
             cfg_plot.MONITOR = ns_parser.value
             console.print("")
+        load_dotenv(USER_ENV_FILE)
 
     @log_start_end(log=logger)
     def call_backend(self, other_args: List[str]):
@@ -390,6 +399,7 @@ class SettingsController(BaseController):
             else:
                 cfg_plot.BACKEND = ns_parser.value
             console.print("")
+        load_dotenv(USER_ENV_FILE)
 
     @log_start_end(log=logger)
     def call_lang(self, other_args: List[str]):
@@ -423,6 +433,7 @@ class SettingsController(BaseController):
                     f"Languages available: {', '.join(self.languages_available)}"
                 )
             console.print("")
+        load_dotenv(USER_ENV_FILE)
 
     @log_start_end(log=logger)
     def call_tz(self, other_args: List[str]):
@@ -449,6 +460,7 @@ class SettingsController(BaseController):
         if ns_parser:
             if ns_parser.timezone:
                 replace_user_timezone(ns_parser.timezone.replace("_", "/", 1))
+        load_dotenv(USER_ENV_FILE)
 
     @log_start_end(log=logger)
     def call_flair(self, other_args: List[str]):
@@ -478,6 +490,7 @@ class SettingsController(BaseController):
             set_key(obbff.USER_ENV_FILE, "OPENBB_USE_FLAIR", str(ns_parser.emoji))
             obbff.USE_FLAIR = ns_parser.emoji
             console.print("")
+        load_dotenv(USER_ENV_FILE)
 
     @log_start_end(log=logger)
     def call_userdata(self, other_args: List[str]):
@@ -567,3 +580,4 @@ class SettingsController(BaseController):
                             success_userdata = True
 
         console.print()
+        load_dotenv(USER_ENV_FILE)
