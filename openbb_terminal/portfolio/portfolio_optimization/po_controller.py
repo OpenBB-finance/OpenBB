@@ -2531,7 +2531,9 @@ class PortfolioOptimizationController(BaseController):
 
             if table is False:
                 if ns_parser.file_sa:
-                    excel_file = USER_PORTFOLIO_DATA_DIRECTORY / "views" / ns_parser.file_sa
+                    excel_file = (
+                        USER_PORTFOLIO_DATA_DIRECTORY / "views" / ns_parser.file_sa
+                    )
                     p_views_sa, q_views_sa = excel_model.load_bl_views(
                         excel_file=excel_file
                     )

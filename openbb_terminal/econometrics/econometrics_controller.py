@@ -165,7 +165,9 @@ class EconometricsController(BaseController):
             for file_type in self.file_types
             for filepath in chain(
                 Path(USER_EXPORTS_DIRECTORY).rglob(f"*.{file_type}"),
-                Path(USER_CUSTOM_IMPORTS_DIRECTORY / "econometrics").rglob(f"*.{file_type}"),
+                Path(USER_CUSTOM_IMPORTS_DIRECTORY / "econometrics").rglob(
+                    f"*.{file_type}"
+                ),
             )
             if filepath.is_file()
         }

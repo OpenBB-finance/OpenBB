@@ -21,7 +21,6 @@ import pandas as pd
 from openbb_terminal import feature_flags as obbff
 
 from openbb_terminal.core.config.paths import (
-    MISCELLANEOUS_DIRECTORY,
     REPOSITORY_DIRECTORY,
     USER_ENV_FILE,
     REPOSITORY_ENV_FILE,
