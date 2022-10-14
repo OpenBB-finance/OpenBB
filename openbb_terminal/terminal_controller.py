@@ -21,10 +21,11 @@ import pandas as pd
 from openbb_terminal import feature_flags as obbff
 
 from openbb_terminal.core.config.paths import (
-    REPOSITORY_DIRECTORY,
-    USER_ENV_FILE,
-    REPOSITORY_ENV_FILE,
     HOME_DIRECTORY,
+    MISCELLANEOUS_DIRECTORY,
+    REPOSITORY_DIRECTORY,
+    REPOSITORY_ENV_FILE,
+    USER_ENV_FILE,
     USER_ROUTINES_DIRECTORY,
 )
 from openbb_terminal.core.log.generation.path_tracking_file_handler import (
@@ -116,7 +117,7 @@ class TerminalController(BaseController):
         """Update runtime choices"""
         self.ROUTINE_FILES = {
             filepath.name: filepath
-            for filepath in (REPOSITORY_DIRECTORY / "routines").rglob("*.openbb")
+            for filepath in (MISCELLANEOUS_DIRECTORY / "routines").rglob("*.openbb")
         }
         self.ROUTINE_FILES.update(
             {
