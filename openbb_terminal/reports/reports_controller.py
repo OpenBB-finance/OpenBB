@@ -35,17 +35,13 @@ class ReportController(BaseController):
         for notebooks in os.listdir(REPORTS_FOLDER)
         if notebooks.endswith(".ipynb")
     ]
-    REPORT_IDS = [str(val + 1) for val in range(len(REPORT_NAMES))]
+    REPORTS_DICT = {v + 1: k for v, k in enumerate(REPORT_NAMES)}
+    REPORT_IDS = [str(k) for k in REPORTS_DICT.keys()]
+    MAX_LEN_NAME = max(len(name) for name in REPORT_NAMES) + 2
+    PARAMETERS_DICT = {}
+    MENU_STRING = ""
 
-    d_id_to_report_name = {}
-    for id_report, report_name in enumerate(REPORT_NAMES):
-        d_id_to_report_name[str(id_report + 1)] = report_name
-
-    d_params = {}
-
-    max_len_name = max(len(name) for name in REPORT_NAMES) + 2
-    reports_opts = ""
-    for k, report_to_run in d_id_to_report_name.items():
+    for k, report_to_run in REPORTS_DICT.items():
         # Crawl data to look into what
         notebook_file = REPORTS_FOLDER / report_to_run
 
@@ -88,7 +84,7 @@ class ReportController(BaseController):
 
         if "report_name" in l_params:
             l_params.remove("report_name")
-        d_params[report_to_run] = [l_params, def_params]
+        PARAMETERS_DICT[report_to_run] = [l_params, def_params]
 
         # On the menu of choices add the parameters necessary for each template report
         if len(l_params) > 1 or not l_params:
@@ -96,9 +92,9 @@ class ReportController(BaseController):
         else:
             args = f"<{l_params[0]}>"
 
-        reports_opts += (
+        MENU_STRING += (
             f"    {k}. {report_to_run}"
-            + f"{(max_len_name-len(report_to_run))*' '} "
+            + f"{(MAX_LEN_NAME-len(report_to_run))*' '} "
             + f"{args if args != '<>' else ''}\n"
         )
     CHOICES_MENUS = REPORT_NAMES + REPORT_IDS + ["r", "reset"]
@@ -120,7 +116,7 @@ class ReportController(BaseController):
         """Print help."""
         mt = MenuText("reports/")
         mt.add_info("_reports_")
-        mt.add_raw(f"[cmds]{self.reports_opts}[/cmds]")
+        mt.add_raw(f"[cmds]{self.MENU_STRING}[/cmds]")
         console.print(text=mt.menu_text, menu="Reports - WORK IN PROGRESS")
 
     @log_start_end(log=logger)
@@ -140,9 +136,9 @@ class ReportController(BaseController):
 
         """
 
-        if known_args.cmd in self.d_id_to_report_name:
+        if known_args.cmd in self.REPORTS_DICT:
             # Report ID
-            report_to_run = self.d_id_to_report_name[known_args.cmd]
+            report_to_run = self.REPORTS_DICT[known_args.cmd]
         else:
             # Report name
             report_to_run = known_args.cmd
@@ -219,7 +215,7 @@ class ReportController(BaseController):
 
         """
 
-        params = self.d_params[report_to_run][0]
+        params = self.PARAMETERS_DICT[report_to_run][0]
 
         # Check that the number of arguments match. We can't check validity of the
         # argument used because this depends on what the user will use it for in
@@ -236,7 +232,6 @@ class ReportController(BaseController):
             console.print("")
             return {}
 
-        # Parameters
         d_report_params = {}
         for idx, args in enumerate(params):
             d_report_params[args] = other_args[idx]
@@ -347,7 +342,7 @@ class ReportController(BaseController):
 
                 return self.queue
 
-        # The magic happens here.
+        # The magic happens here
         self.produce_report(known_args, other_args)
 
         return self.queue
