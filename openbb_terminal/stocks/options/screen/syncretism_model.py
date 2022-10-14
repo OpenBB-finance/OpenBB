@@ -11,7 +11,7 @@ import requests
 import yfinance as yf
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.core.config.paths import PRESETS_DIRECTORY
+from openbb_terminal.core.config.paths import USER_PRESETS_DIRECTORY
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options import yfinance_model
 
@@ -120,7 +120,7 @@ def get_preset_choices() -> Dict:
     filepath as value
     """
 
-    PRESETS_PATH = PRESETS_DIRECTORY / "stocks" / "options"
+    PRESETS_PATH = USER_PRESETS_DIRECTORY / "stocks" / "options"
     PRESETS_PATH_DEFAULT = Path(__file__).parent.parent / "presets"
     preset_choices = {
         filepath.name: filepath

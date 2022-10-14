@@ -12,7 +12,7 @@ import i18n
 from openbb_terminal.core.config.paths import (
     USER_ENV_FILE,
     REPOSITORY_ENV_FILE,
-    DATA_SOURCES_DEFAULT_FILE,
+    USER_DATA_SOURCES_DEFAULT_FILE,
 )
 from openbb_terminal.core.config import paths_helper
 
@@ -110,7 +110,7 @@ LOGGING_COMMIT_HASH = str(os.getenv("OPENBB_LOGGING_COMMIT_HASH", "REPLACE_ME"))
 PREFERRED_DATA_SOURCE_FILE = str(
     os.getenv(
         "OPENBB_PREFERRED_DATA_SOURCE_FILE",
-        DATA_SOURCES_DEFAULT_FILE,
+        USER_DATA_SOURCES_DEFAULT_FILE,
     )
 )
 
