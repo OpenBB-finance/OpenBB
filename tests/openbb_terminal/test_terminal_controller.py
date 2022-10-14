@@ -1,6 +1,6 @@
 from contextlib import contextmanager
 import pytest
-import terminal
+from openbb_terminal import terminal_controller
 
 
 @pytest.mark.skip
@@ -8,31 +8,31 @@ import terminal
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_terminal_quick_exit(mocker, monkeypatch):
-    monkeypatch.setattr(terminal.obbff, "ENABLE_QUICK_EXIT", True)
-    monkeypatch.setattr(terminal.obbff, "USE_ION", False)
-    monkeypatch.setattr(terminal.obbff, "USE_PROMPT_TOOLKIT", True)
+    monkeypatch.setattr(terminal_controller.obbff, "ENABLE_QUICK_EXIT", True)
+    monkeypatch.setattr(terminal_controller.obbff, "USE_ION", False)
+    monkeypatch.setattr(terminal_controller.obbff, "USE_PROMPT_TOOLKIT", True)
 
     mocker.patch("sys.stdin")
 
-    terminal.terminal()
+    terminal_controller.terminal()
 
 
 @pytest.mark.skip
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.record_stdout
 def test_terminal_quit(mocker, monkeypatch):
-    monkeypatch.setattr(terminal.obbff, "ENABLE_QUICK_EXIT", False)
-    monkeypatch.setattr(terminal.obbff, "USE_ION", False)
-    monkeypatch.setattr(terminal.obbff, "USE_PROMPT_TOOLKIT", True)
+    monkeypatch.setattr(terminal_controller.obbff, "ENABLE_QUICK_EXIT", False)
+    monkeypatch.setattr(terminal_controller.obbff, "USE_ION", False)
+    monkeypatch.setattr(terminal_controller.obbff, "USE_PROMPT_TOOLKIT", True)
 
     mocker.patch("sys.stdin")
     mocker.patch("builtins.input", return_value="e")
-    mocker.patch("terminal.session")
-    mocker.patch("terminal.session.prompt", return_value="e")
-    mocker.patch("terminal.print_goodbye")
-    spy_print_goodbye = mocker.spy(terminal, "print_goodbye")
+    mocker.patch("terminal_controller.session")
+    mocker.patch("terminal_controller.session.prompt", return_value="e")
+    mocker.patch("terminal_controller.print_goodbye")
+    spy_print_goodbye = mocker.spy(terminal_controller, "print_goodbye")
 
-    terminal.terminal()
+    terminal_controller.terminal()
 
     spy_print_goodbye.assert_called_once()
 
@@ -55,6 +55,6 @@ def no_suppress():
     ],
 )
 def test_menu(mocker, debug, test, filtert, path, verbose):
-    mocker.patch(target="terminal.terminal")
-    mocker.patch(target="terminal.suppress_stdout", side_effect=no_suppress)
-    terminal.main(debug, test, filtert, path, verbose)
+    mocker.patch(target="terminal_controller.terminal")
+    mocker.patch(target="terminal_controller.suppress_stdout", side_effect=no_suppress)
+    terminal_controller.main(debug, test, filtert, path, verbose)
