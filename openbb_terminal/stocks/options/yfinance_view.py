@@ -1050,7 +1050,13 @@ def export_binomial_calcs(
         for j, _ in enumerate(opt_vals[i]):
             ws[f"{opts[i]}{j+8+days}"] = opt_vals[i][j]
 
-    trypath = str(MISCELLANEOUS_DIRECTORY / "exports" / "stocks" / "options" / f"{symbol} {datetime.now()}.xlsx")
+    trypath = str(
+        MISCELLANEOUS_DIRECTORY
+        / "exports"
+        / "stocks"
+        / "options"
+        / f"{symbol} {datetime.now()}.xlsx"
+    )
     wb.save(trypath)
     console.print(
         f"Analysis ran for {symbol}\nPlease look in {trypath} for the file.\n"
