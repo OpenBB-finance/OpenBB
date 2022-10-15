@@ -15,9 +15,7 @@ try:
     darts_latest = "0.22.0"
     # check darts version
     if darts.__version__ != darts_latest:
-        print(
-            f"You are currently using Darts version {darts.__version__}"
-        )
+        print(f"You are currently using Darts version {darts.__version__}")
         print(
             f"Follow instructions on creating a new conda environment with the latest Darts version ({darts_latest}):"
         )
