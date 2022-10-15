@@ -855,7 +855,7 @@ FIND_KEYS = ["id", "symbol", "name"]
 
 
 def find(
-    query: str,
+    coin: str,
     source: str = "CoinGecko",
     key: str = "symbol",
     limit: int = 10,
@@ -874,7 +874,7 @@ def find(
 
     Parameters
     ----------
-    query: str
+    coin: str
         Cryptocurrency
     source: str
         Data source of coins.  CoinGecko (cg) or CoinPaprika (cp) or Binance (bin), Coinbase (cb)
@@ -885,7 +885,6 @@ def find(
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    coin = query
 
     if source == "CoinGecko":
         coins_df = get_coin_list()

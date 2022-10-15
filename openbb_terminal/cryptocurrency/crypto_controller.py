@@ -514,7 +514,7 @@ class CryptoController(CryptoBaseController):
         # TODO: merge find + display_all_coins
         if ns_parser and ns_parser.coin:
             find(
-                query=ns_parser.coin,
+                coin=ns_parser.coin,
                 source=ns_parser.source,
                 key=ns_parser.key,
                 limit=ns_parser.limit,
