@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import argparse
 from dataclasses import replace
 import logging
+import os
 
 # pylint: disable=R1732, R0912
 from typing import Any, Dict, List
@@ -26,13 +27,14 @@ class ReportController(BaseController):
     REPORTS: List[str] = reports_model.get_reports_available()
     PARAMETERS_DICT: Dict[str, Any] = {}
 
-    CHOICES_COMMANDS: List[str] = REPORTS
+    CHOICES_COMMANDS: List[str] = REPORTS + ["run", "load"]
     PATH = "/reports/"
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
 
         super().__init__(queue)
+        self.file_types = ["ipynb"]
         self.update_choices()
 
         # Create a call_ method for each report and assign a run report function to it.
@@ -75,10 +77,14 @@ class ReportController(BaseController):
             self.REPORTS = reports_model.get_reports_available()
 
             self.choices: dict = {c: {} for c in self.controller_choices}
+            self.choices["run"] = {
+                "--file": {},
+                "-f": "--file",
+            }
             for report_name in self.REPORTS:
 
                 self.PARAMETERS_DICT[report_name] = reports_model.extract_parameters(
-                    report_name
+                    reports_model.REPORTS_FOLDER / report_name
                 )
 
                 # Completer with limited user choices to avoid unforeseen problems
@@ -151,10 +157,62 @@ class ReportController(BaseController):
             if ns_parser:
                 params = vars(ns_parser)
                 params.pop("help")
-                reports_model.render_report(report_name, params)
+                reports_model.render_report(
+                    reports_model.REPORTS_FOLDER / report_name, params
+                )
 
         else:
             console.print("[red]Notebook not found![/red]\n")
+
+    @log_start_end(log=logger)
+    def call_run(self, other_args: List[str]):
+        """Process returns command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="run",
+            description="Run a notebook",
+        )
+        parser.add_argument(
+            "-f",
+            "--file",
+            type=str,
+            dest="file",
+            required="-h" not in other_args,
+            help="The file to be loaded",
+        )
+
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+
+        # The report is rendered here.
+        if ns_parser and ns_parser.file:
+            if os.path.exists(ns_parser.file):
+                params = vars(ns_parser)
+                params.pop("help")
+                reports_model.render_report(ns_parser.file, params)
+
+    @log_start_end(log=logger)
+    def call_load(self, other_args: List[str]):
+        """Process load command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="load",
+            description="Load your portfolio",
+        )
+        parser.add_argument(
+            "-f",
+            "--file",
+            type=str,
+            dest="file",
+            required="-h" not in other_args,
+            help="The file to be loaded",
+        )
+
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+
+        if ns_parser and ns_parser.file:
+            print(ns_parser.file)  # type: ignore
 
 
 # amanha arranjar os reports que nao funcionam e tentar fazer um installer
