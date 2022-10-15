@@ -11,12 +11,24 @@ from typing import Any, Optional, List, Dict
 try:
     import torch
     import darts
+
+    darts_latest = "0.22.0"
+    # check darts version
+    if darts.__version__ != darts_latest:
+        print(f"You are currently using Darts version {darts.__version__}")
+        print(
+            f"Follow instructions on creating a new conda environment with the latest Darts version ({darts_latest}):"
+        )
+        print(
+            "https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/openbb_terminal/README.md"
+        )
 except ModuleNotFoundError:
     raise ModuleNotFoundError(
         "Please install the forecast version of the terminal. Instructions "
         "are here: https://github.com/OpenBB-finance/OpenBBTerminal/"
         "blob/main/openbb_terminal/README.md#anaconda--python"
     )
+
 import pandas as pd
 import psutil
 
