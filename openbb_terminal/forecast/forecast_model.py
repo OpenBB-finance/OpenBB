@@ -12,6 +12,7 @@ import pandas as pd
 from pandas import DataFrame
 import numpy as np
 
+from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
 
@@ -23,7 +24,7 @@ default_files = {
     for file_type in ["csv", "xlsx"]
     for filepath in chain(
         Path("exports").rglob(f"*.{file_type}"),
-        Path("custom_imports").rglob(f"*.{file_type}"),
+        (MISCELLANEOUS_DIRECTORY / "custom_imports").rglob(f"*.{file_type}"),
     )
     if filepath.is_file()
 }
