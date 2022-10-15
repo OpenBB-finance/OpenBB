@@ -46,7 +46,7 @@ REPORT_CHOICES = {
 }
 
 
-def get_reports_available(folder: Path = REPORTS_FOLDER) -> List[str]:
+def get_reports_available(folder: Path = REPORTS_FOLDER, warn: bool = True) -> List[str]:
     """Get Jupyter notebook available in folder.
 
     Parameters
@@ -57,11 +57,22 @@ def get_reports_available(folder: Path = REPORTS_FOLDER) -> List[str]:
     Returns:
         List[str]: List with names of notebooks available.
     """
-    available = [
-        notebooks[:-6]
-        for notebooks in os.listdir(folder)
-        if notebooks.endswith(".ipynb")
-    ]
+
+    bad_format = []
+    available = []
+
+    for notebook in os.listdir(folder):
+        if notebook.endswith(".ipynb"):
+            if " " in notebook:
+                bad_format.append(notebook)
+            else:
+                available.append(notebook[:-6])
+
+    if bad_format and warn:
+        s = ", ".join(bad_format)
+        console.print(
+            f"[red]Character '_' not allowed in the following names: {s}.[/red]"
+        )
 
     return available
 

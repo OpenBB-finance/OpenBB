@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import argparse
+from dataclasses import replace
 import logging
 
 # pylint: disable=R1732, R0912
@@ -101,7 +102,7 @@ class ReportController(BaseController):
         mt = MenuText("reports/")
         mt.add_info("_reports_")
         mt.add_raw("\n")
-        mt.add_info("_Notebooks_")
+        mt.add_info("_OpenBB_reports_")
         MAX_LEN_NAME = max(len(name) for name in self.REPORTS) + 2
         templates_string = ""
         for report_name in self.REPORTS:
@@ -120,7 +121,8 @@ class ReportController(BaseController):
             )
         mt.add_raw(f"{templates_string}")
         mt.add_raw("\n")
-
+        mt.add_info("_Custom_reports_")
+        mt.add_cmd("run")
         console.print(text=mt.menu_text, menu="Reports")
 
     @log_start_end(log=logger)
