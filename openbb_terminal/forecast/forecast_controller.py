@@ -55,7 +55,7 @@ from openbb_terminal.forecast import (
 )
 from openbb_terminal.core.config.paths import (
     USER_EXPORTS_DIRECTORY,
-    CUSTOM_IMPORTS_DIRECTORY,
+    USER_CUSTOM_IMPORTS_DIRECTORY,
 )
 
 logger = logging.getLogger(__name__)
@@ -177,7 +177,7 @@ class ForecastController(BaseController):
             for file_type in self.file_types
             for filepath in chain(
                 USER_EXPORTS_DIRECTORY.rglob(f"*.{file_type}"),
-                CUSTOM_IMPORTS_DIRECTORY.rglob(f"*.{file_type}"),
+                USER_CUSTOM_IMPORTS_DIRECTORY.rglob(f"*.{file_type}"),
             )
             if filepath.is_file()
         }
@@ -287,7 +287,8 @@ class ForecastController(BaseController):
         mt.add_param("_disclaimer_", self.disclaimer)
         mt.add_raw("\n")
         mt.add_param(
-            "_data_loc", f"\n\t{USER_EXPORTS_DIRECTORY}\n\t{CUSTOM_IMPORTS_DIRECTORY}"
+            "_data_loc",
+            f"\n\t{USER_EXPORTS_DIRECTORY}\n\t{USER_CUSTOM_IMPORTS_DIRECTORY}",
         )
         mt.add_raw("\n")
         mt.add_cmd("load")
