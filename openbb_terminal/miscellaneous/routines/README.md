@@ -4,12 +4,12 @@ This folder introduces the concept of routines, which are meant for the user to 
 
 Try out with:
 
-```
+```bash
 python terminal.py routines/example.openbb
 ```
 
 Or within the Terminal, use:
 
-```
+```bash
 exe routines/example.openbb
 ```
