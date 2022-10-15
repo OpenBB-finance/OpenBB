@@ -11,7 +11,7 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import check_api_key, log_start_end
-from openbb_terminal.helper_funcs import clean_tweet, get_data
+from openbb_terminal.helper_funcs import clean_tweet, get_data, check_df_empty_or_none
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -172,7 +172,7 @@ def get_sentiment(
             end_date=dt_recent.strftime(dt_format),
         )
 
-        if (isinstance(temp, pd.DataFrame) and temp.empty) or not temp:
+        if check_df_empty_or_none(temp):
             return pd.DataFrame()
 
         df_tweets = pd.concat([df_tweets, temp])

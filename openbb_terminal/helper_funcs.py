@@ -1805,3 +1805,28 @@ def load_json(path: str) -> Dict[str, str]:
         )
         console.print(f"[red]{e}[/red]")
         return {}
+
+
+def check_df_empty_or_none(obj) -> bool:
+    """
+    Check if a given object is an empty dataframe or None
+
+    Parameters
+    ----------
+    obj
+        Object to check
+
+    Returns
+    -------
+    bool
+        True if empty or None, False otherwise
+    """
+
+    # given object is a dataframe and is empty
+    if isinstance(obj, pd.DataFrame) and obj.empty:
+        return True
+    # given object is not a dataframe and is None
+    if not isinstance(obj, pd.DataFrame) and not obj:
+        return True
+
+    return False

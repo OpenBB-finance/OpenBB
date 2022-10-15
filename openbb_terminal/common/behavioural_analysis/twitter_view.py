@@ -19,6 +19,7 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     get_closing_price,
     is_valid_axes_count,
+    check_df_empty_or_none,
 )
 from openbb_terminal.rich_config import console
 
@@ -40,7 +41,7 @@ def display_inference(symbol: str, limit: int = 100, export: str = ""):
     """
     df_tweets = twitter_model.load_analyze_tweets(symbol, limit)
 
-    if (isinstance(df_tweets, pd.DataFrame) and df_tweets.empty) or not df_tweets:
+    if check_df_empty_or_none(df_tweets):
         return
 
     # Parse tweets
@@ -102,7 +103,7 @@ def display_sentiment(
 
     df_tweets = twitter_model.get_sentiment(symbol, n_tweets, n_days_past)
 
-    if (isinstance(df_tweets, pd.DataFrame) and df_tweets.empty) or not df_tweets:
+    if check_df_empty_or_none(df_tweets):
         return
 
     ax1, ax2, ax3 = None, None, None
