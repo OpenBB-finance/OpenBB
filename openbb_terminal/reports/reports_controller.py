@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 from argparse import Namespace
 import argparse
+from email.policy import default
 import logging
 
 # pylint: disable=R1732, R0912
@@ -27,6 +28,7 @@ class ReportController(BaseController):
     CHOICES_COMMANDS = ["run"]
     PATH = "/reports/"
     REPORTS: List[str] = []
+    PARAMETERS_DICT: Dict[str, Any] = {}
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -46,10 +48,17 @@ class ReportController(BaseController):
             ]
 
             self.choices: dict = {c: {} for c in self.controller_choices}
-            self.choices["run"] = {
-                "--report": {c: None for c in self.REPORTS},
-                "-r": "--report",
-            }
+            for report_name in self.REPORTS:
+
+                self.PARAMETERS_DICT[report_name] = reports_model.extract_parameters(
+                    report_name
+                )
+
+            for report_name, arg_names in self.PARAMETERS_DICT.items():
+                self.choices["run"]["--" + report_name] = {}
+                for arg in arg_names:
+                    self.choices["run"]["-" + report_name]["--" + arg] = None
+
             self.choices["support"] = self.SUPPORT_CHOICES
             self.choices["about"] = self.ABOUT_CHOICES
 
@@ -65,12 +74,12 @@ class ReportController(BaseController):
         mt.add_raw("\n")
         mt.add_cmd("run")
         mt.add_raw("\n")
-        mt.add_info("_Available_templates_")
+        mt.add_info("_Available_notebooks_")
         MAX_LEN_NAME = max(len(name) for name in self.REPORTS) + 2
         templates_string = ""
         for report_name in self.REPORTS:
 
-            parameters_names, _ = reports_model.extract_parameters(report_name)
+            parameters_names = list(self.PARAMETERS_DICT[report_name].keys())
 
             if len(parameters_names) > 1 or not parameters_names:
                 args = f"<{'> <'.join(parameters_names)}>"
@@ -90,29 +99,53 @@ class ReportController(BaseController):
     @log_start_end(log=logger)
     def call_run(self, other_args: List[str]):
         """Display current keys"""
+
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="run",
             description="Run specified report.",
         )
-        parser.add_argument(
-            "-r", "--report", type=str, dest="report", help="report", default=False
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-r")
 
-        # # atribuir programticamente o argumento
-        # getattr(parser, "add_argument")()
+        # Assign report name as argument
+        report_name = other_args[0]
+        if report_name.startswith("-"):
+            report_name = report_name[1:]
 
-        ns_parser = parse_simple_args(parser, other_args)
+        if report_name in self.PARAMETERS_DICT:
+            getattr(parser, "add_argument")(
+                other_args[0],
+                action="store_true",
+                help=report_name,
+            )
 
-        if ns_parser:
-            if "-r" in other_args:
-                other_args.remove("-r")
-            if "--report" in other_args:
-                other_args.remove("--report")
+            # Assign respective parameters as arguments
+            for arg_name, arg_default in self.PARAMETERS_DICT[report_name].items():
+                getattr(parser, "add_argument")(
+                    "--" + arg_name,
+                    type=str,
+                    default=arg_default,
+                    dest=arg_name,
+                    help=arg_name,
+                )
 
-            other_args.remove(ns_parser.report)
+            ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
-            reports_model.produce_report(ns_parser.report, other_args)
+            if ns_parser:
+                # change this params to send a dicvtionary instead of a list so
+                # that user can change order of params
+                params = [
+                    item for item in other_args if not item.startswith(("-", "--"))
+                ]
+                reports_model.produce_report(report_name, params)
+
+        else:
+            console.print("[red]Notebook not found![/red]\n")
+
+
+# seria bom poder abrir notebook ja existentes no exports atraves do terminal
+# o notebook de crypto esta a falhar no report
+# posso criar prompt de parametros permitidos para os nossos notebooks
+# etf simbolos de etf
+# portfolio os portfolios disponiveis etc
+# o prompt de sugestoes nao esta a funcionar com mais que um parametro

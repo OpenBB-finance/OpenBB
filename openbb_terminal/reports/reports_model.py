@@ -9,7 +9,7 @@ from pathlib import Path
 import webbrowser
 from ast import literal_eval
 from datetime import datetime
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List
 import papermill as pm
 
 from openbb_terminal import feature_flags as obbff
@@ -25,7 +25,7 @@ OUTPUT_FOLDER = USER_EXPORTS_DIRECTORY / "reports"
 
 
 @log_start_end(log=logger)
-def extract_parameters(report_name: str) -> Tuple[List[str], List[str]]:
+def extract_parameters(report_name: str) -> Dict[str, str]:
     """Extract required parameters from notebook content.
 
     Parameters
@@ -72,7 +72,9 @@ def extract_parameters(report_name: str) -> Tuple[List[str], List[str]]:
     if "report_name" in parameters_names:
         parameters_names.remove("report_name")
 
-    return parameters_names, parameters_values
+    parameters_dict = dict(zip(parameters_names, parameters_values))
+
+    return parameters_dict
 
 
 @log_start_end(log=logger)
@@ -147,13 +149,14 @@ def get_parameters(
 
     """
 
-    params, _ = extract_parameters(report_name)
+    parameters_dict = extract_parameters(report_name)
+    parameters_names = list(parameters_dict.keys())
 
-    if len(other_args) != len(params):
+    if len(other_args) != len(parameters_names):
         console.print("Wrong number of arguments provided!")
-        if len(params):
+        if len(parameters_names):
             console.print("Provide, in order:")
-            for k, v in enumerate(params):
+            for k, v in enumerate(parameters_names):
                 console.print(f"{k+1}. {v}")
         else:
             console.print("No argument required.")
@@ -161,7 +164,7 @@ def get_parameters(
         return {}
 
     report_params = {}
-    for idx, args in enumerate(params):
+    for idx, args in enumerate(parameters_names):
         report_params[args] = other_args[idx]
 
     report_params["report_name"] = output_path
