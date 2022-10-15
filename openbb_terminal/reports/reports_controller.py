@@ -191,29 +191,6 @@ class ReportController(BaseController):
                 params.pop("help")
                 reports_model.render_report(ns_parser.file, params)
 
-    @log_start_end(log=logger)
-    def call_load(self, other_args: List[str]):
-        """Process load command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="load",
-            description="Load your portfolio",
-        )
-        parser.add_argument(
-            "-f",
-            "--file",
-            type=str,
-            dest="file",
-            required="-h" not in other_args,
-            help="The file to be loaded",
-        )
-
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-
-        if ns_parser and ns_parser.file:
-            print(ns_parser.file)  # type: ignore
-
 
 # amanha arranjar os reports que nao funcionam e tentar fazer um installer
 # testar custom reports do user, pelo menos o nome do ficheiro tenho de subsitiuir os espaços por "_"?
