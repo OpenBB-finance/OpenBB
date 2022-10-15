@@ -924,6 +924,16 @@ def run_test_list(path_list: List[str], filtert: str, verbose: bool):
         f"Summary: [green]Successes: {SUCCESSES}[/green] [red]Failures: {FAILURES}[/red]"
     )
 
+def run_routine(file: str, routines_args=List[str]):
+    user_routine_path = USER_DATA_DIRECTORY / "routines" / file
+    default_routine_path = MISCELLANEOUS_DIRECTORY / "routines" / file
+
+    if user_routine_path.exists():
+        chosen_path = user_routine_path
+    elif default_routine_path.exists():
+        chosen_path = default_routine_path
+
+    run_scripts(path=chosen_path, routines_args=routines_args)
 
 def main(
     debug: bool,
@@ -960,7 +970,7 @@ def main(
     if debug:
         os.environ["DEBUG_MODE"] = "true"
     if isinstance(path_list, list) and path_list[0].endswith(".openbb"):
-        run_scripts(Path(path_list[0]), routines_args=routines_args)
+        run_routine(file=path_list[0], routines_args=routines_args)
     elif path_list:
         argv_cmds = list([" ".join(path_list).replace(" /", "/home/")])
         argv_cmds = insert_start_slash(argv_cmds) if argv_cmds else argv_cmds
