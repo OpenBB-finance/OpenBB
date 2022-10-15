@@ -307,23 +307,32 @@ def get_coinpaprika_id(symbol: str):
 def load(
     symbol: str,
     start_date: datetime = (datetime.now() - timedelta(days=1100)),
-    interval: str = "1440",  # 1, 15, 30, 60, 240, 1440, 10080, 43200
+    interval: str = "1440",
     exchange: str = "binance",
     vs_currency: str = "usdt",
     end_date: datetime = datetime.now(),
     source: str = "CCXT",
 ) -> pd.DataFrame:
-    """Load crypto currency to perform analysis on CoinGecko is used as source for price and
-    YahooFinance for volume.
+    """Load crypto currency to get data for.
 
     Parameters
     ----------
     symbol: str
         Coin to get
-    vs: str
-        Quote Currency (usd or eur), by default usd
-    days: int
-        Data up to number of days ago, by default 365
+    start_date: datetime
+        The datetime to start at
+    interval: str
+        The interval between data points in minutes.
+        Choose from: 1, 15, 30, 60, 240, 1440, 10080, 43200
+    exchange: str:
+        The exchange to get data from.
+    vs_currency: str
+        Quote Currency (Defaults to usdt)
+    end_date: datetime
+       The datetime to end at
+    source: str
+        The source of the data
+        Choose from: CCXT, CoinGecko, YahooFinance
 
     Returns
     -------
@@ -458,11 +467,6 @@ def show_quick_performance(
         df["Volume (7D avg)"] = lambda_long_number_format(np.mean(volumes[-9:-2]), 2)
 
     df.insert(0, f"\nPrice ({current_currency.upper()})", closes[-1])
-    # df.insert(
-    #    len(df.columns),
-    #    f"Market Cap ({current_currency.upper()})",
-    #    lambda_long_number_format(int(crypto_df["Market Cap"][-1])),
-    # )
 
     try:
         coingecko_id = get_coingecko_id(symbol)
