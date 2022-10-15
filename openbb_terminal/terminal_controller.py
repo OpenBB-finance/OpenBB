@@ -865,7 +865,7 @@ def run_scripts(
             terminal()
 
 
-def build_test_path_list(path_list: List[str], filtert:str) -> List[Path]:
+def build_test_path_list(path_list: List[str], filtert: str) -> List[Path]:
     if path_list == "":
         console.print("Please send a path when using test mode")
         return []
@@ -888,7 +888,7 @@ def build_test_path_list(path_list: List[str], filtert:str) -> List[Path]:
             test_files.append(chosen_path)
         elif chosen_path.is_dir():
             script_directory = chosen_path
-            script_list = script_directory.glob('**/*.openbb')
+            script_list = script_directory.glob("**/*.openbb")
             script_list = [script for script in script_list if script.is_file()]
             script_list = [script for script in script_list if filtert in str(script)]
             test_files.extend(script_list)
@@ -896,7 +896,7 @@ def build_test_path_list(path_list: List[str], filtert:str) -> List[Path]:
     return test_files
 
 
-def run_test_list(path_list: List[str], filtert:str, verbose: bool):
+def run_test_list(path_list: List[str], filtert: str, verbose: bool):
     os.environ["DEBUG_MODE"] = "true"
 
     test_files = build_test_path_list(path_list=path_list, filtert=filtert)
