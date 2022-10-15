@@ -35,7 +35,9 @@ class ReportController(BaseController):
         self.update_choices()
 
         # Create a call_ method for each report and assign a run report function to it.
-        # This allows to add and run new reports without adding a command.
+        # This allows to run notebooks as commands with proper input validation.
+        # The benefits on the user side are that it is now possible to use 'help' flag
+        # and run with default arguments or any other useful property of our controller.
         #
         # Example:
         # class ReportController:

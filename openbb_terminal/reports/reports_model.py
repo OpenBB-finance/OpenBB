@@ -145,7 +145,7 @@ def render_report(report_name: str, args_dict: Dict[str, str]):
 
     if parameters_dict:
         try:
-            execute_notebook(input_path, output_path, parameters_dict)
+            execute_notebook(input_path, parameters_dict, output_path)
         except Exception as e:
             console.print(f"[red]Cannot execute notebook - {e}")
 
