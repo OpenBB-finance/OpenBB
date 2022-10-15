@@ -23,6 +23,28 @@ CURRENT_LOCATION = Path(__file__)
 REPORTS_FOLDER = CURRENT_LOCATION.parent / "templates"
 OUTPUT_FOLDER = USER_EXPORTS_DIRECTORY / "reports"
 
+REPORT_CHOICES = {
+    "etf": {
+        "--symbol": {c: None for c in ["SPY"]},
+    },
+    "forex": {
+        "--symbol": {c: None for c in ["EURUSD", "EURAUD"]},
+    },
+    "portfolio": {
+        "--orderbook": {c: None for c in ["example.csv"]},
+    },
+    "economy": None,
+    "equity": {
+        "--symbol": {c: None for c in ["TSLA", "GME"]},
+    },
+    "crypto": {
+        "--symbol": {c: None for c in ["BTCUSD"]},
+    },
+    "forecast": {
+        "--symbol": {c: None for c in ["TSLA", "GME"]},
+    },
+}
+
 
 @log_start_end(log=logger)
 def extract_parameters(report_name: str) -> Dict[str, str]:
@@ -95,7 +117,10 @@ def produce_report(report_name: str, other_args: List[str] = None):
     parameters = get_parameters(report_name, other_args, output_path)
 
     if parameters:
-        execute_notebook(input_path, output_path, parameters)
+        try:
+            execute_notebook(input_path, output_path, parameters)
+        except Exception as e:
+            console.print(f"[red]Cannot execute notebook - {e}")
 
 
 @log_start_end(log=logger)
@@ -188,8 +213,11 @@ def execute_notebook(input_path, output_path, parameters):
 
     """
 
+    if not input_path.endswith(".ipynb"):
+        input_path = input_path + ".ipynb"
+
     result = pm.execute_notebook(
-        input_path=input_path + ".ipynb",
+        input_path=input_path,
         output_path=output_path + ".ipynb",
         parameters=parameters,
         kernel_name="python3",

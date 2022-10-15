@@ -1026,8 +1026,7 @@ en:
   dashboards/futures: historical futures performance
   reports: customizable research reports through jupyter notebooks
   reports/_reports_: Build and run your custom reports or try one of our templates
-  reports/run: run a selected notebook
-  reports/_Available_notebooks_: Available notebooks
+  reports/_Notebooks_: Notebooks
   reports/_User_reports_: My reports
   forecast/_disclaimer_: DISCLAIMER
   forecast/_data_loc: Looking for data in
