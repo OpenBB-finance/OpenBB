@@ -1,6 +1,6 @@
-import json
+from datetime import datetime, timedelta
 import logging
-from datetime import datetime
+import json
 
 import pandas as pd
 import requests
@@ -367,7 +367,7 @@ def get_active_addresses(
 def get_hashrate(
     symbol: str,
     interval: str = "24h",
-    start_date: int = int(datetime(2010, 1, 1).timestamp()),
+    start_date: int = int((datetime.now() - timedelta(days=365 * 12)).timestamp()),
     end_date: int = int(datetime.now().timestamp()),
 ) -> pd.DataFrame:
     """Returns dataframe with mean hashrate of btc or eth blockchain and symbol price
@@ -414,9 +414,12 @@ def get_hashrate(
             console.print(f"No data found for {symbol}'s hashrate or price.\n")
         else:
             df = df.set_index("t")
+            df2 = df2.set_index("t")
             df.index = pd.to_datetime(df.index, unit="s")
-            df["price"] = df2["v"].values
-            df.rename(columns={"v": "hashrate"}, inplace=True)
+            df = df.rename(columns={"v": "hashrate"})
+            df2.index = pd.to_datetime(df2.index, unit="s")
+            df2 = df2.rename(columns={"v": "price"})
+            df = df.merge(df2, left_index=True, right_index=True, how="outer")
 
     elif r.status_code == 401 or r2.status_code == 401:
         console.print("[red]Invalid API Key[/red]\n")
