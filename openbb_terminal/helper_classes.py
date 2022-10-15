@@ -11,7 +11,10 @@ import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, ticker
 
-from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY, USER_DATA_DIRECTORY
+from openbb_terminal.core.config.paths import (
+    MISCELLANEOUS_DIRECTORY,
+    USER_DATA_DIRECTORY,
+)
 
 
 class LineAnnotateDrawer:
