@@ -55,7 +55,7 @@ class ReportController(BaseController):
                 )
 
             for report_name, arg_names in self.PARAMETERS_DICT.items():
-                self.choices["run"]["--" + report_name] = {}
+                self.choices["run"]["-" + report_name] = {}
                 for arg in arg_names:
                     self.choices["run"]["-" + report_name]["--" + arg] = None
 
