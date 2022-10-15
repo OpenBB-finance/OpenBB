@@ -46,6 +46,26 @@ REPORT_CHOICES = {
 }
 
 
+def get_reports_available(folder: Path = REPORTS_FOLDER) -> List[str]:
+    """Get Jupyter notebook available in folder.
+
+    Parameters
+    ----------
+    folder: Path
+        Path to folder.
+
+    Returns:
+        List[str]: List with names of notebooks available.
+    """
+    available = [
+        notebooks[:-6]
+        for notebooks in os.listdir(folder)
+        if notebooks.endswith(".ipynb")
+    ]
+
+    return available
+
+
 @log_start_end(log=logger)
 def extract_parameters(report_name: str) -> Dict[str, str]:
     """Extract required parameters from notebook content.
@@ -87,7 +107,6 @@ def extract_parameters(report_name: str) -> Dict[str, str]:
         ]
 
     # To ensure default value is correctly selected
-    # WHAT'S THE PURPOSE OF THIS BELOW?
     for param in range(len(parameters_values) - 1):
         parameters_values[param] = parameters_values[param][:-1]
 
@@ -100,39 +119,92 @@ def extract_parameters(report_name: str) -> Dict[str, str]:
 
 
 @log_start_end(log=logger)
-def produce_report(report_name: str, other_args: List[str] = None):
+def produce_report(report_name: str, args_dict: Dict[str, str]):
     """Report production end to end.
+
+    Workflow:
+        1. Get input path
+        2. Update parameters to use in notebook with received arguments
+        3. Create output path
+        4. Update parameters with output_path
+        5. Validate and execute notebook
 
     Parameters
     ----------
     report_name: str
         Name of report to run.
-    other_args: List[str]
-        List containing others args, for example parameters to be used in report.
+    args_dict: Dict[str, str]
+        Dictionary with received arguments dictionary.
 
     """
 
-    input_path = str(REPORTS_FOLDER / report_name)
-    output_path = get_output_path(report_name, other_args)
-    parameters = get_parameters(report_name, other_args, output_path)
+    input_path = get_input_path(report_name)
+    parameters_dict = update_parameters(report_name, args_dict)
+    output_path = create_output_path(report_name, parameters_dict)
+    parameters_dict["report_name"] = output_path
 
-    if parameters:
+    if parameters_dict:
         try:
-            execute_notebook(input_path, output_path, parameters)
+            execute_notebook(input_path, output_path, parameters_dict)
         except Exception as e:
             console.print(f"[red]Cannot execute notebook - {e}")
 
 
 @log_start_end(log=logger)
-def get_output_path(report_name: str, other_args: List[str]) -> str:
-    """Get path to save rendered report, thus the output path.
+def get_input_path(report_name: str, folder: Path = REPORTS_FOLDER) -> str:
+    """Get path to notebook, thus the input path.
 
     Parameters
     ----------
     report_name: str
         Name of report to run.
-    other_args: List[str]
-        List containing others args, for example parameters to be used in report.
+    folder: Path
+        Path to folder.
+
+    Returns
+    -------
+    str
+        Path to notebook.
+
+    """
+
+    return str(folder / report_name)
+
+
+@log_start_end(log=logger)
+def update_parameters(report_name: str, args_dict: Dict[str, str]) -> Dict[str, Any]:
+    """Update dictionary of parameters to be used in report with received arguments.
+
+    Parameters
+    ----------
+    report_name: str
+        Name of report to run.
+    args_dict: Dict[str, str]
+        Dictionary with received arguments dictionary.
+
+    Returns
+    -------
+    Dict[str, Any]
+        Dictionary with report parameters.
+
+    """
+
+    parameters_dict = extract_parameters(report_name)
+    parameters_dict.update(args_dict)
+
+    return parameters_dict
+
+
+@log_start_end(log=logger)
+def create_output_path(report_name: str, parameters_dict: Dict[str, Any]) -> str:
+    """Create path to save rendered report, thus the output path.
+
+    Parameters
+    ----------
+    report_name: str
+        Name of report to run.
+    parameters_dict: Dict[str, Any]
+        Dictionary with report parameters.
 
     Returns
     -------
@@ -141,7 +213,8 @@ def get_output_path(report_name: str, other_args: List[str]) -> str:
 
     """
 
-    args_to_output = f"_{'_'.join(other_args)}" if "_".join(other_args) else ""
+    param_values = list(parameters_dict.values())
+    args_to_output = f"_{'_'.join(param_values)}" if "_".join(param_values) else ""
     report_output_name = (
         f"{datetime.now().strftime('%Y%m%d_%H%M%S')}"
         + "_"
@@ -153,52 +226,7 @@ def get_output_path(report_name: str, other_args: List[str]) -> str:
 
 
 @log_start_end(log=logger)
-def get_parameters(
-    report_name: str, other_args: List[str], output_path: str
-) -> Dict[str, Any]:
-    """Get dictionary of parameters to be used in report.
-
-    Parameters
-    ----------
-    report_name: str
-        Name of report to run.
-    other_args: List[str]
-        List containing others args, for example parameters to be used in report.
-    output_path: str
-        Path of rendered report.
-
-    Returns
-    -------
-    Dict[str, Any]
-        Dictionary with report parameters.
-
-    """
-
-    parameters_dict = extract_parameters(report_name)
-    parameters_names = list(parameters_dict.keys())
-
-    if len(other_args) != len(parameters_names):
-        console.print("Wrong number of arguments provided!")
-        if len(parameters_names):
-            console.print("Provide, in order:")
-            for k, v in enumerate(parameters_names):
-                console.print(f"{k+1}. {v}")
-        else:
-            console.print("No argument required.")
-        console.print("")
-        return {}
-
-    report_params = {}
-    for idx, args in enumerate(parameters_names):
-        report_params[args] = other_args[idx]
-
-    report_params["report_name"] = output_path
-
-    return report_params
-
-
-@log_start_end(log=logger)
-def execute_notebook(input_path, output_path, parameters):
+def execute_notebook(input_path, parameters, output_path):
     """Execute the input path's notebook with the parameters provided.
     Then, save it in the output path.
 
@@ -206,10 +234,10 @@ def execute_notebook(input_path, output_path, parameters):
     ----------
     input_path: str
         Path of report to be rendered.
-    output_path: str
-        Path of rendered report.
     parameters: Dict[str, Any]
         Dictionary with report parameters.
+    output_path: str
+        Path of rendered report.
 
     """
 

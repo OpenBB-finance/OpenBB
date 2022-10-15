@@ -26,11 +26,7 @@ logger = logging.getLogger(__name__)
 class ReportController(BaseController):
     """Report Controller class."""
 
-    REPORTS: List[str] = [
-        notebooks[:-6]
-        for notebooks in os.listdir(reports_model.REPORTS_FOLDER)
-        if notebooks.endswith(".ipynb")
-    ]
+    REPORTS: List[str] = reports_model.get_reports_available()
     PARAMETERS_DICT: Dict[str, Any] = {}
 
     CHOICES_COMMANDS: List[str] = REPORTS
@@ -42,7 +38,17 @@ class ReportController(BaseController):
         super().__init__(queue)
         self.update_choices()
 
-        # Create a call_ method for each report
+        # Create a call_ method for each report and assign a run report function to it.
+        #
+        # Example:
+        # class ReportController:
+        #     ...
+        # def call_etf(self, other_args: List[str]):
+        #   self.run_report(
+        #       report_name = "forex",
+        #       other_args = ["--symbol", "EURUSD"]
+        #    )
+
         for report in self.REPORTS:
             setattr(
                 self,
@@ -51,7 +57,9 @@ class ReportController(BaseController):
             )
 
     @classmethod
-    def make_func(cls, obj, report_name):
+    def make_func(cls, obj, report_name: str):
+        """Dynamic function builder."""
+
         def func(other_args):
             obj.run_report(report_name, other_args)
 
@@ -62,11 +70,7 @@ class ReportController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
 
-            self.REPORTS = [
-                notebooks[:-6]
-                for notebooks in os.listdir(reports_model.REPORTS_FOLDER)
-                if notebooks.endswith(".ipynb")
-            ]
+            self.REPORTS = reports_model.get_reports_available()
 
             self.choices: dict = {c: {} for c in self.controller_choices}
             for report_name in self.REPORTS:
@@ -75,6 +79,7 @@ class ReportController(BaseController):
                     report_name
                 )
 
+                # Completer with limited user choices to avoid unforeseen problems
                 self.choices[report_name] = {}
                 for arg in self.PARAMETERS_DICT[report_name]:
                     if report_name in reports_model.REPORT_CHOICES:
@@ -140,11 +145,8 @@ class ReportController(BaseController):
             ns_parser = parse_simple_args(parser, other_args)
 
             if ns_parser:
-                # change this params to send a dicvtionary instead of a list so
-                # that user can change order of params
-                params = [
-                    item for item in other_args if not item.startswith(("-", "--"))
-                ]
+                params = vars(ns_parser)
+                params.pop("help")
                 reports_model.produce_report(report_name, params)
 
         else:
