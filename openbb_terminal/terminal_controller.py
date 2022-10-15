@@ -923,6 +923,7 @@ def run_test_list(path_list: List[str], filtert: str, verbose: bool):
         f"Summary: [green]Successes: {SUCCESSES}[/green] [red]Failures: {FAILURES}[/red]"
     )
 
+
 def run_routine(file: str, routines_args=List[str]):
     user_routine_path = USER_DATA_DIRECTORY / "routines" / file
     default_routine_path = MISCELLANEOUS_DIRECTORY / "routines" / file
@@ -933,6 +934,7 @@ def run_routine(file: str, routines_args=List[str]):
         chosen_path = default_routine_path
 
     run_scripts(path=chosen_path, routines_args=routines_args)
+
 
 def main(
     debug: bool,
