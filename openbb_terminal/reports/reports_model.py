@@ -119,8 +119,8 @@ def extract_parameters(report_name: str) -> Dict[str, str]:
 
 
 @log_start_end(log=logger)
-def produce_report(report_name: str, args_dict: Dict[str, str]):
-    """Report production end to end.
+def render_report(report_name: str, args_dict: Dict[str, str]):
+    """Report rendering end to end.
 
     Workflow:
         1. Get input path

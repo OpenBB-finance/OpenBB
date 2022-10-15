@@ -1,14 +1,10 @@
 """Reports Controller Module."""
 __docformat__ = "numpy"
 
-from argparse import Namespace
 import argparse
-from ast import parse
-from email.policy import default
 import logging
 
 # pylint: disable=R1732, R0912
-import os
 from typing import Any, Dict, List
 
 from openbb_terminal import feature_flags as obbff
@@ -39,15 +35,16 @@ class ReportController(BaseController):
         self.update_choices()
 
         # Create a call_ method for each report and assign a run report function to it.
+        # This allows to add and run new reports without adding a command.
         #
         # Example:
         # class ReportController:
         #     ...
-        # def call_etf(self, other_args: List[str]):
-        #   self.run_report(
-        #       report_name = "forex",
-        #       other_args = ["--symbol", "EURUSD"]
-        #    )
+        #   def call_etf(self, other_args: List[str]):
+        #       self.run_report(
+        #           report_name = "forex",
+        #           other_args = ["--symbol", "EURUSD"]
+        #       )
 
         for report in self.REPORTS:
             setattr(
@@ -144,20 +141,14 @@ class ReportController(BaseController):
 
             ns_parser = parse_simple_args(parser, other_args)
 
+            # The report is rendered here.
             if ns_parser:
                 params = vars(ns_parser)
                 params.pop("help")
-                reports_model.produce_report(report_name, params)
+                reports_model.render_report(report_name, params)
 
         else:
             console.print("[red]Notebook not found![/red]\n")
 
 
-# seria bom poder abrir notebook ja existentes no exports atraves do terminal
-# o notebook de crypto esta a falhar no report
-# posso criar prompt de parametros permitidos para os nossos notebooks
-# etf simbolos de etf
-# portfolio os portfolios disponiveis etc
-# o prompt de sugestoes nao esta a funcionar com mais que um parametro
-# fazer um try catch a volta do execute report
 # amanha arranjar os reports que nao funcionam e tentar fazer um installer
