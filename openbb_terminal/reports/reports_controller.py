@@ -35,7 +35,9 @@ class ReportController(BaseController):
         self.update_choices()
 
         # Create a call_ method for each report and assign a run report function to it.
-        # This allows to run notebooks as commands with proper input validation.
+        # This allows to run notebooks as commands with proper input validation,
+        # avoiding unforeseen crashes.
+        #
         # The benefits on the user side are that it is now possible to use 'help' flag
         # and run with default arguments or any other useful property of our controller.
         #
@@ -154,3 +156,4 @@ class ReportController(BaseController):
 
 
 # amanha arranjar os reports que nao funcionam e tentar fazer um installer
+# testar custom reports do user, pelo menos o nome do ficheiro tenho de subsitiuir os espaços por "_"?
