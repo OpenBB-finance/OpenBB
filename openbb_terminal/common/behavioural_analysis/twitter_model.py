@@ -172,7 +172,7 @@ def get_sentiment(
             end_date=dt_recent.strftime(dt_format),
         )
 
-        if temp.empty:
+        if (isinstance(temp, pd.DataFrame) and temp.empty) or not temp:
             return pd.DataFrame()
 
         df_tweets = pd.concat([df_tweets, temp])
