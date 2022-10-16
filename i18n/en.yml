@@ -87,7 +87,7 @@ en:
   reports: customizable research reports through jupyter notebooks
   futures/search: search for a future based on category or exchange
   futures/historical: get historical timeseries from future
-  futures/futures: get futures curves based on number of contracts
+  futures/curve: get futures curves based on number of contracts
   stocks/search: search a specific stock ticker for analysis
   stocks/SEARCH: Show companies matching the search query
   stocks/SEARCH_query: The search term used to find company tickers

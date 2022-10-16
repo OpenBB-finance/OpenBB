@@ -7,7 +7,7 @@ import argparse
 import logging
 import os
 import itertools
-from datetime import date
+from datetime import datetime, timedelta
 from typing import List, Dict, Any
 
 import pandas as pd
@@ -28,6 +28,7 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.menu import session
+from openbb_terminal.futures import yfinance_model, yfinance_view
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +38,7 @@ class FuturesController(BaseController):
 
     CHOICES_COMMANDS = [
         "search",
-        "futures",
+        "curve",
         "historical",
     ]
 
@@ -49,13 +50,9 @@ class FuturesController(BaseController):
         """Constructor"""
         super().__init__(queue)
 
-        self.futures_data = pd.read_csv(
-            os.path.join("openbb_terminal", "futures", "futures.csv")
-        )
-
-        self.all_tickers = self.futures_data["Ticker"].tolist()
-        self.all_exchanges = self.futures_data["Exchange"].unique().tolist()
-        self.all_categories = self.futures_data["Category"].unique().tolist()
+        self.all_tickers = yfinance_model.FUTURES_DATA["Ticker"].unique().tolist()
+        self.all_exchanges = yfinance_model.FUTURES_DATA["Exchange"].unique().tolist()
+        self.all_categories = yfinance_model.FUTURES_DATA["Category"].unique().tolist()
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             self.choices: dict = {c: {} for c in self.controller_choices}
@@ -99,7 +96,7 @@ class FuturesController(BaseController):
         mt.add_cmd("search")
         mt.add_raw("\n")
         mt.add_cmd("historical")
-        mt.add_cmd("futures")
+        mt.add_cmd("curve")
         console.print(text=mt.menu_text, menu="Futures")
 
     @log_start_end(log=logger)
@@ -110,15 +107,6 @@ class FuturesController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="curve",
             description="""Set type of curve to use. [Source: YahooFinance]""",
-        )
-        parser.add_argument(
-            "-t",
-            "--type",
-            dest="type",
-            help="Select between 'futures' and 'timeseries'",
-            type=str,
-            choices=["futures", "timeseries"],
-            default="futures",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
@@ -161,37 +149,40 @@ class FuturesController(BaseController):
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            if ns_parser.category:
+            if ns_parser.category and ns_parser.exchange:
                 print_rich_table(
-                    self.futures_data[
-                        self.futures_data["Category"] == ns_parser.category
+                    yfinance_model.FUTURES_DATA[
+                        (yfinance_model.FUTURES_DATA["Exchange"] == ns_parser.exchange)
+                        & (
+                            yfinance_model.FUTURES_DATA["Category"]
+                            == ns_parser.category
+                        )
+                    ]
+                )
+            elif ns_parser.category:
+                print_rich_table(
+                    yfinance_model.FUTURES_DATA[
+                        yfinance_model.FUTURES_DATA["Category"] == ns_parser.category
                     ]
                 )
             elif ns_parser.exchange:
                 print_rich_table(
-                    self.futures_data[
-                        self.futures_data["Exchange"] == ns_parser.exchange
-                    ]
-                )
-            elif ns_parser.category and ns_parser.exchange:
-                print_rich_table(
-                    self.futures_data[
-                        (self.futures_data["Exchange"] == ns_parser.exchange)
-                        and (self.futures_data["Category"] == ns_parser.category)
+                    yfinance_model.FUTURES_DATA[
+                        yfinance_model.FUTURES_DATA["Exchange"] == ns_parser.exchange
                     ]
                 )
             else:
-                print_rich_table(self.futures_data)
+                print_rich_table(yfinance_model.FUTURES_DATA)
         console.print()
 
     @log_start_end(log=logger)
-    def call_timeseries(self, other_args: List[str]):
-        """Process timeseries command"""
+    def call_historical(self, other_args: List[str]):
+        """Process historical command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="timeseries",
-            description="""Display futures timeseres. [Source: YahooFinance]""",
+            prog="historical",
+            description="""Display futures historical. [Source: YahooFinance]""",
         )
         parser.add_argument(
             "-t",
@@ -201,6 +192,14 @@ class FuturesController(BaseController):
             choices=self.all_tickers,
             default="",
             help="Future ticker to display timeseries",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            dest="start",
+            type=valid_date,
+            help="Initial date. Default: 3 years ago",
+            default=(datetime.now() - timedelta(days=3 * 365)).strftime("%Y-%m-%d"),
         )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
