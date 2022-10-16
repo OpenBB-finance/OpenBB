@@ -89,8 +89,8 @@ def extract_parameters(input_path: str) -> Dict[str, str]:
         Path of report to be rendered.
 
     """
-    if not str(input_path).endswith(".ipynb"):
-        input_path = str(input_path) + ".ipynb"
+
+    input_path = add_ipynb_extension(input_path)
 
     with open(str(input_path)) as file:
         notebook_content = file.read()
@@ -151,15 +151,14 @@ def render_report(input_path: str, args_dict: Dict[str, str]):
 
     """
 
-    parameters_dict = update_parameters(input_path, args_dict)
-    output_path = create_output_path(input_path, parameters_dict)
-    parameters_dict["report_name"] = output_path
-
-    if parameters_dict:
-        try:
+    try:
+        parameters_dict = update_parameters(input_path, args_dict)
+        output_path = create_output_path(input_path, parameters_dict)
+        parameters_dict["report_name"] = output_path
+        if parameters_dict:
             execute_notebook(input_path, parameters_dict, output_path)
-        except Exception as e:
-            console.print(f"[red]Cannot execute notebook - {e}")
+    except Exception as e:
+        console.print(f"[red]Cannot execute notebook - {e}")
 
 
 @log_start_end(log=logger)
@@ -206,7 +205,7 @@ def create_output_path(input_path: str, parameters_dict: Dict[str, Any]) -> str:
 
     """
 
-    report_name = str(input_path).split("/")[-1]
+    report_name = input_path.split("/")[-1]
     param_values = list(parameters_dict.values())
     args_to_output = f"_{'_'.join(param_values)}" if "_".join(param_values) else ""
     report_output_name = (
@@ -235,8 +234,7 @@ def execute_notebook(input_path, parameters, output_path):
 
     """
 
-    if not str(input_path).endswith(".ipynb"):
-        input_path = str(input_path) + ".ipynb"
+    input_path = add_ipynb_extension(input_path)
 
     result = pm.execute_notebook(
         input_path=input_path,
@@ -260,3 +258,15 @@ def execute_notebook(input_path, parameters, output_path):
         )
     else:
         console.print("[red]\nReport couldn't be created.\n[/red]")
+
+
+def add_ipynb_extension(path: str):
+    """Add .ipynb extension to path.
+    Parameters
+    ----------
+    path: str
+        Path to notebook file.
+
+    """
+    if not path.endswith(".ipynb"):
+        return path + ".ipynb"

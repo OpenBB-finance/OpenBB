@@ -49,7 +49,7 @@ class ReportController(BaseController):
             for report_name in self.REPORTS:
 
                 self.PARAMETERS_DICT[report_name] = reports_model.extract_parameters(
-                    reports_model.REPORTS_FOLDER / report_name
+                    str(reports_model.REPORTS_FOLDER / report_name)
                 )
 
                 # Completer with limited user choices to avoid unforeseen problems
@@ -152,7 +152,7 @@ class ReportController(BaseController):
                 params = vars(ns_parser)
                 params.pop("help")
                 reports_model.render_report(
-                    reports_model.REPORTS_FOLDER / report_name, params
+                    str(reports_model.REPORTS_FOLDER / report_name), params
                 )
 
         else:
@@ -184,6 +184,3 @@ class ReportController(BaseController):
                 params = vars(ns_parser)
                 params.pop("help")
                 reports_model.render_report(ns_parser.file, params)
-
-
-# amanha arranjar os reports que nao funcionam e tentar fazer um installer
