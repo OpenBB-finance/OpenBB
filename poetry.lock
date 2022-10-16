@@ -330,7 +330,7 @@ optional = false
 python-versions = ">=3.5"
 
 [package.extras]
-tests = ["mypy", "PyHamcrest (>=2.0.2)", "pytest (>=4.6)", "pytest-benchmark", "pytest-cov", "pytest-flake8"]
+tests = ["pytest-flake8", "pytest-cov", "pytest-benchmark", "pytest (>=4.6)", "PyHamcrest (>=2.0.2)", "mypy"]
 
 [[package]]
 name = "beartype"
@@ -433,7 +433,7 @@ ffn = ">=0.3.5"
 pyprind = ">=2.11"
 
 [package.extras]
-dev = ["pyprind (>=2.11)", "ffn (>=0.3.5)", "matplotlib (>=2)", "pandas (>=0.19)", "numpy (>=1)", "nose", "mock", "future", "flake8-black", "flake8", "cython (>=0.25)", "coverage", "codecov", "black (>=20.8b1)"]
+dev = ["black (>=20.8b1)", "codecov", "coverage", "cython (>=0.25)", "flake8", "flake8-black", "future", "mock", "nose", "numpy (>=1)", "pandas (>=0.19)", "matplotlib (>=2)", "ffn (>=0.3.5)", "pyprind (>=2.11)"]
 
 [[package]]
 name = "cachetools"
@@ -884,7 +884,7 @@ scipy = ">=0.15"
 tabulate = ">=0.7.5"
 
 [package.extras]
-dev = ["black (>=20.8b1)", "codecov", "coverage", "flake8", "flake8-black", "future", "mock", "nose"]
+dev = ["nose", "mock", "future", "flake8-black", "flake8", "coverage", "codecov", "black (>=20.8b1)"]
 
 [[package]]
 name = "filelock"
@@ -2324,6 +2324,42 @@ description = "Utilities for writing pandoc filters in python"
 category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+
+[[package]]
+name = "papermill"
+version = "2.4.0"
+description = "Parametrize and run Jupyter and nteract Notebooks"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+develop = false
+
+[package.dependencies]
+click = "*"
+entrypoints = "*"
+nbclient = ">=0.2.0"
+nbformat = ">=5.1.2"
+pyyaml = "*"
+requests = "*"
+tenacity = ">=5.0.2"
+tqdm = ">=4.32.2"
+
+[package.extras]
+all = ["boto3", "azure-datalake-store (>=0.0.30)", "azure-storage-blob (>=12.1.0)", "requests (>=2.21.0)", "gcsfs (>=0.2.0)", "pyarrow (>=2.0)", "black (>=19.3b0)"]
+azure = ["azure-datalake-store (>=0.0.30)", "azure-storage-blob (>=12.1.0)", "requests (>=2.21.0)"]
+black = ["black (>=19.3b0)"]
+dev = ["boto3", "botocore", "codecov", "coverage", "google-compute-engine", "ipython (>=5.0)", "ipywidgets", "notebook", "moto", "pytest (>=4.1)", "pytest-cov (>=2.6.1)", "pytest-mock (>=1.10)", "pytest-env (>=0.6.2)", "requests (>=2.21.0)", "check-manifest", "attrs (>=17.4.0)", "pre-commit", "flake8", "tox", "bumpversion", "recommonmark", "pip (>=18.1)", "wheel (>=0.31.0)", "setuptools (>=38.6.0)", "twine (>=1.11.0)", "azure-datalake-store (>=0.0.30)", "azure-storage-blob (>=12.1.0)", "gcsfs (>=0.2.0)", "pyarrow (>=2.0)", "black (>=19.3b0)"]
+gcs = ["gcsfs (>=0.2.0)"]
+github = ["PyGithub (>=1.55)"]
+hdfs = ["pyarrow (>=2.0)"]
+s3 = ["boto3"]
+test = ["boto3", "botocore", "codecov", "coverage", "google-compute-engine", "ipython (>=5.0)", "ipywidgets", "notebook", "moto", "pytest (>=4.1)", "pytest-cov (>=2.6.1)", "pytest-mock (>=1.10)", "pytest-env (>=0.6.2)", "requests (>=2.21.0)", "check-manifest", "attrs (>=17.4.0)", "pre-commit", "flake8", "tox", "bumpversion", "recommonmark", "pip (>=18.1)", "wheel (>=0.31.0)", "setuptools (>=38.6.0)", "twine (>=1.11.0)", "azure-datalake-store (>=0.0.30)", "azure-storage-blob (>=12.1.0)", "gcsfs (>=0.2.0)", "pyarrow (>=2.0)", "black (>=19.3b0)"]
+
+[package.source]
+type = "git"
+url = "https://github.com/nteract/papermill.git"
+reference = "main"
+resolved_reference = "fdf488010d46bff25064161e52970a83a493a4f2"
 
 [[package]]
 name = "parso"
@@ -4288,9 +4324,9 @@ traitlets = ">=5.0.3,<6"
 websockets = ">=9.0"
 
 [package.extras]
-dev = ["black", "bump2version", "jupyter-releaser (>=0.6,<1.0)"]
-test = ["numpy", "pandas", "ipywidgets", "matplotlib", "mock", "pytest", "pytest-rerunfailures", "pytest-tornasync"]
-visual_test = ["jupyterlab (>=3.0,<4.0)", "bqplot", "scipy", "ipympl (==0.8.7)", "ipyvolume", "jupyterlab-miami-nights (==0.3.2)"]
+visual_test = ["jupyterlab-miami-nights (==0.3.2)", "ipyvolume", "ipympl (==0.8.7)", "scipy", "bqplot", "jupyterlab (>=3.0,<4.0)"]
+test = ["pytest-tornasync", "pytest-rerunfailures", "pytest", "mock", "matplotlib", "ipywidgets", "pandas", "numpy"]
+dev = ["jupyter-releaser (>=0.6,<1.0)", "bump2version", "black"]
 
 [[package]]
 name = "watchdog"
@@ -4328,9 +4364,9 @@ optional = false
 python-versions = ">=3.7"
 
 [package.extras]
-docs = ["Sphinx (>=3.4)", "sphinx-rtd-theme (>=0.5)"]
-optional = ["python-socks", "wsaccel"]
 test = ["websockets"]
+optional = ["wsaccel", "python-socks"]
+docs = ["sphinx-rtd-theme (>=0.5)", "Sphinx (>=3.4)"]
 
 [[package]]
 name = "websockets"
@@ -4449,7 +4485,7 @@ prediction = ["torch"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "5a330ed6d4ca21e04198bc7d65b5ccecbe084e1f1829b80b4e671eb9ff1f5320"
+content-hash = "291bc663b147f0920096f90730675ae57260e9512ebaef302fb8226cd7503789"
 
 [metadata.files]
 aiodns = []
@@ -4629,6 +4665,7 @@ pandas-datareader = []
 pandas-market-calendars = []
 pandas-ta = []
 pandocfilters = []
+papermill = []
 parso = []
 pathspec = []
 patsy = []
