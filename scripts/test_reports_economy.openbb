@@ -2,7 +2,8 @@ reports
 
 economy
 
-# Test with random tickers
+# Test with random tickers, that should be ignored by the report.
 economy AAPL
+economy --symbol MSFT
 
 exit

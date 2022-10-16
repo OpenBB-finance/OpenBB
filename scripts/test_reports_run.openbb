@@ -1,0 +1,10 @@
+reports
+
+## defaults
+run
+
+## Invalid inputs
+run --file dummyfile.csv
+run --file dummyfile.ipynb
+
+exit

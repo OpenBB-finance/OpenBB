@@ -1,11 +1,14 @@
 reports
 
-forex USDEUR
+## defaults
+forex
+
+forex --symbol USDEUR
 
 # Test with emerging pairs
-forex USDVND
+forex --symbol USDVND
 
 # Test with invalid pairs
-forex USDABCXYZ
+forex --symbol USDABCXYZ
 
 exit

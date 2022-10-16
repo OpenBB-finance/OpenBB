@@ -48,7 +48,6 @@ class ReportController(BaseController):
                 "-p": "--params",
             }
             for report_name in self.REPORTS:
-
                 # Extract report parameters do display on menu
                 self.PARAMETERS_DICT[report_name] = reports_model.extract_parameters(
                     str(reports_model.REPORTS_FOLDER / report_name)
@@ -186,17 +185,28 @@ class ReportController(BaseController):
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
-        params_dict = {}
-        if ns_parser.params:
-            for p in ns_parser.params:
-                if ":" in p:
-                    item = p.split(":")
-                    params_dict[item[0]] = item[1]
+        if ns_parser:
+            # Validate parameter inputs
+            params_dict = {}
+            if ns_parser.params:
+                for p in ns_parser.params:
+                    if ":" in p:
+                        item = p.split(":")
+                        if item[1]:
+                            params_dict[item[0]] = item[1]
+                        else:
+                            console.print(
+                                f"[red]Bad format '{p}': empty value.[/red]\nExecuting with defaults.\n"
+                            )
+                    else:
+                        console.print(
+                            f"[red]Bad format '{p}': use format 'name:value'.[/red]\nExecuting with defaults.\n"
+                        )
+
+            if ns_parser.file:
+                if os.path.exists(ns_parser.file):
+                    reports_model.render_report(ns_parser.file, params_dict)
                 else:
                     console.print(
-                        f"[red]Bad format '{p}', use format 'name:value'.[/red]\nExecuting with defaults.\n"
+                        f"[red]Notebook '{ns_parser.file}' not found![/red]\n"
                     )
-
-        if ns_parser and ns_parser.file:
-            if os.path.exists(ns_parser.file):
-                reports_model.render_report(ns_parser.file, params_dict)
