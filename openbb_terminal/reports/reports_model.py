@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
+from operator import imod
 
 # pylint: disable=R1732, R0912
 import os
@@ -11,11 +12,16 @@ from ast import literal_eval
 from datetime import datetime
 from typing import Any, Dict, List
 import papermill as pm
+import pandas as pd
 
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.core.config.paths import USER_EXPORTS_DIRECTORY
+from openbb_terminal.core.config.paths import (
+    USER_EXPORTS_DIRECTORY,
+    REPOSITORY_DIRECTORY,
+)
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
+from openbb_terminal.forex.forex_controller import FX_TICKERS
 
 logger = logging.getLogger(__name__)
 
@@ -24,25 +30,47 @@ REPORTS_FOLDER = CURRENT_LOCATION.parent / "templates"
 OUTPUT_FOLDER = USER_EXPORTS_DIRECTORY / "reports"
 
 # TODO: Add a proper list of choices here.
+
+etf_data_path = CURRENT_LOCATION.parent.parent / "etf" / "data" / "etf_tickers.csv"
+ETF_TICKERS = pd.read_csv(etf_data_path).iloc[:, 0].to_list()
+
+crypto_data_path = (
+    CURRENT_LOCATION.parent.parent / "cryptocurrency" / "data" / "crypto_tickers.csv"
+)
+CRYPTO_TICKERS = pd.read_csv(crypto_data_path).iloc[:, 0].to_list()
+
+stocks_data_path = (
+    CURRENT_LOCATION.parent.parent / "stocks" / "data" / "stocks_tickers.csv"
+)
+STOCKS_TICKERS = pd.read_csv(stocks_data_path).iloc[:, 0].to_list()
+
+PORTFOLIO_HOLDINGS_FILES = {
+    filepath.name: filepath
+    for file_type in ["xlsx", "csv"]
+    for filepath in (REPOSITORY_DIRECTORY / "portfolio" / "holdings").rglob(
+        f"*.{file_type}"
+    )
+}
+
 REPORT_CHOICES = {
     "etf": {
-        "--symbol": {c: None for c in ["SPY"]},
+        "--symbol": {c: None for c in ETF_TICKERS},
     },
     "forex": {
-        "--symbol": {c: None for c in ["EURUSD", "EURAUD"]},
+        "--symbol": {c: None for c in FX_TICKERS},
     },
     "portfolio": {
-        "--orderbook": {c: None for c in ["example.csv"]},
+        "--orderbook": {c: None for c in PORTFOLIO_HOLDINGS_FILES},
     },
     "economy": None,
     "equity": {
-        "--symbol": {c: None for c in ["TSLA", "GME"]},
+        "--symbol": {c: None for c in STOCKS_TICKERS},
     },
     "crypto": {
-        "--symbol": {c: None for c in ["BTC"]},
+        "--symbol": {c: None for c in CRYPTO_TICKERS},
     },
     "forecast": {
-        "--symbol": {c: None for c in ["TSLA", "GME"]},
+        "--symbol": {c: None for c in STOCKS_TICKERS + ETF_TICKERS},
     },
 }
 
