@@ -1,7 +1,6 @@
 """Reports Model Module."""
 __docformat__ = "numpy"
 
-from io import StringIO
 import logging
 
 # pylint: disable=R1732, R0912
@@ -40,7 +39,7 @@ REPORT_CHOICES = {
         "--symbol": {c: None for c in ["TSLA", "GME"]},
     },
     "crypto": {
-        "--symbol": {c: None for c in ["BTCUSD"]},
+        "--symbol": {c: None for c in ["BTC"]},
     },
     "forecast": {
         "--symbol": {c: None for c in ["TSLA", "GME"]},
@@ -182,7 +181,11 @@ def update_parameters(input_path: str, args_dict: Dict[str, str]) -> Dict[str, A
     """
 
     parameters_dict = extract_parameters(input_path)
-    parameters_dict.update(args_dict)
+    for key, val in args_dict.items():
+        if key in parameters_dict:
+            parameters_dict[key] = val
+        else:
+            console.print(f"[red]'{key}' not found in notebook parameters.[/red]")
 
     return parameters_dict
 

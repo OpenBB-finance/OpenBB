@@ -44,6 +44,8 @@ class ReportController(BaseController):
             self.choices["run"] = {
                 "--file": {},
                 "-f": "--file",
+                "--params": {},
+                "-p": "--params",
             }
             for report_name in self.REPORTS:
 
@@ -95,7 +97,7 @@ class ReportController(BaseController):
         mt.add_raw("\n")
         mt.add_info("_Custom_reports_")
         mt.add_cmd("run")
-        console.print(text=mt.menu_text, menu="Reports")
+        console.print(text=mt.menu_text, menu="Reports - WORK IN PROGRESS")
 
     @log_start_end(log=logger)
     def call_etf(self, other_args: List[str]):
@@ -174,12 +176,27 @@ class ReportController(BaseController):
             required="-h" not in other_args,
             help="The file to be loaded",
         )
+        parser.add_argument(
+            "-p",
+            "--params",
+            nargs="+",
+            dest="params",
+            help="Report parameters with format 'name:value'.",
+        )
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
+        params_dict = {}
+        if ns_parser.params:
+            for p in ns_parser.params:
+                if ":" in p:
+                    item = p.split(":")
+                    params_dict[item[0]] = item[1]
+                else:
+                    console.print(
+                        f"[red]Bad format '{p}', use format 'name:value'.[/red]\nExecuting with defaults.\n"
+                    )
+
         if ns_parser and ns_parser.file:
-            params = vars(ns_parser)
-            notebook_file = params.pop("file")
-            params.pop("help")
-            if os.path.exists(notebook_file):
-                reports_model.render_report(notebook_file, params)
+            if os.path.exists(ns_parser.file):
+                reports_model.render_report(ns_parser.file, params_dict)
