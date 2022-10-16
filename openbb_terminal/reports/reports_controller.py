@@ -7,6 +7,7 @@ import os
 
 # pylint: disable=R1732, R0912
 from typing import Any, Dict, List
+import warnings
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.helper_funcs import parse_simple_args
@@ -124,7 +125,20 @@ class ReportController(BaseController):
 
     @log_start_end(log=logger)
     def call_forecast(self, other_args: List[str]):
-        self.run_report("forecast", other_args)
+        try:
+            import darts  # pyright: reportMissingImports=false
+
+            forecast = True
+        except ImportError:
+            forecast = False
+            console.print(
+                "'forecast' menu dependencies are not installed."
+                " This part of the SDK will not be usable.\n\n"
+                "For more information see the official documentation at: "
+                "[blue]https://openbb-finance.github.io/OpenBBTerminal/api/[/blue]\n"
+            )
+        if forecast:
+            self.run_report("forecast", other_args)
 
     @log_start_end(log=logger)
     def run_report(self, report_name: str, other_args: List[str]):
