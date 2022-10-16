@@ -6,7 +6,6 @@ import logging
 # pylint: disable=R1732, R0912
 import os
 from pathlib import Path
-import sys
 import webbrowser
 from ast import literal_eval
 from datetime import datetime
@@ -24,6 +23,7 @@ CURRENT_LOCATION = Path(__file__)
 REPORTS_FOLDER = CURRENT_LOCATION.parent / "templates"
 OUTPUT_FOLDER = USER_EXPORTS_DIRECTORY / "reports"
 
+# TODO: Add a proper list of choices here.
 REPORT_CHOICES = {
     "etf": {
         "--symbol": {c: None for c in ["SPY"]},
