@@ -36,44 +36,10 @@ class ReportController(BaseController):
         self.file_types = ["ipynb"]
         self.update_choices()
 
-        # Create a call_ method for each report and assign a run report function to it.
-        # This allows to run notebooks as commands with proper input validation,
-        # avoiding unforeseen crashes.
-        #
-        # The benefits on the user side are that it is now possible to use 'help' flag
-        # and run with default arguments or any other useful property of our controller.
-        #
-        # Example:
-        # class ReportController:
-        #     ...
-        #   def call_etf(self, other_args: List[str]):
-        #       self.run_report(
-        #           report_name = "forex",
-        #           other_args = ["--symbol", "EURUSD"]
-        #       )
-
-        for report in self.REPORTS:
-            setattr(
-                self,
-                "call_" + report,
-                ReportController.make_func(obj=self, report_name=report),
-            )
-
-    @classmethod
-    def make_func(cls, obj, report_name: str):
-        """Dynamic function builder."""
-
-        def func(other_args):
-            obj.run_report(report_name, other_args)
-
-        return func
-
     def update_choices(self):
         """Update controller choices with reports available under templates folder."""
 
         if session and obbff.USE_PROMPT_TOOLKIT:
-
-            self.REPORTS = reports_model.get_reports_available()
 
             self.choices: dict = {c: {} for c in self.controller_choices}
             self.choices["run"] = {
@@ -102,6 +68,7 @@ class ReportController(BaseController):
     def print_help(self):
         """Print help."""
 
+        self.REPORTS = reports_model.get_reports_available()
         self.update_choices()
 
         mt = MenuText("reports/")
@@ -129,6 +96,34 @@ class ReportController(BaseController):
         mt.add_info("_Custom_reports_")
         mt.add_cmd("run")
         console.print(text=mt.menu_text, menu="Reports")
+
+    @log_start_end(log=logger)
+    def call_etf(self, other_args: List[str]):
+        self.run_report("etf", other_args)
+
+    @log_start_end(log=logger)
+    def call_forex(self, other_args: List[str]):
+        self.run_report("forex", other_args)
+
+    @log_start_end(log=logger)
+    def call_portfolio(self, other_args: List[str]):
+        self.run_report("portfolio", other_args)
+
+    @log_start_end(log=logger)
+    def call_economy(self, other_args: List[str]):
+        self.run_report("economy", other_args)
+
+    @log_start_end(log=logger)
+    def call_equity(self, other_args: List[str]):
+        self.run_report("equity", other_args)
+
+    @log_start_end(log=logger)
+    def call_crypto(self, other_args: List[str]):
+        self.run_report("crypto", other_args)
+
+    @log_start_end(log=logger)
+    def call_forecast(self, other_args: List[str]):
+        self.run_report("forecast", other_args)
 
     @log_start_end(log=logger)
     def run_report(self, report_name: str, other_args: List[str]):
@@ -192,4 +187,3 @@ class ReportController(BaseController):
 
 
 # amanha arranjar os reports que nao funcionam e tentar fazer um installer
-# testar custom reports do user, pelo menos o nome do ficheiro tenho de subsitiuir os espaços por "_"?
