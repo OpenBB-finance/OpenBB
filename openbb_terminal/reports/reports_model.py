@@ -29,7 +29,7 @@ CURRENT_LOCATION = Path(__file__)
 REPORTS_FOLDER = CURRENT_LOCATION.parent / "templates"
 OUTPUT_FOLDER = USER_EXPORTS_DIRECTORY / "reports"
 
-# TODO: Add a proper list of choices here.
+# TODO: Trim available choices to avoid errors in notebooks.
 
 etf_data_path = CURRENT_LOCATION.parent.parent / "etf" / "data" / "etf_tickers.csv"
 ETF_TICKERS = pd.read_csv(etf_data_path).iloc[:, 0].to_list()
