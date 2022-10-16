@@ -236,15 +236,12 @@ def execute_notebook(input_path, parameters, output_path):
 
     input_path = add_ipynb_extension(input_path)
 
-    orig_out = sys.stdout
-    sys.stdout = StringIO()
     result = pm.execute_notebook(
         input_path=input_path,
         output_path=output_path + ".ipynb",
         parameters=parameters,
         kernel_name="python3",
     )
-    sys.stdout = orig_out
 
     if not result["metadata"]["papermill"]["exception"]:
         if obbff.OPEN_REPORT_AS_HTML:
@@ -279,4 +276,26 @@ def add_ipynb_extension(path: str) -> str:
     """
     if not path.endswith(".ipynb"):
         return path + ".ipynb"
+    return path
+
+
+@log_start_end(log=logger)
+def check_ipynb(path: str) -> Union[bool, str]:
+    """Check if there is .ipynb extension in path.
+    This is useful to the controller type check.
+
+    Parameters
+    ----------
+    path: str
+        Path to notebook file.
+
+    Returns
+    -------
+    bool
+        Path if paths endswith .ipynb, else False.
+
+    """
+    if not path.endswith(".ipynb"):
+        console.print("[red]Please provide a .ipynb file.[/red]\n")
+        return False
     return path

@@ -33,7 +33,6 @@ class ReportController(BaseController):
         """Constructor"""
 
         super().__init__(queue)
-        self.file_types = ["ipynb"]
         self.update_choices()
 
     def update_choices(self):
@@ -48,6 +47,7 @@ class ReportController(BaseController):
             }
             for report_name in self.REPORTS:
 
+                # Extract report parameters do display on menu
                 self.PARAMETERS_DICT[report_name] = reports_model.extract_parameters(
                     str(reports_model.REPORTS_FOLDER / report_name)
                 )
@@ -147,7 +147,6 @@ class ReportController(BaseController):
 
             ns_parser = parse_simple_args(parser, other_args)
 
-            # The report is rendered here.
             if ns_parser:
                 params = vars(ns_parser)
                 params.pop("help")
@@ -170,7 +169,7 @@ class ReportController(BaseController):
         parser.add_argument(
             "-f",
             "--file",
-            type=str,
+            type=reports_model.check_ipynb,
             dest="file",
             required="-h" not in other_args,
             help="The file to be loaded",
@@ -178,7 +177,6 @@ class ReportController(BaseController):
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
-        # The report is rendered here.
         if ns_parser and ns_parser.file:
             params = vars(ns_parser)
             notebook_file = params.pop("file")
