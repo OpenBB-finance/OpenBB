@@ -180,7 +180,8 @@ class ReportController(BaseController):
 
         # The report is rendered here.
         if ns_parser and ns_parser.file:
-            if os.path.exists(ns_parser.file):
-                params = vars(ns_parser)
-                params.pop("help")
-                reports_model.render_report(ns_parser.file, params)
+            params = vars(ns_parser)
+            notebook_file = params.pop("file")
+            params.pop("help")
+            if os.path.exists(notebook_file):
+                reports_model.render_report(notebook_file, params)

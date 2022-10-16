@@ -1,11 +1,13 @@
 """Reports Model Module."""
 __docformat__ = "numpy"
 
+from io import StringIO
 import logging
 
 # pylint: disable=R1732, R0912
 import os
 from pathlib import Path
+import sys
 import webbrowser
 from ast import literal_eval
 from datetime import datetime
@@ -181,8 +183,6 @@ def update_parameters(input_path: str, args_dict: Dict[str, str]) -> Dict[str, A
 
     parameters_dict = extract_parameters(input_path)
     parameters_dict.update(args_dict)
-    if "file" in parameters_dict:
-        parameters_dict.pop("file")
 
     return parameters_dict
 
@@ -236,12 +236,15 @@ def execute_notebook(input_path, parameters, output_path):
 
     input_path = add_ipynb_extension(input_path)
 
+    orig_out = sys.stdout
+    sys.stdout = StringIO()
     result = pm.execute_notebook(
         input_path=input_path,
         output_path=output_path + ".ipynb",
         parameters=parameters,
         kernel_name="python3",
     )
+    sys.stdout = orig_out
 
     if not result["metadata"]["papermill"]["exception"]:
         if obbff.OPEN_REPORT_AS_HTML:
@@ -260,13 +263,20 @@ def execute_notebook(input_path, parameters, output_path):
         console.print("[red]\nReport couldn't be created.\n[/red]")
 
 
-def add_ipynb_extension(path: str):
+@log_start_end(log=logger)
+def add_ipynb_extension(path: str) -> str:
     """Add .ipynb extension to path.
     Parameters
     ----------
     path: str
         Path to notebook file.
 
+    Returns
+    -------
+    str
+        Path to .ipynb file.
+
     """
     if not path.endswith(".ipynb"):
         return path + ".ipynb"
+    return path
