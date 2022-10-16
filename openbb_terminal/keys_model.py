@@ -6,11 +6,12 @@ __docformat__ = "numpy"
 import sys
 import logging
 import os
+import contextlib
 from enum import Enum
-
+import io
 from typing import Dict, List, Union
-import binance
 import dotenv
+import binance
 import pandas as pd
 import quandl
 import requests
@@ -20,6 +21,7 @@ import pyEX
 import oandapyV20.endpoints.pricing
 from oandapyV20 import API as oanda_API
 from coinmarketcapapi import CoinMarketCapAPI
+from tokenterminal import TokenTerminal
 from alpha_vantage.timeseries import TimeSeries
 from openbb_terminal.cryptocurrency.coinbase_helpers import (
     CoinbaseProAuth,
@@ -31,11 +33,20 @@ from openbb_terminal.core.config.paths import USER_ENV_FILE
 from openbb_terminal.rich_config import console
 
 from openbb_terminal.terminal_helper import suppress_stdout
+from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
 
 logger = logging.getLogger(__name__)
 
 sys.tracebacklimit = 0
 
+# README PLEASE:
+# The API_DICT keys must match the set and check functions format.
+#
+# This format is used by the KeysController and get_keys_info().
+# E.g. tokenterminal -> set_tokenterminal_key & check_tokenterminal_key
+#
+# Don't forget to add the set function to api.py endpoints dictionary.
+# E.g.  "keys.tokenterminal": {"model": "openbb_terminal.keys_model.set_tokenterminal_key"},
 
 API_DICT: Dict = {
     "av": "ALPHA_VANTAGE",
@@ -67,6 +78,8 @@ API_DICT: Dict = {
     "messari": "MESSARI",
     "eodhd": "EODHD",
     "santiment": "SANTIMENT",
+    "tokenterminal": "TOKEN_TERMINAL",
+    "shroom": "SHROOM",
 }
 
 
@@ -1111,8 +1124,26 @@ def check_degiro_key(show_output: bool = False) -> str:
         logger.info("Degiro key not defined")
         status = KeyStatus.NOT_DEFINED
     else:
-        logger.info("Degiro key defined, not tested")
-        status = KeyStatus.DEFINED_NOT_TESTED
+        dg = DegiroModel()
+        try:
+            f = io.StringIO()  # suppress stdout
+            with contextlib.redirect_stdout(f):
+                check_creds = dg.check_credentials()  # pylint: disable=no-member
+
+            if "2FA is enabled" in f.getvalue() or check_creds:
+                logger.info("Degiro key defined, test passed")
+                status = KeyStatus.DEFINED_TEST_PASSED
+            else:
+                raise Exception
+
+            logger.info("Degiro key defined, test passed")
+            status = KeyStatus.DEFINED_TEST_PASSED
+
+        except Exception:
+            logger.info("Degiro key defined, test failed")
+            status = KeyStatus.DEFINED_TEST_FAILED
+
+        del dg  # ensure the object is destroyed explicitly
 
     if show_output:
         console.print(status.colorize() + "\n")
@@ -1962,6 +1993,114 @@ def check_santiment_key(show_output: bool = False) -> str:
         except Exception as _:  # noqa: F841
             logger.info("santiment key defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
+
+    if show_output:
+        console.print(status.colorize() + "\n")
+
+    return str(status)
+
+
+def set_shroom_key(key: str, persist: bool = False, show_output: bool = False) -> str:
+    """Set Shroom key
+    Parameters
+    ----------
+        key: str
+            API key
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
+    Returns
+    -------
+    status: str
+    """
+
+    set_key("OPENBB_API_SHROOM_KEY", key, persist)
+    return check_shroom_key(show_output)
+
+
+def check_shroom_key(show_output: bool = False) -> str:
+    """Check Shroom key"""
+    if cfg.API_SHROOM_KEY == "REPLACE_ME":
+        logger.info("Shroom key not defined")
+        status = KeyStatus.NOT_DEFINED
+    else:
+        try:
+            response = requests.post(
+                "https://node-api.flipsidecrypto.com/queries",
+                headers={"x-api-key": cfg.API_SHROOM_KEY},
+            )
+            if response.status_code == 400:
+                # this is expected because shroom returns 400 when query is not passed
+                logger.info("Shroom key defined, test passed")
+                status = KeyStatus.DEFINED_TEST_PASSED
+            elif response.status_code == 401:
+                logger.warning("Shroom key defined, test failed")
+                status = KeyStatus.DEFINED_TEST_FAILED
+            else:
+                logger.warning("Shroom key defined, test failed")
+                status = KeyStatus.DEFINED_TEST_FAILED
+        except requests.exceptions.RequestException:
+            logger.warning("Shroom key defined, test failed")
+            status = KeyStatus.DEFINED_TEST_FAILED
+    if show_output:
+        console.print(status.colorize() + "\n")
+
+    return str(status)
+
+
+def set_tokenterminal_key(
+    key: str, persist: bool = False, show_output: bool = False
+) -> str:
+    """Set Token Terminal key.
+
+    Parameters
+    ----------
+        key: str
+            API key
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
+
+    Returns
+    -------
+    status: str
+
+    """
+    set_key("OPENBB_API_TOKEN_TERMINAL_KEY", key, persist)
+    return check_tokenterminal_key(show_output)
+
+
+def check_tokenterminal_key(show_output: bool = False) -> str:
+    """Check Token Terminal key
+
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not. By default, False.
+
+    Returns
+    -------
+    status: str
+
+    """
+    if cfg.API_TOKEN_TERMINAL_KEY == "REPLACE_ME":
+        logger.info("Token Terminal key not defined")
+        status = KeyStatus.NOT_DEFINED
+    else:
+        token_terminal = TokenTerminal(key=cfg.API_TOKEN_TERMINAL_KEY)
+
+        if "message" in token_terminal.get_all_projects():
+            logger.warning("Token Terminal key defined, test failed")
+            status = KeyStatus.DEFINED_TEST_FAILED
+        else:
+            logger.info("Token Terminal key defined, test passed")
+            status = KeyStatus.DEFINED_TEST_PASSED
 
     if show_output:
         console.print(status.colorize() + "\n")

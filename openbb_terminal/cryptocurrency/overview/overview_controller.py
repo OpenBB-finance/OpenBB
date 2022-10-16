@@ -8,7 +8,7 @@ import logging
 from datetime import datetime, timedelta
 from typing import List
 
-from prompt_toolkit.completion import NestedCompleter
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.due_diligence.glassnode_view import (
@@ -30,6 +30,8 @@ from openbb_terminal.cryptocurrency.overview import (
     rekt_view,
     withdrawalfees_model,
     withdrawalfees_view,
+    tokenterminal_model,
+    tokenterminal_view,
 )
 from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import (
     get_categories_keys,
@@ -84,6 +86,7 @@ class OverviewController(BaseController):
         "altindex",
         "ch",
         "cr",
+        "fun",
     ]
 
     PATH = "/crypto/ov/"
@@ -95,52 +98,166 @@ class OverviewController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             crypto_hack_slugs = rekt_model.get_crypto_hack_slugs()
             choices: dict = {c: {} for c in self.controller_choices}
+            choices["cgglobal"]["--pie"] = {}
             choices["cr"] = {c: {} for c in ["borrow", "supply"]}
-            choices["cr"]["-c"] = {c: None for c in loanscan_model.CRYPTOS}
-            choices["cr"]["-p"] = {c: None for c in loanscan_model.PLATFORMS}
-            choices["ch"]["--sort"] = {c: None for c in rekt_model.HACKS_COLUMNS}
-            choices["ch"]["-s"] = {c: None for c in crypto_hack_slugs}
-            choices["ch"]["--slug"] = {c: None for c in crypto_hack_slugs}
-            choices["cghold"] = {c: None for c in pycoingecko_model.HOLD_COINS}
-            choices["cgcompanies"] = {c: None for c in pycoingecko_model.HOLD_COINS}
-            choices["cgcategories"]["-s"] = {
-                c: None for c in pycoingecko_model.CATEGORIES_FILTERS
+            choices["cr"]["--cryptocurrrencies"] = {
+                c: None for c in loanscan_model.CRYPTOS
             }
-            choices["cgstables"]["-s"] = {
-                c: None for c in pycoingecko_model.COINS_COLUMNS
+            choices["cr"]["-c"] = "--cryptocurrrencies"
+            choices["cr"]["--platforms"] = {c: None for c in loanscan_model.PLATFORMS}
+            choices["cr"]["-p"] = "--platforms"
+            choices["cr"]["--limit"] = {str(c): {} for c in range(1, 100)}
+            choices["cr"]["-l"] = "--limit"
+            choices["ch"] = {
+                "--sort": {c: {} for c in rekt_model.HACKS_COLUMNS},
+                "--slug": {c: {} for c in crypto_hack_slugs},
+                "-s": "--slug",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
             }
-            choices["cgexrates"]["-s"] = {
-                c: None for c in pycoingecko_model.EXRATES_FILTERS
+            choices["cghold"] = {
+                "--coin": {c: {} for c in pycoingecko_model.HOLD_COINS},
+                "-c": "--coin",
+                "--limit": {str(c): {} for c in range(1, 50)},
+                "-l": "--limit",
+                "--bar": {},
             }
-            choices["cgindexes"]["-s"] = {
-                c: None for c in pycoingecko_model.INDEXES_FILTERS
+            choices["cgcategories"] = {
+                "--sort": {c: {} for c in pycoingecko_model.CATEGORIES_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--pie": {},
             }
-            choices["cgderivatives"]["-s"] = {
-                c: None for c in pycoingecko_model.DERIVATIVES_FILTERS
+            choices["cgstables"] = {
+                "--sort": {c: {} for c in pycoingecko_model.COINS_COLUMNS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+                "--pie": {},
             }
-            choices["cpmarkets"]["-s"] = {
-                c: None for c in coinpaprika_model.MARKETS_FILTERS
+            choices["cgexchanges"] = {
+                "--sort": {c: {} for c in pycoingecko_model.EXCHANGES_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+                "--urls": {},
+                "-u": "--urls",
             }
-            choices["cpexmarkets"]["-s"] = {
-                c: None for c in coinpaprika_model.EXMARKETS_FILTERS
+            choices["cgexrates"] = {
+                "--sort": {c: {} for c in pycoingecko_model.EXRATES_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
             }
-            choices["cpexchanges"]["-s"] = {
-                c: None for c in coinpaprika_model.EXCHANGES_FILTERS
+            choices["cgindexes"] = {
+                "--sort": {c: {} for c in pycoingecko_model.INDEXES_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+            }
+            choices["cgderivates"] = {
+                "--sort": {c: {} for c in pycoingecko_model.DERIVATIVES_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+            }
+            choices["cpmarkets"] = {
+                "--vs": {c: {} for c in CURRENCIES},
+                "--sort": {c: {} for c in coinpaprika_model.MARKETS_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+            }
+            choices["cpexmarkets"] = {
+                "--exchange": None,
+                "-e": "--exchange",
+                "--sort": {c: {} for c in coinpaprika_model.EXMARKETS_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+                "--urls": {},
+                "-u": "--urls",
+            }
+            choices["cpexchanges"] = {
+                "--vs": {c: {} for c in CURRENCIES},
+                "--sort": {c: {} for c in coinpaprika_model.EXCHANGES_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
             }
             choices["cpcontracts"] = {
                 c: None for c in get_all_contract_platforms()["platform_id"].tolist()
             }
-            choices["cpcontracts"]["-s"] = {
+            choices["cpcontracts"]["--sort"] = {
                 c: None for c in coinpaprika_model.CONTRACTS_FILTERS
             }
-            choices["hm"] = {c: None for c in get_categories_keys()}
-            choices["cpinfo"]["-s"] = {c: None for c in coinpaprika_model.INFO_FILTERS}
-            choices["cbpairs"]["-s"] = {c: None for c in coinbase_model.PAIRS_FILTERS}
-            choices["news"]["-k"] = {c: None for c in cryptopanic_model.CATEGORIES}
-            choices["news"]["--filter"] = {c: None for c in cryptopanic_model.FILTERS}
-            choices["news"]["-r"] = {c: None for c in cryptopanic_model.REGIONS}
-            choices["news"]["-s"] = {c: None for c in cryptopanic_model.SORT_FILTERS}
-            choices["wfpe"] = {c: None for c in withdrawalfees_model.POSSIBLE_CRYPTOS}
+            choices["cpcontracts"]["-s"] = "--sort"
+            choices["cpcontracts"]["--limit"] = {str(c): {} for c in range(1, 100)}
+            choices["cpcontracts"]["-l"] = "--limit"
+            choices["cpcontracts"]["--descend"] = {}
+            choices["hm"] = {c: {} for c in get_categories_keys()}
+            choices["hm"]["--limit"] = {str(c): {} for c in range(1, 100)}
+            choices["hm"]["-l"] = "--limit"
+            choices["cpinfo"] = {
+                "--vs": {c: {} for c in CURRENCIES},
+                "--sort": {c: {} for c in coinpaprika_model.INFO_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+            }
+            choices["cppairs"] = {
+                "--sort": {c: {} for c in coinbase_model.PAIRS_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(10, 100)},
+                "-l": "--limit",
+                "--descend": {},
+            }
+            choices["news"] = {
+                "--kind": {c: {} for c in cryptopanic_model.CATEGORIES},
+                "-k": "--kind",
+                "--filter": {c: {} for c in cryptopanic_model.FILTERS},
+                "--region": {c: {} for c in cryptopanic_model.REGIONS},
+                "-r": "--region",
+                "--sort": {c: {} for c in cryptopanic_model.SORT_FILTERS},
+                "-s": "--sort",
+                "--descend": {},
+                "--urls": {},
+                "-u": "--urls",
+            }
+            choices["wf"] = {
+                "--limit": {str(c): {} for c in range(10, 100)},
+                "-l": "--limit",
+            }
+            choices["wfpe"] = {c: {} for c in withdrawalfees_model.POSSIBLE_CRYPTOS}
+            choices["altindex"] = {
+                "--period": {str(c): {} for c in DAYS},
+                "-p": "--period",
+                "--since": None,
+                "-s": "--since",
+                "--until": None,
+                "-u": "--until",
+            }
+            choices["btcrb"] = {
+                "--since": None,
+                "-s": "--since",
+                "--until": None,
+                "-u": "--until",
+            }
+            choices["fun"] = {c: {} for c in tokenterminal_model.METRICS}
+            choices["fun"]["-m"] = {c: {} for c in tokenterminal_model.METRICS}
+            choices["fun"]["-c"] = {c: {} for c in tokenterminal_model.CATEGORIES}
+            choices["fun"]["-t"] = {c: {} for c in tokenterminal_model.TIMELINES}
 
             choices["support"] = self.SUPPORT_CHOICES
             choices["about"] = self.ABOUT_CHOICES
@@ -176,6 +293,7 @@ class OverviewController(BaseController):
         mt.add_cmd("btcrb")
         mt.add_cmd("ch")
         mt.add_cmd("cr")
+        mt.add_cmd("fun")
         console.print(text=mt.menu_text, menu="Cryptocurrency - Overview")
 
     @log_start_end(log=logger)
@@ -191,7 +309,6 @@ class OverviewController(BaseController):
             You can look on only top N number of records with --limit.
             """,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -216,6 +333,71 @@ class OverviewController(BaseController):
         if ns_parser:
             pycoingecko_view.display_crypto_heatmap(
                 category=ns_parser.category,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_fun(self, other_args):
+        """Process fun command"""
+        parser = argparse.ArgumentParser(
+            prog="fun",
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            description="""Display fundamental metrics overview [Source: Token Terminal]""",
+        )
+        parser.add_argument(
+            "-m",
+            "--metric",
+            required=True,
+            choices=tokenterminal_model.METRICS,
+            dest="metric",
+            help="Choose metric of interest",
+        )
+        parser.add_argument(
+            "-c",
+            "--category",
+            default="",
+            choices=tokenterminal_model.CATEGORIES,
+            dest="category",
+            help="Choose category of interest",
+        )
+        parser.add_argument(
+            "-t",
+            "--timeline",
+            default="24h",
+            choices=tokenterminal_model.TIMELINES,
+            dest="timeline",
+            help="Choose timeline of interest",
+        )
+        parser.add_argument(
+            "-a",
+            "--ascend",
+            action="store_true",
+            help="Flag to sort in ascending order",
+            dest="ascend",
+            default=False,
+        )
+        parser.add_argument(
+            "-l",
+            "--limit",
+            dest="limit",
+            type=int,
+            help="Display N items",
+            default=10,
+        )
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-m")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
+        )
+        if ns_parser:
+            tokenterminal_view.display_fundamental_metrics(
+                metric=ns_parser.metric,
+                category=ns_parser.category,
+                timeline=ns_parser.timeline,
+                ascend=ns_parser.ascend,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
             )
@@ -258,7 +440,6 @@ class OverviewController(BaseController):
             dest="descend",
             default=False,
         )
-
         parser.add_argument(
             "-s",
             "--slug",

@@ -14,7 +14,6 @@ import json
 from typing import Union, Any, List, Dict
 from datetime import datetime, timedelta
 
-from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 from rich.markdown import Markdown
@@ -22,11 +21,12 @@ import pandas as pd
 import numpy as np
 
 from openbb_terminal.core.config.paths import (
-    CUSTOM_IMPORTS_DIRECTORY,
-    ROUTINES_DIRECTORY,
+    USER_CUSTOM_IMPORTS_DIRECTORY,
+    USER_ROUTINES_DIRECTORY,
 )
 from openbb_terminal.decorators import log_start_end
 
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.menu import session
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.helper_funcs import (
@@ -43,6 +43,7 @@ from openbb_terminal.helper_funcs import (
     parse_and_split_input,
     search_wikipedia,
     screenshot,
+    export_data,
 )
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.rich_config import console, get_ordered_list_sources
@@ -604,11 +605,11 @@ class BaseController(metaclass=ABCMeta):
                 "[red]There is no session to be saved. Run at least 1 command after starting 'record'[/red]\n"
             )
         else:
-            routine_file = os.path.join(ROUTINES_DIRECTORY, SESSION_RECORDED_NAME)
+            routine_file = os.path.join(USER_ROUTINES_DIRECTORY, SESSION_RECORDED_NAME)
 
             if os.path.isfile(routine_file):
                 routine_file = os.path.join(
-                    ROUTINES_DIRECTORY,
+                    USER_ROUTINES_DIRECTORY,
                     datetime.now().strftime("%Y%m%d_%H%M%S_") + SESSION_RECORDED_NAME,
                 )
 
@@ -979,7 +980,9 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
 
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
 
         if ns_parser:
             if ns_parser.weekly and ns_parser.monthly:
@@ -1002,7 +1005,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 # This seems to block the .exe since the folder needs to be manually created
                 # This block makes sure that we only look for the file if the -f flag is used
                 # Adding files in the argparse choices, will fail for the .exe even without -f
-                STOCKS_CUSTOM_IMPORTS = CUSTOM_IMPORTS_DIRECTORY / "stocks"
+                STOCKS_CUSTOM_IMPORTS = USER_CUSTOM_IMPORTS_DIRECTORY / "stocks"
                 try:
                     file_list = [x.name for x in STOCKS_CUSTOM_IMPORTS.iterdir()]
                     if ns_parser.filepath not in file_list:
@@ -1059,7 +1062,13 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     self.stock = self.stock.rename(columns={"Adj Close": "AdjClose"})
                     self.stock = self.stock.dropna()
                     self.stock.columns = [x.lower() for x in self.stock.columns]
-                    console.print("")
+                    console.print()
+                export_data(
+                    ns_parser.export,
+                    os.path.dirname(os.path.abspath(__file__)),
+                    "load",
+                    self.stock.copy(),
+                )
 
 
 class CryptoBaseController(BaseController, metaclass=ABCMeta):
@@ -1151,7 +1160,9 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
 
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
 
         if ns_parser:
             if ns_parser.source in ("YahooFinance", "CoinGecko"):
@@ -1164,6 +1175,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                 start_date=ns_parser.start,
                 interval=ns_parser.interval,
                 source=ns_parser.source,
+                exchange=ns_parser.exchange,
             )
             if not self.current_df.empty:
                 self.vs = ns_parser.vs
@@ -1179,4 +1191,10 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                     ns_parser.source,
                     ns_parser.exchange,
                     self.current_interval,
+                )
+                export_data(
+                    ns_parser.export,
+                    os.path.dirname(os.path.abspath(__file__)),
+                    "load",
+                    self.current_df.copy(),
                 )

@@ -8,11 +8,12 @@ __docformat__ = "numpy"
 import logging
 import os
 from datetime import datetime, timedelta, date
-from typing import Any, Union, Optional, Iterable, List
+from typing import Any, Union, Optional, Iterable, List, Dict
 
 import financedatabase as fd
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
+from matplotlib.ticker import LogLocator, ScalarFormatter
 import mplfinance as mpf
 import numpy as np
 import pandas as pd
@@ -35,6 +36,7 @@ from openbb_terminal.stocks.stock_statics import SOURCES  # noqa: F401
 from openbb_terminal.stocks.stock_statics import INCOME_PLOT  # noqa: F401
 from openbb_terminal.stocks.stock_statics import BALANCE_PLOT  # noqa: F401
 from openbb_terminal.stocks.stock_statics import CASH_PLOT  # noqa: F401
+from openbb_terminal.stocks.stock_statics import CANDLE_SORT  # noqa: F401
 from openbb_terminal.stocks.stocks_models import (
     load_stock_av,
     load_stock_yf,
@@ -88,7 +90,7 @@ def search(
     export : str
         Export data
     """
-    kwargs: dict[str, Any] = {"exclude_exchanges": False}
+    kwargs: Dict[str, Any] = {"exclude_exchanges": False}
     if country:
         kwargs["country"] = country
     if sector:
@@ -401,6 +403,7 @@ def display_candle(
     monthly: bool = False,
     external_axes: Optional[List[plt.Axes]] = None,
     raw: bool = False,
+    yscale: str = "linear",
 ):
     """Shows candle plot of loaded ticker. [Source: Yahoo Finance, IEX Cloud or Alpha Vantage]
 
@@ -442,6 +445,8 @@ def display_candle(
         Flag to get monthly data
     raw : bool, optional
         Flag to display raw data, by default False
+    yscale: str
+        Linear or log for yscale
     """
 
     if data is None:
@@ -499,6 +504,7 @@ def display_candle(
                     "volume_width": 0.8,
                 },
                 "warn_too_much_data": 10000,
+                "yscale": yscale,
             }
 
             kwargs = {"mav": ma} if ma else {}
@@ -526,6 +532,13 @@ def display_candle(
                     lines = [Line2D([0], [0], color=c) for c in colors]
                     labels = ["MA " + str(label) for label in ma]
                     ax[0].legend(lines, labels)
+
+                if yscale == "log":
+                    ax[0].yaxis.set_major_formatter(ScalarFormatter())
+                    ax[0].yaxis.set_major_locator(
+                        LogLocator(base=100, subs=[1.0, 2.0, 5.0, 10.0])
+                    )
+                    ax[0].ticklabel_format(style="plain", axis="y")
 
                 cfg.theme.visualize_output(force_tight_layout=False)
             else:

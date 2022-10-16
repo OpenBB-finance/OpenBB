@@ -15,6 +15,7 @@ import numpy as np
 import ccxt
 from binance.client import Client
 import matplotlib.pyplot as plt
+from matplotlib.ticker import LogLocator, ScalarFormatter
 import yfinance as yf
 import mplfinance as mpf
 from pycoingecko import CoinGeckoAPI
@@ -306,23 +307,32 @@ def get_coinpaprika_id(symbol: str):
 def load(
     symbol: str,
     start_date: datetime = (datetime.now() - timedelta(days=1100)),
-    interval: str = "1440",  # 1, 15, 30, 60, 240, 1440, 10080, 43200
+    interval: str = "1440",
     exchange: str = "binance",
     vs_currency: str = "usdt",
     end_date: datetime = datetime.now(),
     source: str = "CCXT",
 ) -> pd.DataFrame:
-    """Load crypto currency to perform analysis on CoinGecko is used as source for price and
-    YahooFinance for volume.
+    """Load crypto currency to get data for.
 
     Parameters
     ----------
     symbol: str
         Coin to get
-    vs: str
-        Quote Currency (usd or eur), by default usd
-    days: int
-        Data up to number of days ago, by default 365
+    start_date: datetime
+        The datetime to start at
+    interval: str
+        The interval between data points in minutes.
+        Choose from: 1, 15, 30, 60, 240, 1440, 10080, 43200
+    exchange: str:
+        The exchange to get data from.
+    vs_currency: str
+        Quote Currency (Defaults to usdt)
+    end_date: datetime
+       The datetime to end at
+    source: str
+        The source of the data
+        Choose from: CCXT, CoinGecko, YahooFinance
 
     Returns
     -------
@@ -457,11 +467,6 @@ def show_quick_performance(
         df["Volume (7D avg)"] = lambda_long_number_format(np.mean(volumes[-9:-2]), 2)
 
     df.insert(0, f"\nPrice ({current_currency.upper()})", closes[-1])
-    # df.insert(
-    #    len(df.columns),
-    #    f"Market Cap ({current_currency.upper()})",
-    #    lambda_long_number_format(int(crypto_df["Market Cap"][-1])),
-    # )
 
     try:
         coingecko_id = get_coingecko_id(symbol)
@@ -890,6 +895,8 @@ def find(
         coins_list = coins_df[key].to_list()
         if key in ["symbol", "id"]:
             coin = query.lower()
+        else:
+            coin = query
         sim = difflib.get_close_matches(coin, coins_list, limit)
         df = pd.Series(sim).to_frame().reset_index()
         df.columns = ["index", key]
@@ -1280,6 +1287,7 @@ def plot_chart(
     exchange: str = "",
     interval: str = "",
     external_axes: list[plt.Axes] | None = None,
+    yscale: str = "linear",
 ) -> None:
     """Load data for Technical Analysis
 
@@ -1291,6 +1299,8 @@ def plot_chart(
         Coin (only used for chart title), by default ""
     from_symbol: str
         Currency (only used for chart title), by default ""
+    yscale: str
+        Scale for y axis of plot Either linear or log
     """
     del interval
 
@@ -1315,9 +1325,10 @@ def plot_chart(
         volume=True,
         ylabel="Volume [1M]" if volume_mean > 1_000_000 else "Volume",
         external_axes=external_axes,
+        yscale=yscale,
     )
 
-    console.print("")
+    console.print()
 
 
 def plot_candles(
@@ -1326,6 +1337,7 @@ def plot_candles(
     ylabel: str = "",
     title: str = "",
     external_axes: list[plt.Axes] | None = None,
+    yscale: str = "linear",
 ) -> None:
     """Plot candle chart from dataframe. [Source: Binance]
 
@@ -1341,6 +1353,8 @@ def plot_candles(
         Title of graph, by default ""
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
+    yscale : str
+        Scaling for y axis.  Either linear or log
     """
     candle_chart_kwargs = {
         "type": "candle",
@@ -1356,6 +1370,7 @@ def plot_candles(
             "volume_width": 0.8,
         },
         "warn_too_much_data": 10000,
+        "yscale": yscale,
     }
 
     # This plot has 2 axes
@@ -1374,6 +1389,12 @@ def plot_candles(
             y=1,
         )
         lambda_long_number_format_y_axis(candles_df, "Volume", ax)
+        if yscale == "log":
+            ax[0].yaxis.set_major_formatter(ScalarFormatter())
+            ax[0].yaxis.set_major_locator(
+                LogLocator(base=100, subs=[1.0, 2.0, 5.0, 10.0])
+            )
+            ax[0].ticklabel_format(style="plain", axis="y")
         theme.visualize_output(force_tight_layout=False)
     else:
         nr_external_axes = 2 if volume else 1

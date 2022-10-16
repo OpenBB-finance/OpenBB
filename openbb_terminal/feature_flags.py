@@ -2,17 +2,18 @@
 import os
 import os.path
 from distutils.util import strtobool
-import pkg_resources
 
 # IMPORTATION THIRDPARTY
 from dotenv import load_dotenv
+import pkg_resources
 import i18n
 
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import (
-    USER_ENV_FILE,
+    MISCELLANEOUS_DIRECTORY,
     REPOSITORY_ENV_FILE,
-    DATA_SOURCES_DEFAULT_FILE,
+    USER_DATA_SOURCES_DEFAULT_FILE,
+    USER_ENV_FILE,
 )
 from openbb_terminal.core.config import paths_helper
 
@@ -20,11 +21,7 @@ paths_helper.init_userdata()
 
 # pylint: disable=no-member,c-extension-no-member
 
-i18n_dict_location = (
-    os.path.join(os.path.dirname(os.path.abspath(__file__)), "i18n")
-    if os.path.exists(os.path.join(os.path.dirname(os.path.abspath(__file__)), "i18n"))
-    else os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "i18n")
-)
+i18n_dict_location = MISCELLANEOUS_DIRECTORY / "i18n"
 i18n.load_path.append(i18n_dict_location)
 i18n.set("locale", "en")
 i18n.set("filename_format", "{locale}.{format}")
@@ -110,7 +107,7 @@ LOGGING_COMMIT_HASH = str(os.getenv("OPENBB_LOGGING_COMMIT_HASH", "REPLACE_ME"))
 PREFERRED_DATA_SOURCE_FILE = str(
     os.getenv(
         "OPENBB_PREFERRED_DATA_SOURCE_FILE",
-        DATA_SOURCES_DEFAULT_FILE,
+        USER_DATA_SOURCES_DEFAULT_FILE,
     )
 )
 

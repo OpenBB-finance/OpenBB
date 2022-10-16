@@ -2,6 +2,7 @@
   "stocks": {
     "search": ["FinanceDatabase"],
     "quote": ["YahooFinance"],
+    "tob": ["CBOE"],
     "candle": [],
     "codes": ["Polygon"],
     "news": ["Feedparser", "NewsApi"],
@@ -331,7 +332,8 @@
       "altindex": ["BlockchainCenter"],
       "btcrb": ["BlockchainCenter"],
       "ch": ["Rekt"],
-      "cr": ["LoanScan"]
+      "cr": ["LoanScan"],
+      "fun": ["TokenTerminal"]
     },
     "onchain": {
       "hr": ["Glassnode"],
@@ -353,7 +355,10 @@
       "holders": ["Ethplorer"],
       "th": ["Ethplorer"],
       "prices": ["Ethplorer"],
-      "tx": ["Ethplorer"]
+      "tx": ["Ethplorer"],
+      "dt": ["Shroom"],
+      "ds": ["Shroom"],
+      "tvl": ["Shroom"]
     },
     "defi": {
       "newsletter": ["Substack"],
@@ -425,7 +430,9 @@
       "social": ["CoinGecko"],
       "score": ["CoinGecko"],
       "dev": ["CoinGecko"],
-      "gh": ["Santiment"]
+      "gh": ["Santiment"],
+      "desc": ["TokenTerminal"],
+      "funot": ["TokenTerminal"]
     },
     "ta": {
       "load": ["YahooFinance", "CoinGecko", "CCXT"],

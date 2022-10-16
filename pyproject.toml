@@ -73,7 +73,6 @@ voila = "^0.3.0"
 rich = "^12.6.0"
 investpy = "^1.0.7"
 dnspython = "^2.1.0"
-numpy = "^1.21.2"
 python-dotenv = "^0.19.2"
 Pygments = "^2.11.2"
 ascii-magic = "^1.6"
@@ -91,7 +90,8 @@ pyinstaller = {version = "^4.10", optional = true}
 jupyterlab-code-formatter = {version = "^1.4.10", optional = true}
 jupyterlab-lsp = {version = "^3.10.1", optional = true}
 jedi-language-server = {version = "^0.35.1", optional = true}
-kaleido = {version = "<=0.2.1", optional = true}
+tokenterminal = "^1.0.1"
+kaleido = {version = "^0.2.1", optional = true}
 torch = {version = "1.11.0", optional = true}
 streamlit = "^1.12.2"
 charset-normalizer = "2.1.0"
@@ -99,6 +99,9 @@ watchdog = "^2.1.9"
 pythclient = "^0.1.2"
 ipyflex = "^0.2.4"
 "ruamel.yaml" = "^0.17.21"
+setuptools = "^65.4.1"
+investiny = "^0.5.0"
+numpy = "1.21.6"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
@@ -134,3 +137,7 @@ installer = ["pyinstaller"]
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pydocstyle]
+convention = "numpy"
+match = '((?!test_).)*\.py'

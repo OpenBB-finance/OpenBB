@@ -163,6 +163,9 @@ API_SMARTSTAKE_TOKEN = os.getenv("OPENBB_API_SMARTSTAKE_TOKEN") or "REPLACE_ME"
 # https://messari.io/
 API_MESSARI_KEY = os.getenv("OPENBB_API_MESSARI_KEY") or "REPLACE_ME"
 
+# https://sdk.flipsidecrypto.xyz/shroomdk
+API_SHROOM_KEY = os.getenv("OPENBB_API_SHROOM_KEY") or "REPLACE_ME"
+
 # https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api
 API_GITHUB_KEY = os.getenv("OPENBB_API_GITHUB_KEY") or "REPLACE_ME"
 
@@ -171,3 +174,6 @@ API_SANTIMENT_KEY = os.getenv("OPENBB_API_SANTIMENT_KEY") or "REPLACE_ME"
 
 # https://eodhistoricaldata.com/r/?ref=869U7F4J
 API_EODHD_KEY = os.getenv("OPENBB_API_EODHD_KEY") or "REPLACE_ME"
+
+# https://tokenterminal.com
+API_TOKEN_TERMINAL_KEY = os.getenv("OPENBB_API_TOKEN_TERMINAL_KEY") or "REPLACE_ME"

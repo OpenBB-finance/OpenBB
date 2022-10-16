@@ -63,7 +63,7 @@ The terminal allows for users to import their own proprietary datasets to use on
 
 <--->
 
-### OpenBB API and Customizable notebook reports
+### OpenBB SDK and Customizable notebook reports
 
 Use our OpenBB Terminal environment to access raw data through a Jupyter Notebook and play with it accordingly. Or just create customizable notebook reports for your colleagues and friends doing research on a particular asset or a macroeconomic event impact on said asset. The possibilities are endless.
 
@@ -362,6 +362,7 @@ To figure out where you can obtain the API key, you can enter the command (e.g. 
 | cpanic     | Crypto Panic                             | https://cryptopanic.com/developers/api/                                            |
 | eodhd      | EODHD                                    | https://eodhistoricaldata.com/                                                     |
 | santiment  | Santiment                                | https://app.santiment.net/                                                         |
+| shroom     | ShroomDK                                 | https://sdk.flipsidecrypto.xyz/shroomdk                                            |
 
 ---
 
