@@ -160,6 +160,14 @@ class ReportController(BaseController):
                     help=arg_name,
                 )
 
+            if (
+                other_args
+                and "-" not in other_args[0][0]
+                and len(self.PARAMETERS_DICT[report_name]) == 1
+            ):
+                other_args.insert(
+                    0, "--" + list(self.PARAMETERS_DICT[report_name].keys())[0]
+                )
             ns_parser = parse_simple_args(parser, other_args)
 
             if ns_parser:
