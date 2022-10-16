@@ -3,13 +3,10 @@ __docformat__ = "numpy"
 
 import logging
 import os
+import pandas as pd
 
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    export_data,
-    print_rich_table,
-    check_df_empty_or_none,
-)
+from openbb_terminal.helper_funcs import export_data, print_rich_table
 from openbb_terminal.stocks.due_diligence import fmp_model
 
 logger = logging.getLogger(__name__)
@@ -38,7 +35,11 @@ def rating(symbol: str, limit: int = 10, export: str = ""):
     """
     df = fmp_model.get_rating(symbol)
 
-    if check_df_empty_or_none(df):
+    # given object is a dataframe and is empty
+    if isinstance(df, pd.DataFrame) and df.empty:
+        return
+    # given object is not a dataframe and is None
+    if not isinstance(df, pd.DataFrame) and not df:
         return
 
     # TODO: This could be displayed in a nice rating plot over time
