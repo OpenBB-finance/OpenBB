@@ -50,6 +50,7 @@ class FundController(BaseController):
         "equity",
         "al_swe",
         "info_swe",
+        "forecast",
     ]
 
     fund_countries = investpy.funds.get_fund_countries()
@@ -146,6 +147,7 @@ class FundController(BaseController):
         if self.country == "sweden":
             mt.add_cmd("al_swe", self.fund_symbol)
             mt.add_cmd("info_swe", self.fund_symbol)
+            mt.add_cmd("forecast", self.fund_symbol)
         console.print(text=mt.menu_text, menu="Mutual Funds")
 
     def custom_reset(self):
@@ -537,3 +539,16 @@ Potential errors
             avanza_view.display_info(self.fund_name)
 
         return self.queue
+
+    @log_start_end(log=logger)
+    def call_forecast(self, _):
+        """Process forecast command"""
+        # pylint: disable=import-outside-toplevel
+        from openbb_terminal.forecast import forecast_controller
+
+        self.queue = self.load_class(
+            forecast_controller.ForecastController,
+            self.fund_name,
+            self.data,
+            self.queue,
+        )

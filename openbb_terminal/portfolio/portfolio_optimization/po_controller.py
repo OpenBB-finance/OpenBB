@@ -13,7 +13,7 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal import parent_classes
 from openbb_terminal.core.config.paths import (
     USER_EXPORTS_DIRECTORY,
-    PORTFOLIO_DATA_DIRECTORY,
+    USER_PORTFOLIO_DATA_DIRECTORY,
     REPOSITORY_DIRECTORY,
 )
 from openbb_terminal.decorators import log_start_end
@@ -329,7 +329,7 @@ class PortfolioOptimizationController(BaseController):
             "property",
         ]
         self.file_types = ["xlsx", "ini"]
-        self.DEFAULT_ALLOCATION_PATH = PORTFOLIO_DATA_DIRECTORY / "allocation"
+        self.DEFAULT_ALLOCATION_PATH = USER_PORTFOLIO_DATA_DIRECTORY / "allocation"
 
         self.DATA_ALLOCATION_FILES = {
             filepath.name: filepath
@@ -348,7 +348,7 @@ class PortfolioOptimizationController(BaseController):
         )
 
         self.current_file = ""
-        self.DEFAULT_OPTIMIZATION_PATH = PORTFOLIO_DATA_DIRECTORY / "optimization"
+        self.DEFAULT_OPTIMIZATION_PATH = USER_PORTFOLIO_DATA_DIRECTORY / "optimization"
 
         self.DATA_OPTIMIZATION_FILES = {
             filepath.name: filepath
@@ -2484,7 +2484,7 @@ class PortfolioOptimizationController(BaseController):
                 return
 
             if ns_parser.file:
-                excel_file = PORTFOLIO_DATA_DIRECTORY / "views" / ns_parser.file
+                excel_file = USER_PORTFOLIO_DATA_DIRECTORY / "views" / ns_parser.file
                 p_views, q_views = excel_model.load_bl_views(excel_file=excel_file)
             else:
                 p_views = ns_parser.p_views
@@ -2531,7 +2531,9 @@ class PortfolioOptimizationController(BaseController):
 
             if table is False:
                 if ns_parser.file_sa:
-                    excel_file = PORTFOLIO_DATA_DIRECTORY / "views" / ns_parser.file_sa
+                    excel_file = (
+                        USER_PORTFOLIO_DATA_DIRECTORY / "views" / ns_parser.file_sa
+                    )
                     p_views_sa, q_views_sa = excel_model.load_bl_views(
                         excel_file=excel_file
                     )

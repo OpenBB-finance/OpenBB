@@ -181,28 +181,19 @@ def get_fund_historical(
             logger.exception(str(e))
             return pd.DataFrame(), "", name, country
 
-    # Note that dates for investpy need to be in the format dd/mm/yyyy
-    from_date = start_date.strftime("%d/%m/%Y")
-    to_date = end_date.strftime("%d/%m/%Y")
+    # Note that dates for investpy need to be in the format mm/dd/yyyy
+    from_date = start_date.strftime("%m/%d/%Y")
+    to_date = end_date.strftime("%m/%d/%Y")
     search_country = matching_country if matching_country else country
 
-    # Using investiny to get around the 403 error with investment.com api
-    # We need to get an ID number
-
-    id_number = int(investiny.search_assets(name, limit=1)[0]["ticker"])
-
     try:
-        # return (
-        #     investpy.funds.get_fund_historical_data(
-        #         fund_name, search_country, from_date=from_date, to_date=to_date
-        #     ),
-        #     fund_name,
-        #     fund_symbol,
-        #     matching_country,
-        # )
-        df = pd.DataFrame.from_dict(
-            investiny.historical_data(id_number, from_date=from_date, to_date=to_date)
-        ).set_index("date")
+        # Using investiny to get around the 403 error with investment.com api
+        # We need to get an ID number
+        id_number = int(investiny.search_assets(name, limit=1)[0]["ticker"])
+        data = investiny.historical_data(
+            id_number, from_date=from_date, to_date=to_date
+        )
+        df = pd.DataFrame.from_dict(data).set_index("date")
         df.columns = [col.title() for col in df.columns]
         df.index = pd.to_datetime(df.index)
         return (df, fund_name, fund_symbol, matching_country)

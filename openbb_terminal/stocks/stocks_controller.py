@@ -16,6 +16,7 @@ from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common import feedparser_view, newsapi_view
 from openbb_terminal.common.quantitative_analysis import qa_view
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.stocks import cboe_view
 
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -46,6 +47,7 @@ class StocksController(StockBaseController):
         "search",
         "load",
         "quote",
+        "tob",
         "candle",
         "news",
         "resources",
@@ -77,6 +79,7 @@ class StocksController(StockBaseController):
     country = financedatabase.show_options("equities", "countries")
     sector = financedatabase.show_options("equities", "sectors")
     industry = financedatabase.show_options("equities", "industries")
+    TOB_EXCHANGES = ["BZX", "EDGX", "BYX", "EDGA"]
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -113,6 +116,10 @@ class StocksController(StockBaseController):
             choices["quote"] = {
                 "--ticker": None,
                 "-t": "--ticker",
+            }
+            choices["tob"] = {
+                "--exchange": {c: {} for c in self.TOB_EXCHANGES},
+                "-e": "--exchange",
             }
             choices["search"] = {
                 "--query": None,
@@ -167,10 +174,9 @@ class StocksController(StockBaseController):
             s_intraday = (f"Intraday {self.interval}", "Daily")[
                 self.interval == "1440min"
             ]
+            stock_text += f"{s_intraday} {self.ticker}"
             if self.start:
-                stock_text = f"{s_intraday} {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
-            else:
-                stock_text = f"{s_intraday} {self.ticker}"
+                stock_text += f" (from {self.start.strftime('%Y-%m-%d')})"
 
         mt = MenuText("stocks/", 100)
         mt.add_cmd("search")
@@ -180,6 +186,7 @@ class StocksController(StockBaseController):
         mt.add_raw(self.add_info)
         mt.add_raw("\n")
         mt.add_cmd("quote", self.ticker)
+        mt.add_cmd("tob", self.ticker)
         mt.add_cmd("candle", self.ticker)
         mt.add_cmd("codes", self.ticker)
         mt.add_cmd("news", self.ticker)
@@ -286,6 +293,41 @@ class StocksController(StockBaseController):
                 limit=ns_parser.limit,
                 export=ns_parser.export,
             )
+
+    @log_start_end(log=logger)
+    def call_tob(self, other_args: List[str]):
+        """Process quote command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="quote",
+            description="Get top of book for loaded ticker from selected exchange",
+        )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            action="store",
+            dest="s_ticker",
+            required="-h" not in other_args and not self.ticker,
+            help="Ticker to get data for",
+        )
+        parser.add_argument(
+            "-e",
+            "--exchange",
+            default="BZX",
+            choices=self.TOB_EXCHANGES,
+            type=str,
+            dest="exchange",
+        )
+
+        if not self.ticker:
+            if other_args and "-" not in other_args[0][0]:
+                other_args.insert(0, "-t")
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+
+        if ns_parser:
+            ticker = ns_parser.s_ticker if ns_parser.s_ticker else self.ticker
+            cboe_view.display_top_of_book(ticker, ns_parser.exchange)
 
     @log_start_end(log=logger)
     def call_quote(self, other_args: List[str]):
@@ -743,8 +785,6 @@ class StocksController(StockBaseController):
                 self.stock,
                 self.queue,
             )
-        # TODO: This menu should work regardless of data being daily or not!
-        # James: 5/27 I think it does now
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
 
