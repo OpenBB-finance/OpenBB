@@ -280,7 +280,7 @@ def add_ipynb_extension(path: str) -> str:
 
 
 @log_start_end(log=logger)
-def check_ipynb(path: str) -> Union[bool, str]:
+def check_ipynb(path: str) -> str:
     """Check if there is .ipynb extension in path.
     This is useful to the controller type check.
 
@@ -297,5 +297,5 @@ def check_ipynb(path: str) -> Union[bool, str]:
     """
     if not path.endswith(".ipynb"):
         console.print("[red]Please provide a .ipynb file.[/red]\n")
-        return False
+        return ""
     return path
