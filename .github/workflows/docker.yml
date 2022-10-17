@@ -12,19 +12,18 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # - name: Login to GitHub Container Registry
-      #   uses: docker/login-action@v1
-      #   with:
-      #     registry: ghcr.io
-      #     username: ${{ github.actor }}
-      #     password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Building the Docker image
         run: |
           source docker/compose.env
           source docker/build.sh
-          echo "ghcr.io/${OPENBBTERMINAL_DOCKER_GITHUB_REPOSITORY}/openbbterminal-poetry:${OPENBBTERMINAL_DOCKER_RELEASE_VERSION}"
 
-      # - name: Publishing Docker image
-      #   run: |
-      #   docker push "ghcr.io/${OPENBBTERMINAL_DOCKER_GITHUB_REPOSITORY}/openbbterminal-poetry:${OPENBBTERMINAL_DOCKER_RELEASE_VERSION}"
+      - name: Publishing Docker image
+        run: |
+        docker push "ghcr.io/${OPENBBTERMINAL_DOCKER_GITHUB_REPOSITORY}/openbbterminal-poetry:${OPENBBTERMINAL_DOCKER_RELEASE_VERSION}"
