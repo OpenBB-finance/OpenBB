@@ -235,8 +235,8 @@ class Handler:
         r1c1, r1c2, r1c3, r1c4, r1c5 = st.columns([2, 1, 1, 1, 1])
         r2c1, r2c2, r2c3 = st.columns([1, 1, 1])
 
-        with r0c1:
-            st.title("Forecast")
+        # with r0c1:
+            # st.title("Forecast")
         with r1c1:
             ticker = st.text_input(
                 "Ticker", "", key="ticker", on_change=self.on_ticker_change
