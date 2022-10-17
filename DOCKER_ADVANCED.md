@@ -2,16 +2,18 @@
 
 ## Display
 
-In order to display plots in the docker container, we can configure our XServer.
+In order to display plots in the docker container, we need to configure the XServer on the host machine.
+Without this configuration the interactive charts will not be displayed.
 
 ### X-Server on macOS
 
-Users familiar with Docker and X-Server can set the `DISPLAY` variable in the file [setenv](/docker/setenv) described
-above. If you use this approach remember to add `:0` at the end of your inet address. E.g. `DISPLAY=192.168.1.155:0`.
+Users familiar with Docker and X-Server can set the `DISPLAY` variable in the file [setenv](/docker/setenv) described above. If you use this approach remember to add `:0` at the end of your inet address. E.g. `DISPLAY=192.168.1.155:0`.
 
-For help setting up the X-Server, I will go through this now:
+For help setting up the X-Server continue reading:
 
 #### Setting up X Quartz/X11
+
+On macOS the X11 client of choice is [XQuartz](https://www.xquartz.org/). On Windows it's [Xming](http://www.straightrunning.com/XmingNotes/). XQuartz will be used as an example further on.
 
 0. Install X Quartz from <https://www.xquartz.org/>
 1. With X Quartz open: go to Preferences -> Security and make sure both options are enabled.
@@ -29,14 +31,14 @@ xhost + $IP
 Now we can run the docker container, adding the display to the environment:
 
 ```bach
-docker run -it --rm --env-file=path/to/setenv -e DISPLAY=$IP:0 ghcr.io/OpenBBTerminal/gst-poetry:latest
+docker run -it --rm --env-file=path/to/setenv -e DISPLAY=$IP:0 ghcr.io/openbb-finance/openbbterminal-poetry:latest
 ```
 
 This container will be able to display all the same plots as the terminal interface.
 
 ### X-Server on Linux Desktop
 
-X-Server is default in Linux distribution, and it's no need to install any client in Desktop.
+X-Server is default in Linux distribution. There is no need to install any clients.
 
 #### Local docker container
 
