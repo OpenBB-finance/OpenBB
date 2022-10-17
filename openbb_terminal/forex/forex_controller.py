@@ -45,7 +45,15 @@ FX_TICKERS = pd.read_csv(forex_data_path).iloc[:, 0].to_list()
 class ForexController(BaseController):
     """Forex Controller class."""
 
-    CHOICES_COMMANDS = ["load", "quote", "candle", "resources", "fwd", "forecast"]
+    CHOICES_COMMANDS = [
+        "load",
+        "quote",
+        "candle",
+        "resources",
+        "fwd",
+        "forecast",
+        "oanda",
+    ]
     CHOICES_MENUS = ["ta", "qa", "Oanda"]
     RESOLUTION = ["i", "d", "w", "m"]
 

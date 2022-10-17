@@ -1,0 +1,36 @@
+# Go into the stocks context
+stocks
+
+# Load a company ticker, e.g. Amazon
+load AMZN
+
+# Show a simple plot of the ticker, adding in any basic indicator.
+candle --ma 20,30
+
+# Switch over to the due diligence menu
+dd
+
+# Show the price targets of Amazon, both the graph as well as the table
+pt
+pt --raw
+
+# Show estimates of annual and quarterly earnings as well as quarterly revenue estimates
+est
+
+# Open the comparison analysis menu (ca)
+../ca
+
+# Pick stocks that are competitors to Amazon
+add ebay,wmt,tgt,baba,jd
+
+# Determine the valuations of each company
+valuation
+
+# Show correlations between each company
+hcorr
+
+# Figure out the sentiment perceived of each company
+sentiment
+
+# Return to home
+/

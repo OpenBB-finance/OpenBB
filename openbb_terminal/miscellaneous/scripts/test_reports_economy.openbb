@@ -1,0 +1,8 @@
+reports
+
+economy
+
+# Test with random tickers
+economy AAPL
+
+exit

@@ -17,7 +17,7 @@ The Forecast menu is called upon by typing `forecast` which opens the following 
 
 ## How to Use
 
-To begin any machine learning, you must first load in data. The menu supports importing both terminal datasets found in `stocks` and `cryptocurrency`, along with external datasets in the form of `.csv` that can be placed in the following location: `.../OpenBBTerminal/custom_imports/forecast/`
+To begin any machine learning, you must first load in data. The menu supports importing both terminal datasets found in `stocks` and `cryptocurrency`, along with external datasets in the form of `.csv` that can be placed in the following location: `~/OpenBBUserData/custom_imports/forecast/`
 
 It is important to note, if you ever have troubles on running a command, please read the help commands to guide you on what is available. You can do this by trailing any command with a `-h`
 

@@ -894,10 +894,9 @@ def find(
         coins_df = get_coin_list()
         coins_list = coins_df[key].to_list()
         if key in ["symbol", "id"]:
-            coin = query.lower()
-        else:
-            coin = query
-        sim = difflib.get_close_matches(coin, coins_list, limit)
+            query = query.lower()
+
+        sim = difflib.get_close_matches(query, coins_list, limit)
         df = pd.Series(sim).to_frame().reset_index()
         df.columns = ["index", key]
         coins_df.drop("index", axis=1, inplace=True)
@@ -909,9 +908,9 @@ def find(
         keys = {"name": "title", "symbol": "upper", "id": "lower"}
 
         func_key = keys[key]
-        coin = getattr(coin, str(func_key))()
+        query = getattr(query, str(func_key))()
 
-        sim = difflib.get_close_matches(coin, coins_list, limit)
+        sim = difflib.get_close_matches(query, coins_list, limit)
         df = pd.Series(sim).to_frame().reset_index()
         df.columns = ["index", key]
         df = df.merge(coins_df, on=key)
@@ -919,7 +918,7 @@ def find(
     elif source == "Binance":
 
         # TODO: Fix it in future. Determine if user looks for symbol like ETH or ethereum
-        if len(coin) > 5:
+        if len(query) > 5:
             key = "id"
 
         coins_df_gecko = get_coin_list()
@@ -929,13 +928,13 @@ def find(
         )
         coins_list = coins[key].to_list()
 
-        sim = difflib.get_close_matches(coin, coins_list, limit)
+        sim = difflib.get_close_matches(query, coins_list, limit)
         df = pd.Series(sim).to_frame().reset_index()
         df.columns = ["index", key]
         df = df.merge(coins, on=key)
 
     elif source == "Coinbase":
-        if len(coin) > 5:
+        if len(query) > 5:
             key = "id"
 
         coins_df_gecko = get_coin_list()
@@ -945,7 +944,7 @@ def find(
         )
         coins_list = coins[key].to_list()
 
-        sim = difflib.get_close_matches(coin, coins_list, limit)
+        sim = difflib.get_close_matches(query, coins_list, limit)
         df = pd.Series(sim).to_frame().reset_index()
         df.columns = ["index", key]
         df = df.merge(coins, on=key)

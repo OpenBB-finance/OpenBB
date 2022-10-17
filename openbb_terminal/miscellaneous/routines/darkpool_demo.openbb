@@ -1,0 +1,40 @@
+# Select location folder to export data to (if doesn't exist, will be created by default)
+# export didier_analysis_on_$ARGV[0]
+
+# Go into the stocks context
+stocks
+
+# Navigate to Dark Pools and Short Data Menu
+dps
+
+# Show the most shorted stocks on Yahoo Finance
+shorted
+
+# Show the stocks with the highest short interest on https://highshortinterest.com
+hsi
+
+# Show the top 25 largest Dark Pool positions from https://stockgrid.io
+pos -l 25
+pos -l 25 -a
+
+# Get the Cost-to-Borrow List
+ctb
+
+# Get the days-to-cover list and sort
+sidtc -s si
+sidtc
+
+# Load Apple as a ticker
+load AAPL
+
+# Short Volume vs Position
+spos
+
+# Price vs. Short Interest
+psi
+
+# Export the Cost-to-Borrow list as a spreadsheet to examine.
+ctb
+
+# Return to home
+/
