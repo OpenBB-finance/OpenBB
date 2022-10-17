@@ -22,7 +22,7 @@ jobs:
       - name: Activate Base & Create OpenBB Environment
         run: |
           conda activate base
-          conda env create -n obb --file build/conda/conda-3-9-env.yaml
+          conda env create -n obb --file build/conda/conda-3-9-env-full.yaml
           conda init
           conda activate obb
           conda env list
@@ -44,7 +44,8 @@ jobs:
       - name: Build Terminal.spec file
         run: |
           conda activate obb
-          pyinstaller build/pyinstaller/terminal.spec
+          conda remove --force sigtool -y 
+          pyinstaller build/pyinstaller/terminal.spec --clean
       - name: Move Files into App Folder
         run: cp -r .\dist\OpenBBTerminal\ .\build\nsis\app\
       # dont need this because log collection is turned off

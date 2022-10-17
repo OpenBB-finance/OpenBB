@@ -709,7 +709,7 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst", test_mode=False)
         try:
             # Process the input command
             t_controller.queue = t_controller.switch(an_input)
-            if an_input in ("q", "quit", "..", "exit"):
+            if an_input in ("q", "quit", "..", "exit", "e"):
                 print_goodbye()
                 break
 
