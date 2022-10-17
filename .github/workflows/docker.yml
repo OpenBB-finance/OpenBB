@@ -26,4 +26,4 @@ jobs:
 
       - name: Publishing Docker image
         run: |
-        docker push "ghcr.io/${OPENBBTERMINAL_DOCKER_GITHUB_REPOSITORY}/openbbterminal-poetry:${OPENBBTERMINAL_DOCKER_RELEASE_VERSION}"
+          docker push "ghcr.io/${OPENBBTERMINAL_DOCKER_GITHUB_REPOSITORY}/openbbterminal-poetry:${OPENBBTERMINAL_DOCKER_RELEASE_VERSION}"
