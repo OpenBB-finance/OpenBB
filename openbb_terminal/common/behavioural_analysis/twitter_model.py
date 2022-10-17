@@ -126,7 +126,7 @@ def get_sentiment(
     symbol: str,
     n_tweets: int = 15,
     n_days_past: int = 2,
-):
+) -> pd.DataFrame:
     """Get sentiments from symbol
 
     Parameters
@@ -172,7 +172,9 @@ def get_sentiment(
             end_date=dt_recent.strftime(dt_format),
         )
 
-        if temp.empty:
+        if (isinstance(temp, pd.DataFrame) and temp.empty) or (
+            not isinstance(temp, pd.DataFrame) and not temp
+        ):
             return pd.DataFrame()
 
         df_tweets = pd.concat([df_tweets, temp])
