@@ -50,6 +50,7 @@ Use your best judgment, and feel free to propose changes to this document in a p
     - [Coding](#coding)
     - [Git Process](#git-process)
   - [Add a Test](#add-a-test)
+  - [Installers](#installers)
 
 # BASIC
 
@@ -273,11 +274,11 @@ def call_shorted(self, other_args: List[str]):
 
         ns_parser = parse_known_args_and_warn(
             parser,
-            other_args, 
-            limit=10, 
+            other_args,
+            limit=10,
             export=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-        
+
         if ns_parser:
           yahoofinance_view.display_most_shorted(
               num_stocks=ns_parser.num,
@@ -322,7 +323,7 @@ In order to add a command to the API, follow these steps:
             "model": "openbb_terminal.stocks.stocks_helper.load",
             "view": "openbb_terminal.stocks.stocks_helper.display_candle",
         },
-    
+
     ...
     ```
 
@@ -340,11 +341,11 @@ This is called the `virtual path`. In this case it should be `stocks.dps.shorted
     ```python
     functions = {
         ...
-    
+
         "stocks.dps.shorted": {
             "model": "openbb_terminal.stocks.dark_pool_shorts.yahoofinance_model.get_most_shorted",
         },
-    
+
         ...
     ```
 
@@ -462,11 +463,11 @@ iterations on that code and have it to be more future proof, but also allows the
 
 Often in the past the reviewers have suggested better coding practices, e.g. using `1_000_000` instead of `1000000` for
 better visibility, or suggesting a speed optimization improvement.
-  
+
 ## Understand Code Structure
 
 ### Backend
-  
+
 CLI :computer: → `_controller.py` :robot: →&nbsp;`_view.py` :art: &nbsp;&nbsp;&nbsp; → &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`_model.py` :brain:<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -550,7 +551,7 @@ With:
 1. Each function should have default values for non critical kwargs
 
     - Why? It increases code readability and acts as an input example for the functions arguments. This increases the ease of use of the functions through the api, but also just generally.
-  
+
     <br>
 
     <table>
@@ -561,10 +562,10 @@ With:
     <td>
 
     ```python
-    def display_last_uni_swaps(   
-      top: int = 10,   
-      sortby: str = "timestamp",   
-      descend: bool = False,   
+    def display_last_uni_swaps(
+      top: int = 10,
+      sortby: str = "timestamp",
+      descend: bool = False,
       export: str = "",) -> None:
     ```
 
@@ -573,9 +574,9 @@ With:
 
     ```python
     def display_last_uni_swaps(
-      top: int,   
+      top: int,
       sortby: str,
-      descend: bool,   
+      descend: bool,
       export: str,) -> None:
     ```
 
@@ -586,11 +587,11 @@ With:
     <br>
 
 2. Simple and understandable input objects; avoid for example weird dictionaries packed with data: {“title”: DataFrame}
-  
+
     - Why? Ease of use and often these complex formats are clumsy, prone to error and the formatting required for complex parameters is time consuming and unneeded.
 
     <br>
-  
+
     <table>
     <tr>
     <td> Good code :white_check_mark: </td> <td> Bad code :x: </td>
@@ -599,8 +600,8 @@ With:
     <td>
 
     ```python
-    def get_coins(       
-      top: int = 250,       
+    def get_coins(
+      top: int = 250,
       category: str = "") -> pd.DataFrame:
     ```
 
@@ -608,10 +609,10 @@ With:
     <td>
 
     ```python
-    def load(   
-      file: str,   
-      file_types: list,   
-      data_files: Dict[Any, Any],   
+    def load(
+      file: str,
+      file_types: list,
+      data_files: Dict[Any, Any],
       data_examples: Dict[Any, Any],) -> pd.DataFrame:
     ```
 
@@ -622,15 +623,15 @@ With:
     <br>
 
 3. Each function needs to have a docstring explaining what it does, its parameters and what it returns.
-  
+
     - Why? You can use the function without reading its source code. This improves the developing experience and api usage. The api factory also can’t handle functions with out docstrings.
 
     <br>
-  
+
 4. Consistent and clear argument naming; not `symbol` in _view and then `ticker` in `_file` -> ticker everywhere; the name should be descriptive of what information it hold (see Style Guide section below)
-  
+
     - Why? You can quickly understand what the input it should be; example: tickers and stock names are fundamentally different, but they’re both strings so they should be named accordingly.
-  
+
     <br>
 
     <table>
@@ -693,14 +694,14 @@ With:
     <td>
 
     ```python
-    def get_gaintopain_ratio(portfolio: PortfolioModel) -> pd.DataFrame:  
+    def get_gaintopain_ratio(portfolio: PortfolioModel) -> pd.DataFrame:
 
-    """..."""   
+    """..."""
 
     gtp_period_df = portfolio_helper.get_gaintopain_ratio(
-      portfolio.historical_trade_data, 
-      portfolio.benchmark_trades, 
-      portfolio.benchmark_returns)   
+      portfolio.historical_trade_data,
+      portfolio.benchmark_trades,
+      portfolio.benchmark_returns)
 
     return gtp_period_df
     ```
@@ -709,14 +710,14 @@ With:
     <td>
 
     ```python
-    def get_gaintopain_ratio(self) -> pd.DataFrame:   
+    def get_gaintopain_ratio(self) -> pd.DataFrame:
 
-    """..."""   
+    """..."""
 
-    vals = list()   
+    vals = list()
 
-    for period in portfolio_helper.PERIODS:             
-           port_rets = portfolio_helper.filter_df_by_period(self.returns, period)       
+    for period in portfolio_helper.PERIODS:
+           port_rets = portfolio_helper.filter_df_by_period(self.returns, period)
            bench_rets =  portfolio_helper.filter_df_by_period(self.benchmark_returns, period)
 
     ...
@@ -733,7 +734,7 @@ With:
     - Why? Eases API factory mapping and keeps code clean.
 
     <br>
-  
+
     <table>
     <tr>
     <td> Good code :white_check_mark: </td> <td> Bad code :x: </td>
@@ -912,7 +913,7 @@ def get_historical_data(..., start_date: str = "2022-01-01", end_date: str = "20
     start_date: str
         Date from which data is fetched in format YYYY-MM-DD
     end_date: str
-        Date up to which data is fetched in format YYYY-MM-DD    
+        Date up to which data is fetched in format YYYY-MM-DD
     ...
     """
     data = source_model.get_data(data_name, start_date, end_date, ...)
@@ -931,10 +932,10 @@ def get_historical_data(..., start_year: str = "2022", end_year str = "2023", ..
 Interval for data observations : `interval` *(str), e.g. 60m, 90m, 1h*
 
 ```python
-def get_prices(interval: str = "60m", ...):    
+def get_prices(interval: str = "60m", ...):
     ...
     data = source.download(
-        ..., 
+        ...,
         interval=interval,
         ...
     )
@@ -943,7 +944,7 @@ def get_prices(interval: str = "60m", ...):
 Rolling window length : `window` *(int/str), e.g. 252, 252d*
 
 ```python
-def get_rolling_sum(returns: pd.Series, window: str = "252d"):    
+def get_rolling_sum(returns: pd.Series, window: str = "252d"):
     rolling_sum = returns.rolling(window=window).sum()
 ```
 
@@ -1018,7 +1019,7 @@ Currency to convert data : `currency` *(str) e.g. EUR, USD*
 Instrument ticker, name or currency pair : `symbol` *(str), e.g. AAPL, ethereum, ETH, ETH-USD*
 
 ```python
-def get_prices(symbol: str = "AAPL", ...):    
+def get_prices(symbol: str = "AAPL", ...):
     ...
     data = source.download(
         tickers=symbol,
@@ -1298,7 +1299,7 @@ In the `_view.py` files it is common having at the end of each function `export_
 
 ```python
     export_data(
-        export, 
+        export,
         os.path.dirname(os.path.abspath(__file__)),
         "contracts",
         df_contracts
@@ -1455,7 +1456,7 @@ def your_function() -> pd.DataFrame:
 ```
 
 ### Internationalization
-  
+
 WORK IN PROGRESS - The menu can be internationalised BUT we do not support yet help commands`-h` internationalization.
 
 In order to add support for a new language, the best approach is to:
@@ -1518,13 +1519,22 @@ Network model.
 
 ## Add a Test
 
-Unit tests minimize errors in code and quickly find errors when they do arise.
+Unit tests minimize errors in code and quickly find errors when they do arise. Integration tests are standard usage examples, which are also used to identify errors.
 
-A thorough introduction on the usage of unit tests in OpenBBTerminal can be found on the following page:
+A thorough introduction on the usage of unit tests and integration tests in OpenBBTerminal can be found on the following page respectively:
 
-[README.md](tests/README.md)
+[Unit Test README](tests/README.md)
+
+[Integration Test README](scripts/README.md)
 
 In short:
 
 - Pytest: is the tool we are using to run our tests, with the command: `pytest tests/`
 - Coverage: can be checked like running `coverage run -m pytest` or `coverage html`
+
+## Installers
+
+When implementing a new feature or fixing something within the codebase, it is necessary to ensure that it is working
+appropriately on the terminal. However, it is equally as important to ensure that new features or fixes work on the
+installer terminal too. This is because a large portion of users utilize the installer to use OpenBB Terminal.
+More information on how to build an installer can be found [here](build/README.md).
