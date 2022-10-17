@@ -12,9 +12,9 @@ from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import parent_classes
 from openbb_terminal.core.config.paths import (
+    MISCELLANEOUS_DIRECTORY,
     USER_EXPORTS_DIRECTORY,
     USER_PORTFOLIO_DATA_DIRECTORY,
-    REPOSITORY_DIRECTORY,
 )
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -342,7 +342,7 @@ class PortfolioOptimizationController(BaseController):
                 filepath.name: filepath
                 for file_type in self.file_types
                 for filepath in (
-                    REPOSITORY_DIRECTORY / "portfolio" / "allocation"
+                    MISCELLANEOUS_DIRECTORY / "portfolio_examples" / "allocation"
                 ).rglob(f"*.{file_type}")
             }
         )
@@ -361,7 +361,7 @@ class PortfolioOptimizationController(BaseController):
                 filepath.name: filepath
                 for file_type in self.file_types
                 for filepath in (
-                    REPOSITORY_DIRECTORY / "portfolio" / "optimization"
+                    MISCELLANEOUS_DIRECTORY / "portfolio_examples" / "optimization"
                 ).rglob(f"*.{file_type}")
             }
         )
