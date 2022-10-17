@@ -23,7 +23,8 @@ jobs:
         run: |
           source docker/compose.env
           source docker/build.sh
+          echo "${OPENBBTERMINAL_DOCKER_POETRY_IMAGE}"
 
-      - name: Publishing Docker image
-        run: |
-          docker push "ghcr.io/${OPENBBTERMINAL_DOCKER_GITHUB_REPOSITORY}/openbbterminal-poetry:${OPENBBTERMINAL_DOCKER_RELEASE_VERSION}"
+      # - name: Publishing Docker image
+      #   run: |
+      #     docker push "ghcr.io/${OPENBBTERMINAL_DOCKER_GITHUB_REPOSITORY,,}/openbbterminal-poetry:${OPENBBTERMINAL_DOCKER_RELEASE_VERSION}"
