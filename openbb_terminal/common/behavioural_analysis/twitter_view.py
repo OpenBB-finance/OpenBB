@@ -40,11 +40,9 @@ def display_inference(symbol: str, limit: int = 100, export: str = ""):
     """
     df_tweets = twitter_model.load_analyze_tweets(symbol, limit)
 
-    # given object is a dataframe and is empty
-    if isinstance(df_tweets, pd.DataFrame) and df_tweets.empty:
-        return
-    # given object is not a dataframe and is None
-    if not isinstance(df_tweets, pd.DataFrame) and not df_tweets:
+    if (isinstance(df_tweets, pd.DataFrame) and df_tweets.empty) or (
+        not isinstance(df_tweets, pd.DataFrame) and not df_tweets
+    ):
         return
 
     # Parse tweets
@@ -106,9 +104,7 @@ def display_sentiment(
 
     df_tweets = twitter_model.get_sentiment(symbol, n_tweets, n_days_past)
 
-    if isinstance(df_tweets, pd.DataFrame) and df_tweets.empty:
-        return
-    if not isinstance(df_tweets, pd.DataFrame) and not df_tweets:
+    if df_tweets.empty:
         return
 
     ax1, ax2, ax3 = None, None, None

@@ -35,9 +35,9 @@ def rating(symbol: str, limit: int = 10, export: str = ""):
     """
     df = fmp_model.get_rating(symbol)
 
-    if isinstance(df, pd.DataFrame) and df.empty:
-        return
-    if not isinstance(df, pd.DataFrame) and not df:
+    if (isinstance(df, pd.DataFrame) and df.empty) or (
+        not isinstance(df, pd.DataFrame) and not df
+    ):
         return
 
     # TODO: This could be displayed in a nice rating plot over time
