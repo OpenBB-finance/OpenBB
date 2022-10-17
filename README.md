@@ -88,7 +88,7 @@ OpenBB Terminal provides a modern Python-based integrated environment for invest
 an average joe retail trader to leverage state-of-the-art Data Science and Machine Learning technologies.
 
 As a modern Python-based environment, OpenBBTerminal opens access to numerous Python data libraries in Data Science
-(Pandas, Numpy, Scipy, Jupyter), Machine Learning (Pytorch, Tensorflow, Sklearn, Flair), and Data Acquisition
+(Pandas, Numpy, Scipy, Jupyter), Machine Learning (Pytorch, Sklearn, Flair), and Data Acquisition
 (Beautiful Soup, and numerous third-party APIs).
 
 ## Installation
