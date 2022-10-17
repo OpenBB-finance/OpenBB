@@ -67,11 +67,12 @@ def display_historical(
 
     if raw:
         print_rich_table(
-            historicals,
+            historicals[historicals.index > datetime.strptime(start_date, "%Y-%m-%d")],
             headers=list(historicals.columns),
             show_index=True,
             title="Futures timeseries",
         )
+        console.print()
 
     else:
         # This plot has 1 axis
@@ -117,7 +118,7 @@ def display_historical(
             export,
             os.path.dirname(os.path.abspath(__file__)),
             "historical",
-            historicals,
+            historicals[historicals.index > datetime.strptime(start_date, "%Y-%m-%d")],
         )
 
 
