@@ -19,22 +19,12 @@ jobs:
       #     username: ${{ github.actor }}
       #     password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: List files
-        run: |
-          ls
-
-      - name: Setup and display build parameters
+      - name: Building the Docker image
         run: |
           source docker/compose.env
-          echo $OPENBBTERMINAL_DOCKER_REGISTRY
-          echo $OPENBBTERMINAL_DOCKER_GITHUB_REPOSITORY
-          echo $OPENBBTERMINAL_DOCKER_RELEASE_VERSION
-
-      - name: Build the Docker image
-        run: |
           source docker/build.sh
+          echo "ghcr.io/${OPENBBTERMINAL_DOCKER_GITHUB_REPOSITORY}/openbbterminal-poetry:${OPENBBTERMINAL_DOCKER_RELEASE_VERSION}"
 
-      - name: Build the Docker image
-        run: |
-          chmod +x docker/build.sh
-          ./docker/build.sh
+      # - name: Publishing Docker image
+      #   run: |
+      #   docker push "ghcr.io/${OPENBBTERMINAL_DOCKER_GITHUB_REPOSITORY}/openbbterminal-poetry:${OPENBBTERMINAL_DOCKER_RELEASE_VERSION}"
