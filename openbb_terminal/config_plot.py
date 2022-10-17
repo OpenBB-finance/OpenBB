@@ -8,7 +8,13 @@ from openbb_terminal.rich_config import console
 dotenv.load_dotenv(USER_ENV_FILE)
 dotenv.load_dotenv(REPOSITORY_ENV_FILE, override=True)
 
-PLOT_DPI = int(os.getenv("OPENBB_PLOT_DPI", "100"))
+try:
+    PLOT_DPI = int(os.getenv("OPENBB_PLOT_DPI", "100"))
+except ValueError:
+    PLOT_DPI = 100
+    console.print(
+        f"[red]OPENBB_PLOT_DPI is not an integer, using default value of {PLOT_DPI}[/red]"
+    )
 
 # Backend to use for plotting
 BACKEND = os.getenv("OPENBB_BACKEND", "None")
