@@ -9,19 +9,28 @@ jobs:
       OPENBBTERMINAL_DOCKER_GITHUB_REPOSITORY: ${{ github.repository }}
 
     steps:
-    - uses: actions/checkout@v2
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-    - name: Login to GitHub Container Registry
-      uses: docker/login-action@v1
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Login to GitHub Container Registry
+      #   uses: docker/login-action@v1
+      #   with:
+      #     registry: ghcr.io
+      #     username: ${{ github.actor }}
+      #     password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Build the Docker image
-      run: |
-        source docker/compose.env
-        echo $OPENBBTERMINAL_DOCKER_REGISTRY
-        echo $OPENBBTERMINAL_DOCKER_GITHUB_REPOSITORY
-        echo $OPENBBTERMINAL_DOCKER_RELEASE_VERSION
-        sh docker/build.sh
+      - name: List files
+        run: |
+          ls
+          ls OpenBBTerminal
+
+      - name: Setup and display build parameters
+        run: |
+          source docker/compose.env
+          echo $OPENBBTERMINAL_DOCKER_REGISTRY
+          echo $OPENBBTERMINAL_DOCKER_GITHUB_REPOSITORY
+          echo $OPENBBTERMINAL_DOCKER_RELEASE_VERSION
+
+      # - name: Build the Docker image
+      #   run: |
+      #     sh docker/build.sh
