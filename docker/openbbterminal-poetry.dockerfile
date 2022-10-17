@@ -1,6 +1,6 @@
-ARG OPENBBTERMINAL_DOCKER_IMAGE_PREFIX="ghcr.io/openbb-finance"
-ARG OPENBBTERMINAL_DOCKER_POETRY_DEPS_VERSION="1.2.0"
-FROM ${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}/openbbterminal-poetry-deps:${OPENBBTERMINAL_DOCKER_POETRY_DEPS_VERSION}
+ARG OPENBBTERMINAL_DOCKER_POETRY_DEPS_IMAGE="ghcr.io/openbb-finance/openbbterminal-poetry-deps:1.0.0"
+
+FROM ${OPENBBTERMINAL_DOCKER_POETRY_DEPS_IMAGE}
 
 LABEL org.opencontainers.image.source https://github.com/OpenBB-finance/OpenBBTerminal
 
