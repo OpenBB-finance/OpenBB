@@ -929,11 +929,12 @@ def run_routine(file: str, routines_args=List[str]):
     default_routine_path = MISCELLANEOUS_DIRECTORY / "routines" / file
 
     if user_routine_path.exists():
-        chosen_path = user_routine_path
+        run_scripts(path=user_routine_path, routines_args=routines_args)
     elif default_routine_path.exists():
-        chosen_path = default_routine_path
+        run_scripts(path=default_routine_path, routines_args=routines_args)
+    else:
+        print(f"Routine not found, please put your `.openbb` file into : {user_routine_path}.")
 
-    run_scripts(path=chosen_path, routines_args=routines_args)
 
 
 def main(
