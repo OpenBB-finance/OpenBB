@@ -6,6 +6,8 @@ import argparse
 import difflib
 import logging
 import os
+from pathlib import Path
+import platform
 import sys
 import webbrowser
 from typing import List
@@ -20,10 +22,11 @@ import pandas as pd
 from openbb_terminal import feature_flags as obbff
 
 from openbb_terminal.core.config.paths import (
-    REPOSITORY_DIRECTORY,
-    USER_ENV_FILE,
-    REPOSITORY_ENV_FILE,
     HOME_DIRECTORY,
+    MISCELLANEOUS_DIRECTORY,
+    REPOSITORY_ENV_FILE,
+    USER_DATA_DIRECTORY,
+    USER_ENV_FILE,
     USER_ROUTINES_DIRECTORY,
 )
 
@@ -113,7 +116,7 @@ class TerminalController(BaseController):
         """Update runtime choices"""
         self.ROUTINE_FILES = {
             filepath.name: filepath
-            for filepath in (REPOSITORY_DIRECTORY / "routines").rglob("*.openbb")
+            for filepath in (MISCELLANEOUS_DIRECTORY / "routines").rglob("*.openbb")
         }
         self.ROUTINE_FILES.update(
             {
@@ -591,13 +594,14 @@ class TerminalController(BaseController):
 
 
 # pylint: disable=global-statement
-def terminal(jobs_cmds: List[str] = None, appName: str = "gst"):
+def terminal(jobs_cmds: List[str] = None, appName: str = "gst", test_mode=False):
     """Terminal Menu"""
     # TODO: HELP WANTED! Refactor the appName setting if a more elegant solution comes up
     if obbff.PACKAGED_APPLICATION:
         appName = "gst_packaged"
 
-    setup_logging(appName)
+    if not test_mode:
+        setup_logging(appName)
     logger.info("START")
     log_all_settings()
 
@@ -757,7 +761,7 @@ def insert_start_slash(cmds: List[str]) -> List[str]:
 
 
 def run_scripts(
-    path: str,
+    path: Path,
     test_mode: bool = False,
     verbose: bool = False,
     routines_args: List[str] = None,
@@ -776,8 +780,9 @@ def run_scripts(
         One or multiple inputs to be replaced in the routine and separated by commas.
         E.g. GME,AMC,BTC-USD
     """
-    if os.path.isfile(path):
-        with open(path) as fp:
+
+    if path.exists():
+        with path.open() as fp:
             raw_lines = [x for x in fp if (not is_reset(x)) and ("#" not in x) and x]
             raw_lines = [
                 raw_line.strip("\n") for raw_line in raw_lines if raw_line.strip("\n")
@@ -814,22 +819,95 @@ def run_scripts(
                 # TODO: Add way to track how many commands are tested
             else:
                 if verbose:
-                    terminal(file_cmds, appName="openbb_script")
+                    terminal(file_cmds, appName="openbb_script", test_mode=True)
                 else:
                     with suppress_stdout():
-                        terminal(file_cmds, appName="openbb_script")
-
+                        terminal(file_cmds, appName="openbb_script", test_mode=True)
     else:
         console.print(f"File '{path}' doesn't exist. Launching base terminal.\n")
         if not test_mode:
             terminal()
 
 
+def build_test_path_list(path_list: List[str], filtert: str) -> List[Path]:
+    if path_list == "":
+        console.print("Please send a path when using test mode")
+        return []
+
+    test_files = []
+
+    for path in path_list:
+        user_script_path = USER_DATA_DIRECTORY / "scripts" / path
+        default_script_path = MISCELLANEOUS_DIRECTORY / path
+
+        if user_script_path.exists():
+            chosen_path = user_script_path
+        elif default_script_path.exists():
+            chosen_path = default_script_path
+        else:
+            console.print(f"\n[red]Can't find the file:{path}[/red]\n")
+            continue
+
+        if chosen_path.is_file() and str(chosen_path).endswith(".openbb"):
+            test_files.append(chosen_path)
+        elif chosen_path.is_dir():
+            script_directory = chosen_path
+            script_list = script_directory.glob("**/*.openbb")
+            script_list = [script for script in script_list if script.is_file()]
+            script_list = [script for script in script_list if filtert in str(script)]
+            test_files.extend(script_list)
+
+    return test_files
+
+
+def run_test_list(path_list: List[str], filtert: str, verbose: bool):
+    os.environ["DEBUG_MODE"] = "true"
+
+    test_files = build_test_path_list(path_list=path_list, filtert=filtert)
+    SUCCESSES = 0
+    FAILURES = 0
+    fails = {}
+    length = len(test_files)
+    i = 0
+    console.print("[green]OpenBB Terminal Integrated Tests:\n[/green]")
+    for file in test_files:
+        console.print(f"{((i/length)*100):.1f}%  {file}")
+        try:
+            run_scripts(file, test_mode=True, verbose=verbose)
+            SUCCESSES += 1
+        except Exception as e:
+            fails[file] = e
+            FAILURES += 1
+        i += 1
+    if fails:
+        console.print("\n[red]Failures:[/red]\n")
+        for file, exception in fails.items():
+            logger.error("%s: %s failed", file, exception)
+            console.print(f"{file}: {exception}\n")
+    console.print(
+        f"Summary: [green]Successes: {SUCCESSES}[/green] [red]Failures: {FAILURES}[/red]"
+    )
+
+
+def run_routine(file: str, routines_args=List[str]):
+    user_routine_path = USER_DATA_DIRECTORY / "routines" / file
+    default_routine_path = MISCELLANEOUS_DIRECTORY / "routines" / file
+
+    if user_routine_path.exists():
+        run_scripts(path=user_routine_path, routines_args=routines_args)
+    elif default_routine_path.exists():
+        run_scripts(path=default_routine_path, routines_args=routines_args)
+    else:
+        print(
+            f"Routine not found, please put your `.openbb` file into : {user_routine_path}."
+        )
+
+
 def main(
     debug: bool,
     test: bool,
     filtert: str,
-    paths: List[str],
+    path_list: List[str],
     verbose: bool,
     routines_args: List[str] = None,
 ):
@@ -854,71 +932,15 @@ def main(
     """
 
     if test:
-        os.environ["DEBUG_MODE"] = "true"
-
-        if paths == "":
-            console.print("Please send a path when using test mode")
-            return
-        test_files = []
-        for path in paths:
-            if path.endswith(".openbb"):
-                file = str(REPOSITORY_DIRECTORY / path)
-                test_files.append(file)
-            else:
-                folder = str(REPOSITORY_DIRECTORY / path)
-                files = [
-                    f"{folder}/{name}"
-                    for name in os.listdir(folder)
-                    if os.path.isfile(os.path.join(folder, name))
-                    and name.endswith(".openbb")
-                    and (filtert in f"{folder}/{name}")
-                ]
-                test_files += files
-        test_files.sort()
-        SUCCESSES = 0
-        FAILURES = 0
-        fails = {}
-        length = len(test_files)
-        i = 0
-        console.print("[green]OpenBB Terminal Integrated Tests:\n[/green]")
-        for file in test_files:
-            file = file.replace("//", "/")
-            repo_path_position = file.rfind(REPOSITORY_DIRECTORY.name)
-            if repo_path_position >= 0:
-                file_name = file[repo_path_position:].replace("\\", "/")
-            else:
-                file_name = file
-            console.print(f"{file_name}  {((i/length)*100):.1f}%")
-            try:
-                if not os.path.isfile(file):
-                    raise ValueError("Given file does not exist")
-                run_scripts(file, test_mode=True, verbose=verbose)
-                SUCCESSES += 1
-            except Exception as e:
-                fails[file] = e
-                FAILURES += 1
-            i += 1
-        if fails:
-            console.print("\n[red]Failures:[/red]\n")
-            for key, value in fails.items():
-                repo_path_position = key.rfind(REPOSITORY_DIRECTORY.name)
-                if repo_path_position >= 0:
-                    file_name = key[repo_path_position:].replace("\\", "/")
-                else:
-                    file_name = key
-                logger.error("%s: %s failed", file_name, value)
-                console.print(f"{file_name}: {value}\n")
-        console.print(
-            f"Summary: [green]Successes: {SUCCESSES}[/green] [red]Failures: {FAILURES}[/red]"
-        )
+        run_test_list(path_list=path_list, filtert=filtert, verbose=verbose)
         return
 
     if debug:
         os.environ["DEBUG_MODE"] = "true"
-    if isinstance(paths, list) and paths[0].endswith(".openbb"):
-        run_scripts(paths[0], routines_args=routines_args)
-    elif paths:
-        argv_cmds = list([" ".join(paths).replace(" /", "/home/")])
+    if isinstance(path_list, list) and path_list[0].endswith(".openbb"):
+        run_routine(file=path_list[0], routines_args=routines_args)
+    elif path_list:
+        argv_cmds = list([" ".join(path_list).replace(" /", "/home/")])
         argv_cmds = insert_start_slash(argv_cmds) if argv_cmds else argv_cmds
         terminal(argv_cmds)
     else:
