@@ -395,6 +395,7 @@ class ForecastController(BaseController):
         forecast_only: bool = False,
         naive: bool = False,
         explainability_raw: bool = False,
+        export_pred_raw: bool = False,
     ):
         if hidden_size:
             parser.add_argument(
@@ -659,6 +660,15 @@ class ForecastController(BaseController):
                 dest="explainability_raw",
                 default=False,
                 help="Prints out a raw dataframe showing explainability results.",
+            )
+
+        if export_pred_raw:
+            parser.add_argument(
+                "--export-pred-raw",
+                action="store_true",
+                dest="export_pred_raw",
+                default=False,
+                help="Export predictions to a csv file.",
             )
 
             # if user does not put in --target-dataset
@@ -1654,6 +1664,7 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
+            export_pred_raw=True,
         )
         # TODO Convert this to multi series
         if ns_parser:
@@ -1677,6 +1688,7 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
             )
 
     @log_start_end(log=logger)
@@ -1709,6 +1721,7 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
+            export_pred_raw=True,
         )
 
         if ns_parser:
@@ -1730,6 +1743,7 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
             )
 
     @log_start_end(log=logger)
