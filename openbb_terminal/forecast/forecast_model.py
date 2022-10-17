@@ -12,19 +12,23 @@ import pandas as pd
 from pandas import DataFrame
 import numpy as np
 
-from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
+from openbb_terminal.core.config.paths import (
+    USER_EXPORTS_DIRECTORY,
+    USER_CUSTOM_IMPORTS_DIRECTORY,
+)
 
 logger = logging.getLogger(__name__)
 
 
+base_file_types = ["csv", "xlsx"]
 default_files = {
     filepath.name: filepath
-    for file_type in ["csv", "xlsx"]
+    for file_type in base_file_types
     for filepath in chain(
-        (MISCELLANEOUS_DIRECTORY / "exports").rglob(f"*.{file_type}"),
-        Path("custom_imports").rglob(f"*.{file_type}"),
+        USER_EXPORTS_DIRECTORY.rglob(f"*.{file_type}"),
+        USER_CUSTOM_IMPORTS_DIRECTORY.rglob(f"*.{file_type}"),
     )
     if filepath.is_file()
 }
