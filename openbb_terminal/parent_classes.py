@@ -3,49 +3,47 @@ __docformat__ = "numpy"
 
 # pylint: disable=C0301,C0302,R0902,global-statement
 
-from abc import ABCMeta, abstractmethod
 import argparse
-import re
-import os
 import difflib
-import logging
 import json
-
-from typing import Union, Any, List, Dict
+import logging
+import os
+import re
+from abc import ABCMeta, abstractmethod
 from datetime import datetime, timedelta
+from typing import Any, Dict, List, Union
 
-from prompt_toolkit.styles import Style
-from prompt_toolkit.formatted_text import HTML
-from rich.markdown import Markdown
-import pandas as pd
 import numpy as np
+import pandas as pd
+from prompt_toolkit.formatted_text import HTML
+from prompt_toolkit.styles import Style
+from rich.markdown import Markdown
 
 from openbb_terminal.core.config.paths import (
-    CUSTOM_IMPORTS_DIRECTORY,
-    ROUTINES_DIRECTORY,
+    USER_CUSTOM_IMPORTS_DIRECTORY,
+    USER_ROUTINES_DIRECTORY,
 )
 from openbb_terminal.decorators import log_start_end
-
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.menu import session
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.config_terminal import theme
 from openbb_terminal.helper_funcs import (
-    system_clear,
-    get_flair,
-    valid_date,
-    parse_simple_args,
-    set_command_location,
-    prefill_form,
-    support_message,
     check_file_type_saved,
     check_positive,
+    export_data,
+    get_flair,
     load_json,
     parse_and_split_input,
-    search_wikipedia,
+    parse_simple_args,
+    prefill_form,
     screenshot,
-    export_data,
+    search_wikipedia,
+    set_command_location,
+    support_message,
+    system_clear,
+    valid_date,
 )
-from openbb_terminal.config_terminal import theme
 from openbb_terminal.rich_config import console, get_ordered_list_sources
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.terminal_helper import open_openbb_documentation
@@ -86,6 +84,7 @@ class BaseController(metaclass=ABCMeta):
         "q",
         "quit",
         "..",
+        "e",
         "exit",
         "r",
         "reset",
@@ -313,6 +312,8 @@ class BaseController(metaclass=ABCMeta):
             if known_args.cmd:
                 if known_args.cmd in ("..", "q"):
                     known_args.cmd = "quit"
+                elif known_args.cmd in ("e"):
+                    known_args.cmd = "exit"
                 elif known_args.cmd in ("?", "h"):
                     known_args.cmd = "help"
                 elif known_args.cmd == "r":
@@ -605,11 +606,11 @@ class BaseController(metaclass=ABCMeta):
                 "[red]There is no session to be saved. Run at least 1 command after starting 'record'[/red]\n"
             )
         else:
-            routine_file = os.path.join(ROUTINES_DIRECTORY, SESSION_RECORDED_NAME)
+            routine_file = os.path.join(USER_ROUTINES_DIRECTORY, SESSION_RECORDED_NAME)
 
             if os.path.isfile(routine_file):
                 routine_file = os.path.join(
-                    ROUTINES_DIRECTORY,
+                    USER_ROUTINES_DIRECTORY,
                     datetime.now().strftime("%Y%m%d_%H%M%S_") + SESSION_RECORDED_NAME,
                 )
 
@@ -1005,7 +1006,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 # This seems to block the .exe since the folder needs to be manually created
                 # This block makes sure that we only look for the file if the -f flag is used
                 # Adding files in the argparse choices, will fail for the .exe even without -f
-                STOCKS_CUSTOM_IMPORTS = CUSTOM_IMPORTS_DIRECTORY / "stocks"
+                STOCKS_CUSTOM_IMPORTS = USER_CUSTOM_IMPORTS_DIRECTORY / "stocks"
                 try:
                     file_list = [x.name for x in STOCKS_CUSTOM_IMPORTS.iterdir()]
                     if ns_parser.filepath not in file_list:

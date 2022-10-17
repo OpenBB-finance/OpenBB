@@ -50,6 +50,8 @@ def get_project_ids() -> List[str]:
     List[str]
         A list with the all the project IDs
     """
+    if PROJECTS_DATA.get("message", "") == "Invalid authorization header":
+        return []
     return [project["project_id"] for project in PROJECTS_DATA]
 
 

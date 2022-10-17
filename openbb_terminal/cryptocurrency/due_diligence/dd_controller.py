@@ -953,7 +953,7 @@ class DueDiligenceController(CryptoBaseController):
 
         if ns_parser:
             binance_view.display_balance(
-                to_symbol=coin, from_symbol=ns_parser.vs, export=ns_parser.export
+                from_symbol=coin, to_symbol=ns_parser.vs, export=ns_parser.export
             )
 
     @log_start_end(log=logger)
@@ -1073,8 +1073,8 @@ class DueDiligenceController(CryptoBaseController):
         if ns_parser:
             if self.symbol:
                 coinpaprika_view.display_markets(
-                    symbol=self.symbol,
-                    currency=ns_parser.vs,
+                    from_symbol=self.symbol,
+                    to_symbol=ns_parser.vs,
                     limit=ns_parser.limit,
                     sortby=ns_parser.sortby,
                     ascend=not ns_parser.descend,
