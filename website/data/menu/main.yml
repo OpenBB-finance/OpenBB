@@ -744,6 +744,23 @@ main:
                 ref: /terminal/common/ta/zlma
           - name: weights
             ref: /terminal/etf/weights
+      - name: reports
+        ref: /terminal/reports
+        sub:
+          - name: crypto
+            ref: /terminal/reports/crypto
+          - name: economy
+            ref: /terminal/reports/economy
+          - name: equity
+            ref: /terminal/reports/equity
+          - name: etf
+            ref: /terminal/reports/etf
+          - name: forex
+            ref: /terminal/reports/forex
+          - name: portfolio
+            ref: /terminal/reports/portfolio
+          - name: run
+            ref: /terminal/reports/run
       - name: forecast
         ref: /terminal/forecast/
         sub:
@@ -878,21 +895,6 @@ main:
                 ref: /terminal/jupyter/dashboards/stocks
               - name: vsurf
                 ref: /terminal/jupyter/dashboards/vsurf
-          - name: reports
-            ref: /terminal/jupyter/reports
-            sub:
-              - name: crypto
-                ref: /terminal/jupyter/reports/crypto
-              - name: economy
-                ref: /terminal/jupyter/reports/economy
-              - name: equity
-                ref: /terminal/jupyter/reports/equity
-              - name: etf
-                ref: /terminal/jupyter/reports/etf
-              - name: forex
-                ref: /terminal/jupyter/reports/forex
-              - name: portfolio
-                ref: /terminal/jupyter/reports/portfolio
       - name: portfolio
         ref: /terminal/portfolio
         sub:
