@@ -1507,6 +1507,8 @@ main:
                 ref: /terminal/common/qa/unitroot
           - name: quote
             ref: /terminal/stocks/quote
+          - name: tob
+            ref: /terminal/stocks/tob
           - name: research
             ref: /terminal/stocks/res
             sub:
