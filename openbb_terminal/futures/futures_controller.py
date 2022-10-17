@@ -14,7 +14,6 @@ import pandas as pd
 
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
-from openbb_terminal.decorators import check_api_key
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
 
@@ -67,6 +66,8 @@ class FuturesController(BaseController):
             self.choices["support"] = self.SUPPORT_CHOICES
             self.choices["about"] = self.ABOUT_CHOICES
 
+            self.choices["historical"] = {"-t": {c: None for c in self.all_tickers}}
+
             self.completer = NestedCompleter.from_nested_dict(self.choices)  # type: ignore
 
     def parse_input(self, an_input: str) -> List:
@@ -84,11 +85,6 @@ class FuturesController(BaseController):
             an_input=an_input, custom_filters=custom_filters
         )
         return commands
-
-    def update_runtime_choices(self):
-        if session and obbff.USE_PROMPT_TOOLKIT:
-            pass
-        self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
         """Print help"""
@@ -189,9 +185,8 @@ class FuturesController(BaseController):
             "--ticker",
             dest="ticker",
             type=str,
-            choices=self.all_tickers,
             default="",
-            help="Future ticker to display timeseries",
+            help="Future ticker to display timeseries separated by comma when multiple, e.g.: BLK,ES",
         )
         parser.add_argument(
             "-s",
@@ -199,10 +194,20 @@ class FuturesController(BaseController):
             dest="start",
             type=valid_date,
             help="Initial date. Default: 3 years ago",
-            default=(datetime.now() - timedelta(days=3 * 365)).strftime("%Y-%m-%d"),
+            default=(datetime.now() - timedelta(days=3 * 365)),
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-t")
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            parser,
+            other_args,
+            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+            raw=True,
         )
         if ns_parser:
-            console.print("WORK IN PROGRESS")
+            yfinance_view.display_historical(
+                ns_parser.ticker.split(","),
+                ns_parser.start.strftime("%Y-%m-%d"),
+                ns_parser.raw,
+                ns_parser.export,
+            )

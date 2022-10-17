@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_historical_futures(
+def display_historical(
     tickers: List[str],
     start_date: str = (datetime.now() - timedelta(days=3 * 365)).strftime("%Y-%m-%d"),
     raw: bool = False,
@@ -47,7 +47,20 @@ def display_historical_futures(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    historicals = yfinance_model.get_historical_futures(tickers)
+    tickers_validated = list()
+    for ticker in tickers:
+        if ticker in yfinance_model.FUTURES_DATA["Ticker"].unique().tolist():
+            tickers_validated.append(ticker)
+        else:
+            console.print(f"[red]{ticker} is not a valid ticker[/red]")
+
+    tickers = tickers_validated
+
+    if not tickers:
+        console.print("No ticker was provided.\n")
+        return
+
+    historicals = yfinance_model.get_historical_futures([t + "=F" for t in tickers])
     if historicals.empty:
         console.print(f"No data was found for the tickers: {', '.join(tickers)}\n")
         return
@@ -69,44 +82,40 @@ def display_historical_futures(
         else:
             return
 
-        ax.plot(
-            plot_data.index,
-            plot_data["Adj Close"].values,
-        )
-        ax.plot(
-            plot_data.index,
-            plot_data[df_ta.columns[0]].values,
-            theme.down_color,
-            linewidth=0.7,
-        )
-        ax.plot(
-            plot_data.index, plot_data[df_ta.columns[1]].values, ls="--", linewidth=0.7
-        )
-        ax.plot(
-            plot_data.index,
-            plot_data[df_ta.columns[2]].values,
-            theme.up_color,
-            linewidth=0.7,
-        )
-        ax.set_title(f"{symbol} Bollinger Bands")
-        ax.set_xlim(plot_data.index[0], plot_data.index[-1])
-        ax.set_ylabel("Share Price ($)")
-        ax.legend([symbol, df_ta.columns[0], df_ta.columns[1], df_ta.columns[2]])
-        ax.fill_between(
-            df_ta.index, df_ta.iloc[:, 0].values, df_ta.iloc[:, 2].values, alpha=0.1
-        )
-        theme.style_primary_axis(
-            ax,
-            data_index=plot_data.index.to_list(),
-            tick_labels=plot_data["date"].to_list(),
-        )
+        if len(tickers) > 1:
+            name = list()
+            for tick in tickers:
+                name.append(
+                    yfinance_model.FUTURES_DATA[
+                        yfinance_model.FUTURES_DATA["Ticker"] == tick
+                    ]["Description"].values[0]
+                )
+                ax.plot(
+                    historicals["Adj Close"][tick + "=F"].dropna().index,
+                    historicals["Adj Close"][tick + "=F"].dropna().values,
+                )
+                ax.legend(name)
+        else:
+            name = yfinance_model.FUTURES_DATA[
+                yfinance_model.FUTURES_DATA["Ticker"] == tickers[0]
+            ]["Description"].values[0]
+            ax.plot(
+                historicals["Adj Close"].dropna().index,
+                historicals["Adj Close"].dropna().values,
+            )
+            ax.set_title(name)
+
+        first = datetime.strptime(start_date, "%Y-%m-%d")
+        if historicals.index[0] > first:
+            first = historicals.index[0]
+        ax.set_xlim(first, historicals.index[-1])
 
         if external_axes is None:
             theme.visualize_output()
 
         export_data(
             export,
-            os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
-            "bbands",
-            df_ta,
+            os.path.dirname(os.path.abspath(__file__)),
+            "historical",
+            historicals,
         )
