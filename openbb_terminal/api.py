@@ -564,7 +564,7 @@ functions = {
         "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_exchange_net_position_change",
         "view": "openbb_terminal.cryptocurrency.due_diligence.glassnode_view.display_exchange_net_position_change",
     },
-    "crypto.dd.hr": {
+    "crypto.onchain.hr": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_hashrate",
         "view": "openbb_terminal.cryptocurrency.due_diligence.glassnode_view.display_hashrate",
     },
@@ -1902,6 +1902,7 @@ functions = {
     },
     "stocks.search": {"model": "openbb_terminal.stocks.stocks_helper.search"},
     "stocks.quote": {"model": "openbb_terminal.stocks.stocks_helper.quote"},
+    "stocks.tob": {"model": "openbb_terminal.stocks.cboe_model.get_top_of_book"},
     "stocks.candle": {"model": "openbb_terminal.stocks.stocks_helper.display_candle"},
     "crypto.load": {
         "model": "openbb_terminal.cryptocurrency.cryptocurrency_helpers.load"

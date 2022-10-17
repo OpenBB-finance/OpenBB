@@ -21,6 +21,7 @@ from scipy.stats import binom
 import openbb_terminal.config_plot as cfp
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     excel_columns,
@@ -1049,12 +1050,12 @@ def export_binomial_calcs(
         for j, _ in enumerate(opt_vals[i]):
             ws[f"{opts[i]}{j+8+days}"] = opt_vals[i][j]
 
-    trypath = os.path.join(
-        os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")),
-        "exports",
-        "stocks",
-        "options",
-        f"{symbol} {datetime.now()}.xlsx",
+    trypath = str(
+        MISCELLANEOUS_DIRECTORY
+        / "exports"
+        / "stocks"
+        / "options"
+        / f"{symbol} {datetime.now()}.xlsx"
     )
     wb.save(trypath)
     console.print(
