@@ -2236,7 +2236,7 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
-            explainability_raw=True,
+            export_pred_raw=True,
         )
 
         if ns_parser:
@@ -2272,7 +2272,7 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
-                explainability_raw=ns_parser.explainability_raw,
+                export_pred_raw=ns_parser.export_pred_raw,
             )
 
     @log_start_end(log=logger)
@@ -2360,7 +2360,7 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
-            explainability_raw=True,
+            export_pred_raw=True,
         )
         if ns_parser:
             if not helpers.check_parser_input(ns_parser, self.datasets):
@@ -2398,7 +2398,7 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
-                explainability_raw=ns_parser.explainability_raw,
+                export_pred_raw=ns_parser.export_pred_raw,
             )
 
     @log_start_end(log=logger)
@@ -2472,7 +2472,7 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
-            explainability_raw=True,
+            export_pred_raw=True,
         )
 
         if ns_parser:
@@ -2510,7 +2510,7 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
-                explainability_raw=ns_parser.explainability_raw,
+                export_pred_raw=ns_parser.export_pred_raw,
             )
 
     @log_start_end(log=logger)
@@ -2600,7 +2600,7 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
-            explainability_raw=True,
+            export_pred_raw=True,
         )
 
         if ns_parser:
@@ -2639,5 +2639,5 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
-                explainability_raw=ns_parser.explainability_raw,
+                export_pred_raw=ns_parser.export_pred_raw,
             )

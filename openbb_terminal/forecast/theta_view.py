@@ -96,7 +96,7 @@ def display_theta_forecast(
     )
     probabilistic = False
     helpers.plot_forecast(
-        name=f"Theta_{best_theta:.2f}",
+        name=f"THETA_{best_theta:.2f}",
         target_col=target_column,
         historical_fcast=historical_fcast,
         predicted_values=predicted_values,
