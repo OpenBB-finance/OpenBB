@@ -142,7 +142,7 @@ class NestedCompleter(Completer):
         return f"NestedCompleter({self.options!r}, ignore_case={self.ignore_case!r})"
 
     @classmethod
-    def from_nested_dict(cls, data: NestedDict) -> "NestedCompleter":
+    def from_nested_dict(cls, data: dict) -> "NestedCompleter":
         """
         Create a `NestedCompleter`, starting from a nested dictionary data
         structure, like this:
@@ -259,7 +259,7 @@ class NestedCompleter(Completer):
                             elif same_flags[1] in self.flags_processed:
                                 self.flags_processed.remove(same_flags[1])
 
-                if cmd:
+                if cmd and self.original_options.get(cmd):
                     self.options = {
                         k: self.original_options.get(cmd).options[k]  # type: ignore
                         for k in self.original_options.get(cmd).options.keys()  # type: ignore

@@ -9,23 +9,29 @@ from typing import List
 
 import financedatabase
 import yfinance as yf
-from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common import feedparser_view, newsapi_view
 from openbb_terminal.common.quantitative_analysis import qa_view
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.stocks import cboe_view
 
+from openbb_terminal.helper_classes import AllowArgsWithWhiteSpace
 from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
+    choice_check_after_action,
     export_data,
     valid_date,
 )
-from openbb_terminal.helper_classes import AllowArgsWithWhiteSpace
-from openbb_terminal.helper_funcs import choice_check_after_action
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console, translate, MenuText
+from openbb_terminal.rich_config import (
+    MenuText,
+    console,
+    get_ordered_list_sources,
+    translate,
+)
 from openbb_terminal.stocks import stocks_helper
 
 # pylint: disable=R1710,import-outside-toplevel,R0913,R1702,no-member
@@ -40,6 +46,7 @@ class StocksController(StockBaseController):
         "search",
         "load",
         "quote",
+        "tob",
         "candle",
         "news",
         "resources",
@@ -71,6 +78,7 @@ class StocksController(StockBaseController):
     country = financedatabase.show_options("equities", "countries")
     sector = financedatabase.show_options("equities", "sectors")
     industry = financedatabase.show_options("equities", "industries")
+    TOB_EXCHANGES = ["BZX", "EDGX", "BYX", "EDGA"]
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -80,17 +88,77 @@ class StocksController(StockBaseController):
 
             choices: dict = {c: {} for c in self.controller_choices}
 
-            choices["search"]["--country"] = {c: None for c in self.country}
-            choices["search"]["-c"] = {c: None for c in self.country}
-            choices["search"]["--sector"] = {c: None for c in self.sector}
-            choices["search"]["-s"] = {c: None for c in self.sector}
-            choices["search"]["--industry"] = {c: None for c in self.industry}
-            choices["search"]["-i"] = {c: None for c in self.industry}
-            choices["search"]["--exchange"] = {
-                c: None for c in stocks_helper.market_coverage_suffix
+            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
+            choices["load"] = {
+                "--ticker": None,
+                "-t": "--ticker",
+                "--start": None,
+                "-s": "--start",
+                "--end": None,
+                "-e": "--end",
+                "--interval": {c: {} for c in ["1", "5", "15", "30", "60"]},
+                "-i": "--interval",
+                "--prepost": {},
+                "-p": "--prepost",
+                "--file": None,
+                "-f": "--file",
+                "--monthly": {},
+                "-m": "--monthly",
+                "--weekly": {},
+                "-w": "--weekly",
+                "--iexrange": {c: {} for c in ["ytd", "1y", "2y", "5y", "6m"]},
+                "-r": "--iexrange",
+                "--source": {
+                    c: {} for c in get_ordered_list_sources(f"{self.PATH}load")
+                },
             }
-            choices["search"]["-e"] = {
-                c: None for c in stocks_helper.market_coverage_suffix
+            choices["quote"] = {
+                "--ticker": None,
+                "-t": "--ticker",
+            }
+            choices["tob"] = {
+                "--exchange": {c: {} for c in self.TOB_EXCHANGES},
+                "-e": "--exchange",
+            }
+            choices["search"] = {
+                "--query": None,
+                "-q": "--query",
+                "--country": {c: {} for c in self.country},
+                "-c": "--country",
+                "--sector": {c: {} for c in self.sector},
+                "-s": "--sector",
+                "--industry": {c: {} for c in self.industry},
+                "-i": "--industry",
+                "--exchange": {c: {} for c in stocks_helper.market_coverage_suffix},
+                "-e": "--exchange",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["candle"] = {
+                "--sort": {c: {} for c in stocks_helper.CANDLE_SORT},
+                "--plotly": {},
+                "-p": "--plotly",
+                "--descending": {},
+                "-d": "--descending",
+                "--raw": {},
+                "--trend": {},
+                "-t": "--trend",
+                "--ma": None,
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["news"] = {
+                "--date": None,
+                "-d": "--date",
+                "--oldest": {},
+                "-o": "--oldest",
+                "--sources": None,
+                "-s": "--sources",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+                "--source": {
+                    c: {} for c in get_ordered_list_sources(f"{self.PATH}news")
+                },
             }
 
             choices["support"] = self.SUPPORT_CHOICES
@@ -105,10 +173,9 @@ class StocksController(StockBaseController):
             s_intraday = (f"Intraday {self.interval}", "Daily")[
                 self.interval == "1440min"
             ]
+            stock_text += f"{s_intraday} {self.ticker}"
             if self.start:
-                stock_text = f"{s_intraday} {self.ticker} (from {self.start.strftime('%Y-%m-%d')})"
-            else:
-                stock_text = f"{s_intraday} {self.ticker}"
+                stock_text += f" (from {self.start.strftime('%Y-%m-%d')})"
 
         mt = MenuText("stocks/", 100)
         mt.add_cmd("search")
@@ -118,6 +185,7 @@ class StocksController(StockBaseController):
         mt.add_raw(self.add_info)
         mt.add_raw("\n")
         mt.add_cmd("quote", self.ticker)
+        mt.add_cmd("tob", self.ticker)
         mt.add_cmd("candle", self.ticker)
         mt.add_cmd("codes", self.ticker)
         mt.add_cmd("news", self.ticker)
@@ -226,6 +294,41 @@ class StocksController(StockBaseController):
             )
 
     @log_start_end(log=logger)
+    def call_tob(self, other_args: List[str]):
+        """Process quote command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="quote",
+            description="Get top of book for loaded ticker from selected exchange",
+        )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            action="store",
+            dest="s_ticker",
+            required="-h" not in other_args and not self.ticker,
+            help="Ticker to get data for",
+        )
+        parser.add_argument(
+            "-e",
+            "--exchange",
+            default="BZX",
+            choices=self.TOB_EXCHANGES,
+            type=str,
+            dest="exchange",
+        )
+
+        if not self.ticker:
+            if other_args and "-" not in other_args[0][0]:
+                other_args.insert(0, "-t")
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+
+        if ns_parser:
+            ticker = ns_parser.s_ticker if ns_parser.s_ticker else self.ticker
+            cboe_view.display_top_of_book(ticker, ns_parser.exchange)
+
+    @log_start_end(log=logger)
     def call_quote(self, other_args: List[str]):
         """Process quote command"""
         ticker = self.ticker + "." + self.suffix if self.suffix else self.ticker
@@ -295,16 +398,7 @@ class StocksController(StockBaseController):
         )
         parser.add_argument(
             "--sort",
-            choices=[
-                "AdjClose",
-                "Open",
-                "Close",
-                "High",
-                "Low",
-                "Volume",
-                "Returns",
-                "LogRet",
-            ],
+            choices=stocks_helper.CANDLE_SORT,
             default="",
             type=str,
             dest="sort",
@@ -339,6 +433,13 @@ class StocksController(StockBaseController):
             type=str,
             help=translate("stocks/CANDLE_mov_avg"),
             default=None,
+        )
+        parser.add_argument(
+            "--log",
+            help="Plot with y axis on log scale",
+            action="store_true",
+            default=False,
+            dest="logy",
         )
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -402,6 +503,7 @@ class StocksController(StockBaseController):
                         intraday=self.interval != "1440min",
                         add_trend=ns_parser.trendlines,
                         ma=mov_avgs,
+                        yscale="log" if ns_parser.logy else "linear",
                     )
             else:
                 console.print("No ticker loaded. First use `load {ticker}`\n")
@@ -483,9 +585,7 @@ class StocksController(StockBaseController):
     @log_start_end(log=logger)
     def call_disc(self, _):
         """Process disc command"""
-        from openbb_terminal.stocks.discovery.disc_controller import (
-            DiscoveryController,
-        )
+        from openbb_terminal.stocks.discovery.disc_controller import DiscoveryController
 
         self.queue = self.load_class(DiscoveryController, self.queue)
 
@@ -523,9 +623,7 @@ class StocksController(StockBaseController):
     @log_start_end(log=logger)
     def call_ins(self, _):
         """Process ins command"""
-        from openbb_terminal.stocks.insider.insider_controller import (
-            InsiderController,
-        )
+        from openbb_terminal.stocks.insider.insider_controller import InsiderController
 
         self.queue = self.load_class(
             InsiderController,
@@ -546,9 +644,7 @@ class StocksController(StockBaseController):
     @log_start_end(log=logger)
     def call_options(self, _):
         """Process options command"""
-        from openbb_terminal.stocks.options.options_controller import (
-            OptionsController,
-        )
+        from openbb_terminal.stocks.options.options_controller import OptionsController
 
         self.queue = self.load_class(OptionsController, self.ticker, self.queue)
 
@@ -670,9 +766,7 @@ class StocksController(StockBaseController):
     def call_qa(self, _):
         """Process qa command"""
         if self.ticker:
-            from openbb_terminal.stocks.quantitative_analysis import (
-                qa_controller,
-            )
+            from openbb_terminal.stocks.quantitative_analysis import qa_controller
 
             self.queue = self.load_class(
                 qa_controller.QaController,
@@ -682,8 +776,6 @@ class StocksController(StockBaseController):
                 self.stock,
                 self.queue,
             )
-        # TODO: This menu should work regardless of data being daily or not!
-        # James: 5/27 I think it does now
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
 

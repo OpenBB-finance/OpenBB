@@ -551,7 +551,7 @@ functions = {
         "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_exchange_net_position_change",
         "view": "openbb_terminal.cryptocurrency.due_diligence.glassnode_view.display_exchange_net_position_change",
     },
-    "crypto.dd.hr": {
+    "crypto.onchain.hr": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_hashrate",
         "view": "openbb_terminal.cryptocurrency.due_diligence.glassnode_view.display_hashrate",
     },
@@ -982,6 +982,10 @@ functions = {
     "economy.ycrv": {
         "model": "openbb_terminal.economy.investingcom_model.get_yieldcurve",
         "view": "openbb_terminal.economy.investingcom_view.display_yieldcurve",
+    },
+    "economy.spread": {
+        "model": "openbb_terminal.economy.investingcom_model.get_spread_matrix",
+        "view": "openbb_terminal.economy.investingcom_view.display_spread_matrix",
     },
     "economy.country_codes": {
         "model": "openbb_terminal.economy.nasdaq_model.get_country_codes"
@@ -1885,6 +1889,7 @@ functions = {
     },
     "stocks.search": {"model": "openbb_terminal.stocks.stocks_helper.search"},
     "stocks.quote": {"model": "openbb_terminal.stocks.stocks_helper.quote"},
+    "stocks.tob": {"model": "openbb_terminal.stocks.cboe_model.get_top_of_book"},
     "stocks.candle": {"model": "openbb_terminal.stocks.stocks_helper.display_candle"},
     "crypto.load": {
         "model": "openbb_terminal.cryptocurrency.cryptocurrency_helpers.load"
@@ -2016,6 +2021,10 @@ forecast_extras = {
     "forecast.tft": {
         "model": "openbb_terminal.forecast.tft_model.get_tft_data",
         "view": "openbb_terminal.forecast.tft_view.display_tft_forecast",
+    },
+    "forecast.nhits": {
+        "model": "openbb_terminal.forecast.nhits_model.get_nhits_data",
+        "view": "openbb_terminal.forecast.nhits_view.display_nhits_forecast",
     },
 }
 

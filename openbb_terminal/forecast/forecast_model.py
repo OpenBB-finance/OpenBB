@@ -14,16 +14,21 @@ import numpy as np
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
+from openbb_terminal.core.config.paths import (
+    USER_EXPORTS_DIRECTORY,
+    USER_CUSTOM_IMPORTS_DIRECTORY,
+)
 
 logger = logging.getLogger(__name__)
 
 
+base_file_types = ["csv", "xlsx"]
 default_files = {
     filepath.name: filepath
-    for file_type in ["csv", "xlsx"]
+    for file_type in base_file_types
     for filepath in chain(
-        Path("exports").rglob(f"*.{file_type}"),
-        Path("custom_imports").rglob(f"*.{file_type}"),
+        USER_EXPORTS_DIRECTORY.rglob(f"*.{file_type}"),
+        USER_CUSTOM_IMPORTS_DIRECTORY.rglob(f"*.{file_type}"),
     )
     if filepath.is_file()
 }
@@ -541,4 +546,5 @@ def corr_df(df: pd.DataFrame) -> pd.DataFrame:
     df: pd.DataFrame
         The df with the new data
     """
-    return df.corr()
+    corr = df.corr(numeric_only=True)
+    return corr

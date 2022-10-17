@@ -6,8 +6,10 @@ import logging
 import os
 from typing import List
 
+import numpy as np
 import pandas as pd
-from prompt_toolkit.completion import NestedCompleter
+
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
@@ -19,7 +21,7 @@ from openbb_terminal.helper_funcs import (
 )
 
 from openbb_terminal.menu import session
-from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY
+from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.portfolio import portfolio_model
 from openbb_terminal.portfolio import statics
@@ -88,6 +90,7 @@ class PortfolioController(BaseController):
         "payoff",
         "profitfactor",
     ]
+    PERIODS = ["3y", "5y", "10y", "all"]
     PATH = "/portfolio/"
 
     def __init__(self, queue: List[str] = None):
@@ -106,9 +109,9 @@ class PortfolioController(BaseController):
             {
                 filepath.name: filepath
                 for file_type in self.file_types
-                for filepath in (REPOSITORY_DIRECTORY / "portfolio" / "holdings").rglob(
-                    f"*.{file_type}"
-                )
+                for filepath in (
+                    MISCELLANEOUS_DIRECTORY / "portfolio_examples" / "holdings"
+                ).rglob(f"*.{file_type}")
             }
         )
 
@@ -155,11 +158,117 @@ class PortfolioController(BaseController):
         )
 
         choices: dict = {c: {} for c in self.controller_choices}
-        choices["load"]["-f"] = {c: None for c in self.DATA_HOLDINGS_FILES}
-        choices["load"]["--file"] = {c: None for c in self.DATA_HOLDINGS_FILES}
-        choices["bench"] = {c: None for c in statics.BENCHMARK_LIST}
-        choices["alloc"] = {c: None for c in self.AGGREGATION_METRICS}
-        choices["metric"] = {c: None for c in self.VALID_METRICS}
+
+        one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
+        zero_to_hundred_detailed = {str(c): {} for c in np.arange(0.0, 100.0, 0.1)}
+        choices["load"] = {
+            "--file": {c: {} for c in self.DATA_HOLDINGS_FILES},
+            "-f": "--file",
+            "--name": None,
+            "-n": "--name",
+            "--rfr": zero_to_hundred_detailed,
+            "-r": "--rfr",
+        }
+        choices["show"] = {
+            "--limit": one_to_hundred,
+            "-l": "--limit",
+        }
+        choices["bench"] = {c: {} for c in statics.BENCHMARK_LIST}
+        choices["bench"]["--full_shares"] = {}
+        choices["bench"]["-s"] = "--full_shares"
+        hold = {
+            "--sum": {},
+            "-s": "--sum",
+            "--raw": {},
+            "--limit": one_to_hundred,
+            "-l": "--limit",
+        }
+        choices["holdv"] = hold
+        choices["holdp"] = hold
+        choices["yret"] = {
+            "--period": {c: {} for c in self.PERIODS},
+            "-p": "--period",
+            "--raw": {},
+        }
+        choices["mret"] = {
+            "--period": {c: {} for c in self.PERIODS},
+            "-p": "--period",
+            "--show": {},
+            "-s": "--show",
+            "--raw": {},
+        }
+        choices["dret"] = {
+            "--period": {c: {} for c in self.PERIODS},
+            "-p": "--period",
+            "--limit": one_to_hundred,
+            "-l": "--limit",
+            "--raw": {},
+        }
+        choices["distr"] = {
+            "--period": {c: {} for c in portfolio_helper.PERIODS},
+            "-p": "--period",
+            "--raw": {},
+        }
+        choices["rvol"] = {
+            "--period": {c: {} for c in portfolio_helper.PERIODS},
+            "-p": "--period",
+        }
+        r_auto_complete = {
+            "--period": {c: {} for c in portfolio_helper.PERIODS},
+            "-p": "--period",
+            "--rfr": zero_to_hundred_detailed,
+            "-r": "--rfr",
+        }
+        choices["rsharpe"] = r_auto_complete
+        choices["rsort"] = r_auto_complete
+        choices["rbeta"] = {
+            "--period": {c: {} for c in portfolio_helper.PERIODS},
+            "-p": "--period",
+        }
+        choices["alloc"] = {c: {} for c in self.AGGREGATION_METRICS}
+        choices["alloc"]["--agg"] = {c: {} for c in self.AGGREGATION_METRICS}
+        choices["alloc"]["-a"] = "--agg"
+        choices["alloc"]["--tables"] = {}
+        choices["alloc"]["-t"] = "--tables"
+        choices["alloc"]["--limit"] = one_to_hundred
+        choices["alloc"]["-l"] = "--limit"
+        choices["summary"] = r_auto_complete
+        choices["metric"] = {c: {} for c in self.VALID_METRICS}
+        choices["metric"]["--metric"] = {c: {} for c in self.VALID_METRICS}
+        choices["metric"]["-m"] = "--metric"
+        choices["metric"]["--rfr"] = zero_to_hundred_detailed
+        choices["metric"]["-r"] = "--rfr"
+        choices["perf"] = {
+            "--period": {c: {} for c in portfolio_helper.PERIODS},
+            "-p": "--period",
+            "--show_trades": {},
+            "-t": "--show_trades",
+        }
+        choices["var"] = {
+            "--mean": {},
+            "-m": "--mean",
+            "--adjusted": {},
+            "-a": "--adjusted",
+            "--student": {},
+            "-s": "--student",
+            "--percentile": zero_to_hundred_detailed,
+            "-p": "--percentile",
+        }
+        choices["es"] = {
+            "--mean": {},
+            "-m": "--mean",
+            "--dist": {c: {} for c in self.VALID_DISTRIBUTIONS},
+            "-d": "--dist",
+            "--percentile": zero_to_hundred_detailed,
+            "-p": "--percentile",
+        }
+        choices["om"] = {
+            "--start": None,
+            "-s": "--start",
+            "--end": None,
+            "-e": "--end",
+        }
+
         self.choices = choices
 
         choices["support"] = self.SUPPORT_CHOICES
@@ -835,7 +944,7 @@ class PortfolioController(BaseController):
             type=str,
             dest="period",
             default="all",
-            choices=["3y", "5y", "10y", "all"],
+            choices=self.PERIODS,
             help="Period to select start end of the year returns",
         )
         if other_args and "-" not in other_args[0][0]:
@@ -873,7 +982,7 @@ class PortfolioController(BaseController):
             type=str,
             dest="period",
             default="all",
-            choices=["3y", "5y", "10y", "all"],
+            choices=self.PERIODS,
             help="Period to select start end of the year returns",
         )
         parser.add_argument(
@@ -920,7 +1029,7 @@ class PortfolioController(BaseController):
             type=str,
             dest="period",
             default="all",
-            choices=["3y", "5y", "10y", "all"],
+            choices=self.PERIODS,
             help="Period to select start end of the year returns",
         )
         if other_args and "-" not in other_args[0][0]:

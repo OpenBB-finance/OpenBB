@@ -8,6 +8,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.technical_analysis import ta_controller
+from openbb_terminal.stocks import stocks_helper
 
 # pylint: disable=E1101
 # pylint: disable=W0603
@@ -290,27 +291,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
 @pytest.mark.parametrize(
     "tested_func, other_args, mocked_func, called_args, called_kwargs",
     [
-        (
-            "call_load",
-            [
-                "MOCK_TICKER",
-                "--start=2021-12-01",
-                "--end=2021-12-02",
-                "--interval=1",
-                "--source=YahooFinance",
-                "--prepost",
-            ],
-            "stocks_helper.load",
-            [
-                "MOCK_TICKER",
-                datetime.strptime("2021-12-01", "%Y-%m-%d"),
-                1,
-                datetime.strptime("2021-12-02", "%Y-%m-%d"),
-                True,
-                "YahooFinance",
-            ],
-            {"weekly": False, "monthly": False},
-        ),
         (
             "call_view",
             [],
@@ -775,7 +755,7 @@ def test_call_func(
 @pytest.mark.vcr
 def test_call_load(mocker):
     # FORCE SINGLE THREADING
-    yf_download = ta_controller.stocks_helper.yf.download
+    yf_download = stocks_helper.yf.download
 
     def mock_yf_download(*args, **kwargs):
         kwargs["threads"] = False

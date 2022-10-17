@@ -12,11 +12,12 @@ from typing import List, Dict, Any
 
 import numpy as np
 import pandas as pd
-from prompt_toolkit.completion import NestedCompleter
+
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 import openbb_terminal.econometrics.regression_model
 import openbb_terminal.econometrics.regression_view
-from openbb_terminal.core.config.paths import CUSTOM_IMPORTS_DIRECTORY
+from openbb_terminal.core.config.paths import USER_CUSTOM_IMPORTS_DIRECTORY
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.core.config.paths import USER_EXPORTS_DIRECTORY
 from openbb_terminal.decorators import log_start_end
@@ -164,21 +165,21 @@ class EconometricsController(BaseController):
             for file_type in self.file_types
             for filepath in chain(
                 Path(USER_EXPORTS_DIRECTORY).rglob(f"*.{file_type}"),
-                Path(CUSTOM_IMPORTS_DIRECTORY / "econometrics").rglob(f"*.{file_type}"),
+                Path(USER_CUSTOM_IMPORTS_DIRECTORY / "econometrics").rglob(
+                    f"*.{file_type}"
+                ),
             )
             if filepath.is_file()
         }
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["load"]["-f"] = {c: None for c in self.DATA_FILES.keys()}
-            choices["show"] = {c: None for c in self.files}
+            choices["load"]["-f"] = {c: {} for c in self.DATA_FILES.keys()}
 
             for feature in ["export", "show", "desc", "clear", "index"]:
-                choices[feature] = {c: None for c in self.files}
+                choices[feature] = {c: {} for c in self.files}
 
             for feature in [
-                "general",
                 "type",
                 "plot",
                 "norm",
@@ -198,13 +199,12 @@ class EconometricsController(BaseController):
     def update_runtime_choices(self):
         if session and obbff.USE_PROMPT_TOOLKIT:
             dataset_columns = {
-                f"{dataset}.{column}": {column: None, dataset: None}
+                f"{dataset}.{column}": {}
                 for dataset, dataframe in self.datasets.items()
                 for column in dataframe.columns
             }
 
             for feature in [
-                "general",
                 "plot",
                 "norm",
                 "root",
@@ -224,13 +224,13 @@ class EconometricsController(BaseController):
                 "combine",
                 "rename",
             ]:
-                self.choices[feature] = {c: None for c in self.files}
+                self.choices[feature] = {c: {} for c in self.files}
 
             self.choices["type"] = {
-                c: None for c in self.files + list(dataset_columns.keys())
+                c: {} for c in self.files + list(dataset_columns.keys())
             }
             self.choices["desc"] = {
-                c: None for c in self.files + list(dataset_columns.keys())
+                c: {} for c in self.files + list(dataset_columns.keys())
             }
 
             pairs_timeseries = list()
@@ -241,7 +241,7 @@ class EconometricsController(BaseController):
                     if dataset_col != dataset_col2
                 ]
 
-            self.choices["granger"] = {c: None for c in pairs_timeseries}
+            self.choices["granger"] = {c: {} for c in pairs_timeseries}
 
             self.completer = NestedCompleter.from_nested_dict(self.choices)
 
@@ -250,7 +250,7 @@ class EconometricsController(BaseController):
         mt = MenuText("econometrics/")
         mt.add_param(
             "_data_loc",
-            f"\n\t{str(USER_EXPORTS_DIRECTORY)}\n\t{str(CUSTOM_IMPORTS_DIRECTORY/'econometrics')}",
+            f"\n\t{str(USER_EXPORTS_DIRECTORY)}\n\t{str(USER_CUSTOM_IMPORTS_DIRECTORY/'econometrics')}",
         )
         mt.add_raw("\n")
         mt.add_cmd("load")
@@ -344,7 +344,12 @@ class EconometricsController(BaseController):
             dest="examples",
         )
 
-        if other_args and "-e" not in other_args and "-f" not in other_args:
+        if (
+            other_args
+            and "-e" not in other_args
+            and "-f" not in other_args
+            and "-h" not in other_args
+        ):
             other_args.insert(0, "-f")
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)

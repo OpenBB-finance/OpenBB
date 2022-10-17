@@ -272,6 +272,13 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(),
         ),
         (
+            "call_tob",
+            ["--ticker=AAPL"],
+            "cboe_view.display_top_of_book",
+            [],
+            dict(),
+        ),
+        (
             "call_candle",
             [
                 "--plotly",
@@ -310,6 +317,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 intraday=False,
                 add_trend=True,
                 ma=[20, 30],
+                yscale="linear",
             ),
         ),
         (

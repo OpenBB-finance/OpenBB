@@ -210,7 +210,7 @@ def check_for_updates() -> None:
 
     if r is not None and r.status_code == 200:
         release = r.json()["html_url"].split("/")[-1].replace("v", "")
-        if obbff.VERSION == release:
+        if obbff.VERSION.replace("m", "") == release:
             console.print("[green]You are using the latest version[/green]")
         else:
             console.print("[red]You are not using the latest version[/red]")
