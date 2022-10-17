@@ -32,5 +32,9 @@ jobs:
 
       - name: Build the Docker image
         run: |
+          source docker/build.sh
+
+      - name: Build the Docker image
+        run: |
           chmod +x docker/build.sh
           ./docker/build.sh
