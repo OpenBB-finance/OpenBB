@@ -31,17 +31,13 @@ OUTPUT_FOLDER = USER_EXPORTS_DIRECTORY / "reports"
 
 # TODO: Trim available choices to avoid errors in notebooks.
 
-etf_data_path = CURRENT_LOCATION.parent.parent / "etf" / "data" / "etf_tickers.csv"
+etf_data_path = CURRENT_LOCATION.parent / "data" / "etf_tickers.csv"
 ETF_TICKERS = pd.read_csv(etf_data_path).iloc[:, 0].to_list()
 
-crypto_data_path = (
-    CURRENT_LOCATION.parent.parent / "cryptocurrency" / "data" / "crypto_tickers.csv"
-)
+crypto_data_path = CURRENT_LOCATION.parent / "data" / "crypto_tickers.csv"
 CRYPTO_TICKERS = pd.read_csv(crypto_data_path).iloc[:, 0].to_list()
 
-stocks_data_path = (
-    CURRENT_LOCATION.parent.parent / "stocks" / "data" / "stocks_tickers.csv"
-)
+stocks_data_path = CURRENT_LOCATION.parent / "data" / "stocks_tickers.csv"
 STOCKS_TICKERS = pd.read_csv(stocks_data_path).iloc[:, 0].to_list()
 
 PORTFOLIO_HOLDINGS_FILES = {
