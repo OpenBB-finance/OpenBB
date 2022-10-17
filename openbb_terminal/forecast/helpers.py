@@ -536,6 +536,20 @@ def plot_forecast(
 
     # user wants to export only raw predictions
     if export_pred_raw:
+        # convert numeric)forecast to dataframe
+        numeric_forecast = numeric_forecast.to_frame()
+
+        # if numeric_forcast has a column with *_0.5, then rename it to target_col
+        if f"{target_col}_0.5" in numeric_forecast.columns:
+            numeric_forecast.rename(
+                columns={f"{target_col}_0.5": target_col}, inplace=True
+            )
+
+        # convert non-date column to 2 decimal places
+        numeric_forecast[target_col] = numeric_forecast[target_col].apply(
+            lambda x: round(x, 2)
+        )
+
         export_data(
             "csv",
             os.path.dirname(os.path.abspath(__file__)),
