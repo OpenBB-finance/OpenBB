@@ -7,7 +7,6 @@ import difflib
 import logging
 import os
 from pathlib import Path
-import platform
 import sys
 import webbrowser
 from typing import List
