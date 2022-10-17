@@ -11,12 +11,24 @@ from typing import Any, Optional, List, Dict
 try:
     import torch
     import darts
+
+    darts_latest = "0.22.0"
+    # check darts version
+    if darts.__version__ != darts_latest:
+        print(f"You are currently using Darts version {darts.__version__}")
+        print(
+            f"Follow instructions on creating a new conda environment with the latest Darts version ({darts_latest}):"
+        )
+        print(
+            "https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/openbb_terminal/README.md"
+        )
 except ModuleNotFoundError:
     raise ModuleNotFoundError(
         "Please install the forecast version of the terminal. Instructions "
         "are here: https://github.com/OpenBB-finance/OpenBBTerminal/"
         "blob/main/openbb_terminal/README.md#anaconda--python"
     )
+
 import pandas as pd
 import psutil
 
@@ -55,7 +67,7 @@ from openbb_terminal.forecast import (
 )
 from openbb_terminal.core.config.paths import (
     USER_EXPORTS_DIRECTORY,
-    CUSTOM_IMPORTS_DIRECTORY,
+    USER_CUSTOM_IMPORTS_DIRECTORY,
 )
 
 logger = logging.getLogger(__name__)
@@ -177,7 +189,7 @@ class ForecastController(BaseController):
             for file_type in self.file_types
             for filepath in chain(
                 USER_EXPORTS_DIRECTORY.rglob(f"*.{file_type}"),
-                CUSTOM_IMPORTS_DIRECTORY.rglob(f"*.{file_type}"),
+                USER_CUSTOM_IMPORTS_DIRECTORY.rglob(f"*.{file_type}"),
             )
             if filepath.is_file()
         }
@@ -287,7 +299,8 @@ class ForecastController(BaseController):
         mt.add_param("_disclaimer_", self.disclaimer)
         mt.add_raw("\n")
         mt.add_param(
-            "_data_loc", f"\n\t{USER_EXPORTS_DIRECTORY}\n\t{CUSTOM_IMPORTS_DIRECTORY}"
+            "_data_loc",
+            f"\n\t{USER_EXPORTS_DIRECTORY}\n\t{USER_CUSTOM_IMPORTS_DIRECTORY}",
         )
         mt.add_raw("\n")
         mt.add_cmd("load")

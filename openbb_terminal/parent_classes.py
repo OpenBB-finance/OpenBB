@@ -19,26 +19,35 @@ from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from rich.markdown import Markdown
 
+from openbb_terminal.core.config.paths import (
+    USER_CUSTOM_IMPORTS_DIRECTORY,
+    USER_ROUTINES_DIRECTORY,
+)
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
+from openbb_terminal.menu import session
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.config_terminal import theme
-from openbb_terminal.core.config.paths import (CUSTOM_IMPORTS_DIRECTORY,
-                                               ROUTINES_DIRECTORY)
-from openbb_terminal.cryptocurrency import cryptocurrency_helpers
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (check_file_type_saved,
-                                          check_positive, export_data,
-                                          get_flair, load_json,
-                                          parse_and_split_input,
-                                          parse_simple_args, prefill_form,
-                                          screenshot, search_wikipedia,
-                                          set_command_location,
-                                          support_message, system_clear,
-                                          valid_date)
-from openbb_terminal.menu import session
+from openbb_terminal.helper_funcs import (
+    check_file_type_saved,
+    check_positive,
+    export_data,
+    get_flair,
+    load_json,
+    parse_and_split_input,
+    parse_simple_args,
+    prefill_form,
+    screenshot,
+    search_wikipedia,
+    set_command_location,
+    support_message,
+    system_clear,
+    valid_date,
+)
 from openbb_terminal.rich_config import console, get_ordered_list_sources
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.terminal_helper import open_openbb_documentation
+from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 
 logger = logging.getLogger(__name__)
 
@@ -597,11 +606,11 @@ class BaseController(metaclass=ABCMeta):
                 "[red]There is no session to be saved. Run at least 1 command after starting 'record'[/red]\n"
             )
         else:
-            routine_file = os.path.join(ROUTINES_DIRECTORY, SESSION_RECORDED_NAME)
+            routine_file = os.path.join(USER_ROUTINES_DIRECTORY, SESSION_RECORDED_NAME)
 
             if os.path.isfile(routine_file):
                 routine_file = os.path.join(
-                    ROUTINES_DIRECTORY,
+                    USER_ROUTINES_DIRECTORY,
                     datetime.now().strftime("%Y%m%d_%H%M%S_") + SESSION_RECORDED_NAME,
                 )
 
@@ -997,7 +1006,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                 # This seems to block the .exe since the folder needs to be manually created
                 # This block makes sure that we only look for the file if the -f flag is used
                 # Adding files in the argparse choices, will fail for the .exe even without -f
-                STOCKS_CUSTOM_IMPORTS = CUSTOM_IMPORTS_DIRECTORY / "stocks"
+                STOCKS_CUSTOM_IMPORTS = USER_CUSTOM_IMPORTS_DIRECTORY / "stocks"
                 try:
                     file_list = [x.name for x in STOCKS_CUSTOM_IMPORTS.iterdir()]
                     if ns_parser.filepath not in file_list:

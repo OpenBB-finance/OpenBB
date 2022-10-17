@@ -1,0 +1,58 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML,
+        like Gecko) Chrome/106.0.0.0 Safari/537.36
+      referer:
+      - https://www.cboe.com/us/equities/market_statistics/book_viewer/
+    method: GET
+    uri: https://www.cboe.com/json/bzx/book/AAPL
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA72TT2uDMBiHv0p5zy4kMf5JbqXsMOjWHnaTMlLNWqlWMbajjH33vbFatPQ22EHI
+        k/fJL6+JfoM9pamxFlTbnIwHjSkqnYEKKKUeZLrVoL7BXsptVYCC+Xy9BA/0KW3z6gjqUxcWV6VV
+        WevjxQnr9fJ59vK2mC1Wr2jWjTmDYoITKV1iVZujY58w5nif7/aOBQlCx0X1hehLEvAOtW1dmRK/
+        ayjd6+POgHriJOzyzlVxKnGCB8KXMccNmsw0dtW8Nzoz1q1lEqOxZ3tATBKX2wWKjZeIAYIxhAg3
+        LRpDvNl4sM2zLunmc1SCARiCHADHfj/m0oHgV+iC2r7HJAHGFI8Uo3hkzD39G7thXyEx5W4GU/7N
+        vkrO96c+DeKpT+XE53Lk0+ttPvIHPZ7qwn+s3/zozuf37URTPxj7EYkl/6MfYlkMdji2QxKLazfu
+        hvPS2FaXNf4a/eG5ndo8PXy0lxo/XICfn1+23IgKhgMAAA==
+    headers:
+      Accept-Ranges:
+      - bytes
+      CF-Cache-Status:
+      - EXPIRED
+      CF-RAY:
+      - 75a156ac88625716-IAD
+      Cache-Control:
+      - no-cache=False, must-revalidate=False, max-age=5
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '376'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 14 Oct 2022 15:27:21 GMT
+      Last-Modified:
+      - Fri, 14 Oct 2022 15:27:18 GMT
+      Link:
+      - <https://(null)(null)>; rel="canonical"
+      Server:
+      - cloudflare
+      Vary:
+      - Host,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1
