@@ -20,8 +20,6 @@ echo "OPENBBTERMINAL_DOCKER_PYTHON_IMAGE = $OPENBBTERMINAL_DOCKER_PYTHON_IMAGE"
 echo "OPENBBTERMINAL_DOCKER_POETRY_DEPS_IMAGE = $OPENBBTERMINAL_DOCKER_POETRY_DEPS_IMAGE"
 echo "OPENBBTERMINAL_DOCKER_POETRY_IMAGE = $OPENBBTERMINAL_DOCKER_POETRY_IMAGE"
 
-# docker build -f docker/openbbterminal-python.dockerfile -t "${OPENBBTERMINAL_DOCKER_PYTHON_IMAGE}" .
-# docker build -f docker/openbbterminal-poetry-deps.dockerfile -t "${OPENBBTERMINAL_DOCKER_POETRY_DEPS_IMAGE}" .
-# docker build -f docker/openbbterminal-poetry.dockerfile -t "${OPENBBTERMINAL_DOCKER_POETRY_IMAGE}" .
-
-# docker compose -f docker/docker-compose.yaml run openbbterminal-poetry
+docker build -f docker/openbbterminal-python.dockerfile -t "${OPENBBTERMINAL_DOCKER_PYTHON_IMAGE}" .
+docker build -f docker/openbbterminal-poetry-deps.dockerfile -t "${OPENBBTERMINAL_DOCKER_POETRY_DEPS_IMAGE}" .
+docker build -f docker/openbbterminal-poetry.dockerfile -t "${OPENBBTERMINAL_DOCKER_POETRY_IMAGE}" .

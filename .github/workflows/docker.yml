@@ -6,7 +6,7 @@ jobs:
   publish-image:
     runs-on: ubuntu-latest
     env: 
-      REPOSITORY: ${{ github.repository }}
+      OPENBBTERMINAL_DOCKER_GITHUB_REPOSITORY: ${{ github.repository }}
       IMAGE: openbbterminal-poetry
 
     steps:
@@ -21,8 +21,6 @@ jobs:
 
     - name: Build the Docker image
       run: |
-        source docker/compose.env 
-        docker-compose -f docker/docker-compose.yaml build
-        docker tag `docker images -q ghcr.io/$REPOSITORY/$IMAGE` ghcr.io/$OWNER/$IMAGE:$OPENBBTERMINAL_DOCKER_POETRY_VERSION
-        docker run ghcr.io/$OWNER/$IMAGE:$OPENBBTERMINAL_DOCKER_POETRY_VERSION
-        docker push ghcr.io/$OWNER/$IMAGE:$OPENBBTERMINAL_DOCKER_POETRY_VERSION
+        source docker/compose.env
+        ./docker/build.sh
+        docker push "ghcr.io/${OPENBBTERMINAL_DOCKER_GITHUB_REPOSITORY}/${IMAGE}:${OPENBBTERMINAL_DOCKER_RELEASE_VERSION}"
