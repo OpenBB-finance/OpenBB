@@ -43,8 +43,6 @@ added_files = [
     (os.path.join(os.getcwd(), "data_sources_default.json"), "."),
     (os.path.join(os.getcwd(), "routines"), "routines"),
     (os.path.join(os.getcwd(), "portfolio"), "portfolio"),
-    (os.path.join(os.getcwd(), "i18n"), "i18n"),
-    (os.path.join(os.getcwd(), "styles"), "styles"),
     (os.path.join(pathex, "property_cached"), "property_cached"),
     (os.path.join(pathex, "user_agent"), "user_agent"),
     (os.path.join(pathex, "vaderSentiment"), "vaderSentiment"),
@@ -67,6 +65,7 @@ added_files = [
         "pymongo",
     ),
     (os.path.join(pathex, "bson"), "bson"),
+    (os.path.join(pathex, "debugpy", "_vendored"), os.path.join("debugpy", "_vendored")),
     (".env", "."),
 ]
 
