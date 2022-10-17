@@ -22,7 +22,6 @@ jobs:
       - name: List files
         run: |
           ls
-          ls OpenBBTerminal
 
       - name: Setup and display build parameters
         run: |
@@ -31,6 +30,7 @@ jobs:
           echo $OPENBBTERMINAL_DOCKER_GITHUB_REPOSITORY
           echo $OPENBBTERMINAL_DOCKER_RELEASE_VERSION
 
-      # - name: Build the Docker image
-      #   run: |
-      #     sh docker/build.sh
+      - name: Build the Docker image
+        run: |
+          chmod +x docker/build.sh
+          ./docker/build.sh
