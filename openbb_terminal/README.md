@@ -299,6 +299,101 @@ git stash pop
    your X-server to show plots, hop over to the
    [Advanced Docker Setup](/DOCKER_ADVANCED.md).
 
+## Local Installation of GST on Raspberry Pi
+
+1. Running raspbian lite(headless) or desktop (both 64bit) we should first start off with an update/upgrade.
+
+   ```bash
+   sudo apt update && sudo apt upgrade
+   ```
+
+   Once completed reboot and lets reopen.
+
+2. [Install Miniforge](https://github.com/conda-forge/miniforge) The community version of anaconda/miniconda that has
+   Arm support.
+
+   - Follow the on screen prompts to install miniforge(conda).
+
+   ```bash
+   wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-aarch64.sh
+   ```
+
+   - After following the steps, confirm that you have it by opening a terminal and running: `conda -V`. The output
+     should be something along the lines of: `conda 4.9.2`
+
+3. Install git
+
+   ```bash
+   conda install -c anaconda git
+   ```
+
+4. Install Cmake
+
+   ```bash
+   sudo apt update
+   sudo apt install -y cmake
+   pip install cmake
+   ```
+
+5. Clone the Project
+
+   - Via HTTPS: `git clone https://github.com/OpenBB-finance/OpenBBTerminal.git`
+   - via SSH: `git clone git@github.com:OpenBB-finance/OpenBBTerminal.git`
+
+6. Navigate into the project's folder
+
+   ```bash
+   cd OpenBB/
+   ```
+
+7. Create Environment
+
+   You can name the environment whatever you want. Although you could use names such as: `welikethestock`, `thisistheway`
+   or `diamondhands`, we recommend something simple and intuitive like `gst`. This is because this name will be used
+   from now onwards.
+
+   ```bash
+   conda env create -n openbb python=3.9
+   ```
+
+8. Activate the virtual environment
+
+   ```bash
+   conda activate openbb
+   ```
+
+   Note: At the end, you can deactivate it with: `conda deactivate`.
+
+9. Update all poetry dependencies
+
+   ```bash
+   poetry update --lock
+   ```
+
+   Note: This is done to solve any issues with poetry dependencies for the arm architecture of the rpi
+
+10. Install using our updated poetry installation
+
+    ```bash
+    poetry install
+    ```
+
+11. Ready to rock on a Raspberry Pi!
+
+    ```bash
+    python terminal.py
+    ```
+
+    Note: For a headless installation using raspbian lite also follow the Jupyter Lab installation
+
+12. Jupyter Lab (Optional. Early alpha). User the Terminal from Jupyter Lab
+
+You can install Jupyter Lab extensions that help you manage settings and launch the terminal in a JL bash console
+using the commands in the [jupyterlab/README.md](jupyterlab/README.md)
+
+**NOTE:** When you close the terminal and re-open it, the only command you need to re-call is `conda activate gst`
+before you call `python terminal.py` again.
+
 ### API Keys
 
 The project is build around several different API calls, whether it is to access historical data or financials.
