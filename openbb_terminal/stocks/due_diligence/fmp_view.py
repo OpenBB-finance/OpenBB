@@ -35,10 +35,8 @@ def rating(symbol: str, limit: int = 10, export: str = ""):
     """
     df = fmp_model.get_rating(symbol)
 
-    # given object is a dataframe and is empty
     if isinstance(df, pd.DataFrame) and df.empty:
         return
-    # given object is not a dataframe and is None
     if not isinstance(df, pd.DataFrame) and not df:
         return
 

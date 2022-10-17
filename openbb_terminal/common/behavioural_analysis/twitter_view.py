@@ -106,10 +106,8 @@ def display_sentiment(
 
     df_tweets = twitter_model.get_sentiment(symbol, n_tweets, n_days_past)
 
-    # given object is a dataframe and is empty
     if isinstance(df_tweets, pd.DataFrame) and df_tweets.empty:
         return
-    # given object is not a dataframe and is None
     if not isinstance(df_tweets, pd.DataFrame) and not df_tweets:
         return
 
