@@ -502,7 +502,7 @@
   "futures": {
     "search": ["YahooFinance"],
     "historical": ["YahooFinance"],
-    "futures": ["YahooFinance"]
+    "curve": ["YahooFinance"]
   },
   "alternative": {
     "oss": {

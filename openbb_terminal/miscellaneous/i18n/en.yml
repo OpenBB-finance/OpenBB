@@ -86,8 +86,8 @@ en:
   dashboards: interactive dashboards using voila and jupyter notebooks
   reports: customizable research reports through jupyter notebooks
   futures/search: search for a future based on category or exchange
-  futures/historical: get historical timeseries from future
-  futures/curve: get futures curves based on number of contracts
+  futures/historical: get historical timeseries
+  futures/curve: get futures curves
   stocks/search: search a specific stock ticker for analysis
   stocks/SEARCH: Show companies matching the search query
   stocks/SEARCH_query: The search term used to find company tickers

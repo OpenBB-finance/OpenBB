@@ -153,3 +153,71 @@ def display_search(
         "search",
         df,
     )
+
+
+@log_start_end(log=logger)
+def display_curve(
+    ticker: str,
+    raw: bool = False,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """Display curve futures [Source: Yahoo Finance]
+
+    Parameters
+    ----------
+    ticker: str
+        Curve future ticker to display
+    raw: bool
+        Display futures timeseries in raw format
+    export: str
+        Type of format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
+    """
+    if ticker not in yfinance_model.FUTURES_DATA["Ticker"].unique().tolist():
+        console.print(f"[red]'{ticker}' is not a valid ticker[/red]")
+        return
+
+    df = yfinance_model.get_curve_futures(ticker)
+
+    if raw:
+        print_rich_table(
+            df,
+            headers=list(df.columns),
+            show_index=True,
+            title="Futures curve",
+        )
+        console.print()
+
+    else:
+        # This plot has 1 axis
+        if not external_axes:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        elif is_valid_axes_count(external_axes, 1):
+            (ax,) = external_axes
+        else:
+            return
+
+        name = yfinance_model.FUTURES_DATA[
+            yfinance_model.FUTURES_DATA["Ticker"] == ticker
+        ]["Description"].values[0]
+        ax.plot(
+            df.index,
+            df.values,
+            marker="o",
+            linestyle="dashed",
+            linewidth=2,
+            markersize=12,
+        )
+        ax.set_title(name)
+
+        if external_axes is None:
+            theme.visualize_output()
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "curve",
+            df,
+        )

@@ -8,6 +8,7 @@ import logging
 import os
 import itertools
 from datetime import datetime, timedelta
+from secrets import choice
 from typing import List, Dict, Any
 
 import pandas as pd
@@ -68,6 +69,7 @@ class FuturesController(BaseController):
             self.choices["about"] = self.ABOUT_CHOICES
 
             self.choices["historical"] = {"-t": {c: None for c in self.all_tickers}}
+            self.choices["curve"] = {"-t": {c: None for c in self.all_tickers}}
 
             self.completer = NestedCompleter.from_nested_dict(self.choices)  # type: ignore
 
@@ -187,6 +189,39 @@ class FuturesController(BaseController):
             yfinance_view.display_historical(
                 ns_parser.ticker.split(","),
                 ns_parser.start.strftime("%Y-%m-%d"),
+                ns_parser.raw,
+                ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_curve(self, other_args: List[str]):
+        """Process curve command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="curve",
+            description="""Display futures curve. [Source: YahooFinance]""",
+        )
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            dest="ticker",
+            type=str,
+            choices=self.all_tickers,
+            default="",
+            help="Future curve to be selected",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-t")
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            raw=True,
+        )
+        if ns_parser:
+            yfinance_view.display_curve(
+                ns_parser.ticker,
                 ns_parser.raw,
                 ns_parser.export,
             )
