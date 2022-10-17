@@ -20,6 +20,7 @@ Databases:
 
 Stored datasets: 
 
+    eval               create new series by performing operations on loaded data
     plot               plot data from the above commands together
 
 >   qa                 Open quantitative analysis menu with stored data
