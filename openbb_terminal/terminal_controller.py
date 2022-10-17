@@ -138,7 +138,8 @@ class TerminalController(BaseController):
         mt.add_cmd("about")
         mt.add_cmd("support")
         mt.add_cmd("survey")
-        mt.add_cmd("update")
+        if not obbff.PACKAGED_APPLICATION:
+            mt.add_cmd("update")
         mt.add_cmd("wiki")
         mt.add_cmd("record")
         mt.add_cmd("stop")

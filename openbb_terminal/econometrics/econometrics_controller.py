@@ -189,6 +189,8 @@ class EconometricsController(BaseController):
             ]:
                 choices[feature] = dict()
 
+            # Inititialzie this for regressions to be able to use -h flag
+            choices["regressions"] = {}
             self.choices = choices
 
             choices["support"] = self.SUPPORT_CHOICES

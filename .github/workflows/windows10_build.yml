@@ -44,7 +44,7 @@ jobs:
       - name: Build Terminal.spec file
         run: |
           conda activate obb
-          conda remove --force sigtool -y 
+          conda remove --force sigtool -y
           pyinstaller build/pyinstaller/terminal.spec --clean
       - name: Move Files into App Folder
         run: cp -r .\dist\OpenBBTerminal\ .\build\nsis\app\
@@ -61,7 +61,7 @@ jobs:
           name: Windows EXE Artifact
           path: '.\build\nsis\OpenBB Terminal Setup.exe'
       - name: Run Integration Tests
-        run: dist\OpenBBTerminal\OpenBBTerminal.exe C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\scripts -t
+        run: dist\OpenBBTerminal\OpenBBTerminal.exe C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\openbb_terminal\miscellaneous\scripts\*.openbb -t
       # Cleaning ------------------------
       # Make sure to add Remove-Item C:\Users\Administrator\Desktop\OPENBB-exports -Recurse whenever integration tests get fixed
       - name: Remove Previous Build
