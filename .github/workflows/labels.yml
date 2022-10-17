@@ -10,7 +10,7 @@ jobs:
         with:
           mode: minimum
           count: 1
-          labels: "guides, bug, build, do not merge, docker, docs, duplicate, enhancement, feat XS, feat S, feat M, feat L, feat XL, help wanted, refactor, tests, discord, dependencies, notebookreports, dashboards, API, analytics, portfolio"
+          labels: "guides, bug, build, do not merge, docker, docs, duplicate, enhancement, feat XS, feat S, feat M, feat L, feat XL, help wanted, refactor, tests, discord, dependencies, notebookreports, dashboards, analytics, portfolio, installer, SDK, HACKTOBERFEST, "
       - uses: mheap/github-action-required-labels@v1
         with:
           mode: exactly
