@@ -7,7 +7,6 @@ import os
 
 # pylint: disable=R1732, R0912
 from typing import Any, Dict, List
-import warnings
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.helper_funcs import parse_simple_args
