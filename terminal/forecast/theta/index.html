@@ -9,8 +9,8 @@
 
 
 
-    <meta name="description" content="usage: theta [--naive] [-d {}] [-c TARGET_COLUMN] [-n N_DAYS] [-s {N,A,M}] [-p SEASONAL_PERIODS] [-w START_WINDOW] [--end S_END_DATE] [--start S_START_DATE] [--residuals] [--forecast-only] [-h] [--export EXPORT] Perform Theta forecast.
-optional arguments: --naive Show the naive baseline for a model. (default: False) -d {}, --target-dataset {} The name of the dataset you want to select (default: None) -c TARGET_COLUMN, --target-column TARGET_COLUMN The name of the specific column you want to use (default: close) -n N_DAYS, --n-days N_DAYS prediction days.">
+    <meta name="description" content="usage: theta [--naive] [-d {AAPL}] [-c TARGET_COLUMN] [-n N_DAYS] [-s {N,A,M}] [-p SEASONAL_PERIODS] [-w START_WINDOW] [--end S_END_DATE] [--start S_START_DATE] [--residuals] [--forecast-only] [--export-pred-raw] [-h] [--export EXPORT] Perform Theta forecast.
+optional arguments: --naive Show the naive baseline for a model. (default: False) -d {AAPL}, --target-dataset {AAPL} The name of the dataset you want to select (default: None) -c TARGET_COLUMN, --target-column TARGET_COLUMN The name of the specific column you want to use (default: close) -n N_DAYS, --n-days N_DAYS prediction days.">
 
 
 
@@ -46406,12 +46406,12 @@ code, img {
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Theta</h1>
-        <pre><code>usage: theta [--naive] [-d {}] [-c TARGET_COLUMN] [-n N_DAYS] [-s {N,A,M}] [-p SEASONAL_PERIODS] [-w START_WINDOW]
-             [--end S_END_DATE] [--start S_START_DATE] [--residuals] [--forecast-only] [-h] [--export EXPORT]
+        <pre><code>usage: theta [--naive] [-d {AAPL}] [-c TARGET_COLUMN] [-n N_DAYS] [-s {N,A,M}] [-p SEASONAL_PERIODS] [-w START_WINDOW] [--end S_END_DATE] [--start S_START_DATE] [--residuals]
+             [--forecast-only] [--export-pred-raw] [-h] [--export EXPORT]
 </code></pre><p>Perform Theta forecast.</p>
 <pre><code>optional arguments:
   --naive               Show the naive baseline for a model. (default: False)
-  -d {}, --target-dataset {}
+  -d {AAPL}, --target-dataset {AAPL}
                         The name of the dataset you want to select (default: None)
   -c TARGET_COLUMN, --target-column TARGET_COLUMN
                         The name of the specific column you want to use (default: close)
@@ -46427,10 +46427,11 @@ code, img {
   --start S_START_DATE  The start date (format YYYY-MM-DD) to select for testing (default: None)
   --residuals           Show the residuals for the model. (default: False)
   --forecast-only       Do not plot the hisotorical data without forecasts. (default: False)
+  --export-pred-raw     Export predictions to a csv file. (default: False)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export figure into png, jpg, pdf, svg (default: )
 
-For more information and examples, use 'about export' to access the related guide.
+For more information and examples, use 'about theta' to access the related guide.
 </code></pre><p>Example:</p>
 <pre><code>2022 Jul 23, 10:36 (🦋) /forecast/ $ load GME_20220719_123734.csv -a GME
 
