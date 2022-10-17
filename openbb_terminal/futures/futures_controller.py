@@ -19,6 +19,7 @@ from openbb_terminal.decorators import log_start_end
 
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
     print_rich_table,
     valid_date,
     parse_and_split_input,
@@ -142,34 +143,12 @@ class FuturesController(BaseController):
             help="Select the category where the future exists",
         )
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            if ns_parser.category and ns_parser.exchange:
-                print_rich_table(
-                    yfinance_model.FUTURES_DATA[
-                        (yfinance_model.FUTURES_DATA["Exchange"] == ns_parser.exchange)
-                        & (
-                            yfinance_model.FUTURES_DATA["Category"]
-                            == ns_parser.category
-                        )
-                    ]
-                )
-            elif ns_parser.category:
-                print_rich_table(
-                    yfinance_model.FUTURES_DATA[
-                        yfinance_model.FUTURES_DATA["Category"] == ns_parser.category
-                    ]
-                )
-            elif ns_parser.exchange:
-                print_rich_table(
-                    yfinance_model.FUTURES_DATA[
-                        yfinance_model.FUTURES_DATA["Exchange"] == ns_parser.exchange
-                    ]
-                )
-            else:
-                print_rich_table(yfinance_model.FUTURES_DATA)
-        console.print()
+            yfinance_view.display_search(
+                ns_parser.category, ns_parser.exchange, ns_parser.export
+            )
 
     @log_start_end(log=logger)
     def call_historical(self, other_args: List[str]):

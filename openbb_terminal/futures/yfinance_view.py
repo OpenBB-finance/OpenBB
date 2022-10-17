@@ -119,3 +119,36 @@ def display_historical(
             "historical",
             historicals,
         )
+
+
+@log_start_end(log=logger)
+def display_search(
+    category: str = "",
+    exchange: str = "",
+    export: str = "",
+):
+    """Display search futures [Source: Yahoo Finance]
+
+    Parameters
+    ----------
+    category: str
+        Select the category where the future exists
+    exchange: str
+        Select the exchange where the future exists
+    export: str
+        Type of format to export data
+    """
+    df = yfinance_model.get_search_futures(category, exchange)
+    if df.empty:
+        console.print("[red]No futures data found.[/red]")
+        return
+
+    print_rich_table(df)
+    console.print()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "search",
+        df,
+    )
