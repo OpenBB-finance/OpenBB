@@ -1,0 +1,2 @@
+[red]Invalid syntax in query.  Please enter something of the form `newcol=col1 + col2`[/red]
+
