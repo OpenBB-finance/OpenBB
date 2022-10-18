@@ -1,17 +1,26 @@
 ## Get underlying data 
-### crypto.load(symbol: 'str', start_date: 'datetime' = datetime.datetime(2019, 10, 7, 7, 55, 32, 347659), interval: 'str' = '1440', exchange: 'str' = 'binance', vs_currency: 'str' = 'usdt', end_date: 'datetime' = datetime.datetime(2022, 10, 11, 7, 55, 32, 347665), source: 'str' = 'CCXT') -> 'pd.DataFrame'
+### crypto.load(symbol: 'str', start_date: 'datetime' = datetime.datetime(2019, 10, 15, 0, 16, 24, 253976), interval: 'str' = '1440', exchange: 'str' = 'binance', vs_currency: 'str' = 'usdt', end_date: 'datetime' = datetime.datetime(2022, 10, 19, 0, 16, 24, 253983), source: 'str' = 'CCXT') -> 'pd.DataFrame'
 
-Load crypto currency to perform analysis on CoinGecko is used as source for price and
-    YahooFinance for volume.
+Load crypto currency to get data for.
 
     Parameters
     ----------
     symbol: str
         Coin to get
-    vs: str
-        Quote Currency (usd or eur), by default usd
-    days: int
-        Data up to number of days ago, by default 365
+    start_date: datetime
+        The datetime to start at
+    interval: str
+        The interval between data points in minutes.
+        Choose from: 1, 15, 30, 60, 240, 1440, 10080, 43200
+    exchange: str:
+        The exchange to get data from.
+    vs_currency: str
+        Quote Currency (Defaults to usdt)
+    end_date: datetime
+       The datetime to end at
+    source: str
+        The source of the data
+        Choose from: CCXT, CoinGecko, YahooFinance
 
     Returns
     -------

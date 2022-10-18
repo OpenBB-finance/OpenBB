@@ -11,5 +11,7 @@ Show candle plot for fx data.
         To forex symbol
     from_symbol : str
         From forex symbol
+    ma : Optional[Iterable[int]]
+        Moving averages
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list), by default None

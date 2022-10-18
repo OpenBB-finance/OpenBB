@@ -14,8 +14,8 @@ yaml.indent(mapping=2, sequence=4, offset=2)
 
 
 def all_functions() -> List[Tuple[str, str, Callable[..., Any]]]:
-    """Uses the base api functions dictionary to get a list of all functions we have linked
-    in our API.
+    """Uses the base sdk functions dictionary to get a list of all functions we have linked
+    in our SDK.
 
     Returns
     ----------
@@ -125,17 +125,14 @@ def delete_line(path: str, to_delete: int):
                 file.write(line)
 
 
-def crawl_folders(path: str):
+def crawl_folders(root: str) -> list:
     """Crawls created folders to get a list of what has been created"""
     target = "website/content/"
-    results = os.walk(path)
+    ignore_length = root.index(target) + len(target)
     new_list = []
-    for item in list(results):
-        if item[1]:
-            new_item = list(item[:2])
-            loc = item[0]
-            new_item[0] = loc[loc.index(target) + len(target) :]
-            new_list.append(new_item)
+    for path, dirs, files in os.walk(root):
+        if dirs:
+            new_list.append([path[ignore_length:], sorted(dirs)])
     return new_list
 
 
@@ -165,11 +162,11 @@ def generate_dict(paths: List):
     final_dict: Dict[str, Any] = {}
     added_paths = []
     for path, subs in paths:
-        if not final_dict and path == "api":
-            final_dict = {"name": "api", "ref": "/api", "sub": []}
+        if not final_dict and path == "sdk":
+            final_dict = {"name": "sdk", "ref": "/sdk", "sub": []}
             for sub in subs:
                 final_dict["sub"].append({"name": sub, "ref": f"/{path}/{sub}"})
-            added_paths.append("api")
+            added_paths.append("sdk")
         if path not in added_paths:
             final_dict = set_items(final_dict, path, subs)
             added_paths.append(path)
@@ -189,9 +186,9 @@ def folder_documentation(path: str):
 
 
 if __name__ == "__main__":
-    base_folder_path = os.path.realpath("./website/content/api")
+    base_folder_path = os.path.realpath("./website/content/sdk")
     target_path = os.path.realpath("./website/data/menu/main.yml")
-    main_path = os.path.realpath("./website/content/api")
+    main_path = os.path.realpath("./website/content/sdk")
     folder_list = crawl_folders(main_path)
     for folder_path in [x[0] for x in folder_list]:
         folder_documentation(folder_path)

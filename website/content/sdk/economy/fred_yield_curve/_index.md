@@ -1,7 +1,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### economy.fred_yield_curve(date: datetime.datetime = None) -> Tuple[pandas.core.frame.DataFrame, str]
+### economy.fred_yield_curve(date: datetime.datetime = None) -> Tuple[pandas.core.frame.DataFrame, datetime.datetime]
 
 Gets yield curve data from FRED
 
@@ -18,7 +18,7 @@ Gets yield curve data from FRED
         Date for which the yield curve is obtained
 
 ## Getting charts 
-### economy.fred_yield_curve(date: datetime.datetime = datetime.datetime(2022, 10, 11, 7, 55, 32, 575569, chart=True), external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, raw: bool = False, export: str = '')
+### economy.fred_yield_curve(date: datetime.datetime = None, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, raw: bool = False, export: str = '', chart=True)
 
 Display yield curve based on US Treasury rates for a specified date.
 
