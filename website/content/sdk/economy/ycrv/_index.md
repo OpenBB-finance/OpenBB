@@ -1,7 +1,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### economy.ycrv(country: str) -> pandas.core.frame.DataFrame
+### economy.ycrv(country: str = 'United States') -> pandas.core.frame.DataFrame
 
 Get yield curve for specified country. [Source: Investing.com]
 
@@ -16,7 +16,7 @@ Get yield curve for specified country. [Source: Investing.com]
         Country yield curve
 
 ## Getting charts 
-### economy.ycrv(country: str, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, raw: bool = False, export: str = '', chart=True)
+### economy.ycrv(country: str = 'United States', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, raw: bool = False, export: str = '', chart=True)
 
 Display yield curve for specified country. [Source: Investing.com]
 
