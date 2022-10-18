@@ -237,5 +237,5 @@ class ReportController(BaseController):
                     reports_model.render_report(complete_file_path, parameters_dict)
                 else:
                     console.print(
-                        f"[red]Notebook '{complete_file_path}' not found![/red]\n"
+                        f"[red]Notebook '{ns_parser.file}' not found![/red]\n"
                     )
