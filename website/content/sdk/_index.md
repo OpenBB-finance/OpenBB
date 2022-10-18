@@ -20,6 +20,46 @@ So that you can focus on designing and building your financial reports and appli
 
 ---
 
+## Installation
+
+We provide a simple installation method in order to utilize the OpenBB SDK. You must first create an environment,
+which allows you to isolate the SDK from the rest of your system. It is our recommendation that you utilize a
+`conda` environment because there are optional features, such as `forecast`, that utilize libraries that are
+specifically sourced from `conda-forge`. Due to this, if you do not use a conda environment, you will not be
+able to use some of these features. As such, the installation steps will be written under the assumption that
+you are using conda.
+
+### Steps
+
+1. **Install [Miniconda](https://docs.conda.io/en/latest/miniconda.html)**
+
+    Download the `x86_64` Miniconda for your respective system and follow along with it's installation instructions. The Miniconda architecture MUST be `x86_64` in order to use certain features.
+
+2. **Create Environment**
+
+    ```shell
+    conda create -n <environment> python=3.9.6 -y
+    ```
+
+    (Optional) If you would like machine learning forecast features:
+
+    ```shell
+    conda install -c conda-forge u8darts-torch=0.22.0 -y
+    conda install -c conda-forge pytorch-lightning=1.6.5 -y
+    ```
+
+3. **Install OpenBB Terminal**
+
+    ```shell
+    pip install openbbterminal
+    ```
+
+    (Optional) If you would like machine learning forecast features:
+
+    ```shell
+    pip install "openbbterminal[prediction]"
+    ```
+
 ## Setup
 
 ### 1. Import OpenBB SDK
@@ -337,4 +377,6 @@ openbb.stocks.dps.dpotc(
 fig.tight_layout()
 ```
 
-You can also do this to save output charts in a variable for later uses. For more examples, we'd recommend checking out our [curated Jupyter Notebook reports](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/reports). They are excellent demonstration on how to use the SDK to its fullest extent
+You can also do this to save output charts in a variable for later uses.
+
+### For more examples, we'd recommend checking out our [curated Jupyter Notebook reports](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/reports). They are excellent demonstration on how to use the SDK to its fullest extent
