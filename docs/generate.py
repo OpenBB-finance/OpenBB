@@ -130,9 +130,7 @@ def crawl_folders(root: str) -> list:
     target = "website/content/"
     ignore_length = root.index(target) + len(target)
     return [
-        [path[ignore_length:], sorted(dirs)]
-        for path, dirs, _ in os.walk(root)
-        if dirs
+        [path[ignore_length:], sorted(dirs)] for path, dirs, _ in os.walk(root) if dirs
     ]
 
 
