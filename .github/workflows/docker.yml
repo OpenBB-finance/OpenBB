@@ -6,7 +6,7 @@ jobs:
   publish-image:
     runs-on: ubuntu-latest
     env: 
-      OPENBBTERMINAL_DOCKER_GITHUB_REPOSITORY: ${{ github.repository }}
+      OPENBBTERMINAL_DOCKER_GITHUB_REPOSITORY: ${{ github.github.repository_owner }}
 
     steps:
       - name: Checkout Code
@@ -24,11 +24,7 @@ jobs:
           source docker/compose.env
           source docker/build.sh
           echo "OPENBBTERMINAL_DOCKER_POETRY_IMAGE=$OPENBBTERMINAL_DOCKER_POETRY_IMAGE" >> $GITHUB_ENV
-
-      - name: Display image name
-        run: |
-          echo "${OPENBBTERMINAL_DOCKER_POETRY_IMAGE}"
           
-      # - name: Building the Docker image
+      # - name: Publishing the Docker image
       #   run: |
       #     docker push "${OPENBBTERMINAL_DOCKER_POETRY_IMAGE}"
