@@ -191,6 +191,10 @@ def display_curve(
 
     df = yfinance_model.get_curve_futures(ticker)
 
+    if df.empty:
+        console.print("[red]No future data found to generate curve.[/red]\n")
+        return
+
     if raw:
         print_rich_table(
             df,
@@ -207,10 +211,6 @@ def display_curve(
         elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
         else:
-            return
-
-        if df.empty:
-            console.print("[red]No future data found to generate curve.[/red]\n")
             return
 
         name = yfinance_model.FUTURES_DATA[
