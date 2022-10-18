@@ -5,13 +5,8 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-import os
-import itertools
 from datetime import datetime, timedelta
-from secrets import choice
-from typing import List, Dict, Any
-
-import pandas as pd
+from typing import List
 
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
@@ -21,7 +16,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    print_rich_table,
     valid_date,
     parse_and_split_input,
     parse_simple_args,
@@ -97,25 +91,6 @@ class FuturesController(BaseController):
         mt.add_cmd("historical")
         mt.add_cmd("curve")
         console.print(text=mt.menu_text, menu="Futures")
-
-    @log_start_end(log=logger)
-    def call_curve(self, other_args: List[str]):
-        """Process curve command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="curve",
-            description="""Set type of curve to use. [Source: YahooFinance]""",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-t")
-        ns_parser = parse_simple_args(
-            parser,
-            other_args,
-        )
-        if ns_parser:
-            self.curve_type = ns_parser.type
-            console.print()
 
     @log_start_end(log=logger)
     def call_search(self, other_args: List[str]):
