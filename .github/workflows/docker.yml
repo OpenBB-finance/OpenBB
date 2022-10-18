@@ -24,4 +24,11 @@ jobs:
           source docker/compose.env
           source docker/build.sh
           echo "${OPENBBTERMINAL_DOCKER_POETRY_IMAGE}"
-          docker push "${OPENBBTERMINAL_DOCKER_POETRY_IMAGE}"
+
+      - name: Display image name
+        run: |
+          echo "${OPENBBTERMINAL_DOCKER_POETRY_IMAGE}"
+          
+      # - name: Building the Docker image
+      #   run: |
+      #     docker push "${OPENBBTERMINAL_DOCKER_POETRY_IMAGE}"
