@@ -17,7 +17,12 @@ So that you can focus on designing and building your financial reports and appli
 
 ## Installation
 
-We provide a simple installation method in order to utilize the OpenBB SDK. You must first create an environment, which allows you to isolate the SDK from the rest of your system. It is our recommendation that you utilize a `conda` environment because there are optional features, such as `forecast`, that utilize libraries that are specifically sourced from `conda-forge`. Due to this, if you do not use a conda environment, you will not be able to use some of these features. As such, the installation steps will be written under the assumption that you are using conda.
+We provide a simple installation method in order to utilize the OpenBB SDK. You must first create an environment,
+which allows you to isolate the SDK from the rest of your system. It is our recommendation that you utilize a
+`conda` environment because there are optional features, such as `forecast`, that utilize libraries that are
+specifically sourced from `conda-forge`. Due to this, if you do not use a conda environment, you will not be
+able to use some of these features. As such, the installation steps will be written under the assumption that
+you are using conda.
 
 ### Steps
 
