@@ -763,7 +763,7 @@ class EconomyController(BaseController):
         parser.add_argument(
             "-p",
             "--parameter",
-            nargs="+",
+            type=str,
             dest="parameter",
             help="Series ID of the Macro Economic data from FRED",
         )
@@ -786,7 +786,7 @@ class EconomyController(BaseController):
         parser.add_argument(
             "-q",
             "--query",
-            nargs="+",
+            type=str,
             action="store",
             dest="query",
             help="Query the FRED database to obtain Series IDs given the query search term.",
@@ -801,8 +801,9 @@ class EconomyController(BaseController):
             limit=100,
         )
         if ns_parser:
+            parameters = ns_parser.parameter.split(",")
             if ns_parser.query:
-                query = " ".join(ns_parser.query)
+                query = ns_parser.query.replace(",", " ")
                 df_search = fred_model.get_series_notes(search_query=query)
 
                 if not df_search.empty:
@@ -813,9 +814,9 @@ class EconomyController(BaseController):
 
                 return self.queue
 
-            if ns_parser.parameter:
+            if parameters:
                 series_dict = {}
-                for series in ns_parser.parameter:
+                for series in parameters:
                     information = fred_model.check_series_id(series)
 
                     if "seriess" in information:
@@ -830,7 +831,7 @@ class EconomyController(BaseController):
                     return self.queue
 
                 df, detail = fred_model.get_aggregated_series_data(
-                    series_ids=ns_parser.parameter,
+                    series_ids=parameters,
                     start_date=ns_parser.start_date,
                     end_date=ns_parser.end_date,
                 )
@@ -851,7 +852,7 @@ class EconomyController(BaseController):
                     )
 
                     fred_view.display_fred_series(
-                        series_ids=ns_parser.parameter,
+                        series_ids=parameters,
                         start_date=ns_parser.start_date,
                         end_date=ns_parser.end_date,
                         limit=ns_parser.limit,
@@ -877,7 +878,7 @@ class EconomyController(BaseController):
         parser.add_argument(
             "-i",
             "--indices",
-            nargs="+",
+            type=str,
             dest="indices",
             help="One or multiple indices",
         )
@@ -923,7 +924,6 @@ class EconomyController(BaseController):
             "-q",
             "--query",
             type=str,
-            nargs="+",
             dest="query",
             help="Search for indices with given keyword",
         )
@@ -945,6 +945,7 @@ class EconomyController(BaseController):
             limit=10,
         )
         if ns_parser:
+            indices = ns_parser.indices.split(",")
             if ns_parser.query and ns_parser.limit:
                 yfinance_view.search_indices(ns_parser.query, ns_parser.limit)
                 return self.queue
@@ -959,8 +960,8 @@ class EconomyController(BaseController):
                 )
                 return self.queue
 
-            if ns_parser.indices:
-                for i, index in enumerate(ns_parser.indices):
+            if indices:
+                for i, index in enumerate(indices):
                     df = yfinance_model.get_index(
                         index,
                         interval=ns_parser.interval,
@@ -977,9 +978,9 @@ class EconomyController(BaseController):
                         )
 
                         # display only once in the last iteration
-                        if i == len(ns_parser.indices) - 1:
+                        if i == len(indices) - 1:
                             yfinance_view.show_indices(
-                                indices=ns_parser.indices,
+                                indices=indices,
                                 interval=ns_parser.interval,
                                 start_date=ns_parser.start_date,
                                 end_date=ns_parser.end_date,
@@ -1008,11 +1009,10 @@ class EconomyController(BaseController):
         parser.add_argument(
             "-m",
             "--maturity",
-            nargs="+",
             type=str,
             dest="maturity",
             help="The preferred maturity which is dependent on the type of the treasury",
-            default=["10y"],
+            default="10y",
         )
         parser.add_argument(
             "--show",
@@ -1032,13 +1032,10 @@ class EconomyController(BaseController):
         parser.add_argument(
             "-t",
             "--type",
-            nargs="+",
             type=str,
             dest="type",
-            choices=econdb_model.TREASURIES["instruments"],
-            help="Whether to select nominal, inflation indexed, average inflation indexed or "
-            "secondary market treasury rates",
-            default=["nominal"],
+            help="Choose from: nominal, inflation, average, secondary",
+            default="nominal",
         )
         parser.add_argument(
             "-s",
@@ -1064,14 +1061,20 @@ class EconomyController(BaseController):
             limit=10,
         )
         if ns_parser:
+            maturities = ns_parser.maturity.split(",")
+            types = ns_parser.type.split(",")
+            for item in types:
+                if item not in econdb_model.TREASURIES["instruments"]:
+                    print(f"{item} is not a valid instrument type.\n")
+                    return self.queue
             if ns_parser.show_maturities:
                 econdb_view.show_treasury_maturities()
                 return self.queue
 
             if ns_parser.maturity and ns_parser.type:
                 df = econdb_model.get_treasuries(
-                    instruments=ns_parser.type,
-                    maturities=ns_parser.maturity,
+                    instruments=types,
+                    maturities=maturities,
                     frequency=ns_parser.frequency,
                     start_date=ns_parser.start_date,
                     end_date=ns_parser.end_date,
@@ -1098,8 +1101,8 @@ class EconomyController(BaseController):
                     )
 
                     econdb_view.show_treasuries(
-                        instruments=ns_parser.type,
-                        maturities=ns_parser.maturity,
+                        instruments=types,
+                        maturities=maturities,
                         frequency=ns_parser.frequency,
                         start_date=ns_parser.start_date,
                         end_date=ns_parser.end_date,
@@ -1355,14 +1358,14 @@ class EconomyController(BaseController):
         )
         parser.add_argument(
             "--y1",
-            nargs="+",
+            type=str,
             dest="yaxis1",
             help="Select the data you wish to plot on the first y-axis. You can select multiple variables here.",
             default="",
         )
         parser.add_argument(
             "--y2",
-            nargs="+",
+            type=str,
             dest="yaxis2",
             help="Select the data you wish to plot on the second y-axis. You can select multiple variables here.",
             default="",
@@ -1379,6 +1382,8 @@ class EconomyController(BaseController):
         )
 
         if ns_parser:
+            y1s = ns_parser.yaxis1.split(",")
+            y2s = ns_parser.yaxis2.split(",")
             if not self.DATASETS:
                 console.print(
                     "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
@@ -1388,8 +1393,8 @@ class EconomyController(BaseController):
                 dataset_yaxis1 = pd.DataFrame()
                 dataset_yaxis2 = pd.DataFrame()
 
-                if ns_parser.yaxis1:
-                    for variable in ns_parser.yaxis1:
+                if y1s:
+                    for variable in y1s:
                         for key, data in self.DATASETS.items():
                             if variable in data.columns:
                                 if key == "macro":
@@ -1450,8 +1455,8 @@ class EconomyController(BaseController):
                             f"options are: {', '.join(self.choices['plot']['--y1'])}[/red]\n"
                         )
 
-                if ns_parser.yaxis2:
-                    for variable in ns_parser.yaxis2:
+                if y2s:
+                    for variable in y2s:
                         for key, data in self.DATASETS.items():
                             if variable in data.columns:
                                 if key == "macro":
@@ -1512,7 +1517,7 @@ class EconomyController(BaseController):
                             f"options are: {', '.join(self.choices['plot']['--y2'])}[/red]\n"
                         )
 
-                if ns_parser.yaxis1 or ns_parser.yaxis2:
+                if y1s or y2s:
                     plot_view.show_plot(
                         dataset_yaxis_1=dataset_yaxis1,
                         dataset_yaxis_2=dataset_yaxis2,
@@ -1561,7 +1566,6 @@ class EconomyController(BaseController):
             type=str,
             choices=list(self.d_GROUPS.keys()),
             default="sector",
-            nargs="+",
             dest="group",
             help="Data group (sectors, industry or country)",
         )
@@ -1618,7 +1622,6 @@ class EconomyController(BaseController):
             type=str,
             choices=list(self.d_GROUPS.keys()),
             default="sector",
-            nargs="+",
             dest="group",
             help="Data group (sector, industry or country)",
         )
@@ -1690,7 +1693,6 @@ class EconomyController(BaseController):
             type=str,
             choices=list(self.d_GROUPS.keys()),
             default="sector",
-            nargs="+",
             dest="group",
             help="Data group (sector, industry or country)",
         )
