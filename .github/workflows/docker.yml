@@ -31,5 +31,5 @@ jobs:
 
       - name: Building the Docker image
         run: |
-          docker build -f docker/openbbterminal/alpine.dockerfile -t ghcr.io/chavithra/openbbterminal/alpine:0.0.2 .
+          docker build -f docker/alpine.dockerfile -t ghcr.io/chavithra/openbbterminal/alpine:0.0.2 .
           docker push ghcr.io/chavithra/openbbterminal/alpine:0.0.2
