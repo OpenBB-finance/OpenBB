@@ -14,10 +14,14 @@ dotenv.load_dotenv(USER_ENV_FILE)
 dotenv.load_dotenv(REPOSITORY_ENV_FILE, override=True)
 
 # Terminal UX section
+MPL_STYLE = os.getenv("OPENBB_MPLSTYLE") or "dark"
+PMF_STYLE = os.getenv("OPENBB_PMFSTYLE") or "dark"
+RICH_STYLE = os.getenv("OPENBB_RICHSTYLE") or "dark"
+
 theme = _TerminalStyle(
-    os.getenv("OPENBB_MPLSTYLE") or "dark",
-    os.getenv("OPENBB_MPFSTYLE") or "dark",
-    os.getenv("OPENBB_RICHSTYLE") or "dark",
+    MPL_STYLE,
+    PMF_STYLE,
+    RICH_STYLE,
 )
 
 # Set to True to see full stack traces for debugging/error reporting
