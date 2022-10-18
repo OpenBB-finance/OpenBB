@@ -23,15 +23,26 @@ logger = logging.getLogger(__name__)
 
 
 base_file_types = ["csv", "xlsx"]
-default_files = {
-    filepath.name: filepath
-    for file_type in base_file_types
-    for filepath in chain(
-        USER_EXPORTS_DIRECTORY.rglob(f"*.{file_type}"),
-        USER_CUSTOM_IMPORTS_DIRECTORY.rglob(f"*.{file_type}"),
-    )
-    if filepath.is_file()
-}
+
+
+def get_default_files() -> Dict[str, Path]:
+    """Get the default files to load.
+
+    Returns
+    -------
+    default_files : Dict[str, Path]
+        A dictionary to map the default file names to their paths.
+    """
+    default_files = {
+        filepath.name: filepath
+        for file_type in base_file_types
+        for filepath in chain(
+            USER_EXPORTS_DIRECTORY.rglob(f"*.{file_type}"),
+            USER_CUSTOM_IMPORTS_DIRECTORY.rglob(f"*.{file_type}"),
+        )
+        if filepath.is_file()
+    }
+    return default_files
 
 
 @log_start_end(log=logger)
@@ -62,7 +73,7 @@ def load(
     if file_types is None:
         file_types = ["csv", "xlsx"]
     if data_files is None:
-        data_files = default_files
+        data_files = get_default_files()
 
     if file in data_files:
         full_file = data_files[file]
