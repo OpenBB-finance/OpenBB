@@ -1,7 +1,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### stocks.ba.sentiment(symbol: str, n_tweets: int = 15, n_days_past: int = 2)
+### stocks.ba.sentiment(symbol: str, n_tweets: int = 15, n_days_past: int = 2) -> pandas.core.frame.DataFrame
 
 Get sentiments from symbol
 
