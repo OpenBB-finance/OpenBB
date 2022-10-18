@@ -24,7 +24,15 @@ logger = logging.getLogger(__name__)
 class ReportController(BaseController):
     """Report Controller class."""
 
-    REPORTS: List[str] = reports_model.get_reports_available()
+    REPORTS: List[str] = [
+        "crypto",
+        "economy",
+        "equity",
+        "etf",
+        "forecast",
+        "forex",
+        "portfolio",
+    ]
     PARAMETERS_DICT: Dict[str, Any] = {}
 
     CHOICES_COMMANDS: List[str] = REPORTS + ["run", "load"]
