@@ -16,3 +16,16 @@ optional arguments:
   --export EXPORT       Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
   --raw                 Flag to display raw data (default: False)
 ```
+
+```
+2022 Oct 18, 19:16 (🦋) /futures/ $ historical BLK
+```
+
+![blk](https://user-images.githubusercontent.com/25267873/196562549-1251b0fd-ca36-4e0f-bca6-b6bfe473effa.png)
+
+
+```
+2022 Oct 18, 19:17 (🦋) /futures/ $ historical BLK -e 2022-12
+```
+
+![Figure_31](https://user-images.githubusercontent.com/25267873/196562627-79f9ffa1-8582-457c-91e8-5c18d6d4304f.png)
