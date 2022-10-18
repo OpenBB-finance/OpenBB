@@ -1,5 +1,5 @@
 openbb_terminal
-==================
+===============
 
 .. toctree::
    :maxdepth: 4

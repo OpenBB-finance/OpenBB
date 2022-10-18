@@ -125,18 +125,13 @@ def delete_line(path: str, to_delete: int):
                 file.write(line)
 
 
-def crawl_folders(path: str):
+def crawl_folders(root: str) -> list:
     """Crawls created folders to get a list of what has been created"""
     target = "website/content/"
-    results = os.walk(path)
-    new_list = []
-    for item in list(results):
-        if item[1]:
-            new_item = list(item[:2])
-            loc = item[0]
-            new_item[0] = loc[loc.index(target) + len(target) :]
-            new_list.append(new_item)
-    return new_list
+    ignore_length = root.index(target) + len(target)
+    return [
+        [path[ignore_length:], sorted(dirs)] for path, dirs, _ in os.walk(root) if dirs
+    ]
 
 
 def filter_dict(sub_dict, target: str):
