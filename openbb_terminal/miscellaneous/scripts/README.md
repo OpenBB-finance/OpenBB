@@ -10,15 +10,23 @@ It aims to provide necessary information in order to:
 
 ## 1.1. Why having integration tests ?
 
-The purpose of integration tests is to provide standard usage examples that can be programmatically run to make sure that a specific functionality of the terminal and the process to utilize that functionality is working properly.
+The purpose of integration tests is to provide standard usage examples that can be programmatically run
+to make sure that a specific functionality of the terminal and the process to utilize that functionality
+is working properly.
 
 ## 2. How to build integration tests ?
 
-Integration tests themselves are the same as manually running a certain series of steps. As a result, writing tests is easy because the integration test script is just the total list of steps necessary to use a command, command with specific argument, or series of commands.
+Integration tests themselves are the same as manually running a certain series of steps. As a result,
+writing tests is easy because the integration test script is just the total list of steps necessary to
+use a command, command with specific argument, or series of commands.
 
-When you contribute a new feature to the Terminal, it's important that integration tests are added for this particular feature. It is a part of the Checklist for the PR to be approved.
+When you contribute a new feature to the Terminal, it's important that integration tests are added for
+this particular feature. It is a part of the Checklist for the PR to be approved.
 
-All the `integration tests` should be insides the `scripts` folder. The naming convention for scripts should be `test_<menu>_<command>.openbb` if you are testing a specific command or `test_<menu>.openbb` if you are testing the entire menu. However, it is encouraged to create as specific of integration tests as possible to identify errors more precisely. Additionally, all tests must end with the `exit` command.
+All the `integration tests` should be insides the `scripts` folder. The naming convention for scripts
+should be `test_<menu>_<command>.openbb` if you are testing a specific command or `test_<menu>.openbb`
+if you are testing the entire menu. However, it is encouraged to create as specific of integration tests
+as possible to identify errors more precisely. Additionally, all tests must end with the `exit` command.
 
 ### Examples
 
@@ -80,7 +88,8 @@ exit
 
 ### Conda Terminal
 
-After navigating to the location of the OpenBBTerminal repo, one can run integration tests in a few different ways using the wildcard expression.
+After navigating to the location of the OpenBBTerminal repo, one can run integration tests in a
+few different ways using the wildcard expression.
 
 - Run all integration tests:
 
@@ -104,7 +113,8 @@ After navigating to the location of the OpenBBTerminal repo, one can run integra
 
 ### Installer Terminal
 
-Integration tests can also be used on installers, which is a packaged version of the conda terminal. More information on how to build an installer can be found [here](/build/README.md).
+Integration tests can also be used on installers, which is a packaged version of the conda terminal.
+More information on how to build an installer can be found [here](/build/README.md).
 
 - Run all integration tests:
 
@@ -124,11 +134,15 @@ Integration tests can also be used on installers, which is a packaged version of
     /Full/Path/To/OpenBB\ Terminal/.OpenBB/OpenBBTerminal /Full/Path/To/OpenBBTerminal/OpenBBTerminal/scripts/test_alt_covid.openbb -t
     ```
 
-The `-t` argument runs the integration tests in 'test' mode. It is effectively a 'quiet' mode where one doesn't see the terminal in action. If one were to remove this argument, then the terminal and subsequent steps will be seen running in real time.
+The `-t` argument runs the integration tests in 'test' mode. It is effectively a 'quiet' mode where one
+doesn't see the terminal in action. If one were to remove this argument, then the terminal and subsequent
+steps will be seen running in real time.
 
 ## 4. Errors
 
-If the `-t` argument is given, errors that occur during an integration test are shown after all the selected tests have run. The specific script that has some type of failure occurring, the reason why it failed, and a summary of all the integration tests that were run is printed. An example is as followed:
+If the `-t` argument is given, errors that occur during an integration test are shown after all the
+selected tests have run. The specific script that has some type of failure occurring, the reason why
+it failed, and a summary of all the integration tests that were run is printed. An example is as followed:
 
 ```zsh
 /scripts/test_stocks_ba.openbb: Implement enable_gui in a subclass
@@ -142,6 +156,7 @@ If the `-t` argument is given, errors that occur during an integration test are 
 Summary: Successes: 55 Failures: 4
 ```
 
-If the `-t` argument is not given, then the reason why a specific failure occurs within an integration test is printed inline while the test is being run.
+If the `-t` argument is not given, then the reason why a specific failure occurs within an integration
+test is printed inline while the test is being run.
 
 If there is an error, one can identify the command and or series of steps that causes it fairly easily.
