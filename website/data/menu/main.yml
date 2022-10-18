@@ -2041,6 +2041,8 @@ main:
                 ref: /sdk/crypto/onchain/hist
               - name: holders
                 ref: /sdk/crypto/onchain/holders
+              - name: hr
+                ref: /sdk/crypto/onchain/hr
               - name: info
                 ref: /sdk/crypto/onchain/info
               - name: lt
@@ -2239,6 +2241,8 @@ main:
             ref: /sdk/economy/search_index
           - name: spectrum
             ref: /sdk/economy/spectrum
+          - name: spread
+            ref: /sdk/economy/spread
           - name: treasury
             ref: /sdk/economy/treasury
           - name: treasury_maturities
@@ -2463,10 +2467,14 @@ main:
             ref: /sdk/keys/santiment
           - name: set_keys
             ref: /sdk/keys/set_keys
+          - name: shroom
+            ref: /sdk/keys/shroom
           - name: si
             ref: /sdk/keys/si
           - name: smartstake
             ref: /sdk/keys/smartstake
+          - name: tokenterminal
+            ref: /sdk/keys/tokenterminal
           - name: tradier
             ref: /sdk/keys/tradier
           - name: twitter
@@ -3021,3 +3029,5 @@ main:
                 ref: /sdk/stocks/th/exchange
               - name: open
                 ref: /sdk/stocks/th/open
+          - name: tob
+            ref: /sdk/stocks/tob

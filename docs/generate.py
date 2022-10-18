@@ -129,11 +129,11 @@ def crawl_folders(root: str) -> list:
     """Crawls created folders to get a list of what has been created"""
     target = "website/content/"
     ignore_length = root.index(target) + len(target)
-    new_list = []
-    for path, dirs, files in os.walk(root):
-        if dirs:
-            new_list.append([path[ignore_length:], sorted(dirs)])
-    return new_list
+    return [
+        [path[ignore_length:], sorted(dirs)]
+        for path, dirs, _ in os.walk(root)
+        if dirs
+    ]
 
 
 def filter_dict(sub_dict, target: str):
