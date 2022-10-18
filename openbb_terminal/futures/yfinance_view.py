@@ -117,6 +117,7 @@ def display_historical(
         if historicals.index[0] > first:
             first = historicals.index[0]
         ax.set_xlim(first, historicals.index[-1])
+        theme.style_primary_axis(ax)
 
         if external_axes is None:
             theme.visualize_output()

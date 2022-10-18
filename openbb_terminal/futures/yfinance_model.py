@@ -63,9 +63,9 @@ def get_search_futures(
     df = FUTURES_DATA
     if category:
         df = df[df["Category"] == category]
-    elif exchange:
+    if exchange:
         df = df[df["Exchange"] == exchange]
-    elif description:
+    if description:
         df = df[
             [description.lower() in desc.lower() for desc in df["Description"].values]
         ]
