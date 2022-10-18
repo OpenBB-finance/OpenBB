@@ -79,7 +79,15 @@ class DefiController(BaseController):
                 "-l": "--limit",
                 "--sort": {
                     c: {}
-                    for c in ["Rank", "Name", "Chain", "Category", "TVL", "Change_1D"]
+                    for c in [
+                        "Rank",
+                        "Name",
+                        "Chain",
+                        "Category",
+                        "Users_30D",
+                        "TVL",
+                        "Change_1D",
+                    ]
                 },
                 "-s": "--sort",
                 "--ascend": {},
@@ -490,7 +498,15 @@ class DefiController(BaseController):
             type=str,
             help="Sort by given column. Default: Rank",
             default="Rank",
-            choices=["Rank", "Name", "Chain", "Category", "TVL", "Change_1D"],
+            choices=[
+                "Rank",
+                "Name",
+                "Chain",
+                "Category",
+                "Users_30D",
+                "TVL",
+                "Change_1D",
+            ],
         )
 
         parser.add_argument(

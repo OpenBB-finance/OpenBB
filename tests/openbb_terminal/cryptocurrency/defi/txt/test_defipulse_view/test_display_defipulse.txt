@@ -1,6 +1,6 @@
-     Rank                    Name     Chain       Sector     TVL 1 Day (%)
-131   131  Robo-Advisor for Yield  Ethereum      Lending   $1.4K   -11.56%
-130   130                 Olympus  Ethereum       Assets  $17.9K    -0.39%
-129   129               Primitive  Ethereum  Derivatives  $19.7K   -18.52%
-128   128                 DeFireX  Ethereum       Assets  $35.6K    -0.21%
-127   127               S Finance  Ethereum        DEXes  $99.1K     0.54%
+    Rank                   Name     Chain       Sector Users_30D    TVL Change_1D
+49    49       Rook (KeeperDAO)  Ethereum      Lending        16  $4.0M    +0.95%
+48    48                 Saddle  Ethereum        DEXes        30  $4.8M    +1.20%
+47    47  cvault.finance (CORE)  Ethereum       Assets       137  $4.8M    +0.15%
+46    46                 Pendle  Ethereum  Derivatives        57  $5.0M    -0.06%
+45    45                 Convex  Ethereum       Assets     2,834  $5.3M  +111.60%

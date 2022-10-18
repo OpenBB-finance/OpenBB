@@ -43,8 +43,9 @@ def get_defipulse_index(sortby: str = "TVL", ascend: bool = False) -> pd.DataFra
             "Name",
             "Chain",
             "Sector",
+            "Users_30D",
             "TVL",
-            "1 Day (%)",
+            "Change_1D",
         ],
     )
     df["Rank"] = df.index
