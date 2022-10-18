@@ -25,6 +25,6 @@ jobs:
           source docker/build.sh
           echo "OPENBBTERMINAL_DOCKER_POETRY_IMAGE=$OPENBBTERMINAL_DOCKER_POETRY_IMAGE" >> $GITHUB_ENV
           
-      # - name: Publishing the Docker image
-      #   run: |
-      #     docker push "${OPENBBTERMINAL_DOCKER_POETRY_IMAGE}"
+      - name: Publishing the Docker image
+        run: |
+          docker push "${OPENBBTERMINAL_DOCKER_POETRY_IMAGE}"
