@@ -18,7 +18,6 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     valid_date,
     parse_and_split_input,
-    parse_simple_args,
 )
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
@@ -26,6 +25,17 @@ from openbb_terminal.menu import session
 from openbb_terminal.futures import yfinance_model, yfinance_view
 
 logger = logging.getLogger(__name__)
+
+
+def valid_expiry_date(s: str) -> str:
+    """Argparse type to check date is in valid format"""
+    try:
+        if not s:
+            return s
+        return datetime.strptime(s, "%Y-%m").strftime("%Y-%m")
+    except ValueError as value_error:
+        logging.exception(str(value_error))
+        raise argparse.ArgumentTypeError(f"Not a valid date: {s}") from value_error
 
 
 class FuturesController(BaseController):
@@ -152,6 +162,15 @@ class FuturesController(BaseController):
             help="Initial date. Default: 3 years ago",
             default=(datetime.now() - timedelta(days=3 * 365)),
         )
+        parser.add_argument(
+            "-e",
+            "--expiry",
+            dest="expiry",
+            type=valid_expiry_date,
+            help="Select future expiry date with format YYYY-MM",
+            default="",
+        )
+
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
         ns_parser = self.parse_known_args_and_warn(
@@ -163,6 +182,7 @@ class FuturesController(BaseController):
         if ns_parser:
             yfinance_view.display_historical(
                 ns_parser.ticker.split(","),
+                ns_parser.expiry,
                 ns_parser.start.strftime("%Y-%m-%d"),
                 ns_parser.raw,
                 ns_parser.export,

@@ -26,6 +26,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def display_historical(
     tickers: List[str],
+    expiry: str = "",
     start_date: str = (datetime.now() - timedelta(days=3 * 365)).strftime("%Y-%m-%d"),
     raw: bool = False,
     export: str = "",
@@ -37,6 +38,8 @@ def display_historical(
     ----------
     tickers: List[str]
         List of future timeseries tickers to display
+    expiry: str
+        Future expiry date with format YYYY-MM
     start_date : str
         Initial date like string (e.g., 2021-10-01)
     raw: bool
@@ -59,7 +62,8 @@ def display_historical(
         console.print("No ticker was provided.\n")
         return
 
-    historicals = yfinance_model.get_historical_futures([t + "=F" for t in tickers])
+    historicals = yfinance_model.get_historical_futures(tickers, expiry)
+
     if historicals.empty:
         console.print(f"No data was found for the tickers: {', '.join(tickers)}\n")
         return
@@ -84,16 +88,17 @@ def display_historical(
 
         if len(tickers) > 1:
             name = list()
-            for tick in tickers:
+            for tick in historicals["Adj Close"].columns.tolist():
                 name.append(
                     yfinance_model.FUTURES_DATA[
                         yfinance_model.FUTURES_DATA["Ticker"] == tick
                     ]["Description"].values[0]
                 )
                 ax.plot(
-                    historicals["Adj Close"][tick + "=F"].dropna().index,
-                    historicals["Adj Close"][tick + "=F"].dropna().values,
+                    historicals["Adj Close"][tick].dropna().index,
+                    historicals["Adj Close"][tick].dropna().values,
                 )
+
                 ax.legend(name)
         else:
             name = yfinance_model.FUTURES_DATA[
@@ -103,7 +108,10 @@ def display_historical(
                 historicals["Adj Close"].dropna().index,
                 historicals["Adj Close"].dropna().values,
             )
-            ax.set_title(name)
+            if expiry:
+                ax.set_title(f"{name} with expiry {expiry}")
+            else:
+                ax.set_title(name)
 
         first = datetime.strptime(start_date, "%Y-%m-%d")
         if historicals.index[0] > first:

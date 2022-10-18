@@ -72,20 +72,37 @@ def get_search_futures(
 
 
 @log_start_end(log=logger)
-def get_historical_futures(tickers: List[str]) -> Dict:
+def get_historical_futures(tickers: List[str], expiry: str = "") -> Dict:
     """Get historical futures [Source: Yahoo Finance]
 
     Parameters
     ----------
     tickers: List[str]
         List of future timeseries tickers to display
+    expiry: str
+        Future expiry date with format YYYY-MM
 
     Returns
     ----------
     Dict
         Dictionary with sector weightings allocation
     """
-    df = yf.download(tickers, progress=False, period="max")
+    if expiry:
+        tickers_with_expiry = list()
+
+        for ticker in tickers:
+            expiry_date = datetime.strptime(expiry, "%Y-%m")
+            exchange = FUTURES_DATA[FUTURES_DATA["Ticker"] == ticker][
+                "Exchange"
+            ].values[0]
+
+            tickers_with_expiry.append(
+                f"{ticker}{MONTHS[expiry_date.month]}{str(expiry_date.year)[-2:]}.{exchange}"
+            )
+
+        return yf.download(tickers_with_expiry, progress=False, period="max")
+
+    df = yf.download([t + "=F" for t in tickers], progress=False, period="max")
     return df
 
 
