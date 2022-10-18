@@ -332,7 +332,7 @@ def test_call_func_forecast(
     mocker.patch(target=f"{path_controller}.os.remove")
 
     try:
-        import darts  # pyright: reportMissingImports=false # noqa: F401
+        import darts  # pyright: reportMissingImports=false # noqa: F401, E501 #pylint: disable=import-outside-toplevel, unused-import
 
         forecast = True
     except ImportError:
