@@ -1,0 +1,29 @@
+# Go into the stocks context
+stocks
+
+# Load a ticker that's given as a first argument of the routine
+load USB
+
+# Go into the Comparison Analysis Menu
+ca
+
+# Get similar companies
+set C,USB,WFC,JPM,TD,GS,PNC,TFC,BAC,COF
+
+# Show the historical prices
+historical -n
+
+# Show a correlation matrix
+hcorr
+
+# Compare valuations
+valuation
+
+# Compare performance
+performance
+
+# Show cashflows
+cashflow
+
+# Return to home
+/

@@ -88,7 +88,7 @@ OpenBB Terminal provides a modern Python-based integrated environment for invest
 an average joe retail trader to leverage state-of-the-art Data Science and Machine Learning technologies.
 
 As a modern Python-based environment, OpenBBTerminal opens access to numerous Python data libraries in Data Science
-(Pandas, Numpy, Scipy, Jupyter), Machine Learning (Pytorch, Tensorflow, Sklearn, Flair), and Data Acquisition
+(Pandas, Numpy, Scipy, Jupyter), Machine Learning (Pytorch, Sklearn, Flair), and Data Acquisition
 (Beautiful Soup, and numerous third-party APIs).
 
 ## Installation
@@ -98,8 +98,6 @@ If you wish to install the Terminal, there are currently four options:
 - [Using the Installer](https://openbb-finance.github.io/OpenBBTerminal/#accessing-the-openbb-terminal) (recommended if you just want to use the terminal)
 - [Using Python](openbb_terminal/README.md#anaconda--python) (recommended if you want to develop new features)
 - [Using Docker](openbb_terminal/README.md#Docker-Installation) (alternative option to the installer if preferred)
-- [Using Docker Web UI](openbb_terminal/README.md#web-ui---docker) (if you want to deploy the web UI for users to access
-  over your LAN)
 
 ## Contributing
 

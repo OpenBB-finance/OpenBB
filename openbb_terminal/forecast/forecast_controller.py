@@ -5,7 +5,6 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from itertools import chain
 from typing import Any, Optional, List, Dict
 
 try:
@@ -32,6 +31,10 @@ except ModuleNotFoundError:
 import pandas as pd
 import psutil
 
+from openbb_terminal.core.config.paths import (
+    USER_EXPORTS_DIRECTORY,
+    USER_CUSTOM_IMPORTS_DIRECTORY,
+)
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -64,10 +67,6 @@ from openbb_terminal.forecast import (
     helpers,
     trans_view,
     nhits_view,
-)
-from openbb_terminal.core.config.paths import (
-    USER_EXPORTS_DIRECTORY,
-    USER_CUSTOM_IMPORTS_DIRECTORY,
 )
 
 logger = logging.getLogger(__name__)
@@ -183,16 +182,8 @@ class ForecastController(BaseController):
             "mod": "%",
             "pow": "**",
         }
-        self.file_types = ["csv", "xlsx"]
-        self.DATA_FILES = {
-            filepath.name: filepath
-            for file_type in self.file_types
-            for filepath in chain(
-                USER_EXPORTS_DIRECTORY.rglob(f"*.{file_type}"),
-                USER_CUSTOM_IMPORTS_DIRECTORY.rglob(f"*.{file_type}"),
-            )
-            if filepath.is_file()
-        }
+        self.file_types = forecast_model.base_file_types
+        self.DATA_FILES = forecast_model.default_files
 
         # setting device on GPU if available, else CPU
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -395,6 +386,7 @@ class ForecastController(BaseController):
         forecast_only: bool = False,
         naive: bool = False,
         explainability_raw: bool = False,
+        export_pred_raw: bool = False,
     ):
         if hidden_size:
             parser.add_argument(
@@ -659,6 +651,15 @@ class ForecastController(BaseController):
                 dest="explainability_raw",
                 default=False,
                 help="Prints out a raw dataframe showing explainability results.",
+            )
+
+        if export_pred_raw:
+            parser.add_argument(
+                "--export-pred-raw",
+                action="store_true",
+                dest="export_pred_raw",
+                default=False,
+                help="Export predictions to a csv file.",
             )
 
             # if user does not put in --target-dataset
@@ -1654,6 +1655,7 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
+            export_pred_raw=True,
         )
         # TODO Convert this to multi series
         if ns_parser:
@@ -1677,6 +1679,7 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
             )
 
     @log_start_end(log=logger)
@@ -1709,6 +1712,7 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
+            export_pred_raw=True,
         )
 
         if ns_parser:
@@ -1730,6 +1734,7 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
             )
 
     @log_start_end(log=logger)
@@ -1789,6 +1794,7 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
+            export_pred_raw=True,
         )
 
         if ns_parser:
@@ -1819,6 +1825,7 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
             )
 
     @log_start_end(log=logger)
@@ -1895,6 +1902,7 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
+            export_pred_raw=True,
         )
 
         if ns_parser:
@@ -1931,6 +1939,7 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
             )
 
     @log_start_end(log=logger)
@@ -1998,6 +2007,7 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
+            export_pred_raw=True,
         )
 
         if ns_parser:
@@ -2035,6 +2045,7 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
             )
 
     @log_start_end(log=logger)
@@ -2071,6 +2082,7 @@ class ForecastController(BaseController):
             end=True,
             naive=True,
             explainability_raw=True,
+            export_pred_raw=True,
         )
 
         if ns_parser:
@@ -2099,6 +2111,7 @@ class ForecastController(BaseController):
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
                 explainability_raw=ns_parser.explainability_raw,
+                export_pred_raw=ns_parser.export_pred_raw,
             )
 
     @log_start_end(log=logger)
@@ -2134,6 +2147,7 @@ class ForecastController(BaseController):
             end=True,
             naive=True,
             explainability_raw=True,
+            export_pred_raw=True,
         )
 
         if ns_parser:
@@ -2161,6 +2175,7 @@ class ForecastController(BaseController):
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
                 explainability_raw=ns_parser.explainability_raw,
+                export_pred_raw=ns_parser.export_pred_raw,
             )
 
     @log_start_end(log=logger)
@@ -2212,6 +2227,7 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
+            export_pred_raw=True,
         )
 
         if ns_parser:
@@ -2247,6 +2263,7 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
             )
 
     @log_start_end(log=logger)
@@ -2334,6 +2351,7 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
+            export_pred_raw=True,
         )
         if ns_parser:
             if not helpers.check_parser_input(ns_parser, self.datasets):
@@ -2371,6 +2389,7 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
             )
 
     @log_start_end(log=logger)
@@ -2444,6 +2463,7 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
+            export_pred_raw=True,
         )
 
         if ns_parser:
@@ -2481,6 +2501,7 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
             )
 
     @log_start_end(log=logger)
@@ -2570,6 +2591,7 @@ class ForecastController(BaseController):
             start=True,
             end=True,
             naive=True,
+            export_pred_raw=True,
         )
 
         if ns_parser:
@@ -2608,4 +2630,5 @@ class ForecastController(BaseController):
                 start_date=ns_parser.s_start_date,
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
             )

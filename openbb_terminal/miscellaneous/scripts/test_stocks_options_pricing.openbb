@@ -1,0 +1,13 @@
+stocks
+options
+load aapl
+exp 0
+pricing
+add 150 -c 3
+rmv 150
+add 150 -c 0.3
+add 170 -c 0.5
+add 180 -c 0.2
+show
+rnval
+exit

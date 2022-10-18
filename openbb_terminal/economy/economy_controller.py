@@ -54,6 +54,7 @@ class EconomyController(BaseController):
     """Economy Controller class"""
 
     CHOICES_COMMANDS = [
+        "eval",
         "overview",
         "futures",
         "macro",
@@ -404,6 +405,7 @@ class EconomyController(BaseController):
         mt.add_raw("\n")
         mt.add_param("_stored", self.stored_datasets)
         mt.add_raw("\n")
+        mt.add_cmd("eval")
         mt.add_cmd("plot")
         mt.add_raw("\n")
         mt.add_menu("qa")
@@ -1707,6 +1709,37 @@ class EconomyController(BaseController):
             # # Due to Finviz implementation of Spectrum, we delete the generated spectrum figure
             # # after saving it and displaying it to the user
             os.remove(self.d_GROUPS[ns_group] + ".jpg")
+
+    @log_start_end(log=logger)
+    def call_eval(self, other_args):
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="eval",
+            description="""Create custom data column from loaded datasets.""",
+        )
+        parser.add_argument(
+            "-q",
+            "--query",
+            type=str,
+            nargs="+",
+            dest="query",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-q")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            self.DATASETS = economy_helpers.create_new_entry(
+                self.DATASETS, " ".join(ns_parser.query)
+            )
+
+            self.stored_datasets = economy_helpers.update_stored_datasets_string(
+                self.DATASETS
+            )
+        console.print()
 
     @log_start_end(log=logger)
     def call_qa(self, _):

@@ -1,0 +1,6 @@
+etf
+disc
+gainers
+decliners
+active
+exit

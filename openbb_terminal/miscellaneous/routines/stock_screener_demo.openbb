@@ -1,0 +1,47 @@
+# Enter the Stock Screener menu
+stocks/scr
+
+# Top Gainers
+technical -s Gap
+technical -s RSI
+overview -s Volume
+
+# Strong Support Levels Preset
+set stocks_strong_support_levels
+overview
+performance
+financial
+
+# Multiple Bottom Preset
+set multiple_bottom
+technical -l 15 -s RSI
+
+# Cheap Dividend
+set cheap_dividend
+overview -l 20 -s Market Cap
+
+# Potential Reversals
+set potential_reversals
+performance -s Perf Week
+overview -s Volume
+
+# Unusual Volume
+set unusual_volume
+performance -l 20 -s Volume
+overview -l 20 -s Market Cap
+
+# Value stocks
+set value_stocks
+overview -s Market Cap
+performance
+
+# Major News
+set major_news
+overview -l 20 -s Market Cap
+performance -l 20 -s Volume
+
+# Display Correlation Heat Map of the last screened tickers
+ca
+hcorr -t r --display-full-matrix
+
+# Scroll back up the terminal screen to review the different outputs of the screeners
