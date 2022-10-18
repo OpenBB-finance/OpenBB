@@ -14,8 +14,8 @@ yaml.indent(mapping=2, sequence=4, offset=2)
 
 
 def all_functions() -> List[Tuple[str, str, Callable[..., Any]]]:
-    """Uses the base api functions dictionary to get a list of all functions we have linked
-    in our API.
+    """Uses the base SDK functions dictionary to get a list of all functions we have linked
+    in our SDK.
 
     Returns
     ----------
@@ -165,11 +165,11 @@ def generate_dict(paths: List):
     final_dict: Dict[str, Any] = {}
     added_paths = []
     for path, subs in paths:
-        if not final_dict and path == "api":
-            final_dict = {"name": "api", "ref": "/api", "sub": []}
+        if not final_dict and path == "sdk":
+            final_dict = {"name": "sdk", "ref": "/sdk", "sub": []}
             for sub in subs:
                 final_dict["sub"].append({"name": sub, "ref": f"/{path}/{sub}"})
-            added_paths.append("api")
+            added_paths.append("sdk")
         if path not in added_paths:
             final_dict = set_items(final_dict, path, subs)
             added_paths.append(path)
@@ -189,9 +189,9 @@ def folder_documentation(path: str):
 
 
 if __name__ == "__main__":
-    base_folder_path = os.path.realpath("./website/content/api")
+    base_folder_path = os.path.realpath("./website/content/sdk")
     target_path = os.path.realpath("./website/data/menu/main.yml")
-    main_path = os.path.realpath("./website/content/api")
+    main_path = os.path.realpath("./website/content/sdk")
     folder_list = crawl_folders(main_path)
     for folder_path in [x[0] for x in folder_list]:
         folder_documentation(folder_path)
