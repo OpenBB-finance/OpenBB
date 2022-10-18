@@ -623,18 +623,18 @@ class EconomyController(BaseController):
         parser.add_argument(
             "-p",
             "--parameters",
-            nargs="+",
+            type=str,
             dest="parameters",
             help="Abbreviation(s) of the Macro Economic data",
-            default=["CPI"],
+            default="CPI",
         )
         parser.add_argument(
             "-c",
             "--countries",
-            nargs="+",
+            type=str,
             dest="countries",
             help="The country or countries you wish to show data for",
-            default=["United_States"],
+            default="United_States",
         )
         parser.add_argument(
             "-t",
@@ -679,6 +679,8 @@ class EconomyController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, raw=True
         )
         if ns_parser:
+            parameters = ns_parser.parameters.split(",")
+            countries = ns_parser.countries.split(",")
             if ns_parser.show:
                 if ns_parser.show == "parameters":
                     print_rich_table(
@@ -705,8 +707,8 @@ class EconomyController(BaseController):
 
                 # Store data
                 (df, units, _) = econdb_model.get_aggregated_macro_data(
-                    parameters=ns_parser.parameters,
-                    countries=ns_parser.countries,
+                    parameters=parameters,
+                    countries=countries,
                     transform=ns_parser.transform,
                     start_date=ns_parser.start_date,
                     end_date=ns_parser.end_date,
