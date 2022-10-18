@@ -13,6 +13,7 @@ from traceback import format_stack
 
 from openbb_terminal.rich_config import console
 from openbb_terminal.reports.reports_controller import ReportController
+from openbb_terminal.dashboards.dashboards_controller import DashboardsController
 
 try:
     import darts  # pyright: reportMissingImports=false
@@ -42,6 +43,7 @@ logger = logging.getLogger(__name__)
 
 SUPPRESS_LOGGING_CLASSES = {
     ReportController: "ReportController",
+    DashboardsController: "DashboardsController",
 }
 
 
