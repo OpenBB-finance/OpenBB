@@ -13,7 +13,7 @@
 * Provide instructions so we can reproduce.
 * Please also list any relevant details for your test configuration.
 - [ ] Make sure affected commands still run in terminal
-- [ ] Ensure the sdk still works
+- [ ] Ensure the SDK still works
 - [ ] Check any related reports
 
 
