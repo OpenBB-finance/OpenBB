@@ -153,6 +153,7 @@ class FuturesController(BaseController):
             type=str,
             default="",
             help="Future ticker to display timeseries separated by comma when multiple, e.g.: BLK,ES",
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-s",
@@ -181,7 +182,7 @@ class FuturesController(BaseController):
         )
         if ns_parser:
             yfinance_view.display_historical(
-                ns_parser.ticker.split(","),
+                ns_parser.ticker.upper().split(","),
                 ns_parser.expiry,
                 ns_parser.start.strftime("%Y-%m-%d"),
                 ns_parser.raw,
@@ -205,6 +206,7 @@ class FuturesController(BaseController):
             choices=self.all_tickers,
             default="",
             help="Future curve to be selected",
+            metavar="Futures symbol",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
