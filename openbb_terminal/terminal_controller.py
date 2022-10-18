@@ -177,7 +177,7 @@ class TerminalController(BaseController):
         parse = argparse.ArgumentParser(
             add_help=False,
             prog="news",
-            description=translate("news"),
+            description="display news articles based on term and data sources",
         )
         parse.add_argument(
             "-t",
