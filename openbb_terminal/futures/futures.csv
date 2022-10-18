@@ -136,6 +136,7 @@ EMT,E-mini S&P MidCap 400 Index BTIC Futures,CME,index
 EMD,E-mini S&P MidCap 400 Index Futures,CME,index
 MNQ,E-mini Micro Nasdaq 100 Index Futures,CME,index
 MES,E-mini Micro S&P 500 Index Futures,CME,index
+ES,E-Mini S&P 500 Index Futures,CME,index
 FNG,ICE Micro FANG+ Index Futures,NYB,index
 MMW,ICE MSCI ACWI NTR Index Futures,NYB,index
 CHH,ICE MSCI China NTR Futures,NYB,index
