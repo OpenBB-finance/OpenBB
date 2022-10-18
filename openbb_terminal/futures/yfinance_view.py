@@ -133,6 +133,7 @@ def display_historical(
 def display_search(
     category: str = "",
     exchange: str = "",
+    description: str= "",
     export: str = "",
 ):
     """Display search futures [Source: Yahoo Finance]
@@ -143,12 +144,14 @@ def display_search(
         Select the category where the future exists
     exchange: str
         Select the exchange where the future exists
+    description: str
+        Select the description of the future
     export: str
         Type of format to export data
     """
-    df = yfinance_model.get_search_futures(category, exchange)
+    df = yfinance_model.get_search_futures(category, exchange, description)
     if df.empty:
-        console.print("[red]No futures data found.[/red]")
+        console.print("[red]No futures data found.\n[/red]")
         return
 
     print_rich_table(df)
@@ -222,6 +225,7 @@ def display_curve(
             markersize=12,
         )
         ax.set_title(name)
+        theme.style_primary_axis(ax)
 
         if external_axes is None:
             theme.visualize_output()

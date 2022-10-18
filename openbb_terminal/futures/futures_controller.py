@@ -67,6 +67,8 @@ class FuturesController(BaseController):
                 "-c": "--category",
                 "--exchange": {c: None for c in self.all_exchanges},
                 "-e": "--exchange",
+                "--description": {},
+                "-d": "--description",
             }
 
             self.choices["support"] = self.SUPPORT_CHOICES
@@ -129,12 +131,21 @@ class FuturesController(BaseController):
             default="",
             help="Select the category where the future exists",
         )
+        parser.add_argument(
+            "-d",
+            "--description",
+            dest="description",
+            type=str,
+            nargs="+",
+            default="",
+            help="Select the description future you are interested in",
+        )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             yfinance_view.display_search(
-                ns_parser.category, ns_parser.exchange, ns_parser.export
+                ns_parser.category, ns_parser.exchange, " ".join(ns_parser.description), ns_parser.export
             )
 
     @log_start_end(log=logger)
@@ -152,7 +163,7 @@ class FuturesController(BaseController):
             dest="ticker",
             type=str,
             default="",
-            help="Future ticker to display timeseries separated by comma when multiple, e.g.: BLK,ES",
+            help="Future ticker to display timeseries separated by comma when multiple, e.g.: BLK,QI",
             required="-h" not in other_args,
         )
         parser.add_argument(
