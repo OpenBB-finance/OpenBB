@@ -23,8 +23,7 @@ jobs:
         run: |
           source docker/compose.env
           source docker/build.sh
-          export OPENBBTERMINAL_DOCKER_POETRY_IMAGE="${OPENBBTERMINAL_DOCKER_POETRY_IMAGE}"
-          echo "${OPENBBTERMINAL_DOCKER_POETRY_IMAGE}"
+          echo "::set-env name=OPENBBTERMINAL_DOCKER_POETRY_IMAGE::$OPENBBTERMINAL_DOCKER_POETRY_IMAGE"
 
       - name: Display image name
         run: |
