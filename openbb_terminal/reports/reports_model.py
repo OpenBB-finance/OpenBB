@@ -17,7 +17,8 @@ import pandas as pd
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.core.config.paths import (
     USER_EXPORTS_DIRECTORY,
-    REPOSITORY_DIRECTORY,
+    MISCELLANEOUS_DIRECTORY,
+    USER_PORTFOLIO_DATA_DIRECTORY,
 )
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
@@ -40,17 +41,23 @@ CRYPTO_TICKERS = pd.read_csv(crypto_data_path).iloc[:, 0].to_list()
 stocks_data_path = CURRENT_LOCATION.parent / "data" / "stocks_tickers.csv"
 STOCKS_TICKERS = pd.read_csv(stocks_data_path).iloc[:, 0].to_list()
 
+
 PORTFOLIO_HOLDINGS_FILES = {
     filepath.name: filepath
     for file_type in ["xlsx", "csv"]
-    for filepath in (
-        REPOSITORY_DIRECTORY
-        / "openbb_terminal"
-        / "miscellaneous"
-        / "portfolio_examples"
-        / "holdings"
-    ).rglob(f"*.{file_type}")
+    for filepath in (USER_PORTFOLIO_DATA_DIRECTORY / "holdings").rglob(f"*.{file_type}")
 }
+
+PORTFOLIO_HOLDINGS_FILES.update(
+    {
+        filepath.name: filepath
+        for file_type in ["xlsx", "csv"]
+        for filepath in (
+            MISCELLANEOUS_DIRECTORY / "portfolio_examples" / "holdings"
+        ).rglob(f"*.{file_type}")
+    }
+)
+
 
 REPORT_CHOICES = {
     "etf": {

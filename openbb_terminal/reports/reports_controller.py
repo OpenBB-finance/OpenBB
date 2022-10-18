@@ -154,7 +154,7 @@ class ReportController(BaseController):
             # Assign respective parameters as arguments
             for arg_name, arg_default in self.PARAMETERS_DICT[report_name].items():
 
-                # Define choices as the ones
+                # Limit user choices to auto completion
                 choices = list(
                     reports_model.REPORT_CHOICES[report_name]["--" + arg_name].keys()
                 )
