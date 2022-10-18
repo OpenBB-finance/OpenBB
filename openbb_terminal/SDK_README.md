@@ -22,18 +22,18 @@ So that you can focus on designing and building your financial reports and appli
 First off, import OpenBB SDK into your python script or Jupyter Notebook with:
 
 ```python
-from openbb_terminal.api import openbb
+from openbb_terminal.sdk import openbb
 ```
 
 This imports all Terminal commands at once. To see all the available commands, you can press `tab` in jupyter notebook.
-Another approach is to check out [OpenBB SDK Documentation](https://openbb-finance.github.io/OpenBBTerminal/api/), where you can explore its capabilities
+Another approach is to check out [OpenBB SDK Documentation](https://openbb-finance.github.io/OpenBBTerminal/sdk/), where you can explore its capabilities
 
 ### 2. Customize chart style
 
 With OpenBB SDK, you can customize your chart style. You can switch between `dark` and `light` easily using this block of code:
 
 ```python
-from openbb_terminal.api import TerminalStyle
+from openbb_terminal.sdk import TerminalStyle
 theme = TerminalStyle("light", "light", "light")
 ```
 
@@ -42,7 +42,7 @@ theme = TerminalStyle("light", "light", "light")
 OR
 
 ```python
-from openbb_terminal.api import TerminalStyle
+from openbb_terminal.sdk import TerminalStyle
 theme = TerminalStyle("dark", "dark", "dark")
 ```
 
@@ -81,9 +81,9 @@ openbb.keys.fmp(key="example")
 
 openbb.keys.reddit(
     client_id="example",
-    client_secret="example", 
-    password="example", 
-    username="example", 
+    client_secret="example",
+    password="example",
+    username="example",
     useragent="example")
 ```
 
@@ -103,9 +103,9 @@ openbb.keys.fmp(key="example", persist=True)
 d = {
     "fed": {
         "key":"XXXXX"
-        }, 
+        },
     "binance": {
-        "key":"YYYYY", 
+        "key":"YYYYY",
         "secret":"ZZZZZ"
     },
 }
@@ -138,7 +138,7 @@ Now, let's explore what OpenBB SDK can do. At a high level, you can break down O
 
 ### 1. Data Layer
 
-### **Getting financial data from multiple data sources using one single API**
+### **Getting financial data from multiple data sources using one single SDK**
 
 OpenBB SDK provides you access to normalized financial data from dozens of data sources, without having to built your own integration or relying on multiple third-party packages. Let's explore how we can do that.
 
@@ -311,7 +311,7 @@ To display matplotlib charts inside the Jupyter notebook output cells, you can u
 ```python
 import matplotlib.pyplot as plt
 import matplotlib_inline.backend_inline
-from openbb_terminal.api import openbb
+from openbb_terminal.sdk import openbb
 %matplotlib inline
 matplotlib_inline.backend_inline.set_matplotlib_formats("svg")
 ```
@@ -322,7 +322,7 @@ The code below utilizes the `external_axes` parameter to get two axis in one cha
 
 ```python
 import matplotlib.pyplot as plt
-from openbb_terminal.api import openbb
+from openbb_terminal.sdk import openbb
 fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(11, 5), dpi=150)
 openbb.stocks.dps.dpotc(
     "aapl",
