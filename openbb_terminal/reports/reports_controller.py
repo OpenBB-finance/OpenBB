@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
+from secrets import choice
 
 # pylint: disable=R1732, R0912
 from typing import Any, Dict, List
@@ -44,8 +45,8 @@ class ReportController(BaseController):
             self.choices["run"] = {
                 "--file": {},
                 "-f": "--file",
-                "--params": {},
-                "-p": "--params",
+                "--parameters": {},
+                "-p": "--parameters",
             }
             for report_name in self.REPORTS:
                 # Extract report parameters do display on menu
@@ -149,12 +150,20 @@ class ReportController(BaseController):
         )
 
         if report_name in self.PARAMETERS_DICT:
+
             # Assign respective parameters as arguments
             for arg_name, arg_default in self.PARAMETERS_DICT[report_name].items():
+
+                # Define choices as the ones
+                choices = list(
+                    reports_model.REPORT_CHOICES[report_name]["--" + arg_name].keys()
+                )
+
                 getattr(parser, "add_argument")(
                     "--" + arg_name,
                     type=str,
                     default=arg_default,
+                    choices=choices,
                     dest=arg_name,
                     help=arg_name,
                 )
@@ -170,10 +179,10 @@ class ReportController(BaseController):
             ns_parser = parse_simple_args(parser, other_args)
 
             if ns_parser:
-                params = vars(ns_parser)
-                params.pop("help")
+                parameters = vars(ns_parser)
+                parameters.pop("help")
                 reports_model.render_report(
-                    str(reports_model.REPORTS_FOLDER / report_name), params
+                    str(reports_model.REPORTS_FOLDER / report_name), parameters
                 )
 
         else:
@@ -198,9 +207,9 @@ class ReportController(BaseController):
         )
         parser.add_argument(
             "-p",
-            "--params",
+            "--parameters",
             nargs="+",
-            dest="params",
+            dest="parameters",
             help="Report parameters with format 'name:value'.",
         )
 
@@ -208,13 +217,13 @@ class ReportController(BaseController):
 
         if ns_parser:
             # Validate parameter inputs
-            params_dict = {}
-            if ns_parser.params:
-                for p in ns_parser.params:
+            parameters_dict = {}
+            if ns_parser.parameters:
+                for p in ns_parser.parameters:
                     if ":" in p:
                         item = p.split(":")
                         if item[1]:
-                            params_dict[item[0]] = item[1]
+                            parameters_dict[item[0]] = item[1]
                         else:
                             console.print(
                                 f"[red]Bad format '{p}': empty value.[/red]\nExecuting with defaults.\n"
@@ -226,7 +235,7 @@ class ReportController(BaseController):
 
             if ns_parser.file:
                 if os.path.exists(ns_parser.file):
-                    reports_model.render_report(ns_parser.file, params_dict)
+                    reports_model.render_report(ns_parser.file, parameters_dict)
                 else:
                     console.print(
                         f"[red]Notebook '{ns_parser.file}' not found![/red]\n"

@@ -43,9 +43,13 @@ STOCKS_TICKERS = pd.read_csv(stocks_data_path).iloc[:, 0].to_list()
 PORTFOLIO_HOLDINGS_FILES = {
     filepath.name: filepath
     for file_type in ["xlsx", "csv"]
-    for filepath in (REPOSITORY_DIRECTORY / "portfolio" / "holdings").rglob(
-        f"*.{file_type}"
-    )
+    for filepath in (
+        REPOSITORY_DIRECTORY
+        / "openbb_terminal"
+        / "miscellaneous"
+        / "portfolio_examples"
+        / "holdings"
+    ).rglob(f"*.{file_type}")
 }
 
 REPORT_CHOICES = {
