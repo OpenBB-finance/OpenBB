@@ -206,6 +206,10 @@ def display_curve(
         else:
             return
 
+        if df.empty:
+            console.print("[red]No future data found to generate curve.[/red]\n")
+            return
+
         name = yfinance_model.FUTURES_DATA[
             yfinance_model.FUTURES_DATA["Ticker"] == ticker
         ]["Description"].values[0]
