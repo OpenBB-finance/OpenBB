@@ -291,15 +291,7 @@ class ConsoleAndPanel:
         if kwargs and "text" in list(kwargs) and "menu" in list(kwargs):
             if not os.getenv("TEST_MODE"):
                 if obbff.ENABLE_RICH_PANEL:
-                    version = self.blend_text(
-                        f"OpenBB Terminal v{obbff.VERSION}",
-                        Color.parse("#00AAFF").triplet,
-                        Color.parse("#E4003A").triplet,
-                    )
-                    link = " (https://openbb.co)"
-                    link_text = Text(link)
-                    link_text.stylize("#FCED00", 0, len(link))
-                    version += link_text
+                    version = f"[param]OpenBB Terminal v{obbff.VERSION}[/param] (https://openbb.co)"
                     self.console.print(
                         panel.Panel(
                             "\n" + kwargs["text"],
