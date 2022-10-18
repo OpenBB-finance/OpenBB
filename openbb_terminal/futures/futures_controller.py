@@ -145,7 +145,10 @@ class FuturesController(BaseController):
         )
         if ns_parser:
             yfinance_view.display_search(
-                ns_parser.category, ns_parser.exchange, " ".join(ns_parser.description), ns_parser.export
+                ns_parser.category,
+                ns_parser.exchange,
+                " ".join(ns_parser.description),
+                ns_parser.export,
             )
 
     @log_start_end(log=logger)

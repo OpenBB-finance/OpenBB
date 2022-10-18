@@ -47,7 +47,7 @@ class HiddenPrints:
 def get_search_futures(
     category: str = "",
     exchange: str = "",
-    description: str ="",
+    description: str = "",
 ):
     """Get search futures [Source: Yahoo Finance]
 
@@ -66,7 +66,9 @@ def get_search_futures(
     elif exchange:
         df = df[df["Exchange"] == exchange]
     elif description:
-        df = df[[description.lower() in desc.lower() for desc in df["Description"].values]]
+        df = df[
+            [description.lower() in desc.lower() for desc in df["Description"].values]
+        ]
     return df
 
 
