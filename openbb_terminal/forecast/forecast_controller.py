@@ -16,7 +16,8 @@ try:
     if darts.__version__ != darts_latest:
         print(f"You are currently using Darts version {darts.__version__}")
         print(
-            f"Follow instructions on creating a new conda environment with the latest Darts version ({darts_latest}):"
+            "Follow instructions on creating a new conda environment with the latest "
+            f"Darts version ({darts_latest}):"
         )
         print(
             "https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/openbb_terminal/README.md"
@@ -156,8 +157,7 @@ class ForecastController(BaseController):
         self.datasets: Dict[str, pd.DataFrame] = dict()
 
         if ticker and not data.empty:
-            # data["date"] = data.index
-            data = data.reset_index()  # convert date from index to column
+            data = data.reset_index()
             data.columns = data.columns.map(lambda x: x.lower().replace(" ", "_"))
 
             self.files.append(ticker)
@@ -183,7 +183,7 @@ class ForecastController(BaseController):
             "pow": "**",
         }
         self.file_types = forecast_model.base_file_types
-        self.DATA_FILES = forecast_model.default_files
+        self.DATA_FILES = forecast_model.get_default_files()
 
         # setting device on GPU if available, else CPU
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -213,6 +213,8 @@ class ForecastController(BaseController):
             self.update_runtime_choices()
 
     def update_runtime_choices(self):
+        # Load in any newly exported files
+        self.DATA_FILES = forecast_model.get_default_files()
         if session and obbff.USE_PROMPT_TOOLKIT:
             dataset_columns = {
                 f"{dataset}.{column}": {column: None, dataset: None}
@@ -240,8 +242,6 @@ class ForecastController(BaseController):
                 "delta",
                 "atr",
                 "signal",
-                # "index",
-                # "remove",
                 "combine",
                 "rename",
                 "expo",
@@ -331,7 +331,6 @@ class ForecastController(BaseController):
         mt.add_cmd("tcn", self.files)
         mt.add_cmd("trans", self.files)
         mt.add_cmd("tft", self.files)
-        # mt.add_info("_comingsoon_")
 
         console.print(text=mt.menu_text, menu="Forecast")
 
@@ -724,6 +723,8 @@ class ForecastController(BaseController):
             help="Alias name to give to the dataset",
             type=str,
         )
+        # Load in any newly exported files
+        self.DATA_FILES = forecast_model.get_default_files()
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-f")
