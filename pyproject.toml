@@ -102,6 +102,7 @@ ipyflex = "^0.2.4"
 setuptools = "^65.4.1"
 investiny = "^0.5.0"
 numpy = "1.21.6"
+stocksera = "^0.1.21"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
