@@ -19,12 +19,17 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # - name: Building the Docker image
+      #   run: |
+      #     source docker/compose.env
+      #     source docker/build.sh
+      #     echo "OPENBBTERMINAL_DOCKER_POETRY_IMAGE=$OPENBBTERMINAL_DOCKER_POETRY_IMAGE" >> $GITHUB_ENV
+          
+      # - name: Publishing the Docker image
+      #   run: |
+      #     docker push "${OPENBBTERMINAL_DOCKER_POETRY_IMAGE}"
+
       - name: Building the Docker image
         run: |
-          source docker/compose.env
-          source docker/build.sh
-          echo "OPENBBTERMINAL_DOCKER_POETRY_IMAGE=$OPENBBTERMINAL_DOCKER_POETRY_IMAGE" >> $GITHUB_ENV
-          
-      - name: Publishing the Docker image
-        run: |
-          docker push "${OPENBBTERMINAL_DOCKER_POETRY_IMAGE}"
+          docker build -f docker\openbbterminal-alpine.dockerfile -t ghcr.io/chavithra/openbbterminal-alpine:0.0.2 .
+          docker push ghcr.io/chavithra/openbbterminal-alpine:0.0.2
