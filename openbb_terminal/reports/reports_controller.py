@@ -187,7 +187,7 @@ class ReportController(BaseController):
 
     @log_start_end(log=logger)
     def call_run(self, other_args: List[str]):
-        """Process returns command"""
+        """Process run command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,

@@ -353,7 +353,7 @@ def check_ipynb(path: str) -> str:
     Returns
     -------
     bool
-        Path if paths endswith .ipynb, else False.
+        Path if paths endswith .ipynb, else empty string.
 
     """
     if not path.endswith(".ipynb"):
