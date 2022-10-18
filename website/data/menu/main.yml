@@ -882,6 +882,25 @@ main:
                 ref: /terminal/jupyter/dashboards/stocks
               - name: vsurf
                 ref: /terminal/jupyter/dashboards/vsurf
+          - name: reports
+            ref: /terminal/jupyter/reports
+            sub:
+              - name: crypto
+                ref: /terminal/jupyter/reports/crypto
+              - name: economy
+                ref: /terminal/jupyter/reports/economy
+              - name: equity
+                ref: /terminal/jupyter/reports/equity
+              - name: etf
+                ref: /terminal/jupyter/reports/etf
+              - name: forecast
+                ref: /terminal/jupyter/reports/forecast
+              - name: forex
+                ref: /terminal/jupyter/reports/forex
+              - name: portfolio
+                ref: /terminal/jupyter/reports/portfolio
+              - name: run
+                ref: /terminal/jupyter/reports/run
       - name: portfolio
         ref: /terminal/portfolio
         sub:
@@ -1684,23 +1703,6 @@ main:
                 ref: /terminal/stocks/th/open
               - name: symbol
                 ref: /terminal/stocks/th/symbol
-      - name: reports
-        ref: /terminal/reports
-        sub:
-          - name: crypto
-            ref: /terminal/reports/crypto
-          - name: economy
-            ref: /terminal/reports/economy
-          - name: equity
-            ref: /terminal/reports/equity
-          - name: etf
-            ref: /terminal/reports/etf
-          - name: forex
-            ref: /terminal/reports/forex
-          - name: portfolio
-            ref: /terminal/reports/portfolio
-          - name: run
-            ref: /terminal/reports/run
 # CODE BELOW THIS WILL BE DELETED FREQUENTLY BY PYTHON, DO NOT EDIT THIS
   - name: sdk
     ref: /sdk
