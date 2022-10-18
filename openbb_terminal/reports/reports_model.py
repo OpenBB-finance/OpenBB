@@ -10,7 +10,7 @@ from pathlib import Path
 import webbrowser
 from ast import literal_eval
 from datetime import datetime
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Union
 import papermill as pm
 import pandas as pd
 
@@ -82,6 +82,29 @@ REPORT_CHOICES = {
 }
 
 
+@log_start_end(log=logger)
+def get_arg_choices(report_name: str, arg_name: str) -> Union[List[str], None]:
+    """Get argument choices from autocompletion for crypto, forex and portfolio.
+
+    Parameters
+    ----------
+    report_name: str
+        Name of report chosen.
+    arg_name: str
+        Argument to limit choices.
+
+    Returns:
+        List[str]: List with argument choices from autocompletion.
+    """
+
+    choices = None
+    if report_name in ("crypto", "forex", "portfolio"):
+        if "--" + arg_name in REPORT_CHOICES[report_name]:
+            choices = list(REPORT_CHOICES[report_name]["--" + arg_name].keys())
+    return choices
+
+
+@log_start_end(log=logger)
 def get_reports_available(
     folder: Path = REPORTS_FOLDER, warn: bool = True
 ) -> List[str]:
