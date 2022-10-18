@@ -8,6 +8,7 @@ import types
 import functools
 import importlib
 from typing import Optional, Callable, List
+import logging
 
 from openbb_terminal.rich_config import console
 
@@ -26,10 +27,15 @@ from .config_terminal import theme
 
 from openbb_terminal.helper_classes import TerminalStyle  # noqa: F401
 from openbb_terminal import helper_funcs as helper  # noqa: F401
+from openbb_terminal.loggers import setup_logging
+from openbb_terminal.decorators import log_start_end, sdk_arg_logger
+from openbb_terminal.core.log.generation.settings_logger import log_all_settings
 from .reports import widget_helpers as widgets  # noqa: F401
 
 from .portfolio.portfolio_model import PortfolioModel as Portfolio
 from .cryptocurrency.due_diligence.pycoingecko_model import Coin
+
+logger = logging.getLogger(__name__)
 
 functions = {
     "alt.covid.slopes": {
@@ -2032,7 +2038,9 @@ if forecasting:
     functions = {**functions, **forecast_extras}
 
 
-def copy_func(f) -> Callable:
+def copy_func(
+    f: Callable, logging_decorator: bool = False, virtual_path: str = ""
+) -> Callable:
     """Copy the contents and attributes of the entered function.
 
     Based on https://stackoverflow.com/a/13503277
@@ -2041,11 +2049,18 @@ def copy_func(f) -> Callable:
     ----------
     f: Callable
         Function to be copied
+    logging_decorator: bool
+        If True, the copied function will be decorated with the logging decorator
+
     Returns
     -------
     g: Callable
         New function
     """
+    # Removing the logging decorator
+    if hasattr(f, "__wrapped__"):
+        f = f.__wrapped__  # type: ignore
+
     g = types.FunctionType(
         f.__code__,
         f.__globals__,
@@ -2055,6 +2070,12 @@ def copy_func(f) -> Callable:
     )
     g = functools.update_wrapper(g, f)
     g.__kwdefaults__ = f.__kwdefaults__
+
+    if logging_decorator:
+        log_name = logging.getLogger(g.__module__)
+        g = sdk_arg_logger(func=g, log=log_name, virtual_path=virtual_path)
+        g = log_start_end(func=g, log=log_name)
+
     return g
 
 
@@ -2097,12 +2118,14 @@ def change_docstring(api_callable, model: Callable, view=None):
                 "chart", Parameter.POSITIONAL_OR_KEYWORD, annotation=bool, default=False
             )
         ]
+        api_callable.__module__ = model.__module__
         api_callable.__signature__ = signature(view).replace(
             parameters=parameters + chart_parameter
         )
     else:
         api_callable.__doc__ = model.__doc__
         api_callable.__name__ = model.__name__
+        api_callable.__module__ = model.__module__
         api_callable.__signature__ = signature(model)
 
     return api_callable
@@ -2111,7 +2134,9 @@ def change_docstring(api_callable, model: Callable, view=None):
 class FunctionFactory:
     """The API Function Factory, which creates the callable instance."""
 
-    def __init__(self, model: Callable, view: Optional[Callable] = None):
+    def __init__(
+        self, model: Callable, view: Optional[Callable] = None, virtual_path: str = ""
+    ):
         """Initialise the FunctionFactory instance.
 
         Parameters
@@ -2122,11 +2147,16 @@ class FunctionFactory:
             The original view function from the terminal, this shall be set to None if the
             function has no charting
         """
+        self.virtual_path = virtual_path
         self.model_only = view is None
-        self.model = copy_func(model)
+        self.model = copy_func(
+            f=model, logging_decorator=True, virtual_path=virtual_path
+        )
         self.view = None
         if view is not None:
-            self.view = copy_func(view)
+            self.view = copy_func(
+                f=view, logging_decorator=True, virtual_path=virtual_path
+            )
 
     def api_callable(self, *args, **kwargs):
         """Return a result of the command from the view or the model function based on the chart parameter.
@@ -2140,6 +2170,7 @@ class FunctionFactory:
         -------
         Result from the view or model
         """
+
         if "chart" not in kwargs:
             kwargs["chart"] = False
         if kwargs["chart"] and (not self.model_only):
@@ -2190,6 +2221,7 @@ class Loader:
             "For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/api/"
         )
         self.__function_map = self.build_function_map(funcs=funcs)
+        self.__initialize_logging()
         self.load_menus()
 
     def __call__(self):
@@ -2288,6 +2320,11 @@ class Loader:
 
         return importlib.import_module(module_path)
 
+    @staticmethod
+    def __initialize_logging():
+        setup_logging(app_name="gst_sdk")
+        log_all_settings()
+
     @classmethod
     def get_function(cls, function_path: str) -> Callable:
         """Get function from string path.
@@ -2351,7 +2388,7 @@ class Loader:
 
             if model_function is not None:
                 function_factory = FunctionFactory(
-                    model=model_function, view=view_function
+                    model=model_function, view=view_function, virtual_path=virtual_path
                 )
                 function_with_doc = change_docstring(
                     types.FunctionType(function_factory.api_callable.__code__, {}),

@@ -15,6 +15,46 @@ Developing and maintaining an full-blown investment research infrastructure from
 However, it does not have to be. Take advantage of OpenBB SDK with its out-of-the-box data connectors and financial analysis toolkit.
 So that you can focus on designing and building your financial reports and applications.
 
+## Installation
+
+We provide a simple installation method in order to utilize the OpenBB SDK. You must first create an environment,
+which allows you to isolate the SDK from the rest of your system. It is our recommendation that you utilize a
+`conda` environment because there are optional features, such as `forecast`, that utilize libraries that are
+specifically sourced from `conda-forge`. Due to this, if you do not use a conda environment, you will not be
+able to use some of these features. As such, the installation steps will be written under the assumption that
+you are using conda.
+
+### Steps
+
+1. **Install [Miniconda](https://docs.conda.io/en/latest/miniconda.html)**
+
+    Download the `x86_64` Miniconda for your respective system and follow along with it's installation instructions. The Miniconda architecture MUST be `x86_64` in order to use certain features.
+
+2. **Create Environment**
+
+    ```shell
+    conda create -n <environment> python=3.9.6 -y
+    ```
+
+    (Optional) If you would like machine learning forecast features:
+
+    ```shell
+    conda install -c conda-forge u8darts-torch=0.22.0 -y
+    conda install -c conda-forge pytorch-lightning=1.6.5 -y
+    ```
+
+3. **Install OpenBB Terminal**
+
+    ```shell
+    pip install openbbterminal
+    ```
+
+    (Optional) If you would like machine learning forecast features:
+
+    ```shell
+    pip install "openbbterminal[prediction]"
+    ```
+
 ## Setup
 
 ### 1. Import OpenBB SDK
@@ -81,9 +121,9 @@ openbb.keys.fmp(key="example")
 
 openbb.keys.reddit(
     client_id="example",
-    client_secret="example", 
-    password="example", 
-    username="example", 
+    client_secret="example",
+    password="example",
+    username="example",
     useragent="example")
 ```
 
@@ -103,9 +143,9 @@ openbb.keys.fmp(key="example", persist=True)
 d = {
     "fed": {
         "key":"XXXXX"
-        }, 
+        },
     "binance": {
-        "key":"YYYYY", 
+        "key":"YYYYY",
         "secret":"ZZZZZ"
     },
 }
