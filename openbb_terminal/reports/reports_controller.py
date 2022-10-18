@@ -140,7 +140,7 @@ class ReportController(BaseController):
     @log_start_end(log=logger)
     def call_forecast(self, other_args: List[str]):
         try:
-            import darts  # pyright: reportMissingImports=false
+            import darts  # pyright: reportMissingImports=false # noqa: F401
 
             forecast = True
         except ImportError:
