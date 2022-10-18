@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-from secrets import choice
 
 # pylint: disable=R1732, R0912
 from typing import Any, Dict, List
@@ -40,6 +39,12 @@ class ReportController(BaseController):
     def update_choices(self):
         """Update controller choices with reports available under templates folder."""
 
+        for report_name in self.REPORTS:
+            # Extract report parameters do display on menu
+            self.PARAMETERS_DICT[report_name] = reports_model.extract_parameters(
+                str(reports_model.REPORTS_FOLDER / report_name)
+            )
+
         if session and obbff.USE_PROMPT_TOOLKIT:
 
             self.choices: dict = {c: {} for c in self.controller_choices}
@@ -50,10 +55,6 @@ class ReportController(BaseController):
                 "-p": "--parameters",
             }
             for report_name in self.REPORTS:
-                # Extract report parameters do display on menu
-                self.PARAMETERS_DICT[report_name] = reports_model.extract_parameters(
-                    str(reports_model.REPORTS_FOLDER / report_name)
-                )
 
                 # Completer with limited user choices to avoid unforeseen problems
                 self.choices[report_name] = {}
@@ -66,7 +67,7 @@ class ReportController(BaseController):
             self.choices["support"] = self.SUPPORT_CHOICES
             self.choices["about"] = self.ABOUT_CHOICES
 
-        self.completer = NestedCompleter.from_nested_dict(self.choices)
+            self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
         """Print help."""
@@ -180,7 +181,8 @@ class ReportController(BaseController):
                 parameters = vars(ns_parser)
                 parameters.pop("help")
                 reports_model.render_report(
-                    str(reports_model.REPORTS_FOLDER / report_name), parameters
+                    input_path=str(reports_model.REPORTS_FOLDER / report_name),
+                    args_dict=parameters,
                 )
 
         else:
@@ -234,7 +236,9 @@ class ReportController(BaseController):
             if ns_parser.file:
                 complete_file_path = str(USER_REPORTS_DIRECTORY / ns_parser.file)
                 if os.path.exists(complete_file_path):
-                    reports_model.render_report(complete_file_path, parameters_dict)
+                    reports_model.render_report(
+                        input_path=complete_file_path, args_dict=parameters_dict
+                    )
                 else:
                     console.print(
                         f"[red]Notebook '{ns_parser.file}' not found![/red]\n"

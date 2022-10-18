@@ -1033,7 +1033,7 @@ en:
   reports/_reports_: Build and run your custom reports or try one of our templates
   reports/_OpenBB_reports_: OpenBB reports as commands
   reports/_Custom_reports_: Custom reports
-  reports/run: Run a Jupyter notebook from path
+  reports/run: Run a Jupyter notebook from OpenBBUserData/reports
   forecast/_disclaimer_: DISCLAIMER
   forecast/_data_loc: Looking for data in
   forecast/load: load a dataset from csv
