@@ -21,6 +21,7 @@ from openbb_terminal.helper_funcs import (
     is_valid_axes_count,
 )
 from openbb_terminal.stocks.dark_pool_shorts import stocksera_model
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -100,6 +101,10 @@ def cost_to_borrow(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
     """
+    # Note: if you send an empty string stocksera will search every ticker
+    if not symbol:
+        console.print("[red]No symbol provided[/red]\n")
+        return
     df_cost_to_borrow = stocksera_model.get_cost_to_borrow(symbol)
 
     df_cost_to_borrow = df_cost_to_borrow.head(limit)[::-1]

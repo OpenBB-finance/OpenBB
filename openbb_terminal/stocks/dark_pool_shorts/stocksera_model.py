@@ -34,8 +34,10 @@ def get_cost_to_borrow(symbol: str) -> pd.DataFrame:
         client = stocksera.Client(api_key=cfg.API_STOCKSERA_KEY)
         df = pd.DataFrame(client.borrowed_shares(ticker=symbol))
         df.columns = ["Ticker", "Fees", "Available", "Date"]
-        del df["Ticker"]
+        # del df["Ticker"]
         df.set_index("Date", inplace=True)
+        print(symbol)
+        print(df)
 
     except StockseraRequestException:
         console.print("[red]Invalid API Key[/red]\n")
