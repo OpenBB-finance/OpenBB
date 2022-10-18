@@ -2,7 +2,6 @@
 __docformat__ = "numpy"
 
 import logging
-from operator import imod
 
 # pylint: disable=R1732, R0912
 import os

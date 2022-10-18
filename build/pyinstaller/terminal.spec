@@ -40,8 +40,6 @@ set_key(default_env_file, "OPENBB_LOGGING_COMMIT_HASH", str(commit_hash))
 # Files that are explicitly pulled into the bundle
 added_files = [
     (os.path.join(os.getcwd(), "openbb_terminal"), "openbb_terminal"),
-    (os.path.join(os.getcwd(), "routines"), "routines"),
-    (os.path.join(os.getcwd(), "portfolio"), "portfolio"),
     (os.path.join(pathex, "property_cached"), "property_cached"),
     (os.path.join(pathex, "user_agent"), "user_agent"),
     (os.path.join(pathex, "vaderSentiment"), "vaderSentiment"),
