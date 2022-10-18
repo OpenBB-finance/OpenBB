@@ -102,7 +102,7 @@ def get_arg_choices(report_name: str, arg_name: str) -> Union[List[str], None]:
     """
 
     choices = None
-    if report_name in ("crypto", "forex", "portfolio"):
+    if report_name in ("forex", "portfolio"):
         if "--" + arg_name in REPORT_CHOICES[report_name]:
             choices = list(REPORT_CHOICES[report_name]["--" + arg_name].keys())
     return choices
