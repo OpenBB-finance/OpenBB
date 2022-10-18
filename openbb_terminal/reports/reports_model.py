@@ -19,6 +19,7 @@ from openbb_terminal.core.config.paths import (
     USER_EXPORTS_DIRECTORY,
     MISCELLANEOUS_DIRECTORY,
     USER_PORTFOLIO_DATA_DIRECTORY,
+    USER_REPORTS_DIRECTORY,
 )
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
@@ -30,6 +31,12 @@ CURRENT_LOCATION = Path(__file__)
 REPORTS_FOLDER = CURRENT_LOCATION.parent / "templates"
 OUTPUT_FOLDER = USER_EXPORTS_DIRECTORY / "reports"
 
+USER_REPORTS = {
+    filepath.name: filepath
+    for file_type in ["ipynb"]
+    for filepath in USER_REPORTS_DIRECTORY.rglob(f"*.{file_type}")
+}
+
 # TODO: Trim available choices to avoid errors in notebooks.
 
 etf_data_path = CURRENT_LOCATION.parent / "data" / "etf_tickers.csv"
@@ -40,7 +47,6 @@ CRYPTO_TICKERS = pd.read_csv(crypto_data_path).iloc[:, 0].to_list()
 
 stocks_data_path = CURRENT_LOCATION.parent / "data" / "stocks_tickers.csv"
 STOCKS_TICKERS = pd.read_csv(stocks_data_path).iloc[:, 0].to_list()
-
 
 PORTFOLIO_HOLDINGS_FILES = {
     filepath.name: filepath
@@ -57,7 +63,6 @@ PORTFOLIO_HOLDINGS_FILES.update(
         ).rglob(f"*.{file_type}")
     }
 )
-
 
 REPORT_CHOICES = {
     "etf": {

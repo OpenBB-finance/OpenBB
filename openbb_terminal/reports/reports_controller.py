@@ -10,6 +10,7 @@ from secrets import choice
 from typing import Any, Dict, List
 
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.config.paths import USER_REPORTS_DIRECTORY
 from openbb_terminal.helper_funcs import parse_simple_args
 from openbb_terminal.reports import reports_model
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -43,7 +44,7 @@ class ReportController(BaseController):
 
             self.choices: dict = {c: {} for c in self.controller_choices}
             self.choices["run"] = {
-                "--file": {},
+                "--file": {c: None for c in reports_model.USER_REPORTS},
                 "-f": "--file",
                 "--parameters": {},
                 "-p": "--parameters",
@@ -231,9 +232,10 @@ class ReportController(BaseController):
                         )
 
             if ns_parser.file:
-                if os.path.exists(ns_parser.file):
-                    reports_model.render_report(ns_parser.file, parameters_dict)
+                complete_file_path = str(USER_REPORTS_DIRECTORY / ns_parser.file)
+                if os.path.exists(complete_file_path):
+                    reports_model.render_report(complete_file_path, parameters_dict)
                 else:
                     console.print(
-                        f"[red]Notebook '{ns_parser.file}' not found![/red]\n"
+                        f"[red]Notebook '{complete_file_path}' not found![/red]\n"
                     )
