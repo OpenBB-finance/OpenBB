@@ -1,0 +1,83 @@
+# This script requires you to use a ticker as an argument. This can be done with the following:
+# exe due_diligence_stock.openbb -i AMT
+
+# Go to the stocks menu
+stocks
+
+# Load a ticker, given the argument used. E.g. -i AMT
+load $ARGV[0]
+
+# Display stock price over time
+candle
+
+# Check market cap
+fa/mktcap
+
+# Check company management
+mgmt
+
+# Check fundamentals
+income/balance/cash
+
+# Look into sustainability
+sust
+
+# Look into historical dividends
+divs
+
+# Display most important notes of SEC filings based on a NLP model
+analysis
+
+# Create discounted cash flow spreadsheet
+dcf
+
+# show latest insider activity
+../ins/stats
+
+# check price vs short interest volume
+../dps/psi
+
+# check historical quarterly government contracts
+../gov/histcont
+
+# check rating from analysts
+../dd/rating
+
+# check price targets over time along share price
+pt
+
+# check annual earnings estimates
+est
+
+# check simple moving average 20,50 window
+../ta/sma
+
+# check recommendation and summary based on main technical analysis indicators
+recom/summary
+
+# check Twitter's sentiment on the ticker
+../ba/sentiment
+
+# go into sector and industry analysis menu
+../sia
+
+# check total cash metrics across similar tickers
+metric tc
+
+# check free cash flow metrics across similar tickers
+metric fcf
+
+# check operating income over time
+vis oi
+
+# go into comparison analysis menu
+ca
+
+# share price over time
+historical
+
+# correlation heatmap
+hcorr
+
+# compare fundamentals across these companies
+cashflow/balance/income

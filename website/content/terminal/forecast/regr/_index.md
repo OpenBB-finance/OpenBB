@@ -1,7 +1,5 @@
 ```
-usage: regr [--past-covariates PAST_COVARIATES] [--all-past-covariates] [--naive] [-d {}] [-c TARGET_COLUMN] [-n N_DAYS]
-            [-t TRAIN_SPLIT] [-o OUTPUT_CHUNK_LENGTH] [--end S_END_DATE] [--start S_START_DATE] [--lags LAGS]
-            [--residuals] [--forecast-only] [-h] [--export EXPORT]
+usage: regr [--past-covariates PAST_COVARIATES] [--all-past-covariates] [--naive] [-d {AAPL}] [-c TARGET_COLUMN] [-n N_DAYS] [-t TRAIN_SPLIT] [-o OUTPUT_CHUNK_LENGTH] [--end S_END_DATE] [--start S_START_DATE] [--lags LAGS] [--residuals] [--forecast-only] [--explainability-raw] [--export-pred-raw] [-h] [--export EXPORT]
 ```
 
 Perform a regression forecast.
@@ -13,7 +11,7 @@ optional arguments:
   --all-past-covariates
                         Adds all rows as past covariates except for date and the target column. (default: False)
   --naive               Show the naive baseline for a model. (default: False)
-  -d {}, --target-dataset {}
+  -d {AAPL}, --target-dataset {AAPL}
                         The name of the dataset you want to select (default: None)
   -c TARGET_COLUMN, --target-column TARGET_COLUMN
                         The name of the specific column you want to use (default: close)
@@ -28,10 +26,12 @@ optional arguments:
   --lags LAGS           Lagged target values used to predict the next time step. (default: 14)
   --residuals           Show the residuals for the model. (default: False)
   --forecast-only       Do not plot the hisotorical data without forecasts. (default: False)
+  --explainability-raw  Prints out a raw dataframe showing explainability results. (default: False)
+  --export-pred-raw     Export predictions to a csv file. (default: False)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export figure into png, jpg, pdf, svg (default: )
 
-For more information and examples, use 'about export' to access the related guide.
+For more information and examples, use 'about regr' to access the related guide.
 ```
 
 Example:

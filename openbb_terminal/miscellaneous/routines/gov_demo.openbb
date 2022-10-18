@@ -1,0 +1,43 @@
+# This script requires you to use arguments. This can be done with the following:
+# exe routines/example_with_inputs.openbb -i TSLA,AAPL,MSFT
+
+# Go to the Government submenu
+stocks
+gov
+
+# Last Senate, Congress & House trades
+lasttrades congress
+lasttrades senate
+lasttrades house
+
+# Lobbying efforts
+toplobbying
+toplobbying -l 50 --raw
+
+# Government spending
+lastcontracts -p 1 -l 100 -s
+
+# Load Microsoft for analysis
+load msft
+
+# Show government officials trades over six months
+gtrades congress
+gtrades congress --raw
+gtrades senate
+gtrades senate --raw
+gtrades house
+gtrades house --raw
+
+# Show MSFT lobbying efforts on sigle-issue agendas
+lobbying -l 20
+
+# Historical Quarterly Government Contracts Awarded to MSFT
+histcont
+
+# Top tickers for overall trading by elected officials
+topbuys congress
+topbuys senate
+topbuys house
+topsells congress
+topsells senate
+topsells house

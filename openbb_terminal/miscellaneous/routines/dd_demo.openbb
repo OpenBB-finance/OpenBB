@@ -1,0 +1,38 @@
+# Select location folder to export data to (if doesn't exist, will be created by default)
+# export didier_analysis_on_$ARGV[0]
+
+# Go into the stocks context
+stocks
+
+# Load a ticker that's given as a first argument of the routine
+load CF
+
+# Enter the Due Diligence submenu
+dd
+
+# Print last twenty SEC filings
+sec -l 20
+
+# Print a chart and raw table of historical price targets
+pt
+pt -l 20 --raw
+
+# See a list of public companies that are customers of, or suppliers to, CF Industries
+customer
+supplier
+
+# Change tickers to $TSLA
+load tsla
+
+# Display table of the last twenty $TSLA trades across all ARK funds
+arktrades -l 20
+
+# Export a spreadsheet of historic ARK fund trades of $HOOD
+load hood
+arktrades --export xlsx
+
+# Show future earnings estimates for $HOOD
+est
+
+# Show recent analyst upgrades/downgrades
+analyst

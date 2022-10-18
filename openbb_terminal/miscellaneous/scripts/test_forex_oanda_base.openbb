@@ -1,0 +1,14 @@
+forex
+oanda
+h
+help
+?
+q
+oanda
+..
+..
+forex
+oanda
+quit
+oanda
+exit

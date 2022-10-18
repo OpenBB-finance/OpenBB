@@ -194,15 +194,22 @@ def get_balance(
     client = Client(cfg.API_BINANCE_KEY, cfg.API_BINANCE_SECRET)
 
     pair = from_symbol + to_symbol
-    current_balance = client.get_asset_balance(asset=pair)
+    current_balance = client.get_asset_balance(asset=from_symbol)
     if current_balance is None:
         console.print("Check loaded coin\n")
         return pd.DataFrame()
 
+    last_price = client.get_ticker(symbol=pair).get("lastPrice")
     amounts = [float(current_balance["free"]), float(current_balance["locked"])]
-    df = pd.DataFrame(amounts).apply(lambda x: str(float(x)))
+
+    df = pd.DataFrame(amounts)
     df.columns = ["Amount"]
     df.index = ["Free", "Locked"]
-    df["Percent"] = df.div(df.sum(axis=0), axis=1).round(3)
+
+    if last_price:
+        last_price = float(last_price)
+        df[f"Amount [{to_symbol}]"] = df["Amount"].mul(last_price)
+
+    df["Percent"] = df["Amount"].mul(100).div(df["Amount"].sum(axis=0)).round(3)
 
     return df
