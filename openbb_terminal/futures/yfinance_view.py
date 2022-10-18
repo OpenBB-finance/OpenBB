@@ -133,7 +133,7 @@ def display_historical(
 def display_search(
     category: str = "",
     exchange: str = "",
-    description: str= "",
+    description: str = "",
     export: str = "",
 ):
     """Display search futures [Source: Yahoo Finance]
