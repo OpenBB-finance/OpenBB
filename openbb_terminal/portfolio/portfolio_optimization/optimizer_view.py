@@ -1199,9 +1199,6 @@ def display_max_sharpe(
             risk_measure=risk_choices[risk_measure],
             risk_free_rate=risk_free_rate,
             alpha=alpha,
-            # a_sim=a_sim,
-            # beta=beta,
-            # b_sim=beta_sim,
             freq=freq,
         )
         console.print("")
@@ -1373,9 +1370,6 @@ def display_min_risk(
             risk_measure=risk_choices[risk_measure],
             risk_free_rate=risk_free_rate,
             alpha=alpha,
-            # a_sim=a_sim,
-            # beta=beta,
-            # b_sim=beta_sim,
             freq=freq,
         )
         console.print("")
@@ -1547,9 +1541,6 @@ def display_max_util(
             risk_measure=risk_choices[risk_measure],
             risk_free_rate=risk_free_rate,
             alpha=alpha,
-            # a_sim=a_sim,
-            # beta=beta,
-            # b_sim=beta_sim,
             freq=freq,
         )
         console.print("")
@@ -1721,9 +1712,6 @@ def display_max_ret(
             risk_measure=risk_choices[risk_measure],
             risk_free_rate=risk_free_rate,
             alpha=alpha,
-            # a_sim=a_sim,
-            # beta=beta,
-            # b_sim=beta_sim,
             freq=freq,
         )
         console.print("")
@@ -1838,10 +1826,6 @@ def display_max_div(
             data=stock_returns,
             risk_measure="MV",
             risk_free_rate=0,
-            # alpha=0.05,
-            # a_sim=100,
-            # beta=None,
-            # b_sim=None,
             freq=freq,
         )
         console.print("")
@@ -1957,10 +1941,6 @@ def display_max_decorr(
             data=stock_returns,
             risk_measure="MV",
             risk_free_rate=0,
-            # alpha=alpha,
-            # a_sim=a_sim,
-            # beta=beta,
-            # b_simb_sim,
             freq=freq,
         )
         console.print("")
@@ -2099,10 +2079,6 @@ def display_black_litterman(
             data=stock_returns,
             risk_measure="MV",
             risk_free_rate=0,
-            # alpha=alpha,
-            # a_sim=a_sim,
-            # beta=beta,
-            # b_simb_sim,
             freq=freq,
         )
         console.print("")
@@ -2258,9 +2234,6 @@ def display_ef(
             rm=risk_choices[risk_measure.lower()],
             rf=risk_free_rate,
             alpha=alpha,
-            # a_sim=a_sim,
-            # beta=beta,
-            # b_sim=b_sim,
         )
         if risk_choices[risk_measure.lower()] not in [
             "ADD",
@@ -3772,29 +3745,6 @@ def pie_chart_weights(
                 a.set_text("")
 
     ax.axis("equal")
-
-    # leg1 = ax.legend(
-    #     wedges,
-    #     [str(s) for s in stocks],
-    #     title="  Ticker",
-    #     loc="upper left",
-    #     bbox_to_anchor=(0.80, 0, 0.5, 1),
-    #     frameon=False,
-    # )
-    # leg2 = ax.legend(
-    #     wedges,
-    #     [
-    #         f"{' ' if ((100*s/total_size) < 10) else ''}{100*s/total_size:.2f}%"
-    #         for s in sizes
-    #     ],
-    #     title=" ",
-    #     loc="upper left",
-    #     handlelength=0,
-    #     bbox_to_anchor=(0.91, 0, 0.5, 1),
-    #     frameon=False,
-    # )
-    # ax.add_artist(leg1)
-    # ax.add_artist(leg2)
 
     plt.setp(autotexts, size=8, weight="bold")
 
