@@ -590,7 +590,11 @@ main:
           - name: overview
             ref: /terminal/economy/overview
           - name: performance
-            ref: /terminal/economy/performance
+            ref: "/terminal/economy/performance"
+          - name: spectrum
+            ref: "/terminal/economy/spectrum"
+          - name: eval
+            ref: "/terminal/economy/eval"
           - name: plot
             ref: /terminal/economy/plot
           - name: quantitative analysis
