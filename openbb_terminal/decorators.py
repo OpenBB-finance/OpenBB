@@ -123,6 +123,7 @@ def disable_check_api():
     obbff.ENABLE_CHECK_API = False
 
 
+
 def sdk_arg_logger(func=None, log=None, virtual_path: str = "", chart: bool = False):
     """
     Wrap function to add the function args to the log entry when using the SDK.
@@ -132,6 +133,7 @@ def sdk_arg_logger(func=None, log=None, virtual_path: str = "", chart: bool = Fa
     def wrapper_decorator(*args, **kwargs):
         try:
             value = func(*args, **kwargs)
+
             merged_args = merge_function_args(func, args, kwargs)
             merged_args = sdk_remove_key_and_log_state(func.__module__, merged_args)
 

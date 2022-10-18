@@ -39,6 +39,7 @@ from .cryptocurrency.due_diligence.pycoingecko_model import Coin
 
 logger = logging.getLogger(__name__)
 
+
 SUPPRESS_LOGGING_CLASSES = {
     ReportController: "ReportController",
 }

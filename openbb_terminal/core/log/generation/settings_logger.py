@@ -14,6 +14,7 @@ from openbb_terminal.core.log.generation.path_tracking_file_handler import (
     PathTrackingFileHandler,
 )
 
+
 SENSITIVE_WORDS = [
     "API",
     "DG_",
@@ -25,7 +26,6 @@ SENSITIVE_WORDS = [
     "USERNAME",
     "ACCOUNT",
 ]
-
 
 logger = logging.getLogger(__name__)
 
