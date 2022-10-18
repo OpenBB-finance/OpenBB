@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 class ReportController(BaseController):
     """Report Controller class."""
 
-    REPORTS: List[str] = [
+    CHOICES_COMMANDS: List[str] = [
         "crypto",
         "economy",
         "equity",
@@ -32,11 +32,14 @@ class ReportController(BaseController):
         "forecast",
         "forex",
         "portfolio",
+        "run",
+        "load",
     ]
-    PARAMETERS_DICT: Dict[str, Any] = {}
-
-    CHOICES_COMMANDS: List[str] = REPORTS + ["run", "load"]
     PATH = "/reports/"
+
+    REPORTS: List[str] = reports_model.get_reports_available()
+    REPORTS = list(set(CHOICES_COMMANDS).intersection(REPORTS))
+    PARAMETERS_DICT: Dict[str, Any] = {}
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -81,6 +84,7 @@ class ReportController(BaseController):
         """Print help."""
 
         self.REPORTS = reports_model.get_reports_available()
+        self.REPORTS = list(set(self.CHOICES_COMMANDS).intersection(self.REPORTS))
         self.update_choices()
 
         mt = MenuText("reports/")

@@ -1,11 +1,12 @@
 ```
-usage: run [-f FILE] [-p PARAMS [PARAMS ...]] [-h]
+usage: run [-f {}] [-p PARAMETERS [PARAMETERS ...]] [-h]
 
-Run a notebook
+Run a notebook from this folder: '/Users/diogosousa/OpenBBUserData/reports'.
 
 optional arguments:
-  -f FILE, --file FILE  The file to be loaded (default: None)
-  -p PARAMS [PARAMS ...], --params PARAMS [PARAMS ...]
+  -f {}, --file {}
+                        The file to be loaded (default: None)
+  -p PARAMETERS [PARAMETERS ...], --parameters PARAMETERS [PARAMETERS ...]
                         Report parameters with format 'name:value'. (default: None)
   -h, --help            show this help message (default: False)
 
