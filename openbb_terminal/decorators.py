@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 import functools
 import logging
 import os
+import json
 import pandas as pd
 
 from openbb_terminal import feature_flags as obbff
@@ -117,3 +118,31 @@ def check_api_key(api_keys):
 
 def disable_check_api():
     obbff.ENABLE_CHECK_API = False
+
+
+def sdk_arg_logger(func=None, log=None, virtual_path: str = ""):
+    """
+    Wrap function to add the function args to the log entry when using the SDK.
+    """
+
+    @functools.wraps(func)
+    def wrapper_decorator(*args, **kwargs):
+        try:
+            value = func(*args, **kwargs)
+
+            logging_info = {"INPUT": {"args": args, "kwargs": kwargs}}
+
+            if virtual_path:
+                logging_info["VIRTUAL_PATH"] = virtual_path
+
+            log.info(
+                f"{json.dumps(logging_info)}",
+                extra={"func_name_override": func.__name__},
+            )
+            return value
+
+        except Exception as e:
+            console.print(f"[red]Error: {str(e)}[/red]")
+            raise
+
+    return wrapper_decorator

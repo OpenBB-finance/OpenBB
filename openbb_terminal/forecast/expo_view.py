@@ -34,6 +34,7 @@ def display_expo_forecast(
     start_date: Optional[datetime] = None,
     end_date: Optional[datetime] = None,
     naive: bool = False,
+    export_pred_raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """Display Probabilistic Exponential Smoothing forecast
@@ -102,21 +103,22 @@ def display_expo_forecast(
     )
     probabilistic = True
     helpers.plot_forecast(
-        "PES",
-        target_column,
-        historical_fcast,
-        predicted_values,
-        ticker_series,
-        dataset_name,
-        data,
-        n_predict,
-        forecast_horizon,
-        None,
-        precision,
-        probabilistic,
-        export,
+        name="PES",
+        target_col=target_column,
+        historical_fcast=historical_fcast,
+        predicted_values=predicted_values,
+        ticker_series=ticker_series,
+        ticker_name=dataset_name,
+        data=data,
+        n_predict=n_predict,
+        forecast_horizon=forecast_horizon,
+        past_covariates=None,
+        precision=precision,
+        probabilistic=probabilistic,
+        export=export,
         forecast_only=forecast_only,
         naive=naive,
+        export_pred_raw=export_pred_raw,
         external_axes=external_axes,
     )
     if residuals:
