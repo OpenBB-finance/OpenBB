@@ -1,4 +1,4 @@
-"""OpenBB Terminal API."""
+"""OpenBB Terminal SDK."""
 # flake8: noqa
 # pylint: disable=unused-import,wrong-import-order
 # pylint: disable=C0302,W0611,not-callable,ungrouped-imports
