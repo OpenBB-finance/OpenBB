@@ -1,4 +1,4 @@
-"""OpenBB Terminal API."""
+"""OpenBB Terminal SDK."""
 # flake8: noqa
 # pylint: disable=unused-import,wrong-import-order
 # pylint: disable=C0302,W0611,not-callable,ungrouped-imports
@@ -2113,7 +2113,7 @@ def change_docstring(api_callable, model: Callable, view=None):
     if view.__doc__ is not None:
         index = view.__doc__.find("Parameters")
         all_parameters = (
-            "\nAPI function, use the chart kwarg for getting the view model and it's plot. "
+            "\nSDK function, use the chart kwarg for getting the view model and it's plot. "
             "See every parameter below:\n\n    "
             + view.__doc__[index:]
             + """chart: bool
@@ -2170,7 +2170,7 @@ def check_suppress_logging(suppress_dict: dict) -> bool:
 
 
 class FunctionFactory:
-    """The API Function Factory, which creates the callable instance."""
+    """The SDK Function Factory, which creates the callable instance."""
 
     def __init__(
         self, model: Callable, view: Optional[Callable] = None, virtual_path: str = ""
@@ -2243,10 +2243,10 @@ class MainMenu:
 
     def __repr__(self):
         """Get human readable representation."""
-        return """This is the API of the OpenBB Terminal.
-        Use the API to get data directly into your jupyter notebook or directly use it in your application.
+        return """This is the OpenBB Terminal SDK.
+        Use the SDK to get data directly into your jupyter notebook or directly use it in your application.
         ...
-        For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/api/
+        For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/sdk/
         """
 
 
@@ -2256,7 +2256,7 @@ class Loader:
     def __init__(self, funcs: dict, suppress_logging: bool = False):
         print(
             "WARNING! Breaking changes incoming! Especially avoid using kwargs, since some of them will change.\n"
-            "For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/api/"
+            "For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/sdk/"
         )
 
         self.__suppress_logging = suppress_logging
@@ -2270,8 +2270,8 @@ class Loader:
 
     def __repr__(self):
         """Get human readable representation."""
-        return """This is the API of the OpenBB Terminal.
-        Use the API to get data directly into your jupyter notebook or directly use it in your application.
+        return """This is the OpenBB Terminal SDK.
+        Use the SDK to get data directly into your jupyter notebook or directly use it in your application.
         ...
         For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/api/
         """
@@ -2282,7 +2282,7 @@ class Loader:
         # pass
 
     def load_menus(self):
-        """Create the API structure by setting attributes and saving the functions.
+        """Create the SDK structure by setting attributes and saving the functions.
 
         See openbb.stocks.command
         """
@@ -2308,7 +2308,7 @@ class Loader:
             filtered_dict = {k: v for (k, v) in function_map.items() if path_str in k}
 
             def f():
-                string = menu.upper() + " Menu\n\nThe api commands of the the menu:"
+                string = menu.upper() + " Menu\n\nThe SDK commands of the the menu:"
                 for command in filtered_dict:
                     string += "\n\t<openbb>." + command
                 return string
@@ -2451,8 +2451,8 @@ class Loader:
         return function_map
 
 
-# TO USE THE API DIRECTLY JUST IMPORT IT:
-# from openbb_terminal.api import openbb (or: from openbb_terminal.api import openbb as api)
+# TO USE THE SDK DIRECTLY JUST IMPORT IT:
+# from openbb_terminal.sdk import openbb (or: from openbb_terminal.sdk import openbb as sdk)
 openbb = Loader(
     funcs=functions,
     suppress_logging=check_suppress_logging(suppress_dict=SUPPRESS_LOGGING_CLASSES),
