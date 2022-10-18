@@ -193,13 +193,13 @@ class ReportController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="run",
-            description="Run a notebook",
+            description=f"Run a notebook from this folder: '{str(USER_REPORTS_DIRECTORY)}'.",
         )
         parser.add_argument(
             "-f",
             "--file",
-            type=reports_model.check_ipynb,
             dest="file",
+            choices=reports_model.USER_REPORTS,
             required="-h" not in other_args,
             help="The file to be loaded",
         )
