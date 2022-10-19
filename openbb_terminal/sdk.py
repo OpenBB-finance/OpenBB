@@ -18,6 +18,10 @@ from openbb_terminal.dashboards.dashboards_controller import DashboardsControlle
 try:
     import darts  # pyright: reportMissingImports=false
 
+    # If you just import darts this will pass during pip install, this creates
+    # Failures later on, also importing utils ensures that darts is installed correctly
+    from darts import utils
+
     forecasting = True
 except ImportError:
     forecasting = False
