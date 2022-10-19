@@ -19,7 +19,7 @@ from prompt_toolkit.formatted_text import HTML
 import pandas as pd
 
 from openbb_terminal import feature_flags as obbff
-
+from openbb_terminal.terminal_helper import is_packaged_application
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     MISCELLANEOUS_DIRECTORY,
@@ -138,7 +138,7 @@ class TerminalController(BaseController):
         mt.add_cmd("about")
         mt.add_cmd("support")
         mt.add_cmd("survey")
-        if not obbff.PACKAGED_APPLICATION:
+        if not is_packaged_application():
             mt.add_cmd("update")
         mt.add_cmd("wiki")
         mt.add_cmd("record")
@@ -326,7 +326,7 @@ class TerminalController(BaseController):
 
     def call_update(self, _):
         """Process update command"""
-        if not obbff.PACKAGED_APPLICATION:
+        if not is_packaged_application():
             self.update_success = not update_terminal()
         else:
             console.print(
@@ -400,7 +400,7 @@ class TerminalController(BaseController):
 
     def call_dashboards(self, _):
         """Process dashboards command"""
-        if not obbff.PACKAGED_APPLICATION:
+        if not is_packaged_application():
             from openbb_terminal.dashboards.dashboards_controller import (
                 DashboardsController,
             )
@@ -597,11 +597,9 @@ class TerminalController(BaseController):
 def terminal(jobs_cmds: List[str] = None, appName: str = "gst", test_mode=False):
     """Terminal Menu"""
     # TODO: HELP WANTED! Refactor the appName setting if a more elegant solution comes up
-    if obbff.PACKAGED_APPLICATION:
-        appName = "gst_packaged"
 
     if not test_mode:
-        setup_logging(appName)
+        setup_logging()
     logger.info("START")
     log_all_settings()
 
