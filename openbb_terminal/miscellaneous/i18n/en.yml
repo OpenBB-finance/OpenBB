@@ -209,7 +209,7 @@ en:
   stocks/sia/ca: take these to comparison analysis menu
   stocks/dps/load: load a specific stock ticker for analysis
   stocks/dps/shorted: show most shorted stocks
-  stocks/dps/ctb: stocks with highest cost to borrow
+  stocks/dps/ctb: cost to borrow of stocks
   stocks/dps/hsi: show top high short interest stocks of over 20% ratio
   stocks/dps/prom: promising tickers based on dark pool shares regression
   stocks/dps/pos: dark pool short position

@@ -1,8 +1,9 @@
-FROM python:3.9-slim-buster
+FROM python:3.9-slim-bullseye
 
 LABEL org.opencontainers.image.source https://github.com/OpenBB-finance/OpenBBTerminal
 
-RUN  apt-get update && apt-get -y install --no-install-recommends \
+RUN apt-get update
+RUN apt-get -y install --no-install-recommends \
   gcc \
   g++ \
   make \
@@ -21,13 +22,13 @@ RUN  apt-get update && apt-get -y install --no-install-recommends \
   libgl1-mesa-glx \
   libpng16-16 \
   procps \
-  python3-tk && \
-  curl -sL https://deb.nodesource.com/setup_16.x -o nodesource_setup.sh && \
-  bash nodesource_setup.sh && \
-  apt-get install -y nodejs && \
-  apt-get -y autoremove && \
-  apt-get clean && \
-  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+  python3-tk
+RUN curl -sL https://deb.nodesource.com/setup_16.x -o nodesource_setup.sh
+RUN bash nodesource_setup.sh
+RUN apt-get install -y nodejs
+RUN apt-get -y autoremove
+RUN apt-get clean
+RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN useradd --create-home --shell /bin/bash python
 
@@ -36,4 +37,4 @@ WORKDIR /home/python
 
 ENV PATH="/home/python/.local/bin:${PATH}"
 
-RUN pip install "poetry==1.1.13"
+RUN pip install "poetry==1.1.15"
