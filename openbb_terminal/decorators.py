@@ -137,7 +137,9 @@ def sdk_arg_logger(func=None, log=None, virtual_path: str = "", chart: bool = Fa
             merged_args = sdk_remove_key_and_log_state(func.__module__, merged_args)
 
             logging_info = {}
-            logging_info["INPUT"] = merged_args
+            logging_info["INPUT"] = {
+                key: str(value) for key, value in merged_args.items()
+            }
             logging_info["VIRTUAL_PATH"] = virtual_path
             logging_info["CHART"] = chart
 
@@ -149,6 +151,11 @@ def sdk_arg_logger(func=None, log=None, virtual_path: str = "", chart: bool = Fa
 
         except Exception as e:
             console.print(f"[red]Error: {str(e)}[/red]")
+            log.exception(
+                "Exception: %s",
+                str(e),
+                extra={"func_name_override": func.__name__},
+            )
             raise
 
     return wrapper_decorator

@@ -16,6 +16,7 @@ import requests
 import matplotlib.pyplot as plt
 
 # IMPORTATION INTERNAL
+from openbb_terminal import config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import thought_of_the_day as thought
 from openbb_terminal.rich_config import console
@@ -174,12 +175,23 @@ def hide_splashscreen():
         logger.info(e)
 
 
+def is_packaged_application() -> bool:
+    """Tell whether or not it is a packaged version (Windows or Mac installer).
+
+
+    Returns:
+        bool: If the application is packaged
+    """
+
+    return cfg.LOGGING_APP_NAME == "gst_packaged"
+
+
 def bootup():
     if sys.platform == "win32":
         # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
         os.system("")  # nosec
         # Hide splashscreen loader of the packaged app
-        if obbff.PACKAGED_APPLICATION:
+        if is_packaged_application():
             hide_splashscreen()
 
     try:
