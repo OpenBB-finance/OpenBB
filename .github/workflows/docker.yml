@@ -6,7 +6,7 @@ jobs:
   publish-image:
     runs-on: ubuntu-latest
     env: 
-      OPENBBTERMINAL_DOCKER_GITHUB_REPOSITORY: ${{ github.repository_owner }}
+      OPENBBTERMINAL_DOCKER_GITHUB_REPOSITORY: ${{ github.repository }}
 
     steps:
       - name: Checkout Code
