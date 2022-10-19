@@ -1,6 +1,8 @@
 version: '3.8'
 services:
   poetry:
+    environment:
+        DISPLAY: host.docker.internal:0.0
     volumes:
       - ~/OpenBBUserData:/home/python/OpenBBUserData
       - ~/.openbb_terminal:/home/python/.openbb_terminal
