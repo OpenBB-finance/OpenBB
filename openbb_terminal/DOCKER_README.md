@@ -151,7 +151,7 @@ xhost + $IP
 Now we can run the docker container, adding the display to the environment:
 
 ```bach
-docker run -it --rm --env-file=path/to/setenv --env DISPLAY=$IP:0 ghcr.io/openbb-finance/openbbterminal/poetry:X.Y.Z
+docker run -v ~/.openbb_terminal/:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm --env-file=path/to/setenv --env DISPLAY=$IP:0 ghcr.io/openbb-finance/openbbterminal/poetry:X.Y.Z
 ```
 
 This container will be able to display all the same plots as the terminal interface.
