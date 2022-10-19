@@ -458,48 +458,42 @@ class TerminalController(BaseController):
         """Process intro command"""
         console.print(panel.Panel("[purple]Welcome to the OpenBB Terminal.[/purple]"))
         console.print(
-            "\nThe following guidelines will guide you towards making the most out of the OpenBB Terminal.\n\n"
-            "Whenever you have read the tip & trick type 'Enter' to skip to next one."
+            "\nThe following walkthrough will guide you towards making the most out of the OpenBB Terminal.\n\n"
+            "When you are ready to advance, type 'Enter' to skip to next one."
         )
         input("\n\n")
 
-        console.print(
-            panel.Panel("[purple]#1 - Difference between commands and menus?[/purple]")
-        )
+        console.print(panel.Panel("[purple]#1 - Commands vs menu.[/purple]"))
         console.print(
             "\nMenus are a collection of 'commands' and 'sub-menus'.\n"
-            "You can identify them through their distinct color and the fact that their line starts with '>'\n\n"
+            "You can identify them through their distinct color and a '>' at the beginning of the line\n\n"
             "For instance:\n"
             "[menu]>   stocks             access historical pricing data, options, sector [/menu]"
             "[menu]and industry, and overall due diligence [/menu]\n\n\n"
-            "Commands are expected to return financial data.\n"
+            "Commands are expected to return data either as a chart or table.\n"
             "You can identify them through their distinct color\n\n"
             "For instance:\n"
             "[cmds]>   news               display news articles based on term and data sources [/cmds]"
         )
         input("\n\n")
 
+        console.print(panel.Panel("[purple]#2 - Using commands[/purple]"))
         console.print(
-            panel.Panel("[purple]#2 - How to interact with commands?[/purple]")
-        )
-        console.print(
-            "\nAll the commands in the terminal have a vast range of arguments.\n\n"
+            "\nCommands throughout the terminal can have additional arguments.\n\n"
             "Let's say that in the current menu, you want to have more information about the command 'news'. \n\n"
-            "You can either see the available arguments in the terminal, using: [param]news -h[/param]\n\n"
-            "Or you can find out more about it with an output example on the browser, using: [param]about news[/param]"
+            "You can either see the available arguments in the terminal, using: [param]news -h[/param]\n\n",
+            "or you can find out more about it with an output example on the browser, using: [param]about news[/param]",
         )
         input("\n\n")
 
+        console.print(panel.Panel("[purple]#3 - Setting API Keys[/purple]"))
         console.print(
-            panel.Panel("[purple]#3 - Why do I need to set API keys?[/purple]")
-        )
-        console.print(
-            "\nThe OpenBB Terminal doesn't own any of the data you have access to.\n\n"
+            "\nThe OpenBB Terminal does not own any of the data you have access to.\n\n"
             "Instead, we provide the infrastructure to access over 100 different data sources from a single location.\n\n"
-            "Thus, it is necessary for each user to set their own API keys depending on the type of data of interest.\n\n"
+            "Thus, it is necessary for each user to set their own API keys for the various third party sources\n\n"
             "You can find more about this on the '[param]keys[/param]' menu.\n\n"
-            "In addition, for the same command often there is more than 1 data source available.\n\n"
-            "This is possible to see due to the help menu showing the data sources supported by each command.\n\n"
+            "For many commands, there are multiple data sources that can be selected.\n\n"
+            "The help menu shows the data sources supported by each command.\n\n"
             "For instance:\n"
             "[cmds]    load               load a specific stock ticker and additional info for analysis   [/cmds]"
             "[src][YahooFinance, IEXCloud, AlphaVantage, Polygon, EODHD] [/src]\n\n"
@@ -508,17 +502,15 @@ class TerminalController(BaseController):
         input("\n\n")
 
         console.print(
-            panel.Panel(
-                "[purple]#4 - Menus and commands that are symbol dependent[/purple]"
-            )
+            panel.Panel("[purple]#4 - Symbol dependent menus and commands[/purple]")
         )
         console.print(
-            "\nOften, in the terminal, you will see a command/menu greyed out.\n\n"
-            "This means that such command/menu cannot be accessed until something is loaded.\n\n"
+            "\nThroughout the terminal, you will see commands and menus greyed out.\n\n"
+            "These menus or commands cannot be accessed until an object is loaded.\n\n"
             "Let's take as an example the '[param]stocks[/param]' menu.\n\n"
-            "You will see that the command '[param]disc[/param]' is available as its aim is to find new tickers. I.e\n"
+            "You will see that the command '[param]disc[/param]' is available as its goal is to discover new tickers. I.e\n"
             "[menu]>   stocks             access historical pricing data, options, sector [/menu]\n\n"
-            "On the other hand, '[param]fa[/param]' menu (fundamental analysis) requires a stock to be loaded.\n\n"
+            "On the other hand, '[param]fa[/param]' menu (fundamental analysis) requires a ticker to be loaded.\n\n"
             "And therefore, appears as:\n"
             "[dim]>   fa                 fundamental analysis of loaded ticker [/dim]\n\n"
             "Once a ticker is loaded with: [param]load TSLA[/param]\n\n"
@@ -527,13 +519,10 @@ class TerminalController(BaseController):
         )
         input("\n\n")
 
+        console.print(panel.Panel("[purple]#5 - Terminal Navigation[/purple]"))
         console.print(
-            panel.Panel("[purple]#5 - Navigating through the terminal[/purple]")
-        )
-        console.print(
-            "\nThe terminal structure behaves like a tree where the more menus you go in, the deeper it gets.\n\n"
-            "This is our way to make it easier for users to access each functionality.\n\n"
-            "The users should know where they are at all times, as that is displayed before the text prompt.\n\n"
+            "\nThe terminal has a tree like structure, where menus branch off into new menus.\n\n"
+            "The users current location is displayed before the text prompt.\n\n"
             "For instance, if the user is inside the menu disc which is inside stocks, the following prompt "
             "will appear: \n2022 Oct 18, 21:53 (🦋) [param]/stocks/disc/[/param] $\n\n"
             "If the user wants to go back to the menu above, all they need to do is type '[param]q[/param]'.\n\n"
@@ -542,7 +531,7 @@ class TerminalController(BaseController):
         )
         input("\n\n")
 
-        console.print(panel.Panel("[purple]#6 - Commands pipeline[/purple]"))
+        console.print(panel.Panel("[purple]#6 - Command Pipeline[/purple]"))
         console.print(
             "\nThe terminal offers the capability of allowing users to speed up their navigation and command execution."
             "\n\nTherefore, typing the following prompt is valid:\n"
@@ -555,20 +544,20 @@ class TerminalController(BaseController):
 
         console.print(panel.Panel("[purple]#6 - OpenBB Scripts[/purple]"))
         console.print(
-            "\nThe commands pipeline capability is great, but the user experience wasn't great copy-pasting large "
-            "queue of commands.\n\nTherefore, we allow the user to create a text file of the form:\n\n"
+            "\nThe command pipeline capability is great, but the user experience wasn't great copy-pasting large "
+            "lists of commands.\n\nWe allow the user to create a text file of the form:\n\n"
             "[param]FOLDER_PATH/my_script.openbb[/param]\n"
             "stocks\nload TSLA\ndd\npt\n\n"
-            "and then, this script can be run using '[param]exe[/param]' command in the home menu, with:\n"
+            "which can be run through the '[param]exe[/param]' command in the home menu, with:\n"
             "2022 Oct 18, 22:33 (🦋) / $ [param]exe FOLDER_PATH/my_script.openbb[/param]\n\n"
         )
         input("\n\n")
 
         console.print(
-            panel.Panel("[purple]#7 - OpenBB Scripts with arguments[/purple]")
+            panel.Panel("[purple]#7 - OpenBB Scripts with Arguments[/purple]")
         )
         console.print(
-            "\nThe user can create a script that has arguments that vary based on when they are executed.\n\n"
+            "\nThe user can create a script that includes arguments for the commands.\n\n"
             "Example:\n\n"
             "[param]FOLDER_PATH/my_script_with_variable_input.openbb[/param]\n"
             "stocks\n# this is a comment\nload $ARGV[0]\ndd\npt\nq\nload $ARGV[1]\ncandle\n\n"
@@ -580,25 +569,23 @@ class TerminalController(BaseController):
         )
         input("\n\n")
 
-        console.print(
-            panel.Panel("[purple]#8 - Speed up OpenBB Scripts generation[/purple]")
-        )
+        console.print(panel.Panel("[purple]#8 - OpenBB Script Generation/purple]"))
         console.print(
             "\n"
-            "In order to make it easier for users to create scripts, we have created a "
-            "command that 'copies' user commands "
-            "into a script directly.\n\n"
-            "In order to leverage that the user needs to:\n"
+            "To make it easier for users to create scripts, we have created a "
+            "command that 'records' user commands "
+            "directly into a script.\n\n"
+            "From the home menu, the user can run:\n"
             "2022 Oct 18, 22:33 (🦋) / $ [param]record[/param]\n\n"
-            "Do your typical investment research workflow\n\n"
+            "and then perform your typical investment research workflow before entering\n\n"
             "2022 Oct 18, 22:33 (🦋) / $ [param]stop[/param]\n\n"
-            "And the script file should be successfully saved."
+            "After stopping, the script will be saved to the 'scripts' folder."
         )
         input("\n\n")
 
-        console.print(panel.Panel("[purple]#9 - Customize the terminal[/purple]"))
+        console.print(panel.Panel("[purple]#9 - Terminal Customization[/purple]"))
         console.print(
-            "\nUsers should explore [param]settings[/param] and [param]featflags[/param] menus "
+            "\nUsers should explore the [param]settings[/param] and [param]featflags[/param] menus "
             "to configure their terminal.\n\n"
             "The fact that our terminal is fully open source allows users to be able to customize "
             "anything they want.\n\n"
