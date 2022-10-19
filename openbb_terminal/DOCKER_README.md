@@ -12,7 +12,6 @@ We will detail these steps in the rest of this document.
 
 ## 1. Installing `Docker` and `Docker Compose`
 
-
 **INSTALL DOCKER**
 
 Installing Docker Desktop is the easiest way for most people:
@@ -56,11 +55,9 @@ ERROR: Cannot connect to the Docker daemon at unix:///var/run/docker.sock.
 Is the docker daemon running?
 ```
 
-
 ## 2. Pulling and running the `Docker Container`
 
 **DOCKER COMPOSE**
-
 
 Here are the commands to use `Docker Compose` to pull and run the `OpenBBTerminal Docker Container`:
 
@@ -70,10 +67,10 @@ curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/Ope
 docker compose run poetry
 ```
 
-
 The command line with `curl` is downloading this file : [`docker-compose.yaml`](https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/docker/docker-compose.yaml).
 
 The `docker-compose.yaml` file is a configuration file telling `Docker Compose`:
+
 - where to find `OpenBBTerminal Docker Container`
 - how to run this container.
 
@@ -86,6 +83,7 @@ This second command must be run in the same folder in which `docker-compose.yaml
 If you don't have `Docker Compose` you can also use `Docker` directly to run the `OpenBBTerminal Docker Container`.
 
 Here is the commands to run:
+
 ```bash
 docker pull ghcr.io/openbb-finance/openbbterminal-poetry:X.Y.Z
 
@@ -96,9 +94,11 @@ Be sure to replace `X.Y.Z` with the version you want to pull and run.
 
 Note for windows:
 
-      Ignore this message if you are using Powershell or a more evolved interpreters. 
-      If you are using the builtin Windows interpreter.
-      Replace `~` by `%USERPROFILE%` in the command above.
+```text
+    Ignore this message if you are using Powershell or a more evolved interpreters. 
+    If you are using the builtin Windows interpreter.
+    Replace `~` by `%USERPROFILE%` in the command above.
+```
 
 ## 3. Configuring your X-server to show plots
 
