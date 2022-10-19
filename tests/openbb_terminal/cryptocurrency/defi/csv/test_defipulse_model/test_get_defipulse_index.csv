@@ -1,51 +1,51 @@
-,Rank,Name,Chain,Sector,Users_30D,TVL,Change_1D
+,Rank,Name,Chain,Sector,30D Users,TVL,1 Day %
 5,5,InstaDApp,Ethereum,Lending,208,$994.6M,+1.84%
 15,15,Uma,Ethereum,Derivatives,7,$85.9M,-0.55%
-16,16,Set Protocol,Ethereum,Assets,"3,354",$84.9M,+2.26%
+16,16,Set Protocol,Ethereum,Assets,3354,$84.9M,+2.26%
 17,17,Notional Finance,Ethereum,Lending,107,$83.5M,+1.70%
 18,18,Opyn,Ethereum,Derivatives,705,$81.9M,+7.06%
 19,19,Ribbon,Ethereum,Derivatives,419,$75.7M,+7.27%
-0,0,MakerDAO,Ethereum,Lending,"28,947",$7.77B,+0.81%
+0,0,MakerDAO,Ethereum,Lending,28947,$7.77B,+0.81%
 40,40,Gnosis,Ethereum,Assets,0,$7.6M,+1.75%
 41,41,Railgun,Ethereum,,132,$7.6M,+0.25%
 42,42,DFX Finance,Ethereum,DEXes,9,$7.0M,-0.48%
 20,20,Sablier,Ethereum,Payments,272,$65.2M,+1.53%
-21,21,Index Coop,Ethereum,Assets,"1,139",$65.0M,+2.53%
+21,21,Index Coop,Ethereum,Assets,1139,$65.0M,+2.53%
 6,6,Liquity,Ethereum,Lending,433,$641.0M,+1.95%
 22,22,Angle Protocol,Ethereum,Assets,521,$64.5M,+0.95%
 23,23,Bancor,Ethereum,DEXes,915,$63.3M,+1.52%
-7,7,Balancer,Ethereum,DEXes,"2,004",$625.6M,+3.78%
+7,7,Balancer,Ethereum,DEXes,2004,$625.6M,+3.78%
 43,43,Alchemix,Ethereum,Lending,91,$6.2M,+2.11%
-24,24,Loopring,Ethereum,DEXes,"2,831",$56.1M,+1.30%
+24,24,Loopring,Ethereum,DEXes,2831,$56.1M,+1.30%
 44,44,InsurAce Protocol,Ethereum,Derivatives,123,$5.4M,+0.34%
-45,45,Convex,Ethereum,Assets,"2,834",$5.3M,+111.60%
+45,45,Convex,Ethereum,Assets,2834,$5.3M,+111.60%
 46,46,Pendle,Ethereum,Derivatives,57,$5.0M,-0.06%
 25,25,Yearn Finance,Ethereum,Assets,695,$49.3M,-5.08%
 26,26,Origin Dollar,Ethereum,Assets,7,$41.0M,+0.10%
 47,47,cvault.finance (CORE),Ethereum,Assets,137,$4.8M,+0.15%
 48,48,Saddle,Ethereum,DEXes,30,$4.8M,+1.20%
-1,1,Curve,Ethereum,DEXes,"5,989",$4.84B,+0.43%
+1,1,Curve,Ethereum,DEXes,5989,$4.84B,+0.43%
 49,49,Rook (KeeperDAO),Ethereum,Lending,16,$4.0M,+0.95%
 27,27,Reflexer,Ethereum,Lending,527,$37.5M,+2.73%
 8,8,dYdX,Ethereum,Derivatives,477,$363.8M,+0.07%
 28,28,dodo,Ethereum,DEXes,12,$36.6M,-1.65%
 9,9,SushiSwap,Ethereum,DEXes,714,$309.3M,+1.53%
 29,29,Idle Finance,Ethereum,Lending,5,$30.0M,+1.44%
-2,2,Aave,Ethereum,Lending,"8,812",$3.82B,-0.97%
-3,3,Uniswap,Ethereum,DEXes,"146,809",$3.34B,+0.34%
+2,2,Aave,Ethereum,Lending,8812,$3.82B,-0.97%
+3,3,Uniswap,Ethereum,DEXes,146809,$3.34B,+0.34%
 10,10,Euler,Ethereum,Lending,337,$274.8M,+1.42%
 30,30,TrueFi,Ethereum,Lending,147,$27.8M,+16.58%
 31,31,mStable,Ethereum,Assets,60,$27.1M,-2.62%
 11,11,DeFi Saver,Ethereum,Lending,117,$225.7M,+1.80%
 32,32,Badger DAO,Ethereum,Assets,875,$21.6M,+1.96%
-4,4,Compound,Ethereum,Lending,"4,900",$2.28B,+0.70%
+4,4,Compound,Ethereum,Lending,4900,$2.28B,+0.70%
 33,33,Defi Swap,Ethereum,DEXes,10,$19.8M,+1.62%
 12,12,Nexus Mutual,Ethereum,Derivatives,85,$182.1M,+1.96%
 34,34,KEEP Network (tBTC),Ethereum,Assets,2,$17.6M,+1.95%
 35,35,DeversiFi,Ethereum,DEXes,52,$17.4M,+1.72%
-13,13,Olympus,Ethereum,Assets,"1,795",$160.3M,+0.06%
-36,36,Synthetix,Ethereum,Derivatives,"2,227",$16.5M,+1.85%
+13,13,Olympus,Ethereum,Assets,1795,$160.3M,+0.06%
+36,36,Synthetix,Ethereum,Derivatives,2227,$16.5M,+1.85%
 37,37,Strike,Ethereum,Derivatives,83,$13.9M,+0.70%
 38,38,Inverse Finance,Ethereum,Assets,15,$13.2M,-0.55%
-14,14,Flexa,Ethereum,Assets,"1,926",$110.7M,+0.24%
+14,14,Flexa,Ethereum,Assets,1926,$110.7M,+0.24%
 39,39,PoolTogether,Ethereum,,336,$10.3M,+0.43%

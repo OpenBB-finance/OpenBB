@@ -43,12 +43,14 @@ def get_defipulse_index(sortby: str = "TVL", ascend: bool = False) -> pd.DataFra
             "Name",
             "Chain",
             "Sector",
-            "Users_30D",
+            "30D_Users",
             "TVL",
-            "Change_1D",
+            "1_Day_%",
         ],
     )
     df["Rank"] = df.index
+    df["30D_Users"] = df["30D_Users"].str.replace(",", "").astype(int)
     df = df.sort_values(by=sortby, ascending=ascend)
+    df.rename(columns={"30D_Users": "30D Users", "1_Day_%": "1 Day %"}, inplace=True)
 
     return df

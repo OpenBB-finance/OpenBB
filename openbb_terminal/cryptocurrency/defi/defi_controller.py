@@ -84,9 +84,9 @@ class DefiController(BaseController):
                         "Name",
                         "Chain",
                         "Category",
-                        "Users_30D",
+                        "30D_Users",
                         "TVL",
-                        "Change_1D",
+                        "1_Day_%",
                     ]
                 },
                 "-s": "--sort",
@@ -503,9 +503,9 @@ class DefiController(BaseController):
                 "Name",
                 "Chain",
                 "Category",
-                "Users_30D",
+                "30D_Users",
                 "TVL",
-                "Change_1D",
+                "1_Day_%",
             ],
         )
 
