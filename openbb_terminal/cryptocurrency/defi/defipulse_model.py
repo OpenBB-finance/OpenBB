@@ -60,6 +60,11 @@ def get_defipulse_index(sortby: str = "TVL_$", ascend: bool = False) -> pd.DataF
         value = value[0:-residue]
         value = value.replace(".", "")
         df.at[i, "TVL_$"] = int(value)
+
+        percent = row["1_Day_%"]
+        percent = percent.replace("%", "")
+        percent = percent.replace("+", "")
+        df.at[i, "1_Day_%"] = float(percent)
     df = df.sort_values(by=sortby, ascending=ascend)
     df.rename(
         columns={"30D_Users": "30D Users", "TVL_$": "TVL $", "1_Day_%": "1 Day %"},
