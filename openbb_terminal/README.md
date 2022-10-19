@@ -249,8 +249,6 @@ If you `stashed` your changes previously, you can un-stash them with:
 git stash pop
 ```
 
-
-
 ## Local Installation of GST on Raspberry Pi
 
 1. Running raspbian lite(headless) or desktop (both 64bit) we should first start off with an update/upgrade.
