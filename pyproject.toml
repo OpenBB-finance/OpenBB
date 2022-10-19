@@ -8,7 +8,7 @@ packages = [
 ]
 
 [tool.poetry.scripts]
-openbb = 'terminal:terminal'
+openbb = 'openbb_terminal.terminal_controller:parse_args_and_run'
 
 [tool.poetry.dependencies]
 python = "^3.8,<3.11, !=3.9.7"
@@ -42,7 +42,6 @@ tradingview-ta = "^3.2.3"
 finvizfinance = "^0.14.0"
 statsmodels = "^0.13"
 pyportfolioopt = "^1.4.1"
-selenium = "^4.1.3"
 python-coinmarketcap = "^0.2"
 oandapyV20 = "^0.6.3"
 valinvest = "^0.0.2"
