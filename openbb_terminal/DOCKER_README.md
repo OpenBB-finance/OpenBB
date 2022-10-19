@@ -107,7 +107,7 @@ Without this configuration the interactive charts will not be displayed.
 
 ### On Windows
 
-Download and install VcXsrv
+Download and install : [VcXsrv](https://sourceforge.net/projects/vcxsrv/)
 
 When running the program is important to check "Disable access control"
 
