@@ -301,28 +301,58 @@ def execute_notebook(input_path, parameters, output_path):
 
     input_path = add_ipynb_extension(input_path)
 
-    result = pm.execute_notebook(
-        input_path=input_path,
-        output_path=output_path + ".ipynb",
-        parameters=parameters,
-        kernel_name="python3",
-    )
+    ### OPEN PYTHON SHELL
+    if input_path.endswith("crypto.ipynb"):
+        print("OPEN PYTHON SHELL")
+        import subprocess
 
-    if not result["metadata"]["papermill"]["exception"]:
-        if obbff.OPEN_REPORT_AS_HTML:
-            report_output_path = os.path.join(
-                os.path.abspath(os.path.join(".")), output_path + ".html"
-            )
-            console.print(report_output_path)
-            webbrowser.open(f"file://{report_output_path}")
+        subprocess.Popen(["python"], shell=True)
 
-        console.print("")
-        console.print(
-            f"Exported: {report_output_path}",
-            "\n",
+    ### SUBPROCESS - POPEN
+    if input_path.endswith("economy.ipynb"):
+        print("SUBPROCESS - POPEN")
+        import subprocess
+
+        subprocess.Popen(["python", "-m", "papermill", input_path, output_path])
+
+    ### SUBPROCESS - CALL
+    if input_path.endswith("equity.ipynb"):
+        print("SUBPROCESS - CALL")
+        import subprocess
+
+        subprocess.call(["python", "-m", "papermill", input_path, output_path])
+
+    ### IPYTHON
+    if input_path.endswith("etf.ipynb"):
+        print("IPYTHON")
+        import IPython
+
+        IPython.start_ipython(argv=["-m", "papermill", input_path, output_path])
+
+    ### PAPERMILL
+    if input_path.endswith("forex.ipynb"):
+        print("PAPERMIL")
+        result = pm.execute_notebook(
+            input_path=input_path,
+            output_path=output_path + ".ipynb",
+            parameters=parameters,
         )
-    else:
-        console.print("[red]\nReport couldn't be created.\n[/red]")
+
+        if not result["metadata"]["papermill"]["exception"]:
+            if obbff.OPEN_REPORT_AS_HTML:
+                report_output_path = os.path.join(
+                    os.path.abspath(os.path.join(".")), output_path + ".html"
+                )
+                console.print(report_output_path)
+                webbrowser.open(f"file://{report_output_path}")
+
+            console.print("")
+            console.print(
+                f"Exported: {report_output_path}",
+                "\n",
+            )
+        else:
+            console.print("[red]\nReport couldn't be created.\n[/red]")
 
 
 @log_start_end(log=logger)
