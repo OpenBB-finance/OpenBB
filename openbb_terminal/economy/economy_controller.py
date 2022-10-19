@@ -42,6 +42,7 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
     valid_date,
     parse_and_split_input,
+    list_from_str,
 )
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
@@ -679,8 +680,8 @@ class EconomyController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, raw=True
         )
         if ns_parser:
-            parameters = ns_parser.parameters.split(",")
-            countries = ns_parser.countries.split(",")
+            parameters = list_from_str(ns_parser.parameters)
+            countries = list_from_str(ns_parser.countries)
             if ns_parser.show:
                 if ns_parser.show == "parameters":
                     print_rich_table(
@@ -737,8 +738,8 @@ class EconomyController(BaseController):
 
                     # Display data just loaded
                     econdb_view.show_macro_data(
-                        parameters=ns_parser.parameters,
-                        countries=ns_parser.countries,
+                        parameters=parameters,
+                        countries=countries,
                         transform=ns_parser.transform,
                         start_date=ns_parser.start_date,
                         end_date=ns_parser.end_date,
@@ -801,7 +802,7 @@ class EconomyController(BaseController):
             limit=100,
         )
         if ns_parser:
-            parameters = ns_parser.parameter.split(",")
+            parameters = list_from_str(ns_parser.parameter)
             if ns_parser.query:
                 query = ns_parser.query.replace(",", " ")
                 df_search = fred_model.get_series_notes(search_query=query)
@@ -945,7 +946,7 @@ class EconomyController(BaseController):
             limit=10,
         )
         if ns_parser:
-            indices = ns_parser.indices.split(",")
+            indices = list_from_str(ns_parser.indices)
             if ns_parser.query and ns_parser.limit:
                 yfinance_view.search_indices(ns_parser.query, ns_parser.limit)
                 return self.queue
@@ -1061,8 +1062,8 @@ class EconomyController(BaseController):
             limit=10,
         )
         if ns_parser:
-            maturities = ns_parser.maturity.split(",")
-            types = ns_parser.type.split(",")
+            maturities = list_from_str(ns_parser.maturity)
+            types = list_from_str(ns_parser.type)
             for item in types:
                 if item not in econdb_model.TREASURIES["instruments"]:
                     print(f"{item} is not a valid instrument type.\n")
@@ -1382,8 +1383,8 @@ class EconomyController(BaseController):
         )
 
         if ns_parser:
-            y1s = ns_parser.yaxis1.split(",")
-            y2s = ns_parser.yaxis2.split(",")
+            y1s = list_from_str(ns_parser.yaxis1)
+            y2s = list_from_str(ns_parser.yaxis2)
             if not self.DATASETS:
                 console.print(
                     "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
