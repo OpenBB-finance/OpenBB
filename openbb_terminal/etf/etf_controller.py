@@ -593,7 +593,7 @@ class ETFController(BaseController):
             type=str,
             dest="names",
             help="Symbols to create a report for (e.g. pir ARKW ARKQ QQQ VOO)",
-            default=[self.etf_name],
+            default=self.etf_name,
         )
         parser.add_argument(
             "--filename",
