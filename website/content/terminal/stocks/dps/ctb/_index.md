@@ -6,10 +6,13 @@ Request a list of stocks that have the highest cost to borrow [Source: Interacti
 
 ```
 optional arguments:
-  -n NUM, --num NUM     Number of the stocks with high cost to borrow to retrieve. (default: 20)
-  --export {csv,json,xlsx}
-                        Export dataframe data to csv,json,xlsx file
+  -n NUMBER, --number NUMBER
+                        Number of records to retrieve. (default: 20)
+  --raw                 Print raw data. (default: False)
   -h, --help            show this help message (default: False)
+  --export EXPORT       Export raw data into csv, json, xlsx (default: )
+  --source {ibkr,stocksera}
+                        Data source to select from (default: ibkr)
 ```
 
 Example:
