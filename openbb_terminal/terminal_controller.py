@@ -460,9 +460,11 @@ class TerminalController(BaseController):
         console.print(panel.Panel("[purple]Welcome to the OpenBB Terminal.[/purple]"))
         console.print(
             "\nThe following walkthrough will guide you towards making the most out of the OpenBB Terminal.\n\n"
-            "When you are ready to advance, type 'Enter' to skip to next one."
+            "Press Enter to continue or 'q' followed by Enter to exit."
         )
-        input("\n\n")
+        if input("") == "q":
+            return
+        console.print("\n")
 
         console.print(panel.Panel("[purple]#1 - Commands vs menu.[/purple]"))
         console.print(
@@ -476,7 +478,9 @@ class TerminalController(BaseController):
             "For instance:\n"
             "[cmds]>   news               display news articles based on term and data sources [/cmds]"
         )
-        input("\n\n")
+        if input("") == "q":
+            return
+        console.print("\n")
 
         console.print(panel.Panel("[purple]#2 - Using commands[/purple]"))
         console.print(
@@ -485,7 +489,9 @@ class TerminalController(BaseController):
             "You can either see the available arguments in the terminal, using: [param]news -h[/param]\n\n",
             "or you can find out more about it with an output example on the browser, using: [param]about news[/param]",
         )
-        input("\n\n")
+        if input("") == "q":
+            return
+        console.print("\n")
 
         console.print(panel.Panel("[purple]#3 - Setting API Keys[/purple]"))
         console.print(
@@ -500,7 +506,9 @@ class TerminalController(BaseController):
             "[src][YahooFinance, IEXCloud, AlphaVantage, Polygon, EODHD] [/src]\n\n"
             "The user can go into the '[param]sources[/param]' menu and select their preferred default data source."
         )
-        input("\n\n")
+        if input("") == "q":
+            return
+        console.print("\n")
 
         console.print(
             panel.Panel("[purple]#4 - Symbol dependent menus and commands[/purple]")
@@ -518,7 +526,9 @@ class TerminalController(BaseController):
             "The '[param]fa[/param]' menu will be available as:\n"
             "[menu]>   fa                 fundamental analysis of loaded ticker [/menu]"
         )
-        input("\n\n")
+        if input("") == "q":
+            return
+        console.print("\n")
 
         console.print(panel.Panel("[purple]#5 - Terminal Navigation[/purple]"))
         console.print(
@@ -530,7 +540,9 @@ class TerminalController(BaseController):
             "If the user wants to go back to the home of the terminal, they can type '[param]/[/param]' instead.\n\n"
             "Note: Always type '[param]h[/param]' to know what commands are available in each menu"
         )
-        input("\n\n")
+        if input("") == "q":
+            return
+        console.print("\n")
 
         console.print(panel.Panel("[purple]#6 - Command Pipeline[/purple]"))
         console.print(
@@ -541,7 +553,9 @@ class TerminalController(BaseController):
             "run command '[param]load[/param]' with '[param]TSLA[/param]' as input, \n"
             "go into sub-menu '[param]dd[/param]' (due diligence) and run the command '[param]pt[/param]' (price target)."
         )
-        input("\n\n")
+        if input("") == "q":
+            return
+        console.print("\n")
 
         console.print(panel.Panel("[purple]#6 - OpenBB Scripts[/purple]"))
         console.print(
@@ -552,7 +566,9 @@ class TerminalController(BaseController):
             "which can be run through the '[param]exe[/param]' command in the home menu, with:\n"
             "2022 Oct 18, 22:33 (🦋) / $ [param]exe FOLDER_PATH/my_script.openbb[/param]\n\n"
         )
-        input("\n\n")
+        if input("") == "q":
+            return
+        console.print("\n")
 
         console.print(
             panel.Panel("[purple]#7 - OpenBB Scripts with Arguments[/purple]")
@@ -568,7 +584,9 @@ class TerminalController(BaseController):
             "This means that the [param]pt[/param] will run on [param]AAPL[/param] while "
             "[param]candle[/param] on [param]MSFT[/param]"
         )
-        input("\n\n")
+        if input("") == "q":
+            return
+        console.print("\n")
 
         console.print(panel.Panel("[purple]#8 - OpenBB Script Generation/purple]"))
         console.print(
@@ -582,7 +600,9 @@ class TerminalController(BaseController):
             "2022 Oct 18, 22:33 (🦋) / $ [param]stop[/param]\n\n"
             "After stopping, the script will be saved to the 'scripts' folder."
         )
-        input("\n\n")
+        if input("") == "q":
+            return
+        console.print("\n")
 
         console.print(panel.Panel("[purple]#9 - Terminal Customization[/purple]"))
         console.print(
@@ -593,7 +613,9 @@ class TerminalController(BaseController):
             "If you are interested in contributing to the project, please check:\n"
             "[param]https://github.com/OpenBB-finance/OpenBBTerminal[/param]"
         )
-        input("\n\n")
+        if input("") == "q":
+            return
+        console.print("\n")
 
         console.print(panel.Panel("[purple]#10 - Support[/purple]"))
         console.print(
@@ -605,7 +627,6 @@ class TerminalController(BaseController):
             "If you want to know more, or have any further question. Please join us on Discord:\n"
             "[param]https://openbb.co/discord[/param]"
         )
-        input("\n\n")
 
     def call_exe(self, other_args: List[str]):
         """Process exe command"""
