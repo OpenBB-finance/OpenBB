@@ -79,29 +79,28 @@
 
 **How it started:**
 
-OpenBB Terminal is an awesome stock and crypto market terminal that has been developed for fun, while I saw my GME
-shares tanking. But hey, I like the stock 💎🙌.
+OpenBB Terminal is an awesome stock and crypto market terminal that has been developed for fun, while I saw my GME shares tanking. But hey, I like the stock 💎🙌.
 
 **How it's going:**
 
-OpenBB Terminal provides a modern Python-based integrated environment for investment research, that allows
+OpenBB Terminal provides a Python-based integrated environment for investment research, that allows
 an average joe retail trader to leverage state-of-the-art Data Science and Machine Learning technologies.
 
-As a modern Python-based environment, OpenBBTerminal opens access to numerous Python data libraries in Data Science
+As a Python-based environment, OpenBBTerminal opens access to numerous Python data libraries in Data Science
 (Pandas, Numpy, Scipy, Jupyter), Machine Learning (Pytorch, Sklearn, Flair), and Data Acquisition
 (Beautiful Soup, and numerous third-party APIs).
 
 ## Installation
 
-If you wish to install the Terminal, there are currently four options:
+If you wish to install the Terminal, there are currently three options:
 
 - [Using the Installer](https://openbb-finance.github.io/OpenBBTerminal/#accessing-the-openbb-terminal) (recommended if you just want to use the terminal)
 - [Using Python](openbb_terminal/README.md#anaconda--python) (recommended if you want to develop new features)
-- [Using Docker](openbb_terminal/README.md#Docker-Installation) (alternative option to the installer if preferred)
+- [Using Docker](openbb_terminal/DOCKER_README.md) (alternative option to the installer)
 
 ## Contributing
 
-There are 3 main ways of contributing to this project. (Hopefully you have starred the project by now ⭐️)
+There are three main ways of contributing to this project. (Hopefully you have starred the project by now ⭐️)
 
 **Become a Contributor**
 
