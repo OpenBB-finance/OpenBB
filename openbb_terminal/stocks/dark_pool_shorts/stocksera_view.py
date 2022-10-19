@@ -52,6 +52,9 @@ def plot_cost_to_borrow(
     else:
         return
 
+    if data.empty:
+        return
+
     ax1.bar(
         data.index,
         data["Available"],

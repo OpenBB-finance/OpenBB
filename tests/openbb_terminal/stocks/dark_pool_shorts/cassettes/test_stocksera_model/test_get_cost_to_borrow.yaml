@@ -1,0 +1,120 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Token B2Pkbvgg.rZpUFr105BqA0uOc8JtyxYUYnfU9rPMm
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+      accept:
+      - application/json
+    method: GET
+    uri: https://stocksera.pythonanywhere.com/api/borrowed_shares/TSLA
+  response:
+    body:
+      string: ''
+    headers:
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Content-Type:
+      - text/html; charset=utf-8
+      Date:
+      - Wed, 19 Oct 2022 15:22:20 GMT
+      Location:
+      - /api/borrowed_shares/TSLA/
+      Referrer-Policy:
+      - same-origin
+      Server:
+      - PythonAnywhere
+      X-Clacks-Overhead:
+      - GNU Terry Pratchett
+      X-Content-Type-Options:
+      - nosniff
+    status:
+      code: 301
+      message: Moved Permanently
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Token B2Pkbvgg.rZpUFr105BqA0uOc8JtyxYUYnfU9rPMm
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+      accept:
+      - application/json
+    method: GET
+    uri: https://stocksera.pythonanywhere.com/api/borrowed_shares/TSLA/
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 19 Oct 2022 15:22:21 GMT
+      Referrer-Policy:
+      - same-origin
+      Server:
+      - PythonAnywhere
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Clacks-Overhead:
+      - GNU Terry Pratchett
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - ALLOW-FROM HTTPS://ECONIVERSE.GITHUB.IO
+    status:
+      code: 200
+      message: OK
+version: 1
