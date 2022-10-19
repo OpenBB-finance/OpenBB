@@ -582,7 +582,8 @@ class TerminalController(BaseController):
             panel.Panel("[purple]#8 - Speed up OpenBB Scripts generation[/purple]")
         )
         console.print(
-            "\nIn order to make it easier for users to create scripts, we have created a command that 'copies' user commands "
+            "\n"
+            "In order to make it easier for users to create scripts, we have created a command that 'copies' user commands "
             "into a script directly.\n\n"
             "In order to leverage that the user needs to:\n"
             "2022 Oct 18, 22:33 (🦋) / $ [param]record[/param]\n\n"
@@ -603,7 +604,8 @@ class TerminalController(BaseController):
 
         console.print(panel.Panel("[purple]#10 - Support[/purple]"))
         console.print(
-            "\nWe are nothing without our community, hence we put a lot of effort in being here for you.\n\n"
+            "\n"
+            "We are nothing without our community, hence we put a lot of effort in being here for you.\n\n"
             "If you find any bug that you wish to report to improve the terminal you can do so with:\n"
             "2022 Oct 18, 22:33 (🦋) / $ [param]support CMD[/param]\n\n"
             "which should open a form in your browser where you can report the bug in said 'CMD'.\n\n"
