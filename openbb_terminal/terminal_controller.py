@@ -41,7 +41,7 @@ from openbb_terminal.loggers import setup_logging
 from openbb_terminal.core.log.generation.settings_logger import log_all_settings
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText, translate
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.terminal_helper import (
     bootup,
     check_for_updates,
