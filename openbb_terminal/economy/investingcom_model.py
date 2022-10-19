@@ -461,25 +461,29 @@ def get_economic_calendar(
     time_zone = "GMT " + sign + str(int(offset)) + ":00"
 
     try:
-        data = investpy.news.economic_calendar(
-            time_zone,
-            time_filter,
-            countries_list,
-            importances_list,
-            categories_list,
-            start_date_string,
-            end_date_string,
-        )
-    except Exception:
-        data = investpy.news.economic_calendar(
-            None,
-            time_filter,
-            countries_list,
-            importances_list,
-            categories_list,
-            start_date_string,
-            end_date_string,
-        )
+        try:
+            data = investpy.news.economic_calendar(
+                time_zone,
+                time_filter,
+                countries_list,
+                importances_list,
+                categories_list,
+                start_date_string,
+                end_date_string,
+            )
+        except Exception:
+            data = investpy.news.economic_calendar(
+                None,
+                time_filter,
+                countries_list,
+                importances_list,
+                categories_list,
+                start_date_string,
+                end_date_string,
+            )
+    except Exception as _:  # noqa: F841
+        console.print("[red]Economic calendar data not found.[/red]\n")
+        return pd.DataFrame(), ""
 
     if data.empty:
         logger.error("No data")
