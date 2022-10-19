@@ -594,9 +594,8 @@ class TerminalController(BaseController):
 
 
 # pylint: disable=global-statement
-def terminal(jobs_cmds: List[str] = None, appName: str = "gst", test_mode=False):
+def terminal(jobs_cmds: List[str] = None, test_mode=False):
     """Terminal Menu"""
-    # TODO: HELP WANTED! Refactor the appName setting if a more elegant solution comes up
 
     if not test_mode:
         setup_logging()
@@ -813,14 +812,13 @@ def run_scripts(
                 file_cmds = [" ".join(file_cmds)]
 
             if not test_mode:
-                terminal(file_cmds, appName="openbb_script")
-                # TODO: Add way to track how many commands are tested
+                terminal(file_cmds, test_mode=True)
             else:
                 if verbose:
-                    terminal(file_cmds, appName="openbb_script", test_mode=True)
+                    terminal(file_cmds, test_mode=True)
                 else:
                     with suppress_stdout():
-                        terminal(file_cmds, appName="openbb_script", test_mode=True)
+                        terminal(file_cmds, test_mode=True)
     else:
         console.print(f"File '{path}' doesn't exist. Launching base terminal.\n")
         if not test_mode:
