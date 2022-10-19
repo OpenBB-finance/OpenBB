@@ -20,6 +20,7 @@ from prompt_toolkit.formatted_text import HTML
 import pandas as pd
 
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal import keys_controller
 
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
@@ -802,6 +803,10 @@ def terminal(jobs_cmds: List[str] = None, appName: str = "gst", test_mode=False)
     bootup()
     if not jobs_cmds:
         welcome_message()
+
+        if not keys_controller.KeysController().is_there_at_least_one_key_defined():
+            t_controller.call_intro(None)
+
         t_controller.print_help()
         check_for_updates()
 
