@@ -417,7 +417,7 @@ class StocksController(StockBaseController):
             action="store_true",
             dest="raw",
             default=False,
-            help="Shows raw data instead of chart. If sort is set those are the top ones, otherwise we grab latest data to date",
+            help="Shows raw data instead of chart.",
         )
         parser.add_argument(
             "-t",
