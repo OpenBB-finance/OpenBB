@@ -8,7 +8,6 @@ from typing import Tuple
 from rich import panel
 from rich.console import Console, Theme
 from rich.text import Text
-from rich.color import Color
 import i18n
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal import config_terminal as cfg
