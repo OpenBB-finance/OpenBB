@@ -517,7 +517,7 @@ class TerminalController(BaseController):
             "\nThroughout the terminal, you will see commands and menus greyed out.\n\n"
             "These menus or commands cannot be accessed until an object is loaded.\n\n"
             "Let's take as an example the '[param]stocks[/param]' menu.\n\n"
-            "You will see that the command '[param]disc[/param]' is available as its goal is to discover new tickers. I.e\n"
+            "You will see that the command '[param]disc[/param]' is available as its goal is to discover new tickers:\n"
             "[menu]>   stocks             access historical pricing data, options, sector [/menu]\n\n"
             "On the other hand, '[param]fa[/param]' menu (fundamental analysis) requires a ticker to be loaded.\n\n"
             "And therefore, appears as:\n"
