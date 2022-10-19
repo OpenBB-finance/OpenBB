@@ -27,7 +27,7 @@ except ImportError:
     forecasting = False
     warnings.warn(
         "Forecasting dependencies are not installed."
-        " This part of the SDK will noy be usable"
+        " This part of the SDK will not be usable"
     )
 
 from .config_terminal import theme
