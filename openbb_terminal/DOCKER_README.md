@@ -3,7 +3,7 @@
 Here are the steps to get OpenBBTerminal using the Docker containers that we provide:
 
 1. Installing `Docker` and `Docker Compose`
-2. Pulling and running the `Docker Container`
+2. Pulling and running `OpenBBTerminal Docker Container`
 3. Configuring your X-server to show plots
 
 Each of this steps need to be followed to have a working version of OpenBBTerminal.
@@ -55,7 +55,7 @@ ERROR: Cannot connect to the Docker daemon at unix:///var/run/docker.sock.
 Is the docker daemon running?
 ```
 
-## 2. Pulling and running the `Docker Container`
+## 2. Pulling and running `OpenBBTerminal Docker Container`
 
 **DOCKER COMPOSE**
 
@@ -105,6 +105,26 @@ Note for windows:
 In order to display plots in the docker container, we need to configure the XServer on the host machine.
 Without this configuration the interactive charts will not be displayed.
 
+### On Windows
+
+Download and install VcXsrv
+
+When running the program is important to check "Disable access control"
+
+Run `Docker Compose` like this:
+
+```bash
+curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/main/docker/docker-compose.yaml
+
+docker compose run poetry
+```
+
+Or run `Docker` directly:
+
+```bash
+docker run -v ~/.openbb_terminal:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm --env DISPLAY=host.docker.internal:0.0 ghcr.io/openbb-finance/openbbterminal-poetry:latest
+```
+
 ### X-Server on macOS
 
 Users familiar with Docker and X-Server can set the `DISPLAY` variable in the file [setenv](/docker/setenv) described above. If you use this approach remember to add `:0` at the end of your inet address. E.g. `DISPLAY=192.168.1.155:0`.
@@ -131,7 +151,7 @@ xhost + $IP
 Now we can run the docker container, adding the display to the environment:
 
 ```bach
-docker run -it --rm --env-file=path/to/setenv -e DISPLAY=$IP:0 ghcr.io/openbb-finance/openbbterminal-poetry:latest
+docker run -it --rm --env-file=path/to/setenv --env DISPLAY=$IP:0 ghcr.io/openbb-finance/openbbterminal-poetry:latest
 ```
 
 This container will be able to display all the same plots as the terminal interface.
