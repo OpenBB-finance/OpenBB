@@ -66,14 +66,14 @@
 <details open="open">
   <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
   <ol>
-    <li> <a href="#1.-about-the-project">About The Project</a> </li>
-    <li><a href="#2.-installation">Installation</a></li>
-    <li><a href="#3.-contributing">Contributing</a></li>
-    <li><a href="#4.-license">License</a></li>
-    <li><a href="#5.-disclaimer">Disclaimer</a></li>
-    <li><a href="#6.-contacts">Contacts</a></li>
-    <li><a href="#7.-start-history">Star History</a></li>
-    <li><a href="#8.-contributors">Contributors</a></li>
+    <li> <a href="#1-about-the-project">About The Project</a> </li>
+    <li><a href="#2-installation">Installation</a></li>
+    <li><a href="#3-contributing">Contributing</a></li>
+    <li><a href="#4-license">License</a></li>
+    <li><a href="#5-disclaimer">Disclaimer</a></li>
+    <li><a href="#6-contacts">Contacts</a></li>
+    <li><a href="#7-star-history">Star History</a></li>
+    <li><a href="#8-contributors">Contributors</a></li>
   </ol>
 </details>
 
