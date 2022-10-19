@@ -6,7 +6,7 @@ LABEL org.opencontainers.image.source https://github.com/OpenBB-finance/OpenBBTe
 
 COPY --chown=python:python pyproject.toml poetry.lock /home/python/
 
-RUN mkdir /home/python/openbb_terminal && \
-  touch openbb_terminal/__init__.py && \
-  chown python:python /home/python/openbb_terminal /home/python/openbb_terminal/__init__.py && \
-  poetry install
+RUN mkdir /home/python/openbb_terminal
+RUN touch openbb_terminal/__init__.py
+RUN chown python:python /home/python/openbb_terminal /home/python/openbb_terminal/__init__.py
+RUN poetry install
