@@ -57,7 +57,7 @@ def get_news(
             if data.entries:
                 have_data = True
             elif limit == 60:  # Breaking if 60 successful requests return no data
-                console.print("[red]Timeout occurred. Please try again\n[/red")
+                console.print("[red]Timeout occurred. Please try again\n[/red]")
                 break
             limit = limit + 1
 
