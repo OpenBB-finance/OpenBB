@@ -534,8 +534,8 @@ class TerminalController(BaseController):
             "\nThe terminal structure behaves like a tree where the more menus you go in, the deeper it gets.\n\n"
             "This is our way to make it easier for users to access each functionality.\n\n"
             "The users should know where they are at all times, as that is displayed before the text prompt.\n\n"
-            "For instance, if the user is inside the menu disc which is inside stocks, the following prompt will appear:\n"
-            "2022 Oct 18, 21:53 (🦋) [param]/stocks/disc/[/param] $\n\n"
+            "For instance, if the user is inside the menu disc which is inside stocks, the following prompt "
+            "will appear: \n2022 Oct 18, 21:53 (🦋) [param]/stocks/disc/[/param] $\n\n"
             "If the user wants to go back to the menu above, all they need to do is type '[param]q[/param]'.\n\n"
             "If the user wants to go back to the home of the terminal, they can type '[param]/[/param]' instead.\n\n"
             "Note: Always type '[param]h[/param]' to know what commands are available in each menu"
@@ -544,8 +544,8 @@ class TerminalController(BaseController):
 
         console.print(panel.Panel("[purple]#6 - Commands pipeline[/purple]"))
         console.print(
-            "\nThe terminal offers the capability of allowing users to speed up their navigation and command execution.\n\n"
-            "Therefore, typing the following prompt is valid:\n"
+            "\nThe terminal offers the capability of allowing users to speed up their navigation and command execution."
+            "\n\nTherefore, typing the following prompt is valid:\n"
             "2022 Oct 18, 21:53 (🦋) / $ [param]stocks/load TSLA/dd/pt[/param]\n\n"
             "In this example, the terminal - in a single action - will go into '[param]stocks[/param]' menu, "
             "run command '[param]load[/param]' with '[param]TSLA[/param]' as input, \n"
@@ -573,8 +573,10 @@ class TerminalController(BaseController):
             "[param]FOLDER_PATH/my_script_with_variable_input.openbb[/param]\n"
             "stocks\n# this is a comment\nload $ARGV[0]\ndd\npt\nq\nload $ARGV[1]\ncandle\n\n"
             "and then, if this script is run with:\n"
-            "2022 Oct 18, 22:33 (🦋) / $ [param]exe FOLDER_PATH/my_script_with_variable_input.openbb -i AAPL,MSFT[/param]\n\n"
-            "This means that the [param]pt[/param] will run on [param]AAPL[/param] while [param]candle[/param] on [param]MSFT[/param]"
+            "2022 Oct 18, 22:33 (🦋) / $ [param]exe FOLDER_PATH/my_script_with_variable_input.openbb "
+            "-i AAPL,MSFT[/param]\n\n"
+            "This means that the [param]pt[/param] will run on [param]AAPL[/param] while "
+            "[param]candle[/param] on [param]MSFT[/param]"
         )
         input("\n\n")
 
@@ -583,7 +585,8 @@ class TerminalController(BaseController):
         )
         console.print(
             "\n"
-            "In order to make it easier for users to create scripts, we have created a command that 'copies' user commands "
+            "In order to make it easier for users to create scripts, we have created a "
+            "command that 'copies' user commands "
             "into a script directly.\n\n"
             "In order to leverage that the user needs to:\n"
             "2022 Oct 18, 22:33 (🦋) / $ [param]record[/param]\n\n"
@@ -595,8 +598,10 @@ class TerminalController(BaseController):
 
         console.print(panel.Panel("[purple]#9 - Customize the terminal[/purple]"))
         console.print(
-            "\nUsers should explore [param]settings[/param] and [param]featflags[/param] menus to configure their terminal.\n\n"
-            "The fact that our terminal is fully open source allows users to be able to customize anything they want.\n\n"
+            "\nUsers should explore [param]settings[/param] and [param]featflags[/param] menus "
+            "to configure their terminal.\n\n"
+            "The fact that our terminal is fully open source allows users to be able to customize "
+            "anything they want.\n\n"
             "If you are interested in contributing to the project, please check:\n"
             "[param]https://github.com/OpenBB-finance/OpenBBTerminal[/param]"
         )
