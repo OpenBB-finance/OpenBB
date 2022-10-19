@@ -6,7 +6,6 @@
     <ol>
       <li><a href="#anaconda--python">Anaconda & Python Installation</a></li>
       <li><a href="#docker-installation">Docker Installation</a></li>
-      <li><a href="#web-ui---docker">Docker Web UI Installation</a></li>
       <li><a href="#local-installation-of-gst-on-raspberry-pi">Raspberry-Pi-Installation - Portable GST</a></li>
       <li><a href="#api-keys">API Keys</a></li>
     </ol>
@@ -19,8 +18,6 @@ There are currently four options to install the terminal:
 - [Using the Installer](https://openbb-finance.github.io/OpenBBTerminal/#accessing-the-openbb-terminal) (recommended if you just want to use the terminal)
 - [Using Python](#anaconda--python) (recommended if you want to develop new features)
 - [Using Docker](#docker-installation) (alternative option to the installer if preferred)
-- [Using Docker Web UI](#web-ui---docker) (if you want to deploy the web UI for users to access
-  over your LAN)
 
 First step in all options is to star the project
 
@@ -301,21 +298,6 @@ git stash pop
    At this point, you should be able to use the majority of the features using Docker. To read more on how to configure
    your X-server to show plots, hop over to the
    [Advanced Docker Setup](/DOCKER_ADVANCED.md).
-
-## Web UI - Docker
-
-1. Ensure Docker is installed.
-2. Navigate to the location of the Dockerfile in the repo (`cd openbb_terminal_web`)
-3. Ensure the launcher is executable with `chmod +x ./launch`
-4. Launch it with `./launch`. If you get a permission denied error, do `sudo ./launch` instead
-5. Once it's launched, you will be able to access it by going to `http://host-ip:8080` in a browser, or
-   `http://localhost:8080` if you are running it on your local machine.
-
-For API keys, create the `setenv` file if it doesn't already exist.
-It will automatically get created on the first launch, and won't get committed to Git because it is on the `.gitignore`.
-Set the API keys [as explained here](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/DOCKER_ADVANCED.md#environment-variables).
-Once you've put the API keys in that file, re-run the launch script, and it will use your API keys.
-There are a few things that still don't work, and you can see what works and what doesn't [here](https://github.com/CoconutMacaroon/OpenBBTerminal/blob/main/openbb_terminal_web/README.md#todo).
 
 ## Local Installation of GST on Raspberry Pi
 

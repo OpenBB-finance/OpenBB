@@ -1,5 +1,5 @@
 ## Get underlying data 
-### stocks.ba.cnews(symbol: str, start_date: str = '2022-09-11', end_date: str = '2022-10-11') -> List[Dict]
+### stocks.ba.cnews(symbol: str, start_date: str = '2022-09-18', end_date: str = '2022-10-18') -> List[Dict]
 
 Get news from a company. [Source: Finnhub]
 

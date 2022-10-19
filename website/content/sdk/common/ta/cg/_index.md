@@ -13,7 +13,7 @@ Center of gravity
         Length for indicator window
     Returns
     ----------
-    d.DataFrame
+    pd.DataFrame
         Dataframe of technical indicator
 
 ## Getting charts 
