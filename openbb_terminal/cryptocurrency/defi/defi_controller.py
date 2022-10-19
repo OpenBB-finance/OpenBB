@@ -85,7 +85,7 @@ class DefiController(BaseController):
                         "Chain",
                         "Category",
                         "30D_Users",
-                        "TVL",
+                        "TVL_$",
                         "1_Day_%",
                     ]
                 },
@@ -504,7 +504,7 @@ class DefiController(BaseController):
                 "Chain",
                 "Category",
                 "30D_Users",
-                "TVL",
+                "TVL_$",
                 "1_Day_%",
             ],
         )
