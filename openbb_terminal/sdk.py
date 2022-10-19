@@ -9,8 +9,11 @@ import functools
 import importlib
 from typing import Optional, Callable, List
 import logging
+from traceback import format_stack
 
 from openbb_terminal.rich_config import console
+from openbb_terminal.reports.reports_controller import ReportController
+from openbb_terminal.dashboards.dashboards_controller import DashboardsController
 
 try:
     import darts  # pyright: reportMissingImports=false
@@ -36,6 +39,13 @@ from .portfolio.portfolio_model import PortfolioModel as Portfolio
 from .cryptocurrency.due_diligence.pycoingecko_model import Coin
 
 logger = logging.getLogger(__name__)
+
+
+SUPPRESS_LOGGING_CLASSES = {
+    ReportController: "ReportController",
+    DashboardsController: "DashboardsController",
+}
+
 
 functions = {
     "alt.covid.slopes": {
@@ -2039,7 +2049,10 @@ if forecasting:
 
 
 def copy_func(
-    f: Callable, logging_decorator: bool = False, virtual_path: str = ""
+    f: Callable,
+    logging_decorator: bool = False,
+    virtual_path: str = "",
+    chart: bool = False,
 ) -> Callable:
     """Copy the contents and attributes of the entered function.
 
@@ -2051,6 +2064,10 @@ def copy_func(
         Function to be copied
     logging_decorator: bool
         If True, the copied function will be decorated with the logging decorator
+    virtual_path: str
+        If not empty, virtual path will be added to the logging
+    chart: bool
+        If True, the copied function will log info on whether it is a view (chart)
 
     Returns
     -------
@@ -2073,7 +2090,7 @@ def copy_func(
 
     if logging_decorator:
         log_name = logging.getLogger(g.__module__)
-        g = sdk_arg_logger(func=g, log=log_name, virtual_path=virtual_path)
+        g = sdk_arg_logger(func=g, log=log_name, virtual_path=virtual_path, chart=chart)
         g = log_start_end(func=g, log=log_name)
 
     return g
@@ -2131,6 +2148,29 @@ def change_docstring(api_callable, model: Callable, view=None):
     return api_callable
 
 
+def check_suppress_logging(suppress_dict: dict) -> bool:
+    """
+    Check if logging should be suppressed.
+    If the dict contains a value that is found in the stack trace,
+     the logging should be suppressed.
+
+    Parameters
+    ----------
+    supress_dict: dict
+        Dictionary with values that trigger log suppression
+
+    Returns
+    -------
+    bool
+        True if logging shall be suppressed, False otherwise
+    """
+    for _, value in suppress_dict.items():
+        for ele in format_stack():
+            if value in ele:
+                return True
+    return False
+
+
 class FunctionFactory:
     """The SDK Function Factory, which creates the callable instance."""
 
@@ -2155,7 +2195,7 @@ class FunctionFactory:
         self.view = None
         if view is not None:
             self.view = copy_func(
-                f=view, logging_decorator=True, virtual_path=virtual_path
+                f=view, logging_decorator=True, virtual_path=virtual_path, chart=True
             )
 
     def api_callable(self, *args, **kwargs):
@@ -2215,13 +2255,15 @@ class MainMenu:
 class Loader:
     """The Loader class."""
 
-    def __init__(self, funcs: dict):
+    def __init__(self, funcs: dict, suppress_logging: bool = False):
         print(
             "WARNING! Breaking changes incoming! Especially avoid using kwargs, since some of them will change.\n"
             "For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/sdk/"
         )
+
+        self.__suppress_logging = suppress_logging
         self.__function_map = self.build_function_map(funcs=funcs)
-        self.__initialize_logging()
+        self.__check_initialize_logging()
         self.load_menus()
 
     def __call__(self):
@@ -2297,6 +2339,10 @@ class Loader:
             setattr(previous_menu, last_virtual_path, function)
 
         self.openbb = main_menu
+
+    def __check_initialize_logging(self):
+        if not self.__suppress_logging:
+            self.__initialize_logging()
 
     @staticmethod
     def __load_module(module_path: str) -> Optional[types.ModuleType]:
@@ -2409,4 +2455,7 @@ class Loader:
 
 # TO USE THE SDK DIRECTLY JUST IMPORT IT:
 # from openbb_terminal.sdk import openbb (or: from openbb_terminal.sdk import openbb as sdk)
-openbb = Loader(funcs=functions).openbb
+openbb = Loader(
+    funcs=functions,
+    suppress_logging=check_suppress_logging(suppress_dict=SUPPRESS_LOGGING_CLASSES),
+).openbb
