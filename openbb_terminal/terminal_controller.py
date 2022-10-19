@@ -560,7 +560,8 @@ class TerminalController(BaseController):
         console.print(panel.Panel("[purple]#6 - OpenBB Scripts[/purple]"))
         console.print(
             "\nThe command pipeline capability is great, but the user experience wasn't great copy-pasting large "
-            "lists of commands.\n\nWe allow the user to create a text file of the form:\n\n"
+            "lists of commands.\n\n"
+            "We allow the user to create a text file of the form:\n\n"
             "[param]FOLDER_PATH/my_script.openbb[/param]\n"
             "stocks\nload TSLA\ndd\npt\n\n"
             "which can be run through the '[param]exe[/param]' command in the home menu, with:\n"
