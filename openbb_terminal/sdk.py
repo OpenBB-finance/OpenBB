@@ -2260,10 +2260,6 @@ class Loader:
     """The Loader class."""
 
     def __init__(self, funcs: dict, suppress_logging: bool = False):
-        print(
-            "WARNING! Breaking changes incoming! Especially avoid using kwargs, since some of them will change.\n"
-            "For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/sdk/"
-        )
 
         self.__suppress_logging = suppress_logging
         self.__function_map = self.build_function_map(funcs=funcs)
