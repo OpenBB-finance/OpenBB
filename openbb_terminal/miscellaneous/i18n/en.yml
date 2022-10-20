@@ -858,7 +858,7 @@ en:
   funds/plot: plot loaded historical fund data
   funds/sector: sector weightings
   funds/equity: equity holdings
-  funds/al_swe: display fund allocation (sector, country, holdings)
+  funds/alswe: display fund allocation (sector, country, holdings)
   funds/info_swe: get fund information
   funds/forecast: forecasting techniques
   alternative/covid: COVID menu,                 cases, deaths, rates
