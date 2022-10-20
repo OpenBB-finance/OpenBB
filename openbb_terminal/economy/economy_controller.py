@@ -1716,7 +1716,12 @@ class EconomyController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="eval",
-            description="""Create custom data column from loaded datasets.""",
+            description="""Create custom data column from loaded datasets.  Can be mathematical expressions supported
+            by pandas.eval() function.
+
+            Example.  If I have loaded `fred dgs2 dgs5` and I want to create a new column that is the difference
+            between these two, I can create a new column by doing `eval spread = dgs2 - dgs5`
+            """,
         )
         parser.add_argument(
             "-q",
@@ -1724,6 +1729,7 @@ class EconomyController(BaseController):
             type=str,
             nargs="+",
             dest="query",
+            help="Query to evaluate on loaded datasets",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-q")
