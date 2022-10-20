@@ -497,7 +497,7 @@
     "plot": ["Investing"],
     "sector": ["YahooFinance"],
     "equity": ["YahooFinance"],
-    "al_swe": ["Avanza"],
+    "alswe": ["Avanza"],
     "info_swe": ["Avanza"]
   },
   "alternative": {
