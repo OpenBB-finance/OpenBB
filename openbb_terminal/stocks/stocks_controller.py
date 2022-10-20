@@ -227,7 +227,7 @@ class StocksController(StockBaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="search",
-            description=translate("stocks/SEARCH"),
+            description="Show companies matching the search query",
         )
         parser.add_argument(
             "-q",
@@ -237,7 +237,7 @@ class StocksController(StockBaseController):
             type=str.lower,
             default="",
             nargs="+",
-            help=translate("stocks/SEARCH_query"),
+            help="The search term used to find company tickers",
         )
         parser.add_argument(
             "-c",
@@ -246,7 +246,7 @@ class StocksController(StockBaseController):
             nargs=argparse.ONE_OR_MORE,
             action=choice_check_after_action(AllowArgsWithWhiteSpace, self.country),
             dest="country",
-            help=translate("stocks/SEARCH_country"),
+            help="Search by country to find stocks matching the criteria",
         )
         parser.add_argument(
             "-s",
@@ -255,7 +255,7 @@ class StocksController(StockBaseController):
             nargs=argparse.ONE_OR_MORE,
             action=choice_check_after_action(AllowArgsWithWhiteSpace, self.sector),
             dest="sector",
-            help=translate("stocks/SEARCH_sector"),
+            help="Search by sector to find stocks matching the criteria",
         )
         parser.add_argument(
             "-i",
@@ -264,7 +264,7 @@ class StocksController(StockBaseController):
             nargs=argparse.ONE_OR_MORE,
             action=choice_check_after_action(AllowArgsWithWhiteSpace, self.industry),
             dest="industry",
-            help=translate("stocks/SEARCH_industry"),
+            help="Search by industry to find stocks matching the criteria",
         )
         parser.add_argument(
             "-e",
@@ -272,7 +272,7 @@ class StocksController(StockBaseController):
             default="",
             choices=list(stocks_helper.market_coverage_suffix.keys()),
             dest="exchange_country",
-            help=translate("stocks/SEARCH_exchange"),
+            help="Search by a specific exchange country to find stocks matching the criteria",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-q")
@@ -336,7 +336,7 @@ class StocksController(StockBaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="quote",
-            description=translate("stocks/QUOTE"),
+            description="Current quote for stock ticker",
         )
         if self.ticker:
             parser.add_argument(
@@ -345,7 +345,7 @@ class StocksController(StockBaseController):
                 action="store",
                 dest="s_ticker",
                 default=ticker,
-                help=translate("stocks/QUOTE_ticker"),
+                help="Stock ticker",
             )
         else:
             parser.add_argument(
@@ -386,7 +386,7 @@ class StocksController(StockBaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="candle",
-            description=translate("stocks/CANDLE"),
+            description="Shows historic data for a stock",
         )
         parser.add_argument(
             "-p",
@@ -394,7 +394,7 @@ class StocksController(StockBaseController):
             dest="plotly",
             action="store_false",
             default=True,
-            help=translate("stocks/CANDLE_plotly"),
+            help="Flag to show interactive plotly chart",
         )
         parser.add_argument(
             "--sort",
@@ -402,7 +402,7 @@ class StocksController(StockBaseController):
             default="",
             type=str,
             dest="sort",
-            help=translate("stocks/CANDLE_sort"),
+            help="Choose a column to sort by. Only works when raw data is displayed.",
         )
         parser.add_argument(
             "-d",
@@ -410,28 +410,28 @@ class StocksController(StockBaseController):
             action="store_false",
             dest="descending",
             default=True,
-            help=translate("stocks/CANDLE_descending"),
+            help="Sort selected column descending. Only works when raw data is displayed.",
         )
         parser.add_argument(
             "--raw",
             action="store_true",
             dest="raw",
             default=False,
-            help=translate("stocks/CANDLE_raw"),
+            help="Shows raw data instead of chart.",
         )
         parser.add_argument(
             "-t",
             "--trend",
             action="store_true",
             default=False,
-            help=translate("stocks/CANDLE_trend"),
+            help="Flag to add high and low trends to candle",
             dest="trendlines",
         )
         parser.add_argument(
             "--ma",
             dest="mov_avg",
             type=str,
-            help=translate("stocks/CANDLE_mov_avg"),
+            help="Add moving average in number of days to plot and separate by a comma",
             default=None,
         )
         parser.add_argument(
@@ -514,7 +514,7 @@ class StocksController(StockBaseController):
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="news",
-            description=translate("stocks/news"),
+            description="latest news of the company",
         )
         parser.add_argument(
             "-d",
@@ -523,7 +523,7 @@ class StocksController(StockBaseController):
             dest="n_start_date",
             type=valid_date,
             default=datetime.now() - timedelta(days=7),
-            help=translate("stocks/NEWS_date"),
+            help="The starting date (format YYYY-MM-DD) to search articles from",
         )
         parser.add_argument(
             "-o",
@@ -531,7 +531,7 @@ class StocksController(StockBaseController):
             action="store_false",
             dest="n_oldest",
             default=True,
-            help=translate("stocks/NEWS_oldest"),
+            help="Show oldest articles first",
         )
         parser.add_argument(
             "-s",
@@ -539,7 +539,7 @@ class StocksController(StockBaseController):
             dest="sources",
             default=[],
             nargs="+",
-            help=translate("stocks/NEWS_sources"),
+            help="Show news only from the sources specified (e.g bbc yahoo.com)",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
