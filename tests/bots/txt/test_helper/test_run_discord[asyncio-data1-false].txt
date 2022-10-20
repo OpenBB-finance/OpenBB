@@ -1,7 +1,0 @@
-()
-{}
-hello
-goodbye
-<class 'str'>
-<class 'NoneType'>
-None

@@ -14,7 +14,7 @@ import valinvest
 
 from openbb_terminal.rich_config import console
 from openbb_terminal import config_terminal as cfg
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format
 from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 
@@ -22,13 +22,14 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_score(ticker: str) -> Optional[np.number]:
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
+def get_score(symbol: str) -> Optional[np.number]:
     """Gets value score from fmp
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
+    symbol : str
+        Stock ticker symbol
 
     Returns
     -------
@@ -39,7 +40,7 @@ def get_score(ticker: str) -> Optional[np.number]:
     value_score = None
 
     try:
-        valstock = valinvest.Fundamental(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+        valstock = valinvest.Fundamental(symbol, cfg.API_KEY_FINANCIALMODELINGPREP)
         warnings.filterwarnings("ignore", category=FutureWarning)
         value_score = 100 * (valstock.fscore() / 9)
         warnings.filterwarnings("ignore", category=FutureWarning)
@@ -52,13 +53,14 @@ def get_score(ticker: str) -> Optional[np.number]:
 
 
 @log_start_end(log=logger)
-def get_profile(ticker: str) -> pd.DataFrame:
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
+def get_profile(symbol: str) -> pd.DataFrame:
     """Get ticker profile from FMP
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
+    symbol : str
+        Stock ticker symbol
 
     Returns
     ----------
@@ -68,7 +70,7 @@ def get_profile(ticker: str) -> pd.DataFrame:
     df = pd.DataFrame()
 
     try:
-        df = fa.profile(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+        df = fa.profile(symbol, cfg.API_KEY_FINANCIALMODELINGPREP)
     # Invalid API Keys
     except ValueError:
         console.print("[red]Invalid API Key[/red]\n")
@@ -79,13 +81,14 @@ def get_profile(ticker: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_quote(ticker) -> pd.DataFrame:
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
+def get_quote(symbol: str) -> pd.DataFrame:
     """Gets ticker quote from FMP
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
+    symbol : str
+        Stock ticker symbol
 
     Returns
     ----------
@@ -96,7 +99,7 @@ def get_quote(ticker) -> pd.DataFrame:
     df_fa = pd.DataFrame()
 
     try:
-        df_fa = fa.quote(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+        df_fa = fa.quote(symbol, cfg.API_KEY_FINANCIALMODELINGPREP)
     # Invalid API Keys
     except ValueError:
         console.print("[red]Invalid API Key[/red]\n")
@@ -125,14 +128,17 @@ def get_quote(ticker) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_enterprise(ticker: str, number: int, quarterly: bool = False) -> pd.DataFrame:
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
+def get_enterprise(
+    symbol: str, limit: int = 5, quarterly: bool = False
+) -> pd.DataFrame:
     """Financial Modeling Prep ticker enterprise
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Fundamental analysis ticker symbol
-    number: int
+    limit: int
         Number to get
     quarterly: bool
         Flag to get quarterly data
@@ -147,10 +153,10 @@ def get_enterprise(ticker: str, number: int, quarterly: bool = False) -> pd.Data
     try:
         if quarterly:
             df_fa = fa.enterprise(
-                ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
+                symbol, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
             )
         else:
-            df_fa = fa.enterprise(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+            df_fa = fa.enterprise(symbol, cfg.API_KEY_FINANCIALMODELINGPREP)
     # Invalid API Keys
     except ValueError as e:
         console.print(e)
@@ -159,19 +165,20 @@ def get_enterprise(ticker: str, number: int, quarterly: bool = False) -> pd.Data
         console.print(e)
 
     if not df_fa.empty:
-        df_fa = clean_metrics_df(df_fa, num=number, mask=False)
+        df_fa = clean_metrics_df(df_fa, num=limit, mask=False)
     return df_fa
 
 
 @log_start_end(log=logger)
-def get_dcf(ticker: str, number: int, quarterly: bool = False) -> pd.DataFrame:
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
+def get_dcf(symbol: str, limit: int = 5, quarterly: bool = False) -> pd.DataFrame:
     """Get stocks dcf from FMP
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
-    number : int
+    symbol : str
+        Stock ticker symbol
+    limit : int
         Number to get
     quarterly : bool, optional
         Flag to get quarterly data, by default False
@@ -187,11 +194,11 @@ def get_dcf(ticker: str, number: int, quarterly: bool = False) -> pd.DataFrame:
     try:
         if quarterly:
             df_fa = fa.discounted_cash_flow(
-                ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
+                symbol, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
             )
         else:
-            df_fa = fa.discounted_cash_flow(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
-        df_fa = clean_metrics_df(df_fa, num=number, mask=False)
+            df_fa = fa.discounted_cash_flow(symbol, cfg.API_KEY_FINANCIALMODELINGPREP)
+        df_fa = clean_metrics_df(df_fa, num=limit, mask=False)
     # Invalid API Keys
     except ValueError as e:
         console.print(e)
@@ -203,9 +210,10 @@ def get_dcf(ticker: str, number: int, quarterly: bool = False) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def get_income(
-    ticker: str,
-    number: int,
+    symbol: str,
+    limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
     plot: bool = False,
@@ -214,9 +222,9 @@ def get_income(
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
-    number : int
+    symbol : str
+        Stock ticker symbol
+    limit : int
         Number to get
     quarterly : bool, optional
         Flag to get quarterly data, by default False
@@ -236,10 +244,10 @@ def get_income(
     try:
         if quarterly:
             df_fa = fa.income_statement(
-                ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
+                symbol, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
             )
         else:
-            df_fa = fa.income_statement(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+            df_fa = fa.income_statement(symbol, cfg.API_KEY_FINANCIALMODELINGPREP)
 
     # Invalid API Keys
     except ValueError as e:
@@ -262,16 +270,17 @@ def get_income(
             df_fa.iloc[i] = df_fa_pc.iloc[j]
             j += 1
 
-    df_fa = df_fa.iloc[:, 0:number]
-    df_fa_c = clean_metrics_df(df_fa, num=number)
+    df_fa = df_fa.iloc[:, 0:limit]
+    df_fa_c = clean_metrics_df(df_fa, num=limit)
 
     return df_fa_c if not plot else df_fa
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def get_balance(
-    ticker: str,
-    number: int,
+    symbol: str,
+    limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
     plot: bool = False,
@@ -280,9 +289,9 @@ def get_balance(
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
-    number : int
+    symbol : str
+        Stock ticker symbol
+    limit : int
         Number to get
     quarterly : bool, optional
         Flag to get quarterly data, by default False
@@ -302,11 +311,11 @@ def get_balance(
     try:
         if quarterly:
             df_fa = fa.balance_sheet_statement(
-                ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
+                symbol, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
             )
         else:
             df_fa = fa.balance_sheet_statement(
-                ticker, cfg.API_KEY_FINANCIALMODELINGPREP
+                symbol, cfg.API_KEY_FINANCIALMODELINGPREP
             )
 
     # Invalid API Keys
@@ -330,16 +339,17 @@ def get_balance(
             df_fa.iloc[i] = df_fa_pc.iloc[j]
             j += 1
 
-    df_fa = df_fa.iloc[:, 0:number]
-    df_fa_c = clean_metrics_df(df_fa, num=number)
+    df_fa = df_fa.iloc[:, 0:limit]
+    df_fa_c = clean_metrics_df(df_fa, num=limit)
 
     return df_fa_c if not plot else df_fa
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def get_cash(
-    ticker: str,
-    number: int,
+    symbol: str,
+    limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
     plot: bool = False,
@@ -348,9 +358,9 @@ def get_cash(
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
-    number : int
+    symbol : str
+        Stock ticker symbol
+    limit : int
         Number to get
     quarterly : bool, optional
         Flag to get quarterly data, by default False
@@ -369,10 +379,10 @@ def get_cash(
     try:
         if quarterly:
             df_fa = fa.cash_flow_statement(
-                ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
+                symbol, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
             )
         else:
-            df_fa = fa.cash_flow_statement(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+            df_fa = fa.cash_flow_statement(symbol, cfg.API_KEY_FINANCIALMODELINGPREP)
 
     # Invalid API Keys
     except ValueError as e:
@@ -395,21 +405,24 @@ def get_cash(
             df_fa.iloc[i] = df_fa_pc.iloc[j]
             j += 1
 
-    df_fa = df_fa.iloc[:, 0:number]
-    df_fa_c = clean_metrics_df(df_fa, num=number)
+    df_fa = df_fa.iloc[:, 0:limit]
+    df_fa_c = clean_metrics_df(df_fa, num=limit)
 
     return df_fa_c if not plot else df_fa
 
 
 @log_start_end(log=logger)
-def get_key_metrics(ticker: str, number: int, quarterly: bool = False) -> pd.DataFrame:
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
+def get_key_metrics(
+    symbol: str, limit: int = 5, quarterly: bool = False
+) -> pd.DataFrame:
     """Get key metrics
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
-    number : int
+    symbol : str
+        Stock ticker symbol
+    limit : int
         Number to get
     quarterly : bool, optional
         Flag to get quarterly data, by default False
@@ -424,12 +437,12 @@ def get_key_metrics(ticker: str, number: int, quarterly: bool = False) -> pd.Dat
     try:
         if quarterly:
             df_fa = fa.key_metrics(
-                ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
+                symbol, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
             )
         else:
-            df_fa = fa.key_metrics(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+            df_fa = fa.key_metrics(symbol, cfg.API_KEY_FINANCIALMODELINGPREP)
 
-        df_fa = clean_metrics_df(df_fa, num=number)
+        df_fa = clean_metrics_df(df_fa, num=limit)
     # Invalid API Keys
     except ValueError as e:
         console.print(e)
@@ -441,14 +454,17 @@ def get_key_metrics(ticker: str, number: int, quarterly: bool = False) -> pd.Dat
 
 
 @log_start_end(log=logger)
-def get_key_ratios(ticker: str, number: int, quarterly: bool = False) -> pd.DataFrame:
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
+def get_key_ratios(
+    symbol: str, limit: int = 5, quarterly: bool = False
+) -> pd.DataFrame:
     """Get key ratios
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
-    number : int
+    symbol : str
+        Stock ticker symbol
+    limit : int
         Number to get
     quarterly : bool, optional
         Flag to get quarterly data, by default False
@@ -463,12 +479,12 @@ def get_key_ratios(ticker: str, number: int, quarterly: bool = False) -> pd.Data
     try:
         if quarterly:
             df_fa = fa.financial_ratios(
-                ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
+                symbol, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
             )
         else:
-            df_fa = fa.financial_ratios(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+            df_fa = fa.financial_ratios(symbol, cfg.API_KEY_FINANCIALMODELINGPREP)
 
-        df_fa = clean_metrics_df(df_fa, num=number)
+        df_fa = clean_metrics_df(df_fa, num=limit)
     # Invalid API Keys
     except ValueError as e:
         console.print(e)
@@ -480,16 +496,17 @@ def get_key_ratios(ticker: str, number: int, quarterly: bool = False) -> pd.Data
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def get_financial_growth(
-    ticker: str, number: int, quarterly: bool = False
+    symbol: str, limit: int = 5, quarterly: bool = False
 ) -> pd.DataFrame:
     """Get financial statement growth
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
-    number : int
+    symbol : str
+        Stock ticker symbol
+    limit : int
         Number to get
     quarterly : bool, optional
         Flag to get quarterly data, by default False
@@ -504,14 +521,14 @@ def get_financial_growth(
     try:
         if quarterly:
             df_fa = fa.financial_statement_growth(
-                ticker, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
+                symbol, cfg.API_KEY_FINANCIALMODELINGPREP, period="quarter"
             )
         else:
             df_fa = fa.financial_statement_growth(
-                ticker, cfg.API_KEY_FINANCIALMODELINGPREP
+                symbol, cfg.API_KEY_FINANCIALMODELINGPREP
             )
 
-        df_fa = clean_metrics_df(df_fa, num=number)
+        df_fa = clean_metrics_df(df_fa, num=limit)
     # Invalid API Keys
     except ValueError as e:
         console.print(e)
@@ -523,12 +540,13 @@ def get_financial_growth(
 
 
 @log_start_end(log=logger)
-def clean_metrics_df(df_fa: pd.DataFrame, num: int, mask: bool = True) -> pd.DataFrame:
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
+def clean_metrics_df(data: pd.DataFrame, num: int, mask: bool = True) -> pd.DataFrame:
     """Clean metrics data frame
 
     Parameters
     ----------
-    df_fa : pd.DataFrame
+    data : pd.DataFrame
         Metrics data frame
     num : int
         Number of columns to clean
@@ -541,14 +559,14 @@ def clean_metrics_df(df_fa: pd.DataFrame, num: int, mask: bool = True) -> pd.Dat
         Cleaned metrics data frame
     """
 
-    df_fa = df_fa.iloc[:, 0:num]
+    data = data.iloc[:, 0:num]
     if mask:
-        df_fa = df_fa.mask(df_fa.astype(object).eq(num * ["None"])).dropna()
-        df_fa = df_fa.mask(df_fa.astype(object).eq(num * ["0"])).dropna()
-    df_fa = df_fa.applymap(lambda x: lambda_long_number_format(x))
-    clean_df_index(df_fa)
-    df_fa.columns.name = "Fiscal Date Ending"
-    df_fa = df_fa.rename(
+        data = data.mask(data.astype(object).eq(num * ["None"])).dropna()
+        data = data.mask(data.astype(object).eq(num * ["0"])).dropna()
+    data = data.applymap(lambda x: lambda_long_number_format(x))
+    clean_df_index(data)
+    data.columns.name = "Fiscal Date Ending"
+    data = data.rename(
         index={
             "Enterprise value over e b i t d a": "Enterprise value over EBITDA",
             "Net debt to e b i t d a": "Net debt to EBITDA",
@@ -557,4 +575,4 @@ def clean_metrics_df(df_fa: pd.DataFrame, num: int, mask: bool = True) -> pd.Dat
         }
     )
 
-    return df_fa
+    return data

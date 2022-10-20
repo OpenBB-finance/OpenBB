@@ -280,7 +280,7 @@ code {
   --body-font-color: #343a40;
   --button-background: #498bcb;
   --button-border-color: #4186c9;
-  --link-color: #21cd9b;
+  --link-color: white;
   --link-color-visited: #7749bf;
   --code-background: #f5f6f8;
   --code-accent-color: #e3e7eb;
@@ -753,7 +753,7 @@ code {
     --body-font-color: #ced3d8;
     --button-background: #498bcb;
     --button-border-color: #4186c9;
-    --link-color: #21cd9b;
+    --link-color: white;
     --link-color-visited: #ba8ef0;
     --code-background: #2f353a;
     --code-accent-color: #262b2f;
@@ -1098,7 +1098,7 @@ code {
   --body-font-color: #ced3d8;
   --button-background: #498bcb;
   --button-border-color: #4186c9;
-  --link-color: #21cd9b;
+  --link-color: white;
   --link-color-visited: #ba8ef0;
   --code-background: #2f353a;
   --code-accent-color: #262b2f;
@@ -1443,7 +1443,7 @@ code {
     --body-font-color: #ced3d8;
     --button-background: #498bcb;
     --button-border-color: #4186c9;
-    --link-color: #21cd9b;
+    --link-color: white;
     --link-color-visited: #ba8ef0;
     --code-background: #2f353a;
     --code-accent-color: #262b2f;
@@ -1997,8 +1997,8 @@ img {
 .gdoc-search__entry.is-active,
 .gdoc-search__entry:hover {
   text-decoration: underline;
-  -webkit-text-decoration-style: dashed !important;
-  text-decoration-style: dashed !important;
+  -webkit-text-decoration-style: underline !important;
+  text-decoration-style: underline !important;
 }
 .gdoc-nav__entry:visited,
 .gdoc-search__entry:visited {

@@ -28,22 +28,20 @@ register_matplotlib_converters()
 
 @log_start_end(log=logger)
 def plot_rating_over_time(
-    df_rot: pd.DataFrame,
-    ticker: str,
+    data: pd.DataFrame,
+    symbol: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plot rating over time
 
     Parameters
     ----------
-    df_rot : pd.DataFrame
+    data: pd.DataFrame
         Rating over time
-    ticker : str
-        Ticker associated with ratings
-    external_axes : Optional[List[plt.Axes]], optional
+    symbol: str
+        Ticker symbol associated with ratings
+    external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    external_axes: Optional[List[plt.Axes]] = None,
-
     """
     # This plot has 1 axis
     if not external_axes:
@@ -53,7 +51,7 @@ def plot_rating_over_time(
     else:
         return
 
-    rot = df_rot.sort_values("period")
+    rot = data.sort_values("period")
     ax.plot(pd.to_datetime(rot["period"]), rot["strongBuy"], c="green", lw=3)
     ax.plot(pd.to_datetime(rot["period"]), rot["buy"], c="lightgreen", lw=3)
     ax.plot(pd.to_datetime(rot["period"]), rot["hold"], c="grey", lw=3)
@@ -63,7 +61,7 @@ def plot_rating_over_time(
         pd.to_datetime(rot["period"].values[0]),
         pd.to_datetime(rot["period"].values[-1]),
     )
-    ax.set_title(f"{ticker}'s ratings over time")
+    ax.set_title(f"{symbol}'s ratings over time")
     ax.set_ylabel("Rating")
     ax.legend(["Strong Buy", "Buy", "Hold", "Sell", "Strong Sell"])
 
@@ -76,9 +74,9 @@ def plot_rating_over_time(
 @log_start_end(log=logger)
 @check_api_key(["API_FINNHUB_KEY"])
 def rating_over_time(
-    ticker: str,
-    num: int,
-    raw: bool,
+    symbol: str,
+    limit: int = 10,
+    raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -88,14 +86,16 @@ def rating_over_time(
     ----------
     ticker : str
         Ticker to get ratings from
-    num : int
+    limit : int
         Number of last months ratings to show
-    raw : bool
+    raw: bool
         Display raw data only
-    export : str
+    export: str
         Export dataframe data to csv,json,xlsx file
+    external_axes : Optional[List[plt.Axes]]
+        External axes (1 axis is expected in the list), by default None
     """
-    df_rot = finnhub_model.get_rating_over_time(ticker)
+    df_rot = finnhub_model.get_rating_over_time(symbol)
 
     if df_rot.empty:
         return
@@ -111,7 +111,7 @@ def rating_over_time(
         df_rot_raw = (
             df_rot[["period", "strongSell", "sell", "hold", "buy", "strongBuy"]]
             .rename(columns=d_cols)
-            .head(num)
+            .head(limit)
         )
         print_rich_table(
             df_rot_raw,
@@ -120,7 +120,7 @@ def rating_over_time(
             title="Monthly Rating",
         )
     else:
-        plot_rating_over_time(df_rot.head(num), ticker, external_axes)
+        plot_rating_over_time(df_rot.head(limit), symbol, external_axes)
 
     export_data(
         export,

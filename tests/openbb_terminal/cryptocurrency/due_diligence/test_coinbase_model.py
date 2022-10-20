@@ -13,10 +13,10 @@ from openbb_terminal.cryptocurrency.due_diligence import coinbase_model
     "func, kwargs",
     [
         ("show_available_pairs_for_given_symbol", dict()),
-        ("get_trading_pair_info", dict(product_id="ETH-USDT")),
-        ("get_trades", dict(product_id="ETH-USDT", side="buy")),
-        ("get_candles", dict(product_id="ETH-USDT")),
-        ("get_product_stats", dict(product_id="ETH-USDT")),
+        ("get_trading_pair_info", dict(symbol="ETH-USDT")),
+        ("get_trades", dict(symbol="ETH-USDT", side="buy")),
+        ("get_candles", dict(symbol="ETH-USDT")),
+        ("get_product_stats", dict(symbol="ETH-USDT")),
     ],
 )
 def test_call_func(func, kwargs, recorder):
@@ -30,7 +30,7 @@ def test_call_func(func, kwargs, recorder):
 
 @pytest.mark.vcr
 def test_get_order_book(recorder):
-    result = coinbase_model.get_order_book(product_id="ETH-USDT")
+    result = coinbase_model.get_order_book(symbol="ETH-USDT")
     bids, asks, product_id, market_book = result
     bids = pd.DataFrame(data=bids)
     asks = pd.DataFrame(data=asks)

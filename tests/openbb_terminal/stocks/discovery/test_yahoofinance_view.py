@@ -34,7 +34,7 @@ def vcr_config():
     ],
 )
 def test_call_func(func):
-    getattr(yahoofinance_view, func)(num_stocks=2, export="")
+    getattr(yahoofinance_view, func)(limit=2, export="")
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -58,4 +58,4 @@ def test_func_empty_df(func, mocked_func, mocker):
         return_value=pd.DataFrame(),
     )
 
-    getattr(yahoofinance_view, func)(num_stocks=2, export="")
+    getattr(yahoofinance_view, func)(limit=2, export="")

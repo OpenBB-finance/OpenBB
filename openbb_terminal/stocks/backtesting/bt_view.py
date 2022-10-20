@@ -33,22 +33,22 @@ np.seterr(divide="ignore")
 
 @log_start_end(log=logger)
 def display_whatif_scenario(
-    ticker: str,
-    num_shares_acquired: float,
-    date_shares_acquired: datetime,
+    symbol: str,
+    date_shares_acquired: Optional[datetime] = None,
+    num_shares_acquired: float = 1,
 ):
     """Display what if scenario
 
     Parameters
     ----------
-    ticker: str
+    symbol: str
         Ticker to check what if scenario
-    num_shares: float
-        Number of shares acquired
     date_shares_acquired: str
         Date at which the shares were acquired
+    num_shares_acquired: float
+        Number of shares acquired
     """
-    data = yf.download(ticker, progress=False)
+    data = yf.download(symbol, progress=False)
 
     if not data.empty:
         data = data["Adj Close"]
@@ -57,22 +57,24 @@ def display_whatif_scenario(
     last_date = data.index[-1]
 
     if not date_shares_acquired:
-        date_shares_acquired = ipo_date
+        date_shares_ac = ipo_date
         console.print("IPO date selected by default.")
+    else:
+        date_shares_ac = date_shares_acquired
 
-    if date_shares_acquired > last_date:
+    if date_shares_ac > last_date:
         console.print("The date selected is in the future. Select a valid date.", "\n")
         return
 
-    if date_shares_acquired < ipo_date:
+    if date_shares_ac < ipo_date:
         console.print(
-            f"{ticker} had not IPO at that date. Thus, changing the date to IPO on the {ipo_date.strftime('%Y-%m-%d')}",
+            f"{symbol} had not IPO at that date. Thus, changing the date to IPO on the {ipo_date.strftime('%Y-%m-%d')}",
             "\n",
         )
-        date_shares_acquired = ipo_date
+        date_shares_ac = ipo_date
 
     initial_shares_value = (
-        data[data.index > date_shares_acquired].values[0] * num_shares_acquired
+        data[data.index > date_shares_ac].values[0] * num_shares_acquired
     )
 
     if (num_shares_acquired - int(num_shares_acquired)) > 0:
@@ -87,12 +89,12 @@ def display_whatif_scenario(
         these = "These"
 
     console.print(
-        f"If you had acquired {nshares} {shares} of {ticker} on "
-        f"{date_shares_acquired.strftime('%Y-%m-%d')} with a cost of {initial_shares_value:.2f}."
+        f"If you had acquired {nshares} {shares} of {symbol} on "
+        f"{date_shares_ac.strftime('%Y-%m-%d')} with a cost of {initial_shares_value:.2f}."
     )
 
     current_shares_value = (
-        data[data.index > date_shares_acquired].values[-1] * num_shares_acquired
+        data[data.index > date_shares_ac].values[-1] * num_shares_acquired
     )
     if current_shares_value > initial_shares_value:
         pct = 100 * (
@@ -114,9 +116,9 @@ def display_whatif_scenario(
 
 @log_start_end(log=logger)
 def display_simple_ema(
-    ticker: str,
-    df_stock: pd.DataFrame,
-    ema_length: int,
+    symbol: str,
+    data: pd.DataFrame,
+    ema_length: int = 20,
     spy_bt: bool = True,
     no_bench: bool = False,
     export: str = "",
@@ -126,9 +128,9 @@ def display_simple_ema(
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Stock ticker
-    df_stock : pd.Dataframe
+    data : pd.Dataframe
         Dataframe of prices
     ema_length : int
         Length of ema window
@@ -143,7 +145,7 @@ def display_simple_ema(
     """
     # TODO: Help Wanted!
     # Implement support for backtesting on intraday data
-    if is_intraday(df_stock):
+    if is_intraday(data):
         console.print("Backtesting on intraday data is not yet supported.")
         console.print("Submit a feature request to let us know that you need it here:")
         console.print("https://openbb.co/request-a-feature")
@@ -158,7 +160,7 @@ def display_simple_ema(
     else:
         return
 
-    res = bt_model.ema_strategy(ticker, df_stock, ema_length, spy_bt, no_bench)
+    res = bt_model.ema_strategy(symbol, data, ema_length, spy_bt, no_bench)
     res.plot(title=f"Equity for EMA({ema_length})", ax=ax)
 
     theme.style_primary_axis(ax)
@@ -177,10 +179,10 @@ def display_simple_ema(
 
 @log_start_end(log=logger)
 def display_ema_cross(
-    ticker: str,
-    df_stock: pd.DataFrame,
-    short_ema: int,
-    long_ema: int,
+    symbol: str,
+    data: pd.DataFrame,
+    short_ema: int = 20,
+    long_ema: int = 50,
     spy_bt: bool = True,
     no_bench: bool = False,
     shortable: bool = True,
@@ -191,9 +193,9 @@ def display_ema_cross(
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Stock ticker
-    df_stock : pd.Dataframe
+    data : pd.Dataframe
         Dataframe of prices
     short_ema : int
         Length of short ema window
@@ -212,7 +214,7 @@ def display_ema_cross(
     """
     # TODO: Help Wanted!
     # Implement support for backtesting on intraday data
-    if is_intraday(df_stock):
+    if is_intraday(data):
         console.print("Backtesting on intraday data is not yet supported.")
         console.print("Submit a feature request to let us know that you need it here:")
         console.print("https://openbb.co/request-a-feature")
@@ -228,7 +230,7 @@ def display_ema_cross(
         return
 
     res = bt_model.ema_cross_strategy(
-        ticker, df_stock, short_ema, long_ema, spy_bt, no_bench, shortable
+        symbol, data, short_ema, long_ema, spy_bt, no_bench, shortable
     )
     res.plot(title=f"EMA Cross for EMA({short_ema})/EMA({long_ema})", ax=ax)
 
@@ -246,11 +248,11 @@ def display_ema_cross(
 # pylint:disable=too-many-arguments
 @log_start_end(log=logger)
 def display_rsi_strategy(
-    ticker: str,
-    df_stock: pd.DataFrame,
-    periods: int,
-    low_rsi: int,
-    high_rsi: int,
+    symbol: str,
+    data: pd.DataFrame,
+    periods: int = 14,
+    low_rsi: int = 30,
+    high_rsi: int = 70,
     spy_bt: bool = True,
     no_bench: bool = False,
     shortable: bool = True,
@@ -261,9 +263,9 @@ def display_rsi_strategy(
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Stock ticker
-    df_stock : pd.Dataframe
+    data : pd.Dataframe
         Dataframe of prices
     periods : int
         Number of periods for RSI calculation
@@ -284,7 +286,7 @@ def display_rsi_strategy(
     """
     # TODO: Help Wanted!
     # Implement support for backtesting on intraday data
-    if is_intraday(df_stock):
+    if is_intraday(data):
         console.print("Backtesting on intraday data is not yet supported.")
         console.print("Submit a feature request to let us know that you need it here:")
         console.print("https://openbb.co/request-a-feature")
@@ -300,7 +302,7 @@ def display_rsi_strategy(
         return
 
     res = bt_model.rsi_strategy(
-        ticker, df_stock, periods, low_rsi, high_rsi, spy_bt, no_bench, shortable
+        symbol, data, periods, low_rsi, high_rsi, spy_bt, no_bench, shortable
     )
 
     res.plot(title=f"RSI Strategy between ({low_rsi}, {high_rsi})", ax=ax)

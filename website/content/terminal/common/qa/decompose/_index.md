@@ -2,7 +2,7 @@
 usage: decompose [-m] [--export {csv,json,xlsx}] [-h]
 ```
 
-This type of forcasting attempts to separate and index factors thought to have meaningful impact on the otherwise random movements in stock prices. 
+This type of forecasting attempts to separate and index factors thought to have meaningful impact on the otherwise random movements in stock prices. 
 
 Decompose time series as:
 - Additive Time Series = Level + CyclicTrend + Residual + Seasonality

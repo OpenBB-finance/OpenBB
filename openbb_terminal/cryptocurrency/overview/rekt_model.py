@@ -89,12 +89,16 @@ def _make_request(url: str) -> Union[BeautifulSoup, None]:
 
 
 @log_start_end(log=logger)
-def get_crypto_hacks() -> pd.DataFrame:
+def get_crypto_hacks(sortby: str = "Platform", ascend: bool = False) -> pd.DataFrame:
     """Get major crypto-related hacks
     [Source: https://rekt.news]
 
     Parameters
     ----------
+    sortby: str
+        Key by which to sort data {Platform,Date,Amount [$],Audit,Slug,URL}
+    ascend
+        Flag to sort data ascending
 
     Returns
     -------
@@ -124,6 +128,8 @@ def get_crypto_hacks() -> pd.DataFrame:
                 f"https://rekt.news{url}",
             ]
         df["Date"] = pd.to_datetime(df["Date"])
+        if sortby in HACKS_COLUMNS:
+            df = df.sort_values(by=sortby, ascending=ascend)
         return df
     return pd.DataFrame()
 

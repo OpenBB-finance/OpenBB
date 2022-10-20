@@ -13,7 +13,11 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def pnl_calculator(
-    strike: float, premium: float, put: bool, sell: bool, **kwargs: Dict[str, int]
+    strike: float = 10,
+    premium: float = 1,
+    put: bool = False,
+    sell: bool = False,
+    **kwargs: Dict[str, int]
 ) -> Tuple[np.ndarray, np.ndarray, float]:
     """Calculate profit/loss for different option variables
 

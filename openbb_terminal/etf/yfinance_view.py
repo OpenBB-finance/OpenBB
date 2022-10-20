@@ -100,9 +100,7 @@ def display_etf_weightings(
 
 
 @log_start_end(log=logger)
-def display_etf_description(
-    name: str,
-):
+def display_etf_description(name: str):
     """Display ETF description summary. [Source: Yahoo Finance]
 
     Parameters

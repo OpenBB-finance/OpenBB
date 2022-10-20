@@ -14,13 +14,13 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_insider_activity(ticker: str) -> pd.DataFrame:
+def get_insider_activity(symbol: str) -> pd.DataFrame:
     """Get insider activity. [Source: Business Insider]
 
     Parameters
     ----------
-    ticker : str
-        Ticker to get insider activity data from
+    symbol : str
+        Ticker symbol to get insider activity data from
 
     Returns
     -------
@@ -28,7 +28,7 @@ def get_insider_activity(ticker: str) -> pd.DataFrame:
         Get insider activity data
     """
     url_market_business_insider = (
-        f"https://markets.businessinsider.com/stocks/{ticker.lower()}-stock"
+        f"https://markets.businessinsider.com/stocks/{symbol.lower()}-stock"
     )
     text_soup_market_business_insider = BeautifulSoup(
         requests.get(

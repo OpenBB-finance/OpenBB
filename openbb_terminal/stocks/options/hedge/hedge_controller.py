@@ -7,23 +7,18 @@ from datetime import datetime
 from typing import Dict, List
 
 import pandas as pd
-from prompt_toolkit.completion import NestedCompleter
+
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    check_non_negative,
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import check_non_negative, print_rich_table
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks.options.hedge import hedge_view
 from openbb_terminal.stocks.options.hedge.hedge_model import add_hedge_option
-from openbb_terminal.stocks.options.yfinance_model import (
-    get_option_chain,
-    get_price,
-)
+from openbb_terminal.stocks.options.yfinance_model import get_option_chain, get_price
 from openbb_terminal.stocks.options.yfinance_view import plot_payoff
 
 # pylint: disable=R0902
@@ -90,9 +85,15 @@ class HedgeController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: None for c in self.controller_choices}
             choices["pick"] = {c: None for c in self.PICK_CHOICES}
+            choices["pick"]["--amount"] = None
+            choices["pick"]["-a"] = "--amount"
             choices["add"] = {
                 str(c): {} for c in list(range(max(len(self.puts), len(self.calls))))
             }
+            choices["add"]["--put"] = {}
+            choices["add"]["-p"] = "--put"
+            choices["add"]["--short"] = {}
+            choices["add"]["-s"] = "--short"
             # This menu contains dynamic choices that may change during runtime
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
@@ -101,6 +102,8 @@ class HedgeController(BaseController):
         """Update runtime choices"""
         if self.options and session and obbff.USE_PROMPT_TOOLKIT:
             self.choices["rmv"] = {c: None for c in ["Option A", "Option B"]}
+            self.choices["rmv"]["--all"] = {}
+            self.choices["rmv"]["-a"] = "--all"
             self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
@@ -114,20 +117,17 @@ class HedgeController(BaseController):
         mt.add_param("_underlying", self.underlying_asset_position)
         mt.add_raw("\n")
         mt.add_cmd("list")
-        mt.add_cmd("add", "", "Delta" in self.greeks["Portfolio"])
+        mt.add_cmd("add", "Delta" in self.greeks["Portfolio"])
         mt.add_cmd(
             "rmv",
-            "",
             "Delta" in self.greeks["Option A"] or "Delta" in self.greeks["Option B"],
         )
         mt.add_cmd(
             "sop",
-            "",
             "Delta" in self.greeks["Option A"] or "Delta" in self.greeks["Option B"],
         )
         mt.add_cmd(
             "plot",
-            "",
             "Delta" in self.greeks["Option A"] or "Delta" in self.greeks["Option B"],
         )
         console.print(text=mt.menu_text, menu="Stocks - Options - Hedge")
@@ -399,7 +399,7 @@ class HedgeController(BaseController):
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="long",
+            prog="pick",
             description="This function plots option hedge diagrams",
         )
         parser.add_argument(

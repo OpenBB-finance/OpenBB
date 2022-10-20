@@ -21,7 +21,7 @@ def vcr_config():
 )
 def test_get_short_interest(nyse, recorder):
     result_df = quandl_model.get_short_interest(
-        ticker="PM",
+        symbol="PM",
         nyse=nyse,
     )
 

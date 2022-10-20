@@ -19,18 +19,18 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def view(ticker: str, external_axes: Optional[List[plt.Axes]] = None):
+def view(symbol: str, external_axes: Optional[List[plt.Axes]] = None):
     """View finviz image for ticker
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
-    external_axes : Optional[List[plt.Axes]], optional
+    symbol: str
+        Stock ticker symbol
+    external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
 
-    image_data = finviz_model.get_finviz_image(ticker)
+    image_data = finviz_model.get_finviz_image(symbol)
     dataBytesIO = io.BytesIO(image_data)
     im = Image.open(dataBytesIO)
 

@@ -1,6 +1,6 @@
 ```
 usage: herc [-p HISTORIC_PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr]
-            [-f {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE]
+            [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE]
             [-mt NAN_FILL_METHOD]
             [-cd {pearson,spearman,abs_pearson,abs_spearman,distance,mutual_info,tail}]
             [-cv {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}]
@@ -35,7 +35,7 @@ optional arguments:
                         MM-DD' format (default: )
   -lr, --log-returns    If use logarithmic or arithmetic returns to calculate
                         returns (default: False)
-  -f {d,w,m}, --freq {d,w,m}
+  --freq {d,w,m}
                         Frequency used to calculate returns. Possible values
                         are: 'd': for daily returns 'w': for weekly returns
                         'm': for monthly returns (default: d)
@@ -153,7 +153,7 @@ Example:
  [3 Years] Hierarchical equal risk contribution portfolio using pearson
 codependence,single linkage and volatility as risk measure
 
-     Weights      
+     Weights
 ┏━━━━━━┳━━━━━━━━━┓
 ┃      ┃ Value   ┃
 ┡━━━━━━╇━━━━━━━━━┩

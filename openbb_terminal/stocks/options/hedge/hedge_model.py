@@ -9,7 +9,28 @@ from scipy.stats import norm
 # Based on article of Roman Paolucci: https://towardsdatascience.com/algorithmic-portfolio-hedging-9e069aafff5a
 
 
-def calc_hedge(portfolio_option_amount, side, greeks, sign):
+def calc_hedge(
+    portfolio_option_amount: float = 100,
+    side: str = "Call",
+    greeks: dict = {
+        "Portfolio": {
+            "Delta": 1,
+            "Gamma": 9.1268e-05,
+            "Vega": 5.4661,
+        },
+        "Option A": {
+            "Delta": 1,
+            "Gamma": 9.1268e-05,
+            "Vega": 5.4661,
+        },
+        "Option B": {
+            "Delta": 1,
+            "Gamma": 9.1268e-05,
+            "Vega": 5.4661,
+        },
+    },
+    sign: int = 1,
+):
     """Determine the hedge position and the weights within each option and
     underlying asset to hold a neutral portfolio
 
@@ -119,12 +140,18 @@ def calc_hedge(portfolio_option_amount, side, greeks, sign):
     return weights[0][0], weights[1][0], neutral[0][0], singular
 
 
-def add_hedge_option(price, implied_volatility, strike, days, side):
+def add_hedge_option(
+    price: float = 100,
+    implied_volatility: float = 20,
+    strike: float = 120,
+    days: float = 30,
+    sign: int = 1,
+) -> tuple:
     """Determine the delta, gamma and vega value of the portfolio and/or options.
 
     Parameters
     ----------
-    price: int
+    price: float
         The price.
     implied_volatility: float
         The implied volatility.
@@ -142,7 +169,7 @@ def add_hedge_option(price, implied_volatility, strike, days, side):
     portfolio: float
     """
     # Determine delta position given the option
-    delta = calc_delta(price, implied_volatility, strike, days, 0, side)
+    delta = calc_delta(price, implied_volatility, strike, days, 0, sign)
 
     # Determine gamma position given the option
     gamma = calc_gamma(price, implied_volatility, strike, days, 0)
@@ -154,12 +181,12 @@ def add_hedge_option(price, implied_volatility, strike, days, side):
 
 
 def calc_delta(
-    asset_price,
-    asset_volatility,
-    strike_price,
-    time_to_expiration,
-    risk_free_rate,
-    side,
+    asset_price: float = 100,
+    asset_volatility: float = 20,
+    strike_price: float = 120,
+    time_to_expiration: float = 30,
+    risk_free_rate: float = 0,
+    sign: int = 1,
 ):
     """The first-order partial-derivative with respect to the underlying asset of the Black-Scholes
     equation is known as delta. Delta refers to how the option value changes when there is a change in
@@ -195,14 +222,18 @@ def calc_delta(
     x1 = x1 / (asset_volatility * (time_to_expiration**0.5))
     delta = norm.cdf(x1)
 
-    if side == 1:
+    if sign == 1:
         return delta
 
     return delta - 1
 
 
 def calc_gamma(
-    asset_price, asset_volatility, strike_price, time_to_expiration, risk_free_rate
+    asset_price: float = 100,
+    asset_volatility: float = 20,
+    strike_price: float = 120,
+    time_to_expiration: float = 30,
+    risk_free_rate: float = 0,
 ):
     """The second-order partial-derivative with respect to the underlying asset of the Black-Scholes equation
     is known as gamma. Gamma refers to how the option’s delta changes when there is a change in the underlying
@@ -223,8 +254,6 @@ def calc_gamma(
         The amount of days until expiration. Use annual notation thus a month would be 30 / 360.
     risk_free_rate: float
         The risk free rate.
-    sign: int
-        Whether you have a long (1) or short (-1) position
 
     Returns
     -------
@@ -244,7 +273,11 @@ def calc_gamma(
 
 
 def calc_vega(
-    asset_price, asset_volatility, strike_price, time_to_expiration, risk_free_rate
+    asset_price: float = 100,
+    asset_volatility: float = 20,
+    strike_price: float = 120,
+    time_to_expiration: float = 30,
+    risk_free_rate: float = 0,
 ):
     """The first-order partial-derivative with respect to the underlying asset volatility of
     the Black-Scholes equation is known as vega. Vega refers to how the option value
@@ -264,8 +297,6 @@ def calc_vega(
         The amount of days until expiration. Use annual notation thus a month would be 30 / 360.
     risk_free_rate: float
         The risk free rate.
-    sign: int
-        Whether you have a long (1) or short (-1) position
 
     Returns
     -------

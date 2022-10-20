@@ -1,5 +1,5 @@
 ```
-usage: arkord [-l LIMIT] [-s {date,volume,open,high,close,low,total,weight,shares} [{date,volume,open,high,close,low,total,weight,shares} ...]] [-a] [-b] [-c] [-f {ARKK,ARKF,ARKW,ARKQ,ARKG,ARKX,}] [-h] [--export {csv,json,xlsx}]
+usage: arkord [-l LIMIT] [-s {date,volume,open,high,close,low,total,weight,shares} [{date,volume,open,high,close,low,total,weight,shares} ...]] [-a] [-b] [-c] [--fund {ARKK,ARKF,ARKW,ARKQ,ARKG,ARKX,}] [-h] [--export {csv,json,xlsx}]
 ```
 
 Orders by ARK Investment Management LLC - https://ark-funds.com/. [Source: https://cathiesark.com]
@@ -13,7 +13,7 @@ optional arguments:
   -a, --ascend          Flag to sort in ascending order (default: False)
   -b, --buy_only        Flag to look at buys only (default: False)
   -c, --sell_only       Flag to look at sells only (default: False)
-  -f {ARKK,ARKF,ARKW,ARKQ,ARKG,ARKX,}, --fund {ARKK,ARKF,ARKW,ARKQ,ARKG,ARKX,}
+  --fund {ARKK,ARKF,ARKW,ARKQ,ARKG,ARKX,}
                         Filter by fund (default: )
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx}
@@ -49,7 +49,7 @@ Example:
 │ 2022-02-15 │ MKFG   │ Buy       │ 1057800 │ 4.55  │ 4.67  │ 4.73  │ 4.54  │ 22131.13   │ ARKX │ 0.0057 │ 4739   │
 └────────────┴────────┴───────────┴─────────┴───────┴───────┴───────┴───────┴────────────┴──────┴────────┴────────┘
 
-2022 Feb 16, 03:50 (✨) /stocks/disc/ $ arkord -b -f ARKK
+2022 Feb 16, 03:50 (✨) /stocks/disc/ $ arkord -b --fund ARKK
 
                                          Orders by ARK Investment Management LLC
 ┏━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━┳━━━━━━━━┳━━━━━━━━━┓

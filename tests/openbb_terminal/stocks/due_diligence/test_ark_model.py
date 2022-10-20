@@ -23,7 +23,7 @@ def vcr_config():
 @pytest.mark.default_cassette("test_get_ark_trades_by_ticker_TSLA")
 @pytest.mark.vcr
 def test_get_ark_trades_by_ticker(recorder):
-    result_df = ark_model.get_ark_trades_by_ticker(ticker="TSLA")
+    result_df = ark_model.get_ark_trades_by_ticker(symbol="TSLA")
 
     recorder.capture(result_df)
 
@@ -31,7 +31,7 @@ def test_get_ark_trades_by_ticker(recorder):
 @pytest.mark.default_cassette("test_get_ark_trades_by_ticker_INVALID_TICKER")
 @pytest.mark.vcr
 def test_get_ark_trades_by_ticker_invalid_ticker():
-    result_df = ark_model.get_ark_trades_by_ticker(ticker="INVALID_TICKER")
+    result_df = ark_model.get_ark_trades_by_ticker(symbol="INVALID_TICKER")
     assert result_df.empty
 
 
@@ -48,7 +48,7 @@ def test_get_ark_trades_by_ticker_invalid_json(mocker):
             }
         ),
     )
-    result_df = ark_model.get_ark_trades_by_ticker(ticker="TSLA")
+    result_df = ark_model.get_ark_trades_by_ticker(symbol="TSLA")
 
     assert result_df.empty
 
@@ -61,7 +61,7 @@ def test_get_ark_trades_by_ticker_invalid_status(mocker):
         target="requests.get",
         new=mocker.Mock(return_value=mock_response),
     )
-    result_df = ark_model.get_ark_trades_by_ticker(ticker="TSLA")
+    result_df = ark_model.get_ark_trades_by_ticker(symbol="TSLA")
 
     assert result_df.empty
 
@@ -74,6 +74,6 @@ def test_get_ark_trades_by_ticker_json_normalize(mocker):
         target="pandas.json_normalize",
         new=mocker.Mock(return_value=mock_df),
     )
-    result_df = ark_model.get_ark_trades_by_ticker(ticker="TSLA")
+    result_df = ark_model.get_ark_trades_by_ticker(symbol="TSLA")
 
     assert result_df.empty

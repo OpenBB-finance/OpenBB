@@ -1,0 +1,43 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+    method: GET
+    uri: https://cloud.iexapis.com/v1/stock/AAPL/quote?token=1234
+  response:
+    body:
+      string: The API key provided is not valid.
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Request-Source
+      Access-Control-Allow-Methods:
+      - GET, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Date:
+      - Tue, 04 Oct 2022 10:22:23 GMT
+      Server:
+      - nginx
+      Set-Cookie:
+      - ctoken=23f725d8baeb433aa0abdd164cd7a4dc; Max-Age=43200; Path=/; Expires=Tue,
+        04 Oct 2022 22:22:23 GMT
+      Strict-Transport-Security:
+      - max-age=15768000
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 403
+      message: The API key provided is not valid.
+version: 1

@@ -125,11 +125,11 @@ d_cols_to_sort = {
 
 @log_start_end(log=logger)
 def screener(
-    loaded_preset: str,
-    data_type: str,
+    loaded_preset: str = "top_gainers",
+    data_type: str = "overview",
     limit: int = 10,
     ascend: bool = False,
-    sort: str = "",
+    sortby: str = "",
     export: str = "",
 ) -> List[str]:
     """Screener one of the following: overview, valuation, financial, ownership, performance, technical.
@@ -144,7 +144,7 @@ def screener(
         Limit of stocks to display
     ascend : bool
         Order of table to ascend or descend
-    sort: str
+    sortby: str
         Column to sort table by
     export : str
         Export dataframe data to csv,json,xlsx file
@@ -168,23 +168,23 @@ def screener(
 
         df_screen = df_screen.dropna(axis="columns", how="all")
 
-        if sort:
-            if sort in d_cols_to_sort[data_type]:
+        if sortby:
+            if sortby in d_cols_to_sort[data_type]:
                 df_screen = df_screen.sort_values(
-                    by=[sort],
+                    by=[sortby],
                     ascending=ascend,
                     na_position="last",
                 )
             else:
                 similar_cmd = difflib.get_close_matches(
-                    sort,
+                    sortby,
                     d_cols_to_sort[data_type],
                     n=1,
                     cutoff=0.7,
                 )
                 if similar_cmd:
                     console.print(
-                        f"Replacing '{' '.join(sort)}' by '{similar_cmd[0]}' so table can be sorted."
+                        f"Replacing '{' '.join(sortby)}' by '{similar_cmd[0]}' so table can be sorted."
                     )
                     df_screen = df_screen.sort_values(
                         by=[similar_cmd[0]],

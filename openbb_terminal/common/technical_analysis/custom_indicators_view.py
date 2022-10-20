@@ -26,11 +26,11 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def fibonacci_retracement(
-    ohlc: pd.DataFrame,
-    period: int = 120,
+    data: pd.DataFrame,
+    limit: int = 120,
     start_date: Optional[Union[str, None]] = None,
     end_date: Optional[Union[str, None]] = None,
-    s_ticker: str = "",
+    symbol: str = "",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -38,16 +38,16 @@ def fibonacci_retracement(
 
     Parameters
     ----------
-    ohlc: pd.DataFrame
-        Stock data
-    period: int
+    data: pd.DataFrame
+        OHLC data
+    limit: int
         Days to lookback
     start_date: Optional[str, None]
         User picked date for starting retracement
     end_date: Optional[str, None]
         User picked date for ending retracement
-    s_ticker:str
-        Stock ticker
+    symbol: str
+        Ticker symbol
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
@@ -59,11 +59,11 @@ def fibonacci_retracement(
         max_date,
         min_pr,
         max_pr,
-    ) = custom_indicators_model.calculate_fib_levels(ohlc, period, start_date, end_date)
+    ) = custom_indicators_model.calculate_fib_levels(data, limit, start_date, end_date)
 
     levels = df_fib.Price
 
-    plot_data = reindex_dates(ohlc)
+    plot_data = reindex_dates(data)
 
     # This plot has 2 axes
     if external_axes is None:
@@ -79,7 +79,7 @@ def fibonacci_retracement(
 
     ax1.plot(plot_data["Adj Close"])
 
-    if is_intraday(ohlc):
+    if is_intraday(data):
         date_format = "%b %d %H:%M"
     else:
         date_format = "%Y-%m-%d"
@@ -101,7 +101,7 @@ def fibonacci_retracement(
         ax1.fill_between(plot_data.index, levels[i], levels[i + 1], alpha=0.15)
 
     ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
-    ax1.set_title(f"Fibonacci Support for {s_ticker.upper()}")
+    ax1.set_title(f"Fibonacci Support for {symbol.upper()}")
     ax1.set_yticks(levels)
     ax1.set_yticklabels([0, 0.235, 0.382, 0.5, 0.618, 0.65, 1])
     theme.style_primary_axis(

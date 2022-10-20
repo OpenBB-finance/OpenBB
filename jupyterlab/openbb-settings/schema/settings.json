@@ -116,24 +116,6 @@
                     "description": "Path to the terminal.py",
                     "default": "terminal.py",
                     "value": ""
-                },
-                "PATH_TO_SELENIUM_DRIVER":
-                {
-                    "type": "string",
-                    "form": "text",
-                    "title": "Path to webdriver",
-                    "description": "Path to the selenium driver",
-                    "default": "",
-                    "value": ""
-                },
-                "WEBDRIVER_TO_USE":
-                {
-                    "type": "string",
-                    "form": "text",
-                    "title": "Webdriver",
-                    "description": "Selenium browser drivers can be found at https://selenium-python.readthedocs.io/installation.html",
-                    "default": "chrome",
-                    "value": ""
                 }
             }
         },
@@ -386,7 +368,7 @@
                     "default": "REPLACE_ME",
                     "value": ""
                 },
-                "OPENBB_API_IEX_KEY":
+                "OPENBB_API_IEX_TOKEN":
                 {
                     "type": "string",
                     "form": "password",

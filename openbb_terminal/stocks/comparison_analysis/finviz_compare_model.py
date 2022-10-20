@@ -23,13 +23,13 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def get_similar_companies(
-    ticker: str, compare_list: List[str]
+    symbol: str, compare_list: List[str] = None
 ) -> Tuple[List[str], str]:
     """Get similar companies from Finviz
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Ticker to find comparisons for
     compare_list : List[str]
         List of fields to compare, ["Sector", "Industry", "Country"]
@@ -38,28 +38,29 @@ def get_similar_companies(
     -------
     List[str]
         List of similar companies
-    str
-        String containing data source
     """
     try:
+        compare_list = ["Sector", "Industry"] if compare_list is None else compare_list
         similar = (
-            Overview().compare(ticker, compare_list, verbose=0)["Ticker"].to_list()
+            Overview().compare(symbol, compare_list, verbose=0)["Ticker"].to_list()
         )
-        user = "Finviz"
     except Exception as e:
         logger.exception(str(e))
         console.print(e)
         similar = [""]
-        user = "Error"
-    return similar, user
+    return similar
 
 
 @log_start_end(log=logger)
-def get_comparison_data(data_type: str, similar: List[str]):
+def get_comparison_data(similar: List[str], data_type: str = "overview"):
     """Screener Overview
 
     Parameters
     ----------
+    similar:
+        List of similar companies.
+        Comparable companies can be accessed through
+        finnhub_peers(), finviz_peers(), polygon_peers().
     data_type : str
         Data type between: overview, valuation, financial, ownership, performance, technical
 

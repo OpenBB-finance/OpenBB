@@ -1,0 +1,264 @@
+interactions:
+- request:
+    body: '{"sql": "\n    select\n    date_trunc(''day'', block_timestamp) as timeframe,\n    sum(case
+      when symbol = ''U'' then amount_usd end) as U,sum(case when symbol = ''S'' then
+      amount_usd end) as S,sum(case when symbol = ''D'' then amount_usd end) as D,sum(case
+      when symbol = ''C'' then amount_usd end) as C\n    from  ethereum.udm_events\n    where\n    block_timestamp
+      >= ''2020-06-01''\n    -- and amount0_usd > ''0''\n    group by 1\n    order
+      by timeframe desc\n    ", "ttlMinutes": 15}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '472'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.28.1
+      x-api-key:
+      - f5857482-1185-4d7c-98f0-e537d2335130
+    method: POST
+    uri: https://node-api.flipsidecrypto.com/queries
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAE/6tWKsnPTs1TslIqLE0tqgwqzdNNNbBMSUm2MDQxSrZISzNPMU5LTjUyMDY1N042
+        STVPNVHSUUpOTM5ITVGySkvMKU6tBQAhooQXRAAAAA==
+    headers:
+      connection:
+      - keep-alive
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Mon, 10 Oct 2022 10:14:44 GMT
+      etag:
+      - W/"44-q5TDVqI2cmbhDDLiGzKLvyQ4VxQ"
+      fly-request-id:
+      - 01GF0P7HDTDF3AYV3HM4R978WB-cdg
+      keep-alive:
+      - timeout=5
+      ratelimit-limit:
+      - '10000'
+      ratelimit-remaining:
+      - '9992'
+      ratelimit-reset:
+      - '84813'
+      server:
+      - Fly/54d1d920f (2022-09-30)
+      transfer-encoding:
+      - chunked
+      vary:
+      - Origin
+      via:
+      - 1.1 fly.io
+      x-powered-by:
+      - Express
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.28.1
+      x-api-key:
+      - f5857482-1185-4d7c-98f0-e537d2335130
+    method: GET
+    uri: https://node-api.flipsidecrypto.com/queries/queryRun-e09ddc8142c8ff7d3fce203573c4e7e4?pageNumber=1&pageSize=100000
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAE/6tWKi5JLCktVrJSKirNy8vMS1eqBQAqTkzLFAAAAA==
+    headers:
+      connection:
+      - keep-alive
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Mon, 10 Oct 2022 10:14:45 GMT
+      etag:
+      - W/"14-gfn4m/4htgMx1Nnl9+2EBDZ+o8g"
+      fly-request-id:
+      - 01GF0P7HPPFFA2SW6Q8PE4P0CQ-ams
+      keep-alive:
+      - timeout=5
+      server:
+      - Fly/54d1d920f (2022-09-30)
+      transfer-encoding:
+      - chunked
+      vary:
+      - Origin
+      via:
+      - 1.1 fly.io
+      x-powered-by:
+      - Express
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      User-Agent:
+      - python-requests/2.28.1
+      x-api-key:
+      - f5857482-1185-4d7c-98f0-e537d2335130
+    method: GET
+    uri: https://node-api.flipsidecrypto.com/queries/queryRun-e09ddc8142c8ff7d3fce203573c4e7e4?pageNumber=1&pageSize=100000
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAE/6pWKkotLs0pKVayio5WMjIwMtI1sNA1sFAwMLACIz0DAwMlnbzSnBw0IlYHSb05
+        ierNSFRvSqJ6ExLVG5Oo3ohE9YakqDfXNSZVvQFp5htZkqiepPRgrmtEUnow1zUiKT2Y6xqRlB7M
+        dY1ISg/mukYkpQdzXSOS0oO5rhGJ8WtEYvwakhi/hiTGryER8QsAAAD//0KUD+a6hiTGryGJ8WtI
+        Yvwakhi/hiTGryGJ8WtIYvwakBi/pJXn5roGJMavAYnxa0Bi/BqQGL8GJMavAYnxa0BS/JrpGpMU
+        v2a6pJXPZrpGJOVfMxLLZzMSy2czEstnMxLLZzMSy2czEstnMxLLZzNd0spnM13SymczXdLKZzNd
+        0spnMxLLZzNd0spnM13SymczXdLKZzNd0spnM13SymczXdLKZzNd0spnMxLb22Ykls9muqSVz2a6
+        pJVvpiS2V01JLA9NSSwPTUksD01JLA9NSSwPTUksD01JLA9NSSwPTUksD01JLA9NSSwPTUksD01J
+        LA9NSSwPTUksD01JLA9NSSwPTUksD01JLA9NSSwPTUksD01JLA9NSSwPTUksD01JLA9NdUlrr5rq
+        ktZeNdUlrb1qqktae9WUxPLchMTy2YTE8tmExPLZhMTy2YTE8tmExPLZhMTy2YTE8tmExPLZhMTy
+        2YTE8tmExPLZhMTy2YTE8tmExPLZhMTy2YTE8tmExPLZhMTy2YTE8tmExPLZhMTy2YTE8tmExPLZ
+        hMTy2YTE8tmExPLZhMTy2YTE8tmExPLZmMT2tjGJ5bkxieW5MYnluTGJ5bkxieW5MYnluTGJ5bkx
+        ieW5MYnluTGJ5bkxieW5MYnluTGJ5bkxieW5MYnluTGJ5bkxieW5MYnluTGJ5bkxieW5MYnluTGJ
+        5bkxieW5MYnluTGJ5bkxieW5MYnluTGJ5bkxieW5MYnluRGJ5acRieWnEYnlpxGJ5acRieWnEYnl
+        pxGJ5acRieWnEYnlpxGJ5acRieWnEYnlpxGJ5acRieWnEYnlpxGJ5acRieWnEYnlpxGJ5acRieUn
+        aMkEKfPpRiSWn0Yklp9GJJafRiSWn0Yklp9GJJafRiSWn4YktocNSWwPG5LYHjYksTw3JLE8NySx
+        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
+    headers:
+      connection:
+      - keep-alive
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Mon, 10 Oct 2022 10:14:55 GMT
+      etag:
+      - W/"9af7-WUxr4dUWiUQwMLKR+X8sug9PBVE"
+      fly-request-id:
+      - 01GF0P7VNPKXV4SB42QKE3PC7K-ams
+      keep-alive:
+      - timeout=5
+      server:
+      - Fly/54d1d920f (2022-09-30)
+      transfer-encoding:
+      - chunked
+      vary:
+      - Origin
+      via:
+      - 1.1 fly.io
+      x-powered-by:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

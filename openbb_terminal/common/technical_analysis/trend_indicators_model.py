@@ -16,7 +16,7 @@ def adx(
     high_values: pd.Series,
     low_values: pd.Series,
     close_values: pd.Series,
-    length: int = 14,
+    window: int = 14,
     scalar: int = 100,
     drift: int = 1,
 ):
@@ -30,7 +30,7 @@ def adx(
         Low prices
     close_values: pd.Series
         close prices
-    length: int
+    window: int
         Length of window
     scalar: int
         Scalar variable
@@ -47,7 +47,7 @@ def adx(
             high=high_values,
             low=low_values,
             close=close_values,
-            length=length,
+            length=window,
             scalar=scalar,
             drift=drift,
         ).dropna()
@@ -56,7 +56,7 @@ def adx(
 
 @log_start_end(log=logger)
 def aroon(
-    high_values: pd.Series, low_values: pd.Series, length: int = 25, scalar: int = 100
+    high_values: pd.Series, low_values: pd.Series, window: int = 25, scalar: int = 100
 ) -> pd.DataFrame:
     """Aroon technical indicator
 
@@ -66,7 +66,7 @@ def aroon(
         High prices
     low_values: pd.Series
         Low prices
-    length : int
+    window : int
         Length of window
     scalar : int
         Scalar variable
@@ -81,7 +81,7 @@ def aroon(
         ta.aroon(
             high=high_values,
             low=low_values,
-            length=length,
+            length=window,
             scalar=scalar,
         ).dropna()
     )

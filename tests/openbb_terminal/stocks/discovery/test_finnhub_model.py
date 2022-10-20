@@ -21,8 +21,8 @@ def vcr_config():
 @pytest.mark.vcr
 def test_get_ipo_calendar(recorder):
     ipo_df = finnhub_model.get_ipo_calendar(
-        from_date="2021-12-01",
-        to_date="2021-12-02",
+        start_date="2021-12-01",
+        end_date="2021-12-02",
     )
     recorder.capture(ipo_df)
 
@@ -39,7 +39,7 @@ def test_get_ipo_calendar_400(mocker):
 
     mocker.patch(target="requests.get", new=mocker.Mock(return_value=mock_response))
     ipo_df = finnhub_model.get_ipo_calendar(
-        from_date="2021-12-01",
-        to_date="2021-12-02",
+        start_date="2021-12-01",
+        end_date="2021-12-02",
     )
     assert ipo_df.empty

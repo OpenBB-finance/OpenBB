@@ -11,18 +11,16 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def technical_summary_report(ticker: str):
+def technical_summary_report(symbol: str):
     """Print technical summary report provided by FinBrain's API
 
     Parameters
     ----------
-    other_args : List[str]
-        Command line arguments to be processed with argparse
-    ticker : str
-        Ticker to get the technical summary
+    symbol: str
+        Ticker symbol to get the technical summary
     """
 
-    report = finbrain_model.get_technical_summary_report(ticker)
+    report = finbrain_model.get_technical_summary_report(symbol)
     if report:
         console.print(report.replace(". ", ".\n"))
     console.print("")

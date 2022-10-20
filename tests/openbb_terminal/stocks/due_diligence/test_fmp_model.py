@@ -18,6 +18,6 @@ def vcr_config():
 
 @pytest.mark.vcr
 def test_get_rating(recorder):
-    result_df = fmp_model.get_rating(ticker="TSLA")
+    result_df = fmp_model.get_rating(symbol="TSLA")
 
     recorder.capture(result_df)

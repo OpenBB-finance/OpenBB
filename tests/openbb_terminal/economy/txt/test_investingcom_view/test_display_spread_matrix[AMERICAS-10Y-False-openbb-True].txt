@@ -1,0 +1,9 @@
+                                Yield 10Y                     Brazil                      Canada                      Chile                    Colombia                     Mexico                       Peru              United States
+Brazil         [#00ACFF]11.813%[/#00ACFF]        [#00ACFF][/#00ACFF]   [#00ACFF]+836.2[/#00ACFF]  [#00ACFF]+489.3[/#00ACFF]   [#e4003a]-166.7[/#e4003a]  [#00ACFF]+167.6[/#00ACFF]  [#00ACFF]+312.5[/#00ACFF]  [#00ACFF]+791.1[/#00ACFF]
+Canada          [#00ACFF]3.451%[/#00ACFF]  [#e4003a]-836.2[/#e4003a]         [#00ACFF][/#00ACFF]  [#e4003a]-346.9[/#e4003a]  [#e4003a]-1002.9[/#e4003a]  [#e4003a]-668.6[/#e4003a]  [#e4003a]-523.7[/#e4003a]   [#e4003a]-45.1[/#e4003a]
+Chile           [#00ACFF]6.920%[/#00ACFF]  [#e4003a]-489.3[/#e4003a]   [#00ACFF]+346.9[/#00ACFF]        [#00ACFF][/#00ACFF]   [#e4003a]-656.0[/#e4003a]  [#e4003a]-321.7[/#e4003a]  [#e4003a]-176.8[/#e4003a]  [#00ACFF]+301.8[/#00ACFF]
+Colombia       [#00ACFF]13.480%[/#00ACFF]  [#00ACFF]+166.7[/#00ACFF]  [#00ACFF]+1002.9[/#00ACFF]  [#00ACFF]+656.0[/#00ACFF]         [#00ACFF][/#00ACFF]  [#00ACFF]+334.3[/#00ACFF]  [#00ACFF]+479.2[/#00ACFF]  [#00ACFF]+957.8[/#00ACFF]
+Mexico         [#00ACFF]10.137%[/#00ACFF]  [#e4003a]-167.6[/#e4003a]   [#00ACFF]+668.6[/#00ACFF]  [#00ACFF]+321.7[/#00ACFF]   [#e4003a]-334.3[/#e4003a]        [#00ACFF][/#00ACFF]  [#00ACFF]+144.9[/#00ACFF]  [#00ACFF]+623.5[/#00ACFF]
+Peru            [#00ACFF]8.688%[/#00ACFF]  [#e4003a]-312.5[/#e4003a]   [#00ACFF]+523.7[/#00ACFF]  [#00ACFF]+176.8[/#00ACFF]   [#e4003a]-479.2[/#e4003a]  [#e4003a]-144.9[/#e4003a]        [#00ACFF][/#00ACFF]  [#00ACFF]+478.6[/#00ACFF]
+United States   [#00ACFF]3.902%[/#00ACFF]  [#e4003a]-791.1[/#e4003a]    [#00ACFF]+45.1[/#00ACFF]  [#e4003a]-301.8[/#e4003a]   [#e4003a]-957.8[/#e4003a]  [#e4003a]-623.5[/#e4003a]  [#e4003a]-478.6[/#e4003a]        [#00ACFF][/#00ACFF]
+

@@ -4,8 +4,8 @@ keywords: "econometrics, statistics, regression, panel data, time series, resear
 excerpt: "The Introduction to Econometrics explains how to use the menu"
 geekdocCollapseSection: true
 ---
-The Econometrics menu's purpose is to provide the user the ability to perform statistical research on custom datasets. 
-The menu allows the user to load in his/her own dataset(s), modify the data by (for example) adding columns or setting 
+The Econometrics menu's purpose is to provide the user the ability to perform statistical research on custom datasets.
+The menu allows the user to load in his/her own dataset(s), modify the data by (for example) adding columns or setting
 indices, apply statistical tests (e.g. <a href="https://en.wikipedia.org/wiki/Breusch%E2%80%93Godfrey_test" target="_blank">Breusch-Godfrey autocorrelation tests</a>)
 as well as OLS regressions and Panel regressions (e.g. <a href="https://en.wikipedia.org/wiki/Random_effects_model" target="_blank">Random Effects</a> and <a href="https://en.wikipedia.org/wiki/Fixed_effects_model" target="_blank">Fixed Effects</a>)
 
@@ -83,7 +83,7 @@ found by using the <a href="https://openbb-finance.github.io/OpenBBTerminal/term
 │ sunspots           │ Yearly sunspots data 1700-2008                            │
 ├────────────────────┼───────────────────────────────────────────────────────────┤
 │ wage_panel         │ Veila and M. Verbeek (1998): Whose Wages Do Unions Raise? │
-└────────────────────┴───────────────────────────────────────────────────────────┘    
+└────────────────────┴───────────────────────────────────────────────────────────┘
 ````
 
 As there is a clear difference between time series data, which is 1-dimensional data (e.g. a single company over time)
@@ -496,7 +496,7 @@ For the panel regressions, it can be beneficial to see time effects from `year`.
 This can be done with the following command:
 
 ```
-2022 Jun 20, 05:33 (🦋) /econometrics/ $ type wp.year -f category
+2022 Jun 20, 05:33 (🦋) /econometrics/ $ type wp.year --format category
 Update 'wp.year' with type 'category'
 
 2022 Jun 20, 05:40 (🦋) /econometrics/ $ type
@@ -598,7 +598,8 @@ are located where the application is located inside the `routines` folder.
 ![Econometrics Menu Routine Exe OpenBB Terminal](https://user-images.githubusercontent.com/46355364/174588513-5c52ea20-548a-4c2b-a4c1-6054e2d71786.png)
 
 This demo file has the following contents:
-```
+
+```txt
 # Go into the econometrics context
 econometrics
 
@@ -609,7 +610,7 @@ load wage_panel -a wp
 index wp -i nr,year
 
 # Change the type of the year column so it can be included as time effects within the regressions
-type wp.year -f category
+type wp.year --format category
 
 # Perform a Pooled OLS, Random Effects and Fixed Effects estimation
 panel -d wp.lwage -i wp.black,wp.hisp,wp.exper,wp.expersq,wp.married,wp.educ,wp.union,wp.year
@@ -624,7 +625,7 @@ Everything after the `#` _on the same line_ refers to comments and will not be e
 ultimately leads to a comparison of three models and takes less than a few seconds to execute.
 See below for the comparison result, obtained via the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/econometrics/compare/" target="_blank">compare</a> command:
 
-```
+```txt
 022 Jun 20, 06:52 (🦋) /econometrics/ $ compare
                         Model Comparison
 ===============================================================

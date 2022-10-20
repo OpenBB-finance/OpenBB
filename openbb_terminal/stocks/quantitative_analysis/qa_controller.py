@@ -8,7 +8,8 @@ from typing import List
 
 import numpy as np
 import pandas as pd
-from prompt_toolkit.completion import NestedCompleter
+
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common.quantitative_analysis import qa_view, rolling_view
@@ -22,7 +23,8 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
+from openbb_terminal.stocks.quantitative_analysis.beta_view import beta_view
 from openbb_terminal.stocks.quantitative_analysis.factors_view import capm_view
 
 # pylint: disable=C0302
@@ -56,6 +58,7 @@ class QaController(StockBaseController):
         "goodness",
         "unitroot",
         "capm",
+        "beta",
         "var",
         "es",
         "sh",
@@ -64,8 +67,11 @@ class QaController(StockBaseController):
     ]
 
     stock_interval = [1, 5, 15, 30, 60]
-    stock_sources = ["yf", "av", "iex"]
+    stock_sources = ["YahooFinance", "AlphaVantage", "IEXCloud"]
     distributions = ["laplace", "student_t", "logistic", "normal"]
+    FULLER_REG = ["c", "ct", "ctt", "nc"]
+    KPS_REG = ["c", "ct"]
+    VALID_DISTRIBUTIONS = ["laplace", "student_t", "logistic", "normal"]
     PATH = "/stocks/qa/"
 
     def __init__(
@@ -97,10 +103,135 @@ class QaController(StockBaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["pick"] = {c: None for c in list(stock.columns)}
-            choices["load"]["-i"] = {c: None for c in self.stock_interval}
-            choices["load"]["--interval"] = {c: None for c in self.stock_interval}
-            choices["load"]["--source"] = {c: None for c in self.stock_sources}
+
+            zero_to_hundred: dict = {str(c): {} for c in range(0, 100)}
+            zero_to_hundred_detailed: dict = {
+                str(c): {} for c in np.arange(0.0, 100.0, 0.1)
+            }
+            choices["pick"] = {c: {} for c in list(stock.columns)}
+            choices["load"] = {
+                "--ticker": None,
+                "-t": "--ticker",
+                "--start": None,
+                "-s": "--start",
+                "--end": None,
+                "-e": "--end",
+                "--interval": {c: {} for c in ["1", "5", "15", "30", "60"]},
+                "-i": "--interval",
+                "--prepost": {},
+                "-p": "--prepost",
+                "--file": None,
+                "-f": "--file",
+                "--monthly": {},
+                "-m": "--monthly",
+                "--weekly": {},
+                "-w": "--weekly",
+                "--iexrange": {c: {} for c in ["ytd", "1y", "2y", "5y", "6m"]},
+                "-r": "--iexrange",
+                "--source": {
+                    c: {} for c in get_ordered_list_sources(f"{self.PATH}load")
+                },
+            }
+            choices["unitroot"] = {
+                "--fuller_reg": {c: {} for c in self.FULLER_REG},
+                "-r": "--fuller_reg",
+                "--kps_reg": {c: {} for c in self.KPS_REG},
+                "-k": "--kps_reg",
+            }
+            choices["line"] = {
+                "--log": {},
+                "--draw": {},
+                "-d": "--draw",
+                "--ml": None,
+                "--ms": None,
+            }
+            choices["hist"] = {
+                "--bins": {str(c): {} for c in range(10, 100)},
+                "-b": "--bins",
+            }
+            choices["bw"] = {
+                "--yearly": {},
+                "-y": {},
+            }
+            choices["acf"] = {
+                "--lags": {str(c): {} for c in range(5, 100)},
+                "-l": "--lags",
+            }
+            choices["rolling"] = {
+                "--window": {str(c): {} for c in range(5, 100)},
+                "-w": "--window",
+            }
+            choices["spread"] = {
+                "--window": {str(c): {} for c in range(5, 100)},
+                "-w": "--window",
+            }
+            choices["quantile"] = {
+                "--window": {str(c): {} for c in range(5, 100)},
+                "-w": "--window",
+                "--quantile": {str(c): {} for c in np.arange(0.0, 1.0, 0.01)},
+                "-q": "--quantile",
+            }
+            choices["skew"] = {
+                "--window": {str(c): {} for c in range(5, 100)},
+                "-w": "--window",
+            }
+            choices["kurtosis"] = {
+                "--window": {str(c): {} for c in range(5, 100)},
+                "-w": "--window",
+            }
+            choices["raw"] = {
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+            }
+            choices["decompose"] = {
+                "--multiplicative": None,
+                "-m": "--multiplicative",
+            }
+            choices["cusum"] = {
+                "--threshold": None,
+                "-t": "--threshold",
+                "--drift": None,
+                "-d": "--drift",
+            }
+            choices["var"] = {
+                "--mean": {},
+                "-m": "--mean",
+                "--adjusted": {},
+                "-a": "--adjusted",
+                "--student": {},
+                "-s": "--student",
+                "--percentile": zero_to_hundred_detailed,
+                "-p": "--percentile",
+                "--datarange": zero_to_hundred,
+                "-d": "--datarange",
+            }
+            choices["es"] = {
+                "--mean": {},
+                "-m": "--mean",
+                "--dist": {c: {} for c in self.VALID_DISTRIBUTIONS},
+                "-d": "--dist",
+                "--percentile": zero_to_hundred_detailed,
+                "-p": "--percentile",
+            }
+            choices["om"] = {
+                "--start": zero_to_hundred_detailed,
+                "-s": "--start",
+                "--end": zero_to_hundred_detailed,
+                "-e": "--end",
+            }
+            choices["so"] = {
+                "--target": None,
+                "-t": "--target",
+                "--adjusted": {},
+                "-a": "--adjusted",
+                "--window": {str(c): {} for c in range(1, 960)},
+                "-w": "--window",
+            }
+
+            choices["support"] = self.SUPPORT_CHOICES
+            choices["about"] = self.ABOUT_CHOICES
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -148,6 +279,7 @@ class QaController(StockBaseController):
         mt.add_cmd("decompose")
         mt.add_cmd("cusum")
         mt.add_cmd("capm")
+        mt.add_cmd("beta")
         console.print(text=mt.menu_text, menu="Stocks - Quantitative Analysis")
 
     def custom_reset(self):
@@ -217,10 +349,10 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             qa_view.display_raw(
-                self.stock[self.target],
-                num=ns_parser.limit,
-                sort="",
-                des=ns_parser.descend,
+                data=self.stock[self.target],
+                limit=ns_parser.limit,
+                sortby="",
+                descend=ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -239,7 +371,7 @@ class QaController(StockBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            qa_view.display_summary(df=self.stock, export=ns_parser.export)
+            qa_view.display_summary(data=self.stock, export=ns_parser.export)
 
     @log_start_end(log=logger)
     def call_line(self, other_args: List[str]):
@@ -310,8 +442,8 @@ class QaController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_hist(
-                name=self.ticker,
-                df=self.stock,
+                symbol=self.ticker,
+                data=self.stock,
                 target=self.target,
                 bins=ns_parser.n_bins,
             )
@@ -332,8 +464,8 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             qa_view.display_cdf(
-                name=self.ticker,
-                df=self.stock,
+                data=self.stock,
+                symbol=self.ticker,
                 target=self.target,
                 export=ns_parser.export,
             )
@@ -360,8 +492,8 @@ class QaController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_bw(
-                name=self.ticker,
-                df=self.stock,
+                data=self.stock,
+                symbol=self.ticker,
                 target=self.target,
                 yearly=ns_parser.year,
             )
@@ -392,8 +524,8 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             qa_view.display_seasonal(
-                name=self.ticker,
-                df=self.stock,
+                symbol=self.ticker,
+                data=self.stock,
                 target=self.target,
                 multiplicative=ns_parser.multiplicative,
                 export=ns_parser.export,
@@ -437,7 +569,7 @@ class QaController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_cusum(
-                df=self.stock,
+                data=self.stock,
                 target=self.target,
                 threshold=ns_parser.threshold,
                 drift=ns_parser.drift,
@@ -470,8 +602,8 @@ class QaController(StockBaseController):
                 )
 
             qa_view.display_acf(
-                name=self.ticker,
-                df=self.stock,
+                data=self.stock,
+                symbol=self.ticker,
                 target=self.target,
                 lags=ns_parser.lags,
             )
@@ -501,8 +633,8 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             rolling_view.display_mean_std(
-                name=self.ticker,
-                df=self.stock,
+                symbol=self.ticker,
+                data=self.stock,
                 target=self.target,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
@@ -532,8 +664,8 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             rolling_view.display_spread(
-                name=self.ticker,
-                df=self.stock,
+                data=self.stock,
+                symbol=self.ticker,
                 target=self.target,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
@@ -580,8 +712,8 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             rolling_view.display_quantile(
-                name=self.ticker,
-                df=self.stock,
+                data=self.stock,
+                symbol=self.ticker,
                 target=self.target,
                 window=ns_parser.n_window,
                 quantile=ns_parser.f_quantile,
@@ -618,8 +750,8 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             rolling_view.display_skew(
-                name=self.ticker,
-                df=self.stock,
+                symbol=self.ticker,
+                data=self.stock,
                 target=self.target,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
@@ -655,8 +787,8 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             rolling_view.display_kurtosis(
-                name=self.ticker,
-                df=self.stock,
+                symbol=self.ticker,
+                data=self.stock,
                 target=self.target,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
@@ -678,7 +810,7 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             qa_view.display_normality(
-                df=self.stock, target=self.target, export=ns_parser.export
+                data=self.stock, target=self.target, export=ns_parser.export
             )
 
     @log_start_end(log=logger)
@@ -694,7 +826,9 @@ class QaController(StockBaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            qa_view.display_qqplot(name=self.ticker, df=self.stock, target=self.target)
+            qa_view.display_qqplot(
+                symbol=self.ticker, data=self.stock, target=self.target
+            )
 
     @log_start_end(log=logger)
     def call_unitroot(self, other_args: List[str]):
@@ -711,7 +845,7 @@ class QaController(StockBaseController):
             "-r",
             "--fuller_reg",
             help="Type of regression.  Can be ‘c’,’ct’,’ctt’,’nc’ 'c' - Constant and t - trend order",
-            choices=["c", "ct", "ctt", "nc"],
+            choices=self.FULLER_REG,
             default="c",
             type=str,
             dest="fuller_reg",
@@ -720,7 +854,7 @@ class QaController(StockBaseController):
             "-k",
             "--kps_reg",
             help="Type of regression.  Can be ‘c’,’ct'",
-            choices=["c", "ct"],
+            choices=self.KPS_REG,
             type=str,
             dest="kpss_reg",
             default="c",
@@ -730,7 +864,7 @@ class QaController(StockBaseController):
         )
         if ns_parser:
             qa_view.display_unitroot(
-                df=self.stock,
+                data=self.stock,
                 target=self.target,
                 fuller_reg=ns_parser.fuller_reg,
                 kpss_reg=ns_parser.kpss_reg,
@@ -751,6 +885,36 @@ class QaController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             capm_view(self.ticker)
+
+    @log_start_end(log=logger)
+    def call_beta(self, other_args: List[str]):
+        """Call the beta command on loaded ticker"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="beta",
+            description="""
+                Displays a scatter plot demonstrating the beta of two stocks or ETFs.
+            """,
+        )
+        parser.add_argument(
+            "-r",
+            "--ref",
+            action="store",
+            dest="ref",
+            type=str,
+            default="SPY",
+            help="""
+                Reference ticker used for beta calculation.
+            """,
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            beta_view(
+                self.ticker, ns_parser.ref, data=self.stock, export=ns_parser.export
+            )
 
     @log_start_end(log=logger)
     def call_var(self, other_args: List[str]):
@@ -825,7 +989,7 @@ class QaController(StockBaseController):
                     ns_parser.use_mean,
                     ns_parser.adjusted,
                     ns_parser.student_t,
-                    ns_parser.percentile / 100,
+                    ns_parser.percentile,
                     ns_parser.data_range,
                     False,
                 )
@@ -878,7 +1042,7 @@ class QaController(StockBaseController):
                 self.ticker,
                 ns_parser.use_mean,
                 ns_parser.distributions,
-                ns_parser.percentile / 100,
+                ns_parser.percentile,
                 False,
             )
 

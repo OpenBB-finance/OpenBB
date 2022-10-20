@@ -96,14 +96,14 @@ def test_get_fama_raw(recorder):
 
 @pytest.mark.vcr
 def test_get_historical_5(recorder):
-    result_df = dcf_model.get_historical_5(ticker="TSLA")
+    result_df = dcf_model.get_historical_5(symbol="TSLA")
 
     recorder.capture(result_df)
 
 
 @pytest.mark.vcr
 def test_get_fama_coe():
-    coef = dcf_model.get_fama_coe(ticker="TSLA")
+    coef = dcf_model.get_fama_coe(symbol="TSLA")
 
     assert isinstance(coef, np.float64)
 
@@ -111,6 +111,6 @@ def test_get_fama_coe():
 @pytest.mark.vcr
 def test_others_in_sector():
     data = dcf_model.others_in_sector(
-        ticker="PM", sector="Consumer Defensive", industry="Tobacco"
+        symbol="PM", sector="Consumer Defensive", industry="Tobacco"
     )
     assert len(data) > 0

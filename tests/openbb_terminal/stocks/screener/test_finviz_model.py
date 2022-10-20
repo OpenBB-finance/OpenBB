@@ -41,7 +41,7 @@ def test_get_screener_data_no_preset_loaded(mocker, recorder):
     )
 
     result_df = finviz_model.get_screener_data(
-        preset_loaded="oversold",
+        preset_loaded="oversold.ini",
         data_type="overview",
         limit=2,
         ascend=True,

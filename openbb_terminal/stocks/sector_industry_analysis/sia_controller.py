@@ -6,8 +6,10 @@ import difflib
 import logging
 from typing import List
 
+import numpy as np
 import yfinance as yf
-from prompt_toolkit.completion import NestedCompleter
+
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
@@ -18,7 +20,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.comparison_analysis import ca_controller
 from openbb_terminal.stocks.sector_industry_analysis import (
@@ -94,6 +96,7 @@ class SectorIndustryAnalysisController(BaseController):
         "ev",
         "fpe",
     ]
+    satma_choices = ["BS", "bs", "IS", "is", "CF", "cf", ""]
     metric_yf_keys = {
         "roa": ("financialData", "returnOnAssets"),
         "roe": ("financialData", "returnOnEquity"),
@@ -131,9 +134,9 @@ class SectorIndustryAnalysisController(BaseController):
     }
 
     vis_choices = (
-        list(stockanalysis_model.sa_keys["BS"].keys())
-        + list(stockanalysis_model.sa_keys["CF"].keys())
-        + list(stockanalysis_model.sa_keys["IS"].keys())
+        list(stockanalysis_model.SA_KEYS["BS"].keys())
+        + list(stockanalysis_model.SA_KEYS["CF"].keys())
+        + list(stockanalysis_model.SA_KEYS["IS"].keys())
     )
 
     mktcap_choices = [
@@ -169,10 +172,10 @@ class SectorIndustryAnalysisController(BaseController):
         """Constructor"""
         super().__init__(queue)
 
-        self.country = "United States"
-        self.sector = "Financial Services"
-        self.industry = "Financial Data & Stock Exchanges"
-        self.mktcap = "Large"
+        self.country = ""
+        self.sector = ""
+        self.industry = ""
+        self.mktcap = ""
         self.exclude_exchanges = True
         self.period = "Annual"
 
@@ -182,84 +185,83 @@ class SectorIndustryAnalysisController(BaseController):
         self.tickers: List = list()
         self.currency: str = ""
 
-        if ticker:
-            data = yf.utils.get_json(f"https://finance.yahoo.com/quote/{ticker}")
-
-            if "summaryProfile" in data:
-                self.country = data["summaryProfile"]["country"]
-                if self.country not in financedatabase_model.get_countries():
-                    similar_cmd = difflib.get_close_matches(
-                        self.country,
-                        financedatabase_model.get_countries(),
-                        n=1,
-                        cutoff=0.7,
-                    )
-                    if similar_cmd:
-                        self.country = similar_cmd[0]
-                self.sector = data["summaryProfile"]["sector"]
-                if self.sector not in financedatabase_model.get_sectors():
-                    similar_cmd = difflib.get_close_matches(
-                        self.sector,
-                        financedatabase_model.get_sectors(),
-                        n=1,
-                        cutoff=0.7,
-                    )
-                    if similar_cmd:
-                        self.sector = similar_cmd[0]
-                self.industry = data["summaryProfile"]["industry"]
-                if self.industry not in financedatabase_model.get_industries():
-                    similar_cmd = difflib.get_close_matches(
-                        self.industry,
-                        financedatabase_model.get_industries(),
-                        n=1,
-                        cutoff=0.7,
-                    )
-                    if similar_cmd:
-                        self.industry = similar_cmd[0]
-            if "price" in data:
-                mktcap = data["price"]["marketCap"]
-                if mktcap < 50_000_000:
-                    self.mktcap = "Nano"
-                elif mktcap < 300_000_000:
-                    self.mktcap = "Micro"
-                elif mktcap < 2_000_000_000:
-                    self.mktcap = "Small"
-                elif mktcap > 200_000_000_000:
-                    self.mktcap = "Mega"
-                elif mktcap > 10_000_000_000:
-                    self.mktcap = "Large"
-                else:
-                    self.mktcap = "Mid"
-
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["mktcap"] = {c: None for c in self.mktcap_choices}
-            choices["period"] = {c: None for c in self.period_choices}
-            choices["clear"] = {c: None for c in self.clear_choices}
-            choices["metric"] = {c: None for c in self.metric_choices}
+
+            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
+            zero_to_one_detailed: dict = {
+                str(c): {} for c in np.arange(0.0, 1.0, 0.005)
+            }
+            choices["load"] = {
+                "--ticker": None,
+                "-t": "--ticker",
+                "--source": {
+                    c: {} for c in get_ordered_list_sources(f"{self.PATH}load")
+                },
+            }
+            choices["mktcap"] = {c: {} for c in self.mktcap_choices}
+            choices["period"] = {c: {} for c in self.period_choices}
+            choices["clear"] = {c: {} for c in self.clear_choices}
+            standard_cp = {
+                "--max": one_to_hundred,
+                "-M": "--max",
+                "--min": zero_to_one_detailed,
+                "-m": "--min",
+                "--raw": {},
+                "-r": "--raw",
+            }
+            choices["cps"] = standard_cp
+            choices["cpic"] = standard_cp
+            choices["cpis"] = standard_cp
+            choices["cpcs"] = standard_cp
+            choices["cpci"] = standard_cp
+            choices["metric"] = {
+                "--metric": {c: {} for c in self.metric_choices},
+                "-m": "--metric",
+                "--raw": {},
+                "-r": "--raw",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["satma"] = {c: {} for c in self.satma_choices}
+            choices["vis"] = {
+                "--metric": {c: {} for c in self.metric_choices},
+                "-m": "--metric",
+                "--period": one_to_hundred,
+                "-p": "--period",
+                "--currency": None,
+                "-c": "--currency",
+                "--raw": {},
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+
             choices["support"] = self.SUPPORT_CHOICES
             choices["about"] = self.ABOUT_CHOICES
+
             # This menu contains dynamic choices that may change during runtime
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
+
+        self.__load()
 
     def update_runtime_choices(self):
         """Update runtime choices"""
         if session and obbff.USE_PROMPT_TOOLKIT:
             self.choices["industry"] = {
-                i: None
+                i: {}
                 for i in financedatabase_model.get_industries(
                     country=self.country, sector=self.sector
                 )
             }
             self.choices["sector"] = {
-                s: None
+                s: {}
                 for s in financedatabase_model.get_sectors(
                     industry=self.industry, country=self.country
                 )
             }
             self.choices["country"] = {
-                c: None
+                c: {}
                 for c in financedatabase_model.get_countries(
                     industry=self.industry, sector=self.sector
                 )
@@ -277,7 +279,7 @@ class SectorIndustryAnalysisController(BaseController):
         mt.add_cmd("country")
         mt.add_cmd("mktcap")
         mt.add_cmd("exchange")
-        mt.add_cmd("period", "StockAnalysis")
+        mt.add_cmd("period")
         mt.add_raw("\n")
         mt.add_param("_industry", self.industry, 18)
         mt.add_param("_sector", self.sector, 18)
@@ -287,24 +289,23 @@ class SectorIndustryAnalysisController(BaseController):
         mt.add_param("_period", self.period, 18)
         mt.add_raw("\n")
         mt.add_info("_statistics_")
-        mt.add_cmd("cps", "", self.country)
-        mt.add_cmd("cpic", "", self.country)
-        mt.add_cmd("cpis", "", self.sector)
-        mt.add_cmd("cpcs", "", self.sector)
-        mt.add_cmd("cpci", "", self.industry)
+        mt.add_cmd("cps", self.country)
+        mt.add_cmd("cpic", self.country)
+        mt.add_cmd("cpis", self.sector)
+        mt.add_cmd("cpcs", self.sector)
+        mt.add_cmd("cpci", self.industry)
         mt.add_raw("\n")
         if self.stocks_data:
             mt.add_info("_financials_")
         else:
             mt.add_info("_financials_loaded_")
-        mt.add_cmd("sama", "Yahoo Finance")
-        mt.add_cmd("metric", "Yahoo Finance")
-        mt.add_cmd("satma", "StockAnalysis")
-        mt.add_cmd("vis", "StockAnalysis")
+        mt.add_cmd("sama")
+        mt.add_cmd("metric")
+        mt.add_cmd("satma")
+        mt.add_cmd("vis")
         mt.add_raw("\n")
         mt.add_param("_returned_tickers", ", ".join(self.tickers))
         mt.add_menu("ca", self.tickers)
-        mt.add_raw("\n")
         console.print(text=mt.menu_text, menu="Stocks - Sector and Industry Analysis")
 
     def custom_reset(self):
@@ -344,61 +345,80 @@ class SectorIndustryAnalysisController(BaseController):
                 else:
                     self.ticker = ns_parser.ticker.upper()
 
-                data = yf.utils.get_json(
-                    f"https://finance.yahoo.com/quote/{self.ticker}"
+                self.__load()
+
+    def __load(self):
+        if self.ticker:
+            data = yf.utils.get_json(f"https://finance.yahoo.com/quote/{self.ticker}")
+
+            if "summaryProfile" not in data or data["summaryProfile"] is None:
+                raise Exception(
+                    f"Failed to load {self.ticker} Summary Profile from Yahoo Finance"
                 )
 
-                if "summaryProfile" in data:
-                    self.country = data["summaryProfile"]["country"]
-                    if self.country not in financedatabase_model.get_countries():
-                        similar_cmd = difflib.get_close_matches(
-                            self.country,
-                            financedatabase_model.get_countries(),
-                            n=1,
-                            cutoff=0.7,
-                        )
-                        if similar_cmd:
-                            self.country = similar_cmd[0]
+            if not data["summaryProfile"]["country"]:
+                raise Exception(
+                    f"Failed to load {self.ticker} Country from Yahoo Finance"
+                )
 
-                    self.sector = data["summaryProfile"]["sector"]
-                    if self.sector not in financedatabase_model.get_sectors():
-                        similar_cmd = difflib.get_close_matches(
-                            self.sector,
-                            financedatabase_model.get_sectors(),
-                            n=1,
-                            cutoff=0.7,
-                        )
-                        if similar_cmd:
-                            self.sector = similar_cmd[0]
+            if not data["summaryProfile"]["sector"]:
+                raise Exception(
+                    f"Failed to load {self.ticker} Sector from Yahoo Finance"
+                )
 
-                    self.industry = data["summaryProfile"]["industry"]
-                    if self.industry not in financedatabase_model.get_industries():
-                        similar_cmd = difflib.get_close_matches(
-                            self.industry,
-                            financedatabase_model.get_industries(),
-                            n=1,
-                            cutoff=0.7,
-                        )
-                        if similar_cmd:
-                            self.industry = similar_cmd[0]
+            if not data["summaryProfile"]["industry"]:
+                raise Exception(
+                    f"Failed to load {self.ticker} Industry from Yahoo Finance"
+                )
 
-                if "price" in data:
-                    mktcap = data["price"]["marketCap"]
-                    if mktcap < 50_000_000:
-                        self.mktcap = "Nano"
-                    elif mktcap < 300_000_000:
-                        self.mktcap = "Micro"
-                    elif mktcap < 2_000_000_000:
-                        self.mktcap = "Small"
-                    elif mktcap > 200_000_000_000:
-                        self.mktcap = "Mega"
-                    elif mktcap > 10_000_000_000:
-                        self.mktcap = "Large"
-                    else:
-                        self.mktcap = "Mid"
+            self.country = data["summaryProfile"]["country"]
+            if self.country not in financedatabase_model.get_countries():
+                similar_cmd = difflib.get_close_matches(
+                    self.country,
+                    financedatabase_model.get_countries(),
+                    n=1,
+                    cutoff=0.7,
+                )
+                if similar_cmd:
+                    self.country = similar_cmd[0]
+            self.sector = data["summaryProfile"]["sector"]
+            if self.sector not in financedatabase_model.get_sectors():
+                similar_cmd = difflib.get_close_matches(
+                    self.sector,
+                    financedatabase_model.get_sectors(),
+                    n=1,
+                    cutoff=0.7,
+                )
+                if similar_cmd:
+                    self.sector = similar_cmd[0]
+            self.industry = data["summaryProfile"]["industry"]
+            if self.industry not in financedatabase_model.get_industries():
+                similar_cmd = difflib.get_close_matches(
+                    self.industry,
+                    financedatabase_model.get_industries(),
+                    n=1,
+                    cutoff=0.7,
+                )
+                if similar_cmd:
+                    self.industry = similar_cmd[0]
 
-                self.stocks_data = {}
-                self.update_runtime_choices()
+            if "price" in data:
+                mktcap = data["price"]["marketCap"]
+                if mktcap < 50_000_000:
+                    self.mktcap = "Nano"
+                elif mktcap < 300_000_000:
+                    self.mktcap = "Micro"
+                elif mktcap < 2_000_000_000:
+                    self.mktcap = "Small"
+                elif mktcap > 200_000_000_000:
+                    self.mktcap = "Mega"
+                elif mktcap > 10_000_000_000:
+                    self.mktcap = "Large"
+                else:
+                    self.mktcap = "Mid"
+
+            self.stocks_data = {}
+            self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_industry(self, other_args: List[str]):
@@ -796,22 +816,36 @@ class SectorIndustryAnalysisController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            (
-                self.stocks_data,
-                self.tickers,
-            ) = financedatabase_view.display_bars_financials(
-                self.metric_yf_keys[ns_parser.metric][0],
-                self.metric_yf_keys[ns_parser.metric][1],
-                self.country,
-                self.sector,
-                self.industry,
-                self.mktcap,
-                self.exclude_exchanges,
-                ns_parser.limit,
-                ns_parser.export,
-                ns_parser.raw,
-                self.stocks_data,
-            )
+            if not self.country and not self.sector and not self.industry:
+                console.print(
+                    "[red]Select at least one filter from sector, country or industry.[/red]\n"
+                )
+            else:
+                try:
+                    console.print(
+                        "[param]If it takes too long, you can use 'Ctrl + C' to cancel.\n[/param]"
+                    )
+                    (
+                        self.stocks_data,
+                        self.tickers,
+                    ) = financedatabase_view.display_bars_financials(
+                        self.metric_yf_keys[ns_parser.metric][0],
+                        self.metric_yf_keys[ns_parser.metric][1],
+                        self.country,
+                        self.sector,
+                        self.industry,
+                        self.mktcap,
+                        self.exclude_exchanges,
+                        ns_parser.limit,
+                        ns_parser.export,
+                        ns_parser.raw,
+                        self.stocks_data,
+                    )
+                except KeyboardInterrupt:
+                    console.print(
+                        "[param]For a faster search, ensure that you select at least one filter "
+                        "from sector, country or industry.\n[/param]"
+                    )
 
     @log_start_end(log=logger)
     def call_satma(self, other_args: List[str]):
@@ -828,7 +862,7 @@ class SectorIndustryAnalysisController(BaseController):
             "--statement",
             dest="statement",
             help="See all metrics available for the given choice",
-            choices=["BS", "bs", "IS", "is", "CF", "cf", ""],
+            choices=self.satma_choices,
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -849,11 +883,11 @@ class SectorIndustryAnalysisController(BaseController):
                 console.print(f"{ns_parser.statement} is not a valid option.")
 
             help_text += f"\n{statement_string[ns_parser.statement]}\n"
-            for k, v in stockanalysis_model.sa_keys[ns_parser.statement].items():
+            for k, v in stockanalysis_model.SA_KEYS[ns_parser.statement].items():
                 help_text += f"  {k} {(10 - len(k)) * ' '} {v} \n"
 
         else:
-            for statement, statement_value in stockanalysis_model.sa_keys.items():
+            for statement, statement_value in stockanalysis_model.SA_KEYS.items():
                 help_text += f"\n{statement_string[statement]}\n"
                 for k, v in statement_value.items():
                     help_text += f"  {k} {(10 - len(k)) * ' '} {v} \n"
@@ -877,7 +911,6 @@ class SectorIndustryAnalysisController(BaseController):
             help="Metric to visualize",
             choices=self.vis_choices,
         )
-
         parser.add_argument(
             "-p",
             "--period",
@@ -886,45 +919,56 @@ class SectorIndustryAnalysisController(BaseController):
             help="Limit number of periods to display",
             type=check_positive,
         )
-
         parser.add_argument(
-            "-cc",
-            "--convert_currency",
-            dest="convert_currency",
+            "-c",
+            "--currency",
+            dest="currency",
             help="Convert the currency of the chosen country to a specified currency. By default, this is set "
             "to USD (US Dollars).",
             default="USD",
         )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-m")
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, limit=10, raw=True
         )
         if ns_parser:
-            if ns_parser.convert_currency != self.currency:
-                self.stocks_data = {}
-            (
-                self.stocks_data,
-                self.tickers,
-            ) = stockanalysis_view.display_plots_financials(
-                finance_key=ns_parser.metric,
-                sa_dict=stockanalysis_model.sa_keys,
-                country=self.country,
-                sector=self.sector,
-                industry=self.industry,
-                period=self.period,
-                period_length=ns_parser.period,
-                marketcap=self.mktcap,
-                convert_currency=ns_parser.convert_currency,
-                exclude_exchanges=self.exclude_exchanges,
-                limit=ns_parser.limit,
-                export=ns_parser.export,
-                raw=ns_parser.raw,
-                already_loaded_stocks_data=self.stocks_data,
-            )
+            if not self.country and not self.sector and not self.industry:
+                console.print(
+                    "[red]Select at least one filter from sector, country or industry.[/red]\n"
+                )
+            else:
+                try:
+                    console.print(
+                        "[param]If it takes too long, you can use 'Ctrl + C' to cancel.\n[/param]"
+                    )
+                    if ns_parser.currency != self.currency:
+                        self.stocks_data = {}
+                    (
+                        self.stocks_data,
+                        self.tickers,
+                    ) = stockanalysis_view.display_plots_financials(
+                        finance_key=ns_parser.metric,
+                        country=self.country,
+                        sector=self.sector,
+                        industry=self.industry,
+                        period=self.period,
+                        period_length=ns_parser.period,
+                        marketcap=self.mktcap,
+                        currency=ns_parser.currency,
+                        exclude_exchanges=self.exclude_exchanges,
+                        limit=ns_parser.limit,
+                        export=ns_parser.export,
+                        raw=ns_parser.raw,
+                        already_loaded_stocks_data=self.stocks_data,
+                    )
 
-            self.currency = ns_parser.convert_currency
+                    self.currency = ns_parser.currency
+                except KeyboardInterrupt:
+                    console.print(
+                        "[param]For a faster search, ensure that you select at least one filter"
+                        "from sector, country or industry.\n[/param]"
+                    )
 
     @log_start_end(log=logger)
     def call_cps(self, other_args: List[str]):

@@ -16,6 +16,7 @@ import requests
 import matplotlib.pyplot as plt
 
 # IMPORTATION INTERNAL
+from openbb_terminal import config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import thought_of_the_day as thought
 from openbb_terminal.rich_config import console
@@ -45,14 +46,31 @@ def print_goodbye():
     # "...when offered a flight to the moon, nobody asks about what seat."
 
     console.print(
-        "OpenBB Terminal is the result of a strong community building an "
-        "[param]investment research platform for everyone.[/param]\n\n"
-        "Join us on [cmds]https://openbb.co/discord[/cmds], "
-        "show your appreciation on [cmds]https://twitter.com/openbb_finance[/cmds],\n"
-        "ask support on [cmds]https://openbb.co/support[/cmds], "
-        "or even request a feature on [cmds]https://openbb.co/request-a-feature[/cmds]\n"
+        "[param]The OpenBB Terminal is the result of a strong community building an "
+        "investment research platform for everyone, anywhere.[/param]\n"
     )
 
+    console.print(
+        "We are always eager to welcome new contributors and you can find our open jobs here:\n"
+        "[cmds]https://www.openbb.co/company/careers#open-roles[/cmds]\n"
+    )
+
+    console.print(
+        "Join us           : [cmds]https://openbb.co/discord[/cmds]\n"
+        "Follow us         : [cmds]https://twitter.com/openbb_finance[/cmds]\n"
+        "Ask support       : [cmds]https://openbb.co/support[/cmds]\n"
+        "Request a feature : [cmds]https://openbb.co/request-a-feature[/cmds]\n"
+    )
+
+    console.print(
+        "[bold]Fill in our 2-minute survey so we better understand how we can improve the OpenBB Terminal "
+        "at [cmds]https://openbb.co/survey[/cmds][/bold]\n"
+    )
+
+    console.print(
+        "[param]In the meantime access investment research from your chatting platform using the OpenBB Bot[/param]\n"
+        "Try it today, for FREE: [cmds]https://openbb.co/products/bot[/cmds]\n"
+    )
     logger.info("END")
 
 
@@ -105,20 +123,21 @@ def open_openbb_documentation(
     that are considered 'common' by adjusting the path accordingly."""
     if "ta" in path:
         path = "terminal/common/ta/"
-    if "ba" in path:
+    elif "ba" in path:
         path = "terminal/common/ba/"
     elif "qa" in path:
         path = "terminal/common/qa/"
-    elif "pred" in path:
-        path = "terminal/common/pred/"
     elif "keys" in path:
         path = "#accessing-other-sources-of-data-via-api-keys"
+        command = ""
+    elif "settings" in path or "featflags" in path or "sources" in path:
+        path = "#customizing-the-terminal"
         command = ""
     else:
         path = f"terminal/{path}"
 
     if command:
-        if command in ["ta", "ba", "qa", "pred"]:
+        if command in ["ta", "ba", "qa"]:
             path = "terminal/common/"
         elif "keys" == command:
             path = "#accessing-other-sources-of-data-via-api-keys"
@@ -126,10 +145,15 @@ def open_openbb_documentation(
         elif "exe" == command:
             path = "/terminal/scripts/"
             command = ""
+        elif command in ["settings", "featflags", "sources"]:
+            path = "#customizing-the-terminal"
+            command = ""
 
         path += command
 
-    webbrowser.open(f"{url}{path}")
+    full_url = f"{url}{path}".replace("//", "/")
+
+    webbrowser.open(full_url)
     console.print("")
 
 
@@ -151,12 +175,23 @@ def hide_splashscreen():
         logger.info(e)
 
 
+def is_packaged_application() -> bool:
+    """Tell whether or not it is a packaged version (Windows or Mac installer).
+
+
+    Returns:
+        bool: If the application is packaged
+    """
+
+    return cfg.LOGGING_APP_NAME == "gst_packaged"
+
+
 def bootup():
     if sys.platform == "win32":
         # Enable VT100 Escape Sequence for WINDOWS 10 Ver. 1607
         os.system("")  # nosec
         # Hide splashscreen loader of the packaged app
-        if obbff.PACKAGED_APPLICATION:
+        if is_packaged_application():
             hide_splashscreen()
 
     try:
@@ -187,7 +222,7 @@ def check_for_updates() -> None:
 
     if r is not None and r.status_code == 200:
         release = r.json()["html_url"].split("/")[-1].replace("v", "")
-        if obbff.VERSION == release:
+        if obbff.VERSION.replace("m", "") == release:
             console.print("[green]You are using the latest version[/green]")
         else:
             console.print("[red]You are not using the latest version[/red]")

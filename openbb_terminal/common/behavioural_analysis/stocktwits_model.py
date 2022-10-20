@@ -13,13 +13,13 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_bullbear(ticker: str) -> Tuple[int, int, int, int]:
+def get_bullbear(symbol: str) -> Tuple[int, int, int, int]:
     """Gets bullbear sentiment for ticker [Source: stocktwits]
 
     Parameters
     ----------
-    ticker : str
-        Ticker to look at
+    symbol : str
+        Ticker symbol to look at
 
     Returns
     -------
@@ -33,7 +33,7 @@ def get_bullbear(ticker: str) -> Tuple[int, int, int, int]:
         Number of bearish statements
     """
     result = requests.get(
-        f"https://api.stocktwits.com/api/2/streams/symbol/{ticker}.json"
+        f"https://api.stocktwits.com/api/2/streams/symbol/{symbol}.json"
     )
     if result.status_code == 200:
         result_json = result.json()
@@ -52,28 +52,30 @@ def get_bullbear(ticker: str) -> Tuple[int, int, int, int]:
 
 
 @log_start_end(log=logger)
-def get_messages(ticker: str, limit: int = 30) -> List[str]:
+def get_messages(symbol: str, limit: int = 30) -> pd.DataFrame:
     """Get last messages for a given ticker [Source: stocktwits]
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
+    symbol : str
+        Stock ticker symbol
     limit : int
         Number of messages to get
 
     Returns
     -------
-    List[str]
-        List of messages
+    pd.DataFrame
+        Dataframe of messages
     """
     result = requests.get(
-        f"https://api.stocktwits.com/api/2/streams/symbol/{ticker}.json"
+        f"https://api.stocktwits.com/api/2/streams/symbol/{symbol}.json"
     )
     if result.status_code == 200:
-        return [message["body"] for message in result.json()["messages"][:limit]]
+        return pd.DataFrame(
+            [message["body"] for message in result.json()["messages"][:limit]]
+        )
 
-    return []
+    return pd.DataFrame()
 
 
 @log_start_end(log=logger)
@@ -87,11 +89,10 @@ def get_trending() -> pd.DataFrame:
     """
     result = requests.get("https://api.stocktwits.com/api/2/trending/symbols.json")
     if result.status_code == 200:
-        l_symbols = []
-        for symbol in result.json()["symbols"]:
-            l_symbols.append(
-                [symbol["symbol"], symbol["watchlist_count"], symbol["title"]]
-            )
+        l_symbols = [
+            [symbol["symbol"], symbol["watchlist_count"], symbol["title"]]
+            for symbol in result.json()["symbols"]
+        ]
 
         df_trending = pd.DataFrame(
             l_symbols, columns=["Ticker", "Watchlist Count", "Name"]

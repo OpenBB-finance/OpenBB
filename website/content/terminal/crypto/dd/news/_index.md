@@ -1,6 +1,6 @@
 ```
 usage: news [-l LIMIT] [-k {news,media}]
-            [-f {rising,hot,bullish,bearish,important,saved,lol}]
+            [--filter {rising,hot,bullish,bearish,important,saved,lol}]
             [-r {en,de,es,fr,nl,it,pt,ru}]
             [-s {published_at,domain,title,negative_votes,positive_votes}] [--descend]
             [-u] [-h] [--export EXPORT]
@@ -15,7 +15,7 @@ optional arguments:
   -k {news,media}, --kind {news,media}
                         Filter by category of news. Available values: news or media.
                         (default: news)
-  -f {rising,hot,bullish,bearish,important,saved,lol}, --filter {rising,hot,bullish,bearish,important,saved,lol}
+  --filter {rising,hot,bullish,bearish,important,saved,lol}
                         Filter by kind of news. One from list:
                         rising|hot|bullish|bearish|important|saved|lol (default: None)
   -r {en,de,es,fr,nl,it,pt,ru}, --region {en,de,es,fr,nl,it,pt,ru}

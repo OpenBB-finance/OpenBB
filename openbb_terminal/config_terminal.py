@@ -6,17 +6,22 @@ from distutils.util import strtobool
 import dotenv
 
 # IMPORTATION INTERNAL
+
+from openbb_terminal.core.config.paths import USER_ENV_FILE, REPOSITORY_ENV_FILE
 from .helper_classes import TerminalStyle as _TerminalStyle
 
-env_files = [f for f in os.listdir() if f.endswith(".env")]
-if env_files:
-    dotenv.load_dotenv(env_files[0])
+dotenv.load_dotenv(USER_ENV_FILE)
+dotenv.load_dotenv(REPOSITORY_ENV_FILE, override=True)
 
 # Terminal UX section
+MPL_STYLE = os.getenv("OPENBB_MPLSTYLE") or "dark"
+PMF_STYLE = os.getenv("OPENBB_PMFSTYLE") or "dark"
+RICH_STYLE = os.getenv("OPENBB_RICHSTYLE") or "dark"
+
 theme = _TerminalStyle(
-    os.getenv("OPENBB_MPLSTYLE") or "boring",
-    os.getenv("OPENBB_MPFSTYLE") or "boring",
-    os.getenv("OPENBB_RICHSTYLE") or "boring",
+    MPL_STYLE,
+    PMF_STYLE,
+    RICH_STYLE,
 )
 
 # Set to True to see full stack traces for debugging/error reporting
@@ -105,7 +110,7 @@ OANDA_ACCOUNT = os.getenv("OPENBB_OANDA_ACCOUNT") or "REPLACE_ME"
 OANDA_TOKEN = os.getenv("OPENBB_OANDA_TOKEN") or "REPLACE_ME"
 
 # https://tradier.com/products/market-data-api
-TRADIER_TOKEN = os.getenv("OPENBB_API_TRADIER_TOKEN") or "REPLACE_ME"
+API_TRADIER_TOKEN = os.getenv("OPENBB_API_TRADIER_TOKEN") or "REPLACE_ME"
 
 # Selenium Webbrowser drivers can be found at https://selenium-python.readthedocs.io/installation.html
 WEBDRIVER_TO_USE = "chrome"
@@ -122,7 +127,7 @@ API_BINANCE_SECRET = os.getenv("OPENBB_API_BINANCE_SECRET") or "REPLACE_ME"
 API_FINNHUB_KEY = os.getenv("OPENBB_API_FINNHUB_KEY") or "REPLACE_ME"
 
 # https://iexcloud.io
-API_IEX_TOKEN = os.getenv("OPENBB_API_IEX_KEY") or "REPLACE_ME"
+API_IEX_TOKEN = os.getenv("OPENBB_API_IEX_TOKEN") or "REPLACE_ME"
 
 # https://www.sentimentinvestor.com
 API_SENTIMENTINVESTOR_TOKEN = (
@@ -162,8 +167,20 @@ API_SMARTSTAKE_TOKEN = os.getenv("OPENBB_API_SMARTSTAKE_TOKEN") or "REPLACE_ME"
 # https://messari.io/
 API_MESSARI_KEY = os.getenv("OPENBB_API_MESSARI_KEY") or "REPLACE_ME"
 
+# https://sdk.flipsidecrypto.xyz/shroomdk
+API_SHROOM_KEY = os.getenv("OPENBB_API_SHROOM_KEY") or "REPLACE_ME"
+
 # https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api
 API_GITHUB_KEY = os.getenv("OPENBB_API_GITHUB_KEY") or "REPLACE_ME"
 
 # https://academy.santiment.net/products-and-plans/create-an-api-key/
 API_SANTIMENT_KEY = os.getenv("OPENBB_API_SANTIMENT_KEY") or "REPLACE_ME"
+
+# https://eodhistoricaldata.com/r/?ref=869U7F4J
+API_EODHD_KEY = os.getenv("OPENBB_API_EODHD_KEY") or "REPLACE_ME"
+
+# https://tokenterminal.com
+API_TOKEN_TERMINAL_KEY = os.getenv("OPENBB_API_TOKEN_TERMINAL_KEY") or "REPLACE_ME"
+
+# https://stocksera.pythonanywhere.com/accounts/developers
+API_STOCKSERA_KEY = os.getenv("OPENBB_API_STOCKSERA_KEY") or "REPLACE_ME"

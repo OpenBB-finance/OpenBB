@@ -22,9 +22,9 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_crypto_rates(
-    cryptos: str,
+    symbols: str,
     platforms: str,
-    rate_type: str,
+    rate_type: str = "borrow",
     limit: int = 10,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -36,7 +36,7 @@ def display_crypto_rates(
     ----------
     rate_type: str
         Interest rate type: {borrow, supply}. Default: supply
-    cryptos: str
+    symbols: str
         Crypto separated by commas. Default: BTC,ETH,USDT,USDC
     platforms: str
         Platforms separated by commas. Default: BlockFi,Ledn,SwissBorg,Youhodler
@@ -49,7 +49,12 @@ def display_crypto_rates(
     if df.empty:
         console.print("\nError in loanscan request\n")
     else:
-        df = df[cryptos.upper().split(",")].loc[platforms.lower().split(",")]
+        valid_platforms = [
+            platform
+            for platform in platforms.lower().split(",")
+            if platform in df.index
+        ]
+        df = df[symbols.upper().split(",")].loc[valid_platforms]
         df = df.sort_values(df.columns[0], ascending=False, na_position="last")
 
         if not external_axes:
@@ -98,8 +103,8 @@ def display_crypto_rates(
         if not external_axes:
             cfg.theme.visualize_output()
 
-        df = df.fillna("N/A")
-        df = df.applymap(lambda x: str(round(100 * x, 2)) + "%" if x != "N/A" else x)
+        df = df.fillna("-")
+        df = df.applymap(lambda x: str(round(100 * x, 2)) + "%" if x != "-" else x)
 
         print_rich_table(
             df.head(limit),

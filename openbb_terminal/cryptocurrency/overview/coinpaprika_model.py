@@ -123,7 +123,7 @@ def get_list_of_coins() -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def _get_coins_info_helper(quotes: str = "USD") -> pd.DataFrame:
+def _get_coins_info_helper(symbols: str = "USD") -> pd.DataFrame:
     """Helper method that call /tickers endpoint which returns for all coins quoted in provided currency/crypto
 
     {
@@ -164,7 +164,7 @@ def _get_coins_info_helper(quotes: str = "USD") -> pd.DataFrame:
 
     Parameters
     ----------
-    quotes: Comma separated quotes to return e.g quotes=USD,BTC
+    symbols: Comma separated quotes to return e.g quotes=USD,BTC
 
     Returns
     -------
@@ -177,12 +177,11 @@ def _get_coins_info_helper(quotes: str = "USD") -> pd.DataFrame:
     """
 
     session = PaprikaSession()
-    tickers = session.make_request(session.ENDPOINTS["tickers"], quotes=quotes)
+    tickers = session.make_request(session.ENDPOINTS["tickers"], quotes=symbols)
     data = pd.json_normalize(tickers)
     try:
-        # data.columns = [col.replace(f"quotes.{quotes}.", f"{quotes.lower()}_") for col in data.columns.tolist()]
         data.columns = [
-            col.replace(f"quotes.{quotes}.", "") for col in data.columns.tolist()
+            col.replace(f"quotes.{symbols}.", "") for col in data.columns.tolist()
         ]
         data.columns = [col.replace("percent", "pct") for col in list(data.columns)]
     except KeyError as e:
@@ -199,13 +198,19 @@ def _get_coins_info_helper(quotes: str = "USD") -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_coins_info(quotes: str = "USD") -> pd.DataFrame:  # > format big numbers fix
+def get_coins_info(
+    symbols: str = "USD", sortby: str = "rank", ascend: bool = True
+) -> pd.DataFrame:  # > format big numbers fix
     """Returns basic coin information for all coins from CoinPaprika API [Source: CoinPaprika]
 
     Parameters
     ----------
-    quotes: str
+    symbols: str
         Comma separated quotes to return e.g quotes=USD,BTC
+    sortby: str
+        Key by which to sort data
+    ascend: bool
+        Flag to sort data descending
 
     Returns
     -------
@@ -227,17 +232,25 @@ def get_coins_info(quotes: str = "USD") -> pd.DataFrame:  # > format big numbers
         "beta_value",
         "ath_price",
     ]
-    return _get_coins_info_helper(quotes)[cols].sort_values(by="rank")
+    df = _get_coins_info_helper(symbols)[cols]
+    df = df.sort_values(by=sortby, ascending=ascend)
+    return df
 
 
 @log_start_end(log=logger)
-def get_coins_market_info(quotes: str = "USD") -> pd.DataFrame:
+def get_coins_market_info(
+    symbols: str = "USD", sortby: str = "rank", ascend: bool = True
+) -> pd.DataFrame:
     """Returns basic coin information for all coins from CoinPaprika API [Source: CoinPaprika]
 
     Parameters
     ----------
-    quotes: str
+    symbols: str
         Comma separated quotes to return e.g quotes=USD,BTC
+    sortby: str
+        Key by which to sort data
+    ascend: bool
+        Flag to sort data ascend
 
     Returns
     -------
@@ -258,18 +271,26 @@ def get_coins_market_info(quotes: str = "USD") -> pd.DataFrame:
         "ath_price",
         "pct_from_ath",
     ]
-    return _get_coins_info_helper(quotes=quotes)[cols].sort_values(by="rank")
+    df = _get_coins_info_helper(symbols=symbols)[cols].sort_values(by="rank")
+    df.sort_values(by=sortby, ascending=ascend)
+    return df
 
 
 @log_start_end(log=logger)
-def get_list_of_exchanges(quotes: str = "USD") -> pd.DataFrame:
+def get_list_of_exchanges(
+    symbols: str = "USD", sortby: str = "rank", ascend: bool = True
+) -> pd.DataFrame:
     """
     List exchanges from CoinPaprika API [Source: CoinPaprika]
 
     Parameters
     ----------
-    quotes: str
+    symbols: str
         Comma separated quotes to return e.g quotes=USD,BTC
+    sortby: str
+        Key by which to sort data
+    ascend: bool
+        Flag to sort data ascend
 
     Returns
     -------
@@ -279,11 +300,11 @@ def get_list_of_exchanges(quotes: str = "USD") -> pd.DataFrame:
     """
 
     session = PaprikaSession()
-    exchanges = session.make_request(session.ENDPOINTS["exchanges"], quotes=quotes)
+    exchanges = session.make_request(session.ENDPOINTS["exchanges"], quotes=symbols)
     df = pd.json_normalize(exchanges)
     try:
         df.columns = [
-            col.replace(f"quotes.{quotes}.", "") for col in df.columns.tolist()
+            col.replace(f"quotes.{symbols}.", "") for col in df.columns.tolist()
         ]
     except KeyError as e:
         logger.exception(str(e))
@@ -312,12 +333,16 @@ def get_list_of_exchanges(quotes: str = "USD") -> pd.DataFrame:
         inplace=True,
     )
     df.columns = [x.replace("reported_", "") for x in df.columns]
-    return df.sort_values(by="rank")
+    df = df.sort_values(by=sortby, ascending=ascend)
+    return df
 
 
 @log_start_end(log=logger)
 def get_exchanges_market(
-    exchange_id: str = "binance", quotes: str = "USD"
+    exchange_id: str = "binance",
+    symbols: str = "USD",
+    sortby: str = "pair",
+    ascend: bool = True,
 ) -> pd.DataFrame:
     """List markets by exchange ID [Source: CoinPaprika]
 
@@ -325,8 +350,12 @@ def get_exchanges_market(
     ----------
     exchange_id: str
         identifier of exchange e.g for Binance Exchange -> binance
-    quotes: str
+    symbols: str
         Comma separated quotes to return e.g quotes=USD,BTC
+    sortby: str
+        Key by which to sort data
+    ascend: bool
+        Flag to sort data ascending
 
     Returns
     -------
@@ -337,7 +366,7 @@ def get_exchanges_market(
 
     session = PaprikaSession()
     data = session.make_request(
-        session.ENDPOINTS["exchange_markets"].format(exchange_id), quotes=quotes
+        session.ENDPOINTS["exchange_markets"].format(exchange_id), quotes=symbols
     )
     if "error" in data:
         console.print(data)
@@ -354,7 +383,9 @@ def get_exchanges_market(
     ]
     df = pd.DataFrame(data)
     df["exchange_id"] = exchange_id
-    return df[cols]
+    df = df[cols]
+    df = df.sort_values(by=sortby, ascending=ascend)
+    return df
 
 
 @log_start_end(log=logger)
@@ -379,12 +410,18 @@ def get_all_contract_platforms() -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_contract_platform(platform_id: str = "eth-ethereum") -> pd.DataFrame:
+def get_contract_platform(
+    platform_id: str = "eth-ethereum", sortby: str = "active", ascend: bool = True
+) -> pd.DataFrame:
     """Gets all contract addresses for given platform [Source: CoinPaprika]
     Parameters
     ----------
     platform_id: str
         Blockchain platform like eth-ethereum
+    sortby: str
+        Key by which to sort data
+    ascend: bool
+        Flag to sort data ascend
 
     Returns
     -------
@@ -397,4 +434,6 @@ def get_contract_platform(platform_id: str = "eth-ethereum") -> pd.DataFrame:
         session.ENDPOINTS["contract_platform_addresses"].format(platform_id)
     )
 
-    return pd.DataFrame(contract_platforms)[["id", "type", "active"]]
+    df = pd.DataFrame(contract_platforms)[["id", "type", "active"]]
+    df = df.sort_values(by=sortby, ascending=ascend)
+    return df

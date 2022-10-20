@@ -6,18 +6,16 @@ import pytest
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.sector_industry_analysis import (
     stockanalysis_view,
-    stockanalysis_model,
 )
 
 
 @pytest.mark.skip
 @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "finance_key, sa_keys, country, sector, industry, period, period_length, marketcap, statement",
+    "finance_key, country, sector, industry, period, period_length, marketcap, statement",
     [
         (
             "re",
-            stockanalysis_model.sa_keys,
             "United States",
             None,
             "Credit Services",
@@ -28,7 +26,6 @@ from openbb_terminal.stocks.sector_industry_analysis import (
         ),
         (
             "rec",
-            stockanalysis_model.sa_keys,
             "Germany",
             "Technology",
             None,
@@ -39,7 +36,6 @@ from openbb_terminal.stocks.sector_industry_analysis import (
         ),
         (
             "ncf",
-            stockanalysis_model.sa_keys,
             "Netherlands",
             "Technology",
             None,
@@ -54,7 +50,6 @@ def test_display_plots_financials(
     recorder,
     mocker,
     finance_key,
-    sa_keys,
     country,
     sector,
     industry,
@@ -71,7 +66,6 @@ def test_display_plots_financials(
     )
     stocks_data, company_tickers = stockanalysis_view.display_plots_financials(
         finance_key=finance_key,
-        sa_dict=sa_keys,
         country=country,
         sector=sector,
         industry=industry,

@@ -12,11 +12,14 @@ from typing import List, Dict, Any
 
 import numpy as np
 import pandas as pd
-from prompt_toolkit.completion import NestedCompleter
+
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 import openbb_terminal.econometrics.regression_model
 import openbb_terminal.econometrics.regression_view
+from openbb_terminal.core.config.paths import USER_CUSTOM_IMPORTS_DIRECTORY
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.config.paths import USER_EXPORTS_DIRECTORY
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     check_positive,
@@ -69,7 +72,9 @@ class EconometricsController(BaseController):
         "granger",
         "coint",
     ]
-    CHOICES_MENUS: List[str] = ["qa", "pred"]
+    CHOICES_MENUS: List[str] = [
+        "qa",
+    ]
     pandas_plot_choices = [
         "line",
         "scatter",
@@ -159,22 +164,22 @@ class EconometricsController(BaseController):
             filepath.name: filepath
             for file_type in self.file_types
             for filepath in chain(
-                Path(obbff.EXPORT_FOLDER_PATH).rglob(f"*.{file_type}"),
-                Path("custom_imports").rglob(f"*.{file_type}"),
+                Path(USER_EXPORTS_DIRECTORY).rglob(f"*.{file_type}"),
+                Path(USER_CUSTOM_IMPORTS_DIRECTORY / "econometrics").rglob(
+                    f"*.{file_type}"
+                ),
             )
             if filepath.is_file()
         }
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["load"] = {c: None for c in self.DATA_FILES.keys()}
-            choices["show"] = {c: None for c in self.files}
+            choices["load"]["-f"] = {c: {} for c in self.DATA_FILES.keys()}
 
             for feature in ["export", "show", "desc", "clear", "index"]:
-                choices[feature] = {c: None for c in self.files}
+                choices[feature] = {c: {} for c in self.files}
 
             for feature in [
-                "general",
                 "type",
                 "plot",
                 "norm",
@@ -184,6 +189,8 @@ class EconometricsController(BaseController):
             ]:
                 choices[feature] = dict()
 
+            # Inititialzie this for regressions to be able to use -h flag
+            choices["regressions"] = {}
             self.choices = choices
 
             choices["support"] = self.SUPPORT_CHOICES
@@ -194,13 +201,12 @@ class EconometricsController(BaseController):
     def update_runtime_choices(self):
         if session and obbff.USE_PROMPT_TOOLKIT:
             dataset_columns = {
-                f"{dataset}.{column}": {column: None, dataset: None}
+                f"{dataset}.{column}": {}
                 for dataset, dataframe in self.datasets.items()
                 for column in dataframe.columns
             }
 
             for feature in [
-                "general",
                 "plot",
                 "norm",
                 "root",
@@ -220,13 +226,13 @@ class EconometricsController(BaseController):
                 "combine",
                 "rename",
             ]:
-                self.choices[feature] = {c: None for c in self.files}
+                self.choices[feature] = {c: {} for c in self.files}
 
             self.choices["type"] = {
-                c: None for c in self.files + list(dataset_columns.keys())
+                c: {} for c in self.files + list(dataset_columns.keys())
             }
             self.choices["desc"] = {
-                c: None for c in self.files + list(dataset_columns.keys())
+                c: {} for c in self.files + list(dataset_columns.keys())
             }
 
             pairs_timeseries = list()
@@ -237,7 +243,7 @@ class EconometricsController(BaseController):
                     if dataset_col != dataset_col2
                 ]
 
-            self.choices["granger"] = {c: None for c in pairs_timeseries}
+            self.choices["granger"] = {c: {} for c in pairs_timeseries}
 
             self.completer = NestedCompleter.from_nested_dict(self.choices)
 
@@ -246,48 +252,66 @@ class EconometricsController(BaseController):
         mt = MenuText("econometrics/")
         mt.add_param(
             "_data_loc",
-            f"\n\t{obbff.EXPORT_FOLDER_PATH}\n\t{Path('custom_imports').resolve()}",
+            f"\n\t{str(USER_EXPORTS_DIRECTORY)}\n\t{str(USER_CUSTOM_IMPORTS_DIRECTORY/'econometrics')}",
         )
         mt.add_raw("\n")
         mt.add_cmd("load")
-        mt.add_cmd("remove", "", self.files)
+        mt.add_cmd("remove", self.files)
         mt.add_raw("\n")
         mt.add_param("_loaded", self.loaded_dataset_cols)
 
         mt.add_info("_exploration_")
-        mt.add_cmd("show", "", self.files)
-        mt.add_cmd("plot", "", self.files)
-        mt.add_cmd("type", "", self.files)
-        mt.add_cmd("desc", "", self.files)
-        mt.add_cmd("index", "", self.files)
-        mt.add_cmd("clean", "", self.files)
-        mt.add_cmd("add", "", self.files)
-        mt.add_cmd("delete", "", self.files)
-        mt.add_cmd("combine", "", self.files)
-        mt.add_cmd("rename", "", self.files)
-        mt.add_cmd("export", "", self.files)
+        mt.add_cmd("show", self.files)
+        mt.add_cmd("plot", self.files)
+        mt.add_cmd("type", self.files)
+        mt.add_cmd("desc", self.files)
+        mt.add_cmd("index", self.files)
+        mt.add_cmd("clean", self.files)
+        mt.add_cmd("add", self.files)
+        mt.add_cmd("delete", self.files)
+        mt.add_cmd("combine", self.files)
+        mt.add_cmd("rename", self.files)
+        mt.add_cmd("export", self.files)
         mt.add_info("_tests_")
-        mt.add_cmd("norm", "", self.files)
-        mt.add_cmd("root", "", self.files)
-        mt.add_cmd("granger", "", self.files)
-        mt.add_cmd("coint", "", self.files)
+        mt.add_cmd("norm", self.files)
+        mt.add_cmd("root", self.files)
+        mt.add_cmd("granger", self.files)
+        mt.add_cmd("coint", self.files)
         mt.add_info("_regression_")
-        mt.add_cmd("ols", "", self.files)
-        mt.add_cmd("panel", "", self.files)
-        mt.add_cmd("compare", "", self.files)
+        mt.add_cmd("ols", self.files)
+        mt.add_cmd("panel", self.files)
+        mt.add_cmd("compare", self.files)
         mt.add_info("_regression_tests_")
-        mt.add_cmd("dwat", "", self.files and self.regression["OLS"]["model"])
-        mt.add_cmd("bgod", "", self.files and self.regression["OLS"]["model"])
-        mt.add_cmd("bpag", "", self.files and self.regression["OLS"]["model"])
+        mt.add_cmd("dwat", self.files and self.regression["OLS"]["model"])
+        mt.add_cmd("bgod", self.files and self.regression["OLS"]["model"])
+        mt.add_cmd("bpag", self.files and self.regression["OLS"]["model"])
 
         console.print(text=mt.menu_text, menu="Econometrics")
 
     def custom_reset(self):
         """Class specific component of reset command"""
         if self.files:
-            load_files = [f"load {file}" for file in self.files]
+            load_files = [f"load -f {file}" for file in self.files]
             return ["econometrics"] + load_files
         return []
+
+    def update_loaded(self):
+        self.list_dataset_cols = []
+        if not self.files:
+            self.loaded_dataset_cols = "\n"
+            self.list_dataset_cols.append("")
+            return
+
+        maxfile = max(len(file) for file in self.files)
+        self.loaded_dataset_cols = "\n"
+        for dataset, data in self.datasets.items():
+            max_files = (maxfile - len(dataset)) * " "
+            self.loaded_dataset_cols += (
+                f"\t{dataset} {max_files}: {', '.join(data.columns)}\n"
+            )
+
+            for col in data.columns:
+                self.list_dataset_cols.append(f"{dataset}.{col}")
 
     @log_start_end(log=logger)
     def call_load(self, other_args: List[str]):
@@ -296,12 +320,13 @@ class EconometricsController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
-            description="Load custom dataset (from previous export, custom imports or StatsModels).",
+            description="Load dataset (from previous export, custom imports or StatsModels).",
         )
         parser.add_argument(
             "-f",
             "--file",
-            help="File to load data in (can be custom import, may have been exported before or can be from Statsmodels)",
+            help="File to load data in (can be custom import, "
+            "may have been exported before or can be from Statsmodels)",
             type=str,
         )
         parser.add_argument(
@@ -321,8 +346,14 @@ class EconometricsController(BaseController):
             dest="examples",
         )
 
-        if other_args and "-" not in other_args[0][0]:
+        if (
+            other_args
+            and "-e" not in other_args
+            and "-f" not in other_args
+            and "-h" not in other_args
+        ):
             other_args.insert(0, "-f")
+
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
@@ -388,18 +419,7 @@ class EconometricsController(BaseController):
 
                     self.update_runtime_choices()
 
-                    # Process new datasets to be updated
-                    self.list_dataset_cols = list()
-                    maxfile = max(len(file) for file in self.files)
-                    self.loaded_dataset_cols = "\n"
-                    for dataset, data in self.datasets.items():
-                        self.loaded_dataset_cols += (
-                            f"  {dataset} {(maxfile - len(dataset)) * ' '}: "
-                            f"{', '.join(data.columns)}\n"
-                        )
-
-                        for col in data.columns:
-                            self.list_dataset_cols.append(f"{dataset}.{col}")
+                    self.update_loaded()
 
                     console.print()
 
@@ -472,6 +492,9 @@ class EconometricsController(BaseController):
             other_args.insert(0, "-n")
         ns_parser = self.parse_known_args_and_warn(parser, other_args, NO_EXPORT)
 
+        if not ns_parser:
+            return
+
         if not ns_parser.name:
             console.print("Please enter a valid dataset.\n")
             return
@@ -485,15 +508,7 @@ class EconometricsController(BaseController):
 
         self.update_runtime_choices()
 
-        # Process new datasets to be updated
-        self.list_dataset_cols = list()
-        maxfile = max(len(file) for file in self.files)
-        self.loaded_dataset_cols = "\n"
-        for dataset, data in self.datasets.items():
-            self.loaded_dataset_cols += f"\t{dataset} {(maxfile - len(dataset)) * ' '}: {', '.join(data.columns)}\n"
-
-            for col in data.columns:
-                self.list_dataset_cols.append(f"{dataset}.{col}")
+        self.update_loaded()
 
     @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
@@ -651,20 +666,24 @@ class EconometricsController(BaseController):
                     df,
                 )
             else:
-                df = self.datasets[ns_parser.name].describe()
-                print_rich_table(
-                    df,
-                    headers=self.datasets[ns_parser.name].columns,
-                    show_index=True,
-                    title=f"Statistics for dataset: '{ns_parser.name}'",
-                )
+                df = self.datasets[ns_parser.name]
+                if not df.empty:
+                    df = df.describe()
+                    print_rich_table(
+                        df,
+                        headers=self.datasets[ns_parser.name].columns,
+                        show_index=True,
+                        title=f"Statistics for dataset: '{ns_parser.name}'",
+                    )
 
-                export_data(
-                    ns_parser.export,
-                    os.path.dirname(os.path.abspath(__file__)),
-                    f"{ns_parser.name}_desc",
-                    df,
-                )
+                    export_data(
+                        ns_parser.export,
+                        os.path.dirname(os.path.abspath(__file__)),
+                        f"{ns_parser.name}_desc",
+                        df,
+                    )
+                else:
+                    console.print("Empty dataset")
 
     @log_start_end(log=logger)
     def call_type(self, other_args: List[str]):
@@ -684,7 +703,6 @@ class EconometricsController(BaseController):
             choices=self.choices["type"],
         )
         parser.add_argument(
-            "-f",
             "--format",
             type=str,
             choices=self.DATA_TYPES,
@@ -829,9 +847,10 @@ class EconometricsController(BaseController):
                     if len(columns) > 1 and dataset[columns[0]].isnull().any():
                         null_values = dataset[dataset[columns[0]].isnull()]
                         console.print(
-                            f"The column '{columns[0]}' contains {len(null_values)} NaN values. As multiple columns are "
-                            f"provided, it is assumed this column represents entities (i), the NaN values are "
-                            f"forward filled. Remove the -a argument to disable this."
+                            f"The column '{columns[0]}' contains {len(null_values)} NaN "
+                            "values. As multiple columns are provided, it is assumed this "
+                            "column represents entities (i), the NaN values are forward "
+                            "filled. Remove the -a argument to disable this."
                         )
                         dataset[columns[0]] = dataset[columns[0]].fillna(method="ffill")
                     if dataset[columns[-1]].isnull().any():
@@ -875,7 +894,6 @@ class EconometricsController(BaseController):
             choices=list(self.datasets.keys()),
         )
         parser.add_argument(
-            "-f",
             "--fill",
             help="The method of filling NaNs. This has options to fill rows (rfill, rbfill, rffill) or fill "
             "columns (cfill, cbfill, cffill). Furthermore, it has the option to forward fill and backward fill "
@@ -1010,6 +1028,7 @@ class EconometricsController(BaseController):
                 )
 
             self.update_runtime_choices()
+            self.update_loaded()
         console.print()
 
     @log_start_end(log=logger)
@@ -1025,7 +1044,7 @@ class EconometricsController(BaseController):
             "-d",
             "--delete",
             help="The columns you want to delete from a dataset. Use format: <dataset.column> or"
-            " multiple with <dataset.column>,<datasetb.column2>",
+            " multiple with <dataset.column>,<dataset.column2>",
             dest="delete",
             type=check_list_values(self.choices["delete"]),
         )
@@ -1073,7 +1092,7 @@ class EconometricsController(BaseController):
         parser.add_argument(
             "-c",
             "--columns",
-            help="The columns we want to add <dataset.column>,<datasetb.column2>",
+            help="The columns we want to add <dataset.column>,<dataset.column2>",
             dest="columns",
             type=check_list_values(self.choices["delete"]),
         )
@@ -1210,7 +1229,7 @@ class EconometricsController(BaseController):
             if "," in ns_parser.dependent:
                 console.print(
                     "It appears you have selected multiple variables for the dependent variable. "
-                    "The model only accepts one.\nDid you intend to include these variables as independent "
+                    "Please select one.\nDid you intend to include these variables as independent "
                     f"variables? Use -i {ns_parser.dependent} in this case.\n"
                 )
             elif ns_parser.dependent in self.choices["regressions"]:
@@ -1222,7 +1241,6 @@ class EconometricsController(BaseController):
                 ) = openbb_terminal.econometrics.regression_model.get_ols(
                     [ns_parser.dependent] + ns_parser.independent,
                     self.datasets,
-                    self.choices["regressions"],
                     export=ns_parser.export,
                 )
             else:
@@ -1312,7 +1330,7 @@ class EconometricsController(BaseController):
             "-r",
             "--fuller_reg",
             help="Type of regression. Can be 'c','ct','ctt','nc'. c - Constant and t - trend order",
-            choices=["c", "ct", "ctt", "nc"],
+            choices=["c", "ct", "ctt", "n"],
             default="c",
             type=str,
             dest="fuller_reg",
@@ -1477,10 +1495,9 @@ class EconometricsController(BaseController):
                             self.regression[regression_name]["independent"],
                             self.regression[regression_name]["model"],
                         ) = openbb_terminal.econometrics.regression_view.display_panel(
-                            regression,
-                            regression_vars,
                             self.datasets,
-                            self.choices["regressions"],
+                            regression_vars,
+                            regression,
                             ns_parser.entity_effects,
                             ns_parser.time_effects,
                         )
@@ -1578,7 +1595,7 @@ class EconometricsController(BaseController):
         if ns_parser:
             if not self.regression["OLS"]["model"]:
                 console.print(
-                    "Please perform an OLS regression before estimating the Breusch-Godfrey statistic.\n"
+                    "Perform an OLS regression before estimating the Breusch-Godfrey statistic.\n"
                 )
             else:
                 openbb_terminal.econometrics.regression_view.display_bgod(
@@ -1605,7 +1622,7 @@ class EconometricsController(BaseController):
         if ns_parser:
             if not self.regression["OLS"]["model"]:
                 console.print(
-                    "Please perform an OLS regression before estimating the Breusch-Pagan statistic.\n"
+                    "Perform an OLS regression before estimating the Breusch-Pagan statistic.\n"
                 )
             else:
                 openbb_terminal.econometrics.regression_view.display_bpag(
@@ -1712,7 +1729,7 @@ class EconometricsController(BaseController):
 
             if ns_parser.ts:
 
-                if len(ns_parser.ts) > 2:
+                if len(ns_parser.ts) > 1:
                     datasets = {}
                     for stock in ns_parser.ts:
                         column, dataset = self.choices["coint"][stock].keys()

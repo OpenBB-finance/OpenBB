@@ -19,4 +19,4 @@ def vcr_config():
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_rating():
-    fmp_view.rating(ticker="TSLA", num=5, export=None)
+    fmp_view.rating(symbol="TSLA", limit=5, export=None)

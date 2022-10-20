@@ -34,5 +34,5 @@ def test_add_order_total(recorder, mocker):
 
     mocker.patch("yfinance.download", side_effect=mock_yf_download)
     df_orders = ark_model.get_ark_orders()
-    result_df = ark_model.add_order_total(df_orders=df_orders.head(2))
+    result_df = ark_model.add_order_total(data=df_orders.head(2))
     recorder.capture(result_df)

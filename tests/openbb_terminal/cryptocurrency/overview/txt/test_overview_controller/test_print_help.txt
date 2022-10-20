@@ -24,4 +24,5 @@
     btcrb              display bitcoin rainbow price chart (logarithmic regression)         [BlockchainCenter]
     ch                 lists major crypto-related hacks                                     [Rekt]
     cr                 crypto supply or borrow interest rates                               [LoanScan]
+    fun                explore projects based on fundamental metrics                        [TokenTerminal]
 

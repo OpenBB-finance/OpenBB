@@ -3,8 +3,6 @@ __docformat__ = "numpy"
 
 import logging
 
-import pandas as pd
-
 from openbb_terminal.common.behavioural_analysis import stocktwits_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import print_rich_table
@@ -14,17 +12,17 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_bullbear(ticker: str):
+def display_bullbear(symbol: str):
     """
     Print bullbear sentiment based on last 30 messages on the board.
     Also prints the watchlist_count. [Source: Stocktwits]
 
     Parameters
     ----------
-    ticker: str
-        Stock ticker
+    symbol: str
+        Stock ticker symbol
     """
-    watchlist_count, n_cases, n_bull, n_bear = stocktwits_model.get_bullbear(ticker)
+    watchlist_count, n_cases, n_bull, n_bear = stocktwits_model.get_bullbear(symbol)
     console.print(f"Watchlist count: {watchlist_count}")
     if n_cases > 0:
         console.print(f"\nLast {n_cases} sentiment messages:")
@@ -36,21 +34,21 @@ def display_bullbear(ticker: str):
 
 
 @log_start_end(log=logger)
-def display_messages(ticker: str, limit: int = 30):
+def display_messages(symbol: str, limit: int = 30):
     """Print up to 30 of the last messages on the board. [Source: Stocktwits]
 
     Parameters
     ----------
-    ticker: str
-        Stock ticker
+    symbol: str
+        Stock ticker symbol
     limit: int
         Number of messages to get
     """
-    messages = stocktwits_model.get_messages(ticker, limit)
+    messages = stocktwits_model.get_messages(symbol, limit)
 
-    if len(messages) > 0:
+    if not messages.empty:
         print_rich_table(
-            pd.DataFrame(messages),
+            messages,
             headers=["MESSAGES"],
             show_index=False,
             title="Last Messages on Board",

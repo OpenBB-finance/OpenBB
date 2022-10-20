@@ -29,9 +29,9 @@ def test_getFINRAweeks(recorder):
 @pytest.mark.vcr
 def test_getFINRAdata_offset(recorder):
     response = finra_model.getFINRAdata_offset(
-        weekStartDate="2021-11-01",
+        start_date="2021-11-01",
+        symbol="TSLA",
         tier="T1",
-        ticker="TSLA",
         is_ats=False,
         offset=0,
     )
@@ -42,7 +42,7 @@ def test_getFINRAdata_offset(recorder):
 @pytest.mark.vcr
 def test_getTickerFINRAdata(recorder):
     result_list = finra_model.getTickerFINRAdata(
-        ticker="RIVN",
+        symbol="RIVN",
     )
 
     recorder.capture_list(result_list)
@@ -81,7 +81,7 @@ def filter_json_data(response):
 @pytest.mark.vcr(before_record_response=filter_json_data)
 def test_getATSdata(recorder):
     df_ats, d_ats_reg = finra_model.getATSdata(
-        num_tickers_to_filter=2,
+        limit=2,
         tier_ats="T1",
     )
 

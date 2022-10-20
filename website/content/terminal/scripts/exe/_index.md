@@ -1,5 +1,5 @@
 ```
-usage: exe [-p PATH] [-i ROUTINE_ARGS] [-h]
+usage: exe [-f PATH] [-i ROUTINE_ARGS] [-h]
 ```
 
 The .openbb scripts offer the ability to automatically run a set of commands in the form of a **routine**. Furthermore,
@@ -9,7 +9,7 @@ doing advanced statistical/econometric research.
 
 ```
 optional arguments:
-  -p PATH, --path PATH  The path or .openbb file to run. (default: )
+  -f PATH, --file PATH  The path or .openbb file to run. (default: )
   -i ROUTINE_ARGS, --input ROUTINE_ARGS
                         Select multiple inputs to be replaced in the routine and separated by commas. E.g. GME,AMC,BTC-USD (default: None)
   -h, --help            show this help message (default: False)
@@ -18,7 +18,7 @@ optional arguments:
 
 An example of a script can be the following (inside a `.openbb` file):
 
-```
+```txt
 # Go into the econometrics context
 econometrics
 
@@ -29,7 +29,7 @@ load wage_panel -a wp
 index wp -i nr,year
 
 # Change the type of the year column so it can be included as time effects within the regressions
-type wp.year -f category
+type wp.year --format category
 
 # Perform a Pooled OLS, Random Effects and Fixed Effects estimation
 panel -d wp.lwage -i wp.black,wp.hisp,wp.exper,wp.expersq,wp.married,wp.educ,wp.union,wp.year

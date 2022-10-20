@@ -20,9 +20,9 @@ def vcr_config():
 @pytest.mark.parametrize(
     "preset,num_to_show,sortby,ascend",
     [
-        ("etf_config", 5, "Assets", True),
-        ("etf_config", 10, "Expense", False),
-        ("etf_config", 7, "Volume", True),
+        ("etf_config.ini", 5, "Assets", True),
+        ("etf_config.ini", 10, "Expense", False),
+        ("etf_config.ini", 7, "Volume", True),
     ],
 )
 def test_view_screener(preset, num_to_show, sortby, ascend, mocker):

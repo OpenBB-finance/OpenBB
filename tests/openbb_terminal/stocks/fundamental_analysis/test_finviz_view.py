@@ -20,4 +20,4 @@ def test_display_screen_data(mocker, use_tab):
     mocker.patch.object(
         target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=use_tab
     )
-    finviz_view.display_screen_data(ticker="AAPL", export="")
+    finviz_view.display_screen_data(symbol="AAPL", export="")

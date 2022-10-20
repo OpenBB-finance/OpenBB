@@ -25,8 +25,8 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_btc_circulating_supply(
-    since: int,
-    until: int,
+    start_date: int = int(datetime(2010, 1, 1).timestamp()),
+    end_date: int = int(datetime.now().timestamp()),
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -34,7 +34,7 @@ def display_btc_circulating_supply(
 
     Parameters
     ----------
-    since : int
+    start_date : int
         Initial date timestamp (e.g., 1_609_459_200)
     until : int
         End date timestamp (e.g., 1_641_588_030)
@@ -46,8 +46,8 @@ def display_btc_circulating_supply(
 
     df = blockchain_model.get_btc_circulating_supply()
     df = df[
-        (df["x"] > datetime.fromtimestamp(since))
-        & (df["x"] < datetime.fromtimestamp(until))
+        (df["x"] > datetime.fromtimestamp(start_date))
+        & (df["x"] < datetime.fromtimestamp(end_date))
     ]
 
     # This plot has 1 axis
@@ -78,8 +78,8 @@ def display_btc_circulating_supply(
 
 @log_start_end(log=logger)
 def display_btc_confirmed_transactions(
-    since: int,
-    until: int,
+    start_date: int = int(datetime(2010, 1, 1).timestamp()),
+    end_date: int = int(datetime.now().timestamp()),
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -99,8 +99,8 @@ def display_btc_confirmed_transactions(
 
     df = blockchain_model.get_btc_confirmed_transactions()
     df = df[
-        (df["x"] > datetime.fromtimestamp(since))
-        & (df["x"] < datetime.fromtimestamp(until))
+        (df["x"] > datetime.fromtimestamp(start_date))
+        & (df["x"] < datetime.fromtimestamp(end_date))
     ]
 
     # This plot has 1 axis

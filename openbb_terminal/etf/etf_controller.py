@@ -8,12 +8,12 @@ from datetime import datetime, timedelta
 from typing import List
 
 import yfinance as yf
-from prompt_toolkit.completion import NestedCompleter
-from thepassiveinvestor import create_ETF_report
 
+from thepassiveinvestor import create_ETF_report
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.common import newsapi_view
 from openbb_terminal.common.quantitative_analysis import qa_view
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.etf import (
     financedatabase_view,
@@ -35,7 +35,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
 from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.stocks.comparison_analysis import ca_controller
 
@@ -49,8 +49,7 @@ class ETFController(BaseController):
     """ETF Controller class"""
 
     CHOICES_COMMANDS = [
-        "ln",
-        "ld",
+        "search",
         "load",
         "overview",
         "holdings",
@@ -64,11 +63,21 @@ class ETFController(BaseController):
     ]
     CHOICES_MENUS = [
         "ta",
-        "pred",
         "ca",
-        "scr",
+        # "scr",
         "disc",
     ]
+    CANDLE_COLUMNS = [
+        "AdjClose",
+        "Open",
+        "Close",
+        "High",
+        "Low",
+        "Volume",
+        "Returns",
+        "LogRet",
+    ]
+
     PATH = "/etf/"
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
 
@@ -84,6 +93,69 @@ class ETFController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
 
+            one_to_fifty: dict = {str(c): {} for c in range(1, 50)}
+            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
+            choices["search"] = {
+                "--name": None,
+                "-n": "--name",
+                "--description": None,
+                "-d": "--description",
+                "--source": {
+                    c: {} for c in get_ordered_list_sources(f"{self.PATH}search")
+                },
+                "--limit": one_to_fifty,
+                "-l": "--limit",
+            }
+            choices["load"] = {
+                "--ticker": None,
+                "-t": "--ticker",
+                "--start": None,
+                "-s": "--start",
+                "--end": None,
+                "-e": "--end",
+                "--limit": one_to_fifty,
+                "-l": "--limit",
+            }
+            choices["holdings"] = {
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["weights"] = {"--min": one_to_hundred, "-m": "--min", "--raw": {}}
+            choices["holdings"] = {
+                "--date": None,
+                "-d": "--date",
+                "--oldest": {},
+                "-o": "--oldest",
+                "--sources": None,
+                "-s": "--sources",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["candle"] = {
+                "--sort": {c: {} for c in self.CANDLE_COLUMNS},
+                "-s": "--sort",
+                "--plotly": {},
+                "-p": "--plotly",
+                "--ma": None,
+                "--descending": {},
+                "-d": "--descending",
+                "--trend": {},
+                "-t": "--trend",
+                "--raw": {},
+                "--num": one_to_hundred,
+                "-n": "--num",
+            }
+            choices["pir"] = {
+                "--etfs": None,
+                "-e": "--etfs",
+                "--filename": None,
+                "--folder": None,
+            }
+            choices["compare"] = {
+                "--etfs": None,
+                "-e": "--etfs",
+            }
+
             choices["support"] = self.SUPPORT_CHOICES
             choices["about"] = self.ABOUT_CHOICES
 
@@ -92,29 +164,27 @@ class ETFController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("etf/")
-        mt.add_cmd("ln", "FinanceDatabase / StockAnalysis")
-        mt.add_cmd("ld", "FinanceDatabase")
-        mt.add_cmd("load", "Yahoo Finance")
+        mt.add_cmd("search")
+        mt.add_cmd("load")
         mt.add_raw("\n")
         mt.add_param("_symbol", self.etf_name)
         mt.add_param("_major_holdings", ", ".join(self.etf_holdings))
         mt.add_raw("\n")
         mt.add_menu("ca", len(self.etf_holdings))
         mt.add_menu("disc")
-        mt.add_menu("scr")
+        # mt.add_menu("scr")
         mt.add_raw("\n")
-        mt.add_cmd("overview", "StockAnalysis", self.etf_name)
-        mt.add_cmd("holdings", "StockAnalysis", self.etf_name)
-        mt.add_cmd("weights", "Yahoo Finance", self.etf_name)
-        mt.add_cmd("summary", "Yahoo Finance", self.etf_name)
-        mt.add_cmd("news", "News API", self.etf_name)
-        mt.add_cmd("candle", "", self.etf_name)
+        mt.add_cmd("overview", self.etf_name)
+        mt.add_cmd("holdings", self.etf_name)
+        mt.add_cmd("weights", self.etf_name)
+        mt.add_cmd("summary", self.etf_name)
+        mt.add_cmd("news", self.etf_name)
+        mt.add_cmd("candle", self.etf_name)
         mt.add_raw("\n")
-        mt.add_cmd("pir", "PassiveInvestor", self.etf_name)
-        mt.add_cmd("compare", "StockAnalysis", self.etf_name)
+        mt.add_cmd("pir", self.etf_name)
+        mt.add_cmd("compare", self.etf_name)
         mt.add_raw("\n")
         mt.add_menu("ta", self.etf_name)
-        mt.add_menu("pred", self.etf_name)
         console.print(text=mt.menu_text, menu="ETF")
 
     def custom_reset(self):
@@ -124,13 +194,13 @@ class ETFController(BaseController):
         return []
 
     @log_start_end(log=logger)
-    def call_ln(self, other_args: List[str]):
-        """Process ln command"""
+    def call_search(self, other_args: List[str]):
+        """Process search command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ln",
-            description="Lookup by name [Source: FinanceDatabase/StockAnalysis.com]",
+            prog="search",
+            description="Search ETF by name [Source: FinanceDatabase/StockAnalysis.com]",
         )
         parser.add_argument(
             "-n",
@@ -139,43 +209,10 @@ class ETFController(BaseController):
             dest="name",
             nargs="+",
             help="Name to look for ETFs",
-            required="-h" not in other_args,
-        )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-n")
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-            limit=5,
-            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
-        )
-        if ns_parser:
-            name_to_search = " ".join(ns_parser.name)
-            if ns_parser.source == "fd":
-                financedatabase_view.display_etf_by_name(
-                    name=name_to_search,
-                    limit=ns_parser.limit,
-                    export=ns_parser.export,
-                )
-            elif ns_parser.source == "sa":
-                stockanalysis_view.display_etf_by_name(
-                    name=name_to_search,
-                    limit=ns_parser.limit,
-                    export=ns_parser.export,
-                )
-            else:
-                console.print("Wrong source choice!\n")
-
-    @log_start_end(log=logger)
-    def call_ld(self, other_args: List[str]):
-        """Process ld command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ld",
-            description="Lookup by description [Source: FinanceDatabase/StockAnalysis.com]",
+            default="",
+            required="-h" not in other_args
+            and "-d" not in other_args
+            and "--description" not in other_args,
         )
         parser.add_argument(
             "-d",
@@ -184,30 +221,46 @@ class ETFController(BaseController):
             dest="description",
             nargs="+",
             help="Name to look for ETFs",
-            required="-h" not in other_args,
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            type=check_positive,
-            dest="limit",
-            help="Limit of ETFs to display",
-            default=5,
+            default="",
+            required="-h" not in other_args
+            and "-n" not in other_args
+            and "--name" not in other_args,
         )
 
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-d")
+            other_args.insert(0, "-n")
 
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
+            limit=5,
         )
         if ns_parser:
-            description_to_search = " ".join(ns_parser.description)
-            financedatabase_view.display_etf_by_description(
-                description=description_to_search,
-                limit=ns_parser.limit,
-                export=ns_parser.export,
-            )
+            name_to_search = " ".join(ns_parser.name)
+
+            if ns_parser.name:
+                if ns_parser.source == "FinanceDatabase":
+                    financedatabase_view.display_etf_by_name(
+                        name=name_to_search,
+                        limit=ns_parser.limit,
+                        export=ns_parser.export,
+                    )
+                elif ns_parser.source == "StockAnalysis":
+                    stockanalysis_view.display_etf_by_name(
+                        name=name_to_search,
+                        limit=ns_parser.limit,
+                        export=ns_parser.export,
+                    )
+                else:
+                    console.print("Wrong source choice!\n")
+            else:
+                description_to_search = " ".join(ns_parser.description)
+                financedatabase_view.display_etf_by_description(
+                    description=description_to_search,
+                    limit=ns_parser.limit,
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_load(self, other_args: List[str]):
@@ -277,13 +330,15 @@ class ETFController(BaseController):
                 self.etf_holdings = holdings.index[: ns_parser.limit].tolist()
 
                 if "n/a" in self.etf_holdings:
-                    na_tix_idx = []
-                    for idx, item in enumerate(self.etf_holdings):
-                        if item == "n/a":
-                            na_tix_idx.append(str(idx))
+                    na_tix_idx = [
+                        str(idx)
+                        for idx, item in enumerate(self.etf_holdings)
+                        if item == "n/a"
+                    ]
 
                     console.print(
-                        f"n/a tickers found at position {','.join(na_tix_idx)}.  Dropping these from holdings.\n"
+                        f"n/a tickers found at position {','.join(na_tix_idx)}. "
+                        " Dropping these from holdings.\n"
                     )
 
                 self.etf_holdings = list(
@@ -340,7 +395,7 @@ class ETFController(BaseController):
         if ns_parser:
             stockanalysis_view.view_holdings(
                 symbol=self.etf_name,
-                num_to_show=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -351,7 +406,8 @@ class ETFController(BaseController):
             add_help=False,
             prog="news",
             description="""
-                Prints latest news about ETF, including date, title and web link. [Source: News API]
+                Prints latest news about ETF, including date, title and web link.
+                [Source: News API]
             """,
         )
         parser.add_argument(
@@ -400,11 +456,11 @@ class ETFController(BaseController):
                 d_stock = yf.Ticker(self.etf_name).info
 
                 newsapi_view.display_news(
-                    term=d_stock["shortName"].replace(" ", "+")
+                    query=d_stock["shortName"].replace(" ", "+")
                     if "shortName" in d_stock
                     else self.etf_name,
-                    num=ns_parser.limit,
-                    s_from=ns_parser.n_start_date.strftime("%Y-%m-%d"),
+                    limit=ns_parser.limit,
+                    start_date=ns_parser.n_start_date.strftime("%Y-%m-%d"),
                     show_newest=ns_parser.n_oldest,
                     sources=",".join(sources),
                 )
@@ -430,16 +486,7 @@ class ETFController(BaseController):
         )
         parser.add_argument(
             "--sort",
-            choices=[
-                "AdjClose",
-                "Open",
-                "Close",
-                "High",
-                "Low",
-                "Volume",
-                "Returns",
-                "LogRet",
-            ],
+            choices=self.CANDLE_COLUMNS,
             default="",
             type=str,
             dest="sort",
@@ -500,10 +547,10 @@ class ETFController(BaseController):
 
                 if ns_parser.raw:
                     qa_view.display_raw(
-                        df=self.etf_data,
-                        sort=ns_parser.sort,
-                        des=ns_parser.descending,
-                        num=ns_parser.num,
+                        data=self.etf_data,
+                        sortby=ns_parser.sort,
+                        descend=ns_parser.descending,
+                        limit=ns_parser.num,
                     )
 
                 else:
@@ -516,8 +563,8 @@ class ETFController(BaseController):
                     )
 
                     stocks_helper.display_candle(
-                        s_ticker=self.etf_name,
-                        df_stock=data,
+                        symbol=self.etf_name,
+                        data=data,
                         use_matplotlib=ns_parser.plotly,
                         intraday=False,
                         add_trend=ns_parser.trendlines,
@@ -558,7 +605,7 @@ class ETFController(BaseController):
             default=compose_export_path(
                 func_name=parser.prog,
                 dir_path=os.path.dirname(os.path.abspath(__file__)),
-            )[0],
+            ).parent,
             dest="folder",
             help="Folder where the excel ETF report will be saved",
         )
@@ -567,11 +614,17 @@ class ETFController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.names:
-                create_ETF_report(
-                    ns_parser.names,
-                    filename=ns_parser.filename,
-                    folder=ns_parser.folder,
-                )
+                try:
+                    create_ETF_report(
+                        ns_parser.names,
+                        filename=ns_parser.filename,
+                        folder=ns_parser.folder,
+                    )
+                except FileNotFoundError:
+                    console.print(
+                        f"[red]Could not find the file: {ns_parser.filename}[/red]\n"
+                    )
+                    return
                 console.print(
                     f"Created ETF report as {ns_parser.filename} in folder {ns_parser.folder} \n"
                 )
@@ -644,42 +697,6 @@ class ETFController(BaseController):
             )
         else:
             console.print("Use 'load <ticker>' prior to this command!", "\n")
-
-    @log_start_end(log=logger)
-    def call_pred(self, _):
-        """Process pred command"""
-        if obbff.ENABLE_PREDICT:
-            if self.etf_name:
-                try:
-                    from openbb_terminal.etf.prediction_techniques import (
-                        pred_controller,
-                    )
-
-                    self.queue = self.load_class(
-                        pred_controller.PredictionTechniquesController,
-                        self.etf_name,
-                        self.etf_data.index[0],
-                        "1440min",
-                        self.etf_data,
-                        self.queue,
-                    )
-
-                except ModuleNotFoundError as e:
-                    logger.exception(
-                        "One of the optional packages seems to be missing: %s", str(e)
-                    )
-                    console.print(
-                        "One of the optional packages seems to be missing: ",
-                        e,
-                        "\n",
-                    )
-            else:
-                console.print("Use 'load <ticker>' prior to this command!", "\n")
-        else:
-            console.print(
-                "Predict is disabled. Check ENABLE_PREDICT flag on feature_flags.py",
-                "\n",
-            )
 
     @log_start_end(log=logger)
     def call_ca(self, _):

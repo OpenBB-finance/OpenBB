@@ -1,7 +1,7 @@
 name: Windows 10 Full Clean Build with ML
 env:
   OPENBB_ENABLE_QUICK_EXIT: true
-  OPENBB_LOG_COLLECTION: false
+  OPENBB_LOG_COLLECT: false
   OPENBB_USE_ION: false
   OPENBB_USE_PROMPT_TOOLKIT: false
   PIP_DEFAULT_TIMEOUT: 100
@@ -98,7 +98,7 @@ jobs:
         env:
             MPLBACKEND: Agg
         shell: bash -l {0}
-        run: pytest tests/ -m "not bots and not linux"
+        run: pytest tests/ -m "not linux"
 
       - name: Start Terminal and exit
         shell: bash -l {0}

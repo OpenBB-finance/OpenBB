@@ -272,6 +272,13 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(),
         ),
         (
+            "call_tob",
+            ["--ticker=AAPL"],
+            "cboe_view.display_top_of_book",
+            [],
+            dict(),
+        ),
+        (
             "call_candle",
             [
                 "--plotly",
@@ -285,10 +292,10 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "qa_view.display_raw",
             [],
             dict(
-                df=EMPTY_DF,
-                sort="Open",
-                des=False,
-                num=1,
+                data=EMPTY_DF,
+                sortby="Open",
+                descend=False,
+                limit=1,
             ),
         ),
         (
@@ -304,30 +311,13 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "stocks_helper.display_candle",
             [],
             dict(
-                s_ticker="MOCK_TICKER",
-                df_stock=EMPTY_DF,
+                symbol="MOCK_TICKER",
+                data=EMPTY_DF,
                 use_matplotlib=False,
                 intraday=False,
                 add_trend=True,
                 ma=[20, 30],
-            ),
-        ),
-        (
-            "call_news",
-            [
-                "--limit=1",
-                "--date=2022-01-07",
-                "--oldest",
-                "--sources=MOCK_SOURCE_1,MOCK_SOURCE_2",
-            ],
-            "newsapi_view.display_news",
-            [],
-            dict(
-                term="MOCK_TICKER",
-                num=1,
-                s_from="2022-01-07",
-                show_newest=False,
-                sources="MOCK_SOURCE_1,MOCK_SOURCE_2.com",
+                yscale="linear",
             ),
         ),
         (
@@ -513,14 +503,12 @@ def test_call_func_no_parser(func, mocker):
     "func",
     [
         "call_candle",
-        "call_news",
         "call_res",
         "call_dd",
         "call_fa",
         "call_bt",
         "call_ta",
         "call_qa",
-        "call_pred",
     ],
 )
 def test_call_func_no_ticker(func, mocker):

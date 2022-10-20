@@ -11,21 +11,25 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_forward_rates(to_cur: str, from_cur: str, export: str = ""):
+def display_forward_rates(
+    to_symbol: str = "USD", from_symbol: str = "EUR", export: str = ""
+):
     """Display forward rates for currency pairs
 
     Parameters
     ----------
-    to_cur: str
+    to_symbol: str
         To currency
-    from_cur: str
+    from_symbol: str
         From currency
     export: str
         Format to export data
     """
-    forward_rates = fxempire_model.get_forward_rates(to_cur, from_cur)
+    forward_rates = fxempire_model.get_forward_rates(to_symbol, from_symbol)
     if forward_rates.empty:
-        console.print(f"[red]Forward rates not found for {to_cur}/{from_cur}.[/red]\n")
+        console.print(
+            f"[red]Forward rates not found for {to_symbol}/{from_symbol}.[/red]\n"
+        )
         return
 
     print_rich_table(
@@ -33,7 +37,7 @@ def display_forward_rates(to_cur: str, from_cur: str, export: str = ""):
         index_name="Expirations",
         show_index=True,
         headers=forward_rates.columns,
-        title=f"Forward rates for {from_cur}/{to_cur}",
+        title=f"Forward rates for {from_symbol}/{to_symbol}",
         floatfmt=".4f",
     )
 

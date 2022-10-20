@@ -14,14 +14,14 @@ def vcr_config():
 
 @pytest.mark.vcr
 def test_get_rating_over_time(recorder):
-    result_df = finnhub_model.get_rating_over_time(ticker="TSLA")
+    result_df = finnhub_model.get_rating_over_time(symbol="TSLA")
 
     recorder.capture(result_df)
 
 
 @pytest.mark.vcr
 def test_get_rating_over_time_invalid_ticker():
-    result_df = finnhub_model.get_rating_over_time(ticker="INVALID_TICKER")
+    result_df = finnhub_model.get_rating_over_time(symbol="INVALID_TICKER")
 
     assert result_df.empty
 
@@ -40,6 +40,6 @@ def test_get_rating_over_time_invalid_status(mocker):
         target="requests.get",
         new=mocker.Mock(return_value=mock_response),
     )
-    result_df = finnhub_model.get_rating_over_time(ticker="FAILING_REQUEST")
+    result_df = finnhub_model.get_rating_over_time(symbol="FAILING_REQUEST")
 
     assert result_df.empty

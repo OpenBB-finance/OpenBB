@@ -12,21 +12,21 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def sec_filings(ticker: str, num: int, export: str):
+def sec_filings(symbol: str, limit: int = 5, export: str = ""):
     """Display SEC filings for a given stock ticker. [Source: Market Watch]
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
-    num : int
+    symbol: str
+        Stock ticker symbol
+    limit: int
         Number of ratings to display
-    export : str
+    export: str
         Export dataframe data to csv,json,xlsx file
     """
-    df_financials = marketwatch_model.get_sec_filings(ticker)
+    df_financials = marketwatch_model.get_sec_filings(symbol)
     print_rich_table(
-        df_financials.head(num),
+        df_financials.head(limit),
         headers=list(df_financials.columns),
         show_index=True,
         title="SEC Filings",

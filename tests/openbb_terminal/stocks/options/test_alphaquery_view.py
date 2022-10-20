@@ -15,7 +15,7 @@ def test_display_put_call_ratio(mocker):
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 
     alphaquery_view.display_put_call_ratio(
-        ticker="PM",
+        symbol="PM",
         window=10,
         start_date=datetime.strptime("2021-12-01", "%Y-%m-%d"),
         export="",
@@ -30,7 +30,7 @@ def test_display_put_call_ratio_empty(mocker):
         return_value=pd.DataFrame(),
     )
     alphaquery_view.display_put_call_ratio(
-        ticker="PM",
+        symbol="PM",
         window=10,
         start_date=datetime.strptime("2021-12-01", "%Y-%m-%d"),
         export="",

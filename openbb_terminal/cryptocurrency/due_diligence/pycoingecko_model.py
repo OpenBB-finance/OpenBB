@@ -48,11 +48,22 @@ BASE_INFO = [
 ]
 
 
+def format_df(df: pd.DataFrame):
+    df["Potential Market Cap ($)"] = df.apply(
+        lambda x: f"{int(x['Potential Market Cap ($)']):n}", axis=1
+    )
+
+    df["Current Market Cap ($)"] = df.apply(
+        lambda x: f"{int(x['Current Market Cap ($)']):n}", axis=1
+    )
+    return df
+
+
 @log_start_end(log=logger)
 def get_coin_potential_returns(
     main_coin: str,
-    vs: Union[str, None] = None,
-    top: Union[int, None] = None,
+    to_symbol: Union[str, None] = None,
+    limit: Union[int, None] = None,
     price: Union[int, None] = None,
 ) -> pd.DataFrame:
     """Fetch data to calculate potential returns of a certain coin. [Source: CoinGecko]
@@ -61,9 +72,9 @@ def get_coin_potential_returns(
     ----------
     main_coin   : str
         Coin loaded to check potential returns for (e.g., algorand)
-    vs          : str | None
+    to_symbol          : str | None
         Coin to compare main_coin with (e.g., bitcoin)
-    top         : int | None
+    limit         : int | None
         Number of coins with highest market cap to compare main_coin with (e.g., 5)
     price
         Target price of main_coin to check potential returns (e.g., 5)
@@ -84,7 +95,7 @@ def get_coin_potential_returns(
         "Potential Market Cap ($)",
         "Change (%)",
     ]
-    if top and top > 0:  # user wants to compare with top coins
+    if limit and limit > 0:  # user wants to compare with top coins
         data = client.get_price(
             ids=f"{main_coin}",
             vs_currencies="usd",
@@ -94,7 +105,7 @@ def get_coin_potential_returns(
             include_last_updated_at=False,
         )
         top_coins_data = client.get_coins_markets(
-            vs_currency="usd", per_page=top, order="market_cap_desc"
+            vs_currency="usd", per_page=limit, order="market_cap_desc"
         )
         main_coin_data = data[main_coin]
         diff_arr = []
@@ -116,14 +127,15 @@ def get_coin_potential_returns(
                     market_cap_difference_percentage,
                 ]
             )
-        return pd.DataFrame(
+        df = pd.DataFrame(
             data=diff_arr,
             columns=COLUMNS,
         )
+        return format_df(df)
 
-    if vs:  # user passed a coin
+    if to_symbol:  # user passed a coin
         data = client.get_price(
-            ids=f"{main_coin},{vs}",
+            ids=f"{main_coin},{to_symbol}",
             vs_currencies="usd",
             include_market_cap=True,
             include_24hr_vol=False,
@@ -131,7 +143,7 @@ def get_coin_potential_returns(
             include_last_updated_at=False,
         )
         main_coin_data = data[main_coin]
-        vs_coin_data = data[vs]
+        vs_coin_data = data[to_symbol]
 
         if main_coin_data and vs_coin_data:
             market_cap_difference_percentage = calc_change(
@@ -140,13 +152,13 @@ def get_coin_potential_returns(
             future_price = main_coin_data["usd"] * (
                 1 + market_cap_difference_percentage / 100
             )
-            return pd.DataFrame(
+            df = pd.DataFrame(
                 data=[
                     [
                         main_coin,
                         main_coin_data["usd"],
                         main_coin_data["usd_market_cap"],
-                        vs,
+                        to_symbol,
                         future_price,
                         vs_coin_data["usd_market_cap"],
                         market_cap_difference_percentage,
@@ -154,6 +166,7 @@ def get_coin_potential_returns(
                 ],
                 columns=COLUMNS,
             )
+            return format_df(df)
 
     if price and price > 0:  # user passed a price
         data = client.get_price(
@@ -175,7 +188,7 @@ def get_coin_potential_returns(
             future_price = main_coin_data["usd"] * (
                 1 + market_cap_difference_percentage / 100
             )
-            return pd.DataFrame(
+            df = pd.DataFrame(
                 data=[
                     [
                         main_coin,
@@ -189,24 +202,25 @@ def get_coin_potential_returns(
                 ],
                 columns=COLUMNS,
             )
+            return format_df(df)
 
     return pd.DataFrame()
 
 
 @log_start_end(log=logger)
-def check_coin(coin_id: str):
+def check_coin(symbol: str):
     coins = read_file_data("coingecko_coins.json")
     for coin in coins:
-        if coin["id"] == coin_id:
+        if coin["id"] == symbol:
             return coin["id"]
-        if coin["symbol"] == coin_id:
+        if coin["symbol"] == symbol:
             return coin["id"]
     return None
 
 
 @log_start_end(log=logger)
 def get_coin_market_chart(
-    coin_id: str = "", vs_currency: str = "usd", days: int = 30, **kwargs: Any
+    symbol: str = "", vs_currency: str = "usd", days: int = 30, **kwargs: Any
 ) -> pd.DataFrame:
     """Get prices for given coin. [Source: CoinGecko]
 
@@ -225,7 +239,7 @@ def get_coin_market_chart(
         Columns: time, price, currency
     """
     client = CoinGeckoAPI()
-    prices = client.get_coin_market_chart_by_id(coin_id, vs_currency, days, **kwargs)
+    prices = client.get_coin_market_chart_by_id(symbol, vs_currency, days, **kwargs)
     prices = prices["prices"]
     df = pd.DataFrame(data=prices, columns=["time", "price"])
     df["time"] = pd.to_datetime(df.time, unit="ms")
@@ -585,9 +599,7 @@ class Coin:
             "price_change_percentage_1y",
             "market_cap_change_24h",
         ]
-        single_stats = {}
-        for col in market_single_columns:
-            single_stats[col] = market_data.get(col)
+        single_stats = {col: market_data.get(col) for col in market_single_columns}
         single_stats.update(denominated_data)
 
         if (
@@ -630,10 +642,7 @@ class Coin:
             "ath_change_percentage",
         ]
 
-        results = {}
-        for column in ath_columns:
-            results[column] = market_data[column].get(currency)
-
+        results = {column: market_data[column].get(currency) for column in ath_columns}
         df = pd.Series(results).to_frame().reset_index()
         df.columns = ["Metric", "Value"]
         df["Metric"] = df["Metric"].apply(
@@ -666,10 +675,7 @@ class Coin:
             "atl_date",
             "atl_change_percentage",
         ]
-        results = {}
-        for column in ath_columns:
-            results[column] = market_data[column].get(currency)
-
+        results = {column: market_data[column].get(currency) for column in ath_columns}
         df = pd.Series(results).to_frame().reset_index()
         df.columns = ["Metric", "Value"]
         df["Metric"] = df["Metric"].apply(

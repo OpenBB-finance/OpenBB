@@ -1,21 +1,18 @@
 ```
-usage: hist -s STRIKE [-p] [-c CHAIN_ID] [-r] [--source {td,ce}] [-l LIMIT] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}]
+usage: hist -s STRIKE [-p] [-c CHAIN_ID] [-r] [--source {tradier,chartexchange}] [-l LIMIT] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}]
 ```
 
 The price history for a specified strike price from the loaded options chain.
 
 ```
 optional arguments:
-  -s STRIKE, --strike STRIKE
-                        Strike price to look at (default: None)
-  -p, --put             Flag for showing put option (default: False)
-  -c CHAIN_ID, --chain CHAIN_ID
-                        OCC option symbol (default: None)
-  -r, --raw             Display raw data (default: False)
-  --source {td,ce}      Choose Tradier(TD) or ChartExchange (CE), only affects raw data (default: ce)
-  -l LIMIT, --limit LIMIT
-                        Limit of data rows to display (default: None)
-  -h, --help            show this help message (default: False)
+  -s STRIKE, --strike STRIKE         Strike price to look at (default: None)
+  -p, --put                          Flag for showing put option (default: False)
+  -c CHAIN_ID, --chain CHAIN_ID      OCC option symbol (default: None)
+  -r, --raw                          Display raw data (default: False)
+  --source {tradier,chartexchange}   Choose Tradier or ChartExchange, only affects raw data (default: chartexchange)
+  -l LIMIT, --limit LIMIT            Limit of data rows to display (default: None)
+  -h, --help                         show this help message (default: False)
   --export {csv,json,xlsx,png,jpg,pdf,svg}
                         Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
 ```

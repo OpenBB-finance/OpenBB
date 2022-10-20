@@ -16,12 +16,12 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_ark_trades_by_ticker(ticker: str) -> pd.DataFrame:
+def get_ark_trades_by_ticker(symbol: str) -> pd.DataFrame:
     """Gets a dataframe of ARK trades for ticker
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Ticker to get trades for
 
     Returns
@@ -29,7 +29,7 @@ def get_ark_trades_by_ticker(ticker: str) -> pd.DataFrame:
     pd.DataFrame
         DataFrame of trades
     """
-    url = f"https://cathiesark.com/ark-combined-holdings-of-{ticker}"
+    url = f"https://cathiesark.com/ark-combined-holdings-of-{symbol}"
     r = requests.get(url, headers={"User-Agent": get_user_agent()})
     # Error in request
     if r.status_code != 200:
@@ -57,7 +57,7 @@ def get_ark_trades_by_ticker(ticker: str) -> pd.DataFrame:
 
     # Get yfinance price to merge.  Use Close which assumes purchased throughout day
     prices = yf.download(
-        ticker,
+        symbol,
         end=df_orders.Date.iloc[0],
         start=df_orders.Date.iloc[-1],
         progress=False,

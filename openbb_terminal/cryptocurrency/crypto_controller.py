@@ -6,9 +6,9 @@ import argparse
 import logging
 import os
 from typing import List
-from prompt_toolkit.completion import NestedCompleter
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
-from openbb_terminal.cryptocurrency import cryptocurrency_helpers
+from openbb_terminal.cryptocurrency import cryptocurrency_helpers, pyth_model, pyth_view
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import (
     FIND_KEYS,
@@ -27,6 +27,7 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
+    export_data,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import CryptoBaseController
@@ -38,11 +39,11 @@ from openbb_terminal.rich_config import console, MenuText
 logger = logging.getLogger(__name__)
 
 CRYPTO_SOURCES = {
-    "bin": "Binance",
-    "cg": "CoinGecko",
-    "cp": "CoinPaprika",
-    "cb": "Coinbase",
-    "yf": "YahooFinance",
+    "Binance": "Binance",
+    "CoingGecko": "CoinGecko",
+    "CoinPaprika": "CoinPaprika",
+    "Coinbase": "Coinbase",
+    "YahooFinance": "YahooFinance",
 }
 
 
@@ -56,6 +57,7 @@ class CryptoController(CryptoBaseController):
         "find",
         "prt",
         "resources",
+        "price",
     ]
     CHOICES_MENUS = [
         "ta",
@@ -66,14 +68,14 @@ class CryptoController(CryptoBaseController):
         "defi",
         "tools",
         "nft",
-        "pred",
         "qa",
+        "forecast",
     ]
 
     DD_VIEWS_MAPPING = {
-        "cg": pycoingecko_view,
-        "cp": coinpaprika_view,
-        "bin": binance_view,
+        "CoingGecko": pycoingecko_view,
+        "CoinPaprika": coinpaprika_view,
+        "Binance": binance_view,
     }
     PATH = "/crypto/"
     FILE_PATH = os.path.join(os.path.dirname(__file__), "README.md")
@@ -84,11 +86,49 @@ class CryptoController(CryptoBaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["load"]["-d"] = {
-                c: {} for c in ["1", "7", "14", "30", "90", "180", "365"]
+            choices["load"] = {
+                "--interval": {
+                    c: {}
+                    for c in [
+                        "1",
+                        "5",
+                        "15",
+                        "30",
+                        "60",
+                        "240",
+                        "1440",
+                        "10080",
+                        "43200",
+                    ]
+                },
+                "-i": "--interval",
+                "--exchange": {c: {} for c in self.exchanges},
+                "--source": {c: {} for c in ["CCXT", "YahooFinance", "CoingGecko"]},
+                "--vs": {c: {} for c in ["usd", "eur"]},
+                "--start": None,
+                "-s": "--start",
+                "--end": None,
+                "-e": "--end",
             }
-            choices["load"]["--vs"] = {c: {} for c in ["usd", "eur"]}
-            choices["find"]["-k"] = {c: {} for c in FIND_KEYS}
+            choices["find"] = {
+                "--key": {c: {} for c in FIND_KEYS},
+                "-k": "--key",
+                "--limit": {str(c): {} for c in range(1, 300)},
+                "-l": "--limit",
+                "--skip": {str(c): {} for c in range(1, 300)},
+                "-s": "--skip",
+                "--source": {
+                    c: {}
+                    for c in [
+                        "CoinGecko",
+                        "CoinPaprika",
+                        "Binance",
+                        "Coinbase",
+                        "YahooFinance",
+                    ]
+                },
+            }
+            choices["price"] = {c: {} for c in pyth_model.ASSETS.keys()}
             choices["headlines"] = {c: {} for c in finbrain_crypto_view.COINS}
             # choices["prt"]["--vs"] = {c: {} for c in coingecko_coin_ids} # list is huge. makes typing buggy
 
@@ -102,15 +142,21 @@ class CryptoController(CryptoBaseController):
         mt = MenuText("crypto/")
         mt.add_cmd("load")
         mt.add_cmd("find")
+        mt.add_cmd("price", "Pyth")
         mt.add_raw("\n")
-        mt.add_param("_symbol", self.symbol.upper())
         mt.add_param(
-            "_source", "CoinGecko (Price), YahooFinance (Volume)" if self.symbol else ""
+            "_symbol", f"{self.symbol.upper()}/{self.vs.upper()}" if self.symbol else ""
         )
+        if self.source == "CCXT":
+            mt.add_param(
+                "_exchange", self.exchange if self.symbol and self.exchange else ""
+            )
+        mt.add_param("_source", self.source if self.symbol and self.source else "")
+        mt.add_param("_interval", self.current_interval)
         mt.add_raw("\n")
-        mt.add_cmd("headlines", "FinBrain")
-        mt.add_cmd("chart", "", self.symbol)
-        mt.add_cmd("prt", "", self.symbol)
+        mt.add_cmd("headlines")
+        mt.add_cmd("candle", self.symbol)
+        mt.add_cmd("prt", self.symbol)
         mt.add_raw("\n")
         mt.add_menu("disc")
         mt.add_menu("ov")
@@ -120,8 +166,8 @@ class CryptoController(CryptoBaseController):
         mt.add_menu("nft")
         mt.add_menu("dd", self.symbol)
         mt.add_menu("ta", self.symbol)
-        mt.add_menu("pred", self.symbol)
         mt.add_menu("qa", self.symbol)
+        mt.add_menu("forecast", self.symbol)
         console.print(text=mt.menu_text, menu="Cryptocurrency")
 
     @log_start_end(log=logger)
@@ -190,6 +236,38 @@ class CryptoController(CryptoBaseController):
                     )
 
     @log_start_end(log=logger)
+    def call_price(self, other_args):
+        """Process price command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="price",
+            description="""Display price and interval of confidence in real-time. [Source: Pyth]""",
+        )
+        parser.add_argument(
+            "-s",
+            "--symbol",
+            required="-h" not in other_args,
+            type=str,
+            dest="symbol",
+            help="Symbol of coin to load data for, ~100 symbols are available",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-s")
+
+        ns_parser = self.parse_known_args_and_warn(parser, other_args)
+
+        if ns_parser:
+
+            if ns_parser.symbol in pyth_model.ASSETS.keys():
+                console.print(
+                    "[param]If it takes too long, you can use 'Ctrl + C' to cancel.\n[/param]"
+                )
+                pyth_view.display_price(ns_parser.symbol)
+            else:
+                console.print("[red]The symbol selected does not exist.[/red]\n")
+
+    @log_start_end(log=logger)
     def call_candle(self, other_args):
         """Process candle command"""
 
@@ -200,20 +278,36 @@ class CryptoController(CryptoBaseController):
             description="""Display chart for loaded coin. You can specify currency vs which you want
             to show chart and also number of days to get data for.""",
         )
+        parser.add_argument(
+            "--log",
+            help="Plot with y axis on log scale",
+            action="store_true",
+            default=False,
+            dest="logy",
+        )
 
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
-
         if ns_parser:
             if not self.symbol:
                 console.print("No coin loaded. First use `load {symbol}`\n")
                 return
+            export_data(
+                ns_parser.export,
+                os.path.join(os.path.dirname(os.path.abspath(__file__))),
+                f"{self.symbol}",
+                self.current_df,
+            )
 
             plot_chart(
-                symbol=self.symbol,
-                currency=self.current_currency,
+                exchange=self.exchange,
+                source=self.source,
+                to_symbol=self.symbol,
+                from_symbol=self.current_currency,
                 prices_df=self.current_df,
+                interval=self.current_interval,
+                yscale="log" if ns_parser.logy else "linear",
             )
 
     @log_start_end(log=logger)
@@ -281,7 +375,6 @@ class CryptoController(CryptoBaseController):
             prog="headlines",
             description="""Display sentiment analysis from FinBrain for chosen Cryptocurrencies""",
         )
-
         parser.add_argument(
             "-c",
             "--coin",
@@ -291,17 +384,15 @@ class CryptoController(CryptoBaseController):
             help="Symbol of coin to load data for, ~100 symbols are available",
             choices=finbrain_crypto_view.COINS,
         )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
 
         if ns_parser:
             finbrain_crypto_view.display_crypto_sentiment_analysis(
-                coin=ns_parser.coin, export=ns_parser.export
+                symbol=ns_parser.coin, export=ns_parser.export
             )
 
     @log_start_end(log=logger)
@@ -323,53 +414,17 @@ class CryptoController(CryptoBaseController):
 
     @log_start_end(log=logger)
     def call_qa(self, _):
-        """Process pred command"""
+        """Process qa command"""
         if self.symbol:
             from openbb_terminal.cryptocurrency.quantitative_analysis import (
                 qa_controller,
             )
 
-            if self.current_interval != "1day":
-                console.print("Only interval `1day` is possible for now.\n")
-            else:
-                self.queue = self.load_class(
-                    qa_controller.QaController,
-                    self.symbol,
-                    self.current_df,
-                    self.queue,
-                )
-
-    @log_start_end(log=logger)
-    def call_pred(self, _):
-        """Process pred command"""
-        if obbff.ENABLE_PREDICT:
-            if self.symbol:
-                try:
-                    from openbb_terminal.cryptocurrency.prediction_techniques import (
-                        pred_controller,
-                    )
-
-                    if self.current_interval != "1day":
-                        console.print("Only interval `1day` is possible for now.\n")
-                    else:
-                        self.queue = self.load_class(
-                            pred_controller.PredictionTechniquesController,
-                            self.symbol,
-                            self.current_df,
-                            self.queue,
-                        )
-                except ImportError:
-                    logger.exception("Tensorflow not available")
-                    console.print("[red]Run pip install tensorflow to continue[/red]\n")
-
-            else:
-                console.print(
-                    "No coin selected. Use 'load' to load the coin you want to look at.\n"
-                )
-        else:
-            console.print(
-                "Predict is disabled. Check ENABLE_PREDICT flag on feature_flags.py",
-                "\n",
+            self.queue = self.load_class(
+                qa_controller.QaController,
+                self.symbol,
+                self.current_df,
+                self.queue,
             )
 
     @log_start_end(log=logger)
@@ -415,7 +470,6 @@ class CryptoController(CryptoBaseController):
             uniswap on CoinPaprika then use: coins uniswap --source cp --limit 10
             """,
         )
-
         parser.add_argument(
             "-c",
             "--coin",
@@ -424,7 +478,6 @@ class CryptoController(CryptoBaseController):
             required="-h" not in other_args,
             type=str,
         )
-
         parser.add_argument(
             "-k",
             "--key",
@@ -434,7 +487,6 @@ class CryptoController(CryptoBaseController):
             choices=FIND_KEYS,
             default="symbol",
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -451,7 +503,6 @@ class CryptoController(CryptoBaseController):
             help="Skip n of records",
             type=check_positive,
         )
-
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "-c")
 
@@ -461,19 +512,32 @@ class CryptoController(CryptoBaseController):
             EXPORT_ONLY_RAW_DATA_ALLOWED,
         )
         # TODO: merge find + display_all_coins
-        if ns_parser.coin:
+        if ns_parser and ns_parser.coin:
             find(
-                coin=ns_parser.coin,
+                query=ns_parser.coin,
                 source=ns_parser.source,
                 key=ns_parser.key,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
             display_all_coins(
-                coin=ns_parser.coin,
+                symbol=ns_parser.coin,
                 source=ns_parser.source,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 skip=ns_parser.skip,
                 show_all=bool("ALL" in other_args),
                 export=ns_parser.export,
             )
+
+    @log_start_end(log=logger)
+    def call_forecast(self, _):
+        """Process forecast command"""
+        from openbb_terminal.forecast import forecast_controller
+
+        console.print(self.symbol)
+        self.queue = self.load_class(
+            forecast_controller.ForecastController,
+            self.symbol,
+            self.current_df,
+            self.queue,
+        )

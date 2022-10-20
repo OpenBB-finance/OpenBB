@@ -24,7 +24,6 @@ def test_calculate_next_sharp_invalid():
         clock.calculate_next_sharp(now, "bad")
 
 
-# TODO: find a better way to mock the while loop
 def test_do_action_every_sharp(mocker):
     mock = mocker.Mock()
     mock.count = 0

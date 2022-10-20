@@ -295,8 +295,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "openinsider_view.print_insider_filter",
             [],
             dict(
-                preset_loaded="whales",
-                ticker="",
+                preset="whales",
+                symbol="",
                 limit=1,
                 links=True,
                 export="csv",
@@ -315,8 +315,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "openinsider_view.print_insider_filter",
             [],
             dict(
-                preset_loaded="",
-                ticker="MOCK_TICKER",
+                preset="",
+                symbol="MOCK_TICKER",
                 limit=1,
                 links=True,
                 export="csv",
@@ -461,11 +461,11 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "businessinsider_view.insider_activity",
             [],
             dict(
-                stock=EMPTY_DF,
-                ticker="MOCK_TICKER",
-                start="MOCK_DATE",
+                data=EMPTY_DF,
+                symbol="MOCK_TICKER",
+                start_date="MOCK_DATE",
                 interval="MOCK_INTERVAL",
-                num=5,
+                limit=5,
                 raw=True,
                 export="csv",
             ),
@@ -476,8 +476,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "finviz_view.last_insider_activity",
             [],
             dict(
-                ticker="MOCK_TICKER",
-                num=5,
+                symbol="MOCK_TICKER",
+                limit=5,
                 export="csv",
             ),
         ),
@@ -621,6 +621,6 @@ def test_call_load(mocker):
         "TSLA",
         "--start=2021-12-17",
         "--end=2021-12-18",
-        "--source=yf",
+        "--source=YahooFinance",
     ]
     controller.call_load(other_args=other_args)

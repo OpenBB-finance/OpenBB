@@ -7,7 +7,7 @@ import pathlib
 from typing import List
 
 import pandas as pd
-from prompt_toolkit.completion import NestedCompleter
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.alternative.covid import covid_view
@@ -44,6 +44,26 @@ class CovidController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["country"] = {c: None for c in self.COUNTRY_LIST}
+            choices["ov"] = {
+                "--raw": {},
+                "--limit": {str(c): {} for c in range(1, 1000)},
+                "-l": "--limit",
+            }
+            choices["rates"] = {
+                "--raw": {},
+                "--limit": {str(c): {} for c in range(1, 1000)},
+                "-l": "--limit",
+            }
+            choices["cases"] = {
+                "--raw": {},
+                "--limit": {str(c): {} for c in range(1, 1000)},
+                "-l": "--limit",
+            }
+            choices["deaths"] = {
+                "--raw": {},
+                "--limit": {str(c): {} for c in range(1, 1000)},
+                "-l": "--limit",
+            }
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -99,7 +119,7 @@ class CovidController(BaseController):
 
     @log_start_end(log=logger)
     def call_ov(self, other_args: List[str]):
-        """Process hist command"""
+        """Process ov command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -232,7 +252,7 @@ class CovidController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
         )
         if ns_parser:
-            covid_view.display_country_slopes(
+            covid_view.display_case_slopes(
                 days_back=ns_parser.days,
                 limit=ns_parser.limit,
                 ascend=ns_parser.ascend,

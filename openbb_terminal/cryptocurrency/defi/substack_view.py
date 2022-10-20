@@ -13,31 +13,25 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_newsletters(top: int = 10, export: str = "") -> None:
+def display_newsletters(limit: int = 10, export: str = "") -> None:
     """Display DeFi related substack newsletters.
     [Source: substack.com]
 
     Parameters
     ----------
-    top: int
+    limit: int
         Number of records to display
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
     df = substack_model.get_newsletters()
-    df_data = df.copy()
 
     print_rich_table(
-        df.head(top),
+        df.head(limit),
         headers=list(df.columns),
         show_index=False,
         title="Substack Newsletters",
     )
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "newsletter",
-        df_data,
-    )
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "newsletter", df)

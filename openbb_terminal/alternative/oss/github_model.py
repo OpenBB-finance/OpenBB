@@ -10,13 +10,14 @@ import requests
 import pandas as pd
 
 from openbb_terminal import config_terminal as cfg
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
 from openbb_terminal.helper_funcs import get_user_agent
 
 logger = logging.getLogger(__name__)
 
 
+@check_api_key(["API_GITHUB_KEY"])
 def get_github_data(url: str, **kwargs):
     """Get repository stats
 
@@ -126,7 +127,7 @@ def get_stars_history(repo: str):
 
 
 @log_start_end(log=logger)
-def get_top_repos(sortby: str, top: int, categories: str) -> pd.DataFrame:
+def get_top_repos(sortby: str, limit: int = 50, categories: str = "") -> pd.DataFrame:
     """Get repos sorted by stars or forks. Can be filtered by categories
 
     Parameters
@@ -135,13 +136,13 @@ def get_top_repos(sortby: str, top: int, categories: str) -> pd.DataFrame:
             Sort repos by {stars, forks}
     categories : str
             Check for repo categories. If more than one separate with a comma: e.g., finance,investment. Default: None
-    top : int
+    limit : int
             Number of repos to search for
     Returns
     -------
     pd.DataFrame with list of repos
     """
-    initial_top = top
+    initial_top = limit
     df = pd.DataFrame(
         columns=[
             "full_name",
@@ -154,21 +155,21 @@ def get_top_repos(sortby: str, top: int, categories: str) -> pd.DataFrame:
             "html_url",
         ]
     )
-    if top <= 100:
+    if limit <= 100:
         df2 = search_repos(sortby=sortby, page=1, categories=categories)
         df = pd.concat([df, df2], ignore_index=True)
     else:
         p = 2
-        while top > 0:
+        while limit > 0:
             df2 = search_repos(sortby=sortby, page=p, categories=categories)
             df = pd.concat([df, df2], ignore_index=True)
-            top -= 100
+            limit -= 100
             p += 1
     return df.head(initial_top)
 
 
 @log_start_end(log=logger)
-def get_repo_summary(repo: str):
+def get_repo_summary(repo: str) -> pd.DataFrame:
     """Get repository summary
 
     Parameters

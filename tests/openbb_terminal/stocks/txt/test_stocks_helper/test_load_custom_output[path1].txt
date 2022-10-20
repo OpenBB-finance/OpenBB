@@ -1,0 +1,3 @@
+Loaded data has columns: Date, Close/Last, Volume, Open, High, Low
+
+Column [blue]Date[/blue] set as index.

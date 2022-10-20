@@ -343,7 +343,6 @@ def test_call_func(
         "call_candle",
         "call_ta",
         "call_dd",
-        "call_pred",
     ],
 )
 def test_call_func_no_current_coin(tested_func):

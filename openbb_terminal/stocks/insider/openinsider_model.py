@@ -1,6 +1,7 @@
 import configparser
 import logging
-import os
+from pathlib import Path
+import textwrap
 from datetime import datetime
 from typing import Dict, List
 
@@ -9,11 +10,10 @@ import requests
 from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.core.config.paths import USER_PRESETS_DIRECTORY
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
-
-presets_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), "presets/")
 
 
 # pylint: disable=too-many-branches,line-too-long,C0302
@@ -529,6 +529,28 @@ d_SectorSubsectorIndustry = {
     "Services -> Engr, Acct, Rsrch, Mgmt Svcs -> Facilities Support Management Se": "sic1=70&sic2=87&sic3=8744&sicl=8744&sich=8879",
     "Services -> Miscellaneous Services": "sic1=70&sic2=89&sicl=8900&sich=9720",
     "Closed-End Funds": "sic1=0&sicl=0&sich=99",
+}
+d_open_insider = {
+    "lcb": "latest-cluster-buys",
+    "lpsb": "latest-penny-stock-buys",
+    "lit": "latest-insider-trading",
+    "lip": "insider-purchases",
+    "blip": "latest-insider-purchases-25k",
+    "blop": "latest-officer-purchases-25k",
+    "blcp": "latest-ceo-cfo-purchases-25k",
+    "lis": "insider-sales",
+    "blis": "latest-insider-sales-100k",
+    "blos": "latest-officer-sales-100k",
+    "blcs": "latest-ceo-cfo-sales-100k",
+    "topt": "top-officer-purchases-of-the-day",
+    "toppw": "top-officer-purchases-of-the-week",
+    "toppm": "top-officer-purchases-of-the-month",
+    "tipt": "top-insider-purchases-of-the-day",
+    "tippw": "top-insider-purchases-of-the-week",
+    "tippm": "top-insider-purchases-of-the-month",
+    "tist": "top-insider-sales-of-the-day",
+    "tispw": "top-insider-sales-of-the-week",
+    "tispm": "top-insider-sales-of-the-month",
 }
 
 
@@ -1081,6 +1103,31 @@ def check_open_insider_screener(
 
 
 @log_start_end(log=logger)
+def get_preset_choices() -> Dict:
+    """
+    Return a dict containing keys as name of preset and
+    filepath as value
+    """
+
+    PRESETS_PATH = USER_PRESETS_DIRECTORY / "stocks" / "insider"
+    PRESETS_PATH_DEFAULT = Path(__file__).parent / "presets"
+    preset_choices = {
+        filepath.name: filepath
+        for filepath in PRESETS_PATH.iterdir()
+        if filepath.suffix == ".ini"
+    }
+    preset_choices.update(
+        {
+            filepath.name: filepath
+            for filepath in PRESETS_PATH_DEFAULT.iterdir()
+            if filepath.suffix == ".ini"
+        }
+    )
+
+    return preset_choices
+
+
+@log_start_end(log=logger)
 def get_open_insider_link(preset_loaded: str) -> str:
     """Get open insider link
 
@@ -1096,7 +1143,11 @@ def get_open_insider_link(preset_loaded: str) -> str:
     """
     preset = configparser.RawConfigParser()
     preset.optionxform = str  # type: ignore
-    preset.read(presets_path + preset_loaded + ".ini")
+    choices = get_preset_choices()
+    if preset_loaded not in choices:
+        console.print("[red]Could not find the link[/red]\n")
+        return ""
+    preset.read(choices[preset_loaded])
 
     d_general = dict(preset["General"])
     d_date = dict(preset["Date"])
@@ -1349,7 +1400,7 @@ def get_open_insider_data(url: str, has_company_name: bool) -> pd.DataFrame:
         else:
             idx = 0
 
-    d_open_insider = {
+    d_open_insider_filtered = {
         "X": l_X,
         "Filing Date": l_filing_date,
         "Trading Date": l_trading_date,
@@ -1367,6 +1418,86 @@ def get_open_insider_data(url: str, has_company_name: bool) -> pd.DataFrame:
         "Insider Link": l_insider_link,
     }
     if has_company_name:
-        d_open_insider["Company"] = l_company
+        d_open_insider_filtered["Company"] = l_company
 
-    return pd.DataFrame(d_open_insider)
+    return pd.DataFrame(d_open_insider_filtered)
+
+
+@log_start_end(log=logger)
+def get_insider_types() -> Dict:
+    """Get insider types available for insider data
+
+    Returns:
+        Dict: Dictionary with insider types and respective description
+    """
+    return d_open_insider
+
+
+@log_start_end(log=logger)
+def get_print_insider_data(type_insider: str = "lcb", limit: int = 10):
+    """Print insider data
+
+    Parameters
+    ----------
+    type_insider: str
+        Insider type of data. Available types can be accessed through get_insider_types().
+    limit: int
+        Limit of data rows to display
+    """
+    response = requests.get(f"http://openinsider.com/{d_open_insider[type_insider]}")
+    soup = BeautifulSoup(response.text, "html.parser")
+    table = soup.find("table", {"class": "tinytable"})
+
+    if not table:
+        console.print("No insider information found", "\n")
+        return pd.DataFrame()
+
+    table_rows = table.find_all("tr")
+
+    res = []
+    for tr in table_rows:
+        td = tr.find_all("td")
+        row = [tr.text.strip() for tr in td if tr.text.strip()]
+        res.append(row)
+
+    df = pd.DataFrame(res).dropna().head(n=limit)
+    columns = [
+        "X",
+        "Filing Date",
+        "Trade Date",
+        "Ticker",
+        "Company Name",
+        "Industry" if type_insider == "lcb" else "Insider Name",
+        "Title",
+        "Trade Type",
+        "Price",
+        "Qty",
+        "Owned",
+        "Diff Own",
+        "Value",
+    ]
+
+    if df.shape[1] == 13:
+        df.columns = columns
+    else:
+        df.columns = columns[1:]
+
+    df["Filing Date"] = df["Filing Date"].apply(
+        lambda x: "\n".join(textwrap.wrap(x, width=10)) if isinstance(x, str) else x
+    )
+    df["Company Name"] = df["Company Name"].apply(
+        lambda x: "\n".join(textwrap.wrap(x, width=20)) if isinstance(x, str) else x
+    )
+    df["Title"] = df["Title"].apply(
+        lambda x: "\n".join(textwrap.wrap(x, width=10)) if isinstance(x, str) else x
+    )
+    if type_insider == "lcb":
+        df["Industry"] = df["Industry"].apply(
+            lambda x: "\n".join(textwrap.wrap(x, width=20)) if isinstance(x, str) else x
+        )
+    else:
+        df["Insider Name"] = df["Insider Name"].apply(
+            lambda x: "\n".join(textwrap.wrap(x, width=20)) if isinstance(x, str) else x
+        )
+
+    return df

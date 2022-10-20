@@ -54,25 +54,25 @@ def display_holdings(export: str = ""):
 
 
 @log_start_end(log=logger)
-def display_historical(interval: str = "day", span: str = "3month", export: str = ""):
+def display_historical(interval: str = "day", window: str = "3month", export: str = ""):
     """Display historical portfolio
 
     Parameters
     ----------
     interval : str
         Interval to look at (candle width), default="day"
-    span : str
+    window : str
         How long to look back, default="3month"
     export : str, optional
         Format to export data
     """
-    hist = robinhood_model.get_historical(interval, span)
+    hist = robinhood_model.get_historical(interval, window)
 
     mpf.plot(
         hist,
         type="candle",
         style=theme.mpf_style,
-        title=f"\nPortfolio for {span_title_dict[span]}",
+        title=f"\nPortfolio for {span_title_dict[window]}",
         ylabel="Equity ($)",
         xrotation=10,
         figratio=(10, 7),

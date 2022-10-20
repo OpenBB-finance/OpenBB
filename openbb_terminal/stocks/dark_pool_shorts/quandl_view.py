@@ -26,10 +26,11 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_QUANDL"])
 def plot_short_interest(
-    ticker: str,
-    nyse: bool,
-    df_short_interest: pd.DataFrame,
+    symbol: str,
+    data: pd.DataFrame,
+    nyse: bool = False,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots the short interest of a stock. This corresponds to the
@@ -38,14 +39,12 @@ def plot_short_interest(
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         ticker to get short interest from
-    start : str
-        start date to start displaying short interest volume
+    data: pd.DataFrame
+        Short interest dataframe
     nyse : bool
         data from NYSE if true, otherwise NASDAQ
-    df_short_interest: pd.DataFrame
-        Short interest dataframe
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
 
@@ -61,20 +60,20 @@ def plot_short_interest(
         return
 
     ax1.bar(
-        df_short_interest.index,
-        df_short_interest["Short Volume"],
+        data.index,
+        data["Short Volume"],
         0.3,
         color=theme.down_color,
     )
     ax1.bar(
-        df_short_interest.index,
-        df_short_interest["Total Volume"] - df_short_interest["Short Volume"],
+        data.index,
+        data["Total Volume"] - data["Short Volume"],
         0.3,
-        bottom=df_short_interest["Short Volume"],
+        bottom=data["Short Volume"],
         color=theme.up_color,
     )
     ax1.set_ylabel("Shares")
-    ax1.set_title(f"{('NASDAQ', 'NYSE')[nyse]} Short Interest on {ticker}")
+    ax1.set_title(f"{('NASDAQ', 'NYSE')[nyse]} Short Interest on {symbol}")
 
     ax1.legend(labels=["Short Volume", "Total Volume"], loc="best")
     ax1.yaxis.set_major_formatter(matplotlib.ticker.EngFormatter())
@@ -82,8 +81,8 @@ def plot_short_interest(
     ax2.tick_params(axis="y")
     ax2.set_ylabel("Percentage of Volume Shorted")
     ax2.plot(
-        df_short_interest.index,
-        df_short_interest["% of Volume Shorted"],
+        data.index,
+        data["% of Volume Shorted"],
     )
     ax2.tick_params(axis="y", which="major")
     ax2.yaxis.set_major_formatter(matplotlib.ticker.FormatStrFormatter("%.0f%%"))
@@ -96,27 +95,36 @@ def plot_short_interest(
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_QUANDL"])
-def short_interest(ticker: str, nyse: bool, days: int, raw: bool, export: str):
+def short_interest(
+    symbol: str,
+    nyse: bool = False,
+    limit: int = 10,
+    raw: bool = False,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
     """Plots the short interest of a stock. This corresponds to the
     number of shares that have been sold short but have not yet been
     covered or closed out. Either NASDAQ or NYSE [Source: Quandl]
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         ticker to get short interest from
     nyse : bool
         data from NYSE if true, otherwise NASDAQ
-    days : int
+    limit: int
         Number of past days to show short interest
     raw : bool
         Flag to print raw data instead
     export : str
         Export dataframe data to csv,json,xlsx file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (2 axes are expected in the list), by default None
     """
-    df_short_interest = quandl_model.get_short_interest(ticker, nyse)
+    df_short_interest = quandl_model.get_short_interest(symbol, nyse)
 
-    df_short_interest = df_short_interest.tail(days)
+    df_short_interest = df_short_interest.tail(limit)
 
     df_short_interest.columns = [
         "".join(" " + char if char.isupper() else char.strip() for char in idx).strip()
@@ -130,6 +138,8 @@ def short_interest(ticker: str, nyse: bool, days: int, raw: bool, export: str):
         / df_short_interest["Total Volume"].values
     )
     df_short_interest["% of Volume Shorted"] = [round(pct, 2) for pct in vol_pct]
+
+    plot_short_interest(symbol, df_short_interest, nyse, external_axes)
 
     if raw:
         df_short_interest["% of Volume Shorted"] = df_short_interest[

@@ -1,8 +1,8 @@
 import os
 import pytest
-from openbb_terminal.core.log.generation import formatter_with_exceptions as fwe
+from openbb_terminal.core.log.generation import formatter_with_exceptions
 from openbb_terminal.core.log.generation.settings import AppSettings
-from openbb_terminal.core.config.constants import REPO_DIR
+from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY
 
 app_settings = AppSettings(
     commit_hash="MOCK_COMMIT_HASH",
@@ -12,7 +12,7 @@ app_settings = AppSettings(
 )
 
 
-formatter = fwe.FormatterWithExceptions(app_settings)
+formatter = formatter_with_exceptions.FormatterWithExceptions(app_settings)
 
 
 @pytest.mark.parametrize("exc, level", [(True, True), (False, "name"), (False, False)])
@@ -33,7 +33,9 @@ def test_extract_log_extra(mocker):
 
 
 def test_filter_piis():
-    text = f"test 1.1.1.1 chavi@chavi.com {REPO_DIR.name}{os.sep} dd{os.sep}dd"
+    text = (
+        f"test 1.1.1.1 chavi@chavi.com {REPOSITORY_DIRECTORY.name}{os.sep} dd{os.sep}dd"
+    )
     value = formatter.filter_piis(text)
     assert value
 

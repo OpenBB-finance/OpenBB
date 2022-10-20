@@ -71,7 +71,7 @@ CURRENCIES = [
 
 
 @log_start_end(log=logger)
-def display_global_market(export: str) -> None:
+def display_global_market(export: str = "") -> None:
     """Return data frame with most important global crypto statistics like:
     market_cap_usd, volume_24h_usd, bitcoin_dominance_percentage, cryptocurrencies_number,
     market_cap_ath_value, market_cap_ath_date, volume_24h_ath_value, volume_24h_ath_date,
@@ -103,29 +103,31 @@ def display_global_market(export: str) -> None:
 
 @log_start_end(log=logger)
 def display_all_coins_market_info(
-    currency: str, sortby: str, descend: bool, top: int, export: str
+    symbol: str,
+    sortby: str = "rank",
+    ascend: bool = True,
+    limit: int = 15,
+    export: str = "",
 ) -> None:
     """Displays basic market information for all coins from CoinPaprika API. [Source: CoinPaprika]
 
     Parameters
     ----------
-    currency: str
+    symbol: str
         Quoted currency
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data
-    descend: bool
-        Flag to sort data descending
+    ascend: bool
+        Flag to sort data ascending
     links: bool
         Flag to display urls
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = paprika.get_coins_market_info(quotes=currency).sort_values(
-        by=sortby, ascending=descend
-    )
+    df = paprika.get_coins_market_info(symbols=symbol, sortby=sortby, ascend=ascend)
 
     df_data = df.copy()
 
@@ -136,10 +138,10 @@ def display_all_coins_market_info(
     cols = [col for col in df.columns if col != "rank"]
     df[cols] = df[cols].applymap(lambda x: lambda_long_number_format_with_type_check(x))
 
-    console.print(f"\nDisplaying data vs {currency}")
+    console.print(f"\nDisplaying data vs {symbol}")
 
     print_rich_table(
-        df.head(top),
+        df.head(limit),
         headers=list(df.columns),
         show_index=False,
         title="Basic Market Information",
@@ -155,19 +157,23 @@ def display_all_coins_market_info(
 
 @log_start_end(log=logger)
 def display_all_coins_info(
-    currency: str, sortby: str, descend: bool, top: int, export: str
+    symbol: str,
+    sortby: str = "rank",
+    ascend: bool = True,
+    limit: int = 15,
+    export: str = "",
 ) -> None:
     """Displays basic coin information for all coins from CoinPaprika API. [Source: CoinPaprika]
 
     Parameters
     ----------
-    currency: str
+    symbol: str
         Quoted currency
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data
-    descend: bool
+    ascend: bool
         Flag to sort data descending
     links: bool
         Flag to display urls
@@ -175,9 +181,7 @@ def display_all_coins_info(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = paprika.get_coins_info(quotes=currency).sort_values(
-        by=sortby, ascending=descend
-    )
+    df = paprika.get_coins_info(symbols=symbol, sortby=sortby, ascend=ascend)
 
     df_data = df.copy()
 
@@ -188,10 +192,10 @@ def display_all_coins_info(
     cols = [col for col in df.columns if col != "rank"]
     df[cols] = df[cols].applymap(lambda x: lambda_long_number_format_with_type_check(x))
 
-    console.print(f"\nDisplaying data vs {currency}")
+    console.print(f"\nDisplaying data vs {symbol}")
 
     print_rich_table(
-        df.head(top),
+        df.head(limit),
         headers=list(df.columns),
         show_index=False,
         title="Basic Coin Information",
@@ -207,7 +211,11 @@ def display_all_coins_info(
 
 @log_start_end(log=logger)
 def display_all_exchanges(
-    currency: str, sortby: str, descend: bool, top: int, export: str
+    symbol: str,
+    sortby: str = "rank",
+    ascend: bool = True,
+    limit: int = 15,
+    export: str = "",
 ) -> None:
     """List exchanges from CoinPaprika API. [Source: CoinPaprika]
 
@@ -215,12 +223,12 @@ def display_all_exchanges(
     ----------
     currency: str
         Quoted currency
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data
-    descend: bool
-        Flag to sort data descending
+    ascend: bool
+        Flag to sort data ascending
     links: bool
         Flag to display urls
     export : str
@@ -228,9 +236,7 @@ def display_all_exchanges(
 
     """
 
-    df = paprika.get_list_of_exchanges(quotes=currency).sort_values(
-        by=sortby, ascending=descend
-    )
+    df = paprika.get_list_of_exchanges(symbols=symbol, sortby=sortby, ascend=ascend)
 
     df_data = df.copy()
 
@@ -240,10 +246,13 @@ def display_all_exchanges(
 
     cols = [col for col in df.columns if col != "rank"]
     df[cols] = df[cols].applymap(lambda x: lambda_long_number_format_with_type_check(x))
-    console.print(f"\nDisplaying data vs {currency}")
+    console.print(f"\nDisplaying data vs {symbol}")
 
     print_rich_table(
-        df.head(top), headers=list(df.columns), show_index=False, title="List Exchanges"
+        df.head(limit),
+        headers=list(df.columns),
+        show_index=False,
+        title="List Exchanges",
     )
 
     export_data(
@@ -256,7 +265,12 @@ def display_all_exchanges(
 
 @log_start_end(log=logger)
 def display_exchange_markets(
-    exchange: str, sortby: str, descend: bool, top: int, links: bool, export: str
+    exchange: str = "binance",
+    sortby: str = "pair",
+    ascend: bool = True,
+    limit: int = 15,
+    links: bool = False,
+    export: str = "",
 ) -> None:
     """Get all markets for given exchange [Source: CoinPaprika]
 
@@ -264,11 +278,11 @@ def display_exchange_markets(
     ----------
     exchange: str
         Exchange identifier e.g Binance
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data
-    descend: bool
+    ascend: bool
         Flag to sort data descending
     links: bool
         Flag to display urls
@@ -276,7 +290,9 @@ def display_exchange_markets(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = paprika.get_exchanges_market(exchange_id=exchange)
+    df = paprika.get_exchanges_market(
+        exchange_id=exchange, sortby=sortby, ascend=ascend
+    )
 
     df_data = df.copy()
 
@@ -284,15 +300,13 @@ def display_exchange_markets(
         console.print("No data found", "\n")
         return
 
-    df = df.sort_values(by=sortby, ascending=descend)
-
     if links is True:
         df = df[["exchange_id", "pair", "trust_score", "market_url"]]
     else:
         df.drop("market_url", axis=1, inplace=True)
 
     print_rich_table(
-        df.head(top),
+        df.head(limit),
         headers=list(df.columns),
         show_index=False,
         title="Exchange Markets",
@@ -308,7 +322,8 @@ def display_exchange_markets(
 
 @log_start_end(log=logger)
 def display_all_platforms(export: str) -> None:
-    """List all smart contract platforms like ethereum, solana, cosmos, polkadot, kusama. [Source: CoinPaprika]
+    """List all smart contract platforms like ethereum, solana, cosmos, polkadot, kusama.
+    [Source: CoinPaprika]
 
     Parameters
     ----------
@@ -332,7 +347,11 @@ def display_all_platforms(export: str) -> None:
 
 @log_start_end(log=logger)
 def display_contracts(
-    platform: str, sortby: str, descend: bool, top: int, export: str
+    symbol: str,
+    sortby: str = "active",
+    ascend: bool = True,
+    limit: int = 15,
+    export: str = "",
 ) -> None:
     """Gets all contract addresses for given platform. [Source: CoinPaprika]
 
@@ -340,26 +359,24 @@ def display_contracts(
     ----------
     platform: str
         Blockchain platform like eth-ethereum
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data
-    descend: bool
-        Flag to sort data descending
+    ascend: bool
+        Flag to sort data ascending
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = paprika.get_contract_platform(platform)
+    df = paprika.get_contract_platform(symbol, sortby, ascend)
 
     if df.empty:
-        console.print(f"Nothing found for platform: {platform}", "\n")
+        console.print(f"Nothing found for platform: {symbol}", "\n")
         return
 
-    df = df.sort_values(by=sortby, ascending=descend)
-
     print_rich_table(
-        df.head(top),
+        df.head(limit),
         headers=list(df.columns),
         show_index=False,
         title="Contract Addresses",

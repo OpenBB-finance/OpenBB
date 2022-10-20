@@ -53,7 +53,7 @@ def test_display_chains(calls_only, max_sp, min_sp, mocker, puts_only):
     )
 
     tradier_view.display_chains(
-        ticker="AAPL",
+        symbol="AAPL",
         expiry="2022-02-25",
         to_display=["volume"],
         min_sp=min_sp,
@@ -93,7 +93,7 @@ def test_plot_oi(calls_only, max_sp, min_sp, mocker, puts_only):
     )
 
     tradier_view.plot_oi(
-        ticker="AAPL",
+        symbol="AAPL",
         expiry="2022-02-25",
         min_sp=min_sp,
         max_sp=max_sp,
@@ -131,7 +131,7 @@ def test_plot_vol(calls_only, max_sp, min_sp, mocker, puts_only):
     )
 
     tradier_view.plot_vol(
-        ticker="AAPL",
+        symbol="AAPL",
         expiry="2022-02-25",
         min_sp=min_sp,
         max_sp=max_sp,
@@ -165,7 +165,7 @@ def test_plot_volume_open_interest(max_sp, min_sp, min_vol, mocker):
     )
 
     tradier_view.plot_volume_open_interest(
-        ticker="AAPL",
+        symbol="AAPL",
         expiry="2022-02-25",
         min_sp=min_sp,
         max_sp=max_sp,
@@ -191,7 +191,7 @@ def test_display_historical(mocker):
     )
 
     tradier_view.display_historical(
-        ticker="AAPL",
+        symbol="AAPL",
         expiry="2022-02-25",
         strike=180.0,
         put=True,

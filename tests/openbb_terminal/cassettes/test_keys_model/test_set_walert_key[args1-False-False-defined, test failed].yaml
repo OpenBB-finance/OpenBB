@@ -1,0 +1,48 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+    method: GET
+    uri: https://api.whale-alert.io/v1/transactions?api_key=test_key
+  response:
+    body:
+      string: '{"result":"error","message":"invalid api_key"}
+
+        '
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 754e82e79ed4be38-CPH
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '47'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Tue, 04 Oct 2022 14:12:14 GMT
+      NEL:
+      - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Report-To:
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=pNRNsg5GlM73gyEJW8cA84uyafK1C%2B%2FmdTZXKYgZHzgIV6NKfxnjDlg0PVmETjFB7HII%2BWe2P6%2BW9naOf7D2z9OVwy%2BUFsKGOXgYqbY7gLxZbb7nbuLN5Rr0B9xaIitDPvE5bT0%3D"}],"group":"cf-nel","max_age":604800}'
+      Server:
+      - cloudflare
+      alt-svc:
+      - h3=":443"; ma=86400, h3-29=":443"; ma=86400
+      x-content-type-options:
+      - nosniff
+      x-frame-options:
+      - deny
+    status:
+      code: 401
+      message: Unauthorized
+version: 1

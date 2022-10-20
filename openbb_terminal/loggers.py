@@ -58,7 +58,7 @@ def get_app_id() -> str:
         if e.errno == 30:
             print("Please move the application into a writable location.")
             print(
-                "Note for macOS users: copy `Gamestonk Terminal` folder outside the DMG."
+                "Note for macOS users: copy `OpenBB Terminal` folder outside the DMG."
             )
         else:
             raise e
@@ -120,9 +120,9 @@ def add_file_handler(settings: Settings):
 
 
 def setup_handlers(settings: Settings):
-    log_settings = settings.log_settings
-    handler_list = log_settings.handler_list
-    verbosity = log_settings.verbosity
+    logging_settings = settings.log_settings
+    handler_list = logging_settings.handler_list
+    verbosity = logging_settings.verbosity
 
     logging.basicConfig(
         level=verbosity,

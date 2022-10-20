@@ -30,7 +30,7 @@ def display_search(
     country: str = "united states",
     limit: int = 10,
     sortby: str = "",
-    ascending: bool = False,
+    ascend: bool = False,
 ):
     """Display results of searching for Mutual Funds
 
@@ -46,7 +46,7 @@ def display_search(
         Number to show
     sortby: str
         Column to sort by
-    ascending: bool
+    ascend: bool
         Flag to sort in ascending order
     """
     searches = investpy_model.search_funds(by, value)
@@ -61,7 +61,7 @@ def display_search(
         searches = searches.drop(columns=["country", "underlying"])
 
     if sortby:
-        searches = searches.sort_values(by=sortby, ascending=ascending)
+        searches = searches.sort_values(by=sortby, ascending=ascend)
 
     print_rich_table(
         searches.head(limit),
@@ -84,6 +84,8 @@ def display_overview(country: str = "united states", limit: int = 10, export: st
         Format to export data
     """
     overview = investpy_model.get_overview(country=country, limit=limit)
+    if overview.empty:
+        return
     overview["Assets (1B)"] = overview.total_assets / 1_000_000_000
     overview = overview.drop(columns=["country", "total_assets"])
     print_rich_table(
@@ -99,25 +101,35 @@ def display_overview(country: str = "united states", limit: int = 10, export: st
 
 
 @log_start_end(log=logger)
-def display_fund_info(fund_name: str, country: str = "united states"):
+def display_fund_info(name: str, country: str = "united states"):
     """Display fund information.  Finds name from symbol first if name is false
 
     Parameters
     ----------
-    fund: str
+    name: str
         Fund name to get info for
     country : str
         Country of fund
     """
     info = (
-        investpy_model.get_fund_info(fund_name, country)
+        investpy_model.get_fund_info(name, country)
         .reset_index(drop=False)
         .applymap(lambda x: np.nan if not x else x)
         .dropna()
     )
+    if info.empty:
+        return
+
+    # redact inception date if it appears castable to a float
+    try:
+        float(info[0].loc[info["index"] == "Inception Date"].values[0])
+        info.loc[info["index"] == "Inception Date", 0] = "-"
+    except ValueError:
+        pass
+
     print_rich_table(
         info,
-        title=f"[bold]{fund_name.title()} Information[/bold]",
+        title=f"[bold]{name.title()} Information[/bold]",
         show_index=False,
         headers=["Info", "Value"],
     )
@@ -126,7 +138,7 @@ def display_fund_info(fund_name: str, country: str = "united states"):
 @log_start_end(log=logger)
 def display_historical(
     data: pd.DataFrame,
-    fund: str = "",
+    name: str = "",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -136,7 +148,7 @@ def display_historical(
     ----------
     data: pd.DataFrame
         Dataframe containing historical data
-    fund: str
+    name: str
         Fund symbol or name
     export: str
         Format to export data
@@ -148,11 +160,13 @@ def display_historical(
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
         ax = external_axes[0]
+    if data.empty:
+        return
     ax.plot(data.index, data.Close)
     ax.set_xlim([data.index[0], data.index[-1]])
     ax.set_xlabel("Date")
     ax.set_ylabel("Close Price")
-    ax.set_title(f"{fund.title()} Price History")
+    ax.set_title(f"{name.title()} Price History")
     theme.style_primary_axis(ax)
     if external_axes is None:
         theme.visualize_output()

@@ -29,17 +29,20 @@ def etf_movers(sort_type: str = "gainers", export: bool = False) -> pd.DataFrame
     if sort_type == "gainers":
         url = (
             "https://www.wsj.com/market-data/mutualfunds-etfs/etfmovers?id=%7B%22application"
-            "%22%3A%22WSJ%22%2C%22etfMover%22%3A%22leaders%22%2C%22count%22%3A25%7D&type=mdc_etfmovers"
+            "%22%3A%22WSJ%22%2C%22etfMover%22%3A%22leaders%22%2C%22count%22%3A25%7D&type="
+            "mdc_etfmovers"
         )
     elif sort_type == "decliners":
         url = (
             "https://www.wsj.com/market-data/mutualfunds-etfs/etfmovers?id=%7B%22application"
-            "%22%3A%22WSJ%22%2C%22etfMover%22%3A%22laggards%22%2C%22count%22%3A25%7D&type=mdc_etfmovers"
+            "%22%3A%22WSJ%22%2C%22etfMover%22%3A%22laggards%22%2C%22count%22%3A25%7D&type="
+            "mdc_etfmovers"
         )
     elif sort_type == "active":
         url = (
             "https://www.wsj.com/market-data/mutualfunds-etfs/etfmovers?id=%7B%22application"
-            "%22%3A%22WSJ%22%2C%22etfMover%22%3A%22most_active%22%2C%22count%22%3A25%7D&type=mdc_etfmovers"
+            "%22%3A%22WSJ%22%2C%22etfMover%22%3A%22most_active%22%2C%22count%22%3A25%7D&type="
+            "mdc_etfmovers"
         )
     else:
         url = ""

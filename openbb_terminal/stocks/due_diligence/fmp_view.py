@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+import pandas as pd
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
@@ -11,39 +12,44 @@ from openbb_terminal.stocks.due_diligence import fmp_model
 logger = logging.getLogger(__name__)
 
 
+def add_color(value: str) -> str:
+    if "buy" in value.lower():
+        value = f"[green]{value}[/green]"
+    elif "sell" in value.lower():
+        value = f"[red]{value}[/red]"
+    return value
+
+
 @log_start_end(log=logger)
-def rating(ticker: str, num: int, export: str):
+def rating(symbol: str, limit: int = 10, export: str = ""):
     """Display ratings for a given ticker. [Source: Financial Modeling Prep]
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
-    num : int
+    symbol: str
+        Stock ticker symbol
+    limit: int
         Number of last days ratings to display
-    export : str
+    export: str
         Export dataframe data to csv,json,xlsx file
     """
-    df = fmp_model.get_rating(ticker)
+    df = fmp_model.get_rating(symbol)
+
+    if (isinstance(df, pd.DataFrame) and df.empty) or (
+        not isinstance(df, pd.DataFrame) and not df
+    ):
+        return
 
     # TODO: This could be displayed in a nice rating plot over time
-    # TODO: Add coloring to table
 
-    if not df.empty:
-        l_recoms = [col for col in df.columns if "Recommendation" in col]
-        l_recoms_show = [
-            recom.replace("rating", "")
-            .replace("Details", "")
-            .replace("Recommendation", "")
-            for recom in l_recoms
-        ]
-        l_recoms_show[0] = "Rating"
-        print_rich_table(
-            df[l_recoms].head(num),
-            headers=l_recoms_show,
-            show_index=True,
-            title="Rating",
-        )
+    df = df.astype(str).applymap(lambda x: add_color(x))
+
+    print_rich_table(
+        df.head(limit),
+        headers=df.columns,
+        show_index=True,
+        title="Rating",
+    )
 
     export_data(
         export,

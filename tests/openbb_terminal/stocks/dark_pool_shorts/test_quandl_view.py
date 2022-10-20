@@ -29,9 +29,9 @@ def test_short_interest(mocker, nyse, raw):
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 
     quandl_view.short_interest(
-        ticker="PM",
+        symbol="PM",
         nyse=nyse,
-        days=2,
+        limit=2,
         raw=raw,
         export="",
     )

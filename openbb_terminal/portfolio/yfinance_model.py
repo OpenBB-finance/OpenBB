@@ -10,12 +10,12 @@ import pandas as pd
 from openbb_terminal.stocks.sector_industry_analysis import financedatabase_model
 
 
-def get_stocks(tickers: List[str], start: datetime) -> pd.DataFrame:
+def get_stocks(symbols: List[str], start: datetime) -> pd.DataFrame:
     """Gets historic data for list of tickers
 
     Parameters
     ----------
-    tickers : List[str]
+    symbols : List[str]
         Tickers to get data for
     start : datetime
         First date in stock filtered dataframe
@@ -26,29 +26,29 @@ def get_stocks(tickers: List[str], start: datetime) -> pd.DataFrame:
         Historic daily prices for stocks
     """
     df = yf.download(
-        tickers=tickers,
+        tickers=symbols,
         start=start - timedelta(days=365),
         interval="1d",
         progress=False,
     )
     df = df["Adj Close"]
-    if len(tickers) > 1:
+    if len(symbols) > 1:
         df.columns = df.columns.str.lower()
         arrays = [["Close" for _ in df.columns], [x.lower() for x in df.columns]]
         tuples = list(zip(*arrays))
         headers = pd.MultiIndex.from_tuples(tuples, names=["first", "second"])
         df.columns = headers
-    if len(tickers) == 1:
-        df = df.to_frame(name=("Close", tickers[0]))
+    if len(symbols) == 1:
+        df = df.to_frame(name=("Close", symbols[0]))
     return df
 
 
-def get_dividends(tickers: List[str]) -> pd.DataFrame:
+def get_dividends(symbols: List[str]) -> pd.DataFrame:
     """Past dividends for list of tickers
 
     Parameters
     ----------
-    tickers : List[str]
+    symbols : List[str]
         Tickers to get data for
 
     Returns
@@ -57,7 +57,7 @@ def get_dividends(tickers: List[str]) -> pd.DataFrame:
         Historic dividends for stocks
     """
     dfs = []
-    for ticker in tickers:
+    for ticker in symbols:
         tick = yf.Ticker(ticker)
         df = tick.dividends.to_frame(name=("Dividend", ticker))
         dfs.append(df)

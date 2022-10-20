@@ -313,8 +313,8 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [
                 "MOCK_TICKER",
                 "2022-01-07",
-                True,
                 PRICES,
+                True,
                 1.0,
                 2.0,
                 3.0,

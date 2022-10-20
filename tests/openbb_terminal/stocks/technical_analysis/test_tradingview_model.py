@@ -23,7 +23,7 @@ def vcr_config():
 )
 def test_get_tradingview_recommendation(interval, recorder):
     result = tradingview_model.get_tradingview_recommendation(
-        ticker="AAPL",
+        symbol="AAPL",
         exchange="",
         screener="america",
         interval=interval,

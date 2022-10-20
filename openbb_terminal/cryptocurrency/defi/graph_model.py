@@ -12,7 +12,10 @@ from openbb_terminal.cryptocurrency.dataframe_helpers import (
 )
 from openbb_terminal.decorators import log_start_end
 
+# pylint: disable=unsupported-assignment-operation
+
 logger = logging.getLogger(__name__)
+# pylint: disable=unsupported-assignment-operation
 
 UNI_URL = "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2"
 
@@ -74,7 +77,9 @@ def query_graph(url: str, query: str) -> dict:
 
 
 @log_start_end(log=logger)
-def get_uni_tokens(skip: int = 0, limit: int = 100) -> pd.DataFrame:
+def get_uni_tokens(
+    skip: int = 0, limit: int = 100, sortby: str = "index", ascend: bool = False
+) -> pd.DataFrame:
     """Get list of tokens trade-able on Uniswap DEX. [Source: https://thegraph.com/en/]
 
     Parameters
@@ -83,6 +88,10 @@ def get_uni_tokens(skip: int = 0, limit: int = 100) -> pd.DataFrame:
         Skip n number of records.
     limit: int
         Show n number of records.
+    sortby: str
+        The column to sort by
+    ascend: bool
+        Whether to sort in ascending order
 
     Returns
     -------
@@ -106,8 +115,8 @@ def get_uni_tokens(skip: int = 0, limit: int = 100) -> pd.DataFrame:
     data = query_graph(UNI_URL, query)
     if not data:
         return pd.DataFrame()
-
-    return pd.DataFrame(data["tokens"]).reset_index()
+    df = pd.DataFrame(data["tokens"]).reset_index()
+    return df.sort_values(by=sortby, ascending=ascend)
 
 
 @log_start_end(log=logger)

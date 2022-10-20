@@ -14,18 +14,29 @@ def vcr_config():
     }
 
 
-@pytest.mark.vcr
-@pytest.mark.parametrize(
-    "data_type",
-    [
-        "valuation",
-        "performance",
-    ],
-)
-def test_get_valuation_performance_data(data_type, recorder):
-    result_df = finviz_model.get_valuation_performance_data(
-        group="Sector", data_type=data_type
+@pytest.mark.vcr(record_mode="none")
+def test_get_performance_map(mocker):
+    # MOCK EXPORT_DATA
+    mock_open = mocker.Mock()
+    mocker.patch(
+        target="openbb_terminal.economy.finviz_model.webbrowser.open", new=mock_open
     )
+
+    finviz_model.get_performance_map(period="1w", map_filter="sp500")
+
+    mock_open.assert_called_once()
+
+
+@pytest.mark.vcr
+def test_get_valuation_data(recorder):
+    result_df = finviz_model.get_valuation_data(group="sector")
+
+    recorder.capture(result_df)
+
+
+@pytest.mark.vcr
+def test_get_performance_data(recorder):
+    result_df = finviz_model.get_performance_data(group="sector")
 
     recorder.capture(result_df)
 
@@ -38,7 +49,7 @@ def test_get_spectrum_data(mocker):
         target="openbb_terminal.economy.finviz_model.spectrum",
         new=mock_spectrum,
     )
-    finviz_model.get_spectrum_data(group="Sector")
+    finviz_model.get_spectrum_data(group="sector")
 
     mock_spectrum.Spectrum().screener_view.assert_called_with(group="Sector")
 

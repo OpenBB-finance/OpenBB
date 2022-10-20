@@ -25,20 +25,23 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def darkpool_ats_otc(
-    ticker: str, export: str = "", external_axes: Optional[List[plt.Axes]] = None
+    symbol: str, export: str = "", external_axes: Optional[List[plt.Axes]] = None
 ):
     """Display barchart of dark pool (ATS) and OTC (Non ATS) data. [Source: FINRA]
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Stock ticker
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
     """
-    ats, otc = finra_model.getTickerFINRAdata(ticker)
+    ats, otc = finra_model.getTickerFINRAdata(symbol)
+    if ats.empty:
+        console.print("[red]Could not get data[/red]\n")
+        return
 
     if ats.empty and otc.empty:
         console.print("No ticker data found!")
@@ -81,7 +84,7 @@ def darkpool_ats_otc(
         ax1.legend(["OTC"])
 
     ax1.set_ylabel("Total Weekly Shares [Million]")
-    ax1.set_title(f"Dark Pools (ATS) vs OTC (Non-ATS) Data for {ticker}")
+    ax1.set_title(f"Dark Pools (ATS) vs OTC (Non-ATS) Data for {symbol}")
     ax1.set_xticks([])
 
     if not ats.empty:
@@ -136,19 +139,19 @@ def darkpool_ats_otc(
 
 @log_start_end(log=logger)
 def plot_dark_pools_ats(
-    ats: pd.DataFrame,
-    top_ats_tickers: List,
+    data: pd.DataFrame,
+    symbols: List,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Plots promising tickers based on growing ATS data
 
     Parameters
     ----------
-    ats : pd.DataFrame
+    data: pd.DataFrame
         Dark Pools (ATS) Data
-    top_ats_tickers : List
+    symbols: List
         List of tickers from most promising with better linear regression slope
-    external_axes : Optional[List[plt.Axes]], optional
+    external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
 
     """
@@ -161,21 +164,21 @@ def plot_dark_pools_ats(
     else:
         return
 
-    for symbol in top_ats_tickers:
+    for symbol in symbols:
         ax.plot(
             pd.to_datetime(
-                ats[ats["issueSymbolIdentifier"] == symbol]["weekStartDate"]
+                data[data["issueSymbolIdentifier"] == symbol]["weekStartDate"]
             ),
-            ats[ats["issueSymbolIdentifier"] == symbol]["totalWeeklyShareQuantity"]
+            data[data["issueSymbolIdentifier"] == symbol]["totalWeeklyShareQuantity"]
             / 1_000_000,
         )
 
-    ax.legend(top_ats_tickers)
+    ax.legend(symbols)
     ax.set_ylabel("Total Weekly Shares [Million]")
     ax.set_title("Dark Pool (ATS) growing tickers")
     ax.set_xlabel("Weeks")
-    ats["weekStartDate"] = pd.to_datetime(ats["weekStartDate"])
-    ax.set_xlim(ats["weekStartDate"].iloc[0], ats["weekStartDate"].iloc[-1])
+    data["weekStartDate"] = pd.to_datetime(data["weekStartDate"])
+    ax.set_xlim(data["weekStartDate"].iloc[0], data["weekStartDate"].iloc[-1])
     theme.style_primary_axis(ax)
 
     if not external_axes:
@@ -184,8 +187,8 @@ def plot_dark_pools_ats(
 
 @log_start_end(log=logger)
 def darkpool_otc(
-    num: int,
-    promising: int,
+    input_limit: int = 1000,
+    limit: int = 10,
     tier: str = "T1",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -194,10 +197,10 @@ def darkpool_otc(
 
     Parameters
     ----------
-    num : int
+    input_limit : int
         Number of tickers to filter from entire ATS data based on
         the sum of the total weekly shares quantity
-    promising : int
+    limit : int
         Number of tickers to display from most promising with
         better linear regression slope
     tier : str
@@ -208,18 +211,25 @@ def darkpool_otc(
         External axes (1 axis is expected in the list), by default None
     """
     # TODO: Improve command logic to be faster and more useful
-    df_ats, d_ats_reg = finra_model.getATSdata(num, tier)
+    df_ats, d_ats_reg = finra_model.getATSdata(input_limit, tier)
 
-    top_ats_tickers = list(
-        dict(sorted(d_ats_reg.items(), key=lambda item: item[1], reverse=True)).keys()
-    )[:promising]
+    if not df_ats.empty and d_ats_reg:
 
-    plot_dark_pools_ats(df_ats, top_ats_tickers, external_axes)
-    console.print("")
+        symbols = list(
+            dict(
+                sorted(d_ats_reg.items(), key=lambda item: item[1], reverse=True)
+            ).keys()
+        )[:limit]
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "prom",
-        df_ats,
-    )
+        plot_dark_pools_ats(df_ats, symbols, external_axes)
+        console.print("")
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "prom",
+            df_ats,
+        )
+    else:
+        console.print("[red]Could not get data[/red]\n")
+        return

@@ -1,6 +1,6 @@
 ---
 title: Introduction to the Due Diligence Menu
-keywords: "dd, due, diligence, dilligence, research, company, ticker, analyst, rating, rot, pt, est, sec, supplier, customer, arktrades, ratings, analysts, filings, form, forms, customers, suppliers"
+keywords: "dd, due, diligence, research, company, ticker, analyst, rating, rot, pt, est, sec, supplier, customer, arktrades, ratings, analysts, filings, form, forms, customers, suppliers"
 date: "2022-06-01"
 type: guides
 status: publish

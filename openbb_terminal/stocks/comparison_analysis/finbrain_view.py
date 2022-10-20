@@ -40,7 +40,9 @@ def display_sentiment_compare(
     Parameters
     ----------
     similar : List[str]
-        Similar companies to compare income with
+        Similar companies to compare income with.
+        Comparable companies can be accessed through
+        finviz_peers(), finnhub_peers() or polygon_peers().
     raw : bool, optional
         Output raw values, by default False
     export : str, optional
@@ -128,7 +130,9 @@ def display_sentiment_correlation(
     Parameters
     ----------
     similar : List[str]
-        Similar companies to compare income with
+        Similar companies to compare income with.
+        Comparable companies can be accessed through
+        finviz_peers(), finnhub_peers() or polygon_peers().
     raw : bool, optional
         Output raw values, by default False
     export : str, optional
@@ -136,8 +140,7 @@ def display_sentiment_correlation(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df_sentiment = finbrain_model.get_sentiments(similar)
-    corrs = df_sentiment.corr()
+    corrs, df_sentiment = finbrain_model.get_sentiment_correlation(similar)
 
     if df_sentiment.empty:
         console.print("No sentiments found.")

@@ -6,7 +6,8 @@ from typing import List
 import logging
 import matplotlib as mpl
 import pandas as pd
-from prompt_toolkit.completion import NestedCompleter
+
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.helper_funcs import (
@@ -49,6 +50,40 @@ class BacktestingController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+
+            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
+            choices["whatif"] = {
+                "--date": None,
+                "-d": "--date",
+                "--number": one_to_hundred,
+                "-n": "--number",
+            }
+            choices["ema"] = {
+                "-l": one_to_hundred,
+                "--spy": {},
+                "--no_bench": {},
+            }
+            choices["ema_cross"] = {
+                "--long": one_to_hundred,
+                "-l": "--long",
+                "--short": one_to_hundred,
+                "-s": "--short",
+                "--spy": {},
+                "--no_bench": {},
+                "--no_short": {},
+            }
+            choices["rsi"] = {
+                "--periods": one_to_hundred,
+                "-p": "--periods",
+                "--high": one_to_hundred,
+                "-u": "--high",
+                "--low": one_to_hundred,
+                "-l": "--low",
+                "--spy": {},
+                "--no_bench": {},
+                "--no_short": {},
+            }
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -99,7 +134,7 @@ class BacktestingController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             bt_view.display_whatif_scenario(
-                ticker=self.ticker,
+                symbol=self.ticker,
                 num_shares_acquired=ns_parser.num_shares_acquired,
                 date_shares_acquired=ns_parser.date_shares_acquired,
             )
@@ -140,8 +175,8 @@ class BacktestingController(BaseController):
         if ns_parser:
 
             bt_view.display_simple_ema(
-                ticker=self.ticker,
-                df_stock=self.stock,
+                symbol=self.ticker,
+                data=self.stock,
                 ema_length=ns_parser.length,
                 spy_bt=ns_parser.spy,
                 no_bench=ns_parser.no_bench,
@@ -204,8 +239,8 @@ class BacktestingController(BaseController):
                 console.print("Short EMA period is longer than Long EMA period\n")
 
             bt_view.display_ema_cross(
-                ticker=self.ticker,
-                df_stock=self.stock,
+                symbol=self.ticker,
+                data=self.stock,
                 short_ema=ns_parser.short,
                 long_ema=ns_parser.long,
                 spy_bt=ns_parser.spy,
@@ -277,8 +312,8 @@ class BacktestingController(BaseController):
                 console.print("Low RSI value is higher than Low RSI value\n")
 
             bt_view.display_rsi_strategy(
-                ticker=self.ticker,
-                df_stock=self.stock,
+                symbol=self.ticker,
+                data=self.stock,
                 periods=ns_parser.periods,
                 low_rsi=ns_parser.low,
                 high_rsi=ns_parser.high,

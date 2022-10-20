@@ -17,7 +17,7 @@ ASSETS = ["ust", "luna", "sdt"]
 
 @log_start_end(log=logger)
 def get_history_asset_from_terra_address(
-    asset: str = "ust", address: str = ""
+    asset: str = "ust", address: str = "terra1tmnqgvg567ypvsvk6rwsga3srp7e3lg6u0elp8"
 ) -> pd.DataFrame:
     """Returns historical data of an asset in a certain terra address
     [Source: https://terra.engineer/]
@@ -49,7 +49,27 @@ def get_history_asset_from_terra_address(
         raise Exception(f"Status code: {response.status_code}. Reason: {response.text}")
 
     data = response.json()
-    df = pd.DataFrame(data[0]["data"])
-    df["x"] = pd.to_datetime(df["x"])
+    if data[0]["data"]:
+        df = pd.DataFrame(data[0]["data"])
+        df["x"] = pd.to_datetime(df["x"])
+    else:
+        df = pd.DataFrame()
 
+    return df
+
+
+@log_start_end(log=logger)
+def get_anchor_yield_reserve() -> pd.DataFrame:
+    """Displays the 30-day history of the Anchor Yield Reserve.
+    [Source: https://terra.engineer/]
+
+    Returns
+    ----------
+    pd.DataFrame
+        Dataframe containing historical data
+    """
+
+    df = get_history_asset_from_terra_address(
+        address="terra1tmnqgvg567ypvsvk6rwsga3srp7e3lg6u0elp8"
+    )
     return df

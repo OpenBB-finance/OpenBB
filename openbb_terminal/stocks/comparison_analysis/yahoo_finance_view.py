@@ -42,8 +42,8 @@ d_candle_types = {
 
 @log_start_end(log=logger)
 def display_historical(
-    similar_tickers: List[str],
-    start: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+    similar: List[str],
+    start_date: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
     candle_type: str = "a",
     normalize: bool = True,
     export: str = "",
@@ -53,29 +53,23 @@ def display_historical(
 
     Parameters
     ----------
-    similar_tickers : List[str]
-        List of similar tickers
-    start : str, optional
+    similar: List[str]
+        List of similar tickers.
+        Comparable companies can be accessed through
+        finnhub_peers(), finviz_peers(), polygon_peers().
+    start_date: str, optional
         Start date of comparison, by default 1 year ago
-    candle_type : str, optional
+    candle_type: str, optional
         OHLCA column to use or R to use daily returns calculated from Adjusted Close, by default "a" for Adjusted Close
-    normalize : bool, optional
+    normalize: bool, optional
         Boolean to normalize all stock prices using MinMax defaults True
-    export : str, optional
+    export: str, optional
         Format to export historical prices, by default ""
-    external_axes : Optional[List[plt.Axes]], optional
+    external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
 
     """
-    df_similar = yahoo_finance_model.get_historical(similar_tickers, start, candle_type)
-    df_similar = df_similar[similar_tickers]
-
-    if np.any(df_similar.isna()):
-        nan_tickers = df_similar.columns[df_similar.isna().sum() >= 1].to_list()
-        console.print(
-            f"NaN values found in: {', '.join(nan_tickers)}.  Replacing with zeros."
-        )
-        df_similar = df_similar.fillna(0)
+    df_similar = yahoo_finance_model.get_historical(similar, start_date, candle_type)
 
     # This puts everything on 0-1 scale for visualizing
     if normalize:
@@ -114,26 +108,27 @@ def display_historical(
 
 @log_start_end(log=logger)
 def display_volume(
-    similar_tickers: List[str],
-    start: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+    similar: List[str],
+    start_date: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Display volume stock prices. [Source: Yahoo Finance]
+    """Display stock volume. [Source: Yahoo Finance]
 
     Parameters
     ----------
-    similar_tickers : List[str]
-        List of similar tickers
-    start : str, optional
+    similar : List[str]
+        List of similar tickers.
+        Comparable companies can be accessed through
+        finnhub_peers(), finviz_peers(), polygon_peers().
+    start_date : str, optional
         Start date of comparison, by default 1 year ago
     export : str, optional
         Format to export historical prices, by default ""
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df_similar = yahoo_finance_model.get_historical(similar_tickers, start, "v")
-    df_similar = df_similar[similar_tickers]
+    df_similar = yahoo_finance_model.get_volume(similar, start_date)
 
     # This plot has 1 axis
     if not external_axes:
@@ -166,13 +161,13 @@ def display_volume(
 
 @log_start_end(log=logger)
 def display_correlation(
-    similar_tickers: List[str],
-    start: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+    similar: List[str],
+    start_date: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
     candle_type: str = "a",
-    external_axes: Optional[List[plt.Axes]] = None,
-    export: str = "",
     display_full_matrix: bool = False,
     raw: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
+    export: str = "",
 ):
     """
     Correlation heatmap based on historical price comparison
@@ -180,32 +175,27 @@ def display_correlation(
 
     Parameters
     ----------
-    similar_tickers : List[str]
-        List of similar tickers
-    start : str, optional
+    similar : List[str]
+        List of similar tickers.
+        Comparable companies can be accessed through
+        finnhub_peers(), finviz_peers(), polygon_peers().
+    start_date : str, optional
         Start date of comparison, by default 1 year ago
     candle_type : str, optional
         OHLCA column to use for candles or R for returns, by default "a" for Adjusted Close
+    display_full_matrix : bool, optional
+        Optionally display all values in the matrix, rather than masking off half, by default False
+    raw: bool, optional
+        Whether to display raw data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     export : str, optional
         Format to export correlation prices, by default ""
-    display_full_matrix : bool, optional
-        Optionally display all values in the matrix, rather than masking off half, by default False
-
     """
 
-    df_similar = yahoo_finance_model.get_historical(similar_tickers, start, candle_type)
-    df_similar = df_similar[similar_tickers]
-
-    if np.any(df_similar.isna()):
-        nan_tickers = df_similar.columns[df_similar.isna().sum() >= 1].to_list()
-        console.print(
-            f"NaN values found in: {', '.join(nan_tickers)}.  Backfilling data"
-        )
-        df_similar = df_similar.fillna(method="bfill")
-
-    df_similar = df_similar.dropna(axis=1, how="all")
+    correlations, df_similar = yahoo_finance_model.get_correlation(
+        similar, start_date, candle_type
+    )
 
     mask = None
     if not display_full_matrix:
@@ -220,8 +210,6 @@ def display_correlation(
     else:
         return
 
-    # Print correlations to command line as well
-    correlations = df_similar.corr()
     if raw:
         print_rich_table(
             correlations,
@@ -241,10 +229,98 @@ def display_correlation(
         mask=mask,
         ax=ax,
     )
-    ax.set_title(f"Correlation Heatmap of similar companies from {start}")
+    ax.set_title(f"Correlation Heatmap of similar companies from {start_date}")
 
     if not external_axes:
         theme.visualize_output()
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "hcorr", df_similar)
     console.print("")
+
+
+@log_start_end(log=logger)
+def display_sp500_comps_tsne(
+    symbol: str,
+    lr: int = 200,
+    no_plot: bool = False,
+    limit: int = 10,
+    external_axes: Optional[List[plt.Axes]] = None,
+) -> List[str]:
+    """Runs TSNE on SP500 tickers (along with ticker if not in SP500).
+    TSNE is a method of visualing higher dimensional data
+    https://scikit-learn.org/stable/modules/generated/sklearn.manifold.TSNE.html
+    Note that the TSNE numbers are meaningless and will be arbitrary if run again.
+
+    Parameters
+    ----------
+    symbol: str
+        Ticker to get comparisons to
+    lr: int
+        Learning rate for TSNE
+    no_plot: bool
+        Flag to hold off on plotting
+    limit: int
+        Number of tickers to return
+    external_axes : Optional[List[plt.Axes]]
+        External axes (1 axis is expected in the list), by default None
+
+    Returns
+    -------
+    List[str]
+        List of the 10 closest stocks due to TSNE
+    """
+    data = yahoo_finance_model.get_sp500_comps_tsne(symbol=symbol, lr=lr)
+
+    top_n = data.iloc[1 : (limit + 1)]
+    top_n_name = top_n.index.to_list()
+
+    if not no_plot:
+        # This plot has 1 axis
+        if not external_axes:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        elif is_valid_axes_count(external_axes, 1):
+            (ax,) = external_axes
+        else:
+            return []
+
+        top_100 = data[(limit + 1) : 101]
+        symbol_df = data[data.index == symbol]
+
+        ax.scatter(
+            top_n.X,
+            top_n.Y,
+            alpha=0.8,
+            c=theme.up_color,
+            label=f"Top {limit} closest tickers",
+        )
+        ax.scatter(
+            top_100.X, top_100.Y, alpha=0.5, c="grey", label="Top 100 closest tickers"
+        )
+
+        for x, y, company in zip(top_n.X, top_n.Y, top_n.index):
+            ax.annotate(company, (x, y), fontsize=9, alpha=0.9)
+
+        for x, y, company in zip(top_100.X, top_100.Y, top_100.index):
+            ax.annotate(company, (x, y), fontsize=9, alpha=0.75)
+
+        ax.scatter(
+            symbol_df.X,
+            symbol_df.Y,
+            s=50,
+            c=theme.down_color,
+        )
+        ax.annotate(symbol, (symbol_df.X, symbol_df.Y), fontsize=9, alpha=1)
+        ax.legend()
+
+        ax.set_title(
+            f"Top 100 closest stocks on S&P500 to {symbol} using TSNE algorithm",
+            fontsize=11,
+        )
+        ax.set_xlabel("Dimension 1")
+        ax.set_ylabel("Dimension 2")
+        theme.style_primary_axis(ax)
+
+        if not external_axes:
+            theme.visualize_output()
+
+    return top_n_name

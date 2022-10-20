@@ -8,7 +8,8 @@ import os
 from typing import List
 
 import pandas as pd
-from prompt_toolkit.completion import NestedCompleter
+
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
@@ -65,19 +66,23 @@ class TradingHoursController(BaseController):
                 else:
                     self.symbol_market_open = False
             else:
-                console.print(f"The ticker {ticker} was not find in the database.")
+                console.print(f"The ticker {ticker} was not found in the database.")
 
-        self.source = "yf"
+        self.source = "YahooFinance"
         self.data = pd.DataFrame()
         self.timezone = get_user_timezone_or_invalid()
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+
             choices["exchange"] = {c: None for c in self.all_exchange_short_names}
-            choices["exchange"]["-n"] = {c: None for c in self.all_exchange_short_names}
             choices["exchange"]["--name"] = {
-                c: None for c in self.all_exchange_short_names
+                c: {} for c in self.all_exchange_short_names
             }
+            choices["exchange"]["-n"] = "--name"
+            choices["symbol"]["--name"] = None
+            choices["symbol"]["-n"] = "--name"
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -195,7 +200,7 @@ class TradingHoursController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             bursa_view.display_open()
-
+        else:
             logger.error("No open exchanges right now.")
             console.print("[red]No open exchanges right now.[/red]\n")
 

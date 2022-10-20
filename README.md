@@ -33,7 +33,7 @@
   </a>
 
   <h3 align="center">OpenBB Terminal 🚀</h3>
-  <h4 align="center">Documentation can be found at: https://openbb-finance.github.io/OpenBBTerminal/ </h4>
+  <h4 align="center">Documentation can be found at: https://openbb.co/docs </h4>
   <p align="center">Click on the GIF below for a DEMO of the terminal.</p>
 
 <p align="center">
@@ -66,131 +66,110 @@
 <details open="open">
   <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
   <ol>
-    <li> <a href="#about-the-project">About The Project</a> </li>
-    <li><a href="#installation">Installation</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#disclaimer">Disclaimer</a></li>
-    <li><a href="#contacts">Contacts</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
+    <li> <a href="#1-about-the-project">About The Project</a> </li>
+    <li><a href="#2-installation">Installation</a></li>
+    <li><a href="#3-contributing">Contributing</a></li>
+    <li><a href="#4-license">License</a></li>
+    <li><a href="#5-disclaimer">Disclaimer</a></li>
+    <li><a href="#6-contacts">Contacts</a></li>
+    <li><a href="#7-star-history">Star History</a></li>
+    <li><a href="#8-contributors">Contributors</a></li>
   </ol>
 </details>
 
-## About The Project
+## 1. About The Project
 
 **How it started:**
 
-OpenBB Terminal is an awesome stock and crypto market terminal that has been developed for fun, while I saw my GME
-shares tanking. But hey, I like the stock 💎🙌.
+OpenBBTerminal is an awesome stock and crypto market terminal that has been developed for fun, while I saw my GME shares tanking. But hey, I like the stock 💎🙌.
 
 **How it's going:**
 
-OpenBB Terminal provides a modern Python-based integrated environment for investment research, that allows
+OpenBBTerminal provides a Python-based integrated environment for investment research, that allows
 an average joe retail trader to leverage state-of-the-art Data Science and Machine Learning technologies.
 
-As a modern Python-based environment, OpenBBTerminal opens access to numerous Python data libraries in Data Science
-(Pandas, Numpy, Scipy, Jupyter), Machine Learning (Pytorch, Tensorflow, Sklearn, Flair), and Data Acquisition
+As a Python-based environment, OpenBBTerminal opens access to numerous Python data libraries in Data Science
+(Pandas, Numpy, Scipy, Jupyter), Machine Learning (Pytorch, Sklearn, Flair), and Data Acquisition
 (Beautiful Soup, and numerous third-party APIs).
 
-## Installation
+## 2. Installation
 
-If you wish to install the Terminal, there are currently four options:
+If you wish to install the OpenBBTerminal, there are currently four options:
 
-- [Using the Installer](https://openbb-finance.github.io/OpenBBTerminal/#accessing-the-openbb-terminal) (recommended if you just want to use the terminal)
-- [Using Python](openbb_terminal/README.md#anaconda--python) (recommended if you want to develop new features)
-- [Using Docker](openbb_terminal/README.md#Docker-Installation) (alternative option to the installer if preferred)
-- [Using Docker Web UI](openbb_terminal/README.md#web-ui---docker) (if you want to deploy the web UI for users to access
-  over your LAN)
+|**Option**|**Use case**|
+|:-|:-|
+|[Installer for Mac or Windows](https://openbb-finance.github.io/OpenBBTerminal/#accessing-the-openbb-terminal)|Recommended way if you just want to use the terminal.|
+|[Git clone](openbb_terminal/README.md#anaconda--python)|Best way if you want to contribute to the project : by adding code or documentation.|
+|[Pypi.org](openbb_terminal/SDK_README)|Best way if you want to use the SDK.|
+|[Using Docker](openbb_terminal/DOCKER_README.md)|An alternative way.|
 
-## Contributing
+## 3. Contributing
 
-There are 3 main ways of contributing to this project.
+There are three main ways of contributing to this project. (Hopefully you have starred the project by now ⭐️)
 
-For a 1 hour coding session where the architecture of the repo is explained while a new feature is added, check
-[here](https://www.youtube.com/watch?v=9BMI9cleTTg).
-
-**Become a Contributor 🦍**
-
-Recommended if you bought the dip, and the share price keeps dipping. You may as well keep yourself busy while stonks
-go up.
+**BECOME A CONTRIBUTOR**
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Install the pre-commit hooks by running:
-   `pre-commit install`.
-   Any time you commit a change, linters will be run automatically. On changes, you will have to re-commit.
+3. Install the pre-commit hooks by running: `pre-commit install`
+      Any time you commit a change, linters will be run automatically. On changes, you will have to re-commit
 4. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 5. Push to your Branch (`git push origin feature/AmazingFeature`)
 6. Open a Pull Request
 
-**Raise an Issue**
+You can read more details about adding a feature in our [CONTRIBUTING GUIDELINES](/CONTRIBUTING.md).
 
-Recommended if you adopted a strategy of buying high and selling low.
+**RAISE AN ISSUE OR REQUEST A FEATURE**
 
-We are interested in your view on what sort of [features](https://github.com/OpenBB-finance/OpenBBTerminal/issues)
-would make you buy even higher and sell even lower.
+- Raise an issue by opening a [bug ticket](https://github.com/OpenBB-finance/OpenBBTerminal/issues).
+- Request a new  feature through a [feature request ticket](https://github.com/OpenBB-finance/OpenBBTerminal/issues).
 
-Also, if somehow you're sitting in several mils due to this terminal, don't forget to report a
-[bug](https://github.com/OpenBB-finance/OpenBBTerminal/issues) so that the team can fix, and keep the old ways.
+**JOIN US**
 
-**Join Us and Contribute**
+Join [our Discord](https://openbb.co/discord) and provide us any feedback on The OpenBB Terminal.
 
-Welcome to the club, and feel free to support the developers behind this amazing open-source project.
-
-If you're interested in contributing, fork us! Grab an issue or enhancement and put in a PR request with the fix.
-
-## License
+## 4. License
 
 Distributed under the MIT License. See
 [LICENSE](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/LICENSE) for more information.
 
-## Disclaimer
+## 5. Disclaimer
 
-"A few things I am not. I am not a cat. I am not an institutional investor, nor am I a hedge fund. I do not have
-clients and I do not provide personalized investment advice for fees or commissions." DFV
+*"A few things I am not. I am not a cat. I am not an institutional investor, nor am I a hedge fund. I do not have
+clients and I do not provide personalized investment advice for fees or commissions."* DFV
 
+```text
 Trading in financial instruments involves high risks including the risk of losing some, or all, of your investment
-amount, and may not be suitable for all investors. Before deciding to trade in a financial instrument you should be fully
-informed of the risks and costs associated with trading the financial markets, carefully consider your investment
-objectives, level of experience, and risk appetite, and seek professional advice where needed. The data contained in GST
-is not necessarily accurate. GST and any provider of the data contained in this website will not accept liability for
-any loss or damage as a result of your trading, or your reliance on the information displayed.
+amount, and may not be suitable for all investors.
 
-## Contacts
+Before deciding to trade in a financial instrument you should be fully informed of the risks and costs associated with trading the financial markets, carefully consider your investment objectives, level of experience, and risk appetite, and seek professional advice where needed.
 
-[Didier Rodrigues Lopes](https://www.linkedin.com/in/didier-lopes/) - dro.lopes@campus.fct.unl.pt
+The data contained in the OpenBBTerminal is not necessarily accurate.
 
-[Artem Veremy](https://www.linkedin.com/in/veremey/) - artem@veremey.net
+OpenBB and any provider of the data contained in this website will not accept liability for any loss or damage as a result of your trading, or your reliance on the information displayed.
+```
 
-[James Maslek](https://www.linkedin.com/in/james-maslek-b6810186/) - jmaslek11@gmail.com
+## 6. Contacts
+
+If you have any questions about the terminal or anything OpenBB, feel free to email us at support@openbb.co
+
+If you want to say hi, or are interested in partnering with us, feel free to reach us at hello@openbb.co
 
 Feel free to share loss porn, memes or any questions at:
 
-- Discord: <https://discord.gg/Up2QGbMKHY>
 - Twitter: [@openbb_finance](https://twitter.com/openbb_finance)
+- Discord: [openbb.co/discord](https://openbb.co/discord)
+- Reddit: [openbb.co/reddit](https://openbb.co/reddit)
 
-### Contributors
-
-<a href="https://github.com/OpenBB-finance/OpenBBTerminal/graphs/contributors">
-   <img src="https://contributors-img.web.app/image?repo=OpenBB-finance/OpenBBTerminal" height="276"/>
-</a>
-
-## Star History
+## 7. Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=openbb-finance/OpenBBTerminal&type=Date)](https://star-history.com/#openbb-finance/OpenBBTerminal&Date)
 
-## Acknowledgments
+## 8. Contributors
 
-- [VICE article - Gamestonk Terminal Is a DIY, Meme Stock Version of Bloomberg Terminal](https://www.vice.com/en/article/qjp9vp/gamestonk-terminal-is-a-diy-meme-stock-version-of-bloomberg-terminal)
-- [Daily Fintech article - Never underestimate Bloomberg, but here are 5 reasons why the Gamestonk Terminal is a contender](https://dailyfintech.com/2021/02/25/never-underestimate-bloomberg-but-here-are-5-reasons-why-the-gamestonk-terminal-is-a-contender/)
-- [HackerNews - Show HN: Can’t afford Bloomberg Terminal? No prob, I built the next best thing](https://news.ycombinator.com/item?id=26258773)
-- [Reddit r/algotrading - Gamestonk Terminal: The next best thing after Bloomberg Terminal.](https://www.reddit.com/r/algotrading/comments/m4uvza/gamestonk_terminal_the_next_best_thing_after/)
-- [Reddit r/Python - Gamestonk Terminal: The equivalent to an open-source python Bloomberg Terminal.](https://www.reddit.com/r/Python/comments/m515yk/gamestonk_terminal_the_equivalent_to_an/)
-- [Reddit r/Superstonk - Move over Bloomberg Terminal, here comes Gamestonk Terminal](https://www.reddit.com/r/Superstonk/comments/mx2cjh/move_over_bloomberg_terminal_here_comes_gamestonk/)
-- [Spotlight: Didier Lopes. Creator of Gamestonk Terminal](https://deepsource.io/spotlight/didier-lopes/)
-- [Reddit r/Superstonk - Gamestonk Terminal - We are very much alive](https://www.reddit.com/r/Superstonk/comments/o502i8/gamestonk_terminal_we_are_very_much_alive/)
-- [Medium- Gamestonk Terminal. Can't Stop, Won't Stop](https://dro-lopes.medium.com/gamestonk-terminal-cant-stop-won-t-stop-e635662d6f2e)
-- [Gamestonk Terminal: UX/UI >> Features](https://dro-lopes.medium.com/gamestonk-terminal-ux-features-f9754b484919)
+<a href="https://github.com/OpenBB-finance/OpenBBTerminal/graphs/contributors">
+   <img src="https://contributors-img.web.app/image?repo=OpenBB-finance/OpenBBTerminal" width="800"/>
+</a>
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->

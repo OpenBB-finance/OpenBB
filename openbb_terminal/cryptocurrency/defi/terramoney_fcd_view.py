@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_account_staking_info(
-    address: str = "", top: int = 10, export: str = ""
+    address: str = "", limit: int = 10, export: str = ""
 ) -> None:
     """Display staking info for provided terra account address [Source: https://fcd.terra.dev/swagger]
 
@@ -37,7 +37,7 @@ def display_account_staking_info(
     ----------
     address: str
         terra blockchain address e.g. terra1jvwelvs7rdk6j3mqdztq5tya99w8lxk6l9hcqg
-    top: int
+    limit: int
         Number of records to display
     export : str
         Export dataframe data to csv,json,xlsx file
@@ -46,7 +46,7 @@ def display_account_staking_info(
     df, report = terramoney_fcd_model.get_staking_account_info(address)
     if not df.empty:
         print_rich_table(
-            df.head(top), headers=list(df.columns), show_index=False, title=report
+            df.head(limit), headers=list(df.columns), show_index=False, title=report
         )
 
     export_data(
@@ -59,25 +59,25 @@ def display_account_staking_info(
 
 @log_start_end(log=logger)
 def display_validators(
-    top: int = 10, sortby: str = "votingPower", descend: bool = False, export: str = ""
+    limit: int = 10, sortby: str = "votingPower", ascend: bool = True, export: str = ""
 ) -> None:
     """Display information about terra validators [Source: https://fcd.terra.dev/swagger]
 
     Parameters
     ----------
-    top: int
+    limit: int
         Number of records to display
     sortby: str
-        Key by which to sort data
-    descend: bool
+        Key by which to sort data. Choose from:
+        validatorName, tokensAmount, votingPower, commissionRate, status, uptime
+    ascend: bool
         Flag to sort data descending
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = terramoney_fcd_model.get_validators()
+    df = terramoney_fcd_model.get_validators(sortby, ascend)
     df_data = df.copy()
-    df = df.sort_values(by=sortby, ascending=descend)
     df["tokensAmount"] = df["tokensAmount"].apply(
         lambda x: lambda_very_long_number_formatter(x)
     )
@@ -87,7 +87,7 @@ def display_validators(
     ]
 
     print_rich_table(
-        df.head(top),
+        df.head(limit),
         headers=list(df.columns),
         floatfmt=".2f",
         show_index=False,
@@ -103,53 +103,40 @@ def display_validators(
 
 @log_start_end(log=logger)
 def display_gov_proposals(
-    top: int = 10,
+    limit: int = 10,
     status: str = "all",
     sortby: str = "id",
-    descend: bool = False,
+    ascend: bool = True,
     export: str = "",
 ) -> None:
     """Display terra blockchain governance proposals list [Source: https://fcd.terra.dev/swagger]
 
     Parameters
     ----------
-    top: int
+    limit: int
         Number of records to display
     status: str
         status of proposal, one from list: ['Voting','Deposit','Passed','Rejected']
     sortby: str
         Key by which to sort data
-    descend: bool
-        Flag to sort data descending
+    ascend: bool
+        Flag to sort data ascend
     export : str
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = terramoney_fcd_model.get_proposals(status)
-    df_data = df.copy()
-    df = df.sort_values(by=sortby, ascending=descend).head(top)
-    df.columns = prettify_column_names(df.columns)
+    df = terramoney_fcd_model.get_proposals(status, sortby, ascend, limit)
 
-    print_rich_table(
-        df,
-        headers=list(df.columns),
-        floatfmt=".2f",
-        show_index=False,
-    )
+    print_rich_table(df, headers=list(df.columns), floatfmt=".2f", show_index=False)
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "govp",
-        df_data,
-    )
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "govp", df)
 
 
 @log_start_end(log=logger)
 def display_account_growth(
     kind: str = "total",
     cumulative: bool = False,
-    top: int = 90,
+    limit: int = 90,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -157,7 +144,7 @@ def display_account_growth(
 
     Parameters
     ----------
-    top: int
+    limit: int
         Number of records to display
     kind: str
         display total account count or active account count. One from list [active, total]
@@ -185,7 +172,7 @@ def display_account_growth(
     else:
         return
 
-    df = df.sort_values("date", ascending=False).head(top)
+    df = df.sort_values("date", ascending=False).head(limit)
     df = df.set_index("date")
 
     start, end = df.index[-1], df.index[0]
@@ -215,7 +202,7 @@ def display_account_growth(
 
 @log_start_end(log=logger)
 def display_staking_ratio_history(
-    top: int = 90,
+    limit: int = 90,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -223,18 +210,15 @@ def display_staking_ratio_history(
 
     Parameters
     ----------
-    top: int
+    limit: int
         Number of records to display
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-
     """
 
-    df = terramoney_fcd_model.get_staking_ratio_history()
-    df = df.sort_values("date", ascending=False).head(top)
-    df = df.set_index("date")
+    df = terramoney_fcd_model.get_staking_ratio_history(limit)
 
     start, end = df.index[-1], df.index[0]
 
@@ -265,7 +249,7 @@ def display_staking_ratio_history(
 
 @log_start_end(log=logger)
 def display_staking_returns_history(
-    top: int = 90,
+    limit: int = 90,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -273,7 +257,7 @@ def display_staking_returns_history(
 
     Parameters
     ----------
-    top: int
+    limit: int
         Number of records to display
     export : str
         Export dataframe data to csv,json,xlsx file
@@ -289,10 +273,7 @@ def display_staking_returns_history(
     else:
         return
 
-    df = terramoney_fcd_model.get_staking_returns_history()
-
-    df = df.sort_values("date", ascending=False).head(top)
-    df = df.set_index("date")
+    df = terramoney_fcd_model.get_staking_returns_history(limit)
 
     start, end = df.index[-1], df.index[0]
 

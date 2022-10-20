@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def load_configuration(excel_file: str):
+def load_configuration(excel_file: str = ""):
     """
     Load in the Excel file to determine the configuration that needs to be set.
 
@@ -51,7 +51,7 @@ def load_configuration(excel_file: str):
 
 
 @log_start_end(log=logger)
-def load_allocation(excel_file: str):
+def load_allocation(excel_file: str = ""):
     """
     Load in the Excel file to determine the allocation that needs to be set.
 
@@ -98,7 +98,7 @@ def load_allocation(excel_file: str):
 
 
 @log_start_end(log=logger)
-def load_bl_views(excel_file: str):
+def load_bl_views(excel_file: str = ""):
     """
     Load a Excel file with views for Black Litterman model.
 

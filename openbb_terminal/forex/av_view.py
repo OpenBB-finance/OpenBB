@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
-def display_quote(to_symbol: str, from_symbol: str):
+def display_quote(to_symbol: str = "USD", from_symbol: str = "EUR"):
     """Display current forex pair exchange rate.
 
     Parameters
@@ -39,7 +39,11 @@ def display_quote(to_symbol: str, from_symbol: str):
         )
         return
 
-    df = pd.DataFrame.from_dict(quote)
+    try:
+        df = pd.DataFrame.from_dict(quote)
+    except ValueError:
+        console.print(f"[red]{quote['Information']}[/red]\n")
+        return
     df.index = df.index.to_series().apply(lambda x: x[3:]).values
     df = df.iloc[[0, 2, 5, 4, 7, 8]]
     print_rich_table(

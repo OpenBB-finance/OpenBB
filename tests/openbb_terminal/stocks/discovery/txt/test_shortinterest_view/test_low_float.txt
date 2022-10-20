@@ -1,3 +1,3 @@
-  Ticker                Company Exchange Float Outstd ShortInt          Industry
-1    DIT  Amcon Distributing Co     AMEX  130K   580K    1.53%  Retail (Grocery)
-2    SEB          Seaboard Corp     AMEX  240K  1.16M    0.67%    Fish/Livestock
+  Ticker                   Company Exchange Float Outstd ShortInt                Industry
+1    SEB             Seaboard Corp     AMEX  250K  1.16M    0.61%          Fish/Livestock
+2    HMG  HMG Courtland Properties     AMEX  390K  1.02M    0.28%  Real Estate Operations

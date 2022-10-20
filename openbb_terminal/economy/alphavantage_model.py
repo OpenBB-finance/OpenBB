@@ -27,33 +27,50 @@ def get_sector_data() -> pd.DataFrame:
     sector_perf = SectorPerformances(
         key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas"
     )
-    # pylint: disable=unbalanced-tuple-unpacking
+
     df_sectors, _ = sector_perf.get_sector()
-    return df_sectors
+
+    # pylint: disable=invalid-sequence-index
+    df_rtp = df_sectors["Rank A: Real-Time Performance"]
+    df_rtp = df_rtp.apply(lambda x: x * 100)
+    df_rtp = df_rtp.to_frame().reset_index()
+
+    df_rtp.columns = ["Sector", "% Chg"]
+
+    return df_rtp
 
 
 @log_start_end(log=logger)
-def get_real_gdp(interval: str = "a") -> pd.DataFrame:
+def get_real_gdp(
+    interval: str = "q",
+    start_year: int = 2010,
+) -> pd.DataFrame:
     """Get annual or quarterly Real GDP for US
 
     Parameters
     ----------
     interval : str, optional
-        Interval for GDP, by default "a" for annual
+        Interval for GDP, by default "a" for annual, by default "q"
+    start_year : int, optional
+        Start year for plot, by default 2010
     Returns
     -------
     pd.DataFrame
         Dataframe of GDP
     """
     s_interval = "quarterly" if interval == "q" else "annual"
-    url = f"https://www.alphavantage.co/query?function=REAL_GDP&interval={s_interval}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+
+    url = (
+        "https://www.alphavantage.co/query?function=REAL_GDP"
+        + f"&interval={s_interval}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+    )
     r = requests.get(url, headers={"User-Agent": get_user_agent()})
 
     if r.status_code != 200:
+        console.print(f"Request error. Response code: {str(r.status_code)}.\n")
         return pd.DataFrame()
 
     payload = r.json()
-    data = pd.DataFrame()
 
     # Successful requests
     if "data" in payload:
@@ -62,97 +79,114 @@ def get_real_gdp(interval: str = "a") -> pd.DataFrame:
             data["date"] = pd.to_datetime(data["date"])
             data["GDP"] = data["value"].astype(float)
             data = data.drop(columns=["value"])
-        else:
-            console.print(f"No data found for {interval}.\n")
-
+            return data[data["date"] >= f"{start_year}-01-01"]
+        console.print(f"No data found for {interval}.\n")
     # Invalid API Keys
-    elif "Error Message" in payload:
+    if "Error Message" in payload:
         console.print(payload["Error Message"])
     # Premium feature, API plan is not authorized
-    elif "Information" in payload:
+    if "Information" in payload:
         console.print(payload["Information"])
 
-    return data
+    return pd.DataFrame()
 
 
 @log_start_end(log=logger)
-def get_gdp_capita() -> pd.DataFrame:
+def get_gdp_capita(start_year: int = 2010) -> pd.DataFrame:
     """Real GDP per Capita for United States
+
+    Parameters
+    ----------
+    start_year : int, optional
+        Start year for plot, by default 2010
 
     Returns
     -------
     pd.DataFrame
         DataFrame of GDP per Capita
     """
-    url = f"https://www.alphavantage.co/query?function=REAL_GDP_PER_CAPITA&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+    url = (
+        "https://www.alphavantage.co/query?function=REAL_GDP_PER_CAPITA"
+        + f"&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+    )
     r = requests.get(url, headers={"User-Agent": get_user_agent()})
     if r.status_code != 200:
+        console.print(f"Request error. Response code: {str(r.status_code)}.\n")
         return pd.DataFrame()
 
     payload = r.json()
-    data = pd.DataFrame()
-    # Successful requests
+
     if "data" in payload:
         if payload["data"]:
             data = pd.DataFrame(payload["data"])
             data["date"] = pd.to_datetime(data["date"])
             data["GDP"] = data["value"].astype(float)
             data = data.drop(columns=["value"])
-        else:
-            console.print("No data found.\n")
+            return data[data["date"] >= f"{start_year}-01-01"]
+        console.print("No data found.\n")
     # Invalid API Keys
-    elif "Error Message" in payload:
+    if "Error Message" in payload:
         console.print(payload["Error Message"])
     # Premium feature, API plan is not authorized
-    elif "Information" in payload:
+    if "Information" in payload:
         console.print(payload["Information"])
 
-    return data
+    return pd.DataFrame()
 
 
 @log_start_end(log=logger)
-def get_inflation() -> pd.DataFrame:
+def get_inflation(start_year: int = 2010) -> pd.DataFrame:
     """Get historical Inflation for United States from AlphaVantage
+
+    Parameters
+    ----------
+    start_year : int, optional
+        Start year for plot, by default 2010
 
     Returns
     -------
     pd.DataFrame
         DataFrame of inflation rates
     """
-    url = f"https://www.alphavantage.co/query?function=INFLATION&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+    url = (
+        "https://www.alphavantage.co/query?function=INFLATION"
+        + f"&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+    )
     r = requests.get(url, headers={"User-Agent": get_user_agent()})
     if r.status_code != 200:
+        console.print(f"Request error. Response code: {str(r.status_code)}.\n")
         return pd.DataFrame()
 
     payload = r.json()
-    data = pd.DataFrame()
-    # Successful requests
+
     if "data" in payload:
         if payload["data"]:
             data = pd.DataFrame(payload["data"])
             data["date"] = pd.to_datetime(data["date"])
             data["Inflation"] = data["value"].astype(float)
             data = data.drop(columns=["value"])
-        else:
-            console.print("No data found.\n")
+            return data[data["date"] >= f"{start_year}-01-01"]
+        console.print("No data found.\n")
     # Invalid API Keys
-    elif "Error Message" in payload:
+    if "Error Message" in payload:
         console.print(payload["Error Message"])
     # Premium feature, API plan is not authorized
-    elif "Information" in payload:
+    if "Information" in payload:
         console.print(payload["Information"])
 
-    return data
+    return pd.DataFrame()
 
 
 @log_start_end(log=logger)
-def get_cpi(interval: str) -> pd.DataFrame:
+def get_cpi(interval: str = "m", start_year: int = 2010) -> pd.DataFrame:
     """Get Consumer Price Index from Alpha Vantage
 
     Parameters
     ----------
     interval : str
         Interval for data.  Either "m" or "s" for monthly or semiannual
+    start_year : int, optional
+        Start year for plot, by default 2010
 
     Returns
     -------
@@ -160,14 +194,17 @@ def get_cpi(interval: str) -> pd.DataFrame:
         Dataframe of CPI
     """
     s_interval = "semiannual" if interval == "s" else "monthly"
-    url = f"https://www.alphavantage.co/query?function=CPI&interval={s_interval}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+    url = (
+        f"https://www.alphavantage.co/query?function=CPI&interval={s_interval}"
+        + f"&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+    )
     r = requests.get(url, headers={"User-Agent": get_user_agent()})
 
     if r.status_code != 200:
+        console.print(f"Request error. Response code: {str(r.status_code)}.\n")
         return pd.DataFrame()
 
     payload = r.json()
-    data = pd.DataFrame()
 
     # Successful requests
     if "data" in payload:
@@ -176,28 +213,32 @@ def get_cpi(interval: str) -> pd.DataFrame:
             data["date"] = pd.to_datetime(data["date"])
             data["CPI"] = data["value"].astype(float)
             data = data.drop(columns=["value"])
-        else:
-            console.print(f"No data found for {interval}.\n")
+            return data[data["date"] >= f"{start_year}-01-01"]
+        console.print(f"No data found for {interval}.\n")
     # Invalid API Keys
-    elif "Error Message" in payload:
+    if "Error Message" in payload:
         console.print(payload["Error Message"])
     # Premium feature, API plan is not authorized
-    elif "Information" in payload:
+    if "Information" in payload:
         console.print(payload["Information"])
 
-    return data
+    return pd.DataFrame()
 
 
 @log_start_end(log=logger)
-def get_treasury_yield(interval: str, maturity: str) -> pd.DataFrame:
+def get_treasury_yield(
+    interval: str = "m", maturity: str = "10y", start_date: str = "2010-01-01"
+) -> pd.DataFrame:
     """Get historical yield for a given maturity
 
     Parameters
     ----------
     interval : str
-        Interval for data.  Can be "d","w","m" for daily, weekly or monthly
+        Interval for data.  Can be "d","w","m" for daily, weekly or monthly, by default "m"
+    start_date: str
+        Start date for data.  Should be in YYYY-MM-DD format, by default "2010-01-01"
     maturity : str
-        Maturity timeline.  Can be "3mo","5y","10y" or "30y"
+        Maturity timeline.  Can be "3mo","5y","10y" or "30y", by default "10y"
 
     Returns
     -------
@@ -207,14 +248,17 @@ def get_treasury_yield(interval: str, maturity: str) -> pd.DataFrame:
     d_interval = {"d": "daily", "w": "weekly", "m": "monthly"}
     d_maturity = {"3m": "3month", "5y": "5year", "10y": "10year", "30y": "30year"}
 
-    url = f"https://www.alphavantage.co/query?function=TREASURY_YIELD&interval={d_interval[interval]}&ma"
-    url += f"turity={d_maturity[maturity]}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+    url = (
+        "https://www.alphavantage.co/query?function=TREASURY_YIELD"
+        + f"&interval={d_interval[interval]}"
+        + f"&maturity={d_maturity[maturity]}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+    )
     r = requests.get(url, headers={"User-Agent": get_user_agent()})
     if r.status_code != 200:
+        console.print(f"Request error. Response code: {str(r.status_code)}.\n")
         return pd.DataFrame()
 
     payload = r.json()
-    data = pd.DataFrame()
 
     # Successful requests
     if "data" in payload:
@@ -223,22 +267,26 @@ def get_treasury_yield(interval: str, maturity: str) -> pd.DataFrame:
             data["date"] = pd.to_datetime(data["date"])
             data["Yield"] = data["value"].astype(float)
             data = data.drop(columns=["value"])
-        else:
-            console.print(f"No data found for {interval}.\n")
+            return data[data["date"] >= start_date]
+        console.print(f"No data found for {interval}.\n")
     # Invalid API Keys
-    elif "Error Message" in payload:
+    if "Error Message" in payload:
         console.print(payload["Error Message"])
-
     # Premium feature, API plan is not authorized
-    elif "Information" in payload:
+    if "Information" in payload:
         console.print(payload["Information"])
 
-    return data
+    return pd.DataFrame()
 
 
 @log_start_end(log=logger)
-def get_unemployment() -> pd.DataFrame:
+def get_unemployment(start_year: int = 2010) -> pd.DataFrame:
     """Get historical unemployment for United States
+
+    Parameters
+    ----------
+    start_year : int, optional
+        Start year for plot, by default 2010
 
     Returns
     -------
@@ -260,13 +308,13 @@ def get_unemployment() -> pd.DataFrame:
             data["date"] = pd.to_datetime(data["date"])
             data["unemp"] = data["value"].astype(float)
             data = data.drop(columns=["value"])
-        else:
-            console.print("No data found.\n")
+            return data[data["date"] >= f"{start_year}-01-01"]
+        console.print("No data found.\n")
     # Invalid API Keys
-    elif "Error Message" in payload:
+    if "Error Message" in payload:
         console.print(payload["Error Message"])
     # Premium feature, API plan is not authorized
-    elif "Information" in payload:
+    if "Information" in payload:
         console.print(payload["Information"])
 
-    return data
+    return pd.DataFrame()

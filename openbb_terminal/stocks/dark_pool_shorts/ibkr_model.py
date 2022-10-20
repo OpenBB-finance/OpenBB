@@ -35,4 +35,5 @@ def get_cost_to_borrow() -> pd.DataFrame:
     data.sort_values(by=["FEERATE"], ascending=False, inplace=True)
     data["FEERATE"] = data["FEERATE"].apply(lambda x: str(x) + "%")
     data.columns = ["Symbol", "Fees", "Available"]
+    data = data.reset_index(drop=True)
     return data

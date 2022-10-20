@@ -367,8 +367,8 @@ def test_filter_stocks_value_error(mocker):
     assert not data
 
 
-@pytest.mark.vcr(record_mode="none")
-def test_filter_stocks_no_param():
+@pytest.mark.vcr
+def test_filter_stocks_no_param(recorder):
     data = financedatabase_model.filter_stocks(
         country=None,
         sector=None,
@@ -377,7 +377,7 @@ def test_filter_stocks_no_param():
         exclude_exchanges=True,
     )
     assert isinstance(data, list)
-    assert not data
+    recorder.capture(data)
 
 
 @pytest.mark.vcr(record_mode="none")

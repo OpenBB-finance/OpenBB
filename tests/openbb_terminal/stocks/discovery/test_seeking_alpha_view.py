@@ -19,7 +19,7 @@ def vcr_config():
 def test_upcoming_earning_release_dates():
     seeking_alpha_view.upcoming_earning_release_dates(
         num_pages=1,
-        num_earnings=2,
+        limit=2,
         export="",
     )
 
@@ -29,7 +29,7 @@ def test_upcoming_earning_release_dates():
 def test_news():
     seeking_alpha_view.news(
         article_id=-1,
-        num=2,
+        limit=2,
         export="",
     )
 
@@ -39,6 +39,6 @@ def test_news():
 def test_display_news():
     seeking_alpha_view.display_news(
         news_type="Crypto",
-        num=2,
+        limit=2,
         export="",
     )

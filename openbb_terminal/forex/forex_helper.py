@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List, Optional, Dict, Iterable
 import os
 import argparse
@@ -19,14 +19,14 @@ from openbb_terminal.config_terminal import theme
 
 
 FOREX_SOURCES: Dict = {
-    "yf": "YahooFinance",
-    "av": "AlphaAdvantage",
-    "oanda": "Oanda",
-    "polygon": "Polygon",
+    "YahooFinance": "YahooFinance",
+    "AlphaVantage": "AlphaAdvantage",
+    "Oanda": "Oanda",
+    "Polygon": "Polygon",
 }
 
 SOURCES_INTERVALS: Dict = {
-    "yf": [
+    "YahooFinance": [
         "1min",
         "2min",
         "5min",
@@ -41,11 +41,11 @@ SOURCES_INTERVALS: Dict = {
         "1month",
         "3month",
     ],
-    "av": ["1min", "5min", "15min", "30min", "60min"],
+    "AlphaVantage": ["1min", "5min", "15min", "30min", "60min"],
 }
 
 INTERVAL_MAPS: Dict = {
-    "yf": {
+    "YahooFinance": {
         "1min": "1m",
         "2min": "2m",
         "5min": "5m",
@@ -60,32 +60,57 @@ INTERVAL_MAPS: Dict = {
         "1month": "1mo",
         "3month": "3mo",
     },
-    "av": {"1min": 1, "5min": 5, "15min": 15, "30min": 30, "60min": 60},
+    "AlphaVantage": {"1min": 1, "5min": 5, "15min": 15, "30min": 30, "60min": 60},
 }
 
 logger = logging.getLogger(__name__)
+
+last_year = datetime.now() - timedelta(days=365)
 
 
 @log_start_end(log=logger)
 def load(
     to_symbol: str,
     from_symbol: str,
-    resolution: str,
-    interval: str,
-    start_date: str,
-    source: str = "yf",
-):
-    if source in ["yf", "av"]:
+    resolution: str = "d",
+    interval: str = "1day",
+    start_date: str = last_year.strftime("%Y-%m-%d"),
+    source: str = "YahooFinance",
+) -> pd.DataFrame:
+    """Loads forex for two given symbols
+
+    Parameters
+    ----------
+    to_symbol : str
+        The from currency symbol. Ex: USD, EUR, GBP, YEN
+    from_symbol: str
+        The from currency symbol. Ex: USD, EUR, GBP, YEN
+    resolution: str
+        The resolution for the data
+    interval: str
+        What interval to get data for
+    start_date: str
+        When to begin loading in data
+    source: str
+        Where to get data from
+
+    Returns
+    -------
+    pd.DataFrame
+        The loaded data
+    """
+    if source in ["YahooFinance", "AlphaVantage"]:
         interval_map = INTERVAL_MAPS[source]
 
         if interval not in interval_map.keys():
             console.print(
-                f"Interval not supported by {FOREX_SOURCES[source]}. Need to be one of the following options",
+                f"Interval not supported by {FOREX_SOURCES[source]}."
+                " Need to be one of the following options",
                 interval_map.keys(),
             )
             return pd.DataFrame()
 
-        if source == "av":
+        if source == "AlphaVantage":
 
             df = av_model.get_historical(
                 to_symbol=to_symbol,
@@ -95,7 +120,7 @@ def load(
                 start_date=start_date,
             )
 
-        if source == "yf":
+        if source == "YahooFinance":
 
             df = yf.download(
                 f"{from_symbol}{to_symbol}=X",
@@ -105,7 +130,7 @@ def load(
                 progress=False,
             )
 
-    if source == "polygon":
+    if source == "Polygon":
         # Interval for polygon gets broken into mulltiplier and timeframe
         temp = re.split(r"(\d+)", interval)
         multiplier = int(temp[1])
@@ -163,8 +188,8 @@ def check_valid_yf_forex_currency(fx_symbol: str) -> str:
 @log_start_end(log=logger)
 def display_candle(
     data: pd.DataFrame,
-    to_symbol: str,
-    from_symbol: str,
+    to_symbol: str = "",
+    from_symbol: str = "",
     ma: Optional[Iterable[int]] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -178,6 +203,8 @@ def display_candle(
         To forex symbol
     from_symbol : str
         From forex symbol
+    ma : Optional[Iterable[int]]
+        Moving averages
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list), by default None
     """
@@ -204,18 +231,16 @@ def display_candle(
         candle_chart_kwargs["figscale"] = 1.10
         candle_chart_kwargs["figsize"] = plot_autoscale()
         fig, ax = mpf.plot(data, **candle_chart_kwargs)
-        fig.suptitle(
-            f"{from_symbol}/{to_symbol}",
-            x=0.055,
-            y=0.965,
-            horizontalalignment="left",
-        )
+        if from_symbol and to_symbol:
+            fig.suptitle(
+                f"{from_symbol}/{to_symbol}",
+                x=0.055,
+                y=0.965,
+                horizontalalignment="left",
+            )
         if ma:
             # Manually construct the chart legend
-            colors = []
-
-            for i, _ in enumerate(ma):
-                colors.append(theme.get_colors()[i])
+            colors = [theme.get_colors()[i] for i, _ in enumerate(ma)]
 
             lines = [Line2D([0], [0], color=c) for c in colors]
             labels = ["MA " + str(label) for label in ma]

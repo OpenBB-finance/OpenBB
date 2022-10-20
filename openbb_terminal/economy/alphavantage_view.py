@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def realtime_performance_sector(
-    raw: bool,
+    raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -41,27 +41,25 @@ def realtime_performance_sector(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df_sectors = alphavantage_model.get_sector_data()
+    df_rtp = alphavantage_model.get_sector_data()
 
     # pylint: disable=E1101
-    if df_sectors.empty:
+    if df_rtp.empty:
         return
-
-    # pylint: disable=invalid-sequence-index
-    df_rtp = df_sectors["Rank A: Real-Time Performance"]
-
-    df_rtp = df_rtp.apply(lambda x: x * 100)
 
     if raw:
         print_rich_table(
-            df_rtp.to_frame(),
-            show_index=True,
-            headers=["Sector", "Real-Time Performance"],
+            df_rtp,
+            show_index=False,
+            headers=df_rtp.columns,
             title="Real-Time Performance",
         )
 
     else:
-        ax = df_rtp.plot(kind="barh")
+        df_rtp.set_index("Sector", inplace=True)
+        df_rtp = df_rtp.squeeze(axis=1)
+        colors = [theme.up_color if x > 0 else theme.down_color for x in df_rtp.values]
+        ax = df_rtp.plot(kind="barh", color=colors)
         theme.style_primary_axis(ax)
         ax.set_title("Real Time Performance (%) per Sector")
         ax.tick_params(axis="x", labelrotation=90)
@@ -74,14 +72,14 @@ def realtime_performance_sector(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "rtps",
-        df_sectors,
+        df_rtp,
     )
 
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_real_gdp(
-    interval: str,
+    interval: str = "q",
     start_year: int = 2010,
     raw: bool = False,
     export: str = "",
@@ -92,7 +90,7 @@ def display_real_gdp(
     Parameters
     ----------
     interval : str
-        Interval for GDP.  Either "a" or "q"
+        Interval for GDP.  Either "a" or "q", by default "q"
     start_year : int, optional
         Start year for plot, by default 2010
     raw : bool, optional
@@ -102,13 +100,13 @@ def display_real_gdp(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    gdp_full = alphavantage_model.get_real_gdp(interval)
+    gdp = alphavantage_model.get_real_gdp(interval, start_year)
 
-    if gdp_full.empty:
+    if gdp.empty:
         return
-    gdp = gdp_full[gdp_full.date >= f"{start_year}-01-01"]
+
     int_string = "Annual" if interval == "a" else "Quarterly"
-    year_str = str(start_year) if interval == "a" else str(list(gdp.date)[-1].year)
+    year_str = str(start_year) if interval == "a" else str(list(gdp["date"])[-1].year)
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
@@ -117,7 +115,7 @@ def display_real_gdp(
     else:
         return
 
-    ax.plot(gdp.date, gdp.GDP, marker="o")
+    ax.plot(gdp["date"], gdp["GDP"], marker="o")
     ax.set_title(f"{int_string} US GDP ($B) from {year_str}")
     ax.set_ylabel("US GDP ($B) ")
     theme.style_primary_axis(ax)
@@ -128,7 +126,7 @@ def display_real_gdp(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "gdp",
-        gdp_full,
+        gdp,
     )
     if raw:
         print_rich_table(
@@ -157,11 +155,10 @@ def display_gdp_capita(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    gdp_capita = alphavantage_model.get_gdp_capita()
-    if gdp_capita.empty:
+    gdp = alphavantage_model.get_gdp_capita(start_year)
+    if gdp.empty:
         console.print("Error getting data.  Check API Key")
         return
-    gdp = gdp_capita[gdp_capita.date >= f"{start_year}-01-01"]
 
     # This plot has 1 axis
     if not external_axes:
@@ -171,7 +168,7 @@ def display_gdp_capita(
     else:
         return
 
-    ax.plot(gdp.date, gdp.GDP, marker="o")
+    ax.plot(gdp["date"], gdp["GDP"], marker="o")
     ax.set_title(f"US GDP per Capita (Chained 2012 USD) from {start_year}")
     ax.set_ylabel("US GDP (Chained 2012 USD) ")
     theme.style_primary_axis(ax)
@@ -182,7 +179,7 @@ def display_gdp_capita(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "gdpc",
-        gdp_capita,
+        gdp,
     )
     if raw:
         print_rich_table(
@@ -214,11 +211,10 @@ def display_inflation(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    inflation = alphavantage_model.get_inflation()
-    if inflation.empty:
+    inf = alphavantage_model.get_inflation(start_year)
+    if inf.empty:
         console.print("Error getting data.  Check API Key")
         return
-    inf = inflation[inflation.date >= f"{start_year}-01-01"]
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
@@ -227,8 +223,8 @@ def display_inflation(
     else:
         return
 
-    ax.plot(inf.date, inf.Inflation, marker="o")
-    ax.set_title(f"US Inflation from {list(inf.date)[-1].year}")
+    ax.plot(inf["date"], inf["Inflation"], marker="o")
+    ax.set_title(f"US Inflation from {list(inf['date'])[-1].year}")
     ax.set_ylabel("Inflation (%)")
     theme.style_primary_axis(ax)
     if external_axes is None:
@@ -238,7 +234,7 @@ def display_inflation(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "inf",
-        inflation,
+        inf,
     )
     if raw:
         print_rich_table(
@@ -252,7 +248,7 @@ def display_inflation(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_cpi(
-    interval: str,
+    interval: str = "m",
     start_year: int = 2010,
     raw: bool = False,
     export: str = "",
@@ -273,13 +269,13 @@ def display_cpi(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    cpi_full = alphavantage_model.get_cpi(interval)
-    if cpi_full.empty:
+    cpi = alphavantage_model.get_cpi(interval, start_year)
+    if cpi.empty:
         console.print("Error getting data.  Check API Key")
         return
-    cpi = cpi_full[cpi_full.date >= f"{start_year}-01-01"]
+
     int_string = "Semi-Annual" if interval == "s" else "Monthly"
-    year_str = str(list(cpi.date)[-1].year)
+    year_str = str(list(cpi["date"])[-1].year)
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
@@ -288,7 +284,7 @@ def display_cpi(
     else:
         return
 
-    ax.plot(cpi.date, cpi.CPI, marker="o")
+    ax.plot(cpi["date"], cpi["CPI"], marker="o")
     ax.set_title(f"{int_string} Consumer Price Index from {year_str}")
     ax.set_ylabel("CPI")
     theme.style_primary_axis(ax)
@@ -299,7 +295,7 @@ def display_cpi(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "cpi",
-        cpi_full,
+        cpi,
     )
     if raw:
         print_rich_table(
@@ -310,9 +306,9 @@ def display_cpi(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_treasury_yield(
-    interval: str,
-    maturity: str,
-    start_date: str,
+    interval: str = "m",
+    maturity: str = "10y",
+    start_date: str = "2010-01-01",
     raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -322,11 +318,11 @@ def display_treasury_yield(
     Parameters
     ----------
     interval : str
-        Interval for data.  Can be "d","w","m" for daily, weekly or monthly
+        Interval for data.  Can be "d","w","m" for daily, weekly or monthly, by default "m"
     maturity : str
-        Maturity timeline.  Can be "3mo","5y","10y" or "30y"
+        Maturity timeline.  Can be "3mo","5y","10y" or "30y", by default "10y"
     start_date: str
-        Start date for data.  Should be in YYYY-MM-DD format
+        Start date for data.  Should be in YYYY-MM-DD format, by default "2010-01-01"
     raw : bool, optional
         Flag to display raw data, by default False
     export : str, optional
@@ -335,11 +331,10 @@ def display_treasury_yield(
         External axes (1 axis is expected in the list), by default None
     """
     d_maturity = {"3m": "3month", "5y": "5year", "10y": "10year", "30y": "30year"}
-    yields = alphavantage_model.get_treasury_yield(interval, maturity)
-    if yields.empty:
+    yld = alphavantage_model.get_treasury_yield(interval, maturity, start_date)
+    if yld.empty:
         console.print("Error getting data.  Check API Key")
         return
-    yld = yields[yields.date >= start_date]
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
@@ -348,9 +343,9 @@ def display_treasury_yield(
     else:
         return
 
-    ax.plot(yld.date, yld.Yield, marker="o")
+    ax.plot(yld["date"], yld["Yield"], marker="o")
     ax.set_title(f"{d_maturity[maturity]} Treasury Yield")
-    ax.set_ylabel("Yield")
+    ax.set_ylabel("Yield (%)")
     theme.style_primary_axis(ax)
     if external_axes is None:
         theme.visualize_output()
@@ -359,13 +354,13 @@ def display_treasury_yield(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "tyld",
-        yields,
+        yld,
     )
     if raw:
         print_rich_table(
             yld.head(20),
             headers=["Date", "Yield"],
-            title="Historical Treasurey Yield",
+            title="Historical Treasury Yield",
             show_index=False,
         )
 
@@ -373,7 +368,7 @@ def display_treasury_yield(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_ALPHAVANTAGE"])
 def display_unemployment(
-    start_year: int = 2015,
+    start_year: int = 2010,
     raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -392,13 +387,11 @@ def display_unemployment(
         External axes (1 axis is expected in the list), by default None
     """
 
-    unemp = alphavantage_model.get_unemployment()
+    un = alphavantage_model.get_unemployment(start_year)
 
-    if unemp.empty:
-        console.print("Error getting data.  Check API Key")
+    if un.empty:
+        console.print("Error getting data. Check API Key")
         return
-
-    un = unemp[unemp.date >= f"{start_year}-01-01"]
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
@@ -407,9 +400,9 @@ def display_unemployment(
     else:
         return
 
-    ax.plot(un.date, un.unemp, marker="o")
+    ax.plot(un["date"], un["unemp"], marker="o")
     ax.set_title(f"US Unemployment from {start_year}")
-    ax.set_ylabel("US Unemployment  ")
+    ax.set_ylabel("US Unemployment (%)")
     theme.style_primary_axis(ax)
     if external_axes is None:
         theme.visualize_output()
@@ -418,7 +411,7 @@ def display_unemployment(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "unemp",
-        unemp,
+        un,
     )
 
     if raw:

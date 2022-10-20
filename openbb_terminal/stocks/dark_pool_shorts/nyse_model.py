@@ -12,12 +12,12 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_short_data_by_exchange(ticker: str) -> pd.DataFrame:
+def get_short_data_by_exchange(symbol: str) -> pd.DataFrame:
     """Gets short data for 5 exchanges [https://ftp.nyse.com] starting at 1/1/2021
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Ticker to get data for
 
     Returns
@@ -25,7 +25,6 @@ def get_short_data_by_exchange(ticker: str) -> pd.DataFrame:
     pd.DataFrame
         DataFrame of short data by exchange
     """
-    exchanges = ["ARCA", "Amex", "Chicago", "National", "NYSE"]
     mongo_url = "mongodb+srv://terminal:terminal@cluster0.rdmzt.mongodb.net/"  # pragma: allowlist secret
     mongo_url += (
         "NYSE_ShortData?retryWrites=true&w=majority"  # pragma: allowlist secret
@@ -37,7 +36,7 @@ def get_short_data_by_exchange(ticker: str) -> pd.DataFrame:
     for exchange in exchanges:
         exch_collection = db[exchange]
         try:
-            df = pd.DataFrame(exch_collection.find_one({"index": ticker})["data"])
+            df = pd.DataFrame(exch_collection.find_one({"index": symbol})["data"])
             df["Exchange"] = exchange
             short_data = pd.concat([short_data, df])
         except Exception:

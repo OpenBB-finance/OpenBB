@@ -3,13 +3,40 @@ __docformat__ = "numpy"
 
 import configparser
 import logging
-import os
+from pathlib import Path
+from typing import Dict
 
 import pandas as pd
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.core.config.paths import USER_PRESETS_DIRECTORY
 
 logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
+def get_preset_choices() -> Dict:
+    """
+    Return a dict containing keys as name of preset and
+    filepath as value
+    """
+
+    PRESETS_PATH = USER_PRESETS_DIRECTORY / "etf" / "screener"
+    PRESETS_PATH_DEFAULT = Path(__file__).parent / "presets"
+    preset_choices = {
+        filepath.name: filepath
+        for filepath in PRESETS_PATH.iterdir()
+        if filepath.suffix == ".ini"
+    }
+    preset_choices.update(
+        {
+            filepath.name: filepath
+            for filepath in PRESETS_PATH_DEFAULT.iterdir()
+            if filepath.suffix == ".ini"
+        }
+    )
+
+    return preset_choices
 
 
 @log_start_end(log=logger)
@@ -37,11 +64,8 @@ def etf_screener(preset: str):
     )
 
     cf = configparser.ConfigParser()
-    path = os.path.join(
-        os.path.abspath(os.path.dirname(__file__)), "presets", preset + ".ini"
-    )
 
-    cf.read(path)
+    cf.read(get_preset_choices()[preset])
     cols = cf.sections()
 
     for col in cols:

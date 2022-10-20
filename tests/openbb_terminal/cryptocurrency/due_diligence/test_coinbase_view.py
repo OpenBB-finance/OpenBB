@@ -11,10 +11,10 @@ from openbb_terminal.cryptocurrency.due_diligence import coinbase_view
 @pytest.mark.parametrize(
     "func, kwargs",
     [
-        ("display_order_book", dict(product_id="ETH-USDT")),
-        ("display_trades", dict(product_id="ETH-USDT")),
-        ("display_candles", dict(product_id="ETH-USDT")),
-        ("display_stats", dict(product_id="ETH-USDT")),
+        ("display_order_book", dict(symbol="ETH-USDT")),
+        ("display_trades", dict(symbol="ETH-USDT")),
+        ("display_candles", dict(symbol="ETH-USDT")),
+        ("display_stats", dict(symbol="ETH-USDT")),
     ],
 )
 def test_call_func(func, kwargs, mocker):

@@ -33,13 +33,12 @@ def get_high_short_interest() -> DataFrame:
         "lxml",
     )
 
-    a_high_short_interest_header = []
-    for high_short_interest_header in text_soup_high_short_interested_stocks.findAll(
-        "td", {"class": "tblhdr"}
-    ):
-        a_high_short_interest_header.append(
-            high_short_interest_header.text.strip("\n").split("\n")[0]
+    a_high_short_interest_header = [
+        high_short_interest_header.text.strip("\n").split("\n")[0]
+        for high_short_interest_header in text_soup_high_short_interested_stocks.findAll(
+            "td", {"class": "tblhdr"}
         )
+    ]
 
     if not a_high_short_interest_header:
         return pd.DataFrame()

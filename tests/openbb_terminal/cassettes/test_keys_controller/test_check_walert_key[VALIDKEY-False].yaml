@@ -21,7 +21,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 6f93bd15ecbc2037-IND
+      - 74527dd4fbafe67c-LHR
       Connection:
       - keep-alive
       Content-Length:
@@ -29,13 +29,11 @@ interactions:
       Content-Type:
       - text/plain; charset=utf-8
       Date:
-      - Sat, 09 Apr 2022 13:55:07 GMT
-      Expect-CT:
-      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      - Sun, 04 Sep 2022 00:08:35 GMT
       NEL:
       - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
       Report-To:
-      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=H%2FFXYA1k2HBiW8QE%2FTSHrzd8PlRo8R9lgaaHIcwrcPx2dUQgS%2FOP9pP0xQnRF70WPMo3qC3xfl1CxsWTsOMUU1gID2xEcUKoFO%2FYiV5FJKH4oB3mkGQWDG6Th9jPM99AZyHz4jk%3D"}],"group":"cf-nel","max_age":604800}'
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=88vCXvn6%2FNXbONcPSWHNO%2B%2BYMuI4tqN0Rcy9g5r%2B2ehYpuGArUdvk86pKvezKb9%2BZp%2Fg1gfOtj1UvR%2FykLHyiCfAl1Vfur%2F5tsXfd%2BdgvEmn2uXV77zPNZd3hwAX10qKmiiZEKnqVo%2F5y9d04tkIELA%3D"}],"group":"cf-nel","max_age":604800}'
       Server:
       - cloudflare
       alt-svc:

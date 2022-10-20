@@ -49,29 +49,24 @@ def format_units(num: int) -> str:
 
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
-def notes(series_term: str, num: int) -> pd.DataFrame:
-    """Print Series notes. [Source: FRED]
+def notes(search_query: str, limit: int = 10) -> pd.DataFrame:
+    """Display series notes. [Source: FRED]
 
     Parameters
     ----------
-    series_term : str
-        Search for these series_term
-    num : int
+    search_query : str
+        Text query to search on fred series notes database
+    limit : int
         Maximum number of series notes to display
     """
-    df_search = fred_model.get_series_notes(series_term)
+    df_search = fred_model.get_series_notes(search_query, limit)
 
     if df_search.empty:
         return
-    df_search["notes"] = df_search["notes"].apply(
-        lambda x: "\n".join(textwrap.wrap(x, width=100)) if isinstance(x, str) else x
-    )
-    df_search["title"] = df_search["title"].apply(
-        lambda x: "\n".join(textwrap.wrap(x, width=50)) if isinstance(x, str) else x
-    )
+
     print_rich_table(
-        df_search[["id", "title", "notes"]].head(num),
-        title=f"[bold]Search results for {series_term}[/bold]",
+        df_search[["id", "title", "notes"]],
+        title=f"[bold]Search results for {search_query}[/bold]",
         show_index=False,
         headers=["Series ID", "Title", "Description"],
     )
@@ -80,37 +75,37 @@ def notes(series_term: str, num: int) -> pd.DataFrame:
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def display_fred_series(
-    d_series: Dict[str, Dict[str, str]],
-    start_date: str,
-    end_date: str = "",
+    series_ids: List[str],
+    start_date: str = None,
+    end_date: str = None,
+    limit: int = 10,
     raw: bool = False,
     export: str = "",
-    limit: int = 10,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]
 
     Parameters
     ----------
-    d_series : str
+    series_ids : List[str]
         FRED Series ID from https://fred.stlouisfed.org. For multiple series use: series1,series2,series3
     start_date : str
         Starting date (YYYY-MM-DD) of data
     end_date : str
         Ending date (YYYY-MM-DD) of data
-    store : bool
-        Whether to prevent plotting the data.
+    limit : int
+        Number of data points to display.
     raw : bool
         Output only raw data
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
-    limit: int
-        Number of raw data rows to show
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    series_ids = list(d_series.keys())
-    data = fred_model.get_aggregated_series_data(d_series, start_date, end_date)
+
+    data, detail = fred_model.get_aggregated_series_data(
+        series_ids, start_date, end_date
+    )
 
     if data.empty:
         logger.error("No data")
@@ -127,13 +122,13 @@ def display_fred_series(
 
         if len(series_ids) == 1:
             s_id = series_ids[0]
-            sub_dict: Dict = d_series[s_id]
+            sub_dict: Dict = detail[s_id]
             title = f"{sub_dict['title']} ({sub_dict['units']})"
             ax.plot(
                 data.index, data.iloc[:, 0], label="\n".join(textwrap.wrap(title, 80))
             )
         else:
-            for s_id, sub_dict in d_series.items():
+            for s_id, sub_dict in detail.items():
                 data_to_plot = data[s_id].dropna()
                 exponent = int(np.log10(data_to_plot.max()))
                 data_to_plot /= 10**exponent
@@ -181,7 +176,7 @@ def display_fred_series(
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def display_yield_curve(
-    date: datetime,
+    date: datetime = None,
     external_axes: Optional[List[plt.Axes]] = None,
     raw: bool = False,
     export: str = "",
@@ -198,7 +193,7 @@ def display_yield_curve(
     rates, date_of_yield = fred_model.get_yield_curve(date)
     if rates.empty:
         console.print(
-            f"[red]Yield data not found for {date.strftime('%Y-%m-%d')}[/red].\n"
+            f"[red]Yield data not found for {date_of_yield.strftime('%Y-%m-%d')}.[/red]\n"
         )
         return
     if external_axes is None:
@@ -208,16 +203,7 @@ def display_yield_curve(
     else:
         return
 
-    tenors = []
-    for i, row in rates.iterrows():
-        t = row["Maturity"][-3:].strip()
-        rates.at[i, "Maturity"] = t
-        if t[-1] == "M":
-            tenors.append(int(t[:-1]) / 12)
-        elif t[-1] == "Y":
-            tenors.append(int(t[:-1]))
-
-    ax.plot(tenors, rates.Rate, "-o")
+    ax.plot(rates["Maturity"], rates["Rate"], "-o")
     ax.set_xlabel("Maturity")
     ax.set_ylabel("Rate (%)")
     theme.style_primary_axis(ax)

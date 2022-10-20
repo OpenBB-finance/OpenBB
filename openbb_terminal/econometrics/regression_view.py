@@ -1,7 +1,7 @@
 """Regression View"""
 __docformat__ = "numpy"
 
-from typing import Optional, List, Tuple, Dict, Any
+from typing import Optional, List, Tuple, Dict
 import os
 import logging
 import pandas as pd
@@ -22,10 +22,9 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_panel(
-    regression_type: str,
-    regression_variables: List[Tuple],
     data: Dict[str, pd.DataFrame],
-    datasets: Dict[pd.DataFrame, Any],
+    regression_variables: List[Tuple],
+    regression_type: str = "OLS",
     entity_effects: bool = False,
     time_effects: bool = False,
     export: str = "",
@@ -34,16 +33,15 @@ def display_panel(
 
     Parameters
     ----------
-    regression_type: str
-        The type of regression you wish to execute.
+    data : dict
+        A dictionary containing the datasets.
     regression_variables : list
         The regressions variables entered where the first variable is
         the dependent variable.
-    data : dict
-        A dictionary containing the datasets.
-    datasets: dict
-        A dictionary containing the column and dataset names of
         each column/dataset combination.
+    regression_type: str
+        The type of regression you wish to execute. Choose from:
+        OLS, POLS, RE, BOLS, FE
     entity_effects: bool
         Whether to apply Fixed Effects on entities.
     time_effects: bool
@@ -65,7 +63,6 @@ def display_panel(
         regression_type,
         regression_variables,
         data,
-        datasets,
         entity_effects,
         time_effects,
     )
@@ -107,17 +104,17 @@ def display_dwat(
     external_axes: Optional[List[plt.axes]]
         External axes to plot on
     """
-    autocorrelation = regression_model.get_dwat(residual)
+    autocorr = regression_model.get_dwat(residual)
 
-    if 1.5 < autocorrelation < 2.5:
+    if 1.5 < autocorr < 2.5:
         console.print(
-            f"The result {autocorrelation} is within the range 1.5 and 2.5 which therefore indicates "
+            f"The result {autocorr} is within the range 1.5 and 2.5 which therefore indicates "
             f"autocorrelation not to be problematic."
         )
     else:
         console.print(
-            f"The result {autocorrelation} is outside the range 1.5 and 2.5 and therefore autocorrelation "
-            f"can be problematic. Please consider lags of the dependent or independent variable."
+            f"The result {autocorr} is outside the range 1.5 and 2.5 and could "
+            f"be problematic. Please consider lags of the dependent or independent variable."
         )
 
     if plot:
@@ -140,14 +137,14 @@ def display_dwat(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         f"{dependent_variable.name}_dwat",
-        autocorrelation,
+        autocorr,
     )
 
     console.print()
 
 
 @log_start_end(log=logger)
-def display_bgod(model: pd.DataFrame, lags: int, export: str = ""):
+def display_bgod(model: pd.DataFrame, lags: int = 3, export: str = ""):
     """Show Breusch-Godfrey autocorrelation test
 
     Parameters
@@ -180,8 +177,8 @@ def display_bgod(model: pd.DataFrame, lags: int, export: str = ""):
 
     if p_value > 0.05:
         console.print(
-            f"The result {round(p_value, 2)} indicates the existence of autocorrelation. Consider re-estimating "
-            f"with clustered standard errors and applying the Random Effects or Fixed Effects model."
+            f"{round(p_value, 2)} indicates the autocorrelation. Consider re-estimating with "
+            "clustered standard errors and applying the Random Effects or Fixed Effects model."
         )
     else:
         console.print(
@@ -225,7 +222,7 @@ def display_bpag(model: pd.DataFrame, export: str = ""):
 
     if p_value > 0.05:
         console.print(
-            f"The result {round(p_value, 2)} indicates the existence of heteroscedasticity. Consider taking the log "
+            f"{round(p_value, 2)} indicates heteroscedasticity. Consider taking the log "
             f"or a rate for the dependent variable."
         )
     else:

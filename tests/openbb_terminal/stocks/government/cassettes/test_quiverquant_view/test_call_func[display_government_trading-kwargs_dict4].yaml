@@ -19,17 +19,19 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAAwAAAP//3NbPb4IwFAfwf6VpPPKW98oA9Wa2ww4zWdDbskNDmq1RqaFlOyz73xe6
-        eNAo6gIRuL7+gE++9NHXb56qrSnco3SKTxkXKAgwAQp5wPiykLmVmdMm358QAyV+gs5Wqqjqs3n6
-        UFVStS2UVbmTTn/6FWxRWq3Ys1IHW1aDC7n25dnGlLnjU0aIdIcB40+mtH79/o7WP0Tm735sRAEi
-        wYiiABH5T8COg2IQ9aAIRHwxaGk2bC7XOjdfdqVvpxrvXvqUKgScNKd6KYvsQ9oDWXQlLfqzRVhv
-        CwHrbQIwajOxllxnM6vmDNSV9O6EhbuPrEYV9zAtAqLTLgQSICaNNPjjTeMG7fBa1D/bYSuyS+IS
-        A4yLxr2M66yMgHBgt43GVV3KC4H6dzus/3ch4H2jt8OuqEIIu3u23n4BAAD//wMAFCiw13ENAAA=
+        H4sIAAAAAAAAA9zWz2+CMBQH8H+laTzylvfKAPVmtsMOM1nQ27JDQ5qtUamhZTss+98XunjQKOoC
+        Ebi+/oBPvvTR12+eqq0p3KN0ik8ZFygIMAEKecD4spC5lZnTJt+fEAMlfoLOVqqo6rN5+lBVUrUt
+        lFW5k05/+hVsUVqt2LNSB1tWgwu59uXZxpS541NGiHSHAeNPprR+/f6O1j9E5u9+bEQBIsGIogAR
+        +U/AjoNiEPWgCER8MWhpNmwu1zo3X3alb6ca7176lCoEnDSneimL7EPaA1l0JS36s0VYbwsB620C
+        MGozsZZcZzOr5gzUlfTuhIW7j6xGFfcwLQKi0y4EEiAmjTT4403jBu3wWtQ/22ErskviEgOMi8a9
+        jOusjIBwYLeNxlVdyguB+nc7rP93IeB9o7fDrqhCCLt7tt5+AQAA//8DABQosNdxDQAA
     headers:
+      Allow:
+      - GET, HEAD, OPTIONS
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 6da745bdbebe8813-SIN
+      - 739861f6fb065d3b-LIS
       Connection:
       - keep-alive
       Content-Encoding:
@@ -37,26 +39,24 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 08 Feb 2022 19:30:26 GMT
+      - Fri, 12 Aug 2022 10:03:43 GMT
       Expect-CT:
       - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
       NEL:
       - '{"success_fraction":0,"report_to":"cf-nel","max_age":604800}'
+      Referrer-Policy:
+      - same-origin
       Report-To:
-      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=dhyvFVvtFJqyw60fnjLmSROt3RK1qdqr6CsxFvG%2BUKaZAoyddlzhvnhE9eYbfO4YXGq2%2Bus4d%2BKOF%2BI3Bn%2FlFP5TdbQ1LkHFpL30AwtPseCtdleFQp%2FTfFFH15SiKtZDriZE%2FHU%3D"}],"group":"cf-nel","max_age":604800}'
+      - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v3?s=UnJm2uu8ix4XZK6xZdjszbhXgRwIhjASevNKX1Hj2zWCr%2FUuW3Zln6cIb9wIFbjgvuBmMymxj1Yd4wwJeXMlF29IyZjIahkeDxbNvNWTRmcN3FT0uwlqNVQtn3Ske2QZRd%2Fe0WU%3D"}],"group":"cf-nel","max_age":604800}'
       Server:
       - cloudflare
       Transfer-Encoding:
       - chunked
-      allow:
-      - GET, HEAD, OPTIONS
-      referrer-policy:
-      - same-origin
-      vary:
+      Vary:
       - Accept
-      x-content-type-options:
+      X-Content-Type-Options:
       - nosniff
-      x-frame-options:
+      X-Frame-Options:
       - DENY
     status:
       code: 200

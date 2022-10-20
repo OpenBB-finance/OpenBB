@@ -28,7 +28,7 @@ def test_lambda_category_color_red_green(val, expected):
 def test_news(mocker):
     # REMOVE FINVIZ STOCK_PAGE CACHE
     mocker.patch.object(target=finviz.main_func, attribute="STOCK_PAGE", new={})
-    finviz_view.news(ticker="TSLA", num=5)
+    finviz_view.news(symbol="TSLA", limit=5)
 
 
 @pytest.mark.vcr
@@ -36,4 +36,4 @@ def test_news(mocker):
 def test_analyst(mocker):
     # REMOVE FINVIZ STOCK_PAGE CACHE
     mocker.patch.object(target=finviz.main_func, attribute="STOCK_PAGE", new={})
-    finviz_view.analyst(ticker="TSLA", export=None)
+    finviz_view.analyst(symbol="TSLA", export="")

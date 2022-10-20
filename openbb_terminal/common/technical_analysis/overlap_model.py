@@ -15,12 +15,12 @@ WINDOW_LENGTHS2 = [10, 20]
 
 
 @log_start_end(log=logger)
-def ema(values: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
+def ema(data: pd.DataFrame, length: int = 50, offset: int = 0) -> pd.DataFrame:
     """Gets exponential moving average (EMA) for stock
 
     Parameters
     ----------
-    values: pd.DataFrame
+    data: pd.DataFrame
         Dataframe of dates and prices
     length: int
         Length of EMA window
@@ -32,16 +32,16 @@ def ema(values: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
     pd.DataFrame
         Dataframe containing prices and EMA
     """
-    return pd.DataFrame(ta.ema(values, length=length, offset=offset)).dropna()
+    return pd.DataFrame(ta.ema(data, length=length, offset=offset)).dropna()
 
 
 @log_start_end(log=logger)
-def sma(values: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
+def sma(data: pd.DataFrame, length: int = 50, offset: int = 0) -> pd.DataFrame:
     """Gets simple moving average (EMA) for stock
 
      Parameters
      ----------
-     values: pd.DataFrame
+     data: pd.DataFrame
          Dataframe of dates and prices
      length: int
          Length of SMA window
@@ -53,16 +53,16 @@ def sma(values: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
     pd.DataFrame
          Dataframe containing prices and SMA
     """
-    return pd.DataFrame(ta.sma(values, length=length, offset=offset)).dropna()
+    return pd.DataFrame(ta.sma(data, length=length, offset=offset)).dropna()
 
 
 @log_start_end(log=logger)
-def wma(values: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
+def wma(data: pd.DataFrame, length: int = 50, offset: int = 0) -> pd.DataFrame:
     """Gets weighted moving average (WMA) for stock
 
     Parameters
     ----------
-    values: pd.DataFrame
+    data: pd.DataFrame
         Dataframe of dates and prices
     length: int
         Length of SMA window
@@ -74,16 +74,16 @@ def wma(values: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
     df_ta: pd.DataFrame
         Dataframe containing prices and WMA
     """
-    return pd.DataFrame(ta.wma(values, length=length, offset=offset)).dropna()
+    return pd.DataFrame(ta.wma(data, length=length, offset=offset)).dropna()
 
 
 @log_start_end(log=logger)
-def hma(values: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
+def hma(data: pd.DataFrame, length: int = 50, offset: int = 0) -> pd.DataFrame:
     """Gets hull moving average (HMA) for stock
 
     Parameters
     ----------
-    values: pd.DataFrame
+    data: pd.DataFrame
         Dataframe of dates and prices
     length: int
         Length of SMA window
@@ -95,11 +95,11 @@ def hma(values: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
     df_ta: pd.DataFrame
         Dataframe containing prices and HMA
     """
-    return pd.DataFrame(ta.hma(values, length=length, offset=offset)).dropna()
+    return pd.DataFrame(ta.hma(data, length=length, offset=offset)).dropna()
 
 
 @log_start_end(log=logger)
-def zlma(values: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
+def zlma(data: pd.DataFrame, length: int = 50, offset: int = 0) -> pd.DataFrame:
     """Gets zero-lagged exponential moving average (ZLEMA) for stock
 
     Parameters
@@ -116,16 +116,16 @@ def zlma(values: pd.DataFrame, length: int, offset: int) -> pd.DataFrame:
     df_ta: pd.DataFrame
         Dataframe containing prices and EMA
     """
-    return pd.DataFrame(ta.zlma(values, length=length, offset=offset)).dropna()
+    return pd.DataFrame(ta.zlma(data, length=length, offset=offset)).dropna()
 
 
 @log_start_end(log=logger)
-def vwap(df: pd.DataFrame, offset: int) -> pd.DataFrame:
+def vwap(data: pd.DataFrame, offset: int = 0) -> pd.DataFrame:
     """Gets volume weighted average price (VWAP)
 
     Parameters
     ----------
-    df: pd.DataFrame
+    data: pd.DataFrame
         Dataframe of dates and prices
     offset: int
         Length of offset
@@ -136,10 +136,10 @@ def vwap(df: pd.DataFrame, offset: int) -> pd.DataFrame:
     """
 
     df_vwap = ta.vwap(
-        high=df["High"],
-        low=df["Low"],
-        close=df["Close"],
-        volume=df["Volume"],
+        high=data["High"],
+        low=data["Low"],
+        close=data["Close"],
+        volume=data["Volume"],
         offset=offset,
     )
 

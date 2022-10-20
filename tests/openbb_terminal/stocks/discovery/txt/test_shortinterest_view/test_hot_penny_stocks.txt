@@ -1,3 +1,3 @@
-       Price Change      $ Volume     Volume # Trades
-ETHE  $38.48  6.37%  $276,587,944  7,227,943   25,269
-GBTC  $40.69  4.25%  $219,189,815  5,406,771   18,667
+  Symbol                  Company Name  Last Price  Change % Change  Market Time   Volume Avg Vol (3 month) Market Cap
+0   MNMD  Mind Medicine (MindMed) Inc.        1.02    0.27  +36.18%  4:00 PM EDT  224.25M             6.61M    435.63M
+1   BBIG          Vinco Ventures, Inc.        1.45    0.06   +4.32%  4:00 PM EDT  117.16M            21.15M    338.05M

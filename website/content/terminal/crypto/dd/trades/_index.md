@@ -1,55 +1,14 @@
-```
-usage: trades [--vs {EUR,USDC,GBP,USD,USDT,UST}] [--side {all,buy,sell}] [-t TOP] [--export {csv,json,xlsx}] [-h]
-```
+`usage: trades [-e EXCHANGE] [--vs {usdt,usdc,btc}] [-h] [--export EXPORT] [-l LIMIT]`
 
-Show last trades on Coinbase
+Get the latest trades for selected coin
 
 ```
 optional arguments:
-  --vs {EUR,USDC,GBP,USD,USDT,UST}
-                        Quote currency (what to view coin vs) (default: USDT)
-  --side {all,buy,sell}
-                        Side of trade: buy, sell, all (default: all)
-  -t TOP, --top TOP     Limit of records (default: 15)
-  --export {csv,json,xlsx}
-                        Export dataframe data to csv,json,xlsx file (default: )
+  -e {aax,ascendex,bequant,bibox,bigone,binance,binancecoinm,binanceus,binanceusdm,bit2c,bitbank,bitbay,bitbns,bitcoincom,bitfinex,bitfinex2,bitflyer,bitforex,bitget,bithumb,bitmart,bitmex,bitopro,bitpanda,bitrue,bitso,bitstamp,bitstamp1,bittrex,bitvavo,bkex,bl3p,blockchaincom,btcalpha,btcbox,btcmarkets,btctradeua,btcturk,buda,bw,bybit,bytetrade,cdax,cex,coinbase,coinbaseprime,coinbasepro,coincheck,coinex,coinfalcon,coinflex,coinmate,coinone,coinspot,crex24,cryptocom,currencycom,delta,deribit,digifinex,eqonex,exmo,flowbtc,fmfwio,ftx,ftxus,gateio,gemini,hitbtc,hitbtc3,hollaex,huobi,huobijp,huobipro,idex,independentreserve,indodax,itbit,kraken,kucoin,kucoinfutures,kuna,latoken,lbank,lbank2,liquid,luno,lykke,mercado,mexc,mexc3,ndax,novadax,oceanex,okcoin,okex,okex5,okx,paymium,phemex,poloniex,probit,qtrade,ripio,stex,therock,tidebit,tidex,timex,upbit,vcc,wavesexchange,wazirx,whitebit,woo,xena,yobit,zaif,zb,zipmex,zonda}, --exchange {aax,ascendex,bequant,bibox,bigone,binance,binancecoinm,binanceus,binanceusdm,bit2c,bitbank,bitbay,bitbns,bitcoincom,bitfinex,bitfinex2,bitflyer,bitforex,bitget,bithumb,bitmart,bitmex,bitopro,bitpanda,bitrue,bitso,bitstamp,bitstamp1,bittrex,bitvavo,bkex,bl3p,blockchaincom,btcalpha,btcbox,btcmarkets,btctradeua,btcturk,buda,bw,bybit,bytetrade,cdax,cex,coinbase,coinbaseprime,coinbasepro,coincheck,coinex,coinfalcon,coinflex,coinmate,coinone,coinspot,crex24,cryptocom,currencycom,delta,deribit,digifinex,eqonex,exmo,flowbtc,fmfwio,ftx,ftxus,gateio,gemini,hitbtc,hitbtc3,hollaex,huobi,huobijp,huobipro,idex,independentreserve,indodax,itbit,kraken,kucoin,kucoinfutures,kuna,latoken,lbank,lbank2,liquid,luno,lykke,mercado,mexc,mexc3,ndax,novadax,oceanex,okcoin,okex,okex5,okx,paymium,phemex,poloniex,probit,qtrade,ripio,stex,therock,tidebit,tidex,timex,upbit,vcc,wavesexchange,wazirx,whitebit,woo,xena,yobit,zaif,zb,zipmex,zonda}
+                        Exchange to search for order book (default: binance)
+  --vs {usdt,usdc,btc}  Quote currency (what to view coin vs) (default: usdt)
   -h, --help            show this help message (default: False)
-```
-
-Example:
-```
-2022 Feb 15, 07:48 (✨) /crypto/dd/ $ trades
-┌─────────────────────────────┬────────────────┬────────────┬──────┐
-│ time                        │ price          │ size       │ side │
-├─────────────────────────────┼────────────────┼────────────┼──────┤
-│ 2022-02-15T12:48:49.429769Z │ 44210.63000000 │ 0.04045752 │ sell │
-├─────────────────────────────┼────────────────┼────────────┼──────┤
-│ 2022-02-15T12:48:49.429769Z │ 44207.34000000 │ 0.02260937 │ sell │
-├─────────────────────────────┼────────────────┼────────────┼──────┤
-│ 2022-02-15T12:48:31.30732Z  │ 44184.04000000 │ 0.00238891 │ buy  │
-├─────────────────────────────┼────────────────┼────────────┼──────┤
-│ 2022-02-15T12:48:25.51977Z  │ 44179.84000000 │ 0.00000216 │ sell │
-├─────────────────────────────┼────────────────┼────────────┼──────┤
-│ 2022-02-15T12:48:24.96678Z  │ 44179.84000000 │ 0.02262000 │ sell │
-├─────────────────────────────┼────────────────┼────────────┼──────┤
-│ 2022-02-15T12:47:45.136476Z │ 44183.84000000 │ 0.00046768 │ buy  │
-├─────────────────────────────┼────────────────┼────────────┼──────┤
-│ 2022-02-15T12:47:40.197541Z │ 44198.63000000 │ 0.00000891 │ buy  │
-├─────────────────────────────┼────────────────┼────────────┼──────┤
-│ 2022-02-15T12:47:36.791631Z │ 44198.63000000 │ 0.00011859 │ buy  │
-├─────────────────────────────┼────────────────┼────────────┼──────┤
-│ 2022-02-15T12:47:36.791631Z │ 44198.63000000 │ 0.00074141 │ buy  │
-├─────────────────────────────┼────────────────┼────────────┼──────┤
-│ 2022-02-15T12:47:28.468736Z │ 44201.98000000 │ 0.00013180 │ buy  │
-├─────────────────────────────┼────────────────┼────────────┼──────┤
-│ 2022-02-15T12:47:19.90752Z  │ 44209.80000000 │ 0.05338614 │ sell │
-├─────────────────────────────┼────────────────┼────────────┼──────┤
-│ 2022-02-15T12:47:19.90752Z  │ 44207.83000000 │ 0.02260811 │ sell │
-├─────────────────────────────┼────────────────┼────────────┼──────┤
-│ 2022-02-15T12:47:14.403975Z │ 44206.47000000 │ 0.00027010 │ sell │
-├─────────────────────────────┼────────────────┼────────────┼──────┤
-│ 2022-02-15T12:47:13.700917Z │ 44206.47000000 │ 0.00027077 │ sell │
-├─────────────────────────────┼────────────────┼────────────┼──────┤
-│ 2022-02-15T12:47:12.41306Z  │ 44211.76000000 │ 0.25000000 │ buy  │
-└─────────────────────────────┴────────────────┴────────────┴──────┘
+  --export EXPORT       Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
+  -l LIMIT, --limit LIMIT
+                        Number of entries to show in data. (default: 10)
 ```

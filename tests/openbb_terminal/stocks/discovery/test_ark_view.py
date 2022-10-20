@@ -30,16 +30,15 @@ def test_lambda_direction_color_red_green(val, recorder):
 
 
 @pytest.mark.vcr
-@pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "kwargs_dict, use_color",
     [
-        ({"num": 2}, True),
-        ({"num": 2}, False),
-        ({"num": 2, "sort_col": "open"}, False),
-        ({"num": 2, "buys_only": True}, False),
-        ({"num": 2, "sells_only": True}, False),
-        ({"num": 2, "fund": "ARKK"}, False),
+        ({"limit": 2}, True),
+        ({"limit": 2}, False),
+        ({"limit": 2, "sortby": "weight"}, False),
+        ({"limit": 2, "buys_only": True}, False),
+        ({"limit": 2, "sells_only": True}, False),
+        ({"limit": 2, "fund": "ARKK"}, False),
     ],
 )
 def test_ark_orders_view(kwargs_dict, mocker, use_color):
@@ -64,4 +63,4 @@ def test_ark_orders_view_empty_df(mocker):
         "openbb_terminal.stocks.discovery.ark_view.ark_model.get_ark_orders",
         return_value=pd.DataFrame(),
     )
-    ark_view.ark_orders_view(num=2)
+    ark_view.ark_orders_view(limit=2)

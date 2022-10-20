@@ -130,6 +130,10 @@ def test_print_help():
         ("q", ["quit"]),
         ("h", []),
         (
+            "rs openbb-finance/openbbterminal/help",
+            ["rs openbb-finance/openbbterminal", "help"],
+        ),
+        (
             "r",
             ["quit", "quit", "reset", "alternative", "oss"],
         ),

@@ -5,10 +5,9 @@ import argparse
 import logging
 from typing import List, Union
 
-from prompt_toolkit.completion import NestedCompleter
-
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forex import av_model, forex_helper
 from openbb_terminal.forex.forex_helper import FOREX_SOURCES
@@ -93,11 +92,11 @@ class OandaController(BaseController):
         mt.add_param("_to", self.to_symbol)
         mt.add_param("_source", FOREX_SOURCES[self.source])
         mt.add_raw("\n")
-        mt.add_cmd("candles", "", self.instrument)
-        mt.add_cmd("price", "", self.instrument)
-        mt.add_cmd("order", "", self.instrument)
-        mt.add_cmd("orderbook", "", self.instrument)
-        mt.add_cmd("positionbook", "", self.instrument)
+        mt.add_cmd("candles", self.instrument)
+        mt.add_cmd("price", self.instrument)
+        mt.add_cmd("order", self.instrument)
+        mt.add_cmd("orderbook", self.instrument)
+        mt.add_cmd("positionbook", self.instrument)
         console.print(text=mt.menu_text, menu="Forex - Oanda")
 
     @log_start_end(log=logger)

@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def display_etf_by_name(
     name: str,
-    limit: int,
+    limit: int = 10,
     export: str = "",
 ):
     """Display a selection of ETFs based on name filtered by total assets. [Source: Finance Database]
@@ -55,10 +55,11 @@ def display_etf_by_name(
 @log_start_end(log=logger)
 def display_etf_by_description(
     description: str,
-    limit: int,
+    limit: int = 10,
     export: str = "",
 ):
-    """Display a selection of ETFs based on description filtered by total assets. [Source: Finance Database]
+    """Display a selection of ETFs based on description filtered by total assets.
+    [Source: Finance Database]
 
     Parameters
     ----------
@@ -93,10 +94,11 @@ def display_etf_by_description(
 @log_start_end(log=logger)
 def display_etf_by_category(
     category: str,
-    limit: int,
+    limit: int = 10,
     export: str = "",
 ):
-    """Display a selection of ETFs based on a category filtered by total assets. [Source: Finance Database]
+    """Display a selection of ETFs based on a category filtered by total assets.
+    [Source: Finance Database]
 
     Parameters
     ----------

@@ -37,7 +37,7 @@ except ValueError:
 
 @log_start_end(log=logger)
 def display_crypto_sentiment_analysis(
-    coin: str,
+    symbol: str,
     raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -53,7 +53,7 @@ def display_crypto_sentiment_analysis(
 
     Parameters
     ----------
-    coin: str
+    symbol: str
         Cryptocurrency
     raw : False
         Display raw table data
@@ -63,10 +63,10 @@ def display_crypto_sentiment_analysis(
         External axes (1 axis is expected in the list), by default None
     """
 
-    sentiment = get_sentiment(f"{coin}-USD")  # Currently only USD pairs are available
+    sentiment = get_sentiment(f"{symbol}-USD")  # Currently only USD pairs are available
 
     if sentiment.empty:
-        console.print(f"Couldn't find Sentiment Data for {coin}\n")
+        console.print(f"Couldn't find Sentiment Data for {symbol}\n")
         return
 
     if not raw:
@@ -85,7 +85,9 @@ def display_crypto_sentiment_analysis(
         ax.set_xlabel("Time")
         ax.set_ylabel("Finbrain's Sentiment Score")
         start_date = sentiment.index[0].strftime("%Y/%m/%d")
-        ax.set_title(f"FinBrain's Sentiment Analysis for {coin}-USD since {start_date}")
+        ax.set_title(
+            f"FinBrain's Sentiment Analysis for {symbol}-USD since {start_date}"
+        )
         ax.set_ylim([-1.1, 1.1])
         senValues = np.array(pd.to_numeric(sentiment["Sentiment Analysis"].values))
         senNone = np.array(0 * len(sentiment))

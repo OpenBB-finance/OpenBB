@@ -52,7 +52,7 @@ def test_menu_with_queue(expected, mocker, queue):
     result_menu = ta_controller.TechnicalAnalysisController(
         ticker="MOCK_TICKER",
         start=datetime.strptime("2021-12-01", "%Y-%m-%d"),
-        source="yf",
+        source="YahooFinance",
         interval="MOCK_INTERVAL",
         data=MOCK_STOCK_DF,
         queue=queue,
@@ -96,7 +96,7 @@ def test_menu_without_queue_completion(mocker):
 
     result_menu = ta_controller.TechnicalAnalysisController(
         ticker="MOCK_TICKER",
-        source="yf",
+        source="YahooFinance",
         start=datetime.strptime("2021-12-01", "%Y-%m-%d"),
         interval="MOCK_INTERVAL",
         data=MOCK_STOCK_DF,
@@ -147,7 +147,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 
     result_menu = ta_controller.TechnicalAnalysisController(
         ticker="MOCK_TICKER",
-        source="yf",
+        source="YahooFinance",
         start=datetime.strptime("2021-12-01", "%Y-%m-%d"),
         interval="MOCK_INTERVAL",
         data=MOCK_STOCK_DF,
@@ -168,7 +168,7 @@ def test_menu_without_queue_sys_exit(mock_input, mocker):
 def test_print_help(start):
     controller = ta_controller.TechnicalAnalysisController(
         ticker="MOCK_TICKER",
-        source="yf",
+        source="YahooFinance",
         start=start,
         interval="MOCK_INTERVAL",
         data=MOCK_STOCK_DF,
@@ -210,7 +210,7 @@ def test_print_help(start):
 def test_switch(an_input, expected_queue):
     controller = ta_controller.TechnicalAnalysisController(
         ticker="MOCK_FROM/MOCK_TO",
-        source="yf",
+        source="YahooFinance",
         start=datetime.strptime("2021-12-01", "%Y-%m-%d"),
         interval="MOCK_INTERVAL",
         data=MOCK_STOCK_DF,
@@ -226,7 +226,7 @@ def test_call_cls(mocker):
     mocker.patch("os.system")
     controller = ta_controller.TechnicalAnalysisController(
         ticker="MOCK_TICKER/MOCK_TICKER",
-        source="yf",
+        source="YahooFinance",
         start=datetime.strptime("2021-12-01", "%Y-%m-%d"),
         interval="MOCK_INTERVAL",
         data=MOCK_STOCK_DF,
@@ -286,7 +286,7 @@ def test_call_cls(mocker):
 def test_call_func_expect_queue(expected_queue, func, queue):
     controller = ta_controller.TechnicalAnalysisController(
         ticker="MOCK_FROM/MOCK_TO",
-        source="yf",
+        source="YahooFinance",
         start=datetime.strptime("2021-12-01", "%Y-%m-%d"),
         interval="MOCK_INTERVAL",
         data=MOCK_STOCK_DF,
@@ -430,7 +430,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [
                 "1",
                 "--std=2",
-                "--mamode=MOCK_MAMODE",
+                "--mamode=ema",
                 "--export=csv",
             ],
             "volatility_view.display_bbands",
@@ -476,7 +476,7 @@ def test_call_func(
 
         controller = ta_controller.TechnicalAnalysisController(
             ticker="MOCK_FROM/MOCK_TO",
-            source="yf",
+            source="YahooFinance",
             start=datetime.strptime("2021-12-01", "%Y-%m-%d"),
             interval="MOCK_INTERVAL",
             data=MOCK_STOCK_DF,
@@ -492,7 +492,7 @@ def test_call_func(
     else:
         controller = ta_controller.TechnicalAnalysisController(
             ticker="MOCK_FROM/MOCK_TO",
-            source="yf",
+            source="YahooFinance",
             start=datetime.strptime("2021-12-01", "%Y-%m-%d"),
             interval="MOCK_INTERVAL",
             data=MOCK_STOCK_DF,

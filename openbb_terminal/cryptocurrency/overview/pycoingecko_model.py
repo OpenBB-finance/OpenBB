@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 # pylint: disable=C0301, E1101
+# pylint: disable=unsupported-assignment-operation
 
 import logging
 import re
@@ -20,6 +21,7 @@ from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import get_coins
 from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
+# pylint: disable=unsupported-assignment-operation
 
 HOLD_COINS = ["ethereum", "bitcoin"]
 
@@ -180,8 +182,19 @@ def get_top_crypto_categories(sort_filter: str = SORT_VALUES[0]) -> pd.DataFrame
 
 # TODO: add string with overview
 @log_start_end(log=logger)
-def get_stable_coins(top: int = 20) -> pd.DataFrame:
+def get_stable_coins(
+    limit: int = 20, sortby: str = "rank", ascend: bool = False
+) -> pd.DataFrame:
     """Returns top stable coins [Source: CoinGecko]
+
+    Parameters
+    ----------
+    limit: int
+        How many rows to show
+    sortby: str
+        Key by which to sort data
+    ascend: bool
+        Flag to sort data ascending
 
     Returns
     -------
@@ -189,13 +202,22 @@ def get_stable_coins(top: int = 20) -> pd.DataFrame:
         Rank, Name, Symbol, Price, Change_24h, Exchanges, Market_Cap, Change_30d, Url
     """
 
-    df = get_coins(top=top, category="stablecoins")
-    return df[COINS_COLUMNS]
+    df = get_coins(limit=limit, category="stablecoins")
+    df = df[COINS_COLUMNS]
+    df = df.sort_values(by=sortby, ascending=ascend)
+    return df
 
 
 @log_start_end(log=logger)
-def get_exchanges() -> pd.DataFrame:
+def get_exchanges(sortby: str = "name", ascend: bool = False) -> pd.DataFrame:
     """Get list of top exchanges from CoinGecko API [Source: CoinGecko]
+
+    Parameters
+    ----------
+    sortby: str
+        Key by which to sort data
+    ascend: bool
+        Flag to sort data descending
 
     Returns
     -------
@@ -227,12 +249,20 @@ def get_exchanges() -> pd.DataFrame:
         "Url",
     ]
     create_df_index(df, "Rank")
+    df = df.sort_values(by=sortby, ascending=ascend)
     return df
 
 
 @log_start_end(log=logger)
-def get_financial_platforms() -> pd.DataFrame:
+def get_financial_platforms(sortby: str = "Name", ascend: bool = True) -> pd.DataFrame:
     """Get list of financial platforms from CoinGecko API [Source: CoinGecko]
+
+    Parameter
+    ----------
+    sortby: str
+        Key by which to sort data
+    ascend: bool
+        Flag to sort data ascending
 
     Returns
     -------
@@ -245,12 +275,20 @@ def get_financial_platforms() -> pd.DataFrame:
     df.drop("facts", axis=1, inplace=True)
     create_df_index(df, "rank")
     df.columns = ["Rank", "Name", "Category", "Centralized", "Url"]
+    df = df.sort_values(by=sortby, ascending=ascend)
     return df
 
 
 @log_start_end(log=logger)
-def get_finance_products() -> pd.DataFrame:
+def get_finance_products(sortby: str = "Name", ascend: bool = True) -> pd.DataFrame:
     """Get list of financial products from CoinGecko API
+
+    Parameters
+    ----------
+    sortby: str
+        Key by which to sort data
+    ascend: bool
+        Flag to sort data ascending
 
     Returns
     -------
@@ -270,34 +308,48 @@ def get_finance_products() -> pd.DataFrame:
     )
     df.columns = ["Platform", "Identifier", "Supply_Rate", "Borrow_Rate"]
     create_df_index(df, "Rank")
+    df = df.sort_values(by=sortby, ascending=ascend)
     return df
 
 
 @log_start_end(log=logger)
-def get_indexes() -> pd.DataFrame:
+def get_indexes(sortby: str = "Name", ascend: bool = True) -> pd.DataFrame:
     """Get list of crypto indexes from CoinGecko API [Source: CoinGecko]
 
     Returns
     -------
     pandas.DataFrame
         Name, Id, Market, Last, MultiAsset
+    sortby: str
+        Key by which to sort data
+    ascend: bool
+        Flag to sort data descending
     """
 
     client = CoinGeckoAPI()
     df = pd.DataFrame(client.get_indexes(per_page=250))
     df.columns = ["Name", "Id", "Market", "Last", "MultiAsset"]
     create_df_index(df, "Rank")
+    df = df.sort_values(by=sortby, ascending=ascend)
     return df
 
 
 @log_start_end(log=logger)
-def get_derivatives() -> pd.DataFrame:
+def get_derivatives(sortby: str = "Rank", ascend: bool = False) -> pd.DataFrame:
     """Get list of crypto derivatives from CoinGecko API [Source: CoinGecko]
+
+    Parameters
+    ----------
+    sortby: str
+        Key by which to sort data
+    ascend: bool
+        Flag to sort data descending
 
     Returns
     -------
     pandas.DataFrame
-        Rank, Market, Symbol, Price, Pct_Change_24h, Contract_Type, Basis, Spread, Funding_Rate, Volume_24h,
+        Rank, Market, Symbol, Price, Pct_Change_24h, Contract_Type, Basis, Spread,
+        Funding_Rate, Volume_24h,
     """
 
     client = CoinGeckoAPI()
@@ -326,12 +378,20 @@ def get_derivatives() -> pd.DataFrame:
         "Funding_Rate",
         "Volume_24h",
     ]
+    df = df.sort_values(by=sortby, ascending=ascend)
     return df
 
 
 @log_start_end(log=logger)
-def get_exchange_rates() -> pd.DataFrame:
+def get_exchange_rates(sortby: str = "Name", ascend: bool = False) -> pd.DataFrame:
     """Get list of crypto, fiats, commodity exchange rates from CoinGecko API [Source: CoinGecko]
+
+    Parameters
+    ----------
+    sortby: str
+        Key by which to sort data
+    ascend: bool
+        Flag to sort data ascending
 
     Returns
     -------
@@ -344,6 +404,7 @@ def get_exchange_rates() -> pd.DataFrame:
     df.drop("index", axis=1, inplace=True)
     create_df_index(df, "index")
     df.columns = ["Index", "Name", "Unit", "Value", "Type"]
+    df = df.sort_values(by=sortby, ascending=ascend)
     return df
 
 

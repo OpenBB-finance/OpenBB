@@ -6,14 +6,16 @@ import logging
 import os
 from typing import Optional, List
 
-import pandas as pd
 from matplotlib import pyplot as plt
-import financedatabase as fd
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.economy.yfinance_model import get_index, INDICES
+from openbb_terminal.economy.yfinance_model import (
+    get_indices,
+    get_search_indices,
+    INDICES,
+)
 from openbb_terminal.helper_funcs import (
     plot_autoscale,
     print_rich_table,
@@ -41,6 +43,7 @@ def show_indices(
     ----------
     indices: list
         A list of indices you wish to load (and plot).
+        Available indices can be accessed through economy.available_indices().
     interval: str
         Valid intervals: 1m,2m,5m,15m,30m,60m,90m,1h,1d,5d,1wk,1mo,3mo
         Intraday data cannot extend last 60 days
@@ -62,15 +65,8 @@ def show_indices(
     ----------
     Plots the Series.
     """
-    indices_data: pd.DataFrame = pd.DataFrame()
 
-    for index in indices:
-        indices_data[index] = get_index(index, interval, start_date, end_date, column)
-
-    if returns:
-        indices_data = indices_data.pct_change().dropna()
-        indices_data = indices_data + 1
-        indices_data = indices_data.cumprod()
+    indices_data = get_indices(indices, interval, start_date, end_date, column, returns)
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -137,11 +133,11 @@ def show_indices(
 
 
 @log_start_end(log=logger)
-def search_indices(keyword: list, limit: int = 10):
+def search_indices(query: list, limit: int = 10):
     """Load (and show) the selected indices over time [Source: Yahoo Finance]
     Parameters
     ----------
-    keyword: list
+    query: list
         The keyword you wish to search for. This can include spaces.
     limit: int
         The amount of views you want to show, by default this is set to 10.
@@ -149,16 +145,11 @@ def search_indices(keyword: list, limit: int = 10):
     ----------
     Shows a rich table with the available options.
     """
-    keyword_adjusted = " ".join(keyword)
 
-    indices = fd.select_indices()
-
-    queried_indices = pd.DataFrame.from_dict(
-        fd.search_products(indices, keyword_adjusted, "short_name"), orient="index"
-    )
+    keyword_adjusted, queried_indices = get_search_indices(query, limit)
 
     print_rich_table(
-        queried_indices.iloc[:limit],
+        queried_indices,
         show_index=True,
         index_name="ticker",
         headers=queried_indices.columns,

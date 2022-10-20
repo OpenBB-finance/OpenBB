@@ -38,20 +38,20 @@ def lambda_category_color_red_green(val: str) -> str:
 
 
 @log_start_end(log=logger)
-def news(ticker: str, num: int):
+def news(symbol: str, limit: int = 5):
     """Display news for a given stock ticker
 
     Parameters
     ----------
-    ticker : str
+    symbol: str
         Stock ticker
-    fnews : int
+    limit: int
         Number of latest news being printed
     """
-    fnews: List[Any] = finviz_model.get_news(ticker)
+    fnews: List[Any] = finviz_model.get_news(symbol)
 
     if fnews:
-        fnews = sorted(fnews, reverse=True)[:num]
+        fnews = sorted(fnews, reverse=True)[:limit]
 
         for news_date, news_title, news_link, _ in fnews:
             console.print(f"{news_date} - {news_title}")
@@ -62,17 +62,17 @@ def news(ticker: str, num: int):
 
 
 @log_start_end(log=logger)
-def analyst(ticker: str, export: str = ""):
+def analyst(symbol: str, export: str = ""):
     """Display analyst ratings. [Source: Finviz]
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Stock ticker
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    df = finviz_model.get_analyst_data(ticker)
+    df = finviz_model.get_analyst_data(symbol)
 
     if rich_config.USE_COLOR:
         df["category"] = df["category"].apply(lambda_category_color_red_green)

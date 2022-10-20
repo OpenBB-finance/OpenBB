@@ -38,7 +38,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 @check_api_key(["OANDA_ACCOUNT", "OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
-def get_fx_price(account: str, instrument: Union[str, None]):
+def get_fx_price(account: str, instrument: Union[str, None] = ""):
     """View price for loaded currency pair.
 
     Parameters
@@ -80,7 +80,7 @@ def get_account_summary(accountID: str):
 @check_api_key(["OANDA_ACCOUNT", "OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
 def get_order_book(
     accountID: str,
-    instrument: str,
+    instrument: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
     """
@@ -117,7 +117,7 @@ def get_order_book(
 @log_start_end(log=logger)
 @check_api_key(["OANDA_ACCOUNT", "OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
 def get_position_book(
-    accountID: str, instrument: str, external_axes: Optional[List[plt.Axes]] = None
+    accountID: str, instrument: str = "", external_axes: Optional[List[plt.Axes]] = None
 ):
     """Plot a position book for an instrument if Oanda provides one.
 
@@ -154,7 +154,7 @@ def get_position_book(
 
 @log_start_end(log=logger)
 @check_api_key(["OANDA_ACCOUNT", "OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
-def list_orders(accountID: str, order_state: str, order_count: int):
+def list_orders(accountID: str, order_state: str = "PENDING", order_count: int = 0):
     """List order history.
 
     Parameters
@@ -176,7 +176,7 @@ def list_orders(accountID: str, order_state: str, order_count: int):
 
 @log_start_end(log=logger)
 @check_api_key(["OANDA_ACCOUNT", "OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
-def create_order(accountID: str, instrument: str, price: int, units: int):
+def create_order(accountID: str, instrument: str = "", price: int = 0, units: int = 0):
     """Create a buy/sell order.
 
     Parameters
@@ -200,7 +200,7 @@ def create_order(accountID: str, instrument: str, price: int, units: int):
 
 @log_start_end(log=logger)
 @check_api_key(["OANDA_ACCOUNT", "OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
-def cancel_pending_order(accountID: str, orderID: str):
+def cancel_pending_order(accountID: str, orderID: str = ""):
     """Cancel a Pending Order.
 
     Parameters
@@ -256,9 +256,6 @@ def get_pending_orders(accountID: str):
         console.print("No data was returned from Oanda.\n")
 
 
-# Pylint raises no-member error because the df_trades can be either
-# a dataframe or a boolean (False) value that has no .empty and no .to_string
-# pylint: disable=no-member
 @log_start_end(log=logger)
 @check_api_key(["OANDA_ACCOUNT", "OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
 def get_open_trades(accountID: str):
@@ -270,7 +267,7 @@ def get_open_trades(accountID: str):
         Oanda user account ID
     """
     df_trades = open_trades_request(accountID)
-    if df_trades is not False and not df_trades.empty:
+    if isinstance(df_trades, pd.DataFrame) and not df_trades.empty:
         console.print(df_trades.to_string(index=False))
         console.print("")
     elif df_trades is not False and df_trades.empty:
@@ -281,7 +278,7 @@ def get_open_trades(accountID: str):
 
 @log_start_end(log=logger)
 @check_api_key(["OANDA_ACCOUNT", "OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
-def close_trade(accountID: str, orderID: str, units: Union[int, None]):
+def close_trade(accountID: str, orderID: str = "", units: Union[int, None] = None):
     """Close a trade.
 
     Parameters
@@ -306,9 +303,9 @@ def close_trade(accountID: str, orderID: str, units: Union[int, None]):
 @log_start_end(log=logger)
 @check_api_key(["OANDA_ACCOUNT", "OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
 def show_candles(
-    instrument: str,
-    granularity: str,
-    candlecount: int,
+    instrument: str = "",
+    granularity: str = "D",
+    candlecount: int = 180,
     additional_charts: Optional[Dict[str, bool]] = None,
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -321,7 +318,9 @@ def show_candles(
     instrument : str
         The loaded currency pair
     granularity : str, optional
-        Data granularity
+        The timeframe to get for the candle chart. Seconds: S5, S10, S15, S30
+        Minutes: M1, M2, M4, M5, M10, M15, M30 Hours: H1, H2, H3, H4, H6, H8, H12
+        Day (default): D, Week: W Month: M,
     candlecount : int, optional
         Limit for the number of data points
     additional_charts : Dict[str, bool]
@@ -392,7 +391,7 @@ def show_candles(
 
 @log_start_end(log=logger)
 @check_api_key(["OANDA_ACCOUNT", "OANDA_TOKEN", "OANDA_ACCOUNT_TYPE"])
-def calendar(instrument: str, days: int):
+def calendar(instrument: str, days: int = 7):
     """View calendar of significant events.
 
     Parameters

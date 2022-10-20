@@ -1,7 +1,7 @@
-name: Intel MacOS
+name: Intel MacOS Build
 env:
   OPENBB_ENABLE_QUICK_EXIT: true
-  OPENBB_LOG_COLLECTION: false
+  OPENBB_LOG_COLLECT: false
   OPENBB_USE_ION: false
   OPENBB_USE_PROMPT_TOOLKIT: false
   PIP_DEFAULT_TIMEOUT: 100
@@ -10,17 +10,28 @@ on: workflow_dispatch
 jobs:
   Build:
     name: Intel MacOS Build
-    runs-on: macos-latest
+    runs-on: [self-hosted, macos, x64]
     steps:
-      # Check out repository
+      # Checkout repository main branch. this allows for the commit hashes to line up
       - name: Checkout
         uses: actions/checkout@v2.4.2
+      - name: Git Log
+        run: git log
+      # Install create-dmg
+      - name: Install create-dmg
+        run: brew install create-dmg
+      # The following commands to clear previous PATHS and restore to defaults since we have to maintain the instance ourselves
+      - name: Clean Previous Path
+        run: |
+          export PATH=""
+          export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+          echo $PATH
       # Set up caching for conda env so that the workflow runs quickly after the first time
-      - name: Setup caching for conda packages
+      - name: Setup Conda Caching
         uses: actions/cache@v2
         with:
           path: ~/conda_pkgs_dir
-          key: conda-macos-3-9-${{ hashFiles('build/conda/conda-3-9-env.yaml') }}
+          key: conda-macos-3-9-${{ hashFiles('build/conda/conda-3-9-env-full.yaml') }}
       # Set up miniconda using the environment yaml file within the repo
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2
@@ -30,30 +41,132 @@ jobs:
           channels: conda-forge,defaults
           show-channel-urls: true
           channel-priority: flexible
-          environment-file: build/conda/conda-3-9-env.yaml
+          environment-file: build/conda/conda-3-9-env-full.yaml
           activate-environment: build_env
           use-only-tar-bz2: true # Needed for caching some reason
+      - name: Initialize Conda and Reset Terminal
+        run: |
+          conda init
+          exec zsh -l
+          source ~/.zshrc
       - name: Run Poetry
-        shell: bash -l {0}
         run: poetry install
       - name: Install Pyinstaller
-        shell: bash -l {0}
         run: poetry install -E installer
       - name: Install Prediction Modules
-        shell: bash -l {0}
         run: poetry install -E prediction
-      - name: Run Build Shell Script
-        shell: bash -l {0}
-        continue-on-error: true # this is here because there is a known error in create-dmg that cannot unmount disks if they are too large
-        run: build/pyinstaller/build4mac.sh
-        # Saves created artifacts except the icon artifact
-      - name: Save Build Artifact Folder
+      # Double Checking Version Number
+      - name: Check OpenBB Version
+        run: pip list | grep openbb
+      # This is basically the same as build4mac.sh
+      - name: Build Bundle
+        run: |
+          conda remove --force sigtool -y
+          pyinstaller build/pyinstaller/terminal.spec --clean
+          osascript build/pyinstaller/setup_icons.applescript
+          mkdir DMG
+          cp -r build/pyinstaller/macOS_package_assets/* DMG/
+          mv dist/OpenBBTerminal DMG/OpenBB\ Terminal/.OpenBB
+      - name: Creating Keychain
+        env:
+          MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+          MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+          MACOS_KEYCHAIN_PWD: ${{ secrets.MACOS_KEYCHAIN_PWD }}
+          MACOS_CODESIGN_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
+        run: | # when pushing to main, make to generate new cert, and utilize secrets to store newpassowrd, and identity
+          echo "Decoding"
+          echo $MACOS_CERTIFICATE | base64 --decode > certificate.p12
+          echo "Creating Keychain"
+          security create-keychain -p $MACOS_KEYCHAIN_PWD build.keychain
+          echo "Setting Default Keychain"
+          security default-keychain -s build.keychain
+          echo "Unlocking Keychain"
+          security unlock-keychain -p $MACOS_KEYCHAIN_PWD build.keychain
+          echo "Importing Keychain"
+          security import certificate.p12 -k build.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign
+          echo "Setting Partition List"
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $MACOS_KEYCHAIN_PWD build.keychain
+      - name: Codesign Specific Binaries
+        env:
+          MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+          MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+          MACOS_KEYCHAIN_PWD: ${{ secrets.MACOS_KEYCHAIN_PWD }}
+          MACOS_CODESIGN_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
+        run: |
+          echo "Code Signing SO Files"
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*.so
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*/*.so
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*/*/*.so
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*/*/*/*.so
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*/*/*/*/*.so
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*/*/*/*/*/*.so
+          echo "Code Signing DYLIB Files"
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*.dylib
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*/*.dylib
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*/*/*.dylib
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/scipy/.dylibs/*.dylib
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/torch/.dylibs/*.dylib
+          echo "Code Signing Other Files"
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/pyarrow/plasma-store-server
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/torch/bin/protoc
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/torch/bin/protoc-3.13.0.0
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/torch/bin/torch_shm_manager
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/prophet/stan_model/prophet_model.bin
+          echo "Code Sign OpenBB Executable File"
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/OpenBBTerminal
+      - name: Create DMG
+        run: create-dmg --volname "OpenBB Terminal" --volicon "images/dmg_volume.icns" --background "images/openbb_dmg_background.png" --icon "OpenBB Terminal" 190 250 --window-pos 190 120 --window-size 800 400 --icon-size 100 --text-size 14 --app-drop-link 600 250 --eula LICENSE --format UDZO --no-internet-enable "OpenBB Terminal".dmg DMG
+      - name: Code Sign DMG Installer
+        env:
+          MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+          MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+          MACOS_KEYCHAIN_PWD: ${{ secrets.MACOS_KEYCHAIN_PWD }}
+          MACOS_CODESIGN_IDENTITY: ${{ secrets.MACOS_CODESIGN_IDENTITY }}
+        run: |
+          echo "Code Signing DMG Installer"
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY OpenBB\ Terminal.dmg
+          echo "Verify Signing"
+          codesign --verify --deep --strict --verbose=2 OpenBB\ Terminal.dmg
+      - name: Deleting Previous Keychain
+        run: |
+          echo "Deleting Previous Keychain to Clean Instance"
+          rm -rf /Users/openbb/Library/Keychains/build.keychain-db
+      - name: Clean up Build Artifacts
+        run: |
+          rm -rf build/terminal
+          rm -rf dist
+          rm -rf DMG
+      - name: Notorize DMG
+        env:
+          NOTARIZE_APPLE_ID: ${{ secrets.NOTARIZE_APPLE_ID }}
+          NOTARIZE_APPLE_PWD: ${{ secrets.NOTARIZE_APPLE_PWD }}
+          NOTARIZE_APPLE_TEAM_ID: ${{ secrets.NOTARIZE_APPLE_TEAM_ID }}
+        run: |
+          xcrun notarytool submit OpenBB\ Terminal.dmg --apple-id "$NOTARIZE_APPLE_ID" --password "$NOTARIZE_APPLE_PWD" --team-id "$NOTARIZE_APPLE_TEAM_ID" --wait
+      - name: Staple
+        run: |
+          xcrun stapler staple "OpenBB Terminal.dmg"
+      - name: Save Build Artifact DMG
         uses: actions/upload-artifact@v3
         with:
-          name: OpenBB Artifact
-          path: |
-                DMG/OpenBB\ Terminal/.openbb
-                DMG/OpenBB\ Terminal/OpenBB\ Terminal
+          name: Intel MacOS DMG Artifact
+          path: OpenBB\ Terminal.dmg
+      - name: Convert & Mount DMG
+        run: | # Remove the converting disc image at the end
+          hdiutil convert OpenBB\ Terminal.dmg -format UDTO -o openbbterminal.cdr
+          hdiutil attach openbbterminal.cdr
+          rm -rf openbbterminal.cdr
+      - name: Directory Change
+        run: |
+            cd
+            cd /Volumes/OpenBB\ Terminal
+            ls
+            cp -R OpenBB\ Terminal ~/Desktop
+      - name: Unmount DMG
+        run: hdiutil detach /dev/disk3
       - name: Run Integration Tests
-        shell: bash -l {0}
-        run: DMG/OpenBB\ Terminal/.OpenBB/OpenBBTerminal ~/work/OpenBBTerminal/OpenBBTerminal/scripts/*.openbb -t
+        run: /Users/openbb/Desktop/OpenBB\ Terminal/.OpenBB/OpenBBTerminal /Users/openbb/actions-runner/_work/OpenBBTerminal/OpenBBTerminal/openbb_terminal/miscellaneous/scripts/*.openbb -t
+      - name: Remove OpenBB Folder
+        run: rm -rf /Users/openbb/Desktop/OpenBB\ Terminal
+      - name: Remove OpenBB Exports Folder
+        run: rm -rf ~/Desktop/OPENBB-exports

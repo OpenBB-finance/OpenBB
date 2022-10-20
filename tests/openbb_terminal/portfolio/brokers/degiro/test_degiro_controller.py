@@ -203,7 +203,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         (
             "call_companynews",
             [
-                "MOCK_ISIN",
+                "--symbol=MOCK_ISIN",
             ],
             "DegiroView.companynews",
             [],

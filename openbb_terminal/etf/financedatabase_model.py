@@ -33,7 +33,8 @@ def get_etfs_by_name(name: str) -> Dict:
 
 @log_start_end(log=logger)
 def get_etfs_by_description(description: str) -> Dict:
-    """Return a selection of ETFs based on description filtered by total assets. [Source: Finance Database]
+    """Return a selection of ETFs based on description filtered by total assets.
+    [Source: Finance Database]
 
     Parameters
     ----------
@@ -53,7 +54,8 @@ def get_etfs_by_description(description: str) -> Dict:
 
 @log_start_end(log=logger)
 def get_etfs_by_category(category: str) -> Dict:
-    """Return a selection of ETFs based on category filtered by total assets. [Source: Finance Database]
+    """Return a selection of ETFs based on category filtered by total assets.
+    [Source: Finance Database]
 
     Parameters
     ----------

@@ -7,7 +7,7 @@ from distutils.util import strtobool
 
 # IMPORTATION THIRDPARTY
 import pandas as pd
-import pkg_resources
+import importlib_metadata
 import pytest
 from _pytest.capture import MultiCapture, SysCapture
 from _pytest.config import Config
@@ -31,7 +31,6 @@ EXTENSIONS_MATCHING: Dict[str, List[Type]] = {
 
 os.environ["TEST_MODE"] = "True"
 os.environ["OPENBB_IMG_HOST_ACTIVE"] = "False"
-os.environ["OPENBB_DISCORD_BOT_TOKEN"] = "123"
 os.environ["OPENBB_IMGUR_CLIENT_ID"] = "123"
 obbff.ENABLE_EXIT_AUTO_HELP = strtobool("True")
 
@@ -44,7 +43,7 @@ class Record:
         elif isinstance(data, tuple(EXTENSIONS_MATCHING["csv"])):
             string_value = data.to_csv(
                 encoding="utf-8",
-                line_terminator="\n",
+                lineterminator="\n",
                 # date_format="%Y-%m-%d %H:%M:%S",
                 **kwargs,
             )
@@ -332,11 +331,6 @@ def pytest_addoption(parser: Parser):
         help="To run tests with the marker : @pytest.mark.prediction",
     )
     parser.addoption(
-        "--bots",
-        action="store_true",
-        help="To run tests with the marker : @pytest.mark.bots",
-    )
-    parser.addoption(
         "--rewrite-expected",
         action="store_true",
         help="To force `record_stdout` and `recorder` to rewrite all files.",
@@ -344,8 +338,7 @@ def pytest_addoption(parser: Parser):
 
 
 def brotli_check():
-    installed_packages = pkg_resources.working_set
-    for item in list(installed_packages):
+    for item in importlib_metadata.packages_distributions():
         if "brotli" in str(item).lower():
             pytest.exit("Uninstall brotli and brotlipy before running tests")
 
@@ -406,20 +399,6 @@ def default_json_path(request: SubRequest) -> str:
 def record_stdout_markers(request: SubRequest) -> List[Mark]:
     """All markers applied to the certain test together with cassette names associated with each marker."""
     return list(request.node.iter_markers(name="record_stdout"))
-
-
-@pytest.fixture(scope="session", autouse=True)
-def delete_images():
-    yield
-    mydir = os.path.join(
-        os.path.abspath(os.path.join(os.path.dirname(__file__), "..")),
-        "bots",
-        "interactive",
-        "images",
-    )
-    filelist = [f for f in os.listdir(mydir) if f.endswith(".png")]
-    for f in filelist:
-        os.remove(os.path.join(mydir, f))
 
 
 @pytest.fixture(autouse=True)

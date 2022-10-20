@@ -1,0 +1,16 @@
+name-template: 'OpenBB Terminal v$NEXT_MINOR_VERSION'
+tag-template: 'v$NEXT_MINOR_VERSION'
+
+template: |
+  ## Thank you and welcome to our new contributors 🔥
+  $CONTRIBUTORS
+
+  ## What's changed 🚀
+  $CHANGES
+
+  We are proud of our community contributors and staunch supporters of open-source ecosystems.
+  Help us promote our community by tagging `@openbb_finance` on Twitter with a link to your pull request,
+  and join our Discord server to chat about your contribution! We want to hear about your experience!
+
+  ### Links 🦋
+  [Website](https://openbb.co/), [Twitter](https://twitter.com/openbb_finance), [Linkedin](https://www.linkedin.com/company/openbb-finance), [Instagram](https://www.instagram.com/openbb.finance/), [Reddit](https://www.reddit.com/r/openbb/), [Discord](https://discord.com/invite/xPHTuHCmuV)

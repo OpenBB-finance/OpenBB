@@ -21,13 +21,12 @@ openbb_terminal/config_terminal.py
 openbb_terminal/feature_flags.py
 openbb_terminal/reports/stored/*
 !openbb_terminal/reports/stored/.gitkeep
-!openbb_terminal/dashboards/*.ipynb
+!openbb_terminal/dashboards/voila/*.ipynb
 !openbb_terminal/reports/*.ipynb
 openbb_terminal/portfolio/portfolios/*
 **/.ipynb_checkpoints
 *.swp
 *.http
-bots/interactive/*.html
 .coverage.*
 !openbb_terminal/custom_reports/*/.ipynb
 
@@ -60,3 +59,10 @@ styles/user
 
 # the file containing the API keys for the web version
 openbb_terminal_web/setenv
+
+# dart models
+darts_logs/
+
+# User data
+custom_imports/*.csv
+custom_imports/*/*.csv

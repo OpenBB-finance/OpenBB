@@ -1,5 +1,5 @@
 ```
-usage: dpi [-l LIMIT] [-s {Rank,Name,Chain,Category,TVL,Change_1D}] [--descend] [-h] [--export {csv,json,xlsx}]
+usage: dpi [-l LIMIT] [-s {Rank,Name,Chain,Category,TVL,Change_1D}] [--ascend] [-h] [--export {csv,json,xlsx}]
 ```
 
 Displays DeFi Pulse crypto protocols. [Source: https://defipulse.com/]
@@ -10,7 +10,7 @@ optional arguments:
                         Number of records to display (default: 15)
   -s {Rank,Name,Chain,Category,TVL,Change_1D}, --sort {Rank,Name,Chain,Category,TVL,Change_1D}
                         Sort by given column. Default: Rank (default: Rank)
-  --descend             Flag to sort in descending order (lowest first) (default: True)
+  --ascend             Flag to sort in ascending order (lowest first) (default: True)
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx (default: )

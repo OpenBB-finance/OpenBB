@@ -12,50 +12,43 @@ from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-sort_map = {
-    "Symbol": "Symbol",
-    "CMC_Rank": "CMC_Rank",
-    "LastPrice": "Last Price",
-    "DayPctChange": "1 Day Pct Change",
-    "MarketCap": "Market Cap ($B)",
-}
-
 
 @log_start_end(log=logger)
 @check_api_key(["API_CMC_KEY"])
 def display_cmc_top_coins(
-    top: int = 15,
+    limit: int = 15,
     sortby: str = "CMC_Rank",
-    descend: bool = False,
+    ascend: bool = True,
     export: str = "",
 ) -> None:
     """Shows top n coins. [Source: CoinMarketCap]
 
     Parameters
     ----------
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key to sort data. The table can be sorted by every of its columns. Refer to
-        Coin Market Cap:s API documentation
-        (see https://coinmarketcap.com/api/documentation/v1/#operation/getV1CryptocurrencyListingsLatest)
-    descend: bool
-        Flag to sort data descending
+        Coin Market Cap:s API documentation, see:
+        https://coinmarketcap.com/api/documentation/v1/#operation/getV1CryptocurrencyListingsLatest
+    ascend: bool
+        Flag to sort data ascending
     export : str
         Export dataframe data to csv,json,xlsx file
 
     """
 
-    df = coinmarketcap_model.get_cmc_top_n()
+    df = coinmarketcap_model.get_cmc_top_n(sortby, ascend)
 
     if df.empty:
         console.print("No Data Found\n")
         return
 
-    df = df.sort_values(by=sort_map[sortby], ascending=descend)
-
     print_rich_table(
-        df.iloc[:top, :], headers=list(df.columns), show_index=False, title="Top Coins"
+        df.iloc[:limit, :],
+        headers=list(df.columns),
+        show_index=False,
+        title="Top Coins",
     )
 
     export_data(

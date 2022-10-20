@@ -27,17 +27,3 @@ Capital Expenditure               7,557    7,377    8,031    7,712    2,000
 Selling, General & Admin. Exp.    5,342    6,809    7,023    6,906    5,686
 Shareholder’s Equity             44,873   63,057   85,777   96,491        -
 Total Assets                     79,406  101,864  129,230  129,102        -
-                           Previous Quarter  Current Quarter     Next Quarter     Current Year        Next Year
-QUARTER EARNINGS ESTIMATES                                                                                     
-Date                        ending 03/31/22  ending 06/30/22  ending 09/30/22  ending 12/31/22  ending 12/31/23
-No. of Analysts                          31               27               26               38               37
-Average Estimate                  2.258 USD        2.198 USD        3.175 USD       12.183 USD       16.115 USD
-Year Ago                          0.930 USD        1.450 USD        1.860 USD        6.780 USD       12.183 USD
-Publish Date                      4/20/2022        7/27/2022       10/26/2022                -                -
-                           Previous Quarter  Current Quarter     Next Quarter     Current Year        Next Year
-QUARTER REVENUES ESTIMATES                                                                                     
-Date                        ending 03/31/22  ending 06/30/22  ending 09/30/22  ending 12/31/22  ending 12/31/23
-No. of Analysts                          16               14               13               27               26
-Average Estimate                 17,869 USD       18,200 USD       22,867 USD       86,858 USD      116,788 USD
-Year Ago                         10,389 USD       11,958 USD       13,757 USD       53,823 USD       86,858 USD
-Publish Date                      4/20/2022        7/27/2022       10/26/2022                -                -

@@ -23,8 +23,8 @@ def test_rating_over_time(mocker):
     # MOCK VISUALIZE_OUTPUT
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
     finnhub_view.rating_over_time(
-        ticker="TSLA",
-        num=10,
+        symbol="TSLA",
+        limit=10,
         raw=True,
         export=None,
     )
@@ -38,8 +38,8 @@ def test_rating_over_time_plt(capsys, mocker):
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 
     finnhub_view.rating_over_time(
-        ticker="TSLA",
-        num=10,
+        symbol="TSLA",
+        limit=10,
         raw=False,
         export=None,
     )
@@ -55,8 +55,8 @@ def test_rating_over_time_invalid_ticker(mocker):
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 
     finnhub_view.rating_over_time(
-        ticker="INVALID_TICKER",
-        num=10,
+        symbol="INVALID_TICKER",
+        limit=10,
         raw=False,
         export=None,
     )
@@ -68,8 +68,8 @@ def test_rating_over_time_invalid_token(mocker):
     # MOCK VISUALIZE_OUTPUT
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
     finnhub_view.rating_over_time(
-        ticker="TSLA",
-        num=10,
+        symbol="TSLA",
+        limit=10,
         raw=False,
         export=None,
     )

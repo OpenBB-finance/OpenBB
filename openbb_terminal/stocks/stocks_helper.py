@@ -1,29 +1,49 @@
 """Main helper"""
 __docformat__ = "numpy"
 
+# pylint: disable=unsupported-assignment-operation,too-many-lines
+# pylint: disable=no-member,too-many-branches,too-many-arguments
+# pylint: disable=inconsistent-return-statements
+
 import logging
 import os
 from datetime import datetime, timedelta, date
-from typing import List, Union, Optional, Iterable
+from typing import Any, Union, Optional, Iterable, List, Dict
 
 import financedatabase as fd
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
+from matplotlib.ticker import LogLocator, ScalarFormatter
 import mplfinance as mpf
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
-import pyEX
 import pytz
 import requests
+from requests.exceptions import ReadTimeout
 
 import yfinance as yf
-from alpha_vantage.timeseries import TimeSeries
 from numpy.core.fromnumeric import transpose
 from plotly.subplots import make_subplots
 from scipy import stats
 
 from openbb_terminal import config_terminal as cfg
+
+# pylint: disable=unused-import
+from openbb_terminal.stocks.stock_statics import market_coverage_suffix
+from openbb_terminal.stocks.stock_statics import INTERVALS  # noqa: F401
+from openbb_terminal.stocks.stock_statics import SOURCES  # noqa: F401
+from openbb_terminal.stocks.stock_statics import INCOME_PLOT  # noqa: F401
+from openbb_terminal.stocks.stock_statics import BALANCE_PLOT  # noqa: F401
+from openbb_terminal.stocks.stock_statics import CASH_PLOT  # noqa: F401
+from openbb_terminal.stocks.stock_statics import CANDLE_SORT  # noqa: F401
+from openbb_terminal.stocks.stocks_models import (
+    load_stock_av,
+    load_stock_yf,
+    load_stock_eodhd,
+    load_stock_iex_cloud,
+    load_stock_polygon,
+)
 from openbb_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
@@ -34,440 +54,12 @@ from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
-# pylint: disable=no-member,too-many-branches,C0302,R0913
 
-INTERVALS = [1, 5, 15, 30, 60]
-SOURCES = ["yf", "av", "iex"]
-
-market_coverage_suffix = {
-    "USA": ["CBT", "CME", "NYB", "CMX", "NYM", "US", ""],
-    "Argentina": ["BA"],
-    "Austria": ["VI"],
-    "Australia": ["AX"],
-    "Belgium": ["BR"],
-    "Brazil": ["SA"],
-    "Canada": ["CN", "NE", "TO", "V"],
-    "Chile": ["SN"],
-    "China": ["SS", "SZ"],
-    "Czech-Republic": ["PR"],
-    "Denmark": ["CO"],
-    "Egypt": ["CA"],
-    "Estonia": ["TL"],
-    "Europe": ["NX"],
-    "Finland": ["HE"],
-    "France": ["PA"],
-    "Germany": ["BE", "BM", "DU", "F", "HM", "HA", "MU", "SG", "DE"],
-    "Greece": ["AT"],
-    "Hong-Kong": ["HK"],
-    "Hungary": ["BD"],
-    "Iceland": ["IC"],
-    "India": ["BO", "NS"],
-    "Indonesia": ["JK"],
-    "Ireland": ["IR"],
-    "Israel": ["TA"],
-    "Italy": ["MI"],
-    "Japan": ["T", "S"],
-    "Latvia": ["RG"],
-    "Lithuania": ["VS"],
-    "Malaysia": ["KL"],
-    "Mexico": ["MX"],
-    "Netherlands": ["AS"],
-    "New-Zealand": ["NZ"],
-    "Norway": ["OL"],
-    "Portugal": ["LS"],
-    "Qatar": ["QA"],
-    "Russia": ["ME"],
-    "Singapore": ["SI"],
-    "South-Africa": ["JO"],
-    "South-Korea": ["KS", "KQ"],
-    "Spain": ["MC"],
-    "Saudi-Arabia": ["SAU"],
-    "Sweden": ["ST"],
-    "Switzerland": ["SW"],
-    "Taiwan": ["TWO", "TW"],
-    "Thailand": ["BK"],
-    "Turkey": ["IS"],
-    "United-Kingdom": ["L", "IL"],
-    "Venezuela": ["CR"],
-}
-
-INCOME_PLOT = {
-    "av": [
-        "reported_currency",
-        "gross_profit",
-        "total_revenue",
-        "cost_of_revenue",
-        "cost_of_goods_and_services_sold",
-        "operating_income",
-        "selling_general_and_administrative",
-        "research_and_development",
-        "operating_expenses",
-        "investment_income_net",
-        "net_interest_income",
-        "interest_income",
-        "interest_expense",
-        "non_interest_income",
-        "other_non_operating_income",
-        "depreciation",
-        "depreciation_and_amortization",
-        "income_before_tax",
-        "income_tax_expense",
-        "interest_and_debt_expense",
-        "net_income_from_continuing_operations",
-        "comprehensive_income_net_of_tax",
-        "ebit",
-        "ebitda",
-        "net_income",
-    ],
-    "polygon": [
-        "cost_of_revenue",
-        "diluted_earnings_per_share",
-        "costs_and_expenses",
-        "gross_profit",
-        "non_operating_income_loss",
-        "operating_income_loss",
-        "participating_securities_distributed_and_undistributed_earnings_loss_basic",
-        "income_tax_expense_benefit",
-        "net_income_loss_attributable_to_parent",
-        "net_income_loss",
-        "income_tax_expense_benefit_deferred",
-        "preferred_stock_dividends_and_other_adjustments",
-        "operating_expenses",
-        "income_loss_from_continuing_operations_before_tax",
-        "net_income_loss_attributable_to_non_controlling_interest",
-        "income_loss_from_continuing_operations_after_tax",
-        "revenues",
-        "net_income_loss_available_to_common_stockholders_basic",
-        "benefits_costs_expenses",
-        "basic_earnings_per_share",
-        "interest_expense_operating",
-        "income_loss_before_equity_method_investments",
-    ],
-    "yf": [
-        "total_revenue",
-        "cost_of_revenue",
-        "gross_profit",
-        "research_development",
-        "selling_general_and_administrative",
-        "total_operating_expenses",
-        "operating_income_or_loss",
-        "interest_expense",
-        "total_other_income/expenses_net",
-        "income_before_tax",
-        "income_tax_expense",
-        "income_from_continuing_operations",
-        "net_income",
-        "net_income_available_to_common_shareholders",
-        "basic_eps",
-        "diluted_eps",
-        "basic_average_shares",
-        "diluted_average_shares",
-        "ebitda",
-    ],
-    "fmp": [
-        "reported_currency",
-        "cik",
-        "filling_date",
-        "accepted_date",
-        "calendar_year",
-        "period",
-        "revenue",
-        "cost_of_revenue",
-        "gross_profit",
-        "gross_profit_ratio",
-        "research_and_development_expenses",
-        "general_and_administrative_expenses",
-        "selling_and_marketing_expenses",
-        "selling_general_and_administrative_expenses",
-        "other_expenses",
-        "operating_expenses",
-        "cost_and_expenses",
-        "interest_income",
-        "interest_expense",
-        "depreciation_and_amortization",
-        "ebitda",
-        "ebitda_ratio",
-        "operating_income",
-        "operating_income_ratio",
-        "total_other_income_expenses_net",
-        "income_before_tax",
-        "income_before_tax_ratio",
-        "income_tax_expense",
-        "net_income",
-        "net_income_ratio",
-        "eps",
-        "eps_diluted",
-        "weighted_average_shs_out",
-        "weighted_average_shs_out_dil",
-        "link",
-        "final_link",
-    ],
-}
-BALANCE_PLOT = {
-    "av": [
-        "reported_currency",
-        "total_assets",
-        "total_current_assets",
-        "cash_and_cash_equivalents_at_carrying_value",
-        "cash_and_short_term_investments",
-        "inventory",
-        "current_net_receivables",
-        "total_non_current_assets",
-        "property_plant_equipment",
-        "accumulated_depreciation_amortization_ppe",
-        "intangible_assets",
-        "intangible_assets_excluding_goodwill",
-        "goodwill",
-        "investments",
-        "long_term_investments",
-        "short_term_investments",
-        "other_current_assets",
-        "other_non_currrent_assets",
-        "total_liabilities",
-        "total_current_liabilities",
-        "current_accounts_payable",
-        "deferred_revenue",
-        "current_debt",
-        "short_term_debt",
-        "total_non_current_liabilities",
-        "capital_lease_obligations",
-        "long_term_debt",
-        "current_long_term_debt",
-        "long_term_debt_non_current",
-        "short_long_term_debt_total",
-        "other_current_liabilities",
-        "other_non_current_liabilities",
-        "total_shareholder_equity",
-        "treasury_stock",
-        "retained_earnings",
-        "common_stock",
-        "common_stock_shares_outstanding",
-    ],
-    "polygon": [
-        "equity_attributable_to_non_controlling_interest",
-        "liabilities",
-        "non_current_assets",
-        "equity",
-        "assets",
-        "current_assets",
-        "equity_attributable_to_parent",
-        "current_liabilities",
-        "non_current_liabilities",
-        "fixed_assets",
-        "other_than_fixed_non_current_assets",
-        "liabilities_and_equity",
-    ],
-    "yf": [
-        "cash_and_cash_equivalents",
-        "other_short-term_investments",
-        "total_cash",
-        "net_receivables",
-        "inventory",
-        "other_current_assets",
-        "total_current_assets",
-        "gross_property, plant_and_equipment",
-        "accumulated_depreciation",
-        "net_property, plant_and_equipment",
-        "equity_and_other_investments",
-        "other_long-term_assets",
-        "total_non-current_assets",
-        "total_assets",
-        "current_debt",
-        "accounts_payable",
-        "deferred_revenues",
-        "other_current_liabilities",
-        "total_current_liabilities",
-        "long-term_debt",
-        "deferred_tax_liabilities",
-        "deferred_revenues",
-        "other_long-term_liabilities",
-        "total_non-current_liabilities",
-        "total_liabilities",
-        "common_stock",
-        "retained_earnings",
-        "accumulated_other_comprehensive_income",
-        "total_stockholders'_equity",
-        "total_liabilities_and_stockholders'_equity",
-    ],
-    "fmp": [
-        "reported_currency",
-        "cik",
-        "filling_date",
-        "accepted_date",
-        "calendar_year",
-        "period",
-        "cash_and_cash_equivalents",
-        "short_term_investments",
-        "cash_and_short_term_investments",
-        "net_receivables",
-        "inventory",
-        "other_current_assets",
-        "total_current_assets",
-        "property_plant_equipment_net",
-        "goodwill",
-        "intangible_assets",
-        "goodwill_and_intangible_assets",
-        "long_term_investments",
-        "tax_assets",
-        "other_non_current_assets",
-        "total_non_current_assets",
-        "other_assets",
-        "total_assets",
-        "account_payables",
-        "short_term_debt",
-        "tax_payables",
-        "deferred_revenue",
-        "other_current_liabilities",
-        "total_current_liabilities",
-        "long_term_debt",
-        "deferred_revenue_non_current",
-        "deferred_tax_liabilities_non_current",
-        "other_non_current_liabilities",
-        "total_non_current_liabilities",
-        "other_liabilities",
-        "capital_lease_obligations",
-        "total_liabilities",
-        "preferred_stock",
-        "common_stock",
-        "retained_earnings",
-        "accumulated_other_comprehensive_income_loss",
-        "other_total_stockholders_equity",
-        "total_stockholders_equity",
-        "total_liabilities_and_stockholders_equity",
-        "minority_interest",
-        "total_equity",
-        "total_liabilities_and_total_equity",
-        "total_investments",
-        "total_debt",
-        "net_debt",
-        "link",
-        "final_link",
-    ],
-}
-CASH_PLOT = {
-    "av": [
-        "reported_currency",
-        "operating_cash_flow",
-        "payments_for_operating_activities",
-        "proceeds_from_operating_activities",
-        "change_in_operating_liabilities",
-        "change_in_operating_assets",
-        "depreciation_depletion_and_amortization",
-        "capital_expenditures",
-        "change_in_receivables",
-        "change_in_inventory",
-        "profit_loss",
-        "cash_flow_from_investment",
-        "cash_flow_from_financing",
-        "proceeds_from_repayments_of_short_term_debt",
-        "payments_for_repurchase_of_common_stock",
-        "payments_for_repurchase_of_equity",
-        "payments_for_repurchase_of_preferred_stock",
-        "dividend_payout",
-        "dividend_payout_common_stock",
-        "dividend_payout_preferred_stock",
-        "proceeds_from_issuance_of_common_stock",
-        "proceeds_from_issuance_of_long_term_debt_and_capital_securities_net",
-        "proceeds_from_issuance_of_preferred_stock",
-        "proceeds_from_repurchase_of_equity",
-        "proceeds_from_sale_of_treasury_stock",
-        "change_in_cash_and_cash_equivalents",
-        "change_in_exchange_rate",
-        "net_income",
-    ],
-    "polygon": [
-        "net_cash_flow_from_financing_activities_continuing",
-        "net_cash_flow_continuing",
-        "net_cash_flow_from_investing_activities",
-        "net_cash_flow",
-        "net_cash_flow_from_operating_activities",
-        "net_cash_flow_from_financing_activities",
-        "net_cash_flow_from_operating_activities_continuing",
-        "net_cash_flow_from_investing_activities_continuing",
-    ],
-    "yf": [
-        "net_income",
-        "depreciation_&_amortisation",
-        "deferred_income_taxes",
-        "stock-based_compensation",
-        "change_in working_capital",
-        "accounts_receivable",
-        "inventory",
-        "accounts_payable",
-        "other_working_capital",
-        "other_non-cash_items",
-        "net_cash_provided_by_operating_activities",
-        "investments_in_property, plant_and_equipment",
-        "acquisitions, net",
-        "purchases_of_investments",
-        "sales/maturities_of_investments",
-        "other_investing_activities",
-        "net_cash_used_for_investing_activities",
-        "debt_repayment",
-        "common_stock_issued",
-        "common_stock_repurchased",
-        "dividends_paid",
-        "other_financing_activities",
-        "net_cash_used_provided_by_(used_for)_financing_activities",
-        "net_change_in_cash",
-        "cash_at_beginning_of_period",
-        "cash_at_end_of_period",
-        "operating_cash_flow",
-        "capital_expenditure",
-        "free_cash_flow",
-    ],
-    "fmp": [
-        "reported_currency",
-        "cik",
-        "filling_date",
-        "accepted_date",
-        "calendar_year",
-        "period",
-        "net_income",
-        "depreciation_and_amortization",
-        "deferred_income_tax",
-        "stock_based_compensation",
-        "change_in_working_capital",
-        "accounts_receivables",
-        "inventory",
-        "accounts_payables",
-        "other_working_capital",
-        "other_non_cash_items",
-        "net_cash_provided_by_operating_activities",
-        "investments_in_property_plant_and_equipment",
-        "acquisitions_net",
-        "purchases_of_investments",
-        "sales_maturities_of_investments",
-        "other_investing_activites",
-        "net_cash_used_for_investing_activites",
-        "debt_repayment",
-        "common_stock_issued",
-        "common_stock_repurchased",
-        "dividends_paid",
-        "other_financing_activites",
-        "net_cash_used_provided_by_financing_activities",
-        "effect_of_forex_changes_on_cash",
-        "net_change_in_cash",
-        "cash_at_end_of_period",
-        "cash_at_beginning_of_period",
-        "operating_cash_flow",
-        "capital_expenditure",
-        "free_cash_flow",
-        "link",
-        "final_link",
-    ],
-}
-exchange_mappings = (
-    pd.read_csv(
-        os.path.join(
-            os.path.dirname(os.path.abspath(__file__)), "mappings", "Mic_Codes.csv"
-        ),
-        index_col=0,
-        header=None,
-    )
-    .squeeze("columns")
-    .to_dict()
+exch_file_path = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "mappings", "Mic_Codes.csv"
 )
+exhcnage_df = pd.read_csv(exch_file_path, index_col=0, header=None)
+exchange_mappings = exhcnage_df.squeeze("columns").to_dict()
 
 
 def search(
@@ -498,58 +90,23 @@ def search(
     export : str
         Export data
     """
+    kwargs: Dict[str, Any] = {"exclude_exchanges": False}
     if country:
-        if sector:
-            if industry:
-                data = fd.select_equities(
-                    country=country,
-                    sector=sector,
-                    industry=industry,
-                    exclude_exchanges=False,
-                )
-            else:  # no industry
-                data = fd.select_equities(
-                    country=country,
-                    sector=sector,
-                    exclude_exchanges=False,
-                )
-        else:  # no sector
-            if industry:
-                data = fd.select_equities(
-                    country=country,
-                    industry=industry,
-                    exclude_exchanges=False,
-                )
-            else:  # no industry
-                data = fd.select_equities(
-                    country=country,
-                    exclude_exchanges=False,
-                )
+        kwargs["country"] = country
+    if sector:
+        kwargs["sector"] = sector
+    if industry:
+        kwargs["industry"] = industry
 
-    else:  # no country
-        if sector:
-            if industry:
-                data = fd.select_equities(
-                    sector=sector,
-                    industry=industry,
-                    exclude_exchanges=False,
-                )
-            else:  # no industry
-                data = fd.select_equities(
-                    sector=sector,
-                    exclude_exchanges=False,
-                )
-        else:  # no sector
-            if industry:
-                data = fd.select_equities(
-                    industry=industry,
-                    exclude_exchanges=False,
-                )
-            else:  # no industry
-                data = fd.select_equities(
-                    exclude_exchanges=False,
-                )
-
+    try:
+        data = fd.select_equities(**kwargs)
+    except ReadTimeout:
+        console.print(
+            "[red]Unable to retrieve company data from GitHub which limits the search"
+            " capabilities. This tends to be due to access restrictions for GitHub.com,"
+            " please check if you can access this website without a VPN.[/red]\n"
+        )
+        data = {}
     if not data:
         console.print("No companies found.\n")
         return
@@ -613,27 +170,34 @@ def search(
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "search", df)
 
 
-# pylint:disable=too-many-return-statements
 def load(
-    ticker: str,
-    start: datetime = (datetime.now() - timedelta(days=1100)),
+    symbol: str,
+    start_date: datetime = None,
     interval: int = 1440,
-    end: datetime = datetime.now(),
+    end_date: datetime = None,
     prepost: bool = False,
-    source: str = "yf",
+    source: str = "YahooFinance",
     iexrange: str = "ytd",
     weekly: bool = False,
     monthly: bool = False,
 ):
+
     """
-    Load a symbol to perform analysis using the string above as a template. Optional arguments and their
-    descriptions are listed above. The default source is, yFinance (https://pypi.org/project/yfinance/).
-    Alternatively, one may select either AlphaVantage (https://www.alphavantage.co/documentation/)
-    or IEX Cloud (https://iexcloud.io/docs/api/) as the data source for the analysis.
-    Please note that certain analytical features are exclusive to the source.
+    Load a symbol to perform analysis using the string above as a template.
+
+    Optional arguments and their descriptions are listed above.
+
+    The default source is, yFinance (https://pypi.org/project/yfinance/).
+    Other sources:
+            -   AlphaVantage (https://www.alphavantage.co/documentation/)
+            -   IEX Cloud (https://iexcloud.io/docs/api/)
+            -   Eod Historical Data (https://eodhistoricaldata.com/financial-apis/)
+
+    Please note that certain analytical features are exclusive to the specific source.
 
     To load a symbol from an exchange outside of the NYSE/NASDAQ default, use yFinance as the source and
-    add the corresponding exchange to the end of the symbol. i.e. ‘BNS.TO’.
+    add the corresponding exchange to the end of the symbol. i.e. ‘BNS.TO’.  Note this may be possible with
+    other paid sources check their docs.
 
     BNS is a dual-listed stock, there are separate options chains and order books for each listing.
     Opportunities for arbitrage may arise from momentary pricing discrepancies between listings
@@ -651,13 +215,13 @@ def load(
 
     Parameters
     ----------
-    ticker: str
+    symbol: str
         Ticker to get data
-    start: datetime
+    start_date: datetime
         Start date to get data from with
     interval: int
         Interval (in minutes) to get data 1, 5, 15, 30, 60 or 1440
-    end: datetime
+    end_date: datetime
         End date to get data from with
     prepost: bool
         Pre and After hours data
@@ -675,170 +239,54 @@ def load(
     df_stock_candidate: pd.DataFrame
         Dataframe of data
     """
+    if start_date is None:
+        start_date = datetime.now() - timedelta(days=1100)
+    if end_date is None:
+        end_date = datetime.now()
 
     # Daily
     if interval == 1440:
 
-        # Alpha Vantage Source
-        if source == "av":
-            try:
-                ts = TimeSeries(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
-                # pylint: disable=unbalanced-tuple-unpacking
-                df_stock_candidate, _ = ts.get_daily_adjusted(
-                    symbol=ticker, outputsize="full"
-                )
-            except Exception as e:
-                console.print(e, "")
-                return pd.DataFrame()
+        int_string = "Daily"
+        if weekly:
+            int_string = "Weekly"
+        if monthly:
+            int_string = "Monthly"
 
-            df_stock_candidate.columns = [
-                val.split(". ")[1].capitalize() for val in df_stock_candidate.columns
-            ]
+        if source == "AlphaVantage":
+            df_stock_candidate = load_stock_av(symbol, start_date, end_date)
 
-            df_stock_candidate = df_stock_candidate.rename(
-                columns={
-                    "Adjusted close": "Adj Close",
-                }
+        elif source == "YahooFinance":
+            df_stock_candidate = load_stock_yf(
+                symbol, start_date, end_date, weekly, monthly
             )
 
-            # Check that loading a stock was not successful
-            # pylint: disable=no-member
-            if df_stock_candidate.empty:
-                console.print("No data found.\n")
-                return pd.DataFrame()
-
-            df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
-
-            # pylint: disable=no-member
-            df_stock_candidate.sort_index(ascending=True, inplace=True)
-
-            # Slice dataframe from the starting date YYYY-MM-DD selected
-            df_stock_candidate = df_stock_candidate[
-                (df_stock_candidate.index >= start.strftime("%Y-%m-%d"))
-                & (df_stock_candidate.index <= end.strftime("%Y-%m-%d"))
-            ]
-
-        # Yahoo Finance Source
-        elif source == "yf":
-
-            # TODO: Better handling of interval with week/month
-            int_ = "1d"
-            int_string = "Daily"
-            if weekly:
-                int_ = "1wk"
-                int_string = "Weekly"
-            if monthly:
-                int_ = "1mo"
-                int_string = "Monthly"
-
-            # Win10 version of mktime cannot cope with dates before 1970
-            if os.name == "nt" and start < datetime(1970, 1, 1):
-                start = datetime(
-                    1970, 1, 2
-                )  # 1 day buffer in case of timezone adjustments
-
-            # Adding a dropna for weekly and monthly because these include weird NaN columns.
-            df_stock_candidate = yf.download(
-                ticker, start=start, end=end, progress=False, interval=int_
-            ).dropna(axis=0)
-
-            # Check that loading a stock was not successful
-            if df_stock_candidate.empty:
-                console.print("")
-                return pd.DataFrame()
-
-            df_stock_candidate.index.name = "date"
-
-        # IEX Cloud Source
-        elif source == "iex":
-            df_stock_candidate = pd.DataFrame()
-
-            try:
-                client = pyEX.Client(api_token=cfg.API_IEX_TOKEN, version="v1")
-
-                df_stock_candidate = client.chartDF(ticker, timeframe=iexrange)
-
-                # Check that loading a stock was not successful
-                if df_stock_candidate.empty:
-                    console.print("No data found.\n")
-                    return df_stock_candidate
-
-            except Exception as e:
-                if "The API key provided is not valid" in str(e):
-                    console.print("[red]Invalid API Key[/red]\n")
-                else:
-                    console.print(e, "\n")
-
-                return df_stock_candidate
-
-            df_stock_candidate = df_stock_candidate[
-                ["close", "fHigh", "fLow", "fOpen", "fClose", "volume"]
-            ]
-            df_stock_candidate = df_stock_candidate.rename(
-                columns={
-                    "close": "Close",
-                    "fHigh": "High",
-                    "fLow": "Low",
-                    "fOpen": "Open",
-                    "fClose": "Adj Close",
-                    "volume": "Volume",
-                }
+        elif source == "EODHD":
+            df_stock_candidate = load_stock_eodhd(
+                symbol, start_date, end_date, weekly, monthly
             )
 
-            df_stock_candidate.sort_index(ascending=True, inplace=True)
+        elif source == "IEXCloud":
+            df_stock_candidate = load_stock_iex_cloud(symbol, iexrange)
 
-        # Polygon source
-        elif source == "polygon":
-
-            # Polygon allows: day, minute, hour, day, week, month, quarter, year
-            timespan = "day"
-            if weekly or monthly:
-                timespan = "week" if weekly else "month"
-
-            request_url = (
-                f"https://api.polygon.io/v2/aggs/ticker/"
-                f"{ticker.upper()}/range/1/{timespan}/"
-                f"{start.strftime('%Y-%m-%d')}/{end.strftime('%Y-%m-%d')}?adjusted=true"
-                f"&sort=desc&limit=49999&apiKey={cfg.API_POLYGON_KEY}"
+        elif source == "Polygon":
+            df_stock_candidate = load_stock_polygon(
+                symbol, start_date, end_date, weekly, monthly
             )
-            r = requests.get(request_url)
-            if r.status_code != 200:
-                console.print("[red]Error in polygon request[/red]")
-                return pd.DataFrame()
+        else:
+            console.print("[red]Invalid source for stock[/red]\n")
+            return
+        if df_stock_candidate.empty:
+            return df_stock_candidate
 
-            r_json = r.json()
-            if "results" not in r_json.keys():
-                console.print("[red]No results found in polygon reply.[/red]")
-                return pd.DataFrame()
-
-            df_stock_candidate = pd.DataFrame(r_json["results"])
-
-            df_stock_candidate = df_stock_candidate.rename(
-                columns={
-                    "o": "Open",
-                    "c": "Adj Close",
-                    "h": "High",
-                    "l": "Low",
-                    "t": "date",
-                    "v": "Volume",
-                    "n": "Transactions",
-                }
-            )
-            df_stock_candidate["date"] = pd.to_datetime(
-                df_stock_candidate.date, unit="ms"
-            )
-            # TODO: Clean up Close vs Adj Close throughout
-            df_stock_candidate["Close"] = df_stock_candidate["Adj Close"]
-            df_stock_candidate = df_stock_candidate.sort_values(by="date")
-            df_stock_candidate = df_stock_candidate.set_index("date")
-
+        df_stock_candidate.index.name = "date"
         s_start = df_stock_candidate.index[0]
         s_interval = f"{interval}min"
         int_string = "Daily" if interval == 1440 else "Intraday"
 
     else:
 
-        if source == "yf":
+        if source == "YahooFinance":
             s_int = str(interval) + "m"
             s_interval = s_int + "in"
             d_granularity = {"1m": 6, "5m": 59, "15m": 59, "30m": 59, "60m": 729}
@@ -847,10 +295,10 @@ def load(
             s_date_start = s_start_dt.strftime("%Y-%m-%d")
 
             df_stock_candidate = yf.download(
-                ticker,
+                symbol,
                 start=s_date_start
-                if s_start_dt > start
-                else start.strftime("%Y-%m-%d"),
+                if s_start_dt > start_date
+                else start_date.strftime("%Y-%m-%d"),
                 progress=False,
                 interval=s_int,
                 prepost=prepost,
@@ -863,17 +311,18 @@ def load(
 
             df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
 
-            if s_start_dt > start:
+            if s_start_dt > start_date:
                 s_start = pytz.utc.localize(s_start_dt)
             else:
-                s_start = start
+                s_start = start_date
 
             df_stock_candidate.index.name = "date"
 
-        elif source == "polygon":
+        elif source == "Polygon":
             request_url = (
                 f"https://api.polygon.io/v2/aggs/ticker/"
-                f"{ticker.upper()}/range/{interval}/minute/{start.strftime('%Y-%m-%d')}/{end.strftime('%Y-%m-%d')}"
+                f"{symbol.upper()}/range/{interval}/minute/{start_date.strftime('%Y-%m-%d')}"
+                f"/{end_date.strftime('%Y-%m-%d')}"
                 f"?adjusted=true&sort=desc&limit=49999&apiKey={cfg.API_POLYGON_KEY}"
             )
             r = requests.get(request_url)
@@ -899,6 +348,7 @@ def load(
                     "n": "Transactions",
                 }
             )
+            # pylint: disable=unsupported-assignment-operation
             df_stock_candidate["date"] = pd.to_datetime(
                 df_stock_candidate.date, unit="ms"
             )
@@ -911,20 +361,24 @@ def load(
                 console.print()
                 return pd.DataFrame()
 
-            df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
+            df_stock_candidate.index = (
+                df_stock_candidate.index.tz_localize(tz="UTC")
+                .tz_convert("US/Eastern")
+                .tz_localize(None)
+            )
             s_start_dt = df_stock_candidate.index[0]
 
-            if s_start_dt > start:
+            if s_start_dt > start_date:
                 s_start = pytz.utc.localize(s_start_dt)
             else:
-                s_start = start
+                s_start = start_date
             s_interval = f"{interval}min"
         int_string = "Intraday"
 
     s_intraday = (f"Intraday {s_interval}", int_string)[interval == 1440]
 
     console.print(
-        f"\nLoading {s_intraday} {ticker.upper()} stock "
+        f"\nLoading {s_intraday} {symbol.upper()} stock "
         f"with starting period {s_start.strftime('%Y-%m-%d')} for analysis.",
     )
 
@@ -932,23 +386,33 @@ def load(
 
 
 def display_candle(
-    s_ticker: str,
-    df_stock: pd.DataFrame,
-    use_matplotlib: bool,
+    symbol: str,
+    data: pd.DataFrame = None,
+    use_matplotlib: bool = True,
     intraday: bool = False,
     add_trend: bool = False,
     ma: Optional[Iterable[int]] = None,
-    asset_type: str = "Stock",
+    asset_type: str = "",
+    start_date: datetime = (datetime.now() - timedelta(days=1100)),
+    interval: int = 1440,
+    end_date: datetime = datetime.now(),
+    prepost: bool = False,
+    source: str = "YahooFinance",
+    iexrange: str = "ytd",
+    weekly: bool = False,
+    monthly: bool = False,
     external_axes: Optional[List[plt.Axes]] = None,
+    raw: bool = False,
+    yscale: str = "linear",
 ):
     """Shows candle plot of loaded ticker. [Source: Yahoo Finance, IEX Cloud or Alpha Vantage]
 
     Parameters
     ----------
-    df_stock: pd.DataFrame
-        Stock dataframe
-    s_ticker: str
+    symbol: str
         Ticker name
+    data: pd.DataFrame
+        Stock dataframe
     use_matplotlib: bool
         Flag to use matplotlib instead of interactive plotly chart
     intraday: bool
@@ -963,249 +427,296 @@ def display_candle(
         External axes (2 axes are expected in the list), by default None
     asset_type_: str
         String to include in title
+    start_date: datetime
+        Start date to get data from with
+    interval: int
+        Interval (in minutes) to get data 1, 5, 15, 30, 60 or 1440
+    end_date: datetime
+        End date to get data from with
+    prepost: bool
+        Pre and After hours data
+    source: str
+        Source of data extracted
+    iexrange: str
+        Timeframe to get IEX data.
+    weekly: bool
+        Flag to get weekly data
+    monthly: bool
+        Flag to get monthly data
+    raw : bool, optional
+        Flag to display raw data, by default False
+    yscale: str
+        Linear or log for yscale
     """
+
+    if data is None:
+        data = load(
+            symbol,
+            start_date,
+            interval,
+            end_date,
+            prepost,
+            source,
+            iexrange,
+            weekly,
+            monthly,
+        )
+        data = process_candle(data)
+
     if add_trend:
-        if (df_stock.index[1] - df_stock.index[0]).total_seconds() >= 86400:
-            df_stock = find_trendline(df_stock, "OC_High", "high")
-            df_stock = find_trendline(df_stock, "OC_Low", "low")
+        if (data.index[1] - data.index[0]).total_seconds() >= 86400:
+            data = find_trendline(data, "OC_High", "high")
+            data = find_trendline(data, "OC_Low", "low")
 
-    if use_matplotlib:
-        ap0 = []
-        if add_trend:
-            if "OC_High_trend" in df_stock.columns:
-                ap0.append(
-                    mpf.make_addplot(
-                        df_stock["OC_High_trend"],
-                        color=cfg.theme.up_color,
-                        secondary_y=False,
-                    ),
+    if not raw:
+        if use_matplotlib:
+            ap0 = []
+            if add_trend:
+                if "OC_High_trend" in data.columns:
+                    ap0.append(
+                        mpf.make_addplot(
+                            data["OC_High_trend"],
+                            color=cfg.theme.up_color,
+                            secondary_y=False,
+                        ),
+                    )
+
+                if "OC_Low_trend" in data.columns:
+                    ap0.append(
+                        mpf.make_addplot(
+                            data["OC_Low_trend"],
+                            color=cfg.theme.down_color,
+                            secondary_y=False,
+                        ),
+                    )
+
+            candle_chart_kwargs = {
+                "type": "candle",
+                "style": cfg.theme.mpf_style,
+                "volume": True,
+                "addplot": ap0,
+                "xrotation": cfg.theme.xticks_rotation,
+                "scale_padding": {"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
+                "update_width_config": {
+                    "candle_linewidth": 0.6,
+                    "candle_width": 0.8,
+                    "volume_linewidth": 0.8,
+                    "volume_width": 0.8,
+                },
+                "warn_too_much_data": 10000,
+                "yscale": yscale,
+            }
+
+            kwargs = {"mav": ma} if ma else {}
+
+            if external_axes is None:
+                candle_chart_kwargs["returnfig"] = True
+                candle_chart_kwargs["figratio"] = (10, 7)
+                candle_chart_kwargs["figscale"] = 1.10
+                candle_chart_kwargs["figsize"] = plot_autoscale()
+                candle_chart_kwargs["warn_too_much_data"] = 100_000
+
+                fig, ax = mpf.plot(data, **candle_chart_kwargs, **kwargs)
+                lambda_long_number_format_y_axis(data, "Volume", ax)
+
+                fig.suptitle(
+                    f"{asset_type} {symbol}",
+                    x=0.055,
+                    y=0.965,
+                    horizontalalignment="left",
                 )
 
-            if "OC_Low_trend" in df_stock.columns:
-                ap0.append(
-                    mpf.make_addplot(
-                        df_stock["OC_Low_trend"],
-                        color=cfg.theme.down_color,
-                        secondary_y=False,
+                if ma:
+                    # Manually construct the chart legend
+                    colors = [cfg.theme.get_colors()[i] for i, _ in enumerate(ma)]
+                    lines = [Line2D([0], [0], color=c) for c in colors]
+                    labels = ["MA " + str(label) for label in ma]
+                    ax[0].legend(lines, labels)
+
+                if yscale == "log":
+                    ax[0].yaxis.set_major_formatter(ScalarFormatter())
+                    ax[0].yaxis.set_major_locator(
+                        LogLocator(base=100, subs=[1.0, 2.0, 5.0, 10.0])
+                    )
+                    ax[0].ticklabel_format(style="plain", axis="y")
+
+                cfg.theme.visualize_output(force_tight_layout=False)
+            else:
+                if len(external_axes) != 2:
+                    logger.error("Expected list of one axis item.")
+                    console.print("[red]Expected list of 2 axis items.\n[/red]")
+                    return pd.DataFrame()
+                ax1, ax2 = external_axes
+                candle_chart_kwargs["ax"] = ax1
+                candle_chart_kwargs["volume"] = ax2
+                mpf.plot(data, **candle_chart_kwargs)
+
+        else:
+            fig = make_subplots(
+                rows=2,
+                cols=1,
+                shared_xaxes=True,
+                vertical_spacing=0.06,
+                subplot_titles=(f"{symbol}", "Volume"),
+                row_width=[0.2, 0.7],
+            )
+            fig.add_trace(
+                go.Candlestick(
+                    x=data.index,
+                    open=data.Open,
+                    high=data.High,
+                    low=data.Low,
+                    close=data.Close,
+                    name="OHLC",
+                ),
+                row=1,
+                col=1,
+            )
+            if ma:
+                plotly_colors = [
+                    "black",
+                    "teal",
+                    "blue",
+                    "purple",
+                    "orange",
+                    "gray",
+                    "deepskyblue",
+                ]
+                for idx, ma_val in enumerate(ma):
+                    temp = data["Adj Close"].copy()
+                    temp[f"ma{ma_val}"] = data["Adj Close"].rolling(ma_val).mean()
+                    temp = temp.dropna()
+                    fig.add_trace(
+                        go.Scatter(
+                            x=temp.index,
+                            y=temp[f"ma{ma_val}"],
+                            name=f"MA{ma_val}",
+                            mode="lines",
+                            line=go.scatter.Line(
+                                color=plotly_colors[np.mod(idx, len(plotly_colors))]
+                            ),
+                        ),
+                        row=1,
+                        col=1,
+                    )
+
+            if add_trend:
+                if "OC_High_trend" in data.columns:
+                    fig.add_trace(
+                        go.Scatter(
+                            x=data.index,
+                            y=data["OC_High_trend"],
+                            name="High Trend",
+                            mode="lines",
+                            line=go.scatter.Line(color="green"),
+                        ),
+                        row=1,
+                        col=1,
+                    )
+                if "OC_Low_trend" in data.columns:
+                    fig.add_trace(
+                        go.Scatter(
+                            x=data.index,
+                            y=data["OC_Low_trend"],
+                            name="Low Trend",
+                            mode="lines",
+                            line=go.scatter.Line(color="red"),
+                        ),
+                        row=1,
+                        col=1,
+                    )
+
+            colors = [
+                "red" if row.Open < row["Adj Close"] else "green"
+                for _, row in data.iterrows()
+            ]
+            fig.add_trace(
+                go.Bar(
+                    x=data.index,
+                    y=data.Volume,
+                    name="Volume",
+                    marker_color=colors,
+                ),
+                row=2,
+                col=1,
+            )
+            fig.update_layout(
+                yaxis_title="Stock Price ($)",
+                xaxis=dict(
+                    rangeselector=dict(
+                        buttons=list(
+                            [
+                                dict(
+                                    count=1,
+                                    label="1m",
+                                    step="month",
+                                    stepmode="backward",
+                                ),
+                                dict(
+                                    count=3,
+                                    label="3m",
+                                    step="month",
+                                    stepmode="backward",
+                                ),
+                                dict(
+                                    count=1, label="YTD", step="year", stepmode="todate"
+                                ),
+                                dict(
+                                    count=1,
+                                    label="1y",
+                                    step="year",
+                                    stepmode="backward",
+                                ),
+                                dict(step="all"),
+                            ]
+                        )
                     ),
-                )
-
-        candle_chart_kwargs = {
-            "type": "candle",
-            "style": cfg.theme.mpf_style,
-            "volume": True,
-            "addplot": ap0,
-            "xrotation": cfg.theme.xticks_rotation,
-            "scale_padding": {"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
-            "update_width_config": {
-                "candle_linewidth": 0.6,
-                "candle_width": 0.8,
-                "volume_linewidth": 0.8,
-                "volume_width": 0.8,
-            },
-            "warn_too_much_data": 10000,
-        }
-
-        kwargs = {"mav": ma} if ma else {}
-
-        if external_axes is None:
-            candle_chart_kwargs["returnfig"] = True
-            candle_chart_kwargs["figratio"] = (10, 7)
-            candle_chart_kwargs["figscale"] = 1.10
-            candle_chart_kwargs["figsize"] = plot_autoscale()
-
-            fig, ax = mpf.plot(df_stock, **candle_chart_kwargs, **kwargs)
-            lambda_long_number_format_y_axis(df_stock, "Volume", ax)
-
-            fig.suptitle(
-                f"{asset_type} {s_ticker}",
-                x=0.055,
-                y=0.965,
-                horizontalalignment="left",
+                    rangeslider=dict(visible=False),
+                    type="date",
+                ),
             )
 
-            if ma:
-                # Manually construct the chart legend
-                colors = []
-
-                for i, _ in enumerate(ma):
-                    colors.append(cfg.theme.get_colors()[i])
-
-                lines = [Line2D([0], [0], color=c) for c in colors]
-                labels = ["MA " + str(label) for label in ma]
-                ax[0].legend(lines, labels)
-
-            cfg.theme.visualize_output(force_tight_layout=False)
-        else:
-            if len(external_axes) != 2:
-                logger.error("Expected list of one axis item.")
-                console.print("[red]Expected list of 2 axis items.\n[/red]")
-                return
-            ax1, ax2 = external_axes
-            candle_chart_kwargs["ax"] = ax1
-            candle_chart_kwargs["volume"] = ax2
-            mpf.plot(df_stock, **candle_chart_kwargs)
-
-    else:
-        fig = make_subplots(
-            rows=2,
-            cols=1,
-            shared_xaxes=True,
-            vertical_spacing=0.06,
-            subplot_titles=(f"{s_ticker}", "Volume"),
-            row_width=[0.2, 0.7],
-        )
-        fig.add_trace(
-            go.Candlestick(
-                x=df_stock.index,
-                open=df_stock.Open,
-                high=df_stock.High,
-                low=df_stock.Low,
-                close=df_stock.Close,
-                name="OHLC",
-            ),
-            row=1,
-            col=1,
-        )
-        if ma:
-            plotly_colors = [
-                "black",
-                "teal",
-                "blue",
-                "purple",
-                "orange",
-                "gray",
-                "deepskyblue",
-            ]
-            for idx, ma_val in enumerate(ma):
-                temp = df_stock["Adj Close"].copy()
-                temp[f"ma{ma_val}"] = df_stock["Adj Close"].rolling(ma_val).mean()
-                temp = temp.dropna()
-                fig.add_trace(
-                    go.Scatter(
-                        x=temp.index,
-                        y=temp[f"ma{ma_val}"],
-                        name=f"MA{ma_val}",
-                        mode="lines",
-                        line=go.scatter.Line(
-                            color=plotly_colors[np.mod(idx, len(plotly_colors))]
-                        ),
-                    ),
-                    row=1,
-                    col=1,
-                )
-
-        if add_trend:
-            if "OC_High_trend" in df_stock.columns:
-                fig.add_trace(
-                    go.Scatter(
-                        x=df_stock.index,
-                        y=df_stock["OC_High_trend"],
-                        name="High Trend",
-                        mode="lines",
-                        line=go.scatter.Line(color="green"),
-                    ),
-                    row=1,
-                    col=1,
-                )
-            if "OC_Low_trend" in df_stock.columns:
-                fig.add_trace(
-                    go.Scatter(
-                        x=df_stock.index,
-                        y=df_stock["OC_Low_trend"],
-                        name="Low Trend",
-                        mode="lines",
-                        line=go.scatter.Line(color="red"),
-                    ),
-                    row=1,
-                    col=1,
-                )
-
-        colors = [
-            "red" if row.Open < row["Adj Close"] else "green"
-            for _, row in df_stock.iterrows()
-        ]
-        fig.add_trace(
-            go.Bar(
-                x=df_stock.index,
-                y=df_stock.Volume,
-                name="Volume",
-                marker_color=colors,
-            ),
-            row=2,
-            col=1,
-        )
-        fig.update_layout(
-            yaxis_title="Stock Price ($)",
-            xaxis=dict(
-                rangeselector=dict(
-                    buttons=list(
-                        [
+            fig.update_layout(
+                updatemenus=[
+                    dict(
+                        buttons=[
                             dict(
-                                count=1,
-                                label="1m",
-                                step="month",
-                                stepmode="backward",
+                                label="linear",
+                                method="relayout",
+                                args=[{"yaxis.type": "linear"}],
                             ),
                             dict(
-                                count=3,
-                                label="3m",
-                                step="month",
-                                stepmode="backward",
+                                label="log",
+                                method="relayout",
+                                args=[{"yaxis.type": "log"}],
                             ),
-                            dict(count=1, label="YTD", step="year", stepmode="todate"),
-                            dict(
-                                count=1,
-                                label="1y",
-                                step="year",
-                                stepmode="backward",
-                            ),
-                            dict(step="all"),
                         ]
                     )
-                ),
-                rangeslider=dict(visible=False),
-                type="date",
-            ),
-        )
-
-        fig.update_layout(
-            updatemenus=[
-                dict(
-                    buttons=[
-                        dict(
-                            label="linear",
-                            method="relayout",
-                            args=[{"yaxis.type": "linear"}],
-                        ),
-                        dict(
-                            label="log", method="relayout", args=[{"yaxis.type": "log"}]
-                        ),
-                    ]
-                )
-            ]
-        )
-
-        if intraday:
-            fig.update_xaxes(
-                rangebreaks=[
-                    dict(bounds=["sat", "mon"]),
-                    dict(bounds=[20, 9], pattern="hour"),
                 ]
             )
 
-        fig.show(config=dict({"scrollZoom": True}))
+            if intraday:
+                fig.update_xaxes(
+                    rangebreaks=[
+                        dict(bounds=["sat", "mon"]),
+                        dict(bounds=[20, 9], pattern="hour"),
+                    ]
+                )
+
+            fig.show(config=dict({"scrollZoom": True}))
+    else:
+        return data
 
 
-def quote(s_ticker: str):
+def quote(symbol: str) -> pd.DataFrame:
     """Ticker quote
 
     Parameters
     ----------
-    s_ticker : str
+    symbol : str
         Ticker
     """
-    ticker = yf.Ticker(s_ticker)
+    ticker = yf.Ticker(symbol)
 
     try:
         quote_df = pd.DataFrame(
@@ -1248,16 +759,19 @@ def quote(s_ticker: str):
         quote_data = transpose(quote_df)
 
         print_rich_table(quote_data, title="Ticker Quote", show_index=True)
+        return quote_data
 
     except KeyError:
         logger.exception("Invalid stock ticker")
-        console.print(f"Invalid stock ticker: {s_ticker}")
+        console.print(f"Invalid stock ticker: {symbol}")
+        return ""
 
 
 def load_ticker(
     ticker: str, start_date: Union[str, datetime], end_date: Union[str, datetime] = ""
 ) -> pd.DataFrame:
-    """Loads a ticker data from Yahoo Finance, adds a data index column data_id and Open-Close High/Low columns.
+    """Loads a ticker data from Yahoo Finance, adds a data index column data_id and Open-Close
+    High/Low columns.
 
     Parameters
     ----------
@@ -1271,7 +785,8 @@ def load_ticker(
     Returns
     -------
     DataFrame
-        A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume, date_id, OC-High, OC-Low.
+        A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume,
+        date_id, OC-High, OC-Low.
     """
     if end_date:
         df_data = yf.download(ticker, start=start_date, end=end_date, progress=False)
@@ -1290,20 +805,21 @@ def load_ticker(
     return df_data
 
 
-def process_candle(df: pd.DataFrame) -> pd.DataFrame:
+def process_candle(data: pd.DataFrame) -> pd.DataFrame:
     """Process DataFrame into candle style plot
 
     Parameters
     ----------
-    df : DataFrame
+    data : DataFrame
         Stock dataframe.
 
     Returns
     -------
     DataFrame
-        A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume, date_id, OC-High, OC-Low.
+        A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume,
+        date_id, OC-High, OC-Low.
     """
-    df_data = df.copy()
+    df_data = data.copy()
     df_data["date_id"] = (df_data.index.date - df_data.index.date.min()).astype(
         "timedelta64[D]"
     )
@@ -1376,12 +892,10 @@ def find_trendline(
 
 def additional_info_about_ticker(ticker: str) -> str:
     """Information about trading the ticker such as exchange, currency, timezone and market status
-
     Parameters
     ----------
     ticker : str
         The stock ticker to extract if stock market is open or not
-
     Returns
     -------
     str
@@ -1511,25 +1025,30 @@ def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
     else:
         perfs["Period"] = 100 * (closes[-1] - closes[0]) / closes[0]
 
-    df = pd.DataFrame.from_dict(perfs, orient="index").dropna().T
-    df = df.applymap(lambda x: str(round(x, 2)) + " %")
-    df = df.applymap(lambda x: f"[red]{x}[/red]" if "-" in x else f"[green]{x}[/green]")
+    perf_df = pd.DataFrame.from_dict(perfs, orient="index").dropna().T
+    perf_df = perf_df.applymap(lambda x: str(round(x, 2)) + " %")
+    perf_df = perf_df.applymap(
+        lambda x: f"[red]{x}[/red]" if "-" in x else f"[green]{x}[/green]"
+    )
     if len(closes) > 252:
-        df["Volatility (1Y)"] = (
-            str(round(100 * np.sqrt(252) * closes[:-252].pct_change().std(), 2)) + " %"
+        perf_df["Volatility (1Y)"] = (
+            str(round(100 * np.sqrt(252) * closes[-252:].pct_change().std(), 2)) + " %"
         )
     else:
-        df["Volatility (Ann)"] = (
+        perf_df["Volatility (Ann)"] = (
             str(round(100 * np.sqrt(252) * closes.pct_change().std(), 2)) + " %"
         )
     if len(volumes) > 10:
-        df["Volume (10D avg)"] = (
+        perf_df["Volume (10D avg)"] = (
             str(round(np.mean(volumes[-12:-2]) / 1_000_000, 2)) + " M"
         )
 
-    df["Last Price"] = closes[-1]
+    perf_df["Last Price"] = str(round(closes[-1], 2))
     print_rich_table(
-        df, show_index=False, headers=df.columns, title=f"{ticker.upper()} Performance"
+        perf_df,
+        show_index=False,
+        headers=perf_df.columns,
+        title=f"{ticker.upper()} Performance",
     )
 
 
@@ -1542,6 +1061,9 @@ def show_codes_polygon(ticker: str):
         Stock ticker
     """
     link = f"https://api.polygon.io/v3/reference/tickers/{ticker.upper()}?apiKey={cfg.API_POLYGON_KEY}"
+    if cfg.API_POLYGON_KEY == "REPLACE_ME":
+        console.print("[red]Polygon API key missing[/red]\n")
+        return
     r = requests.get(link)
     if r.status_code != 200:
         console.print("[red]Error in polygon request[/red]\n")
@@ -1552,11 +1074,9 @@ def show_codes_polygon(ticker: str):
         return
     r_json = r_json["results"]
     cols = ["cik", "composite_figi", "share_class_figi", "sic_code"]
-    vals = []
-    for col in cols:
-        vals.append(r_json[col])
-    df = pd.DataFrame({"codes": [c.upper() for c in cols], "vals": vals})
-    df.codes = df.codes.apply(lambda x: x.replace("_", " "))
+    vals = [r_json[col] for col in cols]
+    polyon_df = pd.DataFrame({"codes": [c.upper() for c in cols], "vals": vals})
+    polyon_df.codes = polyon_df.codes.apply(lambda x: x.replace("_", " "))
     print_rich_table(
-        df, show_index=False, headers=["", ""], title=f"{ticker.upper()} Codes"
+        polyon_df, show_index=False, headers=["", ""], title=f"{ticker.upper()} Codes"
     )

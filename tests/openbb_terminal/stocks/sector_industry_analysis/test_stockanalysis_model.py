@@ -11,38 +11,34 @@ from openbb_terminal.stocks.sector_industry_analysis import stockanalysis_model
 
 @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "stocks, finance_key, sa_keys, period, statement",
+    "symbols, finance_key, period, statement",
     [
-        (["AAPL"], "re", stockanalysis_model.sa_keys, "annual", "IS"),
-        (["AAPL"], "rec", stockanalysis_model.sa_keys, "quarterly", "BS"),
+        (["AAPL"], "re", "annual", "IS"),
+        (["AAPL"], "rec", "quarterly", "BS"),
         (
             ["FB", "TSLA", "MSFT"],
             "ncf",
-            stockanalysis_model.sa_keys,
             "annual",
             "CF",
         ),
         (
             ["FB", "TSLA", "MSFT"],
             "ni",
-            stockanalysis_model.sa_keys,
             "quarterly",
             "IS",
         ),
         (
             ["FB", "TSLA", "MSFT"],
             "tle",
-            stockanalysis_model.sa_keys,
             "trailing",
             "BS",
         ),
     ],
 )
-def test_get_stocks_data(recorder, stocks, finance_key, sa_keys, period, statement):
+def test_get_stocks_data(recorder, symbols, finance_key, period, statement):
     result = stockanalysis_model.get_stocks_data(
-        stocks=stocks,
+        symbols=symbols,
         finance_key=finance_key,
-        sa_dict=sa_keys,
         stocks_data=dict(),
         period=period,
     )
@@ -67,7 +63,7 @@ def test_match_length_dataframes(recorder):
 @pytest.mark.vcr
 def test_change_type_dataframes(recorder):
     result = stockanalysis_model.change_type_dataframes(
-        dataframe=pd.DataFrame(
+        data=pd.DataFrame(
             [["1,0", "1.0", "1,0"], ["2,0", "2,000", 2]],
             index=["Item 1", "Item 2"],
             columns=["2010", "2011", "2012"],

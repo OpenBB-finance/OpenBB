@@ -14,8 +14,8 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def display_group_holdings(
     portfolio: pd.DataFrame,
-    group_column: str,
-    allocation: bool,
+    group_column: str = "value",
+    allocation: bool = True,
 ):
     """Display portfolio holdings based on grouping
 
@@ -25,6 +25,8 @@ def display_group_holdings(
         Portfolio dataframe
     group_column : str
         Column to group by
+    allocation : bool
+        Flag to allocation column, True by default
     """
     headers = [group_column, "value"]
     grouped_df = pd.DataFrame(portfolio.groupby(group_column).agg(sum)["value"])

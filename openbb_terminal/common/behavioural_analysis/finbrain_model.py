@@ -12,20 +12,20 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_sentiment(ticker: str) -> pd.DataFrame:
+def get_sentiment(symbol: str) -> pd.DataFrame:
     """Gets Sentiment analysis provided by FinBrain's API [Source: finbrain]
 
     Parameters
     ----------
-    ticker : str
-        Ticker to get the sentiment analysis from
+    symbol : str
+        Ticker symbol to get the sentiment analysis from
 
     Returns
     -------
     DataFrame()
         Empty if there was an issue with data retrieval
     """
-    result = requests.get(f"https://api.finbrain.tech/v0/sentiments/{ticker}")
+    result = requests.get(f"https://api.finbrain.tech/v0/sentiments/{symbol}")
     sentiment = pd.DataFrame()
     if result.status_code == 200:
         result_json = result.json()

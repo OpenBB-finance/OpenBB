@@ -22,23 +22,23 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_sector(fund: str, min_pct_to_display: float = 5, export: str = ""):
+def display_sector(name: str, min_pct_to_display: float = 5, export: str = ""):
     """Display sector weightings for fund
 
     Parameters
     ----------
-    fund: str
+    name: str
         Fund symbol
     min_pct_to_display: float
         Minimum percentage to display sector
     export: str
         Type of format to export data
     """
-    sector_weights = yfinance_model.get_information(fund)
+    sector_weights = yfinance_model.get_information(name)
     if "sectorWeightings" not in sector_weights.keys():
         console.print(
-            f"Sector Weights are not found for {fund}. Either the symbol is incorrect or there is an issue "
-            "in pulling from yahoo.\n"
+            f"Sector Weights are not found for {name}. Either the symbol is incorrect or there "
+            "is an issue in pulling from yahoo.\n"
         )
         return
     sector_weights = sector_weights["sectorWeightings"]
@@ -60,7 +60,7 @@ def display_sector(fund: str, min_pct_to_display: float = 5, export: str = ""):
         show_index=True,
         index_name="Sector",
         headers=["Weight (%)"],
-        title=f"[bold]{fund.upper()} Sector Weightings[/bold] ",
+        title=f"[bold]{name.upper()} Sector Weightings[/bold] ",
     )
 
     main_holdings = df_weight[df_weight.Weight > min_pct_to_display].to_dict()[
@@ -80,7 +80,7 @@ def display_sector(fund: str, min_pct_to_display: float = 5, export: str = ""):
         labeldistance=1.05,
         startangle=90,
     )
-    ax.set_title(f"Sector holdings of {fund.upper()}")
+    ax.set_title(f"Sector holdings of {name.upper()}")
     fig.tight_layout()
     if obbff.USE_ION:
         plt.ion()
@@ -89,12 +89,12 @@ def display_sector(fund: str, min_pct_to_display: float = 5, export: str = ""):
 
 
 @log_start_end(log=logger)
-def display_equity(fund: str):
+def display_equity(name: str):
     """Display equity holdings for fund
 
     Parameters
     ----------
-    fund: str
+    name: str
         Fund symbol
     """
     title_map = {
@@ -112,7 +112,7 @@ def display_equity(fund: str):
         "priceToCashflowCat": "Price To Cashflow Cat",
     }
 
-    equity_hold = yfinance_model.get_information(fund)["equityHoldings"]
+    equity_hold = yfinance_model.get_information(name)["equityHoldings"]
     df_weight = pd.DataFrame.from_dict(equity_hold, orient="index")
     df_weight = df_weight.apply(lambda x: round(100 * x, 3))
     df_weight.index = df_weight.index.map(title_map)
@@ -121,5 +121,5 @@ def display_equity(fund: str):
         show_index=True,
         index_name="Equity",
         headers=["Holding"],
-        title=f"[bold]{fund.upper()} Equity Holdings[/bold] ",
+        title=f"[bold]{name.upper()} Equity Holdings[/bold] ",
     )

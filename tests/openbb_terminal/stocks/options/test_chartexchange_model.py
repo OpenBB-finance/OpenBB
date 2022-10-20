@@ -17,7 +17,7 @@ def vcr_config():
 @pytest.mark.vcr
 def test_get_option_history(recorder):
     result_df = chartexchange_model.get_option_history(
-        ticker="GME",
+        symbol="GME",
         date="2021-02-05",
         call=True,
         price="90",

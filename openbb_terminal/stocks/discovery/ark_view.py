@@ -6,7 +6,6 @@ import os
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
-from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.discovery import ark_model
 from openbb_terminal import rich_config
 
@@ -32,9 +31,9 @@ def lambda_direction_color_red_green(val: str) -> str:
 
 @log_start_end(log=logger)
 def ark_orders_view(
-    num: int,
-    sort_col: str = "",
-    ascending: bool = False,
+    limit: int = 10,
+    sortby: str = "",
+    ascend: bool = False,
     buys_only: bool = False,
     sells_only: bool = False,
     fund: str = "",
@@ -44,47 +43,38 @@ def ark_orders_view(
 
     Parameters
     ----------
-    num: int
+    limit: int
         Number of stocks to display
-    sort_col : str
+    sortby: str
         Column to sort on
-    ascending : bool
+    ascend: bool
         Flag to sort in ascending order
-    buys_only : bool
+    buys_only: bool
         Flag to filter on buys only
-    sells_only : bool
+    sells_only: bool
         Flag to sort on sells only
-    fund : str
+    fund: str
         Optional filter by fund
-    export : str
+    export: str
         Export dataframe data to csv,json,xlsx file
     """
-    df_orders = ark_model.get_ark_orders()
+    df_orders = ark_model.get_ark_orders(sortby, ascend, buys_only, sells_only, fund)
 
-    if df_orders.empty:
-        console.print("The ARK orders aren't available at the moment.\n")
-        return
-    if fund:
-        df_orders = df_orders[df_orders.fund == fund]
-    if buys_only:
-        df_orders = df_orders[df_orders.direction == "Buy"]
-    if sells_only:
-        df_orders = df_orders[df_orders.direction == "Sell"]
-    df_orders = ark_model.add_order_total(df_orders.head(num))
+    if not df_orders.empty:
 
-    if sort_col:
-        df_orders = df_orders.sort_values(by=sort_col, ascending=ascending)
-    if rich_config.USE_COLOR:
-        df_orders["direction"] = df_orders["direction"].apply(
-            lambda_direction_color_red_green
+        df_orders = ark_model.add_order_total(df_orders.head(limit))
+
+        if rich_config.USE_COLOR:
+            df_orders["direction"] = df_orders["direction"].apply(
+                lambda_direction_color_red_green
+            )
+
+        print_rich_table(
+            df_orders,
+            headers=[x.title() for x in df_orders.columns],
+            show_index=False,
+            title="Orders by ARK Investment Management LLC",
         )
-
-    print_rich_table(
-        df_orders,
-        headers=[x.title() for x in df_orders.columns],
-        show_index=False,
-        title="Orders by ARK Investment Management LLC",
-    )
 
     export_data(
         export,

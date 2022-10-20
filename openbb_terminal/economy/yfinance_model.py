@@ -2,9 +2,12 @@
 __docformat__ = "numpy"
 
 import logging
+from datetime import datetime
+from typing import Optional
 
 import pandas as pd
 import yfinance as yf
+import financedatabase as fd
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
@@ -40,9 +43,12 @@ INDICES = {
     "dow_dja": {"name": "Dow Jones Composite Average Index", "ticker": "^DJA"},
     "dow_dji": {"name": "Dow Jones Industrial Average Index", "ticker": "^DJI"},
     "ca_tsx": {"name": "TSX Composite Index (CAD)", "ticker": "^GSPTSE"},
+    "ca_banks": {"name": "S&P/TSX Composite Banks Index (CAD)", "ticker": "TXBA.TS"},
     "mx_ipc": {"name": "IPC Mexico Index (MXN)", "ticker": "^MXX"},
     "arca_mxy": {"name": "NYSE ARCA Mexico Index (USD)", "ticker": "^MXY"},
     "br_bvsp": {"name": "IBOVESPA Sao Paulo Brazil Index (BRL)", "ticker": "^BVSP"},
+    "br_ivbx": {"name": "IVBX2 Indice Valour (BRL)", "ticker": "^IVBX"},
+    "ar_mervel": {"name": "S&P MERVAL TR Index (USD)", "ticker": "M.BA"},
     "eu_fteu1": {"name": "FTSE Eurotop 100 Index (EUR)", "ticker": "^FTEU1"},
     "eu_speup": {"name": "S&P Europe 350 Index (EUR)", "ticker": "^SPEUP"},
     "eu_n100": {"name": "Euronext 100 Index (EUR)", "ticker": "^N100"},
@@ -57,12 +63,14 @@ INDICES = {
     "nl_aex": {"name": "Euronext Dutch 25 Index (EUR)", "ticker": "^AEX"},
     "nl_amx": {"name": "Euronext Dutch Mid Cap Index (EUR)", "ticker": "^AMX"},
     "at_atx": {"name": "Wiener Börse Austrian 20 Index (EUR)", "ticker": "^ATX"},
+    "at_atx5": {"name": "Vienna ATX Five Index (EUR)", "ticker": "^ATX5"},
+    "at_prime": {"name": "Vienna ATX Prime Index (EUR)", "ticker": "^ATXPRIME"},
     "ch_stoxx": {"name": "Zurich STXE 600 PR Index (EUR)", "ticker": "^STOXX"},
     "ch_stoxx50e": {"name": "Zurich ESTX 50 PR Index (EUR)", "ticker": "^STOXX50E"},
     "se_omx30": {"name": "OMX Stockholm 30 Index (SEK)", "ticker": "^OMX"},
     "se_omxspi": {"name": "OMX Stockholm All Share PI (SEK)", "ticker": "^OMXSPI"},
     "se_benchmark": {"name": "OMX Stockholm Benchmark GI (SEK)", "ticker": "^OMXSBGI"},
-    "dk_benchmark": {"name": "OMX Copenhagen Benchamrk GI (DKK)", "ticker": "^OMXCBGI"},
+    "dk_benchmark": {"name": "OMX Copenhagen Benchmark GI (DKK)", "ticker": "^OMXCBGI"},
     "dk_omxc25": {"name": "OMX Copenhagen 25 Index (DKK)", "ticker": "^OMXC25"},
     "fi_omxh25": {"name": "OMX Helsinki 25 (EUR)", "ticker": "^OMXH25"},
     "de_dax40": {"name": "DAX Performance Index (EUR)", "ticker": "^GDAXI"},
@@ -79,6 +87,18 @@ INDICES = {
     },
     "es_ibex35": {"name": "IBEX 35 - Madrid CATS (EUR)", "ticker": "^IBEX"},
     "in_bse": {"name": "S&P Bombay SENSEX (INR)", "ticker": "^BSESN"},
+    "in_bse500": {
+        "name": "S&P BSE 500 Index (INR)",
+        "ticker": "BSE-500.BO",
+    },
+    "in_bse200": {
+        "name": "S&P BSE 200 Index (INR)",
+        "ticker": "BSE-200.BO",
+    },
+    "in_bse100": {
+        "name": "S&P BSE 100 Index (INR)",
+        "ticker": "BSE-100.BO",
+    },
     "in_bse_mcap": {
         "name": "S&P Bombay Mid Cap Index (INR)",
         "ticker": "BSE-MIDCAP.BO",
@@ -109,9 +129,77 @@ INDICES = {
         "ticker": "^J232.JO",
     },
     "ru_moex": {"name": "MOEX Russia Index (RUB)", "ticker": "IMOEX.ME"},
-    "au_asx200": {"name": "S&P/ASX 200 Index (AUD)", "ticker": "^AXJO"},
     "au_aord": {"name": "Australia All Ordinary Share Index (AUD)", "ticker": "^AORD"},
+    "au_small": {"name": "S&P/ASX Small Ordinaries Index (AUD)", "ticker": "^AXSO"},
+    "au_asx20": {
+        "name": "S&P/ASX 20 Index (AUD)",
+        "ticker": "^ATLI",
+    },
+    "au_asx50": {
+        "name": "S&P/ASX 50 Index (AUD)",
+        "ticker": "^AFLI",
+    },
+    "au_asx50_mid": {
+        "name": "S&P/ASX Mid Cap 50 Index (AUD)",
+        "ticker": "^AXMD",
+    },
+    "au_asx100": {
+        "name": "S&P/ASX 100 Index (AUD)",
+        "ticker": "^ATOI",
+    },
+    "au_asx200": {"name": "S&P/ASX 200 Index (AUD)", "ticker": "^AXJO"},
+    "au_asx300": {
+        "name": "S&P/ASX 300 Index (AUD)",
+        "ticker": "^AXKO",
+    },
+    "au_energy": {
+        "name": "S&P/ASX 200 Energy Sector Index (AUD)",
+        "ticker": "^AXEJ",
+    },
+    "au_resources": {
+        "name": "S&P/ASX 200 Resources Sector Index (AUD)",
+        "ticker": "^AXJR",
+    },
+    "au_materials": {
+        "name": "S&P/ASX 200 Materials Sector Index (AUD)",
+        "ticker": "^AXMJ",
+    },
+    "au_mining": {
+        "name": "S&P/ASX 300 Metals and Mining Sector Index (AUD)",
+        "ticker": "^AXMM",
+    },
+    "au_industrials": {
+        "name": "S&P/ASX 200 Industrials Sector Index (AUD)",
+        "ticker": "^AXNJ",
+    },
+    "au_discretionary": {
+        "name": "S&P/ASX 200 Consumer Discretionary Sector Index (AUD)",
+        "ticker": "^AXDJ",
+    },
+    "au_staples": {
+        "name": "S&P/ASX 200 Consumer Staples Sector Index (AUD)",
+        "ticker": "^AXSJ",
+    },
+    "au_health": {
+        "name": "S&P/ASX 200 Health Care Sector Index (AUD)",
+        "ticker": "^AXHJ",
+    },
+    "au_financials": {
+        "name": "S&P/ASX 200 Financials Sector Index (AUD)",
+        "ticker": "^AXFJ",
+    },
+    "au_reit": {"name": "S&P/ASX 200 A-REIT Industry Index (AUD)", "ticker": "^AXPJ"},
+    "au_tech": {"name": "S&P/ASX 200 Info Tech Sector Index (AUD)", "ticker": "^AXIJ"},
+    "au_communications": {
+        "name": "S&P/ASX 200 Communications Sector Index (AUD)",
+        "ticker": "^AXTJ",
+    },
+    "au_utilities": {
+        "name": "S&P/ASX 200 Utilities Sector Index (AUD)",
+        "ticker": "^AXUJ",
+    },
     "nz50": {"name": "S&P New Zealand 50 Index (NZD)", "ticker": "^nz50"},
+    "nz_small": {"name": "S&P/NZX Small Cap Index (NZD)", "ticker": "^NZSC"},
     "kr_kospi": {"name": "KOSPI Composite Index (KRW)", "ticker": "^KS11"},
     "jp_arca": {"name": "NYSE ARCA Japan Index (JPY)", "ticker": "^JPN"},
     "jp_n225": {"name": "Nikkei 255 Index (JPY)", "ticker": "^N225"},
@@ -146,8 +234,25 @@ INDICES = {
     "tw_twii": {"name": "TSEC Weighted Index (TWD)", "ticker": "^TWII"},
     "tw_tpai": {"name": "TSEC Paper and Pulp Subindex (TWD)", "ticker": "^TPAI"},
     "hk_hsi": {"name": "Hang Seng Index (HKD)", "ticker": "^HSI"},
+    "hk_utilities": {
+        "name": "Hang Seng Utilities Sector Index (HKD)",
+        "ticker": "^HSNU",
+    },
+    "hk_china": {
+        "name": "Hang Seng China-Affiliated Corporations Index (HKD)",
+        "ticker": "^HSCC",
+    },
+    "hk_finance": {"name": "Hang Seng Finance Sector Index (HKD)", "ticker": "^HSNF"},
+    "hk_properties": {
+        "name": "Hang Seng Properties Sector Index (HKD)",
+        "ticker": "^HSNP",
+    },
     "hk_hko": {"name": "NYSE ARCA Hong Kong Options Index (USD)", "ticker": "^HKO"},
     "id_jkse": {"name": "Jakarta Composite Index (IDR)", "ticker": "^JKSE"},
+    "id_lq45": {
+        "name": "Indonesia Stock Exchange LQ45 Index (IDR)",
+        "ticker": "^JKLQ45",
+    },
     "my_klci": {"name": "FTSE Kuala Lumpur Composite Index (MYR)", "ticker": "^KLSE"},
     "ph_psei": {"name": "Philippine Stock Exchange Index (PHP)", "ticker": "PSEI.PS"},
     "sg_sti": {"name": "STI Singapore Index (SGD)", "ticker": "^STI"},
@@ -487,8 +592,8 @@ INDICES = {
 def get_index(
     index: str,
     interval: str = "1d",
-    start_date: int = None,
-    end_date: int = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
     column: str = "Adj Close",
 ) -> pd.Series:
     """Obtain data on any index [Source: Yahoo Finance]
@@ -497,9 +602,9 @@ def get_index(
     ----------
     index: str
         The index you wish to collect data for.
-    start_date : str
+    start_date : Optional[str]
        the selected country
-    end_date : bool
+    end_date : Optional[str]
         The currency you wish to convert the data to.
     interval : str
         Valid intervals: 1m, 2m, 5m, 15m, 30m, 60m, 90m, 1h, 1d, 5d, 1wk, 1mo or 3mo
@@ -516,6 +621,15 @@ def get_index(
         ticker = INDICES[index.lower()]["ticker"]
     else:
         ticker = index
+
+    try:
+        if start_date:
+            datetime.strptime(str(start_date), "%Y-%m-%d")
+        if end_date:
+            datetime.strptime(str(end_date), "%Y-%m-%d")
+    except ValueError:
+        console.print("[red]Please format date as YYYY-MM-DD[/red]\n")
+        return pd.Series(dtype="object")
 
     index_data = yf.download(
         ticker,
@@ -540,3 +654,85 @@ def get_index(
         return pd.Series(dtype="float64")
 
     return index_data[column]
+
+
+@log_start_end(log=logger)
+def get_available_indices() -> dict:
+    """Get available indices
+
+    Returns:
+        dict: dictionary with available indices and respective detail
+    """
+    return INDICES
+
+
+@log_start_end(log=logger)
+def get_indices(
+    indices: list,
+    interval: str = "1d",
+    start_date: int = None,
+    end_date: int = None,
+    column: str = "Adj Close",
+    returns: bool = False,
+) -> pd.DataFrame:
+
+    """Get data on selected indices over time [Source: Yahoo Finance]
+    Parameters
+    ----------
+    indices: list
+        A list of indices to get data. Available indices can be accessed through economy.available_indices().
+    interval: str
+        Valid intervals: 1m,2m,5m,15m,30m,60m,90m,1h,1d,5d,1wk,1mo,3mo
+        Intraday data cannot extend last 60 days
+    start_date : str
+        The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
+    end_date : str
+        The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
+    column : str
+        Which column to load in, by default this is the Adjusted Close.
+    returns: bool
+        Flag to show cumulative returns on index
+    Returns
+    ----------
+    pd.Dataframe
+        Dataframe with historical data on selected indices.
+    """
+
+    indices_data: pd.DataFrame = pd.DataFrame()
+
+    for index in indices:
+        indices_data[index] = get_index(index, interval, start_date, end_date, column)
+
+    if returns:
+        indices_data = indices_data.pct_change().dropna()
+        indices_data = indices_data + 1
+        indices_data = indices_data.cumprod()
+
+    return indices_data
+
+
+@log_start_end(log=logger)
+def get_search_indices(keyword: list, limit: int = 10) -> pd.DataFrame:
+    """Search indices by keyword. [Source: FinanceDatabase]
+    Parameters
+    ----------
+    keyword: list
+        The keyword you wish to search for. This can include spaces.
+    limit: int
+        The amount of views you want to show, by default this is set to 10.
+    Returns
+    ----------
+    pd.Dataframe
+        Dataframe with the available options.
+    """
+    keyword_adjusted = " ".join(keyword)
+
+    indices = fd.select_indices()
+
+    queried_indices = pd.DataFrame.from_dict(
+        fd.search_products(indices, keyword_adjusted, "short_name"), orient="index"
+    )
+
+    queried_indices = queried_indices.iloc[:limit]
+
+    return keyword_adjusted, queried_indices

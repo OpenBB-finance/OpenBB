@@ -34,8 +34,8 @@ def test_display_historical(mocker):
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 
     yahoo_finance_view.display_historical(
-        similar_tickers=["TSLA", "GM"],
-        start=datetime.strptime("2020-12-21", "%Y-%m-%d"),
+        similar=["TSLA", "GM"],
+        start_date=datetime.strptime("2020-12-21", "%Y-%m-%d"),
         candle_type="o",
         normalize=True,
         export="",
@@ -57,8 +57,8 @@ def test_display_volume(mocker):
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 
     yahoo_finance_view.display_volume(
-        similar_tickers=["TSLA", "GM"],
-        start=datetime.strptime("2020-12-21", "%Y-%m-%d"),
+        similar=["TSLA", "GM"],
+        start_date=datetime.strptime("2020-12-21", "%Y-%m-%d"),
         export="",
     )
 
@@ -78,7 +78,7 @@ def test_display_correlation(mocker):
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 
     yahoo_finance_view.display_correlation(
-        similar_tickers=["TSLA", "GM"],
-        start=datetime.strptime("2020-12-21", "%Y-%m-%d"),
+        similar=["TSLA", "GM"],
+        start_date=datetime.strptime("2020-12-21", "%Y-%m-%d"),
         candle_type="o",
     )

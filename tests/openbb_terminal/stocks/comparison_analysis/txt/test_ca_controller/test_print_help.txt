@@ -2,7 +2,7 @@
 
 Ticker to get similar companies from: 
 
-[unvl]    tsne               run TSNE on all SP500 stocks and returns closest tickers[/unvl]
+[unvl]    tsne               run TSNE on all SP500 stocks and returns closest tickers[/unvl] [YahooFinance]
 [unvl]    getpoly            get similar stocks[/unvl]                          [Polygon]
 [unvl]    getfinnhub         get similar stocks[/unvl]                          [Finnhub]
 [unvl]    getfinviz          get similar stocks[/unvl]                          [Finviz]
@@ -13,12 +13,12 @@ Ticker to get similar companies from:
 
 Similar Companies: 
 
-[unvl]    historical         historical price data comparison[/unvl]            [Yahoo Finance]
-[unvl]    hcorr              historical price correlation[/unvl]                [Yahoo Finance]
-[unvl]    volume             historical volume data comparison[/unvl]           [Yahoo Finance]
-[unvl]    income             income financials comparison[/unvl]                [Market Watch]
-[unvl]    balance            balance financials comparison[/unvl]               [Market Watch]
-[unvl]    cashflow           cashflow comparison[/unvl]                         [Market Watch]
+[unvl]    historical         historical price data comparison[/unvl]            [YahooFinance]
+[unvl]    hcorr              historical price correlation[/unvl]                [YahooFinance]
+[unvl]    volume             historical volume data comparison[/unvl]           [YahooFinance]
+[unvl]    income             income financials comparison[/unvl]                [MarketWatch]
+[unvl]    balance            balance financials comparison[/unvl]               [MarketWatch]
+[unvl]    cashflow           cashflow comparison[/unvl]                         [MarketWatch]
 [unvl]    sentiment          sentiment analysis comparison[/unvl]               [FinBrain]
 [unvl]    scorr              sentiment correlation[/unvl]                       [FinBrain]
 [unvl]    overview           brief overview comparison[/unvl]                   [Finviz]
@@ -27,6 +27,4 @@ Similar Companies:
 [unvl]    ownership          brief ownership comparison[/unvl]                  [Finviz]
 [unvl]    performance        brief performance comparison[/unvl]                [Finviz]
 [unvl]    technical          brief technical comparison[/unvl]                  [Finviz]
-
-[unvl]>   po                 portfolio optimization for selected tickers[/unvl]
 

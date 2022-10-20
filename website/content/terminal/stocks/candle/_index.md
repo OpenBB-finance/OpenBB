@@ -1,20 +1,23 @@
 ```
-usage: candle [-m] [--export {csv,json,xlsx}] [--sort {AdjClose,Open,Close,High,Low,Volume,Returns,LogRet}] [-d] [--raw] [-n NUM] [-h]
+usage: candle [-p] [--sort {AdjClose,Open,Close,High,Low,Volume,Returns,LogRet}] [-d] [--raw] [-t] [--ma MOV_AVG] [--log] [-h] [--export EXPORT] [-l LIMIT]
 ```
-
-Shows historic data for the loaded ticker in an interactive chart that loads in a web browser. Static charts are also available through the optional '-m' argument. There is also the ability to retrieve and sort raw data sets based on the intraday interval and date window selected through the load command.
-
+Shows historic data for a stock
 ```
 optional arguments:
-  -m, --matplotlib      Flag to show matplotlib instead of interactive plot using plotly. (default: False)
-  --export {csv,json,xlsx}
-                        Export dataframe data to csv,json,xlsx file (default: )
+  -p, --plotly          Flag to show interactive plotly chart (default: True)
   --sort {AdjClose,Open,Close,High,Low,Volume,Returns,LogRet}
-                        Choose a column to sort by (default: )
-  -d, --descending      Sort selected column descending (default: True)
-  --raw                 Shows raw data instead of chart (default: False)
-  -n NUM, --num NUM     Number to show if raw selected (default: 20)
+                        Choose a column to sort by. Only works when raw data is displayed. (default: )
+  -d, --descending      Sort selected column descending. Only works when raw data is displayed. (default: True)
+  --raw                 Shows raw data instead of chart. If sort is set those are the top ones, otherwise we grab latest data to date (default: False)
+  -t, --trend           Flag to add high and low trends to candle (default: False)
+  --ma MOV_AVG          Add moving average in number of days to plot and separate by a comma (default: None)
+  --log                 Plot with y axis on log scale (default: False)
   -h, --help            show this help message (default: False)
+  --export EXPORT       Export raw data into csv, json, xlsx (default: )
+  -l LIMIT, --limit LIMIT
+                        Number of entries to show in data. (default: 20)
 ```
+For more information and examples, use 'about candle' to access the related guide.
+
 
 ![candle](https://user-images.githubusercontent.com/46355364/154072214-f4b49833-157f-44a7-be2d-d558ffc6f945.png)

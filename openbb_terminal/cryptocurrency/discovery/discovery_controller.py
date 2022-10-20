@@ -6,7 +6,7 @@ import argparse
 import logging
 from typing import List
 
-from prompt_toolkit.completion import NestedCompleter
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 
 from openbb_terminal import feature_flags as obbff
@@ -56,31 +56,72 @@ class DiscoveryController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["cggainers"]["-p"] = {c: {} for c in pycoingecko_model.API_PERIODS}
-            choices["cggainers"]["--sort"] = {
-                c: {} for c in pycoingecko_model.GAINERS_LOSERS_COLUMNS
+            choices["cggainers"] = {
+                "--interval": {c: {} for c in pycoingecko_model.API_PERIODS},
+                "-i": "--interval",
+                "--sort": {c: {} for c in pycoingecko_model.GAINERS_LOSERS_COLUMNS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
             }
-            choices["cglosers"]["--sort"] = {
-                c: {} for c in pycoingecko_model.GAINERS_LOSERS_COLUMNS
+            choices["cglosers"] = {
+                "--interval": {c: {} for c in pycoingecko_model.API_PERIODS},
+                "-i": "--interval",
+                "--sort": {c: {} for c in pycoingecko_model.GAINERS_LOSERS_COLUMNS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
             }
-            choices["cglosers"]["-p"] = {c: {} for c in pycoingecko_model.API_PERIODS}
-            choices["cgtop"] = {
-                c: None for c in pycoingecko_model.get_categories_keys()
-            }
+            choices["cgtop"] = {c: {} for c in pycoingecko_model.get_categories_keys()}
             choices["cgtop"]["--category"] = {
-                c: None for c in pycoingecko_model.get_categories_keys()
+                c: {} for c in pycoingecko_model.get_categories_keys()
             }
-            choices["cgtop"]["--sort"] = {
-                c: None for c in pycoingecko_view.COINS_COLUMNS
+            choices["cgtop"]["-c"] = "--category"
+            choices["cgtop"]["--sort"] = {c: {} for c in pycoingecko_view.COINS_COLUMNS}
+            choices["cgtop"]["-s"] = "--sort"
+            choices["cgtop"]["--limit"] = {str(c): {} for c in range(1, 100)}
+            choices["cgtop"]["-l"] = "--limit"
+            choices["cmctop"] = {
+                "--sort": {c: {} for c in coinmarketcap_model.FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
             }
-            choices["cmctop"]["-s"] = {c: {} for c in coinmarketcap_model.FILTERS}
-            choices["cpsearch"]["-s"] = {c: {} for c in coinpaprika_model.FILTERS}
-            choices["cpsearch"]["-c"] = {c: {} for c in coinpaprika_model.CATEGORIES}
-            choices["drnft"]["--sort"] = {c: {} for c in dappradar_model.NFT_COLUMNS}
-            choices["drgames"]["--sort"] = {c: {} for c in dappradar_model.DEX_COLUMNS}
-            choices["drdex"]["--sort"] = {c: {} for c in dappradar_model.DEX_COLUMNS}
-            choices["drdapps"]["--sort"] = {
-                c: {} for c in dappradar_model.DAPPS_COLUMNS
+            choices["cpsearch"] = {
+                "--query": None,
+                "-q": "--query",
+                "--sort": {c: {} for c in coinpaprika_model.FILTERS},
+                "-s": "--sort",
+                "--cat": {c: {} for c in coinpaprika_model.CATEGORIES},
+                "-c": "--cat",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+            }
+            choices["drnft"] = {
+                "--sort": {c: {} for c in dappradar_model.NFT_COLUMNS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+            }
+            choices["drgames"] = {
+                "--sort": {c: {} for c in dappradar_model.DEX_COLUMNS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+            }
+            choices["drdex"] = {
+                "--sort": {c: {} for c in dappradar_model.DEX_COLUMNS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+            }
+            choices["drdapps"] = {
+                "--sort": {c: {} for c in dappradar_model.DAPPS_COLUMNS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
             }
 
             choices["support"] = self.SUPPORT_CHOICES
@@ -91,16 +132,16 @@ class DiscoveryController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("crypto/disc/")
-        mt.add_cmd("cgtop", "CoinGecko")
-        mt.add_cmd("cgtrending", "CoinGecko")
-        mt.add_cmd("cggainers", "CoinGecko")
-        mt.add_cmd("cglosers", "CoinGecko")
-        mt.add_cmd("cpsearch", "CoinPaprika")
-        mt.add_cmd("cmctop", "CoinMarketCap")
-        mt.add_cmd("drnft", "DappRadar")
-        mt.add_cmd("drgames", "DappRadar")
-        mt.add_cmd("drdapps", "DappRadar")
-        mt.add_cmd("drdex", "DappRadar")
+        mt.add_cmd("cgtop")
+        mt.add_cmd("cgtrending")
+        mt.add_cmd("cggainers")
+        mt.add_cmd("cglosers")
+        mt.add_cmd("cpsearch")
+        mt.add_cmd("cmctop")
+        mt.add_cmd("drnft")
+        mt.add_cmd("drgames")
+        mt.add_cmd("drdapps")
+        mt.add_cmd("drdex")
         console.print(text=mt.menu_text, menu="Cryptocurrency - Discovery")
 
     @log_start_end(log=logger)
@@ -154,7 +195,7 @@ class DiscoveryController(BaseController):
             pycoingecko_view.display_coins(
                 sortby=" ".join(ns_parser.sortby),
                 category=ns_parser.category,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -194,7 +235,7 @@ class DiscoveryController(BaseController):
         if ns_parser:
             dappradar_view.display_top_dapps(
                 sortby=" ".join(ns_parser.sortby),
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -234,7 +275,7 @@ class DiscoveryController(BaseController):
         if ns_parser:
             dappradar_view.display_top_games(
                 sortby=" ".join(ns_parser.sortby),
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -274,7 +315,7 @@ class DiscoveryController(BaseController):
         if ns_parser:
             dappradar_view.display_top_dexes(
                 sortby=" ".join(ns_parser.sortby),
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -315,7 +356,7 @@ class DiscoveryController(BaseController):
         if ns_parser:
             dappradar_view.display_top_nfts(
                 sortby=" ".join(ns_parser.sortby),
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -328,16 +369,16 @@ class DiscoveryController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
             Shows Largest Gainers - coins which gain the most in given period.
-            You can use parameter --period to set which timeframe are you interested in: {14d,1h,1y,200d,24h,30d,7d}
+            You can use parameter --interval to set which timeframe are you interested in: {14d,1h,1y,200d,24h,30d,7d}
             You can look on only N number of records with --limit,
             You can sort by {Symbol,Name,Price [$],Market Cap,Market Cap Rank,Volume [$]} with --sort.
             """,
         )
 
         parser.add_argument(
-            "-p",
-            "--period",
-            dest="period",
+            "-i",
+            "--interval",
+            dest="interval",
             type=str,
             help="time period, one from {14d,1h,1y,200d,24h,30d,7d}",
             default="1h",
@@ -359,7 +400,7 @@ class DiscoveryController(BaseController):
             dest="sortby",
             nargs="+",
             help="Sort by given column. Default: Market Cap Rank",
-            default=["Market Cap"],
+            default=["market_cap"],
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -367,8 +408,8 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             pycoingecko_view.display_gainers(
-                period=ns_parser.period,
-                top=ns_parser.limit,
+                interval=ns_parser.interval,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=" ".join(ns_parser.sortby),
             )
@@ -382,16 +423,16 @@ class DiscoveryController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
            Shows Largest Losers - coins which price dropped the most in given period
-           You can use parameter --period to set which timeframe are you interested in: {14d,1h,1y,200d,24h,30d,7d}
+           You can use parameter --interval to set which timeframe are you interested in: {14d,1h,1y,200d,24h,30d,7d}
            You can look on only N number of records with --limit,
            You can sort by {Symbol,Name,Price [$],Market Cap,Market Cap Rank,Volume [$]} with --sort.
             """,
         )
 
         parser.add_argument(
-            "-p",
-            "--period",
-            dest="period",
+            "-i",
+            "--interval",
+            dest="interval",
             type=str,
             help="time period, one from {14d,1h,1y,200d,24h,30d,7d}",
             default="1h",
@@ -422,8 +463,8 @@ class DiscoveryController(BaseController):
 
         if ns_parser:
             pycoingecko_view.display_losers(
-                period=ns_parser.period,
-                top=ns_parser.limit,
+                interval=ns_parser.interval,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
                 sortby=" ".join(ns_parser.sortby),
             )
@@ -483,7 +524,7 @@ class DiscoveryController(BaseController):
             action="store_false",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
-            default=True,
+            default=False,
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -491,9 +532,9 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             coinmarketcap_view.display_cmc_top_coins(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -569,9 +610,9 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             coinpaprika_view.display_search_results(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
                 query=" ".join(ns_parser.query),
                 category=ns_parser.category,

@@ -1,12 +1,11 @@
-                                              id                                       name    category
-27                        xlc-ethereum-lite-cash                         Ethereum Lite Cash  currencies
-18                             void-ethereumvoid                               EthereumVoid  currencies
-23                    uet-useless-ethereum-token                     Useless Ethereum Token  currencies
-5   push-ethereum-push-notification-service-epns  Ethereum Push Notification Service - EPNS  currencies
-46       push-ethereum-push-notification-service         Ethereum Push Notification Service        icos
-11     nwset-2100news-ethereum-tokens-index-fund        2100news Ethereum Tokens Index Fund  currencies
-15                     horses-horses-of-ethereum                         Horses of Ethereum  currencies
-19                           eye-eye-on-ethereum                            eYe on Ethereum  currencies
-28                                 etx-ethereumx                                  EthereumX  currencies
-6                  etlt-ethereum-lightning-token                   Ethereum Lightning Token  currencies
-
+                                          id                                 name    category
+42           bens-baby-ethereum-name-service           Baby Ethereum Name Service  currencies
+9   best-bitcoin-and-ethereum-standard-token  Bitcoin and Ethereum Standard Token  currencies
+37                      ddeth-daddy-ethereum                       Daddy Ethereum  currencies
+25                            eai-ethereumai                           EthereumAI  currencies
+43                      eban-ethereum-banana                      Ethereum Banana  currencies
+4                        ecash-ethereum-cash                        Ethereum Cash  currencies
+20               ecell-ethereum-cell-network                Ethereum Cell Network  currencies
+36                  ect-ethereum-chain-token                 Ethereum Chain Token  currencies
+35                          ecum-ethereumcum                          EthereumCum  currencies
+32                        eer-ethereum-erush                       Ethereum eRush  currencies

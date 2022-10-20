@@ -7,20 +7,21 @@ import pandas as pd
 import requests
 
 from openbb_terminal import config_terminal as cfg
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_rating_over_time(ticker: str) -> pd.DataFrame:
+@check_api_key(["API_FINNHUB_KEY"])
+def get_rating_over_time(symbol: str) -> pd.DataFrame:
     """Get rating over time data. [Source: Finnhub]
 
     Parameters
     ----------
-    ticker : str
-        Ticker to get ratings from
+    symbol : str
+        Ticker symbol to get ratings from
 
     Returns
     -------
@@ -28,7 +29,7 @@ def get_rating_over_time(ticker: str) -> pd.DataFrame:
         Get dataframe with ratings
     """
     response = requests.get(
-        f"https://finnhub.io/api/v1/stock/recommendation?symbol={ticker}&token={cfg.API_FINNHUB_KEY}"
+        f"https://finnhub.io/api/v1/stock/recommendation?symbol={symbol}&token={cfg.API_FINNHUB_KEY}"
     )
     df = pd.DataFrame()
 

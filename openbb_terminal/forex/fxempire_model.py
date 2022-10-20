@@ -11,21 +11,23 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_forward_rates(to_cur: str, from_cur: str):
+def get_forward_rates(to_symbol: str = "USD", from_symbol: str = "EUR"):
     """Gets forward rates from fxempire
 
     Parameters
     ----------
-    to_cur:str
-        To currenct
-    from_cur:str
+    to_symbol: str
+        To currency
+    from_symbol: str
+        From currency
 
     Returns
     -------
+    df: pd.DataFrame
 
     """
     r = requests.get(
-        f"https://www.fxempire.com/currencies/{from_cur}-{to_cur}/forward-rates",
+        f"https://www.fxempire.com/currencies/{from_symbol}-{to_symbol}/forward-rates",
         headers={"User-Agent": get_user_agent()},
     )
     if r.status_code == 200:

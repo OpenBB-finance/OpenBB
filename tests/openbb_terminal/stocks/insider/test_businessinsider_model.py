@@ -16,6 +16,6 @@ def vcr_config():
 
 @pytest.mark.vcr
 def test_get_insider_activity(recorder):
-    result_df = businessinsider_model.get_insider_activity(ticker="TSLA")
+    result_df = businessinsider_model.get_insider_activity(symbol="TSLA")
 
     recorder.capture(result_df)

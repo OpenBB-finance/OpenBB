@@ -15,44 +15,50 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def suppliers(ticker: str, export: str):
+def suppliers(symbol: str, export: str = ""):
     """Display suppliers from ticker provided. [Source: CSIMarket]
 
     Parameters
     ----------
-    ticker: str
+    symbol: str
         Ticker to select suppliers from
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    tickers = csimarket_model.get_suppliers(ticker)
-    console.print(tickers)
+    tickers = csimarket_model.get_suppliers(symbol)
+    if tickers:
+        console.print(f"List of suppliers: {', '.join(tickers)}\n")
+    else:
+        console.print("No suppliers found.\n")
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "supplier",
-        pd.DataFrame(tickers.split(",")),
+        pd.DataFrame(tickers),
     )
 
 
 @log_start_end(log=logger)
-def customers(ticker: str, export: str):
+def customers(symbol: str, export: str = ""):
     """Display customers from ticker provided. [Source: CSIMarket]
 
     Parameters
     ----------
-    ticker: str
+    symbol: str
         Ticker to select customers from
     export : str
         Export dataframe data to csv,json,xlsx file
     """
-    tickers = csimarket_model.get_customers(ticker)
-    console.print(tickers)
+    tickers = csimarket_model.get_customers(symbol)
+    if tickers:
+        console.print(f"List of customers: {', '.join(tickers)}\n")
+    else:
+        console.print("No customers found.\n")
 
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "customer",
-        pd.DataFrame(tickers.split(",")),
+        pd.DataFrame(tickers),
     )

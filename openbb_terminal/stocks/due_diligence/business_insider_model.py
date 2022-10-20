@@ -17,12 +17,12 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_price_target_from_analysts(ticker: str) -> pd.DataFrame:
+def get_price_target_from_analysts(symbol: str) -> pd.DataFrame:
     """Get analysts' price targets for a given stock. [Source: Business Insider]
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Ticker symbol
 
     Returns
@@ -31,7 +31,7 @@ def get_price_target_from_analysts(ticker: str) -> pd.DataFrame:
         Analysts data
     """
     url_market_business_insider = (
-        f"https://markets.businessinsider.com/stocks/{ticker.lower()}-stock"
+        f"https://markets.businessinsider.com/stocks/{symbol.lower()}-stock"
     )
     text_soup_market_business_insider = BeautifulSoup(
         requests.get(
@@ -49,7 +49,10 @@ def get_price_target_from_analysts(ticker: str) -> pd.DataFrame:
             d_analyst_data = json.loads(s_analyst_data.split(",\n")[0])
             break
 
-    df_analyst_data = pd.DataFrame.from_dict(d_analyst_data["Markers"])  # type: ignore
+    try:
+        df_analyst_data = pd.DataFrame.from_dict(d_analyst_data["Markers"])  # type: ignore
+    except TypeError:
+        return pd.DataFrame()
     df_analyst_data = df_analyst_data[
         ["DateLabel", "Company", "InternalRating", "PriceTarget"]
     ]
@@ -65,12 +68,12 @@ def get_price_target_from_analysts(ticker: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_estimates(ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+def get_estimates(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """Get analysts' estimates for a given ticker. [Source: Business Insider]
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Ticker to get analysts' estimates
 
     Returns
@@ -83,7 +86,7 @@ def get_estimates(ticker: str) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame
         Quarter revenues estimates
     """
     url_market_business_insider = (
-        f"https://markets.businessinsider.com/stocks/{ticker.lower()}-stock"
+        f"https://markets.businessinsider.com/stocks/{symbol.lower()}-stock"
     )
     text_soup_market_business_insider = BeautifulSoup(
         requests.get(

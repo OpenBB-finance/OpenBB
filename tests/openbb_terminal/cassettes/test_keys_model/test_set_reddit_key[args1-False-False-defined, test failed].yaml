@@ -1,0 +1,68 @@
+interactions:
+- request:
+    body: grant_type=password&password=test_pass&username=test_user
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Basic dGVzdF9pZDp0ZXN0X3NlY3JldA==
+      Connection:
+      - close
+      Content-Length:
+      - '57'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - test_agent PRAW/7.6.0 prawcore/2.3.0
+    method: POST
+    uri: https://www.reddit.com/api/v1/access_token
+  response:
+    body:
+      string: '{"message": "Unauthorized", "error": 401}'
+    headers:
+      Accept-Ranges:
+      - bytes
+      Cache-Control:
+      - private, max-age=3600
+      Connection:
+      - close
+      Content-Length:
+      - '41'
+      Date:
+      - Tue, 04 Oct 2022 14:12:07 GMT
+      NEL:
+      - '{"report_to": "w3-reporting-nel", "max_age": 14400, "include_subdomains":
+        false, "success_fraction": 0.2, "failure_fraction": 0.2}'
+      Report-To:
+      - '{"group": "w3-reporting-nel", "max_age": 14400, "include_subdomains": true,  "endpoints":
+        [{ "url": "https://w3-reporting-nel.reddit.com/reports" }]}, {"group": "w3-reporting",
+        "max_age": 14400, "include_subdomains": true, "endpoints": [{ "url": "https://w3-reporting.reddit.com/reports"
+        }]}'
+      Server:
+      - snooserv
+      Set-Cookie:
+      - edgebucket=H3hyRQbqYeztzihFZt; Domain=reddit.com; Max-Age=63071999; Path=/;  secure
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains
+      Via:
+      - 1.1 varnish
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      content-type:
+      - application/json; charset=UTF-8
+      www-authenticate:
+      - Basic realm="reddit"
+      x-moose:
+      - majestic
+      x-ua-compatible:
+      - IE=edge
+    status:
+      code: 401
+      message: Unauthorized
+version: 1

@@ -6,9 +6,13 @@ import requests
 import pandas as pd
 from openbb_terminal.config_terminal import API_POLYGON_KEY as api_key
 from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.decorators import check_api_key
 from openbb_terminal.rich_config import console
 
+# pylint: disable=unsupported-assignment-operation
 
+
+@check_api_key(["API_POLYGON_KEY"])
 def get_historical(
     fx_pair: str,
     multiplier: int = 1,

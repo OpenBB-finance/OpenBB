@@ -7,9 +7,9 @@ from typing import List
 
 import numpy as np
 import pandas as pd
-from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.common.quantitative_analysis import qa_view, rolling_view
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -51,6 +51,8 @@ class QaController(CryptoBaseController):
         "goodness",
         "unitroot",
     ]
+    FULLER_REG = ["c", "ct", "ctt", "nc"]
+    KPS_REG = ["c", "ct"]
 
     PATH = "/forex/qa/"
 
@@ -76,7 +78,93 @@ class QaController(CryptoBaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["pick"] = {c: None for c in list(data.columns)}
+            choices["pick"] = {c: {} for c in list(data.columns)}
+            choices["load"] = {
+                "--interval": {
+                    c: {}
+                    for c in [
+                        "1",
+                        "5",
+                        "15",
+                        "30",
+                        "60",
+                        "240",
+                        "1440",
+                        "10080",
+                        "43200",
+                    ]
+                },
+                "-i": "--interval",
+                "--exchange": {c: {} for c in self.exchanges},
+                "--source": {c: {} for c in ["CCXT", "YahooFinance", "CoingGecko"]},
+                "--vs": {c: {} for c in ["usd", "eur"]},
+                "--start": None,
+                "-s": "--start",
+                "--end": None,
+                "-e": "--end",
+            }
+            choices["unitroot"] = {
+                "--fuller_reg": {c: {} for c in self.FULLER_REG},
+                "-r": "--fuller_reg",
+                "--kps_reg": {c: {} for c in self.KPS_REG},
+                "-k": "--kps_reg",
+            }
+            choices["line"] = {
+                "--log": {},
+                "--draw": {},
+                "-d": "--draw",
+                "--ml": None,
+                "--ms": None,
+            }
+            choices["hist"] = {
+                "--bins": {str(c): {} for c in range(10, 100)},
+                "-b": "--bins",
+            }
+            choices["bw"] = {
+                "--yearly": {},
+                "-y": {},
+            }
+            choices["acf"] = {
+                "--lags": {str(c): {} for c in range(5, 100)},
+                "-l": "--lags",
+            }
+            choices["rolling"] = {
+                "--window": {str(c): {} for c in range(5, 100)},
+                "-w": "--window",
+            }
+            choices["spread"] = {
+                "--window": {str(c): {} for c in range(5, 100)},
+                "-w": "--window",
+            }
+            choices["quantile"] = {
+                "--window": {str(c): {} for c in range(5, 100)},
+                "-w": "--window",
+                "--quantile": {str(c): {} for c in np.arange(0.0, 1.0, 0.01)},
+                "-q": "--quantile",
+            }
+            choices["skew"] = {
+                "--window": {str(c): {} for c in range(5, 100)},
+                "-w": "--window",
+            }
+            choices["kurtosis"] = {
+                "--window": {str(c): {} for c in range(5, 100)},
+                "-w": "--window",
+            }
+            choices["raw"] = {
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+            }
+            choices["decompose"] = {
+                "--multiplicative": None,
+                "-m": "--multiplicative",
+            }
+            choices["cusum"] = {
+                "--threshold": None,
+                "-t": "--threshold",
+                "--drift": None,
+                "-d": "--drift",
+            }
 
             choices["support"] = self.SUPPORT_CHOICES
             choices["about"] = self.ABOUT_CHOICES
@@ -184,10 +272,10 @@ class QaController(CryptoBaseController):
         )
         if ns_parser:
             qa_view.display_raw(
-                self.data[self.target],
-                num=ns_parser.limit,
-                sort="",
-                des=ns_parser.descend,
+                data=self.data[self.target],
+                limit=ns_parser.limit,
+                sortby="",
+                descend=ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -206,7 +294,7 @@ class QaController(CryptoBaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            qa_view.display_summary(df=self.data, export=ns_parser.export)
+            qa_view.display_summary(data=self.data, export=ns_parser.export)
 
     @log_start_end(log=logger)
     def call_line(self, other_args: List[str]):
@@ -277,8 +365,8 @@ class QaController(CryptoBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_hist(
-                name=self.ticker,
-                df=self.data,
+                symbol=self.ticker,
+                data=self.data,
                 target=self.target,
                 bins=ns_parser.n_bins,
             )
@@ -299,8 +387,8 @@ class QaController(CryptoBaseController):
         )
         if ns_parser:
             qa_view.display_cdf(
-                name=self.ticker,
-                df=self.data,
+                symbol=self.ticker,
+                data=self.data,
                 target=self.target,
                 export=ns_parser.export,
             )
@@ -327,8 +415,8 @@ class QaController(CryptoBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_bw(
-                name=self.ticker,
-                df=self.data,
+                symbol=self.ticker,
+                data=self.data,
                 target=self.target,
                 yearly=ns_parser.year,
             )
@@ -359,8 +447,8 @@ class QaController(CryptoBaseController):
         )
         if ns_parser:
             qa_view.display_seasonal(
-                name=self.ticker,
-                df=self.data,
+                symbol=self.ticker,
+                data=self.data,
                 target=self.target,
                 multiplicative=ns_parser.multiplicative,
                 export=ns_parser.export,
@@ -402,7 +490,7 @@ class QaController(CryptoBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             qa_view.display_cusum(
-                df=self.data,
+                data=self.data,
                 target=self.target,
                 threshold=ns_parser.threshold,
                 drift=ns_parser.drift,
@@ -435,8 +523,8 @@ class QaController(CryptoBaseController):
                 )
 
             qa_view.display_acf(
-                name=self.ticker,
-                df=self.data,
+                symbol=self.ticker,
+                data=self.data,
                 target=self.target,
                 lags=ns_parser.lags,
             )
@@ -466,8 +554,8 @@ class QaController(CryptoBaseController):
         )
         if ns_parser:
             rolling_view.display_mean_std(
-                name=self.ticker,
-                df=self.data,
+                symbol=self.ticker,
+                data=self.data,
                 target=self.target,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
@@ -497,8 +585,8 @@ class QaController(CryptoBaseController):
         )
         if ns_parser:
             rolling_view.display_spread(
-                name=self.ticker,
-                df=self.data,
+                symbol=self.ticker,
+                data=self.data,
                 target=self.target,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
@@ -545,8 +633,8 @@ class QaController(CryptoBaseController):
         )
         if ns_parser:
             rolling_view.display_quantile(
-                name=self.ticker,
-                df=self.data,
+                symbol=self.ticker,
+                data=self.data,
                 target=self.target,
                 window=ns_parser.n_window,
                 quantile=ns_parser.f_quantile,
@@ -583,8 +671,8 @@ class QaController(CryptoBaseController):
         )
         if ns_parser:
             rolling_view.display_skew(
-                name=self.ticker,
-                df=self.data,
+                symbol=self.ticker,
+                data=self.data,
                 target=self.target,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
@@ -620,8 +708,8 @@ class QaController(CryptoBaseController):
         )
         if ns_parser:
             rolling_view.display_kurtosis(
-                name=self.ticker,
-                df=self.data,
+                symbol=self.ticker,
+                data=self.data,
                 target=self.target,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
@@ -643,7 +731,7 @@ class QaController(CryptoBaseController):
         )
         if ns_parser:
             qa_view.display_normality(
-                df=self.data, target=self.target, export=ns_parser.export
+                data=self.data, target=self.target, export=ns_parser.export
             )
 
     @log_start_end(log=logger)
@@ -659,7 +747,9 @@ class QaController(CryptoBaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            qa_view.display_qqplot(name=self.ticker, df=self.data, target=self.target)
+            qa_view.display_qqplot(
+                symbol=self.ticker, data=self.data, target=self.target
+            )
 
     @log_start_end(log=logger)
     def call_unitroot(self, other_args: List[str]):
@@ -676,7 +766,7 @@ class QaController(CryptoBaseController):
             "-r",
             "--fuller_reg",
             help="Type of regression.  Can be ‘c’,’ct’,’ctt’,’nc’ 'c' - Constant and t - trend order",
-            choices=["c", "ct", "ctt", "nc"],
+            choices=self.FULLER_REG,
             default="c",
             type=str,
             dest="fuller_reg",
@@ -685,7 +775,7 @@ class QaController(CryptoBaseController):
             "-k",
             "--kps_reg",
             help="Type of regression.  Can be ‘c’,’ct'",
-            choices=["c", "ct"],
+            choices=self.KPS_REG,
             type=str,
             dest="kpss_reg",
             default="c",
@@ -695,7 +785,7 @@ class QaController(CryptoBaseController):
         )
         if ns_parser:
             qa_view.display_unitroot(
-                df=self.data,
+                data=self.data,
                 target=self.target,
                 fuller_reg=ns_parser.fuller_reg,
                 kpss_reg=ns_parser.kpss_reg,

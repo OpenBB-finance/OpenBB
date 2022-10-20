@@ -59,7 +59,7 @@ Below you can find examples of the dataset from Vella and M. Verbeek (1998), “
 
 2022 Feb 25, 08:09 (✨) /econometrics/ $ index wp -i nr,year
 
-2022 Feb 25, 08:10 (✨) /econometrics/ $ type wp.year -f category
+2022 Feb 25, 08:10 (✨) /econometrics/ $ type wp.year --format category
 
 2022 Feb 25, 08:10 (✨) /econometrics/ $ show wp
                                                             wp

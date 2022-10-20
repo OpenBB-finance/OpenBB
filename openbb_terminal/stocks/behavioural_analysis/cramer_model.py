@@ -1,6 +1,7 @@
 """Cramer Model"""
 __docformat__ = "numpy"
 
+import os
 import logging
 import re
 
@@ -9,11 +10,16 @@ import requests
 import numpy as np
 import yfinance as yf
 from bs4 import BeautifulSoup
+import certifi
 
 from openbb_terminal.decorators import log_start_end
 
 
 logger = logging.getLogger(__name__)
+
+# Necessary only for installer to identify where SSL certs are
+os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
+os.environ["SSL_CERT_FILE"] = certifi.where()
 
 
 @log_start_end(log=logger)
@@ -55,23 +61,20 @@ def get_cramer_daily(inverse: bool = True) -> pd.DataFrame:
         "5": "Buy",
     }
 
-    rec = []
-
-    for tr in trs[1:]:
-        rec.append(recs[tr.find_all("td")[3].find("img")["src"][-5]])
+    rec = [recs[tr.find_all("td")[3].find("img")["src"][-5]] for tr in trs[1:]]
 
     df = pd.read_html(r.text)[0]
     df["Symbol"] = df.Company.apply(lambda x: re.findall(r"[\w]+", x)[-1])
-    last_price = []
-    for ticker in df.Symbol:
-        last_price.append(
-            round(
-                yf.download(ticker, period="1d", interval="1h", progress=False)[
-                    "Close"
-                ][-1],
-                2,
-            )
+    last_price = [
+        round(
+            yf.download(ticker, period="1d", interval="1h", progress=False)["Close"][
+                -1
+            ],
+            2,
         )
+        for ticker in df.Symbol
+    ]
+
     df["LastPrice"] = last_price
     df["Price"] = df.Price.apply(lambda x: float(x.strip("$")))
     df = df.drop(columns=["Segment", "Call", "Portfolio"])
@@ -96,12 +99,12 @@ def get_cramer_daily(inverse: bool = True) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_cramer_ticker(ticker: str) -> pd.DataFrame:
+def get_cramer_ticker(symbol: str) -> pd.DataFrame:
     """Get cramer recommendations from beginning of year for given ticker
 
     Parameters
     ----------
-    ticker: str
+    symbol: str
         Ticker to get recommendations for
 
     Returns
@@ -112,4 +115,5 @@ def get_cramer_ticker(ticker: str) -> pd.DataFrame:
 
     link = "https://raw.githubusercontent.com/jmaslek/InverseCramer/main/AllRecommendations.csv"
     df = pd.read_csv(link, index_col=0)
-    return df[df.Symbol == ticker].reset_index(drop=True)
+    df["Date"] = pd.to_datetime(df["Date"].apply(lambda x: x + "/2022"))
+    return df[df.Symbol == symbol].reset_index(drop=True)

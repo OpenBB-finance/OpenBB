@@ -1,7 +1,6 @@
 """Stockanalysis.com/etf Model"""
 __docformat__ = "numpy"
 
-import json
 import logging
 from typing import List, Tuple
 
@@ -26,20 +25,28 @@ def get_all_names_symbols() -> Tuple[List[str], List[str]]:
     etf_names: List[str]
         List of all available etf names
     """
+
+    etf_symbols = []
+    etf_names = []
+
     r = requests.get(
         "https://stockanalysis.com/etf/", headers={"User-Agent": get_user_agent()}
     )
     soup2 = bs(r.text, "html.parser")
-    script = soup2.find("script", {"type": "application/json"})
+    table = soup2.find("table", attrs={"class": "svelte-v47wb2"})
+    table_body = table.find("tbody")
+    rows = table_body.find_all("tr")
+    for row in rows:
+        cols = row.find_all("td")
+        cols = [ele.text.strip() for ele in cols]
+        etf_symbols.append(cols[0])
+        etf_names.append(cols[1])
 
-    etfs = pd.DataFrame(json.loads(script.string)["data"])
-    etf_symbols = etfs.s.to_list()
-    etf_names = etfs.n.to_list()
     return etf_symbols, etf_names
 
 
 @log_start_end(log=logger)
-def get_etf_overview(etf_symbol: str) -> pd.DataFrame:
+def get_etf_overview(symbol: str) -> pd.DataFrame:
     """Get overview data for selected etf
 
     Parameters
@@ -53,10 +60,10 @@ def get_etf_overview(etf_symbol: str) -> pd.DataFrame:
         Dataframe of stock overview data
     """
     r = requests.get(
-        f"https://stockanalysis.com/etf/{etf_symbol}",
+        f"https://stockanalysis.com/etf/{symbol}",
         headers={"User-Agent": get_user_agent()},
     )
-    soup = bs(r.text, "html.parser")  # %%
+    soup = bs(r.text, "html.parser")
     tables = soup.findAll("table")
     texts = []
     for tab in tables[:2]:
@@ -68,7 +75,7 @@ def get_etf_overview(etf_symbol: str) -> pd.DataFrame:
     vals = [idx + 1 for idx in var_cols]
     columns = [texts[idx] for idx in var_cols]
     data = [texts[idx] for idx in vals]
-    df = pd.DataFrame(data, index=columns, columns=[etf_symbol.upper()])
+    df = pd.DataFrame(data, index=columns, columns=[symbol.upper()])
     return df
 
 
@@ -89,24 +96,15 @@ def get_etf_holdings(symbol: str) -> pd.DataFrame:
 
     link = f"https://stockanalysis.com/etf/{symbol}/holdings/"
     r = requests.get(link, headers={"User-Agent": get_user_agent()})
-    if r.status_code == 200:
-        soup = bs(r.text, "html.parser")
-        soup = soup.find("table")
-        tds = soup.findAll("td")
-        tickers = []
-        for i in tds[1::5]:
-            tickers.append(i.text)
-        percents = []
-        for i in tds[3::5]:
-            percents.append(i.text)
-        shares = []
-        for i in tds[4::5]:
-            shares.append(i.text)
-        df = pd.DataFrame(index=tickers)
-        df["% Of Etf"] = percents
-        df["Shares"] = shares
-        return df
-    return pd.DataFrame()
+    try:
+        df = pd.read_html(r.content)[0]
+        df["Symbol"] = df["Symbol"].fillna("n/a")
+        df = df.set_index("Symbol")
+        df = df[["% Assets", "Shares"]]
+        df = df.rename(columns={"% Assets": "% Of Etf"})
+    except ValueError:
+        df = pd.DataFrame()
+    return df
 
 
 @log_start_end(log=logger)

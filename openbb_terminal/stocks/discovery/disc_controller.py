@@ -6,7 +6,7 @@ import logging
 from datetime import datetime
 from typing import List
 
-from prompt_toolkit.completion import NestedCompleter
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
@@ -20,15 +20,15 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
 from openbb_terminal.stocks.discovery import (
     ark_view,
-    fidelity_view,
     finnhub_view,
     nasdaq_view,
     seeking_alpha_view,
     shortinterest_view,
     yahoofinance_view,
+    finviz_view,
 )
 
 # pylint:disable=C0302
@@ -50,7 +50,6 @@ class DiscoveryController(BaseController):
         "active",
         "ulc",
         "asc",
-        "ford",
         "arkord",
         "upcoming",
         "trending",
@@ -59,6 +58,7 @@ class DiscoveryController(BaseController):
         "cnews",
         "rtat",
         "divcal",
+        "heatmap",
     ]
 
     arkord_sortby_choices = [
@@ -110,6 +110,7 @@ class DiscoveryController(BaseController):
         "Annual Dividend",
         "Announcement Date",
     ]
+    heatmap_timeframes = ["day", "week", "month", "3month", "6month", "year", "ytd"]
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -117,16 +118,91 @@ class DiscoveryController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["arkord"]["-s"] = {c: None for c in self.arkord_sortby_choices}
-            choices["arkord"]["--sortby"] = {
-                c: None for c in self.arkord_sortby_choices
+
+            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
+            choices["pipo"] = {
+                "--days": one_to_hundred,
+                "-d": "--days",
+                "--start": None,
+                "-s": "--start",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
             }
-            choices["arkord"]["-f"] = {c: None for c in self.arkord_fund_choices}
-            choices["arkord"]["--fund"] = {c: None for c in self.arkord_fund_choices}
-            choices["cnews"]["-t"] = {c: None for c in self.cnews_type_choices}
-            choices["cnews"]["--type"] = {c: None for c in self.cnews_type_choices}
-            choices["divcal"]["-s"] = {c: None for c in self.dividend_columns}
-            choices["divcal"]["--sort"] = {c: None for c in self.dividend_columns}
+            choices["fipo"] = {
+                "--days": one_to_hundred,
+                "-d": "--days",
+                "--end": None,
+                "-e": "--end",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            limit = {
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["gainers"] = limit
+            choices["losers"] = limit
+            choices["ugs"] = limit
+            choices["gtech"] = limit
+            choices["active"] = limit
+            choices["ulc"] = limit
+            choices["asc"] = limit
+            choices["arkord"] = {
+                "--sortby": {c: {} for c in self.arkord_sortby_choices},
+                "-s": "--sortby",
+                "--ascend": {},
+                "-a": "--ascend",
+                "--buy_only": {},
+                "-b": "--buy_only",
+                "--sell_only": {},
+                "-c": "--sell_only",
+                "--fund": {c: {} for c in self.arkord_fund_choices},
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["upcoming"] = {
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+                "--pages": one_to_hundred,
+                "-p": "--pages",
+            }
+            choices["trending"] = {
+                "--id": None,
+                "-i": "--id",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+                "--date": None,
+                "-d": "--date",
+            }
+            choices["cnews"] = {
+                "--type": {c: {} for c in self.cnews_type_choices},
+                "-t": "--type",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["lowfloat"] = limit
+            choices["hotpenny"] = {
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+                "--source": {
+                    c: {} for c in get_ordered_list_sources(f"{self.PATH}hotpenny")
+                },
+            }
+            choices["rtat"] = limit
+            choices["divcal"] = {
+                "--date": None,
+                "-d": "--date",
+                "--sort": {c: {} for c in self.dividend_columns},
+                "-s": "--sort",
+                "--ascend": {},
+                "-a": "--ascend",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["heatmap"]["--timeframe"] = {
+                c: None for c in self.heatmap_timeframes
+            }
+            choices["heatmap"]["-t"] = "--timeframe"
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -142,8 +218,7 @@ class DiscoveryController(BaseController):
         mt.add_cmd("active", "Yahoo Finance")
         mt.add_cmd("ulc", "Yahoo Finance")
         mt.add_cmd("asc", "Yahoo Finance")
-        mt.add_cmd("ford", "Fidelity")
-        mt.add_cmd("arkord", "Cathiesark")
+        mt.add_cmd("arkord", "Cathies Ark")
         mt.add_cmd("upcoming", "Seeking Alpha")
         mt.add_cmd("trending", "Seeking Alpha")
         mt.add_cmd("cnews", "Seeking Alpha")
@@ -151,6 +226,7 @@ class DiscoveryController(BaseController):
         mt.add_cmd("hotpenny", "Shortinterest")
         mt.add_cmd("rtat", "NASDAQ Data Link")
         mt.add_cmd("divcal", "NASDAQ Data Link")
+        mt.add_cmd("heatmap", "Finviz")
         console.print(text=mt.menu_text, menu="Stocks - Discovery")
 
     # TODO Add flag for adding last price to the following table
@@ -199,9 +275,9 @@ class DiscoveryController(BaseController):
                 console.print(f"{sort_col} not a valid selection for sorting.\n")
                 return
             nasdaq_view.display_dividend_calendar(
-                ns_parser.date.strftime("%Y-%m-%d"),
-                sort_col=sort_col,
-                ascending=ns_parser.ascend,
+                date=ns_parser.date.strftime("%Y-%m-%d"),
+                sortby=sort_col,
+                ascend=ns_parser.ascend,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
             )
@@ -341,7 +417,7 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             yahoofinance_view.display_gainers(
-                num_stocks=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -370,7 +446,7 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             yahoofinance_view.display_losers(
-                num_stocks=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -402,7 +478,7 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             yahoofinance_view.display_ugs(
-                num_stocks=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -432,7 +508,7 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             yahoofinance_view.display_gtech(
-                num_stocks=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -463,7 +539,7 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             yahoofinance_view.display_active(
-                num_stocks=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -494,7 +570,7 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             yahoofinance_view.display_ulc(
-                num_stocks=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -525,41 +601,7 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             yahoofinance_view.display_asc(
-                num_stocks=ns_parser.limit,
-                export=ns_parser.export,
-            )
-
-    @log_start_end(log=logger)
-    def call_ford(self, other_args: List[str]):
-        """Process ford command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ford",
-            description="""
-                Orders by Fidelity customers. Information shown in the table below
-                is based on the volume of orders entered on the "as of" date shown. Securities
-                identified are not recommended or endorsed by Fidelity and are displayed for
-                informational purposes only. [Source: Fidelity]
-            """,
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="limit",
-            type=check_int_range(1, 25),
-            default=5,
-            help="Limit of stocks to display.",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            fidelity_view.orders_view(
-                num=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -617,7 +659,6 @@ class DiscoveryController(BaseController):
             default=False,
         )
         parser.add_argument(
-            "-f",
             "--fund",
             type=str,
             default="",
@@ -632,9 +673,9 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             ark_view.ark_orders_view(
-                num=ns_parser.limit,
-                sort_col=ns_parser.sort_col,
-                ascending=ns_parser.ascend,
+                limit=ns_parser.limit,
+                sortby=ns_parser.sort_col,
+                ascend=ns_parser.ascend,
                 buys_only=ns_parser.buys_only,
                 sells_only=ns_parser.sells_only,
                 fund=ns_parser.fund,
@@ -677,7 +718,7 @@ class DiscoveryController(BaseController):
         if ns_parser:
             seeking_alpha_view.upcoming_earning_release_dates(
                 num_pages=ns_parser.n_pages,
-                num_earnings=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -725,7 +766,7 @@ class DiscoveryController(BaseController):
         if ns_parser:
             seeking_alpha_view.news(
                 article_id=ns_parser.n_id,
-                num=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -760,7 +801,7 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             shortinterest_view.low_float(
-                num=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -800,7 +841,7 @@ class DiscoveryController(BaseController):
         if ns_parser:
             seeking_alpha_view.display_news(
                 news_type=ns_parser.s_type,
-                num=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -811,15 +852,7 @@ class DiscoveryController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="hotpenny",
-            description="""
-                This site provides a list of todays most active and hottest penny stocks. While not for everyone, penny
-                stocks can be exciting and rewarding investments in many ways. With penny stocks, you can get more bang
-                for the buck. You can turn a few hundred dollars into thousands, just by getting in on the right penny
-                stock at the right time. Penny stocks are increasing in popularity. More and more investors of all age
-                groups and skill levels are getting involved, and the dollar amounts they are putting into these
-                speculative investments are representing a bigger portion of their portfolios.
-                [Source: www.pennystockflow.com]
-            """,
+            description="Provides top penny stocks from various websites. [Source: Yfinance]",
         )
         parser.add_argument(
             "-l",
@@ -838,13 +871,14 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             shortinterest_view.hot_penny_stocks(
-                num=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
+                source=ns_parser.source,
             )
 
     @log_start_end(log=logger)
     def call_rtat(self, other_args: List[str]):
-        """Process fds command"""
+        """Process rtat command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -871,5 +905,30 @@ class DiscoveryController(BaseController):
         )
         if ns_parser:
             nasdaq_view.display_top_retail(
-                n_days=ns_parser.limit, export=ns_parser.export
+                limit=ns_parser.limit, export=ns_parser.export
             )
+
+    @log_start_end(log=logger)
+    def call_heatmap(self, other_args: List[str]):
+        """Process heatmap command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="heatmap",
+            description="""
+                    Get the SP 500 heatmap from finviz and display in interactive treemap
+                """,
+        )
+        parser.add_argument(
+            "-t",
+            "--timeframe",
+            default="day",
+            choices=self.heatmap_timeframes,
+            help="Timeframe to get heatmap data for",
+            dest="timeframe",
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
+        )
+        if ns_parser:
+            finviz_view.display_heatmap(ns_parser.timeframe, ns_parser.export)

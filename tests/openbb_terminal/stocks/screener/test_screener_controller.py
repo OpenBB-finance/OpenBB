@@ -217,7 +217,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         (
             "call_view",
             [
-                "oversold",
+                "oversold.ini",
             ],
             "",
             [],
@@ -233,7 +233,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         (
             "call_set",
             [
-                "oversold",
+                "oversold.ini",
             ],
             "",
             [],
@@ -274,7 +274,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 data_type="overview",
                 limit=1,
                 ascend=True,
-                sort="Ticker",
+                sortby="Ticker",
                 export="csv",
             ),
         ),
@@ -294,7 +294,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 data_type="valuation",
                 limit=1,
                 ascend=True,
-                sort="Ticker",
+                sortby="Ticker",
                 export="csv",
             ),
         ),
@@ -314,7 +314,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 data_type="financial",
                 limit=1,
                 ascend=True,
-                sort="Ticker",
+                sortby="Ticker",
                 export="csv",
             ),
         ),
@@ -334,7 +334,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 data_type="ownership",
                 limit=1,
                 ascend=True,
-                sort="Ticker",
+                sortby="Ticker",
                 export="csv",
             ),
         ),
@@ -354,7 +354,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 data_type="performance",
                 limit=1,
                 ascend=True,
-                sort="Ticker",
+                sortby="Ticker",
                 export="csv",
             ),
         ),
@@ -374,16 +374,9 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 data_type="technical",
                 limit=1,
                 ascend=True,
-                sort="Ticker",
+                sortby="Ticker",
                 export="csv",
             ),
-        ),
-        (
-            "call_po",
-            [],
-            "po_controller.PortfolioOptimizationController.menu",
-            [],
-            dict(),
         ),
         (
             "call_ca",
@@ -424,7 +417,6 @@ def test_call_func_test(
 @pytest.mark.parametrize(
     "func",
     [
-        "call_po",
         "call_ca",
     ],
 )

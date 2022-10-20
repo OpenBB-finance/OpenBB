@@ -17,27 +17,19 @@ interactions:
       string: "<html>\r\n<head><title>401 Authorization Required</title></head>\r\n<body>\r\n<center><h1>401
         Authorization Required</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n"
     headers:
-      CF-Cache-Status:
-      - DYNAMIC
-      CF-RAY:
-      - 6f93bd16acd8209d-IND
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Origin:
+      - https://studio.glassnode.com
       Connection:
       - keep-alive
+      Content-Length:
+      - '172'
       Content-Type:
       - text/html
       Date:
-      - Sat, 09 Apr 2022 13:55:08 GMT
-      Expect-CT:
-      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
-      Server:
-      - cloudflare
-      Transfer-Encoding:
-      - chunked
-      access-control-allow-credentials:
-      - 'true'
-      access-control-allow-origin:
-      - https://studio.glassnode.com
-      strict-transport-security:
+      - Sun, 04 Sep 2022 00:08:35 GMT
+      Strict-Transport-Security:
       - max-age=15724800; includeSubDomains
     status:
       code: 401

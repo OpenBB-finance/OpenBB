@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import logging
 import os
 from typing import List, Optional
-from datetime import datetime
 
 import matplotlib.pyplot as plt
 import mplfinance as mpf
@@ -31,11 +30,11 @@ register_matplotlib_converters()
 
 @log_start_end(log=logger)
 def view_ma(
-    series: pd.Series,
-    length: List[int] = None,
+    data: pd.Series,
+    window: List[int] = None,
     offset: int = 0,
     ma_type: str = "EMA",
-    s_ticker: str = "",
+    symbol: str = "",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -43,41 +42,43 @@ def view_ma(
 
     Parameters
     ----------
-    series : pd.Series
+    data: pd.Series
         Series of prices
-    length : List[int]
+    window: List[int]
         Length of EMA window
+    offset: int
+        Offset variable
     ma_type: str
         Type of moving average.  Either "EMA" "ZLMA" or "SMA"
-    s_ticker : str
+    symbol: str
         Ticker
-    export : str
+    export: str
         Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
+    external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
     # Define a dataframe for adding EMA series to it
-    price_df = pd.DataFrame(series)
+    price_df = pd.DataFrame(data)
 
-    l_legend = [s_ticker]
-    if not length:
-        length = [20, 50]
+    l_legend = [symbol]
+    if not window:
+        window = [20, 50]
 
-    for win in length:
+    for win in window:
         if ma_type == "EMA":
-            df_ta = overlap_model.ema(series, win, offset)
+            df_ta = overlap_model.ema(data, win, offset)
             l_legend.append(f"EMA {win}")
         elif ma_type == "SMA":
-            df_ta = overlap_model.sma(series, win, offset)
+            df_ta = overlap_model.sma(data, win, offset)
             l_legend.append(f"SMA {win}")
         elif ma_type == "WMA":
-            df_ta = overlap_model.wma(series, win, offset)
+            df_ta = overlap_model.wma(data, win, offset)
             l_legend.append(f"WMA {win}")
         elif ma_type == "HMA":
-            df_ta = overlap_model.hma(series, win, offset)
+            df_ta = overlap_model.hma(data, win, offset)
             l_legend.append(f"HMA {win}")
         elif ma_type == "ZLMA":
-            df_ta = overlap_model.zlma(series, win, offset)
+            df_ta = overlap_model.zlma(data, win, offset)
             l_legend.append(f"ZLMA {win}")
         price_df = price_df.join(df_ta)
 
@@ -93,11 +94,11 @@ def view_ma(
 
     ax.plot(plot_data.index, plot_data.iloc[:, 1].values)
     ax.set_xlim([plot_data.index[0], plot_data.index[-1]])
-    ax.set_ylabel(f"{s_ticker} Price")
+    ax.set_ylabel(f"{symbol} Price")
     for idx in range(2, plot_data.shape[1]):
         ax.plot(plot_data.iloc[:, idx])
 
-    ax.set_title(f"{s_ticker} {ma_type.upper()}")
+    ax.set_title(f"{symbol} {ma_type.upper()}")
     ax.legend(l_legend)
     theme.style_primary_axis(
         ax,
@@ -111,37 +112,37 @@ def view_ma(
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
-        f"{ma_type.lower()}{'_'.join([str(win) for win in length])}",
+        f"{ma_type.lower()}{'_'.join([str(win) for win in window])}",
         price_df,
     )
 
 
 @log_start_end(log=logger)
 def view_vwap(
-    s_ticker: str,
-    ohlc: pd.DataFrame,
-    start: datetime = None,
-    end: datetime = None,
+    data: pd.DataFrame,
+    symbol: str = "",
+    start_date: str = None,
+    end_date: str = None,
     offset: int = 0,
-    s_interval: str = "",
+    interval: str = "",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plots EMA technical indicator
+    """Plots VWMA technical indicator
 
     Parameters
     ----------
-    s_ticker : str
+    data : pd.DataFrame
+        Dataframe of OHLC prices
+    symbol : str
         Ticker
-    ohlc : pd.DataFrame
-        Dataframe of prices
     offset : int
         Offset variable
-    start: datetime
+    start_date: datetime
         Start date to get data from with
-    end: datetime
+    end_date: datetime
         End date to get data from with
-    s_interval : str
+    interval : str
         Interval of data
     export : str
         Format to export data
@@ -149,21 +150,24 @@ def view_vwap(
         External axes (3 axes are expected in the list), by default None
     """
 
-    ohlc.index = ohlc.index.tz_localize(None)
+    data.index = data.index.tz_localize(None)
 
-    if start and end:
-        start_date = start.date()
-        end_date = end.date()
+    if start_date is None:
+        start = data.index[0].date()
+        console.print(f"No start date specified. Start date: {start}")
     else:
-        start_date = end_date = ohlc.index[-1].date()
-        console.print(
-            f"No Specified date range. load most recent trading data: {start_date.strftime('%Y-%m-%d')}"
-        )
+        start = start_date
 
-    day_df = ohlc[(start_date <= ohlc.index.date) & (ohlc.index.date <= end_date)]
+    if end_date is None:
+        end = data.index[-1].date()
+        console.print(f"No end date specified. End date: {end}")
+    else:
+        end = end_date
+
+    day_df = data[(start <= data.index.date) & (data.index.date <= end)]
     if len(day_df) == 0:
         console.print(
-            f"[red]No data found between {start_date.strftime('%Y-%m-%d')} and {end_date.strftime('%Y-%m-%d')}\n[/red]"
+            f"[red]No data found between {start.strftime('%Y-%m-%d')} and {end.strftime('%Y-%m-%d')}\n[/red]"
         )
         return
 
@@ -194,7 +198,7 @@ def view_vwap(
         )
         fig, ax = mpf.plot(day_df, **candle_chart_kwargs)
         fig.suptitle(
-            f"{s_ticker} {s_interval} VWAP",
+            f"{symbol} {interval} VWAP",
             x=0.055,
             y=0.965,
             horizontalalignment="left",

@@ -14,23 +14,24 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table, plot_autoscale
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import fmp_model
+from openbb_terminal.helpers_denomination import (
+    transform as transform_by_denomination,
+)
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def valinvest_score(ticker: str):
+def valinvest_score(symbol: str):
     """Value investing tool based on Warren Buffett, Joseph Piotroski and Benjamin Graham thoughts [Source: FMP]
 
     Parameters
     ----------
-    other_args : List[str]
-        argparse other args
-    ticker : str
+    symbol : str
         Fundamental analysis ticker symbol
     """
-    score = fmp_model.get_score(ticker)
+    score = fmp_model.get_score(symbol)
     if score:
         console.print(f"Score: {score:.2f}".rstrip("0").rstrip(".") + " %")
         console.print("")
@@ -38,23 +39,21 @@ def valinvest_score(ticker: str):
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def display_profile(ticker: str):
+def display_profile(symbol: str):
     """Financial Modeling Prep ticker profile
 
     Parameters
     ----------
-    other_args : List[str]
-        argparse other args
-    ticker : str
+    symbol : str
         Fundamental analysis ticker symbol
     """
-    profile = fmp_model.get_profile(ticker)
+    profile = fmp_model.get_profile(symbol)
 
     if not profile.empty:
         print_rich_table(
             profile.drop(index=["description", "image"]),
             headers=[""],
-            title=f"{ticker.upper()} Profile",
+            title=f"{symbol.upper()} Profile",
             show_index=True,
         )
 
@@ -69,41 +68,41 @@ def display_profile(ticker: str):
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
-def display_quote(ticker: str):
+def display_quote(symbol: str):
     """Financial Modeling Prep ticker quote
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Fundamental analysis ticker symbol
     """
 
-    quote = fmp_model.get_quote(ticker)
+    quote = fmp_model.get_quote(symbol)
     if quote.empty:
         console.print("[red]Data not found[/red]\n")
     else:
-        print_rich_table(quote, headers=[""], title=f"{ticker} Quote", show_index=True)
+        print_rich_table(quote, headers=[""], title=f"{symbol} Quote", show_index=True)
 
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_enterprise(
-    ticker: str, number: int, quarterly: bool = False, export: str = ""
+    symbol: str, limit: int = 5, quarterly: bool = False, export: str = ""
 ):
     """Financial Modeling Prep ticker enterprise
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Fundamental analysis ticker symbol
-    number: int
+    limit: int
         Number to get
     quarterly: bool
         Flag to get quarterly data
     export: str
         Format to export data
     """
-    df_fa = fmp_model.get_enterprise(ticker, number, quarterly)
+    df_fa = fmp_model.get_enterprise(symbol, limit, quarterly)
     df_fa = df_fa[df_fa.columns[::-1]]
 
     # Re-order the returned columns so they are in a more logical ordering
@@ -124,7 +123,7 @@ def display_enterprise(
         print_rich_table(
             df_fa,
             headers=list(df_fa.columns),
-            title=f"{ticker} Enterprise",
+            title=f"{symbol} Enterprise",
             show_index=True,
         )
 
@@ -136,22 +135,22 @@ def display_enterprise(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_discounted_cash_flow(
-    ticker: str, number: int, quarterly: bool = False, export: str = ""
+    symbol: str, limit: int = 5, quarterly: bool = False, export: str = ""
 ):
     """Financial Modeling Prep ticker discounted cash flow
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Fundamental analysis ticker symbol
-    number: int
+    limit: int
         Number to get
     quarterly: bool
         Flag to get quarterly data
     export: str
         Format to export data
     """
-    dcf = fmp_model.get_dcf(ticker, number, quarterly)
+    dcf = fmp_model.get_dcf(symbol, limit, quarterly)
     dcf = dcf[dcf.columns[::-1]]
     dcf.columns = dcf.iloc[0].values
     dcf = dcf.drop("Date")
@@ -166,8 +165,8 @@ def display_discounted_cash_flow(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_income_statement(
-    ticker: str,
-    number: int,
+    symbol: str,
+    limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
     plot: list = None,
@@ -177,9 +176,9 @@ def display_income_statement(
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Fundamental analysis ticker symbol
-    number: int
+    limit: int
         Number to get
     quarterly: bool
         Flag to get quarterly data
@@ -190,31 +189,18 @@ def display_income_statement(
     export: str
         Format to export data
     """
-    income = fmp_model.get_income(ticker, number, quarterly, ratios, bool(plot))
+    income = fmp_model.get_income(symbol, limit, quarterly, ratios, bool(plot))
 
     if not income.empty:
         if plot:
             income_plot_data = income[income.columns[::-1]]
             rows_plot = len(plot)
-            maximum_value = income_plot_data.max().max()
             income_plot_data = income_plot_data.transpose()
             income_plot_data.columns = income_plot_data.columns.str.lower()
 
             if not ratios:
-                if maximum_value > 1_000_000_000_000:
-                    df_rounded = income_plot_data / 1_000_000_000_000
-                    denomination = " in Trillions"
-                elif maximum_value > 1_000_000_000:
-                    df_rounded = income_plot_data / 1_000_000_000
-                    denomination = " in Billions"
-                elif maximum_value > 1_000_000:
-                    df_rounded = income_plot_data / 1_000_000
-                    denomination = " in Millions"
-                elif maximum_value > 1_000:
-                    df_rounded = income_plot_data / 1_000
-                    denomination = " in Thousands"
-                else:
-                    df_rounded = income_plot_data
+                (df_rounded, denomination) = transform_by_denomination(income_plot_data)
+                if denomination == "Units":
                     denomination = ""
             else:
                 df_rounded = income_plot_data
@@ -223,9 +209,9 @@ def display_income_statement(
                 fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
                 df_rounded[plot[0].replace("_", "")].plot()
                 title = (
-                    f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {ticker.upper()}"
+                    f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                     if ratios
-                    else f"{plot[0].replace('_', ' ')} of {ticker.upper()} {denomination}"
+                    else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
                 )
                 plt.title(title)
                 theme.style_primary_axis(ax)
@@ -242,9 +228,9 @@ def display_income_statement(
             print_rich_table(
                 income.drop(index=["Final link", "Link"]),
                 headers=list(income.columns),
-                title=f"{ticker.upper()} Income Statement"
+                title=f"{symbol.upper()} Income Statement"
                 if not ratios
-                else f"{'QoQ' if quarterly else 'YoY'} Change of {ticker.upper()} Income Statement",
+                else f"{'QoQ' if quarterly else 'YoY'} Change of {symbol.upper()} Income Statement",
                 show_index=True,
             )
 
@@ -265,8 +251,8 @@ def display_income_statement(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_balance_sheet(
-    ticker: str,
-    number: int,
+    symbol: str,
+    limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
     plot: list = None,
@@ -276,9 +262,9 @@ def display_balance_sheet(
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Fundamental analysis ticker symbol
-    number: int
+    limit: int
         Number to get
     quarterly: bool
         Flag to get quarterly data
@@ -289,31 +275,20 @@ def display_balance_sheet(
     export: str
         Format to export data
     """
-    balance = fmp_model.get_balance(ticker, number, quarterly, ratios, bool(plot))
+    balance = fmp_model.get_balance(symbol, limit, quarterly, ratios, bool(plot))
 
     if not balance.empty:
         if plot:
             balance_plot_data = balance[balance.columns[::-1]]
             rows_plot = len(plot)
-            maximum_value = balance_plot_data.max().max()
             balance_plot_data = balance_plot_data.transpose()
             balance_plot_data.columns = balance_plot_data.columns.str.lower()
 
             if not ratios:
-                if maximum_value > 1_000_000_000_000:
-                    df_rounded = balance_plot_data / 1_000_000_000_000
-                    denomination = " in Trillions"
-                elif maximum_value > 1_000_000_000:
-                    df_rounded = balance_plot_data / 1_000_000_000
-                    denomination = " in Billions"
-                elif maximum_value > 1_000_000:
-                    df_rounded = balance_plot_data / 1_000_000
-                    denomination = " in Millions"
-                elif maximum_value > 1_000:
-                    df_rounded = balance_plot_data / 1_000
-                    denomination = " in Thousands"
-                else:
-                    df_rounded = balance_plot_data
+                (df_rounded, denomination) = transform_by_denomination(
+                    balance_plot_data
+                )
+                if denomination == "Units":
                     denomination = ""
             else:
                 df_rounded = balance_plot_data
@@ -323,9 +298,9 @@ def display_balance_sheet(
                 fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
                 df_rounded[plot[0].replace("_", "")].plot()
                 title = (
-                    f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {ticker.upper()}"
+                    f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                     if ratios
-                    else f"{plot[0].replace('_', ' ')} of {ticker.upper()} {denomination}"
+                    else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
                 )
                 plt.title(title)
                 theme.style_primary_axis(ax)
@@ -342,7 +317,7 @@ def display_balance_sheet(
             print_rich_table(
                 balance.drop(index=["Final link", "Link"]),
                 headers=list(balance.columns),
-                title=f"{ticker.upper()} Balance Sheet",
+                title=f"{symbol.upper()} Balance Sheet",
                 show_index=True,
             )
 
@@ -363,8 +338,8 @@ def display_balance_sheet(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_cash_flow(
-    ticker: str,
-    number: int,
+    symbol: str,
+    limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
     plot: list = None,
@@ -374,9 +349,9 @@ def display_cash_flow(
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Fundamental analysis ticker symbol
-    number: int
+    limit: int
         Number to get
     quarterly: bool
         Flag to get quarterly data
@@ -387,31 +362,18 @@ def display_cash_flow(
     export: str
         Format to export data
     """
-    cash = fmp_model.get_cash(ticker, number, quarterly, ratios, bool(plot))
+    cash = fmp_model.get_cash(symbol, limit, quarterly, ratios, bool(plot))
 
     if not cash.empty:
         if plot:
             cash_plot_data = cash[cash.columns[::-1]]
             rows_plot = len(plot)
-            maximum_value = cash_plot_data.max().max()
             cash_plot_data = cash_plot_data.transpose()
             cash_plot_data.columns = cash_plot_data.columns.str.lower()
 
             if not ratios:
-                if maximum_value > 1_000_000_000_000:
-                    df_rounded = cash_plot_data / 1_000_000_000_000
-                    denomination = " in Trillions"
-                elif maximum_value > 1_000_000_000:
-                    df_rounded = cash_plot_data / 1_000_000_000
-                    denomination = " in Billions"
-                elif maximum_value > 1_000_000:
-                    df_rounded = cash_plot_data / 1_000_000
-                    denomination = " in Millions"
-                elif maximum_value > 1_000:
-                    df_rounded = cash_plot_data / 1_000
-                    denomination = " in Thousands"
-                else:
-                    df_rounded = cash_plot_data
+                (df_rounded, denomination) = transform_by_denomination(cash_plot_data)
+                if denomination == "Units":
                     denomination = ""
             else:
                 df_rounded = cash_plot_data
@@ -421,9 +383,9 @@ def display_cash_flow(
                 fig, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
                 df_rounded[plot[0].replace("_", "")].plot()
                 title = (
-                    f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {ticker.upper()}"
+                    f"{plot[0].replace('_', ' ').lower()} {'QoQ' if quarterly else 'YoY'} Growth of {symbol.upper()}"
                     if ratios
-                    else f"{plot[0].replace('_', ' ')} of {ticker.upper()} {denomination}"
+                    else f"{plot[0].replace('_', ' ')} of {symbol.upper()} {denomination}"
                 )
                 plt.title(title)
                 theme.style_primary_axis(ax)
@@ -440,7 +402,7 @@ def display_cash_flow(
             print_rich_table(
                 cash.drop(index=["Final link", "Link"]),
                 headers=list(cash.columns),
-                title=f"{ticker.upper()} Cash Flow",
+                title=f"{symbol.upper()} Cash Flow",
                 show_index=True,
             )
 
@@ -459,29 +421,29 @@ def display_cash_flow(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_key_metrics(
-    ticker: str, number: int, quarterly: bool = False, export: str = ""
+    symbol: str, limit: int = 5, quarterly: bool = False, export: str = ""
 ):
     """Financial Modeling Prep ticker key metrics
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Fundamental analysis ticker symbol
-    number: int
+    limit: int
         Number to get
     quarterly: bool
         Flag to get quarterly data
     export: str
         Format to export data
     """
-    key_metrics = fmp_model.get_key_metrics(ticker, number, quarterly)
+    key_metrics = fmp_model.get_key_metrics(symbol, limit, quarterly)
 
     if not key_metrics.empty:
         key_metrics = key_metrics[key_metrics.columns[::-1]]
         print_rich_table(
             key_metrics,
             headers=list(key_metrics.columns),
-            title=f"{ticker.upper()} Key Metrics",
+            title=f"{symbol.upper()} Key Metrics",
             show_index=True,
         )
 
@@ -496,29 +458,29 @@ def display_key_metrics(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_financial_ratios(
-    ticker: str, number: int, quarterly: bool = False, export: str = ""
+    symbol: str, limit: int = 5, quarterly: bool = False, export: str = ""
 ):
     """Financial Modeling Prep ticker ratios
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Fundamental analysis ticker symbol
-    number: int
+    limit: int
         Number to get
     quarterly: bool
         Flag to get quarterly data
     export: str
         Format to export data
     """
-    ratios = fmp_model.get_key_ratios(ticker, number, quarterly)
+    ratios = fmp_model.get_key_ratios(symbol, limit, quarterly)
 
     if not ratios.empty:
         ratios = ratios[ratios.columns[::-1]]
         print_rich_table(
             ratios,
             headers=list(ratios.columns),
-            title=f"{ticker.upper()} Ratios",
+            title=f"{symbol.upper()} Ratios",
             show_index=True,
         )
 
@@ -533,29 +495,29 @@ def display_financial_ratios(
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_financial_statement_growth(
-    ticker: str, number: int, quarterly: bool = False, export: str = ""
+    symbol: str, limit: int = 5, quarterly: bool = False, export: str = ""
 ):
     """Financial Modeling Prep ticker growth
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Fundamental analysis ticker symbol
-    number: int
+    limit: int
         Number to get
     quarterly: bool
         Flag to get quarterly data
     export: str
         Format to export data
     """
-    growth = fmp_model.get_financial_growth(ticker, number, quarterly)
+    growth = fmp_model.get_financial_growth(symbol, limit, quarterly)
 
     if not growth.empty:
         growth = growth[growth.columns[::-1]]
         print_rich_table(
             growth,
             headers=list(growth.columns),
-            title=f"{ticker.upper()} Growth",
+            title=f"{symbol.upper()} Growth",
             show_index=True,
         )
 

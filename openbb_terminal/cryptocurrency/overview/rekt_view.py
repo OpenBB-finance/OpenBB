@@ -16,7 +16,11 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_crypto_hacks(
-    top: int, sortby: str, descend: bool, slug: str, export: str = ""
+    limit: int = 15,
+    sortby: str = "Platform",
+    ascend: bool = False,
+    slug: str = "polyntwork-rekt",
+    export: str = "",
 ) -> None:
     """Display list of major crypto-related hacks. If slug is passed
     individual crypto hack is displayed instead of list of crypto hacks
@@ -26,12 +30,12 @@ def display_crypto_hacks(
     ----------
     slug: str
         Crypto hack slug to check (e.g., polynetwork-rekt)
-    top: int
+    limit: int
         Number of hacks to search
     sortby: str
         Key by which to sort data {Platform,Date,Amount [$],Audit,Slug,URL}
-    descend: bool
-        Flag to sort data descending
+    ascend: bool
+        Flag to sort data ascending
     export : str
         Export dataframe data to csv,json,xlsx file
     """
@@ -46,20 +50,18 @@ def display_crypto_hacks(
             text,
         )
     else:
-        df = rekt_model.get_crypto_hacks()
+        df = rekt_model.get_crypto_hacks(sortby, ascend)
 
         if df.empty:
             console.print("\nError in rekt request\n")
         else:
-            if sortby in rekt_model.HACKS_COLUMNS:
-                df = df.sort_values(by=sortby, ascending=descend)
             df["Amount [$]"] = df["Amount [$]"].apply(
                 lambda x: lambda_long_number_format(x)
             )
             df["Date"] = df["Date"].dt.date
 
             print_rich_table(
-                df.head(top),
+                df.head(limit),
                 headers=list(df.columns),
                 floatfmt=".1f",
                 show_index=False,

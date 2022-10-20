@@ -2,6 +2,7 @@
 
 # IMPORTATION THIRDPARTY
 import pytest
+import pandas as pd
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks.fundamental_analysis import eclect_us_view
@@ -19,9 +20,8 @@ def vcr_config():
 
 
 @pytest.mark.vcr
-@pytest.mark.record_stdout
 def test_display_analysis():
-    eclect_us_view.display_analysis(ticker="AAPL")
+    eclect_us_view.display_analysis(symbol="AAPL")
 
 
 @pytest.mark.vcr
@@ -29,6 +29,6 @@ def test_display_analysis():
 def test_display_analysis_invalid(mocker):
     mocker.patch(
         target="openbb_terminal.stocks.fundamental_analysis.eclect_us_view.eclect_us_model.get_filings_analysis",
-        return_value="",
+        return_value=pd.DataFrame(),
     )
-    eclect_us_view.display_analysis(ticker="AAPL")
+    eclect_us_view.display_analysis(symbol="AAPL")

@@ -5,21 +5,25 @@ import logging
 
 import pandas as pd
 
-from openbb_terminal.helper_funcs import (
-    print_rich_table,
-)
+from openbb_terminal.helper_funcs import print_rich_table
 from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options.hedge import hedge_model
 
 logger = logging.getLogger(__name__)
 
 
-def add_and_show_greeks(price, implied_volatility, strike, days, side):
+def add_and_show_greeks(
+    price: float = 100,
+    implied_volatility: float = 20,
+    strike: float = 120,
+    days: float = 30,
+    sign: int = 1,
+):
     """Determine the delta, gamma and vega value of the portfolio and/or options and show them.
 
     Parameters
     ----------
-    price: int
+    price: float
         The price.
     implied_volatility: float
         The implied volatility.
@@ -38,7 +42,7 @@ def add_and_show_greeks(price, implied_volatility, strike, days, side):
     """
     # Add in hedge option
     delta, gamma, vega = hedge_model.add_hedge_option(
-        price, implied_volatility, strike, days, side
+        price, implied_volatility, strike, days, sign
     )
 
     # Show the added delta, gamma and vega positions. Next to that, also show the inputted
@@ -55,7 +59,28 @@ def add_and_show_greeks(price, implied_volatility, strike, days, side):
     return delta, gamma, vega
 
 
-def show_calculated_hedge(portfolio_option_amount, side, greeks, sign):
+def show_calculated_hedge(
+    portfolio_option_amount: float = 100,
+    side: str = "Call",
+    greeks: dict = {
+        "Portfolio": {
+            "Delta": 1,
+            "Gamma": 9.1268e-05,
+            "Vega": 5.4661,
+        },
+        "Option A": {
+            "Delta": 1,
+            "Gamma": 9.1268e-05,
+            "Vega": 5.4661,
+        },
+        "Option B": {
+            "Delta": 1,
+            "Gamma": 9.1268e-05,
+            "Vega": 5.4661,
+        },
+    },
+    sign: int = 1,
+):
     """Determine the hedge position and the weights within each option and
     underlying asset to hold a neutral portfolio and show them
 

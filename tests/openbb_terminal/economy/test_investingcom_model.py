@@ -1,7 +1,7 @@
 # IMPORTATION STANDARD
 
 # IMPORTATION THIRDPARTY
-import datetime
+from typing import List, Union
 import pandas as pd
 import pytest
 
@@ -27,20 +27,58 @@ def test_get_yieldcurve(country):
 
 @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "countries, importances, categories, from_date, to_date",
+    "country, importance, category, start_date, end_date",
     [
         [
-            ["united states"],
-            ["high"],
-            ["Employment"],
-            datetime.date(2022, 7, 7),
-            datetime.date(2022, 7, 8),
+            "united states",
+            "high",
+            "Employment",
+            "2022-7-7",
+            "2022-7-8",
         ],
     ],
 )
-def test_get_economic_calendar(countries, importances, categories, from_date, to_date):
+def test_get_economic_calendar(country, importance, category, start_date, end_date):
     result_df, _ = investingcom_model.get_economic_calendar(
-        countries, importances, categories, from_date, to_date
+        country, importance, category, start_date, end_date
     )
 
     assert isinstance(result_df, pd.DataFrame)
+
+
+@pytest.mark.vcr
+@pytest.mark.parametrize(
+    "countries, maturity, change",
+    [
+        (
+            "G7",
+            "10Y",
+            False,
+        ),
+        (
+            ["Portugal", "Spain"],
+            "5Y",
+            True,
+        ),
+        (
+            "PIIGS",
+            "10Y",
+            False,
+        ),
+        (
+            "PIIGS",
+            "10Y",
+            False,
+        ),
+    ],
+)
+def test_get_spread_matrix(
+    countries: Union[str, List[str]],
+    maturity: str,
+    change: bool,
+):
+    df = investingcom_model.get_spread_matrix(
+        countries=countries, maturity=maturity, change=change
+    )
+
+    assert isinstance(df, pd.DataFrame)

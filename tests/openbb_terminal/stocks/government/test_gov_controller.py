@@ -224,7 +224,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "quiverquant_view.display_contracts",
             ["--past_transaction_days=5", "--raw", "--export=csv"],
             dict(
-                ticker="MOCK_TICKER",
+                symbol="MOCK_TICKER",
                 past_transaction_days=5,
                 raw=True,
                 export="csv",
@@ -240,7 +240,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 "--export=csv",
             ],
             dict(
-                ticker="MOCK_TICKER",
+                symbol="MOCK_TICKER",
                 gov_type="congress",
                 past_transactions_months=5,
                 raw=True,
@@ -252,7 +252,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "quiverquant_view.display_hist_contracts",
             ["--raw", "--export=csv"],
             dict(
-                ticker="MOCK_TICKER",
+                symbol="MOCK_TICKER",
                 raw=True,
                 export="csv",
             ),
@@ -263,7 +263,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             ["--past_transaction_days=2", "--limit=5", "--sum", "--export=csv"],
             dict(
                 past_transaction_days=2,
-                num=5,
+                limit=5,
                 sum_contracts=True,
                 export="csv",
             ),
@@ -279,7 +279,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             ],
             dict(
                 gov_type="congress",
-                past_days=5,
+                limit=5,
                 representative="MOCK_TEXT",
                 export="csv",
             ),
@@ -289,8 +289,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "quiverquant_view.display_lobbying",
             ["--limit=5"],
             dict(
-                ticker="MOCK_TICKER",
-                num=5,
+                symbol="MOCK_TICKER",
+                limit=5,
             ),
         ),
         (
@@ -299,7 +299,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             ["--limit=5", "--analysis=total", "--raw", "--export=csv"],
             dict(
                 analysis="total",
-                num=5,
+                limit=5,
                 raw=True,
                 export="csv",
             ),
@@ -317,7 +317,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             dict(
                 gov_type="congress",
                 past_transactions_months=2,
-                num=5,
+                limit=5,
                 raw=True,
                 export="csv",
             ),
@@ -327,7 +327,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "quiverquant_view.display_top_lobbying",
             ["--limit=5", "--raw", "--export=csv"],
             dict(
-                num=5,
+                limit=5,
                 raw=True,
                 export="csv",
             ),
@@ -345,7 +345,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             dict(
                 gov_type="congress",
                 past_transactions_months=2,
-                num=5,
+                limit=5,
                 raw=True,
                 export="csv",
             ),
@@ -436,7 +436,7 @@ def test_call_load(mocker):
     other_args = [
         "TSLA",
         "--start=2021-12-17",
-        "--source=yf",
+        "--source=YahooFinance",
     ]
     controller.call_load(other_args=other_args)
 

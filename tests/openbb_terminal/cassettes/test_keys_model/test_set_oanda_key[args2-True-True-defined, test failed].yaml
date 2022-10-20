@@ -1,0 +1,46 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - Bearer test_access_token
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+    method: GET
+    uri: https://api-fxpractice.oanda.com/v3/accounts/test_account/pricing?instruments=EUR_USD
+  response:
+    body:
+      string: '{"errorMessage":"Invalid value specified for ''accountID''"}'
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 754e82caef8e5d2f-LIS
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '58'
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 04 Oct 2022 14:12:10 GMT
+      RequestID:
+      - '0'
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=bMYAAvxCIn1pk33uwICyuvC9hYFypI3yNJs4yhkuu68-1664892730-0-ARGpc/IDtvrNkxMZYVHugsnsPD2A0Q7kwQ+6jA9n9nbNFs7lTFZHjY0tdVEsYK3AxN1xPKpTgGmVsMg2L30abMs=;
+        path=/; expires=Tue, 04-Oct-22 14:42:10 GMT; domain=.api-fxpractice.oanda.com;
+        HttpOnly; Secure; SameSite=None
+      Vary:
+      - Origin, Accept-Encoding
+    status:
+      code: 400
+      message: Bad Request
+version: 1

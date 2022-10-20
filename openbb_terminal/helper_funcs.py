@@ -2,10 +2,13 @@
 __docformat__ = "numpy"
 # pylint: disable=too-many-lines
 import argparse
+import io
 import logging
 from pathlib import Path
-from typing import List, Tuple, Union, Optional
-from datetime import datetime, timedelta, date as d
+from typing import List, Union, Optional, Dict
+from functools import lru_cache
+from datetime import datetime, timedelta
+from datetime import date as d
 import types
 from collections.abc import Iterable
 import os
@@ -33,10 +36,17 @@ from screeninfo import get_monitors
 import yfinance as yf
 import numpy as np
 
+from PIL import Image, ImageDraw
+
 from openbb_terminal.rich_config import console
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import config_plot as cfgPlot
-from openbb_terminal.core.config.constants import USER_HOME
+from openbb_terminal.core.config.paths import (
+    HOME_DIRECTORY,
+    USER_ENV_FILE,
+    USER_EXPORTS_DIRECTORY,
+)
+from openbb_terminal.core.config import paths
 
 logger = logging.getLogger(__name__)
 
@@ -71,8 +81,8 @@ def set_command_location(cmd_loc: str):
 
 
 # pylint: disable=global-statement
-def set_export_folder(env_file: str = ".env", path_folder: str = ""):
-    """Set export folder location
+def set_user_data_folder(env_file: str = ".env", path_folder: str = ""):
+    """Set user data folder location
 
     Parameters
     ----------
@@ -81,9 +91,8 @@ def set_export_folder(env_file: str = ".env", path_folder: str = ""):
     path_folder: str
         Path folder location
     """
-    os.environ["OPENBB_EXPORT_FOLDER_PATH"] = path_folder
-    dotenv.set_key(env_file, "OPENBB_EXPORT_FOLDER_PATH", path_folder)
-    obbff.EXPORT_FOLDER_PATH = path_folder
+    dotenv.set_key(env_file, "OPENBB_USER_DATA_DIRECTORY", path_folder)
+    paths.USER_DATA_DIRECTORY = Path(path_folder)
 
 
 def check_path(path: str) -> str:
@@ -103,7 +112,7 @@ def check_path(path: str) -> str:
     if not path:
         return ""
     if path[0] == "~":
-        path = path.replace("~", USER_HOME.as_posix())
+        path = path.replace("~", HOME_DIRECTORY.as_posix())
     # Return string of path if such relative path exists
     if os.path.isfile(path):
         return path
@@ -113,6 +122,76 @@ def check_path(path: str) -> str:
     logger.error("The path file '%s' does not exist.", path)
     console.print(f"[red]The path file '{path}' does not exist.\n[/red]")
     return ""
+
+
+def parse_and_split_input(an_input: str, custom_filters: List) -> List[str]:
+    """Filter and split the input queue
+
+    Uses regex to filters command arguments that have forward slashes so that it doesn't
+    break the execution of the command queue.
+    Currently handles unix paths and sorting settings for screener menus.
+
+    Parameters
+    ----------
+    an_input : str
+        User input as string
+    custom_filters : List
+        Additional regular expressions to match
+
+    Returns
+    -------
+    List[str]
+        Command queue as list
+    """
+    # Make sure that the user can go back to the root when doing "/"
+    if an_input:
+        if an_input == "/":
+            an_input = "home"
+        elif an_input[0] == "/":
+            an_input = "home" + an_input
+
+    # everything from ` -f ` to the next known extension
+    file_flag = r"(\ -f |\ --file )"
+    up_to = r".*?"
+    known_extensions = r"(\.xlsx|.csv|.xls|.tsv|.json|.yaml|.ini|.openbb)"
+    unix_path_arg_exp = f"({file_flag}{up_to}{known_extensions})"
+
+    # Add custom expressions to handle edge cases of individual controllers
+    custom_filter = ""
+    for exp in custom_filters:
+        if exp is not None:
+            custom_filter += f"|{exp}"
+            del exp
+
+    slash_filter_exp = f"({unix_path_arg_exp}){custom_filter}"
+
+    filter_input = True
+    placeholders: Dict[str, str] = {}
+    while filter_input:
+        match = re.search(pattern=slash_filter_exp, string=an_input)
+        if match is not None:
+            placeholder = f"{{placeholder{len(placeholders)+1}}}"
+            placeholders[placeholder] = an_input[
+                match.span()[0] : match.span()[1]  # noqa:E203
+            ]
+            an_input = (
+                an_input[: match.span()[0]]
+                + placeholder
+                + an_input[match.span()[1] :]  # noqa:E203
+            )
+        else:
+            filter_input = False
+
+    commands = an_input.split("/")
+
+    for command_num, command in enumerate(commands):
+        if command == commands[command_num] == commands[-1] == "":
+            return list(filter(None, commands))
+        matching_placeholders = [tag for tag in placeholders if tag in command]
+        if len(matching_placeholders) > 0:
+            for tag in matching_placeholders:
+                commands[command_num] = command.replace(tag, placeholders[tag])
+    return commands
 
 
 def log_and_raise(error: Union[argparse.ArgumentTypeError, ValueError]) -> None:
@@ -146,6 +225,7 @@ def print_rich_table(
     index_name: str = "",
     headers: Union[List[str], pd.Index] = None,
     floatfmt: Union[str, List[str]] = ".2f",
+    show_header: bool = True,
 ):
     """Prepare a table from df in rich
 
@@ -163,10 +243,11 @@ def print_rich_table(
         Titles for columns
     floatfmt: Union[str, List[str]]
         Float number formatting specs as string or list of strings. Defaults to ".2f"
+    show_header: bool
+        Whether to show the header row.
     """
-
     if obbff.USE_TABULATE_DF:
-        table = Table(title=title, show_lines=True)
+        table = Table(title=title, show_lines=True, show_header=show_header)
 
         if show_index:
             table.add_column(index_name)
@@ -195,21 +276,23 @@ def print_rich_table(
             floatfmt = [floatfmt for _ in range(len(df.columns))]
 
         for idx, values in zip(df.index.tolist(), df.values.tolist()):
+            # remove hour/min/sec from timestamp index - Format: YYYY-MM-DD # make better
             row = [str(idx)] if show_index else []
             row += [
                 str(x)
-                if not isinstance(x, float)
+                if not isinstance(x, float) and not isinstance(x, np.float64)
                 else (
                     f"{x:{floatfmt[idx]}}"
                     if isinstance(floatfmt, list)
-                    else (f"{x:.2e}" if 0 < abs(x) <= 0.0001 else f"{x:floatfmt}")
+                    else (
+                        f"{x:.2e}" if 0 < abs(float(x)) <= 0.0001 else f"{x:floatfmt}"
+                    )
                 )
                 for idx, x in enumerate(values)
             ]
             table.add_row(*row)
         console.print()
         console.print(table)
-        console.print()
     else:
         console.print(df.to_string(col_space=0))
 
@@ -583,10 +666,12 @@ def us_market_holidays(years) -> list:
         holiday + " (Observed)" for holiday in market_holidays
     ]
     all_holidays = us_holidays(years=years)
-    valid_holidays = []
-    for date in list(all_holidays):
-        if all_holidays[date] in market_and_observed_holidays:
-            valid_holidays.append(date)
+    valid_holidays = [
+        date
+        for date in list(all_holidays)
+        if all_holidays[date] in market_and_observed_holidays
+    ]
+
     for year in years:
         new_Year = datetime.strptime(f"{year}-01-01", "%Y-%m-%d")
         if new_Year.weekday() != 5:  # ignore saturday
@@ -697,21 +782,26 @@ def get_next_stock_market_days(last_stock_day, n_next_days) -> list:
     l_pred_days = []
     years: list = []
     holidays: list = []
-    while n_days < n_next_days:
-        last_stock_day += timedelta(hours=24)
-        year = last_stock_day.date().year
-        if year not in years:
-            years.append(year)
-            holidays += us_market_holidays(year)
-        # Check if it is a weekend
-        if last_stock_day.date().weekday() > 4:
-            continue
-        # Check if it is a holiday
-        if last_stock_day.strftime("%Y-%m-%d") in holidays:
-            continue
-        # Otherwise stock market is open
-        n_days += 1
-        l_pred_days.append(last_stock_day)
+    if isinstance(last_stock_day, datetime):
+        while n_days < n_next_days:
+            last_stock_day += timedelta(hours=24)
+            year = last_stock_day.date().year
+            if year not in years:
+                years.append(year)
+                holidays += us_market_holidays(year)
+            # Check if it is a weekend
+            if last_stock_day.date().weekday() > 4:
+                continue
+            # Check if it is a holiday
+            if last_stock_day.strftime("%Y-%m-%d") in holidays:
+                continue
+            # Otherwise stock market is open
+            n_days += 1
+            l_pred_days.append(last_stock_day)
+    else:
+        while n_days < n_next_days:
+            l_pred_days.append(last_stock_day + 1 + n_days)
+            n_days += 1
 
     return l_pred_days
 
@@ -775,16 +865,16 @@ def get_data(tweet):
     return {"created_at": s_datetime, "text": s_text}
 
 
-def clean_tweet(tweet: str, s_ticker: str) -> str:
+def clean_tweet(tweet: str, symbol: str) -> str:
     """Cleans tweets to be fed to sentiment model"""
     whitespace = re.compile(r"\s+")
     web_address = re.compile(r"(?i)http(s):\/\/[a-z0-9.~_\-\/]+")
-    ticker = re.compile(rf"(?i)@{s_ticker}(?=\b)")
+    ticker = re.compile(rf"(?i)@{symbol}(?=\b)")
     user = re.compile(r"(?i)@[a-z0-9_]+")
 
     tweet = whitespace.sub(" ", tweet)
     tweet = web_address.sub("", tweet)
-    tweet = ticker.sub(s_ticker, tweet)
+    tweet = ticker.sub(symbol, tweet)
     tweet = user.sub("", tweet)
 
     return tweet
@@ -979,6 +1069,8 @@ def get_flair() -> str:
         if str(obbff.USE_FLAIR) in flairs
         else str(obbff.USE_FLAIR)
     )
+
+    set_default_timezone()
     if obbff.USE_DATETIME and get_user_timezone_or_invalid() != "INVALID":
         dtime = datetime.now(pytz.timezone(get_user_timezone())).strftime(
             "%Y %b %d, %H:%M"
@@ -991,6 +1083,15 @@ def get_flair() -> str:
         return f"{dtime} {flair}"
 
     return flair
+
+
+def set_default_timezone() -> None:
+    """Sets a default (America/New_York) timezone if one doesn't exist"""
+
+    dotenv.load_dotenv(USER_ENV_FILE)
+    user_tz = os.getenv("OPENBB_TIMEZONE")
+    if not user_tz:
+        dotenv.set_key(USER_ENV_FILE, "OPENBB_TIMEZONE", "America/New_York")
 
 
 def is_timezone_valid(user_tz: str) -> bool:
@@ -1015,15 +1116,12 @@ def get_user_timezone() -> str:
     Returns
     -------
     str
-        user timezone based on timezone.openbb file
+        user timezone based on .env file
     """
-    filename = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)),
-        "timezone.openbb",
-    )
-    if os.path.isfile(filename):
-        with open(filename) as f:
-            return f.read()
+    dotenv.load_dotenv(USER_ENV_FILE)
+    user_tz = os.getenv("OPENBB_TIMEZONE")
+    if user_tz:
+        return user_tz
     return ""
 
 
@@ -1049,21 +1147,11 @@ def replace_user_timezone(user_tz: str) -> None:
     user_tz: str
         User timezone to set
     """
-    filename = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)),
-        "timezone.openbb",
-    )
-    if os.path.isfile(filename):
-        with open(filename, "w") as f:
-            if is_timezone_valid(user_tz):
-                if f.write(user_tz):
-                    console.print("Timezone successfully updated", "\n")
-                else:
-                    console.print("Timezone not set successfully", "\n")
-            else:
-                console.print("Timezone selected is not valid", "\n")
+    if is_timezone_valid(user_tz):
+        dotenv.set_key(USER_ENV_FILE, "OPENBB_TIMEZONE", user_tz)
+        console.print("Timezone successfully updated", "\n")
     else:
-        console.print("timezone.openbb file does not exist", "\n")
+        console.print("Timezone selected is not valid", "\n")
 
 
 def str_to_bool(value) -> bool:
@@ -1166,7 +1254,7 @@ def check_file_type_saved(valid_types: List[str] = None):
     return check_filenames
 
 
-def compose_export_path(func_name: str, dir_path: str) -> Tuple[str, str]:
+def compose_export_path(func_name: str, dir_path: str) -> Path:
     """Compose export path for data from the terminal
 
     Creates a path to a folder and a filename based on conditions.
@@ -1180,8 +1268,8 @@ def compose_export_path(func_name: str, dir_path: str) -> Tuple[str, str]:
 
     Returns
     -------
-    Tuple[str, str]
-        Tuple containing the folder path and a file name
+    Path
+        Path variable containing the path of the exported file
     """
     now = datetime.now()
     # Resolving all symlinks and also normalizing path.
@@ -1191,29 +1279,13 @@ def compose_export_path(func_name: str, dir_path: str) -> Tuple[str, str]:
     if resolve_path.parts[-2] == "openbb_terminal":
         path_cmd = f"{resolve_path.parts[-1]}"
     else:
-        path_cmd = f"{resolve_path.parts[-2]}_{resolve_path.parts[-1]}"
+        path_cmd = f"{resolve_path.parts[-2]}//{resolve_path.parts[-1]}"
 
-    default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}"
-    if obbff.EXPORT_FOLDER_PATH:
-        full_path_dir = str(obbff.EXPORT_FOLDER_PATH)
-    else:
-        if obbff.PACKAGED_APPLICATION:
-            full_path_dir = os.path.join(
-                USER_HOME.as_posix(), "Desktop", "OPENBB-exports"
-            )
+    default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{func_name}"
 
-            if not os.path.isdir(full_path_dir):
-                try:
-                    os.makedirs(full_path_dir)
-                except Exception:
-                    console.print(
-                        f"[red]Couldn't create a folder in {full_path_dir}. Exporting failed.[/red]"
-                    )
-                    full_path_dir = dir_path.replace("openbb_terminal", "exports")
-        else:
-            default_filename = f"{func_name}_{now.strftime('%Y%m%d_%H%M%S')}"
-            full_path_dir = dir_path.replace("openbb_terminal", "exports")
-    return full_path_dir, default_filename
+    full_path = USER_EXPORTS_DIRECTORY / path_cmd / default_filename
+
+    return full_path
 
 
 def export_data(
@@ -1233,10 +1305,11 @@ def export_data(
         Dataframe of data to save
     """
     if export_type:
-        export_folder, export_filename = compose_export_path(func_name, dir_path)
-
+        export_path = compose_export_path(func_name, dir_path)
+        export_folder = str(export_path.parent)
+        export_filename = export_path.name
+        export_path.parent.mkdir(parents=True, exist_ok=True)
         for exp_type in export_type.split(","):
-
             # In this scenario the path was provided, e.g. --export pt.csv, pt.jpg
             if "." in exp_type:
                 saved_path = os.path.join(export_folder, exp_type)
@@ -1566,67 +1639,169 @@ def check_list_values(valid_values: List[str]):
     return check_list_values_from_valid_values_list
 
 
-def get_ordered_list_sources(command_path: str):
+def search_wikipedia(expression: str) -> None:
     """
-    Returns the preferred source for the given command. If a value is not available for the specific
-    command, returns the most specific source, eventually returning the overall default source.
+    Search wikipedia for a given expression"
+    Parameters
+    ----------
+    expression: str
+        Expression to search for
+    """
+
+    url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{expression}"
+
+    response = requests.request("GET", url, headers={}, data={})
+
+    if response.status_code == 200:
+        response_json = json.loads(response.text)
+        res = {
+            "title": response_json["title"],
+            "url": f"[blue]{response_json['content_urls']['desktop']['page']}[/blue]",
+            "summary": response_json["extract"],
+        }
+    else:
+        res = {
+            "title": "[red]Not Found[/red]",
+        }
+
+    df = pd.json_normalize(res)
+
+    print_rich_table(
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title=f"Wikipedia results for {expression}",
+    )
+
+
+def screenshot() -> None:
+    """
+    Screenshot the terminal window or the plot window
 
     Parameters
     ----------
-    command_path: str
-        The command to find the source for. Example would be "stocks/load" to return the value
-        for stocks.load first, then stocks, then the default value.
-
-    Returns
-    -------
-    str:
-        The preferred source for the given command
+    terminal_window_target: bool
+        Target the terminal window
     """
     try:
-        with open(obbff.PREFERRED_DATA_SOURCE_FILE) as f:
-            # Load the file as a JSON document
-            json_doc = json.load(f)
+        if plt.get_fignums():
+            img_buf = io.BytesIO()
+            plt.savefig(img_buf, format="png")
+            shot = Image.open(img_buf)
+            screenshot_to_canvas(shot, plot_exists=True)
+            console.print("")
 
-            # We are going to iterate through each command as if it is broken up by period characters (.)
-            path_objects = command_path.split("/")[1:]
+        else:
+            console.print("No plots found.\n")
 
-            # Start iterating through the top-level JSON doc to start
-            deepest_level = json_doc
+    except Exception as e:
+        console.print(f"Cannot reach window - {e}\n")
 
-            # If we still have entries in path_objects, continue to go deeper
-            while len(path_objects) > 0:
-                # Is this path object in the JSON doc? If so, go into that for our next iteration.
-                if path_objects[0] in deepest_level:
-                    # We found the element, so go one level deeper
-                    deepest_level = deepest_level[path_objects[0]]
 
-                else:
-                    # If we have not find the `load` on the deepest level it means we may be in a sub-menu
-                    # and we can use the load from the Base class
-                    if path_objects[0] == "load":
+def screenshot_to_canvas(shot, plot_exists: bool = False):
+    """
+    Frame image to OpenBB canvas.
 
-                        # Get the context associated with the sub-menu (e.g. stocks, crypto, ...)
-                        context = command_path.split("/")[1]
+    Parameters
+    ----------
+    shot
+        Image to frame with OpenBB Canvas
+    plot_exists: bool
+        Variable to say whether the image is a plot or screenshot of terminal
+    """
 
-                        # Grab the load source from that context if it exists, otherwise throws an error
-                        if context in json_doc:
-                            if "load" in json_doc[context]:
-                                return json_doc[context]["load"]
+    WHITE_LINE_WIDTH = 3
+    OUTSIDE_CANVAS_WIDTH = shot.width + 4 * WHITE_LINE_WIDTH + 5
+    OUTSIDE_CANVAS_HEIGHT = shot.height + 4 * WHITE_LINE_WIDTH + 5
+    UPPER_SPACE = 40
+    BACKGROUND_WIDTH_SLACK = 150
+    BACKGROUND_HEIGHT_SLACK = 150
 
-                    # We didn't find the next level, so flag that that command default source is missing
-                    # Which means that there aren't more than 1 source and therefore no selection is necessary
-                    return []
+    background = Image.open(
+        Path(os.path.abspath(__file__), "../../images/background.png")
+    )
+    logo = Image.open(
+        Path(os.path.abspath(__file__), "../../images/openbb_horizontal_logo.png")
+    )
 
-                # Go one level deeper into the path
-                path_objects = path_objects[1:]
+    try:
+        if plot_exists:
+            HEADER_HEIGHT = 0
+            RADIUS = 8
 
-            # We got through all values, so return this as the final value
-            return deepest_level
+            background = background.resize(
+                (
+                    shot.width + BACKGROUND_WIDTH_SLACK,
+                    shot.height + BACKGROUND_HEIGHT_SLACK,
+                )
+            )
 
+            x = int((background.width - OUTSIDE_CANVAS_WIDTH) / 2)
+            y = UPPER_SPACE
+
+            white_shape = (
+                (x, y),
+                (x + OUTSIDE_CANVAS_WIDTH, y + OUTSIDE_CANVAS_HEIGHT),
+            )
+            img = ImageDraw.Draw(background)
+            img.rounded_rectangle(
+                white_shape,
+                fill="black",
+                outline="white",
+                width=WHITE_LINE_WIDTH,
+                radius=RADIUS,
+            )
+            background.paste(shot, (x + WHITE_LINE_WIDTH + 5, y + WHITE_LINE_WIDTH + 5))
+
+            # Logo
+            background.paste(
+                logo,
+                (
+                    int((background.width - logo.width) / 2),
+                    UPPER_SPACE
+                    + OUTSIDE_CANVAS_HEIGHT
+                    + HEADER_HEIGHT
+                    + int(
+                        (
+                            background.height
+                            - UPPER_SPACE
+                            - OUTSIDE_CANVAS_HEIGHT
+                            - HEADER_HEIGHT
+                            - logo.height
+                        )
+                        / 2
+                    ),
+                ),
+                logo,
+            )
+
+            background.show(title="screenshot")
+
+    except Exception:
+        console.print("Shot failed.")
+
+
+@lru_cache
+def load_json(path: str) -> Dict[str, str]:
+    """Loads a dictionary from a json file path
+
+    Parameter
+    ----------
+    path : str
+        The path for the json file
+
+    Returns
+    ----------
+    Dict[str, str]
+        The dictionary loaded from json
+    """
+    try:
+        with open(path) as file:
+            return json.load(file)
     except Exception as e:
         console.print(
             f"[red]Failed to load preferred source from file: "
             f"{obbff.PREFERRED_DATA_SOURCE_FILE}[/red]"
         )
         console.print(f"[red]{e}[/red]")
-        return None
+        return {}

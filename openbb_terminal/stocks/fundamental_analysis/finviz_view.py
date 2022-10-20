@@ -12,17 +12,17 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_screen_data(ticker: str, export: str = ""):
+def display_screen_data(symbol: str, export: str = ""):
     """FinViz ticker screener
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
+    symbol : str
+        Stock ticker symbol
     export : str
         Format to export data
     """
-    fund_data = finviz_model.get_data(ticker)
+    fund_data = finviz_model.get_data(symbol)
 
     print_rich_table(fund_data, title="Ticker Screener", show_index=True)
 

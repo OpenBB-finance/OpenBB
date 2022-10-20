@@ -60,4 +60,3 @@ Diluted Shares Outstanding                           1.12B              1.45B
 EBITDA                                               1.19B              5.93B
 EBITDA Growth                                            -                  -
 EBITDA Margin                                            -                  -
-

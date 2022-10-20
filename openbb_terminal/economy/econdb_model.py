@@ -12,10 +12,10 @@ import pandas as pd
 import pandas_datareader.data as web
 import requests
 import yfinance as yf
-from pandas import DataFrame
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
+from openbb_terminal.helpers_denomination import transform as transform_by_denomination
 
 logger = logging.getLogger(__name__)
 
@@ -354,7 +354,7 @@ PARAMETERS = {
         "period": "Monthly",
         "description": "A record of a country's international transactions with the rest of the world",
     },
-    "TBFR": {
+    "TB": {
         "name": "Trade balance",
         "period": "Monthly",
         "description": "The difference between the monetary value of a nation's exports and imports over a "
@@ -407,10 +407,21 @@ PARAMETERS = {
     },
 }
 
+TRANSFORM = {
+    "": "No transformation",
+    "TPOP": "total percentage change on period",
+    "TOYA": "total percentage since 1 year ago",
+    "TUSD": "level USD",
+    "TPGP": "Percentage of GDP",
+    "TNOR": "Start = 100",
+}
+
 SCALES = {
     "Thousands": 1_000,
+    "Tens of thousands": 10_000,
     "Millions": 1_000_000,
     "Hundreds of millions": 100_000_000,
+    "Billions": 1_000_000_000,
     "Units": 1,
 }
 
@@ -471,23 +482,32 @@ TREASURIES: Dict = {
 def get_macro_data(
     parameter: str,
     country: str,
+    transform: str = "",
     start_date=pd.to_datetime("1900-01-01"),
     end_date=datetime.today().date(),
-    convert_currency=False,
+    symbol: str = "",
 ) -> Tuple[Any, Union[str, Any]]:
     """Query the EconDB database to find specific macro data about a company [Source: EconDB]
 
     Parameters
     ----------
     parameter: str
-        The type of data you wish to acquire
+        The type of data you wish to display
     country : str
        the selected country
+    transform : str
+        select data transformation from:
+            '' - no transformation
+            'TPOP' - total percentage change on period,
+            'TOYA' - total percentage since 1 year ago,
+            'TUSD' - level USD,
+            'TPGP' - Percentage of GDP,
+            'TNOR' - Start = 100
     start_date : str
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : str
         The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
-    convert_currency : str
+    symbol : str
         In what currency you wish to convert all values.
 
     Returns
@@ -498,52 +518,67 @@ def get_macro_data(
         The units of the macro data, e.g. 'Bbl/day" for oil.
     """
     country = country.replace(" ", "_")
+    country = country[0].upper() + country[1:]
+    parameter = parameter.upper()
 
     if country not in COUNTRY_CODES:
         console.print(f"No data available for the country {country}.")
-        return pd.Series(), ""
+        return pd.Series(dtype=float), ""
     if parameter not in PARAMETERS:
         console.print(f"The parameter {parameter} is not an option for {country}.")
-        return pd.Series(), ""
+        return pd.Series(dtype=float), ""
+    if transform not in TRANSFORM:
+        console.print(f"The transform {transform} is not a valid option.")
+        return pd.Series(dtype=float), ""
 
     country_code = COUNTRY_CODES[country]
     country_currency = COUNTRY_CURRENCIES[country]
 
     try:
-        r = requests.get(
-            f"https://www.econdb.com/series/context/?tickers={parameter}{country_code}"
-        )
-        data = r.json()[0]
-        scale = data["td"]["scale"]
-        units = data["td"]["units"]
+        code = f"{parameter}{country_code}"
+        if transform:
+            code += f"~{transform}"
 
-        df = pd.DataFrame(data["dataarray"])
-        df = (
-            df.set_index(pd.to_datetime(df["date"]))[f"{parameter}{country_code}"]
-            * SCALES[scale]
-        )
-        df = df.sort_index().dropna()
+        r = requests.get(f"https://www.econdb.com/series/context/?tickers={code}")
+        res_json = r.json()
+        if res_json:
+            data = res_json[0]
+            scale = data["td"]["scale"]
+            units = data["td"]["units"]
 
-        if df.empty:
+            df = pd.DataFrame(data["dataarray"])
+
+            df = df.set_index(pd.to_datetime(df["date"]))[code] * SCALES[scale]
+            df = df.sort_index().dropna()
+
+            # Since a percentage is done through differences, the first value is NaN
+            if transform in ["TPOP", "TOYA"]:
+                df = df.iloc[1:]
+
+        if not res_json or df.empty:
             console.print(
                 f"No data available for {parameter} ({PARAMETERS[parameter]['name']}) "
                 f"of country {country.replace('_', ' ')}"
             )
-            return pd.Series(), ""
+            return pd.Series(dtype=float), ""
 
         if start_date or end_date:
-            df = df.loc[start_date:end_date]
+            try:
+                df = df.loc[start_date:end_date]
+            except TypeError:
+                console.print("[red]Invalid date sent. Format as YYYY-MM-DD[/red]\n")
+                return pd.DataFrame(), "NA/NA"
 
         if (
-            convert_currency
-            and country_currency != convert_currency
+            symbol
+            and country_currency != symbol
             and units in COUNTRY_CURRENCIES.values()
         ):
             if units in COUNTRY_CURRENCIES.values():
-                units = convert_currency
+                units = symbol
 
             currency_data = yf.download(
-                f"{country_currency}{convert_currency}=X",
+                f"{country_currency}{symbol}=X",
                 start=df.index[0],
                 end=df.index[-1],
                 progress=False,
@@ -552,7 +587,7 @@ def get_macro_data(
             merged_df = pd.merge_asof(
                 df, currency_data, left_index=True, right_index=True
             )
-            df = merged_df[f"{parameter}{country_code}"] * merged_df["Adj Close"]
+            df = merged_df[code] * merged_df["Adj Close"]
 
             if pd.isna(df).any():
                 df_old_oldest, df_old_newest = df.index[0].date(), df.index[-1].date()
@@ -574,26 +609,65 @@ def get_macro_data(
 
 
 @log_start_end(log=logger)
+def get_macro_transform() -> Dict[str, str]:
+    """This function returns the available macro transform with detail.
+
+    Returns
+    ----------
+    Dict[str]
+        A dictionary with the available macro transforms.
+    """
+    return TRANSFORM
+
+
+@log_start_end(log=logger)
+def get_macro_parameters() -> Dict[str, Dict[str, str]]:
+    """This function returns the available macro parameters with detail.
+
+    Returns
+    ----------
+    Dict[str, Dict[str, str]]
+        A dictionary with the available macro parameters.
+    """
+    return PARAMETERS
+
+
+@log_start_end(log=logger)
+def get_macro_countries() -> Dict[str, str]:
+    """This function returns the available countries and respective currencies.
+
+    Returns
+    ----------
+    Dict[str, str]
+        A dictionary with the available countries and respective currencies.
+    """
+    return COUNTRY_CURRENCIES
+
+
+@log_start_end(log=logger)
 def get_aggregated_macro_data(
-    parameters: list,
-    countries: list,
+    parameters: list = None,
+    countries: list = None,
+    transform: str = "",
     start_date: str = "1900-01-01",
     end_date=datetime.today().date(),
-    convert_currency=False,
-) -> Tuple[DataFrame, Dict[Any, Dict[Any, Any]]]:
+    symbol: str = "",
+) -> Tuple[Any, Dict[Any, Dict[Any, Any]], str]:
     """This functions groups the data queried from the EconDB database [Source: EconDB]
 
     Parameters
     ----------
     parameters: list
-        The type of data you wish to acquire
+        The type of data you wish to download. Available parameters can be accessed through economy.macro_parameters().
     countries : list
-       the selected country or countries
+        The selected country or countries. Available countries can be accessed through economy.macro_countries().
+    transform : str
+        The selected transform. Available transforms can be accessed through get_macro_transform().
     start_date : str
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : str
         The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
-    convert_currency : str
+    symbol : str
         In what currency you wish to convert all values.
 
     Returns
@@ -602,7 +676,15 @@ def get_aggregated_macro_data(
         A DataFrame with the requested macro data of all chosen countries
     Dictionary
         A dictionary containing the units of each country's parameter (e.g. EUR)
+    str
+        Denomination which can be Trillions, Billions, Millions, Thousands
     """
+
+    if parameters is None:
+        parameters = ["CPI"]
+    if countries is None:
+        countries = ["United_States"]
+
     country_data: Dict[Any, Dict[Any, pd.Series]] = {}
     units: Dict[Any, Dict[Any, Any]] = {}
 
@@ -614,7 +696,7 @@ def get_aggregated_macro_data(
                 country_data[country][parameter],
                 units[country][parameter],
             ) = get_macro_data(
-                parameter, country, start_date, end_date, convert_currency
+                parameter, country, transform, start_date, end_date, symbol
             )
 
             if country_data[country][parameter].empty:
@@ -628,37 +710,50 @@ def get_aggregated_macro_data(
         country_data_df[0].values.tolist(), index=country_data_df.index
     ).T
 
-    return country_data_df, units
+    (df_rounded, denomination) = transform_by_denomination(country_data_df)
+
+    return (
+        df_rounded,
+        units,
+        f" [in {denomination}]" if denomination != "Units" else "",
+    )
 
 
 @log_start_end(log=logger)
 def get_treasuries(
-    instruments: list,
-    maturities: list,
+    instruments: list = None,
+    maturities: list = None,
     frequency: str = "monthly",
     start_date: str = "1900-01-01",
-    end_date=datetime.today().date(),
-) -> Dict[Any, Dict[Any, pd.Series]]:
-    """Obtain U.S. Treasury Rates [Source: EconDB]
+    end_date: str = str(datetime.today().date()),
+) -> pd.DataFrame:
+    """Get U.S. Treasury rates [Source: EconDB]
 
     Parameters
     ----------
     instruments: list
-        The type(s) of treasuries, nominal, inflation-adjusted (long term average) or secondary market.
+        Type(s) of treasuries, nominal, inflation-adjusted (long term average) or secondary market.
+        Available options can be accessed through economy.treasury_maturities().
     maturities : list
-       the maturities you wish to view.
+        Treasury maturities to get. Available options can be accessed through economy.treasury_maturities().
     frequency : str
-        The frequency of the data, this can be annually, monthly, weekly or daily.
+        Frequency of the data, this can be annually, monthly, weekly or daily.
     start_date : str
-        The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
+        Starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : str
-        The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
+        End date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
 
     Returns
     ----------
-    treasury_data: dict
+    treasury_data: pd.Dataframe
         Holds data of the selected types and maturities
     """
+
+    if instruments is None:
+        instruments = ["nominal"]
+    if maturities is None:
+        maturities = ["10y"]
+
     treasury_data: Dict[Any, Dict[Any, pd.Series]] = {}
 
     for instrument in instruments:
@@ -722,17 +817,16 @@ def get_treasuries(
                             f"No data found for the combination {instrument} and {maturity}."
                         )
 
-    return treasury_data
+    df = pd.DataFrame.from_dict(treasury_data, orient="index").stack().to_frame()
+    df = pd.DataFrame(df[0].values.tolist(), index=df.index).T
+    df.columns = ["_".join(column) for column in df.columns]
+
+    return df
 
 
 @log_start_end(log=logger)
-def obtain_treasury_maturities(treasuries: Dict) -> pd.DataFrame:
-    """Obtain treasury maturity options [Source: EconDB]
-
-    Parameters
-    ----------
-    treasuries: dict
-        A dictionary containing the options structured {instrument : {maturities: {abbreviation : name}}}
+def get_treasury_maturities() -> pd.DataFrame:
+    """Get treasury maturity options [Source: EconDB]
 
     Returns
     ----------
@@ -742,10 +836,13 @@ def obtain_treasury_maturities(treasuries: Dict) -> pd.DataFrame:
 
     instrument_maturities = {
         instrument: ", ".join(values["maturities"].keys())
-        for instrument, values in treasuries["instruments"].items()
+        for instrument, values in TREASURIES["instruments"].items()
     }
 
     df = pd.DataFrame.from_dict(instrument_maturities, orient="index")
     df.loc["average"] = "Defined by function"
+
+    df.index.name = "Instrument"
+    df.columns = ["Maturities"]
 
     return df

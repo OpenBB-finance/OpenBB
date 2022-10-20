@@ -78,11 +78,12 @@ def prepare_df_financials(
     )
 
     # Define financials columns
-    a_financials_header = []
-    for financials_header in text_soup_financials.findAll(
-        "th", {"class": "overflow__heading"}
-    ):
-        a_financials_header.append(financials_header.text.strip("\n").split("\n")[0])
+    a_financials_header = [
+        financials_header.text.strip("\n").split("\n")[0]
+        for financials_header in text_soup_financials.findAll(
+            "th", {"class": "overflow__heading"}
+        )
+    ]
 
     s_header_end_trend = ("5-year trend", "5- qtr trend")[quarter]
 
@@ -164,11 +165,13 @@ def get_sean_seah_warnings(
     )
 
     # Define financials columns
-    a_financials_header = []
-    for financials_header in text_soup_financials.findAll(
-        "th", {"class": "overflow__heading"}
-    ):
-        a_financials_header.append(financials_header.text.strip("\n").split("\n")[0])
+    a_financials_header = [
+        financials_header.text.strip("\n").split("\n")[0]
+        for financials_header in text_soup_financials.findAll(
+            "th", {"class": "overflow__heading"}
+        )
+    ]
+
     df_financials = pd.DataFrame(columns=a_financials_header[0:-1])
 
     # Add financials values

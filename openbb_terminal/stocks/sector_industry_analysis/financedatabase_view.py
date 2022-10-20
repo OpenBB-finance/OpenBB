@@ -28,12 +28,12 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_bars_financials(
-    finance_key: str,
-    finance_metric: str,
-    country: str,
-    sector: str,
-    industry: str,
-    marketcap: str = "",
+    finance_key: str = "financialData",
+    finance_metric: str = "ebitda",
+    country: str = "United States",
+    sector: str = "Communication Services",
+    industry: str = "Internet Content & Information",
+    marketcap: str = "Mega Cap",
     exclude_exchanges: bool = True,
     limit: int = 10,
     export: str = "",
@@ -51,12 +51,12 @@ def display_bars_financials(
         Select finance metric from Yahoo Finance (e.g. operatingCashflow, revenueGrowth, ebitda, freeCashflow)
     country: str
         Search by country to find stocks matching the criteria.
-    sector : str
+    sector: str
         Search by sector to find stocks matching the criteria.
-    industry : str
+    industry: str
         Search by industry to find stocks matching the criteria.
-    marketcap : str
-        Select stocks based on the market cap.
+    marketcap: str
+        Select stocks based on the market cap from Mega Cap, Large Cap, Mid Cap, Small Cap, Micro Cap, Nano Cap
     exclude_exchanges: bool
         When you wish to include different exchanges use this boolean.
     limit: int
@@ -167,13 +167,13 @@ def display_bars_financials(
             else:
                 unit = " KMBTP"[magnitude] if magnitude != 0 else ""
 
-            colors = iter(theme.get_colors())
             for name, metric, ticker in zip(
                 company_name[::-1], company_metric[::-1], company_ticker[::-1]
             ):
                 if len(name.split(" ")) > 6 and len(name) > 40:
                     name = f'{" ".join(name.split(" ")[:4])}\n{" ".join(name.split(" ")[4:])}'
-                ax.barh(f"{name} ({ticker})", metric, label=ticker, color=next(colors))
+
+                ax.barh(f"{name} ({ticker})", metric, label=ticker)
 
             metric_title = (
                 "".join(
@@ -236,8 +236,8 @@ def display_bars_financials(
 
 @log_start_end(log=logger)
 def display_companies_per_sector_in_country(
-    country: str,
-    mktcap: str = "",
+    country: str = "United States",
+    mktcap: str = "Large",
     exclude_exchanges: bool = True,
     export: str = "",
     raw: bool = False,
@@ -374,8 +374,8 @@ def display_companies_per_sector_in_country(
 
 @log_start_end(log=logger)
 def display_companies_per_industry_in_country(
-    country: str,
-    mktcap: str = "",
+    country: str = "United States",
+    mktcap: str = "Large",
     exclude_exchanges: bool = True,
     export: str = "",
     raw: bool = False,
@@ -524,8 +524,8 @@ def display_companies_per_industry_in_country(
 
 @log_start_end(log=logger)
 def display_companies_per_industry_in_sector(
-    sector: str,
-    mktcap: str = "",
+    sector: str = "Technology",
+    mktcap: str = "Large",
     exclude_exchanges: bool = True,
     export: str = "",
     raw: bool = False,
@@ -674,8 +674,8 @@ def display_companies_per_industry_in_sector(
 
 @log_start_end(log=logger)
 def display_companies_per_country_in_sector(
-    sector: str,
-    mktcap: str = "",
+    sector: str = "Technology",
+    mktcap: str = "Large",
     exclude_exchanges: bool = True,
     export: str = "",
     raw: bool = False,
@@ -687,8 +687,8 @@ def display_companies_per_country_in_sector(
 
     Parameters
     ----------
-    country: str
-        Select country to get number of companies by each country
+    sector: str
+        Select sector to get number of companies by each country
     mktcap: str
         Select market cap of companies to consider from Small, Mid and Large
     exclude_exchanges : bool
@@ -818,8 +818,8 @@ def display_companies_per_country_in_sector(
 
 @log_start_end(log=logger)
 def display_companies_per_country_in_industry(
-    industry: str,
-    mktcap: str = "",
+    industry: str = "Internet Content & Information",
+    mktcap: str = "Large",
     exclude_exchanges: bool = True,
     export: str = "",
     raw: bool = False,
@@ -831,8 +831,8 @@ def display_companies_per_country_in_industry(
 
     Parameters
     ----------
-    country: str
-        Select country to get number of companies by each country
+    industry: str
+        Select industry to get number of companies by each country
     mktcap: str
         Select market cap of companies to consider from Small, Mid and Large
     exclude_exchanges : bool

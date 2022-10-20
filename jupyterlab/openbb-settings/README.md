@@ -1,4 +1,4 @@
-# OpenBB Teminal Settings Menu
+# OpenBB Terminal Settings Menu
 
 This extensions allows the user to set API keys and feature flags for the OpenBB Terminal
 

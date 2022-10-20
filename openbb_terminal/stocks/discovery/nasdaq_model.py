@@ -1,13 +1,14 @@
 """NASDAQ DataLink Model"""
 __docformat__ = "numpy"
 
+from datetime import datetime
 import logging
 
 import pandas as pd
 import requests
 
 import openbb_terminal.config_terminal as cfg
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import get_user_agent
 from openbb_terminal.rich_config import console
 
@@ -16,6 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_QUANDL"])
 def get_retail_tickers() -> pd.DataFrame:
     """Gets the top 10 retail stocks per day
 
@@ -50,7 +52,7 @@ def get_retail_tickers() -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_dividend_cal(date: str) -> pd.DataFrame:
+def get_dividend_cal(date: str = datetime.today().strftime("%Y-%m-%d")) -> pd.DataFrame:
     """Gets dividend calendar for given date.  Date represents Ex-Dividend Date
 
     Parameters

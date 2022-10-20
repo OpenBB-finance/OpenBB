@@ -28,18 +28,18 @@ sector_dict = {
 
 
 @log_start_end(log=logger)
-def display_allocation(fund_name: str, focus: str):
+def display_allocation(name: str, focus: str):
     """Displays the allocation of the selected swedish fund
 
     Parameters
     ----------
-    fund_name: str
+    name: str
         Full name of the fund
     focus: str
         The focus of the displayed allocation/exposure of the fund
     """
-    # Code mostly taken from: https://github.com/northern-64bit/Portfolio-Report-Generator/tree/main
-    fund_data = avanza_model.get_data(fund_name.upper())
+    # Taken from: https://github.com/northern-64bit/Portfolio-Report-Generator/tree/main
+    fund_data = avanza_model.get_data(name.upper())
     if focus in ["holding", "all"]:
         table_row = []
         console.print("")
@@ -51,7 +51,7 @@ def display_allocation(fund_name: str, focus: str):
             table_row.append(table_row_temp)
         header = ["Holding", "Allocation in %", "Country"]
         holding_data = pd.DataFrame(table_row, columns=header)
-        print_rich_table(holding_data, title=f"{fund_name}'s Holdings", headers=header)
+        print_rich_table(holding_data, title=f"{name}'s Holdings", headers=header)
     if focus in ["sector", "all"]:
         table_row = []
         console.print("")
@@ -63,7 +63,7 @@ def display_allocation(fund_name: str, focus: str):
         header = ["Sector", "Allocation in %"]
         sector_data = pd.DataFrame(table_row, columns=header)
         print_rich_table(
-            sector_data, title=f"{fund_name}'s Sector Weighting", headers=header
+            sector_data, title=f"{name}'s Sector Weighting", headers=header
         )
     if focus in ["country", "all"]:
         table_row = []
@@ -76,26 +76,26 @@ def display_allocation(fund_name: str, focus: str):
         header = ["Country", "Allocation in %"]
         country_data = pd.DataFrame(table_row, columns=header)
         print_rich_table(
-            country_data, title=f"{fund_name}'s Country Weighting", headers=header
+            country_data, title=f"{name}'s Country Weighting", headers=header
         )
 
 
 @log_start_end(log=logger)
-def display_info(fund_name: str):
+def display_info(name: str):
     """Displays info of swedish funds
 
     Parameters
     ----------
-    fund_name: str
+    name: str
         Full name of the fund
     """
-    fund_data = avanza_model.get_data(fund_name.upper())
+    fund_data = avanza_model.get_data(name.upper())
     text = f"\nSwedish Description:\n\n{fund_data['description']}\n\nThe fund is managed by:\n"
     for manager in fund_data["fundManagers"]:
         text = text + f"\t- {manager['name']} since {manager['startDate']}\n"
     text = (
         text
-        + f"from {fund_data['adminCompany']['name']}.\nThe currency of the fund is {fund_data['currency']}"
+        + f"from {fund_data['adminCompany']['name']}.\nFund currency is {fund_data['currency']}"
         f" and it the fund started {fund_data['startDate']}."
     )
     if fund_data["indexFund"]:

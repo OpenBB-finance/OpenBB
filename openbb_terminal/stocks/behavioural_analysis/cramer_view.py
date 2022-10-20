@@ -4,11 +4,11 @@ __docformat__ = "numpy"
 import os
 from typing import Optional, List
 import logging
+from datetime import datetime
 
 import matplotlib.pyplot as plt
 from matplotlib.dates import DateFormatter
 import yfinance
-import pandas as pd
 
 import openbb_terminal.config_plot as cfp
 from openbb_terminal.config_terminal import theme
@@ -31,9 +31,9 @@ def display_cramer_daily(inverse: bool = True, export: str = ""):
 
     Parameters
     ----------
-    inverse:bool
-        Flag to include inverse recommendation
-    export:str
+    inverse: bool
+        Include inverse recommendation
+    export: str
         Format to export data
     """
 
@@ -44,6 +44,16 @@ def display_cramer_daily(inverse: bool = True, export: str = ""):
     date = recs.Date[0]
     recs = recs.drop(columns=["Date"])
 
+    if datetime.today().strftime("%m-%d") != datetime.strptime(
+        date.replace("/", "-"), "%m-%d"
+    ):
+        console.print(
+            """
+        \n[yellow]Warning[/yellow]: We noticed Jim Crammer recommendation data has not been updated for a while, \
+and we're investigating on finding a replacement.
+        """,
+        )
+
     print_rich_table(recs, title=f"Jim Cramer Recommendations for {date}")
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "cramer", recs)
@@ -51,8 +61,8 @@ def display_cramer_daily(inverse: bool = True, export: str = ""):
 
 @log_start_end(log=logger)
 def display_cramer_ticker(
-    ticker: str,
-    raw: bool = True,
+    symbol: str,
+    raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -60,7 +70,7 @@ def display_cramer_ticker(
 
     Parameters
     ----------
-    ticker: str
+    symbol: str
         Stock ticker
     raw: bool
         Display raw data
@@ -70,12 +80,10 @@ def display_cramer_ticker(
         External axes to plot on
     """
 
-    df = cramer_model.get_cramer_ticker(ticker)
+    df = cramer_model.get_cramer_ticker(symbol)
     if df.empty:
-        console.print(f"No recommendations found for {ticker}.\n")
+        console.print(f"No recommendations found for {symbol}.\n")
         return
-
-    df["Date"] = pd.to_datetime(df["Date"].apply(lambda x: x + "/2022"))
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
@@ -84,7 +92,7 @@ def display_cramer_ticker(
     else:
         return
 
-    close_prices = yfinance.download(ticker, start="2022-01-01", progress=False)[
+    close_prices = yfinance.download(symbol, start="2022-01-01", progress=False)[
         "Adj Close"
     ]
 
@@ -93,7 +101,7 @@ def display_cramer_ticker(
     for name, group in df.groupby("Recommendation"):
         ax.scatter(group.Date, group.Price, color=color_map[name], s=150, label=name)
 
-    ax.set_title(f"{ticker.upper()} Close With Cramer Recommendations")
+    ax.set_title(f"{symbol.upper()} Close With Cramer Recommendations")
     theme.style_primary_axis(ax)
     ax.legend(loc="best", scatterpoints=1)
 
@@ -106,6 +114,6 @@ def display_cramer_ticker(
 
     if raw:
         df["Date"] = df["Date"].apply(lambda x: x.strftime("%Y-%m-%d"))
-        print_rich_table(df, title=f"Jim Cramer Recommendations for {ticker}")
+        print_rich_table(df, title=f"Jim Cramer Recommendations for {symbol}")
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), df, "jctr")

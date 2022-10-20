@@ -6,7 +6,6 @@
     <ol>
       <li><a href="#anaconda--python">Anaconda & Python Installation</a></li>
       <li><a href="#docker-installation">Docker Installation</a></li>
-      <li><a href="#web-ui---docker">Docker Web UI Installation</a></li>
       <li><a href="#local-installation-of-gst-on-raspberry-pi">Raspberry-Pi-Installation - Portable GST</a></li>
       <li><a href="#api-keys">API Keys</a></li>
     </ol>
@@ -19,8 +18,6 @@ There are currently four options to install the terminal:
 - [Using the Installer](https://openbb-finance.github.io/OpenBBTerminal/#accessing-the-openbb-terminal) (recommended if you just want to use the terminal)
 - [Using Python](#anaconda--python) (recommended if you want to develop new features)
 - [Using Docker](#docker-installation) (alternative option to the installer if preferred)
-- [Using Docker Web UI](#web-ui---docker) (if you want to deploy the web UI for users to access
-  over your LAN)
 
 First step in all options is to star the project
 
@@ -121,9 +118,24 @@ issues.
    or `diamondhands`, we recommend something simple and intuitive like `obb`. This is because this name will be used
    from now onwards.
 
+   Please note, the following setup has been confirmed to work for all OS (including M1) with the standard
+   miniconda distribution.
+
+   `https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh`
+
+   If you are using a different distribution, you will need to install it manually before proceeding.
+
    ```bash
    conda env create -n obb --file build/conda/conda-3-9-env.yaml
    ```
+
+   Or, to include machine learning type:
+
+   ```bash
+   conda env create -n obb --file build/conda/conda-3-9-env-full.yaml
+   ```
+
+   Note: Using python 3.10 can lead to undesirable functionality for certain commands.
 
 6. Activate the virtual environment
 
@@ -141,10 +153,10 @@ issues.
    poetry install
    ```
 
-   To enable the `prediction` menu install additional dependencies after installing main dependencies:
+   For machine learning instead type:
 
    ```bash
-   conda install -c conda-forge tensorflow
+   poetry install -E prediction
    ```
 
    If you are having trouble with Poetry (e.g. on a non-conda python), simply install requirements.txt with pip
@@ -157,6 +169,12 @@ issues.
 
    ```bash
    python terminal.py
+   ```
+
+    If you are using macOS and if you get SyntaxError, you might need to run this instead
+
+    ```bash
+   python3 terminal.py
    ```
 
 9. (Windows - Optional and **only if you are not using WSL**) Speeding up opening process in the future
@@ -181,7 +199,7 @@ before you call `python terminal.py` again.
 ## Advanced User Install - Custom installation procedures
 
 By default we advice using `conda` and `poetry` for environment setup and dependency management.
-Conda ships binaries for packages like `numpy` and `tensorflow` so these dependencies are
+Conda ships binaries for packages like `numpy` so these dependencies are
 not built from source locally by `pip`.
 Poetry solves the dependency tree in a way that the dependencies of dependencies of dependencies
 use versions that are compatible with each other.
@@ -230,68 +248,6 @@ If you `stashed` your changes previously, you can un-stash them with:
 ```bash
 git stash pop
 ```
-
-## Docker Installation
-
-1. Make sure docker desktop is installed. Install links can be found [here](https://www.docker.com/products/docker-desktop).
-   To confirm that your docker desktop is downloaded and running, open a command prompt or terminal and enter
-   `docker info`. If you get the following you are not running the docker desktop:
-
-   ```text
-   Server:
-   ERROR: Cannot connect to the Docker daemon at unix:///var/run/docker.sock.
-   Is the docker daemon running?
-   ```
-
-   Open the docker desktop app in this case.
-
-2. Download the latest docker image.
-
-   ```bash
-   docker pull ghcr.io/openbb-finance/openbbterminal-poetry:latest
-   ```
-
-   Upon running this the first time, you should see the various layers downloading (note the random series of letters
-   numbers will vary). The first time this is run, it will take a few minutes. Subsequent updates will be much faster,
-   as the changes will be in the MB instead of GB.
-
-   ![Screen Shot 2021-09-08 at 10 41 08 AM](https://user-images.githubusercontent.com/18151143/132531075-7d7f7e71-4fcb-435c-9bb3-466d7077eba4.png)
-
-   Once the download is complete, confirm that the image has been created by doing `docker images`. You should see
-   something similar to
-
-   ```text
-   REPOSITORY                             TAG       IMAGE ID       CREATED        SIZE
-   ghcr.io/openbb-finance/openbbterminal-poetry   latest    b1409a304750   42 hours ago   2.29GB
-   ```
-
-3. Run a container
-
-   You are now ready to run the terminal (every time you want to use the terminal you need to run this command):
-
-   `docker run -it --rm ghcr.io/openbb-finance/openbbterminal-poetry:latest`
-
-   This will open up the terminal in your command prompt or terminal. Note that this has provided now environment file,
-   so you will not be able to view plots or use keys at this stage.
-
-   At this point, you should be able to use the majority of the features using Docker. To read more on adding the
-   environment keys and how to configure your X-server to show plots, hop over to the
-   [Advanced Docker Setup](/DOCKER_ADVANCED.md).
-
-## Web UI - Docker
-
-1. Ensure Docker is installed.
-2. Navigate to the location of the Dockerfile in the repo (`cd openbb_terminal_web`)
-3. Ensure the launcher is executable with `chmod +x ./launch`
-4. Launch it with `./launch`. If you get a permission denied error, do `sudo ./launch` instead
-5. Once it's launched, you will be able to access it by going to `http://host-ip:8080` in a browser, or
-   `http://localhost:8080` if you are running it on your local machine.
-
-For API keys, create the `setenv` file if it doesn't already exist.
-It will automatically get created on the first launch, and won't get committed to Git because it is on the `.gitignore`.
-Set the API keys [as explained here](https://github.com/OpenBB-finance/OpenBBTerminal/blob/main/DOCKER_ADVANCED.md#environment-variables).
-Once you've put the API keys in that file, re-run the launch script, and it will use your API keys.
-There are a few things that still don't work, and you can see what works and what doesn't [here](https://github.com/CoconutMacaroon/OpenBBTerminal/blob/main/openbb_terminal_web/README.md#todo).
 
 ## Local Installation of GST on Raspberry Pi
 
@@ -347,7 +303,7 @@ There are a few things that still don't work, and you can see what works and wha
    from now onwards.
 
    ```bash
-   conda env create -n openbb python=3.8.13
+   conda env create -n openbb python=3.9
    ```
 
 8. Activate the virtual environment
@@ -372,7 +328,7 @@ There are a few things that still don't work, and you can see what works and wha
     poetry install
     ```
 
-11. Ready to rock on a Raspbery Pi!
+11. Ready to rock on a Raspberry Pi!
 
     ```bash
     python terminal.py

@@ -8,7 +8,8 @@ from datetime import datetime, timedelta
 from typing import List
 
 import yfinance as yf
-from prompt_toolkit.completion import NestedCompleter
+
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal.decorators import check_api_key
 from openbb_terminal import feature_flags as obbff
@@ -22,7 +23,6 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.portfolio.portfolio_optimization import po_controller
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks.comparison_analysis import (
     finbrain_view,
@@ -31,7 +31,6 @@ from openbb_terminal.stocks.comparison_analysis import (
     finviz_compare_view,
     marketwatch_view,
     polygon_model,
-    yahoo_finance_model,
     yahoo_finance_view,
 )
 
@@ -72,9 +71,8 @@ class ComparisonAnalysisController(BaseController):
         "technical",
         "tsne",
     ]
-    CHOICES_MENUS = [
-        "po",
-    ]
+    choices_ohlca = ["o", "h", "l", "c", "a"]
+    CHOICES_MENUS: List = list()
     PATH = "/stocks/ca/"
 
     def __init__(self, similar: List[str] = None, queue: List[str] = None):
@@ -93,6 +91,79 @@ class ComparisonAnalysisController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+
+            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
+            one_to_three_hundred: dict = {str(c): {} for c in range(1, 300)}
+            choices["load"] = {
+                "--ticker": None,
+                "-t": "--ticker",
+            }
+            choices["tsne"] = {
+                "--learnrate": one_to_three_hundred,
+                "-r": "--learnrate",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["getpoly"] = {
+                "--us_only": {},
+                "-u": "--us_only",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            limit = {
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["getfinnhub"] = limit
+            choices["getfinviz"] = {
+                "--nocountry": {},
+                "-n": "--nocountry",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            complete_similar = {
+                "--similar": None,
+                "-s": "--similar",
+            }
+            choices["set"] = complete_similar
+            choices["add"] = complete_similar
+            choices["rmv"] = complete_similar
+            choices["historical"] = {
+                "--type": {c: {} for c in self.choices_ohlca},
+                "-t": "--type",
+                "--normalize": {},
+                "-n": "--normalize",
+                "--start": None,
+                "-s": "--start",
+            }
+            choices["hcorr"] = {
+                "--type": {c: {} for c in self.choices_ohlca},
+                "-t": "--type",
+                "--start": None,
+                "-s": "--start",
+                "--display-full-matrix": {},
+                "--raw": {},
+            }
+            choices["volume"] = {
+                "--start": None,
+                "-s": "--start",
+            }
+            statements: dict = {
+                "--timeframe": None,
+                "-t": "--timeframe",
+                "--quarter": {},
+                "-q": "--quarter",
+            }
+            choices["income"] = statements
+            choices["balance"] = statements
+            choices["cashflow"] = statements
+            raw = {
+                "--raw": {},
+                "-r": "--raw",
+            }
+            choices["sentiment"] = raw
+            choices["scorr"] = raw
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
@@ -102,10 +173,10 @@ class ComparisonAnalysisController(BaseController):
         mt.add_raw("\n")
         mt.add_param("_ticker", self.ticker)
         mt.add_raw("\n")
-        mt.add_cmd("tsne", "", self.ticker)
-        mt.add_cmd("getpoly", "Polygon", self.ticker)
-        mt.add_cmd("getfinnhub", "Finnhub", self.ticker)
-        mt.add_cmd("getfinviz", "Finviz", self.ticker)
+        mt.add_cmd("tsne", self.ticker)
+        mt.add_cmd("getpoly", self.ticker)
+        mt.add_cmd("getfinnhub", self.ticker)
+        mt.add_cmd("getfinviz", self.ticker)
         mt.add_raw("\n")
         mt.add_cmd("set")
         mt.add_cmd("add")
@@ -113,24 +184,20 @@ class ComparisonAnalysisController(BaseController):
         mt.add_raw("\n")
         mt.add_param("_similar", ", ".join(self.similar))
         mt.add_raw("\n")
-        mt.add_cmd(
-            "historical", "Yahoo Finance", self.similar and len(self.similar) > 1
-        )
-        mt.add_cmd("hcorr", "Yahoo Finance", self.similar and len(self.similar) > 1)
-        mt.add_cmd("volume", "Yahoo Finance", self.similar and len(self.similar) > 1)
-        mt.add_cmd("income", "Market Watch", self.similar and len(self.similar) > 1)
-        mt.add_cmd("balance", "Market Watch", self.similar and len(self.similar) > 1)
-        mt.add_cmd("cashflow", "Market Watch", self.similar and len(self.similar) > 1)
-        mt.add_cmd("sentiment", "FinBrain", self.similar and len(self.similar) > 1)
-        mt.add_cmd("scorr", "FinBrain", self.similar and len(self.similar) > 1)
-        mt.add_cmd("overview", "Finviz", self.similar and len(self.similar) > 1)
-        mt.add_cmd("valuation", "Finviz", self.similar and len(self.similar) > 1)
-        mt.add_cmd("financial", "Finviz", self.similar and len(self.similar) > 1)
-        mt.add_cmd("ownership", "Finviz", self.similar and len(self.similar) > 1)
-        mt.add_cmd("performance", "Finviz", self.similar and len(self.similar) > 1)
-        mt.add_cmd("technical", "Finviz", self.similar and len(self.similar) > 1)
-        mt.add_raw("\n")
-        mt.add_menu("po", self.similar and len(self.similar) > 1)
+        mt.add_cmd("historical", self.similar and len(self.similar) > 1)
+        mt.add_cmd("hcorr", self.similar and len(self.similar) > 1)
+        mt.add_cmd("volume", self.similar and len(self.similar) > 1)
+        mt.add_cmd("income", self.similar and len(self.similar) > 1)
+        mt.add_cmd("balance", self.similar and len(self.similar) > 1)
+        mt.add_cmd("cashflow", self.similar and len(self.similar) > 1)
+        mt.add_cmd("sentiment", self.similar and len(self.similar) > 1)
+        mt.add_cmd("scorr", self.similar and len(self.similar) > 1)
+        mt.add_cmd("overview", self.similar and len(self.similar) > 1)
+        mt.add_cmd("valuation", self.similar and len(self.similar) > 1)
+        mt.add_cmd("financial", self.similar and len(self.similar) > 1)
+        mt.add_cmd("ownership", self.similar and len(self.similar) > 1)
+        mt.add_cmd("performance", self.similar and len(self.similar) > 1)
+        mt.add_cmd("technical", self.similar and len(self.similar) > 1)
         console.print(text=mt.menu_text, menu="Stocks - Comparison Analysis")
 
     def custom_reset(self):
@@ -209,11 +276,11 @@ class ComparisonAnalysisController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
-                self.similar = yahoo_finance_model.get_sp500_comps_tsne(
+                self.similar = yahoo_finance_view.display_sp500_comps_tsne(
                     self.ticker,
                     lr=ns_parser.lr,
                     no_plot=ns_parser.no_plot,
-                    num_tickers=ns_parser.limit,
+                    limit=ns_parser.limit,
                 )
 
                 self.similar = [self.ticker] + self.similar
@@ -223,7 +290,8 @@ class ComparisonAnalysisController(BaseController):
 
             else:
                 console.print(
-                    "You need to 'set' a ticker to get similar companies from first!"
+                    "You need to 'set' a ticker to get similar companies from first! This is "
+                    "for example done by running 'ticker gme'"
                 )
 
     @log_start_end(log=logger)
@@ -261,9 +329,11 @@ class ComparisonAnalysisController(BaseController):
                 else:
                     compare_list = ["Sector", "Industry", "Country"]
 
-                self.similar, self.user = finviz_compare_model.get_similar_companies(
+                self.similar = finviz_compare_model.get_similar_companies(
                     self.ticker, compare_list
                 )
+
+                self.user = "Finviz"
 
                 if self.ticker.upper() in self.similar:
                     self.similar.remove(self.ticker.upper())
@@ -319,9 +389,11 @@ class ComparisonAnalysisController(BaseController):
 
         if ns_parser:
             if self.ticker:
-                self.similar, self.user = polygon_model.get_similar_companies(
+                self.similar = polygon_model.get_similar_companies(
                     self.ticker, ns_parser.us_only
                 )
+
+                self.user = "Polygon"
 
                 if self.ticker.upper() in self.similar:
                     self.similar.remove(self.ticker.upper())
@@ -368,9 +440,9 @@ class ComparisonAnalysisController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
-                self.similar, self.user = finnhub_model.get_similar_companies(
-                    self.ticker
-                )
+                self.similar = finnhub_model.get_similar_companies(self.ticker)
+
+                self.user = "Finnhub"
 
                 if self.ticker.upper() in self.similar:
                     self.similar.remove(self.ticker.upper())
@@ -508,7 +580,7 @@ class ComparisonAnalysisController(BaseController):
             action="store",
             dest="type_candle",
             type=str,
-            choices=["o", "h", "l", "c", "a"],
+            choices=self.choices_ohlca,
             default="a",  # in case it's adjusted close
             help="Candle data to use: o-open, h-high, l-low, c-close, a-adjusted close.",
         )
@@ -536,8 +608,8 @@ class ComparisonAnalysisController(BaseController):
         if ns_parser:
             if self.similar and len(self.similar) > 1:
                 yahoo_finance_view.display_historical(
-                    similar_tickers=self.similar,
-                    start=ns_parser.start.strftime("%Y-%m-%d"),
+                    similar=self.similar,
+                    start_date=ns_parser.start.strftime("%Y-%m-%d"),
                     candle_type=ns_parser.type_candle,
                     normalize=ns_parser.normalize,
                     export=ns_parser.export,
@@ -590,8 +662,8 @@ class ComparisonAnalysisController(BaseController):
         if ns_parser:
             if self.similar and len(self.similar) > 1:
                 yahoo_finance_view.display_correlation(
-                    similar_tickers=self.similar,
-                    start=ns_parser.start.strftime("%Y-%m-%d"),
+                    similar=self.similar,
+                    start_date=ns_parser.start.strftime("%Y-%m-%d"),
                     candle_type=ns_parser.type_candle,
                     export=ns_parser.export,
                     display_full_matrix=ns_parser.display_full_matrix,
@@ -635,7 +707,7 @@ class ComparisonAnalysisController(BaseController):
         )
         if ns_parser:
             marketwatch_view.display_income_comparison(
-                similar=self.similar,
+                symbols=self.similar,
                 timeframe=ns_parser.s_timeframe,
                 quarter=ns_parser.b_quarter,
             )
@@ -666,8 +738,8 @@ class ComparisonAnalysisController(BaseController):
         if ns_parser:
             if self.similar and len(self.similar) > 1:
                 yahoo_finance_view.display_volume(
-                    similar_tickers=self.similar,
-                    start=ns_parser.start.strftime("%Y-%m-%d"),
+                    similar=self.similar,
+                    start_date=ns_parser.start.strftime("%Y-%m-%d"),
                     export=ns_parser.export,
                 )
 
@@ -707,7 +779,7 @@ class ComparisonAnalysisController(BaseController):
         )
         if ns_parser:
             marketwatch_view.display_balance_comparison(
-                similar=self.similar,
+                symbols=self.similar,
                 timeframe=ns_parser.s_timeframe,
                 quarter=ns_parser.b_quarter,
             )
@@ -738,14 +810,15 @@ class ComparisonAnalysisController(BaseController):
             dest="s_timeframe",
             type=str,
             default=None,
-            help="Specify yearly/quarterly timeframe. Default is last.",
+            help="Specify year/quarter of the cashflow statement to be retrieved. The format for year is YYYY and for "
+            "quarter is DD-MMM-YYY (for example, 30-Sep-2021). Default is last year/quarter.",
         )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             marketwatch_view.display_cashflow_comparison(
-                similar=self.similar,
+                symbols=self.similar,
                 timeframe=ns_parser.s_timeframe,
                 quarter=ns_parser.b_quarter,
             )
@@ -971,15 +1044,3 @@ class ComparisonAnalysisController(BaseController):
                 console.print(
                     "Please make sure there are more than 1 similar tickers selected. \n"
                 )
-
-    @log_start_end(log=logger)
-    def call_po(self, _):
-        """Call the portfolio optimization menu with selected tickers"""
-        if self.similar and len(self.similar) > 1:
-            self.queue = po_controller.PortfolioOptimizationController(
-                self.similar, self.queue
-            ).menu(custom_path_menu_above="/portfolio/")
-        else:
-            console.print(
-                "Please make sure there are more than 1 similar tickers selected. \n"
-            )

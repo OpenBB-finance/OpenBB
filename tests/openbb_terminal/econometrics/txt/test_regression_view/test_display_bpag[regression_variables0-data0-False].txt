@@ -1,0 +1,8 @@
+
+                 0
+lm-stat   8.266655
+p-value   0.004038
+f-stat    7.482736
+fp-value  0.006162
+The result 0.0 indicates no existence of heteroscedasticity.
+

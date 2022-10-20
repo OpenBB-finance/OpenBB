@@ -2,16 +2,18 @@
 __docformat__ = "numpy"
 
 import os
+import json
+from pathlib import Path
 from typing import Tuple
 from rich import panel
 from rich.console import Console, Theme
 from rich.text import Text
-from rich.color import Color
 import i18n
+from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
 
-# pylint: disable=no-member
+# pylint: disable=no-member,c-extension-no-member
 
 
 # https://rich.readthedocs.io/en/stable/appendix/colors.html#appendix-colors
@@ -43,6 +45,81 @@ def translate(key: str):
 
 def no_panel(renderable, *args, **kwargs):  # pylint: disable=unused-argument
     return renderable
+
+
+def get_ordered_list_sources(command_path: str):
+    """
+    Returns the preferred source for the given command. If a value is not available for the specific
+    command, returns the most specific source, eventually returning the overall default source.
+
+    Parameters
+    ----------
+    command_path: str
+        The command to find the source for. Example would be "stocks/load" to return the value
+        for stocks.load first, then stocks, then the default value.
+
+    Returns
+    -------
+    str:
+        The preferred source for the given command
+    """
+    try:
+        # Loading in both source files: default sources and user sources
+        default_data_source = MISCELLANEOUS_DIRECTORY / "data_sources_default.json"
+        user_data_source = Path(obbff.PREFERRED_DATA_SOURCE_FILE)
+
+        # Opening default sources file from the repository root
+        with open(str(default_data_source)) as json_file:
+            json_doc = json.load(json_file)
+
+        # If the user has added sources to their own sources file in OpenBBUserData, then use that
+        if user_data_source.exists() and user_data_source.stat().st_size > 0:
+            with open(str(user_data_source)) as json_file:
+                json_doc = json.load(json_file)
+
+        # We are going to iterate through each command as if it is broken up by period characters (.)
+        path_objects = command_path.split("/")[1:]
+
+        # Start iterating through the top-level JSON doc to start
+        deepest_level = json_doc
+
+        # If we still have entries in path_objects, continue to go deeper
+        while len(path_objects) > 0:
+            # Is this path object in the JSON doc? If so, go into that for our next iteration.
+            if path_objects[0] in deepest_level:
+                # We found the element, so go one level deeper
+                deepest_level = deepest_level[path_objects[0]]
+
+            else:
+                # If we have not find the `load` on the deepest level it means we may be in a sub-menu
+                # and we can use the load from the Base class
+                if path_objects[0] == "load":
+
+                    # Get the context associated with the sub-menu (e.g. stocks, crypto, ...)
+                    context = command_path.split("/")[1]
+
+                    # Grab the load source from that context if it exists, otherwise throws an error
+                    if context in json_doc:
+                        if "load" in json_doc[context]:
+                            return json_doc[context]["load"]
+
+                # We didn't find the next level, so flag that that command default source is missing
+                # Which means that there aren't more than 1 source and therefore no selection is necessary
+                return []
+
+            # Go one level deeper into the path
+            path_objects = path_objects[1:]
+
+        # We got through all values, so return this as the final value
+        return deepest_level
+
+    except Exception as e:
+        console.print(
+            f"[red]Failed to load preferred source from file: "
+            f"{obbff.PREFERRED_DATA_SOURCE_FILE}[/red]"
+        )
+        console.print(f"[red]{e}[/red]")
+        return None
 
 
 class MenuText:
@@ -111,15 +188,13 @@ class MenuText:
             space = ""
         self.menu_text += f"[param]{parameter_translated}{space}:[/param] {value}\n"
 
-    def add_cmd(self, key_command: str, source: str = "", condition: bool = True):
+    def add_cmd(self, key_command: str, condition: bool = True):
         """Append command text (after translation from key) to a menu
 
         Parameters
         ----------
         key_command : str
             key command to be executed by user. It is also used as a key to get description of command.
-        source : str
-            source associated with the command
         condition : bool
             condition in which command is available to user. I.e. displays command and description.
             If condition is false, the command line is greyed out.
@@ -129,12 +204,15 @@ class MenuText:
             cmd = f"[cmds]    {key_command}{spacing}{i18n.t(self.menu_path + key_command)}[/cmds]"
         else:
             cmd = f"[unvl]    {key_command}{spacing}{i18n.t(self.menu_path + key_command)}[/unvl]"
-        if source:
+
+        sources = get_ordered_list_sources(f"/{self.menu_path}{key_command}")
+
+        if sources:
             if self.col_src > len(cmd):
                 space = (self.col_src - len(cmd)) * " "
             else:
                 space = " "
-            cmd += f"{space}[src][{source}][/src]"
+            cmd += f"{space}[src][{', '.join(sources)}][/src]"
 
         self.menu_text += cmd + "\n"
 
@@ -212,15 +290,7 @@ class ConsoleAndPanel:
         if kwargs and "text" in list(kwargs) and "menu" in list(kwargs):
             if not os.getenv("TEST_MODE"):
                 if obbff.ENABLE_RICH_PANEL:
-                    version = self.blend_text(
-                        f"OpenBB Terminal v{obbff.VERSION}",
-                        Color.parse("#00AAFF").triplet,
-                        Color.parse("#E4003A").triplet,
-                    )
-                    link = " (https://openbb.co)"
-                    link_text = Text(link)
-                    link_text.stylize("#FCED00", 0, len(link))
-                    version += link_text
+                    version = f"[param]OpenBB Terminal v{obbff.VERSION}[/param] (https://openbb.co)"
                     self.console.print(
                         panel.Panel(
                             "\n" + kwargs["text"],

@@ -223,7 +223,7 @@ def positionbook_plot_data_request(
 
 @log_start_end(log=logger)
 def order_history_request(
-    order_state: str, order_count: int, accountID: str = account
+    order_state: str = "PENDING", order_count: int = 0, accountID: str = account
 ) -> Union[pd.DataFrame, bool]:
     """Request the orders list from Oanda.
 
@@ -268,8 +268,8 @@ def order_history_request(
 
 @log_start_end(log=logger)
 def create_order_request(
-    price: int,
-    units: int,
+    price: int = 0,
+    units: int = 0,
     instrument: Union[str, None] = None,
     accountID: str = account,
 ) -> Union[pd.DataFrame, bool]:
@@ -393,23 +393,21 @@ def open_positions_request(accountID: str = account) -> Union[pd.DataFrame, bool
     try:
         request = positions.OpenPositions(accountID)
         response = client.request(request)
-        position_data = []
-        for i in range(len(response["positions"])):
-            position_data.append(
-                {
-                    "Instrument": response["positions"][i]["instrument"],
-                    "Long Units": response["positions"][i]["long"]["units"],
-                    "Total Long P/L": response["positions"][i]["long"]["units"],
-                    "Unrealized Long P/L": response["positions"][i]["long"][
-                        "unrealizedPL"
-                    ],
-                    "Short Units": response["positions"][i]["short"]["units"],
-                    "Total Short P/L": response["positions"][i]["short"]["pl"],
-                    "Short Unrealized P/L": response["positions"][i]["short"][
-                        "unrealizedPL"
-                    ],
-                }
-            )
+        position_data = [
+            {
+                "Instrument": response["positions"][i]["instrument"],
+                "Long Units": response["positions"][i]["long"]["units"],
+                "Total Long P/L": response["positions"][i]["long"]["units"],
+                "Unrealized Long P/L": response["positions"][i]["long"]["unrealizedPL"],
+                "Short Units": response["positions"][i]["short"]["units"],
+                "Total Short P/L": response["positions"][i]["short"]["pl"],
+                "Short Unrealized P/L": response["positions"][i]["short"][
+                    "unrealizedPL"
+                ],
+            }
+            for i in range(len(response["positions"]))
+        ]
+
         df_positions = pd.DataFrame.from_dict(position_data)
         return df_positions
     except V20Error as e:
@@ -443,20 +441,20 @@ def pending_orders_request(accountID: str = account) -> Union[pd.DataFrame, bool
     try:
         request = orders.OrdersPending(accountID)
         response = client.request(request)
-        pending_data = []
-        for i in range(len(response["orders"])):
-            pending_data.append(
-                {
-                    "Order ID": response["orders"][i]["id"],
-                    "Instrument": response["orders"][i]["instrument"],
-                    "Price": response["orders"][i]["price"],
-                    "Units": response["orders"][i]["units"],
-                    "Time Created": response["orders"][i]["createTime"][:10]
-                    + " "
-                    + response["orders"][i]["createTime"][11:19],
-                    "Time In Force": response["orders"][i]["timeInForce"],
-                }
-            )
+        pending_data = [
+            {
+                "Order ID": response["orders"][i]["id"],
+                "Instrument": response["orders"][i]["instrument"],
+                "Price": response["orders"][i]["price"],
+                "Units": response["orders"][i]["units"],
+                "Time Created": response["orders"][i]["createTime"][:10]
+                + " "
+                + response["orders"][i]["createTime"][11:19],
+                "Time In Force": response["orders"][i]["timeInForce"],
+            }
+            for i in range(len(response["orders"]))
+        ]
+
         if len(pending_data) == 0:
             return pd.DataFrame()
         df_pending = pd.DataFrame.from_dict(pending_data)
@@ -526,7 +524,7 @@ def open_trades_request(accountID: str = account) -> Union[pd.DataFrame, bool]:
 
 @log_start_end(log=logger)
 def close_trades_request(
-    orderID: str, units: Union[int, None], accountID: str = account
+    orderID: str, units: Union[int, None] = 0, accountID: str = account
 ) -> Union[pd.DataFrame, bool]:
     """Close a trade.
 
@@ -615,20 +613,20 @@ def get_candles_dataframe(
     try:
         request = instruments.InstrumentsCandles(instrument, params=parameters)
         response = client.request(request)
-        candles_data = []
-        for i in range(len(response["candles"])):
-            candles_data.append(
-                {
-                    "Date": response["candles"][i]["time"][:10]
-                    + " "
-                    + response["candles"][i]["time"][11:19],
-                    "Open": float(response["candles"][i]["mid"]["o"]),
-                    "High": float(response["candles"][i]["mid"]["h"]),
-                    "Low": float(response["candles"][i]["mid"]["l"]),
-                    "Close": float(response["candles"][i]["mid"]["c"]),
-                    "Volume": response["candles"][i]["volume"],
-                }
-            )
+        candles_data = [
+            {
+                "Date": response["candles"][i]["time"][:10]
+                + " "
+                + response["candles"][i]["time"][11:19],
+                "Open": float(response["candles"][i]["mid"]["o"]),
+                "High": float(response["candles"][i]["mid"]["h"]),
+                "Low": float(response["candles"][i]["mid"]["l"]),
+                "Close": float(response["candles"][i]["mid"]["c"]),
+                "Volume": response["candles"][i]["volume"],
+            }
+            for i in range(len(response["candles"]))
+        ]
+
         if len(candles_data) == 0:
             df_candles = pd.DataFrame()
         else:

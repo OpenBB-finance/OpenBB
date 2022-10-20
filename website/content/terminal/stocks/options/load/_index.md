@@ -1,5 +1,5 @@
 ```
-usage: load [-t TICKER] [-s {tr,yf}] [-h]
+usage: load [-t TICKER] [--source {tradier,yf}] [-h]
 ```
 
 Load a ticker into the Options menu
@@ -8,7 +8,7 @@ Load a ticker into the Options menu
 optional arguments:
   -t TICKER, --ticker TICKER
                         Stock ticker (default: None)
-  -s {tr,yf}, --source {tr,yf}
+  --source  {tradier ,yf}    Tradier or Yahoo Finance (default: tradier)
                         Source to get option expirations from (default: None)
   -h, --help            show this help message (default: False)
 ```

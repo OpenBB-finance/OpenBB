@@ -21,7 +21,7 @@ def vcr_config():
 # @pytest.mark.record_stdout
 def test_print_recommendation():
     tradingview_view.print_recommendation(
-        ticker="AAPL",
+        symbol="AAPL",
         exchange="",
         screener="america",
         interval="",

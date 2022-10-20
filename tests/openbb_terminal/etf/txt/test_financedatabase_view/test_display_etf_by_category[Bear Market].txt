@@ -1,3 +1,2 @@
                                   long_name         family     category total_assets
 DWSH  AdvisorShares Dorsey Wright Short ETF  AdvisorShares  Bear Market    26.198404
-

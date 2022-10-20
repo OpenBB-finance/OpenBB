@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 
 import logging
 from typing import Any, Tuple
+from datetime import datetime, timedelta
 import re
 import pandas as pd
 import requests
@@ -17,19 +18,27 @@ from openbb_terminal.cryptocurrency.dataframe_helpers import (
 from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import (
     get_coin_tokenomics,
 )
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import lambda_long_number_format
 from openbb_terminal.rich_config import console
+
+# pylint: disable=unsupported-assignment-operation
 
 logger = logging.getLogger(__name__)
 
 INTERVALS_TIMESERIES = ["5m", "15m", "30m", "1h", "1d", "1w"]
+# pylint: disable=unsupported-assignment-operation
 
 
 @log_start_end(log=logger)
-def get_available_timeseries() -> pd.DataFrame:
+def get_available_timeseries(only_free: bool = True) -> pd.DataFrame:
     """Returns available messari timeseries
     [Source: https://messari.io/]
+
+    Parameters
+    ----------
+    only_free : bool
+        Display only timeseries available for free
 
     Returns
     -------
@@ -58,6 +67,8 @@ def get_available_timeseries() -> pd.DataFrame:
             )
         df = pd.DataFrame(arr)
         df.set_index("id", inplace=True)
+        if only_free:
+            df = df.drop(df[df["Requires Paid Key"]].index)
         return df
     return pd.DataFrame()
 
@@ -68,21 +79,24 @@ base_url2 = "https://data.messari.io/api/v2/"
 
 @log_start_end(log=logger)
 def get_marketcap_dominance(
-    coin: str, interval: str, start: str, end: str
+    symbol: str,
+    interval: str = "1d",
+    start_date: str = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
+    end_date: str = datetime.now().strftime("%Y-%m-%d"),
 ) -> pd.DataFrame:
     """Returns market dominance of a coin over time
     [Source: https://messari.io/]
 
     Parameters
     ----------
-    coin : str
+    symbol : str
         Crypto symbol to check market cap dominance
-    start : int
-        Initial date like string (e.g., 2021-10-01)
-    end : int
-        End date like string (e.g., 2021-10-01)
     interval : str
-        Interval frequency (e.g., 1d)
+        Interval frequency (possible values are: 5m, 15m, 30m, 1h, 1d, 1w)
+    start_date : int
+        Initial date like string (e.g., 2021-10-01)
+    end_date : int
+        End date like string (e.g., 2021-10-01)
 
     Returns
     -------
@@ -91,30 +105,39 @@ def get_marketcap_dominance(
     """
 
     df, _ = get_messari_timeseries(
-        coin=coin, end=end, start=start, interval=interval, timeseries_id="mcap.dom"
+        symbol=symbol,
+        end_date=end_date,
+        start_date=start_date,
+        interval=interval,
+        timeseries_id="mcap.dom",
     )
     return df
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_MESSARI_KEY"])
 def get_messari_timeseries(
-    coin: str, timeseries_id: str, interval: str, start: str, end: str
+    symbol: str,
+    timeseries_id: str,
+    interval: str = "1d",
+    start_date: str = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d"),
+    end_date: str = datetime.now().strftime("%Y-%m-%d"),
 ) -> Tuple[pd.DataFrame, str]:
     """Returns messari timeseries
     [Source: https://messari.io/]
 
     Parameters
     ----------
-    coin : str
+    symbol : str
         Crypto symbol to check messari timeseries
     timeseries_id : str
         Messari timeserie id
+    interval : str
+        Interval frequency (possible values are: 5m, 15m, 30m, 1h, 1d, 1w)
     start : int
         Initial date like string (e.g., 2021-10-01)
     end : int
         End date like string (e.g., 2021-10-01)
-    interval : str
-        Interval frequency (e.g., 1d)
 
     Returns
     -------
@@ -124,13 +147,13 @@ def get_messari_timeseries(
         timeserie title
     """
 
-    url = base_url + f"assets/{coin}/metrics/{timeseries_id}/time-series"
+    url = base_url + f"assets/{symbol}/metrics/{timeseries_id}/time-series"
 
     headers = {"x-messari-api-key": cfg.API_MESSARI_KEY}
 
     parameters = {
-        "start": start,
-        "end": end,
+        "start": start_date,
+        "end": end_date,
         "interval": interval,
     }
 
@@ -145,7 +168,7 @@ def get_messari_timeseries(
         df = pd.DataFrame(data["values"], columns=data["parameters"]["columns"])
 
         if df.empty:
-            console.print(f"No data found for {coin}.\n")
+            console.print(f"No data found for {symbol}.\n")
         else:
             df = df.set_index("timestamp")
             df.index = pd.to_datetime(df.index, unit="ms")
@@ -160,6 +183,7 @@ def get_messari_timeseries(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_MESSARI_KEY"])
 def get_links(symbol: str) -> pd.DataFrame:
     """Returns asset's links
     [Source: https://messari.io/]
@@ -198,7 +222,8 @@ def get_links(symbol: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_roadmap(symbol: str) -> pd.DataFrame:
+@check_api_key(["API_MESSARI_KEY"])
+def get_roadmap(symbol: str, ascend: bool = True) -> pd.DataFrame:
     """Returns coin roadmap
     [Source: https://messari.io/]
 
@@ -206,6 +231,8 @@ def get_roadmap(symbol: str) -> pd.DataFrame:
     ----------
     symbol : str
         Crypto symbol to check roadmap
+    ascend: bool
+        reverse order
 
     Returns
     -------
@@ -229,6 +256,10 @@ def get_roadmap(symbol: str) -> pd.DataFrame:
         df["date"] = pd.to_datetime(df["date"])
         df.columns = map(str.capitalize, df.columns)
         df = df.dropna(axis=1, how="all")
+        df["Date"] = df["Date"].dt.date
+        show_df = df
+        show_df = show_df.sort_values(by="Date", ascending=ascend)
+        show_df.fillna("Unknown", inplace=True)
     elif r.status_code == 401:
         console.print("[red]Invalid API Key[/red]\n")
     else:
@@ -238,9 +269,8 @@ def get_roadmap(symbol: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_tokenomics(
-    symbol: str, coingecko_symbol: str
-) -> Tuple[pd.DataFrame, pd.DataFrame]:
+@check_api_key(["API_MESSARI_KEY"])
+def get_tokenomics(symbol: str, coingecko_id: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Returns coin tokenomics
     [Source: https://messari.io/]
 
@@ -248,7 +278,7 @@ def get_tokenomics(
     ----------
     symbol : str
         Crypto symbol to check tokenomics
-    coingecko_symbol : str
+    coingecko_id : str
         ID from coingecko
     Returns
     -------
@@ -290,15 +320,15 @@ def get_tokenomics(
             }
         )
         df["Value"] = df["Value"].str.replace("n/a", "-")
-        cg_df = get_coin_tokenomics(coingecko_symbol)
+        cg_df = get_coin_tokenomics(coingecko_id)
         df = pd.concat([df, cg_df], ignore_index=True, sort=False)
         df.fillna("-", inplace=True)
         circ_df, _ = get_messari_timeseries(
-            coin=symbol,
+            symbol=symbol,
             timeseries_id="sply.circ",
             interval="1d",
-            start="",
-            end="",
+            start_date="",
+            end_date="",
         )
     elif r.status_code == 401:
         console.print("[red]Invalid API Key[/red]\n")
@@ -309,6 +339,7 @@ def get_tokenomics(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_MESSARI_KEY"])
 def get_project_product_info(
     symbol: str,
 ) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
@@ -377,6 +408,7 @@ def get_project_product_info(
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_MESSARI_KEY"])
 def get_team(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Returns coin team
     [Source: https://messari.io/]
@@ -452,6 +484,7 @@ def get_team(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_MESSARI_KEY"])
 def get_investors(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Returns coin investors
     [Source: https://messari.io/]
@@ -525,6 +558,7 @@ def get_investors(symbol: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_MESSARI_KEY"])
 def get_governance(symbol: str) -> Tuple[str, pd.DataFrame]:
     """Returns coin governance
     [Source: https://messari.io/]
@@ -595,6 +629,7 @@ def format_addresses(x: Any):
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_MESSARI_KEY"])
 def get_fundraising(
     symbol: str,
 ) -> Tuple[str, pd.DataFrame, pd.DataFrame, pd.DataFrame]:

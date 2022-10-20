@@ -1,0 +1,29 @@
+stocks
+load gme
+forecast
+show GME
+plot GME.close
+clean GME
+desc GME
+corr GME
+season GME.close
+delete GME.open
+rename GME -o volume -n vol
+ema GME
+sto GME
+rsi GME
+roc GME
+mom GME
+delta GME
+atr GME
+signal GME
+expo GME
+theta GME
+linregr GME
+regr GME
+rnn GME
+brnn GME
+nbeats GME
+tcn GME
+trans GME
+tft GME

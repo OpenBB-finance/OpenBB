@@ -18,6 +18,6 @@ def vcr_config():
 @pytest.mark.record_stdout
 def test_print_options_data():
     barchart_view.print_options_data(
-        ticker="PM",
+        symbol="PM",
         export="",
     )

@@ -22,7 +22,7 @@ optional arguments:
 Example:
 ```
 2022 Feb 16, 11:31 (✨) /stocks/ta/ $ recom
-               Ticker Recomendation
+               Ticker Recommendation
 ┏━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━┳━━━━━━┳━━━━━━━━━┓
 ┃         ┃ RECOMMENDATION ┃ BUY ┃ SELL ┃ NEUTRAL ┃
 ┡━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━╇━━━━━━╇━━━━━━━━━┩

@@ -6,7 +6,7 @@ import webbrowser
 from datetime import datetime
 from typing import List
 
-from prompt_toolkit.completion import NestedCompleter
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
@@ -21,24 +21,25 @@ class ResearchController(BaseController):
     """Research Controller class"""
 
     CHOICES_COMMANDS = [
-        "macroaxis",
-        "yahoo",
-        "finviz",
-        "marketwatch",
-        "fool",
-        "businessinsider",
-        "fmp",
-        "fidelity",
-        "tradingview",
-        "marketchameleon",
-        "stockrow",
         "barchart",
-        "grufity",
+        "businessinsider",
+        "bullrun",
+        "fidelity",
         "fintel",
-        "zacks",
+        "finviz",
+        "fmp",
+        "fool",
+        "grufity",
+        "macroaxis",
         "macrotrends",
+        "marketchameleon",
+        "marketwatch",
         "newsfilter",
         "stockanalysis",
+        "stockrow",
+        "tradingview",
+        "yahoo",
+        "zacks",
     ]
     PATH = "/stocks/res/"
 
@@ -61,24 +62,25 @@ class ResearchController(BaseController):
         mt = MenuText("stocks/res/", 50)
         mt.add_param("_ticker", self.ticker.upper())
         mt.add_raw("\n")
-        mt.add_cmd("macroaxis")
-        mt.add_cmd("yahoo")
-        mt.add_cmd("finviz")
-        mt.add_cmd("marketwatch")
-        mt.add_cmd("fool")
-        mt.add_cmd("businessinsider")
-        mt.add_cmd("fmp")
-        mt.add_cmd("fidelity")
-        mt.add_cmd("tradingview")
-        mt.add_cmd("marketchameleon")
-        mt.add_cmd("stockrow")
         mt.add_cmd("barchart")
-        mt.add_cmd("grufity")
+        mt.add_cmd("businessinsider")
+        mt.add_cmd("bullrun")
+        mt.add_cmd("fidelity")
         mt.add_cmd("fintel")
-        mt.add_cmd("zacks")
+        mt.add_cmd("finviz")
+        mt.add_cmd("fmp")
+        mt.add_cmd("fool")
+        mt.add_cmd("grufity")
+        mt.add_cmd("macroaxis")
         mt.add_cmd("macrotrends")
+        mt.add_cmd("marketchameleon")
+        mt.add_cmd("marketwatch")
         mt.add_cmd("newsfilter")
         mt.add_cmd("stockanalysis")
+        mt.add_cmd("stockrow")
+        mt.add_cmd("tradingview")
+        mt.add_cmd("yahoo")
+        mt.add_cmd("zacks")
         console.print(text=mt.menu_text, menu="Stocks - Research")
 
     def custom_reset(self):
@@ -103,6 +105,12 @@ class ResearchController(BaseController):
     def call_finviz(self, _):
         """Process finviz command"""
         webbrowser.open(f"https://finviz.com/quote.ashx?t={self.ticker}")
+        console.print("")
+
+    @log_start_end(log=logger)
+    def call_bullrun(self, _):
+        """Process bullrun command"""
+        webbrowser.open(f"https://bullrun.com.br/acoes/{self.ticker}")
         console.print("")
 
     @log_start_end(log=logger)

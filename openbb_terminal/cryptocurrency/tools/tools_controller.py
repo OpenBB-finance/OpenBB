@@ -7,7 +7,7 @@ import argparse
 import logging
 from typing import List
 
-from prompt_toolkit.completion import NestedCompleter
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
@@ -40,6 +40,27 @@ class ToolsController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
 
+            one_to_hundred_one: dict = {str(c): {} for c in range(1, 101)}
+            choices["aprtoapy"] = {
+                "--apr": one_to_hundred_one,
+                "--compounding": "--apr",
+                "-c": "--compounding",
+                "--narrative": {},
+                "-n": "--narrative",
+            }
+            choices["il"] = {
+                "--priceChangeA": one_to_hundred_one,
+                "-a": "--priceChangeA",
+                "--priceChangeB": "--priceChangeA",
+                "-b": "--priceChangeB",
+                "--proportion": "--priceChangeA",
+                "-p": "--proportion",
+                "--value": None,
+                "-v": "--value",
+                "--narrative": {},
+                "-n": "--narrative",
+            }
+
             choices["support"] = self.SUPPORT_CHOICES
             choices["about"] = self.ABOUT_CHOICES
 
@@ -63,18 +84,16 @@ class ToolsController(BaseController):
             Users can provide percentages increases for two tokens (and their weight in the liquidity pool)
             and verify the impermanent loss that can occur.""",
         )
-
         parser.add_argument(
-            "-pcA",
+            "-a",
             "--priceChangeA",
             dest="priceChangeA",
             type=check_non_negative_float,
             help="Token A price change in percentage",
             default=0,
         )
-
         parser.add_argument(
-            "-pcB",
+            "-b",
             "--priceChangeB",
             dest="priceChangeB",
             type=check_non_negative_float,
@@ -99,7 +118,6 @@ class ToolsController(BaseController):
             help="Initial amount of dollars that user provides to liquidity pool",
             default=1000,
         )
-
         parser.add_argument(
             "-n",
             "--narrative",
@@ -108,9 +126,8 @@ class ToolsController(BaseController):
             help="Flag to show narrative instead of dataframe",
             default=False,
         )
-
         if other_args and not other_args[0][0] == "-":
-            other_args.insert(0, "-pcA")
+            other_args.insert(0, "-a")
 
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
@@ -139,7 +156,6 @@ class ToolsController(BaseController):
                       can be defined with -c argument.
                   """,
         )
-
         parser.add_argument(
             "--apr",
             dest="apr",
@@ -147,7 +163,6 @@ class ToolsController(BaseController):
             help="APR value in percentage to convert",
             default=100,
         )
-
         parser.add_argument(
             "-c",
             "--compounding",

@@ -1,0 +1,6 @@
+                                  slug  floorInfo.currentFloorEth  totalSupply  listedCount blockchain
+0           ringers-art-blocks-curated                      51.00         1000           27   ethereum
+1  chromie-squiggle-art-blocks-curated                      11.49         9675          220   ethereum
+2                          cryptopunks                      61.95        10000         1114   ethereum
+3                bored-ape-kennel-club                       6.48         9602          414   ethereum
+4                            cool-cats                       1.99         9941          428   ethereum

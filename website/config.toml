@@ -1,6 +1,6 @@
 baseURL = "https://openbb-finance.github.io/OpenBBTerminal"
-title = "OpenBB Documentation"
 theme = "hugo-geekdoc"
+title = "OpenBB Terminal Documentation"
 
 # Required to get well formatted code blocks
 pygmentsUseClasses = true
@@ -24,9 +24,9 @@ enableGitInfo = true
 
   # (Optional, default static/brand.svg) Set the path to a logo for the Geekdoc
   # relative to your 'static/' folder.
-  geekdocLogo = "openbb_logo.png"
+  geekdocLogo = "openbb_logo.svg"
 
-  # (Optional, default false) Render menu from data file im 'data/menu/main.yaml'.
+  # (Optional, default false) Render menu from data file in 'data/menu/main.yaml'.
   geekdocMenuBundle = true
 
   # (Optional, default true) Show page navigation links at the bottom of each

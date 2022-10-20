@@ -32,10 +32,7 @@ interactions:
       Content-Type:
       - text/xml; charset=UTF-8
       Date:
-      - Sat, 09 Apr 2022 13:01:28 GMT
-      Set-Cookie:
-      - cookiesession1=678A3E1FC28A68B6BA595AD7027EAAE5;Expires=Sun, 09 Apr 2023 13:01:20
-        GMT;Path=/;HttpOnly
+      - Sun, 04 Sep 2022 00:08:31 GMT
     status:
       code: 400
       message: Bad Request

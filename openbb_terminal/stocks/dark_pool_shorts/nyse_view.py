@@ -27,10 +27,10 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_short_by_exchange(
-    ticker: str,
+    symbol: str,
     raw: bool = False,
-    sort: str = "",
-    asc: bool = False,
+    sortby: str = "",
+    ascend: bool = False,
     mpl: bool = True,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -39,34 +39,36 @@ def display_short_by_exchange(
 
     Parameters
     ----------
-    ticker : str
+    symbol : str
         Stock ticker
     raw : bool
         Flag to display raw data
-    sort: str
+    sortby: str
         Column to sort by
-    asc: bool
-        Flag to sort in ascending order
+    ascend: bool
+        Sort in ascending order
     mpl: bool
-        Flag to display using matplotlib
+        Display using matplotlib
     export : str, optional
         Format  of export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
 
     """
-    volume_by_exchange = nyse_model.get_short_data_by_exchange(ticker).sort_values(
+    volume_by_exchange = nyse_model.get_short_data_by_exchange(symbol).sort_values(
         by="Date"
     )
     if volume_by_exchange.empty:
         console.print("No short data found. Please send us a question on discord")
 
-    if sort:
-        if sort in volume_by_exchange.columns:
-            volume_by_exchange = volume_by_exchange.sort_values(by=sort, ascending=asc)
+    if sortby:
+        if sortby in volume_by_exchange.columns:
+            volume_by_exchange = volume_by_exchange.sort_values(
+                by=sortby, ascending=ascend
+            )
         else:
             console.print(
-                f"{sort} not a valid option.  Selectone of {list(volume_by_exchange.columns)}.  Not sorting."
+                f"{sortby} not a valid option. Selectone of {list(volume_by_exchange.columns)}. Not sorting."
             )
 
     if mpl:
@@ -91,7 +93,7 @@ def display_short_by_exchange(
             volume_by_exchange.Date.iloc[-1],
         )
 
-        ax.set_title(f"Net Short Volume for {ticker}")
+        ax.set_title(f"Net Short Volume for {symbol}")
         theme.style_primary_axis(ax)
 
         if not external_axes:
@@ -103,7 +105,7 @@ def display_short_by_exchange(
             x="Date",
             y="NetShort",
             color="Exchange",
-            title=f"Net Short Volume for {ticker}",
+            title=f"Net Short Volume for {symbol}",
         )
         fig.show()
 

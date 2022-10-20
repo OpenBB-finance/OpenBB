@@ -16,13 +16,13 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_management(ticker: str) -> pd.DataFrame:
+def get_management(symbol: str) -> pd.DataFrame:
     """Get company managers from Business Insider
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
+    symbol : str
+        Stock ticker symbol
 
     Returns
     -------
@@ -30,7 +30,7 @@ def get_management(ticker: str) -> pd.DataFrame:
         Dataframe of managers
     """
     url_market_business_insider = (
-        f"https://markets.businessinsider.com/stocks/{ticker.lower()}-stock"
+        f"https://markets.businessinsider.com/stocks/{symbol.lower()}-stock"
     )
     text_soup_market_business_insider = BeautifulSoup(
         requests.get(
@@ -65,25 +65,26 @@ def get_management(ticker: str) -> pd.DataFrame:
 
     if found_h2s.get("Management") is None:
         console.print(
-            f"[red]No management information in Business Insider for {ticker}[/red]"
+            f"[red]No management information in Business Insider for {symbol}[/red]"
         )
         console.print("")
         return pd.DataFrame()
 
-    l_titles = []
-    for s_title in found_h2s["Management"].findAll(
-        "td", {"class": "table__td text-right"}
-    ):
-        if any(c.isalpha() for c in s_title.text.strip()) and (
-            "USD" not in s_title.text.strip()
-        ):
-            l_titles.append(s_title.text.strip())
+    l_titles = [
+        s_title.text.strip()
+        for s_title in found_h2s["Management"].findAll(
+            "td", {"class": "table__td text-right"}
+        )
+        if any(c.isalpha() for c in s_title.text.strip())
+        and ("USD" not in s_title.text.strip())
+    ]
 
-    l_names = []
-    for s_name in found_h2s["Management"].findAll(
-        "td", {"class": "table__td table--allow-wrap"}
-    ):
-        l_names.append(s_name.text.strip())
+    l_names = [
+        s_name.text.strip()
+        for s_name in found_h2s["Management"].findAll(
+            "td", {"class": "table__td table--allow-wrap"}
+        )
+    ]
 
     df_management = pd.DataFrame(
         {"Name": l_names[-len(l_titles) :], "Title": l_titles},  # noqa: E203
@@ -97,7 +98,7 @@ def get_management(ticker: str) -> pd.DataFrame:
     for s_name in df_management.index:
         df_management.loc[s_name][
             "Info"
-        ] = f"http://www.google.com/search?q={s_name} {ticker.upper()}".replace(
+        ] = f"http://www.google.com/search?q={s_name} {symbol.upper()}".replace(
             " ", "%20"
         )
 

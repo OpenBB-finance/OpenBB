@@ -12,7 +12,7 @@ import requests
 
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal.rich_config import console
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import prepare_all_coins_df
 from openbb_terminal.parent_classes import CRYPTO_SOURCES
 
@@ -55,6 +55,7 @@ class ApiKeyException(Exception):
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_CRYPTO_PANIC_KEY"])
 def make_request(**kwargs: Any) -> Optional[dict]:
     """Helper methods for requests [Source: https://cryptopanic.com/developers/api/]
 
@@ -158,8 +159,10 @@ def get_news(
     post_kind: str = "news",
     filter_: Optional[str] = None,
     region: str = "en",
-    source: str = "cp",
-    currency: str = None,
+    source: Optional[str] = None,
+    symbol: Optional[str] = None,
+    sortby: str = "published_at",
+    ascend: bool = True,
 ) -> pd.DataFrame:
     """Get recent posts from CryptoPanic news aggregator platform. [Source: https://cryptopanic.com/]
 
@@ -172,8 +175,12 @@ def get_news(
     filter_: Optional[str]
         Filter by kind of news. One from list: rising|hot|bullish|bearish|important|saved|lol
     region: str
-        Filter news by regions. Available regions are: en (English), de (Deutsch), nl (Dutch), es (Español),
-        fr (Français), it (Italiano), pt (Português), ru (Русский)
+        Filter news by regions. Available regions are: en (English), de (Deutsch), nl (Dutch),
+        es (Español), fr (Français), it (Italiano), pt (Português), ru (Русский)
+    sortby: str
+        Key to sort by.
+    ascend: bool
+        Sort in ascend order.
 
     Returns
     -------
@@ -186,12 +193,11 @@ def get_news(
 
     results = []
 
+    kwargs = {}
+    if source:
+        kwargs["source"] = source
     response = make_request(
-        post_kind=post_kind,
-        filter_=filter_,
-        region=region,
-        source=source,
-        currency=currency,
+        post_kind=post_kind, filter_=filter_, region=region, currency=symbol, **kwargs
     )
 
     if response:
@@ -228,6 +234,8 @@ def get_news(
                 if isinstance(x, str)
                 else x
             )
+            df["published_at"] = pd.to_datetime(df["published_at"]).dt.date
+            df = df.sort_values(by=sortby, ascending=ascend)
             return df
         except Exception as e:  # noqa: F841
             logger.exception(str(e))

@@ -1,5 +1,5 @@
-    search             search a specific stock ticker for analysis
-    load               load a specific stock ticker and additional info for analysis
+    search             search a specific stock ticker for analysis                     [FinanceDatabase]
+    load               load a specific stock ticker and additional info for analysis   [YahooFinance, IEXCloud, AlphaVantage, Polygon, EODHD]
 
 Stock: 
 
@@ -7,10 +7,11 @@ Company:
 Exchange: 
 Currency: 
 
-[unvl]    quote              view the current price for a specific stock ticker[/unvl]
+[unvl]    quote              view the current price for a specific stock ticker[/unvl]              [YahooFinance]
+[unvl]    tob                view top of book for loaded ticker (US exchanges only)[/unvl]          [CBOE]
 [unvl]    candle             view a candle chart for a specific stock ticker[/unvl]
-[unvl]    news               latest news of the company[/unvl]                  [News API]
-[unvl]    codes              FIGI, SIK and SIC codes codes[/unvl]               [Polygon]
+[unvl]    codes              FIGI, SIK and SIC codes codes[/unvl]                                   [Polygon]
+[unvl]    news               latest news of the company[/unvl]                                      [Feedparser, NewsApi]
 
 >   th                 trading hours,                check open markets
 >   options            options menu,                 chains, open interest, greeks, parity
@@ -28,5 +29,5 @@ Currency:
 [unvl]>   bt                 strategy backtester,          simple ema, ema cross, rsi strategies[/unvl]
 [unvl]>   ta                 technical analysis,           ema, macd, rsi, adx, bbands, obv[/unvl]
 [unvl]>   qa                 quantitative analysis,        decompose, cusum, residuals analysis[/unvl]
-[unvl]>   pred               prediction techniques,        regression, arima, rnn, lstm[/unvl]
+[unvl]>   forecast           forecast techniques,          rnn, nbeats, transformer, block rnn[/unvl]
 

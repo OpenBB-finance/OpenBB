@@ -46,7 +46,7 @@ def test_view_holdings(symbol, mocker):
     mocker.patch.object(
         target=helper_funcs.obbff, attribute="USE_TABULATE_DF", new=False
     )
-    stockanalysis_view.view_holdings(symbol, num_to_show=5, export="")
+    stockanalysis_view.view_holdings(symbol, limit=5, export="")
 
 
 @pytest.mark.vcr

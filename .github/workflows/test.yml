@@ -1,7 +1,7 @@
 name: Tests
 env:
   OPENBB_ENABLE_QUICK_EXIT: true
-  OPENBB_LOG_COLLECTION: false
+  OPENBB_LOG_COLLECT: false
   OPENBB_USE_ION: false
   OPENBB_USE_PROMPT_TOOLKIT: false
   PIP_DEFAULT_TIMEOUT: 100
@@ -13,42 +13,42 @@ jobs:
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b  # actions/checkout v3.0.2
 
       - name: Setup Python 3.9
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: "3.9"
           architecture: x64
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-v1-linting
           restore-keys: ${{ runner.os }}-v1-linting
 
-      - run: python custom_pre_commit/check_doc.py --ignore-files=settings_controller.py,keys_controller.py,featflags_controller.py,degiro_controller.py,oanda_controller.py --ignore-commands=login,al_swe,info_swe,goodness,resources,yf,yolo
-      - run: pip install bandit black codespell flake8 mypy pyupgrade safety pylint==2.13.9
+      - run: python custom_pre_commit/check_doc.py --ignore-files=settings_controller.py,keys_controller.py,featflags_controller.py,degiro_controller.py,oanda_controller.py --ignore-commands=login,al_swe,info_swe,goodness,resources,yf,yolo,featflags,guess,settings,survey,intro
+      - run: pip install bandit black codespell flake8 mypy pyupgrade safety pylint==2.15.2
       - run: pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools types-six
       - run: bandit -x ./tests -r . || true
       - run: black --diff --check .
-      - run: codespell --ignore-words-list=zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,vie,hel --quiet-level=2 --skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,./build/pyinstaller
+      - run: codespell --ignore-words-list=commun,statics,ro,zar,zlot,ba,buil,coo,ether,hist,hsi,mape,navagation,operatio,pres,ser,yeld,shold,ist,varian,datas,ake,creat,vie,hel --quiet-level=2 --skip=./tests,.git,*.css,*.csv,*.html,*.ini,*.ipynb,*.js,*.json,*.lock,*.scss,*.txt,*.yaml,./build/pyinstaller
       - run: flake8 . --count --ignore=E203,W503 --max-line-length=122 --show-source --statistics --exclude ./build/pyinstaller
       - run: mypy --ignore-missing-imports --exclude="/setup\.py$" .
-      - run: shopt -s globstar && pyupgrade --py36-plus **/*.py
+      - run: shopt -s globstar && pyupgrade --py38-plus **/*.py
       - run: safety check
       - run: |
-          pylint terminal.py openbb_terminal bots tests
+          pylint terminal.py openbb_terminal tests
   test:
     name: Base Tests - Ubuntu-latest - Python 3.9
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Python 3.9
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: "3.9"
           architecture: x64
@@ -62,24 +62,24 @@ jobs:
 
       - name: Load cached venv
         id: cached-poetry-dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: .venv
           key: venv-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock') }}
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root -E bots
+        run: poetry install --no-interaction --no-root
 
       - name: Install Package
-        run: poetry install --no-interaction -E bots
+        run: poetry install --no-interaction
 
       - name: Run tests
         env:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/ -m "not bots"
+          pytest tests/
 
       - name: Start Terminal and exit
         run: |
@@ -90,7 +90,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         name: Check out the code
       - name: Lint Code Base
         uses: docker://avtodev/markdown-lint:v1
@@ -104,17 +104,17 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        python-version: ["3.8", "3.9"]
+        python-version: ["3.8", "3.9", "3.10"]
         os: [ubuntu-latest, macos-latest]
         exclude:
           - os: ubuntu-latest
             python-version: "3.9"
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
           architecture: x64
@@ -128,17 +128,17 @@ jobs:
 
       - name: Load cached venv
         id: cached-poetry-dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: .venv
           key: venv-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock') }}
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root -E bots
+        run: poetry install --no-interaction --no-root
 
       - name: Install Package
-        run: poetry install --no-interaction -E bots
+        run: poetry install --no-interaction
 
       - name: List installed packages
         shell: bash -l {0}
@@ -151,7 +151,7 @@ jobs:
           MPLBACKEND: Agg
         run: |
           source $VENV
-          pytest tests/ -m "not bots"
+          pytest tests/
 
       - name: Start Terminal and exit
         run: |
@@ -185,7 +185,7 @@ jobs:
           git config --global core.eol lf
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           # Need to fetch more than the last commit so that setuptools-scm can
           # create the correct version string. If the number of commits since
@@ -197,10 +197,10 @@ jobs:
           persist-credentials: false
 
       - name: Setup caching for conda packages
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/conda_pkgs_dir
-          key: conda-${{ runner.os }}-v1-${{ matrix.python }}-${{ hashFiles('build/conda/conda-3-9-env.yaml') }}
+          key: conda-${{ runner.os }}-v1-${{ matrix.python }}-${{ hashFiles('build/conda/conda-3-9-env-full.yaml') }}
 
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2
@@ -229,10 +229,10 @@ jobs:
           echo "::set-output name=dir::$(pip cache dir)"
 
       - name: pip cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
-          key: ${{ runner.os }}-v1-3-9-pip-${{ hashFiles('requirements.txt') }}
+          key: ${{ runner.os }}-v1-3-9-pip-${{ hashFiles('requirements-full.txt') }}
           restore-keys: |
             ${{ runner.os }}-v1-pip-
 
@@ -256,7 +256,7 @@ jobs:
         env:
             MPLBACKEND: Agg
         shell: bash -l {0}
-        run: pytest tests/ -m "not bots and not linux"
+        run: pytest tests/ -m "not linux"
 
       - name: Start Terminal and exit
         shell: bash -l {0}

@@ -24,7 +24,7 @@ def test_display_crypto_rates(mocker):
     mocker.patch(target="openbb_terminal.helper_classes.TerminalStyle.visualize_output")
 
     loanscan_view.display_crypto_rates(
-        cryptos="BTC,ETH,USDT,USDC",
+        symbols="BTC,ETH,USDT,USDC",
         platforms="BlockFi,Ledn,SwissBorg,Youhodler",
         rate_type="supply",
     )

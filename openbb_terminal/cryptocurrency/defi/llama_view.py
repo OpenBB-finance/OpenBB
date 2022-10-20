@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_grouped_defi_protocols(
-    num: int = 50, export: str = "", external_axes: Optional[List[plt.Axes]] = None
+    limit: int = 50, export: str = "", external_axes: Optional[List[plt.Axes]] = None
 ) -> None:
     """Display top dApps (in terms of TVL) grouped by chain.
     [Source: https://docs.llama.fi/api]
@@ -43,11 +43,9 @@ def display_grouped_defi_protocols(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df = llama_model.get_defi_protocols()
-    df = df.sort_values("tvl", ascending=False).head(num)
 
-    df = df.set_index("name")
-    chains = df.groupby("chain").size().index.values.tolist()
+    df = llama_model.get_defi_protocols(limit)
+    chains = llama_model.get_grouped_defi_protocols(limit)
 
     # This plot has 1 axis
     if not external_axes:
@@ -75,7 +73,7 @@ def display_grouped_defi_protocols(
         ticker.FuncFormatter(lambda x, _: lambda_long_number_format(x))
     )
 
-    ax.set_title(f"Top {num} dApp TVL grouped by chain")
+    ax.set_title(f"Top {limit} dApp TVL grouped by chain")
     cfg.theme.style_primary_axis(ax)
     ax.tick_params(axis="y", labelsize=8)
 
@@ -91,24 +89,28 @@ def display_grouped_defi_protocols(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "gdapps",
-        df,
+        chains,
     )
 
 
 @log_start_end(log=logger)
 def display_defi_protocols(
-    top: int, sortby: str, descend: bool, description: bool, export: str = ""
+    limit: int,
+    sortby: str,
+    ascend: bool = False,
+    description: bool = False,
+    export: str = "",
 ) -> None:
-    """Display information about listed DeFi protocols, their current TVL and changes to it in the last hour/day/week.
-    [Source: https://docs.llama.fi/api]
+    """Display information about listed DeFi protocols, their current TVL and changes to it in
+    the last hour/day/week. [Source: https://docs.llama.fi/api]
 
     Parameters
     ----------
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data
-    descend: bool
+    ascend: bool
         Flag to sort data descending
     description: bool
         Flag to display description of protocol
@@ -119,7 +121,7 @@ def display_defi_protocols(
     df = llama_model.get_defi_protocols()
     df_data = df.copy()
 
-    df = df.sort_values(by=sortby, ascending=descend)
+    df = df.sort_values(by=sortby, ascending=ascend)
     df = df.drop(columns="chain")
 
     df["tvl"] = df["tvl"].apply(lambda x: lambda_long_number_format(x))
@@ -148,7 +150,7 @@ def display_defi_protocols(
         inplace=True,
     )
 
-    print_rich_table(df.head(top), headers=list(df.columns), show_index=False)
+    print_rich_table(df.head(limit), headers=list(df.columns), show_index=False)
 
     export_data(
         export,
@@ -217,7 +219,7 @@ def display_historical_tvl(
 
 @log_start_end(log=logger)
 def display_defi_tvl(
-    top: int = 5,
+    limit: int = 5,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -226,7 +228,7 @@ def display_defi_tvl(
 
     Parameters
     ----------
-    top: int
+    limit: int
         Number of records to display, by default 5
     export : str
         Export dataframe data to csv,json,xlsx file
@@ -244,7 +246,7 @@ def display_defi_tvl(
 
     df = llama_model.get_defi_tvl()
     df_data = df.copy()
-    df = df.tail(top)
+    df = df.tail(limit)
 
     ax.plot(df["date"], df["totalLiquidityUSD"], ms=2)
     # ax.set_xlim(df["date"].iloc[0], df["date"].iloc[-1])

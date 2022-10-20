@@ -7,7 +7,8 @@ from datetime import datetime, timedelta
 from typing import List
 
 import pandas as pd
-from prompt_toolkit.completion import NestedCompleter
+
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
@@ -20,7 +21,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
 from openbb_terminal.stocks.dark_pool_shorts import (
     finra_view,
     quandl_view,
@@ -29,6 +30,7 @@ from openbb_terminal.stocks.dark_pool_shorts import (
     stockgrid_view,
     yahoofinance_view,
     ibkr_view,
+    stocksera_view,
 )
 
 logger = logging.getLogger(__name__)
@@ -51,6 +53,7 @@ class DarkPoolShortsController(StockBaseController):
         "spos",
         # "volexch",
     ]
+    POS_CHOICES = ["sv", "sv_pct", "nsv", "nsv_dollar", "dpp", "dpp_dollar"]
     PATH = "/stocks/dps/"
 
     def __init__(
@@ -65,6 +68,88 @@ class DarkPoolShortsController(StockBaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
+
+            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
+            choices["load"] = {
+                "--ticker": None,
+                "-t": "--ticker",
+                "--start": None,
+                "-s": "--start",
+                "--end": None,
+                "-e": "--end",
+                "--interval": {c: {} for c in ["1", "5", "15", "30", "60"]},
+                "-i": "--interval",
+                "--prepost": {},
+                "-p": "--prepost",
+                "--file": None,
+                "-f": "--file",
+                "--monthly": {},
+                "-m": "--monthly",
+                "--weekly": {},
+                "-w": "--weekly",
+                "--iexrange": {c: {} for c in ["ytd", "1y", "2y", "5y", "6m"]},
+                "-r": "--iexrange",
+                "--source": {
+                    c: {} for c in get_ordered_list_sources(f"{self.PATH}load")
+                },
+            }
+            limit = {
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["shorted"] = limit
+            choices["hsi"] = limit
+            choices["ctb"] = {
+                "--number": one_to_hundred,
+                "-n": "--number",
+            }
+            choices["prom"] = {
+                "--num": None,
+                "-n": "--num",
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+                "--tier": {c: {} for c in ["T1", "T2", "OTCE"]},
+                "-t": "--tier",
+            }
+            choices["pos"] = {
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+                "--sort": {c: {} for c in self.POS_CHOICES},
+                "-s": "--sort",
+                "--ascend": {},
+                "-a": "--ascend",
+            }
+            choices["sidtc"] = {
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+                "--sort": {c: {} for c in ["float", "dtc", "si"]},
+                "-s": "--sort",
+            }
+            choices["ftd"] = {
+                "--start": None,
+                "-s": "--start",
+                "--end": None,
+                "-e": "--end",
+                "--num": one_to_hundred,
+                "-n": "--num",
+                "--raw": {},
+            }
+            choices["spos"] = {
+                "--num": one_to_hundred,
+                "-n": "--num",
+                "--raw": {},
+                "-r": "--raw",
+            }
+            choices["psi"] = {
+                "--nyse": {},
+                "--raw": {},
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+                "--source": {
+                    c: {} for c in get_ordered_list_sources(f"{self.PATH}psi")
+                },
+            }
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def custom_reset(self):
@@ -78,19 +163,19 @@ class DarkPoolShortsController(StockBaseController):
         mt = MenuText("stocks/dps/")
         mt.add_cmd("load")
         mt.add_raw("\n")
-        mt.add_cmd("shorted", "Yahoo Finance")
-        mt.add_cmd("ctb", "Interactive Broker")
-        mt.add_cmd("hsi", "Shortinterest")
-        mt.add_cmd("prom", "FINRA")
-        mt.add_cmd("pos", "Stockgrid")
-        mt.add_cmd("sidtc", "Stockgrid")
+        mt.add_cmd("shorted")
+        mt.add_cmd("ctb")
+        mt.add_cmd("hsi")
+        mt.add_cmd("prom")
+        mt.add_cmd("pos")
+        mt.add_cmd("sidtc")
         mt.add_raw("\n")
         mt.add_param("_ticker", self.ticker or "")
         mt.add_raw("\n")
-        mt.add_cmd("dpotc", "FINRA", self.ticker)
-        mt.add_cmd("ftd", "SEC", self.ticker)
-        mt.add_cmd("spos", "Stockgrid", self.ticker)
-        mt.add_cmd("psi", "Quandl/Stockgrid", self.ticker)
+        mt.add_cmd("dpotc", self.ticker)
+        mt.add_cmd("ftd", self.ticker)
+        mt.add_cmd("spos", self.ticker)
+        mt.add_cmd("psi", self.ticker)
         console.print(text=mt.menu_text, menu="Stocks - Dark Pool and Short data")
 
     @log_start_end(log=logger)
@@ -118,7 +203,7 @@ class DarkPoolShortsController(StockBaseController):
         )
         if ns_parser:
             yahoofinance_view.display_most_shorted(
-                num_stocks=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -129,7 +214,7 @@ class DarkPoolShortsController(StockBaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="ctb",
-            description="Print stocks with highest cost to borrow. [Source: Interactive Broker]",
+            description="Show cost to borrow of stocks. [Source: Stocksera/Interactive Broker]",
         )
         parser.add_argument(
             "-n",
@@ -138,18 +223,28 @@ class DarkPoolShortsController(StockBaseController):
             dest="number",
             type=check_int_range(1, 10000),
             default=20,
-            help="Number of stocks with high cost to borrow to retrieve.",
+            help="Number of records to retrieve.",
         )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
+        parser.add_argument(
+            "--raw",
+            action="store_true",
+            default=False,
+            dest="raw",
+            help="Print raw data.",
+        )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            ibkr_view.display_cost_to_borrow(
-                num_stocks=ns_parser.number,
-                export=ns_parser.export,
-            )
+            if ns_parser.source == "ibkr":
+                ibkr_view.display_cost_to_borrow(
+                    limit=ns_parser.number,
+                    export=ns_parser.export,
+                )
+            else:
+                stocksera_view.cost_to_borrow(
+                    self.ticker, limit=ns_parser.number, raw=ns_parser.raw
+                )
 
     @log_start_end(log=logger)
     def call_hsi(self, other_args: List[str]):
@@ -180,7 +275,7 @@ class DarkPoolShortsController(StockBaseController):
         )
         if ns_parser:
             shortinterest_view.high_short_interest(
-                num=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
 
@@ -228,8 +323,8 @@ class DarkPoolShortsController(StockBaseController):
         )
         if ns_parser:
             finra_view.darkpool_otc(
-                num=ns_parser.n_num,
-                promising=ns_parser.limit,
+                input_limit=ns_parser.n_num,
+                limit=ns_parser.limit,
                 tier=ns_parser.tier,
                 export=ns_parser.export,
             )
@@ -259,7 +354,7 @@ class DarkPoolShortsController(StockBaseController):
             "'sv_pct': Short Vol. %%, 'nsv': Net Short Vol. [1M], "
             "'nsv_dollar': Net Short Vol. ($100M), 'dpp': DP Position [1M], "
             "'dpp_dollar': DP Position ($1B)",
-            choices=["sv", "sv_pct", "nsv", "nsv_dollar", "dpp", "dpp_dollar"],
+            choices=self.POS_CHOICES,
             default="dpp_dollar",
             dest="sort_field",
         )
@@ -268,7 +363,7 @@ class DarkPoolShortsController(StockBaseController):
             "--ascending",
             action="store_true",
             default=False,
-            dest="ascending",
+            dest="ascend",
             help="Data in ascending order",
         )
         ns_parser = self.parse_known_args_and_warn(
@@ -276,9 +371,9 @@ class DarkPoolShortsController(StockBaseController):
         )
         if ns_parser:
             stockgrid_view.dark_pool_short_positions(
-                num=ns_parser.limit,
-                sort_field=ns_parser.sort_field,
-                ascending=ns_parser.ascending,
+                limit=ns_parser.limit,
+                sortby=ns_parser.sort_field,
+                ascend=ns_parser.ascend,
                 export=ns_parser.export,
             )
 
@@ -314,8 +409,8 @@ class DarkPoolShortsController(StockBaseController):
         )
         if ns_parser:
             stockgrid_view.short_interest_days_to_cover(
-                num=ns_parser.limit,
-                sort_field=ns_parser.sort_field,
+                limit=ns_parser.limit,
+                sortby=ns_parser.sort_field,
                 export=ns_parser.export,
             )
 
@@ -334,7 +429,7 @@ class DarkPoolShortsController(StockBaseController):
         if ns_parser:
             if self.ticker:
                 finra_view.darkpool_ats_otc(
-                    ticker=self.ticker,
+                    symbol=self.ticker,
                     export=ns_parser.export,
                 )
             else:
@@ -388,11 +483,11 @@ class DarkPoolShortsController(StockBaseController):
         if ns_parser:
             if self.ticker:
                 sec_view.fails_to_deliver(
-                    ticker=self.ticker,
-                    stock=self.stock,
-                    start=ns_parser.start,
-                    end=ns_parser.end,
-                    num=ns_parser.n_num,
+                    symbol=self.ticker,
+                    data=self.stock,
+                    start_date=ns_parser.start.strftime("%Y-%m-%d"),
+                    end_date=ns_parser.end.strftime("%Y-%m-%d"),
+                    limit=ns_parser.n_num,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
                 )
@@ -429,8 +524,8 @@ class DarkPoolShortsController(StockBaseController):
         if ns_parser:
             if self.ticker:
                 stockgrid_view.net_short_position(
-                    ticker=self.ticker,
-                    num=ns_parser.num,
+                    symbol=self.ticker,
+                    limit=ns_parser.num,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
                 )
@@ -461,18 +556,18 @@ class DarkPoolShortsController(StockBaseController):
         )
         if ns_parser:
             if self.ticker:
-                if ns_parser.source == "quandl":
+                if ns_parser.source == "Quandl":
                     quandl_view.short_interest(
-                        ticker=self.ticker,
+                        symbol=self.ticker,
                         nyse=ns_parser.b_nyse,
-                        days=ns_parser.limit,
+                        limit=ns_parser.limit,
                         raw=ns_parser.raw,
                         export=ns_parser.export,
                     )
                 else:
                     stockgrid_view.short_interest_volume(
-                        ticker=self.ticker,
-                        num=ns_parser.limit,
+                        symbol=self.ticker,
+                        limit=ns_parser.limit,
                         raw=ns_parser.raw,
                         export=ns_parser.export,
                     )

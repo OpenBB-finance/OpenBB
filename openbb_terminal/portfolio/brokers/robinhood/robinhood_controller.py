@@ -5,7 +5,7 @@ import argparse
 import logging
 from typing import List
 
-from prompt_toolkit.completion import NestedCompleter
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal.decorators import check_api_key
 from openbb_terminal import feature_flags as obbff
@@ -37,10 +37,12 @@ class RobinhoodController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["history"]["-i"] = {c: None for c in self.valid_interval}
-            choices["history"]["--interval"] = {c: None for c in self.valid_interval}
-            choices["history"]["-s"] = {c: None for c in self.valid_span}
-            choices["history"]["--span"] = {c: None for c in self.valid_span}
+            choices["history"] = {
+                "--span": {c: {} for c in self.valid_span},
+                "-s": "--span",
+                "--interval": {c: {} for c in self.valid_interval},
+                "-i": "--interval",
+            }
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):

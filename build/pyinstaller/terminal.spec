@@ -1,5 +1,6 @@
 # -*- mode: python ; coding: utf-8 -*-
 import os
+import pathlib
 
 from dotenv import set_key
 
@@ -7,6 +8,9 @@ from PyInstaller.compat import is_darwin, is_win
 from PyInstaller.building.api import PYZ, EXE, COLLECT
 from PyInstaller.building.splash import Splash
 from PyInstaller.building.build_main import Analysis
+
+
+# import subprocess
 
 from openbb_terminal.loggers import get_commit_hash
 
@@ -19,6 +23,14 @@ build_type = (
 # Local python environment packages folder
 pathex = os.path.join(os.path.dirname(os.__file__), "site-packages")
 
+# Removing unused ARM64 binary
+binary_to_remove = pathlib.Path(
+    os.path.join(pathex, "_scs_direct.cpython-39-darwin.so")
+)
+print("Removing ARM64 Binary: _scs_direct.cpython-39-darwin.so")
+binary_to_remove.unlink(missing_ok=True)
+
+
 # Get latest commit
 commit_hash = get_commit_hash()
 build_assets_folder = os.path.join(os.getcwd(), "build", "pyinstaller")
@@ -28,14 +40,10 @@ set_key(default_env_file, "OPENBB_LOGGING_COMMIT_HASH", str(commit_hash))
 # Files that are explicitly pulled into the bundle
 added_files = [
     (os.path.join(os.getcwd(), "openbb_terminal"), "openbb_terminal"),
-    (os.path.join(os.getcwd(), "data_sources_default.json"), "."),
-    (os.path.join(os.getcwd(), "routines"), "routines"),
-    (os.path.join(os.getcwd(), "portfolio"), "portfolio"),
-    (os.path.join(os.getcwd(), "i18n"), "i18n"),
-    (os.path.join(os.getcwd(), "styles"), "styles"),
     (os.path.join(pathex, "property_cached"), "property_cached"),
     (os.path.join(pathex, "user_agent"), "user_agent"),
     (os.path.join(pathex, "vaderSentiment"), "vaderSentiment"),
+    (os.path.join(pathex, "prophet"), "prophet"),
     (os.path.join(pathex, "frozendict", "VERSION"), "frozendict"),
     (
         os.path.join(pathex, "linearmodels", "datasets"),
@@ -49,6 +57,11 @@ added_files = [
         os.path.join(pathex, "investpy", "resources"),
         os.path.join("investpy", "resources"),
     ),
+    (
+        os.path.join(pathex, "pymongo"),
+        "pymongo",
+    ),
+    (os.path.join(pathex, "bson"), "bson"),
     (".env", "."),
 ]
 
@@ -68,11 +81,16 @@ hidden_imports = [
     "user_agent",
     "vaderSentiment",
     "frozendict",
-    "boto3",
     "textwrap3",
     "pyEX",
     "tensorflow",
+    "feedparser",
+    "pymongo",
+    "bson",
+    "_sysconfigdata__darwin_darwin",
+    "prophet",
 ]
+
 
 analysis_kwargs = dict(
     scripts=[os.path.join(os.getcwd(), "terminal.py")],
@@ -80,7 +98,7 @@ analysis_kwargs = dict(
     binaries=[],
     datas=added_files,
     hiddenimports=hidden_imports,
-    hookspath=[],
+    hookspath=["build/pyinstaller/hooks"],
     hooksconfig={},
     runtime_hooks=[],
     excludes=[],
@@ -112,6 +130,7 @@ exe_kwargs = dict(
     codesign_identity=None,
     entitlements_file=None,
 )
+
 
 # Packaging settings
 if build_type == "onefile":

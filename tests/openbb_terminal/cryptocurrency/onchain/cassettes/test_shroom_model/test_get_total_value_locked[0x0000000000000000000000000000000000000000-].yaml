@@ -1,0 +1,106 @@
+interactions:
+- request:
+    body: '{"sql": "\n    SELECT\n        date_trunc(''day'', balance_date) as metric_date,\n        symbol,\n        amount_usd/1000000
+      as amount_usd\n    FROM\n        ethereum.erc20_balances\n    WHERE\n        user_address
+      = ''0x0000000000000000000000000000000000000000'' and\n        symbol = ''USDC''
+      AND\n        balance_date >= getdate() - interval ''1 month''\n    ORDER BY\n        metric_date
+      asc\n    ", "ttlMinutes": 15}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '414'
+      Content-Type:
+      - application/json
+      x-api-key:
+      - MOCK_AUTHORIZATION
+    method: POST
+    uri: https://node-api.flipsidecrypto.com/queries
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAE/6tWKsnPTs1TslIqLE0tqgwqzdM1NzNMNTE1Nk41tTA0STa1SLUwSUoxTDYxTjRI
+        S0wzNlfSUUpOTM5ITVGyKikqTa0FAAtAnM1DAAAA
+    headers:
+      connection:
+      - keep-alive
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Mon, 10 Oct 2022 11:33:14 GMT
+      etag:
+      - W/"43-ChAWkttvmcKq7c9L9ujpGopGlsY"
+      fly-request-id:
+      - 01GF0TQ80W41K9Y0C5GFZMVEB2-lhr
+      keep-alive:
+      - timeout=5
+      server:
+      - Fly/54d1d920f (2022-09-30)
+      transfer-encoding:
+      - chunked
+      vary:
+      - Origin
+      via:
+      - 1.1 fly.io
+      x-powered-by:
+      - Express
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      x-api-key:
+      - MOCK_AUTHORIZATION
+    method: GET
+    uri: https://node-api.flipsidecrypto.com/queries/queryRun-761e4533e5814c58e84bd1c43a0faf37?pageNumber=1&pageSize=100000
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAE/6tWKkotLs0pKVayio7VUUrOzynNzfNJTErNAYko+bqGBHk6x7s4hrgq6SgFR/o6
+        +fso6Sg5+vqH+oXEhwa7KME1hVQWpIL1pCSWpCrpKBWXFGXmpSvpKOWV5ialFoEUFpckFpWkpjiW
+        KFkpGRkYGekaGugaGoQYGloZG1kZm+kZGBhEKekopeal4FRkAVNUkJie6gcx2cpQRwnEDc6sSlWy
+        MjQAAZD9iSWlxUpWSmmZeZnFGakpSrUAu0TkMu0AAAA=
+    headers:
+      connection:
+      - keep-alive
+      content-encoding:
+      - gzip
+      content-type:
+      - application/json; charset=utf-8
+      date:
+      - Mon, 10 Oct 2022 11:33:14 GMT
+      etag:
+      - W/"ed-fhfNu3Lmjm2FyGdzfm0tVbLc5Fk"
+      fly-request-id:
+      - 01GF0TQ8EDKNH5DB71B9A6TB41-lhr
+      keep-alive:
+      - timeout=5
+      server:
+      - Fly/54d1d920f (2022-09-30)
+      transfer-encoding:
+      - chunked
+      vary:
+      - Origin
+      via:
+      - 1.1 fly.io
+      x-powered-by:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

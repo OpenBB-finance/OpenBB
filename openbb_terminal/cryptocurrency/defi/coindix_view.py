@@ -9,7 +9,6 @@ from openbb_terminal.cryptocurrency.defi import coindix_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     export_data,
-    lambda_long_number_format,
     print_rich_table,
 )
 
@@ -21,9 +20,9 @@ def display_defi_vaults(
     chain: Optional[str] = None,
     protocol: Optional[str] = None,
     kind: Optional[str] = None,
-    top: int = 10,
+    limit: int = 10,
     sortby: str = "apy",
-    descend: bool = False,
+    ascend: bool = True,
     link: bool = False,
     export: str = "",
 ) -> None:
@@ -47,11 +46,11 @@ def display_defi_vaults(
         ]
     kind: str
         Kind/type of vault - one from list: ['lp','single','noimploss','stable']
-    top: int
+    limit: int
         Number of records to display
     sortby: str
         Key by which to sort data
-    descend: bool
+    ascend: bool
         Flag to sort data descending
     link: bool
         Flag to show links
@@ -59,29 +58,23 @@ def display_defi_vaults(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = coindix_model.get_defi_vaults(chain=chain, protocol=protocol, kind=kind)
-    df_data = df.copy()
+    df = coindix_model.get_defi_vaults(
+        chain=chain, protocol=protocol, kind=kind, sortby=sortby, ascend=ascend
+    )
     if df.empty:
         print(
             f"Couldn't find any vaults for "
-            f"{'' if not chain else 'chain: ' + chain}{'' if not protocol else ', protocol: ' + protocol}"
+            f"{'' if not chain else 'chain: ' + chain}"
+            f"{'' if not protocol else ', protocol: ' + protocol}"
             f"{'' if not kind else ', kind:' + kind}"
         )
         return
-
-    df = df.sort_values(by=sortby, ascending=descend).fillna("NA")
-    df["tvl"] = df["tvl"].apply(lambda x: lambda_long_number_format(x))
-    df["apy"] = df["apy"].apply(
-        lambda x: f"{str(round(x * 100, 2))} %" if isinstance(x, (int, float)) else x
-    )
-    df.columns = [x.title() for x in df.columns]
-    df.rename(columns={"Apy": "APY (%)", "Tvl": "TVL ($)"}, inplace=True)
 
     if link is True:
         df.drop("Link", axis=1, inplace=True)
 
     print_rich_table(
-        df.head(top),
+        df.head(limit),
         headers=list(df.columns),
         show_index=False,
         title="Top DeFi Vaults",
@@ -91,5 +84,5 @@ def display_defi_vaults(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "vaults",
-        df_data,
+        df,
     )

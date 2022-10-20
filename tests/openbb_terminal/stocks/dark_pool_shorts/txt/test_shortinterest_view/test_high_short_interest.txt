@@ -1,4 +1,3 @@
   Ticker          Company Exchange ShortInt   Float  Outstd                          Industry
 1   BFRI  Biofrontera Inc   Nasdaq   84.54%   5.74M  14.46M                   Pharmaceuticals
 2   CRTX    Cortexyme Inc   Nasdaq   59.10%  15.54M  29.88M  Biotechnology & Medical Research
-

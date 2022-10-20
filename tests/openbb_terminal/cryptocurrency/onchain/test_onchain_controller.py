@@ -331,6 +331,27 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [],
             dict(),
         ),
+        (
+            "call_dt",
+            [],
+            "shroom_view.display_daily_transactions",
+            [],
+            dict(),
+        ),
+        (
+            "call_ds",
+            ["uniswap-v3"],
+            "shroom_view.display_dapp_stats",
+            [],
+            dict(),
+        ),
+        (
+            "call_tvl",
+            ["0xa5407eae9ba41422680e2e00537571bcc53efbfd"],
+            "shroom_view.display_total_value_locked",
+            [],
+            dict(),
+        ),
     ],
 )
 def test_call_func(

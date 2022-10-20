@@ -1,21 +1,21 @@
-,name,chain,protocol,apy,tvl,link
-0,WETH-10k,Ethereum,Uniswap,,1698882,https://api.coindix.com/vault/120568/redirect
-1,Azuki-WETH,Ethereum,Uniswap,,1180607,https://api.coindix.com/vault/113873/redirect
-2,WETH-RYOSHI,Ethereum,Uniswap,,1569332,https://api.coindix.com/vault/111282/redirect
-3,Hasbro-WETH,Ethereum,Uniswap,,1025188,https://api.coindix.com/vault/110372/redirect
-4,WETH-GENIE,Ethereum,Uniswap,,1770296,https://api.coindix.com/vault/118073/redirect
-5,WETH-PRAG,Ethereum,Uniswap,,1359190,https://api.coindix.com/vault/165735/redirect
-6,APELAND-WETH,Ethereum,Uniswap,,1216107,https://api.coindix.com/vault/113531/redirect
-7,Line-WETH,Ethereum,Uniswap,,2065257,https://api.coindix.com/vault/108126/redirect
-8,USDC-CRV,Ethereum,Uniswap,,1721977,https://api.coindix.com/vault/167534/redirect
-9,USDD-USDT (0.01%),Ethereum,Uniswap,,3925917,https://api.coindix.com/vault/121969/redirect
-10,WETH-DOODLE,Ethereum,Uniswap,,2886965,https://api.coindix.com/vault/97162/redirect
-11,HOOT-WETH,Ethereum,Uniswap,,1474099,https://api.coindix.com/vault/112952/redirect
-12,Firefox-WETH,Ethereum,Uniswap,,1963426,https://api.coindix.com/vault/95445/redirect
-13,WBTC-BBTC (0.05%),Ethereum,Uniswap,,4200389,https://api.coindix.com/vault/178382/redirect
-14,WETH-Richemont,Ethereum,Uniswap,,1630815,https://api.coindix.com/vault/104732/redirect
-15,WETH-OP,Ethereum,Uniswap,,1664803,https://api.coindix.com/vault/119426/redirect
-16,GRAPE-MIM,Avalanche,Beefy,7.47626288,1056770,https://api.coindix.com/vault/50508/redirect
-17,WBTC-cxBTC,Polygon,Beefy,3.85182283,1542565,https://api.coindix.com/vault/150035/redirect
-18,ETH-cxETH,Polygon,Beefy,3.76929371,1547500,https://api.coindix.com/vault/72936/redirect
-19,SHIT-WETH (1%),Ethereum,Uniswap,3.65199141,2179266,https://api.coindix.com/vault/162981/redirect
+,Name,Chain,Protocol,APY (%),TVL ($),Link
+19,SHIT-WETH (1%),Ethereum,Uniswap,365.2 %,2.179 M,https://api.coindix.com/vault/162981/redirect
+18,ETH-cxETH,Polygon,Beefy,376.93 %,1.548 M,https://api.coindix.com/vault/72936/redirect
+17,WBTC-cxBTC,Polygon,Beefy,385.18 %,1.543 M,https://api.coindix.com/vault/150035/redirect
+16,GRAPE-MIM,Avalanche,Beefy,747.63 %,1.057 M,https://api.coindix.com/vault/50508/redirect
+0,WETH-10k,Ethereum,Uniswap,NA,1.699 M,https://api.coindix.com/vault/120568/redirect
+1,Azuki-WETH,Ethereum,Uniswap,NA,1.181 M,https://api.coindix.com/vault/113873/redirect
+2,WETH-RYOSHI,Ethereum,Uniswap,NA,1.569 M,https://api.coindix.com/vault/111282/redirect
+3,Hasbro-WETH,Ethereum,Uniswap,NA,1.025 M,https://api.coindix.com/vault/110372/redirect
+4,WETH-GENIE,Ethereum,Uniswap,NA,1.770 M,https://api.coindix.com/vault/118073/redirect
+5,WETH-PRAG,Ethereum,Uniswap,NA,1.359 M,https://api.coindix.com/vault/165735/redirect
+6,APELAND-WETH,Ethereum,Uniswap,NA,1.216 M,https://api.coindix.com/vault/113531/redirect
+7,Line-WETH,Ethereum,Uniswap,NA,2.065 M,https://api.coindix.com/vault/108126/redirect
+8,USDC-CRV,Ethereum,Uniswap,NA,1.722 M,https://api.coindix.com/vault/167534/redirect
+9,USDD-USDT (0.01%),Ethereum,Uniswap,NA,3.926 M,https://api.coindix.com/vault/121969/redirect
+10,WETH-DOODLE,Ethereum,Uniswap,NA,2.887 M,https://api.coindix.com/vault/97162/redirect
+11,HOOT-WETH,Ethereum,Uniswap,NA,1.474 M,https://api.coindix.com/vault/112952/redirect
+12,Firefox-WETH,Ethereum,Uniswap,NA,1.963 M,https://api.coindix.com/vault/95445/redirect
+13,WBTC-BBTC (0.05%),Ethereum,Uniswap,NA,4.200 M,https://api.coindix.com/vault/178382/redirect
+14,WETH-Richemont,Ethereum,Uniswap,NA,1.631 M,https://api.coindix.com/vault/104732/redirect
+15,WETH-OP,Ethereum,Uniswap,NA,1.665 M,https://api.coindix.com/vault/119426/redirect

@@ -17,16 +17,12 @@ import riskfolio as rp
 from dateutil.relativedelta import relativedelta, FR
 from matplotlib.gridspec import GridSpec
 from matplotlib.lines import Line2D
-from scipy.interpolate import interp1d
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import plot_autoscale, print_rich_table
-from openbb_terminal.portfolio.portfolio_optimization import (
-    optimizer_model,
-    yahoo_finance_model,
-)
+from openbb_terminal.portfolio.portfolio_optimization import optimizer_model
 from openbb_terminal.rich_config import console
 
 warnings.filterwarnings("ignore")
@@ -109,18 +105,18 @@ dict_conversion = {"period": "historic_period", "start": "start_period"}
 
 
 @log_start_end(log=logger)
-def d_period(period: str, start: str, end: str):
+def d_period(interval: str = "1y", start_date: str = "", end_date: str = ""):
     """
     Builds a date range string
 
     Parameters
     ----------
-    period : str
-        Period starting today
-    start: str
-        If not using period, start date string (YYYY-MM-DD)
-    end: str
-        If not using period, end date string (YYYY-MM-DD). If empty use last
+    interval : str
+        interval starting today
+    start_date: str
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
     """
     extra_choices = {
@@ -128,27 +124,27 @@ def d_period(period: str, start: str, end: str):
         "max": "[All-time]",
     }
 
-    if start == "":
-        if period in extra_choices:
-            p = extra_choices[period]
+    if start_date == "":
+        if interval in extra_choices:
+            p = extra_choices[interval]
         else:
-            if period[-1] == "d":
-                p = "[" + period[:-1] + " Days]"
-            elif period[-1] == "w":
-                p = "[" + period[:-1] + " Weeks]"
-            elif period[-1] == "o":
-                p = "[" + period[:-2] + " Months]"
-            elif period[-1] == "y":
-                p = "[" + period[:-1] + " Years]"
+            if interval[-1] == "d":
+                p = "[" + interval[:-1] + " Days]"
+            elif interval[-1] == "w":
+                p = "[" + interval[:-1] + " Weeks]"
+            elif interval[-1] == "o":
+                p = "[" + interval[:-2] + " Months]"
+            elif interval[-1] == "y":
+                p = "[" + interval[:-1] + " Years]"
         if p[1:3] == "1 ":
             p = p.replace("s", "")
     else:
-        if end == "":
+        if end_date == "":
             end_ = date.today()
             if end_.weekday() >= 5:
                 end_ = end_ + relativedelta(weekday=FR(-1))
-            end = end_.strftime("%Y-%m-%d")
-        p = "[From " + start + " to " + end + "]"
+            end_date = end_.strftime("%Y-%m-%d")
+        p = "[From " + start_date + " to " + end_date + "]"
 
     return p
 
@@ -156,7 +152,7 @@ def d_period(period: str, start: str, end: str):
 @log_start_end(log=logger)
 def portfolio_performance(
     weights: dict,
-    stock_returns: pd.DataFrame,
+    data: pd.DataFrame,
     freq: str = "D",
     risk_measure: str = "MV",
     risk_free_rate: float = 0,
@@ -172,7 +168,7 @@ def portfolio_performance(
     ----------
     weights: dict
         Portfolio weights
-    stock_returns: pd.DataFrame
+    data: pd.DataFrame
         Stock returns dataframe
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
@@ -227,7 +223,7 @@ def portfolio_performance(
     """
     freq = freq.upper()
     weights = pd.Series(weights).to_frame()
-    returns = stock_returns @ weights
+    returns = data @ weights
     mu = returns.mean().item() * time_factor[freq]
     sigma = returns.std().item() * time_factor[freq] ** 0.5
     sharpe = (mu - risk_free_rate) / sigma
@@ -242,8 +238,8 @@ def portfolio_performance(
     if risk_measure != "MV":
         risk = rp.Sharpe_Risk(
             weights,
-            cov=stock_returns.cov(),
-            returns=stock_returns,
+            cov=data.cov(),
+            returns=data,
             rm=risk_measure,
             rf=risk_free_rate,
             alpha=alpha,
@@ -342,8 +338,9 @@ def display_weights_sa(weights: dict, weights_sa: dict):
     ----------
     weights: dict
         weights to display.  Keys are stocks.  Values are either weights or values
-    market_neutral : bool
-        Flag indicating shorting allowed (negative weights)
+    weights_sa: dict
+        weights of sensitivity analysis to display.  Keys are stocks.
+        Values are either weights or values
     """
     if not weights or not weights_sa:
         return
@@ -395,7 +392,9 @@ def display_weights_sa(weights: dict, weights_sa: dict):
 
 
 @log_start_end(log=logger)
-def display_categories(weights: dict, categories: dict, column: str, title: str = ""):
+def display_categories(
+    weights: dict, categories: dict, column: str = "ASSET_CLASS", title: str = ""
+):
     """
     Prints categories in a nice format
 
@@ -405,12 +404,14 @@ def display_categories(weights: dict, categories: dict, column: str, title: str 
         weights to display.  Keys are stocks.  Values are either weights or values
     categories: dict
         categories to display. Keys are stocks.  Values are either weights or values
-    column: int.
+    column: str.
         column selected to show table
         - ASSET_CLASS
         - SECTOR
         - INDUSTRY
         - COUNTRY
+    title: str
+        title to display
     """
     if not weights:
         return
@@ -615,10 +616,10 @@ def display_categories_sa(
 
 @log_start_end(log=logger)
 def display_equal_weight(
-    stocks: List[str],
-    period: str = "3y",
-    start: str = "",
-    end: str = "",
+    symbols: List[str],
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
     log_returns: bool = False,
     freq: str = "D",
     maxnan: float = 0.05,
@@ -631,18 +632,18 @@ def display_equal_weight(
     table: bool = False,
 ) -> Dict:
     """
-    Equally weighted portfolio, where weight = 1/# of stocks
+    Equally weighted portfolio, where weight = 1/# of symbols
 
     Parameters
     ----------
-    stocks : List[str]
+    symbols : List[str]
         List of portfolio tickers
-    period : str, optional
-        Period to look at returns from
-    start: str, optional
-        If not using period, start date string (YYYY-MM-DD)
-    end: str, optional
-        If not using period, end date string (YYYY-MM-DD). If empty use last
+    interval : str, optional
+        interval to look at returns from
+    start_date: str, optional
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str, optional
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
     log_returns: bool, optional
         If True calculate log returns, else arithmetic returns. Default value
@@ -681,7 +682,7 @@ def display_equal_weight(
         - 'MDD': Maximum Drawdown of uncompounded cumulative returns.
 
     risk_free_rate: float, optional
-        Risk free rate, must be in the same period of assets returns. Used for
+        Risk free rate, must be in the same interval of assets returns. Used for
         'FLPM' and 'SLPM' and Sharpe objective function. The default is 0.
     alpha: float, optional
         Significance level of CVaR, EVaR, CDaR and EDaR.
@@ -690,14 +691,14 @@ def display_equal_weight(
     table: bool, optional
         True if plot table weights, by default False
     """
-    p = d_period(period, start, end)
+    p = d_period(interval, start_date, end_date)
     s_title = f"{p} Equally Weighted Portfolio\n"
 
     weights, stock_returns = optimizer_model.get_equal_weights(
-        stocks=stocks,
-        period=period,
-        start=start,
-        end=end,
+        symbols=symbols,
+        interval=interval,
+        start_date=start_date,
+        end_date=end_date,
         log_returns=log_returns,
         freq=freq,
         maxnan=maxnan,
@@ -711,7 +712,7 @@ def display_equal_weight(
         display_weights(weights)
         portfolio_performance(
             weights=weights,
-            stock_returns=stock_returns,
+            data=stock_returns,
             risk_measure=risk_choices[risk_measure],
             risk_free_rate=risk_free_rate,
             alpha=alpha,
@@ -727,10 +728,10 @@ def display_equal_weight(
 
 @log_start_end(log=logger)
 def display_property_weighting(
-    stocks: List[str],
-    period: str = "3y",
-    start: str = "",
-    end: str = "",
+    symbols: List[str],
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
     log_returns: bool = False,
     freq: str = "D",
     maxnan: float = 0.05,
@@ -748,14 +749,14 @@ def display_property_weighting(
 
     Parameters
     ----------
-    stocks : List[str]
+    symbols : List[str]
         List of portfolio tickers
-    period : str, optional
-        Period to look at returns from
-    start: str, optional
-        If not using period, start date string (YYYY-MM-DD)
-    end: str, optional
-        If not using period, end date string (YYYY-MM-DD). If empty use last
+    interval : str, optional
+        interval to look at returns from
+    start_date: str, optional
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str, optional
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
     log_returns: bool, optional
         If True calculate log returns, else arithmetic returns. Default value
@@ -796,7 +797,7 @@ def display_property_weighting(
         - 'MDD': Maximum Drawdown of uncompounded cumulative returns.
 
     risk_free_rate: float, optional
-        Risk free rate, must be in the same period of assets returns. Used for
+        Risk free rate, must be in the same interval of assets returns. Used for
         'FLPM' and 'SLPM' and Sharpe objective function. The default is 0.
     alpha: float, optional
         Significance level of CVaR, EVaR, CDaR and EDaR.
@@ -805,14 +806,14 @@ def display_property_weighting(
     table: bool, optional
         True if plot table weights, by default False
     """
-    p = d_period(period, start, end)
+    p = d_period(interval, start_date, end_date)
     s_title = f"{p} Weighted Portfolio based on " + s_property + "\n"
 
     weights, stock_returns = optimizer_model.get_property_weights(
-        stocks=stocks,
-        period=period,
-        start=start,
-        end=end,
+        symbols=symbols,
+        interval=interval,
+        start_date=start_date,
+        end_date=end_date,
         log_returns=log_returns,
         freq=freq,
         maxnan=maxnan,
@@ -827,7 +828,7 @@ def display_property_weighting(
         display_weights(weights)
         portfolio_performance(
             weights=weights,
-            stock_returns=stock_returns,
+            data=stock_returns,
             risk_measure=risk_choices[risk_measure],
             risk_free_rate=risk_free_rate,
             alpha=alpha,
@@ -843,10 +844,10 @@ def display_property_weighting(
 
 @log_start_end(log=logger)
 def display_mean_risk(
-    stocks: List[str],
-    period: str = "3y",
-    start: str = "",
-    end: str = "",
+    symbols: List[str],
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
     log_returns: bool = False,
     freq: str = "D",
     maxnan: float = 0.05,
@@ -871,14 +872,14 @@ def display_mean_risk(
 
     Parameters
     ----------
-    stocks : List[str]
+    symbols : List[str]
         List of portfolio tickers
-    period : str, optional
-        Period to look at returns from
-    start: str, optional
-        If not using period, start date string (YYYY-MM-DD)
-    end: str, optional
-        If not using period, end date string (YYYY-MM-DD). If empty use last
+    interval : str, optional
+        interval to look at returns from
+    start_date: str, optional
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str, optional
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
     log_returns: bool, optional
         If True calculate log returns, else arithmetic returns. Default value
@@ -926,7 +927,7 @@ def display_mean_risk(
         - 'MaxRet': Maximize the expected return of the portfolio.
 
     risk_free_rate: float, optional
-        Risk free rate, must be in the same period of assets returns. Used for
+        Risk free rate, must be in the same interval of assets returns. Used for
         'FLPM' and 'SLPM' and Sharpe objective function. The default is 0.
     risk_aversion: float, optional
         Risk aversion factor of the 'Utility' objective function.
@@ -975,7 +976,7 @@ def display_mean_risk(
     table: bool, optional
         True if plot table weights, by default False
     """
-    p = d_period(period, start, end)
+    p = d_period(interval, start_date, end_date)
     if objective == "sharpe":
         s_title = f"{p} Maximal return/risk ratio portfolio using "
     elif objective == "minrisk":
@@ -987,10 +988,10 @@ def display_mean_risk(
     s_title += risk_names[risk_measure] + " as risk measure\n"
 
     weights, stock_returns = optimizer_model.get_mean_risk_portfolio(
-        stocks=stocks,
-        period=period,
-        start=start,
-        end=end,
+        symbols=symbols,
+        interval=interval,
+        start_date=start_date,
+        end_date=end_date,
         log_returns=log_returns,
         freq=freq,
         maxnan=maxnan,
@@ -1019,7 +1020,7 @@ def display_mean_risk(
         display_weights(weights)
         portfolio_performance(
             weights=weights,
-            stock_returns=stock_returns,
+            data=stock_returns,
             risk_measure=risk_choices[risk_measure],
             risk_free_rate=risk_free_rate,
             alpha=alpha,
@@ -1035,302 +1036,10 @@ def display_mean_risk(
 
 @log_start_end(log=logger)
 def display_max_sharpe(
-    stocks: List[str],
-    period: str = "3y",
-    start: str = "",
-    end: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    risk_measure: str = "MV",
-    risk_free_rate: float = 0,
-    alpha: float = 0.05,
-    target_return: float = -1,
-    target_risk: float = -1,
-    mean: str = "hist",
-    covariance: str = "hist",
-    d_ewma: float = 0.94,
-    value: float = 1.0,
-    value_short: float = 0.0,
-    table: bool = False,
-) -> Dict:
-    """
-    Builds a maximal return/risk ratio portfolio
-
-    Parameters
-    ----------
-    stocks : List[str]
-        List of portfolio tickers
-    period : str, optional
-        Period to look at returns from
-    start: str, optional
-        If not using period, start date string (YYYY-MM-DD)
-    end: str, optional
-        If not using period, end date string (YYYY-MM-DD). If empty use last
-        weekday.
-    log_returns: bool, optional
-        If True calculate log returns, else arithmetic returns. Default value
-        is False
-    freq: str, optional
-        The frequency used to calculate returns. Default value is 'D'. Possible
-        values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
-
-    maxnan: float, optional
-        Max percentage of nan values accepted per asset to be included in
-        returns.
-    threshold: float, optional
-        Value used to replace outliers that are higher to threshold.
-    method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
-    risk_measure: str, optional
-        The risk measure used to optimize the portfolio.
-        The default is 'MV'. Possible values are:
-
-        - 'MV': Standard Deviation.
-        - 'MAD': Mean Absolute Deviation.
-        - 'MSV': Semi Standard Deviation.
-        - 'FLPM': First Lower Partial Moment (Omega Ratio).
-        - 'SLPM': Second Lower Partial Moment (Sortino Ratio).
-        - 'CVaR': Conditional Value at Risk.
-        - 'EVaR': Entropic Value at Risk.
-        - 'WR': Worst Realization.
-        - 'ADD': Average Drawdown of uncompounded cumulative returns.
-        - 'UCI': Ulcer Index of uncompounded cumulative returns.
-        - 'CDaR': Conditional Drawdown at Risk of uncompounded cumulative returns.
-        - 'EDaR': Entropic Drawdown at Risk of uncompounded cumulative returns.
-        - 'MDD': Maximum Drawdown of uncompounded cumulative returns.
-
-    risk_free_rate: float, optional
-        Risk free rate, must be in the same period of assets returns. Used for
-        'FLPM' and 'SLPM' and Sharpe objective function. The default is 0.
-    alpha: float, optional
-        Significance level of CVaR, EVaR, CDaR and EDaR
-    target_return: float, optional
-        Constraint on minimum level of portfolio's return.
-    target_risk: float, optional
-        Constraint on maximum level of portfolio's risk.
-    mean: str, optional
-        The method used to estimate the expected returns.
-        The default value is 'hist'. Possible values are:
-
-        - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-
-    covariance: str, optional
-        The method used to estimate the covariance matrix:
-        The default is 'hist'. Possible values are:
-
-        - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ledoit': use the Ledoit and Wolf Shrinkage method.
-        - 'oas': use the Oracle Approximation Shrinkage method.
-        - 'shrunk': use the basic Shrunk Covariance method.
-        - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
-
-    d_ewma: float, optional
-        The smoothing factor of ewma methods.
-        The default is 0.94.
-    value : float, optional
-        Amount to allocate to portfolio in long positions, by default 1.0
-    value_short : float, optional
-        Amount to allocate to portfolio in short positions, by default 0.0
-    table: bool, optional
-        True if plot table weights, by default False
-    """
-    weights = display_mean_risk(
-        stocks=stocks,
-        period=period,
-        start=start,
-        end=end,
-        log_returns=log_returns,
-        freq=freq,
-        maxnan=maxnan,
-        threshold=threshold,
-        method=method,
-        risk_measure=risk_measure,
-        objective="sharpe",
-        risk_free_rate=risk_free_rate,
-        alpha=alpha,
-        target_return=target_return,
-        target_risk=target_risk,
-        mean=mean,
-        covariance=covariance,
-        d_ewma=d_ewma,
-        value=value,
-        value_short=value_short,
-        table=table,
-    )
-    return weights
-
-
-@log_start_end(log=logger)
-def display_min_risk(
-    stocks: List[str],
-    period: str = "3y",
-    start: str = "",
-    end: str = "",
-    log_returns: bool = False,
-    freq: str = "D",
-    maxnan: float = 0.05,
-    threshold: float = 0,
-    method: str = "time",
-    risk_measure: str = "MV",
-    risk_free_rate: float = 0,
-    alpha: float = 0.05,
-    target_return: float = -1,
-    target_risk: float = -1,
-    mean: str = "hist",
-    covariance: str = "hist",
-    d_ewma: float = 0.94,
-    value: float = 1.0,
-    value_short: float = 0.0,
-    table: bool = False,
-) -> Dict:
-    """
-    Builds a minimum risk portfolio
-
-    Parameters
-    ----------
-    stocks : List[str]
-        List of portfolio tickers
-    period : str, optional
-        Period to look at returns from
-    start: str, optional
-        If not using period, start date string (YYYY-MM-DD)
-    end: str, optional
-        If not using period, end date string (YYYY-MM-DD). If empty use last
-        weekday.
-    log_returns: bool, optional
-        If True calculate log returns, else arithmetic returns. Default value
-        is False
-    freq: str, optional
-        The frequency used to calculate returns. Default value is 'D'. Possible
-        values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
-
-    maxnan: float, optional
-        Max percentage of nan values accepted per asset to be included in
-        returns.
-    threshold: float, optional
-        Value used to replace outliers that are higher to threshold.
-    method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
-    risk_measure: str, optional
-        The risk measure used to optimize the portfolio.
-        The default is 'MV'. Possible values are:
-
-        - 'MV': Standard Deviation.
-        - 'MAD': Mean Absolute Deviation.
-        - 'MSV': Semi Standard Deviation.
-        - 'FLPM': First Lower Partial Moment (Omega Ratio).
-        - 'SLPM': Second Lower Partial Moment (Sortino Ratio).
-        - 'CVaR': Conditional Value at Risk.
-        - 'EVaR': Entropic Value at Risk.
-        - 'WR': Worst Realization.
-        - 'ADD': Average Drawdown of uncompounded cumulative returns.
-        - 'UCI': Ulcer Index of uncompounded cumulative returns.
-        - 'CDaR': Conditional Drawdown at Risk of uncompounded cumulative returns.
-        - 'EDaR': Entropic Drawdown at Risk of uncompounded cumulative returns.
-        - 'MDD': Maximum Drawdown of uncompounded cumulative returns.
-
-    risk_free_rate: float, optional
-        Risk free rate, must be in the same period of assets returns. Used for
-        'FLPM' and 'SLPM' and Sharpe objective function. The default is 0.
-    alpha: float, optional
-        Significance level of CVaR, EVaR, CDaR and EDaR
-    target_return: float, optional
-        Constraint on minimum level of portfolio's return.
-    target_risk: float, optional
-        Constraint on maximum level of portfolio's risk.
-    mean: str, optional
-        The method used to estimate the expected returns.
-        The default value is 'hist'. Possible values are:
-
-        - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-
-    covariance: str, optional
-        The method used to estimate the covariance matrix:
-        The default is 'hist'. Possible values are:
-
-        - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ledoit': use the Ledoit and Wolf Shrinkage method.
-        - 'oas': use the Oracle Approximation Shrinkage method.
-        - 'shrunk': use the basic Shrunk Covariance method.
-        - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
-
-    d_ewma: float, optional
-        The smoothing factor of ewma methods.
-        The default is 0.94.
-    value : float, optional
-        Amount to allocate to portfolio in long positions, by default 1.0
-    value_short : float, optional
-        Amount to allocate to portfolio in short positions, by default 0.0
-    table: bool, optional
-        True if plot table weights, by default False
-    """
-    weights = display_mean_risk(
-        stocks=stocks,
-        period=period,
-        start=start,
-        end=end,
-        log_returns=log_returns,
-        freq=freq,
-        maxnan=maxnan,
-        threshold=threshold,
-        method=method,
-        risk_measure=risk_measure,
-        objective="minrisk",
-        risk_free_rate=risk_free_rate,
-        alpha=alpha,
-        target_return=target_return,
-        target_risk=target_risk,
-        mean=mean,
-        covariance=covariance,
-        d_ewma=d_ewma,
-        value=value,
-        value_short=value_short,
-        table=table,
-    )
-    return weights
-
-
-@log_start_end(log=logger)
-def display_max_util(
-    stocks: List[str],
-    period: str = "3y",
-    start: str = "",
-    end: str = "",
+    symbols: List[str],
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
     log_returns: bool = False,
     freq: str = "D",
     maxnan: float = 0.05,
@@ -1350,18 +1059,18 @@ def display_max_util(
     table: bool = False,
 ) -> Dict:
     """
-    Builds a maximal risk averse utility portfolio
+    Builds a maximal return/risk ratio portfolio
 
     Parameters
     ----------
-    stocks : List[str]
+    symbols : List[str]
         List of portfolio tickers
-    period : str, optional
-        Period to look at returns from
-    start: str, optional
-        If not using period, start date string (YYYY-MM-DD)
-    end: str, optional
-        If not using period, end date string (YYYY-MM-DD). If empty use last
+    interval : str, optional
+        interval to look at returns from
+    start_date: str, optional
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str, optional
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
     log_returns: bool, optional
         If True calculate log returns, else arithmetic returns. Default value
@@ -1400,7 +1109,7 @@ def display_max_util(
         - 'MDD': Maximum Drawdown of uncompounded cumulative returns.
 
     risk_free_rate: float, optional
-        Risk free rate, must be in the same period of assets returns. Used for
+        Risk free rate, must be in the same interval of assets returns. Used for
         'FLPM' and 'SLPM' and Sharpe objective function. The default is 0.
     risk_aversion: float, optional
         Risk aversion factor of the 'Utility' objective function.
@@ -1449,18 +1158,22 @@ def display_max_util(
     table: bool, optional
         True if plot table weights, by default False
     """
-    weights = display_mean_risk(
-        stocks=stocks,
-        period=period,
-        start=start,
-        end=end,
+
+    p = d_period(interval, start_date, end_date)
+    s_title = f"{p} Maximal return/risk ratio portfolio using "
+    s_title += risk_names[risk_measure.lower()] + " as risk measure\n"
+
+    weights, stock_returns = optimizer_model.get_max_sharpe(
+        symbols=symbols,
+        interval=interval,
+        start_date=start_date,
+        end_date=end_date,
         log_returns=log_returns,
         freq=freq,
         maxnan=maxnan,
         threshold=threshold,
         method=method,
         risk_measure=risk_measure,
-        objective="utility",
         risk_free_rate=risk_free_rate,
         risk_aversion=risk_aversion,
         alpha=alpha,
@@ -1471,17 +1184,37 @@ def display_max_util(
         d_ewma=d_ewma,
         value=value,
         value_short=value_short,
-        table=table,
     )
+
+    if weights is None:
+        console.print("\n", "There is no solution with these parameters")
+        return {}
+
+    if table:
+        console.print("\n", s_title)
+        display_weights(weights)
+        portfolio_performance(
+            weights=weights,
+            data=stock_returns,
+            risk_measure=risk_choices[risk_measure],
+            risk_free_rate=risk_free_rate,
+            alpha=alpha,
+            # a_sim=a_sim,
+            # beta=beta,
+            # b_sim=beta_sim,
+            freq=freq,
+        )
+        console.print("")
+
     return weights
 
 
 @log_start_end(log=logger)
-def display_max_ret(
-    stocks: List[str],
-    period: str = "3y",
-    start: str = "",
-    end: str = "",
+def display_min_risk(
+    symbols: List[str],
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
     log_returns: bool = False,
     freq: str = "D",
     maxnan: float = 0.05,
@@ -1489,6 +1222,7 @@ def display_max_ret(
     method: str = "time",
     risk_measure: str = "MV",
     risk_free_rate: float = 0,
+    risk_aversion: float = 1,
     alpha: float = 0.05,
     target_return: float = -1,
     target_risk: float = -1,
@@ -1500,18 +1234,18 @@ def display_max_ret(
     table: bool = False,
 ) -> Dict:
     """
-    Builds a maximal return portfolio
+    Builds a minimum risk portfolio
 
     Parameters
     ----------
-    stocks : List[str]
+    symbols : List[str]
         List of portfolio tickers
-    period : str, optional
-        Period to look at returns from
-    start: str, optional
-        If not using period, start date string (YYYY-MM-DD)
-    end: str, optional
-        If not using period, end date string (YYYY-MM-DD). If empty use last
+    interval : str, optional
+        interval to look at returns from
+    start_date: str, optional
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str, optional
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
     log_returns: bool, optional
         If True calculate log returns, else arithmetic returns. Default value
@@ -1550,8 +1284,11 @@ def display_max_ret(
         - 'MDD': Maximum Drawdown of uncompounded cumulative returns.
 
     risk_free_rate: float, optional
-        Risk free rate, must be in the same period of assets returns. Used for
+        Risk free rate, must be in the same interval of assets returns. Used for
         'FLPM' and 'SLPM' and Sharpe objective function. The default is 0.
+    risk_aversion: float, optional
+        Risk aversion factor of the 'Utility' objective function.
+        The default is 1.
     alpha: float, optional
         Significance level of CVaR, EVaR, CDaR and EDaR
     target_return: float, optional
@@ -1596,19 +1333,23 @@ def display_max_ret(
     table: bool, optional
         True if plot table weights, by default False
     """
-    weights = display_mean_risk(
-        stocks=stocks,
-        period=period,
-        start=start,
-        end=end,
+    p = d_period(interval, start_date, end_date)
+    s_title = f"{p} Minimum risk portfolio using "
+    s_title += risk_names[risk_measure.lower()] + " as risk measure\n"
+
+    weights, stock_returns = optimizer_model.get_min_risk(
+        symbols=symbols,
+        interval=interval,
+        start_date=start_date,
+        end_date=end_date,
         log_returns=log_returns,
         freq=freq,
         maxnan=maxnan,
         threshold=threshold,
         method=method,
         risk_measure=risk_measure,
-        objective="maxret",
         risk_free_rate=risk_free_rate,
+        risk_aversion=risk_aversion,
         alpha=alpha,
         target_return=target_return,
         target_risk=target_risk,
@@ -1617,17 +1358,385 @@ def display_max_ret(
         d_ewma=d_ewma,
         value=value,
         value_short=value_short,
-        table=table,
     )
+
+    if weights is None:
+        console.print("\n", "There is no solution with these parameters")
+        return {}
+
+    if table:
+        console.print("\n", s_title)
+        display_weights(weights)
+        portfolio_performance(
+            weights=weights,
+            data=stock_returns,
+            risk_measure=risk_choices[risk_measure],
+            risk_free_rate=risk_free_rate,
+            alpha=alpha,
+            # a_sim=a_sim,
+            # beta=beta,
+            # b_sim=beta_sim,
+            freq=freq,
+        )
+        console.print("")
+
+    return weights
+
+
+@log_start_end(log=logger)
+def display_max_util(
+    symbols: List[str],
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
+    log_returns: bool = False,
+    freq: str = "D",
+    maxnan: float = 0.05,
+    threshold: float = 0,
+    method: str = "time",
+    risk_measure: str = "MV",
+    risk_free_rate: float = 0,
+    risk_aversion: float = 1,
+    alpha: float = 0.05,
+    target_return: float = -1,
+    target_risk: float = -1,
+    mean: str = "hist",
+    covariance: str = "hist",
+    d_ewma: float = 0.94,
+    value: float = 1.0,
+    value_short: float = 0.0,
+    table: bool = False,
+) -> Dict:
+    """
+    Builds a maximal risk averse utility portfolio
+
+    Parameters
+    ----------
+    symbols : List[str]
+        List of portfolio tickers
+    interval : str, optional
+        interval to look at returns from
+    start_date: str, optional
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str, optional
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
+        weekday.
+    log_returns: bool, optional
+        If True calculate log returns, else arithmetic returns. Default value
+        is False
+    freq: str, optional
+        The frequency used to calculate returns. Default value is 'D'. Possible
+        values are:
+            - 'D' for daily returns.
+            - 'W' for weekly returns.
+            - 'M' for monthly returns.
+
+    maxnan: float, optional
+        Max percentage of nan values accepted per asset to be included in
+        returns.
+    threshold: float, optional
+        Value used to replace outliers that are higher to threshold.
+    method: str
+        Method used to fill nan values. Default value is 'time'. For more information see
+        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+    risk_measure: str, optional
+        The risk measure used to optimize the portfolio.
+        The default is 'MV'. Possible values are:
+
+        - 'MV': Standard Deviation.
+        - 'MAD': Mean Absolute Deviation.
+        - 'MSV': Semi Standard Deviation.
+        - 'FLPM': First Lower Partial Moment (Omega Ratio).
+        - 'SLPM': Second Lower Partial Moment (Sortino Ratio).
+        - 'CVaR': Conditional Value at Risk.
+        - 'EVaR': Entropic Value at Risk.
+        - 'WR': Worst Realization.
+        - 'ADD': Average Drawdown of uncompounded cumulative returns.
+        - 'UCI': Ulcer Index of uncompounded cumulative returns.
+        - 'CDaR': Conditional Drawdown at Risk of uncompounded cumulative returns.
+        - 'EDaR': Entropic Drawdown at Risk of uncompounded cumulative returns.
+        - 'MDD': Maximum Drawdown of uncompounded cumulative returns.
+
+    risk_free_rate: float, optional
+        Risk free rate, must be in the same interval of assets returns. Used for
+        'FLPM' and 'SLPM' and Sharpe objective function. The default is 0.
+    risk_aversion: float, optional
+        Risk aversion factor of the 'Utility' objective function.
+        The default is 1.
+    alpha: float, optional
+        Significance level of CVaR, EVaR, CDaR and EDaR
+    target_return: float, optional
+        Constraint on minimum level of portfolio's return.
+    target_risk: float, optional
+        Constraint on maximum level of portfolio's risk.
+    mean: str, optional
+        The method used to estimate the expected returns.
+        The default value is 'hist'. Possible values are:
+
+        - 'hist': use historical estimates.
+        - 'ewma1': use ewma with adjust=True. For more information see
+        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma2': use ewma with adjust=False. For more information see
+        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+
+    covariance: str, optional
+        The method used to estimate the covariance matrix:
+        The default is 'hist'. Possible values are:
+
+        - 'hist': use historical estimates.
+        - 'ewma1': use ewma with adjust=True. For more information see
+        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma2': use ewma with adjust=False. For more information see
+        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ledoit': use the Ledoit and Wolf Shrinkage method.
+        - 'oas': use the Oracle Approximation Shrinkage method.
+        - 'shrunk': use the basic Shrunk Covariance method.
+        - 'gl': use the basic Graphical Lasso Covariance method.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+
+    d_ewma: float, optional
+        The smoothing factor of ewma methods.
+        The default is 0.94.
+    value : float, optional
+        Amount to allocate to portfolio in long positions, by default 1.0
+    value_short : float, optional
+        Amount to allocate to portfolio in short positions, by default 0.0
+    table: bool, optional
+        True if plot table weights, by default False
+    """
+    p = d_period(interval, start_date, end_date)
+    s_title = f"{p} Maximal risk averse utility function portfolio using "
+    s_title += risk_names[risk_measure.lower()] + " as risk measure\n"
+
+    weights, stock_returns = optimizer_model.get_max_util(
+        symbols=symbols,
+        interval=interval,
+        start_date=start_date,
+        end_date=end_date,
+        log_returns=log_returns,
+        freq=freq,
+        maxnan=maxnan,
+        threshold=threshold,
+        method=method,
+        risk_measure=risk_measure,
+        risk_free_rate=risk_free_rate,
+        risk_aversion=risk_aversion,
+        alpha=alpha,
+        target_return=target_return,
+        target_risk=target_risk,
+        mean=mean,
+        covariance=covariance,
+        d_ewma=d_ewma,
+        value=value,
+        value_short=value_short,
+    )
+
+    if weights is None:
+        console.print("\n", "There is no solution with these parameters")
+        return {}
+
+    if table:
+        console.print("\n", s_title)
+        display_weights(weights)
+        portfolio_performance(
+            weights=weights,
+            data=stock_returns,
+            risk_measure=risk_choices[risk_measure],
+            risk_free_rate=risk_free_rate,
+            alpha=alpha,
+            # a_sim=a_sim,
+            # beta=beta,
+            # b_sim=beta_sim,
+            freq=freq,
+        )
+        console.print("")
+
+    return weights
+
+
+@log_start_end(log=logger)
+def display_max_ret(
+    symbols: List[str],
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
+    log_returns: bool = False,
+    freq: str = "D",
+    maxnan: float = 0.05,
+    threshold: float = 0,
+    method: str = "time",
+    risk_measure: str = "MV",
+    risk_free_rate: float = 0,
+    risk_aversion: float = 1,
+    alpha: float = 0.05,
+    target_return: float = -1,
+    target_risk: float = -1,
+    mean: str = "hist",
+    covariance: str = "hist",
+    d_ewma: float = 0.94,
+    value: float = 1.0,
+    value_short: float = 0.0,
+    table: bool = False,
+) -> Dict:
+    """
+    Builds a maximal return portfolio
+
+    Parameters
+    ----------
+    symbols : List[str]
+        List of portfolio tickers
+    interval : str, optional
+        interval to look at returns from
+    start_date: str, optional
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str, optional
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
+        weekday.
+    log_returns: bool, optional
+        If True calculate log returns, else arithmetic returns. Default value
+        is False
+    freq: str, optional
+        The frequency used to calculate returns. Default value is 'D'. Possible
+        values are:
+            - 'D' for daily returns.
+            - 'W' for weekly returns.
+            - 'M' for monthly returns.
+
+    maxnan: float, optional
+        Max percentage of nan values accepted per asset to be included in
+        returns.
+    threshold: float, optional
+        Value used to replace outliers that are higher to threshold.
+    method: str
+        Method used to fill nan values. Default value is 'time'. For more information see
+        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+    risk_measure: str, optional
+        The risk measure used to optimize the portfolio.
+        The default is 'MV'. Possible values are:
+
+        - 'MV': Standard Deviation.
+        - 'MAD': Mean Absolute Deviation.
+        - 'MSV': Semi Standard Deviation.
+        - 'FLPM': First Lower Partial Moment (Omega Ratio).
+        - 'SLPM': Second Lower Partial Moment (Sortino Ratio).
+        - 'CVaR': Conditional Value at Risk.
+        - 'EVaR': Entropic Value at Risk.
+        - 'WR': Worst Realization.
+        - 'ADD': Average Drawdown of uncompounded cumulative returns.
+        - 'UCI': Ulcer Index of uncompounded cumulative returns.
+        - 'CDaR': Conditional Drawdown at Risk of uncompounded cumulative returns.
+        - 'EDaR': Entropic Drawdown at Risk of uncompounded cumulative returns.
+        - 'MDD': Maximum Drawdown of uncompounded cumulative returns.
+
+    risk_free_rate: float, optional
+        Risk free rate, must be in the same interval of assets returns. Used for
+        'FLPM' and 'SLPM' and Sharpe objective function. The default is 0.
+    risk_aversion: float, optional
+        Risk aversion factor of the 'Utility' objective function.
+        The default is 1.
+    alpha: float, optional
+        Significance level of CVaR, EVaR, CDaR and EDaR
+    target_return: float, optional
+        Constraint on minimum level of portfolio's return.
+    target_risk: float, optional
+        Constraint on maximum level of portfolio's risk.
+    mean: str, optional
+        The method used to estimate the expected returns.
+        The default value is 'hist'. Possible values are:
+
+        - 'hist': use historical estimates.
+        - 'ewma1': use ewma with adjust=True. For more information see
+        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma2': use ewma with adjust=False. For more information see
+        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+
+    covariance: str, optional
+        The method used to estimate the covariance matrix:
+        The default is 'hist'. Possible values are:
+
+        - 'hist': use historical estimates.
+        - 'ewma1': use ewma with adjust=True. For more information see
+        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma2': use ewma with adjust=False. For more information see
+        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ledoit': use the Ledoit and Wolf Shrinkage method.
+        - 'oas': use the Oracle Approximation Shrinkage method.
+        - 'shrunk': use the basic Shrunk Covariance method.
+        - 'gl': use the basic Graphical Lasso Covariance method.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+
+    d_ewma: float, optional
+        The smoothing factor of ewma methods.
+        The default is 0.94.
+    value : float, optional
+        Amount to allocate to portfolio in long positions, by default 1.0
+    value_short : float, optional
+        Amount to allocate to portfolio in short positions, by default 0.0
+    table: bool, optional
+        True if plot table weights, by default False
+    """
+    p = d_period(interval, start_date, end_date)
+    s_title = f"{p} Maximal risk averse utility function portfolio using "
+    s_title += risk_names[risk_measure.lower()] + " as risk measure\n"
+
+    weights, stock_returns = optimizer_model.get_max_ret(
+        symbols=symbols,
+        interval=interval,
+        start_date=start_date,
+        end_date=end_date,
+        log_returns=log_returns,
+        freq=freq,
+        maxnan=maxnan,
+        threshold=threshold,
+        method=method,
+        risk_measure=risk_measure,
+        risk_free_rate=risk_free_rate,
+        risk_aversion=risk_aversion,
+        alpha=alpha,
+        target_return=target_return,
+        target_risk=target_risk,
+        mean=mean,
+        covariance=covariance,
+        d_ewma=d_ewma,
+        value=value,
+        value_short=value_short,
+    )
+
+    if weights is None:
+        console.print("\n", "There is no solution with these parameters")
+        return {}
+
+    if table:
+        console.print("\n", s_title)
+        display_weights(weights)
+        portfolio_performance(
+            weights=weights,
+            data=stock_returns,
+            risk_measure=risk_choices[risk_measure],
+            risk_free_rate=risk_free_rate,
+            alpha=alpha,
+            # a_sim=a_sim,
+            # beta=beta,
+            # b_sim=beta_sim,
+            freq=freq,
+        )
+        console.print("")
+
     return weights
 
 
 @log_start_end(log=logger)
 def display_max_div(
-    stocks: List[str],
-    period: str = "3y",
-    start: str = "",
-    end: str = "",
+    symbols: List[str],
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
     log_returns: bool = False,
     freq: str = "D",
     maxnan: float = 0.05,
@@ -1644,14 +1753,14 @@ def display_max_div(
 
     Parameters
     ----------
-    stocks : List[str]
+    symbols : List[str]
         List of portfolio tickers
-    period : str, optional
-        Period to look at returns from
-    start: str, optional
-        If not using period, start date string (YYYY-MM-DD)
-    end: str, optional
-        If not using period, end date string (YYYY-MM-DD). If empty use last
+    interval : str, optional
+        interval to look at returns from
+    start_date: str, optional
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str, optional
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
     log_returns: bool, optional
         If True calculate log returns, else arithmetic returns. Default value
@@ -1699,14 +1808,14 @@ def display_max_div(
     table: bool, optional
         True if plot table weights, by default False
     """
-    p = d_period(period, start, end)
+    p = d_period(interval, start_date, end_date)
     s_title = f"{p} Maximal diversification portfolio\n"
 
     weights, stock_returns = optimizer_model.get_max_diversification_portfolio(
-        stocks=stocks,
-        period=period,
-        start=start,
-        end=end,
+        symbols=symbols,
+        interval=interval,
+        start_date=start_date,
+        end_date=end_date,
         log_returns=log_returns,
         freq=freq,
         maxnan=maxnan,
@@ -1726,7 +1835,7 @@ def display_max_div(
         display_weights(weights)
         portfolio_performance(
             weights=weights,
-            stock_returns=stock_returns,
+            data=stock_returns,
             risk_measure="MV",
             risk_free_rate=0,
             # alpha=0.05,
@@ -1742,10 +1851,10 @@ def display_max_div(
 
 @log_start_end(log=logger)
 def display_max_decorr(
-    stocks: List[str],
-    period: str = "3y",
-    start: str = "",
-    end: str = "",
+    symbols: List[str],
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
     log_returns: bool = False,
     freq: str = "D",
     maxnan: float = 0.05,
@@ -1762,14 +1871,14 @@ def display_max_decorr(
 
     Parameters
     ----------
-    stocks : List[str]
+    symbols : List[str]
         List of portfolio tickers
-    period : str, optional
-        Period to look at returns from
-    start: str, optional
-        If not using period, start date string (YYYY-MM-DD)
-    end: str, optional
-        If not using period, end date string (YYYY-MM-DD). If empty use last
+    interval : str, optional
+        interval to look at returns from
+    start_date: str, optional
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str, optional
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
     log_returns: bool, optional
         If True calculate log returns, else arithmetic returns. Default value
@@ -1817,14 +1926,14 @@ def display_max_decorr(
     table: bool, optional
         True if plot table weights, by default False
     """
-    p = d_period(period, start, end)
+    p = d_period(interval, start_date, end_date)
     s_title = f"{p} Maximal decorrelation portfolio\n"
 
     weights, stock_returns = optimizer_model.get_max_decorrelation_portfolio(
-        stocks=stocks,
-        period=period,
-        start=start,
-        end=end,
+        symbols=symbols,
+        interval=interval,
+        start_date=start_date,
+        end_date=end_date,
         log_returns=log_returns,
         freq=freq,
         maxnan=maxnan,
@@ -1845,7 +1954,7 @@ def display_max_decorr(
         display_weights(weights)
         portfolio_performance(
             weights=weights,
-            stock_returns=stock_returns,
+            data=stock_returns,
             risk_measure="MV",
             risk_free_rate=0,
             # alpha=alpha,
@@ -1861,12 +1970,12 @@ def display_max_decorr(
 
 @log_start_end(log=logger)
 def display_black_litterman(
-    stocks: List[str],
+    symbols: List[str],
     p_views: List,
     q_views: List,
-    period: str = "3y",
-    start: str = "",
-    end: str = "",
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
     log_returns: bool = False,
     freq: str = "D",
     maxnan: float = 0.05,
@@ -1888,19 +1997,19 @@ def display_black_litterman(
 
     Parameters
     ----------
-    stocks : List[str]
+    symbols : List[str]
         List of portfolio tickers
     p_views: List
         Matrix P of views that shows relationships among assets and returns.
         Default value to None.
     q_views: List
         Matrix Q of expected returns of views. Default value is None.
-    period : str, optional
-        Period to look at returns from
-    start: str, optional
-        If not using period, start date string (YYYY-MM-DD)
-    end: str, optional
-        If not using period, end date string (YYYY-MM-DD). If empty use last
+    interval : str, optional
+        interval to look at returns from
+    start_date: str, optional
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str, optional
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
     log_returns: bool, optional
         If True calculate log returns, else arithmetic returns. Default value
@@ -1953,16 +2062,16 @@ def display_black_litterman(
     table: bool, optional
         True if plot table weights, by default False
     """
-    p = d_period(period, start, end)
+    p = d_period(interval, start_date, end_date)
     s_title = f"{p} Black Litterman portfolio\n"
     weights, stock_returns = optimizer_model.get_black_litterman_portfolio(
-        stocks=stocks,
+        symbols=symbols,
         benchmark=benchmark,
         p_views=p_views,
         q_views=q_views,
-        period=period,
-        start=start,
-        end=end,
+        interval=interval,
+        start_date=start_date,
+        end_date=end_date,
         log_returns=log_returns,
         freq=freq,
         maxnan=maxnan,
@@ -1987,7 +2096,7 @@ def display_black_litterman(
         display_weights(weights)
         portfolio_performance(
             weights=weights,
-            stock_returns=stock_returns,
+            data=stock_returns,
             risk_measure="MV",
             risk_free_rate=0,
             # alpha=alpha,
@@ -2003,10 +2112,10 @@ def display_black_litterman(
 
 @log_start_end(log=logger)
 def display_ef(
-    stocks: List[str],
-    period: str = "3y",
-    start: str = "",
-    end: str = "",
+    symbols: List[str],
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
     log_returns: bool = False,
     freq: str = "D",
     maxnan: float = 0.05,
@@ -2028,14 +2137,14 @@ def display_ef(
 
     Parameters
     ----------
-    stocks : List[str]
+    symbols : List[str]
         List of portfolio tickers
-    period : str, optional
-        Period to look at returns from
-    start: str, optional
-        If not using period, start date string (YYYY-MM-DD)
-    end: str, optional
-        If not using period, end date string (YYYY-MM-DD). If empty use last
+    interval : str, optional
+        interval to look at returns from
+    start_date: str, optional
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str, optional
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
     log_returns: bool, optional
         If True calculate log returns, else arithmetic returns. Default value
@@ -2074,7 +2183,7 @@ def display_ef(
         - 'MDD': Maximum Drawdown of uncompounded cumulative returns.
 
     risk_free_rate: float, optional
-        Risk free rate, must be in the same period of assets returns. Used for
+        Risk free rate, must be in the same interval of assets returns. Used for
         'FLPM' and 'SLPM' and Sharpe objective function. The default is 0.
     alpha: float, optional
         Significance level of CVaR, EVaR, CDaR and EDaR
@@ -2094,96 +2203,39 @@ def display_ef(
     plot_tickers: bool
         Whether to plot the tickers for the assets
     """
-    stock_prices = yahoo_finance_model.process_stocks(stocks, period, start, end)
-    stock_returns = yahoo_finance_model.process_returns(
-        stock_prices,
-        log_returns=log_returns,
-        freq=freq,
-        maxnan=maxnan,
-        threshold=threshold,
-        method=method,
-    )
 
     risk_free_rate = risk_free_rate / time_factor[freq.upper()]
 
-    # Building the portfolio object
-    port = rp.Portfolio(returns=stock_returns, alpha=alpha)
-
-    # Estimate input parameters:
-    port.assets_stats(method_mu="hist", method_cov="hist")
-
-    # Budget constraints
-    port.upperlng = value
-    if value_short > 0:
-        port.sht = True
-        port.uppersht = value_short
-        port.budget = value - value_short
-    else:
-        port.budget = value
-
-    # Estimate tangency portfolio:
-    weights = port.optimization(
-        model="Classic",
-        rm=risk_choices[risk_measure],
-        obj="Sharpe",
-        rf=risk_free_rate,
-        hist=True,
+    frontier, mu, cov, stock_returns, weights, X1, Y1, port = optimizer_model.get_ef(
+        symbols,
+        interval,
+        start_date,
+        end_date,
+        log_returns,
+        freq,
+        maxnan,
+        threshold,
+        method,
+        risk_measure,
+        risk_free_rate,
+        alpha,
+        value,
+        value_short,
+        n_portfolios,
+        seed,
     )
-
-    points = 20  # Number of points of the frontier
-    frontier = port.efficient_frontier(
-        model="Classic",
-        rm=risk_choices[risk_measure],
-        points=points,
-        rf=risk_free_rate,
-        hist=True,
-    )
-
-    random_weights = optimizer_model.generate_random_portfolios(
-        stocks=stocks,
-        n_portfolios=n_portfolios,
-        seed=seed,
-    )
-
-    mu = stock_returns.mean().to_frame().T
-    cov = stock_returns.cov()
-    Y = (mu @ frontier).to_numpy() * time_factor[freq.upper()]
-    Y = np.ravel(Y)
-    X = np.zeros_like(Y)
-
-    for i in range(frontier.shape[1]):
-        w = np.array(frontier.iloc[:, i], ndmin=2).T
-        risk = rp.Sharpe_Risk(
-            w,
-            cov=cov,
-            returns=stock_returns,
-            rm=risk_choices[risk_measure],
-            rf=risk_free_rate,
-            alpha=alpha,
-            # a_sim=a_sim,
-            # beta=beta,
-            # b_sim=b_sim,
-        )
-        X[i] = risk
-
-    if risk_choices[risk_measure] not in ["ADD", "MDD", "CDaR", "EDaR", "UCI"]:
-        X = X * time_factor[freq.upper()] ** 0.5
-    f = interp1d(X, Y, kind="quadratic")
-    X1 = np.linspace(X[0], X[-1], num=100)
-    Y1 = f(X1)
 
     if external_axes is None:
         _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     else:
         ax = external_axes[0]
 
-    frontier = pd.concat([frontier, random_weights], axis=1)
     ax = rp.plot_frontier(
         w_frontier=frontier,
         mu=mu,
         cov=cov,
         returns=stock_returns,
-        rm=risk_choices[risk_measure],
+        rm=risk_choices[risk_measure.lower()],
         rf=risk_free_rate,
         alpha=alpha,
         cmap="RdYlBu",
@@ -2203,14 +2255,20 @@ def display_ef(
             weights,
             cov=cov,
             returns=stock_returns,
-            rm=risk_choices[risk_measure],
+            rm=risk_choices[risk_measure.lower()],
             rf=risk_free_rate,
             alpha=alpha,
             # a_sim=a_sim,
             # beta=beta,
             # b_sim=b_sim,
         )
-        if risk_choices[risk_measure] not in ["ADD", "MDD", "CDaR", "EDaR", "UCI"]:
+        if risk_choices[risk_measure.lower()] not in [
+            "ADD",
+            "MDD",
+            "CDaR",
+            "EDaR",
+            "UCI",
+        ]:
             risk_sharpe = risk_sharpe * time_factor[freq.upper()] ** 0.5
 
         y = ret_sharpe * 1.5
@@ -2234,12 +2292,18 @@ def display_ef(
                 weight_df,
                 cov=port.cov[ticker][ticker],
                 returns=stock_returns.loc[:, [ticker]],
-                rm=risk_choices[risk_measure],
+                rm=risk_choices[risk_measure.lower()],
                 rf=risk_free_rate,
                 alpha=alpha,
             )
 
-            if risk_choices[risk_measure] not in ["MDD", "ADD", "CDaR", "EDaR", "UCI"]:
+            if risk_choices[risk_measure.lower()] not in [
+                "MDD",
+                "ADD",
+                "CDaR",
+                "EDaR",
+                "UCI",
+            ]:
                 risk = risk * time_factor[freq.upper()] ** 0.5
 
             ticker_plot = ticker_plot.append(
@@ -2267,10 +2331,10 @@ def display_ef(
 
 @log_start_end(log=logger)
 def display_risk_parity(
-    stocks: List[str],
-    period: str = "3y",
-    start: str = "",
-    end: str = "",
+    symbols: List[str],
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
     log_returns: bool = False,
     freq: str = "D",
     maxnan: float = 0.05,
@@ -2292,14 +2356,14 @@ def display_risk_parity(
 
     Parameters
     ----------
-    stocks : List[str]
+    symbols : List[str]
         List of portfolio tickers
-    period : str
-        Period to look at returns from
-    start: str
-        If not using period, start date string (YYYY-MM-DD)
-    end: str
-        If not using period, end date string (YYYY-MM-DD). If empty use last
+    interval : str
+        interval to look at returns from
+    start_date: str
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
     log_returns: bool
         If True calculate log returns, else arithmetic returns. Default value
@@ -2339,7 +2403,7 @@ def display_risk_parity(
         The vector of risk contribution per asset. If empty, the default is
         1/n (number of assets).
     risk_free_rate: float, optional
-        Risk free rate, must be in the same period of assets returns. Used for
+        Risk free rate, must be in the same interval of assets returns. Used for
         'FLPM' and 'SLPM' and Sharpe objective function. The default is 0.
     alpha: float, optional
         Significance level of CVaR, EVaR, CDaR and EDaR
@@ -2381,14 +2445,14 @@ def display_risk_parity(
     table: bool, optional
         True if plot table weights, by default False
     """
-    p = d_period(period, start, end)
+    p = d_period(interval, start_date, end_date)
     s_title = f"{p} Risk parity portfolio based on risk budgeting approach\n"
     s_title += "using " + risk_names[risk_measure] + " as risk measure\n"
     weights, stock_returns = optimizer_model.get_risk_parity_portfolio(
-        stocks=stocks,
-        period=period,
-        start=start,
-        end=end,
+        symbols=symbols,
+        interval=interval,
+        start_date=start_date,
+        end_date=end_date,
         log_returns=log_returns,
         freq=freq,
         maxnan=maxnan,
@@ -2414,7 +2478,7 @@ def display_risk_parity(
         display_weights(weights)
         portfolio_performance(
             weights=weights,
-            stock_returns=stock_returns,
+            data=stock_returns,
             risk_measure=risk_choices[risk_measure],
             risk_free_rate=risk_free_rate,
             freq=freq,
@@ -2426,10 +2490,10 @@ def display_risk_parity(
 
 @log_start_end(log=logger)
 def display_rel_risk_parity(
-    stocks: List[str],
-    period: str = "3y",
-    start: str = "",
-    end: str = "",
+    symbols: List[str],
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
     log_returns: bool = False,
     freq: str = "D",
     maxnan: float = 0.05,
@@ -2450,14 +2514,14 @@ def display_rel_risk_parity(
 
     Parameters
     ----------
-    stocks : List[str]
+    symbols : List[str]
         List of portfolio tickers
-    period : str, optional
-        Period to look at returns from
-    start: str, optional
-        If not using period, start date string (YYYY-MM-DD)
-    end: str, optional
-        If not using period, end date string (YYYY-MM-DD). If empty use last
+    interval : str, optional
+        interval to look at returns from
+    start_date: str, optional
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str, optional
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
     log_returns: bool, optional
         If True calculate log returns, else arithmetic returns. Default value
@@ -2530,13 +2594,13 @@ def display_rel_risk_parity(
     table: bool, optional
         True if plot table weights, by default False
     """
-    p = d_period(period, start, end)
+    p = d_period(interval, start_date, end_date)
     s_title = f"{p} Relaxed risk parity portfolio based on least squares approach\n"
     weights, stock_returns = optimizer_model.get_rel_risk_parity_portfolio(
-        stocks=stocks,
-        period=period,
-        start=start,
-        end=end,
+        symbols=symbols,
+        interval=interval,
+        start_date=start_date,
+        end_date=end_date,
         log_returns=log_returns,
         freq=freq,
         maxnan=maxnan,
@@ -2561,7 +2625,7 @@ def display_rel_risk_parity(
         display_weights(weights)
         portfolio_performance(
             weights=weights,
-            stock_returns=stock_returns,
+            data=stock_returns,
             risk_measure=risk_choices["mv"],
             freq=freq,
         )
@@ -2572,10 +2636,10 @@ def display_rel_risk_parity(
 
 @log_start_end(log=logger)
 def display_hcp(
-    stocks: List[str],
-    period: str = "3y",
-    start: str = "",
-    end: str = "",
+    symbols: List[str],
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
     log_returns: bool = False,
     freq: str = "D",
     maxnan: float = 0.05,
@@ -2593,7 +2657,7 @@ def display_hcp(
     beta: float = None,
     b_sim: int = None,
     linkage: str = "ward",
-    k: int = 0,
+    k: int = None,
     max_k: int = 10,
     bins_info: str = "KN",
     alpha_tail: float = 0.05,
@@ -2607,14 +2671,14 @@ def display_hcp(
 
     Parameters
     ----------
-    stocks : List[str]
+    symbols : List[str]
         List of portfolio tickers
-    period : str
-        Period to look at returns from
-    start: str, optional
-        If not using period, start date string (YYYY-MM-DD)
-    end: str, optional
-        If not using period, end date string (YYYY-MM-DD). If empty use last
+    interval : str
+        interval to look at returns from
+    start_date: str, optional
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str, optional
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
     log_returns: bool, optional
         If True calculate log returns, else arithmetic returns. Default value
@@ -2719,7 +2783,7 @@ def display_hcp(
         - 'UCI_Rel': Ulcer Index of compounded cumulative returns.
 
     risk_free_rate: float, optional
-        Risk free rate, must be in the same period of assets returns.
+        Risk free rate, must be in the same interval of assets returns.
         Used for 'FLPM' and 'SLPM'. The default is 0.
     risk_aversion: float, optional
         Risk aversion factor of the 'Utility' objective function.
@@ -2781,7 +2845,7 @@ def display_hcp(
     table: bool, optional
         True if plot table weights, by default False
     """
-    p = d_period(period, start, end)
+    p = d_period(interval, start_date, end_date)
 
     if model == "HRP":
         s_title = f"{p} Hierarchical risk parity portfolio"
@@ -2795,10 +2859,10 @@ def display_hcp(
     s_title += " linkage and " + risk_names[risk_measure] + " as risk measure\n"
 
     weights, stock_returns = optimizer_model.get_hcp_portfolio(
-        stocks=stocks,
-        period=period,
-        start=start,
-        end=end,
+        symbols=symbols,
+        interval=interval,
+        start_date=start_date,
+        end_date=end_date,
         log_returns=log_returns,
         freq=freq,
         maxnan=maxnan,
@@ -2834,7 +2898,7 @@ def display_hcp(
         display_weights(weights)
         portfolio_performance(
             weights=weights,
-            stock_returns=stock_returns,
+            data=stock_returns,
             risk_measure=risk_choices[risk_measure],
             risk_free_rate=risk_free_rate,
             alpha=alpha,
@@ -2850,10 +2914,10 @@ def display_hcp(
 
 @log_start_end(log=logger)
 def display_hrp(
-    stocks: List[str],
-    period: str = "3y",
-    start: str = "",
-    end: str = "",
+    symbols: List[str],
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
     log_returns: bool = False,
     freq: str = "D",
     maxnan: float = 0.05,
@@ -2863,11 +2927,12 @@ def display_hrp(
     covariance: str = "hist",
     risk_measure: str = "mv",
     risk_free_rate: float = 0.0,
+    risk_aversion: float = 1.0,
     alpha: float = 0.05,
     a_sim: int = 100,
     beta: float = None,
     b_sim: int = None,
-    linkage: str = "ward",
+    linkage: str = "single",
     k: int = 0,
     max_k: int = 10,
     bins_info: str = "KN",
@@ -2882,14 +2947,14 @@ def display_hrp(
 
     Parameters
     ----------
-    stocks : List[str]
+    symbols : List[str]
         List of portfolio tickers
-    period : str
-        Period to look at returns from
-    start: str, optional
-        If not using period, start date string (YYYY-MM-DD)
-    end: str, optional
-        If not using period, end date string (YYYY-MM-DD). If empty use last
+    interval : str
+        interval to look at returns from
+    start_date: str, optional
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str, optional
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
     log_returns: bool, optional
         If True calculate log returns, else arithmetic returns. Default value
@@ -2977,8 +3042,11 @@ def display_hrp(
         - 'UCI_Rel': Ulcer Index of compounded cumulative returns.
 
     risk_free_rate: float, optional
-        Risk free rate, must be in the same period of assets returns.
+        Risk free rate, must be in the same interval of assets returns.
         Used for 'FLPM' and 'SLPM'. The default is 0.
+    risk_aversion: float, optional
+        Risk aversion factor of the 'Utility' objective function.
+        The default is 1.
     alpha: float, optional
         Significance level of VaR, CVaR, EDaR, DaR, CDaR, EDaR, Tail Gini of losses.
         The default is 0.05.
@@ -3038,21 +3106,27 @@ def display_hrp(
     table: bool, optional
         True if plot table weights, by default False
     """
-    weights = display_hcp(
-        stocks=stocks,
-        period=period,
-        start=start,
-        end=end,
+    p = d_period(interval, start_date, end_date)
+
+    s_title = f"{p} Hierarchical risk parity portfolio"
+    s_title += " using " + codependence + " codependence,\n" + linkage
+    s_title += " linkage and " + risk_names[risk_measure] + " as risk measure\n"
+
+    weights, stock_returns = optimizer_model.get_hrp(
+        symbols=symbols,
+        interval=interval,
+        start_date=start_date,
+        end_date=end_date,
         log_returns=log_returns,
         freq=freq,
         maxnan=maxnan,
         threshold=threshold,
         method=method,
-        model="HRP",
         codependence=codependence,
         covariance=covariance,
-        risk_measure=risk_measure,
+        risk_measure=risk_choices[risk_measure],
         risk_free_rate=risk_free_rate,
+        risk_aversion=risk_aversion,
         alpha=alpha,
         a_sim=a_sim,
         beta=beta,
@@ -3065,17 +3139,37 @@ def display_hrp(
         leaf_order=leaf_order,
         d_ewma=d_ewma,
         value=value,
-        table=table,
     )
+
+    if weights is None:
+        console.print("\n", "There is no solution with this parameters")
+        return {}
+
+    if table:
+        console.print("\n", s_title)
+        display_weights(weights)
+        portfolio_performance(
+            weights=weights,
+            data=stock_returns,
+            risk_measure=risk_choices[risk_measure],
+            risk_free_rate=risk_free_rate,
+            alpha=alpha,
+            a_sim=a_sim,
+            beta=beta,
+            b_sim=b_sim,
+            freq=freq,
+        )
+        console.print("")
+
     return weights
 
 
 @log_start_end(log=logger)
 def display_herc(
-    stocks: List[str],
-    period: str = "3y",
-    start: str = "",
-    end: str = "",
+    symbols: List[str],
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
     log_returns: bool = False,
     freq: str = "D",
     maxnan: float = 0.05,
@@ -3085,6 +3179,7 @@ def display_herc(
     covariance: str = "hist",
     risk_measure: str = "mv",
     risk_free_rate: float = 0.0,
+    risk_aversion: float = 1.0,
     alpha: float = 0.05,
     a_sim: int = 100,
     beta: float = None,
@@ -3104,14 +3199,14 @@ def display_herc(
 
     Parameters
     ----------
-    stocks : List[str]
+    symbols : List[str]
         List of portfolio tickers
-    period : str
-        Period to look at returns from
-    start: str, optional
-        If not using period, start date string (YYYY-MM-DD)
-    end: str, optional
-        If not using period, end date string (YYYY-MM-DD). If empty use last
+    interval : str
+        interval to look at returns from
+    start_date: str, optional
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str, optional
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
     log_returns: bool, optional
         If True calculate log returns, else arithmetic returns. Default value
@@ -3207,8 +3302,11 @@ def display_herc(
         - 'UCI_Rel': Ulcer Index of compounded cumulative returns.
 
     risk_free_rate: float, optional
-        Risk free rate, must be in the same period of assets returns.
+        Risk free rate, must be in the same interval of assets returns.
         Used for 'FLPM' and 'SLPM'. The default is 0.
+    risk_aversion: float, optional
+        Risk aversion factor of the 'Utility' objective function.
+        The default is 1.
     alpha: float, optional
         Significance level of VaR, CVaR, EDaR, DaR, CDaR, EDaR, Tail Gini of losses.
         The default is 0.05.
@@ -3268,21 +3366,27 @@ def display_herc(
     table: bool, optional
         True if plot table weights, by default False
     """
-    weights = display_hcp(
-        stocks=stocks,
-        period=period,
-        start=start,
-        end=end,
+    p = d_period(interval, start_date, end_date)
+
+    s_title = f"{p} Hierarchical equal risk contribution portfolio"
+    s_title += " using " + codependence + "\ncodependence," + linkage
+    s_title += " linkage and " + risk_names[risk_measure] + " as risk measure\n"
+
+    weights, stock_returns = optimizer_model.get_herc(
+        symbols=symbols,
+        interval=interval,
+        start_date=start_date,
+        end_date=end_date,
         log_returns=log_returns,
         freq=freq,
         maxnan=maxnan,
         threshold=threshold,
         method=method,
-        model="HERC",
         codependence=codependence,
         covariance=covariance,
-        risk_measure=risk_measure,
+        risk_measure=risk_choices[risk_measure],
         risk_free_rate=risk_free_rate,
+        risk_aversion=risk_aversion,
         alpha=alpha,
         a_sim=a_sim,
         beta=beta,
@@ -3295,17 +3399,37 @@ def display_herc(
         leaf_order=leaf_order,
         d_ewma=d_ewma,
         value=value,
-        table=table,
     )
+
+    if weights is None:
+        console.print("\n", "There is no solution with this parameters")
+        return {}
+
+    if table:
+        console.print("\n", s_title)
+        display_weights(weights)
+        portfolio_performance(
+            weights=weights,
+            data=stock_returns,
+            risk_measure=risk_choices[risk_measure],
+            risk_free_rate=risk_free_rate,
+            alpha=alpha,
+            a_sim=a_sim,
+            beta=beta,
+            b_sim=b_sim,
+            freq=freq,
+        )
+        console.print("")
+
     return weights
 
 
 @log_start_end(log=logger)
 def display_nco(
-    stocks: List[str],
-    period: str = "3y",
-    start: str = "",
-    end: str = "",
+    symbols: List[str],
+    interval: str = "3y",
+    start_date: str = "",
+    end_date: str = "",
     log_returns: bool = False,
     freq: str = "D",
     maxnan: float = 0.05,
@@ -3316,10 +3440,13 @@ def display_nco(
     objective: str = "MinRisk",
     risk_measure: str = "mv",
     risk_free_rate: float = 0.0,
-    risk_aversion: float = 2.0,
+    risk_aversion: float = 1.0,
     alpha: float = 0.05,
+    a_sim: int = 100,
+    beta: float = None,
+    b_sim: int = None,
     linkage: str = "ward",
-    k: int = 0,
+    k: int = None,
     max_k: int = 10,
     bins_info: str = "KN",
     alpha_tail: float = 0.05,
@@ -3329,18 +3456,18 @@ def display_nco(
     table: bool = False,
 ) -> Dict:
     """
-    Builds a nested clustered optimization portfolio
+    Builds a hierarchical equal risk contribution portfolio
 
     Parameters
     ----------
-    stocks : List[str]
+    symbols : List[str]
         List of portfolio tickers
-    period : str
-        Period to look at returns from
-    start: str, optional
-        If not using period, start date string (YYYY-MM-DD)
-    end: str, optional
-        If not using period, end date string (YYYY-MM-DD). If empty use last
+    interval : str
+        interval to look at returns from
+    start_date: str, optional
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str, optional
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
     log_returns: bool, optional
         If True calculate log returns, else arithmetic returns. Default value
@@ -3445,7 +3572,7 @@ def display_nco(
         - 'UCI_Rel': Ulcer Index of compounded cumulative returns.
 
     risk_free_rate: float, optional
-        Risk free rate, must be in the same period of assets returns.
+        Risk free rate, must be in the same interval of assets returns.
         Used for 'FLPM' and 'SLPM'. The default is 0.
     risk_aversion: float, optional
         Risk aversion factor of the 'Utility' objective function.
@@ -3509,24 +3636,32 @@ def display_nco(
     table: bool, optional
         True if plot table weights, by default False
     """
-    weights = display_hcp(
-        stocks=stocks,
-        period=period,
-        start=start,
-        end=end,
+    p = d_period(interval, start_date, end_date)
+
+    s_title = f"{p} Nested clustered optimization"
+    s_title += " using " + codependence + " codependence,\n" + linkage
+    s_title += " linkage and " + risk_names[risk_measure] + " as risk measure\n"
+
+    weights, stock_returns = optimizer_model.get_nco(
+        symbols=symbols,
+        interval=interval,
+        start_date=start_date,
+        end_date=end_date,
         log_returns=log_returns,
         freq=freq,
         maxnan=maxnan,
         threshold=threshold,
         method=method,
-        model="NCO",
         codependence=codependence,
         covariance=covariance,
-        objective=objective,
-        risk_measure=risk_measure,
+        objective=objectives_choices[objective.lower()],
+        risk_measure=risk_choices[risk_measure],
         risk_free_rate=risk_free_rate,
         risk_aversion=risk_aversion,
         alpha=alpha,
+        a_sim=a_sim,
+        beta=beta,
+        b_sim=b_sim,
         linkage=linkage,
         k=k,
         max_k=max_k,
@@ -3535,8 +3670,28 @@ def display_nco(
         leaf_order=leaf_order,
         d_ewma=d_ewma,
         value=value,
-        table=table,
     )
+
+    if weights is None:
+        console.print("\n", "There is no solution with this parameters")
+        return {}
+
+    if table:
+        console.print("\n", s_title)
+        display_weights(weights)
+        portfolio_performance(
+            weights=weights,
+            data=stock_returns,
+            risk_measure=risk_choices[risk_measure],
+            risk_free_rate=risk_free_rate,
+            alpha=alpha,
+            a_sim=a_sim,
+            beta=beta,
+            b_sim=b_sim,
+            freq=freq,
+        )
+        console.print("")
+
     return weights
 
 
@@ -3569,11 +3724,11 @@ def pie_chart_weights(
 
     init_stocks = list(weights.keys())
     init_sizes = list(weights.values())
-    stocks = []
+    symbols = []
     sizes = []
     for stock, size in zip(init_stocks, init_sizes):
         if size > 0:
-            stocks.append(stock)
+            symbols.append(stock)
             sizes.append(size)
 
     total_size = np.sum(sizes)
@@ -3587,7 +3742,7 @@ def pie_chart_weights(
     if math.isclose(sum(sizes), 1, rel_tol=0.1):
         _, _, autotexts = ax.pie(
             sizes,
-            labels=stocks,
+            labels=symbols,
             autopct=my_autopct,
             colors=colors,
             textprops=dict(color="white"),
@@ -3600,7 +3755,7 @@ def pie_chart_weights(
     else:
         _, _, autotexts = ax.pie(
             sizes,
-            labels=stocks,
+            labels=symbols,
             autopct="",
             colors=colors,
             textprops=dict(color="white"),
@@ -3654,22 +3809,22 @@ def pie_chart_weights(
 @log_start_end(log=logger)
 def additional_plots(
     weights,
-    stock_returns: pd.DataFrame,
-    category: Dict,
-    title_opt: str,
-    freq: str,
-    risk_measure: str,
-    risk_free_rate: float,
-    alpha: float,
-    a_sim: float,
-    beta: float,
-    b_sim: float,
-    pie: bool,
-    hist: bool,
-    dd: bool,
-    rc_chart: bool,
-    heat: bool,
-    external_axes: Optional[List[plt.Axes]],
+    data: pd.DataFrame,
+    category: Dict = None,
+    title_opt: str = "",
+    freq: str = "D",
+    risk_measure: str = "MV",
+    risk_free_rate: float = 0,
+    alpha: float = 0.05,
+    a_sim: float = 100,
+    beta: float = None,
+    b_sim: float = None,
+    pie: bool = False,
+    hist: bool = False,
+    dd: bool = False,
+    rc_chart: bool = False,
+    heat: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ):
     """
     Plot additional charts
@@ -3678,7 +3833,7 @@ def additional_plots(
     ----------
     weights: Dict
         Dict of portfolio weights
-    stock_returns: pd.DataFrame
+    data: pd.DataFrame
         DataFrame of stock returns
     title_opt: str
         Title to be used on the pie chart
@@ -3721,7 +3876,7 @@ def additional_plots(
         - 'UCI_Rel': Ulcer Index of compounded cumulative returns.
 
     risk_free_rate: float, optional
-        Risk free rate, must be in the same period of assets returns.
+        Risk free rate, must be in the same interval of assets returns.
         Used for 'FLPM' and 'SLPM'. The default is 0.
     alpha: float, optional
         Significance level of VaR, CVaR, EDaR, DaR, CDaR, EDaR, Tail Gini of losses.
@@ -3778,13 +3933,13 @@ def additional_plots(
         matrix_classes = pd.DataFrame(
             matrix_classes, columns=classes, index=weights.index
         )
-        stock_returns = stock_returns @ matrix_classes
+        data = data @ matrix_classes
         weights = weights_classes["value"].copy()
         weights.replace(0, np.nan, inplace=True)
         weights.dropna(inplace=True)
         weights.sort_values(ascending=True, inplace=True)
-        stock_returns = stock_returns[weights.index.tolist()]
-        stock_returns.columns = [i.title() for i in stock_returns.columns]
+        data = data[weights.index.tolist()]
+        data.columns = [i.title() for i in data.columns]
         weights.index = [i.title() for i in weights.index]
         weights = weights.to_dict()
 
@@ -3798,9 +3953,7 @@ def additional_plots(
         else:
             ax = external_axes[0]
 
-        ax = rp.plot_hist(
-            stock_returns, w=pd.Series(weights).to_frame(), alpha=alpha, ax=ax
-        )
+        ax = rp.plot_hist(data, w=pd.Series(weights).to_frame(), alpha=alpha, ax=ax)
         ax.legend(fontsize="x-small", loc="best")
 
         # Changing colors
@@ -3828,7 +3981,7 @@ def additional_plots(
         else:
             ax = external_axes[0]
 
-        nav = stock_returns.cumsum()
+        nav = data.cumsum()
         ax = rp.plot_drawdown(
             nav=nav, w=pd.Series(weights).to_frame(), alpha=alpha, ax=ax
         )
@@ -3866,9 +4019,9 @@ def additional_plots(
 
         ax = rp.plot_risk_con(
             w=pd.Series(weights).to_frame(),
-            cov=stock_returns.cov(),
-            returns=stock_returns,
-            rm=risk_choices[risk_measure],
+            cov=data.cov(),
+            returns=data,
+            rm=risk_choices[risk_measure.lower()],
             rf=risk_free_rate,
             alpha=alpha,
             a_sim=a_sim,
@@ -3904,7 +4057,7 @@ def additional_plots(
             number_of_clusters = None
 
         ax = rp.plot_clusters(
-            returns=stock_returns,
+            returns=data,
             codependence="pearson",
             linkage="ward",
             k=number_of_clusters,

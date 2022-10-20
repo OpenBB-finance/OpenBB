@@ -1,12 +1,11 @@
-                                Account address       Validator name Tokens amount  Voting power %  Commission rate %  Status  Uptime %
-0  terra1259cmu5zyklsdkmgstxhwqpe0utfe5hhyygjdc          Orion.Money         15.9M            5.09                5.0  active    100.00
-1  terra15zcjduavxc5mkp8qcqs9eyhwlqwdlrzy6anwpg            B-Harvest         10.1M            3.22                5.0  active     99.98
-2  terra1v5hrqlv8dqgzvy0pwzqzg0gxy899rm4kdn0jp4         DokiaCapital         10.1M            3.22                5.0  active    100.00
-3  terra13g7z3qq6f00qww3u4mpcs3xw5jhqwraswv3q3t         everstakeone          8.7M            2.79               10.0  active    100.00
-4  terra175hhkyxmkp8hf2zrzka7cnn7lk6mudtv4nsp2x  DSRV - CHAISCAN.com          8.4M            2.68               10.0  active    100.00
-5  terra1alpf6snw2d76kkwjv3dp4l7pcl6cn9uytq89zk          Smart Stake          8.1M            2.60                5.0  active    100.00
-6  terra123gn6j23lmexu0qx5qhmgxgunmjcqsx8g5ueq2         Staking Fund          7.9M            2.53               10.0  active    100.00
-7  terra15cupwhpnxhgylxa8n4ufyvux05xu864jcrrkqa              Figment            7M            2.25               10.0  active     99.99
-8  terra1va2ew92dtkhffduswr83elf3nfvl4xg48rguwl            NOD Games            7M            2.24                0.0  active    100.00
-9  terra1kprce6kc08a6l03gzzh99hfpazfjeczfpd6td0           Certus One            7M            2.23               10.0  active    100.00
-
+                                  Account address          Validator name Tokens amount  Voting power %  Commission rate %    Status  Uptime %
+161  terra1r7zwfk0lx6kuy8r03ewdchaea3ssy5vudns2sy             blocksteady           109             0.0               10.0    jailed     100.0
+220  terra1rnthk3l73p0sqdwg5a8j05zynzguzst6tu83lt            atomicwallet             1             0.0               10.0  inactive     100.0
+219  terra1dkcfqaym0xm8wh9v2gn6y9drq284assg324cp5               RockStake             0             0.0               10.0    jailed     100.0
+218  terra1vhm0l52y83vsqr60vt7vhxgsjlfyhf3h25y532           Tavis Digital          2.3K             0.0                7.0    jailed     100.0
+217  terra1revygmqdv3uk0aszkd2wg3nz3jsqwprfre4rmk                  DSPool             0             0.0                5.0  inactive     100.0
+216  terra1qr8ewxc0xx2vuq7jhe2evsde2k4c4cku6p9hpy          Secure Secrets            56             0.0                3.0  inactive     100.0
+215  terra1f699dxaftg4pxfqtwzyreyxgaznk922zues259             Just-Mining            24             0.0              100.0  inactive     100.0
+214  terra1qxrrf73tf7agksyxs6v6zj2nrce63jk0p4a8g2                 Celsius             3             0.0                4.0  inactive     100.0
+221  terra1d6r83n848v2juv6qal7a0r3n9n6vmpqjw42uj9  porn addicts anonymous             1             0.0               51.0  inactive     100.0
+213  terra1kl9alpr77qfjze4quf62ycngg6fkka0tthn6r6                  Bitrue          3.7K             0.0                0.0  inactive     100.0

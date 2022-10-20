@@ -13,17 +13,17 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_management(ticker: str, export: str = ""):
+def display_management(symbol: str, export: str = ""):
     """Display company's managers
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
+    symbol : str
+        Stock ticker symbol
     export : str
         Format to export data
     """
-    df_management = business_insider_model.get_management(ticker)
+    df_management = business_insider_model.get_management(symbol)
 
     df_new = df_management.applymap(
         lambda x: "\n".join(textwrap.wrap(x, width=30)) if isinstance(x, str) else x

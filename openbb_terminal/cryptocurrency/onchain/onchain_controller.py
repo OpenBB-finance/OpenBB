@@ -9,7 +9,7 @@ import logging
 from datetime import datetime, timedelta
 from typing import List
 
-from prompt_toolkit.completion import NestedCompleter
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.due_diligence.glassnode_model import (
@@ -26,6 +26,8 @@ from openbb_terminal.cryptocurrency.onchain import (
     ethgasstation_view,
     ethplorer_model,
     ethplorer_view,
+    shroom_model,
+    shroom_view,
     whale_alert_model,
     whale_alert_view,
 )
@@ -82,6 +84,9 @@ class OnchainController(BaseController):
         "baas",
         "btccp",
         "btcct",
+        "dt",
+        "ds",
+        "tvl",
     ]
 
     PATH = "/crypto/onchain/"
@@ -95,38 +100,156 @@ class OnchainController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["whales"]["-s"] = {c: None for c in whale_alert_model.FILTERS}
-            choices["hr"] = {c: None for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS}
-            choices["hr"]["-c"] = {c: None for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS}
+            choices["whales"] = {
+                "--sort": {c: {} for c in whale_alert_model.FILTERS},
+                "-s": "--sort",
+                "--min": None,
+                "-m": "--min",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+                "--adress": {},
+                "-a": {},
+            }
+            choices["hr"] = {c: {} for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS}
+            choices["ds"] = {c: None for c in shroom_model.DAPP_STATS_PLATFORM_CHOICES}
             choices["hr"]["--coin"] = {
-                c: None for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS
+                c: {} for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS
             }
-            choices["hr"]["-i"] = {c: None for c in INTERVALS_HASHRATE}
-            choices["ttcp"] = {c: None for c in bitquery_model.DECENTRALIZED_EXCHANGES}
-            choices["baas"]["-c"] = {c: None for c in bitquery_model.POSSIBLE_CRYPTOS}
-            choices["baas"]["--coin"] = {
-                c: None for c in bitquery_model.POSSIBLE_CRYPTOS
+            choices["hr"]["-c"] = "--coin"
+            choices["hr"]["--interval"] = {c: {} for c in INTERVALS_HASHRATE}
+            choices["hr"]["-i"] = "--interval"
+            choices["hr"]["--until"] = None
+            choices["hr"]["-u"] = "--until"
+            choices["hr"]["--since"] = None
+            choices["hr"]["-s"] = "--since"
+            choices["btccp"] = {
+                "--until": None,
+                "-u": "--until",
+                "--since": None,
+                "-s": "--since",
             }
-            choices["balance"]["-s"] = {
-                c: None for c in ethplorer_model.BALANCE_FILTERS
+            choices["btcct"] = {
+                "--until": None,
+                "-u": "--until",
+                "--since": None,
+                "-s": "--since",
             }
-            choices["holders"]["-s"] = {
-                c: None for c in ethplorer_model.HOLDERS_FILTERS
+            choices["ttcp"] = {c: {} for c in bitquery_model.DECENTRALIZED_EXCHANGES}
+            choices["baas"]["-c"] = {c: {} for c in bitquery_model.POSSIBLE_CRYPTOS}
+            choices["baas"]["--coin"] = {c: {} for c in bitquery_model.POSSIBLE_CRYPTOS}
+            choices["balance"] = {
+                "--sort": {c: None for c in ethplorer_model.BALANCE_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
             }
-            choices["hist"]["-s"] = {c: None for c in ethplorer_model.HIST_FILTERS}
-            choices["top"]["-s"] = {c: None for c in ethplorer_model.TOP_FILTERS}
+            choices["holders"] = {
+                "--sort": {c: None for c in ethplorer_model.HOLDERS_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+            }
+            choices["hist"] = {
+                "--sort": {c: None for c in ethplorer_model.HIST_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+            }
+            choices["top"] = {
+                "--sort": {c: None for c in ethplorer_model.TOP_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+            }
             choices["th"]["-s"] = {c: None for c in ethplorer_model.TH_FILTERS}
-            choices["prices"]["-s"] = {c: None for c in ethplorer_model.PRICES_FILTERS}
-            choices["lt"]["-s"] = {c: None for c in bitquery_model.LT_FILTERS}
-            choices["tv"]["-s"] = {c: None for c in bitquery_model.LT_FILTERS}
-            choices["ueat"]["-s"] = {c: None for c in bitquery_model.UEAT_FILTERS}
-            choices["ueat"]["-i"] = {c: None for c in bitquery_model.INTERVALS}
-            choices["dvcp"]["-s"] = {c: None for c in bitquery_model.DVCP_FILTERS}
-            choices["lt"]["-k"] = {c: None for c in bitquery_model.LT_KIND}
-            choices["lt"]["-vs"] = {c: None for c in bitquery_model.CURRENCIES}
-            choices["ttcp"] = {c: None for c in bitquery_model.DECENTRALIZED_EXCHANGES}
-            choices["ttcp"]["-s"] = {c: None for c in bitquery_model.TTCP_FILTERS}
-            choices["baas"]["-s"] = {c: None for c in bitquery_model.BAAS_FILTERS}
+            choices["th"] = {
+                "--sort": {c: None for c in ethplorer_model.TH_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+                "--hash": {},
+            }
+            choices["prices"] = {
+                "--sort": {c: None for c in ethplorer_model.PRICES_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+            }
+            choices["lt"] = {
+                "--kind": {c: {} for c in bitquery_model.LT_KIND},
+                "-k": "--kind",
+                "--vs": {c: {} for c in bitquery_model.CURRENCIES},
+                "-vs": "--vs",
+                "--sort": {c: {} for c in bitquery_model.LT_FILTERS},
+                "-s": "--sort",
+                "--days": {str(c): {} for c in range(1, 360)},
+                "-d": "--days",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+            }
+            choices["tv"] = {
+                "--coin": None,
+                "-c": "--coin",
+                "--vs": {c: {} for c in bitquery_model.CURRENCIES},
+                "-vs": "--vs",
+                "--sort": {c: {} for c in bitquery_model.LT_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+            }
+            choices["ueat"] = {
+                "--sort": {c: None for c in bitquery_model.UEAT_FILTERS},
+                "-s": "--sort",
+                "--interval": {c: {} for c in bitquery_model.INTERVALS},
+                "-i": "--interval",
+                "--limit": {str(c): {} for c in range(1, 90)},
+                "-l": "--limit",
+                "--descend": {},
+            }
+            choices["dvcp"] = {
+                "--coin": None,
+                "-c": "--coin",
+                "--vs": {c: {} for c in bitquery_model.CURRENCIES},
+                "-vs": "--vs",
+                "--days": {str(c): {} for c in range(1, 100)},
+                "-d": "--days",
+                "--sort": {c: {} for c in bitquery_model.DVCP_FILTERS},
+                "-s": "--sort",
+                "--descend": {},
+            }
+            choices["ttcp"] = {c: {} for c in bitquery_model.DECENTRALIZED_EXCHANGES}
+            choices["ttcp"]["--sort"] = {c: None for c in bitquery_model.TTCP_FILTERS}
+            choices["ttcp"]["-s"] = "--sort"
+            choices["ttcp"]["--days"] = {str(c): {} for c in range(1, 100)}
+            choices["ttcp"]["-d"] = "--days"
+            choices["ttcp"]["--limit"] = {str(c): {} for c in range(1, 100)}
+            choices["ttcp"]["-l"] = "--limit"
+            choices["ttcp"]["--descend"] = {}
+            choices["baas"] = {
+                "--coin": None,
+                "-c": "--coin",
+                "--vs": {c: {} for c in bitquery_model.CURRENCIES},
+                "-vs": "--vs",
+                "--sort": {c: {} for c in bitquery_model.BAAS_FILTERS},
+                "-s": "--sort",
+                "--descend": {},
+            }
+            choices["address"] = {
+                "-a": {},
+                "-t": {},
+                "-tx": {},
+                "--address": None,
+            }
+            choices["info"]["--social"] = {}
 
             choices["support"] = self.SUPPORT_CHOICES
             choices["about"] = self.ABOUT_CHOICES
@@ -136,32 +259,159 @@ class OnchainController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("crypto/onchain/")
-        mt.add_cmd("hr", "Glassnode")
-        mt.add_cmd("btccp", "Blockchain")
-        mt.add_cmd("btcct", "Blockchain")
-        mt.add_cmd("gwei", "ETH Gas Stations")
-        mt.add_cmd("whales", "Whale Alert")
-        mt.add_cmd("lt", "BitQuery")
-        mt.add_cmd("dvcp", "BitQuery")
-        mt.add_cmd("tv", "BitQuery")
-        mt.add_cmd("ueat", "BitQuery")
-        mt.add_cmd("ttcp", "BitQuery")
-        mt.add_cmd("baas", "BitQuery")
+        mt.add_cmd("hr")
+        mt.add_cmd("btccp")
+        mt.add_cmd("btcct")
+        mt.add_cmd("gwei")
+        mt.add_cmd("whales")
+        mt.add_cmd("lt")
+        mt.add_cmd("dvcp")
+        mt.add_cmd("tv")
+        mt.add_cmd("ueat")
+        mt.add_cmd("ttcp")
+        mt.add_cmd("baas")
+        mt.add_cmd("dt")
+        mt.add_cmd("ds")
+        mt.add_cmd("tvl")
         mt.add_raw("\n")
         mt.add_param("_address", self.address or "")
         mt.add_param("_type", self.address_type or "")
         mt.add_raw("\n")
         mt.add_info("_ethereum_")
-        mt.add_cmd("address", "Ethplorer")
-        mt.add_cmd("top", "Ethplorer")
-        mt.add_cmd("balance", "Ethplorer", self.address_type == "account")
-        mt.add_cmd("hist", "Ethplorer", self.address_type == "account")
-        mt.add_cmd("info", "Ethplorer", self.address_type == "token")
-        mt.add_cmd("holders", "Ethplorer", self.address_type == "token")
-        mt.add_cmd("th", "Ethplorer", self.address_type == "token")
-        mt.add_cmd("prices", "Ethplorer", self.address_type == "token")
-        mt.add_cmd("tx", "Ethplorer", self.address_type == "tx")
+        mt.add_cmd("address")
+        mt.add_cmd("top")
+        mt.add_cmd("balance", self.address_type == "account")
+        mt.add_cmd("hist", self.address_type == "account")
+        mt.add_cmd("info", self.address_type == "token")
+        mt.add_cmd("holders", self.address_type == "token")
+        mt.add_cmd("th", self.address_type == "token")
+        mt.add_cmd("prices", self.address_type == "token")
+        mt.add_cmd("tx", self.address_type == "tx")
         console.print(text=mt.menu_text, menu="Cryptocurrency - Onchain")
+
+    @log_start_end(log=logger)
+    def call_tvl(self, other_args: List[str]):
+        """Process tvl command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="tvl",
+            description="""
+                Total value locked (TVL) metric - Ethereum ERC20
+                [Source:https://docs.flipsidecrypto.com/]
+                useraddress OR addressname must be provided
+            """,
+        )
+
+        parser.add_argument(
+            "-u",
+            "--useraddress",
+            dest="useraddress",
+            type=str,
+            help="User address we'd like to take a balance reading of against the contract",
+        )
+
+        parser.add_argument(
+            "-a",
+            "--addressname",
+            dest="addressname",
+            type=str,
+            help="Address name corresponding to the user address",
+        )
+
+        parser.add_argument(
+            "-s",
+            "--symbol",
+            dest="symbol",
+            type=str,
+            help="Contract symbol",
+            default="USDC",
+        )
+
+        parser.add_argument(
+            "-i",
+            "--interval",
+            dest="interval",
+            type=int,
+            help="Interval in months",
+            default=12,
+        )
+
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-u")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if ns_parser:
+            shroom_view.display_total_value_locked(
+                user_address=ns_parser.useraddress,
+                address_name=ns_parser.addressname,
+                interval=ns_parser.interval,
+                symbol=ns_parser.symbol,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_ds(self, other_args: List[str]):
+        """Process ds command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="ds",
+            description="""
+            Get daily transactions for certain symbols in ethereum blockchain
+            [Source: https://sdk.flipsidecrypto.xyz/shroomdk]
+            """,
+        )
+
+        parser.add_argument(
+            "-p",
+            "--platform",
+            dest="platform",
+            type=str,
+            help="Ethereum platform to check fees/number of users over time",
+            default="curve",
+            choices=shroom_model.DAPP_STATS_PLATFORM_CHOICES,
+        )
+
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-p")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, raw=True, limit=10
+        )
+
+        if ns_parser:
+            shroom_view.display_dapp_stats(
+                raw=ns_parser.raw,
+                limit=ns_parser.limit,
+                platform=ns_parser.platform,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_dt(self, other_args: List[str]):
+        """Process dt command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="dt",
+            description="""
+                Get daily transactions for certain symbols in ethereum blockchain
+                [Source: https://sdk.flipsidecrypto.xyz/shroomdk]
+            """,
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if ns_parser:
+            shroom_view.display_daily_transactions(
+                export=ns_parser.export,
+            )
 
     @log_start_end(log=logger)
     def call_btcct(self, other_args: List[str]):
@@ -199,8 +449,8 @@ class OnchainController(BaseController):
 
         if ns_parser:
             blockchain_view.display_btc_confirmed_transactions(
-                since=int(datetime.timestamp(ns_parser.since)),
-                until=int(datetime.timestamp(ns_parser.until)),
+                start_date=int(datetime.timestamp(ns_parser.since)),
+                end_date=int(datetime.timestamp(ns_parser.until)),
                 export=ns_parser.export,
             )
 
@@ -240,8 +490,8 @@ class OnchainController(BaseController):
 
         if ns_parser:
             blockchain_view.display_btc_circulating_supply(
-                since=int(datetime.timestamp(ns_parser.since)),
-                until=int(datetime.timestamp(ns_parser.until)),
+                start_date=int(datetime.timestamp(ns_parser.since)),
+                end_date=int(datetime.timestamp(ns_parser.until)),
                 export=ns_parser.export,
             )
 
@@ -305,10 +555,10 @@ class OnchainController(BaseController):
 
         if ns_parser:
             display_hashrate(
-                asset=ns_parser.coin,
+                symbol=ns_parser.coin,
                 interval=ns_parser.interval,
-                since=int(datetime.timestamp(ns_parser.since)),
-                until=int(datetime.timestamp(ns_parser.until)),
+                start_date=int(datetime.timestamp(ns_parser.since)),
+                end_date=int(datetime.timestamp(ns_parser.until)),
                 export=ns_parser.export,
             )
 
@@ -396,9 +646,9 @@ class OnchainController(BaseController):
         if ns_parser:
             whale_alert_view.display_whales_transactions(
                 min_value=ns_parser.min,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 show_address=ns_parser.address,
                 export=ns_parser.export,
             )
@@ -525,9 +775,9 @@ class OnchainController(BaseController):
 
         if ns_parser and self.address:
             ethplorer_view.display_address_info(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 address=self.address,
                 export=ns_parser.export,
             )
@@ -581,9 +831,9 @@ class OnchainController(BaseController):
 
         if ns_parser and self.address:
             ethplorer_view.display_address_history(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 address=self.address,
                 export=ns_parser.export,
             )
@@ -636,9 +886,9 @@ class OnchainController(BaseController):
 
         if ns_parser and self.address:
             ethplorer_view.display_top_token_holders(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 address=self.address,
                 export=ns_parser.export,
             )
@@ -691,9 +941,9 @@ class OnchainController(BaseController):
 
         if ns_parser:
             ethplorer_view.display_top_tokens(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -786,10 +1036,10 @@ class OnchainController(BaseController):
 
         if ns_parser and self.address:
             ethplorer_view.display_token_history(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 hash_=ns_parser.hash,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 address=self.address,
                 export=ns_parser.export,
             )
@@ -868,9 +1118,9 @@ class OnchainController(BaseController):
 
         if ns_parser and self.address:
             ethplorer_view.display_token_historical_prices(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 address=self.address,
                 export=ns_parser.export,
             )
@@ -954,10 +1204,10 @@ class OnchainController(BaseController):
             bitquery_view.display_dex_trades(
                 kind=ns_parser.kind,
                 trade_amount_currency=ns_parser.vs,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 days=ns_parser.days,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -1032,11 +1282,11 @@ class OnchainController(BaseController):
 
         if ns_parser:
             bitquery_view.display_daily_volume_for_given_pair(
-                token=ns_parser.coin,
-                vs=ns_parser.vs,
-                top=ns_parser.days,
+                symbol=ns_parser.coin,
+                to_symbol=ns_parser.vs,
+                limit=ns_parser.days,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -1107,11 +1357,11 @@ class OnchainController(BaseController):
 
         if ns_parser:
             bitquery_view.display_dex_volume_for_token(
-                token=ns_parser.coin,
+                symbol=ns_parser.coin,
                 trade_amount_currency=ns_parser.vs,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -1177,7 +1427,7 @@ class OnchainController(BaseController):
                 interval=ns_parser.interval,
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -1283,10 +1533,10 @@ class OnchainController(BaseController):
 
             bitquery_view.display_most_traded_pairs(
                 days=ns_parser.days,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 exchange=exchange,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -1353,11 +1603,11 @@ class OnchainController(BaseController):
             if ns_parser.coin:
                 if ns_parser.coin in bitquery_model.POSSIBLE_CRYPTOS:
                     bitquery_view.display_spread_for_crypto_pair(
-                        token=ns_parser.coin,
-                        vs=ns_parser.vs,
+                        symbol=ns_parser.coin,
+                        to_symbol=ns_parser.vs,
                         days=ns_parser.days,
                         sortby=ns_parser.sortby,
-                        descend=ns_parser.descend,
+                        ascend=not ns_parser.descend,
                         export=ns_parser.export,
                     )
 
@@ -1377,10 +1627,10 @@ class OnchainController(BaseController):
                         console.print(f"Replacing with '{token}'")
                         bitquery_view.display_spread_for_crypto_pair(
                             token=token,
-                            vs=ns_parser.vs,
+                            to_symbol=ns_parser.vs,
                             days=ns_parser.days,
                             sortby=ns_parser.sortby,
-                            descend=ns_parser.descend,
+                            ascend=not ns_parser.descend,
                             export=ns_parser.export,
                         )
                     else:

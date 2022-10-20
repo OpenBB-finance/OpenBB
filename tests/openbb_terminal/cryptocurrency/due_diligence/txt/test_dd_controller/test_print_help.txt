@@ -1,35 +1,38 @@
-    load               load a specific cryptocurrency for analysis
+    load               load a specific cryptocurrency for analysis                                         [YahooFinance, CoinGecko, CCXT]
 
 Coin: None
 Source: cg
 
 Overview:
-    info               basic information about loaded coin                                                 [CoinGecko]
-    basic              basic information about loaded coin                                                 [CoinPaprika]
+    info               information about loaded coin                                                       [CoinGecko]
     ath                all time high related stats for loaded coin                                         [CoinGecko]
     atl                all time low related stats for loaded coin                                          [CoinGecko]
     web                found websites for loaded coin e.g forum, homepage                                  [CoinGecko]
+    bc                 links to blockchain explorers for loaded coin                                       [CoinGecko]
     pi                 project information e.g. technology details, public repos, audits, vulns            [Messari]
     gov                governance details                                                                  [Messari]
+    basic              basic information about loaded coin                                                 [CoinPaprika]
     stats              coin stats                                                                          [Coinbase]
-    bc                 links to blockchain explorers for loaded coin                                       [CoinGecko]
+    desc               description on project - why, how, what                                             [TokenTerminal]
 Market:
     market             market stats about loaded coin                                                      [CoinGecko]
     mkt                all markets for loaded coin                                                         [CoinPaprika]
-    binbook            order book                                                                          [Binance]
-    balance            coin balance                                                                        [Binance]
-    cbbook             order book                                                                          [Coinbase]
-    trades             last trades                                                                         [Coinbase]
     ex                 all exchanges where loaded coin is listed                                           [CoinPaprika]
+    balance            coin balance                                                                        [Binance]
     oi                 open interest per exchange                                                          [Coinglass]
-    eb                 total balance held on exchanges (in percentage and units)                           [Glassnode]
+    fundrate           funding rate per exchange                                                           [Coinglass]
+    liquidations       daily liquidation stats for loaded coin                                             [Coinglass]
+    eb                 total balance held on exchanges (in percentage and units)                           [Coinglass]
+    trades             last trades                                                                         [CCXT]
+    ob                 order book                                                                          [CCXT]
 Metrics:
-    mcapdom            market cap dominance                                                                [Messari]
     active             active addresses                                                                    [Glassnode]
     nonzero            addresses with non-zero balances                                                    [Glassnode]
     change             30d change of supply held on exchange wallets                                       [Glassnode]
     ps                 price and supply related metrics for loaded coin                                    [CoinPaprika]
+    mcapdom            market cap dominance                                                                [Messari]
     mt                 messari timeseries e.g. twitter followers, circ supply, etc                         [Messari]
+    funot              fundamental metric over time                                                        [TokenTerminal]
 Contributors and Investors:
     team               contributors (individuals and organizations)                                        [Messari]
     inv                investors (individuals and organizations)                                           [Messari]
@@ -42,8 +45,8 @@ Roadmap and News:
     news               loaded coin's most recent news                                                      [CryptoPanic]
 Activity and Community:
     links              links e.g. whitepaper, github, twitter, youtube, reddit, telegram                   [Messari]
-    social             social portals urls for loaded coin, e.g reddit, twitter                            [CoinGecko]
     twitter            tweets for loaded coin                                                              [CoinPaprika]
+    social             social portals urls for loaded coin, e.g reddit, twitter                            [CoinGecko]
     score              different kind of scores for loaded coin, e.g developer score, sentiment score      [CoinGecko]
     dev                github, bitbucket coin development statistics                                       [CoinGecko]
     gh                 github activity over time                                                           [Santiment]

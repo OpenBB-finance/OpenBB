@@ -7,19 +7,21 @@ import fundamentalanalysis as fa
 import pandas as pd
 
 from openbb_terminal import config_terminal as cfg
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_rating(ticker: str) -> pd.DataFrame:
+@check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
+def get_rating(symbol: str) -> pd.DataFrame:
     """Get ratings for a given ticker. [Source: Financial Modeling Prep]
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
+    symbol : str
+        Stock ticker symbol
 
     Returns
     -------
@@ -28,8 +30,19 @@ def get_rating(ticker: str) -> pd.DataFrame:
     """
     if cfg.API_KEY_FINANCIALMODELINGPREP:
         try:
-            df = fa.rating(ticker, cfg.API_KEY_FINANCIALMODELINGPREP)
+            df = fa.rating(symbol, cfg.API_KEY_FINANCIALMODELINGPREP)
+            l_recoms = [col for col in df.columns if "Recommendation" in col]
+            l_recoms_show = [
+                recom.replace("rating", "")
+                .replace("Details", "")
+                .replace("Recommendation", "")
+                for recom in l_recoms
+            ]
+            l_recoms_show[0] = "Rating"
+            df = df[l_recoms]
+            df.columns = l_recoms_show
         except ValueError as e:
+            console.print(f"[red]{e}[/red]\n")
             logger.exception(str(e))
             df = pd.DataFrame()
     else:

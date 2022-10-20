@@ -11,7 +11,7 @@ import requests
 
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal.rich_config import console
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 
 logger = logging.getLogger(__name__)
 
@@ -40,6 +40,7 @@ class ApiKeyException(Exception):
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_WHALE_ALERT_KEY"])
 def make_request(params: Optional[dict] = None) -> Tuple[Optional[int], Any]:
     """Helper methods for requests [Source: https://docs.whale-alert.io/]
 
@@ -82,7 +83,12 @@ def make_request(params: Optional[dict] = None) -> Tuple[Optional[int], Any]:
 
 
 @log_start_end(log=logger)
-def get_whales_transactions(min_value: int = 800000, limit: int = 100) -> pd.DataFrame:
+def get_whales_transactions(
+    min_value: int = 800000,
+    limit: int = 100,
+    sortby: str = "date",
+    ascend: bool = False,
+) -> pd.DataFrame:
     """Whale Alert's API allows you to retrieve live and historical transaction data from major blockchains.
     Supported blockchain: Bitcoin, Ethereum, Ripple, NEO, EOS, Stellar and Tron. [Source: https://docs.whale-alert.io/]
 
@@ -92,6 +98,10 @@ def get_whales_transactions(min_value: int = 800000, limit: int = 100) -> pd.Dat
         Minimum value of trade to track.
     limit: int
         Limit of transactions. Max 100
+    sortby: str
+        Key to sort by.
+    ascend: str
+        Sort in ascending order.
 
     Returns
     -------
@@ -150,7 +160,7 @@ def get_whales_transactions(min_value: int = 800000, limit: int = 100) -> pd.Dat
         inplace=True,
     )
 
-    return data[
+    df = data[
         [
             "date",
             "symbol",
@@ -163,3 +173,5 @@ def get_whales_transactions(min_value: int = 800000, limit: int = 100) -> pd.Dat
             "to_address",
         ]
     ]
+    df = df.sort_values(by=sortby, ascending=ascend)
+    return df

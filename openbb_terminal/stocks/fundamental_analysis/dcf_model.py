@@ -275,20 +275,20 @@ def get_fama_raw() -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_historical_5(ticker: str) -> pd.DataFrame:
+def get_historical_5(symbol: str) -> pd.DataFrame:
     """Get 5 year monthly historical performance for a ticker with dividends filtered
 
     Parameters
     ----------
-    ticker : str
-        The ticker to be analyzed
+    symbol: str
+        The ticker symbol to be analyzed
 
     Returns
     -------
-    df : pd.DataFrame
+    df: pd.DataFrame
         Historical data
     """
-    tick = yf.Ticker(ticker)
+    tick = yf.Ticker(symbol)
     df = tick.history(period="5y", interval="1mo")
     df = df[df.index.to_series().apply(lambda x: x.day == 1)]
     df = df.drop(["Dividends", "Stock Splits"], axis=1)
@@ -297,13 +297,13 @@ def get_historical_5(ticker: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_fama_coe(ticker: str) -> float:
+def get_fama_coe(symbol: str) -> float:
     """Use Fama and French to get the cost of equity for a company
 
     Parameters
     ----------
-    ticker : str
-        The ticker to be analyzed
+    symbol : str
+        The ticker symbol to be analyzed
 
     Returns
     -------
@@ -311,7 +311,7 @@ def get_fama_coe(ticker: str) -> float:
         The stock's Fama French coefficient
     """
     df_f = get_fama_raw()
-    df_h = get_historical_5(ticker)
+    df_h = get_historical_5(symbol)
     df = df_h.join(df_f)
     df = df.dropna()
     df["Monthly Return"] = df["Close"].pct_change()
@@ -332,25 +332,25 @@ def get_fama_coe(ticker: str) -> float:
 
 @log_start_end(log=logger)
 def others_in_sector(
-    ticker: str, sector: str, industry: str, no_filter: bool = False
+    symbol: str, sector: str, industry: str, no_filter: bool = False
 ) -> List[str]:
     """Get other stocks in a ticker's sector
 
     Parameters
     ----------
-    ticker : str
-        The ticker to be excluded
-    sector : str
+    symbol: str
+        The ticker symbol to be excluded
+    sector: str
         The sector to pull from
-    industry : str
+    industry: str
         The industry to pull from
-    no_filter : bool
+    no_filter: bool
         True means that we do not filter based on market cap
 
     Returns
     -------
-    tickers : List[str]
-        List of tickers in the same sector
+    List[str]
+        List of symbols in the same sector
     """
     industry = industry.replace("—", " - ")
     industry = industry.replace("/", " ")
@@ -358,9 +358,9 @@ def others_in_sector(
     similars = fd.select_equities(sector=sector, industry=industry)
 
     # This filters similars to match market cap and removes ticker analyzed
-    if ticker in similars:
-        market_cap = similars[ticker]["market_cap"]
-        similars.pop(ticker, None)
+    if symbol in similars:
+        market_cap = similars[symbol]["market_cap"]
+        similars.pop(symbol, None)
         if not no_filter:
             similars = {
                 k: v for (k, v) in similars.items() if v["market_cap"] == market_cap
@@ -369,14 +369,14 @@ def others_in_sector(
     return similars
 
 
-def create_dataframe(ticker: str, statement: str, period: str = "annual"):
+def create_dataframe(symbol: str, statement: str, period: str = "annual"):
     """
     Creates a df financial statement for a given ticker
 
     Parameters
     ----------
-    ticker : str
-        The ticker to create a dataframe for
+    symbol : str
+        The ticker symbol to create a dataframe for
     statement : str
         The financial statement dataframe to create
     period : str
@@ -399,7 +399,7 @@ def create_dataframe(ticker: str, statement: str, period: str = "annual"):
         )
     per_url = f"{period}/" if period != "annual" else ""
 
-    URL = f"https://stockanalysis.com/stocks/{ticker}/financials/"
+    URL = f"https://stockanalysis.com/stocks/{symbol}/financials/"
     URL += dcf_static.statement_url[statement] + per_url
     ignores = dcf_static.statement_ignore[statement]
 
@@ -426,6 +426,7 @@ def create_dataframe(ticker: str, statement: str, period: str = "annual"):
     else:
         return pd.DataFrame(), None, None
 
+    statement_currency = ""
     for currency in CURRENCIES:
         if currency.lower() in phrase:
             statement_currency = currency
@@ -462,14 +463,14 @@ def create_dataframe(ticker: str, statement: str, period: str = "annual"):
 
 
 @log_start_end(log=logger)
-def get_similar_dfs(ticker: str, info: Dict[str, Any], n: int, no_filter: bool = False):
+def get_similar_dfs(symbol: str, info: Dict[str, Any], n: int, no_filter: bool = False):
     """
     Get dataframes for similar companies
 
     Parameters
     ----------
-    ticker : str
-        The ticker to create a dataframe for
+    symbol : str
+        The ticker symbol to create a dataframe for
     into : Dict[str,Any]
         The dictionary produced from the yfinance.info function
     n : int
@@ -482,7 +483,7 @@ def get_similar_dfs(ticker: str, info: Dict[str, Any], n: int, no_filter: bool =
     new_list : List[str, pd.DataFrame]
         A list of similar companies
     """
-    similars = others_in_sector(ticker, info["sector"], info["industry"], no_filter)
+    similars = others_in_sector(symbol, info["sector"], info["industry"], no_filter)
     i = 0
     new_list = []
     while i < n and similars:
@@ -570,30 +571,29 @@ def frac(num: float, denom: float) -> Union[str, float]:
 
 
 @log_start_end(log=logger)
-def generate_path(n: int, ticker: str, date: str) -> Path:
+def generate_path(n: int, symbol: str, date: str) -> Path:
     """
     Create the path to save an excel file to
 
     Parameters
     ----------
-    n : int
+    n: int
         The try number
-    ticker : str
-        The ticker to be saved
-    date : str
+    symbol: str
+        The ticker symbol to be saved
+    date: str
         The date the dcf was generated
 
     Returns
     -------
-    path : Path
+    path: Path
         The path to save a file to
     """
     val = "" if n == 0 else f"({n})"
-    export_folder, _ = compose_export_path(
+    export_folder = compose_export_path(
         func_name="dcf", dir_path=os.path.abspath(os.path.dirname(__file__))
-    )
-    trypath = os.path.join(
-        export_folder,
-        f"{ticker} {date}{val}.xlsx",
-    )
+    ).parent
+    trypath = export_folder / symbol / date / val
+    trypath = str(trypath) + ".xlsx"  # type: ignore
+
     return Path(trypath)

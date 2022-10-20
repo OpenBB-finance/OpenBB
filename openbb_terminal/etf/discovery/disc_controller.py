@@ -5,7 +5,7 @@ import argparse
 import logging
 from typing import List
 
-from prompt_toolkit.completion import NestedCompleter
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.decorators import log_start_end
@@ -37,6 +37,20 @@ class DiscoveryController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
 
+            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
+            choices["gainers"] = {
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["decliners"] = {
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+            choices["active"] = {
+                "--limit": one_to_hundred,
+                "-l": "--limit",
+            }
+
             choices["support"] = self.SUPPORT_CHOICES
             choices["about"] = self.ABOUT_CHOICES
 
@@ -45,9 +59,9 @@ class DiscoveryController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("etf/disc/", 60)
-        mt.add_cmd("gainers", "Wall Street Journal")
-        mt.add_cmd("decliners", "Wall Street Journal")
-        mt.add_cmd("active", "Wall Street Journal")
+        mt.add_cmd("gainers")
+        mt.add_cmd("decliners")
+        mt.add_cmd("active")
         console.print(text=mt.menu_text, menu="ETF - Discovery")
 
     @log_start_end(log=logger)

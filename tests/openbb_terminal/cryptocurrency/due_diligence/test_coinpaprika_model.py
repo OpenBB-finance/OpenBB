@@ -28,7 +28,7 @@ def vcr_config():
         ("get_coin_markets_by_id", dict()),
         ("get_ohlc_historical", dict()),
         ("get_tickers_info_for_coin", dict()),
-        ("validate_coin", dict(coin="btc", coins_dct={"btc-bitcoin": "btc"})),
+        ("validate_coin", dict(symbol="btc", coins_dct={"btc-bitcoin": "btc"})),
         ("basic_coin_info", dict()),
     ],
 )

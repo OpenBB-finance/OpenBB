@@ -9,4 +9,3 @@
 7        CBOE Volatility     24.57    0.70   2.93
 8           DJIA Futures     34485    -148  -0.43
 9        S&P 500 Futures   4442.50  -11.00  -0.25
-

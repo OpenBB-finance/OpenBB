@@ -76,14 +76,14 @@ def rh_positions_to_df(holds: dict) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_historical(interval: str = "day", span: str = "3month") -> pd.DataFrame:
+def get_historical(interval: str = "day", window: str = "3month") -> pd.DataFrame:
     """Get historical portfolio in candle form
 
     Parameters
     ----------
     interval : str, optional
         Interval for robinhood (candle width), by default "day"
-    span : str, optional
+    window : str, optional
         Lookback to get portfolio history, by default "3month"
 
     Returns
@@ -91,7 +91,7 @@ def get_historical(interval: str = "day", span: str = "3month") -> pd.DataFrame:
     pd.DataFrame
         Historical portfolio with OHLC variables
     """
-    rhhist = robinhood.account.get_historical_portfolio(interval, span)
+    rhhist = robinhood.account.get_historical_portfolio(interval, window)
     rhhist_eq = rhhist["equity_historicals"]
     open_eq = []
     close_eq = []

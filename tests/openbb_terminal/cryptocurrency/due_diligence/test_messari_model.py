@@ -19,14 +19,14 @@ def vcr_config():
 
 @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "coin,interval,start,end",
+    "symbol,interval,start,end",
     [
         ("btc", "1d", "2022-01-10", "2022-03-08"),
     ],
 )
-def test_get_marketcap_dominance(coin, interval, start, end, recorder):
+def test_get_marketcap_dominance(symbol, interval, start, end, recorder):
     df = messari_model.get_marketcap_dominance(
-        coin=coin, interval=interval, start=start, end=end
+        symbol=symbol, interval=interval, start_date=start, end_date=end
     )
     recorder.capture(df)
 
@@ -116,14 +116,18 @@ def test_get_links(coin, recorder):
 
 @pytest.mark.vcr
 @pytest.mark.parametrize(
-    "coin,interval,start,end,timeseries_id",
+    "symbol,interval,start,end,timeseries_id",
     [
         ("btc", "1d", "2022-01-10", "2022-03-08", "sply.circ"),
     ],
 )
-def test_get_messari_timeseries(coin, interval, start, end, timeseries_id, recorder):
+def test_get_messari_timeseries(symbol, interval, start, end, timeseries_id, recorder):
     df, _ = messari_model.get_messari_timeseries(
-        coin=coin, interval=interval, start=start, end=end, timeseries_id=timeseries_id
+        symbol=symbol,
+        interval=interval,
+        start_date=start,
+        end_date=end,
+        timeseries_id=timeseries_id,
     )
     recorder.capture(df)
 

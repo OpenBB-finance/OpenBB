@@ -1,6 +1,6 @@
 ```
 usage: maxdiv [-p HISTORIC_PERIOD] [-s START_PERIOD] [-e END_PERIOD] [-lr]
-              [-f {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE]
+              [--freq {d,w,m}] [-mn MAX_NAN] [-th THRESHOLD_VALUE]
               [-mt NAN_FILL_METHOD]
               [-cv {hist,ewma1,ewma2,ledoit,oas,shrunk,gl,jlogo,fixed,spectral,shrink}]
               [-de SMOOTHING_FACTOR_EWMA] [-v LONG_ALLOCATION]
@@ -28,7 +28,7 @@ optional arguments:
                         MM-DD' format (default: )
   -lr, --log-returns    If use logarithmic or arithmetic returns to calculate
                         returns (default: False)
-  -f {d,w,m}, --freq {d,w,m}
+  --freq {d,w,m}
                         Frequency used to calculate returns. Possible values
                         are: 'd': for daily returns 'w': for weekly returns
                         'm': for monthly returns (default: d)
@@ -79,8 +79,8 @@ Example:
 2022 Apr 05, 14:18 (🦋) /portfolio/po/ $ maxdiv
 
  [3 Years] Display a maximal diversification portfolio
- 
-     Weights      
+
+     Weights
 ┏━━━━━━┳━━━━━━━━━┓
 ┃      ┃ Value   ┃
 ┡━━━━━━╇━━━━━━━━━┩

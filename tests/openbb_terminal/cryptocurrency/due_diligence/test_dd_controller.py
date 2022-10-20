@@ -1,4 +1,5 @@
 # IMPORTATION STANDARD
+from typing import List
 import os
 
 # IMPORTATION THIRDPARTY
@@ -13,6 +14,8 @@ from openbb_terminal.cryptocurrency.due_diligence import dd_controller
 # pylint: disable=E1111
 
 MESSARI_TIMESERIES_DF = pd.DataFrame()
+
+TOKENTERMINAL_PROJECTS: List[str] = list()
 
 COIN_MAP_DF = pd.Series(
     data={
@@ -110,6 +113,12 @@ def test_menu_without_queue_completion(mocker):
     mocker.patch(
         target=f"{path_controller}.messari_model.get_available_timeseries",
         return_value=MESSARI_TIMESERIES_DF,
+    )
+
+    # MOCK TOKEN TERMINAL get_project_ids
+    mocker.patch(
+        target=f"{path_controller}.tokenterminal_model.get_project_ids",
+        return_value=TOKENTERMINAL_PROJECTS,
     )
 
     result_menu = dd_controller.DueDiligenceController(queue=None).menu()
@@ -303,6 +312,20 @@ def test_call_func_expect_queue(expected_queue, func, queue, mocker):
             dict(),
         ),
         (
+            "call_fundrate",
+            [],
+            "coinglass_view.display_funding_rate",
+            [],
+            dict(),
+        ),
+        (
+            "call_liquidations",
+            [],
+            "coinglass_view.display_liquidations",
+            [],
+            dict(),
+        ),
+        (
             "call_oi",
             [],
             "coinglass_view.display_open_interest",
@@ -366,16 +389,16 @@ def test_call_func_expect_queue(expected_queue, func, queue, mocker):
             dict(),
         ),
         (
-            "call_binbook",
+            "call_ob",
             [],
-            "binance_view.display_order_book",
+            "ccxt_view.display_order_book",
             [],
             dict(),
         ),
         (
-            "call_cbbook",
+            "call_trades",
             [],
-            "coinbase_view.display_order_book",
+            "ccxt_view.display_trades",
             [],
             dict(),
         ),
@@ -383,13 +406,6 @@ def test_call_func_expect_queue(expected_queue, func, queue, mocker):
             "call_balance",
             [],
             "binance_view.display_balance",
-            [],
-            dict(),
-        ),
-        (
-            "call_trades",
-            [],
-            "coinbase_view.display_trades",
             [],
             dict(),
         ),

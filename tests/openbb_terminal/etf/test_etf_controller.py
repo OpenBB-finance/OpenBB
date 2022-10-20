@@ -248,22 +248,22 @@ def test_call_func_expect_queue(expected_queue, func, queue):
     "tested_func, other_args, mocked_func, called_args, called_kwargs",
     [
         (
-            "call_ln",
-            ["oil", "-l=5", "--source=fd"],
+            "call_search",
+            ["--name", "oil", "--source", "FinanceDatabase"],
             "financedatabase_view.display_etf_by_name",
             [],
             dict(name="oil", limit=5, export=""),
         ),
         (
-            "call_ln",
-            ["oil", "-l=5", "--source=sa"],
+            "call_search",
+            ["--name", "oil", "--source", "StockAnalysis"],
             "stockanalysis_view.display_etf_by_name",
             [],
             dict(name="oil", limit=5, export=""),
         ),
         (
-            "call_ld",
-            ["oil", "-l=5"],
+            "call_search",
+            ["--description", "oil"],
             "financedatabase_view.display_etf_by_description",
             [],
             dict(description="oil", limit=5, export=""),
@@ -280,7 +280,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ["6"],
             "stockanalysis_view.view_holdings",
             [],
-            dict(symbol="MOCK_ETF_NAME", num_to_show=6, export=""),
+            dict(symbol="MOCK_ETF_NAME", limit=6, export=""),
         ),
         (
             "call_weights",

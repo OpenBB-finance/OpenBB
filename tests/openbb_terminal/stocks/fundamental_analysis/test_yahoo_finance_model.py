@@ -32,17 +32,15 @@ def vcr_config():
     ],
 )
 def test_call_func(func, recorder):
-    result = getattr(yahoo_finance_model, func)(ticker="AAPL")
+    result = getattr(yahoo_finance_model, func)(symbol="AAPL")
 
     recorder.capture(result)
 
 
 @pytest.mark.vcr
 def test_get_shareholders(recorder):
-    major_df, institutional_df, mutual_df = yahoo_finance_model.get_shareholders(
-        ticker="AAPL"
-    )
-    result_list = [major_df, institutional_df, mutual_df]
+    df = yahoo_finance_model.get_shareholders(symbol="AAPL", holder="major")
+    result_list = [df]
 
     recorder.capture_list(result_list)
 
@@ -50,8 +48,19 @@ def test_get_shareholders(recorder):
 @pytest.mark.vcr
 def test_get_mktcap(recorder):
     df_mktcap, currency = yahoo_finance_model.get_mktcap(
-        ticker="AAPL",
+        symbol="AAPL",
     )
     result_list = [df_mktcap, currency]
 
     recorder.capture_list(result_list)
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "ticker, statement",
+    [("ABBV", "cash-flow"), ("ABBV", "financials"), ("ABBV", "balance-sheet")],
+)
+def test_get_financials(ticker, statement, recorder):
+    df = yahoo_finance_model.get_financials(symbol=ticker, statement=statement)
+
+    recorder.capture(df)

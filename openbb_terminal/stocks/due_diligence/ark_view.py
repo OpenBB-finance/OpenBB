@@ -16,22 +16,22 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_ark_trades(
-    ticker: str, num: int = 20, export: str = "", show_ticker: bool = False
+    symbol: str, limit: int = 20, show_symbol: bool = False, export: str = ""
 ):
     """Display ARK trades for ticker
 
     Parameters
     ----------
-    ticker : str
+    symbol: str
         Ticker to get trades for
-    num: int
+    limit: int
         Number of rows to show
-    export : str, optional
-        Format to export data
-    show_ticker: bool
+    show_symbol: bool
         Flag to show ticker in table
+    export: str, optional
+        Format to export data
     """
-    ark_holdings = ark_model.get_ark_trades_by_ticker(ticker)
+    ark_holdings = ark_model.get_ark_trades_by_ticker(symbol)
 
     if ark_holdings.empty:
         console.print(
@@ -40,7 +40,7 @@ def display_ark_trades(
         return
 
     # Since this is for a given ticker, no need to show it
-    if not show_ticker:
+    if not show_symbol:
         ark_holdings = ark_holdings.drop(columns=["ticker"])
     ark_holdings["Total"] = ark_holdings["Total"] / 1_000_000
     ark_holdings.rename(
@@ -51,7 +51,7 @@ def display_ark_trades(
         lambda x: x.strftime("%Y-%m-%d")
     )
     print_rich_table(
-        ark_holdings.head(num),
+        ark_holdings.head(limit),
         headers=list(ark_holdings.columns),
         show_index=True,
         title="ARK Trades",

@@ -35,29 +35,29 @@ def test_display_hist_fail():
 
 @pytest.mark.parametrize("external", [None, [1, 2]])
 def test_display_cdf(external):
-    qa_view.display_cdf("Data", df, "col2", "xlsx", external)
+    qa_view.display_cdf(df, "col2", "Data", "xlsx", external)
 
 
 def test_display_cdf_fail():
     with pytest.raises(Exception):
-        qa_view.display_cdf("Data", df, "col1", 2, [MagicMock()])
+        qa_view.display_cdf(df, "col1", "Data", 2, [MagicMock()])
 
 
 @pytest.mark.parametrize(
     "external, yearly", [(None, False), (None, True), ([1, 2], False)]
 )
 def test_display_bw(external, yearly):
-    qa_view.display_bw("Data", df, "col2", yearly, external)
+    qa_view.display_bw(df, "col2", "Data", yearly, external)
 
 
 @pytest.mark.parametrize("external, yearly", [([1, 2], False)])
 def test_display_acf(external, yearly):
-    qa_view.display_acf("Data", df2, "col2", yearly, external)
+    qa_view.display_acf(df2, "col2", "Data", yearly, external)
 
 
 @pytest.mark.parametrize("external", [None, [1, 2]])
 def test_display_qqplot(external):
-    qa_view.display_qqplot("Data", df, "col2", external)
+    qa_view.display_qqplot(df, "col2", "Data", external)
 
 
 def test_display_cusum():

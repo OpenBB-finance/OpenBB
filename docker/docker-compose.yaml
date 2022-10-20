@@ -1,72 +1,12 @@
 version: '3.8'
 services:
-  openbbterminal-python:
-    build:
-      context: ..
-      dockerfile: docker/openbbterminal-python.dockerfile
-    image: "${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}/openbbterminal-python:${OPENBBTERMINAL_DOCKER_PYTHON_VERSION}"
-  openbbterminal-deps:
-    build:
-      context: ..
-      dockerfile: docker/openbbterminal-deps.dockerfile
-      args:
-        OPENBBTERMINAL_DOCKER_IMAGE_PREFIX: ${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}
-        OPENBBTERMINAL_DOCKER_PYTHON_VERSION: ${OPENBBTERMINAL_DOCKER_PYTHON_VERSION}
-    image: "${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}/openbbterminal-deps:${OPENBBTERMINAL_DOCKER_DEPS_VERSION}"
-  openbbterminal-poetry-deps:
-    build:
-      context: ..
-      dockerfile: docker/openbbterminal-poetry-deps.dockerfile
-      args:
-        OPENBBTERMINAL_DOCKER_IMAGE_PREFIX: ${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}
-        OPENBBTERMINAL_DOCKER_PYTHON_VERSION: ${OPENBBTERMINAL_DOCKER_PYTHON_VERSION}
-    image: "${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}/openbbterminal-poetry-deps:${OPENBBTERMINAL_DOCKER_POETRY_DEPS_VERSION}"
-  openbbterminal-poetry-full-deps:
-    build:
-      context: ..
-      dockerfile: docker/openbbterminal-poetry-full-deps.dockerfile
-      args:
-        OPENBBTERMINAL_DOCKER_IMAGE_PREFIX: ${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}
-        OPENBBTERMINAL_DOCKER_PYTHON_VERSION: ${OPENBBTERMINAL_DOCKER_PYTHON_VERSION}
-        OPENBBTERMINAL_DOCKER_POETRY_DEPS_VERSION: ${OPENBBTERMINAL_DOCKER_POETRY_DEPS_VERSION}
-    image: "${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}/openbbterminal-poetry-full-deps:${OPENBBTERMINAL_DOCKER_POETRY_FULL_DEPS_VERSION}"
-  openbbterminal:
-    build:
-      context: ..
-      dockerfile: docker/openbbterminal.dockerfile
-      args:
-        OPENBBTERMINAL_DOCKER_IMAGE_PREFIX: ${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}
-        OPENBBTERMINAL_DOCKER_DEPS_VERSION: ${OPENBBTERMINAL_DOCKER_DEPS_VERSION}
-    image: "${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}/openbbterminal:${OPENBBTERMINAL_DOCKER_OPENBBTERMINAL_VERSION}"
-    tty: true
-    env_file: setenv
-  openbbterminal-poetry:
-    build:
-      context: ..
-      dockerfile: docker/openbbterminal-poetry.dockerfile
-      args:
-        OPENBBTERMINAL_DOCKER_IMAGE_PREFIX: ${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}
-        OPENBBTERMINAL_DOCKER_POETRY_DEPS_VERSION: ${OPENBBTERMINAL_DOCKER_POETRY_DEPS_VERSION}
-    image: "${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}/openbbterminal-poetry:${OPENBBTERMINAL_DOCKER_POETRY_VERSION}"
-    tty: true
-    env_file: setenv
-  openbbterminal-poetry-jupyter:
-    build:
-      context: ..
-      dockerfile: docker/openbbterminal-poetry-jupyter.dockerfile
-      args:
-        OPENBBTERMINAL_DOCKER_IMAGE_PREFIX: ${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}
-        OPENBBTERMINAL_DOCKER_POETRY_FULL_DEPS_VERSION: ${OPENBBTERMINAL_DOCKER_POETRY_FULL_DEPS_VERSION}
-    image: "${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}/openbbterminal-poetry-jupyter:${OPENBBTERMINAL_DOCKER_POETRY_VERSION}"
-    tty: true
-    env_file: setenv
-  openbbterminal-poetry-full:
-    build:
-      context: ..
-      dockerfile: docker/openbbterminal-poetry-full.dockerfile
-      args:
-        OPENBBTERMINAL_DOCKER_IMAGE_PREFIX: ${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}
-        OPENBBTERMINAL_DOCKER_POETRY_FULL_DEPS_VERSION: ${OPENBBTERMINAL_DOCKER_POETRY_FULL_DEPS_VERSION}
-    image: "${OPENBBTERMINAL_DOCKER_IMAGE_PREFIX}/openbbterminal-poetry-full:${OPENBBTERMINAL_DOCKER_POETRY_FULL_VERSION}"
-    tty: true
-    env_file: setenv
+  poetry:
+    environment:
+        DISPLAY: host.docker.internal:0.0
+    volumes:
+      - ~/OpenBBUserData:/home/python/OpenBBUserData
+      - ~/.openbb_terminal:/home/python/.openbb_terminal
+    platform: linux/amd64
+    image: ghcr.io/openbb-finance/openbbterminal/poetry:1.9.1
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t

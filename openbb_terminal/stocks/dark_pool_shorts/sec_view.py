@@ -25,12 +25,12 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def fails_to_deliver(
-    ticker: str,
-    stock: pd.DataFrame,
-    start: datetime,
-    end: datetime,
-    num: int,
-    raw: bool,
+    symbol: str,
+    data: pd.DataFrame,
+    start_date: str = (datetime.now() - timedelta(days=60)).strftime("%Y-%m-%d"),
+    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    limit: int = 0,
+    raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -38,25 +38,25 @@ def fails_to_deliver(
 
     Parameters
     ----------
-    ticker : str
+    symbol: str
         Stock ticker
-    stock : pd.DataFrame
+    data: pd.DataFrame
         Stock data
-    start : datetime
-        Start of data
-    end : datetime
-        End of data
-    num : int
+    start_date: str
+        Start of data, in YYYY-MM-DD format
+    end_date: str
+        End of data, in YYYY-MM-DD format
+    limit : int
         Number of latest fails-to-deliver being printed
-    raw : bool
+    raw: bool
         Print raw data
-    export : str
+    export: str
         Export dataframe data to csv,json,xlsx file
-    external_axes : Optional[List[plt.Axes]], optional
+    external_axes: Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
 
     """
-    ftds_data = sec_model.get_fails_to_deliver(ticker, start, end, num)
+    ftds_data = sec_model.get_fails_to_deliver(symbol, start_date, end_date, limit)
 
     # This plot has 2 axes
     if not external_axes:
@@ -73,18 +73,16 @@ def fails_to_deliver(
         label="Fail Quantity",
     )
     ax1.set_ylabel("Shares [K]")
-    ax1.set_title(f"Fails-to-deliver Data for {ticker}")
+    ax1.set_title(f"Fails-to-deliver Data for {symbol}")
     ax1.legend(loc="lower right")
 
-    if num > 0:
-        stock_ftd = stock[stock.index > (datetime.now() - timedelta(days=num + 31))]
+    if limit > 0:
+        data_ftd = data[data.index > (datetime.now() - timedelta(days=limit + 31))]
     else:
-        stock_ftd = stock[stock.index > start]
-        stock_ftd = stock_ftd[stock_ftd.index < end]
+        data_ftd = data[data.index > start_date]
+        data_ftd = data_ftd[data_ftd.index < end_date]
 
-    ax2.plot(
-        stock_ftd.index, stock_ftd["Adj Close"], color="orange", label="Share Price"
-    )
+    ax2.plot(data_ftd.index, data_ftd["Adj Close"], color="orange", label="Share Price")
     ax2.set_ylabel("Share Price [$]")
     ax2.legend(loc="upper right")
 

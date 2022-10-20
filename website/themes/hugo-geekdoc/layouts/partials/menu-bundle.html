@@ -30,7 +30,7 @@
             {{ end }}
             <span class="flex">
                 {{ if $icon }}<svg class="icon {{ .icon }}"><use xlink:href="#{{ .icon }}"></use></svg>{{ end }}
-                <a href="{{ if .external }}{{ .ref }}{{ else }}{{ relref $current .ref }}{{ end }}"
+                <a style="text-decoration: none !important;" href="{{ if .external }}{{ .ref }}{{ else }}{{ relref $current .ref }}{{ end }}"
                     class="gdoc-nav__entry {{ if not .external }}{{ if $isCurrent }}is-active{{ end }}{{ end }}">
                     {{ .name }}
                 </a>

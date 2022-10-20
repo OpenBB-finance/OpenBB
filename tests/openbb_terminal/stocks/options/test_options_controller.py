@@ -131,6 +131,7 @@ def test_menu_with_queue(expected, mocker, queue):
     assert result_menu == expected
 
 
+@pytest.mark.skip
 @pytest.mark.vcr(record_mode="none")
 def test_menu_without_queue_completion(mocker):
     path_controller = "openbb_terminal.stocks.options.options_controller"
@@ -295,6 +296,7 @@ def test_call_cls(mocker):
     os.system.assert_called_once_with("cls||clear")
 
 
+@pytest.mark.skip
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "func, queue, expected_queue",
@@ -370,7 +372,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
     assert controller.queue == expected_queue
 
 
-# @pytest.mark.skip
+@pytest.mark.skip
 @pytest.mark.vcr(record_mode="none")
 @pytest.mark.parametrize(
     "tested_func, other_args, mocked_func, called_args, called_kwargs",
@@ -440,10 +442,10 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
             "fdscanner_view.display_options",
             [],
             dict(
-                num=1,
-                sort_column=["Vol"],
+                limit=1,
+                sortby=["Vol"],
                 export="csv",
-                ascending=True,
+                ascend=True,
                 calls_only=False,
                 puts_only=True,
             ),
@@ -454,7 +456,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
             "alphaquery_view.display_put_call_ratio",
             [],
             dict(
-                ticker="MOCK_TICKER",
+                symbol="MOCK_TICKER",
                 window="10",
                 start_date="2021-12-01",
                 export="csv",
@@ -466,7 +468,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
             "barchart_view.print_options_data",
             [],
             dict(
-                ticker="MOCK_TICKER",
+                symbol="MOCK_TICKER",
                 export="csv",
             ),
         ),
@@ -485,14 +487,14 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
             "syncretism_view.view_historical_greeks",
             [],
             dict(
-                ticker="MOCK_TICKER",
+                symbol="MOCK_TICKER",
                 expiry="2022-01-07",
                 strike=200.0,
                 greek="theta",
                 chain_id="MOCK_CHAIN_ID",
                 put=True,
                 raw=True,
-                n_show="2",
+                limit="2",
                 export="csv",
             ),
         ),
@@ -511,14 +513,14 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
             "syncretism_view.view_historical_greeks",
             [],
             dict(
-                ticker="MOCK_TICKER",
+                symbol="MOCK_TICKER",
                 expiry="2022-01-07",
                 strike=200.0,
                 greek="theta",
                 chain_id="MOCK_CHAIN_ID",
                 put=False,
                 raw=True,
-                n_show="2",
+                limit="2",
                 export="csv",
             ),
         ),
@@ -583,7 +585,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
             "tradier_view.display_historical",
             [],
             dict(
-                ticker="MOCK_TICKER",
+                symbol="MOCK_TICKER",
                 expiry="2022-01-07",
                 strike=200.0,
                 put=True,
@@ -613,6 +615,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
             [
                 "--calls",
                 "--puts",
+                "--source=tradier",
                 "--min=1",
                 "--max=2",
                 "--display=volume",
@@ -621,13 +624,32 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
             "tradier_view.display_chains",
             [],
             dict(
-                ticker="MOCK_TICKER",
+                symbol="MOCK_TICKER",
                 expiry="2022-01-07",
                 to_display=["volume"],
                 min_sp=1.0,
                 max_sp=2.0,
                 calls_only=True,
                 puts_only=True,
+                export="csv",
+            ),
+        ),
+        (
+            "call_chains",
+            [
+                "--min=1",
+                "--max=2",
+                "--export=csv",
+            ],
+            "yfinance_view.display_chains",
+            [],
+            dict(
+                symbol="MOCK_TICKER",
+                expiry="2022-01-07",
+                min_sp=1.0,
+                max_sp=2.0,
+                calls_only=False,
+                puts_only=False,
                 export="csv",
             ),
         ),
@@ -639,13 +661,13 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 "--max=2",
                 "--calls",
                 "--puts",
-                "--source=yf",
+                "--source=YahooFinance",
                 "--export=csv",
             ],
             "yfinance_view.plot_vol",
             [],
             dict(
-                ticker="MOCK_TICKER",
+                symbol="MOCK_TICKER",
                 expiry="2022-01-07",
                 min_sp=1.0,
                 max_sp=2.0,
@@ -668,7 +690,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
             "tradier_view.plot_vol",
             [],
             dict(
-                ticker="MOCK_TICKER",
+                symbol="MOCK_TICKER",
                 expiry="2022-01-07",
                 min_sp=1.0,
                 max_sp=2.0,
@@ -684,13 +706,13 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 "--minv=1",
                 "--min=2",
                 "--max=3",
-                "--source=yf",
+                "--source=YahooFinance",
                 "--export=csv",
             ],
             "yfinance_view.plot_volume_open_interest",
             [],
             dict(
-                ticker="MOCK_TICKER",
+                symbol="MOCK_TICKER",
                 expiry="2022-01-07",
                 min_sp=2.0,
                 max_sp=3.0,
@@ -711,7 +733,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
             "tradier_view.plot_volume_open_interest",
             [],
             dict(
-                ticker="MOCK_TICKER",
+                symbol="MOCK_TICKER",
                 expiry="2022-01-07",
                 min_sp=2.0,
                 max_sp=3.0,
@@ -727,13 +749,13 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
                 "--max=2",
                 "--calls",
                 "--puts",
-                "--source=yf",
+                "--source=YahooFinance",
                 "--export=csv",
             ],
             "yfinance_view.plot_oi",
             [],
             dict(
-                ticker="MOCK_TICKER",
+                symbol="MOCK_TICKER",
                 expiry="2022-01-07",
                 min_sp=1.0,
                 max_sp=2.0,
@@ -756,7 +778,7 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
             "tradier_view.plot_oi",
             [],
             dict(
-                ticker="MOCK_TICKER",
+                symbol="MOCK_TICKER",
                 expiry="2022-01-07",
                 min_sp=1.0,
                 max_sp=2.0,
@@ -778,10 +800,10 @@ def test_call_func_expect_queue(expected_queue, func, mocker, queue):
             [
                 "MOCK_TICKER",
                 "2022-01-07",
-                True,
                 "c",
                 "v",
                 "smile",
+                True,
                 "jpg",
             ],
             dict(),
@@ -852,10 +874,10 @@ def test_call_func(
 ):
     path_controller = "openbb_terminal.stocks.options.options_controller"
 
-    # MOCK TRADIER_TOKEN
+    # MOCK API_TRADIER_TOKEN
     mocker.patch.object(
         target=options_controller,
-        attribute="TRADIER_TOKEN",
+        attribute="API_TRADIER_TOKEN",
         new="MOCK_TRADIER_TOKEN",
     )
 
@@ -976,7 +998,7 @@ def test_call_func_no_selected_date(func, mocker):
     "other_args",
     [
         ["TSLA"],
-        ["TSLA", "--source=yf"],
+        ["TSLA", "--source=YahooFinance"],
     ],
 )
 def test_call_load(mocker, other_args):

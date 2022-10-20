@@ -7,7 +7,7 @@ import argparse
 import logging
 from typing import List
 
-from prompt_toolkit.completion import NestedCompleter
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.cryptocurrency.defi import (
@@ -20,8 +20,6 @@ from openbb_terminal.cryptocurrency.defi import (
     llama_model,
     llama_view,
     substack_view,
-    terraengineer_model,
-    terraengineer_view,
     terramoney_fcd_model,
     terramoney_fcd_view,
     smartstake_view,
@@ -56,8 +54,6 @@ class DefiController(BaseController):
         "swaps",
         "stats",
         "vaults",
-        "ayr",
-        "aterra",
         "sinfo",
         "validators",
         "gacc",
@@ -74,21 +70,126 @@ class DefiController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["ldapps"]["-s"] = {c: {} for c in llama_model.LLAMA_FILTERS}
-            choices["aterra"]["--asset"] = {c: {} for c in terraengineer_model.ASSETS}
-            choices["aterra"] = {c: {} for c in terraengineer_model.ASSETS}
-            choices["tokens"]["-s"] = {c: {} for c in graph_model.TOKENS_FILTERS}
-            choices["pairs"]["-s"] = {c: {} for c in graph_model.PAIRS_FILTERS}
-            choices["pools"]["-s"] = {c: {} for c in graph_model.POOLS_FILTERS}
-            choices["swaps"]["-s"] = {c: {} for c in graph_model.SWAPS_FILTERS}
-            choices["vaults"]["-s"] = {c: {} for c in coindix_model.VAULTS_FILTERS}
-            choices["vaults"]["-k"] = {c: {} for c in coindix_model.VAULT_KINDS}
-            choices["vaults"]["-c"] = {c: {} for c in coindix_model.CHAINS}
-            choices["vaults"]["-p"] = {c: {} for c in coindix_model.PROTOCOLS}
-            choices["validators"]["-s"] = {
-                c: {} for c in terramoney_fcd_model.VALIDATORS_COLUMNS
+            choices["newspaper"] = {
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
             }
-
+            choices["dpi"] = {
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--sort": {
+                    c: {}
+                    for c in [
+                        "Rank",
+                        "Name",
+                        "Chain",
+                        "Category",
+                        "30D_Users",
+                        "TVL_$",
+                        "1_Day_%",
+                    ]
+                },
+                "-s": "--sort",
+                "--ascend": {},
+            }
+            choices["vaults"] = {
+                "--chain": {c: {} for c in coindix_model.CHAINS},
+                "-c": "--chain",
+                "--sort": {c: {} for c in coindix_model.VAULTS_FILTERS},
+                "-s": "--sort",
+                "--kind": {c: {} for c in coindix_model.VAULT_KINDS},
+                "-k": "--kind",
+                "--top": {str(c): {} for c in range(1, 1000)},
+                "-t": "--top",
+                "--protocol": {c: {} for c in coindix_model.PROTOCOLS},
+                "-p": "--protocol",
+                "--descend": {},
+            }
+            choices["tokens"] = {
+                "--sort": {c: {} for c in graph_model.TOKENS_FILTERS},
+                "-s": "--sort",
+                "--skip": {str(c): {} for c in range(1, 1000)},
+                "--limit": {str(c): {} for c in range(1, 1000)},
+                "--descend": {},
+            }
+            choices["pairs"] = {
+                "--sort": {c: {} for c in graph_model.PAIRS_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 1000)},
+                "-l": "--limit",
+                "--vol": {str(c): {} for c in range(1, 1000)},
+                "-v": "--vol",
+                "--tx": {str(c): {} for c in range(1, 1000)},
+                "-tx": "--tx",
+                "--days": {str(c): {} for c in range(1, 1000)},
+                "--descend": {},
+            }
+            choices["pools"] = {
+                "--sort": {c: {} for c in graph_model.POOLS_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 1000)},
+                "-l": "--limit",
+                "--descend": {},
+            }
+            choices["swaps"] = {
+                "--sort": {c: {} for c in graph_model.SWAPS_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 1000)},
+                "-l": "--limit",
+                "--descend": {},
+            }
+            choices["ldapps"] = {
+                "--sort": {c: {} for c in llama_model.LLAMA_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+                "--desc": {},
+            }
+            choices["gdapps"] = {
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+            }
+            choices["stvl"] = {
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+            }
+            choices["dtvl"] = {"--dapps": {}, "-d": "--dapps"}
+            choices["sinfo"] = {
+                "--address": None,
+                "-a": "--address",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+            }
+            choices["validators"] = {
+                "--sort": {c: {} for c in terramoney_fcd_model.VALIDATORS_COLUMNS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+            }
+            choices["gacc"] = {
+                "--kind": {c: {} for c in ["active", "total"]},
+                "-k": "--kind",
+                "--cumulative": {},
+                "--descend": {},
+                "--limit": {str(c): {} for c in range(1, 1000)},
+                "-l": "--limit",
+            }
+            choices["sreturn"] = {
+                "--limit": {str(c): {} for c in range(1, 1000)},
+                "-l": "--limit",
+            }
+            choices["lcsc"] = {
+                "--days": {str(c): {} for c in range(1, 1000)},
+                "-d": "--days",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+            }
+            choices["anchor"] = {
+                "--adress": None,
+                "--transactions": {},
+            }
             choices["support"] = self.SUPPORT_CHOICES
             choices["about"] = self.ABOUT_CHOICES
 
@@ -97,26 +198,24 @@ class DefiController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("crypto/defi/")
-        mt.add_cmd("newsletter", "Substack")
-        mt.add_cmd("dpi", "Defipulse")
-        mt.add_cmd("vaults", "Coindix")
-        mt.add_cmd("tokens", "The Graph")
-        mt.add_cmd("stats", "The Graph")
-        mt.add_cmd("pairs", "The Graph")
-        mt.add_cmd("pools", "The Graph")
-        mt.add_cmd("swaps", "The Graph")
-        mt.add_cmd("ldapps", "Defi Llama")
-        mt.add_cmd("gdapps", "Defi Llama")
-        mt.add_cmd("stvl", "Defi Llama")
-        mt.add_cmd("dtvl", "Defi Llama")
-        mt.add_cmd("aterra", "Terra Engineer")
-        mt.add_cmd("ayr", "Terra Engineer")
-        mt.add_cmd("sinfo", "Terra FCD")
-        mt.add_cmd("validators", "Terra FCD")
-        mt.add_cmd("gacc", "Terra FCD")
-        mt.add_cmd("sreturn", "Terra FCD")
-        mt.add_cmd("lcsc", "Smartstake")
-        mt.add_cmd("anchor", "CryptoSaurio")
+        mt.add_cmd("newsletter")
+        mt.add_cmd("dpi")
+        mt.add_cmd("vaults")
+        mt.add_cmd("tokens")
+        mt.add_cmd("stats")
+        mt.add_cmd("pairs")
+        mt.add_cmd("pools")
+        mt.add_cmd("swaps")
+        mt.add_cmd("ldapps")
+        mt.add_cmd("gdapps")
+        mt.add_cmd("stvl")
+        mt.add_cmd("dtvl")
+        mt.add_cmd("sinfo")
+        mt.add_cmd("validators")
+        mt.add_cmd("gacc")
+        mt.add_cmd("sreturn")
+        mt.add_cmd("lcsc")
+        mt.add_cmd("anchor")
         console.print(text=mt.menu_text, menu="Cryptocurrency - Decentralized Finance")
 
     @log_start_end(log=logger)
@@ -161,71 +260,6 @@ class DefiController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_aterra(self, other_args: List[str]):
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="aterra",
-            description="""
-                Displays the 30-day history of an asset in a certain terra address.
-                [Source: https://terra.engineer/]
-            """,
-        )
-        parser.add_argument(
-            "--asset",
-            dest="asset",
-            type=str,
-            help="Terra asset {ust,luna,sdt} Default: ust",
-            default=terraengineer_model.ASSETS[0],
-            choices=terraengineer_model.ASSETS,
-        )
-        parser.add_argument(
-            "--address",
-            dest="address",
-            type=check_terra_address_format,
-            help="Terra address. Valid terra addresses start with 'terra'",
-            required="-h" not in other_args,
-        )
-
-        if other_args and not other_args[0][0] == "-":
-            other_args.insert(0, "--asset")
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
-            terraengineer_view.display_terra_asset_history(
-                export=ns_parser.export,
-                address=ns_parser.address,
-                asset=ns_parser.asset,
-            )
-
-    @log_start_end(log=logger)
-    def call_ayr(self, other_args: List[str]):
-        """Process ayr command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ayr",
-            description="""
-                Displays the 30-day history of the Anchor Yield Reserve.
-                An increasing yield reserve indicates that the return on collateral staked by borrowers in Anchor
-                is greater than the yield paid to depositors. A decreasing yield reserve means yield paid
-                to depositors is outpacing the staking returns of borrower's collateral.
-                TLDR: Shows the address that contains UST that is paid on anchor interest earn.
-                [Source: https://terra.engineer/]
-            """,
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
-            terraengineer_view.display_anchor_yield_reserve(export=ns_parser.export)
-
-    @log_start_end(log=logger)
     def call_sinfo(self, other_args: List[str]):
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -262,7 +296,9 @@ class DefiController(BaseController):
 
         if ns_parser:
             terramoney_fcd_view.display_account_staking_info(
-                export=ns_parser.export, address=ns_parser.address, top=ns_parser.limit
+                export=ns_parser.export,
+                address=ns_parser.address,
+                limit=ns_parser.limit,
             )
 
     @log_start_end(log=logger)
@@ -372,7 +408,7 @@ class DefiController(BaseController):
                 kind=ns_parser.kind,
                 export=ns_parser.export,
                 cumulative=ns_parser.cumulative,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
             )
 
     @log_start_end(log=logger)
@@ -401,7 +437,7 @@ class DefiController(BaseController):
 
         if ns_parser:
             terramoney_fcd_view.display_staking_ratio_history(
-                export=ns_parser.export, top=ns_parser.limit
+                export=ns_parser.export, limit=ns_parser.limit
             )
 
     @log_start_end(log=logger)
@@ -430,7 +466,7 @@ class DefiController(BaseController):
 
         if ns_parser:
             terramoney_fcd_view.display_staking_returns_history(
-                export=ns_parser.export, top=ns_parser.limit
+                export=ns_parser.export, limit=ns_parser.limit
             )
 
     @log_start_end(log=logger)
@@ -462,15 +498,23 @@ class DefiController(BaseController):
             type=str,
             help="Sort by given column. Default: Rank",
             default="Rank",
-            choices=["Rank", "Name", "Chain", "Category", "TVL", "Change_1D"],
+            choices=[
+                "Rank",
+                "Name",
+                "Chain",
+                "Category",
+                "30D_Users",
+                "TVL_$",
+                "1_Day_%",
+            ],
         )
 
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
+            "--ascend",
+            action="store_true",
+            help="Flag to sort in ascending order (highest first)",
+            dest="ascending",
+            default=False,
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -479,9 +523,9 @@ class DefiController(BaseController):
 
         if ns_parser:
             defipulse_view.display_defipulse(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=ns_parser.ascending,
                 export=ns_parser.export,
             )
 
@@ -511,7 +555,7 @@ class DefiController(BaseController):
         )
 
         if ns_parser:
-            llama_view.display_grouped_defi_protocols(num=ns_parser.limit)
+            llama_view.display_grouped_defi_protocols(limit=ns_parser.limit)
 
     @log_start_end(log=logger)
     def call_dtvl(self, other_args: List[str]):
@@ -597,9 +641,9 @@ class DefiController(BaseController):
 
         if ns_parser:
             llama_view.display_defi_protocols(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 description=ns_parser.description,
                 export=ns_parser.export,
             )
@@ -631,7 +675,7 @@ class DefiController(BaseController):
         )
 
         if ns_parser:
-            llama_view.display_defi_tvl(top=ns_parser.limit, export=ns_parser.export)
+            llama_view.display_defi_tvl(limit=ns_parser.limit, export=ns_parser.export)
 
     @log_start_end(log=logger)
     def call_newsletter(self, other_args: List[str]):
@@ -661,7 +705,7 @@ class DefiController(BaseController):
 
         if ns_parser:
             substack_view.display_newsletters(
-                top=ns_parser.limit, export=ns_parser.export
+                limit=ns_parser.limit, export=ns_parser.export
             )
 
     @log_start_end(log=logger)
@@ -720,7 +764,7 @@ class DefiController(BaseController):
                 skip=ns_parser.skip,
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -816,12 +860,12 @@ class DefiController(BaseController):
 
         if ns_parser:
             graph_view.display_recently_added(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 days=ns_parser.days,
                 min_volume=ns_parser.vol,
                 min_tx=ns_parser.tx,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -871,9 +915,9 @@ class DefiController(BaseController):
 
         if ns_parser:
             graph_view.display_uni_pools(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -923,9 +967,9 @@ class DefiController(BaseController):
 
         if ns_parser:
             graph_view.display_last_uni_swaps(
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -1020,9 +1064,9 @@ class DefiController(BaseController):
                 chain=ns_parser.chain,
                 kind=ns_parser.kind,
                 protocol=ns_parser.protocol,
-                top=ns_parser.limit,
+                limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
+                ascend=not ns_parser.descend,
                 link=ns_parser.link,
                 export=ns_parser.export,
             )

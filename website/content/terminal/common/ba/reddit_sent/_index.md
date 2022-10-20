@@ -1,11 +1,11 @@
-```
+```txt
 usage: reddit_sent [-s {relevance,hot,top,new,comments}] [-c COMPANY] [--subreddits SUBREDDITS] [-l LIMIT]
                    [-t {hour,day,week,month,year,all}] [-f] [-g] [-h] [--export EXPORT]
 ```
 
 Determine general Reddit sentiment about a ticker. [Source: Reddit]
 
-```
+```txt
 optional arguments:
   -s {relevance,hot,top,new,comments}, --sort {relevance,hot,top,new,comments}
                         search sorting type
@@ -17,7 +17,7 @@ optional arguments:
                         how many posts to gather from each subreddit
   -t {hour,day,week,month,year,all}, --time {hour,day,week,month,year,all}
                         time period to get posts from -- all, year, month, week, or day; defaults to week
-  -f, --full_search     enable comprehensive search
+  --full                enable comprehensive search
   -g, --graphic         display graphic
   -d, --display         Print table of sentiment values
   -h, --help            show this help message
@@ -25,8 +25,9 @@ optional arguments:
 ```
 
 Example:
-```
-reddit_sent -c Google --subreddits tech,stocks -f
+
+```txt
+reddit_sent -c Google --subreddits tech,stocks --full
 Searching through subreddits for posts.
 100%|█████████████████████████████████████████████████████████████████████████| 2/2 [00:01<00:00,  1.84it/s]
 Analyzing each post...

@@ -1,6 +1,7 @@
 """NASDAQ DataLink View"""
 __docformat__ = "numpy"
 
+from datetime import datetime
 import logging
 import os
 
@@ -18,12 +19,12 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_QUANDL"])
-def display_top_retail(n_days: int = 3, export: str = ""):
+def display_top_retail(limit: int = 3, export: str = ""):
     """Display the top 10 retail traded stocks for last days
 
     Parameters
     ----------
-    n_days : int, optional
+    limit : int, optional
         Number of days to show by default 3
     export : str, optional
         Format to export data, by default ""
@@ -33,7 +34,7 @@ def display_top_retail(n_days: int = 3, export: str = ""):
     if retails.empty:
         return
 
-    for date, df in retails.head(n_days * 10).groupby("Date"):
+    for date, df in retails.head(limit * 10).groupby("Date"):
         df = df.drop(columns=["Date"])
         df = df.reset_index(drop=True)
         print_rich_table(
@@ -48,9 +49,9 @@ def display_top_retail(n_days: int = 3, export: str = ""):
 
 @log_start_end(log=logger)
 def display_dividend_calendar(
-    date: str,
-    sort_col: str = "Dividend",
-    ascending: bool = False,
+    date: str = datetime.today().strftime("%Y-%m-%d"),
+    sortby: str = "Dividend",
+    ascend: bool = False,
     limit: int = 10,
     export: str = "",
 ):
@@ -60,9 +61,9 @@ def display_dividend_calendar(
     ----------
     date: str
         Date to get dividend calendar for
-    sort_col: str
+    sortby: str
         Column to sort data for
-    ascending: bool
+    ascend: bool
         Flag to sort in ascending order
     limit: int
         Number of results to show
@@ -88,7 +89,7 @@ def display_dividend_calendar(
         return
     calendar = calendar.drop(columns=["announcement_Date"])
     calendar.columns = calendar.columns.map(div_map)
-    calendar = calendar.sort_values(by=sort_col, ascending=ascending)
+    calendar = calendar.sort_values(by=sortby, ascending=ascend)
     print_rich_table(
         calendar.head(limit),
         headers=[x.title() for x in calendar.columns],

@@ -1,18 +1,21 @@
 ---
-title: Getting Started
-keywords: "getting started, openbb, bots, api, beginner guide, how to use openbb, openbb keys, openbb terminal, openbb"
+title: OpenBB Terminal Documentation
+keywords: "getting started, openbb, api, beginner guide, how to use openbb, openbb keys, openbb terminal, openbb, terminal"
 excerpt: "This page guides you how to use the OpenBB terminal, developed by OpenBB."
 description: "The OpenBB Documentation provides guidance on how to use the OpenBB Terminal, a free, custom built
 financial terminal that will help you make more informed decisions, faster."
 geekdocCollapseSection: true
 ---
-## Introduction
 
-OpenBB is a leading open source investment analysis company. We represent millions of investors who want to leverage
-state-of-the-art data science and machine learning technologies to make sense of raw unrefined data. Our mission
-is to make investment research effective, powerful and accessible to everyone.
+**Introduction**
 
-**All our products are Free and Open-Source (FOSS).**
+OpenBB is a leading open source investment research software platform for accessing and analyzing financial market data.
+We represent millions of investors who want to leverage state-of-the-art data science and machine learning technologies
+to make sense of raw unrefined data. Our mission is to make investment research effective, powerful and accessible to everyone.
+
+---
+
+**The OpenBB Terminal is Free and Open-Source (FOSS)**
 
 <!-- markdownlint-capture -->
 <!-- markdownlint-disable MD033 -->
@@ -24,15 +27,6 @@ is to make investment research effective, powerful and accessible to everyone.
 [![Twitter][twitter-shield]][twitter-url]
 
 <!-- markdownlint-restore -->
-
----
-<center><b><span style="color:white">If you are interested in the <span style="color:orange">OpenBB Terminal</span>,
-please continue reading this page and the related pages on each menu (e.g. <a href="terminal/stocks">Stocks</a>
-or <a href="terminal/economy">Economy</a>)</span></b></center>
-
-<center><b><span style="color:white">If you are interested in one of our other products,
-please refer to the <a href="api">OpenBB Python API</a> or the
-<a href="bots">OpenBB Bots</a> pages.</span></b></center>
 
 ---
 
@@ -51,27 +45,25 @@ of their background - can so easily add features to an investment research platf
 
 ### Why Open Source?
 
-An open source product allows for higher quality, greater reproducibility, lower costs, more transparency,
-and faster go-to-market due to the strong community created. In addition, users can adapt the platform to their
-needs or even build proprietary features on top of our infrastructure - which ultimately can result in a marketplace.
+An open source product allows for higher quality, lower costs, more transparency, and faster go-to-market due to the strong community created. There is no point in re-inventing the wheel for financial theory that has been around for decades, thus users can adapt the platform to their needs or even build proprietary features on top of our infrastructure.
 
 <--->
 
-### Importing and Exporting data
+### Why Free?
 
-The terminal allows for users to import their own proprietary datasets to use on our econometrics menu. In addition, users are allowed to export any type of data to any type of format whether that is raw data in Excel or an image in PNG. This is also ideal for finance content creation.
+We believe that everyone should be able to have the same tooling to do investment research. By leveraging free API tiers, we can allow users to have access to a vast range of information for free. On the other hand, we want users that are willing to subscribe to premium API keys from certain data providers to be able to take advantage of that on OpenBB Terminal - this is where we see a monetization opportunity, a revenue share with data providers for connecting our users to their resources.
 
 {{< /columns >}}
 
 {{< columns >}}
 
-### Automatic notebook reports
+### Importing and Exporting data
 
-Create notebook templates (through papermill) which can be run on different tickers. This level of automation allows speeding up the development of your investment thesis and reduce human error.
+The terminal allows for users to import their own proprietary datasets to use on our econometrics menu. In addition, users are allowed to export any type of data to any type of format whether that is raw data in Excel or an image in PNG. This is also ideal for finance content creation.
 
 <--->
 
-### OpenBB API and Customizable notebook reports
+### OpenBB SDK and Customizable notebook reports
 
 Use our OpenBB Terminal environment to access raw data through a Jupyter Notebook and play with it accordingly. Or just create customizable notebook reports for your colleagues and friends doing research on a particular asset or a macroeconomic event impact on said asset. The possibilities are endless.
 
@@ -95,7 +87,7 @@ or visit our <a href="https://openbb.co/contact" target="_blank">contact page</a
 
 The process starts off by downloading the installer, see below for how to download the most recent release:
 
-1. Go to <a href="https://www.openbb.co/products/terminal#get-started" target="_blank">OpenBB website</a>.
+1. Go to the <a href="https://www.openbb.co/products/terminal#get-started" target="_blank">OpenBB website</a>.
 2. Click on the `Download` button in the Windows Installer section.
 
 When the file is downloaded, use the following steps to run the OpenBB Terminal:
@@ -131,7 +123,7 @@ The first time this takes a bit longer to load, this can take up to a few minute
 
 The process starts off by downloading the installer, see below for how to download the most recent release:
 
-1. Go to <a href="https://www.openbb.co/products/terminal#get-started" target="_blank">OpenBB website</a>.
+1. Go to the <a href="https://www.openbb.co/products/terminal#get-started" target="_blank">OpenBB website</a>.
 2. Click on the `Download` button in the macOS Installer section.
 
 When the DMG file is downloaded, use the following steps to run the OpenBB Terminal:
@@ -162,18 +154,18 @@ If you have trouble launching the app because of security settings and the "Righ
 
 <p align="center"><img width=60% alt="image" src="https://user-images.githubusercontent.com/11668535/173027428-a85890d7-8a3c-4954-a6c0-d3214c635982.png"></p>
 
-
 ## Structure of the OpenBB Terminal
 
 The OpenBB Terminal is based off the <a href="https://en.wikipedia.org/wiki/Command-line_interface" target="_blank">Command Line Interface (CLI)</a>
 which is installed by default on every computer. By opening the application you have installed via "Accessing the OpenBB Terminal",
 you are greeted with the following interface:
 
-<a target="_blank" href="https://user-images.githubusercontent.com/46355364/169503071-ffb2d88d-0786-4568-94c0-ad55c8f8f3e7.png"><img src="https://user-images.githubusercontent.com/46355364/169503071-ffb2d88d-0786-4568-94c0-ad55c8f8f3e7.png" alt="Main Menu" width="800"/></a>
+<a target="_blank" href="https://user-images.githubusercontent.com/85772166/194683764-ae1c6c0a-8d50-4533-b930-ec4b601017b8.png"><img src="https://user-images.githubusercontent.com/85772166/194683764-ae1c6c0a-8d50-4533-b930-ec4b601017b8.png" alt="Main Menu" width="800"/></a>
 
 The OpenBB Terminal is centered around keyboard input. To navigate and perform analysis you will have to type in the name of the command followed by an `ENTER` (⏎). If you wish to see information about the OpenBB Terminal you can do so by typing `about` and then press `ENTER` (⏎). As you are typing, you will notice that you receive suggestions, by using the `DOWN` (⌄) arrow and pressing `ENTER` (⏎) you can select the command and execute it.
 
 Throughout the entire terminal, the same set of colors are used which all share the same representation. This is structured as follows:
+
 - <b><span style="color:#00AAFF">Light Blue</span></b>: represents commands.
 - <b><span style="color:#005CA9">Dark Blue</span></b>: represents menus, also recognizable by the `>` in front.
 - <b><span style="color:#EF7D00">Orange</span></b>: represents titles and headers.
@@ -186,18 +178,20 @@ Menus, depicted in <b><span style="color:#005CA9">Dark Blue</span></b>, take you
 to as a menu. For example, if you wish to view information about stocks, you can do so by typing `stocks` and pressing `ENTER` (⏎).
 This opens a new menu as depicted below.
 
-<a target="_blank" href="https://user-images.githubusercontent.com/46355364/169503240-922357c8-5e2b-41f0-aca2-c1fc849dcd1c.png"><img src="https://user-images.githubusercontent.com/46355364/169503240-922357c8-5e2b-41f0-aca2-c1fc849dcd1c.png" alt="Stocks Menu" width="800"/></a>
+<a target="_blank" href="https://user-images.githubusercontent.com/85772166/194683870-7888ad2f-5d38-4484-96a5-cbe95bf52d5b.png"><img src="https://user-images.githubusercontent.com/85772166/194683870-7888ad2f-5d38-4484-96a5-cbe95bf52d5b.png" alt="Stocks Menu" width="800"/></a>
 
 Depending on the menu you are in, you are presented with a new set of commands (see <a href="#explanation-of-commands">Explanation of Commands</a>)
 and menus you can select. There are interactions in place between each menu. For example, when selecting a company within
 the `stocks` menu, the terminal will remember your selection when you visit the `fa` or `options` menu.
 See <a href="terminal/stocks" target="_blank">Introduction to Stocks</a> for more information.
 
-___
+---
+
 **Pro tip:** you can quickly jump between menus by using a forward slash (`/`). For example, if I want to access the options
 menu, I can type `/stocks/options` to instantly arrive at this menu. You can do this from any location within the
 OpenBB Terminal!
-___
+
+---
 
 ### Explanation of Commands
 
@@ -207,10 +201,11 @@ the commands that you are able to use from any menu in the terminal (see <a href
 - `cls`: clears the screen, by executing this command you are left with an empty screen.
 - `help`, `h` or `?`: displays the menu that you are currently on.
 - `quit`, `q` or `..`: allows for navigation through the menu. E.g. if you type `stocks` press `ENTER` (⏎) and then
-use `q` and press `ENTER` (⏎) you return to where you started. Validate this by typing `?` and pressing `ENTER` (⏎).
+  use `q` and press `ENTER` (⏎) you return to where you started. Validate this by typing `?` and pressing `ENTER` (⏎).
 - `support`: allows you to submit bugs, questions and suggestions.
 - `about`: this opens the related guide, linking to this website. It also has the ability to open a guide to a specific
-command. For example, within the `stocks` menu, `about candle` opens <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/candle/" target="_blank">this guide</a>.
+  command. For example, within the `stocks` menu, `about candle` opens <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/candle/" target="_blank">this guide</a>.
+- `wiki`: search for a given expression on the Wikipedia without leaving the terminal.
 
 Continuing with the example mentioned at `quit`, revisit the `stocks` menu and look at the commands. At the top you
 will see a command named <a href="terminal/stocks/load" target="_blank">load</a>. To understand what this command can do, you can use `load -h` followed by `ENTER` (⏎). The `-h` stands for `help` and every command will have this feature. This will return the following:
@@ -273,7 +268,7 @@ decide to change these default values by calling the argument and inputting a di
 
 Whenever you wish to apply an optional argument, you use the related shortcode, e.g. `-s` or `--start`. Then, if there
 is an additional word behind the argument (in this case there is, which is `START`) it implies the argument expects you
-to define a value. Within the documentation you can read that the format must b `YYYY-MM-DD` implying that `2010-01-01`
+to define a value. Within the documentation you can read that the format must be `YYYY-MM-DD` implying that `2010-01-01`
 will be valid. If there is not an additional word behind it, it is enough to write down `load AMZN -p` (which refers to
 the prepost optional argument)
 
@@ -304,14 +299,17 @@ selected period.
 ```
 2022 May 19, 05:44 (🦋) /stocks/ $ candle
 ```
+
 <a target="_blank" href="https://user-images.githubusercontent.com/46355364/169503345-a9409637-dc7a-4193-9c87-38b1b6ee1a08.png"><img src="https://user-images.githubusercontent.com/46355364/169503345-a9409637-dc7a-4193-9c87-38b1b6ee1a08.png" alt="Amazon Candle Chart" width="800"/></a>
 
 As mentioned in the <a href="#explanation-of-menus">Explanation of Menus</a>, some information also transfers over to other menus and this includes the
 loaded market data from <a href="terminal/stocks/load" target="_blank">load</a>.
 So, if you would visit the `ta` menu (which stands for <a href="https://www.investopedia.com/terms/t/technicalanalysis.asp" target="_blank">Technical Analysis</a>) you will see that, by running any command, the selected period above is depicted again. Return to the Stocks menu again by using `q` and use it again to return to the home screen which can be shown with `?`.
 
+---
 
 ### Explanation of Scripts
+
 The `.openbb` scripts offer the ability to automatically run a set of commands in the form of a **routine**. Furthermore,
 the scripts can be adapted, and documented, at any moment giving the user full control over the type of analysis you wish
 to do (and repeat). This can fundamental research, understanding market movements, finding hidden gems and even
@@ -319,20 +317,22 @@ doing advanced statistical/econometric research.
 
 <b><span style="color:white">For a thorough guide on how to setup these files, please see the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/scripts/" target="_blank">Scripts & Routines guide</a>.</span></b>
 
+---
+
 ## Accessing other sources of data via API keys
 
 Within this menu you can define your, often free, API key from various platforms like Alpha Vantage, FRED, IEX, Twitter, DeGiro, Binance and Coinglass. API keys are in essence a set of random characters that is unique to you.
 
 You can access this menu from the homepage with `keys` which will open the menu as shown below:
 
-<a target="_blank" href="https://user-images.githubusercontent.com/46355364/169802651-6e752a4c-9cfd-4ce1-a99c-978eee5a0aca.png"><img src="https://user-images.githubusercontent.com/46355364/169802651-6e752a4c-9cfd-4ce1-a99c-978eee5a0aca.png" width="800"/></a>
+<a target="_blank" href="https://user-images.githubusercontent.com/85772166/194684312-f12b7f26-8a04-4efe-bc94-fa516b7186d3.png"><img src="https://user-images.githubusercontent.com/85772166/194684312-f12b7f26-8a04-4efe-bc94-fa516b7186d3.png" width="800"/></a>
 
 Within this menu you are able to set your API keys to access the commands that require that key. You can do so by typing the command followed by the API key, for example: `fred a215egade08a8d47cfd49c849658a2be`. When you press `ENTER` (⏎) the terminal will test whether this API key works. If it does, you receive the message `defined, test passed` and if it does not, you receive the message `defined, test failed`.
 
 To figure out where you can obtain the API key, you can enter the command (e.g. `av`) and press `ENTER` (⏎) or use the table below. **We recommend that you gradually obtain and set keys whenever you wish to use features that require an API key. For example, if you are interested in viewing recent news about a company, you should set the API key from the 'News API'.**
 
 | Command    | Name                                     | URL                                                                                |
-|:-----------|:-----------------------------------------|:-----------------------------------------------------------------------------------|
+| :--------- | :--------------------------------------- | :--------------------------------------------------------------------------------- |
 | av         | AlphaVantage                             | https://www.alphavantage.co/support/#api-key                                       |
 | fmp        | Financial Modelling Prep                 | https://site.financialmodelingprep.com/developer/docs/                             |
 | quandl     | Quandl                                   | https://www.quandl.com                                                             |
@@ -358,7 +358,13 @@ To figure out where you can obtain the API key, you can enter the command (e.g. 
 | ethplorer  | Ethplorer                                | https://github.com/EverexIO/Ethplorer/wiki/Ethplorer-API                           |
 | smartstake | Smartstake                               | https://www.smartstake.io                                                          |
 | github     | GitHub                                   | https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api           |
-| messari    | messari                                  | https://messari.io/api/docs                                                        |
+| messari    | Messari                                  | https://messari.io/api/docs                                                        |
+| cpanic     | Crypto Panic                             | https://cryptopanic.com/developers/api/                                            |
+| eodhd      | EODHD                                    | https://eodhistoricaldata.com/                                                     |
+| santiment  | Santiment                                | https://app.santiment.net/                                                         |
+| shroom     | ShroomDK                                 | https://sdk.flipsidecrypto.xyz/shroomdk                                            |
+
+---
 
 ## Available menus within the OpenBB Terminal
 
@@ -367,34 +373,99 @@ There is a large collection of (sub) menus available. Here, the asset class and 
 The asset class menus are as follows:
 
 - <a href="terminal/stocks" target="_blank">Introduction to Stocks</a>: access historical pricing data, options, sector and
-industry analysis, and overall due diligence.
+  industry analysis, and overall due diligence.
 - <a href="terminal/crypto" target="_blank">Introduction to Crypto</a>: dive into onchain data, tokenomics, circulation supply,
-nfts and more.
+  nfts and more.
 - <a href="terminal/etf" target="_blank">Introduction to ETF</a>: explore exchange traded funds, historical pricing, holdings
-and screeners.
+  and screeners.
 - <a href="terminal/forex" target="_blank">Introduction to Forex</a>: see foreign exchanges, quotes, forward rates for currency
-pairs and Oanda integration.
+  pairs and Oanda integration.
 - <a href="terminal/funds" target="_blank">Introduction to Funds</a>: discover mutual funds, general overviews, holdings and
-sector weights.
+  sector weights.
 
 The other menus are as follows:
 
 - <a href="terminal/economy" target="_blank">Introduction to Economy</a>: explore global macroeconomic data including
-interest and inflation rates, GDP and its components, futures, yield curves and treasury rates.
+  interest and inflation rates, GDP and its components, futures, yield curves and treasury rates.
 - <a href="terminal/alternative" target="_blank">Introduction to Alternative</a>: explore alternative datasets such as COVID and
-open source metrics.
+  open source metrics.
 - <a href="terminal/econometrics" target="_blank">Introduction to Econometrics</a>: perform (advanced) regression techniques and
-statistical tests on custom datasets to understand relationships for both time series and panel data.
+  statistical tests on custom datasets to understand relationships for both time series and panel data.
 - <a href="terminal/portfolio" target="_blank">Introduction to Portfolio</a>: understand how your portfolio evolved over time, what
-assets contributed the most to this performance, compare this to a benchmark and make adjustments via various portfolio
-optimization techniques.
+  assets contributed the most to this performance, compare this to a benchmark and make adjustments via various portfolio
+  optimization techniques.
 - <a href="terminal/jupyter" target="_blank">Introduction to Dashboards</a>: see interactive dashboards using voila and
-jupyter notebooks.
+  jupyter notebooks.
 - Introduction to Reports <b>(Work in Progress)</b>: create customizable research reports through jupyter notebooks.
 
+---
+
+## Customizing the terminal
+
 To adjust the lay-out and settings of the OpenBB Terminal you can access the `settings` menu. This menu allows you to
-tweak how the terminal behaves. For example, you are able to define the coloring, interactive graphs and whether to use
-pretty tables.
+tweak how the terminal behaves. This includes the following:
+
+- `dt` adds or removes the datetime from the flair (which is next to the emoji).
+- `flair` allows you to change the emoji that is used.
+- `lang` gives the ability to change the terminal language. At this moment, the terminal is only available in English.
+- `export` defines the folder you wish to export data you acquire from the terminal. Use quotes for custom locations.
+- `tz` allows you to change the timezone if this is incorrectly displayed for you.
+- `autoscaling` automatically scales plots for you if enabled (when green).
+- `pheight` sets the percentage height of the plot (graphs) displayed (if autoscaling is enabled).
+- `pwidth` sets the percentage width of the plot (graphs) displayed (if autoscaling is enabled).
+- `height` sets the height of the plot (graphs) displayed (if autoscaling is disabled).
+- `width` sets the width of the plot (graphs) displayed (if autoscaling is disabled).
+- `dpi` refers to the resolution that is used for the plot (graphs)
+- `backend` allows you to change the backend that is used for the graphs
+- `monitor` choose which monitors to scale the plot (graphs) to if applicable
+- `source` allows you to select a different source file in which the default data sources are written down
+
+Next to that, to enable or disable certain functionalities of the terminal you can use the `featflags` menu which
+includes the following:
+
+- `logcollection` whether you wish to enable logging to help the OpenBB team improve functionalities (default is yes).
+- `retryload` whenever you misspell commands, try to use the `load` command with it first (default is no).
+- `tab` whether to use tabulate to print DataFrames, to prettify these DataFrames (default is yes).
+- `cls` whether to clear the command window after each command (default is no).
+- `color` whether to use colors within the terminal (default is yes).
+- `promptkit` whether you wish to enable autocomplete and history (default is yes).
+- `predict` whether you would like to enable prediction features (default is yes).
+- `thoughts` whether to receive a thought of the day (default is no).
+- `reporthtml` whether to open reports as HTML instead of Jupyter Notebooks (default is yes).
+- `exithelp` whether to automatically print the help message when you use `q` (default is yes).
+- `rcontext` whether to remember loaded tickers and similar while switching menus (default is yes).
+- `rich` whether to apply a colorful rich terminal (default is yes).
+- `richpanel` whether to apply a colorful rich terminal panel (default is yes).
+- `ion` whether to enable interactive mode of MATPLOTLIB (default is yes).
+- `watermark` whether to include the watermark of OpenBB Terminal in figures (default is yes).
+- `cmdloc` whether the location of the command is displayed in figures (default is yes).
+- `tbhint` whether usage hints are displayed in the bottom toolbar (default is yes).
+
+Lastly, you can also change the default sources of each command via the `sources` menu. For example, if you would
+like to change the default data provider from the `load` command from the `stocks` menu you can first run the command
+`get` following by `stocks_load`. This returns the following:
+
+```
+2022 Jul 25, 16:52 (🦋) /sources/ $ get stocks_load
+
+Default   : yf
+Available : yf, iex, av, polygon
+```
+
+Then, with `set` you can change the default data provider. For example, we can change the data provider to iex with
+the following:
+
+```
+2022 Jul 25, 16:55 (🦋) /sources/ $ set stocks_load iex
+The data source was specified successfully.
+
+2022 Jul 25, 16:55 (🦋) /sources/ $ get stocks_load
+
+Default   : iex
+Available : iex, yf, av, polygon
+```
+
+---
 
 ## Obtaining support and/or giving feedback
 

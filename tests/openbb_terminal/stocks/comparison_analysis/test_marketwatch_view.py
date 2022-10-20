@@ -24,7 +24,7 @@ def test_display_income_comparison(mocker):
     )
 
     marketwatch_view.display_income_comparison(
-        similar=["TSLA", "GM"],
+        symbols=["TSLA", "GM"],
         timeframe="31-Dec-2020",
         quarter=True,
         export="",
@@ -41,7 +41,7 @@ def test_display_balance_comparison(mocker):
     )
 
     marketwatch_view.display_balance_comparison(
-        similar=["TSLA", "GM"],
+        symbols=["TSLA", "GM"],
         timeframe="31-Dec-2020",
         quarter=True,
         export="",
@@ -57,7 +57,7 @@ def test_display_cashflow_comparison(mocker):
         new=True,
     )
     marketwatch_view.display_cashflow_comparison(
-        similar=["TSLA", "GM"],
+        symbols=["TSLA", "GM"],
         timeframe="31-Dec-2020",
         quarter=True,
         export="",

@@ -20,13 +20,13 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def get_overview(ticker: str) -> pd.DataFrame:
+def get_overview(symbol: str) -> pd.DataFrame:
     """Get alpha vantage company overview
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
+    symbol : str
+        Stock ticker symbol
 
     Returns
     -------
@@ -34,7 +34,7 @@ def get_overview(ticker: str) -> pd.DataFrame:
         Dataframe of fundamentals
     """
     # Request OVERVIEW data from Alpha Vantage API
-    s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+    s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={symbol}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     result = requests.get(s_req, stream=True)
     result_json = result.json()
 
@@ -85,13 +85,13 @@ def get_overview(ticker: str) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_key_metrics(ticker: str) -> pd.DataFrame:
+def get_key_metrics(symbol: str) -> pd.DataFrame:
     """Get key metrics from overview
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
+    symbol : str
+        Stock ticker symbol
 
     Returns
     -------
@@ -99,7 +99,7 @@ def get_key_metrics(ticker: str) -> pd.DataFrame:
         Dataframe of key metrics
     """
     # Request OVERVIEW data
-    s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+    s_req = f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={symbol}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     result = requests.get(s_req, stream=True)
     result_json = result.json()
 
@@ -147,8 +147,8 @@ def get_key_metrics(ticker: str) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_income_statements(
-    ticker: str,
-    number: int,
+    symbol: str,
+    limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
     plot: bool = False,
@@ -157,9 +157,9 @@ def get_income_statements(
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
-    number : int
+    symbol : str
+        Stock ticker symbol
+    limit : int
         Number of past to get
     quarterly : bool, optional
         Flag to get quarterly instead of annual, by default False
@@ -174,7 +174,7 @@ def get_income_statements(
         DataFrame of income statements
     """
     url = (
-        f"https://www.alphavantage.co/query?function=INCOME_STATEMENT&symbol={ticker}"
+        f"https://www.alphavantage.co/query?function=INCOME_STATEMENT&symbol={symbol}"
         f"&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     )
     r = requests.get(url)
@@ -190,11 +190,11 @@ def get_income_statements(
                 "No data found from Alpha Vantage, looking in Yahoo Finance\n"
             )
             if (
-                yahoo_finance_model.get_financials(ticker, financial="financials")
+                yahoo_finance_model.get_financials(symbol, statement="financials")
                 is not None
             ):
                 return yahoo_finance_model.get_financials(
-                    ticker, financial="financials"
+                    symbol, statement="financials"
                 )
         else:
             statements = response_json
@@ -217,7 +217,7 @@ def get_income_statements(
             df_fa = df_fa.replace("None", "0")
             df_fa.iloc[1:] = df_fa.iloc[1:].astype("float")
 
-            df_fa_c = df_fa.iloc[:, -number:].applymap(
+            df_fa_c = df_fa.iloc[:, -limit:].applymap(
                 lambda x: lambda_long_number_format(x)
             )
 
@@ -228,7 +228,7 @@ def get_income_statements(
                     df_fa.iloc[i] = df_fa_pc.iloc[j]
                     j += 1
 
-            df_fa = df_fa.iloc[:, 0:number]
+            df_fa = df_fa.iloc[:, 0:limit]
 
             return df_fa_c if not plot else df_fa
     return pd.DataFrame()
@@ -236,8 +236,8 @@ def get_income_statements(
 
 @log_start_end(log=logger)
 def get_balance_sheet(
-    ticker: str,
-    number: int,
+    symbol: str,
+    limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
     plot: bool = False,
@@ -246,9 +246,9 @@ def get_balance_sheet(
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
-    number : int
+    symbol : str
+        Stock ticker symbol
+    limit : int
         Number of past to get
     quarterly : bool, optional
         Flag to get quarterly instead of annual, by default False
@@ -262,7 +262,7 @@ def get_balance_sheet(
     pd.DataFrame
         DataFrame of the balance sheet
     """
-    url = f"https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol={ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+    url = f"https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol={symbol}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     r = requests.get(url)
     response_json = r.json()
 
@@ -274,10 +274,10 @@ def get_balance_sheet(
     if not response_json:
         console.print("No data found from Alpha Vantage, looking in Yahoo Finance\n")
         if (
-            yahoo_finance_model.get_financials(ticker, financial="balance-sheet")
+            yahoo_finance_model.get_financials(symbol, statement="balance-sheet")
             is not None
         ):
-            return yahoo_finance_model.get_financials(ticker, financial="balance-sheet")
+            return yahoo_finance_model.get_financials(symbol, statement="balance-sheet")
     else:
         statements = response_json
         df_fa = pd.DataFrame()
@@ -299,7 +299,7 @@ def get_balance_sheet(
         df_fa = df_fa.replace("None", "0")
         df_fa.iloc[1:] = df_fa.iloc[1:].astype("float")
 
-        df_fa_c = df_fa.iloc[:, -number:].applymap(
+        df_fa_c = df_fa.iloc[:, -limit:].applymap(
             lambda x: lambda_long_number_format(x)
         )
 
@@ -310,11 +310,11 @@ def get_balance_sheet(
                 df_fa.iloc[i] = df_fa_pc.iloc[j]
                 j += 1
 
-            df_fa_c = df_fa.iloc[:, 0:number].applymap(
+            df_fa_c = df_fa.iloc[:, 0:limit].applymap(
                 lambda x: lambda_long_number_format(x)
             )
 
-        df_fa = df_fa.iloc[:, 0:number]
+        df_fa = df_fa.iloc[:, 0:limit]
 
         return df_fa_c if not plot else df_fa
     return pd.DataFrame()
@@ -322,8 +322,8 @@ def get_balance_sheet(
 
 @log_start_end(log=logger)
 def get_cash_flow(
-    ticker: str,
-    number: int,
+    symbol: str,
+    limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
     plot: bool = False,
@@ -332,9 +332,9 @@ def get_cash_flow(
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
-    number : int
+    symbol : str
+        Stock ticker symbol
+    limit : int
         Number of past to get
     quarterly : bool, optional
         Flag to get quarterly instead of annual, by default False
@@ -348,7 +348,7 @@ def get_cash_flow(
     pd.DataFrame
         Dataframe of cash flow statements
     """
-    url = f"https://www.alphavantage.co/query?function=CASH_FLOW&symbol={ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+    url = f"https://www.alphavantage.co/query?function=CASH_FLOW&symbol={symbol}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     r = requests.get(url)
     response_json = r.json()
 
@@ -363,10 +363,10 @@ def get_cash_flow(
             )
 
             if (
-                yahoo_finance_model.get_financials(ticker, financial="cash-flow")
+                yahoo_finance_model.get_financials(symbol, statement="cash-flow")
                 is not None
             ):
-                return yahoo_finance_model.get_financials(ticker, financial="cash-flow")
+                return yahoo_finance_model.get_financials(symbol, statement="cash-flow")
         else:
             statements = response_json
             df_fa = pd.DataFrame()
@@ -388,7 +388,7 @@ def get_cash_flow(
             df_fa = df_fa.replace("None", "0")
             df_fa.iloc[1:] = df_fa.iloc[1:].astype("float")
 
-            df_fa_c = df_fa.iloc[:, -number:].applymap(
+            df_fa_c = df_fa.iloc[:, -limit:].applymap(
                 lambda x: lambda_long_number_format(x)
             )
 
@@ -399,24 +399,24 @@ def get_cash_flow(
                     df_fa.iloc[i] = df_fa_pc.iloc[j]
                     j += 1
 
-                df_fa_c = df_fa.iloc[:, 0:number].applymap(
+                df_fa_c = df_fa.iloc[:, 0:limit].applymap(
                     lambda x: lambda_long_number_format(x)
                 )
 
-            df_fa = df_fa.iloc[:, 0:number]
+            df_fa = df_fa.iloc[:, 0:limit]
 
             return df_fa_c if not plot else df_fa
     return pd.DataFrame()
 
 
 @log_start_end(log=logger)
-def get_earnings(ticker: str, quarterly: bool = False) -> pd.DataFrame:
+def get_earnings(symbol: str, quarterly: bool = False) -> pd.DataFrame:
     """Get earnings calendar for ticker
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
+    symbol : str
+        Stock ticker symbol
     quarterly : bool, optional
         Flag to get quarterly and not annual, by default False
 
@@ -428,7 +428,7 @@ def get_earnings(ticker: str, quarterly: bool = False) -> pd.DataFrame:
     # Request EARNINGS data from Alpha Vantage API
     s_req = (
         "https://www.alphavantage.co/query?function=EARNINGS&"
-        f"symbol={ticker}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
+        f"symbol={symbol}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     )
     result = requests.get(s_req, stream=True)
     result_json = result.json()
@@ -574,13 +574,13 @@ def color_zscore_mckee(value: str) -> str:
 
 
 @log_start_end(log=logger)
-def get_fraud_ratios(ticker: str, detail: bool = False) -> pd.DataFrame:
+def get_fraud_ratios(symbol: str, detail: bool = False) -> pd.DataFrame:
     """Get fraud ratios based on fundamentals
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
+    symbol : str
+        Stock ticker symbol
     detail : bool
         Whether to provide extra m-score details
 
@@ -593,9 +593,9 @@ def get_fraud_ratios(ticker: str, detail: bool = False) -> pd.DataFrame:
     try:
         fd = FundamentalData(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
         # pylint: disable=unbalanced-tuple-unpacking
-        df_cf, _ = fd.get_cash_flow_annual(symbol=ticker)
-        df_bs, _ = fd.get_balance_sheet_annual(symbol=ticker)
-        df_is, _ = fd.get_income_statement_annual(symbol=ticker)
+        df_cf, _ = fd.get_cash_flow_annual(symbol=symbol)
+        df_bs, _ = fd.get_balance_sheet_annual(symbol=symbol)
+        df_is, _ = fd.get_income_statement_annual(symbol=symbol)
 
     except Exception as e:
         console.print(e)
@@ -692,13 +692,13 @@ def get_fraud_ratios(ticker: str, detail: bool = False) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_dupont(ticker: str) -> pd.DataFrame:
+def get_dupont(symbol: str) -> pd.DataFrame:
     """Get dupont ratios
 
     Parameters
     ----------
-    ticker : str
-        Stock ticker
+    symbol : str
+        Stock ticker symbol
 
     Returns
     -------
@@ -709,8 +709,8 @@ def get_dupont(ticker: str) -> pd.DataFrame:
     try:
         fd = FundamentalData(key=cfg.API_KEY_ALPHAVANTAGE, output_format="pandas")
         # pylint: disable=unbalanced-tuple-unpacking
-        df_bs, _ = fd.get_balance_sheet_annual(symbol=ticker)
-        df_is, _ = fd.get_income_statement_annual(symbol=ticker)
+        df_bs, _ = fd.get_balance_sheet_annual(symbol=symbol)
+        df_is, _ = fd.get_income_statement_annual(symbol=symbol)
 
     except Exception as e:
         console.print(e)
