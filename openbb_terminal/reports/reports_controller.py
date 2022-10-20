@@ -38,7 +38,7 @@ class ReportController(BaseController):
     PATH = "/reports/"
 
     REPORTS: List[str] = reports_model.get_reports_available()
-    REPORTS = list(set(CHOICES_COMMANDS).intersection(REPORTS))
+    REPORTS = sorted(list(set(CHOICES_COMMANDS).intersection(REPORTS)))
     PARAMETERS_DICT: Dict[str, Any] = {}
 
     def __init__(self, queue: List[str] = None):
@@ -84,7 +84,9 @@ class ReportController(BaseController):
         """Print help."""
 
         self.REPORTS = reports_model.get_reports_available()
-        self.REPORTS = list(set(self.CHOICES_COMMANDS).intersection(self.REPORTS))
+        self.REPORTS = sorted(
+            list(set(self.CHOICES_COMMANDS).intersection(self.REPORTS))
+        )
         self.update_choices()
 
         mt = MenuText("reports/")
