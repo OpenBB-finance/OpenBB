@@ -72,7 +72,7 @@ fundamentalanalysis==0.2.14
 future==0.18.2; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
 gitdb==4.0.9; python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7" and python_version >= "3.7"
 gitpython==3.1.29; python_version >= "3.7"
-grpcio==1.49.1; python_full_version >= "3.7.1" and python_full_version < "4.0.0" and python_version >= "3.7"
+grpcio==1.50.0; python_full_version >= "3.7.1" and python_full_version < "4.0.0" and python_version >= "3.7"
 h11==0.12.0; python_version >= "3.8" and python_version < "4.0"
 hijri-converter==2.2.4; python_version >= "3.7"
 holidays==0.14.2; python_version >= "3.7"
@@ -116,7 +116,7 @@ matplotlib-inline==0.1.6; python_version >= "3.8"
 matplotlib==3.5.3; python_version >= "3.7"
 mccabe==0.6.1; python_full_version >= "3.7.0"
 mistune==0.8.4; python_version >= "3.7"
-more-itertools==8.14.0; python_version >= "3.6"
+more-itertools==9.0.0; python_version >= "3.7"
 mplfinance==0.12.9b1
 multidict==6.0.2; python_version >= "3.7" and python_full_version >= "3.7.0"
 multitasking==0.0.11
@@ -140,7 +140,7 @@ packaging==21.3; python_version >= "3.8" and python_full_version < "3.9.7" or py
 pandas-datareader==0.10.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6"
 pandas-market-calendars==3.2; python_full_version >= "3.7.0"
 pandas-ta==0.3.14b
-pandas==1.5.0; python_version >= "3.8"
+pandas==1.5.1; python_version >= "3.8"
 pandocfilters==1.5.0; python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.7"
 parso==0.8.3; python_version >= "3.8"
 pathspec==0.10.1; python_version >= "3.7"
@@ -158,7 +158,7 @@ prompt-toolkit==3.0.31; python_full_version >= "3.6.2"
 property-cached==1.6.4; python_version >= "3.8"
 protobuf==3.20.3; python_full_version >= "3.7.1" and python_full_version < "4.0.0" and python_version >= "3.7" and (python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7" and python_version >= "3.7")
 psaw==0.0.12; python_version >= "3"
-psutil==5.9.2; python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.7"
+psutil==5.9.3; python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.7"
 ptyprocess==0.7.0; os_name != "nt" and python_version >= "3.8" and sys_platform != "win32"
 pure-eval==0.2.2; python_version >= "3.8"
 py==1.11.0; python_version >= "3.7" and python_full_version < "3.0.0" and implementation_name == "pypy" or implementation_name == "pypy" and python_version >= "3.7" and python_full_version >= "3.5.0"
@@ -193,7 +193,7 @@ python-dotenv==0.19.2; python_version >= "3.5"
 python-i18n==0.3.9
 pytrends==4.8.0
 pytz-deprecation-shim==0.1.0.post0; python_version >= "3.7" and python_full_version < "3.0.0" or python_version >= "3.7" and python_full_version < "3.9.7" and python_full_version >= "3.6.0" or python_full_version > "3.9.7" and python_version >= "3.6"
-pytz==2022.4; python_full_version >= "3.7.1" and python_full_version < "4.0.0" and python_version >= "3.8" and (python_version >= "3.8" and python_full_version < "3.9.7" or python_full_version > "3.9.7" and python_version >= "3.8") and python_version < "4.0"
+pytz==2022.5; python_full_version >= "3.7.1" and python_full_version < "4.0.0" and python_version >= "3.8" and (python_version >= "3.8" and python_full_version < "3.9.7" or python_full_version > "3.9.7" and python_version >= "3.8") and python_version < "4.0"
 pywin32==304; sys_platform == "win32" and platform_python_implementation != "PyPy" and python_version >= "3.7"
 pywinpty==2.0.8; os_name == "nt" and python_version >= "3.7"
 pyyaml==6.0; python_version >= "3.8"
@@ -232,6 +232,7 @@ squarify==0.4.3
 sseclient==0.0.27
 stack-data==0.5.1; python_version >= "3.8"
 statsmodels==0.13.2; python_version >= "3.7"
+stocksera==0.1.21; python_version >= "3.6"
 streamlit==1.13.0; (python_version >= "3.7" and python_full_version < "3.9.7") or (python_full_version > "3.9.7")
 tabulate==0.9.0; python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.7"
 temporal-cache==0.1.4
@@ -247,7 +248,7 @@ toolz==0.12.0; python_version >= "3.8" and python_version < "4.0" and python_ful
 tornado==6.2; python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7" and python_version >= "3.7"
 tqdm==4.64.1; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
 tradingview-ta==3.3.0; python_version >= "3.6"
-traitlets==5.4.0; python_version >= "3.8" and python_full_version >= "3.7.0"
+traitlets==5.5.0; python_version >= "3.8" and python_full_version >= "3.7.0"
 typing-extensions==4.4.0; python_full_version >= "3.7.0" and python_full_version < "4.0.0" and python_version < "3.9" and python_version >= "3.7" and (python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7" and python_version >= "3.7") and (python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7")
 tzdata==2022.5; python_version >= "3.7" and python_full_version < "3.0.0" and platform_system == "Windows" or python_version >= "3.7" and python_full_version < "3.9.7" and platform_system == "Windows" and python_full_version >= "3.6.0" or python_full_version > "3.9.7" and python_version >= "3.6" and platform_system == "Windows"
 tzlocal==4.2; python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7" and python_version >= "3.6"
