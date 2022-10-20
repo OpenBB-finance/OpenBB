@@ -15,6 +15,7 @@ import binance
 import pandas as pd
 import quandl
 import requests
+import stocksera
 from prawcore.exceptions import ResponseException
 import praw
 import pyEX
@@ -80,6 +81,7 @@ API_DICT: Dict = {
     "santiment": "SANTIMENT",
     "tokenterminal": "TOKEN_TERMINAL",
     "shroom": "SHROOM",
+    "stocksera": "STOCKSERA",
 }
 
 
@@ -2105,4 +2107,58 @@ def check_tokenterminal_key(show_output: bool = False) -> str:
     if show_output:
         console.print(status.colorize() + "\n")
 
+    return str(status)
+
+
+def set_stocksera_key(key: str, persist: bool = False, show_output: bool = False):
+    """Set Stocksera key.
+
+    Parameters
+    ----------
+        key: str
+            API key
+        persist: bool
+            If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
+            If True, api key change will be global, i.e. it will affect terminal environment variables.
+            By default, False.
+        show_output: bool
+            Display status string or not. By default, False.
+
+    Returns
+    -------
+    status: str
+
+    """
+    set_key("OPENBB_API_STOCKSERA_KEY", key, persist)
+    return check_stocksera_key(show_output)
+
+
+def check_stocksera_key(show_output: bool = False):
+    """Check Stocksera key
+    Parameters
+    ----------
+        show_output: bool
+            Display status string or not. By default, False.
+
+    Returns
+    -------
+    status: str
+    """
+    if cfg.API_STOCKSERA_KEY == "REPLACE_ME":
+        logger.info("Stocksera key not defined")
+        status = KeyStatus.NOT_DEFINED
+    else:
+
+        client = stocksera.Client(api_key=cfg.API_STOCKSERA_KEY)
+
+        try:
+            client.borrowed_shares(ticker="AAPL")
+            logger.info("Stocksera key defined, test passed")
+            status = KeyStatus.DEFINED_TEST_PASSED
+        except Exception as _:  # noqa: F841
+            logger.warning("Stocksera key defined, test failed")
+            status = KeyStatus.DEFINED_TEST_FAILED
+
+    if show_output:
+        console.print(status.colorize() + "\n")
     return str(status)

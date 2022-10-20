@@ -2,7 +2,7 @@
 
 # LINES
 # http://matplotlib.org/api/artist_api.html#module-matplotlib.lines
-lines.linewidth: 1.1
+lines.linewidth: 3
 lines.color: F5EFF3
 lines.linestyle: -
 lines.marker: None
@@ -26,7 +26,7 @@ font.style: normal
 font.variant: normal
 font.weight: medium
 font.stretch: normal
-font.size: 13
+font.size: 20
 
 text.color: F5EFF3
 
@@ -34,7 +34,7 @@ axes.spines.left: true
 axes.spines.bottom: true
 axes.spines.top: true
 axes.spines.right: true
-axes.linewidth: 0.2
+axes.linewidth: 0.4
 
 axes.labelsize: small
 axes.titlelocation: left

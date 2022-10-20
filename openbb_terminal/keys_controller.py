@@ -56,6 +56,20 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         for api in tqdm(self.API_LIST, desc="Checking keys status"):
             self.status_dict[api] = getattr(keys_model, "check_" + str(api) + "_key")()
 
+    def is_there_at_least_one_key_defined(self) -> bool:
+        """Check if there is at least 1 API key defined.
+        This is a good proxy to understand whether we are in presence of a first time user or not
+
+        Returns
+        -------
+        bool
+            True if at least 1 key is defined, False otherwise
+        """
+        for api in self.API_LIST:
+            if getattr(keys_model, "check_" + str(api) + "_key")() != "not defined":
+                return True
+        return False
+
     def print_help(self):
         """Print help"""
         self.check_keys_status()
@@ -81,6 +95,8 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             elif status_msg == str(keys_model.KeyStatus.NOT_DEFINED):
                 c = "grey30"
 
+            if status_msg is None:
+                status_msg = str(keys_model.KeyStatus.NOT_DEFINED)
             mt.add_raw(
                 f"    [cmds]{cmd_name}[/cmds] {(20 - len(cmd_name)) * ' '}"
                 f" [{c}] {api_name} {(25 - len(api_name)) * ' '} {translate(status_msg)} [/{c}]\n"
@@ -1112,5 +1128,35 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             self.status_dict["tokenterminal"] = keys_model.set_tokenterminal_key(
+                key=ns_parser.key, persist=True, show_output=True
+            )
+
+    @log_start_end(log=logger)
+    def call_stocksera(self, other_args: List[str]):
+        """Process stocksera command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="stocksera",
+            description="Set Stocksera API key.",
+        )
+        parser.add_argument(
+            "-k",
+            "--key",
+            type=str,
+            dest="key",
+            help="key",
+        )
+        if not other_args:
+            console.print(
+                "For your API Key, https://stocksera.pythonanywhere.com/accounts/developers\n"
+            )
+            return
+
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-k")
+        ns_parser = parse_simple_args(parser, other_args)
+        if ns_parser:
+            self.status_dict["stocksera"] = keys_model.set_stocksera_key(
                 key=ns_parser.key, persist=True, show_output=True
             )

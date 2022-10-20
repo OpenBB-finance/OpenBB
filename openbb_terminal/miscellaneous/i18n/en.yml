@@ -13,6 +13,7 @@ en:
   wiki: search for an expression in Wikipedia (https://www.wikipedia.org/)
   record: record session to be converted into a .openbb routine
   stop: stop session recording
+  intro: introduction on the OpenBB Terminal
   _configure_: Configure your own terminal
   _main_menu_: Main menu
   keys/_keys_: This menu allows you to set your own API keys. Type 'about' for more information
@@ -84,31 +85,13 @@ en:
   portfolio: perform portfolio optimization and look at portfolio performance and attribution
   dashboards: interactive dashboards using voila and jupyter notebooks
   stocks/search: search a specific stock ticker for analysis
-  stocks/SEARCH: Show companies matching the search query
-  stocks/SEARCH_query: The search term used to find company tickers
-  stocks/SEARCH_country: Search by country to find stocks matching the criteria
-  stocks/SEARCH_sector: Search by sector to find stocks matching the criteria
-  stocks/SEARCH_industry: Search by industry to find stocks matching the criteria
-  stocks/SEARCH_exchange: Search by a specific exchange country to find stocks matching the criteria
   stocks/load: load a specific stock ticker and additional info for analysis
   stocks/_ticker: Stock
   stocks/quote: view the current price for a specific stock ticker
   stocks/tob: view top of book for loaded ticker (US exchanges only)
-  stocks/QUOTE: Current quote for stock ticker
-  stocks/QUOTE_ticker: Stock ticker
   stocks/candle: view a candle chart for a specific stock ticker
-  stocks/CANDLE: Shows historic data for a stock
-  stocks/CANDLE_plotly: Flag to show interactive plotly chart
-  stocks/CANDLE_sort: Choose a column to sort by. Only works when raw data is displayed.
-  stocks/CANDLE_descending: Sort selected column descending. Only works when raw data is displayed.
-  stocks/CANDLE_raw: Shows raw data instead of chart. If sort is set those are the top ones, otherwise we grab latest data to date
-  stocks/CANDLE_trend: Flag to add high and low trends to candle
-  stocks/CANDLE_mov_avg: Add moving average in number of days to plot and separate by a comma
   stocks/news: latest news of the company
   stocks/codes: FIGI, SIK and SIC codes codes
-  stocks/NEWS_date: The starting date (format YYYY-MM-DD) to search articles from
-  stocks/NEWS_oldest: Show oldest articles first
-  stocks/NEWS_article: Show news only from the sources specified (e.g bbc yahoo.com)
   stocks/th: trading hours,                check open markets
   stocks/options: options menu,                 chains, open interest, greeks, parity
   stocks/disc: discover trending stocks,     map, sectors, high short interest
@@ -225,7 +208,7 @@ en:
   stocks/sia/ca: take these to comparison analysis menu
   stocks/dps/load: load a specific stock ticker for analysis
   stocks/dps/shorted: show most shorted stocks
-  stocks/dps/ctb: stocks with highest cost to borrow
+  stocks/dps/ctb: cost to borrow of stocks
   stocks/dps/hsi: show top high short interest stocks of over 20% ratio
   stocks/dps/prom: promising tickers based on dark pool shares regression
   stocks/dps/pos: dark pool short position
