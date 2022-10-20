@@ -2,7 +2,9 @@ stocks
 ba
 load aapl
 headlines
+headlines --raw
 wsb
+wsb --new
 watchlist
 popular -l 5 -n 10
 spac_c
@@ -10,17 +12,16 @@ spac
 getdd
 reddit_sent
 trending
-stalker
+stalker -l 3
 bullbear
 messages
 infer
-sentiment -d 3
+sentiment -d 3 -l 2
 mentions
 regions
 interest -w yolo
 queries
 rise
-hist
 jcdr
 load tsla
 jctr
