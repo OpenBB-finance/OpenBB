@@ -49,20 +49,23 @@ def get_economic_calendar(
         )
     calendar = pd.DataFrame()
     for date in dates:
-        df = pd.DataFrame(
-            requests.get(
-                f"https://api.nasdaq.com/api/calendar/economicevents?date={date}",
-                headers={
-                    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
-                    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
-                },
-            ).json()["data"]["rows"]
-        ).replace("&nbsp;", "-")
-        df.loc[:, "Date"] = date
-        calendar = pd.concat([calendar, df], axis=0)
+        try:
+            df = pd.DataFrame(
+                requests.get(
+                    f"https://api.nasdaq.com/api/calendar/economicevents?date={date}",
+                    headers={
+                        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                        "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+                    },
+                ).json()["data"]["rows"]
+            ).replace("&nbsp;", "-")
+            df.loc[:, "Date"] = date
+            calendar = pd.concat([calendar, df], axis=0)
+        except TypeError:
+            continue
 
     if calendar.empty:
-        console.print("No data found for date range", style="bold red")
+        console.print("[red]No data found for date range.[/red]")
         return pd.DataFrame()
 
     calendar = calendar.rename(
@@ -75,7 +78,7 @@ def get_economic_calendar(
 
     calendar = calendar[calendar["Country"].isin(countries)].reset_index(drop=True)
     if calendar.empty:
-        console.print(f"No data found for {','.join(countries)}", style="bold red")
+        console.print(f"[red]No data found for {','.join(countries)}[/red]")
         return pd.DataFrame()
     return calendar
 
