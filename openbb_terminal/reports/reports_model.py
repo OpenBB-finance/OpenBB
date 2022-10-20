@@ -283,6 +283,27 @@ def create_output_path(input_path: str, parameters_dict: Dict[str, Any]) -> str:
     return output_path
 
 
+def get_sys():
+    #!/usr/bin/env python3
+    import sys, os
+
+    frozen = "not"
+    if getattr(sys, "frozen", False):
+        # we are running in a bundle
+        frozen = "ever so"
+        bundle_dir = sys._MEIPASS
+    else:
+        # we are running in a normal Python environment
+        bundle_dir = os.path.dirname(os.path.abspath(__file__))
+    print("we are", frozen, "frozen")
+    print("bundle dir is", bundle_dir)
+    print("sys.argv[0] is", sys.argv[0])
+    print("sys.executable is", sys.executable)
+    print("os.getcwd is", os.getcwd())
+    print("")
+    print("what is this: ", os.path.dirname(sys.executable))
+
+
 @log_start_end(log=logger)
 def execute_notebook(input_path, parameters, output_path):
     """Execute the input path's notebook with the parameters provided.
@@ -301,58 +322,27 @@ def execute_notebook(input_path, parameters, output_path):
 
     input_path = add_ipynb_extension(input_path)
 
-    ### OPEN PYTHON SHELL
-    if input_path.endswith("crypto.ipynb"):
-        print("OPEN PYTHON SHELL")
-        import subprocess
+    result = pm.execute_notebook(
+        input_path=input_path,
+        output_path=output_path + ".ipynb",
+        parameters=parameters,
+    )
 
-        subprocess.Popen(["python"], shell=True)
-
-    ### SUBPROCESS - POPEN
-    if input_path.endswith("economy.ipynb"):
-        print("SUBPROCESS - POPEN")
-        import subprocess
-
-        subprocess.Popen(["python", "-m", "papermill", input_path, output_path])
-
-    ### SUBPROCESS - CALL
-    if input_path.endswith("equity.ipynb"):
-        print("SUBPROCESS - CALL")
-        import subprocess
-
-        subprocess.call(["python", "-m", "papermill", input_path, output_path])
-
-    ### IPYTHON
-    if input_path.endswith("etf.ipynb"):
-        print("IPYTHON")
-        import IPython
-
-        IPython.start_ipython(argv=["-m", "papermill", input_path, output_path])
-
-    ### PAPERMILL
-    if input_path.endswith("forex.ipynb"):
-        print("PAPERMIL")
-        result = pm.execute_notebook(
-            input_path=input_path,
-            output_path=output_path + ".ipynb",
-            parameters=parameters,
-        )
-
-        if not result["metadata"]["papermill"]["exception"]:
-            if obbff.OPEN_REPORT_AS_HTML:
-                report_output_path = os.path.join(
-                    os.path.abspath(os.path.join(".")), output_path + ".html"
-                )
-                console.print(report_output_path)
-                webbrowser.open(f"file://{report_output_path}")
-
-            console.print("")
-            console.print(
-                f"Exported: {report_output_path}",
-                "\n",
+    if not result["metadata"]["papermill"]["exception"]:
+        if obbff.OPEN_REPORT_AS_HTML:
+            report_output_path = os.path.join(
+                os.path.abspath(os.path.join(".")), output_path + ".html"
             )
-        else:
-            console.print("[red]\nReport couldn't be created.\n[/red]")
+            console.print(report_output_path)
+            webbrowser.open(f"file://{report_output_path}")
+
+        console.print("")
+        console.print(
+            f"Exported: {report_output_path}",
+            "\n",
+        )
+    else:
+        console.print("[red]\nReport couldn't be created.\n[/red]")
 
 
 @log_start_end(log=logger)

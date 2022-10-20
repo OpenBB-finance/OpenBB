@@ -900,6 +900,9 @@ def run_routine(file: str, routines_args=List[str]):
 
 
 def main(
+    module: str,
+    module_file: str,
+    module_hist_file: str,
     debug: bool,
     test: bool,
     filtert: str,
@@ -927,6 +930,20 @@ def main(
         E.g. GME,AMC,BTC-USD
     """
 
+    if module == "ipykernel_launcher":
+
+        print("start")
+        from ipykernel.kernelapp import IPKernelApp
+
+        IPKernelApp.launch_instance(
+            argv=[
+                "-f",
+                module_file,
+                "--HistoryManager.hist_file",
+                module_hist_file,
+            ]
+        )
+
     if test:
         run_test_list(path_list=path_list, filtert=filtert, verbose=verbose)
         return
@@ -948,6 +965,27 @@ def parse_args_and_run():
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="terminal",
         description="The OpenBB Terminal.",
+    )
+    parser.add_argument(
+        "-m",
+        help="ipykernel_launcher",
+        dest="module",
+        default="",
+        type=str,
+    )
+    parser.add_argument(
+        "-f",
+        help="ipykernel_launcher",
+        dest="module_file",
+        default="",
+        type=str,
+    )
+    parser.add_argument(
+        "--HistoryManager.hist_file",
+        help="ipykernel_launcher",
+        dest="module_hist_file",
+        default="",
+        type=str,
     )
     parser.add_argument(
         "-d",
@@ -999,6 +1037,9 @@ def parse_args_and_run():
         sys.argv.insert(1, "--file")
     ns_parser = parser.parse_args()
     main(
+        ns_parser.module,
+        ns_parser.module_file,
+        ns_parser.module_hist_file,
         ns_parser.debug,
         ns_parser.test,
         ns_parser.filtert,
