@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
+from multiprocessing import Process
 
 # pylint: disable=R1732, R0912
 import os
@@ -151,7 +152,6 @@ def extract_parameters(input_path: str) -> Dict[str, str]:
     ----------
     input_path: str
         Path of report to be rendered.
-
     """
 
     input_path = add_ipynb_extension(input_path)
@@ -204,7 +204,7 @@ def render_report(input_path: str, args_dict: Dict[str, str]):
         1. Update parameters to use in notebook with received arguments
         2. Create output path
         3. Update parameters with output_path
-        4. Validate and execute notebook
+        4. Validate and execute notebook in a child process.
 
     Parameters
     ----------
@@ -212,7 +212,6 @@ def render_report(input_path: str, args_dict: Dict[str, str]):
         Path of report to be rendered.
     args_dict: Dict[str, str]
         Dictionary with received arguments dictionary.
-
     """
 
     try:
@@ -220,14 +219,11 @@ def render_report(input_path: str, args_dict: Dict[str, str]):
         output_path = create_output_path(input_path, parameters_dict)
         parameters_dict["report_name"] = output_path
         if parameters_dict:
-            print("thread started...\n")
-            thread = Thread(
+            p = Process(
                 target=execute_notebook, args=(input_path, parameters_dict, output_path)
             )
-            thread.start()
-            thread.join()
-            print("thread finished...exiting")
-            # execute_notebook(input_path, parameters_dict, output_path)
+            p.start()
+            p.join()
     except Exception as e:
         console.print(f"[red]Cannot execute notebook - {e}")
 
@@ -247,7 +243,6 @@ def update_parameters(input_path: str, args_dict: Dict[str, str]) -> Dict[str, A
     -------
     Dict[str, Any]
         Dictionary with report parameters.
-
     """
 
     parameters_dict = extract_parameters(input_path)
@@ -275,7 +270,6 @@ def create_output_path(input_path: str, parameters_dict: Dict[str, Any]) -> str:
     -------
     str
         Path of rendered report.
-
     """
 
     report_name = input_path.split("/")[-1]
@@ -291,27 +285,6 @@ def create_output_path(input_path: str, parameters_dict: Dict[str, Any]) -> str:
     return output_path
 
 
-def get_sys():
-    #!/usr/bin/env python3
-    import sys, os
-
-    frozen = "not"
-    if getattr(sys, "frozen", False):
-        # we are running in a bundle
-        frozen = "ever so"
-        bundle_dir = sys._MEIPASS
-    else:
-        # we are running in a normal Python environment
-        bundle_dir = os.path.dirname(os.path.abspath(__file__))
-    print("we are", frozen, "frozen")
-    print("bundle dir is", bundle_dir)
-    print("sys.argv[0] is", sys.argv[0])
-    print("sys.executable is", sys.executable)
-    print("os.getcwd is", os.getcwd())
-    print("")
-    print("what is this: ", os.path.dirname(sys.executable))
-
-
 @log_start_end(log=logger)
 def execute_notebook(input_path, parameters, output_path):
     """Execute the input path's notebook with the parameters provided.
@@ -325,7 +298,6 @@ def execute_notebook(input_path, parameters, output_path):
         Dictionary with report parameters.
     output_path: str
         Path of rendered report.
-
     """
 
     input_path = add_ipynb_extension(input_path)
@@ -344,9 +316,8 @@ def execute_notebook(input_path, parameters, output_path):
             console.print(report_output_path)
             webbrowser.open(f"file://{report_output_path}")
 
-        console.print("")
         console.print(
-            f"Exported: {report_output_path}",
+            f"\nExported: {report_output_path}",
             "\n",
         )
     else:
@@ -365,8 +336,8 @@ def add_ipynb_extension(path: str) -> str:
     -------
     str
         Path to .ipynb file.
-
     """
+
     if not path.endswith(".ipynb"):
         return path + ".ipynb"
     return path
@@ -388,6 +359,7 @@ def check_ipynb(path: str) -> str:
         Path if paths endswith .ipynb, else empty string.
 
     """
+
     if not path.endswith(".ipynb"):
         console.print("[red]Please provide a .ipynb file.[/red]\n")
         return ""
