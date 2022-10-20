@@ -121,7 +121,7 @@ def get_trans_data(
         past_covariate_val,
     ) = helpers.past_covs(past_covariates, data, train_split, use_scalers)
 
-    brnn_model = TransformerModel(
+    trans_model = TransformerModel(
         input_chunk_length=input_chunk_length,
         output_chunk_length=output_chunk_length,
         d_model=d_model,
@@ -145,7 +145,7 @@ def get_trans_data(
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         helpers.fit_model(
-            brnn_model,
+            trans_model,
             train,
             val,
             past_covariate_train,

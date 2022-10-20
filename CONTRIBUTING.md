@@ -12,7 +12,7 @@ Use your best judgment, and feel free to propose changes to this document in a p
     - [Model](#model)
     - [View](#view)
     - [Controller](#controller)
-    - [Add API endpoint](#add-api-endpoint)
+    - [Add SDK endpoint](#add-sdk-endpoint)
     - [Add Documentation](#add-documentation)
     - [Open a Pull Request](#open-a-pull-request)
     - [Review Process](#review-process)
@@ -305,11 +305,11 @@ The **import only occurs inside this menu call**, this is so that the loading ti
 
 In addition, note the `self.load_class` which allows to not create a new DarkPoolShortsController instance but re-load the previous created one. Unless the arguments `self.ticker, self.start, self.stock` have changed since. The `self.queue` list of commands is passed around as it contains the commands that the terminal must perform.
 
-### Add API endpoint
+### Add SDK endpoint
 
-In order to add a command to the API, follow these steps:
+In order to add a command to the SDK, follow these steps:
 
-1. Go to the `api.py` file and scroll to the `functions` dictionary, it should look like this:
+1. Go to the `sdk.py` file and scroll to the `functions` dictionary, it should look like this:
 
     ```python
     functions = {
@@ -327,7 +327,7 @@ In order to add a command to the API, follow these steps:
     ...
     ```
 
-2. Add a new key to the dictionary, which corresponds to the way the added command shall be accessed from the api.
+2. Add a new key to the dictionary, which corresponds to the way the added command shall be accessed from the sdk.
 This is called the `virtual path`. In this case it should be `stocks.dps.shorted`.
 3. Now it is time to add the value to the key. This key shall be another dictionary with a `model` key and possibly a
 `view` key.
@@ -481,7 +481,7 @@ CLI :computer: → `_controller.py` :robot: →&nbsp;`_view.py` :art: &nbsp;&nbs
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   &#8593;
   &nbsp;&nbsp;
-`api.py` :factory:
+`sdk.py` :factory:
   &nbsp;
   &#8593;
 
@@ -490,7 +490,7 @@ CLI :computer: → `_controller.py` :robot: →&nbsp;`_view.py` :art: &nbsp;&nbs
 | **_controller.py** :robot: | The router/input validator | The controller file should hold the least amount of logic possible. Its role is to be a stupid (no logic) router and redirect the command correctly while checking the input with argparser.   |
 | **_view.py** :art:         | The artist     | The view file should only output or visualise the data it gets from the `_model` file! The `_view` can limit the data coming from the `_model`, otherwise the data object should be identical in the `_view` and the `_model` files. |
 | **_model.py** 🧠           |The brain       | The model file is where everything fun happens. The data is gathered (external APIs), processed and returned here.                                                                |
-| **api.py** 🏭              |The API Factory | The API file is where the callable functions are created for the API. There is only one api file in the openbb_terminal folder.                                                                                |
+| **sdk.py** 🏭              |The SDK Factory | The SDK file is where the callable functions are created for the SDK. There is only one SDK file in the openbb_terminal folder.                                                                                |
 
 ### Frontend
 
@@ -550,7 +550,7 @@ With:
 
 1. Each function should have default values for non critical kwargs
 
-    - Why? It increases code readability and acts as an input example for the functions arguments. This increases the ease of use of the functions through the api, but also just generally.
+    - Why? It increases code readability and acts as an input example for the functions arguments. This increases the ease of use of the functions through the SDK, but also just generally.
 
     <br>
 
@@ -624,7 +624,7 @@ With:
 
 3. Each function needs to have a docstring explaining what it does, its parameters and what it returns.
 
-    - Why? You can use the function without reading its source code. This improves the developing experience and api usage. The api factory also can’t handle functions with out docstrings.
+    - Why? You can use the function without reading its source code. This improves the developing experience and SDK usage. The SDK factory also can’t handle functions with out docstrings.
 
     <br>
 
@@ -662,7 +662,7 @@ With:
 
     - Why? Two reasons:
 
-    These calculations can then be used outside of the class with custom data; for example via the api or for tests.
+    These calculations can then be used outside of the class with custom data; for example via the sdk or for tests.
 
     ```python
     from openbb_terminal.portfolio.portfolio_helper import get_gaintopain_ratio
@@ -671,18 +671,18 @@ With:
     get_gaintopain_ratio(historical_trade_data, benchmark_trades, benchmark_returns)
     ```
 
-    The function can be loaded in API factory as an endpoint and user can get result by passing the class instance.
+    The function can be loaded in SDK factory as an endpoint and user can get result by passing the class instance.
 
     ```python
-    from openbb_terminal.api import openbb
-    from openbb_terminal.api import Portfolio
+    from openbb_terminal.sdk import openbb
+    from openbb_terminal.sdk import Portfolio
 
     transactions = Portfolio.read_orderbook("../../portfolio/holdings/example.csv")
     P = Portfolio(transactions)
     P.generate_portfolio_data()
     P.load_benchmark()
 
-    # API endpoint access
+    # SDK endpoint access
     openbb.portfolio.gaintopain(P)
     ```
 
@@ -731,7 +731,7 @@ With:
 
 6. Naming among related model and view functions should be obvious; just different prefix if possible
 
-    - Why? Eases API factory mapping and keeps code clean.
+    - Why? Eases SDK factory mapping and keeps code clean.
 
     <br>
 
@@ -787,7 +787,7 @@ With:
 
 1. No data altering in the view file or controller file (view and model with same args)
 
-    - Why? Consistency and good code structure. This also improves the api user experience. Thus follows that view and model files will have the same arguments (except for output options like raw, export, external_axes), since no data changes shall be done in the view file.
+    - Why? Consistency and good code structure. This also improves the SDK user experience. Thus follows that view and model files will have the same arguments (except for output options like raw, export, external_axes), since no data changes shall be done in the view file.
 
     <br>
 
@@ -807,7 +807,7 @@ When in doubt, follow <https://www.python.org/dev/peps/pep-0008/>.
 
 #### OpenBB Style Guide
 
-The style guide is a reverse dictionary for argument names, where a brief definition is mapped to an OpenBB recommended argument name and type. When helpful a code snippet example is added below. Following this guide will help keep argument naming consistent and improve API users experience.
+The style guide is a reverse dictionary for argument names, where a brief definition is mapped to an OpenBB recommended argument name and type. When helpful a code snippet example is added below. Following this guide will help keep argument naming consistent and improve SDK users experience.
 
 Style guide structure:
 
