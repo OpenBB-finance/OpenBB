@@ -6,6 +6,7 @@ import logging
 # pylint: disable=R1732, R0912
 import os
 from pathlib import Path
+from threading import Thread
 import webbrowser
 from ast import literal_eval
 from datetime import datetime
@@ -219,7 +220,14 @@ def render_report(input_path: str, args_dict: Dict[str, str]):
         output_path = create_output_path(input_path, parameters_dict)
         parameters_dict["report_name"] = output_path
         if parameters_dict:
-            execute_notebook(input_path, parameters_dict, output_path)
+            print("thread started...\n")
+            thread = Thread(
+                target=execute_notebook, args=(input_path, parameters_dict, output_path)
+            )
+            thread.start()
+            thread.join()
+            print("thread finished...exiting")
+            # execute_notebook(input_path, parameters_dict, output_path)
     except Exception as e:
         console.print(f"[red]Cannot execute notebook - {e}")
 
