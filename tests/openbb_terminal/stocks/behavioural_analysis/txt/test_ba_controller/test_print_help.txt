@@ -7,7 +7,7 @@ Ticker: TSLA
     wsb                show what WSB gang is up to in subreddit wallstreetbets         [Reddit]
     watchlist          show other users watchlist                                      [Reddit]
     popular            show popular tickers                                            [Reddit]
-    spac_c             show other users spacs announcements from subreddit SPACs       [Reddit]
+    spacc             show other users spacs announcements from subreddit SPACs       [Reddit]
     spac               show other users spacs announcements from other subs            [Reddit]
     getdd              gets due diligence from another user's post                     [Reddit]
     reddit_sent        searches reddit for ticker and finds reddit sentiment           [Reddit]
@@ -24,4 +24,3 @@ Ticker: TSLA
     rise               top rising related queries with stock                           [FinBrain]
     jcdr               Jim Cramer's daily recommendations                              [JimCramer]
     jctr               Jim Cramer's recommendations by ticker                          [JimCramer]
-

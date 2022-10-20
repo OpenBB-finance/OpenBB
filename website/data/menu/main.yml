@@ -72,8 +72,8 @@ main:
               ref: /terminal/common/ba/snews
             - name: spac
               ref: /terminal/common/ba/spac
-            - name: spac_c
-              ref: /terminal/common/ba/spac_c
+            - name: spacc
+              ref: /terminal/common/ba/spacc
             - name: stalker
               ref: /terminal/common/ba/stalker
             - name: stats
@@ -1114,8 +1114,8 @@ main:
                 ref: /terminal/common/ba/snews
               - name: spac
                 ref: /terminal/common/ba/spac
-              - name: spac_c
-                ref: /terminal/common/ba/spac_c
+              - name: spacc
+                ref: /terminal/common/ba/spacc
               - name: stalker
                 ref: /terminal/common/ba/stalker
               - name: stats
@@ -1690,769 +1690,978 @@ main:
   - name: sdk
     ref: /sdk
     sub:
-      - name: econometrics
-        ref: /sdk/econometrics
+      - name: forecast
+        ref: /sdk/forecast
         sub:
-          - name: ols
-            ref: /sdk/econometrics/ols
-          - name: options
-            ref: /sdk/econometrics/options
-          - name: granger
-            ref: /sdk/econometrics/granger
-          - name: re
-            ref: /sdk/econometrics/re
-          - name: fdols
-            ref: /sdk/econometrics/fdols
-          - name: root
-            ref: /sdk/econometrics/root
-          - name: load
-            ref: /sdk/econometrics/load
-          - name: get_regression_data
-            ref: /sdk/econometrics/get_regression_data
-          - name: norm
-            ref: /sdk/econometrics/norm
-          - name: dwat
-            ref: /sdk/econometrics/dwat
-          - name: coint
-            ref: /sdk/econometrics/coint
-          - name: bgod
-            ref: /sdk/econometrics/bgod
-          - name: pols
-            ref: /sdk/econometrics/pols
+          - name: delta
+            ref: /sdk/forecast/delta
+          - name: ema
+            ref: /sdk/forecast/ema
+          - name: tcn
+            ref: /sdk/forecast/tcn
+          - name: plot
+            ref: /sdk/forecast/plot
+          - name: combine
+            ref: /sdk/forecast/combine
+          - name: brnn
+            ref: /sdk/forecast/brnn
+          - name: delete
+            ref: /sdk/forecast/delete
+          - name: desc
+            ref: /sdk/forecast/desc
+          - name: rsi
+            ref: /sdk/forecast/rsi
+          - name: linregr
+            ref: /sdk/forecast/linregr
+          - name: regr
+            ref: /sdk/forecast/regr
+          - name: show
+            ref: /sdk/forecast/show
+          - name: nbeats
+            ref: /sdk/forecast/nbeats
+          - name: expo
+            ref: /sdk/forecast/expo
+          - name: roc
+            ref: /sdk/forecast/roc
           - name: clean
-            ref: /sdk/econometrics/clean
-          - name: fe
-            ref: /sdk/econometrics/fe
-          - name: panel
-            ref: /sdk/econometrics/panel
-          - name: comparison
-            ref: /sdk/econometrics/comparison
-          - name: bols
-            ref: /sdk/econometrics/bols
-          - name: bpag
-            ref: /sdk/econometrics/bpag
-      - name: keys
-        ref: /sdk/keys
+            ref: /sdk/forecast/clean
+          - name: load
+            ref: /sdk/forecast/load
+          - name: tft
+            ref: /sdk/forecast/tft
+          - name: nhits
+            ref: /sdk/forecast/nhits
+          - name: corr
+            ref: /sdk/forecast/corr
+          - name: rename
+            ref: /sdk/forecast/rename
+          - name: atr
+            ref: /sdk/forecast/atr
+          - name: season
+            ref: /sdk/forecast/season
+          - name: trans
+            ref: /sdk/forecast/trans
+          - name: export
+            ref: /sdk/forecast/export
+          - name: theta
+            ref: /sdk/forecast/theta
+          - name: signal
+            ref: /sdk/forecast/signal
+          - name: sto
+            ref: /sdk/forecast/sto
+          - name: rnn
+            ref: /sdk/forecast/rnn
+          - name: mom
+            ref: /sdk/forecast/mom
+      - name: crypto
+        ref: /sdk/crypto
         sub:
-          - name: twitter
-            ref: /sdk/keys/twitter
-          - name: smartstake
-            ref: /sdk/keys/smartstake
-          - name: fred
-            ref: /sdk/keys/fred
-          - name: get_keys_info
-            ref: /sdk/keys/get_keys_info
-          - name: si
-            ref: /sdk/keys/si
-          - name: fmp
-            ref: /sdk/keys/fmp
-          - name: coinbase
-            ref: /sdk/keys/coinbase
-          - name: iex
-            ref: /sdk/keys/iex
-          - name: reddit
-            ref: /sdk/keys/reddit
-          - name: quandl
-            ref: /sdk/keys/quandl
-          - name: cpanic
-            ref: /sdk/keys/cpanic
-          - name: shroom
-            ref: /sdk/keys/shroom
-          - name: rh
-            ref: /sdk/keys/rh
-          - name: mykeys
-            ref: /sdk/keys/mykeys
-          - name: degiro
-            ref: /sdk/keys/degiro
-          - name: coinglass
-            ref: /sdk/keys/coinglass
-          - name: binance
-            ref: /sdk/keys/binance
-          - name: oanda
-            ref: /sdk/keys/oanda
-          - name: walert
-            ref: /sdk/keys/walert
-          - name: glassnode
-            ref: /sdk/keys/glassnode
-          - name: ethplorer
-            ref: /sdk/keys/ethplorer
-          - name: news
-            ref: /sdk/keys/news
-          - name: santiment
-            ref: /sdk/keys/santiment
-          - name: finnhub
-            ref: /sdk/keys/finnhub
-          - name: cmc
-            ref: /sdk/keys/cmc
-          - name: messari
-            ref: /sdk/keys/messari
-          - name: tradier
-            ref: /sdk/keys/tradier
-          - name: github
-            ref: /sdk/keys/github
-          - name: polygon
-            ref: /sdk/keys/polygon
-          - name: tokenterminal
-            ref: /sdk/keys/tokenterminal
-          - name: av
-            ref: /sdk/keys/av
-          - name: set_keys
-            ref: /sdk/keys/set_keys
-          - name: bitquery
-            ref: /sdk/keys/bitquery
-          - name: eodhd
-            ref: /sdk/keys/eodhd
+          - name: tools
+            ref: /sdk/crypto/tools
+            sub:
+              - name: apy
+                ref: /sdk/crypto/tools/apy
+              - name: il
+                ref: /sdk/crypto/tools/il
+          - name: onchain
+            ref: /sdk/crypto/onchain
+            sub:
+              - name: top
+                ref: /sdk/crypto/onchain/top
+              - name: ttcp
+                ref: /sdk/crypto/onchain/ttcp
+              - name: dvcp
+                ref: /sdk/crypto/onchain/dvcp
+              - name: prices
+                ref: /sdk/crypto/onchain/prices
+              - name: holders
+                ref: /sdk/crypto/onchain/holders
+              - name: gwei
+                ref: /sdk/crypto/onchain/gwei
+              - name: ueat
+                ref: /sdk/crypto/onchain/ueat
+              - name: baas
+                ref: /sdk/crypto/onchain/baas
+              - name: dex_trades_monthly
+                ref: /sdk/crypto/onchain/dex_trades_monthly
+              - name: query_graph
+                ref: /sdk/crypto/onchain/query_graph
+              - name: balance
+                ref: /sdk/crypto/onchain/balance
+              - name: btc_supply
+                ref: /sdk/crypto/onchain/btc_supply
+              - name: tv
+                ref: /sdk/crypto/onchain/tv
+              - name: tx
+                ref: /sdk/crypto/onchain/tx
+              - name: info
+                ref: /sdk/crypto/onchain/info
+              - name: hr
+                ref: /sdk/crypto/onchain/hr
+              - name: hist
+                ref: /sdk/crypto/onchain/hist
+              - name: whales
+                ref: /sdk/crypto/onchain/whales
+              - name: token_decimals
+                ref: /sdk/crypto/onchain/token_decimals
+              - name: lt
+                ref: /sdk/crypto/onchain/lt
+              - name: th
+                ref: /sdk/crypto/onchain/th
+              - name: btc_transac
+                ref: /sdk/crypto/onchain/btc_transac
+              - name: erc20_tokens
+                ref: /sdk/crypto/onchain/erc20_tokens
+          - name: nft
+            ref: /sdk/crypto/nft
+            sub:
+              - name: stats
+                ref: /sdk/crypto/nft/stats
+          - name: chart
+            ref: /sdk/crypto/chart
+          - name: ov
+            ref: /sdk/crypto/ov
+            sub:
+              - name: crypto_hacks
+                ref: /sdk/crypto/ov/crypto_hacks
+              - name: cgderivatives
+                ref: /sdk/crypto/ov/cgderivatives
+              - name: wfpe
+                ref: /sdk/crypto/ov/wfpe
+              - name: cpinfo
+                ref: /sdk/crypto/ov/cpinfo
+              - name: cgcategories
+                ref: /sdk/crypto/ov/cgcategories
+              - name: cpmarkets
+                ref: /sdk/crypto/ov/cpmarkets
+              - name: cpplatforms
+                ref: /sdk/crypto/ov/cpplatforms
+              - name: platforms
+                ref: /sdk/crypto/ov/platforms
+              - name: cgstables
+                ref: /sdk/crypto/ov/cgstables
+              - name: crypto_hack_slugs
+                ref: /sdk/crypto/ov/crypto_hack_slugs
+              - name: cpexchanges
+                ref: /sdk/crypto/ov/cpexchanges
+              - name: exchanges
+                ref: /sdk/crypto/ov/exchanges
+              - name: cpcontracts
+                ref: /sdk/crypto/ov/cpcontracts
+              - name: cr
+                ref: /sdk/crypto/ov/cr
+              - name: cgproducts
+                ref: /sdk/crypto/ov/cgproducts
+              - name: cgexrates
+                ref: /sdk/crypto/ov/cgexrates
+              - name: cghm
+                ref: /sdk/crypto/ov/cghm
+              - name: cgdefi
+                ref: /sdk/crypto/ov/cgdefi
+              - name: cghold
+                ref: /sdk/crypto/ov/cghold
+              - name: cpglobal
+                ref: /sdk/crypto/ov/cpglobal
+              - name: cgglobal
+                ref: /sdk/crypto/ov/cgglobal
+              - name: altindex
+                ref: /sdk/crypto/ov/altindex
+              - name: news
+                ref: /sdk/crypto/ov/news
+              - name: crypto_hack
+                ref: /sdk/crypto/ov/crypto_hack
+              - name: global_info
+                ref: /sdk/crypto/ov/global_info
+              - name: ewf
+                ref: /sdk/crypto/ov/ewf
+              - name: cpexmarkets
+                ref: /sdk/crypto/ov/cpexmarkets
+              - name: cbpairs
+                ref: /sdk/crypto/ov/cbpairs
+              - name: cgindexes
+                ref: /sdk/crypto/ov/cgindexes
+              - name: list_of_coins
+                ref: /sdk/crypto/ov/list_of_coins
+              - name: wf
+                ref: /sdk/crypto/ov/wf
+          - name: load
+            ref: /sdk/crypto/load
+          - name: candles
+            ref: /sdk/crypto/candles
+          - name: disc
+            ref: /sdk/crypto/disc
+            sub:
+              - name: cpsearch
+                ref: /sdk/crypto/disc/cpsearch
+              - name: coins_for_given_exchange
+                ref: /sdk/crypto/disc/coins_for_given_exchange
+              - name: categories_keys
+                ref: /sdk/crypto/disc/categories_keys
+              - name: gainers
+                ref: /sdk/crypto/disc/gainers
+              - name: top_dapps
+                ref: /sdk/crypto/disc/top_dapps
+              - name: gainers_or_losers
+                ref: /sdk/crypto/disc/gainers_or_losers
+              - name: coins
+                ref: /sdk/crypto/disc/coins
+              - name: losers
+                ref: /sdk/crypto/disc/losers
+              - name: top_dexes
+                ref: /sdk/crypto/disc/top_dexes
+              - name: coin_list
+                ref: /sdk/crypto/disc/coin_list
+              - name: trending
+                ref: /sdk/crypto/disc/trending
+              - name: top_nfts
+                ref: /sdk/crypto/disc/top_nfts
+              - name: cmctop
+                ref: /sdk/crypto/disc/cmctop
+              - name: top_games
+                ref: /sdk/crypto/disc/top_games
+          - name: dd
+            ref: /sdk/crypto/dd
+            sub:
+              - name: cbbook
+                ref: /sdk/crypto/dd/cbbook
+              - name: twitter
+                ref: /sdk/crypto/dd/twitter
+              - name: inv
+                ref: /sdk/crypto/dd/inv
+              - name: mkt
+                ref: /sdk/crypto/dd/mkt
+              - name: change
+                ref: /sdk/crypto/dd/change
+              - name: mt
+                ref: /sdk/crypto/dd/mt
+              - name: gh
+                ref: /sdk/crypto/dd/gh
+              - name: close
+                ref: /sdk/crypto/dd/close
+              - name: ohlc_historical
+                ref: /sdk/crypto/dd/ohlc_historical
+              - name: exchanges
+                ref: /sdk/crypto/dd/exchanges
+              - name: trades
+                ref: /sdk/crypto/dd/trades
+              - name: eb
+                ref: /sdk/crypto/dd/eb
+              - name: btcrb
+                ref: /sdk/crypto/dd/btcrb
+              - name: headlines
+                ref: /sdk/crypto/dd/headlines
+              - name: ex
+                ref: /sdk/crypto/dd/ex
+              - name: basic
+                ref: /sdk/crypto/dd/basic
+              - name: tk
+                ref: /sdk/crypto/dd/tk
+              - name: get_mt
+                ref: /sdk/crypto/dd/get_mt
+              - name: balance
+                ref: /sdk/crypto/dd/balance
+              - name: pr
+                ref: /sdk/crypto/dd/pr
+              - name: all_binance_trading_pairs
+                ref: /sdk/crypto/dd/all_binance_trading_pairs
+              - name: check_valid_binance_str
+                ref: /sdk/crypto/dd/check_valid_binance_str
+              - name: pi
+                ref: /sdk/crypto/dd/pi
+              - name: ps
+                ref: /sdk/crypto/dd/ps
+              - name: coin
+                ref: /sdk/crypto/dd/coin
+              - name: news
+                ref: /sdk/crypto/dd/news
+              - name: candles
+                ref: /sdk/crypto/dd/candles
+              - name: team
+                ref: /sdk/crypto/dd/team
+              - name: links
+                ref: /sdk/crypto/dd/links
+              - name: trading_pair_info
+                ref: /sdk/crypto/dd/trading_pair_info
+              - name: binance_available_quotes_for_each_coin
+                ref: /sdk/crypto/dd/binance_available_quotes_for_each_coin
+              - name: book
+                ref: /sdk/crypto/dd/book
+              - name: hr
+                ref: /sdk/crypto/dd/hr
+              - name: show_available_pairs_for_given_symbol
+                ref: /sdk/crypto/dd/show_available_pairs_for_given_symbol
+              - name: fr
+                ref: /sdk/crypto/dd/fr
+              - name: mcapdom
+                ref: /sdk/crypto/dd/mcapdom
+              - name: active
+                ref: /sdk/crypto/dd/active
+              - name: events
+                ref: /sdk/crypto/dd/events
+              - name: nonzero
+                ref: /sdk/crypto/dd/nonzero
+              - name: oi
+                ref: /sdk/crypto/dd/oi
+              - name: tokenomics
+                ref: /sdk/crypto/dd/tokenomics
+              - name: rm
+                ref: /sdk/crypto/dd/rm
+              - name: trading_pairs
+                ref: /sdk/crypto/dd/trading_pairs
+              - name: stats
+                ref: /sdk/crypto/dd/stats
+              - name: coin_market_chart
+                ref: /sdk/crypto/dd/coin_market_chart
+              - name: gov
+                ref: /sdk/crypto/dd/gov
+          - name: find
+            ref: /sdk/crypto/find
+          - name: defi
+            ref: /sdk/crypto/defi
+            sub:
+              - name: sratio
+                ref: /sdk/crypto/defi/sratio
+              - name: gacc
+                ref: /sdk/crypto/defi/gacc
+              - name: pools
+                ref: /sdk/crypto/defi/pools
+              - name: sinfo
+                ref: /sdk/crypto/defi/sinfo
+              - name: newsletters
+                ref: /sdk/crypto/defi/newsletters
+              - name: anchor_data
+                ref: /sdk/crypto/defi/anchor_data
+              - name: sreturn
+                ref: /sdk/crypto/defi/sreturn
+              - name: pairs
+                ref: /sdk/crypto/defi/pairs
+              - name: dpi
+                ref: /sdk/crypto/defi/dpi
+              - name: swaps
+                ref: /sdk/crypto/defi/swaps
+              - name: ldapps
+                ref: /sdk/crypto/defi/ldapps
+              - name: luna_supply
+                ref: /sdk/crypto/defi/luna_supply
+              - name: vaults
+                ref: /sdk/crypto/defi/vaults
+              - name: stvl
+                ref: /sdk/crypto/defi/stvl
+              - name: ayr
+                ref: /sdk/crypto/defi/ayr
+              - name: validators
+                ref: /sdk/crypto/defi/validators
+              - name: dtvl
+                ref: /sdk/crypto/defi/dtvl
+              - name: tokens
+                ref: /sdk/crypto/defi/tokens
+              - name: gov_proposals
+                ref: /sdk/crypto/defi/gov_proposals
+              - name: stats
+                ref: /sdk/crypto/defi/stats
+              - name: gdapps
+                ref: /sdk/crypto/defi/gdapps
+              - name: aterra
+                ref: /sdk/crypto/defi/aterra
       - name: economy
         ref: /sdk/economy
         sub:
-          - name: valuation
-            ref: /sdk/economy/valuation
-          - name: spectrum
-            ref: /sdk/economy/spectrum
-          - name: fred_series
-            ref: /sdk/economy/fred_series
-          - name: fred_yield_curve
-            ref: /sdk/economy/fred_yield_curve
-          - name: futures
-            ref: /sdk/economy/futures
-          - name: events
-            ref: /sdk/economy/events
           - name: gdpc
             ref: /sdk/economy/gdpc
-          - name: future
-            ref: /sdk/economy/future
-          - name: fred_ids
-            ref: /sdk/economy/fred_ids
           - name: gdp
             ref: /sdk/economy/gdp
           - name: macro_parameters
             ref: /sdk/economy/macro_parameters
-          - name: rtps
-            ref: /sdk/economy/rtps
-          - name: get_ycrv_countries
-            ref: /sdk/economy/get_ycrv_countries
-          - name: cpi
-            ref: /sdk/economy/cpi
-          - name: index
-            ref: /sdk/economy/index
-          - name: currencies
-            ref: /sdk/economy/currencies
-          - name: treasury
-            ref: /sdk/economy/treasury
-          - name: usbonds
-            ref: /sdk/economy/usbonds
-          - name: available_indices
-            ref: /sdk/economy/available_indices
-          - name: perfmap
-            ref: /sdk/economy/perfmap
-          - name: search_index
-            ref: /sdk/economy/search_index
-          - name: performance
-            ref: /sdk/economy/performance
-          - name: inf
-            ref: /sdk/economy/inf
-          - name: country_codes
-            ref: /sdk/economy/country_codes
-          - name: bigmac
-            ref: /sdk/economy/bigmac
-          - name: get_events_countries
-            ref: /sdk/economy/get_events_countries
-          - name: spread
-            ref: /sdk/economy/spread
           - name: indices
             ref: /sdk/economy/indices
+          - name: currencies
+            ref: /sdk/economy/currencies
+          - name: bigmac
+            ref: /sdk/economy/bigmac
           - name: fred_notes
             ref: /sdk/economy/fred_notes
-          - name: glbonds
-            ref: /sdk/economy/glbonds
-          - name: tyld
-            ref: /sdk/economy/tyld
-          - name: macro
-            ref: /sdk/economy/macro
-          - name: treasury_maturities
-            ref: /sdk/economy/treasury_maturities
-          - name: ycrv
-            ref: /sdk/economy/ycrv
-          - name: macro_countries
-            ref: /sdk/economy/macro_countries
-          - name: overview
-            ref: /sdk/economy/overview
+          - name: futures
+            ref: /sdk/economy/futures
+          - name: cpi
+            ref: /sdk/economy/cpi
+          - name: get_events_countries
+            ref: /sdk/economy/get_events_countries
+          - name: search_index
+            ref: /sdk/economy/search_index
+          - name: country_codes
+            ref: /sdk/economy/country_codes
           - name: unemp
             ref: /sdk/economy/unemp
-      - name: etf
-        ref: /sdk/etf
-        sub:
-          - name: disc
-            ref: /sdk/etf/disc
-            sub:
-              - name: mover
-                ref: /sdk/etf/disc/mover
-          - name: etf_by_category
-            ref: /sdk/etf/etf_by_category
-          - name: symbols
-            ref: /sdk/etf/symbols
-          - name: holdings
-            ref: /sdk/etf/holdings
-          - name: summary
-            ref: /sdk/etf/summary
-          - name: load
-            ref: /sdk/etf/load
-          - name: scr
-            ref: /sdk/etf/scr
-            sub:
-              - name: screen
-                ref: /sdk/etf/scr/screen
-          - name: news
-            ref: /sdk/etf/news
-          - name: ld
-            ref: /sdk/etf/ld
-          - name: candle
-            ref: /sdk/etf/candle
-          - name: weights
-            ref: /sdk/etf/weights
+          - name: get_ycrv_countries
+            ref: /sdk/economy/get_ycrv_countries
+          - name: spread
+            ref: /sdk/economy/spread
+          - name: glbonds
+            ref: /sdk/economy/glbonds
+          - name: available_indices
+            ref: /sdk/economy/available_indices
+          - name: ycrv
+            ref: /sdk/economy/ycrv
+          - name: inf
+            ref: /sdk/economy/inf
+          - name: rtps
+            ref: /sdk/economy/rtps
+          - name: fred_series
+            ref: /sdk/economy/fred_series
+          - name: treasury_maturities
+            ref: /sdk/economy/treasury_maturities
+          - name: macro
+            ref: /sdk/economy/macro
+          - name: usbonds
+            ref: /sdk/economy/usbonds
+          - name: index
+            ref: /sdk/economy/index
+          - name: fred_yield_curve
+            ref: /sdk/economy/fred_yield_curve
+          - name: tyld
+            ref: /sdk/economy/tyld
+          - name: spectrum
+            ref: /sdk/economy/spectrum
+          - name: macro_countries
+            ref: /sdk/economy/macro_countries
+          - name: treasury
+            ref: /sdk/economy/treasury
+          - name: events
+            ref: /sdk/economy/events
+          - name: performance
+            ref: /sdk/economy/performance
           - name: overview
-            ref: /sdk/etf/overview
-          - name: etf_by_name
-            ref: /sdk/etf/etf_by_name
-          - name: ln
-            ref: /sdk/etf/ln
+            ref: /sdk/economy/overview
+          - name: valuation
+            ref: /sdk/economy/valuation
+          - name: future
+            ref: /sdk/economy/future
+          - name: perfmap
+            ref: /sdk/economy/perfmap
+          - name: fred_ids
+            ref: /sdk/economy/fred_ids
       - name: forex
         ref: /sdk/forex
         sub:
           - name: quote
             ref: /sdk/forex/quote
-          - name: load
-            ref: /sdk/forex/load
+          - name: candle
+            ref: /sdk/forex/candle
           - name: get_currency_list
             ref: /sdk/forex/get_currency_list
+          - name: load
+            ref: /sdk/forex/load
           - name: oanda
             ref: /sdk/forex/oanda
             sub:
-              - name: orderbook
-                ref: /sdk/forex/oanda/orderbook
-              - name: calendar
-                ref: /sdk/forex/oanda/calendar
-              - name: openpositions
-                ref: /sdk/forex/oanda/openpositions
               - name: fwd
                 ref: /sdk/forex/oanda/fwd
-              - name: candles
-                ref: /sdk/forex/oanda/candles
-              - name: listorders
-                ref: /sdk/forex/oanda/listorders
-              - name: summary
-                ref: /sdk/forex/oanda/summary
-              - name: pending
-                ref: /sdk/forex/oanda/pending
               - name: order
                 ref: /sdk/forex/oanda/order
               - name: cancel
                 ref: /sdk/forex/oanda/cancel
-              - name: opentrades
-                ref: /sdk/forex/oanda/opentrades
-              - name: positionbook
-                ref: /sdk/forex/oanda/positionbook
+              - name: calendar
+                ref: /sdk/forex/oanda/calendar
               - name: close
                 ref: /sdk/forex/oanda/close
+              - name: listorders
+                ref: /sdk/forex/oanda/listorders
+              - name: openpositions
+                ref: /sdk/forex/oanda/openpositions
+              - name: opentrades
+                ref: /sdk/forex/oanda/opentrades
               - name: price
                 ref: /sdk/forex/oanda/price
+              - name: candles
+                ref: /sdk/forex/oanda/candles
+              - name: orderbook
+                ref: /sdk/forex/oanda/orderbook
+              - name: positionbook
+                ref: /sdk/forex/oanda/positionbook
+              - name: summary
+                ref: /sdk/forex/oanda/summary
+              - name: pending
+                ref: /sdk/forex/oanda/pending
           - name: hist
             ref: /sdk/forex/hist
-          - name: candle
-            ref: /sdk/forex/candle
+      - name: econometrics
+        ref: /sdk/econometrics
+        sub:
+          - name: options
+            ref: /sdk/econometrics/options
+          - name: panel
+            ref: /sdk/econometrics/panel
+          - name: bgod
+            ref: /sdk/econometrics/bgod
+          - name: bpag
+            ref: /sdk/econometrics/bpag
+          - name: bols
+            ref: /sdk/econometrics/bols
+          - name: fe
+            ref: /sdk/econometrics/fe
+          - name: fdols
+            ref: /sdk/econometrics/fdols
+          - name: coint
+            ref: /sdk/econometrics/coint
+          - name: pols
+            ref: /sdk/econometrics/pols
+          - name: granger
+            ref: /sdk/econometrics/granger
+          - name: clean
+            ref: /sdk/econometrics/clean
+          - name: norm
+            ref: /sdk/econometrics/norm
+          - name: load
+            ref: /sdk/econometrics/load
+          - name: get_regression_data
+            ref: /sdk/econometrics/get_regression_data
+          - name: root
+            ref: /sdk/econometrics/root
+          - name: dwat
+            ref: /sdk/econometrics/dwat
+          - name: comparison
+            ref: /sdk/econometrics/comparison
+          - name: re
+            ref: /sdk/econometrics/re
+          - name: ols
+            ref: /sdk/econometrics/ols
       - name: stocks
         ref: /sdk/stocks
         sub:
-          - name: dd
-            ref: /sdk/stocks/dd
-            sub:
-              - name: analyst
-                ref: /sdk/stocks/dd/analyst
-              - name: rating
-                ref: /sdk/stocks/dd/rating
-              - name: customer
-                ref: /sdk/stocks/dd/customer
-              - name: arktrades
-                ref: /sdk/stocks/dd/arktrades
-              - name: sec
-                ref: /sdk/stocks/dd/sec
-              - name: news
-                ref: /sdk/stocks/dd/news
-              - name: pt
-                ref: /sdk/stocks/dd/pt
-              - name: supplier
-                ref: /sdk/stocks/dd/supplier
-              - name: est
-                ref: /sdk/stocks/dd/est
-              - name: rot
-                ref: /sdk/stocks/dd/rot
-          - name: ta
-            ref: /sdk/stocks/ta
-            sub:
-              - name: summary
-                ref: /sdk/stocks/ta/summary
-              - name: view
-                ref: /sdk/stocks/ta/view
-              - name: recom
-                ref: /sdk/stocks/ta/recom
           - name: options
             ref: /sdk/stocks/options
             sub:
-              - name: process_chains
-                ref: /sdk/stocks/options/process_chains
               - name: vsurf
                 ref: /sdk/stocks/options/vsurf
-              - name: hist_tr
-                ref: /sdk/stocks/options/hist_tr
-              - name: closing
-                ref: /sdk/stocks/options/closing
-              - name: vol_yf
-                ref: /sdk/stocks/options/vol_yf
+              - name: pcr
+                ref: /sdk/stocks/options/pcr
+              - name: last_price
+                ref: /sdk/stocks/options/last_price
+              - name: chains_yf
+                ref: /sdk/stocks/options/chains_yf
               - name: hedge
                 ref: /sdk/stocks/options/hedge
                 sub:
-                  - name: calc_gamma
-                    ref: /sdk/stocks/options/hedge/calc_gamma
-                  - name: calc_vega
-                    ref: /sdk/stocks/options/hedge/calc_vega
-                  - name: calc_hedge
-                    ref: /sdk/stocks/options/hedge/calc_hedge
-                  - name: calc_delta
-                    ref: /sdk/stocks/options/hedge/calc_delta
                   - name: add_hedge_option
                     ref: /sdk/stocks/options/hedge/add_hedge_option
-              - name: generate_data
-                ref: /sdk/stocks/options/generate_data
-              - name: y_values
-                ref: /sdk/stocks/options/y_values
-              - name: dividend
-                ref: /sdk/stocks/options/dividend
-              - name: dte
-                ref: /sdk/stocks/options/dte
-              - name: last_price
-                ref: /sdk/stocks/options/last_price
-              - name: info
-                ref: /sdk/stocks/options/info
-              - name: chains
-                ref: /sdk/stocks/options/chains
-              - name: x_values
-                ref: /sdk/stocks/options/x_values
-              - name: grhist
-                ref: /sdk/stocks/options/grhist
-              - name: hist_ce
-                ref: /sdk/stocks/options/hist_ce
-              - name: unu
-                ref: /sdk/stocks/options/unu
-              - name: pcr
-                ref: /sdk/stocks/options/pcr
-              - name: option_expirations
-                ref: /sdk/stocks/options/option_expirations
-              - name: voi_yf
-                ref: /sdk/stocks/options/voi_yf
+                  - name: calc_vega
+                    ref: /sdk/stocks/options/hedge/calc_vega
+                  - name: calc_delta
+                    ref: /sdk/stocks/options/hedge/calc_delta
+                  - name: calc_gamma
+                    ref: /sdk/stocks/options/hedge/calc_gamma
+                  - name: calc_hedge
+                    ref: /sdk/stocks/options/hedge/calc_hedge
+              - name: hist_tr
+                ref: /sdk/stocks/options/hist_tr
               - name: option_chain
                 ref: /sdk/stocks/options/option_chain
+              - name: hist_ce
+                ref: /sdk/stocks/options/hist_ce
+              - name: y_values
+                ref: /sdk/stocks/options/y_values
+              - name: process_chains
+                ref: /sdk/stocks/options/process_chains
+              - name: vol_yf
+                ref: /sdk/stocks/options/vol_yf
+              - name: info
+                ref: /sdk/stocks/options/info
+              - name: dte
+                ref: /sdk/stocks/options/dte
+              - name: price
+                ref: /sdk/stocks/options/price
+              - name: grhist
+                ref: /sdk/stocks/options/grhist
               - name: screen
                 ref: /sdk/stocks/options/screen
                 sub:
-                  - name: check_presets
-                    ref: /sdk/stocks/options/screen/check_presets
                   - name: screener_output
                     ref: /sdk/stocks/options/screen/screener_output
-              - name: chains_yf
-                ref: /sdk/stocks/options/chains_yf
-              - name: price
-                ref: /sdk/stocks/options/price
-          - name: disc
-            ref: /sdk/stocks/disc
+                  - name: check_presets
+                    ref: /sdk/stocks/options/screen/check_presets
+              - name: unu
+                ref: /sdk/stocks/options/unu
+              - name: voi_yf
+                ref: /sdk/stocks/options/voi_yf
+              - name: dividend
+                ref: /sdk/stocks/options/dividend
+              - name: generate_data
+                ref: /sdk/stocks/options/generate_data
+              - name: chains
+                ref: /sdk/stocks/options/chains
+              - name: option_expirations
+                ref: /sdk/stocks/options/option_expirations
+              - name: closing
+                ref: /sdk/stocks/options/closing
+              - name: x_values
+                ref: /sdk/stocks/options/x_values
+          - name: tob
+            ref: /sdk/stocks/tob
+          - name: screener
+            ref: /sdk/stocks/screener
             sub:
-              - name: gtech
-                ref: /sdk/stocks/disc/gtech
-              - name: upcoming
-                ref: /sdk/stocks/disc/upcoming
-              - name: trending
-                ref: /sdk/stocks/disc/trending
-              - name: lowfloat
-                ref: /sdk/stocks/disc/lowfloat
-              - name: gainers
-                ref: /sdk/stocks/disc/gainers
-              - name: asc
-                ref: /sdk/stocks/disc/asc
-              - name: ugs
-                ref: /sdk/stocks/disc/ugs
-              - name: active
-                ref: /sdk/stocks/disc/active
-              - name: pipo
-                ref: /sdk/stocks/disc/pipo
-              - name: fipo
-                ref: /sdk/stocks/disc/fipo
-              - name: ipo
-                ref: /sdk/stocks/disc/ipo
-              - name: losers
-                ref: /sdk/stocks/disc/losers
-              - name: dividends
-                ref: /sdk/stocks/disc/dividends
-              - name: arkord
-                ref: /sdk/stocks/disc/arkord
-              - name: ulc
-                ref: /sdk/stocks/disc/ulc
-              - name: news
-                ref: /sdk/stocks/disc/news
-              - name: rtat
-                ref: /sdk/stocks/disc/rtat
-              - name: hotpenny
-                ref: /sdk/stocks/disc/hotpenny
+              - name: historical
+                ref: /sdk/stocks/screener/historical
+              - name: screener_data
+                ref: /sdk/stocks/screener/screener_data
+          - name: quote
+            ref: /sdk/stocks/quote
+          - name: candle
+            ref: /sdk/stocks/candle
+          - name: sia
+            ref: /sdk/stocks/sia
+            sub:
+              - name: sectors
+                ref: /sdk/stocks/sia/sectors
+              - name: filter_stocks
+                ref: /sdk/stocks/sia/filter_stocks
+              - name: cps
+                ref: /sdk/stocks/sia/cps
+              - name: industries
+                ref: /sdk/stocks/sia/industries
+              - name: cpic
+                ref: /sdk/stocks/sia/cpic
+              - name: maketcap
+                ref: /sdk/stocks/sia/maketcap
+              - name: stocks_data
+                ref: /sdk/stocks/sia/stocks_data
+              - name: countries
+                ref: /sdk/stocks/sia/countries
+              - name: cpci
+                ref: /sdk/stocks/sia/cpci
+              - name: cpis
+                ref: /sdk/stocks/sia/cpis
+              - name: cpcs
+                ref: /sdk/stocks/sia/cpcs
           - name: ca
             ref: /sdk/stocks/ca
             sub:
-              - name: finviz_peers
-                ref: /sdk/stocks/ca/finviz_peers
-              - name: volume
-                ref: /sdk/stocks/ca/volume
-              - name: income
-                ref: /sdk/stocks/ca/income
+              - name: scorr
+                ref: /sdk/stocks/ca/scorr
               - name: polygon_peers
                 ref: /sdk/stocks/ca/polygon_peers
-              - name: hcorr
-                ref: /sdk/stocks/ca/hcorr
+              - name: screener
+                ref: /sdk/stocks/ca/screener
+              - name: income
+                ref: /sdk/stocks/ca/income
               - name: balance
                 ref: /sdk/stocks/ca/balance
+              - name: finviz_peers
+                ref: /sdk/stocks/ca/finviz_peers
               - name: cashflow
                 ref: /sdk/stocks/ca/cashflow
+              - name: finnhub_peers
+                ref: /sdk/stocks/ca/finnhub_peers
               - name: hist
                 ref: /sdk/stocks/ca/hist
               - name: sentiment
                 ref: /sdk/stocks/ca/sentiment
-              - name: finnhub_peers
-                ref: /sdk/stocks/ca/finnhub_peers
-              - name: screener
-                ref: /sdk/stocks/ca/screener
-              - name: scorr
-                ref: /sdk/stocks/ca/scorr
-          - name: quote
-            ref: /sdk/stocks/quote
+              - name: volume
+                ref: /sdk/stocks/ca/volume
+              - name: hcorr
+                ref: /sdk/stocks/ca/hcorr
+          - name: qa
+            ref: /sdk/stocks/qa
+            sub:
+              - name: capm_information
+                ref: /sdk/stocks/qa/capm_information
+              - name: historical_5
+                ref: /sdk/stocks/qa/historical_5
+              - name: fama_raw
+                ref: /sdk/stocks/qa/fama_raw
+          - name: dps
+            ref: /sdk/stocks/dps
+            sub:
+              - name: prom
+                ref: /sdk/stocks/dps/prom
+              - name: ftd
+                ref: /sdk/stocks/dps/ftd
+              - name: psi_sg
+                ref: /sdk/stocks/dps/psi_sg
+              - name: shorted
+                ref: /sdk/stocks/dps/shorted
+              - name: dpotc
+                ref: /sdk/stocks/dps/dpotc
+              - name: pos
+                ref: /sdk/stocks/dps/pos
+              - name: sidtc
+                ref: /sdk/stocks/dps/sidtc
+              - name: volexch
+                ref: /sdk/stocks/dps/volexch
+              - name: ctb
+                ref: /sdk/stocks/dps/ctb
+              - name: hsi
+                ref: /sdk/stocks/dps/hsi
+              - name: psi_q
+                ref: /sdk/stocks/dps/psi_q
+              - name: spos
+                ref: /sdk/stocks/dps/spos
+          - name: search
+            ref: /sdk/stocks/search
+          - name: ins
+            ref: /sdk/stocks/ins
+            sub:
+              - name: lins
+                ref: /sdk/stocks/ins/lins
+              - name: print_insider_data
+                ref: /sdk/stocks/ins/print_insider_data
+              - name: act
+                ref: /sdk/stocks/ins/act
           - name: load
             ref: /sdk/stocks/load
           - name: ba
             ref: /sdk/stocks/ba
             sub:
-              - name: trending
-                ref: /sdk/stocks/ba/trending
-              - name: text_sent
-                ref: /sdk/stocks/ba/text_sent
-              - name: infer
-                ref: /sdk/stocks/ba/infer
-              - name: mentions
-                ref: /sdk/stocks/ba/mentions
-              - name: messages
-                ref: /sdk/stocks/ba/messages
-              - name: popular
-                ref: /sdk/stocks/ba/popular
-              - name: cramer_ticker
-                ref: /sdk/stocks/ba/cramer_ticker
-              - name: bullbear
-                ref: /sdk/stocks/ba/bullbear
               - name: wsb
                 ref: /sdk/stocks/ba/wsb
-              - name: spac_c
-                ref: /sdk/stocks/ba/spac_c
-              - name: stalker
-                ref: /sdk/stocks/ba/stalker
+              - name: cnews
+                ref: /sdk/stocks/ba/cnews
               - name: spac
                 ref: /sdk/stocks/ba/spac
-              - name: cramer
-                ref: /sdk/stocks/ba/cramer
-              - name: queries
-                ref: /sdk/stocks/ba/queries
-              - name: reddit_sent
-                ref: /sdk/stocks/ba/reddit_sent
-              - name: watchlist
-                ref: /sdk/stocks/ba/watchlist
               - name: regions
                 ref: /sdk/stocks/ba/regions
+              - name: messages
+                ref: /sdk/stocks/ba/messages
+              - name: snews
+                ref: /sdk/stocks/ba/snews
+              - name: stalker
+                ref: /sdk/stocks/ba/stalker
               - name: trend
                 ref: /sdk/stocks/ba/trend
-              - name: hist
-                ref: /sdk/stocks/ba/hist
+              - name: reddit_sent
+                ref: /sdk/stocks/ba/reddit_sent
               - name: headlines
                 ref: /sdk/stocks/ba/headlines
+              - name: queries
+                ref: /sdk/stocks/ba/queries
+              - name: mentions
+                ref: /sdk/stocks/ba/mentions
+              - name: text_sent
+                ref: /sdk/stocks/ba/text_sent
+              - name: getdd
+                ref: /sdk/stocks/ba/getdd
+              - name: bullbear
+                ref: /sdk/stocks/ba/bullbear
+              - name: popular
+                ref: /sdk/stocks/ba/popular
+              - name: infer
+                ref: /sdk/stocks/ba/infer
+              - name: hist
+                ref: /sdk/stocks/ba/hist
+              - name: trending
+                ref: /sdk/stocks/ba/trending
+              - name: cramer_ticker
+                ref: /sdk/stocks/ba/cramer_ticker
+              - name: spacc
+                ref: /sdk/stocks/ba/spacc
+              - name: cramer
+                ref: /sdk/stocks/ba/cramer
               - name: sentiment
                 ref: /sdk/stocks/ba/sentiment
               - name: rise
                 ref: /sdk/stocks/ba/rise
-              - name: getdd
-                ref: /sdk/stocks/ba/getdd
-              - name: cnews
-                ref: /sdk/stocks/ba/cnews
-              - name: snews
-                ref: /sdk/stocks/ba/snews
-          - name: dps
-            ref: /sdk/stocks/dps
-            sub:
-              - name: ctb
-                ref: /sdk/stocks/dps/ctb
-              - name: psi_sg
-                ref: /sdk/stocks/dps/psi_sg
-              - name: prom
-                ref: /sdk/stocks/dps/prom
-              - name: volexch
-                ref: /sdk/stocks/dps/volexch
-              - name: dpotc
-                ref: /sdk/stocks/dps/dpotc
-              - name: shorted
-                ref: /sdk/stocks/dps/shorted
-              - name: spos
-                ref: /sdk/stocks/dps/spos
-              - name: pos
-                ref: /sdk/stocks/dps/pos
-              - name: psi_q
-                ref: /sdk/stocks/dps/psi_q
-              - name: ftd
-                ref: /sdk/stocks/dps/ftd
-              - name: sidtc
-                ref: /sdk/stocks/dps/sidtc
-              - name: hsi
-                ref: /sdk/stocks/dps/hsi
-          - name: gov
-            ref: /sdk/stocks/gov
-            sub:
-              - name: gtrades
-                ref: /sdk/stocks/gov/gtrades
-              - name: topbuys
-                ref: /sdk/stocks/gov/topbuys
-              - name: lobbying
-                ref: /sdk/stocks/gov/lobbying
-              - name: toplobbying
-                ref: /sdk/stocks/gov/toplobbying
-              - name: histcont
-                ref: /sdk/stocks/gov/histcont
-              - name: topsells
-                ref: /sdk/stocks/gov/topsells
-              - name: contracts
-                ref: /sdk/stocks/gov/contracts
-              - name: government_trading
-                ref: /sdk/stocks/gov/government_trading
-              - name: lasttrades
-                ref: /sdk/stocks/gov/lasttrades
-              - name: lastcontracts
-                ref: /sdk/stocks/gov/lastcontracts
-              - name: qtrcontracts
-                ref: /sdk/stocks/gov/qtrcontracts
-          - name: ins
-            ref: /sdk/stocks/ins
-            sub:
-              - name: act
-                ref: /sdk/stocks/ins/act
-              - name: lins
-                ref: /sdk/stocks/ins/lins
-              - name: print_insider_data
-                ref: /sdk/stocks/ins/print_insider_data
-          - name: candle
-            ref: /sdk/stocks/candle
-          - name: process_candle
-            ref: /sdk/stocks/process_candle
-          - name: sia
-            ref: /sdk/stocks/sia
-            sub:
-              - name: cpcs
-                ref: /sdk/stocks/sia/cpcs
-              - name: cpis
-                ref: /sdk/stocks/sia/cpis
-              - name: cps
-                ref: /sdk/stocks/sia/cps
-              - name: countries
-                ref: /sdk/stocks/sia/countries
-              - name: cpic
-                ref: /sdk/stocks/sia/cpic
-              - name: cpci
-                ref: /sdk/stocks/sia/cpci
-              - name: sectors
-                ref: /sdk/stocks/sia/sectors
-              - name: maketcap
-                ref: /sdk/stocks/sia/maketcap
-              - name: industries
-                ref: /sdk/stocks/sia/industries
-              - name: filter_stocks
-                ref: /sdk/stocks/sia/filter_stocks
-              - name: stocks_data
-                ref: /sdk/stocks/sia/stocks_data
-          - name: tob
-            ref: /sdk/stocks/tob
-          - name: search
-            ref: /sdk/stocks/search
-          - name: qa
-            ref: /sdk/stocks/qa
-            sub:
-              - name: historical_5
-                ref: /sdk/stocks/qa/historical_5
-              - name: fama_raw
-                ref: /sdk/stocks/qa/fama_raw
-              - name: capm_information
-                ref: /sdk/stocks/qa/capm_information
-          - name: fa
-            ref: /sdk/stocks/fa
-            sub:
-              - name: dupont
-                ref: /sdk/stocks/fa/dupont
-              - name: fmp_metrics
-                ref: /sdk/stocks/fa/fmp_metrics
-              - name: fmp_cash
-                ref: /sdk/stocks/fa/fmp_cash
-              - name: historical_5
-                ref: /sdk/stocks/fa/historical_5
-              - name: hq
-                ref: /sdk/stocks/fa/hq
-              - name: fama_raw
-                ref: /sdk/stocks/fa/fama_raw
-              - name: fraud
-                ref: /sdk/stocks/fa/fraud
-              - name: av_income
-                ref: /sdk/stocks/fa/av_income
-              - name: data
-                ref: /sdk/stocks/fa/data
-              - name: fama_coe
-                ref: /sdk/stocks/fa/fama_coe
-              - name: score
-                ref: /sdk/stocks/fa/score
-              - name: quote
-                ref: /sdk/stocks/fa/quote
-              - name: poly_financials
-                ref: /sdk/stocks/fa/poly_financials
-              - name: av_overview
-                ref: /sdk/stocks/fa/av_overview
-              - name: fmp_income
-                ref: /sdk/stocks/fa/fmp_income
-              - name: info
-                ref: /sdk/stocks/fa/info
-              - name: yf_financials
-                ref: /sdk/stocks/fa/yf_financials
-              - name: cal
-                ref: /sdk/stocks/fa/cal
-              - name: av_balance
-                ref: /sdk/stocks/fa/av_balance
-              - name: mgmt
-                ref: /sdk/stocks/fa/mgmt
-              - name: sust
-                ref: /sdk/stocks/fa/sust
-              - name: av_metrics
-                ref: /sdk/stocks/fa/av_metrics
-              - name: enterprise
-                ref: /sdk/stocks/fa/enterprise
-              - name: splits
-                ref: /sdk/stocks/fa/splits
-              - name: earnings
-                ref: /sdk/stocks/fa/earnings
-              - name: av_cash
-                ref: /sdk/stocks/fa/av_cash
-              - name: shrs
-                ref: /sdk/stocks/fa/shrs
-              - name: mktcap
-                ref: /sdk/stocks/fa/mktcap
-              - name: dcf
-                ref: /sdk/stocks/fa/dcf
-              - name: website
-                ref: /sdk/stocks/fa/website
-              - name: growth
-                ref: /sdk/stocks/fa/growth
-              - name: divs
-                ref: /sdk/stocks/fa/divs
-              - name: fmp_balance
-                ref: /sdk/stocks/fa/fmp_balance
-              - name: profile
-                ref: /sdk/stocks/fa/profile
-              - name: fmp_ratios
-                ref: /sdk/stocks/fa/fmp_ratios
-              - name: similar_dfs
-                ref: /sdk/stocks/fa/similar_dfs
-              - name: analysis
-                ref: /sdk/stocks/fa/analysis
-          - name: screener
-            ref: /sdk/stocks/screener
-            sub:
-              - name: screener_data
-                ref: /sdk/stocks/screener/screener_data
-              - name: historical
-                ref: /sdk/stocks/screener/historical
-          - name: th
-            ref: /sdk/stocks/th
-            sub:
-              - name: exchange
-                ref: /sdk/stocks/th/exchange
-              - name: closed
-                ref: /sdk/stocks/th/closed
-              - name: check_if_open
-                ref: /sdk/stocks/th/check_if_open
-              - name: all
-                ref: /sdk/stocks/th/all
-              - name: open
-                ref: /sdk/stocks/th/open
+              - name: watchlist
+                ref: /sdk/stocks/ba/watchlist
           - name: bt
             ref: /sdk/stocks/bt
             sub:
               - name: ema
                 ref: /sdk/stocks/bt/ema
-              - name: ema_cross
-                ref: /sdk/stocks/bt/ema_cross
               - name: rsi
                 ref: /sdk/stocks/bt/rsi
-      - name: funds
-        ref: /sdk/funds
-        sub:
-          - name: info
-            ref: /sdk/funds/info
-          - name: search
-            ref: /sdk/funds/search
-          - name: overview
-            ref: /sdk/funds/overview
+              - name: ema_cross
+                ref: /sdk/stocks/bt/ema_cross
+          - name: disc
+            ref: /sdk/stocks/disc
+            sub:
+              - name: asc
+                ref: /sdk/stocks/disc/asc
+              - name: ipo
+                ref: /sdk/stocks/disc/ipo
+              - name: gainers
+                ref: /sdk/stocks/disc/gainers
+              - name: gtech
+                ref: /sdk/stocks/disc/gtech
+              - name: hotpenny
+                ref: /sdk/stocks/disc/hotpenny
+              - name: losers
+                ref: /sdk/stocks/disc/losers
+              - name: news
+                ref: /sdk/stocks/disc/news
+              - name: ugs
+                ref: /sdk/stocks/disc/ugs
+              - name: lowfloat
+                ref: /sdk/stocks/disc/lowfloat
+              - name: rtat
+                ref: /sdk/stocks/disc/rtat
+              - name: pipo
+                ref: /sdk/stocks/disc/pipo
+              - name: trending
+                ref: /sdk/stocks/disc/trending
+              - name: upcoming
+                ref: /sdk/stocks/disc/upcoming
+              - name: ulc
+                ref: /sdk/stocks/disc/ulc
+              - name: active
+                ref: /sdk/stocks/disc/active
+              - name: dividends
+                ref: /sdk/stocks/disc/dividends
+              - name: arkord
+                ref: /sdk/stocks/disc/arkord
+              - name: fipo
+                ref: /sdk/stocks/disc/fipo
+          - name: dd
+            ref: /sdk/stocks/dd
+            sub:
+              - name: rot
+                ref: /sdk/stocks/dd/rot
+              - name: rating
+                ref: /sdk/stocks/dd/rating
+              - name: analyst
+                ref: /sdk/stocks/dd/analyst
+              - name: sec
+                ref: /sdk/stocks/dd/sec
+              - name: pt
+                ref: /sdk/stocks/dd/pt
+              - name: news
+                ref: /sdk/stocks/dd/news
+              - name: supplier
+                ref: /sdk/stocks/dd/supplier
+              - name: est
+                ref: /sdk/stocks/dd/est
+              - name: arktrades
+                ref: /sdk/stocks/dd/arktrades
+              - name: customer
+                ref: /sdk/stocks/dd/customer
+          - name: fa
+            ref: /sdk/stocks/fa
+            sub:
+              - name: mgmt
+                ref: /sdk/stocks/fa/mgmt
+              - name: av_income
+                ref: /sdk/stocks/fa/av_income
+              - name: analysis
+                ref: /sdk/stocks/fa/analysis
+              - name: enterprise
+                ref: /sdk/stocks/fa/enterprise
+              - name: hq
+                ref: /sdk/stocks/fa/hq
+              - name: quote
+                ref: /sdk/stocks/fa/quote
+              - name: fraud
+                ref: /sdk/stocks/fa/fraud
+              - name: dupont
+                ref: /sdk/stocks/fa/dupont
+              - name: website
+                ref: /sdk/stocks/fa/website
+              - name: av_overview
+                ref: /sdk/stocks/fa/av_overview
+              - name: poly_financials
+                ref: /sdk/stocks/fa/poly_financials
+              - name: shrs
+                ref: /sdk/stocks/fa/shrs
+              - name: sust
+                ref: /sdk/stocks/fa/sust
+              - name: historical_5
+                ref: /sdk/stocks/fa/historical_5
+              - name: fmp_cash
+                ref: /sdk/stocks/fa/fmp_cash
+              - name: fmp_income
+                ref: /sdk/stocks/fa/fmp_income
+              - name: cal
+                ref: /sdk/stocks/fa/cal
+              - name: growth
+                ref: /sdk/stocks/fa/growth
+              - name: av_balance
+                ref: /sdk/stocks/fa/av_balance
+              - name: info
+                ref: /sdk/stocks/fa/info
+              - name: score
+                ref: /sdk/stocks/fa/score
+              - name: yf_financials
+                ref: /sdk/stocks/fa/yf_financials
+              - name: profile
+                ref: /sdk/stocks/fa/profile
+              - name: mktcap
+                ref: /sdk/stocks/fa/mktcap
+              - name: earnings
+                ref: /sdk/stocks/fa/earnings
+              - name: fmp_metrics
+                ref: /sdk/stocks/fa/fmp_metrics
+              - name: similar_dfs
+                ref: /sdk/stocks/fa/similar_dfs
+              - name: divs
+                ref: /sdk/stocks/fa/divs
+              - name: dcf
+                ref: /sdk/stocks/fa/dcf
+              - name: fmp_balance
+                ref: /sdk/stocks/fa/fmp_balance
+              - name: fmp_ratios
+                ref: /sdk/stocks/fa/fmp_ratios
+              - name: av_cash
+                ref: /sdk/stocks/fa/av_cash
+              - name: data
+                ref: /sdk/stocks/fa/data
+              - name: av_metrics
+                ref: /sdk/stocks/fa/av_metrics
+              - name: fama_raw
+                ref: /sdk/stocks/fa/fama_raw
+              - name: fama_coe
+                ref: /sdk/stocks/fa/fama_coe
+              - name: splits
+                ref: /sdk/stocks/fa/splits
+          - name: process_candle
+            ref: /sdk/stocks/process_candle
+          - name: ta
+            ref: /sdk/stocks/ta
+            sub:
+              - name: recom
+                ref: /sdk/stocks/ta/recom
+              - name: view
+                ref: /sdk/stocks/ta/view
+              - name: summary
+                ref: /sdk/stocks/ta/summary
+          - name: th
+            ref: /sdk/stocks/th
+            sub:
+              - name: exchange
+                ref: /sdk/stocks/th/exchange
+              - name: check_if_open
+                ref: /sdk/stocks/th/check_if_open
+              - name: all
+                ref: /sdk/stocks/th/all
+              - name: closed
+                ref: /sdk/stocks/th/closed
+              - name: open
+                ref: /sdk/stocks/th/open
+          - name: gov
+            ref: /sdk/stocks/gov
+            sub:
+              - name: topbuys
+                ref: /sdk/stocks/gov/topbuys
+              - name: lobbying
+                ref: /sdk/stocks/gov/lobbying
+              - name: government_trading
+                ref: /sdk/stocks/gov/government_trading
+              - name: contracts
+                ref: /sdk/stocks/gov/contracts
+              - name: topsells
+                ref: /sdk/stocks/gov/topsells
+              - name: lasttrades
+                ref: /sdk/stocks/gov/lasttrades
+              - name: histcont
+                ref: /sdk/stocks/gov/histcont
+              - name: toplobbying
+                ref: /sdk/stocks/gov/toplobbying
+              - name: lastcontracts
+                ref: /sdk/stocks/gov/lastcontracts
+              - name: gtrades
+                ref: /sdk/stocks/gov/gtrades
+              - name: qtrcontracts
+                ref: /sdk/stocks/gov/qtrcontracts
       - name: common
         ref: /sdk/common
         sub:
-          - name: ta
-            ref: /sdk/common/ta
-            sub:
-              - name: ad
-                ref: /sdk/common/ta/ad
-              - name: aroon
-                ref: /sdk/common/ta/aroon
-              - name: ema
-                ref: /sdk/common/ta/ema
-              - name: adx
-                ref: /sdk/common/ta/adx
-              - name: cg
-                ref: /sdk/common/ta/cg
-              - name: sma
-                ref: /sdk/common/ta/sma
-              - name: ma
-                ref: /sdk/common/ta/ma
-              - name: rsi
-                ref: /sdk/common/ta/rsi
-              - name: fisher
-                ref: /sdk/common/ta/fisher
-              - name: hma
-                ref: /sdk/common/ta/hma
-              - name: cci
-                ref: /sdk/common/ta/cci
-              - name: adosc
-                ref: /sdk/common/ta/adosc
-              - name: obv
-                ref: /sdk/common/ta/obv
-              - name: vwap
-                ref: /sdk/common/ta/vwap
-              - name: wma
-                ref: /sdk/common/ta/wma
-              - name: donchian
-                ref: /sdk/common/ta/donchian
-              - name: kc
-                ref: /sdk/common/ta/kc
-              - name: fib
-                ref: /sdk/common/ta/fib
-              - name: bbands
-                ref: /sdk/common/ta/bbands
-              - name: macd
-                ref: /sdk/common/ta/macd
-              - name: zlma
-                ref: /sdk/common/ta/zlma
-              - name: stoch
-                ref: /sdk/common/ta/stoch
           - name: behavioural_analysis
             ref: /sdk/common/behavioural_analysis
             sub:
@@ -2460,574 +2669,365 @@ main:
                 ref: /sdk/common/behavioural_analysis/sentiment_stats
               - name: sentiment
                 ref: /sdk/common/behavioural_analysis/sentiment
-          - name: news
-            ref: /sdk/common/news
           - name: qa
             ref: /sdk/common/qa
             sub:
-              - name: es
-                ref: /sdk/common/qa/es
-              - name: calculate_adjusted_var
-                ref: /sdk/common/qa/calculate_adjusted_var
               - name: skew
                 ref: /sdk/common/qa/skew
-              - name: normality
-                ref: /sdk/common/qa/normality
-              - name: var
-                ref: /sdk/common/qa/var
-              - name: kurtosis
-                ref: /sdk/common/qa/kurtosis
-              - name: quantile
-                ref: /sdk/common/qa/quantile
-              - name: summary
-                ref: /sdk/common/qa/summary
-              - name: unitroot
-                ref: /sdk/common/qa/unitroot
               - name: bw
                 ref: /sdk/common/qa/bw
-              - name: spread
-                ref: /sdk/common/qa/spread
               - name: rolling
                 ref: /sdk/common/qa/rolling
-              - name: decompose
-                ref: /sdk/common/qa/decompose
+              - name: calculate_adjusted_var
+                ref: /sdk/common/qa/calculate_adjusted_var
               - name: sharpe
                 ref: /sdk/common/qa/sharpe
-              - name: omega
-                ref: /sdk/common/qa/omega
+              - name: quantile
+                ref: /sdk/common/qa/quantile
+              - name: var
+                ref: /sdk/common/qa/var
+              - name: spread
+                ref: /sdk/common/qa/spread
+              - name: kurtosis
+                ref: /sdk/common/qa/kurtosis
+              - name: unitroot
+                ref: /sdk/common/qa/unitroot
               - name: sortino
                 ref: /sdk/common/qa/sortino
-      - name: crypto
-        ref: /sdk/crypto
-        sub:
-          - name: defi
-            ref: /sdk/crypto/defi
+              - name: omega
+                ref: /sdk/common/qa/omega
+              - name: es
+                ref: /sdk/common/qa/es
+              - name: decompose
+                ref: /sdk/common/qa/decompose
+              - name: summary
+                ref: /sdk/common/qa/summary
+              - name: normality
+                ref: /sdk/common/qa/normality
+          - name: news
+            ref: /sdk/common/news
+          - name: ta
+            ref: /sdk/common/ta
             sub:
-              - name: stats
-                ref: /sdk/crypto/defi/stats
-              - name: newsletters
-                ref: /sdk/crypto/defi/newsletters
-              - name: gov_proposals
-                ref: /sdk/crypto/defi/gov_proposals
-              - name: sreturn
-                ref: /sdk/crypto/defi/sreturn
-              - name: anchor_data
-                ref: /sdk/crypto/defi/anchor_data
-              - name: aterra
-                ref: /sdk/crypto/defi/aterra
-              - name: ldapps
-                ref: /sdk/crypto/defi/ldapps
-              - name: pairs
-                ref: /sdk/crypto/defi/pairs
-              - name: luna_supply
-                ref: /sdk/crypto/defi/luna_supply
-              - name: tokens
-                ref: /sdk/crypto/defi/tokens
-              - name: validators
-                ref: /sdk/crypto/defi/validators
-              - name: sinfo
-                ref: /sdk/crypto/defi/sinfo
-              - name: ayr
-                ref: /sdk/crypto/defi/ayr
-              - name: dtvl
-                ref: /sdk/crypto/defi/dtvl
-              - name: gacc
-                ref: /sdk/crypto/defi/gacc
-              - name: swaps
-                ref: /sdk/crypto/defi/swaps
-              - name: pools
-                ref: /sdk/crypto/defi/pools
-              - name: sratio
-                ref: /sdk/crypto/defi/sratio
-              - name: dpi
-                ref: /sdk/crypto/defi/dpi
-              - name: gdapps
-                ref: /sdk/crypto/defi/gdapps
-              - name: stvl
-                ref: /sdk/crypto/defi/stvl
-              - name: vaults
-                ref: /sdk/crypto/defi/vaults
-          - name: dd
-            ref: /sdk/crypto/dd
-            sub:
-              - name: trades
-                ref: /sdk/crypto/dd/trades
-              - name: stats
-                ref: /sdk/crypto/dd/stats
-              - name: ohlc_historical
-                ref: /sdk/crypto/dd/ohlc_historical
-              - name: check_valid_binance_str
-                ref: /sdk/crypto/dd/check_valid_binance_str
-              - name: rm
-                ref: /sdk/crypto/dd/rm
-              - name: team
-                ref: /sdk/crypto/dd/team
-              - name: tokenomics
-                ref: /sdk/crypto/dd/tokenomics
-              - name: links
-                ref: /sdk/crypto/dd/links
-              - name: twitter
-                ref: /sdk/crypto/dd/twitter
-              - name: candles
-                ref: /sdk/crypto/dd/candles
-              - name: events
-                ref: /sdk/crypto/dd/events
-              - name: mt
-                ref: /sdk/crypto/dd/mt
-              - name: pr
-                ref: /sdk/crypto/dd/pr
-              - name: ps
-                ref: /sdk/crypto/dd/ps
-              - name: fr
-                ref: /sdk/crypto/dd/fr
-              - name: basic
-                ref: /sdk/crypto/dd/basic
-              - name: all_binance_trading_pairs
-                ref: /sdk/crypto/dd/all_binance_trading_pairs
-              - name: mcapdom
-                ref: /sdk/crypto/dd/mcapdom
-              - name: coin
-                ref: /sdk/crypto/dd/coin
-              - name: inv
-                ref: /sdk/crypto/dd/inv
-              - name: balance
-                ref: /sdk/crypto/dd/balance
-              - name: oi
-                ref: /sdk/crypto/dd/oi
-              - name: coin_market_chart
-                ref: /sdk/crypto/dd/coin_market_chart
-              - name: pi
-                ref: /sdk/crypto/dd/pi
-              - name: exchanges
-                ref: /sdk/crypto/dd/exchanges
-              - name: active
-                ref: /sdk/crypto/dd/active
-              - name: trading_pair_info
-                ref: /sdk/crypto/dd/trading_pair_info
-              - name: hr
-                ref: /sdk/crypto/dd/hr
-              - name: eb
-                ref: /sdk/crypto/dd/eb
-              - name: btcrb
-                ref: /sdk/crypto/dd/btcrb
-              - name: tk
-                ref: /sdk/crypto/dd/tk
-              - name: trading_pairs
-                ref: /sdk/crypto/dd/trading_pairs
-              - name: gov
-                ref: /sdk/crypto/dd/gov
-              - name: headlines
-                ref: /sdk/crypto/dd/headlines
-              - name: news
-                ref: /sdk/crypto/dd/news
-              - name: mkt
-                ref: /sdk/crypto/dd/mkt
-              - name: book
-                ref: /sdk/crypto/dd/book
-              - name: cbbook
-                ref: /sdk/crypto/dd/cbbook
-              - name: close
-                ref: /sdk/crypto/dd/close
-              - name: get_mt
-                ref: /sdk/crypto/dd/get_mt
-              - name: ex
-                ref: /sdk/crypto/dd/ex
-              - name: nonzero
-                ref: /sdk/crypto/dd/nonzero
-              - name: show_available_pairs_for_given_symbol
-                ref: /sdk/crypto/dd/show_available_pairs_for_given_symbol
-              - name: gh
-                ref: /sdk/crypto/dd/gh
-              - name: change
-                ref: /sdk/crypto/dd/change
-              - name: binance_available_quotes_for_each_coin
-                ref: /sdk/crypto/dd/binance_available_quotes_for_each_coin
-          - name: candles
-            ref: /sdk/crypto/candles
-          - name: ov
-            ref: /sdk/crypto/ov
-            sub:
-              - name: cgexrates
-                ref: /sdk/crypto/ov/cgexrates
-              - name: cr
-                ref: /sdk/crypto/ov/cr
-              - name: crypto_hacks
-                ref: /sdk/crypto/ov/crypto_hacks
-              - name: crypto_hack
-                ref: /sdk/crypto/ov/crypto_hack
-              - name: global_info
-                ref: /sdk/crypto/ov/global_info
-              - name: cgstables
-                ref: /sdk/crypto/ov/cgstables
-              - name: crypto_hack_slugs
-                ref: /sdk/crypto/ov/crypto_hack_slugs
-              - name: cpplatforms
-                ref: /sdk/crypto/ov/cpplatforms
-              - name: cpinfo
-                ref: /sdk/crypto/ov/cpinfo
-              - name: cgdefi
-                ref: /sdk/crypto/ov/cgdefi
-              - name: cbpairs
-                ref: /sdk/crypto/ov/cbpairs
-              - name: cpexmarkets
-                ref: /sdk/crypto/ov/cpexmarkets
-              - name: ewf
-                ref: /sdk/crypto/ov/ewf
-              - name: exchanges
-                ref: /sdk/crypto/ov/exchanges
-              - name: cgderivatives
-                ref: /sdk/crypto/ov/cgderivatives
-              - name: wfpe
-                ref: /sdk/crypto/ov/wfpe
-              - name: list_of_coins
-                ref: /sdk/crypto/ov/list_of_coins
-              - name: cgcategories
-                ref: /sdk/crypto/ov/cgcategories
-              - name: wf
-                ref: /sdk/crypto/ov/wf
-              - name: cpcontracts
-                ref: /sdk/crypto/ov/cpcontracts
-              - name: cgglobal
-                ref: /sdk/crypto/ov/cgglobal
-              - name: cghold
-                ref: /sdk/crypto/ov/cghold
-              - name: altindex
-                ref: /sdk/crypto/ov/altindex
-              - name: cgindexes
-                ref: /sdk/crypto/ov/cgindexes
-              - name: news
-                ref: /sdk/crypto/ov/news
-              - name: cghm
-                ref: /sdk/crypto/ov/cghm
-              - name: cpglobal
-                ref: /sdk/crypto/ov/cpglobal
-              - name: cpmarkets
-                ref: /sdk/crypto/ov/cpmarkets
-              - name: platforms
-                ref: /sdk/crypto/ov/platforms
-              - name: cgproducts
-                ref: /sdk/crypto/ov/cgproducts
-              - name: cpexchanges
-                ref: /sdk/crypto/ov/cpexchanges
-          - name: disc
-            ref: /sdk/crypto/disc
-            sub:
-              - name: top_dexes
-                ref: /sdk/crypto/disc/top_dexes
-              - name: trending
-                ref: /sdk/crypto/disc/trending
-              - name: categories_keys
-                ref: /sdk/crypto/disc/categories_keys
-              - name: coin_list
-                ref: /sdk/crypto/disc/coin_list
-              - name: gainers_or_losers
-                ref: /sdk/crypto/disc/gainers_or_losers
-              - name: gainers
-                ref: /sdk/crypto/disc/gainers
-              - name: top_games
-                ref: /sdk/crypto/disc/top_games
-              - name: cpsearch
-                ref: /sdk/crypto/disc/cpsearch
-              - name: coins_for_given_exchange
-                ref: /sdk/crypto/disc/coins_for_given_exchange
-              - name: losers
-                ref: /sdk/crypto/disc/losers
-              - name: coins
-                ref: /sdk/crypto/disc/coins
-              - name: cmctop
-                ref: /sdk/crypto/disc/cmctop
-              - name: top_nfts
-                ref: /sdk/crypto/disc/top_nfts
-              - name: top_dapps
-                ref: /sdk/crypto/disc/top_dapps
-          - name: find
-            ref: /sdk/crypto/find
-          - name: nft
-            ref: /sdk/crypto/nft
-            sub:
-              - name: stats
-                ref: /sdk/crypto/nft/stats
-          - name: load
-            ref: /sdk/crypto/load
-          - name: onchain
-            ref: /sdk/crypto/onchain
-            sub:
-              - name: erc20_tokens
-                ref: /sdk/crypto/onchain/erc20_tokens
-              - name: whales
-                ref: /sdk/crypto/onchain/whales
-              - name: prices
-                ref: /sdk/crypto/onchain/prices
-              - name: ueat
-                ref: /sdk/crypto/onchain/ueat
-              - name: dex_trades_monthly
-                ref: /sdk/crypto/onchain/dex_trades_monthly
-              - name: holders
-                ref: /sdk/crypto/onchain/holders
-              - name: token_decimals
-                ref: /sdk/crypto/onchain/token_decimals
-              - name: tx
-                ref: /sdk/crypto/onchain/tx
-              - name: query_graph
-                ref: /sdk/crypto/onchain/query_graph
-              - name: info
-                ref: /sdk/crypto/onchain/info
-              - name: balance
-                ref: /sdk/crypto/onchain/balance
-              - name: hr
-                ref: /sdk/crypto/onchain/hr
-              - name: gwei
-                ref: /sdk/crypto/onchain/gwei
-              - name: tv
-                ref: /sdk/crypto/onchain/tv
-              - name: hist
-                ref: /sdk/crypto/onchain/hist
-              - name: btc_transac
-                ref: /sdk/crypto/onchain/btc_transac
-              - name: lt
-                ref: /sdk/crypto/onchain/lt
-              - name: baas
-                ref: /sdk/crypto/onchain/baas
-              - name: dvcp
-                ref: /sdk/crypto/onchain/dvcp
-              - name: top
-                ref: /sdk/crypto/onchain/top
-              - name: btc_supply
-                ref: /sdk/crypto/onchain/btc_supply
-              - name: th
-                ref: /sdk/crypto/onchain/th
-              - name: ttcp
-                ref: /sdk/crypto/onchain/ttcp
-          - name: chart
-            ref: /sdk/crypto/chart
-          - name: tools
-            ref: /sdk/crypto/tools
-            sub:
-              - name: il
-                ref: /sdk/crypto/tools/il
-              - name: apy
-                ref: /sdk/crypto/tools/apy
-      - name: forecast
-        ref: /sdk/forecast
-        sub:
-          - name: season
-            ref: /sdk/forecast/season
-          - name: delete
-            ref: /sdk/forecast/delete
-          - name: regr
-            ref: /sdk/forecast/regr
-          - name: ema
-            ref: /sdk/forecast/ema
-          - name: plot
-            ref: /sdk/forecast/plot
-          - name: delta
-            ref: /sdk/forecast/delta
-          - name: brnn
-            ref: /sdk/forecast/brnn
-          - name: trans
-            ref: /sdk/forecast/trans
-          - name: show
-            ref: /sdk/forecast/show
-          - name: linregr
-            ref: /sdk/forecast/linregr
-          - name: load
-            ref: /sdk/forecast/load
-          - name: corr
-            ref: /sdk/forecast/corr
-          - name: rename
-            ref: /sdk/forecast/rename
-          - name: roc
-            ref: /sdk/forecast/roc
-          - name: expo
-            ref: /sdk/forecast/expo
-          - name: rsi
-            ref: /sdk/forecast/rsi
-          - name: tcn
-            ref: /sdk/forecast/tcn
-          - name: signal
-            ref: /sdk/forecast/signal
-          - name: export
-            ref: /sdk/forecast/export
-          - name: desc
-            ref: /sdk/forecast/desc
-          - name: rnn
-            ref: /sdk/forecast/rnn
-          - name: theta
-            ref: /sdk/forecast/theta
-          - name: clean
-            ref: /sdk/forecast/clean
-          - name: tft
-            ref: /sdk/forecast/tft
-          - name: combine
-            ref: /sdk/forecast/combine
-          - name: nhits
-            ref: /sdk/forecast/nhits
-          - name: nbeats
-            ref: /sdk/forecast/nbeats
-          - name: atr
-            ref: /sdk/forecast/atr
-          - name: sto
-            ref: /sdk/forecast/sto
-          - name: mom
-            ref: /sdk/forecast/mom
+              - name: ema
+                ref: /sdk/common/ta/ema
+              - name: obv
+                ref: /sdk/common/ta/obv
+              - name: fisher
+                ref: /sdk/common/ta/fisher
+              - name: aroon
+                ref: /sdk/common/ta/aroon
+              - name: kc
+                ref: /sdk/common/ta/kc
+              - name: ad
+                ref: /sdk/common/ta/ad
+              - name: wma
+                ref: /sdk/common/ta/wma
+              - name: ma
+                ref: /sdk/common/ta/ma
+              - name: sma
+                ref: /sdk/common/ta/sma
+              - name: cg
+                ref: /sdk/common/ta/cg
+              - name: rsi
+                ref: /sdk/common/ta/rsi
+              - name: hma
+                ref: /sdk/common/ta/hma
+              - name: macd
+                ref: /sdk/common/ta/macd
+              - name: stoch
+                ref: /sdk/common/ta/stoch
+              - name: bbands
+                ref: /sdk/common/ta/bbands
+              - name: donchian
+                ref: /sdk/common/ta/donchian
+              - name: vwap
+                ref: /sdk/common/ta/vwap
+              - name: zlma
+                ref: /sdk/common/ta/zlma
+              - name: adx
+                ref: /sdk/common/ta/adx
+              - name: fib
+                ref: /sdk/common/ta/fib
+              - name: adosc
+                ref: /sdk/common/ta/adosc
+              - name: cci
+                ref: /sdk/common/ta/cci
       - name: portfolio
         ref: /sdk/portfolio
         sub:
-          - name: yret
-            ref: /sdk/portfolio/yret
-          - name: maxdd
-            ref: /sdk/portfolio/maxdd
-          - name: es
-            ref: /sdk/portfolio/es
-          - name: distr
-            ref: /sdk/portfolio/distr
-          - name: volatility
-            ref: /sdk/portfolio/volatility
-          - name: holdv
-            ref: /sdk/portfolio/holdv
-          - name: skew
-            ref: /sdk/portfolio/skew
-          - name: mret
-            ref: /sdk/portfolio/mret
-          - name: holdp
-            ref: /sdk/portfolio/holdp
-          - name: var
-            ref: /sdk/portfolio/var
-          - name: kelly
-            ref: /sdk/portfolio/kelly
-          - name: perf
-            ref: /sdk/portfolio/perf
-          - name: kurtosis
-            ref: /sdk/portfolio/kurtosis
-          - name: jensens
-            ref: /sdk/portfolio/jensens
-          - name: profitfactor
-            ref: /sdk/portfolio/profitfactor
-          - name: summary
-            ref: /sdk/portfolio/summary
-          - name: rvol
-            ref: /sdk/portfolio/rvol
-          - name: information
-            ref: /sdk/portfolio/information
           - name: dret
             ref: /sdk/portfolio/dret
-          - name: rsortino
-            ref: /sdk/portfolio/rsortino
-          - name: gaintopain
-            ref: /sdk/portfolio/gaintopain
-          - name: commonsense
-            ref: /sdk/portfolio/commonsense
-          - name: maxdrawdown
-            ref: /sdk/portfolio/maxdrawdown
-          - name: max_drawdown_ratio
-            ref: /sdk/portfolio/max_drawdown_ratio
-          - name: rbeta
-            ref: /sdk/portfolio/rbeta
-          - name: om
-            ref: /sdk/portfolio/om
+          - name: skew
+            ref: /sdk/portfolio/skew
+          - name: information
+            ref: /sdk/portfolio/information
+          - name: calmar
+            ref: /sdk/portfolio/calmar
+          - name: maxdd
+            ref: /sdk/portfolio/maxdd
+          - name: rsquare
+            ref: /sdk/portfolio/rsquare
+          - name: payoff
+            ref: /sdk/portfolio/payoff
+          - name: sharpe
+            ref: /sdk/portfolio/sharpe
+          - name: yret
+            ref: /sdk/portfolio/yret
           - name: rsharpe
             ref: /sdk/portfolio/rsharpe
+          - name: jensens
+            ref: /sdk/portfolio/jensens
+          - name: kelly
+            ref: /sdk/portfolio/kelly
+          - name: om
+            ref: /sdk/portfolio/om
+          - name: profitfactor
+            ref: /sdk/portfolio/profitfactor
+          - name: volatility
+            ref: /sdk/portfolio/volatility
+          - name: trackerr
+            ref: /sdk/portfolio/trackerr
+          - name: var
+            ref: /sdk/portfolio/var
           - name: tail
             ref: /sdk/portfolio/tail
+          - name: kurtosis
+            ref: /sdk/portfolio/kurtosis
           - name: po
             ref: /sdk/portfolio/po
             sub:
-              - name: relriskparity
-                ref: /sdk/portfolio/po/relriskparity
-              - name: get_properties
-                ref: /sdk/portfolio/po/get_properties
-              - name: herc
-                ref: /sdk/portfolio/po/herc
-              - name: maxsharpe
-                ref: /sdk/portfolio/po/maxsharpe
               - name: plot
                 ref: /sdk/portfolio/po/plot
-              - name: ef
-                ref: /sdk/portfolio/po/ef
-              - name: hrp
-                ref: /sdk/portfolio/po/hrp
-              - name: minrisk
-                ref: /sdk/portfolio/po/minrisk
-              - name: load
-                ref: /sdk/portfolio/po/load
-              - name: equal
-                ref: /sdk/portfolio/po/equal
-              - name: maxutil
-                ref: /sdk/portfolio/po/maxutil
-              - name: nco
-                ref: /sdk/portfolio/po/nco
-              - name: property
-                ref: /sdk/portfolio/po/property
-              - name: maxret
-                ref: /sdk/portfolio/po/maxret
-              - name: blacklitterman
-                ref: /sdk/portfolio/po/blacklitterman
-              - name: meanrisk
-                ref: /sdk/portfolio/po/meanrisk
-              - name: load_bl_views
-                ref: /sdk/portfolio/po/load_bl_views
-              - name: riskparity
-                ref: /sdk/portfolio/po/riskparity
-              - name: maxdiv
-                ref: /sdk/portfolio/po/maxdiv
               - name: maxdecorr
                 ref: /sdk/portfolio/po/maxdecorr
+              - name: get_properties
+                ref: /sdk/portfolio/po/get_properties
+              - name: meanrisk
+                ref: /sdk/portfolio/po/meanrisk
+              - name: property
+                ref: /sdk/portfolio/po/property
+              - name: herc
+                ref: /sdk/portfolio/po/herc
+              - name: maxdiv
+                ref: /sdk/portfolio/po/maxdiv
+              - name: maxsharpe
+                ref: /sdk/portfolio/po/maxsharpe
+              - name: maxret
+                ref: /sdk/portfolio/po/maxret
+              - name: load_bl_views
+                ref: /sdk/portfolio/po/load_bl_views
+              - name: hrp
+                ref: /sdk/portfolio/po/hrp
+              - name: load
+                ref: /sdk/portfolio/po/load
+              - name: riskparity
+                ref: /sdk/portfolio/po/riskparity
               - name: hcp
                 ref: /sdk/portfolio/po/hcp
-          - name: trackerr
-            ref: /sdk/portfolio/trackerr
-          - name: sharpe
-            ref: /sdk/portfolio/sharpe
-          - name: calmar
-            ref: /sdk/portfolio/calmar
-          - name: rsquare
-            ref: /sdk/portfolio/rsquare
+              - name: blacklitterman
+                ref: /sdk/portfolio/po/blacklitterman
+              - name: nco
+                ref: /sdk/portfolio/po/nco
+              - name: equal
+                ref: /sdk/portfolio/po/equal
+              - name: minrisk
+                ref: /sdk/portfolio/po/minrisk
+              - name: ef
+                ref: /sdk/portfolio/po/ef
+              - name: maxutil
+                ref: /sdk/portfolio/po/maxutil
+              - name: relriskparity
+                ref: /sdk/portfolio/po/relriskparity
+          - name: rsortino
+            ref: /sdk/portfolio/rsortino
           - name: sortino
             ref: /sdk/portfolio/sortino
-          - name: payoff
-            ref: /sdk/portfolio/payoff
+          - name: mret
+            ref: /sdk/portfolio/mret
+          - name: rbeta
+            ref: /sdk/portfolio/rbeta
+          - name: max_drawdown_ratio
+            ref: /sdk/portfolio/max_drawdown_ratio
+          - name: gaintopain
+            ref: /sdk/portfolio/gaintopain
+          - name: es
+            ref: /sdk/portfolio/es
+          - name: maxdrawdown
+            ref: /sdk/portfolio/maxdrawdown
+          - name: commonsense
+            ref: /sdk/portfolio/commonsense
+          - name: rvol
+            ref: /sdk/portfolio/rvol
+          - name: perf
+            ref: /sdk/portfolio/perf
+          - name: distr
+            ref: /sdk/portfolio/distr
+          - name: holdp
+            ref: /sdk/portfolio/holdp
+          - name: summary
+            ref: /sdk/portfolio/summary
+          - name: holdv
+            ref: /sdk/portfolio/holdv
+      - name: keys
+        ref: /sdk/keys
+        sub:
+          - name: cmc
+            ref: /sdk/keys/cmc
+          - name: get_keys_info
+            ref: /sdk/keys/get_keys_info
+          - name: twitter
+            ref: /sdk/keys/twitter
+          - name: tradier
+            ref: /sdk/keys/tradier
+          - name: eodhd
+            ref: /sdk/keys/eodhd
+          - name: av
+            ref: /sdk/keys/av
+          - name: ethplorer
+            ref: /sdk/keys/ethplorer
+          - name: bitquery
+            ref: /sdk/keys/bitquery
+          - name: set_keys
+            ref: /sdk/keys/set_keys
+          - name: walert
+            ref: /sdk/keys/walert
+          - name: mykeys
+            ref: /sdk/keys/mykeys
+          - name: coinbase
+            ref: /sdk/keys/coinbase
+          - name: glassnode
+            ref: /sdk/keys/glassnode
+          - name: tokenterminal
+            ref: /sdk/keys/tokenterminal
+          - name: fred
+            ref: /sdk/keys/fred
+          - name: polygon
+            ref: /sdk/keys/polygon
+          - name: rh
+            ref: /sdk/keys/rh
+          - name: finnhub
+            ref: /sdk/keys/finnhub
+          - name: coinglass
+            ref: /sdk/keys/coinglass
+          - name: cpanic
+            ref: /sdk/keys/cpanic
+          - name: github
+            ref: /sdk/keys/github
+          - name: news
+            ref: /sdk/keys/news
+          - name: oanda
+            ref: /sdk/keys/oanda
+          - name: si
+            ref: /sdk/keys/si
+          - name: messari
+            ref: /sdk/keys/messari
+          - name: smartstake
+            ref: /sdk/keys/smartstake
+          - name: reddit
+            ref: /sdk/keys/reddit
+          - name: santiment
+            ref: /sdk/keys/santiment
+          - name: quandl
+            ref: /sdk/keys/quandl
+          - name: fmp
+            ref: /sdk/keys/fmp
+          - name: degiro
+            ref: /sdk/keys/degiro
+          - name: iex
+            ref: /sdk/keys/iex
+          - name: shroom
+            ref: /sdk/keys/shroom
+          - name: binance
+            ref: /sdk/keys/binance
+      - name: etf
+        ref: /sdk/etf
+        sub:
+          - name: ld
+            ref: /sdk/etf/ld
+          - name: candle
+            ref: /sdk/etf/candle
+          - name: weights
+            ref: /sdk/etf/weights
+          - name: scr
+            ref: /sdk/etf/scr
+            sub:
+              - name: screen
+                ref: /sdk/etf/scr/screen
+          - name: holdings
+            ref: /sdk/etf/holdings
+          - name: etf_by_name
+            ref: /sdk/etf/etf_by_name
+          - name: load
+            ref: /sdk/etf/load
+          - name: news
+            ref: /sdk/etf/news
+          - name: disc
+            ref: /sdk/etf/disc
+            sub:
+              - name: mover
+                ref: /sdk/etf/disc/mover
+          - name: symbols
+            ref: /sdk/etf/symbols
+          - name: ln
+            ref: /sdk/etf/ln
+          - name: etf_by_category
+            ref: /sdk/etf/etf_by_category
+          - name: overview
+            ref: /sdk/etf/overview
+          - name: summary
+            ref: /sdk/etf/summary
+      - name: funds
+        ref: /sdk/funds
+        sub:
+          - name: search
+            ref: /sdk/funds/search
+          - name: info
+            ref: /sdk/funds/info
+          - name: overview
+            ref: /sdk/funds/overview
       - name: alt
         ref: /sdk/alt
         sub:
           - name: oss
             ref: /sdk/alt/oss
             sub:
-              - name: github_data
-                ref: /sdk/alt/oss/github_data
-              - name: _retry_session
-                ref: /sdk/alt/oss/_retry_session
-              - name: search_repos
-                ref: /sdk/alt/oss/search_repos
-              - name: stars_history
-                ref: /sdk/alt/oss/stars_history
-              - name: summary
-                ref: /sdk/alt/oss/summary
+              - name: top
+                ref: /sdk/alt/oss/top
               - name: top_repos
                 ref: /sdk/alt/oss/top_repos
               - name: repo_summary
                 ref: /sdk/alt/oss/repo_summary
-              - name: history
-                ref: /sdk/alt/oss/history
-              - name: _make_request
-                ref: /sdk/alt/oss/_make_request
+              - name: stars_history
+                ref: /sdk/alt/oss/stars_history
               - name: search
                 ref: /sdk/alt/oss/search
-              - name: top
-                ref: /sdk/alt/oss/top
+              - name: _make_request
+                ref: /sdk/alt/oss/_make_request
+              - name: history
+                ref: /sdk/alt/oss/history
+              - name: _retry_session
+                ref: /sdk/alt/oss/_retry_session
+              - name: search_repos
+                ref: /sdk/alt/oss/search_repos
+              - name: github_data
+                ref: /sdk/alt/oss/github_data
+              - name: summary
+                ref: /sdk/alt/oss/summary
               - name: ross
                 ref: /sdk/alt/oss/ross
           - name: covid
             ref: /sdk/alt/covid
             sub:
-              - name: stat
-                ref: /sdk/alt/covid/stat
               - name: slopes
                 ref: /sdk/alt/covid/slopes
-              - name: ov
-                ref: /sdk/alt/covid/ov
-              - name: case_slopes
-                ref: /sdk/alt/covid/case_slopes
               - name: global_deaths
                 ref: /sdk/alt/covid/global_deaths
+              - name: ov
+                ref: /sdk/alt/covid/ov
               - name: global_cases
                 ref: /sdk/alt/covid/global_cases
+              - name: stat
+                ref: /sdk/alt/covid/stat
+              - name: case_slopes
+                ref: /sdk/alt/covid/case_slopes

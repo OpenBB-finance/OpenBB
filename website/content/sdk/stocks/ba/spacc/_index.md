@@ -1,5 +1,5 @@
 ## Get underlying data 
-### stocks.ba.spac_c(limit: int = 10, popular: bool = False) -> Tuple[pandas.core.frame.DataFrame, dict]
+### stocks.ba.spacc(limit: int = 10, popular: bool = False) -> Tuple[pandas.core.frame.DataFrame, dict]
 
 Get top tickers from r/SPACs [Source: reddit]
 
