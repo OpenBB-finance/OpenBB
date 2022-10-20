@@ -4,8 +4,9 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-from typing import List
+from typing import List, Union
 
+from datetime import datetime as dt
 import pandas as pd
 import requests
 
@@ -17,7 +18,70 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def check_country_code_type(list_of_codes: str) -> List[str]:
+def get_economic_calendar(
+    countries: Union[List[str], str] = "",
+    start_date: str = dt.now().strftime("%Y-%m-%d"),
+    end_date: str = dt.now().strftime("%Y-%m-%d"),
+) -> pd.DataFrame:
+    """Get economic calendar for countries between specified dates
+
+    Parameters
+    ----------
+    countries : [List[str],str]
+        List of countries to include in calendar.  Empty returns all
+    start_date : str
+        Start date for calendar
+    end_date : str
+        End date for calendar
+
+    Returns
+    -------
+    pd.DataFrame
+        Economic calendar
+    """
+    if isinstance(countries, str):
+        countries = [countries]
+    if start_date == end_date:
+        dates = [start_date]
+    else:
+        dates = (
+            pd.date_range(start=start_date, end=end_date).strftime("%Y-%m-%d").tolist()
+        )
+    calendar = pd.DataFrame()
+    for date in dates:
+        df = pd.DataFrame(
+            requests.get(
+                f"https://api.nasdaq.com/api/calendar/economicevents?date={date}",
+                headers={
+                    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+                },
+            ).json()["data"]["rows"]
+        ).replace("&nbsp;", "-")
+        df.loc[:, "Date"] = date
+        calendar = pd.concat([calendar, df], axis=0)
+
+    if calendar.empty:
+        console.print("No data found for date range", style="bold red")
+        return pd.DataFrame()
+
+    calendar = calendar.rename(
+        columns={"gmt": "Time (GMT)", "country": "Country", "eventName": "Event"}
+    )
+
+    calendar = calendar.drop(columns=["description"])
+    if not countries:
+        return calendar
+
+    calendar = calendar[calendar["Country"].isin(countries)].reset_index(drop=True)
+    if calendar.empty:
+        console.print(f"No data found for {','.join(countries)}", style="bold red")
+        return pd.DataFrame()
+    return calendar
+
+
+@log_start_end(log=logger)
+def check_country_code_type(list_of_codes: str) -> list[str]:
     """Check that codes are valid for NASDAQ API"""
     nasdaq_codes = list(
         pd.read_csv(os.path.join(os.path.dirname(__file__), "NASDAQ_CountryCodes.csv"))[
@@ -36,7 +100,7 @@ def check_country_code_type(list_of_codes: str) -> List[str]:
 
 
 @log_start_end(log=logger)
-def get_country_codes() -> List[str]:
+def get_country_codes() -> list[str]:
     """Get available country codes for Bigmac index
 
     Returns
@@ -95,7 +159,7 @@ def get_big_mac_index(country_code: str = "USA") -> pd.DataFrame:
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_QUANDL"])
-def get_big_mac_indices(country_codes: List[str] = None) -> pd.DataFrame:
+def get_big_mac_indices(country_codes: list[str] = None) -> pd.DataFrame:
     """Display Big Mac Index for given countries
 
     Parameters

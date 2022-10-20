@@ -9,7 +9,7 @@ repos:
         args:
           [
             "--ignore-files=settings_controller.py,featflags_controller.py,keys_controller.py,degiro_controller.py,",
-            "--ignore-commands=login,al_swe,info_swe,goodness,resources,yf,yolo,from,to,featflags,guess,settings,survey",
+            "--ignore-commands=login,al_swe,info_swe,goodness,resources,yf,yolo,from,to,featflags,guess,settings,survey,intro"
           ]
         entry: python custom_pre_commit/check_doc.py
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -32,7 +32,7 @@ repos:
       - id: flake8
         entry: flake8 --ignore=E203,W503 --max-line-length=122 --exclude ./build/pyinstaller/*
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.2.1
+    rev: v2.2.2
     hooks:
       - id: codespell
         entry: codespell
@@ -68,7 +68,7 @@ repos:
           ["--baseline", ".secrets.baseline", "--exclude-files", "cassettes/*", "--exclude-files", "website/content/api/*"]
         exclude: package.lock.json
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.0.0
+    rev: v3.1.0
     hooks:
       - id: pyupgrade
         args: [--py38-plus]
