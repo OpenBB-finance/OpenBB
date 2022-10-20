@@ -4,5 +4,4 @@ channels:
 dependencies:
   - python=3.9
   - pip
-  - poetry=1.1.13
-  - cvxpy=1.2.1
+  - poetry=1.1.15

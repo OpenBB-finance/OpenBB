@@ -6,5 +6,4 @@ dependencies:
   - pip
   - pytorch-lightning=1.6.5
   - u8darts[torch]=0.22.0
-  - poetry=1.1.13
-  - cvxpy=1.2.1
+  - poetry=1.1.15
