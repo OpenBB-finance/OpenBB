@@ -1069,8 +1069,8 @@ main:
             sub:
               - name: ema
                 ref: /terminal/stocks/bt/ema
-              - name: ema_cross
-                ref: /terminal/stocks/bt/ema_cross
+              - name: emacross
+                ref: /terminal/stocks/bt/emacross
               - name: rsi
                 ref: /terminal/stocks/bt/rsi
               - name: whatif
@@ -2469,8 +2469,8 @@ main:
                 ref: /sdk/stocks/bt/ema
               - name: rsi
                 ref: /sdk/stocks/bt/rsi
-              - name: ema_cross
-                ref: /sdk/stocks/bt/ema_cross
+              - name: emacross
+                ref: /sdk/stocks/bt/emacross
           - name: disc
             ref: /sdk/stocks/disc
             sub:
