@@ -3,7 +3,6 @@
     map                S&P500 index stocks map                                         [Finviz]
     bigmac             The Economist Big Mac index                                     [Nasdaq]
     ycrv               show sovereign yield curves                                     [FRED, Investing]
-    spread             show bond spread matrix
     events             show economic calendar                                          [Nasdaq, Investing]
     edebt              show external debt statistics for various countries             [Wikipedia]
 

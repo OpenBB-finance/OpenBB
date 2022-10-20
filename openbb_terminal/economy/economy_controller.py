@@ -69,7 +69,7 @@ class EconomyController(BaseController):
         "rtps",
         "bigmac",
         "ycrv",
-        "spread",
+        # "spread",
         "events",
         "edebt",
     ]
@@ -388,7 +388,8 @@ class EconomyController(BaseController):
         mt.add_cmd("map")
         mt.add_cmd("bigmac")
         mt.add_cmd("ycrv")
-        mt.add_cmd("spread")
+        # Comment out spread while investpy is donw :()
+        # mt.add_cmd("spread")
         mt.add_cmd("events")
         mt.add_cmd("edebt")
         mt.add_raw("\n")
