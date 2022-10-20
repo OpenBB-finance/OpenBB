@@ -11,6 +11,7 @@ import sys
 import webbrowser
 from typing import List
 import dotenv
+from rich import panel
 
 from prompt_toolkit import PromptSession
 from prompt_toolkit.completion import NestedCompleter
@@ -19,7 +20,9 @@ from prompt_toolkit.formatted_text import HTML
 import pandas as pd
 
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal import keys_controller
 from openbb_terminal.terminal_helper import is_packaged_application
+
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     MISCELLANEOUS_DIRECTORY,
@@ -39,7 +42,7 @@ from openbb_terminal.loggers import setup_logging
 from openbb_terminal.core.log.generation.settings_logger import log_all_settings
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText, translate
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.terminal_helper import (
     bootup,
     check_for_updates,
@@ -53,7 +56,8 @@ from openbb_terminal.terminal_helper import (
 from openbb_terminal.helper_funcs import parse_and_split_input
 from openbb_terminal.common import feedparser_view
 
-# pylint: disable=too-many-public-methods,import-outside-toplevel,too-many-branches,no-member,C0302
+# pylint: disable=too-many-public-methods,import-outside-toplevel
+# pylint: disable=too-many-branches,no-member,C0302,too-many-return-statements
 
 logger = logging.getLogger(__name__)
 
@@ -72,6 +76,7 @@ class TerminalController(BaseController):
         "exe",
         "guess",
         "news",
+        "intro",
     ]
     CHOICES_MENUS = [
         "stocks",
@@ -135,6 +140,7 @@ class TerminalController(BaseController):
         """Print help"""
         mt = MenuText("")
         mt.add_info("_home_")
+        mt.add_cmd("intro")
         mt.add_cmd("about")
         mt.add_cmd("support")
         mt.add_cmd("survey")
@@ -177,7 +183,7 @@ class TerminalController(BaseController):
         parse = argparse.ArgumentParser(
             add_help=False,
             prog="news",
-            description=translate("news"),
+            description="display news articles based on term and data sources",
         )
         parse.add_argument(
             "-t",
@@ -450,6 +456,180 @@ class TerminalController(BaseController):
 
         self.queue = self.load_class(SourcesController, self.queue)
 
+    def call_intro(self, _):
+        """Process intro command"""
+        console.print(panel.Panel("[purple]Welcome to the OpenBB Terminal.[/purple]"))
+        console.print(
+            "\nThe following walkthrough will guide you towards making the most out of the OpenBB Terminal.\n\n"
+            "Press Enter to continue or 'q' followed by Enter to exit."
+        )
+        if input("") == "q":
+            return
+        console.print("\n")
+
+        console.print(panel.Panel("[purple]#1 - Commands vs menu.[/purple]"))
+        console.print(
+            "\nMenus are a collection of 'commands' and 'sub-menus'.\n"
+            "You can identify them through their distinct color and a '>' at the beginning of the line\n\n"
+            "For instance:\n"
+            "[menu]>   stocks             access historical pricing data, options, sector [/menu]"
+            "[menu]and industry, and overall due diligence [/menu]\n\n\n"
+            "Commands are expected to return data either as a chart or table.\n"
+            "You can identify them through their distinct color\n\n"
+            "For instance:\n"
+            "[cmds]>   news               display news articles based on term and data sources [/cmds]"
+        )
+        if input("") == "q":
+            return
+        console.print("\n")
+
+        console.print(panel.Panel("[purple]#2 - Using commands[/purple]"))
+        console.print(
+            "\nCommands throughout the terminal can have additional arguments.\n\n"
+            "Let's say that in the current menu, you want to have more information about the command 'news'. \n\n"
+            "You can either see the available arguments in the terminal, using: [param]news -h[/param]\n\n",
+            "or you can find out more about it with an output example on the browser, using: [param]about news[/param]",
+        )
+        if input("") == "q":
+            return
+        console.print("\n")
+
+        console.print(panel.Panel("[purple]#3 - Setting API Keys[/purple]"))
+        console.print(
+            "\nThe OpenBB Terminal does not own any of the data you have access to.\n\n"
+            "Instead, we provide the infrastructure to access over 100 different data sources from a single location.\n\n"
+            "Thus, it is necessary for each user to set their own API keys for the various third party sources\n\n"
+            "You can find more about this on the '[param]keys[/param]' menu.\n\n"
+            "For many commands, there are multiple data sources that can be selected.\n\n"
+            "The help menu shows the data sources supported by each command.\n\n"
+            "For instance:\n"
+            "[cmds]    load               load a specific stock ticker and additional info for analysis   [/cmds]"
+            "[src][YahooFinance, IEXCloud, AlphaVantage, Polygon, EODHD] [/src]\n\n"
+            "The user can go into the '[param]sources[/param]' menu and select their preferred default data source."
+        )
+        if input("") == "q":
+            return
+        console.print("\n")
+
+        console.print(
+            panel.Panel("[purple]#4 - Symbol dependent menus and commands[/purple]")
+        )
+        console.print(
+            "\nThroughout the terminal, you will see commands and menus greyed out.\n\n"
+            "These menus or commands cannot be accessed until an object is loaded.\n\n"
+            "Let's take as an example the '[param]stocks[/param]' menu.\n\n"
+            "You will see that the command '[param]disc[/param]' is available as its goal is to discover new tickers:\n"
+            "[menu]>   stocks             access historical pricing data, options, sector [/menu]\n\n"
+            "On the other hand, '[param]fa[/param]' menu (fundamental analysis) requires a ticker to be loaded.\n\n"
+            "And therefore, appears as:\n"
+            "[dim]>   fa                 fundamental analysis of loaded ticker [/dim]\n\n"
+            "Once a ticker is loaded with: [param]load TSLA[/param]\n\n"
+            "The '[param]fa[/param]' menu will be available as:\n"
+            "[menu]>   fa                 fundamental analysis of loaded ticker [/menu]"
+        )
+        if input("") == "q":
+            return
+        console.print("\n")
+
+        console.print(panel.Panel("[purple]#5 - Terminal Navigation[/purple]"))
+        console.print(
+            "\nThe terminal has a tree like structure, where menus branch off into new menus.\n\n"
+            "The users current location is displayed before the text prompt.\n\n"
+            "For instance, if the user is inside the menu disc which is inside stocks, the following prompt "
+            "will appear: \n2022 Oct 18, 21:53 (🦋) [param]/stocks/disc/[/param] $\n\n"
+            "If the user wants to go back to the menu above, all they need to do is type '[param]q[/param]'.\n\n"
+            "If the user wants to go back to the home of the terminal, they can type '[param]/[/param]' instead.\n\n"
+            "Note: Always type '[param]h[/param]' to know what commands are available in each menu"
+        )
+        if input("") == "q":
+            return
+        console.print("\n")
+
+        console.print(panel.Panel("[purple]#6 - Command Pipeline[/purple]"))
+        console.print(
+            "\nThe terminal offers the capability of allowing users to speed up their navigation and command execution."
+            "\n\nTherefore, typing the following prompt is valid:\n"
+            "2022 Oct 18, 21:53 (🦋) / $ [param]stocks/load TSLA/dd/pt[/param]\n\n"
+            "In this example, the terminal - in a single action - will go into '[param]stocks[/param]' menu, "
+            "run command '[param]load[/param]' with '[param]TSLA[/param]' as input, \n"
+            "go into sub-menu '[param]dd[/param]' (due diligence) and run the command '[param]pt[/param]' (price target)."
+        )
+        if input("") == "q":
+            return
+        console.print("\n")
+
+        console.print(panel.Panel("[purple]#6 - OpenBB Scripts[/purple]"))
+        console.print(
+            "\nThe command pipeline capability is great, but the user experience wasn't great copy-pasting large "
+            "lists of commands.\n\n"
+            "We allow the user to create a text file of the form:\n\n"
+            "[param]FOLDER_PATH/my_script.openbb[/param]\n"
+            "stocks\nload TSLA\ndd\npt\n\n"
+            "which can be run through the '[param]exe[/param]' command in the home menu, with:\n"
+            "2022 Oct 18, 22:33 (🦋) / $ [param]exe FOLDER_PATH/my_script.openbb[/param]\n\n"
+        )
+        if input("") == "q":
+            return
+        console.print("\n")
+
+        console.print(
+            panel.Panel("[purple]#7 - OpenBB Scripts with Arguments[/purple]")
+        )
+        console.print(
+            "\nThe user can create a script that includes arguments for the commands.\n\n"
+            "Example:\n\n"
+            "[param]FOLDER_PATH/my_script_with_variable_input.openbb[/param]\n"
+            "stocks\n# this is a comment\nload $ARGV[0]\ndd\npt\nq\nload $ARGV[1]\ncandle\n\n"
+            "and then, if this script is run with:\n"
+            "2022 Oct 18, 22:33 (🦋) / $ [param]exe FOLDER_PATH/my_script_with_variable_input.openbb "
+            "-i AAPL,MSFT[/param]\n\n"
+            "This means that the [param]pt[/param] will run on [param]AAPL[/param] while "
+            "[param]candle[/param] on [param]MSFT[/param]"
+        )
+        if input("") == "q":
+            return
+        console.print("\n")
+
+        console.print(panel.Panel("[purple]#8 - OpenBB Script Generation/purple]"))
+        console.print(
+            "\n"
+            "To make it easier for users to create scripts, we have created a "
+            "command that 'records' user commands "
+            "directly into a script.\n\n"
+            "From the home menu, the user can run:\n"
+            "2022 Oct 18, 22:33 (🦋) / $ [param]record[/param]\n\n"
+            "and then perform your typical investment research workflow before entering\n\n"
+            "2022 Oct 18, 22:33 (🦋) / $ [param]stop[/param]\n\n"
+            "After stopping, the script will be saved to the 'scripts' folder."
+        )
+        if input("") == "q":
+            return
+        console.print("\n")
+
+        console.print(panel.Panel("[purple]#9 - Terminal Customization[/purple]"))
+        console.print(
+            "\nUsers should explore the [param]settings[/param] and [param]featflags[/param] menus "
+            "to configure their terminal.\n\n"
+            "The fact that our terminal is fully open source allows users to be able to customize "
+            "anything they want.\n\n"
+            "If you are interested in contributing to the project, please check:\n"
+            "[param]https://github.com/OpenBB-finance/OpenBBTerminal[/param]"
+        )
+        if input("") == "q":
+            return
+        console.print("\n")
+
+        console.print(panel.Panel("[purple]#10 - Support[/purple]"))
+        console.print(
+            "\n"
+            "We are nothing without our community, hence we put a lot of effort in being here for you.\n\n"
+            "If you find any bug that you wish to report to improve the terminal you can do so with:\n"
+            "2022 Oct 18, 22:33 (🦋) / $ [param]support CMD[/param]\n\n"
+            "which should open a form in your browser where you can report the bug in said 'CMD'.\n\n"
+            "If you want to know more, or have any further question. Please join us on Discord:\n"
+            "[param]https://openbb.co/discord[/param]"
+        )
+
     def call_exe(self, other_args: List[str]):
         """Process exe command"""
         # Merge rest of string path to other_args and remove queue since it is a dir
@@ -638,6 +818,10 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
     bootup()
     if not jobs_cmds:
         welcome_message()
+
+        if not keys_controller.KeysController().is_there_at_least_one_key_defined():
+            t_controller.call_intro(None)
+
         t_controller.print_help()
         check_for_updates()
 
