@@ -1,5 +1,5 @@
 ```
-usage: ema_cross [-l LONG] [-s SHORT] [--spy] [--no_bench] [--no_short] [-h] [--export {csv,json,xlsx}]
+usage: emacross [-l LONG] [-s SHORT] [--spy] [--no_bench] [--no_short] [-h] [--export {csv,json,xlsx}]
 ```
 
 Cross between a long and a short Exponential Moving Average.
@@ -19,7 +19,6 @@ optional arguments:
 
 Example:
 ```
-2022 Feb 16, 10:01 (✨) /stocks/bt/ $ ema_cross --spy
+2022 Feb 16, 10:01 (✨) /stocks/bt/ $ emacross --spy
 ```
-![ema_cross](https://user-images.githubusercontent.com/46355364/154292377-dbeae301-5d8c-4793-8f04-eb5d367ca288.png)
-
+![emacross](https://user-images.githubusercontent.com/46355364/154292377-dbeae301-5d8c-4793-8f04-eb5d367ca288.png)

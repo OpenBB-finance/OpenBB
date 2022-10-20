@@ -5,6 +5,6 @@ whatif
 whatif -n 2.34
 whatif 2021-01-01
 ema
-ema_cross
+emacross
 rsi
 exit

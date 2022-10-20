@@ -9,10 +9,9 @@ Backtesting:
 Ticker: TSLA
 
     ema         buy when price exceeds EMA(l)
-    ema_cross   buy when EMA(short) > EMA(long)
+    emacross   buy when EMA(short) > EMA(long)
     rsi         buy when RSI < low and sell when RSI > high
-        
+
 The command selected doesn't exist
 
 Did you mean 'quit'?
-
