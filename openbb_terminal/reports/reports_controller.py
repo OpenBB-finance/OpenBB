@@ -146,7 +146,7 @@ class ReportController(BaseController):
         except ImportError:
             forecast = False
             console.print(
-                "'forecast' menu dependencies are not installed."
+                "\n'forecast' menu dependencies are not installed."
                 " This part of the SDK will not be usable.\n\n"
                 "For more information see the official documentation at: "
                 "[blue]https://openbb-finance.github.io/OpenBBTerminal/api/[/blue]\n"

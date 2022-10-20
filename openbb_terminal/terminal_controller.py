@@ -18,6 +18,7 @@ from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 import pandas as pd
+from ipykernel.kernelapp import IPKernelApp
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import keys_controller
@@ -1115,9 +1116,6 @@ def main(
     """
 
     if module == "ipykernel_launcher":
-
-        print("start")
-        from ipykernel.kernelapp import IPKernelApp
 
         IPKernelApp.launch_instance(
             argv=[

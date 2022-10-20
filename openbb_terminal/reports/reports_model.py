@@ -179,14 +179,10 @@ def extract_parameters(input_path: str) -> Dict[str, str]:
             if param[0] not in ["#", "\n"]
         ]
         parameters_values = [
-            param.split("=")[1][2:-1]
+            param.split("=")[1][2:-2]
             for param in literal_eval(params.strip('source": '))
             if param[0] not in ["#", "\n"]
         ]
-
-    # To ensure default value is correctly selected
-    for param in range(len(parameters_values) - 1):
-        parameters_values[param] = parameters_values[param][:-1]
 
     if "report_name" in parameters_names:
         parameters_names.remove("report_name")
@@ -219,11 +215,7 @@ def render_report(input_path: str, args_dict: Dict[str, str]):
         output_path = create_output_path(input_path, parameters_dict)
         parameters_dict["report_name"] = output_path
         if parameters_dict:
-            p = Process(
-                target=execute_notebook, args=(input_path, parameters_dict, output_path)
-            )
-            p.start()
-            p.join()
+            execute_notebook(input_path, parameters_dict, output_path)
     except Exception as e:
         console.print(f"[red]Cannot execute notebook - {e}")
 
@@ -357,7 +349,6 @@ def check_ipynb(path: str) -> str:
     -------
     bool
         Path if paths endswith .ipynb, else empty string.
-
     """
 
     if not path.endswith(".ipynb"):
