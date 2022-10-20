@@ -151,7 +151,7 @@ class ReportController(BaseController):
                 "\n'forecast' menu dependencies are not installed."
                 " This part of the SDK will not be usable.\n\n"
                 "For more information see the official documentation at: "
-                "[blue]https://openbb-finance.github.io/OpenBBTerminal/api/[/blue]\n"
+                "[blue]https://openbb-finance.github.io/OpenBBTerminal/sdk/[/blue]\n"
             )
         if forecast:
             self.run_report("forecast", other_args)
