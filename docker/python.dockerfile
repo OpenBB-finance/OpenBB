@@ -7,6 +7,7 @@ RUN apt-get -y install --no-install-recommends \
   gcc \
   g++ \
   make \
+  cmake \
   wget \
   curl \
   telnet \
