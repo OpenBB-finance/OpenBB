@@ -1857,19 +1857,6 @@ optional = false
 python-versions = "*"
 
 [[package]]
-name = "mock"
-version = "4.0.3"
-description = "Rolling backport of unittest.mock for all Pythons"
-category = "dev"
-optional = false
-python-versions = ">=3.6"
-
-[package.extras]
-build = ["blurb", "twine", "wheel"]
-docs = ["sphinx"]
-test = ["pytest (<5.4)", "pytest-cov"]
-
-[[package]]
 name = "more-itertools"
 version = "9.0.0"
 description = "More routines for operating on iterables, beyond itertools"
@@ -4359,7 +4346,7 @@ prediction = ["torch"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8,<3.11, !=3.9.7"
-content-hash = "11692bdc0d1db7a4c551e4b6e34f1540acb051b086b7f993694ee616bd4c719f"
+content-hash = "80a354bf7ec754b00f717582a155e08488b85af637fdae95f0e9529c790d06e6"
 
 [metadata.files]
 aiodns = []
@@ -5201,10 +5188,6 @@ mdit-py-plugins = [
 mistune = [
     {file = "mistune-0.8.4-py2.py3-none-any.whl", hash = "sha256:88a1051873018da288eee8538d476dffe1262495144b33ecb586c4ab266bb8d4"},
     {file = "mistune-0.8.4.tar.gz", hash = "sha256:59a3429db53c50b5c6bcc8a07f8848cb00d7dc8bdb431a4ab41920d201d4756e"},
-]
-mock = [
-    {file = "mock-4.0.3-py3-none-any.whl", hash = "sha256:122fcb64ee37cfad5b3f48d7a7d51875d7031aaf3d8be7c42e2bee25044eee62"},
-    {file = "mock-4.0.3.tar.gz", hash = "sha256:7d3fbbde18228f4ff2f1f119a45cdffa458b4c0dee32eb4d2bb2f82554bac7bc"},
 ]
 more-itertools = []
 mplfinance = [
