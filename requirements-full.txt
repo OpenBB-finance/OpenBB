@@ -320,7 +320,7 @@ websocket-client==1.4.1; python_version >= "3.8" and python_version < "4.0"
 websockets==10.3; python_version >= "3.7"
 widgetsnbextension==3.6.1
 win32-setctime==1.1.0; python_version >= "3.5" and python_full_version >= "3.7.0" and sys_platform == "win32"
-wrapt==1.14.1; python_full_version >= "3.7.2" and python_full_version < "4.0.0" and (python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.7") and python_version >= "3.8" and python_version < "3.11"
+wrapt==1.14.1; python_full_version >= "3.7.2" and python_full_version < "4.0.0" and python_version >= "3.8" and python_version < "3.11" and (python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.7")
 xlsxwriter==3.0.3; python_version >= "3.7"
 yarl==1.8.1; python_version >= "3.7" and python_full_version >= "3.7.0"
 yfinance==0.1.74
