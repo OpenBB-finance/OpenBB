@@ -25,7 +25,6 @@ class ReportController(BaseController):
     """Report Controller class."""
 
     CHOICES_COMMANDS: List[str] = [
-        "sys",
         "crypto",
         "economy",
         "equity",
@@ -154,9 +153,6 @@ class ReportController(BaseController):
             )
         if forecast:
             self.run_report("forecast", other_args)
-
-    def call_sys(self, other_args: List[str]):
-        reports_model.get_sys()
 
     @log_start_end(log=logger)
     def run_report(self, report_name: str, other_args: List[str]):
