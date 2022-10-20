@@ -168,7 +168,7 @@
       "spac_c": ["Reddit"],
       "spac": ["Reddit"],
       "getdd": ["Reddit"],
-      "reddit_sent": ["Reddit"],
+      "redditsent": ["Reddit"],
       "trending": ["Stocktwits"],
       "stalker": ["Stocktwits"],
       "bullbear": ["Stocktwits"],

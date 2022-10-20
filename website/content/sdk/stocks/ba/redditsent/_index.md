@@ -1,7 +1,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### stocks.ba.reddit_sent(symbol: str, limit: int = 100, sortby: str = 'relevance', time_frame: str = 'week', full_search: bool = True, subreddits: str = 'all') -> Tuple[pandas.core.frame.DataFrame, list, float]
+### stocks.ba.redditsent(symbol: str, limit: int = 100, sortby: str = 'relevance', time_frame: str = 'week', full_search: bool = True, subreddits: str = 'all') -> Tuple[pandas.core.frame.DataFrame, list, float]
 
 Finds posts related to a specific search term in Reddit
 
@@ -30,7 +30,7 @@ Finds posts related to a specific search term in Reddit
         Average polarity score
 
 ## Getting charts 
-### stocks.ba.reddit_sent(symbol: str, sortby: str = 'relevance', limit: int = 100, graphic: bool = False, time_frame: str = 'week', full_search: bool = True, subreddits: str = 'all', display: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.ba.redditsent(symbol: str, sortby: str = 'relevance', limit: int = 100, graphic: bool = False, time_frame: str = 'week', full_search: bool = True, subreddits: str = 'all', display: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Determine Reddit sentiment about a search term
     Parameters

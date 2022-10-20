@@ -53,7 +53,7 @@ class BehaviouralAnalysisController(StockBaseController):
         "stalker",
         "infer",
         "sentiment",
-        "reddit_sent",
+        "redditsent",
         "mentions",
         "regions",
         "queries",
@@ -142,7 +142,7 @@ class BehaviouralAnalysisController(StockBaseController):
                 "--all": {},
                 "-a": "--all",
             }
-            choices["reddit_sent"] = {
+            choices["redditsent"] = {
                 "--sort": {c: {} for c in self.reddit_sort},
                 "-s": "--sort",
                 "--company": None,
@@ -210,7 +210,7 @@ class BehaviouralAnalysisController(StockBaseController):
         mt.add_cmd("spac_c")
         mt.add_cmd("spac")
         mt.add_cmd("getdd", self.ticker)
-        mt.add_cmd("reddit_sent", self.ticker)
+        mt.add_cmd("redditsent", self.ticker)
         mt.add_cmd("trending")
         mt.add_cmd("stalker")
         mt.add_cmd("bullbear", self.ticker)
@@ -466,11 +466,11 @@ class BehaviouralAnalysisController(StockBaseController):
                 console.print("No ticker loaded. Please load using 'load <ticker>'\n")
 
     @log_start_end(log=logger)
-    def call_reddit_sent(self, other_args: List[str]):
-        """Process reddit_sent command"""
+    def call_redditsent(self, other_args: List[str]):
+        """Process redditsent command"""
         parser = argparse.ArgumentParser(
             add_help=False,
-            prog="reddit_sent",
+            prog="redditsent",
             description="""
                 Determine general Reddit sentiment about a ticker. [Source: Reddit]
             """,
@@ -548,7 +548,7 @@ class BehaviouralAnalysisController(StockBaseController):
         if ns_parser:
             ticker = ns_parser.company if ns_parser.company else self.ticker
             if self.ticker:
-                reddit_view.display_reddit_sent(
+                reddit_view.display_redditsent(
                     symbol=ticker,
                     sortby=ns_parser.sort,
                     limit=ns_parser.limit,

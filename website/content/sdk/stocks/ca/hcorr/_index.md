@@ -1,7 +1,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### stocks.ca.hcorr(similar: List[str], start_date: str = '2021-10-17', candle_type: str = 'a')
+### stocks.ca.hcorr(similar: List[str], start_date: str = '2021-10-19', candle_type: str = 'a')
 
 
     Get historical price correlation. [Source: Yahoo Finance]
@@ -18,7 +18,7 @@ To obtain charts, make sure to add `chart=True` as the last parameter
         OHLCA column to use for candles or R for returns, by default "a" for Adjusted Close
 
 ## Getting charts 
-### stocks.ca.hcorr(similar: List[str], start_date: str = '2021-10-17', candle_type: str = 'a', display_full_matrix: bool = False, raw: bool = False, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, export: str = '', chart=True)
+### stocks.ca.hcorr(similar: List[str], start_date: str = '2021-10-19', candle_type: str = 'a', display_full_matrix: bool = False, raw: bool = False, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, export: str = '', chart=True)
 
 
     Correlation heatmap based on historical price comparison

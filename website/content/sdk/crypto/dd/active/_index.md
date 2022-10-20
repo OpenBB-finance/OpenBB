@@ -1,7 +1,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### crypto.dd.active(symbol: str, interval: str = '24h', start_date: int = 1262304000, end_date: int = 1666094607) -> pandas.core.frame.DataFrame
+### crypto.dd.active(symbol: str, interval: str = '24h', start_date: int = 1262322000, end_date: int = 1666288853) -> pandas.core.frame.DataFrame
 
 Returns active addresses of a certain symbol
     [Source: https://glassnode.com]
