@@ -498,7 +498,7 @@
     "sector": ["YahooFinance"],
     "equity": ["YahooFinance"],
     "al_swe": ["Avanza"],
-    "info_swe": ["Avanza"]
+    "infoswe": ["Avanza"]
   },
   "alternative": {
     "oss": {

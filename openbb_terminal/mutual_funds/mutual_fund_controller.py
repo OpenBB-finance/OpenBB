@@ -49,7 +49,7 @@ class FundController(BaseController):
         "sector",
         "equity",
         "al_swe",
-        "info_swe",
+        "infoswe",
         "forecast",
     ]
 
@@ -146,7 +146,7 @@ class FundController(BaseController):
             mt.add_cmd("equity", self.fund_symbol)
         if self.country == "sweden":
             mt.add_cmd("al_swe", self.fund_symbol)
-            mt.add_cmd("info_swe", self.fund_symbol)
+            mt.add_cmd("infoswe", self.fund_symbol)
             mt.add_cmd("forecast", self.fund_symbol)
         console.print(text=mt.menu_text, menu="Mutual Funds")
 
@@ -503,12 +503,12 @@ Potential errors
         return self.queue
 
     @log_start_end(log=logger)
-    def call_info_swe(self, other_args: List[str]):
-        """Process info_swe command"""
+    def call_infoswe(self, other_args: List[str]):
+        """Process infoswe command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="info_swe",
+            prog="infoswe",
             description="Show fund info of a swedish fund.",
         )
 
