@@ -1,7 +1,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### crypto.dd.gh(symbol: str, dev_activity: bool = False, interval: str = '1d', start_date: str = '2021-10-18T13:03:27Z', end_date: str = '2022-10-18T13:03:27Z') -> pandas.core.frame.DataFrame
+### crypto.dd.gh(symbol: str, dev_activity: bool = False, interval: str = '1d', start_date: str = '2021-10-20T11:27:13Z', end_date: str = '2022-10-20T11:27:13Z') -> pandas.core.frame.DataFrame
 
 Returns  a list of developer activity for a given coin and time interval.
 
@@ -26,7 +26,7 @@ Returns  a list of developer activity for a given coin and time interval.
         developer activity over time
 
 ## Getting charts 
-### crypto.dd.gh(symbol: str, start_date: str = '2021-10-18T13:03:27Z', dev_activity: bool = False, end_date: str = '2022-10-18T13:03:27Z', interval: str = '1d', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
+### crypto.dd.gh(symbol: str, start_date: str = '2021-10-20T11:27:13Z', dev_activity: bool = False, end_date: str = '2022-10-20T11:27:13Z', interval: str = '1d', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
 
 Returns a list of github activity for a given coin and time interval.
 
