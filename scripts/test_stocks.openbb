@@ -1,9 +1,0 @@
-stocks
-search apple
-load aapl -s 2022-10-01
-tob
-tob -e EDGX
-candle
-codes
-news
-exit

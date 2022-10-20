@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "OpenBBTerminal"
-version = "1.9.0"
+version = "1.9.1"
 description = ""
 authors = ["Didier Rodrigues Lopes"]
 packages = [
@@ -8,7 +8,7 @@ packages = [
 ]
 
 [tool.poetry.scripts]
-openbb = 'terminal:terminal'
+openbb = 'openbb_terminal.terminal_controller:parse_args_and_run'
 
 [tool.poetry.dependencies]
 python = "^3.8,<3.11, !=3.9.7"
@@ -101,6 +101,7 @@ ipyflex = "^0.2.4"
 setuptools = "^65.4.1"
 investiny = "^0.5.0"
 numpy = "1.21.6"
+stocksera = "^0.1.21"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
