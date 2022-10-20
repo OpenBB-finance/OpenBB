@@ -614,7 +614,7 @@ class ETFController(BaseController):
             other_args.insert(0, "-e")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            etfs = list_from_str(ns_parser.names)
+            etfs = list_from_str(ns_parser.names.upper())
             if ns_parser.names:
                 # Automatically creates the etf folder inside /OpenBBUserData/exports
                 # if it doesn't exist

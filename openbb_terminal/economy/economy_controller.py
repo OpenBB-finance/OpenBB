@@ -680,7 +680,7 @@ class EconomyController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, raw=True
         )
         if ns_parser:
-            parameters = list_from_str(ns_parser.parameters)
+            parameters = list_from_str(ns_parser.parameters.upper())
             countries = list_from_str(ns_parser.countries)
             if ns_parser.show:
                 if ns_parser.show == "parameters":
@@ -802,7 +802,7 @@ class EconomyController(BaseController):
             limit=100,
         )
         if ns_parser:
-            parameters = list_from_str(ns_parser.parameter)
+            parameters = list_from_str(ns_parser.parameter.upper())
             if ns_parser.query:
                 query = ns_parser.query.replace(",", " ")
                 df_search = fred_model.get_series_notes(search_query=query)
