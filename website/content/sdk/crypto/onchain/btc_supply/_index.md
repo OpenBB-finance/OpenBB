@@ -11,7 +11,7 @@ Returns BTC circulating supply [Source: https://api.blockchain.info/]
         BTC circulating supply
 
 ## Getting charts 
-### crypto.onchain.btc_supply(start_date: int = 1262322000, end_date: int = 1666279633, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
+### crypto.onchain.btc_supply(start_date: int = 1262322000, end_date: int = 1666280880, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
 
 Returns BTC circulating supply [Source: https://api.blockchain.info/]
 

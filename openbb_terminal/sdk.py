@@ -1348,9 +1348,9 @@ functions = {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.additional_plots",
         "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.additional_plots",
     },
-    # "stocks.bt.ema_cross": {
-    #     "model": "openbb_terminal.stocks.backtesting.bt_model.ema_cross_strategy",
-    #     "view": "openbb_terminal.stocks.backtesting.bt_view.display_ema_cross",
+    # "stocks.bt.emacross": {
+    #     "model": "openbb_terminal.stocks.backtesting.bt_model.emacross_strategy",
+    #     "view": "openbb_terminal.stocks.backtesting.bt_view.display_emacross",
     # },
     # "stocks.bt.ema": {
     #     "model": "openbb_terminal.stocks.backtesting.bt_model.ema_strategy",

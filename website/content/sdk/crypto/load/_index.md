@@ -1,5 +1,5 @@
 ## Get underlying data 
-### crypto.load(symbol: 'str', start_date: 'datetime' = datetime.datetime(2019, 10, 16, 11, 27, 13, 378481), interval: 'str' = '1440', exchange: 'str' = 'binance', vs_currency: 'str' = 'usdt', end_date: 'datetime' = datetime.datetime(2022, 10, 20, 11, 27, 13, 378488), source: 'str' = 'CCXT') -> 'pd.DataFrame'
+### crypto.load(symbol: 'str', start_date: 'datetime' = datetime.datetime(2019, 10, 16, 11, 48, 0, 48275), interval: 'str' = '1440', exchange: 'str' = 'binance', vs_currency: 'str' = 'usdt', end_date: 'datetime' = datetime.datetime(2022, 10, 20, 11, 48, 0, 48281), source: 'str' = 'CCXT') -> 'pd.DataFrame'
 
 Load crypto currency to get data for.
 
