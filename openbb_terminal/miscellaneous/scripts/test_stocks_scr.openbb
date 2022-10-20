@@ -4,12 +4,12 @@ view
 view rosenwald
 set top_losers
 historical
-overview
-valuation
-financial
+historical -l 3 -n
+overview -p golden_cross.ini -l 5
+valuation -l 5
+financial -l 3
 ownership
 performance
 technical
 ca
-hcorr
 exit

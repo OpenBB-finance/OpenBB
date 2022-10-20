@@ -5,6 +5,7 @@ load aapl -s 2022-10-01
 quote
 tob
 tob -e EDGX
+candle
 candle -t --ma 5,10
 candle --raw
 candle --sort AdjClose -d --raw
