@@ -61,14 +61,6 @@ added_files = [
         os.path.join(pathex, "pymongo"),
         "pymongo",
     ),
-    (
-        os.path.join(pathex, "papermill"),
-        "papermill",
-    ),
-    (
-        os.path.join(pathex, "ipykernel"),
-        "ipykernel",
-    ),
     (os.path.join(pathex, "bson"), "bson"),
     (os.path.join(pathex, "debugpy", "_vendored"), os.path.join("debugpy", "_vendored")),
     (".env", "."),
@@ -87,8 +79,6 @@ hidden_imports = [
     "squarify",
     "linearmodels",
     "statsmodels",
-    "papermill",
-    "ipykernel",
     "user_agent",
     "vaderSentiment",
     "frozendict",
