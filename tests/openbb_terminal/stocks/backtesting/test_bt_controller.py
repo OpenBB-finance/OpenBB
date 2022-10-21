@@ -233,8 +233,8 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             ),
         ),
         (
-            "call_ema_cross",
-            "bt_view.display_ema_cross",
+            "call_emacross",
+            "bt_view.display_emacross",
             [
                 "-l=2",
                 "--long=10",
@@ -307,7 +307,7 @@ def test_call_func(tested_func, mocked_func, other_args, called_with, mocker):
     "func",
     [
         "call_ema",
-        "call_ema_cross",
+        "call_emacross",
         "call_rsi",
     ],
 )
