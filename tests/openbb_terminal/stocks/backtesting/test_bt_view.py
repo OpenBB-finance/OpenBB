@@ -50,7 +50,7 @@ def test_display_simple_ema(mocker):
 
 @pytest.mark.vcr
 @pytest.mark.record_stdout
-def test_display_ema_cross(mocker):
+def test_display_emacross(mocker):
     yf_download = stocks_helper.yf.download
 
     def mock_yf_download(*args, **kwargs):
@@ -66,7 +66,7 @@ def test_display_ema_cross(mocker):
     start = datetime.strptime("2020-12-01", "%Y-%m-%d")
     end = datetime.strptime("2020-12-02", "%Y-%m-%d")
     df_stock = stocks_helper.load_ticker(ticker=ticker, start_date=start, end_date=end)
-    bt_view.display_ema_cross(
+    bt_view.display_emacross(
         symbol=ticker,
         data=df_stock,
         short_ema=2,
