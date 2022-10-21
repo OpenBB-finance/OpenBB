@@ -72,7 +72,7 @@ def display_historical(
 
         if not raw and len(historicals) == 1:
             console.print(
-                f"\nA single datapoint is not enough to depict a chart, data is presented below."
+                "\nA single datapoint is not enough to depict a chart, data is presented below."
             )
 
         print_rich_table(
