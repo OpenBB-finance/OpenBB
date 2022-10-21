@@ -181,3 +181,6 @@ API_EODHD_KEY = os.getenv("OPENBB_API_EODHD_KEY") or "REPLACE_ME"
 
 # https://tokenterminal.com
 API_TOKEN_TERMINAL_KEY = os.getenv("OPENBB_API_TOKEN_TERMINAL_KEY") or "REPLACE_ME"
+
+# https://stocksera.pythonanywhere.com/accounts/developers
+API_STOCKSERA_KEY = os.getenv("OPENBB_API_STOCKSERA_KEY") or "REPLACE_ME"

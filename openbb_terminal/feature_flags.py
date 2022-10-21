@@ -21,11 +21,6 @@ paths_helper.init_userdata()
 
 # pylint: disable=no-member,c-extension-no-member
 
-i18n_dict_location = MISCELLANEOUS_DIRECTORY / "i18n"
-i18n.load_path.append(i18n_dict_location)
-i18n.set("locale", "en")
-i18n.set("filename_format", "{locale}.{format}")
-
 load_dotenv(USER_ENV_FILE)
 load_dotenv(REPOSITORY_ENV_FILE, override=True)
 
@@ -92,9 +87,6 @@ LOG_COLLECTION = bool(strtobool(os.getenv("OPENBB_LOG_COLLECT", "True")))
 # Provide export folder path. If empty that means default.
 EXPORT_FOLDER_PATH = str(os.getenv("OPENBB_EXPORT_FOLDER_PATH", ""))
 
-# Set a flag if the application is running from a packaged bundle
-PACKAGED_APPLICATION = strtobool(os.getenv("OPENBB_PACKAGED_APPLICATION", "False"))
-
 # Toolbar hint
 TOOLBAR_HINT = strtobool(os.getenv("OPENBB_TOOLBAR_HINT", "True"))
 
@@ -124,3 +116,9 @@ try:
 except Exception:
     version = "1.9.0m"
 VERSION = str(os.getenv("OPENBB_VERSION", version))
+
+# Select the terminal translation language
+i18n_dict_location = MISCELLANEOUS_DIRECTORY / "i18n"
+i18n.load_path.append(i18n_dict_location)
+i18n.set("locale", USE_LANGUAGE)
+i18n.set("filename_format", "{locale}.{format}")

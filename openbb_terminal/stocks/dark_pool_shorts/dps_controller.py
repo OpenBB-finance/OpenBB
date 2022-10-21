@@ -30,6 +30,7 @@ from openbb_terminal.stocks.dark_pool_shorts import (
     stockgrid_view,
     yahoofinance_view,
     ibkr_view,
+    stocksera_view,
 )
 
 logger = logging.getLogger(__name__)
@@ -213,7 +214,7 @@ class DarkPoolShortsController(StockBaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="ctb",
-            description="Print stocks with highest cost to borrow. [Source: Interactive Broker]",
+            description="Show cost to borrow of stocks. [Source: Stocksera/Interactive Broker]",
         )
         parser.add_argument(
             "-n",
@@ -222,18 +223,28 @@ class DarkPoolShortsController(StockBaseController):
             dest="number",
             type=check_int_range(1, 10000),
             default=20,
-            help="Number of stocks with high cost to borrow to retrieve.",
+            help="Number of records to retrieve.",
         )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
+        parser.add_argument(
+            "--raw",
+            action="store_true",
+            default=False,
+            dest="raw",
+            help="Print raw data.",
+        )
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            ibkr_view.display_cost_to_borrow(
-                limit=ns_parser.number,
-                export=ns_parser.export,
-            )
+            if ns_parser.source == "ibkr":
+                ibkr_view.display_cost_to_borrow(
+                    limit=ns_parser.number,
+                    export=ns_parser.export,
+                )
+            else:
+                stocksera_view.cost_to_borrow(
+                    self.ticker, limit=ns_parser.number, raw=ns_parser.raw
+                )
 
     @log_start_end(log=logger)
     def call_hsi(self, other_args: List[str]):

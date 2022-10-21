@@ -249,56 +249,6 @@ If you `stashed` your changes previously, you can un-stash them with:
 git stash pop
 ```
 
-## Docker Installation
-
-1. Make sure docker desktop is installed. Install links can be found [here](https://www.docker.com/products/docker-desktop).
-   To confirm that your docker desktop is downloaded and running, open a command prompt or terminal and enter
-   `docker info`. If you get the following you are not running the docker desktop:
-
-   ```text
-   Server:
-   ERROR: Cannot connect to the Docker daemon at unix:///var/run/docker.sock.
-   Is the docker daemon running?
-   ```
-
-   Open the docker desktop app in this case.
-
-2. Download the latest docker image.
-
-   ```bash
-   docker pull ghcr.io/openbb-finance/openbbterminal-poetry:latest
-   ```
-
-   Upon running this the first time, you should see the various layers downloading (note the random series of letters
-   numbers will vary). The first time this is run, it will take a few minutes. Subsequent updates will be much faster,
-   as the changes will be in the MB instead of GB.
-
-   ![Screen Shot 2021-09-08 at 10 41 08 AM](https://user-images.githubusercontent.com/18151143/132531075-7d7f7e71-4fcb-435c-9bb3-466d7077eba4.png)
-
-   Once the download is complete, confirm that the image has been created by doing `docker images`. You should see
-   something similar to
-
-   ```text
-   REPOSITORY                             TAG       IMAGE ID       CREATED        SIZE
-   ghcr.io/openbb-finance/openbbterminal-poetry   latest    b1409a304750   42 hours ago   2.29GB
-   ```
-
-3. Run a container
-
-   To launch the container you need to run the following command:
-
-   `docker run -v ~/.openbb_terminal/:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm ghcr.io/openbb-finance/openbbterminal-poetry:1.6.0`
-
-   **NOTE FOR WINDOWS**
-
-   Replace `~` by `%USERPROFILE%` in the command above.
-   This applies if you are using the builtin Windows interpreter.
-   You won't have to do this inside Powershell or more evolved interpreters.
-
-   At this point, you should be able to use the majority of the features using Docker. To read more on how to configure
-   your X-server to show plots, hop over to the
-   [Advanced Docker Setup](/DOCKER_ADVANCED.md).
-
 ## Local Installation of GST on Raspberry Pi
 
 1. Running raspbian lite(headless) or desktop (both 64bit) we should first start off with an update/upgrade.

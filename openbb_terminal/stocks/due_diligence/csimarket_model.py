@@ -2,69 +2,85 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import List
 
-import requests
-from bs4 import BeautifulSoup
+import pandas as pd
 
 from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
 
 
+def clean_table(df: pd.DataFrame) -> pd.DataFrame:
+    """Clean up the table from CSIMarket
+
+    Parameters
+    ----------
+    df: pd.DataFrame
+        Dataframe to clean
+
+    Returns
+    -------
+    df: pd.DataFrame
+        Cleaned dataframe
+    """
+    if df.empty:
+        return df
+    if "TICKER" in df.columns:
+        df = df.set_index("TICKER")
+    df.columns = [x.title() for x in df.columns]
+    if "Company Name.1" in df.columns:
+        df = df.drop("Company Name.1", axis=1)
+    if "SUBTOTAL" in df.index:
+        df = df.drop("SUBTOTAL", axis=0)
+    if "Revenue" in df.columns:
+        df = df.sort_values("Revenue", ascending=False)
+    df = df[df.index.notnull()]
+    return df
+
+
 @log_start_end(log=logger)
-def get_suppliers(symbol: str) -> List[str]:
+def get_suppliers(symbol: str, limit: int = 50) -> pd.DataFrame:
     """Get suppliers from ticker provided. [Source: CSIMarket]
 
     Parameters
     ----------
     symbol: str
         Ticker to select suppliers from
+    limit: int
+        The maximum number of rows to show
 
     Returns
     -------
-    list[str]
-        List of suppliers for ticker provided
+    pd.DataFrame
+        A dataframe of suppliers
     """
-    # TODO: This link has a lot more data that we can display
-    # TODO: We could at least sort the tickers based on market cap
-    url_supply_chain = (
-        f"https://csimarket.com/stocks/competitionNO3.php?supply&code={symbol.upper()}"
-    )
-    text_supplier_chain = BeautifulSoup(requests.get(url_supply_chain).text, "lxml")
+    url = f"https://csimarket.com/stocks/competition2.php?supply&code={symbol.upper()}"
+    dfs = pd.read_html(url, header=0)
+    df = dfs[10]
+    df = clean_table(df)
 
-    l_supplier = list()
-    for supplier in text_supplier_chain.findAll(
-        "td", {"class": "svjetlirub11 block al"}
-    ):
-        l_supplier.append(supplier.text.replace("\n", "").strip())
-
-    return l_supplier
+    return df.head(limit)
 
 
 @log_start_end(log=logger)
-def get_customers(symbol: str) -> List[str]:
+def get_customers(symbol: str, limit: int = 50) -> pd.DataFrame:
     """Print customers from ticker provided
 
     Parameters
     ----------
     symbol: str
         Ticker to select customers from
+    limit: int
+        The maximum number of rows to show
 
     Returns
     -------
-    list[str]
-        List of customers for ticker provided
+    pd.DataFrame
+        A dataframe of suppliers
     """
-    # TODO: This link has a lot more data that we can display
-    # TODO: We could at least sort the tickers based on market cap
-    url_customer_chain = (
-        f"https://csimarket.com/stocks/custexNO.php?markets&code={symbol.upper()}"
-    )
-    text_customer_chain = BeautifulSoup(requests.get(url_customer_chain).text, "lxml")
+    url = f"https://csimarket.com/stocks/custexNO.php?markets&code={symbol.upper()}"
+    dfs = pd.read_html(url, header=0)
+    df = dfs[9]
+    df = clean_table(df)
 
-    l_customer = list()
-    for customer in text_customer_chain.findAll("td", {"class": "plava svjetlirub"}):
-        l_customer.append(customer.text)
-
-    return l_customer
+    return df.head(limit)

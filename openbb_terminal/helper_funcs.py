@@ -1149,7 +1149,6 @@ def replace_user_timezone(user_tz: str) -> None:
     """
     if is_timezone_valid(user_tz):
         dotenv.set_key(USER_ENV_FILE, "OPENBB_TIMEZONE", user_tz)
-        os.environ["OPENBB_TIMEZONE"] = user_tz
         console.print("Timezone successfully updated", "\n")
     else:
         console.print("Timezone selected is not valid", "\n")
