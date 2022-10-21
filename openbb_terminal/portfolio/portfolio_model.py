@@ -56,7 +56,6 @@ class PortfolioModel:
 
     """
 
-    @log_start_end(log=logger)
     def __init__(self, orderbook: pd.DataFrame = pd.DataFrame()):
         """Initialize PortfolioModel class"""
 
@@ -129,7 +128,6 @@ class PortfolioModel:
         return df
 
     @staticmethod
-    @log_start_end(log=logger)
     def read_orderbook(path: str) -> pd.DataFrame:
         """Static method to read orderbook from file
 

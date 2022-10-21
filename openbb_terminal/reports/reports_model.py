@@ -329,7 +329,7 @@ def execute_notebook(input_path, parameters, output_path):
         print(e)
         sys.stdout = origin_stdout
         raise Exception(
-            "[red]\nAn error was encountered in the notebook, check the error report:[/red]\n"
+            "[red]An error was encountered in the notebook, check the error report:[/red]\n"
             f" {output_error_report}\n"
         ) from e
 
