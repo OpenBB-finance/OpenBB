@@ -1,6 +1,7 @@
 """Reports Model Module."""
 __docformat__ = "numpy"
 
+from io import StringIO
 import logging
 
 # pylint: disable=R1732, R0912
@@ -278,6 +279,7 @@ def create_output_path(input_path: str, parameters_dict: Dict[str, Any]) -> str:
         + f"{report_name}{args_to_output}"
     )
     output_path = str(USER_REPORTS_DIRECTORY / report_output_name)
+    output_path = output_path.replace(".", "_")
 
     return output_path
 
@@ -300,8 +302,7 @@ def execute_notebook(input_path, parameters, output_path):
     input_path = add_ipynb_extension(input_path)
 
     origin_stdout = sys.stdout
-    output_error_report = output_path + "_ERROR_REPORT.txt"
-    sys.stdout = open(output_error_report, "w")
+    sys.stdout = StringIO()
 
     try:
         result = pm.execute_notebook(
@@ -310,30 +311,28 @@ def execute_notebook(input_path, parameters, output_path):
             parameters=parameters,
         )
 
+        sys.stdout = origin_stdout
+
         if not result["metadata"]["papermill"]["exception"]:
             if obbff.OPEN_REPORT_AS_HTML:
                 report_output_path = os.path.join(
                     os.path.abspath(os.path.join(".")), output_path + ".html"
                 )
-                console.print(report_output_path)
                 webbrowser.open(f"file://{report_output_path}")
-
-            sys.stdout = origin_stdout
-            console.print(
-                f"\nExported: {report_output_path}",
-                "\n",
-            )
+                console.print(f"\nReport: {report_output_path}")
+            console.print(f"\nNotebook: {output_path}.ipynb\n")
         else:
             console.print("[red]\nReport .html couldn't be created.\n[/red]")
+
     except Exception as e:
-        # Flush to _ERROR_REPORT.txt file
-        print(e)
+
         sys.stdout = origin_stdout
         raise Exception(
-            "[red]An error was encountered in the notebook, check the error report:[/red]\n"
-            f" {output_error_report}\n"
+            "[red]An error was encountered in the notebook, check the notebook:[/red]\n"
+            f" {output_path}\n"
         ) from e
 
+    # Safeguard
     sys.stdout = origin_stdout
 
 
