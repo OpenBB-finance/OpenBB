@@ -18,8 +18,6 @@ from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 import pandas as pd
-from ipykernel.kernelapp import IPKernelApp
-
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import keys_controller
 from openbb_terminal.terminal_helper import is_packaged_application
@@ -56,6 +54,7 @@ from openbb_terminal.terminal_helper import (
 )
 from openbb_terminal.helper_funcs import parse_and_split_input
 from openbb_terminal.common import feedparser_view
+from openbb_terminal.reports.reports_model import ipykernel_launcher
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel
 # pylint: disable=too-many-branches,no-member,C0302,too-many-return-statements
@@ -1116,15 +1115,7 @@ def main(
     """
 
     if module == "ipykernel_launcher":
-
-        IPKernelApp.launch_instance(
-            argv=[
-                "-f",
-                module_file,
-                "--HistoryManager.hist_file",
-                module_hist_file,
-            ]
-        )
+        ipykernel_launcher(module_file, module_hist_file)
 
     if test:
         run_test_list(path_list=path_list, filtert=filtert, verbose=verbose)

@@ -2,12 +2,12 @@
 __docformat__ = "numpy"
 
 import logging
-from multiprocessing import Process
 
 # pylint: disable=R1732, R0912
 import os
 from pathlib import Path
 from threading import Thread
+from ipykernel.kernelapp import IPKernelApp
 import webbrowser
 from ast import literal_eval
 from datetime import datetime
@@ -359,3 +359,49 @@ def check_ipynb(path: str) -> str:
         console.print("[red]Please provide a .ipynb file.[/red]\n")
         return ""
     return path
+
+
+def ipykernel_launcher(module_file: str, module_hist_file: str):
+    """This function mocks 'ipykernel_launcher.py' launching a Jupyter notebook kernel.
+
+    It is useful when running python commands inside a frozen application like our
+    installer distribution, where sys.executable[0] is not the path to python
+    interpreter, rather it is the path to the application executable.
+
+    Problem:
+        'papermill' was trying to execute the following command on a subprocess:
+        $ .../bin/python -m ipykernel_launcher -f ... --HistoryManager.hist_file ...
+
+        'papermill' was using '.../bin/python' because it is looks for the sys.executable[0],
+        which most of the time leads to the python interpreter. In our frozen app,
+        sys.executable[0] leads to 'OpenBB Terminal/.OpenBB/OpenBBTerminal', which in turn
+        executes 'terminal.py.
+
+        This means that the command was being executed in 'terminal.py'. Consequently,
+        one gets the following error message:
+        $ terminal: error: unrecognized arguments: -m ipykernel_launcher -f ... --HistoryManager.hist_file ...
+
+    Solution:
+        Parse 'papermill' command in the 'terminal_controller', which is what follows
+        'terminal.py' and here receive the parsed 'papermill' command arguments and
+        route them to IPKernelApp as if this is 'ipykernel_launcher' module
+        - the kernel is launched.
+
+    Source: https://pyinstaller.org/en/stable/runtime-information.html#using-sys-executable-and-sys-argv-0
+
+    Parameters
+    ----------
+    module_file: str
+        Specified connection file.
+    module_hist_file: str
+        History manager file.
+    """
+
+    IPKernelApp.launch_instance(
+        argv=[
+            "-f",
+            module_file,
+            "--HistoryManager.hist_file",
+            module_hist_file,
+        ]
+    )
