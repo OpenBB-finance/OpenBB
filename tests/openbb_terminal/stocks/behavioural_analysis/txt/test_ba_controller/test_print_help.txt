@@ -10,7 +10,7 @@ Ticker: TSLA
     spac_c             show other users spacs announcements from subreddit SPACs       [Reddit]
     spac               show other users spacs announcements from other subs            [Reddit]
     getdd              gets due diligence from another user's post                     [Reddit]
-    reddit_sent        searches reddit for ticker and finds reddit sentiment           [Reddit]
+    redditsent         searches reddit for ticker and finds reddit sentiment           [Reddit]
     trending           trending stocks                                                 [Stocktwits]
     stalker            stalk stocktwits user's last messages                           [Stocktwits]
     bullbear           estimate quick sentiment from last 30 messages on board         [Stocktwits]
