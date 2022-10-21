@@ -410,7 +410,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(
                 symbol="MOCK_TICKER",
                 data=MOCK_STOCK_DF,
-                s_interval="MOCK_INTERVAL",
+                interval="MOCK_INTERVAL",
                 start_date=None,
                 end_date=None,
                 offset=2,
