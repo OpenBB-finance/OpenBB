@@ -38,7 +38,7 @@ mpl.use(default_backend)
 class BacktestingController(BaseController):
     """Backtesting Controller class"""
 
-    CHOICES_COMMANDS = ["ema", "ema_cross", "rsi", "whatif"]
+    CHOICES_COMMANDS = ["ema", "emacross", "rsi", "whatif"]
     PATH = "/stocks/bt/"
 
     def __init__(self, ticker: str, stock: pd.DataFrame, queue: List[str] = None):
@@ -63,7 +63,7 @@ class BacktestingController(BaseController):
                 "--spy": {},
                 "--no_bench": {},
             }
-            choices["ema_cross"] = {
+            choices["emacross"] = {
                 "--long": one_to_hundred,
                 "-l": "--long",
                 "--short": one_to_hundred,
@@ -94,7 +94,7 @@ class BacktestingController(BaseController):
         mt.add_cmd("whatif")
         mt.add_raw("\n")
         mt.add_cmd("ema")
-        mt.add_cmd("ema_cross")
+        mt.add_cmd("emacross")
         mt.add_cmd("rsi")
         console.print(text=mt.menu_text, menu="Stocks - Backtesting")
 
@@ -184,12 +184,12 @@ class BacktestingController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_ema_cross(self, other_args: List[str]):
+    def call_emacross(self, other_args: List[str]):
         """Call EMA Cross strategy"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="ema_cross",
+            prog="emacross",
             description="Cross between a long and a short Exponential Moving Average.",
         )
         parser.add_argument(
@@ -238,7 +238,7 @@ class BacktestingController(BaseController):
             if ns_parser.long < ns_parser.short:
                 console.print("Short EMA period is longer than Long EMA period\n")
 
-            bt_view.display_ema_cross(
+            bt_view.display_emacross(
                 symbol=self.ticker,
                 data=self.stock,
                 short_ema=ns_parser.short,
