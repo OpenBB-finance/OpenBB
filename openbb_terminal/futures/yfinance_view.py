@@ -71,7 +71,9 @@ def display_historical(
     if raw or len(historicals) == 1:
 
         if not raw and len(historicals) == 1:
-            console.print(f"\nA single datapoint is not enough to depict a chart, data is presented below.")
+            console.print(
+                f"\nA single datapoint is not enough to depict a chart, data is presented below."
+            )
 
         print_rich_table(
             historicals[historicals.index > datetime.strptime(start_date, "%Y-%m-%d")],
@@ -95,12 +97,19 @@ def display_historical(
             name = list()
             for tick in historicals["Adj Close"].columns.tolist():
                 if len(historicals["Adj Close"][tick].dropna()) == 1:
-                    console.print(f"\nA single datapoint on {tick} is not enough to depict a chart, data shown below.")
+                    console.print(
+                        f"\nA single datapoint on {tick} is not enough to depict a chart, data shown below."
+                    )
                     naming = yfinance_model.FUTURES_DATA[
                         yfinance_model.FUTURES_DATA["Ticker"] == tick
                     ]["Description"].values[0]
                     print_rich_table(
-                        historicals[historicals["Adj Close"][tick].index > datetime.strptime(start_date, "%Y-%m-%d")]["Adj Close"][tick].dropna().to_frame(),
+                        historicals[
+                            historicals["Adj Close"][tick].index
+                            > datetime.strptime(start_date, "%Y-%m-%d")
+                        ]["Adj Close"][tick]
+                        .dropna()
+                        .to_frame(),
                         headers=[naming],
                         show_index=True,
                         title="Futures timeseries",
@@ -128,9 +137,14 @@ def display_historical(
                     theme.visualize_output()
         else:
             if len(historicals["Adj Close"]) == 1:
-                console.print(f"\nA single datapoint on {tickers[0]} is not enough to depict a chart, data shown below.")
+                console.print(
+                    f"\nA single datapoint on {tickers[0]} is not enough to depict a chart, data shown below."
+                )
                 print_rich_table(
-                    historicals[historicals["Adj Close"].index > datetime.strptime(start_date, "%Y-%m-%d")],
+                    historicals[
+                        historicals["Adj Close"].index
+                        > datetime.strptime(start_date, "%Y-%m-%d")
+                    ],
                     headers=list(historicals["Adj Close"].columns),
                     show_index=True,
                     title="Futures timeseries",
