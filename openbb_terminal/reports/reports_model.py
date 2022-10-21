@@ -215,7 +215,11 @@ def render_report(input_path: str, args_dict: Dict[str, str]):
         output_path = create_output_path(input_path, parameters_dict)
         parameters_dict["report_name"] = output_path
         if parameters_dict:
-            execute_notebook(input_path, parameters_dict, output_path)
+            t = Thread(
+                target=execute_notebook, args=(input_path, parameters_dict, output_path)
+            )
+            t.start()
+            t.join()
     except Exception as e:
         console.print(f"[red]Cannot execute notebook - {e}")
 

@@ -1132,6 +1132,7 @@ def main(
 
     if debug:
         os.environ["DEBUG_MODE"] = "true"
+
     if isinstance(path_list, list) and path_list[0].endswith(".openbb"):
         run_routine(file=path_list[0], routines_args=routines_args)
     elif path_list:
