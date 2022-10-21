@@ -212,7 +212,7 @@ class ReportController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="run",
-            description=f"Run a notebook from this folder: '{str(USER_REPORTS_DIRECTORY)}'.",
+            description=f"Run a notebook from this folder: '{str(USER_CUSTOM_REPORTS_DIRECTORY)}'.",
         )
         parser.add_argument(
             "-f",
