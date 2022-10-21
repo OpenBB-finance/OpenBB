@@ -90,6 +90,7 @@ hidden_imports = [
     "bson",
     "_sysconfigdata__darwin_darwin",
     "prophet",
+    "debugpy",
 ]
 
 
@@ -101,7 +102,7 @@ analysis_kwargs = dict(
     hiddenimports=hidden_imports,
     hookspath=["build/pyinstaller/hooks"],
     hooksconfig={},
-    runtime_hooks=[],
+    runtime_hooks=["build/pyinstaller/hooks/hook-debugpy.py"],
     excludes=[],
     win_no_prefer_redirects=False,
     win_private_assemblies=False,
