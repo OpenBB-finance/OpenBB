@@ -471,8 +471,8 @@
     "futures": ["WallStreetJournal", "Finviz"],
     "map": ["Finviz"],
     "bigmac": ["Nasdaq"],
-    "ycrv": ["Investing", "FRED"],
-    "events": ["Investing"],
+    "ycrv": ["FRED","Investing"],
+    "events": ["Nasdaq","Investing"],
     "edebt": ["Wikipedia"],
     "rtps": ["AlphaVantage"],
     "valuation": ["Finviz"],
@@ -497,7 +497,7 @@
     "plot": ["Investing"],
     "sector": ["YahooFinance"],
     "equity": ["YahooFinance"],
-    "al_swe": ["Avanza"],
+    "alswe": ["Avanza"],
     "infoswe": ["Avanza"]
   },
   "alternative": {

@@ -4,8 +4,9 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
-from typing import List
+from typing import List, Union
 
+from datetime import datetime as dt
 import pandas as pd
 import requests
 
@@ -14,6 +15,72 @@ from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
+
+
+@log_start_end(log=logger)
+def get_economic_calendar(
+    countries: Union[List[str], str] = "",
+    start_date: str = dt.now().strftime("%Y-%m-%d"),
+    end_date: str = dt.now().strftime("%Y-%m-%d"),
+) -> pd.DataFrame:
+    """Get economic calendar for countries between specified dates
+
+    Parameters
+    ----------
+    countries : [List[str],str]
+        List of countries to include in calendar.  Empty returns all
+    start_date : str
+        Start date for calendar
+    end_date : str
+        End date for calendar
+
+    Returns
+    -------
+    pd.DataFrame
+        Economic calendar
+    """
+    if isinstance(countries, str):
+        countries = [countries]
+    if start_date == end_date:
+        dates = [start_date]
+    else:
+        dates = (
+            pd.date_range(start=start_date, end=end_date).strftime("%Y-%m-%d").tolist()
+        )
+    calendar = pd.DataFrame()
+    for date in dates:
+        try:
+            df = pd.DataFrame(
+                requests.get(
+                    f"https://api.nasdaq.com/api/calendar/economicevents?date={date}",
+                    headers={
+                        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                        "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+                    },
+                ).json()["data"]["rows"]
+            ).replace("&nbsp;", "-")
+            df.loc[:, "Date"] = date
+            calendar = pd.concat([calendar, df], axis=0)
+        except TypeError:
+            continue
+
+    if calendar.empty:
+        console.print("[red]No data found for date range.[/red]")
+        return pd.DataFrame()
+
+    calendar = calendar.rename(
+        columns={"gmt": "Time (GMT)", "country": "Country", "eventName": "Event"}
+    )
+
+    calendar = calendar.drop(columns=["description"])
+    if not countries:
+        return calendar
+
+    calendar = calendar[calendar["Country"].isin(countries)].reset_index(drop=True)
+    if calendar.empty:
+        console.print(f"[red]No data found for {','.join(countries)}[/red]")
+        return pd.DataFrame()
+    return calendar
 
 
 @log_start_end(log=logger)

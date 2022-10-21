@@ -48,7 +48,7 @@ class FundController(BaseController):
         "plot",
         "sector",
         "equity",
-        "al_swe",
+        "alswe",
         "infoswe",
         "forecast",
     ]
@@ -112,7 +112,7 @@ class FundController(BaseController):
                 "--min": one_to_hundred,
                 "-m": "--min",
             }
-            choices["al_swe"] = {"--focus": {c: {} for c in self.focus_choices}}
+            choices["alswe"] = {"--focus": {c: {} for c in self.focus_choices}}
 
             choices["support"] = self.SUPPORT_CHOICES
             choices["about"] = self.ABOUT_CHOICES
@@ -145,7 +145,7 @@ class FundController(BaseController):
             mt.add_cmd("sector", self.fund_symbol)
             mt.add_cmd("equity", self.fund_symbol)
         if self.country == "sweden":
-            mt.add_cmd("al_swe", self.fund_symbol)
+            mt.add_cmd("alswe", self.fund_symbol)
             mt.add_cmd("infoswe", self.fund_symbol)
             mt.add_cmd("forecast", self.fund_symbol)
         console.print(text=mt.menu_text, menu="Mutual Funds")
@@ -457,12 +457,12 @@ Potential errors
         return self.queue
 
     @log_start_end(log=logger)
-    def call_al_swe(self, other_args: List[str]):
-        """Process al_swe command"""
+    def call_alswe(self, other_args: List[str]):
+        """Process alswe command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="al_swe",
+            prog="alswe",
             description="Show allocation of a swedish fund.",
         )
         parser.add_argument(
