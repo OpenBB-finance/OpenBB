@@ -104,6 +104,8 @@ def get_historical_futures(tickers: List[str], expiry: str = "") -> Dict:
         return yf.download(tickers_with_expiry, progress=False, period="max")
 
     df = yf.download([t + "=F" for t in tickers], progress=False, period="max")
+    if len(tickers) > 1:
+        df.columns = pd.MultiIndex.from_tuples([(tup[0], tup[1].replace("=F", "")) for tup in df.columns])
     return df
 
 

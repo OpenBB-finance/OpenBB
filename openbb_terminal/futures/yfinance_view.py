@@ -68,7 +68,11 @@ def display_historical(
         console.print(f"No data was found for the tickers: {', '.join(tickers)}\n")
         return
 
-    if raw:
+    if raw or len(historicals) == 1:
+
+        if not raw and len(historicals) == 1:
+            console.print(f"\nA single datapoint is not enough to depict a chart, data is presented below.")
+
         print_rich_table(
             historicals[historicals.index > datetime.strptime(start_date, "%Y-%m-%d")],
             headers=list(historicals.columns),
@@ -78,6 +82,7 @@ def display_historical(
         console.print()
 
     else:
+
         # This plot has 1 axis
         if not external_axes:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
@@ -89,6 +94,19 @@ def display_historical(
         if len(tickers) > 1:
             name = list()
             for tick in historicals["Adj Close"].columns.tolist():
+                if len(historicals["Adj Close"][tick].dropna()) == 1:
+                    console.print(f"\nA single datapoint on {tick} is not enough to depict a chart, data shown below.")
+                    naming = yfinance_model.FUTURES_DATA[
+                        yfinance_model.FUTURES_DATA["Ticker"] == tick
+                    ]["Description"].values[0]
+                    print_rich_table(
+                        historicals[historicals["Adj Close"][tick].index > datetime.strptime(start_date, "%Y-%m-%d")]["Adj Close"][tick].dropna().to_frame(),
+                        headers=[naming],
+                        show_index=True,
+                        title="Futures timeseries",
+                    )
+                    continue
+
                 name.append(
                     yfinance_model.FUTURES_DATA[
                         yfinance_model.FUTURES_DATA["Ticker"] == tick
@@ -98,36 +116,54 @@ def display_historical(
                     historicals["Adj Close"][tick].dropna().index,
                     historicals["Adj Close"][tick].dropna().values,
                 )
-
                 ax.legend(name)
+
+                first = datetime.strptime(start_date, "%Y-%m-%d")
+                if historicals["Adj Close"].index[0] > first:
+                    first = historicals["Adj Close"].index[0]
+                ax.set_xlim(first, historicals["Adj Close"].index[-1])
+                theme.style_primary_axis(ax)
+
+                if external_axes is None:
+                    theme.visualize_output()
         else:
-            name = yfinance_model.FUTURES_DATA[
-                yfinance_model.FUTURES_DATA["Ticker"] == tickers[0]
-            ]["Description"].values[0]
-            ax.plot(
-                historicals["Adj Close"].dropna().index,
-                historicals["Adj Close"].dropna().values,
-            )
-            if expiry:
-                ax.set_title(f"{name} with expiry {expiry}")
+            if len(historicals["Adj Close"]) == 1:
+                console.print(f"\nA single datapoint on {tickers[0]} is not enough to depict a chart, data shown below.")
+                print_rich_table(
+                    historicals[historicals["Adj Close"].index > datetime.strptime(start_date, "%Y-%m-%d")],
+                    headers=list(historicals["Adj Close"].columns),
+                    show_index=True,
+                    title="Futures timeseries",
+                )
+
             else:
-                ax.set_title(name)
+                name = yfinance_model.FUTURES_DATA[
+                    yfinance_model.FUTURES_DATA["Ticker"] == tickers[0]
+                ]["Description"].values[0]
+                ax.plot(
+                    historicals["Adj Close"].dropna().index,
+                    historicals["Adj Close"].dropna().values,
+                )
+                if expiry:
+                    ax.set_title(f"{name} with expiry {expiry}")
+                else:
+                    ax.set_title(name)
 
-        first = datetime.strptime(start_date, "%Y-%m-%d")
-        if historicals.index[0] > first:
-            first = historicals.index[0]
-        ax.set_xlim(first, historicals.index[-1])
-        theme.style_primary_axis(ax)
+                first = datetime.strptime(start_date, "%Y-%m-%d")
+                if historicals["Adj Close"].index[0] > first:
+                    first = historicals["Adj Close"].index[0]
+                ax.set_xlim(first, historicals["Adj Close"].index[-1])
+                theme.style_primary_axis(ax)
 
-        if external_axes is None:
-            theme.visualize_output()
+                if external_axes is None:
+                    theme.visualize_output()
 
-        export_data(
-            export,
-            os.path.dirname(os.path.abspath(__file__)),
-            "historical",
-            historicals[historicals.index > datetime.strptime(start_date, "%Y-%m-%d")],
-        )
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "historical",
+        historicals[historicals.index > datetime.strptime(start_date, "%Y-%m-%d")],
+    )
 
 
 @log_start_end(log=logger)
