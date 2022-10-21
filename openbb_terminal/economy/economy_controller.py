@@ -635,7 +635,7 @@ class EconomyController(BaseController):
             type=str,
             dest="countries",
             help="The country or countries you wish to show data for",
-            default="United_States",
+            default="united_states",
         )
         parser.add_argument(
             "-t",
@@ -681,7 +681,7 @@ class EconomyController(BaseController):
         )
         if ns_parser:
             parameters = list_from_str(ns_parser.parameters.upper())
-            countries = list_from_str(ns_parser.countries)
+            countries = list_from_str(ns_parser.countries.lower())
             if ns_parser.show:
                 if ns_parser.show == "parameters":
                     print_rich_table(
