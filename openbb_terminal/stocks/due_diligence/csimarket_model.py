@@ -23,10 +23,15 @@ def clean_table(df: pd.DataFrame) -> pd.DataFrame:
     df: pd.DataFrame
         Cleaned dataframe
     """
-    df = df.set_index("TICKER")
+    if df.empty:
+        return df
+    if "TICKER" in df.columns:
+        df = df.set_index("TICKER")
     df.columns = [x.title() for x in df.columns]
-    df = df.drop("Company Name.1", axis=1)
-    df = df.drop("SUBTOTAL", axis=0)
+    if "Company Name.1" in df.columns:
+        df = df.drop("Company Name.1", axis=1)
+    if "SUBTOTAL" in df.index:
+        df = df.drop("SUBTOTAL", axis=0)
     if "Revenue" in df.columns:
         df = df.sort_values("Revenue", ascending=False)
     df = df[df.index.notnull()]
