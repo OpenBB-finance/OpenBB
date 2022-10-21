@@ -99,7 +99,7 @@ class QaController(StockBaseController):
             zero_to_hundred_detailed: dict = {
                 str(c): {} for c in np.arange(0.0, 100.0, 0.1)
             }
-            choices["pick"] = {c: {} for c in list(stock.columns)}
+            choices["pick"] = {c: {} for c in list(self.stock.columns)}
             choices["load"] = {
                 "--ticker": None,
                 "-t": "--ticker",
