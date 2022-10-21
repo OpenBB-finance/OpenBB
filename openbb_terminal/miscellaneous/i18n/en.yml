@@ -309,7 +309,7 @@ en:
   stocks/ba/spac_c: show other users spacs announcements from subreddit SPACs
   stocks/ba/spac: show other users spacs announcements from other subs
   stocks/ba/getdd: gets due diligence from another user's post
-  stocks/ba/reddit_sent: searches reddit for ticker and finds reddit sentiment
+  stocks/ba/redditsent: searches reddit for ticker and finds reddit sentiment
   stocks/ba/trending: trending stocks
   stocks/ba/stalker: stalk stocktwits user's last messages
   stocks/ba/bullbear: estimate quick sentiment from last 30 messages on board
