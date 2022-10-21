@@ -84,7 +84,7 @@ def get_economic_calendar(
 
 
 @log_start_end(log=logger)
-def check_country_code_type(list_of_codes: str) -> list[str]:
+def check_country_code_type(list_of_codes: str) -> List[str]:
     """Check that codes are valid for NASDAQ API"""
     nasdaq_codes = list(
         pd.read_csv(os.path.join(os.path.dirname(__file__), "NASDAQ_CountryCodes.csv"))[
@@ -103,7 +103,7 @@ def check_country_code_type(list_of_codes: str) -> list[str]:
 
 
 @log_start_end(log=logger)
-def get_country_codes() -> list[str]:
+def get_country_codes() -> List[str]:
     """Get available country codes for Bigmac index
 
     Returns
@@ -162,7 +162,7 @@ def get_big_mac_index(country_code: str = "USA") -> pd.DataFrame:
 
 @log_start_end(log=logger)
 @check_api_key(["API_KEY_QUANDL"])
-def get_big_mac_indices(country_codes: list[str] = None) -> pd.DataFrame:
+def get_big_mac_indices(country_codes: List[str] = None) -> pd.DataFrame:
     """Display Big Mac Index for given countries
 
     Parameters
