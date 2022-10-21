@@ -11,7 +11,6 @@ from typing import Any, Dict, List
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.core.config.paths import (
     USER_CUSTOM_REPORTS_DIRECTORY,
-    USER_REPORTS_DIRECTORY,
 )
 from openbb_terminal.helper_funcs import parse_simple_args
 from openbb_terminal.reports import reports_model

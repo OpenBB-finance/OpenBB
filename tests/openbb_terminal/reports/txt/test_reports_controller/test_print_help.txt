@@ -10,5 +10,5 @@ OpenBB reports as commands:
     portfolio   <orderbook>
 
 Custom reports:
-    run                Run a Jupyter notebook from OpenBBUserData/reports
+    run                Run a Jupyter notebook from OpenBBUserData/reports/custom reports
 
