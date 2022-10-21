@@ -19,7 +19,7 @@ class FormatterWithExceptions(logging.Formatter):
     )
 
     @staticmethod
-    def calculate_level_name(record: logging.LogRecord):
+    def calculate_level_name(record: logging.LogRecord) -> str:
         if record.exc_text:
             level_name = "X"
         elif record.levelname:
@@ -37,7 +37,7 @@ class FormatterWithExceptions(logging.Formatter):
             record.funcName = record.func_name_override  # type: ignore
             record.lineno = 0
 
-        log_extra["userId"] = record.user_id if hasattr(record, "user_id") else "NA"  # type: ignore
+        log_extra["userId"] = getattr(record, "user_id", "NA")
 
         if hasattr(record, "session_id"):
             log_extra["sessionId"] = record.session_id  # type: ignore
