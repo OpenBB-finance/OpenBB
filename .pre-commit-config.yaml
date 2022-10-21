@@ -9,7 +9,7 @@ repos:
         args:
           [
             "--ignore-files=settings_controller.py,featflags_controller.py,keys_controller.py,degiro_controller.py,",
-            "--ignore-commands=login,al_swe,info_swe,goodness,resources,yf,yolo,from,to,featflags,guess,settings,survey",
+            "--ignore-commands=login,alswe,info_swe,goodness,resources,yf,yolo,from,to,featflags,guess,settings,survey",
           ]
         entry: python custom_pre_commit/check_doc.py
   - repo: https://github.com/pre-commit/pre-commit-hooks
