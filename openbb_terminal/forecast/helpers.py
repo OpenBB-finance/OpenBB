@@ -613,12 +613,15 @@ def dt_format(x) -> str:
 
 
 def get_series(
-    data: pd.DataFrame, target_column: str = None, is_scaler: bool = True
+    data: pd.DataFrame,
+    target_column: str = None,
+    is_scaler: bool = True,
+    time_col: str = "date",
 ) -> tuple[Optional[Scaler], TimeSeries]:
     filler = MissingValuesFiller()
     filler_kwargs = dict(
         df=data,
-        time_col="date",
+        time_col=time_col,
         value_cols=[target_column],
         freq="B",
         fill_missing_dates=True,

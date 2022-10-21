@@ -753,6 +753,8 @@ main:
         sub:
           - name: atr
             ref: terminal/forecast/atr
+          - name: autoets
+            ref: terminal/forecast/autoets
           - name: brnn
             ref: terminal/forecast/brnn
           - name: clean
