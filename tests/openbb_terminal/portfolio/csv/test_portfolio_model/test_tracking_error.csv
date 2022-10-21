@@ -4,9 +4,7 @@ qtd,-
 ytd,"Adj Close   NaN
 Total       NaN
 dtype: float64"
-3m,"Adj Close   NaN
-Total       NaN
-dtype: float64"
+3m,-
 6m,"Adj Close   NaN
 Total       NaN
 dtype: float64"
