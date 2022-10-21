@@ -47,7 +47,7 @@ Performs Probabilistic Exponential Smoothing forecasting
         Fit Prob. Expo model object.
 
 ## Getting charts 
-### forecast.expo(data: Union[pandas.core.frame.DataFrame, pandas.core.series.Series], target_column: str = 'close', dataset_name: str = '', trend: str = 'A', seasonal: str = 'A', seasonal_periods: int = 7, dampen: str = 'F', n_predict: int = 30, start_window: float = 0.85, forecast_horizon: int = 5, export: str = '', residuals: bool = False, forecast_only: bool = False, start_date: Optional[datetime.datetime] = None, end_date: Optional[datetime.datetime] = None, naive: bool = False, export_pred_raw: bool = False, external_axes: Optional[List[axes]] = None, chart=True)
+### forecast.expo(data: Union[pandas.core.frame.DataFrame, pandas.core.series.Series], target_column: str = 'close', dataset_name: str = '', trend: str = 'A', seasonal: str = 'A', seasonal_periods: int = 7, dampen: str = 'F', n_predict: int = 30, start_window: float = 0.85, forecast_horizon: int = 5, export: str = '', residuals: bool = False, forecast_only: bool = False, start_date: Optional[datetime.datetime] = None, end_date: Optional[datetime.datetime] = None, naive: bool = False, external_axes: Optional[List[axes]] = None, chart=True)
 
 Display Probabilistic Exponential Smoothing forecast
 
