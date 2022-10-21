@@ -1,15 +1,13 @@
 ```
-usage: expo [--trend {N,A,M}] [--dampen DAMPEN] [--naive] [-d {AAPL}] [-c TARGET_COLUMN] [-n N_DAYS] [-s {N,A,M}] [-p SEASONAL_PERIODS]
-            [-w START_WINDOW] [--end S_END_DATE] [--start S_START_DATE] [--residuals] [--forecast-only] [--export-pred-raw] [-h]
-            [--export EXPORT]
+usage: autoets [--naive] [-d {AAPL}] [-c TARGET_COLUMN] [-n N_DAYS] [-s {N,A,M}] [-p SEASONAL_PERIODS] [-w START_WINDOW] [--end S_END_DATE] [--start S_START_DATE] [--residuals] [--forecast-only]
+               [--export-pred-raw] [-h] [--export EXPORT]
+
 ```
 
-Perform Probabilistic Exponential Smoothing forecast Trend: N: None, A: Additive, M: Multiplicative Seasonality: N: None, A: Additive, M: Multiplicative Dampen: T: True, F: False
+Perform Automatic ETS (Error, Trend, Seasonality) forecast
 
 ```
 optional arguments:
-  --trend {N,A,M}       Trend: N: None, A: Additive, M: Multiplicative. (default: A)
-  --dampen DAMPEN       Dampening (default: F)
   --naive               Show the naive baseline for a model. (default: False)
   -d {AAPL}, --target-dataset {AAPL}
                         The name of the dataset you want to select (default: None)
@@ -31,32 +29,30 @@ optional arguments:
   -h, --help            show this help message (default: False)
   --export EXPORT       Export figure into png, jpg, pdf, svg (default: )
 
-For more information and examples, use 'about expo' to access the related guide.
+For more information and examples, use 'about autoets' to access the related guide.
 ```
 
 Example:
 ```
-2022 Jul 23, 10:36 (🦋) /forecast/ $ load GME_20220719_123734.csv -a GME
+2022 Oct 21, 18:20 (🦋) /forecast/ $ load AAPL
 
-2022 Jul 23, 10:52 (🦋) /forecast/ $ expo GME
-100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 115/115 [00:16<00:00,  6.80it/s]
-Exponential smoothing obtains MAPE: 12.88%
+2022 Oct 21, 18:21 (🦋) /forecast/ $ autoets AAPL
 
 
 
-       Actual price: $ 146.64
-┏━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┓
-┃ Datetime            ┃ Prediction ┃
-┡━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━┩
-│ 2022-07-19 00:00:00 │ $ 146.35   │
-├─────────────────────┼────────────┤
-│ 2022-07-20 00:00:00 │ $ 148.63   │
-├─────────────────────┼────────────┤
-│ 2022-07-21 00:00:00 │ $ 148.86   │
-├─────────────────────┼────────────┤
-│ 2022-07-22 00:00:00 │ $ 151.76   │
-├─────────────────────┼────────────┤
-│ 2022-07-25 00:00:00 │ $ 149.74   │
-└─────────────────────┴────────────┘
+   Actual price: 143.39    
+┏━━━━━━━━━━━━┳━━━━━━━━━━━━┓
+┃ Datetime   ┃ Prediction ┃
+┡━━━━━━━━━━━━╇━━━━━━━━━━━━┩
+│ 2022-10-21 │ 143.42     │
+├────────────┼────────────┤
+│ 2022-10-24 │ 143.42     │
+├────────────┼────────────┤
+│ 2022-10-25 │ 143.42     │
+├────────────┼────────────┤
+│ 2022-10-26 │ 143.42     │
+├────────────┼────────────┤
+│ 2022-10-27 │ 143.42     │
+└────────────┴────────────┘
 ```
-![expo](https://user-images.githubusercontent.com/72827203/180615313-e45d6cb3-06a8-45aa-ae4e-505df07e7210.png)
+![autoets](https://user-images.githubusercontent.com/10517170/197297075-d141d735-0b35-43cc-bf4f-e746b6b1001e.png)
