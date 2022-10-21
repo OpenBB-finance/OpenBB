@@ -708,12 +708,12 @@ class TechnicalAnalysisController(StockBaseController):
                 interval_text = self.interval
 
             overlap_view.view_vwap(
-                symbol=self.ticker,
-                s_interval=interval_text,
                 data=self.stock,
+                symbol=self.ticker,
                 start_date=ns_parser.start,
                 end_date=ns_parser.end,
                 offset=ns_parser.n_offset,
+                interval=interval_text,
                 export=ns_parser.export,
             )
 

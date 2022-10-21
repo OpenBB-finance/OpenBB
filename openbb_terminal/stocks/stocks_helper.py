@@ -245,7 +245,7 @@ def load(
         end_date = datetime.now()
 
     # Daily
-    if interval == 1440:
+    if int(interval) == 1440:
 
         int_string = "Daily"
         if weekly:

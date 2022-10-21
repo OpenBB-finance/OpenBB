@@ -1,0 +1,35 @@
+,Time (GMT),Country,Event,actual,consensus,previous,Date
+0,08:30,United States,Continuing Jobless Claims,"1,385K","1,375K","1,364K",2022-10-20
+1,08:30,United States,Initial Jobless Claims,214K,230K,226K,2022-10-20
+2,08:30,United States,Jobless Claims 4-Week Avg.,212.25K,-,211.00K,2022-10-20
+3,08:30,United States,Philadelphia Fed Manufacturing Index,-8.7,-5.0,-9.9,2022-10-20
+4,08:30,United States,Philly Fed Business Conditions,-14.9,-,-3.9,2022-10-20
+5,08:30,United States,Philly Fed CAPEX Index,4.40,-,4.60,2022-10-20
+6,08:30,United States,Philly Fed Employment,28.5,-,12.0,2022-10-20
+7,08:30,United States,Philly Fed New Orders,-15.9,-,-17.6,2022-10-20
+8,08:30,United States,Philly Fed Prices Paid,36.30,-,29.80,2022-10-20
+9,10:00,United States,Existing Home Sales,-1.5%,-,-0.8%,2022-10-20
+10,10:00,United States,Existing Home Sales,4.71M,4.70M,4.78M,2022-10-20
+11,10:00,United States,US Leading Index,-0.4%,-0.3%,-0.3%,2022-10-20
+12,10:30,United States,Natural Gas Storage,111B,105B,125B,2022-10-20
+13,11:30,United States,4-Week Bill Auction,3.430%,-,3.250%,2022-10-20
+14,11:30,United States,8-Week Bill Auction,3.690%,-,3.480%,2022-10-20
+15,12:00,United States,FOMC Member Harker Speaks,-,-,-,2022-10-20
+16,13:00,United States,5-Year TIPS Auction,-,-,0.362%,2022-10-20
+17,13:30,United States,Fed Governor Jefferson Speaks,-,-,-,2022-10-20
+18,13:45,United States,Fed Governor Cook Speaks,-,-,-,2022-10-20
+19,14:05,United States,FOMC Member Bowman Speaks,-,-,-,2022-10-20
+20,09:10,United States,FOMC Member Williams Speaks,-,-,-,2022-10-21
+21,13:00,United States,U.S. Baker Hughes Oil Rig Count,-,-,610,2022-10-21
+22,13:00,United States,U.S. Baker Hughes Total Rig Count,-,-,769,2022-10-21
+23,15:30,United States,CFTC Aluminium speculative net positions,-,-,7.5K,2022-10-21
+24,15:30,United States,CFTC Copper speculative net positions,-,-,-15.9K,2022-10-21
+25,15:30,United States,CFTC Corn speculative net positions,-,-,325.1K,2022-10-21
+26,15:30,United States,CFTC Crude Oil speculative net positions,-,-,259.2K,2022-10-21
+27,15:30,United States,CFTC Gold speculative net positions,-,-,94.4K,2022-10-21
+28,15:30,United States,CFTC Nasdaq 100 speculative net positions,-,-,8.5K,2022-10-21
+29,15:30,United States,CFTC Natural Gas speculative net positions,-,-,-162.1K,2022-10-21
+30,15:30,United States,CFTC S&P 500 speculative net positions,-,-,-164.1K,2022-10-21
+31,15:30,United States,CFTC Silver speculative net positions,-,-,7.4K,2022-10-21
+32,15:30,United States,CFTC Soybeans speculative net positions,-,-,55.8K,2022-10-21
+33,15:30,United States,CFTC Wheat speculative net positions,-,-,-2.0K,2022-10-21

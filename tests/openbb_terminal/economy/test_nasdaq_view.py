@@ -34,3 +34,19 @@ def test_display_big_mac_index(mocker, raw):
         raw=raw,
         export="",
     )
+
+
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+def test_display_economic_calendar():
+    nasdaq_view.display_economic_calendar(
+        "United States", start_date="2022-10-20", end_date="2022-10-21", limit=3
+    )
+
+
+@pytest.mark.vcr
+@pytest.mark.record_stdout
+def test_display_economic_calendar_bad_country():
+    nasdaq_view.display_economic_calendar(
+        "Usrgsthetjerawg", start_date="2022-10-20", end_date="2022-10-21", limit=3
+    )
