@@ -26,6 +26,7 @@ from openbb_terminal.parent_classes import StockBaseController
 from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
 from openbb_terminal.stocks.quantitative_analysis.beta_view import beta_view
 from openbb_terminal.stocks.quantitative_analysis.factors_view import capm_view
+from openbb_terminal.stocks.quantitative_analysis.qa_model import full_stock_df
 
 # pylint: disable=C0302
 
@@ -85,17 +86,7 @@ class QaController(StockBaseController):
         """Constructor"""
         super().__init__(queue)
 
-        # TODO: Move these calculations to a model
-        stock["Returns"] = stock["Adj Close"].pct_change()
-        stock["LogRet"] = np.log(stock["Adj Close"]) - np.log(
-            stock["Adj Close"].shift(1)
-        )
-        stock["LogPrice"] = np.log(stock["Adj Close"])
-        stock = stock.rename(columns={"Adj Close": "AdjClose"})
-        stock = stock.dropna()
-        stock.columns = [x.lower() for x in stock.columns]
-
-        self.stock = stock
+        self.stock = full_stock_df(stock)
         self.ticker = ticker
         self.start = start
         self.interval = interval
@@ -108,7 +99,7 @@ class QaController(StockBaseController):
             zero_to_hundred_detailed: dict = {
                 str(c): {} for c in np.arange(0.0, 100.0, 0.1)
             }
-            choices["pick"] = {c: {} for c in list(stock.columns)}
+            choices["pick"] = {c: {} for c in list(self.stock.columns)}
             choices["load"] = {
                 "--ticker": None,
                 "-t": "--ticker",
@@ -596,9 +587,9 @@ class QaController(StockBaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            if self.target != "AdjClose":
+            if self.target != "adjclose":
                 console.print(
-                    "Target not AdjClose.  For best results, use `pick AdjClose` first."
+                    "Target not adjclose.  For best results, use `pick adjclose` first."
                 )
 
             qa_view.display_acf(
@@ -911,9 +902,17 @@ class QaController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+        # This assumes all intervals convert from string to int well
+        # This should handle weekly and monthly because the merge would only
+        # Work on the intersections
+        interval = "".join(c for c in self.interval if c.isdigit())
         if ns_parser:
             beta_view(
-                self.ticker, ns_parser.ref, data=self.stock, export=ns_parser.export
+                symbol=self.ticker,
+                ref_symbol=ns_parser.ref,
+                data=self.stock,
+                interval=interval,
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
