@@ -9,7 +9,10 @@ import os
 from typing import Any, Dict, List
 
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.core.config.paths import USER_REPORTS_DIRECTORY
+from openbb_terminal.core.config.paths import (
+    USER_CUSTOM_REPORTS_DIRECTORY,
+    USER_REPORTS_DIRECTORY,
+)
 from openbb_terminal.helper_funcs import parse_simple_args
 from openbb_terminal.reports import reports_model
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -248,7 +251,7 @@ class ReportController(BaseController):
                         )
 
             if ns_parser.file:
-                complete_file_path = str(USER_REPORTS_DIRECTORY / ns_parser.file)
+                complete_file_path = str(USER_CUSTOM_REPORTS_DIRECTORY / ns_parser.file)
                 if os.path.exists(complete_file_path):
                     reports_model.render_report(
                         input_path=complete_file_path, args_dict=parameters_dict

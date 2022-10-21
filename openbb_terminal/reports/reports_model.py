@@ -21,6 +21,7 @@ from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     USER_PORTFOLIO_DATA_DIRECTORY,
     USER_REPORTS_DIRECTORY,
+    USER_CUSTOM_REPORTS_DIRECTORY,
 )
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
@@ -35,7 +36,7 @@ REPORTS_FOLDER = CURRENT_LOCATION.parent / "templates"
 USER_REPORTS = {
     filepath.name: filepath
     for file_type in ["ipynb"]
-    for filepath in USER_REPORTS_DIRECTORY.rglob(f"*.{file_type}")
+    for filepath in USER_CUSTOM_REPORTS_DIRECTORY.rglob(f"*.{file_type}")
 }
 
 # TODO: Trim available choices to avoid errors in notebooks.
