@@ -6,6 +6,7 @@ import logging
 # pylint: disable=R1732, R0912
 import os
 from pathlib import Path
+import sys
 from threading import Thread
 from ipykernel.kernelapp import IPKernelApp
 import webbrowser
@@ -17,7 +18,6 @@ import pandas as pd
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.core.config.paths import (
-    USER_EXPORTS_DIRECTORY,
     MISCELLANEOUS_DIRECTORY,
     USER_PORTFOLIO_DATA_DIRECTORY,
     USER_REPORTS_DIRECTORY,
@@ -30,7 +30,7 @@ logger = logging.getLogger(__name__)
 
 CURRENT_LOCATION = Path(__file__)
 REPORTS_FOLDER = CURRENT_LOCATION.parent / "templates"
-OUTPUT_FOLDER = USER_EXPORTS_DIRECTORY / "reports"
+# OUTPUT_FOLDER = USER_REPORTS_DIRECTORY / "reports"
 
 USER_REPORTS = {
     filepath.name: filepath
@@ -276,7 +276,7 @@ def create_output_path(input_path: str, parameters_dict: Dict[str, Any]) -> str:
         + "_"
         + f"{report_name}{args_to_output}"
     )
-    output_path = str(OUTPUT_FOLDER / report_output_name)
+    output_path = str(USER_REPORTS_DIRECTORY / report_output_name)
 
     return output_path
 
@@ -298,26 +298,42 @@ def execute_notebook(input_path, parameters, output_path):
 
     input_path = add_ipynb_extension(input_path)
 
-    result = pm.execute_notebook(
-        input_path=input_path,
-        output_path=output_path + ".ipynb",
-        parameters=parameters,
-    )
+    origin_stdout = sys.stdout
+    output_error_report = output_path + "_ERROR_REPORT.txt"
+    sys.stdout = open(output_error_report, "w")
 
-    if not result["metadata"]["papermill"]["exception"]:
-        if obbff.OPEN_REPORT_AS_HTML:
-            report_output_path = os.path.join(
-                os.path.abspath(os.path.join(".")), output_path + ".html"
-            )
-            console.print(report_output_path)
-            webbrowser.open(f"file://{report_output_path}")
-
-        console.print(
-            f"\nExported: {report_output_path}",
-            "\n",
+    try:
+        result = pm.execute_notebook(
+            input_path=input_path,
+            output_path=output_path + ".ipynb",
+            parameters=parameters,
         )
-    else:
-        console.print("[red]\nReport couldn't be created.\n[/red]")
+
+        if not result["metadata"]["papermill"]["exception"]:
+            if obbff.OPEN_REPORT_AS_HTML:
+                report_output_path = os.path.join(
+                    os.path.abspath(os.path.join(".")), output_path + ".html"
+                )
+                console.print(report_output_path)
+                webbrowser.open(f"file://{report_output_path}")
+
+            sys.stdout = origin_stdout
+            console.print(
+                f"\nExported: {report_output_path}",
+                "\n",
+            )
+        else:
+            console.print("[red]\nReport .html couldn't be created.\n[/red]")
+    except Exception as e:
+        # Flush to _ERROR_REPORT.txt file
+        print(e)
+        sys.stdout = origin_stdout
+        raise Exception(
+            "[red]\nAn error was encountered in the notebook, check the error report:[/red]\n"
+            f" {output_error_report}\n"
+        ) from e
+
+    sys.stdout = origin_stdout
 
 
 @log_start_end(log=logger)
