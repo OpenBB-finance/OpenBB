@@ -182,7 +182,7 @@ main:
               ref: /terminal/common/ta/wma
             - name: zlma
               ref: /terminal/common/ta/zlma
-      - name: Cryptocurrency
+      - name: cryptocurrency
         ref: /terminal/crypto
         sub:
           - name: candle
@@ -862,6 +862,15 @@ main:
             ref: /terminal/funds/search
           - name: sector
             ref: /terminal/funds/sector
+      - name: futures
+        ref: /terminal/futures
+        sub:
+          - name: search
+            ref: /terminal/futures/search
+          - name: historical
+            ref: /terminal/futures/historical
+          - name: curve
+            ref: /terminal/futures/curve
       - name: jupyter
         ref: /terminal/jupyter
         sub:

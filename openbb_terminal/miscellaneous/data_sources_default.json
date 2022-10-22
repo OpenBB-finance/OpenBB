@@ -500,6 +500,11 @@
     "alswe": ["Avanza"],
     "info_swe": ["Avanza"]
   },
+  "futures": {
+    "search": ["YahooFinance"],
+    "historical": ["YahooFinance"],
+    "curve": ["YahooFinance"]
+  },
   "alternative": {
     "oss": {
       "rossidx": ["RunaCapital"],
