@@ -306,7 +306,7 @@ en:
   stocks/ba/wsb: show what WSB gang is up to in subreddit wallstreetbets
   stocks/ba/watchlist: show other users watchlist
   stocks/ba/popular: show popular tickers
-  stocks/ba/spac_c: show other users spacs announcements from subreddit SPACs
+  stocks/ba/spacc: show other users spacs announcements from subreddit SPACs
   stocks/ba/spac: show other users spacs announcements from other subs
   stocks/ba/getdd: gets due diligence from another user's post
   stocks/ba/redditsent: searches reddit for ticker and finds reddit sentiment

@@ -44,7 +44,7 @@ class BehaviouralAnalysisController(StockBaseController):
         "load",
         "watchlist",
         "spac",
-        "spac_c",
+        "spacc",
         "wsb",
         "popular",
         "bullbear",
@@ -127,7 +127,7 @@ class BehaviouralAnalysisController(StockBaseController):
                 "--sub": None,
                 "-s": "--sub",
             }
-            choices["spac_c"] = {
+            choices["spacc"] = {
                 "--popular": {},
                 "-p": "--popular",
                 "--limit": one_to_hundred,
@@ -207,7 +207,7 @@ class BehaviouralAnalysisController(StockBaseController):
         mt.add_cmd("wsb")
         mt.add_cmd("watchlist")
         mt.add_cmd("popular")
-        mt.add_cmd("spac_c")
+        mt.add_cmd("spacc")
         mt.add_cmd("spac")
         mt.add_cmd("getdd", self.ticker)
         mt.add_cmd("redditsent", self.ticker)
@@ -298,12 +298,12 @@ class BehaviouralAnalysisController(StockBaseController):
             reddit_view.display_spac(limit=ns_parser.n_limit)
 
     @log_start_end(log=logger)
-    def call_spac_c(self, other_args: List[str]):
-        """Process spac_c command"""
+    def call_spacc(self, other_args: List[str]):
+        """Process spacc command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="spac_c",
+            prog="spacc",
             description="""Print other users SPACs announcement under subreddit 'SPACs'. [Source: Reddit]""",
         )
         parser.add_argument(

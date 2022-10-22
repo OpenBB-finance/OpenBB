@@ -133,7 +133,7 @@ functions = {
     "stocks.ba.spac": {
         "model": "openbb_terminal.common.behavioural_analysis.reddit_model.get_spac"
     },
-    "stocks.ba.spac_c": {
+    "stocks.ba.spacc": {
         "model": "openbb_terminal.common.behavioural_analysis.reddit_model.get_spac_community"
     },
     "stocks.ba.watchlist": {

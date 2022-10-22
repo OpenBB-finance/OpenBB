@@ -72,8 +72,8 @@ main:
               ref: /terminal/common/ba/snews
             - name: spac
               ref: /terminal/common/ba/spac
-            - name: spac_c
-              ref: /terminal/common/ba/spac_c
+            - name: spacc
+              ref: /terminal/common/ba/spacc
             - name: stalker
               ref: /terminal/common/ba/stalker
             - name: stats
@@ -1114,8 +1114,8 @@ main:
                 ref: /terminal/common/ba/snews
               - name: spac
                 ref: /terminal/common/ba/spac
-              - name: spac_c
-                ref: /terminal/common/ba/spac_c
+              - name: spacc
+                ref: /terminal/common/ba/spacc
               - name: stalker
                 ref: /terminal/common/ba/stalker
               - name: stats
@@ -2424,8 +2424,8 @@ main:
                 ref: /SDK/stocks/ba/messages
               - name: snews
                 ref: /SDK/stocks/ba/snews
-              - name: spac_c
-                ref: /SDK/stocks/ba/spac_c
+              - name: spacc
+                ref: /SDK/stocks/ba/spacc
               - name: stalker
                 ref: /SDK/stocks/ba/stalker
               - name: trend
