@@ -1139,27 +1139,6 @@ def parse_args_and_run():
         description="The OpenBB Terminal.",
     )
     parser.add_argument(
-        "-m",
-        help="Mock ipykernel_launcher.",
-        dest="module",
-        default="",
-        type=str,
-    )
-    parser.add_argument(
-        "-f",
-        help="Mock ipykernel_launcher.",
-        dest="module_file",
-        default="",
-        type=str,
-    )
-    parser.add_argument(
-        "--HistoryManager.hist_file",
-        help="Mock ipykernel_launcher.",
-        dest="module_hist_file",
-        default="",
-        type=str,
-    )
-    parser.add_argument(
         "-d",
         "--debug",
         dest="debug",
@@ -1204,20 +1183,42 @@ def parse_args_and_run():
         type=lambda s: [str(item) for item in s.split(",")],
         default=None,
     )
-
+    # The args -m, -f and --HistoryManager.hist_file are used only in reports menu
+    # and should be hidden.
+    parser.add_argument(
+        "-m",
+        help=argparse.SUPPRESS,
+        dest="module",
+        default="",
+        type=str,
+    )
+    parser.add_argument(
+        "-f",
+        help=argparse.SUPPRESS,
+        dest="module_file",
+        default="",
+        type=str,
+    )
+    parser.add_argument(
+        "--HistoryManager.hist_file",
+        help=argparse.SUPPRESS,
+        dest="module_hist_file",
+        default="",
+        type=str,
+    )
     if sys.argv[1:] and "-" not in sys.argv[1][0]:
         sys.argv.insert(1, "--file")
     ns_parser = parser.parse_args()
     main(
-        ns_parser.module,
-        ns_parser.module_file,
-        ns_parser.module_hist_file,
         ns_parser.debug,
         ns_parser.test,
         ns_parser.filtert,
         ns_parser.path,
         ns_parser.verbose,
         ns_parser.routine_args,
+        module=ns_parser.module,
+        module_file=ns_parser.module_file,
+        module_hist_file=ns_parser.module_hist_file,
     )
 
 
