@@ -58,16 +58,17 @@ def ark_orders_view(
     export: str
         Export dataframe data to csv,json,xlsx file
     """
-    df_orders = ark_model.get_ark_orders(sortby, ascend, buys_only, sells_only, fund)
-
+    df_orders = ark_model.get_ark_orders(buys_only, sells_only, fund)
     if not df_orders.empty:
-
         df_orders = ark_model.add_order_total(df_orders.head(limit))
 
         if rich_config.USE_COLOR:
             df_orders["direction"] = df_orders["direction"].apply(
                 lambda_direction_color_red_green
             )
+
+        if sortby:
+            df_orders = df_orders.sort_values(by=sortby, ascending=ascend)
 
         print_rich_table(
             df_orders,
