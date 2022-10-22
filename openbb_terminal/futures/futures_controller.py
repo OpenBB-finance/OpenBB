@@ -145,10 +145,10 @@ class FuturesController(BaseController):
         )
         if ns_parser:
             yfinance_view.display_search(
-                ns_parser.category,
-                ns_parser.exchange,
-                " ".join(ns_parser.description),
-                ns_parser.export,
+                category=ns_parser.category,
+                exchange=ns_parser.exchange,
+                description=" ".join(ns_parser.description),
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -196,11 +196,11 @@ class FuturesController(BaseController):
         )
         if ns_parser:
             yfinance_view.display_historical(
-                ns_parser.ticker.upper().split(","),
-                ns_parser.expiry,
-                ns_parser.start.strftime("%Y-%m-%d"),
-                ns_parser.raw,
-                ns_parser.export,
+                tickers=ns_parser.ticker.upper().split(","),
+                expiry=ns_parser.expiry,
+                start_date=ns_parser.start.strftime("%Y-%m-%d"),
+                raw=ns_parser.raw,
+                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)
@@ -232,7 +232,7 @@ class FuturesController(BaseController):
         )
         if ns_parser:
             yfinance_view.display_curve(
-                ns_parser.ticker,
-                ns_parser.raw,
-                ns_parser.export,
+                ticker=ns_parser.ticker,
+                raw=ns_parser.raw,
+                export=ns_parser.export,
             )
