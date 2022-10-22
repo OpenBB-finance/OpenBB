@@ -1208,7 +1208,15 @@ def parse_args_and_run():
     )
     if sys.argv[1:] and "-" not in sys.argv[1][0]:
         sys.argv.insert(1, "--file")
-    ns_parser = parser.parse_args()
+    ns_parser, unknown = parser.parse_known_args()
+
+    # If terminal.py only receives unknown args, just quit them.
+    # Use -d flag if you want to see the unknown args.
+    if unknown:
+        if ns_parser.debug:
+            console.print(unknown)
+        else:
+            sys.exit()
     main(
         ns_parser.debug,
         ns_parser.test,
