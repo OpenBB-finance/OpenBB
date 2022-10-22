@@ -394,7 +394,7 @@ en:
   stocks/bt/_ticker: Ticker
   stocks/bt/whatif: what if you had bought X shares on day Y
   stocks/bt/ema: buy when price exceeds EMA(l)
-  stocks/bt/ema_cross: buy when EMA(short) > EMA(long)
+  stocks/bt/emacross: buy when EMA(short) > EMA(long)
   stocks/bt/rsi: buy when RSI < low and sell when RSI > high
   stocks/ta/_ticker: Ticker
   stocks/ta/tv: open interactive chart on

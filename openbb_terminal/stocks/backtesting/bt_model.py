@@ -131,7 +131,7 @@ def ema_strategy(
 
 
 @log_start_end(log=logger)
-def ema_cross_strategy(
+def emacross_strategy(
     symbol: str,
     data: pd.DataFrame,
     short_length: int = 20,
@@ -182,7 +182,7 @@ def ema_cross_strategy(
     combined_data = bt.merge(signals, prices, short_ema, long_ema)
     combined_data.columns = ["signal", "price", "ema_short", "ema_long"]
     bt_strategy = bt.Strategy(
-        "EMA_Cross",
+        "EMACross",
         [
             bt.algos.WeighTarget(signals),
             bt.algos.Rebalance(),
