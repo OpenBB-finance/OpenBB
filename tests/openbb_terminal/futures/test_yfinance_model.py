@@ -36,7 +36,7 @@ def test_get_search_futures(recorder, category):
     ],
 )
 def test_get_historical_futures(recorder, tickers):
-    result = yfinance_model.get_historical_futures(tickers)
+    result = yfinance_model.get_historical_futures(tickers).head()
 
     recorder.capture(result)
 

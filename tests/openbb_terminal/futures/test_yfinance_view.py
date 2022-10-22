@@ -35,6 +35,7 @@ def test_display_search(category):
 def test_display_historical(tickers):
     yfinance_view.display_historical(
         tickers=tickers,
+        start_date="2022-10-10",
         raw=True,
     )
 
