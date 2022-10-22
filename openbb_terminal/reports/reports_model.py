@@ -158,7 +158,7 @@ def extract_parameters(input_path: str) -> Dict[str, str]:
 
     input_path = add_ipynb_extension(input_path)
 
-    with open(str(input_path)) as file:
+    with open(input_path, encoding="utf-8") as file:
         notebook_content = file.read()
 
     # Look for the metadata cell to understand if there are parameters required by the report
@@ -270,7 +270,7 @@ def create_output_path(input_path: str, parameters_dict: Dict[str, Any]) -> str:
         Path of rendered report.
     """
 
-    report_name = input_path.split("/")[-1]
+    report_name = os.path.split(input_path)[-1]
     param_values = list(parameters_dict.values())
     args_to_output = f"_{'_'.join(param_values)}" if "_".join(param_values) else ""
     report_output_name = (
