@@ -24,6 +24,42 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+def display_search(
+    category: str = "",
+    exchange: str = "",
+    description: str = "",
+    export: str = "",
+):
+    """Display search futures [Source: Yahoo Finance]
+
+    Parameters
+    ----------
+    category: str
+        Select the category where the future exists
+    exchange: str
+        Select the exchange where the future exists
+    description: str
+        Select the description of the future
+    export: str
+        Type of format to export data
+    """
+    df = yfinance_model.get_search_futures(category, exchange, description)
+    if df.empty:
+        console.print("[red]No futures data found.\n[/red]")
+        return
+
+    print_rich_table(df)
+    console.print()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "search",
+        df,
+    )
+
+
+@log_start_end(log=logger)
 def display_historical(
     tickers: List[str],
     expiry: str = "",
@@ -177,42 +213,6 @@ def display_historical(
         os.path.dirname(os.path.abspath(__file__)),
         "historical",
         historicals[historicals.index > datetime.strptime(start_date, "%Y-%m-%d")],
-    )
-
-
-@log_start_end(log=logger)
-def display_search(
-    category: str = "",
-    exchange: str = "",
-    description: str = "",
-    export: str = "",
-):
-    """Display search futures [Source: Yahoo Finance]
-
-    Parameters
-    ----------
-    category: str
-        Select the category where the future exists
-    exchange: str
-        Select the exchange where the future exists
-    description: str
-        Select the description of the future
-    export: str
-        Type of format to export data
-    """
-    df = yfinance_model.get_search_futures(category, exchange, description)
-    if df.empty:
-        console.print("[red]No futures data found.\n[/red]")
-        return
-
-    print_rich_table(df)
-    console.print()
-
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "search",
-        df,
     )
 
 
