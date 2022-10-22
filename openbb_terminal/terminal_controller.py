@@ -1210,13 +1210,13 @@ def parse_args_and_run():
         sys.argv.insert(1, "--file")
     ns_parser, unknown = parser.parse_known_args()
 
-    # If terminal.py only receives unknown args, just quit them.
+    # If terminal.py receives unknown args it will not start.
     # Use -d flag if you want to see the unknown args.
     if unknown:
         if ns_parser.debug:
             console.print(unknown)
         else:
-            sys.exit()
+            sys.exit(-1)
     main(
         ns_parser.debug,
         ns_parser.test,
