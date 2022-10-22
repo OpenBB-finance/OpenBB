@@ -32,7 +32,7 @@ def test_get_search_futures(recorder, category):
 @pytest.mark.parametrize(
     "tickers",
     [
-        ["BLK", "OJ"],
+        ["BLK", "ES"],
     ],
 )
 def test_get_historical_futures(recorder, tickers):
