@@ -8,7 +8,7 @@ import pandas as pd
 import requests
 
 import openbb_terminal.config_terminal as cfg
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import get_user_agent
 from openbb_terminal.rich_config import console
 
@@ -17,6 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_QUANDL"])
 def get_retail_tickers() -> pd.DataFrame:
     """Gets the top 10 retail stocks per day
 

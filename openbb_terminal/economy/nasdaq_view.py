@@ -24,9 +24,41 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+def display_economic_calendar(
+    country: str, start_date: str, end_date: str, limit: int = 10, export: str = ""
+) -> None:
+    """Display economic calendar for specified country between start and end dates
+
+    Parameters
+    ----------
+    country : str
+        Country to display calendar for
+    start_date : str
+        Start date for calendar
+    end_date : str
+        End date for calendar
+    limit : int
+        Limit number of rows to display
+    export : str
+        Export data to csv or excel file
+    """
+    df = nasdaq_model.get_economic_calendar(country, start_date, end_date)
+    if df.empty:
+        return
+    print_rich_table(
+        df.head(limit),
+        title="Economic Calendar",
+        show_index=False,
+        headers=df.columns,
+    )
+    console.print()
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), "events", df)
+
+
+@log_start_end(log=logger)
 @check_api_key(["API_KEY_QUANDL"])
 def display_big_mac_index(
-    country_codes: List[str],
+    country_codes: List[str] = None,
     raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,

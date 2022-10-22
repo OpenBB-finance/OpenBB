@@ -12,6 +12,7 @@ from typing import List, Dict
 
 # IMPORTATION INTERNAL
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
@@ -46,7 +47,7 @@ class SourcesController(BaseController):
         self.commands_with_sources = dict()
 
         # Loading in both source files: default sources and user sources
-        default_data_source = Path(__file__).parent.parent / "data_sources_default.json"
+        default_data_source = MISCELLANEOUS_DIRECTORY / "data_sources_default.json"
         user_data_source = Path(obbff.PREFERRED_DATA_SOURCE_FILE)
 
         # Opening default sources file from the repository root

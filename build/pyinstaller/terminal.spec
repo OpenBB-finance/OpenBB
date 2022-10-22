@@ -40,14 +40,10 @@ set_key(default_env_file, "OPENBB_LOGGING_COMMIT_HASH", str(commit_hash))
 # Files that are explicitly pulled into the bundle
 added_files = [
     (os.path.join(os.getcwd(), "openbb_terminal"), "openbb_terminal"),
-    (os.path.join(os.getcwd(), "data_sources_default.json"), "."),
-    (os.path.join(os.getcwd(), "routines"), "routines"),
-    (os.path.join(os.getcwd(), "portfolio"), "portfolio"),
-    (os.path.join(os.getcwd(), "i18n"), "i18n"),
-    (os.path.join(os.getcwd(), "styles"), "styles"),
     (os.path.join(pathex, "property_cached"), "property_cached"),
     (os.path.join(pathex, "user_agent"), "user_agent"),
     (os.path.join(pathex, "vaderSentiment"), "vaderSentiment"),
+    (os.path.join(pathex, "prophet"), "prophet"),
     (os.path.join(pathex, "frozendict", "VERSION"), "frozendict"),
     (
         os.path.join(pathex, "linearmodels", "datasets"),
@@ -92,6 +88,7 @@ hidden_imports = [
     "pymongo",
     "bson",
     "_sysconfigdata__darwin_darwin",
+    "prophet",
 ]
 
 

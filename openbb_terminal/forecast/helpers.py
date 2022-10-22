@@ -18,6 +18,7 @@ from darts.dataprocessing.transformers import MissingValuesFiller, Scaler
 from darts.utils.statistics import plot_residuals_analysis
 from darts import TimeSeries
 from darts.metrics import mape
+from darts.explainability.shap_explainer import ShapExplainer
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from openbb_terminal.rich_config import console
 from openbb_terminal.config_terminal import theme
@@ -472,6 +473,7 @@ def plot_forecast(
     high_quantile: float = None,
     forecast_only: bool = False,
     naive: bool = False,
+    export_pred_raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
 ):
     quant_kwargs = {}
@@ -529,7 +531,73 @@ def plot_forecast(
 
     print_pretty_prediction(numeric_forecast, data[target_col].iloc[-1])
 
-    export_data(export, os.path.dirname(os.path.abspath(__file__)), "expo")
+    # user wants to export plot
+    export_data(export, os.path.dirname(os.path.abspath(__file__)), name)
+
+    # user wants to export only raw predictions
+    if export_pred_raw:
+        # convert numeric)forecast to dataframe
+        numeric_forecast = numeric_forecast.to_frame()
+
+        # if numeric_forcast has a column with *_0.5, then rename it to target_col
+        if f"{target_col}_0.5" in numeric_forecast.columns:
+            numeric_forecast.rename(
+                columns={f"{target_col}_0.5": target_col}, inplace=True
+            )
+
+        # convert non-date column to 2 decimal places
+        numeric_forecast[target_col] = numeric_forecast[target_col].apply(
+            lambda x: round(x, 2)
+        )
+
+        export_data(
+            "csv",
+            os.path.dirname(os.path.abspath(__file__)),
+            name + "_predictions",
+            numeric_forecast,
+        )
+
+
+def plot_explainability(
+    model, explainability_raw=False, external_axes: Optional[List[plt.axes]] = None
+):
+    """Use SHAP to explain the model's predictions.
+    Args:
+        model (Linregr or Regr): Trained model
+    """
+    if not external_axes:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        ax = external_axes[0]
+
+    shap_explain = ShapExplainer(model)
+    shap_explain.summary_plot(horizons=1)
+    if explainability_raw:
+        console.print("")
+        console.print("[green]Exporting Raw Explainability DataFrame[/green]")
+        raw_df = shap_explain.explain().get_explanation(horizon=1).pd_dataframe()
+        export_data(
+            "csv",
+            os.path.dirname(os.path.abspath(__file__)),
+            "explainability_raw",
+            raw_df,
+        )
+
+    ax.yaxis.set_label_position("left")
+    ax.yaxis.tick_left()
+
+    # change the colour of the y axis tick labels
+    for t in ax.get_yticklabels():
+        t.set_color("white")
+
+    # change the colour of the x axis tick labels
+    for t in ax.get_xticklabels():
+        t.set_color("white")
+
+    theme.style_primary_axis(ax)
+
+    if not external_axes:
+        theme.visualize_output()
 
 
 def dt_format(x) -> str:

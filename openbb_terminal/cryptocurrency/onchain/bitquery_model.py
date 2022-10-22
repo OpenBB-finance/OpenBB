@@ -18,7 +18,7 @@ from openbb_terminal.cryptocurrency.dataframe_helpers import (
 )
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.rich_config import console
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 
 logger = logging.getLogger(__name__)
 
@@ -156,6 +156,7 @@ def _extract_dex_trades(data: dict) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_BITQUERY_KEY"])
 def query_graph(url: str, query: str) -> dict:
     """Helper methods for querying graphql api. [Source: https://bitquery.io/]
 

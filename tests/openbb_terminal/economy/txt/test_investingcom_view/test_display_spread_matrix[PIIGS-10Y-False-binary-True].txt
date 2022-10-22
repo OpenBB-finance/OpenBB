@@ -1,0 +1,7 @@
+                          Yield 10Y                   Portugal                      Italy                    Ireland                     Greece                      Spain
+Portugal  [#00ACFF]3.395%[/#00ACFF]        [#00ACFF][/#00ACFF]  [#e4003a]-137.2[/#e4003a]   [#00ACFF]+53.8[/#00ACFF]  [#e4003a]-158.9[/#e4003a]    [#e4003a]-9.1[/#e4003a]
+Italy     [#00ACFF]4.767%[/#00ACFF]  [#00ACFF]+137.2[/#00ACFF]        [#00ACFF][/#00ACFF]  [#00ACFF]+191.0[/#00ACFF]   [#e4003a]-21.7[/#e4003a]  [#00ACFF]+128.1[/#00ACFF]
+Ireland   [#00ACFF]2.857%[/#00ACFF]   [#e4003a]-53.8[/#e4003a]  [#e4003a]-191.0[/#e4003a]        [#00ACFF][/#00ACFF]  [#e4003a]-212.7[/#e4003a]   [#e4003a]-62.9[/#e4003a]
+Greece    [#00ACFF]4.984%[/#00ACFF]  [#00ACFF]+158.9[/#00ACFF]   [#00ACFF]+21.7[/#00ACFF]  [#00ACFF]+212.7[/#00ACFF]        [#00ACFF][/#00ACFF]  [#00ACFF]+149.8[/#00ACFF]
+Spain     [#00ACFF]3.486%[/#00ACFF]    [#00ACFF]+9.1[/#00ACFF]  [#e4003a]-128.1[/#e4003a]   [#00ACFF]+62.9[/#00ACFF]  [#e4003a]-149.8[/#e4003a]        [#00ACFF][/#00ACFF]
+

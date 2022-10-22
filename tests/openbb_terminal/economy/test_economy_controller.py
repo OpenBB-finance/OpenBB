@@ -290,6 +290,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "call_futures",
             [
                 "--commodity=energy",
+                "--source=Finviz",
                 "--sortby=ticker",
                 "-a",
                 "--export=csv",
@@ -307,6 +308,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "call_futures",
             [
                 "--commodity=metals",
+                "--source=Finviz",
                 "--sortby=ticker",
                 "-a",
                 "--export=csv",
@@ -324,6 +326,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "call_futures",
             [
                 "--commodity=meats",
+                "--source=Finviz",
                 "--sortby=ticker",
                 "-a",
                 "--export=csv",
@@ -342,6 +345,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [
                 "--commodity=grains",
                 "--sortby=ticker",
+                "--source=Finviz",
                 "-a",
                 "--export=csv",
             ],
@@ -359,6 +363,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [
                 "--commodity=softs",
                 "--sortby=ticker",
+                "--source=Finviz",
                 "-a",
                 "--export=csv",
             ],
@@ -432,13 +437,78 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         ),
         (
             "call_ycrv",
-            [
-                "--country=portugal",
-                "--export=csv",
-            ],
+            ["--country=portugal", "--export=csv", "--source=Investing"],
             "investingcom_view.display_yieldcurve",
             [],
             dict(country="portugal", export="csv", raw=False),
+        ),
+        (
+            "call_spread",
+            [
+                "--countries=United states, United Kingdom, France",
+                "--export=csv",
+            ],
+            "investingcom_view.display_spread_matrix",
+            [],
+            dict(
+                countries=["united states", "united kingdom", "france"],
+                maturity="10Y",
+                change=False,
+                color="openbb",
+                raw=False,
+                export="csv",
+            ),
+        ),
+        (
+            "call_spread",
+            ["--group=EZ", "--color=binary", "--maturity=5Y", "--change=True"],
+            "investingcom_view.display_spread_matrix",
+            [],
+            dict(
+                countries="EZ",
+                maturity="5Y",
+                change=True,
+                color="binary",
+                raw=False,
+                export="",
+            ),
+        ),
+        (
+            "call_events",
+            [
+                "--export=csv",
+                "--country=united_states",
+                "--start=2022-10-20",
+                "--end=2022-10-21",
+                "--limit=10",
+            ],
+            "nasdaq_view.display_economic_calendar",
+            [],
+            dict(
+                country=["United States"],
+                start_date="2022-10-20",
+                end_date="2022-10-21",
+                export="csv",
+                limit=10,
+            ),
+        ),
+        (
+            "call_events",
+            [
+                "--export=csv",
+                "--country=united_states",
+                "--date=2023-10-20",
+                "--limit=10",
+            ],
+            "nasdaq_view.display_economic_calendar",
+            [],
+            dict(
+                country=["United States"],
+                start_date="2023-10-20",
+                end_date="2023-10-20",
+                export="csv",
+                limit=10,
+            ),
         ),
     ],
 )

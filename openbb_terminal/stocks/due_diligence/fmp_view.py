@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+import pandas as pd
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
@@ -34,17 +35,21 @@ def rating(symbol: str, limit: int = 10, export: str = ""):
     """
     df = fmp_model.get_rating(symbol)
 
+    if (isinstance(df, pd.DataFrame) and df.empty) or (
+        not isinstance(df, pd.DataFrame) and not df
+    ):
+        return
+
     # TODO: This could be displayed in a nice rating plot over time
 
-    if not df.empty:
-        df = df.astype(str).applymap(lambda x: add_color(x))
+    df = df.astype(str).applymap(lambda x: add_color(x))
 
-        print_rich_table(
-            df.head(limit),
-            headers=df.columns,
-            show_index=True,
-            title="Rating",
-        )
+    print_rich_table(
+        df.head(limit),
+        headers=df.columns,
+        show_index=True,
+        title="Rating",
+    )
 
     export_data(
         export,

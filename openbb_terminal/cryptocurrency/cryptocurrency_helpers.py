@@ -307,23 +307,32 @@ def get_coinpaprika_id(symbol: str):
 def load(
     symbol: str,
     start_date: datetime = (datetime.now() - timedelta(days=1100)),
-    interval: str = "1440",  # 1, 15, 30, 60, 240, 1440, 10080, 43200
+    interval: str = "1440",
     exchange: str = "binance",
     vs_currency: str = "usdt",
     end_date: datetime = datetime.now(),
     source: str = "CCXT",
 ) -> pd.DataFrame:
-    """Load crypto currency to perform analysis on CoinGecko is used as source for price and
-    YahooFinance for volume.
+    """Load crypto currency to get data for.
 
     Parameters
     ----------
     symbol: str
         Coin to get
-    vs: str
-        Quote Currency (usd or eur), by default usd
-    days: int
-        Data up to number of days ago, by default 365
+    start_date: datetime
+        The datetime to start at
+    interval: str
+        The interval between data points in minutes.
+        Choose from: 1, 15, 30, 60, 240, 1440, 10080, 43200
+    exchange: str:
+        The exchange to get data from.
+    vs_currency: str
+        Quote Currency (Defaults to usdt)
+    end_date: datetime
+       The datetime to end at
+    source: str
+        The source of the data
+        Choose from: CCXT, CoinGecko, YahooFinance
 
     Returns
     -------
@@ -458,11 +467,6 @@ def show_quick_performance(
         df["Volume (7D avg)"] = lambda_long_number_format(np.mean(volumes[-9:-2]), 2)
 
     df.insert(0, f"\nPrice ({current_currency.upper()})", closes[-1])
-    # df.insert(
-    #    len(df.columns),
-    #    f"Market Cap ({current_currency.upper()})",
-    #    lambda_long_number_format(int(crypto_df["Market Cap"][-1])),
-    # )
 
     try:
         coingecko_id = get_coingecko_id(symbol)
@@ -890,8 +894,9 @@ def find(
         coins_df = get_coin_list()
         coins_list = coins_df[key].to_list()
         if key in ["symbol", "id"]:
-            coin = query.lower()
-        sim = difflib.get_close_matches(coin, coins_list, limit)
+            query = query.lower()
+
+        sim = difflib.get_close_matches(query, coins_list, limit)
         df = pd.Series(sim).to_frame().reset_index()
         df.columns = ["index", key]
         coins_df.drop("index", axis=1, inplace=True)
@@ -903,9 +908,9 @@ def find(
         keys = {"name": "title", "symbol": "upper", "id": "lower"}
 
         func_key = keys[key]
-        coin = getattr(coin, str(func_key))()
+        query = getattr(query, str(func_key))()
 
-        sim = difflib.get_close_matches(coin, coins_list, limit)
+        sim = difflib.get_close_matches(query, coins_list, limit)
         df = pd.Series(sim).to_frame().reset_index()
         df.columns = ["index", key]
         df = df.merge(coins_df, on=key)
@@ -913,7 +918,7 @@ def find(
     elif source == "Binance":
 
         # TODO: Fix it in future. Determine if user looks for symbol like ETH or ethereum
-        if len(coin) > 5:
+        if len(query) > 5:
             key = "id"
 
         coins_df_gecko = get_coin_list()
@@ -923,13 +928,13 @@ def find(
         )
         coins_list = coins[key].to_list()
 
-        sim = difflib.get_close_matches(coin, coins_list, limit)
+        sim = difflib.get_close_matches(query, coins_list, limit)
         df = pd.Series(sim).to_frame().reset_index()
         df.columns = ["index", key]
         df = df.merge(coins, on=key)
 
     elif source == "Coinbase":
-        if len(coin) > 5:
+        if len(query) > 5:
             key = "id"
 
         coins_df_gecko = get_coin_list()
@@ -939,7 +944,7 @@ def find(
         )
         coins_list = coins[key].to_list()
 
-        sim = difflib.get_close_matches(coin, coins_list, limit)
+        sim = difflib.get_close_matches(query, coins_list, limit)
         df = pd.Series(sim).to_frame().reset_index()
         df.columns = ["index", key]
         df = df.merge(coins, on=key)

@@ -78,6 +78,10 @@ def display_balance(
 
     df = get_balance(from_symbol, to_symbol)
 
+    if not df or df.empty:
+        console.print("[red]No data found[/red]\n")
+        return
+
     total = np.sum(df["Amount"])
     console.print(f"\nYou currently have {total} coins and the breakdown is:")
 

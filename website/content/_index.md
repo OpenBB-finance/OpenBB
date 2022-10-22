@@ -63,7 +63,7 @@ The terminal allows for users to import their own proprietary datasets to use on
 
 <--->
 
-### OpenBB API and Customizable notebook reports
+### OpenBB SDK and Customizable notebook reports
 
 Use our OpenBB Terminal environment to access raw data through a Jupyter Notebook and play with it accordingly. Or just create customizable notebook reports for your colleagues and friends doing research on a particular asset or a macroeconomic event impact on said asset. The possibilities are endless.
 

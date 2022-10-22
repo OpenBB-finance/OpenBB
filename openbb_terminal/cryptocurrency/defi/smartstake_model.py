@@ -5,10 +5,12 @@ from typing import Union, Dict
 import requests
 import pandas as pd
 
+from openbb_terminal.decorators import check_api_key
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.rich_config import console
 
 
+@check_api_key(["API_SMARTSTAKE_KEY", "API_SMARTSTAKE_TOKEN"])
 def get_luna_supply_stats(
     supply_type: str = "lunaSupplyChallengeStats", days: int = 30
 ) -> pd.DataFrame:

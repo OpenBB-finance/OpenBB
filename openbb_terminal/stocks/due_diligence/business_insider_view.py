@@ -95,9 +95,9 @@ def price_target_from_analysts(
         ax.plot(data.index, data[plot_column].values)
 
         if start_date:
-            ax.plot(df_analyst_data.groupby(by=["Date"]).mean()[start_date:])  # type: ignore
+            ax.plot(df_analyst_data.groupby(by=["Date"]).mean(numeric_only=True)[start_date:])  # type: ignore
         else:
-            ax.plot(df_analyst_data.groupby(by=["Date"]).mean())
+            ax.plot(df_analyst_data.groupby(by=["Date"]).mean(numeric_only=True))
 
         ax.scatter(
             df_analyst_data.index,

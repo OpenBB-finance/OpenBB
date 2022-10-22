@@ -157,7 +157,7 @@ class CreateExcelFA:
 
         column = 1
 
-        for key, value in df.iteritems():
+        for key, value in df.items():
             rowI = row
             if header:
                 dcf_model.set_cell(

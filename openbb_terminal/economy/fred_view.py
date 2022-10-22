@@ -176,7 +176,7 @@ def display_fred_series(
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
 def display_yield_curve(
-    date: datetime = datetime.today(),
+    date: datetime = None,
     external_axes: Optional[List[plt.Axes]] = None,
     raw: bool = False,
     export: str = "",
@@ -193,7 +193,7 @@ def display_yield_curve(
     rates, date_of_yield = fred_model.get_yield_curve(date)
     if rates.empty:
         console.print(
-            f"[red]Yield data not found for {date.strftime('%Y-%m-%d')}.[/red]\n"
+            f"[red]Yield data not found for {date_of_yield.strftime('%Y-%m-%d')}.[/red]\n"
         )
         return
     if external_axes is None:

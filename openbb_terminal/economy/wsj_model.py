@@ -7,6 +7,7 @@ import requests
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import get_user_agent
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +21,7 @@ def us_indices() -> pd.DataFrame:
     indices: pd.DataFrame
         Dataframe containing name, price, net change and percent change
     """
-    data = requests.get(
+    url = (
         "https://www.wsj.com/market-data/stocks?id=%7B%22application%22%3A%22WSJ%22%2C%22instruments%22%3A%5B%7B"
         "%22symbol%22%3A%22INDEX%2FUS%2F%2FDJIA%22%2C%22name%22%3A%22DJIA%22%7D%2C%7B%22symbol%22%3A%22INDEX%2FUS%2F"
         "%2FCOMP%22%2C%22name%22%3A%22Nasdaq%20Composite%22%7D%2C%7B%22symbol%22%3A%22INDEX%2FUS%2F%2FSPX%22%2C%22name"
@@ -30,9 +31,17 @@ def us_indices() -> pd.DataFrame:
         "%2FUS%2F%2FB400%22%2C%22name%22%3A%22Barron%27s%20400%22%7D%2C%7B%22symbol%22%3A%22INDEX%2FUS%2F%2FVIX%22%2C%22"
         "name%22%3A%22CBOE%20Volatility%22%7D%2C%7B%22symbol%22%3A%22FUTURE%2FUS%2F%2FDJIA%20FUTURES%22%2C%22name%22%3A%"
         "22DJIA%20Futures%22%7D%2C%7B%22symbol%22%3A%22FUTURE%2FUS%2F%2FS%26P%20500%20FUTURES%22%2C%22name%22%3A%22S%26P"
-        "%20500%20Futures%22%7D%5D%7D&type=mdc_quotes",
-        headers={"User-Agent": get_user_agent()},
-    ).json()
+        "%20500%20Futures%22%7D%5D%7D&type=mdc_quotes"
+    )
+    try:
+        response = requests.get(
+            url,
+            headers={"User-Agent": get_user_agent()},
+        )
+    except requests.exceptions.RequestException:
+        console.print("[red]Could not retrieve data from wsj.[/red]\n")
+        return pd.DataFrame()
+    data = response.json()
 
     name, last_price, net_change, percent_change = [], [], [], []
 
@@ -58,7 +67,7 @@ def market_overview() -> pd.DataFrame:
     overview: pd.DataFrame
         Dataframe containing name, price, net change and percent change
     """
-    data = requests.get(
+    url = (
         "https://www.wsj.com/market-data?id=%7B%22application%22%3A%22WSJ%22%2C%22instruments%22%3A%5B%7B%22symbol%22"
         "%3A%22INDEX%2FUS%2F%2FDJIA%22%2C%22name%22%3A%22DJIA%22%7D%2C%7B%22symbol%22%3A%22INDEX%2FUS%2F%2FSPX%22%2C%22"
         "name%22%3A%22S%26P%20500%22%7D%2C%7B%22symbol%22%3A%22INDEX%2FUS%2F%2FCOMP%22%2C%22name%22%3A%22Nasdaq%20"
@@ -67,9 +76,14 @@ def market_overview() -> pd.DataFrame:
         "22FUTURE%2FUS%2F%2FCRUDE%20OIL%20-%20ELECTRONIC%22%2C%22name%22%3A%22Crude%20Oil%20Futures%22%7D%2C%7B%22symbol"
         "%22%3A%22FUTURE%2FUS%2F%2FGOLD%22%2C%22name%22%3A%22Gold%20Futures%22%7D%2C%7B%22symbol%22%3A%22CURRENCY%2FUS%2"
         "F%2FUSDJPY%22%2C%22name%22%3A%22Yen%22%7D%2C%7B%22symbol%22%3A%22CURRENCY%2FUS%2F%2FEURUSD%22%2C%22name%22%3A%"
-        "22Euro%22%7D%5D%7D&type=mdc_quotes",
-        headers={"User-Agent": get_user_agent()},
-    ).json()
+        "22Euro%22%7D%5D%7D&type=mdc_quotes"
+    )
+    try:
+        response = requests.get(url, headers={"User-Agent": get_user_agent()})
+    except requests.exceptions.RequestException:
+        console.print("[red]Could not retrieve data from wsj.[/red]\n")
+        return pd.DataFrame()
+    data = response.json()
     name, last_price, net_change, percent_change = [], [], [], []
 
     for entry in data["data"]["instruments"]:
@@ -94,7 +108,7 @@ def top_commodities() -> pd.DataFrame:
     commodities: pd.DataFrame
         Dataframe containing name, price, net change and percent change
     """
-    data = requests.get(
+    url = (
         "https://www.wsj.com/market-data/commodities?id=%7B%22application%22%3A%22WSJ%22%2C%22instruments%22%3A%5B%7"
         "B%22symbol%22%3A%22FUTURE%2FUS%2F%2FCRUDE%20OIL%20-%20ELECTRONIC%22%2C%22name%22%3A%22Crude%20Oil%20Futures"
         "%22%7D%2C%7B%22symbol%22%3A%22FUTURE%2FUK%2F%2FBRENT%20CRUDE%22%2C%22name%22%3A%22Brent%20Crude%20Futures%22"
@@ -104,9 +118,14 @@ def top_commodities() -> pd.DataFrame:
         "FUNLEADED%20GASOLINE%22%2C%22name%22%3A%22Unleaded%20Gasoline%20Futures%22%7D%2C%7B%22symbol%22%3A%22FUTURE%"
         "2FUS%2F%2FCOPPER%22%2C%22name%22%3A%22Copper%20Futures%22%7D%2C%7B%22symbol%22%3A%22FUTURE%2FUS%2F%2FCORN%22%2"
         "C%22name%22%3A%22Corn%20Futures%22%7D%2C%7B%22symbol%22%3A%22FUTURE%2FUS%2F%2FWHEAT%22%2C%22name%22%3A%22Wheat"
-        "%20Futures%22%7D%2C%7B%22symbol%22%3A%22INDEX%2FXX%2F%2FBCOM%22%7D%5D%7D&type=mdc_quotes",
-        headers={"User-Agent": get_user_agent()},
-    ).json()
+        "%20Futures%22%7D%2C%7B%22symbol%22%3A%22INDEX%2FXX%2F%2FBCOM%22%7D%5D%7D&type=mdc_quotes"
+    )
+    try:
+        response = requests.get(url, headers={"User-Agent": get_user_agent()})
+    except requests.exceptions.RequestException:
+        console.print("[red]Could not retrieve data from wsj.[/red]\n")
+        return pd.DataFrame()
+    data = response.json()
     name, last_price, net_change, percent_change = [], [], [], []
 
     for entry in data["data"]["instruments"]:
@@ -137,8 +156,7 @@ def us_bonds() -> pd.DataFrame:
     bonds: pd.DataFrame
         Dataframe containing name, coupon rate, yield and change in yield
     """
-
-    data = requests.get(
+    url = (
         "https://www.wsj.com/market-data?id=%7B%22application%22%3A%22WSJ%22%2C%22instruments%22%3A%5B"
         "%7B%22symbol%22%3A%22BOND%2FBX%2F%2FTMUBMUSD30Y%22%2C%22name%22%3A%2230-Year%20Bond%22%7D%2C%7"
         "B%22symbol%22%3A%22BOND%2FBX%2F%2FTMUBMUSD10Y%22%2C%22name%22%3A%2210-Year%20Note%22%7D%2C%7B%2"
@@ -149,9 +167,15 @@ def us_bonds() -> pd.DataFrame:
         "22BOND%2FBX%2F%2FTMUBMUSD01Y%22%2C%22name%22%3A%221-Year%20Bill%22%7D%2C%7B%22symbol%22%3A%22"
         "BOND%2FBX%2F%2FTMUBMUSD06M%22%2C%22name%22%3A%226-Month%20Bill%22%7D%2C%7B%22symbol%22%3A%22BON"
         "D%2FBX%2F%2FTMUBMUSD03M%22%2C%22name%22%3A%223-Month%20Bill%22%7D%2C%7B%22symbol%22%3A%22BOND%"
-        "2FBX%2F%2FTMUBMUSD01M%22%2C%22name%22%3A%221-Month%20Bill%22%7D%5D%7D&type=mdc_quotes",
-        headers={"User-Agent": get_user_agent()},
-    ).json()
+        "2FBX%2F%2FTMUBMUSD01M%22%2C%22name%22%3A%221-Month%20Bill%22%7D%5D%7D&type=mdc_quotes"
+    )
+
+    try:
+        response = requests.get(url, headers={"User-Agent": get_user_agent()})
+    except requests.exceptions.RequestException:
+        console.print("[red]Could not retrieve data from wsj.[/red]\n")
+        return pd.DataFrame()
+    data = response.json()
     name, yield_pct, rate, yld_chng = [], [], [], []
 
     for entry in data["data"]["instruments"]:
@@ -175,16 +199,21 @@ def global_bonds() -> pd.DataFrame:
     bonds: pd.DataFrame
         Dataframe containing name, coupon rate, yield and change in yield
     """
-    data = requests.get(
+    url = (
         "https://www.wsj.com/market-data?id=%7B%22application%22%3A%22WSJ%22%2C%22bonds%22%3A%5"
         "B%7B%22symbol%22%3A%22TMUBMUSD10Y%22%2C%22name%22%3A%22U.S.%2010%20Year%22%7D%2C%7B%22symbol"
         "%22%3A%22TMBMKDE-10Y%22%2C%22name%22%3A%22Germany%2010%20Year%22%7D%2C%7B%22symbol%22%3A%22TMB"
         "MKGB-10Y%22%2C%22name%22%3A%22U.K.%2010%20Year%22%7D%2C%7B%22symbol%22%3A%22TMBMKJP-10Y%22%2C%"
         "22name%22%3A%22Japan%2010%20Year%22%7D%2C%7B%22symbol%22%3A%22TMBMKAU-10Y%22%2C%22name%22%3A%2"
         "2Australia%2010%20Year%22%7D%2C%7B%22symbol%22%3A%22AMBMKRM-10Y%22%2C%22name%22%3A%22China%2010"
-        "%20Year%22%7D%5D%7D&type=mdc_governmentbonds",
-        headers={"User-Agent": get_user_agent()},
-    ).json()
+        "%20Year%22%7D%5D%7D&type=mdc_governmentbonds"
+    )
+    try:
+        response = requests.get(url, headers={"User-Agent": get_user_agent()})
+    except requests.exceptions.RequestException:
+        console.print("[red]Could not retrieve data from wsj.[/red]\n")
+        return pd.DataFrame()
+    data = response.json()
     name, yield_pct, rate, yld_chng = [], [], [], []
 
     for entry in data["data"]["instruments"]:
@@ -208,7 +237,7 @@ def global_currencies() -> pd.DataFrame:
     currencies: pd.DataFrame
         Dataframe containing name, price, net change and percent change
     """
-    data = requests.get(
+    url = (
         "https://www.wsj.com/market-data?id=%7B%22application%22%3A%22WSJ%22%2C%22instruments%22%3A%5"
         "B%7B%22symbol%22%3A%22CURRENCY%2FUS%2F%2FEURUSD%22%2C%22name%22%3A%22Euro%20(EUR%2FUSD)%22%7D%"
         "2C%7B%22symbol%22%3A%22CURRENCY%2FUS%2F%2FUSDJPY%22%2C%22name%22%3A%22Japanese%20Yen%20(USD%2F"
@@ -220,9 +249,14 @@ def global_currencies() -> pd.DataFrame:
         "USDMXN%22%2C%22name%22%3A%22Mexican%20Peso%20(USD%2FMXN)%22%7D%2C%7B%22symbol%22%3A%22CRYPTO"
         "CURRENCY%2FUS%2F%2FBTCUSD%22%2C%22name%22%3A%22Bitcoin%20(BTC%2FUSD)%22%7D%2C%7B%22symbol%22%3A"
         "%22INDEX%2FXX%2F%2FBUXX%22%2C%22name%22%3A%22WSJ%20Dollar%20Index%22%7D%2C%7B%22symbol%22%3A%2"
-        "2INDEX%2FUS%2F%2FDXY%22%2C%22name%22%3A%22U.S.%20Dollar%20Index%22%7D%5D%7D&type=mdc_quotes",
-        headers={"User-Agent": get_user_agent()},
-    ).json()
+        "2INDEX%2FUS%2F%2FDXY%22%2C%22name%22%3A%22U.S.%20Dollar%20Index%22%7D%5D%7D&type=mdc_quotes"
+    )
+    try:
+        response = requests.get(url, headers={"User-Agent": get_user_agent()})
+    except requests.exceptions.RequestException:
+        console.print("[red]Could not retrieve data from wsj.[/red]\n")
+        return pd.DataFrame()
+    data = response.json()
 
     name, last_price, price_change, pct_change = [], [], [], []
     for entry in data["data"]["instruments"]:

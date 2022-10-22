@@ -1,0 +1,4 @@
+                         Yield 5Y                 Portugal                    Spain
+Portugal  [#e4003a]-5.8[/#e4003a]      [#00ACFF][/#00ACFF]  [#e4003a]-0.9[/#e4003a]
+Spain     [#e4003a]-4.9[/#e4003a]  [#00ACFF]+0.9[/#00ACFF]      [#00ACFF][/#00ACFF]
+

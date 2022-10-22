@@ -12,9 +12,9 @@ from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import parent_classes
 from openbb_terminal.core.config.paths import (
+    MISCELLANEOUS_DIRECTORY,
     USER_EXPORTS_DIRECTORY,
-    PORTFOLIO_DATA_DIRECTORY,
-    REPOSITORY_DIRECTORY,
+    USER_PORTFOLIO_DATA_DIRECTORY,
 )
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
@@ -329,7 +329,7 @@ class PortfolioOptimizationController(BaseController):
             "property",
         ]
         self.file_types = ["xlsx", "ini"]
-        self.DEFAULT_ALLOCATION_PATH = PORTFOLIO_DATA_DIRECTORY / "allocation"
+        self.DEFAULT_ALLOCATION_PATH = USER_PORTFOLIO_DATA_DIRECTORY / "allocation"
 
         self.DATA_ALLOCATION_FILES = {
             filepath.name: filepath
@@ -342,13 +342,13 @@ class PortfolioOptimizationController(BaseController):
                 filepath.name: filepath
                 for file_type in self.file_types
                 for filepath in (
-                    REPOSITORY_DIRECTORY / "portfolio" / "allocation"
+                    MISCELLANEOUS_DIRECTORY / "portfolio_examples" / "allocation"
                 ).rglob(f"*.{file_type}")
             }
         )
 
         self.current_file = ""
-        self.DEFAULT_OPTIMIZATION_PATH = PORTFOLIO_DATA_DIRECTORY / "optimization"
+        self.DEFAULT_OPTIMIZATION_PATH = USER_PORTFOLIO_DATA_DIRECTORY / "optimization"
 
         self.DATA_OPTIMIZATION_FILES = {
             filepath.name: filepath
@@ -361,7 +361,7 @@ class PortfolioOptimizationController(BaseController):
                 filepath.name: filepath
                 for file_type in self.file_types
                 for filepath in (
-                    REPOSITORY_DIRECTORY / "portfolio" / "optimization"
+                    MISCELLANEOUS_DIRECTORY / "portfolio_examples" / "optimization"
                 ).rglob(f"*.{file_type}")
             }
         )
@@ -2484,7 +2484,7 @@ class PortfolioOptimizationController(BaseController):
                 return
 
             if ns_parser.file:
-                excel_file = PORTFOLIO_DATA_DIRECTORY / "views" / ns_parser.file
+                excel_file = USER_PORTFOLIO_DATA_DIRECTORY / "views" / ns_parser.file
                 p_views, q_views = excel_model.load_bl_views(excel_file=excel_file)
             else:
                 p_views = ns_parser.p_views
@@ -2531,7 +2531,9 @@ class PortfolioOptimizationController(BaseController):
 
             if table is False:
                 if ns_parser.file_sa:
-                    excel_file = PORTFOLIO_DATA_DIRECTORY / "views" / ns_parser.file_sa
+                    excel_file = (
+                        USER_PORTFOLIO_DATA_DIRECTORY / "views" / ns_parser.file_sa
+                    )
                     p_views_sa, q_views_sa = excel_model.load_bl_views(
                         excel_file=excel_file
                     )

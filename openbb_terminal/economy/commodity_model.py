@@ -35,10 +35,13 @@ def get_debt() -> pd.DataFrame:
             "Country/Region": "Country",
             "External debtUS dollars": "Debt",
             "Per capitaUS dollars": "Per Capita",
+            "External debt US dollars": "Debt",
+            "Per capita US dollars": "Per Capita",
         }
     )
     df = df.set_index("Rank")
     df = df.drop(["Date", "% of GDP"], axis=1)
+    indexes = ["Country", "Per Capita", "Debt"]
     df["Debt"] = df["Debt"].apply(lambda x: format_number(x))
-    df = df[["Country", "Debt", "Per Capita"]]
+    df = df[indexes]
     return df

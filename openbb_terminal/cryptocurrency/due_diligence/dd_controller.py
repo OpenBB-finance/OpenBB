@@ -862,9 +862,8 @@ class DueDiligenceController(CryptoBaseController):
             "--vs",
             help="Quote currency (what to view coin vs)",
             dest="vs",
-            type=str.lower,
             default="usdt",
-            choices=["usdt", "usdc", "btc"],
+            type=str.lower,
         )
 
         if other_args and not other_args[0][0] == "-":
@@ -906,9 +905,8 @@ class DueDiligenceController(CryptoBaseController):
             "--vs",
             help="Quote currency (what to view coin vs)",
             dest="vs",
-            type=str.lower,
             default="usdt",
-            choices=["usdt", "usdc", "btc"],
+            type=str.lower,
         )
 
         if other_args and not other_args[0][0] == "-":
@@ -931,7 +929,11 @@ class DueDiligenceController(CryptoBaseController):
     def call_balance(self, other_args):
         """Process balance command"""
         coin = self.symbol.upper()
-        _, quotes = binance_model.show_available_pairs_for_given_symbol(coin)
+        values = binance_model.show_available_pairs_for_given_symbol(coin)
+        if values:
+            quotes = values[1]
+        else:
+            quotes = None
 
         parser = argparse.ArgumentParser(
             prog="balance",
@@ -955,7 +957,7 @@ class DueDiligenceController(CryptoBaseController):
 
         if ns_parser:
             binance_view.display_balance(
-                to_symbol=coin, from_symbol=ns_parser.vs, export=ns_parser.export
+                from_symbol=coin, to_symbol=ns_parser.vs, export=ns_parser.export
             )
 
     @log_start_end(log=logger)
@@ -1075,8 +1077,8 @@ class DueDiligenceController(CryptoBaseController):
         if ns_parser:
             if self.symbol:
                 coinpaprika_view.display_markets(
-                    symbol=self.symbol,
-                    currency=ns_parser.vs,
+                    from_symbol=self.symbol,
+                    to_symbol=ns_parser.vs,
                     limit=ns_parser.limit,
                     sortby=ns_parser.sortby,
                     ascend=not ns_parser.descend,

@@ -6,7 +6,7 @@ import requests
 import pandas as pd
 
 from openbb_terminal import config_terminal as cfg
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.rich_config import console
 from openbb_terminal.cryptocurrency.discovery.pycoingecko_model import read_file_data
 
@@ -25,6 +25,7 @@ def get_slug(symbol: str) -> str:
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_SANTIMENT_KEY"])
 def get_github_activity(
     symbol: str,
     dev_activity: bool = False,

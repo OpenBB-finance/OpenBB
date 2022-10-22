@@ -26,6 +26,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_KEY_QUANDL"])
 def plot_short_interest(
     symbol: str,
     data: pd.DataFrame,

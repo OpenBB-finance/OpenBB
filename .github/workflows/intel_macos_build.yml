@@ -31,7 +31,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/conda_pkgs_dir
-          key: conda-macos-3-9-${{ hashFiles('build/conda/conda-3-9-env.yaml') }}
+          key: conda-macos-3-9-${{ hashFiles('build/conda/conda-3-9-env-full.yaml') }}
       # Set up miniconda using the environment yaml file within the repo
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2
@@ -41,33 +41,28 @@ jobs:
           channels: conda-forge,defaults
           show-channel-urls: true
           channel-priority: flexible
-          environment-file: build/conda/conda-3-9-env.yaml
+          environment-file: build/conda/conda-3-9-env-full.yaml
           activate-environment: build_env
           use-only-tar-bz2: true # Needed for caching some reason
       - name: Initialize Conda and Reset Terminal
         run: |
           conda init
           exec zsh -l
+          source ~/.zshrc
       - name: Run Poetry
-        shell: bash -l {0}
         run: poetry install
       - name: Install Pyinstaller
-        shell: bash -l {0}
         run: poetry install -E installer
       - name: Install Prediction Modules
-        shell: bash -l {0}
-        run: |
-          conda install -c apple tensorflow-deps
-          pip install tensorflow-macos
+        run: poetry install -E prediction
       # Double Checking Version Number
       - name: Check OpenBB Version
-        shell: bash -l {0}
         run: pip list | grep openbb
       # This is basically the same as build4mac.sh
       - name: Build Bundle
-        shell: bash -l {0}
         run: |
-          pyinstaller build/pyinstaller/terminal.spec
+          conda remove --force sigtool -y
+          pyinstaller build/pyinstaller/terminal.spec --clean
           osascript build/pyinstaller/setup_icons.applescript
           mkdir DMG
           cp -r build/pyinstaller/macOS_package_assets/* DMG/
@@ -105,10 +100,18 @@ jobs:
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*/*/*/*.so
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*/*/*/*/*.so
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*/*/*/*/*/*.so
-          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*/*/*/*/*/*/*.so
           echo "Code Signing DYLIB Files"
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*.dylib
-          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/sklearn/.dylibs/libomp.dylib
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*/*.dylib
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/*/*/*.dylib
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/scipy/.dylibs/*.dylib
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/torch/.dylibs/*.dylib
+          echo "Code Signing Other Files"
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/pyarrow/plasma-store-server
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/torch/bin/protoc
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/torch/bin/protoc-3.13.0.0
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/torch/bin/torch_shm_manager
+          /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/prophet/stan_model/prophet_model.bin
           echo "Code Sign OpenBB Executable File"
           /usr/bin/codesign --deep --force --verify --verbose --options runtime --entitlements "build/pyinstaller/entitlements.plist" -s $MACOS_CODESIGN_IDENTITY DMG/OpenBB\ Terminal/.OpenBB/OpenBBTerminal
       - name: Create DMG
@@ -127,7 +130,7 @@ jobs:
       - name: Deleting Previous Keychain
         run: |
           echo "Deleting Previous Keychain to Clean Instance"
-          rm -rf /Users/ec2-user/Library/Keychains/build.keychain-db
+          rm -rf /Users/openbb/Library/Keychains/build.keychain-db
       - name: Clean up Build Artifacts
         run: |
           rm -rf build/terminal
@@ -162,8 +165,8 @@ jobs:
       - name: Unmount DMG
         run: hdiutil detach /dev/disk3
       - name: Run Integration Tests
-        run: /Users/ec2-user/Desktop/OpenBB\ Terminal/.OpenBB/OpenBBTerminal /Users/ec2-user/actions-runner/_work/OpenBBTerminal/OpenBBTerminal/scripts/*.openbb -t
+        run: /Users/openbb/Desktop/OpenBB\ Terminal/.OpenBB/OpenBBTerminal /Users/openbb/actions-runner/_work/OpenBBTerminal/OpenBBTerminal/openbb_terminal/miscellaneous/scripts/*.openbb -t
       - name: Remove OpenBB Folder
-        run: rm -rf /Users/ec2-user/Desktop/OpenBB\ Terminal
+        run: rm -rf /Users/openbb/Desktop/OpenBB\ Terminal
       - name: Remove OpenBB Exports Folder
         run: rm -rf ~/Desktop/OPENBB-exports

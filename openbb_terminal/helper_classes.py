@@ -11,7 +11,10 @@ import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, ticker
 
-from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY, USER_DATA_DIRECTORY
+from openbb_terminal.core.config.paths import (
+    MISCELLANEOUS_DIRECTORY,
+    USER_DATA_DIRECTORY,
+)
 
 
 class LineAnnotateDrawer:
@@ -99,7 +102,7 @@ class TerminalStyle:
     styles as python dictionaries.
     """
 
-    DEFAULT_STYLES_LOCATION = REPOSITORY_DIRECTORY / "styles" / "default"
+    DEFAULT_STYLES_LOCATION = MISCELLANEOUS_DIRECTORY / "styles" / "default"
     USER_STYLES_LOCATION = USER_DATA_DIRECTORY / "styles" / "user"
 
     mpl_styles_available: Dict[str, str] = {}

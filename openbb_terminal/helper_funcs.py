@@ -1717,8 +1717,12 @@ def screenshot_to_canvas(shot, plot_exists: bool = False):
     BACKGROUND_WIDTH_SLACK = 150
     BACKGROUND_HEIGHT_SLACK = 150
 
-    background = Image.open(Path("images/background.png"))
-    logo = Image.open(Path("images/openbb_horizontal_logo.png"))
+    background = Image.open(
+        Path(os.path.abspath(__file__), "../../images/background.png")
+    )
+    logo = Image.open(
+        Path(os.path.abspath(__file__), "../../images/openbb_horizontal_logo.png")
+    )
 
     try:
         if plot_exists:

@@ -12,6 +12,7 @@ from typing import List, Optional
 
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
+from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal import feature_flags as gtff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import log_and_raise
@@ -95,15 +96,7 @@ class ParametersController(BaseController):
         self.current_model = current_model
         self.description: Optional[str] = None
         self.DEFAULT_PATH = os.path.abspath(
-            os.path.join(
-                os.path.dirname(__file__),
-                "..",
-                "..",
-                "..",
-                "..",
-                "portfolio",
-                "optimization",
-            )
+            MISCELLANEOUS_DIRECTORY / "portfolio_examples" / "optimization"
         )
 
         self.file_types = ["xlsx", "ini"]
@@ -254,9 +247,6 @@ class ParametersController(BaseController):
                 filepath = os.path.abspath(
                     os.path.join(
                         os.path.dirname(__file__),
-                        ".",
-                        "portfolio",
-                        "optimization",
                         ns_parser.file,
                     )
                 )
@@ -403,12 +393,13 @@ class ParametersController(BaseController):
                             f"between {minimum} and {maximum} in steps of "
                             f"{maximum / sum(x > 0 for x in AVAILABLE_OPTIONS[argument])}"
                         )
+
+                        console.print(
+                            f"[red]The value {value} is not an option for {argument}.\n"
+                            f"The value needs to be {options}[/red]"
+                        )
+
                     else:
                         self.params[argument] = str(AVAILABLE_OPTIONS[argument])  # type: ignore
-
-                    console.print(
-                        f"[red]The value {value} is not an option for {argument}.\n"
-                        f"The value needs to be within: {options}.[/red]"
-                    )
 
             console.print()

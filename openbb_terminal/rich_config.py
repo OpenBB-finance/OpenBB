@@ -8,8 +8,8 @@ from typing import Tuple
 from rich import panel
 from rich.console import Console, Theme
 from rich.text import Text
-from rich.color import Color
 import i18n
+from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal import feature_flags as obbff
 
@@ -65,7 +65,7 @@ def get_ordered_list_sources(command_path: str):
     """
     try:
         # Loading in both source files: default sources and user sources
-        default_data_source = Path(__file__).parent.parent / "data_sources_default.json"
+        default_data_source = MISCELLANEOUS_DIRECTORY / "data_sources_default.json"
         user_data_source = Path(obbff.PREFERRED_DATA_SOURCE_FILE)
 
         # Opening default sources file from the repository root
@@ -290,15 +290,7 @@ class ConsoleAndPanel:
         if kwargs and "text" in list(kwargs) and "menu" in list(kwargs):
             if not os.getenv("TEST_MODE"):
                 if obbff.ENABLE_RICH_PANEL:
-                    version = self.blend_text(
-                        f"OpenBB Terminal v{obbff.VERSION}",
-                        Color.parse("#00AAFF").triplet,
-                        Color.parse("#E4003A").triplet,
-                    )
-                    link = " (https://openbb.co)"
-                    link_text = Text(link)
-                    link_text.stylize("#FCED00", 0, len(link))
-                    version += link_text
+                    version = f"[param]OpenBB Terminal v{obbff.VERSION}[/param] (https://openbb.co)"
                     self.console.print(
                         panel.Panel(
                             "\n" + kwargs["text"],

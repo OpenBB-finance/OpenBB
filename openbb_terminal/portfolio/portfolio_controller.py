@@ -21,7 +21,7 @@ from openbb_terminal.helper_funcs import (
 )
 
 from openbb_terminal.menu import session
-from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY
+from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.portfolio import portfolio_model
 from openbb_terminal.portfolio import statics
@@ -109,9 +109,9 @@ class PortfolioController(BaseController):
             {
                 filepath.name: filepath
                 for file_type in self.file_types
-                for filepath in (REPOSITORY_DIRECTORY / "portfolio" / "holdings").rglob(
-                    f"*.{file_type}"
-                )
+                for filepath in (
+                    MISCELLANEOUS_DIRECTORY / "portfolio_examples" / "holdings"
+                ).rglob(f"*.{file_type}")
             }
         )
 

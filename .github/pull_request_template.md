@@ -3,17 +3,17 @@
 - [ ] Summary of the change / bug fix.
 - [ ] Link # issue, if applicable.
 - [ ] Screenshot of the feature or the bug before/after fix, if applicable.
-- [ ] Relevant motivation and context. 
+- [ ] Relevant motivation and context.
 - [ ] List any dependencies that are required for this change.
 
 
 # How has this been tested?
 
-* Please describe the tests that you ran to verify your changes. 
-* Provide instructions so we can reproduce. 
+* Please describe the tests that you ran to verify your changes.
+* Provide instructions so we can reproduce.
 * Please also list any relevant details for your test configuration.
 - [ ] Make sure affected commands still run in terminal
-- [ ] Ensure the api still works
+- [ ] Ensure the SDK still works
 - [ ] Check any related reports
 
 

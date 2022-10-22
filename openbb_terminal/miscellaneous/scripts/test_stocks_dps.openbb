@@ -1,0 +1,15 @@
+stocks
+dps
+shorted
+ctb
+ctb -source stocksera
+hsi
+pos
+sidtc
+prom
+load -t gme
+spos
+psi
+ftd
+dpotc
+exit

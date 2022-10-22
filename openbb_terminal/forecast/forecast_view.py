@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
-from typing import Dict, Optional, List, Union
+from typing import Dict, Optional, List
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -72,52 +72,42 @@ def show_options(
 
 @log_start_end(log=logger)
 def display_plot(
-    data: Union[pd.DataFrame, Dict[str, pd.DataFrame]],
+    data: pd.DataFrame,
+    columns: List[str],
     export: str = "",
     external_axes: Optional[List[plt.axes]] = None,
 ):
     """Plot data from a dataset
     Parameters
     ----------
-    data: Dict[str: pd.DataFrame]
-        Dictionary with key being dataset.column and dataframes being values
+    data: pd.DataFrame
+        The dataframe to plot
+    columns: List[str]
+        The columns to show
     export: str
         Format to export image
     external_axes:Optional[List[plt.axes]]
         External axes to plot on
     """
-    if isinstance(data, pd.DataFrame):
-        data = {col: data[col] for col in data.columns}
-
-    for dataset_col in list(data):
-        if isinstance(data[dataset_col].index, pd.MultiIndex):
-            console.print(
-                "The index appears to be a multi-index. "
-                "Therefore, it is not possible to plot the data."
-            )
-            del data[dataset_col]
 
     # Check that there's at least a valid dataframe
-    if data:
-        if external_axes is None:
-            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-        else:
-            ax = external_axes[0]
+    if external_axes is None:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+    else:
+        ax = external_axes[0]
 
-        for dataset_col in data:
-            try:
-                if isinstance(data[dataset_col], pd.Series):
-                    ax.plot(data[dataset_col].index, data[dataset_col].values)
-                elif isinstance(data[dataset_col], pd.DataFrame):
-                    ax.plot(data[dataset_col])
-            except TypeError:
-                print(f"Unable to plot column: {dataset_col}")
+    # Only do if data is not plotted, otherwise an error will occur
+    if "date" in data.columns and "date" not in columns:
+        data = data.set_index("date")
 
-            theme.style_primary_axis(ax)
-            if external_axes is None:
-                theme.visualize_output()
+    for column in columns:
+        ax.plot(data[column], label=column)
 
-        ax.legend(list(data.keys()))
+    theme.style_primary_axis(ax)
+    if external_axes is None:
+        theme.visualize_output()
+
+    ax.legend()
 
     export_data(
         export,

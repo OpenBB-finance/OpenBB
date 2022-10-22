@@ -2,9 +2,9 @@
     futures            display a futures and commodities overview                      [WallStreetJournal, Finviz]
     map                S&P500 index stocks map                                         [Finviz]
     bigmac             The Economist Big Mac index                                     [Nasdaq]
-    ycrv               show sovereign yield curves                                     [Investing, FRED]
-    events             display economic calendar                                       [Investing]
-    edebt              shows external debt statistics for various countries            [Wikipedia]
+    ycrv               show sovereign yield curves                                     [FRED, Investing]
+    events             show economic calendar                                          [Nasdaq, Investing]
+    edebt              show external debt statistics for various countries             [Wikipedia]
 
     rtps               real-time performance sectors                                   [AlphaVantage]
     valuation          valuation of sectors, industry, country                         [Finviz]
@@ -19,6 +19,7 @@ Databases:
 
 Stored datasets: 
 
+    eval               create new series by performing operations on loaded data
     plot               plot data from the above commands together
 
 >   qa                 Open quantitative analysis menu with stored data

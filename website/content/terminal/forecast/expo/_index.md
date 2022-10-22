@@ -1,7 +1,7 @@
 ```
-usage: expo [--trend {N,A,M}] [--dampen DAMPEN] [--naive] [-d {}] [-c TARGET_COLUMN] [-n N_DAYS] [-s {N,A,M}]
-            [-p SEASONAL_PERIODS] [-w START_WINDOW] [--end S_END_DATE] [--start S_START_DATE] [--residuals]
-                        [--forecast-only] [-h] [--export EXPORT]
+usage: expo [--trend {N,A,M}] [--dampen DAMPEN] [--naive] [-d {AAPL}] [-c TARGET_COLUMN] [-n N_DAYS] [-s {N,A,M}] [-p SEASONAL_PERIODS]
+            [-w START_WINDOW] [--end S_END_DATE] [--start S_START_DATE] [--residuals] [--forecast-only] [--export-pred-raw] [-h]
+            [--export EXPORT]
 ```
 
 Perform Probabilistic Exponential Smoothing forecast Trend: N: None, A: Additive, M: Multiplicative Seasonality: N: None, A: Additive, M: Multiplicative Dampen: T: True, F: False
@@ -11,7 +11,7 @@ optional arguments:
   --trend {N,A,M}       Trend: N: None, A: Additive, M: Multiplicative. (default: A)
   --dampen DAMPEN       Dampening (default: F)
   --naive               Show the naive baseline for a model. (default: False)
-  -d {}, --target-dataset {}
+  -d {AAPL}, --target-dataset {AAPL}
                         The name of the dataset you want to select (default: None)
   -c TARGET_COLUMN, --target-column TARGET_COLUMN
                         The name of the specific column you want to use (default: close)
@@ -27,11 +27,11 @@ optional arguments:
   --start S_START_DATE  The start date (format YYYY-MM-DD) to select for testing (default: None)
   --residuals           Show the residuals for the model. (default: False)
   --forecast-only       Do not plot the hisotorical data without forecasts. (default: False)
+  --export-pred-raw     Export predictions to a csv file. (default: False)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export figure into png, jpg, pdf, svg (default: )
 
-
-For more information and examples, use 'about export' to access the related guide.
+For more information and examples, use 'about expo' to access the related guide.
 ```
 
 Example:

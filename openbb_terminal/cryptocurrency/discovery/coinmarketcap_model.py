@@ -7,7 +7,7 @@ import pandas as pd
 from coinmarketcapapi import CoinMarketCapAPI, CoinMarketCapAPIError
 
 import openbb_terminal.config_terminal as cfg
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import log_start_end, check_api_key
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -24,6 +24,7 @@ sort_map = {
 
 
 @log_start_end(log=logger)
+@check_api_key(["API_CMC_KEY"])
 def get_cmc_top_n(sortby: str = "CMC_Rank", ascend: bool = True) -> pd.DataFrame:
     """Shows top n coins. [Source: CoinMarketCap]
 

@@ -1,10 +1,8 @@
 ```
-usage: tcn [--num-filters NUM_FILTERS] [--weight-norm WEIGHT_NORM] [--dilation-base DILATION_BASE]
-           [--past-covariates PAST_COVARIATES] [--all-past-covariates] [--naive] [-d {}] [-c TARGET_COLUMN] [-n N_DAYS]
-           [-t TRAIN_SPLIT] [-i INPUT_CHUNK_LENGTH] [-o OUTPUT_CHUNK_LENGTH] [--force-reset FORCE_RESET]
-           [--save-checkpoints SAVE_CHECKPOINTS] [--model-save-name MODEL_SAVE_NAME] [--n-epochs N_EPOCHS]
-           [--dropout DROPOUT] [--batch-size BATCH_SIZE] [--end S_END_DATE] [--start S_START_DATE]
-           [--learning-rate LEARNING_RATE] [--residuals] [--forecast-only] [-h] [--export EXPORT]
+usage: tcn [--num-filters NUM_FILTERS] [--weight-norm WEIGHT_NORM] [--dilation-base DILATION_BASE] [--past-covariates PAST_COVARIATES] [--all-past-covariates] [--naive] [-d {AAPL}]
+           [-c TARGET_COLUMN] [-n N_DAYS] [-t TRAIN_SPLIT] [-i INPUT_CHUNK_LENGTH] [-o OUTPUT_CHUNK_LENGTH] [--force-reset FORCE_RESET] [--save-checkpoints SAVE_CHECKPOINTS]
+           [--model-save-name MODEL_SAVE_NAME] [--n-epochs N_EPOCHS] [--dropout DROPOUT] [--batch-size BATCH_SIZE] [--end S_END_DATE] [--start S_START_DATE] [--learning-rate LEARNING_RATE]
+           [--residuals] [--forecast-only] [--export-pred-raw] [-h] [--export EXPORT]
 ```
 
 Perform TCN forecast.
@@ -22,7 +20,7 @@ optional arguments:
   --all-past-covariates
                         Adds all rows as past covariates except for date and the target column. (default: False)
   --naive               Show the naive baseline for a model. (default: False)
-  -d {}, --target-dataset {}
+  -d {AAPL}, --target-dataset {AAPL}
                         The name of the dataset you want to select (default: None)
   -c TARGET_COLUMN, --target-column TARGET_COLUMN
                         The name of the specific column you want to use (default: close)
@@ -35,8 +33,7 @@ optional arguments:
   -o OUTPUT_CHUNK_LENGTH, --output-chunk-length OUTPUT_CHUNK_LENGTH
                         The length of the forecast of the model. (default: 5)
   --force-reset FORCE_RESET
-                        If set to True, any previously-existing model with the same name will be reset (all checkpoints
-                        will be discarded). (default: True)
+                        If set to True, any previously-existing model with the same name will be reset (all checkpoints will be discarded). (default: True)
   --save-checkpoints SAVE_CHECKPOINTS
                         Whether to automatically save the untrained model and checkpoints. (default: True)
   --model-save-name MODEL_SAVE_NAME
@@ -51,10 +48,11 @@ optional arguments:
                         Learning rate during training. (default: 0.001)
   --residuals           Show the residuals for the model. (default: False)
   --forecast-only       Do not plot the hisotorical data without forecasts. (default: False)
+  --export-pred-raw     Export predictions to a csv file. (default: False)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export figure into png, jpg, pdf, svg (default: )
 
-For more information and examples, use 'about export' to access the related guide.
+For more information and examples, use 'about tcn' to access the related guide.
 ```
 
 Example:

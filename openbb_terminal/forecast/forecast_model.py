@@ -14,19 +14,35 @@ import numpy as np
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
+from openbb_terminal.core.config.paths import (
+    USER_EXPORTS_DIRECTORY,
+    USER_CUSTOM_IMPORTS_DIRECTORY,
+)
 
 logger = logging.getLogger(__name__)
 
 
-default_files = {
-    filepath.name: filepath
-    for file_type in ["csv", "xlsx"]
-    for filepath in chain(
-        Path("exports").rglob(f"*.{file_type}"),
-        Path("custom_imports").rglob(f"*.{file_type}"),
-    )
-    if filepath.is_file()
-}
+base_file_types = ["csv", "xlsx"]
+
+
+def get_default_files() -> Dict[str, Path]:
+    """Get the default files to load.
+
+    Returns
+    -------
+    default_files : Dict[str, Path]
+        A dictionary to map the default file names to their paths.
+    """
+    default_files = {
+        filepath.name: filepath
+        for file_type in base_file_types
+        for filepath in chain(
+            USER_EXPORTS_DIRECTORY.rglob(f"*.{file_type}"),
+            USER_CUSTOM_IMPORTS_DIRECTORY.rglob(f"*.{file_type}"),
+        )
+        if filepath.is_file()
+    }
+    return default_files
 
 
 @log_start_end(log=logger)
@@ -57,7 +73,7 @@ def load(
     if file_types is None:
         file_types = ["csv", "xlsx"]
     if data_files is None:
-        data_files = default_files
+        data_files = get_default_files()
 
     if file in data_files:
         full_file = data_files[file]
@@ -541,4 +557,5 @@ def corr_df(df: pd.DataFrame) -> pd.DataFrame:
     df: pd.DataFrame
         The df with the new data
     """
-    return df.corr()
+    corr = df.corr(numeric_only=True)
+    return corr
