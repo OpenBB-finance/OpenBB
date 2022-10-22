@@ -56,7 +56,7 @@ from openbb_terminal.helper_funcs import parse_and_split_input
 from openbb_terminal.common import feedparser_view
 from openbb_terminal.reports.reports_model import ipykernel_launcher
 
-# pylint: disable=too-many-public-methods,import-outside-toplevel
+# pylint: disable=too-many-public-methods,import-outside-toplevel, too-many-function-args
 # pylint: disable=too-many-branches,no-member,C0302,too-many-return-statements
 
 logger = logging.getLogger(__name__)
@@ -1084,15 +1084,13 @@ def run_routine(file: str, routines_args=List[str]):
 
 
 def main(
-    module: str,
-    module_file: str,
-    module_hist_file: str,
     debug: bool,
     test: bool,
     filtert: str,
     path_list: List[str],
     verbose: bool,
     routines_args: List[str] = None,
+    **kwargs,
 ):
     """
     Runs the terminal with various options
@@ -1114,8 +1112,8 @@ def main(
         E.g. GME,AMC,BTC-USD
     """
 
-    if module == "ipykernel_launcher":
-        ipykernel_launcher(module_file, module_hist_file)
+    if kwargs["module"] == "ipykernel_launcher":
+        ipykernel_launcher(kwargs["module_file"], kwargs["module_hist_file"])
 
     if test:
         run_test_list(path_list=path_list, filtert=filtert, verbose=verbose)
@@ -1142,21 +1140,21 @@ def parse_args_and_run():
     )
     parser.add_argument(
         "-m",
-        help="ipykernel_launcher",
+        help="Mock ipykernel_launcher.",
         dest="module",
         default="",
         type=str,
     )
     parser.add_argument(
         "-f",
-        help="ipykernel_launcher",
+        help="Mock ipykernel_launcher.",
         dest="module_file",
         default="",
         type=str,
     )
     parser.add_argument(
         "--HistoryManager.hist_file",
-        help="ipykernel_launcher",
+        help="Mock ipykernel_launcher.",
         dest="module_hist_file",
         default="",
         type=str,

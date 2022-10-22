@@ -9,11 +9,11 @@ import os
 from pathlib import Path
 import sys
 from threading import Thread
-from ipykernel.kernelapp import IPKernelApp
 import webbrowser
 from ast import literal_eval
 from datetime import datetime
 from typing import Any, Dict, List, Union
+from ipykernel.kernelapp import IPKernelApp
 import papermill as pm
 import pandas as pd
 
