@@ -6,10 +6,11 @@ ctb -source stocksera
 hsi
 pos
 sidtc
-prom
 load -t gme
 spos
 psi
 ftd
+load aapl -i 5
+ftd -n 5 --raw
 dpotc
 exit

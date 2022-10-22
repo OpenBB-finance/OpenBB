@@ -1,63 +1,44 @@
 stocks
-load aa
+load aapl
 fa
-data -h
-mgmt -h
-analysis -h
-info -h
-shrs -h
-sust -h
-cal -h
-web -h
-hq -h
-divs -h
-overview -h
-key -h
-income -h
-balance -h
-cash -h
+income -l 2 --source YahooFinance
+income -l 2 --source Polygon
+income -l 2 --source AlphaVantage
+income -l 2 --source FinancialModelingPrep
+balance -l 2 --source YahooFinance
+balance -l 2 --source Polygon
+balance -l 2 --source AlphaVantage
+balance -l 2 --source FinancialModelingPrep
+cash -l 2 --source YahooFinance
+cash -l 2 --source Polygon
+cash -l 2 --source AlphaVantage
+cash -l 2 --source FinancialModelingPrep
 data
 mgmt
 analysis
-info
-shrs
-sust
-cal
-web
-hq
-divs
-divs -l 8
-divs --limit 24 --plot
-overview
-key
-income
-income -l 3
-balance
-cash
-load goog
-data
-mgmt
-analysis
-info
-shrs
-sust
-cal
-web
-hq
-divs
-divs --limit 24 -p
-overview
-key
-income
-balance
-cash
-dcf
-splits
-mktcap
-dupont
-dcfc
+score
+profile
+quote
 enterprise
 metrics
 ratios
 growth
-exit
+warnings
+warnings -d
+dcfc
+info
+mktcap
+shrs
+shrs major
+shrs mutualfund
+sust
+cal
+divs
+divs -p
+splits
+overview
+key
+earnings --source YahooFinance
+earnings --source AlphaVantage
+fraud
+dupont
