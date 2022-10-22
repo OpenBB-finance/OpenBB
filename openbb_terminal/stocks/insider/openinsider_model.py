@@ -1481,7 +1481,6 @@ def get_print_insider_data(type_insider: str = "lcb", limit: int = 10):
         df.columns = columns
     else:
         df.columns = columns[1:]
-
     df["Filing Date"] = df["Filing Date"].apply(
         lambda x: "\n".join(textwrap.wrap(x, width=10)) if isinstance(x, str) else x
     )
