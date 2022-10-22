@@ -927,15 +927,6 @@ class InsiderController(StockBaseController):
             description="""Prints insider activity over time [Source: Business Insider]""",
         )
         parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="limit",
-            type=check_positive,
-            default=10,
-            help="Limit of latest insider activity.",
-        )
-        parser.add_argument(
             "--raw",
             action="store_true",
             default=False,
@@ -945,7 +936,7 @@ class InsiderController(StockBaseController):
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
         )
         if ns_parser:
             if self.ticker:
