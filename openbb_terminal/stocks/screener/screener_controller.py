@@ -169,6 +169,7 @@ class ScreenerController(BaseController):
             help="View specific custom preset",
             default="",
             choices=self.preset_choices,
+            metavar="Desired preset.",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
@@ -194,6 +195,7 @@ class ScreenerController(BaseController):
             default="template",
             help="Filter presets",
             choices=self.preset_choices,
+            metavar="Desired preset.",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
@@ -281,6 +283,7 @@ class ScreenerController(BaseController):
             default=self.preset,
             help="Filter presets",
             choices=self.preset_choices,
+            metavar="Desired preset.",
         )
         parser.add_argument(
             "-l",
@@ -358,6 +361,7 @@ class ScreenerController(BaseController):
             default=self.preset,
             help="Filter presets",
             choices=self.preset_choices,
+            metavar="Desired preset.",
         )
         parser.add_argument(
             "-l",
@@ -435,6 +439,7 @@ class ScreenerController(BaseController):
             default=self.preset,
             help="Filter presets",
             choices=self.preset_choices,
+            metavar="Desired preset.",
         )
         parser.add_argument(
             "-l",
@@ -513,6 +518,7 @@ class ScreenerController(BaseController):
             default=self.preset,
             help="Filter presets",
             choices=self.preset_choices,
+            metavar="Desired preset.",
         )
         parser.add_argument(
             "-l",
@@ -591,6 +597,7 @@ class ScreenerController(BaseController):
             default=self.preset,
             help="Filter presets",
             choices=self.preset_choices,
+            metavar="Desired preset.",
         )
         parser.add_argument(
             "-l",
@@ -669,6 +676,7 @@ class ScreenerController(BaseController):
             default=self.preset,
             help="Filter presets",
             choices=self.preset_choices,
+            metavar="Desired preset.",
         )
         parser.add_argument(
             "-l",
