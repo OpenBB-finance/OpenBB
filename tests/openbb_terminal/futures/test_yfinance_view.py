@@ -43,7 +43,7 @@ def test_display_historical(tickers):
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "ticker",
-    ["BLK", "OJ"],
+    ["BLK"],
 )
 def test_display_curve(ticker):
     yfinance_view.display_curve(

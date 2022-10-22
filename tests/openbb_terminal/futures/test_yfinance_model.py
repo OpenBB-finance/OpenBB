@@ -46,7 +46,6 @@ def test_get_historical_futures(recorder, tickers):
 @pytest.mark.parametrize(
     "ticker",
     [
-        ["BLK"],
         ["ES"],
     ],
 )
