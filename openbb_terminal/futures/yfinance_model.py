@@ -5,13 +5,15 @@ import os
 import sys
 import logging
 from typing import Dict, List
+from datetime import datetime
 
 import yfinance as yf
 import pandas as pd
 from dateutil.relativedelta import relativedelta
-from datetime import datetime
 
 from openbb_terminal.decorators import log_start_end
+
+# pylint: disable=attribute-defined-outside-init
 
 logger = logging.getLogger(__name__)
 
