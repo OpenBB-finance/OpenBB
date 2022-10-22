@@ -199,6 +199,7 @@ class InsiderController(StockBaseController):
             help="View specific preset",
             default="",
             choices=self.preset_choices,
+            metavar="Desired preset",
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -242,7 +243,7 @@ class InsiderController(StockBaseController):
                             if line.strip() == "[General]":
                                 break
                             description += line.strip()
-                    console.print(f"\nPRESET: {preset}")
+                    console.print(f"\nPRESET: {preset.strip('.ini')}")
                     console.print(
                         description.split("Description: ")[1].replace("#", "")
                     )
@@ -265,6 +266,7 @@ class InsiderController(StockBaseController):
             default="template",
             help="Filter presets",
             choices=self.preset_choices,
+            metavar="Desired preset",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")

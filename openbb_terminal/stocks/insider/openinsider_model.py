@@ -1112,13 +1112,13 @@ def get_preset_choices() -> Dict:
     PRESETS_PATH = USER_PRESETS_DIRECTORY / "stocks" / "insider"
     PRESETS_PATH_DEFAULT = Path(__file__).parent / "presets"
     preset_choices = {
-        filepath.name: filepath
+        filepath.name.strip(".ini"): filepath
         for filepath in PRESETS_PATH.iterdir()
         if filepath.suffix == ".ini"
     }
     preset_choices.update(
         {
-            filepath.name: filepath
+            filepath.name.strip(".ini"): filepath
             for filepath in PRESETS_PATH_DEFAULT.iterdir()
             if filepath.suffix == ".ini"
         }
