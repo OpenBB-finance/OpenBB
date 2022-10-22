@@ -162,10 +162,16 @@ def extract_parameters(input_path: str) -> Dict[str, str]:
         notebook_content = file.read()
 
     # Look for the metadata cell to understand if there are parameters required by the report
+    # Two options in case the first is not found:
     metadata_cell = """"metadata": {\n    "tags": [\n     "parameters"\n    ]\n   },\n   "outputs":"""
 
     # Locate position of the data of interest and get parameters
-    metadata = notebook_content[notebook_content.find(metadata_cell) :]  # noqa: E203
+    if notebook_content.find(metadata_cell) >= 0:
+        position = notebook_content.find(metadata_cell)
+    else:
+        return {}
+
+    metadata = notebook_content[position:]  # noqa: E203
     cell_start = 'source": '
     cell_end = "]"
     start_position = metadata.find(cell_start)
