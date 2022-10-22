@@ -133,7 +133,7 @@ functions = {
     "stocks.ba.spac": {
         "model": "openbb_terminal.common.behavioural_analysis.reddit_model.get_spac"
     },
-    "stocks.ba.spac_c": {
+    "stocks.ba.spacc": {
         "model": "openbb_terminal.common.behavioural_analysis.reddit_model.get_spac_community"
     },
     "stocks.ba.watchlist": {
@@ -2049,6 +2049,18 @@ forecast_extras = {
     "forecast.nhits": {
         "model": "openbb_terminal.forecast.nhits_model.get_nhits_data",
         "view": "openbb_terminal.forecast.nhits_view.display_nhits_forecast",
+    },
+    "futures.search": {
+        "model": "openbb_terminal.futures.yfinance_model.get_search_futures",
+        "view": "openbb_terminal.forecast.nhits_view.display_search",
+    },
+    "futures.historical": {
+        "model": "openbb_terminal.futures.yfinance_model.get_historical_futures",
+        "view": "openbb_terminal.forecast.nhits_view.display_historical",
+    },
+    "futures.curve": {
+        "model": "openbb_terminal.futures.yfinance_model.get_curve_futures",
+        "view": "openbb_terminal.forecast.nhits_view.display_curve",
     },
 }
 
