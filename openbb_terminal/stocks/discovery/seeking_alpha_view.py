@@ -36,6 +36,9 @@ def upcoming_earning_release_dates(
 
     df_earnings = seeking_alpha_model.get_next_earnings(num_pages)
 
+    if df_earnings.empty:
+        console.print("No upcoming earnings release dates found")
+
     pd.set_option("display.max_colwidth", None)
     if export:
         l_earnings = []

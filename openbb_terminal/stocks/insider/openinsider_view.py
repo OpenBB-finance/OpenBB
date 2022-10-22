@@ -179,9 +179,9 @@ def print_insider_filter(
         return
 
     if links:
-        df_insider = df_insider[["Ticker Link", "Insider Link", "Filing Link"]].head(
-            limit
-        )
+        df_insider = df_insider[
+            ["Ticker Link", "Insider Link", "Filing Link", "Filing Date"]
+        ].head(limit)
     else:
         df_insider = df_insider.drop(
             columns=["Filing Link", "Ticker Link", "Insider Link"]
@@ -219,7 +219,7 @@ def print_insider_filter(
 
     else:
         # needs to be done because table is too large :(
-        new_df_insider = df_insider.drop(columns=["Filing Date"])
+        new_df_insider = df_insider.drop(columns=["Filing Date"], axis=1)
 
     print_rich_table(
         new_df_insider,

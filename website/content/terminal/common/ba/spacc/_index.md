@@ -1,5 +1,5 @@
 ```
-usage: spac_c [-l N_LIMIT] [-p] [-h]
+usage: spacc [-l N_LIMIT] [-p] [-h]
 ```
 
 Print other users SPACs announcements under subreddit 'SPACs'. [Source: Reddit]
@@ -14,7 +14,7 @@ optional arguments:
 
 Example:
 ```
-2022 Feb 16, 10:43 (✨) /stocks/ba/ $ spac_c
+2022 Feb 16, 10:43 (✨) /stocks/ba/ $ spacc
 2022-02-16 11:35:01 - I scraped r/SPACs for the top ticker mentions in the last 24H. Here are the results (Wednesday February 16, 2022)
 https://old.reddit.com/r/SPACs/comments/sttsnl/i_scraped_rspacs_for_the_top_ticker_mentions_in/
 

@@ -112,11 +112,11 @@ def insider_activity(
             shares_range = (
                 df_insider[df_insider["Type"] == "Buy"]
                 .groupby(by=["Date"])
-                .sum()["Trade"]
+                .sum(numeric_only=True)["Trade"]
                 .max()
                 - df_insider[df_insider["Type"] == "Sell"]
                 .groupby(by=["Date"])
-                .sum()["Trade"]
+                .sum(numeric_only=True)["Trade"]
                 .min()
             )
             n_proportion = price_range / shares_range
@@ -124,7 +124,7 @@ def insider_activity(
             for ind in (
                 df_insider[df_insider["Type"] == "Sell"]
                 .groupby(by=["Date"])
-                .sum()
+                .sum(numeric_only=True)
                 .index
             ):
                 if ind in data.index:
@@ -145,7 +145,7 @@ def insider_activity(
                     * float(
                         df_insider[df_insider["Type"] == "Sell"]
                         .groupby(by=["Date"])
-                        .sum()["Trade"][ind]
+                        .sum(numeric_only=True)["Trade"][ind]
                     ),
                     ymax=n_stock_price,
                     colors=theme.down_color,
@@ -154,7 +154,10 @@ def insider_activity(
                 )
 
             for ind in (
-                df_insider[df_insider["Type"] == "Buy"].groupby(by=["Date"]).sum().index
+                df_insider[df_insider["Type"] == "Buy"]
+                .groupby(by=["Date"])
+                .sum(numeric_only=True)
+                .index
             ):
                 if ind in data.index:
                     ind_dt = ind
@@ -175,7 +178,7 @@ def insider_activity(
                     * float(
                         df_insider[df_insider["Type"] == "Buy"]
                         .groupby(by=["Date"])
-                        .sum()["Trade"][ind]
+                        .sum(numeric_only=True)["Trade"][ind]
                     ),
                     colors=theme.up_color,
                     ls="-",

@@ -1,11 +1,14 @@
 stocks
 ins
 view
-view whales
-set whales
-filter
+view whales.ini
+set Electronics.ini
+filter -l 4
+filter -l 2 -u
 load aapl
 stats
+stats -u
+act --raw
 act
 lins
 lcb 3

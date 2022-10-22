@@ -1,0 +1,22 @@
+    Ticker                           Description Exchange Category
+0       YI          1,000 oz Mini Silver Futures      NYB   metals
+1      ALI                      Aluminum Futures      CMX   metals
+13     HG0               Copper Spot TAS Futures      CMX   metals
+14     HGT                    Copper TAS Futures      CMX   metals
+19      QC                 E-mini Copper Futures      CMX   metals
+22      QO                   E-mini Gold Futures      CMX   metals
+23      GC                      CME Gold Futures      CMX   metals
+24     SGU           Shanghai Gold (USD) Futures      CMX   metals
+28      QI                 E-mini Silver Futures      CMX   metals
+31     GCT              Gold TAS Futures Futures      CMX   metals
+38      HG                        Copper Futures      CMX   metals
+39     MHG           E-mini Micro Copper Futures      CMX   metals
+40     MGC             E-mini Micro Gold Futures      CMX   metals
+41     SIL          E-mini Micro Silver Futures       CMX   metals
+43      YG                   E-mini Gold Futures      NYB   metals
+53     SIT                    Silver TAS Futures      CMX   metals
+153     PL                      Platinum Futures      NYM   metals
+154     PA                     Palladium Futures      NYM   metals
+155    BUS  US Midwest Busheling Ferrous Futures      CMX   metals
+156    AUP          Aluminum MW U.S. Transaction      CMX   metals
+
