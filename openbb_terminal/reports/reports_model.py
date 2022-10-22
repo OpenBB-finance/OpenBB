@@ -301,9 +301,8 @@ def execute_notebook(input_path, parameters, output_path):
 
     input_path = add_ipynb_extension(input_path)
 
-    origin_stdout = sys.stdout
-    sys.stdout = StringIO()
-
+    # origin_stdout = sys.stdout
+    # sys.stdout = open("trash", "w")
     try:
         result = pm.execute_notebook(
             input_path=input_path,
@@ -311,29 +310,25 @@ def execute_notebook(input_path, parameters, output_path):
             parameters=parameters,
         )
 
-        sys.stdout = origin_stdout
-
         if not result["metadata"]["papermill"]["exception"]:
+            console.print(f"\n[green]Notebook:[/green] {output_path}.ipynb")
             if obbff.OPEN_REPORT_AS_HTML:
                 report_output_path = os.path.join(
                     os.path.abspath(os.path.join(".")), output_path + ".html"
                 )
                 webbrowser.open(f"file://{report_output_path}")
-                console.print(f"\nReport: {report_output_path}")
-            console.print(f"\nNotebook: {output_path}.ipynb\n")
+                console.print(f"\n[green]Report:[/green] {report_output_path}\n")
+            else:
+                console.print("\n")
         else:
             console.print("[red]\nReport .html couldn't be created.\n[/red]")
 
-    except Exception as e:
+    except pm.PapermillExecutionError as e:
 
-        sys.stdout = origin_stdout
-        raise Exception(
-            "[red]An error was encountered in the notebook, check the notebook:[/red]\n"
-            f" {output_path}\n"
-        ) from e
-
-    # Safeguard
-    sys.stdout = origin_stdout
+        console.print(
+            f"[red]An error was encountered in cell [{e.cell_index}], check the notebook:[/red]\n"
+            f"{output_path}\n"
+        )
 
 
 @log_start_end(log=logger)
