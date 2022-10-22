@@ -7,7 +7,7 @@ wsb
 wsb --new
 watchlist
 popular -l 5 -n 10
-spac_c
+spacc
 spac
 getdd
 reddit_sent
