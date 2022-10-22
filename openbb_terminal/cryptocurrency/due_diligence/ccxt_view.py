@@ -1,6 +1,7 @@
 """Ccxt view"""
 __docformat__ = "numpy"
 
+import logging
 import os
 from typing import List, Optional
 
@@ -8,9 +9,13 @@ from matplotlib import pyplot as plt
 import numpy as np
 from openbb_terminal.cryptocurrency.cryptocurrency_helpers import plot_order_book
 from openbb_terminal.cryptocurrency.due_diligence import ccxt_model
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
 
+logger = logging.getLogger(__name__)
 
+
+@log_start_end(log=logger)
 def display_order_book(
     exchange: str,
     symbol: str,
@@ -49,6 +54,7 @@ def display_order_book(
     )
 
 
+@log_start_end(log=logger)
 def display_trades(
     exchange: str, symbol: str, vs: str, limit: int = 10, export: str = ""
 ):

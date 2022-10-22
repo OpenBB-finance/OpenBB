@@ -482,7 +482,7 @@ functions = {
         "view": "openbb_terminal.cryptocurrency.due_diligence.binance_view.display_balance",
     },
     "crypto.dd.ob": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.ccxt_view.get_orderbook",
+        "model": "openbb_terminal.cryptocurrency.due_diligence.ccxt_model.get_orderbook",
         "view": "openbb_terminal.cryptocurrency.due_diligence.ccxt_view.display_order_book",
     },
     "crypto.dd.show_available_pairs_for_given_symbol": {
@@ -494,10 +494,6 @@ functions = {
     "crypto.dd.candles": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.coinbase_model.get_candles",
         "view": "openbb_terminal.cryptocurrency.due_diligence.coinbase_view.display_candles",
-    },
-    "crypto.dd.cbbook": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.coinbase_model.get_order_book",
-        "view": "openbb_terminal.cryptocurrency.due_diligence.coinbase_view.display_order_book",
     },
     "crypto.dd.stats": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.coinbase_model.get_product_stats",
