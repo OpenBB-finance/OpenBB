@@ -33,7 +33,6 @@ def test_get_search_futures(recorder, category):
     "tickers",
     [
         ["BLK", "OJ"],
-        ["ES"],
     ],
 )
 def test_get_historical_futures(recorder, tickers):
