@@ -222,9 +222,6 @@ class ETFController(BaseController):
             nargs="+",
             help="Name to look for ETFs",
             default="",
-            required="-h" not in other_args
-            and "-n" not in other_args
-            and "--name" not in other_args,
         )
 
         if other_args and "-" not in other_args[0][0]:
