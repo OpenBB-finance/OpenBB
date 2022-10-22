@@ -5,8 +5,8 @@ from typing import Optional, List
 import logging
 import os
 
-from matplotlib import pyplot as plt
 from datetime import datetime, timedelta
+from matplotlib import pyplot as plt
 
 from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
