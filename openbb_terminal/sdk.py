@@ -481,9 +481,9 @@ functions = {
         "model": "openbb_terminal.cryptocurrency.due_diligence.binance_view.get_balance",
         "view": "openbb_terminal.cryptocurrency.due_diligence.binance_view.display_balance",
     },
-    "crypto.dd.book": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.binance_view.get_order_book",
-        "view": "openbb_terminal.cryptocurrency.due_diligence.binance_view.display_order_book",
+    "crypto.dd.ob": {
+        "model": "openbb_terminal.cryptocurrency.due_diligence.ccxt_view.get_orderbook",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.ccxt_view.display_order_book",
     },
     "crypto.dd.show_available_pairs_for_given_symbol": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.coinbase_model.show_available_pairs_for_given_symbol"
@@ -504,8 +504,8 @@ functions = {
         "view": "openbb_terminal.cryptocurrency.due_diligence.coinbase_view.display_stats",
     },
     "crypto.dd.trades": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.coinbase_model.get_trades",
-        "view": "openbb_terminal.cryptocurrency.due_diligence.coinbase_view.display_trades",
+        "model": "openbb_terminal.cryptocurrency.due_diligence.ccxt_model.get_trades",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.ccxt_view.display_trades",
     },
     "crypto.dd.trading_pair_info": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.coinbase_model.get_trading_pair_info"
@@ -640,6 +640,14 @@ functions = {
     "crypto.nft.stats": {
         "model": "openbb_terminal.cryptocurrency.nft.opensea_model.get_collection_stats",
         "view": "openbb_terminal.cryptocurrency.nft.opensea_view.display_collection_stats",
+    },
+    "crypto.nft.fp": {
+        "model": "openbb_terminal.cryptocurrency.nft.nftpricefloor_model.get_floor_price",
+        "view": "openbb_terminal.cryptocurrency.nft.nftpricefloor_view.display_floor_price",
+    },
+    "crypto.nft.collections": {
+        "model": "openbb_terminal.cryptocurrency.nft.nftpricefloor_model.get_collections",
+        "view": "openbb_terminal.cryptocurrency.nft.nftpricefloor_view.display_collections",
     },
     "crypto.onchain.dvcp": {
         "model": "openbb_terminal.cryptocurrency.onchain.bitquery_model.get_daily_dex_volume_for_given_pair",
@@ -1914,6 +1922,7 @@ functions = {
     "crypto.load": {
         "model": "openbb_terminal.cryptocurrency.cryptocurrency_helpers.load"
     },
+    "crypto.price": {"model": "openbb_terminal.cryptocurrency.pyth_model.get_price"},
     "crypto.find": {
         "model": "openbb_terminal.cryptocurrency.cryptocurrency_helpers.find"
     },
