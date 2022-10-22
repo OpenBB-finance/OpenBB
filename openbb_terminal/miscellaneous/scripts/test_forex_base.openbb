@@ -1,15 +1,5 @@
 forex
-h
-help
-?
-q
-forex
-..
-forex
-quit
-forex
-to EUR
+load EURUSD
 fwd
-r
-reset
+quote
 exit

@@ -6,7 +6,8 @@ view high_IV
 set high_IV
 scr
 q
-unu
+unu -l 2 -s Strike -a -c
+unu -l 2 -s Vol
 calc
 load aapl
 exp 0
@@ -18,9 +19,16 @@ vol
 voi
 hist 100
 grhist 100
+greeks
 plot -x ltd -y iv
-parity
-binom
+parity -p -m 150 -M 175
+binom -s 150
 load spy
 vsurf
+load NDX --source Nasdaq
+exp 0 --source Nasdaq
+chains --source Nasdaq
+oi --source Nasdaq
+vol --source Nasdaq
+voi --source Nasdaq
 exit
