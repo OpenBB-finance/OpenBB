@@ -1184,7 +1184,7 @@ def parse_args_and_run():
         default=None,
     )
     # The args -m, -f and --HistoryManager.hist_file are used only in reports menu
-    # and should be hidden.
+    # by papermill and that's why they have suppress help.
     parser.add_argument(
         "-m",
         help=argparse.SUPPRESS,
@@ -1210,13 +1210,14 @@ def parse_args_and_run():
         sys.argv.insert(1, "--file")
     ns_parser, unknown = parser.parse_known_args()
 
-    # If terminal.py receives unknown args it will not start.
+    # This ensures that if terminal.py receives unknown args it will not start.
     # Use -d flag if you want to see the unknown args.
     if unknown:
         if ns_parser.debug:
             console.print(unknown)
         else:
             sys.exit(-1)
+
     main(
         ns_parser.debug,
         ns_parser.test,
