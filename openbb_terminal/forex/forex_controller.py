@@ -210,11 +210,11 @@ class ForexController(BaseController):
                 )
 
                 self.source = ns_parser.source
-
-                console.print(f"{self.from_symbol}-{self.to_symbol} loaded.\n")
+                if self.source != "YahooFinance":
+                    console.print(f"{self.from_symbol}-{self.to_symbol} loaded.\n")
             else:
 
-                console.print("\n[red]Make sure to loa.[/red]\n")
+                console.print("\n[red]Make sure to load.[/red]\n")
 
     @log_start_end(log=logger)
     def call_candle(self, other_args: List[str]):
