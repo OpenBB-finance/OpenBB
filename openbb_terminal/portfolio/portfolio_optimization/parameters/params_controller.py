@@ -12,6 +12,7 @@ from typing import List, Optional
 
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
+from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal import feature_flags as gtff
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import log_and_raise
@@ -95,15 +96,7 @@ class ParametersController(BaseController):
         self.current_model = current_model
         self.description: Optional[str] = None
         self.DEFAULT_PATH = os.path.abspath(
-            os.path.join(
-                os.path.dirname(__file__),
-                "..",
-                "..",
-                "..",
-                "..",
-                "portfolio",
-                "optimization",
-            )
+            MISCELLANEOUS_DIRECTORY / "portfolio_examples" / "optimization"
         )
 
         self.file_types = ["xlsx", "ini"]

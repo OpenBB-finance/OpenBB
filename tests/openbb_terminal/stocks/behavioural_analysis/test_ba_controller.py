@@ -247,7 +247,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             dict(limit=2),
         ),
         (
-            "call_spac_c",
+            "call_spacc",
             ["--limit=5", "--popular"],
             "reddit_view.display_spac_community",
             [],
@@ -454,7 +454,7 @@ def test_call_func(
     [
         "call_watchlist",
         "call_spac",
-        "call_spac_c",
+        "call_spacc",
         "call_wsb",
         "call_popular",
         "call_bullbear",

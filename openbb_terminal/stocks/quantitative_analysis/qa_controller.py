@@ -99,7 +99,7 @@ class QaController(StockBaseController):
             zero_to_hundred_detailed: dict = {
                 str(c): {} for c in np.arange(0.0, 100.0, 0.1)
             }
-            choices["pick"] = {c: {} for c in list(stock.columns)}
+            choices["pick"] = {c: {} for c in list(self.stock.columns)}
             choices["load"] = {
                 "--ticker": None,
                 "-t": "--ticker",
@@ -587,9 +587,9 @@ class QaController(StockBaseController):
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            if self.target != "AdjClose":
+            if self.target != "adjclose":
                 console.print(
-                    "Target not AdjClose.  For best results, use `pick AdjClose` first."
+                    "Target not adjclose.  For best results, use `pick adjclose` first."
                 )
 
             qa_view.display_acf(

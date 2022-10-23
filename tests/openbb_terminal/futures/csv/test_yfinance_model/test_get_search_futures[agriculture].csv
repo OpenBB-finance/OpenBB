@@ -1,0 +1,39 @@
+,Ticker,Description,Exchange,Category
+2,BLK,Block Cheese Futures,CME,agriculture
+6,CB,Cash-Settled Butter Futures,CME,agriculture
+7,CSC,Cash-Settled Cheese Futures,CME,agriculture
+9,ZW,Chicago SRW Wheat Futures,CBT,agriculture
+10,ZWT,Chicago SRW Wheat TAS Futures,CBT,agriculture
+11,DC,Class III Milk Futures,CME,agriculture
+12,GDK,Class IV Milk Futures,CME,agriculture
+15,ZC,Corn Futures,CBT,agriculture
+16,ZCT,Corn TAS Futures,CBT,agriculture
+18,DY,Dry Whey Futures,CME,agriculture
+29,GF,Feeder Cattle Futures,CME,agriculture
+30,GFT,Feeder Cattle TAS Futures,CME,agriculture
+32,KE,KC HRW Wheat Futures,CBT,agriculture
+33,KET,KC HRW Wheat TAS Futures,CBT,agriculture
+34,HE,Lean Hogs Futures,CME,agriculture
+35,HET,Lean Hogs TAS Futures,CME,agriculture
+36,LE,Live Cattle Futures,CME,agriculture
+37,LET,Live Cattle TAS Futures,CME,agriculture
+44,XK,Mini Soybean Futures,CBT,agriculture
+45,XC,Mini Corn Futures,CBT,agriculture
+46,XW,Mini Chicago SRW Wheat Futures,CBT,agriculture
+47,GNF,Nonfat Dry Milk Futures,CME,agriculture
+48,ZO,Oats Futures,CBT,agriculture
+49,PRK,Pork Cutout Futures,CME,agriculture
+51,ZR,Rough Rice Futures,CBT,agriculture
+54,ZS,Soybean Futures,CBT,agriculture
+55,ZM,Soybean Meal Futures,CBT,agriculture
+56,ZMT,Soybean Meal TAS Futures,CBT,agriculture
+57,ZL,Soybean Oil Futures,CBT,agriculture
+58,ZLT,Soybean Oil TAS Futures,CBT,agriculture
+59,SBT,Soybean TAS Futures,CBT,agriculture
+176,UFV,Urea (Granular) FOB US Gulf Futures,CBT,agriculture
+177,CC,Cocoa Futures,NYB,agriculture
+178,KC,Coffee Futures,NYB,agriculture
+179,CT,Cotton Futures,NYB,agriculture
+180,SF,Sugar No. 16 Futures,NYB,agriculture
+181,SB,Sugar No. 11 Futures,NYB,agriculture
+182,OJ,Orange Juice Futures,NYB,agriculture

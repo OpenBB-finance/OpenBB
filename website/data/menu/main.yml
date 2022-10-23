@@ -60,8 +60,8 @@ main:
               ref: /terminal/common/ba/popular
             - name: queries
               ref: /terminal/common/ba/queries
-            - name: reddit_sent
-              ref: /terminal/common/ba/reddit_sent
+            - name: redditsent
+              ref: /terminal/common/ba/redditsent
             - name: regions
               ref: /terminal/common/ba/regions
             - name: rise
@@ -72,8 +72,8 @@ main:
               ref: /terminal/common/ba/snews
             - name: spac
               ref: /terminal/common/ba/spac
-            - name: spac_c
-              ref: /terminal/common/ba/spac_c
+            - name: spacc
+              ref: /terminal/common/ba/spacc
             - name: stalker
               ref: /terminal/common/ba/stalker
             - name: stats
@@ -182,7 +182,7 @@ main:
               ref: /terminal/common/ta/wma
             - name: zlma
               ref: /terminal/common/ta/zlma
-      - name: Cryptocurrency
+      - name: cryptocurrency
         ref: /terminal/crypto
         sub:
           - name: candle
@@ -862,6 +862,15 @@ main:
             ref: /terminal/funds/search
           - name: sector
             ref: /terminal/funds/sector
+      - name: futures
+        ref: /terminal/futures
+        sub:
+          - name: search
+            ref: /terminal/futures/search
+          - name: historical
+            ref: /terminal/futures/historical
+          - name: curve
+            ref: /terminal/futures/curve
       - name: jupyter
         ref: /terminal/jupyter
         sub:
@@ -1069,8 +1078,8 @@ main:
             sub:
               - name: ema
                 ref: /terminal/stocks/bt/ema
-              - name: ema_cross
-                ref: /terminal/stocks/bt/ema_cross
+              - name: emacross
+                ref: /terminal/stocks/bt/emacross
               - name: rsi
                 ref: /terminal/stocks/bt/rsi
               - name: whatif
@@ -1102,8 +1111,8 @@ main:
                 ref: /terminal/common/ba/popular
               - name: queries
                 ref: /terminal/common/ba/queries
-              - name: reddit_sent
-                ref: /terminal/common/ba/reddit_sent
+              - name: redditsent
+                ref: /terminal/common/ba/redditsent
               - name: regions
                 ref: /terminal/common/ba/regions
               - name: rise
@@ -1114,8 +1123,8 @@ main:
                 ref: /terminal/common/ba/snews
               - name: spac
                 ref: /terminal/common/ba/spac
-              - name: spac_c
-                ref: /terminal/common/ba/spac_c
+              - name: spacc
+                ref: /terminal/common/ba/spacc
               - name: stalker
                 ref: /terminal/common/ba/stalker
               - name: stats
@@ -2424,14 +2433,14 @@ main:
                 ref: /SDK/stocks/ba/messages
               - name: snews
                 ref: /SDK/stocks/ba/snews
-              - name: spac_c
-                ref: /SDK/stocks/ba/spac_c
+              - name: spacc
+                ref: /SDK/stocks/ba/spacc
               - name: stalker
                 ref: /SDK/stocks/ba/stalker
               - name: trend
                 ref: /SDK/stocks/ba/trend
-              - name: reddit_sent
-                ref: /SDK/stocks/ba/reddit_sent
+              - name: redditsent
+                ref: /SDK/stocks/ba/redditsent
               - name: headlines
                 ref: /SDK/stocks/ba/headlines
               - name: queries
@@ -2469,8 +2478,8 @@ main:
                 ref: /SDK/stocks/bt/ema
               - name: rsi
                 ref: /SDK/stocks/bt/rsi
-              - name: ema_cross
-                ref: /SDK/stocks/bt/ema_cross
+              - name: emacross
+                ref: /SDK/stocks/bt/emacross
           - name: disc
             ref: /SDK/stocks/disc
             sub:
