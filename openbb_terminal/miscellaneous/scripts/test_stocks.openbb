@@ -1,9 +1,14 @@
 stocks
-search apple
+search -c United States -s Consumer Cyclical -i Specialty Retail -e USA -l 5
+load aaple -i 5
 load aapl -s 2022-10-01
+quote
 tob
 tob -e EDGX
 candle
+candle -t --ma 5,10
+candle --raw
+candle --sort AdjClose -d --raw
 codes
-news
+news -l 3
 exit

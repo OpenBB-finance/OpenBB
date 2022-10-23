@@ -58,13 +58,13 @@ class ScreenerController(BaseController):
 
     PRESETS_PATH_DEFAULT = Path(__file__).parent / "presets"
     preset_choices = {
-        filepath.name: filepath
+        filepath.name.strip(".ini"): filepath
         for filepath in PRESETS_PATH.iterdir()
         if filepath.suffix == ".ini"
     }
     preset_choices.update(
         {
-            filepath.name: filepath
+            filepath.name.strip(".ini"): filepath
             for filepath in PRESETS_PATH_DEFAULT.iterdir()
             if filepath.suffix == ".ini"
         }
@@ -169,11 +169,17 @@ class ScreenerController(BaseController):
             help="View specific custom preset",
             default="",
             choices=self.preset_choices,
+            metavar="Desired preset.",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
+            if ns_parser.preset:
+                if ns_parser.preset in finviz_model.d_signals:
+                    console.print("This is a Finviz preset.\n")
+                    return
+                ns_parser.preset += ".ini"
             screener_view.display_presets(ns_parser.preset)
             console.print("")
 
@@ -194,12 +200,13 @@ class ScreenerController(BaseController):
             default="template",
             help="Filter presets",
             choices=self.preset_choices,
+            metavar="Desired preset.",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            self.preset = ns_parser.preset
+            self.preset = ns_parser.preset + ".ini"
         console.print("")
 
     @log_start_end(log=logger)
@@ -281,6 +288,7 @@ class ScreenerController(BaseController):
             default=self.preset,
             help="Filter presets",
             choices=self.preset_choices,
+            metavar="Desired preset.",
         )
         parser.add_argument(
             "-l",
@@ -315,12 +323,17 @@ class ScreenerController(BaseController):
         )
 
         if ns_parser:
+            if self.preset.strip(".ini") in finviz_model.d_signals:
+                preset = self.preset.strip(".ini")
+            else:
+                preset = self.preset
+
             if ns_parser.sort:
                 if ns_parser.sort not in finviz_view.d_cols_to_sort["overview"]:
                     console.print(f"{ns_parser.sort} not a valid sort choice.\n")
                 else:
                     self.screen_tickers = finviz_view.screener(
-                        loaded_preset=self.preset,
+                        loaded_preset=preset,
                         data_type="overview",
                         limit=ns_parser.limit,
                         ascend=ns_parser.ascend,
@@ -331,7 +344,7 @@ class ScreenerController(BaseController):
             else:
 
                 self.screen_tickers = finviz_view.screener(
-                    loaded_preset=self.preset,
+                    loaded_preset=preset,
                     data_type="overview",
                     limit=ns_parser.limit,
                     ascend=ns_parser.ascend,
@@ -358,6 +371,7 @@ class ScreenerController(BaseController):
             default=self.preset,
             help="Filter presets",
             choices=self.preset_choices,
+            metavar="Desired preset.",
         )
         parser.add_argument(
             "-l",
@@ -435,6 +449,7 @@ class ScreenerController(BaseController):
             default=self.preset,
             help="Filter presets",
             choices=self.preset_choices,
+            metavar="Desired preset.",
         )
         parser.add_argument(
             "-l",
@@ -513,6 +528,7 @@ class ScreenerController(BaseController):
             default=self.preset,
             help="Filter presets",
             choices=self.preset_choices,
+            metavar="Desired preset.",
         )
         parser.add_argument(
             "-l",
@@ -591,6 +607,7 @@ class ScreenerController(BaseController):
             default=self.preset,
             help="Filter presets",
             choices=self.preset_choices,
+            metavar="Desired preset.",
         )
         parser.add_argument(
             "-l",
@@ -669,6 +686,7 @@ class ScreenerController(BaseController):
             default=self.preset,
             help="Filter presets",
             choices=self.preset_choices,
+            metavar="Desired preset.",
         )
         parser.add_argument(
             "-l",
