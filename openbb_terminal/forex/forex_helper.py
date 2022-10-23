@@ -60,7 +60,14 @@ INTERVAL_MAPS: Dict = {
         "1month": "1mo",
         "3month": "3mo",
     },
-    "AlphaVantage": {"1min": 1, "5min": 5, "15min": 15, "30min": 30, "60min": 60},
+    "AlphaVantage": {
+        "1min": 1,
+        "5min": 5,
+        "15min": 15,
+        "30min": 30,
+        "60min": 60,
+        "1day": 1,
+    },
 }
 
 logger = logging.getLogger(__name__)
@@ -102,16 +109,17 @@ def load(
     if source in ["YahooFinance", "AlphaVantage"]:
         interval_map = INTERVAL_MAPS[source]
 
-        if interval not in interval_map.keys():
+        if interval not in interval_map.keys() and resolution != "d":
             console.print(
                 f"Interval not supported by {FOREX_SOURCES[source]}."
                 " Need to be one of the following options",
-                interval_map.keys(),
+                list(interval_map.keys()),
             )
             return pd.DataFrame()
 
         if source == "AlphaVantage":
-
+            if "min" in interval:
+                resolution = "i"
             df = av_model.get_historical(
                 to_symbol=to_symbol,
                 from_symbol=from_symbol,
