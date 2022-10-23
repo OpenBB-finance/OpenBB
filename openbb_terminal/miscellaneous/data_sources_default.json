@@ -498,7 +498,7 @@
     "sector": ["YahooFinance"],
     "equity": ["YahooFinance"],
     "alswe": ["Avanza"],
-    "info_swe": ["Avanza"]
+    "infoswe": ["Avanza"]
   },
   "futures": {
     "search": ["YahooFinance"],
