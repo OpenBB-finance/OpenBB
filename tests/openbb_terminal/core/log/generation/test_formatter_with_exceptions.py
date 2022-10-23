@@ -1,9 +1,13 @@
+# IMPORTATION STANDARD
+
+# IMPORTATION THIRDPARTY
 import pytest
+
+# IMPORTATION INTERNAL
 from openbb_terminal.core.log.generation.formatter_with_exceptions import (
     FormatterWithExceptions,
 )
 from openbb_terminal.core.log.generation.settings import AppSettings
-from openbb_terminal.core.config.paths import HOME_DIRECTORY
 
 app_settings = AppSettings(
     commit_hash="MOCK_COMMIT_HASH",
@@ -34,7 +38,11 @@ def test_extract_log_extra(mocker, recorder):
 
 
 def test_filter_log_line(recorder):
-    text = f"test 1.1.1.1 testestest chavi@chavi.com testestest {HOME_DIRECTORY} testestest"
+    text = "test 1.1.1.1 testestest chavi@chavi.com testestest C:\\Users\\username\\some folder\\some path testestest"
+    text_expected = FormatterWithExceptions.filter_log_line(text=text)
+    recorder.capture(text_expected)
+
+    text = "test 1.1.1.1 testestest chavi@chavi.com testestest /home/username/some folder/some path testestest"
     text_expected = FormatterWithExceptions.filter_log_line(text=text)
     recorder.capture(text_expected)
 
