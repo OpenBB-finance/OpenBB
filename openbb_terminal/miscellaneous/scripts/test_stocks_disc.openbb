@@ -19,13 +19,15 @@ active
 ulc
 asc
 arkord
+arkord --fund ARKX -s Total
 upcoming
-divcal
 trending
-cnews
+cnews -t notable-calls
 lowfloat
 hotpenny
 rtat
+divcal -s Dividend -a
+heatmap
 reset
 r
 exit
