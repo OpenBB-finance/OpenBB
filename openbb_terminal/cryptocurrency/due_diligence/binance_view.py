@@ -78,7 +78,7 @@ def display_balance(
 
     df = get_balance(from_symbol, to_symbol)
 
-    if not df or df.empty:
+    if df is None or df.empty:
         console.print("[red]No data found[/red]\n")
         return
 
