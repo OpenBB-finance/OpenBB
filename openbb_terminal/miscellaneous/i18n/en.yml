@@ -863,7 +863,7 @@ en:
   funds/sector: sector weightings
   funds/equity: equity holdings
   funds/alswe: display fund allocation (sector, country, holdings)
-  funds/info_swe: get fund information
+  funds/infoswe: get fund information
   funds/forecast: forecasting techniques
   alternative/covid: COVID menu,                 cases, deaths, rates
   alternative/oss: Open Source menu,           star history, repos information
