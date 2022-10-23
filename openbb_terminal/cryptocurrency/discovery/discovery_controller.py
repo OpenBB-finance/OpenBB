@@ -147,7 +147,7 @@ class DiscoveryController(BaseController):
             prog="top",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="""Display N coins from the data source, if the data scource is CoinGecko it
+            description="""Display N coins from the data source, if the data source is CoinGecko it
             can receive a category as argument (-c decentralized-finance-defi or -c stablecoins)
             and will show only the top coins in that category.
             can also receive sort arguments (these depend on the source), e.g., --sort Volume [$]
