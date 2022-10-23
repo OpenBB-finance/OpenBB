@@ -573,6 +573,7 @@ def display_hist_contracts(
         print_rich_table(
             df_contracts,
             headers=list(df_contracts.columns),
+            floatfmt=[".0f", ".0f", ".2f"],
             title="Historical Quarterly Government Contracts",
         )
 
