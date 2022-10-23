@@ -1,7 +1,5 @@
 etf
-ln oil
-ld oil
-load spy
+load spy -l 5
 ca
 volume
 exit

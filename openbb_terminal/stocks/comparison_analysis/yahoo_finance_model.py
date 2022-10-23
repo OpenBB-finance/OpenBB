@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 import logging
 from datetime import datetime, timedelta
 from typing import List
+import warnings
 
 import numpy as np
 import pandas as pd
@@ -194,9 +195,11 @@ def get_sp500_comps_tsne(
 
     close_vals = close_vals.fillna(method="bfill")
     rets = close_vals.pct_change()[1:].T
-
-    model = TSNE(learning_rate=lr)
+    # Future warning from sklearn.  Think 1.2 will stop printing it
+    warnings.filterwarnings("ignore", category=FutureWarning)
+    model = TSNE(learning_rate=lr, init="pca")
     tsne_features = model.fit_transform(normalize(rets))
+    warnings.resetwarnings()
     xs = tsne_features[:, 0]
     ys = tsne_features[:, 1]
 
