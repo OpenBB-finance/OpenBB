@@ -63,13 +63,12 @@ jobs:
       - name: Run Integration Tests
         run: dist\OpenBBTerminal\OpenBBTerminal.exe C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\openbb_terminal\miscellaneous\scripts -t
       # Cleaning ------------------------
-      # Make sure to add Remove-Item C:\Users\Administrator\Desktop\OPENBB-exports -Recurse whenever integration tests get fixed
-      # - name: Remove Previous Build
-      #   run: |
-      #     Remove-Item '.\build\nsis\OpenBB Terminal Setup.exe' -Recurse
-      #     Remove-Item .\build\nsis\app\ -Recurse
-      #     Remove-Item .\dist\ -Recurse
-      #     Remove-Item .\build\terminal\ -Recurse
+      - name: Remove Previous Build
+        run: |
+          Remove-Item '.\build\nsis\OpenBB Terminal Setup.exe' -Recurse
+          Remove-Item .\build\nsis\app\ -Recurse
+          Remove-Item .\dist\ -Recurse
+          Remove-Item .\build\terminal\ -Recurse
       - name: Deactivate & Remove Conda Environment
         run: |
           conda deactivate obb
