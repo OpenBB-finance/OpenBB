@@ -57,7 +57,7 @@ repos:
     hooks:
       - id: pylint
         name: pylint
-        entry: pylint openbb_terminal terminal.py tests
+        entry: pylint openbb_terminal terminal.py tests -j 4
         language: system
         types: [python]
   - repo: https://github.com/Yelp/detect-secrets
