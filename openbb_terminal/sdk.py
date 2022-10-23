@@ -123,9 +123,9 @@ functions = {
         "model": "openbb_terminal.common.behavioural_analysis.reddit_model.get_popular_tickers",
         "view": "openbb_terminal.common.behavioural_analysis.reddit_view.display_popular_tickers",
     },
-    "stocks.ba.reddit_sent": {
+    "stocks.ba.redditsent": {
         "model": "openbb_terminal.common.behavioural_analysis.reddit_model.get_posts_about",
-        "view": "openbb_terminal.common.behavioural_analysis.reddit_view.display_reddit_sent",
+        "view": "openbb_terminal.common.behavioural_analysis.reddit_view.display_redditsent",
     },
     "stocks.ba.text_sent": {
         "model": "openbb_terminal.common.behavioural_analysis.reddit_model.get_sentiment"

@@ -60,8 +60,8 @@ main:
               ref: /terminal/common/ba/popular
             - name: queries
               ref: /terminal/common/ba/queries
-            - name: reddit_sent
-              ref: /terminal/common/ba/reddit_sent
+            - name: redditsent
+              ref: /terminal/common/ba/redditsent
             - name: regions
               ref: /terminal/common/ba/regions
             - name: rise
@@ -1111,8 +1111,8 @@ main:
                 ref: /terminal/common/ba/popular
               - name: queries
                 ref: /terminal/common/ba/queries
-              - name: reddit_sent
-                ref: /terminal/common/ba/reddit_sent
+              - name: redditsent
+                ref: /terminal/common/ba/redditsent
               - name: regions
                 ref: /terminal/common/ba/regions
               - name: rise
@@ -2439,8 +2439,8 @@ main:
                 ref: /SDK/stocks/ba/stalker
               - name: trend
                 ref: /SDK/stocks/ba/trend
-              - name: reddit_sent
-                ref: /SDK/stocks/ba/reddit_sent
+              - name: redditsent
+                ref: /SDK/stocks/ba/redditsent
               - name: headlines
                 ref: /SDK/stocks/ba/headlines
               - name: queries
