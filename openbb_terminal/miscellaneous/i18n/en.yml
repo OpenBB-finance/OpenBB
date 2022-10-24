@@ -80,6 +80,9 @@ en:
   forex: foreign exchanges, quotes, forward rates for currency pairs and oanda integration
   funds: mutual funds search, overview, holdings and sector weights
   futures: commodities, bonds, index, bitcoin and forex
+  futures/search: search for a future based on category or exchange
+  futures/historical: get historical timeseries
+  futures/curve: get futures curves
   alternative: alternative datasets, such as COVID and open source metrics
   econometrics: statistical and quantitative methods for relationships between datasets
   forecast: timeseries forecasting with machine learning
