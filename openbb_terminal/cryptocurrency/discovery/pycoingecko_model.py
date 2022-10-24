@@ -109,7 +109,12 @@ def get_categories_keys() -> List[str]:
 
 
 @log_start_end(log=logger)
-def get_coins(limit: int = 250, category: str = "", sortby="Symbol") -> pd.DataFrame:
+def get_coins(
+    limit: int = 250,
+    category: str = "",
+    sortby: str = "Symbol",
+    ascending: bool = False,
+) -> pd.DataFrame:
 
     """Get N coins from CoinGecko [Source: CoinGecko]
 
@@ -121,6 +126,8 @@ def get_coins(limit: int = 250, category: str = "", sortby="Symbol") -> pd.DataF
         Category of the coins we want to retrieve
     sortby: str
         Key to sort data
+    ascending: bool
+        Sort data in ascending order
 
     Returns
     -------
@@ -161,7 +168,7 @@ def get_coins(limit: int = 250, category: str = "", sortby="Symbol") -> pd.DataF
             page += 1
     if sortby in COINS_COLUMNS_MAP:
         df = df[(df["total_volume"].notna()) & (df["market_cap"].notna())]
-        df = df.sort_values(by=COINS_COLUMNS_MAP[sortby], ascending=False)
+        df = df.sort_values(by=COINS_COLUMNS_MAP[sortby], ascending=ascending)
     df = df.astype({"market_cap_rank": "Int64"})
     return df.head(table_size)
 

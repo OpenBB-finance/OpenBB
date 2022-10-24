@@ -192,6 +192,14 @@ class DiscoveryController(BaseController):
             dest="descend",
             default=False,
         )
+        parser.add_argument(
+            "-a",
+            "--ascending",
+            dest="ascending",
+            help="Sort in ascending order",
+            action="store_true",
+            default=False,
+        )
 
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "-c")
