@@ -331,7 +331,7 @@ The `OpenBBUserData` folder's default location is the home of the system user ac
  - Files to be imported by various functions
  - Styles and themes
  - Preferred data sources
- - Anonymized useage logs
+ - Anonymized usage logs
 
 <img width="1117" alt="The settings menu" src="https://user-images.githubusercontent.com/85772166/195736718-a1b821da-5977-437a-bd18-b44add2a29a2.png">
 
