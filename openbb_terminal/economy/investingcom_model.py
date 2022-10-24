@@ -157,8 +157,10 @@ MATRIX_CHOICES = list(MATRIX_COUNTRIES.keys())
 def check_correct_country(country: str, countries: list) -> bool:
     """Check if country is in list and warn if not."""
     if country.lower() not in countries:
+        joined_countries = [x.replace(" ", "_").lower() for x in countries]
+        choices = ", ".join(joined_countries)
         console.print(
-            f"[red]'{country}' is an invalid country. Choose from {', '.join(countries)}[/red]"
+            f"[red]'{country}' is an invalid country. Choose from {choices}[/red]\n"
         )
         return False
     return True
