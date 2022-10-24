@@ -1588,7 +1588,7 @@ class TechnicalAnalysisController(StockBaseController):
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="kc",
+            prog="atr",
             description="""
                  Averge True Range is used to measure volatility, especially volatility caused by
                 gaps or limit moves.
