@@ -21,8 +21,6 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def get_ark_orders(
-    sortby: str = "",
-    ascend: bool = False,
     buys_only: bool = False,
     sells_only: bool = False,
     fund: str = "",
@@ -32,10 +30,6 @@ def get_ark_orders(
 
     Parameters
     ----------
-    sortby: str
-        Column to sort on
-    ascend: bool
-        Flag to sort in ascending order
     buys_only: bool
         Flag to filter on buys only
     sells_only: bool
@@ -101,9 +95,6 @@ def get_ark_orders(
         df_orders = df_orders[df_orders.direction == "Buy"]
     if sells_only:
         df_orders = df_orders[df_orders.direction == "Sell"]
-
-    if sortby:
-        df_orders = df_orders.sort_values(by=sortby, ascending=ascend)
 
     return df_orders
 
