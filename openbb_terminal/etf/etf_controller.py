@@ -117,21 +117,8 @@ class ETFController(BaseController):
                 "--limit": one_to_fifty,
                 "-l": "--limit",
             }
-            choices["holdings"] = {
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-            }
             choices["weights"] = {"--min": one_to_hundred, "-m": "--min", "--raw": {}}
-            choices["holdings"] = {
-                "--date": None,
-                "-d": "--date",
-                "--oldest": {},
-                "-o": "--oldest",
-                "--sources": None,
-                "-s": "--sources",
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-            }
+
             choices["candle"] = {
                 "--sort": {c: {} for c in self.CANDLE_COLUMNS},
                 "-s": "--sort",
@@ -223,9 +210,6 @@ class ETFController(BaseController):
             nargs="+",
             help="Name to look for ETFs",
             default="",
-            required="-h" not in other_args
-            and "-n" not in other_args
-            and "--name" not in other_args,
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -387,6 +371,9 @@ class ETFController(BaseController):
             help="Number of holdings to get",
             default=10,
         )
+        if not self.etf_name:
+            console.print("Please load a ticker using <load name>. \n")
+            return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
 

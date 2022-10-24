@@ -92,6 +92,7 @@ class TerminalController(BaseController):
         "econometrics",
         "sources",
         "forecast",
+        "futures",
     ]
 
     PATH = "/"
@@ -166,6 +167,7 @@ class TerminalController(BaseController):
         mt.add_menu("economy")
         mt.add_menu("forex")
         mt.add_menu("funds")
+        mt.add_menu("futures")
         mt.add_menu("alternative")
         mt.add_raw("\n")
         mt.add_info("_others_")
@@ -455,6 +457,12 @@ class TerminalController(BaseController):
         from openbb_terminal.sources_controller import SourcesController
 
         self.queue = self.load_class(SourcesController, self.queue)
+
+    def call_futures(self, _):
+        """Process futures command"""
+        from openbb_terminal.futures.futures_controller import FuturesController
+
+        self.queue = self.load_class(FuturesController, self.queue)
 
     def call_intro(self, _):
         """Process intro command"""
