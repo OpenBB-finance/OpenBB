@@ -2,8 +2,8 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>OpenBB Terminal Documentation</title>
-    <link>https://openbb-finance.github.io/OpenBBTerminal/SDK/stocks/bt/emacross/</link>
+    <link>https://openbb-finance.github.io/OpenBBTerminal/SDK/futures/curve/</link>
     <description>Recent content on OpenBB Terminal Documentation</description>
-    <generator>Hugo -- gohugo.io</generator><atom:link href="https://openbb-finance.github.io/OpenBBTerminal/SDK/stocks/bt/emacross/index.xml" rel="self" type="application/rss+xml" />
+    <generator>Hugo -- gohugo.io</generator><atom:link href="https://openbb-finance.github.io/OpenBBTerminal/SDK/futures/curve/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
