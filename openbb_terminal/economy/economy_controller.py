@@ -1131,10 +1131,10 @@ class EconomyController(BaseController):
             "--country",
             action="store",
             dest="country",
-            nargs="+",
-            default="united states",
-            help="Display yield curve for specific country.",
+            default="united_states",
+            help="Yield curve for a country. Ex: united_states",
         )
+
         parser.add_argument(
             "-d",
             "--date",
@@ -1150,12 +1150,11 @@ class EconomyController(BaseController):
             raw=True,
         )
         if ns_parser:
-            if isinstance(ns_parser.country, list):
-                ns_parser.country = " ".join(ns_parser.country)
+            country = ns_parser.country.lower().replace("_", " ")
 
             if ns_parser.source == "FRED":
 
-                if ns_parser.country == "united states":
+                if country == "united states":
                     fred_view.display_yield_curve(
                         ns_parser.date,
                         raw=ns_parser.raw,
@@ -1168,11 +1167,12 @@ class EconomyController(BaseController):
 
                 if ns_parser.date:
                     console.print(
-                        "Date ignored: historical data is only available for source 'FRED' and country 'united states'.\n"
+                        "Date ignored: historical data is only available for source 'FRED'"
+                        " and country 'united states'.\n"
                     )
 
                 investingcom_view.display_yieldcurve(
-                    country=ns_parser.country,
+                    country=country,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
                 )
