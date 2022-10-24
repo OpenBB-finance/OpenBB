@@ -423,7 +423,9 @@ def display_contracts(
         else:
             return
 
-        df_contracts.groupby("Date").sum().div(1000).plot(kind="bar", rot=0, ax=ax)
+        df_contracts.groupby("Date").sum(numeric_only=True).div(1000).plot(
+            kind="bar", rot=0, ax=ax
+        )
         ax.set_ylabel("Amount ($1k)")
         ax.set_title(f"Sum of latest government contracts to {symbol}")
 
@@ -571,6 +573,7 @@ def display_hist_contracts(
         print_rich_table(
             df_contracts,
             headers=list(df_contracts.columns),
+            floatfmt=[".0f", ".0f", ".2f"],
             title="Historical Quarterly Government Contracts",
         )
 

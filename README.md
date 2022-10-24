@@ -100,7 +100,7 @@ If you wish to install the OpenBBTerminal, there are currently four options:
 |:-|:-|
 |[Installer for Mac or Windows](https://openbb-finance.github.io/OpenBBTerminal/#accessing-the-openbb-terminal)|Recommended way if you just want to use the terminal.|
 |[Git clone](openbb_terminal/README.md#anaconda--python)|Best way if you want to contribute to the project : by adding code or documentation.|
-|[Pypi.org](openbb_terminal/SDK_README)|Best way if you want to use the SDK.|
+|[Pypi.org](openbb_terminal/SDK_README.md)|Best way if you want to use the SDK.|
 |[Using Docker](openbb_terminal/DOCKER_README.md)|An alternative way.|
 
 ## 3. Contributing

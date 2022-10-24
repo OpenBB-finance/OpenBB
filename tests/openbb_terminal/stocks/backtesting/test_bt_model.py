@@ -70,7 +70,7 @@ def test_ema_strategy(mocker):
 
 
 @pytest.mark.vcr
-def test_ema_cross_strategy(mocker):
+def test_emacross_strategy(mocker):
     yf_download = stocks_helper.yf.download
 
     def mock_yf_download(*args, **kwargs):
@@ -83,7 +83,7 @@ def test_ema_cross_strategy(mocker):
     start = datetime.strptime("2020-12-01", "%Y-%m-%d")
     end = datetime.strptime("2020-12-02", "%Y-%m-%d")
     df_stock = stocks_helper.load_ticker(ticker=ticker, start_date=start, end_date=end)
-    back_test_instance = bt_model.ema_cross_strategy(
+    back_test_instance = bt_model.emacross_strategy(
         symbol=ticker,
         data=df_stock,
         short_length=2,

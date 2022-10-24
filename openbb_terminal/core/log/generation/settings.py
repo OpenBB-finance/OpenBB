@@ -51,7 +51,7 @@ class AppSettings:
     ):
         """
         Args:
-            name (str): Name of the application.
+            name (str): Source of the application.
             commit_hash (str): Commit hash of the current running code.
             identifier (str): Unique key identifying a particular installation.
             session_id (str): Key identifying a particular running session.

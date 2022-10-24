@@ -394,7 +394,7 @@ def display_due_diligence(
         "API_REDDIT_PASSWORD",
     ]
 )
-def display_reddit_sent(
+def display_redditsent(
     symbol: str,
     sortby: str = "relevance",
     limit: int = 100,

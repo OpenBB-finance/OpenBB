@@ -165,10 +165,10 @@
       "wsb": ["Reddit"],
       "watchlist": ["Reddit"],
       "popular": ["Reddit"],
-      "spac_c": ["Reddit"],
+      "spacc": ["Reddit"],
       "spac": ["Reddit"],
       "getdd": ["Reddit"],
-      "reddit_sent": ["Reddit"],
+      "redditsent": ["Reddit"],
       "trending": ["Stocktwits"],
       "stalker": ["Stocktwits"],
       "bullbear": ["Stocktwits"],
@@ -179,7 +179,7 @@
       "regions": ["Google"],
       "interest": ["Google"],
       "queries": ["Google"],
-      "rise": ["FinBrain"],
+      "rise": ["Google"],
       "trend": ["SentimentInvestor"],
       "hist": ["SentimentInvestor"],
       "jcdr": ["JimCramer"],
@@ -471,8 +471,8 @@
     "futures": ["WallStreetJournal", "Finviz"],
     "map": ["Finviz"],
     "bigmac": ["Nasdaq"],
-    "ycrv": ["Investing", "FRED"],
-    "events": ["Investing"],
+    "ycrv": ["FRED","Investing"],
+    "events": ["Nasdaq","Investing"],
     "edebt": ["Wikipedia"],
     "rtps": ["AlphaVantage"],
     "valuation": ["Finviz"],
@@ -497,8 +497,13 @@
     "plot": ["Investing"],
     "sector": ["YahooFinance"],
     "equity": ["YahooFinance"],
-    "al_swe": ["Avanza"],
-    "info_swe": ["Avanza"]
+    "alswe": ["Avanza"],
+    "infoswe": ["Avanza"]
+  },
+  "futures": {
+    "search": ["YahooFinance"],
+    "historical": ["YahooFinance"],
+    "curve": ["YahooFinance"]
   },
   "alternative": {
     "oss": {
