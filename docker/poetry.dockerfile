@@ -6,6 +6,6 @@ LABEL org.opencontainers.image.source https://github.com/OpenBB-finance/OpenBBTe
 
 COPY --chown=python:python . .
 
-RUN echo "OPENBB_LOGGING_APP_NAME=gst_docker" > .env
+RUN poetry run python -m docker.make_env_file
 
 CMD ["bash", "docker/entry-point-poetry.sh"]
