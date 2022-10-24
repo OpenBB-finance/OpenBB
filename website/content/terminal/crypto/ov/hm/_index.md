@@ -13,6 +13,9 @@ optional arguments:
                         Category (e.g., stablecoins). Empty for no category (default: )
   -l LIMIT, --limit LIMIT
                         Limit of records (default: 10)
+  -s SORTBY [SORTBY ...], --sort SORTBY [SORTBY ...]
+                        Sort by given column. Default: Market Cap Rank (default: Market Cap Rank)
+  -a, --ascending       Sort data in ascending order (default: False)
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx (default: )
