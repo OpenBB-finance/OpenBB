@@ -48,10 +48,6 @@ main:
               ref: /terminal/common/ba/infer
             - name: interest
               ref: /terminal/common/ba/interest
-            - name: jcdr
-              ref: /terminal/common/ba/jcdr
-            - name: jctr
-              ref: /terminal/common/ba/jctr
             - name: mentions
               ref: /terminal/common/ba/mentions
             - name: messages
