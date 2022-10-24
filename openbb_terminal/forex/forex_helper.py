@@ -5,7 +5,6 @@ import argparse
 import logging
 import re
 
-import yfinance as yf
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
@@ -16,6 +15,7 @@ from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import plot_autoscale, is_valid_axes_count
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.stocks import stocks_helper
 
 
 FOREX_SOURCES: Dict = {
@@ -28,7 +28,6 @@ FOREX_SOURCES: Dict = {
 SOURCES_INTERVALS: Dict = {
     "YahooFinance": [
         "1min",
-        "2min",
         "5min",
         "15min",
         "30min",
@@ -36,10 +35,11 @@ SOURCES_INTERVALS: Dict = {
         "90min",
         "1hour",
         "1day",
-        "5day",
-        "1week",
-        "1month",
-        "3month",
+        # These need to be cleaned up.
+        # "5day",
+        # "1week",
+        # "1month",
+        # "3month",
     ],
     "AlphaVantage": ["1min", "5min", "15min", "30min", "60min"],
 }
@@ -53,14 +53,21 @@ INTERVAL_MAPS: Dict = {
         "30min": "30m",
         "60min": "60m",
         "90min": "90m",
-        "1hour": "1h",
+        "1hour": "60m",
         "1day": "1d",
         "5day": "5d",
         "1week": "1wk",
         "1month": "1mo",
         "3month": "3mo",
     },
-    "AlphaVantage": {"1min": 1, "5min": 5, "15min": 15, "30min": 30, "60min": 60},
+    "AlphaVantage": {
+        "1min": 1,
+        "5min": 5,
+        "15min": 15,
+        "30min": 30,
+        "60min": 60,
+        "1day": 1,
+    },
 }
 
 logger = logging.getLogger(__name__)
@@ -102,16 +109,17 @@ def load(
     if source in ["YahooFinance", "AlphaVantage"]:
         interval_map = INTERVAL_MAPS[source]
 
-        if interval not in interval_map.keys():
+        if interval not in interval_map.keys() and resolution != "d":
             console.print(
                 f"Interval not supported by {FOREX_SOURCES[source]}."
                 " Need to be one of the following options",
-                interval_map.keys(),
+                list(interval_map.keys()),
             )
             return pd.DataFrame()
 
         if source == "AlphaVantage":
-
+            if "min" in interval:
+                resolution = "i"
             df = av_model.get_historical(
                 to_symbol=to_symbol,
                 from_symbol=from_symbol,
@@ -122,12 +130,12 @@ def load(
 
         if source == "YahooFinance":
 
-            df = yf.download(
+            # This works but its not pretty :(
+            interval = interval_map[interval] if interval != "1day" else "1440m"
+            df = stocks_helper.load(
                 f"{from_symbol}{to_symbol}=X",
-                end=datetime.now(),
-                start=datetime.strptime(start_date, "%Y-%m-%d"),
-                interval=interval_map[interval],
-                progress=False,
+                start_date=datetime.strptime(start_date, "%Y-%m-%d"),
+                interval=int(interval.replace("m", "")),
             )
 
     if source == "Polygon":
