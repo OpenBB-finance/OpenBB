@@ -1,0 +1,5 @@
+  Time (GMT)        Country                       Event   actual consensus previous        Date
+0      08:30  United States   Continuing Jobless Claims   1,385K    1,375K   1,364K  2022-10-20
+1      08:30  United States      Initial Jobless Claims     214K      230K     226K  2022-10-20
+2      08:30  United States  Jobless Claims 4-Week Avg.  212.25K         -  211.00K  2022-10-20
+
