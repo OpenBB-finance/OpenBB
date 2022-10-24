@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 from typing import Optional, List
+from itertools import cycle
 import logging
 import os
 
@@ -19,6 +20,7 @@ from openbb_terminal.helper_funcs import (
     is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
+from openbb_terminal.futures.futures_helper import make_white
 
 logger = logging.getLogger(__name__)
 
@@ -129,6 +131,7 @@ def display_historical(
         else:
             return
 
+        colors = cycle(theme.get_colors())
         if len(tickers) > 1:
             name = list()
             for tick in historicals["Adj Close"].columns.tolist():
@@ -160,6 +163,7 @@ def display_historical(
                 ax.plot(
                     historicals["Adj Close"][tick].dropna().index,
                     historicals["Adj Close"][tick].dropna().values,
+                    color=next(colors, "#FCED00"),
                 )
                 ax.legend(name)
 
@@ -169,6 +173,7 @@ def display_historical(
                 ax.set_xlim(first, historicals["Adj Close"].index[-1])
                 theme.style_primary_axis(ax)
 
+                make_white(ax)
                 if external_axes is None:
                     theme.visualize_output()
         else:
@@ -193,6 +198,7 @@ def display_historical(
                 ax.plot(
                     historicals["Adj Close"].dropna().index,
                     historicals["Adj Close"].dropna().values,
+                    color=next(colors, "#FCED00"),
                 )
                 if expiry:
                     ax.set_title(f"{name} with expiry {expiry}")
@@ -205,6 +211,7 @@ def display_historical(
                 ax.set_xlim(first, historicals["Adj Close"].index[-1])
                 theme.style_primary_axis(ax)
 
+                make_white(ax)
                 if external_axes is None:
                     theme.visualize_output()
 
@@ -267,6 +274,7 @@ def display_curve(
         name = yfinance_model.FUTURES_DATA[
             yfinance_model.FUTURES_DATA["Ticker"] == ticker
         ]["Description"].values[0]
+        colors = cycle(theme.get_colors())
         ax.plot(
             df.index,
             df.values,
@@ -274,7 +282,9 @@ def display_curve(
             linestyle="dashed",
             linewidth=2,
             markersize=12,
+            color=next(colors, "#FCED00"),
         )
+        make_white(ax)
         ax.set_title(name)
         theme.style_primary_axis(ax)
 
