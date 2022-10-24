@@ -1,5 +1,5 @@
 ## Get underlying data 
-### stocks.dd.supplier(symbol: str) -> List[str]
+### stocks.dd.supplier(symbol: str, limit: int = 50) -> pandas.core.frame.DataFrame
 
 Get suppliers from ticker provided. [Source: CSIMarket]
 
@@ -7,8 +7,10 @@ Get suppliers from ticker provided. [Source: CSIMarket]
     ----------
     symbol: str
         Ticker to select suppliers from
+    limit: int
+        The maximum number of rows to show
 
     Returns
     -------
-    list[str]
-        List of suppliers for ticker provided
+    pd.DataFrame
+        A dataframe of suppliers
