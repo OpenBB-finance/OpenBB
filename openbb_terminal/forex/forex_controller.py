@@ -153,7 +153,7 @@ class ForexController(BaseController):
             default="1day",
             help="""Interval of intraday data. Options:
             [YahooFinance] 1min, 2min, 5min, 15min, 30min, 60min, 90min, 1hour, 1day, 5day, 1week, 1month, 3month.
-            [AlphaAdvantage] 1min, 5min, 15min, 30min, 60min""",
+            [AlphaVantage] 1min, 5min, 15min, 30min, 60min""",
             dest="interval",
         )
         parser.add_argument(
@@ -210,11 +210,11 @@ class ForexController(BaseController):
                 )
 
                 self.source = ns_parser.source
-
-                console.print(f"{self.from_symbol}-{self.to_symbol} loaded.\n")
+                if self.source != "YahooFinance":
+                    console.print(f"{self.from_symbol}-{self.to_symbol} loaded.\n")
             else:
 
-                console.print("\n[red]Make sure to loa.[/red]\n")
+                console.print("\n[red]Make sure to load.[/red]\n")
 
     @log_start_end(log=logger)
     def call_candle(self, other_args: List[str]):
