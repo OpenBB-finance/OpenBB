@@ -38,8 +38,6 @@ from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
 
 logger = logging.getLogger(__name__)
 
-sys.tracebacklimit = 0
-
 # README PLEASE:
 # The API_DICT keys must match the set and check functions format.
 #
