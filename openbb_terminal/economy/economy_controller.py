@@ -1200,7 +1200,6 @@ class EconomyController(BaseController):
             "--countries",
             action="store",
             dest="countries",
-            nargs="+",
             type=str,
             help="Show bond spread matrix for explicit list of countries.",
         )
@@ -1239,7 +1238,7 @@ class EconomyController(BaseController):
         )
         if ns_parser:
             if ns_parser.countries:
-                countries_string = " ".join(ns_parser.countries)
+                countries_string = ns_parser.countries.replace("_", " ")
                 countries_list = investingcom_model.countries_string_to_list(
                     countries_string
                 )
