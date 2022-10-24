@@ -184,7 +184,13 @@ def folder_documentation(path: str):
 
 
 if __name__ == "__main__":
+    print(
+        "Warning: files created in same session are not added to the yaml."
+        " To remedy this run this script twice in a row"
+    )
     base_folder_path = os.path.realpath("./website/content/sdk")
+    if not os.path.exists(base_folder_path):
+        os.mkdir(base_folder_path)
     target_path = os.path.realpath("./website/data/menu/main.yml")
     main_path = os.path.realpath("./website/content/sdk")
     folder_list = crawl_folders(main_path)

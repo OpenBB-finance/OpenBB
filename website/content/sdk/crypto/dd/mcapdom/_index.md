@@ -1,7 +1,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### crypto.dd.mcapdom(symbol: str, interval: str = '1d', start_date: str = '2021-10-19', end_date: str = '2022-10-19') -> pandas.core.frame.DataFrame
+### crypto.dd.mcapdom(symbol: str, interval: str = '1d', start_date: str = '2021-10-24', end_date: str = '2022-10-24') -> pandas.core.frame.DataFrame
 
 Returns market dominance of a coin over time
     [Source: https://messari.io/]
@@ -23,7 +23,7 @@ Returns market dominance of a coin over time
         market dominance percentage over time
 
 ## Getting charts 
-### crypto.dd.mcapdom(symbol: str, start_date: str = '2021-10-19', end_date: str = '2022-10-19', interval: str = '1d', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
+### crypto.dd.mcapdom(symbol: str, start_date: str = '2021-10-24', end_date: str = '2022-10-24', interval: str = '1d', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
 
 Display market dominance of a coin over time
     [Source: https://messari.io/]

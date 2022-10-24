@@ -1,7 +1,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### crypto.dd.change(symbol: str, exchange: str = 'binance', start_date: int = 1262271600, end_date: int = 1666110263) -> pandas.core.frame.DataFrame
+### crypto.dd.change(symbol: str, exchange: str = 'binance', start_date: int = 1262300400, end_date: int = 1666608459) -> pandas.core.frame.DataFrame
 
 Returns 30d change of the supply held in exchange wallets of a certain symbol.
     [Source: https://glassnode.com]

@@ -11,7 +11,7 @@ Returns BTC confirmed transactions [Source: https://api.blockchain.info/]
         BTC confirmed transactions
 
 ## Getting charts 
-### crypto.onchain.btc_transac(start_date: int = 1262271600, end_date: int = 1666110263, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
+### crypto.onchain.btc_transac(start_date: int = 1262300400, end_date: int = 1666608459, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
 
 Returns BTC confirmed transactions [Source: https://api.blockchain.info/]
 
