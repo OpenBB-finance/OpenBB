@@ -1,0 +1,35 @@
+forex
+load EURUSD --source YahooFinance
+load
+ta
+ema
+sma
+zlma
+cci
+macd
+rsi
+stoch
+fisher
+cg
+adx
+aroon
+bbands
+donchian
+fib
+load USDEUR --source Polygon
+ta
+ema
+sma
+zlma
+cci
+macd
+rsi
+stoch
+fisher
+cg
+adx
+aroon
+bbands
+donchian
+fib
+exit

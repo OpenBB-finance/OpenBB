@@ -39,3 +39,21 @@ def test_get_big_mac_index_no_response(mocker):
 
     assert isinstance(result_df, pd.DataFrame)
     assert result_df.empty
+
+
+@pytest.mark.vcr
+def test_get_economic_calendar(recorder):
+    result_df = nasdaq_model.get_economic_calendar(
+        ["United States"], start_date="2022-10-20", end_date="2022-10-21"
+    )
+
+    recorder.capture(result_df)
+
+
+@pytest.mark.vcr
+def test_get_economic_calendar_bad_country_name(recorder):
+    result_df = nasdaq_model.get_economic_calendar(
+        "hidhf", start_date="2022-10-20", end_date="2022-10-21"
+    )
+
+    recorder.capture(result_df)
