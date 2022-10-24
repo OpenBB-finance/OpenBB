@@ -64,7 +64,7 @@ def display_coins(
         df = df.set_axis(
             COINS_COLUMNS,
             axis=1,
-            inplace=False,
+            copy=True,
         )
         for col in ["Volume [$]", "Market Cap"]:
             if col in df.columns:
