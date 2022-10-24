@@ -160,11 +160,11 @@ def generate_dict(paths: List):
     final_dict: Dict[str, Any] = {}
     added_paths = []
     for path, subs in paths:
-        if not final_dict and path == "sdk":
-            final_dict = {"name": "sdk", "ref": "/sdk", "sub": []}
+        if not final_dict and path == "SDK":
+            final_dict = {"name": "SDK", "ref": "/SDK", "sub": []}
             for sub in subs:
                 final_dict["sub"].append({"name": sub, "ref": f"/{path}/{sub}"})
-            added_paths.append("sdk")
+            added_paths.append("SDK")
         if path not in added_paths:
             final_dict = set_items(final_dict, path, subs)
             added_paths.append(path)
@@ -188,11 +188,11 @@ if __name__ == "__main__":
         "Warning: files created in same session are not added to the yaml."
         " To remedy this run this script twice in a row"
     )
-    base_folder_path = os.path.realpath("./website/content/sdk")
+    base_folder_path = os.path.realpath("./website/content/SDK")
     if not os.path.exists(base_folder_path):
         os.mkdir(base_folder_path)
     target_path = os.path.realpath("./website/data/menu/main.yml")
-    main_path = os.path.realpath("./website/content/sdk")
+    main_path = os.path.realpath("./website/content/SDK")
     folder_list = crawl_folders(main_path)
     for folder_path in [x[0] for x in folder_list]:
         folder_documentation(folder_path)
