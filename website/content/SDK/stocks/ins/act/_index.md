@@ -16,7 +16,7 @@ Get insider activity. [Source: Business Insider]
         Get insider activity data
 
 ## Getting charts 
-### stocks.ins.act(data: pandas.core.frame.DataFrame, symbol: str, start_date: str = '2019-10-17', interval: str = '1440min', limit: int = 10, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.ins.act(data: pandas.core.frame.DataFrame, symbol: str, start_date: str = '2019-10-20', interval: str = '1440min', limit: int = 10, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display insider activity. [Source: Business Insider]
 

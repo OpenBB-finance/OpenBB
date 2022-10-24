@@ -1,7 +1,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### stocks.ca.volume(similar: List[str], start_date: str = '2021-10-20') -> pandas.core.frame.DataFrame
+### stocks.ca.volume(similar: List[str], start_date: str = '2021-10-23') -> pandas.core.frame.DataFrame
 
 Get stock volume. [Source: Yahoo Finance]
 
@@ -15,7 +15,7 @@ Get stock volume. [Source: Yahoo Finance]
         Start date of comparison, by default 1 year ago
 
 ## Getting charts 
-### stocks.ca.volume(similar: List[str], start_date: str = '2021-10-20', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.ca.volume(similar: List[str], start_date: str = '2021-10-23', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display stock volume. [Source: Yahoo Finance]
 
