@@ -119,7 +119,7 @@ The first time this takes a bit longer to load, this can take up to a few minute
 
 {{< /columns >}}
 
-### Installation for macOS
+### Installation for MacOS
 
 The process starts off by downloading the installer, see below for how to download the most recent release:
 
@@ -319,6 +319,24 @@ doing advanced statistical/econometric research.
 
 ---
 
+## Importing and Exporting Data in the OpenBB Terminal
+
+<img width="1231" alt="Screen Shot 2022-10-13 at 6 45 01 PM" src="https://user-images.githubusercontent.com/85772166/195742985-19f0e420-d8f7-4fea-a145-a0243b8f2ddc.png">
+
+The `OpenBBUserData` folder's default location is the home of the system user account. The location of this folder can be set by the user from the `/settings` menu. This folder is where exported files are saved, it is also where files being imported to the Terminal functions are kept. These include all things user-created:
+ 
+ - Screener presets
+ - Portfolio files
+ - Exported files
+ - Files to be imported by various functions
+ - Styles and themes
+ - Preferred data sources
+ - Anonymized usage logs
+
+<img width="1117" alt="The settings menu" src="https://user-images.githubusercontent.com/85772166/195736718-a1b821da-5977-437a-bd18-b44add2a29a2.png">
+
+---
+
 ## Accessing other sources of data via API keys
 
 Within this menu you can define your, often free, API key from various platforms like Alpha Vantage, FRED, IEX, Twitter, DeGiro, Binance and Coinglass. API keys are in essence a set of random characters that is unique to you.
@@ -366,7 +384,7 @@ To figure out where you can obtain the API key, you can enter the command (e.g. 
 
 ---
 
-## Available menus within the OpenBB Terminal
+## Available Menus Within the OpenBB Terminal
 
 There is a large collection of (sub) menus available. Here, the asset class and other menus are described. To find a detailed description and explanation of its usage for each menu, click on the corresponding link to visit the introduction page.
 
@@ -423,13 +441,11 @@ tweak how the terminal behaves. This includes the following:
 Next to that, to enable or disable certain functionalities of the terminal you can use the `featflags` menu which
 includes the following:
 
-- `logcollection` whether you wish to enable logging to help the OpenBB team improve functionalities (default is yes).
 - `retryload` whenever you misspell commands, try to use the `load` command with it first (default is no).
 - `tab` whether to use tabulate to print DataFrames, to prettify these DataFrames (default is yes).
 - `cls` whether to clear the command window after each command (default is no).
 - `color` whether to use colors within the terminal (default is yes).
 - `promptkit` whether you wish to enable autocomplete and history (default is yes).
-- `predict` whether you would like to enable prediction features (default is yes).
 - `thoughts` whether to receive a thought of the day (default is no).
 - `reporthtml` whether to open reports as HTML instead of Jupyter Notebooks (default is yes).
 - `exithelp` whether to automatically print the help message when you use `q` (default is yes).
