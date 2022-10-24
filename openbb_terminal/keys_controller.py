@@ -574,7 +574,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="username",
             help="username",
-            required = "-h" not in other_args,
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-p",
@@ -582,7 +582,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="password",
             help="password",
-            required = "-h" not in other_args,
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-s",
@@ -663,7 +663,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="key",
             help="Key",
-            required = "-h" not in other_args,
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-s",
@@ -671,7 +671,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="secret",
             help="Secret key",
-            required = "-h" not in other_args,
+            required="-h" not in other_args,
         )
         if not other_args:
             console.print("For your API Key, visit: https://binance.com\n")
@@ -754,7 +754,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="key",
             help="Key",
-            required = "-h" not in other_args,
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-s",
@@ -762,7 +762,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="secret",
             help="Secret key",
-            required = "-h" not in other_args,
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-p",
@@ -770,7 +770,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="passphrase",
             help="Passphrase",
-            required = "-h" not in other_args,
+            required="-h" not in other_args,
         )
         if not other_args:
             console.print("For your API Key, visit: https://docs.pro.coinbase.com/\n")
@@ -943,7 +943,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="key",
             help="Key",
-            required = "-h" not in other_args,
+            required="-h" not in other_args,
         )
         parser.add_argument(
             "-t",
@@ -951,7 +951,7 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             type=str,
             dest="token",
             help="Token",
-            required = "-h" not in other_args,
+            required="-h" not in other_args,
         )
         if not other_args:
             console.print("For your API Key, visit: https://www.smartstake.io\n")
