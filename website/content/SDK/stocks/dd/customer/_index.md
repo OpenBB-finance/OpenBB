@@ -1,5 +1,5 @@
 ## Get underlying data 
-### stocks.dd.customer(symbol: str) -> List[str]
+### stocks.dd.customer(symbol: str, limit: int = 50) -> pandas.core.frame.DataFrame
 
 Print customers from ticker provided
 
@@ -7,8 +7,10 @@ Print customers from ticker provided
     ----------
     symbol: str
         Ticker to select customers from
+    limit: int
+        The maximum number of rows to show
 
     Returns
     -------
-    list[str]
-        List of customers for ticker provided
+    pd.DataFrame
+        A dataframe of suppliers
