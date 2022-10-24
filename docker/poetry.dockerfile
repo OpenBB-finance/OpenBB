@@ -31,8 +31,9 @@ ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
 
 FROM python as poetry-deps
 
-RUN apt-get update \
-    && apt-get install --no-install-recommends -y \
+RUN apt-get update
+
+RUN apt-get install --no-install-recommends -y \
     curl \
     build-essential \
     unzip \

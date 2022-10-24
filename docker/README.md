@@ -13,6 +13,10 @@ image on their local machine:
 1. Run the build script `bash docker/build.sh` 
 
 **Note**: The `build.sh` script requires bash 5.0 or newer.
+**Note**: If you have issues building on MacOs run the following commands:
+
+- `export DOCKER_BUILDKIT=0`
+- `export COMPOSE_DOCKER_CLI_BUILD=0`
 
 ## Testing the Docker Image
 
