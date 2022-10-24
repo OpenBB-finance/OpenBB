@@ -309,6 +309,7 @@ def execute_notebook(input_path, parameters, output_path):
 
     origin_stdout = sys.stdout
     sys.stdout = StringIO()
+
     try:
         result = pm.execute_notebook(
             input_path=input_path,

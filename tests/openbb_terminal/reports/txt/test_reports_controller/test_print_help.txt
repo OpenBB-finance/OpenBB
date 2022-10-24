@@ -1,6 +1,6 @@
 Build and run your custom reports or try one of our templates:
 
-OpenBB reports as commands:
+OpenBB reports:
     crypto      <symbol>
     economy     
     equity      <symbol>

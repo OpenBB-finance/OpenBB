@@ -1014,7 +1014,7 @@ en:
   dashboards/futures: historical futures performance
   reports: customizable research reports through jupyter notebooks
   reports/_reports_: Build and run your custom reports or try one of our templates
-  reports/_OpenBB_reports_: OpenBB reports as commands
+  reports/_OpenBB_reports_: OpenBB reports
   reports/_Custom_reports_: Custom reports
   reports/run: Run a Jupyter notebook from OpenBBUserData/reports/custom reports
   forecast/_disclaimer_: DISCLAIMER
