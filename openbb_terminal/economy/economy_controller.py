@@ -6,7 +6,7 @@ import argparse
 import logging
 import os
 import itertools
-from datetime import date
+from datetime import date, datetime as dt
 from typing import List, Dict, Any
 
 import pandas as pd
@@ -69,7 +69,7 @@ class EconomyController(BaseController):
         "rtps",
         "bigmac",
         "ycrv",
-        "spread",
+        # "spread",
         "events",
         "edebt",
     ]
@@ -388,7 +388,8 @@ class EconomyController(BaseController):
         mt.add_cmd("map")
         mt.add_cmd("bigmac")
         mt.add_cmd("ycrv")
-        mt.add_cmd("spread")
+        # Comment out spread while investpy is donw :()
+        # mt.add_cmd("spread")
         mt.add_cmd("events")
         mt.add_cmd("edebt")
         mt.add_raw("\n")
@@ -1269,9 +1270,33 @@ class EconomyController(BaseController):
             "--country",
             action="store",
             dest="country",
-            nargs="+",
-            default="all",
+            type=str,
+            default="",
             help="Display calendar for specific country.",
+        )
+        parser.add_argument(
+            "-s",
+            "--start",
+            dest="start_date",
+            type=valid_date,
+            help="The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31)",
+            default=dt.now().strftime("%Y-%m-%d"),
+        )
+        parser.add_argument(
+            "-e",
+            "--end",
+            dest="end_date",
+            type=valid_date,
+            help="The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31)",
+            default=dt.now().strftime("%Y-%m-%d"),
+        )
+        parser.add_argument(
+            "-d",
+            "--date",
+            dest="spec_date",
+            type=valid_date,
+            help="Get a specific date for events. Overrides start and end dates.",
+            default=None,
         )
         parser.add_argument(
             "-i",
@@ -1287,23 +1312,7 @@ class EconomyController(BaseController):
             dest="category",
             choices=investingcom_model.CATEGORIES,
             default=None,
-            help="Event category.",
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            dest="start_date",
-            type=valid_date,
-            help="The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31)",
-            default=None,
-        )
-        parser.add_argument(
-            "-e",
-            "--end",
-            dest="end_date",
-            type=valid_date,
-            help="The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31)",
-            default=None,
+            help="[INVESTING source only] Event category.",
         )
         ns_parser = self.parse_known_args_and_warn(
             parser,
@@ -1315,7 +1324,8 @@ class EconomyController(BaseController):
 
         if ns_parser:
             if isinstance(ns_parser.country, list):
-                ns_parser.country = " ".join(ns_parser.country)
+                if ns_parser.source == "Investing":
+                    ns_parser.country = " ".join(ns_parser.country)
 
             if ns_parser.start_date:
                 start_date = ns_parser.start_date.strftime("%Y-%m-%d")
@@ -1327,15 +1337,36 @@ class EconomyController(BaseController):
             else:
                 end_date = None
 
-            investingcom_view.display_economic_calendar(
-                country=ns_parser.country,
-                importance=ns_parser.importance,
-                category=ns_parser.category,
-                start_date=start_date,
-                end_date=end_date,
-                limit=ns_parser.limit,
-                export=ns_parser.export,
-            )
+            if ns_parser.source == "Investing":
+                investingcom_view.display_economic_calendar(
+                    country=ns_parser.country,
+                    importance=ns_parser.importance,
+                    category=ns_parser.category,
+                    start_date=start_date,
+                    end_date=end_date,
+                    limit=ns_parser.limit,
+                    export=ns_parser.export,
+                )
+            elif ns_parser.source == "Nasdaq":
+                countries = (
+                    ns_parser.country.replace("_", " ").title().split(",")
+                    if ns_parser.country
+                    else []
+                )
+
+                if ns_parser.spec_date:
+                    start_date = ns_parser.spec_date.strftime("%Y-%m-%d")
+                    end_date = ns_parser.spec_date.strftime("%Y-%m-%d")
+
+                else:
+                    start_date, end_date = sorted([start_date, end_date])
+                nasdaq_view.display_economic_calendar(
+                    country=countries,
+                    start_date=start_date,
+                    end_date=end_date,
+                    limit=ns_parser.limit,
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
@@ -1716,7 +1747,12 @@ class EconomyController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="eval",
-            description="""Create custom data column from loaded datasets.""",
+            description="""Create custom data column from loaded datasets.  Can be mathematical expressions supported
+            by pandas.eval() function.
+
+            Example.  If I have loaded `fred dgs2 dgs5` and I want to create a new column that is the difference
+            between these two, I can create a new column by doing `eval spread = dgs2 - dgs5`
+            """,
         )
         parser.add_argument(
             "-q",
@@ -1724,6 +1760,7 @@ class EconomyController(BaseController):
             type=str,
             nargs="+",
             dest="query",
+            help="Query to evaluate on loaded datasets",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-q")

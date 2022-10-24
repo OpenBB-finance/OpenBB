@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
+import warnings
 
 import bt
 import pandas as pd
@@ -130,7 +131,7 @@ def ema_strategy(
 
 
 @log_start_end(log=logger)
-def ema_cross_strategy(
+def emacross_strategy(
     symbol: str,
     data: pd.DataFrame,
     short_length: int = 20,
@@ -181,7 +182,7 @@ def ema_cross_strategy(
     combined_data = bt.merge(signals, prices, short_ema, long_ema)
     combined_data.columns = ["signal", "price", "ema_short", "ema_long"]
     bt_strategy = bt.Strategy(
-        "EMA_Cross",
+        "EMACross",
         [
             bt.algos.WeighTarget(signals),
             bt.algos.Rebalance(),
@@ -252,18 +253,21 @@ def rsi_strategy(
     merged_data = bt.merge(signal, prices)
     merged_data.columns = ["signal", "price"]
 
+    warnings.simplefilter(action="ignore", category=FutureWarning)
     bt_strategy = bt.Strategy(
         "RSI Reversion", [bt.algos.WeighTarget(signal), bt.algos.Rebalance()]
     )
     bt_backtest = bt.Backtest(bt_strategy, prices)
     bt_backtest = bt.Backtest(bt_strategy, prices)
     backtests = [bt_backtest]
-    if spy_bt:
-        spy_bt = buy_and_hold("spy", start_date, "SPY Hold")
-        backtests.append(spy_bt)
-    if not no_bench:
-        stock_bt = buy_and_hold(symbol, start_date, symbol.upper() + " Hold")
-        backtests.append(stock_bt)
+    # Once the bt package replaces pd iteritems with items we can remove this
+    with warnings.catch_warnings():
+        if spy_bt:
+            spy_bt = buy_and_hold("spy", start_date, "SPY Hold")
+            backtests.append(spy_bt)
+        if not no_bench:
+            stock_bt = buy_and_hold(symbol, start_date, symbol.upper() + " Hold")
+            backtests.append(stock_bt)
 
     res = bt.run(*backtests)
     return res
