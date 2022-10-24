@@ -1,7 +1,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### crypto.dd.btcrb(start_date: str = '2010-01-01', end_date: str = '2022-10-21')
+### crypto.dd.btcrb(start_date: str = '2010-01-01', end_date: str = '2022-10-24')
 
 Get bitcoin price data
     [Price data from source: https://glassnode.com]
@@ -15,7 +15,7 @@ Get bitcoin price data
         Final date, format YYYY-MM-DD
 
 ## Getting charts 
-### crypto.dd.btcrb(start_date: str = '2010-01-01', end_date: str = '2022-10-21', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### crypto.dd.btcrb(start_date: str = '2010-01-01', end_date: str = '2022-10-24', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Displays bitcoin rainbow chart
     [Price data from source: https://glassnode.com]
