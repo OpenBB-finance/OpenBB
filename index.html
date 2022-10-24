@@ -47508,7 +47508,7 @@ to make sense of raw unrefined data. Our mission is to make investment research 
         <li><a href="#accessing-the-openbb-terminal">Accessing the OpenBB Terminal</a>
           <ul>
             <li><a href="#installation-for-windows">Installation for Windows</a></li>
-            <li><a href="#installation-for-macos">Installation for macOS</a></li>
+            <li><a href="#installation-for-macos">Installation for MacOS</a></li>
           </ul>
         </li>
         <li><a href="#structure-of-the-openbb-terminal">Structure of the OpenBB Terminal</a>
@@ -47518,8 +47518,9 @@ to make sense of raw unrefined data. Our mission is to make investment research 
             <li><a href="#explanation-of-scripts">Explanation of Scripts</a></li>
           </ul>
         </li>
+        <li><a href="#importing-and-exporting-data-in-the-openbb-terminal">Importing and Exporting Data in the OpenBB Terminal</a></li>
         <li><a href="#accessing-other-sources-of-data-via-api-keys">Accessing other sources of data via API keys</a></li>
-        <li><a href="#available-menus-within-the-openbb-terminal">Available menus within the OpenBB Terminal</a></li>
+        <li><a href="#available-menus-within-the-openbb-terminal">Available Menus Within the OpenBB Terminal</a></li>
         <li><a href="#customizing-the-terminal">Customizing the terminal</a></li>
         <li><a href="#obtaining-support-andor-giving-feedback">Obtaining support and/or giving feedback</a></li>
       </ul></nav><hr></div>
@@ -47655,8 +47656,8 @@ still in beta phase, and the team has not yet requested verification from Window
 
 <div class="gdoc-page__anchorwrap">
     <h3 id="installation-for-macos">
-        Installation for macOS
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/#installation-for-macos" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Installation for macOS" href="#installation-for-macos">
+        Installation for MacOS
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/#installation-for-macos" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Installation for MacOS" href="#installation-for-macos">
             <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
         </a>
     </h3>
@@ -47842,6 +47843,26 @@ doing advanced statistical/econometric research.</p>
 <p><b><span style="color:white">For a thorough guide on how to setup these files, please see the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/scripts/" target="_blank">Scripts &amp; Routines guide</a>.</span></b></p>
 <hr>
 <div class="gdoc-page__anchorwrap">
+    <h2 id="importing-and-exporting-data-in-the-openbb-terminal">
+        Importing and Exporting Data in the OpenBB Terminal
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/#importing-and-exporting-data-in-the-openbb-terminal" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Importing and Exporting Data in the OpenBB Terminal" href="#importing-and-exporting-data-in-the-openbb-terminal">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h2>
+</div><img width="1231" alt="Screen Shot 2022-10-13 at 6 45 01 PM" src="https://user-images.githubusercontent.com/85772166/195742985-19f0e420-d8f7-4fea-a145-a0243b8f2ddc.png">
+<p>The <code>OpenBBUserData</code> folder&rsquo;s default location is the home of the system user account. The location of this folder can be set by the user from the <code>/settings</code> menu. This folder is where exported files are saved, it is also where files being imported to the Terminal functions are kept. These include all things user-created:</p>
+<ul>
+<li>Screener presets</li>
+<li>Portfolio files</li>
+<li>Exported files</li>
+<li>Files to be imported by various functions</li>
+<li>Styles and themes</li>
+<li>Preferred data sources</li>
+<li>Anonymized usage logs</li>
+</ul>
+<img width="1117" alt="The settings menu" src="https://user-images.githubusercontent.com/85772166/195736718-a1b821da-5977-437a-bd18-b44add2a29a2.png">
+<hr>
+<div class="gdoc-page__anchorwrap">
     <h2 id="accessing-other-sources-of-data-via-api-keys">
         Accessing other sources of data via API keys
         <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/#accessing-other-sources-of-data-via-api-keys" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Accessing other sources of data via API keys" href="#accessing-other-sources-of-data-via-api-keys">
@@ -48017,8 +48038,8 @@ doing advanced statistical/econometric research.</p>
 <hr>
 <div class="gdoc-page__anchorwrap">
     <h2 id="available-menus-within-the-openbb-terminal">
-        Available menus within the OpenBB Terminal
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/#available-menus-within-the-openbb-terminal" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Available menus within the OpenBB Terminal" href="#available-menus-within-the-openbb-terminal">
+        Available Menus Within the OpenBB Terminal
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/#available-menus-within-the-openbb-terminal" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Available Menus Within the OpenBB Terminal" href="#available-menus-within-the-openbb-terminal">
             <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
         </a>
     </h2>
@@ -48080,13 +48101,11 @@ tweak how the terminal behaves. This includes the following:</p>
 <p>Next to that, to enable or disable certain functionalities of the terminal you can use the <code>featflags</code> menu which
 includes the following:</p>
 <ul>
-<li><code>logcollection</code> whether you wish to enable logging to help the OpenBB team improve functionalities (default is yes).</li>
 <li><code>retryload</code> whenever you misspell commands, try to use the <code>load</code> command with it first (default is no).</li>
 <li><code>tab</code> whether to use tabulate to print DataFrames, to prettify these DataFrames (default is yes).</li>
 <li><code>cls</code> whether to clear the command window after each command (default is no).</li>
 <li><code>color</code> whether to use colors within the terminal (default is yes).</li>
 <li><code>promptkit</code> whether you wish to enable autocomplete and history (default is yes).</li>
-<li><code>predict</code> whether you would like to enable prediction features (default is yes).</li>
 <li><code>thoughts</code> whether to receive a thought of the day (default is no).</li>
 <li><code>reporthtml</code> whether to open reports as HTML instead of Jupyter Notebooks (default is yes).</li>
 <li><code>exithelp</code> whether to automatically print the help message when you use <code>q</code> (default is yes).</li>
