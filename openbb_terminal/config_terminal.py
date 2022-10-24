@@ -62,6 +62,8 @@ LOGGING_ROLLING_CLOCK = bool(
 # DEBUG = 10
 # NOTSET = 0
 LOGGING_VERBOSITY = int(os.getenv("OPENBB_LOGGING_VERBOSITY") or 20)
+# LOGGING SUB APP
+LOGGING_SUB_APP = os.getenv("OPENBB_LOGGING_SUB_APP") or "terminal"
 
 # API Keys section
 
