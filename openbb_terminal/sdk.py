@@ -2048,15 +2048,15 @@ forecast_extras = {
     },
     "futures.search": {
         "model": "openbb_terminal.futures.yfinance_model.get_search_futures",
-        "view": "openbb_terminal.forecast.nhits_view.display_search",
+        "view": "openbb_terminal.futures.yfinance_view.display_search",
     },
     "futures.historical": {
         "model": "openbb_terminal.futures.yfinance_model.get_historical_futures",
-        "view": "openbb_terminal.forecast.nhits_view.display_historical",
+        "view": "openbb_terminal.futures.yfinance_view.display_historical",
     },
     "futures.curve": {
         "model": "openbb_terminal.futures.yfinance_model.get_curve_futures",
-        "view": "openbb_terminal.forecast.nhits_view.display_curve",
+        "view": "openbb_terminal.futures.yfinance_view.display_curve",
     },
 }
 
