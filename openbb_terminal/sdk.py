@@ -11,6 +11,7 @@ from typing import Optional, Callable, List
 import logging
 from traceback import format_stack
 
+import openbb_terminal.config_terminal as cfg
 from openbb_terminal.rich_config import console
 from openbb_terminal.reports.reports_controller import ReportController
 from openbb_terminal.dashboards.dashboards_controller import DashboardsController
@@ -2380,7 +2381,8 @@ class Loader:
 
     @staticmethod
     def __initialize_logging():
-        setup_logging(app_name="gst_sdk")
+        cfg.LOGGING_SUB_APP = "sdk"
+        setup_logging()
         log_all_settings()
 
     @classmethod
