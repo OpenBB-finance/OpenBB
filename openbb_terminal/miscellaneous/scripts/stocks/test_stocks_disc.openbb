@@ -1,0 +1,33 @@
+stocks
+disc
+q
+disc
+..
+disc
+quit
+disc
+help
+h
+?
+pipo
+fipo
+gainers
+losers
+ugs -l 3
+gtech
+active
+ulc
+asc
+arkord
+arkord --fund ARKX -s Total
+upcoming
+trending
+cnews -t notable-calls
+lowfloat
+hotpenny
+rtat
+divcal -s Dividend -a
+heatmap
+reset
+r
+exit

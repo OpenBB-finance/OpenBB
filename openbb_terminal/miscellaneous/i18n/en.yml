@@ -79,12 +79,16 @@ en:
   economy: global macroeconomic data, e.g. futures, yield, treasury
   forex: foreign exchanges, quotes, forward rates for currency pairs and oanda integration
   funds: mutual funds search, overview, holdings and sector weights
+  futures: commodities, bonds, index, bitcoin and forex
   alternative: alternative datasets, such as COVID and open source metrics
   econometrics: statistical and quantitative methods for relationships between datasets
   forecast: timeseries forecasting with machine learning
   portfolio: perform portfolio optimization and look at portfolio performance and attribution
   dashboards: interactive dashboards using voila and jupyter notebooks
   reports: customizable research reports through jupyter notebooks
+  futures/search: search for a future based on category or exchange
+  futures/historical: get historical timeseries
+  futures/curve: get futures curves
   stocks/search: search a specific stock ticker for analysis
   stocks/load: load a specific stock ticker and additional info for analysis
   stocks/_ticker: Stock
@@ -306,10 +310,10 @@ en:
   stocks/ba/wsb: show what WSB gang is up to in subreddit wallstreetbets
   stocks/ba/watchlist: show other users watchlist
   stocks/ba/popular: show popular tickers
-  stocks/ba/spac_c: show other users spacs announcements from subreddit SPACs
+  stocks/ba/spacc: show other users spacs announcements from subreddit SPACs
   stocks/ba/spac: show other users spacs announcements from other subs
   stocks/ba/getdd: gets due diligence from another user's post
-  stocks/ba/reddit_sent: searches reddit for ticker and finds reddit sentiment
+  stocks/ba/redditsent: searches reddit for ticker and finds reddit sentiment
   stocks/ba/trending: trending stocks
   stocks/ba/stalker: stalk stocktwits user's last messages
   stocks/ba/bullbear: estimate quick sentiment from last 30 messages on board
@@ -390,7 +394,7 @@ en:
   stocks/bt/_ticker: Ticker
   stocks/bt/whatif: what if you had bought X shares on day Y
   stocks/bt/ema: buy when price exceeds EMA(l)
-  stocks/bt/ema_cross: buy when EMA(short) > EMA(long)
+  stocks/bt/emacross: buy when EMA(short) > EMA(long)
   stocks/bt/rsi: buy when RSI < low and sell when RSI > high
   stocks/ta/_ticker: Ticker
   stocks/ta/tv: open interactive chart on
@@ -858,8 +862,8 @@ en:
   funds/plot: plot loaded historical fund data
   funds/sector: sector weightings
   funds/equity: equity holdings
-  funds/al_swe: display fund allocation (sector, country, holdings)
-  funds/info_swe: get fund information
+  funds/alswe: display fund allocation (sector, country, holdings)
+  funds/infoswe: get fund information
   funds/forecast: forecasting techniques
   alternative/covid: COVID menu,                 cases, deaths, rates
   alternative/oss: Open Source menu,           star history, repos information

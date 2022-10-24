@@ -11,6 +11,7 @@ from typing import Optional, Callable, List
 import logging
 from traceback import format_stack
 
+import openbb_terminal.config_terminal as cfg
 from openbb_terminal.rich_config import console
 from openbb_terminal.reports.reports_controller import ReportController
 from openbb_terminal.dashboards.dashboards_controller import DashboardsController
@@ -123,9 +124,9 @@ functions = {
         "model": "openbb_terminal.common.behavioural_analysis.reddit_model.get_popular_tickers",
         "view": "openbb_terminal.common.behavioural_analysis.reddit_view.display_popular_tickers",
     },
-    "stocks.ba.reddit_sent": {
+    "stocks.ba.redditsent": {
         "model": "openbb_terminal.common.behavioural_analysis.reddit_model.get_posts_about",
-        "view": "openbb_terminal.common.behavioural_analysis.reddit_view.display_reddit_sent",
+        "view": "openbb_terminal.common.behavioural_analysis.reddit_view.display_redditsent",
     },
     "stocks.ba.text_sent": {
         "model": "openbb_terminal.common.behavioural_analysis.reddit_model.get_sentiment"
@@ -133,7 +134,7 @@ functions = {
     "stocks.ba.spac": {
         "model": "openbb_terminal.common.behavioural_analysis.reddit_model.get_spac"
     },
-    "stocks.ba.spac_c": {
+    "stocks.ba.spacc": {
         "model": "openbb_terminal.common.behavioural_analysis.reddit_model.get_spac_community"
     },
     "stocks.ba.watchlist": {
@@ -1348,9 +1349,9 @@ functions = {
         "model": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.additional_plots",
         "view": "openbb_terminal.portfolio.portfolio_optimization.optimizer_view.additional_plots",
     },
-    # "stocks.bt.ema_cross": {
-    #     "model": "openbb_terminal.stocks.backtesting.bt_model.ema_cross_strategy",
-    #     "view": "openbb_terminal.stocks.backtesting.bt_view.display_ema_cross",
+    # "stocks.bt.emacross": {
+    #     "model": "openbb_terminal.stocks.backtesting.bt_model.emacross_strategy",
+    #     "view": "openbb_terminal.stocks.backtesting.bt_view.display_emacross",
     # },
     # "stocks.bt.ema": {
     #     "model": "openbb_terminal.stocks.backtesting.bt_model.ema_strategy",
@@ -2046,6 +2047,18 @@ forecast_extras = {
         "model": "openbb_terminal.forecast.nhits_model.get_nhits_data",
         "view": "openbb_terminal.forecast.nhits_view.display_nhits_forecast",
     },
+    "futures.search": {
+        "model": "openbb_terminal.futures.yfinance_model.get_search_futures",
+        "view": "openbb_terminal.futures.yfinance_view.display_search",
+    },
+    "futures.historical": {
+        "model": "openbb_terminal.futures.yfinance_model.get_historical_futures",
+        "view": "openbb_terminal.futures.yfinance_view.display_historical",
+    },
+    "futures.curve": {
+        "model": "openbb_terminal.futures.yfinance_model.get_curve_futures",
+        "view": "openbb_terminal.futures.yfinance_view.display_curve",
+    },
 }
 
 if forecasting:
@@ -2368,7 +2381,8 @@ class Loader:
 
     @staticmethod
     def __initialize_logging():
-        setup_logging(app_name="gst_sdk")
+        cfg.LOGGING_SUB_APP = "sdk"
+        setup_logging()
         log_all_settings()
 
     @classmethod

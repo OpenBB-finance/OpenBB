@@ -200,9 +200,6 @@ class TradingHoursController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             bursa_view.display_open()
-        else:
-            logger.error("No open exchanges right now.")
-            console.print("[red]No open exchanges right now.[/red]\n")
 
     @log_start_end(log=logger)
     def call_closed(self, other_args: List[str]):
@@ -220,9 +217,6 @@ class TradingHoursController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             bursa_view.display_closed()
-        else:
-            logger.error("No closed exchanges right now.")
-            console.print("[red]No closed exchanges right now.[/red]\n")
 
     @log_start_end(log=logger)
     def call_all(self, other_args: List[str]):
@@ -240,6 +234,3 @@ class TradingHoursController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             bursa_view.display_all()
-        else:
-            logger.error("No exchanges right now.")
-            console.print("[red]No exchanges right now.[/red]\n")

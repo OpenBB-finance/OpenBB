@@ -630,7 +630,7 @@ class DiscoveryController(BaseController):
             "--sortby",
             dest="sort_col",
             choices=self.arkord_sortby_choices,
-            nargs="+",
+            type=str,
             help="Column to sort by",
             default="",
         )
