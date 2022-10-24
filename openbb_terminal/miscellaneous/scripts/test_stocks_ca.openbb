@@ -1,15 +1,24 @@
 stocks
-sia
-metric roa
+load aapl
 ca
+tsne
 historical
+historical -t o -n
 hcorr
+hcorr --raw
+hcorr -t h --display-full-matrix
 volume
+ticker msft
 income
+income -t 31-Mar-2022 -q
 balance
+balance -t 31-Mar-2022 -q
 cashflow
+cashflow -t 31-Mar-2022 -q
 sentiment
+sentiment -r
 scorr
+scorr -h
 overview
 valuation
 financial
@@ -17,7 +26,6 @@ ownership
 performance
 technical
 ticker -t tsla
-tsne
 getpoly
 getfinnhub
 getfinviz

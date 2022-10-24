@@ -168,7 +168,7 @@
       "spacc": ["Reddit"],
       "spac": ["Reddit"],
       "getdd": ["Reddit"],
-      "reddit_sent": ["Reddit"],
+      "redditsent": ["Reddit"],
       "trending": ["Stocktwits"],
       "stalker": ["Stocktwits"],
       "bullbear": ["Stocktwits"],
@@ -498,7 +498,7 @@
     "sector": ["YahooFinance"],
     "equity": ["YahooFinance"],
     "alswe": ["Avanza"],
-    "info_swe": ["Avanza"]
+    "infoswe": ["Avanza"]
   },
   "futures": {
     "search": ["YahooFinance"],

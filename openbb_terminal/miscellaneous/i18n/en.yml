@@ -313,7 +313,7 @@ en:
   stocks/ba/spacc: show other users spacs announcements from subreddit SPACs
   stocks/ba/spac: show other users spacs announcements from other subs
   stocks/ba/getdd: gets due diligence from another user's post
-  stocks/ba/reddit_sent: searches reddit for ticker and finds reddit sentiment
+  stocks/ba/redditsent: searches reddit for ticker and finds reddit sentiment
   stocks/ba/trending: trending stocks
   stocks/ba/stalker: stalk stocktwits user's last messages
   stocks/ba/bullbear: estimate quick sentiment from last 30 messages on board
@@ -863,7 +863,7 @@ en:
   funds/sector: sector weightings
   funds/equity: equity holdings
   funds/alswe: display fund allocation (sector, country, holdings)
-  funds/info_swe: get fund information
+  funds/infoswe: get fund information
   funds/forecast: forecasting techniques
   alternative/covid: COVID menu,                 cases, deaths, rates
   alternative/oss: Open Source menu,           star history, repos information
