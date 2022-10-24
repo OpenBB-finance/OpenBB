@@ -145,9 +145,9 @@ class ReportController(BaseController):
     def call_forecast(self, other_args: List[str]):
         try:
             import darts  # pyright: reportMissingImports=false # noqa: F401, E501 #pylint: disable=import-outside-toplevel, unused-import
-            from darts import (
+            from darts import (  # pyright: reportMissingImports=false # noqa: F401, E501 #pylint: disable=import-outside-toplevel, unused-import
                 utils,
-            )  # pyright: reportMissingImports=false # noqa: F401, E501 #pylint: disable=import-outside-toplevel, unused-import
+            )
 
             forecast = True
         except ImportError:
