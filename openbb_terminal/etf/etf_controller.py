@@ -32,6 +32,7 @@ from openbb_terminal.helper_funcs import (
     export_data,
     valid_date,
     compose_export_path,
+    list_from_str,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -426,8 +427,8 @@ class ETFController(BaseController):
         parser.add_argument(
             "-s",
             "--sources",
-            default=[],
-            nargs="+",
+            default="",
+            type=str,
             help="Show news only from the sources specified (e.g bbc yahoo.com)",
         )
         if other_args and "-" not in other_args[0][0]:
@@ -435,10 +436,11 @@ class ETFController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.etf_name:
-                sources = ns_parser.sources
+                sources = list_from_str(ns_parser.sources)
                 for idx, source in enumerate(sources):
                     if source.find(".") == -1:
                         sources[idx] += ".com"
+                clean_sources = ",".join(sources)
 
                 d_stock = yf.Ticker(self.etf_name).info
 
@@ -449,7 +451,7 @@ class ETFController(BaseController):
                     limit=ns_parser.limit,
                     start_date=ns_parser.n_start_date.strftime("%Y-%m-%d"),
                     show_newest=ns_parser.n_oldest,
-                    sources=",".join(sources),
+                    sources=clean_sources,
                 )
             else:
                 console.print("Use 'load <ticker>' prior to this command!", "\n")
@@ -575,11 +577,10 @@ class ETFController(BaseController):
         parser.add_argument(
             "-e",
             "--etfs",
-            nargs="+",
             type=str,
             dest="names",
             help="Symbols to create a report for (e.g. pir ARKW ARKQ QQQ VOO)",
-            default=[self.etf_name],
+            default=self.etf_name,
         )
         parser.add_argument(
             "--filename",
@@ -600,10 +601,15 @@ class ETFController(BaseController):
             other_args.insert(0, "-e")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
+            etfs = list_from_str(ns_parser.names.upper())
             if ns_parser.names:
+                # Automatically creates the etf folder inside /OpenBBUserData/exports
+                # if it doesn't exist
+                if not os.path.isdir(ns_parser.folder):
+                    os.makedirs(ns_parser.folder)
                 try:
                     create_ETF_report(
-                        ns_parser.names,
+                        etfs,
                         filename=ns_parser.filename,
                         folder=ns_parser.folder,
                     )
