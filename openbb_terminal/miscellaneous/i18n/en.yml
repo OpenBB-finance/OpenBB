@@ -425,6 +425,7 @@ en:
   stocks/ta/bbands: bollinger bands
   stocks/ta/donchian: donchian channels
   stocks/ta/kc: keltner channels
+  stocks/ta/atr: average true range
   stocks/ta/_volume_: Volume
   stocks/ta/ad: accumulation/distribution line
   stocks/ta/adosc: chaikin oscillator
