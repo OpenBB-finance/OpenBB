@@ -2598,10 +2598,6 @@ main:
                 ref: /SDK/stocks/ba/bullbear
               - name: cnews
                 ref: /SDK/stocks/ba/cnews
-              - name: cramer
-                ref: /SDK/stocks/ba/cramer
-              - name: cramer_ticker
-                ref: /SDK/stocks/ba/cramer_ticker
               - name: getdd
                 ref: /SDK/stocks/ba/getdd
               - name: headlines
