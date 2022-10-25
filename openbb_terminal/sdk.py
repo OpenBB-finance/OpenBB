@@ -11,6 +11,7 @@ from typing import Optional, Callable, List
 import logging
 from traceback import format_stack
 
+import openbb_terminal.config_terminal as cfg
 from openbb_terminal.rich_config import console
 from openbb_terminal.reports.reports_controller import ReportController
 from openbb_terminal.dashboards.dashboards_controller import DashboardsController
@@ -324,6 +325,10 @@ functions = {
     "common.ta.obv": {
         "model": "openbb_terminal.common.technical_analysis.volume_model.obv",
         "view": "openbb_terminal.common.technical_analysis.volume_view.display_obv",
+    },
+    "common.ta.atr": {
+        "model": "openbb_terminal.common.technical_analysis.volatility_model.atr",
+        "view": "openbb_terminal.common.technical_analysis.volatility_view.display_atr",
     },
     "crypto.defi.vaults": {
         "model": "openbb_terminal.cryptocurrency.defi.coindix_model.get_defi_vaults",
@@ -1360,13 +1365,6 @@ functions = {
     #     "model": "openbb_terminal.stocks.backtesting.bt_model.rsi_strategy",
     #     "view": "openbb_terminal.stocks.backtesting.bt_view.display_rsi_strategy",
     # },
-    "stocks.ba.cramer": {
-        "model": "openbb_terminal.stocks.behavioural_analysis.cramer_model.get_cramer_daily"
-    },
-    "stocks.ba.cramer_ticker": {
-        "model": "openbb_terminal.stocks.behavioural_analysis.cramer_model.get_cramer_ticker",
-        "view": "openbb_terminal.stocks.behavioural_analysis.cramer_view.display_cramer_ticker",
-    },
     "stocks.ba.cnews": {
         "model": "openbb_terminal.stocks.behavioural_analysis.finnhub_model.get_company_news"
     },
@@ -2048,15 +2046,15 @@ forecast_extras = {
     },
     "futures.search": {
         "model": "openbb_terminal.futures.yfinance_model.get_search_futures",
-        "view": "openbb_terminal.forecast.nhits_view.display_search",
+        "view": "openbb_terminal.futures.yfinance_view.display_search",
     },
     "futures.historical": {
         "model": "openbb_terminal.futures.yfinance_model.get_historical_futures",
-        "view": "openbb_terminal.forecast.nhits_view.display_historical",
+        "view": "openbb_terminal.futures.yfinance_view.display_historical",
     },
     "futures.curve": {
         "model": "openbb_terminal.futures.yfinance_model.get_curve_futures",
-        "view": "openbb_terminal.forecast.nhits_view.display_curve",
+        "view": "openbb_terminal.futures.yfinance_view.display_curve",
     },
 }
 
@@ -2380,7 +2378,8 @@ class Loader:
 
     @staticmethod
     def __initialize_logging():
-        setup_logging(app_name="gst_sdk")
+        cfg.LOGGING_SUB_APP = "sdk"
+        setup_logging()
         log_all_settings()
 
     @classmethod

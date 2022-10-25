@@ -19,6 +19,19 @@ from openbb_terminal.stocks.fundamental_analysis.fa_helper import clean_df_index
 logger = logging.getLogger(__name__)
 
 
+def check_premium_key(json_response: Dict) -> bool:
+    """Checks if the response is the premium endpoint"""
+    if json_response == {
+        "Information": "Thank you for using Alpha Vantage! This is a premium endpoint. You may subscribe to "
+        "any of the premium plans at https://www.alphavantage.co/premium/ to instantly unlock all premium endpoints"
+    }:
+        console.print(
+            "This is a premium endpoint for AlphaVantage. Please use a premium key\n"
+        )
+        return True
+    return False
+
+
 @log_start_end(log=logger)
 def get_overview(symbol: str) -> pd.DataFrame:
     """Get alpha vantage company overview
@@ -179,6 +192,8 @@ def get_income_statements(
     )
     r = requests.get(url)
     response_json = r.json()
+    if check_premium_key(response_json):
+        return pd.DataFrame()
 
     # If the returned data was unsuccessful
     if "Error Message" in response_json:
@@ -265,7 +280,8 @@ def get_balance_sheet(
     url = f"https://www.alphavantage.co/query?function=BALANCE_SHEET&symbol={symbol}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     r = requests.get(url)
     response_json = r.json()
-
+    if check_premium_key(response_json):
+        return pd.DataFrame()
     # If the returned data was unsuccessful
     if "Error Message" in response_json:
         console.print(response_json["Error Message"])
@@ -351,7 +367,8 @@ def get_cash_flow(
     url = f"https://www.alphavantage.co/query?function=CASH_FLOW&symbol={symbol}&apikey={cfg.API_KEY_ALPHAVANTAGE}"
     r = requests.get(url)
     response_json = r.json()
-
+    if check_premium_key(response_json):
+        return pd.DataFrame()
     # If the returned data was unsuccessful
     if "Error Message" in response_json:
         console.print(response_json["Error Message"])

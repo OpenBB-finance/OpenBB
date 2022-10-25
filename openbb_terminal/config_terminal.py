@@ -35,7 +35,10 @@ PAPERMILL_NOTEBOOK_REPORT_PORT = (
 # Logging section
 
 # USE IN LOG LINES + FOR FOLDER NAME INSIDE S3 BUCKET
-LOGGING_APP_NAME = os.getenv("OPENBB_LOGGING_APP_NAME") or "gst"
+if "site-packages" in __file__:
+    LOGGING_APP_NAME = "gst_packaged_pypi"
+else:
+    LOGGING_APP_NAME = os.getenv("OPENBB_LOGGING_APP_NAME") or "gst"
 # AWS KEYS
 LOGGING_AWS_ACCESS_KEY_ID = (
     os.getenv("OPENBB_LOGGING_AWS_ACCESS_KEY_ID") or "REPLACE_ME"
@@ -59,6 +62,8 @@ LOGGING_ROLLING_CLOCK = bool(
 # DEBUG = 10
 # NOTSET = 0
 LOGGING_VERBOSITY = int(os.getenv("OPENBB_LOGGING_VERBOSITY") or 20)
+# LOGGING SUB APP
+LOGGING_SUB_APP = os.getenv("OPENBB_LOGGING_SUB_APP") or "terminal"
 
 # API Keys section
 
