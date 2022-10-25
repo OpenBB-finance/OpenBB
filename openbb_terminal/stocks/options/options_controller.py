@@ -1274,13 +1274,13 @@ class OptionsController(BaseController):
                         )
                     else:
                         yfinance_view.plot_plot(
-                            self.ticker,
-                            self.selected_date,
-                            ns_parser.x,
-                            ns_parser.y,
-                            ns_parser.custom,
-                            ns_parser.put,
-                            ns_parser.export,
+                            symbol=self.ticker,
+                            expiry=self.selected_date,
+                            put=ns_parser.put,
+                            x=ns_parser.x,
+                            y=ns_parser.y,
+                            custom=ns_parser.custom,
+                            export=ns_parser.export,
                         )
                 else:
                     console.print("No expiry loaded. First use `exp {expiry date}`\n")
