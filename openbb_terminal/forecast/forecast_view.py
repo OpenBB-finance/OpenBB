@@ -202,7 +202,13 @@ def display_corr(
 
 
 @log_start_end(log=logger)
-def show_df(data: pd.DataFrame, limit: int = 15, limit_col: int = 10, name: str = "", export: str = ""):
+def show_df(
+    data: pd.DataFrame,
+    limit: int = 15,
+    limit_col: int = 10,
+    name: str = "",
+    export: str = "",
+):
     console.print(
         f"[green]{name} has following shape (rowxcolumn): {data.shape}[/green]"
     )
