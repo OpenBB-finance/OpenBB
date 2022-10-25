@@ -738,7 +738,11 @@ class OptionsController(BaseController):
         )
 
         if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-i")
+            if other_args[0].split("-")[0] > "2000":
+                other_args.insert(0, "-d")
+            else:
+                other_args.insert(0, "-i")
+
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
