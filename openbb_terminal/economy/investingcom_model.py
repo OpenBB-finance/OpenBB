@@ -157,8 +157,10 @@ MATRIX_CHOICES = list(MATRIX_COUNTRIES.keys())
 def check_correct_country(country: str, countries: list) -> bool:
     """Check if country is in list and warn if not."""
     if country.lower() not in countries:
+        joined_countries = [x.replace(" ", "_").lower() for x in countries]
+        choices = ", ".join(joined_countries)
         console.print(
-            f"[red]'{country}' is an invalid country. Choose from {', '.join(countries)}[/red]"
+            f"[red]'{country}' is an invalid country. Choose from {choices}[/red]\n"
         )
         return False
     return True
@@ -460,26 +462,24 @@ def get_economic_calendar(
     sign = "+" if offset > 0 else ""
     time_zone = "GMT " + sign + str(int(offset)) + ":00"
 
+    args = [
+        time_filter,
+        countries_list,
+        importances_list,
+        categories_list,
+        start_date_string,
+        end_date_string,
+    ]
     try:
-        data = investpy.news.economic_calendar(
-            time_zone,
-            time_filter,
-            countries_list,
-            importances_list,
-            categories_list,
-            start_date_string,
-            end_date_string,
-        )
+        data = investpy.news.economic_calendar(time_zone, *args)
     except Exception:
-        data = investpy.news.economic_calendar(
-            None,
-            time_filter,
-            countries_list,
-            importances_list,
-            categories_list,
-            start_date_string,
-            end_date_string,
-        )
+        try:
+            data = investpy.news.economic_calendar(None, *args)
+        except Exception:
+            console.print(
+                f"[red]Economic calendar data not found for {country}.[/red]\n"
+            )
+            return pd.DataFrame(), ""
 
     if data.empty:
         logger.error("No data")

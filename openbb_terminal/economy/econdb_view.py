@@ -109,7 +109,7 @@ def show_macro_data(
 
     if len(parameters) > 1 or len(countries) > 1:
         ax.legend(
-            [fill(label, 45) for label in legend],
+            [fill(label.title(), 45) for label in legend],
             bbox_to_anchor=(0, 0.40, 1, -0.52),
             loc="upper right",
             mode="expand",
