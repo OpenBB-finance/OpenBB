@@ -326,6 +326,10 @@ functions = {
         "model": "openbb_terminal.common.technical_analysis.volume_model.obv",
         "view": "openbb_terminal.common.technical_analysis.volume_view.display_obv",
     },
+    "common.ta.atr": {
+        "model": "openbb_terminal.common.technical_analysis.volatility_model.atr",
+        "view": "openbb_terminal.common.technical_analysis.volatility_view.display_atr",
+    },
     "crypto.defi.vaults": {
         "model": "openbb_terminal.cryptocurrency.defi.coindix_model.get_defi_vaults",
         "view": "openbb_terminal.cryptocurrency.defi.coindix_view.display_defi_vaults",
