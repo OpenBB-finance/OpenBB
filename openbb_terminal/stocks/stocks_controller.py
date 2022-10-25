@@ -239,13 +239,14 @@ class StocksController(StockBaseController):
             nargs="+",
             help="The search term used to find company tickers",
         )
+        clean_countries = [x.lower().replace(" ", "_") for x in self.country]
         parser.add_argument(
             "-c",
             "--country",
             default="",
-            nargs=argparse.ONE_OR_MORE,
-            action=choice_check_after_action(AllowArgsWithWhiteSpace, self.country),
+            choices=clean_countries,
             dest="country",
+            type=str,
             help="Search by country to find stocks matching the criteria",
         )
         parser.add_argument(

@@ -48,10 +48,6 @@ main:
               ref: /terminal/common/ba/infer
             - name: interest
               ref: /terminal/common/ba/interest
-            - name: jcdr
-              ref: /terminal/common/ba/jcdr
-            - name: jctr
-              ref: /terminal/common/ba/jctr
             - name: mentions
               ref: /terminal/common/ba/mentions
             - name: messages
@@ -237,26 +233,24 @@ main:
           - name: discovery
             ref: /terminal/crypto/disc
             sub:
-              - name: cggainers
-                ref: /terminal/crypto/disc/cggainers
-              - name: cglosers
-                ref: /terminal/crypto/disc/cglosers
-              - name: cgtop
-                ref: /terminal/crypto/disc/cgtop
-              - name: cgtrending
-                ref: /terminal/crypto/disc/cgtrending
-              - name: cmctop
-                ref: /terminal/crypto/disc/cmctop
-              - name: cpsearch
-                ref: /terminal/crypto/disc/cpsearch
-              - name: drdapps
-                ref: /terminal/crypto/disc/drdapps
-              - name: drdex
-                ref: /terminal/crypto/disc/drdex
-              - name: drgames
-                ref: /terminal/crypto/disc/drgames
-              - name: drnft
-                ref: /terminal/crypto/disc/drnft
+              - name: gainers
+                ref: /terminal/crypto/disc/gainers
+              - name: losers
+                ref: /terminal/crypto/disc/losers
+              - name: top
+                ref: /terminal/crypto/disc/top
+              - name: trending
+                ref: /terminal/crypto/disc/trending
+              - name: search
+                ref: /terminal/crypto/disc/search
+              - name: dapps
+                ref: /terminal/crypto/disc/dapps
+              - name: dex
+                ref: /terminal/crypto/disc/dex
+              - name: games
+                ref: /terminal/crypto/disc/games
+              - name: nft
+                ref: /terminal/crypto/disc/nft
           - name: due diligence
             ref: /terminal/crypto/dd
             sub:
@@ -411,44 +405,40 @@ main:
                 ref: /terminal/crypto/ov/altindex
               - name: btcrb
                 ref: /terminal/crypto/ov/btcrb
-              - name: cbpairs
-                ref: /terminal/crypto/ov/cbpairs
-              - name: cgcategories
-                ref: /terminal/crypto/ov/cgcategories
-              - name: cgdefi
-                ref: /terminal/crypto/ov/cgdefi
-              - name: cgderivatives
-                ref: /terminal/crypto/ov/cgderivatives
-              - name: cgexchanges
-                ref: /terminal/crypto/ov/cgexchanges
-              - name: cgexrates
-                ref: /terminal/crypto/ov/cgexrates
-              - name: cgglobal
-                ref: /terminal/crypto/ov/cgglobal
-              - name: cghold
-                ref: /terminal/crypto/ov/cghold
-              - name: cgindexes
-                ref: /terminal/crypto/ov/cgindexes
-              - name: cgnews
-                ref: /terminal/crypto/ov/cgnews
-              - name: cgstables
-                ref: /terminal/crypto/ov/cgstables
+              - name: pairs
+                ref: /terminal/crypto/ov/pairs
+              - name: categories
+                ref: /terminal/crypto/ov/categories
+              - name: defi
+                ref: /terminal/crypto/ov/defi
+              - name: derivatives
+                ref: /terminal/crypto/ov/derivatives
+              - name: exchanges
+                ref: /terminal/crypto/ov/exchanges
+              - name: exrates
+                ref: /terminal/crypto/ov/exrates
+              - name: global
+                ref: /terminal/crypto/ov/global
+              - name: hold
+                ref: /terminal/crypto/ov/hold
+              - name: indexes
+                ref: /terminal/crypto/ov/indexes
+              - name: news
+                ref: /terminal/crypto/ov/news
+              - name: stables
+                ref: /terminal/crypto/ov/stables
               - name: ch
                 ref: /terminal/crypto/ov/ch
-              - name: cpcontracts
-                ref: /terminal/crypto/ov/cpcontracts
-              - name: cpexchanges
-                ref: /terminal/crypto/ov/cpexchanges
-              - name: cpexmarkets
-                ref: /terminal/crypto/ov/cpexmarkets
-              - name: cpglobal
-                ref: /terminal/crypto/ov/cpglobal
+              - name: contracts
+                ref: /terminal/crypto/ov/contracts
+              - name: exmarkets
+                ref: /terminal/crypto/ov/exmarkets
               - name: cpinfo
-                ref: /terminal/crypto/ov/cpinfo
-              - name: cpmarkets
-                ref: /terminal/crypto/ov/cpmarkets
-              - name: cpplatforms
-                ref: /terminal/crypto/ov/cpplatforms
+                ref: /terminal/crypto/ov/info
+              - name: markets
+                ref: /terminal/crypto/ov/markets
+              - name: platforms
+                ref: /terminal/crypto/ov/platforms
               - name: cr
                 ref: /terminal/crypto/ov/cr
               - name: ewf
@@ -1116,10 +1106,6 @@ main:
                 ref: /terminal/common/ba/infer
               - name: interest
                 ref: /terminal/common/ba/interest
-              - name: jcdr
-                ref: /terminal/common/ba/jcdr
-              - name: jctr
-                ref: /terminal/common/ba/jctr
               - name: mentions
                 ref: /terminal/common/ba/mentions
               - name: messages
@@ -1167,12 +1153,8 @@ main:
                 ref: /terminal/stocks/ca/cashflow
               - name: financial
                 ref: /terminal/stocks/ca/financial
-              - name: getfinnhub
-                ref: /terminal/stocks/ca/getfinnhub
-              - name: getfinviz
-                ref: /terminal/stocks/ca/getfinviz
-              - name: getpoly
-                ref: /terminal/stocks/ca/getpoly
+              - name: get
+                ref: /terminal/stocks/ca/get
               - name: hcorr
                 ref: /terminal/stocks/ca/hcorr
               - name: historical
@@ -2623,10 +2605,6 @@ main:
                 ref: /SDK/stocks/ba/bullbear
               - name: cnews
                 ref: /SDK/stocks/ba/cnews
-              - name: cramer
-                ref: /SDK/stocks/ba/cramer
-              - name: cramer_ticker
-                ref: /SDK/stocks/ba/cramer_ticker
               - name: getdd
                 ref: /SDK/stocks/ba/getdd
               - name: headlines

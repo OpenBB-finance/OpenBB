@@ -1806,3 +1806,21 @@ def load_json(path: str) -> Dict[str, str]:
         )
         console.print(f"[red]{e}[/red]")
         return {}
+
+
+def list_from_str(value: str) -> List[str]:
+    """Converts a string to a list
+
+    Parameter
+    ----------
+    value : str
+        The string to convert
+
+    Returns
+    ----------
+    new_value: List[str]
+        The list of strings
+    """
+    if value:
+        return value.split(",")
+    return []
