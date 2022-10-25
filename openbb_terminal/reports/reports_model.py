@@ -7,7 +7,6 @@ import logging
 # pylint: disable=R1732, R0912
 import os
 from pathlib import Path
-import sys
 from threading import Thread
 import webbrowser
 from ast import literal_eval
@@ -32,7 +31,6 @@ logger = logging.getLogger(__name__)
 
 CURRENT_LOCATION = Path(__file__)
 REPORTS_FOLDER = CURRENT_LOCATION.parent / "templates"
-# OUTPUT_FOLDER = USER_REPORTS_DIRECTORY / "reports"
 
 USER_REPORTS = {
     filepath.name: filepath
@@ -154,6 +152,9 @@ def extract_parameters(input_path: str) -> Dict[str, str]:
     ----------
     input_path: str
         Path of report to be rendered.
+
+    Returns:
+        Dict[str, str]: Dictionary with parameters names and values.
     """
 
     input_path = add_ipynb_extension(input_path)
@@ -307,9 +308,6 @@ def execute_notebook(input_path, parameters, output_path):
 
     input_path = add_ipynb_extension(input_path)
 
-    origin_stdout = sys.stdout
-    sys.stdout = StringIO()
-
     try:
         result = pm.execute_notebook(
             input_path=input_path,
@@ -317,7 +315,6 @@ def execute_notebook(input_path, parameters, output_path):
             parameters=parameters,
         )
 
-        sys.stdout = origin_stdout
         if not result["metadata"]["papermill"]["exception"]:
             console.print(f"\n[green]Notebook:[/green] {output_path}.ipynb")
             if obbff.OPEN_REPORT_AS_HTML:
@@ -332,13 +329,10 @@ def execute_notebook(input_path, parameters, output_path):
             console.print("[red]\nReport .html couldn't be created.\n[/red]")
 
     except pm.PapermillExecutionError as e:
-        sys.stdout = origin_stdout
         console.print(
             f"[red]An error was encountered in cell [{e.cell_index}], check the notebook:[/red]\n"
             f"{output_path}\n"
         )
-
-    sys.stdout = origin_stdout
 
 
 @log_start_end(log=logger)
