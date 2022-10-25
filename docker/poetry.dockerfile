@@ -59,19 +59,19 @@ RUN mkdir $PYSETUP_PATH/openbb_terminal
 RUN touch openbb_terminal/__init__.py
 
 # install runtime deps - uses $POETRY_VIRTUALENVS_IN_PROJECT internally
-RUN poetry install
+RUN poetry install --no-dev
 
 ###############################################
 # Production Image openbb poetry build
 ###############################################
 
 FROM python as poetry
+
 COPY --from=poetry-deps $PYSETUP_PATH $PYSETUP_PATH
 
 WORKDIR $PYSETUP_PATH
 COPY . .
 
-ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
 RUN echo "OPENBB_LOGGING_APP_NAME=gst_docker" > .env
 
 CMD ["python", "terminal.py"]
