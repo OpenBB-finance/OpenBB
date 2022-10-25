@@ -29,6 +29,7 @@ Volatility:
     bbands             bollinger bands
     donchian           donchian channels
     kc                 keltner channels
+    atr                average true range
 Volume:
     ad                 accumulation/distribution line
     adosc              chaikin oscillator
