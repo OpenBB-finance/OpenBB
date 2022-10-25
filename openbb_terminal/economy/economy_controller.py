@@ -767,6 +767,7 @@ class EconomyController(BaseController):
             "--parameter",
             type=str,
             dest="parameter",
+            default="",
             help="Series ID of the Macro Economic data from FRED",
         )
         parser.add_argument(
