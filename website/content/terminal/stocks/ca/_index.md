@@ -1,6 +1,6 @@
 ---
 title: Introduction to Comparison Analysis
-keywords: "Comparison, analysis, ca, menu, submenu, stocks, compare, correlation, similar, historical, hcorr, volume, income, balance, cashflow, sentiment, scorr, overview, valuation, financial, ownership, performance, technical, tsne, getpoly, getfunnhub, getfinviz, set, add, rmv, Polygon, Finnhub, Finviz, Yahoo, yFinance, FinBrain, market, watch "
+keywords: "Comparison, analysis, ca, menu, submenu, stocks, compare, correlation, similar, historical, hcorr, volume, income, balance, cashflow, sentiment, scorr, overview, valuation, financial, ownership, performance, technical, tsne, get --source Polygon, get --source Finnhub, get, set, add, rmv, Polygon, Finnhub, Finviz, Yahoo, yFinance, FinBrain, market, watch "
 date: "2022-05-27"
 type: guides
 status: publish
@@ -17,8 +17,8 @@ The Comparison Analysis menu provides the user with tools for:
 
 To use all features in this menu, the following <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/#accessing-other-sources-of-data-via-api-keys" target="_blank">API keys (free)</a> must be obtained by the user:
 
-  - <a href="https://finnhub.io/" target="_blank">Finnhub</a> `getfinnhub`
-  - <a href="https://polygon.io/" target="_blank">Polygon</a> `getpoly`
+  - <a href="https://finnhub.io/" target="_blank">Finnhub</a> `get --source Finnhub`
+  - <a href="https://polygon.io/" target="_blank">Polygon</a> `get --source Polygon`
 
 It is not necessary to load a ticker from the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/" target="_blank">stocks</a> menu to use these features. Enter the Comparison Analysis submenu by typing `ca` and pressing `ENTER` (⏎).
 
@@ -26,17 +26,17 @@ It is not necessary to load a ticker from the <a href="https://openbb-finance.gi
 
 ## How to use
 
-To add a primary ticker, or to swap it for another, enter `ticker AMZN`. The three commands: `getfinnhub`, `getpoly`
-and `getfinviz` all provide a similar function. Sources may return different results.
+To add a primary ticker, or to swap it for another, enter `ticker AMZN`. The command has three sources, use: `get --source Finnhub`, `get --source Polygon`
+and `get` to access the different sources. Sources may return different results.
 
 ````
-(🦋) /stocks/ca/ $ getfinviz
+(🦋) /stocks/ca/ $ get
 [Finviz] Similar Companies: WMT, BIG, BJ, COST, DG, DLTR, OLLI, PSMT, TGT, TUEM
 
-(🦋) /stocks/ca/ $ getpoly
+(🦋) /stocks/ca/ $ get --source Polygon
 [Polygon] Similar Companies: WMT, AMZN, COST, EBAY, DLTR, KSS, JCP, TGT, M, DG
 
-(🦋) /stocks/ca/ $ getfinnhub
+(🦋) /stocks/ca/ $ get --source Finnhub
 [Finnhub] Similar Companies: WMT, COST, BJ, PSMT
 ````
 Using any of these commands will automatically populate the list of similar companies for analysis. Furthermore, `add` & `rmv` allows the user to make modifications, or create a list from scratch.
