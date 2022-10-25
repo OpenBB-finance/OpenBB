@@ -9,8 +9,8 @@
 
 
 
-    <meta name="description" content="usage: show [-n {}] [-s SORTCOL [SORTCOL ...]] [-a] [-h] [--export EXPORT] [-l LIMIT] Show a portion of the, with --name defined, dataset or show a portion of all datasets when --name is not defined.
-optional arguments: -n {}, --name {} The name of the database you want to show data for (default: None) -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...] Sort based on a column in the DataFrame (default: ) -a, --ascend Use this argument to sort in a descending order (default: False) -h, --help show this help message (default: False) --export EXPORT Export raw data into csv, json, xlsx (default: ) -l LIMIT, --limit LIMIT Number of entries to show in data.">
+    <meta name="description" content="usage: show [-n {}] [-s SORTCOL [SORTCOL ...]] [-a] [--limit-col LIMIT_COL] [-h] [--export EXPORT] [-l LIMIT] Show a portion of the loaded dataset
+optional arguments: -n {}, --name {AAPL,MSFT,TSLA} The name of the database you want to show data for (default: None) -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...] Sort based on a column in the DataFrame (default: ) -a, --ascend Use this argument to sort in a descending order (default: False) --limit-col LIMIT_COL Set the number of columns to display when showing the dataset (default: 10) -h, --help show this help message (default: False) --export EXPORT Export raw data into csv, json, xlsx (default: ) -l LIMIT, --limit LIMIT Number of entries to show in data.">
 
 
 
@@ -47166,18 +47166,23 @@ code, img {
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Show</h1>
-        <pre><code>usage: show [-n {}] [-s SORTCOL [SORTCOL ...]] [-a] [-h] [--export EXPORT] [-l LIMIT]
-</code></pre><p>Show a portion of the, with <code>--name</code> defined, dataset or show a portion of all datasets when
-<code>--name</code> is not defined.</p>
+        <pre><code>usage: show [-n {}] [-s SORTCOL [SORTCOL ...]] [-a]
+      [--limit-col LIMIT_COL] [-h] [--export EXPORT] [-l LIMIT]
+</code></pre><p>Show a portion of the loaded dataset</p>
 <pre><code>optional arguments:
-  -n {}, --name {}      The name of the database you want to show data for (default: None)
+  -n {}, --name {AAPL,MSFT,TSLA}
+                        The name of the database you want to show data for (default: None)
   -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...]
                         Sort based on a column in the DataFrame (default: )
   -a, --ascend          Use this argument to sort in a descending order (default: False)
+  --limit-col LIMIT_COL
+                        Set the number of columns to display when showing the dataset (default: 10)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export raw data into csv, json, xlsx (default: )
   -l LIMIT, --limit LIMIT
                         Number of entries to show in data. (default: 10)
+
+For more information and examples, use 'about show' to access the related guide.
 </code></pre><p>Example:</p>
 <pre><code>(🦋) /forecast/ $ load aapl.csv
 
