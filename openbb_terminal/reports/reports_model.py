@@ -1,7 +1,6 @@
 """Reports Model Module."""
 __docformat__ = "numpy"
 
-from io import StringIO
 import logging
 
 # pylint: disable=R1732, R0912
