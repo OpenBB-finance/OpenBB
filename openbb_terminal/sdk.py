@@ -1365,13 +1365,6 @@ functions = {
     #     "model": "openbb_terminal.stocks.backtesting.bt_model.rsi_strategy",
     #     "view": "openbb_terminal.stocks.backtesting.bt_view.display_rsi_strategy",
     # },
-    "stocks.ba.cramer": {
-        "model": "openbb_terminal.stocks.behavioural_analysis.cramer_model.get_cramer_daily"
-    },
-    "stocks.ba.cramer_ticker": {
-        "model": "openbb_terminal.stocks.behavioural_analysis.cramer_model.get_cramer_ticker",
-        "view": "openbb_terminal.stocks.behavioural_analysis.cramer_view.display_cramer_ticker",
-    },
     "stocks.ba.cnews": {
         "model": "openbb_terminal.stocks.behavioural_analysis.finnhub_model.get_company_news"
     },
