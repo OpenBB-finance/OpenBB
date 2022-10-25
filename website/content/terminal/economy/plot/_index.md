@@ -20,7 +20,7 @@ optional arguments:
 
 Comparing Unemployment Rates and Consumer Confidence of France and Italy
 ```
-2022 Mar 15, 07:43 (✨) /economy/ $ macro -p URATE CONF -c France Italy -s 2005-01-01 -st
+2022 Mar 15, 07:43 (✨) /economy/ $ macro -p URATE CONF -c france,italy -s 2005-01-01 -st
 2022 Mar 15, 07:45 (✨) /economy/ $ options
                    Options available to plot                    
 ┏━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
