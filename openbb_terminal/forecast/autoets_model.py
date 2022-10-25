@@ -81,7 +81,7 @@ def get_autoets_data(
     model_ets = ETS(
         season_length=int(seasonal_periods),
     )
-    fcst = StatsForecast(df=ticker_series, models=[model_ets], freq="B")
+    fcst = StatsForecast(df=ticker_series, models=[model_ets], freq="B", verbose=True)
 
     # Historical backtesting
     historical_fcast_ets = fcst.cross_validation(
