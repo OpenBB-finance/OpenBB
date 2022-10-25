@@ -41,12 +41,12 @@ select `open in terminal`. Now:
 The `compose.env` file is responsible for loading in the correct environment variables before a
 session begins. Once this is done the `build.sh` file creates a docker image with the appropriate
 tag. The `poetry.dockerfile` is the file used to create the image. It has enhanced caching by
-buidling in three stages. The stages are described below.
+building in three stages. The stages are described below.
 
 - python: this stage creates a new `python:3.9-slim-bullseye` image. Slim-buster is a small linux
   distro that comes with a lot of the functionality we need. We then set environment variables.
   This image will only be reran when there is a new version of `python:3.9-slim-bullseye` or when
-  the environemnt variables are updated (there is almost never a reason to update them).
+  the environment variables are updated (there is almost never a reason to update them).
 - poetry-deps: this stage installs necessary apt packages like curl and git, and then installs
   poetry. This will be reran whenever dependencies change, or whenever `python` has been rerun.
 - poetry: this takes the build from `poetry-deps` and then copies the terminal files into it. Then
