@@ -298,7 +298,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         ),
         (
             "call_pir",
-            ["ARKW", "ARKF", "--filename=hello.xlsx", "--folder=world"],
+            ["ARKW,ARKF", "--filename=hello.xlsx", "--folder=world"],
             "create_ETF_report",
             [["ARKW", "ARKF"]],
             dict(filename="hello.xlsx", folder="world"),
