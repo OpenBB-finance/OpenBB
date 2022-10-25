@@ -326,6 +326,10 @@ functions = {
         "model": "openbb_terminal.common.technical_analysis.volume_model.obv",
         "view": "openbb_terminal.common.technical_analysis.volume_view.display_obv",
     },
+    "common.ta.atr": {
+        "model": "openbb_terminal.common.technical_analysis.volatility_model.atr",
+        "view": "openbb_terminal.common.technical_analysis.volatility_view.display_atr",
+    },
     "crypto.defi.vaults": {
         "model": "openbb_terminal.cryptocurrency.defi.coindix_model.get_defi_vaults",
         "view": "openbb_terminal.cryptocurrency.defi.coindix_view.display_defi_vaults",
@@ -1365,13 +1369,6 @@ functions = {
     #     "model": "openbb_terminal.stocks.backtesting.bt_model.rsi_strategy",
     #     "view": "openbb_terminal.stocks.backtesting.bt_view.display_rsi_strategy",
     # },
-    "stocks.ba.cramer": {
-        "model": "openbb_terminal.stocks.behavioural_analysis.cramer_model.get_cramer_daily"
-    },
-    "stocks.ba.cramer_ticker": {
-        "model": "openbb_terminal.stocks.behavioural_analysis.cramer_model.get_cramer_ticker",
-        "view": "openbb_terminal.stocks.behavioural_analysis.cramer_view.display_cramer_ticker",
-    },
     "stocks.ba.cnews": {
         "model": "openbb_terminal.stocks.behavioural_analysis.finnhub_model.get_company_news"
     },

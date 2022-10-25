@@ -48,10 +48,6 @@ main:
               ref: /terminal/common/ba/infer
             - name: interest
               ref: /terminal/common/ba/interest
-            - name: jcdr
-              ref: /terminal/common/ba/jcdr
-            - name: jctr
-              ref: /terminal/common/ba/jctr
             - name: mentions
               ref: /terminal/common/ba/mentions
             - name: messages
@@ -1099,10 +1095,6 @@ main:
                 ref: /terminal/common/ba/infer
               - name: interest
                 ref: /terminal/common/ba/interest
-              - name: jcdr
-                ref: /terminal/common/ba/jcdr
-              - name: jctr
-                ref: /terminal/common/ba/jctr
               - name: mentions
                 ref: /terminal/common/ba/mentions
               - name: messages
@@ -2606,10 +2598,6 @@ main:
                 ref: /SDK/stocks/ba/bullbear
               - name: cnews
                 ref: /SDK/stocks/ba/cnews
-              - name: cramer
-                ref: /SDK/stocks/ba/cramer
-              - name: cramer_ticker
-                ref: /SDK/stocks/ba/cramer_ticker
               - name: getdd
                 ref: /SDK/stocks/ba/getdd
               - name: headlines

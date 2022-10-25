@@ -62,8 +62,6 @@ class BehaviouralAnalysisController(StockBaseController):
         "popular",
         "getdd",
         "snews",
-        "jcdr",
-        "jctr",
         "interest",
     ]
 
@@ -187,11 +185,6 @@ class BehaviouralAnalysisController(StockBaseController):
             }
             choices["queries"] = limit
             choices["rise"] = limit
-            choices["jcdr"] = {
-                "--inverse": {},
-                "-i": "--inverse",
-            }
-            choices["jctr"]["--raw"] = {}
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -222,8 +215,6 @@ class BehaviouralAnalysisController(StockBaseController):
         mt.add_cmd("interest", self.ticker)
         mt.add_cmd("queries", self.ticker)
         mt.add_cmd("rise", self.ticker)
-        mt.add_cmd("jcdr")
-        mt.add_cmd("jctr", self.ticker)
         console.print(text=mt.menu_text, menu="Stocks - Behavioural Analysis")
 
     def custom_reset(self):
