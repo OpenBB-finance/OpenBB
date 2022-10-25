@@ -609,6 +609,20 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ),
         ),
         (
+            "call_atr",
+            ["--mamode=sma", "--export=csv"],
+            "volatility_view.display_atr",
+            [],
+            dict(
+                symbol="MOCK_TICKER",
+                data=MOCK_STOCK_DF,
+                mamode="sma",
+                window=14,
+                offset=0,
+                export="csv",
+            ),
+        ),
+        (
             "call_donchian",
             [
                 "--length_upper=1",
