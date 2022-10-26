@@ -96,7 +96,6 @@ class CovidController(BaseController):
         parser.add_argument(
             "-c",
             "--country",
-            nargs="+",
             type=str,
             dest="country",
             help="Country to get data for.",
@@ -106,10 +105,12 @@ class CovidController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.country:
-                country = " ".join(ns_parser.country)
+                country = ns_parser.country.title().replace("_", " ")
                 if country not in self.COUNTRY_LIST:
                     logger.error("%s not a valid selection", country)
-                    console.print(f"[red]{country} not a valid selection.[/red]\n")
+                    console.print(
+                        f"[red]{ns_parser.country} not a valid selection.[/red]\n"
+                    )
                     return
                 self.country = country
                 console.print(f"[cyan]{country}[/cyan] loaded\n")
