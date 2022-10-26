@@ -1,3 +1,4 @@
+import sys
 from typing import Optional
 import logging
 import os
@@ -19,6 +20,23 @@ def is_jupyter() -> bool:
         return False
 
 
+def is_papermill() -> bool:
+    """Check if session is being launched with args '-m ipykernel_launcher',
+    thus coming from papermill Popen. See 'ipykernel_launcher' in reports_model
+    for more detail.
+    """
+
+    return all(
+        i in sys.argv
+        for i in [
+            "-m",
+            "ipykernel_launcher",
+            "-f",
+            "--HistoryManager.hist_file=:memory:",
+        ]
+    )
+
+
 def inputhook(inputhook_context):
     while not inputhook_context.input_is_ready():
         try:
@@ -32,7 +50,7 @@ def inputhook(inputhook_context):
 history_file = os.path.join(os.path.expanduser("~"), ".openbb_terminal.his")
 
 try:
-    if not is_jupyter():
+    if not is_jupyter() and not is_papermill():
         session: Optional[PromptSession] = PromptSession(
             history=FileHistory(history_file)
         )

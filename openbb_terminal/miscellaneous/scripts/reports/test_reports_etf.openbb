@@ -1,10 +1,13 @@
 reports
 
-etf VEA
+## defaults
+etf
 
-etf VWCE
+etf --symbol VEA
+
+etf --symbol VWCE
 
 # test with random pairs
-etf ABCEF
+etf --symbol ABCEF
 
 exit
