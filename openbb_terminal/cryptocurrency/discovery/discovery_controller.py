@@ -203,7 +203,7 @@ class DiscoveryController(BaseController):
                     category=ns_parser.category,
                     limit=ns_parser.limit,
                     export=ns_parser.export,
-                    ascending=not ns_parser.descend,
+                    ascend=not ns_parser.descend,
                 )
             elif ns_parser.source == "CoinMarketCap":
                 coinmarketcap_view.display_cmc_top_coins(

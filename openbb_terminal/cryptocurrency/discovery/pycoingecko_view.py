@@ -37,7 +37,7 @@ def display_coins(
     limit: int = 250,
     sortby: str = "Symbol",
     export: str = "",
-    ascending: bool = False,
+    ascend: bool = False,
 ) -> None:
     """Display top coins [Source: CoinGecko]
 
@@ -51,14 +51,14 @@ def display_coins(
         Key to sort data
     export : str
         Export dataframe data to csv,json,xlsx file
-    ascending: bool
+    ascend: bool
         Sort data in ascending order
     """
     df = pycoingecko_model.get_coins(
         limit=limit,
         category=category,
         sortby=sortby,
-        ascending=ascending,
+        ascend=ascend,
     )
     if not df.empty:
         df = df[
