@@ -162,7 +162,6 @@ def extract_parameters(input_path: str) -> Dict[str, str]:
         notebook_content = file.read()
 
     # Look for the metadata cell to understand if there are parameters required by the report
-    # Two options in case the first is not found:
     metadata_cell = """"metadata": {\n    "tags": [\n     "parameters"\n    ]\n   },\n   "outputs":"""
 
     # Locate position of the data of interest and get parameters
@@ -208,7 +207,7 @@ def render_report(input_path: str, args_dict: Dict[str, str]):
         1. Update parameters to use in notebook with received arguments
         2. Create output path
         3. Update parameters with output_path
-        4. Validate and execute notebook in a child process.
+        4. Validate and execute notebook in a new thread.
 
     Parameters
     ----------
