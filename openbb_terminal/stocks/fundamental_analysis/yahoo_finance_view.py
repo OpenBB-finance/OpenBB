@@ -427,6 +427,7 @@ def display_fundamentals(
     symbol_currency = yahoo_finance_model.get_currency(symbol)
 
     if plot:
+        plot = [x.lower() for x in plot]
         rows_plot = len(plot)
         fundamentals_plot_data = fundamentals.transpose().fillna(-1)
         fundamentals_plot_data.columns = fundamentals_plot_data.columns.str.lower()

@@ -111,7 +111,7 @@ def kc(
 
     Returns
     -------
-    df_en : pd.DataFrame
+    pd.DataFrame
         Dataframe of rolling kc
     """
     # Daily
@@ -122,6 +122,49 @@ def kc(
             close=close_prices,
             length=window,
             scalar=scalar,
+            mamode=mamode,
+            offset=offset,
+        ).dropna()
+    )
+
+
+@log_start_end(log=logger)
+def atr(
+    high_prices: pd.Series,
+    low_prices: pd.Series,
+    close_prices: pd.Series,
+    window: int = 14,
+    mamode: str = "ema",
+    offset: int = 0,
+) -> pd.DataFrame:
+    """Average True Range
+
+    Parameters
+    ----------
+    high_prices : pd.DataFrame
+        High prices
+    low_prices : pd.DataFrame
+        Low prices
+    close_prices : pd.DataFrame
+        Close prices
+    window : int
+        Length of window
+    mamode: str
+        Type of filter
+    offset : int
+        Offset value
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe of atr
+    """
+    return pd.DataFrame(
+        ta.atr(
+            high=high_prices,
+            low=low_prices,
+            close=close_prices,
+            length=window,
             mamode=mamode,
             offset=offset,
         ).dropna()

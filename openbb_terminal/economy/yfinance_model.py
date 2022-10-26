@@ -725,7 +725,10 @@ def get_search_indices(keyword: list, limit: int = 10) -> pd.DataFrame:
     pd.Dataframe
         Dataframe with the available options.
     """
-    keyword_adjusted = " ".join(keyword)
+    if isinstance(keyword, str):
+        keyword_adjusted = keyword.replace(",", " ")
+    else:
+        keyword_adjusted = " ".join(keyword)
 
     indices = fd.select_indices()
 
