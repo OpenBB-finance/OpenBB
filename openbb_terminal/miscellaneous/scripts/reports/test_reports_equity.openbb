@@ -1,12 +1,15 @@
 reports
 
+## defaults
+equity
+
 ## simple ticker
-equity AAPL
+equity --symbol AAPL
 
 ## Non-US ticker
-equity NXPI
+equity --symbol NXPI
 
 ## Non-US ticker with suffix
-equity PETR3.SA
+equity --symbol PETR3.SA
 
 exit

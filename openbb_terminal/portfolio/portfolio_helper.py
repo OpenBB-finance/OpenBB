@@ -223,7 +223,7 @@ def get_info_from_ticker(ticker: str) -> list:
 
     filename = "tickers_info.csv"
 
-    file_path = Path(str(DEFAULT_HOLDINGS_PATH), filename)
+    file_path = Path(str(USER_PORTFOLIO_DATA_DIRECTORY), filename)
 
     if file_path.is_file() and os.stat(file_path).st_size > 0:
         # file exists and is not empty, so append if necessary
