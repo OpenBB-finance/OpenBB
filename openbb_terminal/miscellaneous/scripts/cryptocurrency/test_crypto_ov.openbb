@@ -1,16 +1,138 @@
 crypto
 ov
-pairs
+
+# global
+global
+global --pie
+
+# defi
+defi
+
+# stables
+stables
+stables --pie
+stables --limit 3
+stables --sort current_price
+stables --limit 3 --sort current_price
+
+# exchanges
 exchanges
-cr
-hold
-hm
-global
+exchanges --source CoinGecko
+exchanges --source CoinPaprika
+exchanges --urls
+exchanges --sort Trust_Score
+exchanges --limit 3
+exchanges --vs ETH
+exchanges --source CoinGecko --limit 3 --sort Trust_Score
+
+# exrates
+exrates
+exrates --limit 3
+exrates --sort  Value
+exrates --sort  Value --limit 3
+
+# indexes
+indexes
+indexes --limit 3
+indexes --sort  Last
+indexes --sort  Last --limit 3
+
+# derivatives
+derivatives
+derivatives --limit 3
+derivatives --sort  Basis
+derivatives --sort  Basis --limit 3
+
+# categories
 categories
-global
-altindex
-btcrb
-wf
-ch
+categories --pie
+categories --limit 3
+categories --sort Market_Cap
+categories --sort Market_Cap --limit 3
+
+# hold
+hold
+hold --bar
+hold --limit 1
+hold --coin ethereum --bar
+hold --limit 1 --coin ethereum --bar
+
+# hm
+hm
+hm --limit 3
+hm --category stablecoins
+hm --category stablecoins --limit 3
+
+# info
+info
+info --vs ETH
+info --limit 3
+info --sort price
+info --vs ETH --sort price --limit 3
+
+# markets
+markets --vs ETH
+markets --limit 3
+markets --sort price
+markets --vs ETH --sort price --limit 3
+
+# exmarkets
+exmarkets --limit 3
+exmarkets --sort quote_currency_name
+exmarkets --urls
+
+# platforms
+platforms
+
+# contracts
+contracts
+contracts --platform eth-ethereum
+contracts --limit 3
+contracts --sort type
+contracts --platform eth-ethereum --limit 3 --sort type
+
+# pairs
+pairs
+
+# news
 news
+news --limit 3
+news --kind media
+news --filter hot
+news --region es
+news --sort title
+news --limit 3 --kind media --filter hot --sort title
+
+# wf
+wf
+wf --limit 3
+
+# ewf
+ewf
+
+# wfpe
+wfpe
+wfpe -c ethereum
+
+# altindex
+altindex
+altindex --period 30
+altindex --since 2020-10-25
+altindex --until 2021-12-01
+
+
+# ch
+ch
+ch --limit 3
+ch --sort Amount [$]
+ch --slug polynetwork-rekt
+
+# cr
+cr
+cr -t borrow
+cr --limit 3
+cr --cryptocurrrencies ZRX
+cr --platform s Compound
+cr --cryptocurrrencies ZRX --platform s Compound
+
 exit
