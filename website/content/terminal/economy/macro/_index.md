@@ -30,17 +30,17 @@ optional arguments:
 
 Example:
 ```
-2022 Mar 15, 07:20 (✨) /economy/ $ macro -p CONF -c Netherlands Germany France -s 2005-01-01 -e 2022-01-01
+2022 Mar 15, 07:20 (✨) /economy/ $ macro -p CONF -c netherlands,germany,france -s 2005-01-01 -e 2022-01-01
 ```
 ![macro conf netherlands germany france](https://user-images.githubusercontent.com/46355364/159249787-a030cd2c-0b29-4522-a1a9-db0245d55d9f.png)
 
 ```
-2022 Mar 15, 07:22 (✨) /economy/ $ macro -p OILPROD -c Canada United_States -s 2004-01-01
+2022 Mar 15, 07:22 (✨) /economy/ $ macro -p OILPROD -c canada,united_states -s 2004-01-01
 ```
 ![oil production macro](https://user-images.githubusercontent.com/46355364/159251277-9381cc0a-7efe-41ce-af93-41d832103a1e.png)
 
 ```
-2022 Mar 21, 07:33 (✨) /economy/ $ macro -p GDP PRC PUC -c Argentina -cc USD
+2022 Mar 21, 07:33 (✨) /economy/ $ macro -p GDP,PRC,PUC -c argentina -cc USD
 ```
 ![argentina gross domestic product in dollars](https://user-images.githubusercontent.com/46355364/159253210-c7135b12-b04a-49e4-8896-d03e4c25f520.png)
 
