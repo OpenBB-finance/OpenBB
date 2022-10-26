@@ -23,7 +23,33 @@ INTERVALS = {
     "1M": "1 month",
 }
 
-SCREENERS = ["crypto", "forex", "cfd"]
+SCREENERS = [
+    "australia",
+    "brazil",
+    "cfd",
+    "crypto",
+    "euronext",
+    "forex",
+    "france",
+    "germany",
+    "hongkong",
+    "india",
+    "indonesia",
+    "malaysia",
+    "philippines",
+    "russia",
+    "ksa",
+    "rsa",
+    "korea",
+    "spain",
+    "sweden",
+    "taiwan",
+    "thailand",
+    "turkey",
+    "uk",
+    "america",
+    "vietnam",
+]
 
 
 @log_start_end(log=logger)
