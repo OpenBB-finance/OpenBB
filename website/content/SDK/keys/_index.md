@@ -4,7 +4,7 @@ keywords: "api,keys,key,secret,token,bearer,credentials,secrets,data,sources"
 excerpt: "This guide explains how to manage API keys within an OpenBB SDK environment."
 geekdocCollapseSection: true
 ---
-The `keys` module provides the same functionality as the <a href="https://openbb-finance.github.io/OpenBBTerminal/#accessing-other-sources-of-data-via-api-keys" target="_blank"> Keys menu</a> does in the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/" target="_blank">OpenBB Terminal application</a>. Each data source requiring authentification will have slight differences of required inputs. Refer to the table <a href="https://openbb-finance.github.io/OpenBBTerminal/#accessing-other-sources-of-data-via-api-keys" target="_blank">here</a> for a compiled list of links for each data source.
+The `keys` module provides the same functionality as the <a href="https://openbb-finance.github.io/OpenBBTerminal/#accessing-other-sources-of-data-via-api-keys" target="_blank"> Keys menu</a> does in the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/" target="_blank">OpenBB Terminal application</a>. Each data source requiring authentication will have slight differences of required inputs. Refer to the table <a href="https://openbb-finance.github.io/OpenBBTerminal/#accessing-other-sources-of-data-via-api-keys" target="_blank">here</a> for a compiled list of links for each data source.
 
 ![openbb.keys.mykeys()](https://user-images.githubusercontent.com/85772166/198151758-7fdf1e00-29c2-4fb1-bfb1-7421cc9b8986.png)
 
