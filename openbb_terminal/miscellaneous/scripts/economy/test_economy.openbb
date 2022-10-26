@@ -20,14 +20,14 @@ spread
 spread --group PIIGS --color binary
 spread --countries portugal,spain,italy,united states --maturity 5Y --change=True --color openbb
 macro
-macro -p RGDP CPI
+macro -p RGDP,CPI
 macro -p URATE -c Netherlands Germany
 fred -q treasury
-fred -p T10Y2Y FII10 -s 2005-01-01
-index -i nasdaq dowjones sp500 -s 2005-01-01
-macro -p URATE -c Netherlands Germany -s 2005-01-01
+fred -p T10Y2Y,FII10 -s 2005-01-01
+index -i nasdaq,dowjones,sp500 -s 2005-01-01
+macro -p URATE -c Netherlands,Germany -s 2005-01-01
 index -i sp500 -s 2005-01-01
-plot --y1 Netherlands_URATE Germany_URATE --y2 sp500
+plot --y1 Netherlands_URATE,Germany_URATE --y2 sp500
 rtps
 valuation
 performance

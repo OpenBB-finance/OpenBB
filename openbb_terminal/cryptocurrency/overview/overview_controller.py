@@ -51,7 +51,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
+from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
 
 logger = logging.getLogger(__name__)
 
@@ -61,23 +61,21 @@ class OverviewController(BaseController):
 
     CHOICES_COMMANDS = [
         "hm",
-        "cgglobal",
-        "cgdefi",
-        "cgstables",
-        "cgexchanges",
-        "cgexrates",
-        "cgindexes",
-        "cgderivatives",
-        "cgcategories",
-        "cghold",
-        "cpglobal",
-        "cpmarkets",
-        "cpexmarkets",
-        "cpinfo",
-        "cpexchanges",
-        "cpplatforms",
-        "cpcontracts",
-        "cbpairs",
+        "global",
+        "defi",
+        "stables",
+        "exchanges",
+        "exrates",
+        "indexes",
+        "derivatives",
+        "categories",
+        "hold",
+        "markets",
+        "exmarkets",
+        "info",
+        "platforms",
+        "contracts",
+        "pairs",
         "news",
         "wf",
         "ewf",
@@ -98,7 +96,12 @@ class OverviewController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             crypto_hack_slugs = rekt_model.get_crypto_hack_slugs()
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["cgglobal"]["--pie"] = {}
+            choices["global"] = {
+                "--pie": {},
+                "--source": {
+                    c: {} for c in get_ordered_list_sources(f"{self.PATH}global")
+                },
+            }
             choices["cr"] = {c: {} for c in ["borrow", "supply"]}
             choices["cr"]["--cryptocurrrencies"] = {
                 c: None for c in loanscan_model.CRYPTOS
@@ -116,21 +119,21 @@ class OverviewController(BaseController):
                 "-l": "--limit",
                 "--descend": {},
             }
-            choices["cghold"] = {
+            choices["hold"] = {
                 "--coin": {c: {} for c in pycoingecko_model.HOLD_COINS},
                 "-c": "--coin",
                 "--limit": {str(c): {} for c in range(1, 50)},
                 "-l": "--limit",
                 "--bar": {},
             }
-            choices["cgcategories"] = {
+            choices["categories"] = {
                 "--sort": {c: {} for c in pycoingecko_model.CATEGORIES_FILTERS},
                 "-s": "--sort",
                 "--limit": {str(c): {} for c in range(1, 100)},
                 "-l": "--limit",
                 "--pie": {},
             }
-            choices["cgstables"] = {
+            choices["stables"] = {
                 "--sort": {c: {} for c in pycoingecko_model.COINS_COLUMNS},
                 "-s": "--sort",
                 "--limit": {str(c): {} for c in range(1, 100)},
@@ -138,37 +141,43 @@ class OverviewController(BaseController):
                 "--descend": {},
                 "--pie": {},
             }
-            choices["cgexchanges"] = {
-                "--sort": {c: {} for c in pycoingecko_model.EXCHANGES_FILTERS},
+            choices["exchanges"] = {
+                "--sort": {c: {} for c in pycoingecko_model.EXCHANGES_FILTERS}
+                if get_ordered_list_sources(f"{self.PATH}exchanges")[0] == "CoinGecko"
+                else {c: {} for c in coinpaprika_model.EXCHANGES_FILTERS},
                 "-s": "--sort",
                 "--limit": {str(c): {} for c in range(1, 100)},
                 "-l": "--limit",
                 "--descend": {},
                 "--urls": {},
                 "-u": "--urls",
+                "--vs": {c: {} for c in CURRENCIES},
+                "--source": {
+                    c: {} for c in get_ordered_list_sources(f"{self.PATH}exchanges")
+                },
             }
-            choices["cgexrates"] = {
+            choices["exrates"] = {
                 "--sort": {c: {} for c in pycoingecko_model.EXRATES_FILTERS},
                 "-s": "--sort",
                 "--limit": {str(c): {} for c in range(1, 100)},
                 "-l": "--limit",
                 "--descend": {},
             }
-            choices["cgindexes"] = {
+            choices["indexes"] = {
                 "--sort": {c: {} for c in pycoingecko_model.INDEXES_FILTERS},
                 "-s": "--sort",
                 "--limit": {str(c): {} for c in range(1, 100)},
                 "-l": "--limit",
                 "--descend": {},
             }
-            choices["cgderivates"] = {
+            choices["derivates"] = {
                 "--sort": {c: {} for c in pycoingecko_model.DERIVATIVES_FILTERS},
                 "-s": "--sort",
                 "--limit": {str(c): {} for c in range(1, 100)},
                 "-l": "--limit",
                 "--descend": {},
             }
-            choices["cpmarkets"] = {
+            choices["markets"] = {
                 "--vs": {c: {} for c in CURRENCIES},
                 "--sort": {c: {} for c in coinpaprika_model.MARKETS_FILTERS},
                 "-s": "--sort",
@@ -176,7 +185,7 @@ class OverviewController(BaseController):
                 "-l": "--limit",
                 "--descend": {},
             }
-            choices["cpexmarkets"] = {
+            choices["exmarkets"] = {
                 "--exchange": None,
                 "-e": "--exchange",
                 "--sort": {c: {} for c in coinpaprika_model.EXMARKETS_FILTERS},
@@ -187,28 +196,20 @@ class OverviewController(BaseController):
                 "--urls": {},
                 "-u": "--urls",
             }
-            choices["cpexchanges"] = {
-                "--vs": {c: {} for c in CURRENCIES},
-                "--sort": {c: {} for c in coinpaprika_model.EXCHANGES_FILTERS},
-                "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-                "--descend": {},
-            }
-            choices["cpcontracts"] = {
+            choices["contracts"] = {
                 c: None for c in get_all_contract_platforms()["platform_id"].tolist()
             }
-            choices["cpcontracts"]["--sort"] = {
+            choices["contracts"]["--sort"] = {
                 c: None for c in coinpaprika_model.CONTRACTS_FILTERS
             }
-            choices["cpcontracts"]["-s"] = "--sort"
-            choices["cpcontracts"]["--limit"] = {str(c): {} for c in range(1, 100)}
-            choices["cpcontracts"]["-l"] = "--limit"
-            choices["cpcontracts"]["--descend"] = {}
+            choices["contracts"]["-s"] = "--sort"
+            choices["contracts"]["--limit"] = {str(c): {} for c in range(1, 100)}
+            choices["contracts"]["-l"] = "--limit"
+            choices["contracts"]["--descend"] = {}
             choices["hm"] = {c: {} for c in get_categories_keys()}
             choices["hm"]["--limit"] = {str(c): {} for c in range(1, 100)}
             choices["hm"]["-l"] = "--limit"
-            choices["cpinfo"] = {
+            choices["info"] = {
                 "--vs": {c: {} for c in CURRENCIES},
                 "--sort": {c: {} for c in coinpaprika_model.INFO_FILTERS},
                 "-s": "--sort",
@@ -216,7 +217,7 @@ class OverviewController(BaseController):
                 "-l": "--limit",
                 "--descend": {},
             }
-            choices["cppairs"] = {
+            choices["pairs"] = {
                 "--sort": {c: {} for c in coinbase_model.PAIRS_FILTERS},
                 "-s": "--sort",
                 "--limit": {str(c): {} for c in range(10, 100)},
@@ -267,24 +268,22 @@ class OverviewController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("crypto/ov/", 105)
-        mt.add_cmd("cgglobal")
-        mt.add_cmd("cgdefi")
-        mt.add_cmd("cgstables")
-        mt.add_cmd("cgexchanges")
-        mt.add_cmd("cgexrates")
-        mt.add_cmd("cgindexes")
-        mt.add_cmd("cgderivatives")
-        mt.add_cmd("cgcategories")
-        mt.add_cmd("cghold")
+        mt.add_cmd("global")
+        mt.add_cmd("defi")
+        mt.add_cmd("stables")
+        mt.add_cmd("exchanges")
+        mt.add_cmd("exrates")
+        mt.add_cmd("indexes")
+        mt.add_cmd("derivatives")
+        mt.add_cmd("categories")
+        mt.add_cmd("hold")
         mt.add_cmd("hm")
-        mt.add_cmd("cpglobal")
-        mt.add_cmd("cpinfo")
-        mt.add_cmd("cpmarkets")
-        mt.add_cmd("cpexchanges")
-        mt.add_cmd("cpexmarkets")
-        mt.add_cmd("cpplatforms")
-        mt.add_cmd("cpcontracts")
-        mt.add_cmd("cbpairs")
+        mt.add_cmd("info")
+        mt.add_cmd("markets")
+        mt.add_cmd("exmarkets")
+        mt.add_cmd("platforms")
+        mt.add_cmd("contracts")
+        mt.add_cmd("pairs")
         mt.add_cmd("news")
         mt.add_cmd("wf")
         mt.add_cmd("ewf")
@@ -681,10 +680,10 @@ class OverviewController(BaseController):
                 )
 
     @log_start_end(log=logger)
-    def call_cghold(self, other_args):
+    def call_hold(self, other_args):
         """Process hold command"""
         parser = argparse.ArgumentParser(
-            prog="cghold",
+            prog="hold",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
@@ -734,10 +733,10 @@ class OverviewController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_cgcategories(self, other_args):
+    def call_categories(self, other_args):
         """Process top_categories command"""
         parser = argparse.ArgumentParser(
-            prog="cgcategories",
+            prog="categories",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows top cryptocurrency categories by market capitalization. It includes categories like:
@@ -783,12 +782,12 @@ class OverviewController(BaseController):
                 pie=ns_parser.pie,
             )
 
-    # TODO: solve sort (similar to cglosers from discovery)
+    # TODO: solve sort (similar to losers from discovery)
     @log_start_end(log=logger)
-    def call_cgstables(self, other_args):
+    def call_stables(self, other_args):
         """Process stables command"""
         parser = argparse.ArgumentParser(
-            prog="cgstables",
+            prog="stables",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows stablecoins by market capitalization.
@@ -902,10 +901,10 @@ class OverviewController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_cgexchanges(self, other_args):
+    def call_exchanges(self, other_args):
         """Process exchanges command"""
         parser = argparse.ArgumentParser(
-            prog="cgexchanges",
+            prog="exchanges",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows Top Crypto Exchanges
@@ -931,8 +930,11 @@ class OverviewController(BaseController):
             dest="sortby",
             type=str,
             help="Sort by given column. Default: Rank",
-            default="Rank",
-            choices=pycoingecko_model.EXCHANGES_FILTERS,
+            default="Rank"
+            if get_ordered_list_sources(f"{self.PATH}exchanges")[0] == "CoinGecko"
+            else "rank",
+            choices=pycoingecko_model.EXCHANGES_FILTERS
+            and coinpaprika_model.EXCHANGES_FILTERS,
         )
         parser.add_argument(
             "--descend",
@@ -947,27 +949,45 @@ class OverviewController(BaseController):
             "--urls",
             dest="urls",
             action="store_true",
-            help="Flag to add a url column",
+            help="Flag to add a url column. Works only with CoinGecko source",
             default=False,
+        )
+
+        parser.add_argument(
+            "--vs",
+            help="Quoted currency. Default: USD. Works only with CoinPaprika source",
+            dest="vs",
+            default="USD",
+            type=str,
+            choices=CURRENCIES,
         )
 
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            pycoingecko_view.display_exchanges(
-                limit=ns_parser.limit,
-                export=ns_parser.export,
-                sortby=ns_parser.sortby,
-                ascend=not ns_parser.descend,
-                links=ns_parser.urls,
-            )
+            if ns_parser.source == "CoinGecko":
+                pycoingecko_view.display_exchanges(
+                    limit=ns_parser.limit,
+                    export=ns_parser.export,
+                    sortby=ns_parser.sortby,
+                    ascend=not ns_parser.descend,
+                    links=ns_parser.urls,
+                )
+            elif ns_parser.source == "CoinPaprika":
+                coinpaprika_view.display_all_exchanges(
+                    symbol=ns_parser.vs,
+                    limit=ns_parser.limit,
+                    ascend=not ns_parser.descend,
+                    sortby=ns_parser.sortby,
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
-    def call_cgexrates(self, other_args):
+    def call_exrates(self, other_args):
         """Process exchange_rates command"""
         parser = argparse.ArgumentParser(
-            prog="cgexrates",
+            prog="exrates",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""
@@ -1015,10 +1035,10 @@ class OverviewController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_cgindexes(self, other_args):
+    def call_indexes(self, other_args):
         """Process indexes command"""
         parser = argparse.ArgumentParser(
-            prog="cgindexes",
+            prog="indexes",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows list of crypto indexes from CoinGecko.
@@ -1070,10 +1090,10 @@ class OverviewController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_cgderivatives(self, other_args):
+    def call_derivatives(self, other_args):
         """Process derivatives command"""
         parser = argparse.ArgumentParser(
-            prog="cgderivatives",
+            prog="derivatives",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows list of crypto derivatives from CoinGecko
@@ -1127,10 +1147,10 @@ class OverviewController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_cgglobal(self, other_args):
+    def call_global(self, other_args):
         """Process global command"""
         parser = argparse.ArgumentParser(
-            prog="cgglobal",
+            prog="global",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows global statistics about Crypto Market""",
@@ -1139,7 +1159,7 @@ class OverviewController(BaseController):
         parser.add_argument(
             "--pie",
             action="store_true",
-            help="Flag to show pie chart with market cap distribution",
+            help="Flag to show pie chart with market cap distribution. Works only with CoinGecko source",
             dest="pie",
             default=False,
         )
@@ -1148,15 +1168,18 @@ class OverviewController(BaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            pycoingecko_view.display_global_market_info(
-                export=ns_parser.export, pie=ns_parser.pie
-            )
+            if ns_parser.source == "CoinGecko":
+                pycoingecko_view.display_global_market_info(
+                    export=ns_parser.export, pie=ns_parser.pie
+                )
+            elif ns_parser.source == "CoinPaprika":
+                coinpaprika_view.display_global_market(export=ns_parser.export)
 
     @log_start_end(log=logger)
-    def call_cgdefi(self, other_args):
+    def call_defi(self, other_args):
         """Process defi command"""
         parser = argparse.ArgumentParser(
-            prog="cgdefi",
+            prog="defi",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Shows global DeFi statistics
@@ -1173,28 +1196,10 @@ class OverviewController(BaseController):
             pycoingecko_view.display_global_defi_info(export=ns_parser.export)
 
     @log_start_end(log=logger)
-    def call_cpglobal(self, other_args):
-        """Process global command"""
-
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="cpglobal",
-            description="""Show most important global crypto statistics like: Market Cap, Volume,
-            Number of cryptocurrencies, All Time High, All Time Low""",
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            coinpaprika_view.display_global_market(export=ns_parser.export)
-
-    @log_start_end(log=logger)
-    def call_cpmarkets(self, other_args):
+    def call_markets(self, other_args):
         """Process markets command"""
         parser = argparse.ArgumentParser(
-            prog="cpmarkets",
+            prog="markets",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Show market related (price, supply, volume) coin information for all coins on CoinPaprika.
@@ -1256,10 +1261,10 @@ class OverviewController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_cpexmarkets(self, other_args):
+    def call_exmarkets(self, other_args):
         """Process exmarkets command"""
         parser = argparse.ArgumentParser(
-            prog="cpexmarkets",
+            prog="exmarkets",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Get all exchange markets found for given exchange
@@ -1335,12 +1340,12 @@ class OverviewController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_cpinfo(self, other_args):
+    def call_info(self, other_args):
         """Process info command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="cpinfo",
+            prog="info",
             description="""Show basic coin information for all coins from CoinPaprika API
                 You can display only N number of coins with --limit parameter.
                 You can sort data by rank, name, symbol, price, volume_24h, circulating_supply,
@@ -1402,75 +1407,10 @@ class OverviewController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_cpexchanges(self, other_args):
-        """Process coins_market command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="cpexchanges",
-            description="""Show all exchanges from CoinPaprika
-               You can display only N number of coins with --limit parameter.
-               You can sort data by  rank, name, currencies, markets, fiats, confidence,
-               volume_24h,volume_7d ,volume_30d, sessions_per_month --sort parameter
-               and also with --descend flag to sort descending.
-               Displays:
-                   rank, name, currencies, markets, fiats, confidence, volume_24h,
-                   volume_7d ,volume_30d, sessions_per_month""",
-        )
-
-        parser.add_argument(
-            "--vs",
-            help="Quoted currency. Default USD",
-            dest="vs",
-            default="USD",
-            type=str,
-            choices=CURRENCIES,
-        )
-
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            type=check_positive,
-            help="display N number records",
-            default=20,
-        )
-
-        parser.add_argument(
-            "-s",
-            "--sort",
-            dest="sortby",
-            type=str,
-            help="Sort by given column. Default: rank",
-            default="rank",
-            choices=coinpaprika_model.EXCHANGES_FILTERS,
-        )
-
-        parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            coinpaprika_view.display_all_exchanges(
-                symbol=ns_parser.vs,
-                limit=ns_parser.limit,
-                ascend=not ns_parser.descend,
-                sortby=ns_parser.sortby,
-                export=ns_parser.export,
-            )
-
-    @log_start_end(log=logger)
-    def call_cpplatforms(self, other_args):
+    def call_platforms(self, other_args):
         """Process platforms command"""
         parser = argparse.ArgumentParser(
-            prog="cpplatforms",
+            prog="platforms",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""List all smart contract platforms like ethereum, solana, cosmos, polkadot, kusama""",
@@ -1483,12 +1423,12 @@ class OverviewController(BaseController):
             coinpaprika_view.display_all_platforms(export=ns_parser.export)
 
     @log_start_end(log=logger)
-    def call_cpcontracts(self, other_args):
+    def call_contracts(self, other_args):
         """Process contracts command"""
         platforms = get_all_contract_platforms()["platform_id"].tolist()
 
         parser = argparse.ArgumentParser(
-            prog="cpcontracts",
+            prog="contracts",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="""Gets all contract addresses for given platform.
@@ -1555,10 +1495,10 @@ class OverviewController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_cbpairs(self, other_args):
-        """Process news command"""
+    def call_pairs(self, other_args):
+        """Process pairs command"""
         parser = argparse.ArgumentParser(
-            prog="cbpairs",
+            prog="pairs",
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             description="Shows available trading pairs on Coinbase ",
@@ -1569,7 +1509,7 @@ class OverviewController(BaseController):
             "--limit",
             dest="limit",
             type=int,
-            help="display N number of news >=10",
+            help="display N number of pairs >=10",
             default=15,
         )
 
