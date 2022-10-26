@@ -130,7 +130,8 @@ def display_btc_rainbow(
     sample_dates = mdates.date2num(sample_dates)
     ax.vlines(x=sample_dates, ymin=0, ymax=max(y0), color="grey")
     for i, x in enumerate(sample_dates):
-        ax.text(x, 1, f"Halving {i+1}", rotation=-90, verticalalignment="center")
+        if mdates.date2num(d0) < x < mdates.date2num(dend):
+            ax.text(x, 1, f"Halving {i+1}", rotation=-90, verticalalignment="center")
 
     ax.minorticks_off()
     ax.yaxis.set_major_formatter(
