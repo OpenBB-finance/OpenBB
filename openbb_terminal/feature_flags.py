@@ -11,6 +11,7 @@ import i18n
 # IMPORTATION INTERNAL
 from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
+    PACKAGE_ENV_FILE,
     REPOSITORY_ENV_FILE,
     USER_DATA_SOURCES_DEFAULT_FILE,
     USER_ENV_FILE,
@@ -23,6 +24,7 @@ paths_helper.init_userdata()
 
 load_dotenv(USER_ENV_FILE)
 load_dotenv(REPOSITORY_ENV_FILE, override=True)
+load_dotenv(PACKAGE_ENV_FILE, override=True)
 
 # Retry unknown commands with `load`
 RETRY_WITH_LOAD = strtobool(os.getenv("OPENBB_RETRY_WITH_LOAD", "False"))
@@ -92,8 +94,6 @@ TOOLBAR_HINT = strtobool(os.getenv("OPENBB_TOOLBAR_HINT", "True"))
 
 # Select language to be used
 USE_LANGUAGE = str(os.getenv("OPENBB_USE_LANGUAGE", "en"))
-
-LOGGING_COMMIT_HASH = str(os.getenv("OPENBB_LOGGING_COMMIT_HASH", "REPLACE_ME"))
 
 # File that contains a JSON dictionary of preferred sources for commands
 PREFERRED_DATA_SOURCE_FILE = str(
