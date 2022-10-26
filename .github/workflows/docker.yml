@@ -21,8 +21,7 @@ jobs:
 
       - name: Check commit hash
         run: |
-          echo ${{ github.head_ref }}
-          echo ${{ github.sha }}
+          echo $(git rev-parse --short "$GITHUB_SHA")
 
       # - name: Building the Docker image
       #   run: |
