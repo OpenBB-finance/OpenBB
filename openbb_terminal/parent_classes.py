@@ -824,7 +824,7 @@ class BaseController(metaclass=ABCMeta):
                     # Get input from user without auto-completion
                     else:
                         an_input = input(f"{get_flair()} {self.PATH} $ ")
-                        
+
                 except (KeyboardInterrupt, EOFError):
                     # Exit in case of keyboard interrupt
                     an_input = "exit"
@@ -836,7 +836,9 @@ class BaseController(metaclass=ABCMeta):
 
                 # Process the input command
                 self.queue = self.switch(an_input)
-                if not self.queue or (self.queue and self.queue[0] not in ("quit", "help")):
+                if not self.queue or (
+                    self.queue and self.queue[0] not in ("quit", "help")
+                ):
                     console.print()
 
             except SystemExit:
