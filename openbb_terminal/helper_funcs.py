@@ -1720,7 +1720,6 @@ def screenshot_to_canvas(shot, plot_exists: bool = False):
     background = Image.open(
         Path(os.path.abspath(__file__), "../../images/background.png")
     )
-    print(Path(os.path.abspath(__file__), "../../images/background.png"))
     logo = Image.open(
         Path(os.path.abspath(__file__), "../../images/openbb_horizontal_logo.png")
     )
