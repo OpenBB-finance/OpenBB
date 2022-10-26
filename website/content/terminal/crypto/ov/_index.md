@@ -7,7 +7,7 @@ geekdocCollapseSection: true
 ---
 
 The Cryptocurrency Overview menu provides, among other things, the option to obtain a complete overview of the Cryptocurrency market
-(<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/ov/cgglobal/" target="_blank">cgglobal</a>), find cryptocurrency indices and derivatives (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/ov/cgindices/" target="_blank">cgindices</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/ov/cgderivatives/" target="_blank">cgderivatives</a>), news feeds (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/ov/news/" target="_blank">news</a>) and fees (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/ov/wf/" target="_blank">wf</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/ov/ewf/" target="_blank">ewf</a>)
+(<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/ov/global/" target="_blank">global</a>), find cryptocurrency indices and derivatives (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/ov/indices/" target="_blank">indices</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/ov/derivatives/" target="_blank">derivatives</a>), news feeds (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/ov/news/" target="_blank">news</a>) and fees (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/ov/wf/" target="_blank">wf</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/ov/ewf/" target="_blank">ewf</a>)
 
 ## How to use
 
@@ -17,10 +17,10 @@ The Cryptocurrency Overview menu is called upon by typing `ov`, while inside the
 
 Alternatively, you can also type `/crypto/ov`. Within the Cryptocurrency Overview menu you have a variety of options
 to get an understanding of the global market, derivatives, heatmaps, a full list of exchanges, news, fees and borrow rates.
-Taking one of these as an example, `cgderivatives` returns a Futures table:
+Taking one of these as an example, `derivatives` returns a Futures table:
 
 ```
-2022 Jul 12, 05:36 (🦋) /crypto/ov/ $ cgderivatives
+2022 Jul 12, 05:36 (🦋) /crypto/ov/ $ derivatives
 
                                                              Crypto Derivatives
 ┏━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
@@ -60,10 +60,10 @@ Taking one of these as an example, `cgderivatives` returns a Futures table:
 
 ## Examples
 
-We can start by looking at some general information about the Cryptocurrency market by using `cpglobal`:
+We can start by looking at some general information about the Cryptocurrency market by using `global`:
 
 ```
-2022 Jul 12, 05:38 (🦋) /crypto/ov/ $ cgglobal
+2022 Jul 12, 05:38 (🦋) /crypto/ov/ $ global
 
                  Global Statistics
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┓
@@ -89,11 +89,11 @@ We can start by looking at some general information about the Cryptocurrency mar
 └──────────────────────────────────────┴──────────┘
 ```
 
-To find an overview of all coins without segregating between different types of coins, we can use `cpinfo` which returns
+To find an overview of all coins without segregating between different types of coins, we can use `info` which returns
 the following table:
 
 ```
-2022 Jul 12, 05:40 (🦋) /crypto/ov/ $ cpinfo
+2022 Jul 12, 05:40 (🦋) /crypto/ov/ $ info
 
 Displaying data vs USD
 
@@ -144,10 +144,10 @@ Displaying data vs USD
 ```
 
 And lastly, it is also possible to look at the stable coins in the market instead of the entire Cryptocurrency investment
-universe. This can be done with `cgstables` which returns the following:
+universe. This can be done with `stables` which returns the following:
 
 ```
-2022 Jul 12, 05:40 (🦋) /crypto/ov/ $ cgstables
+2022 Jul 12, 05:40 (🦋) /crypto/ov/ $ stables
 
 First 15 stablecoins have a total 152.551 B dollars of market cap.
 

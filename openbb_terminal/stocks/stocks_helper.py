@@ -92,7 +92,7 @@ def search(
     """
     kwargs: Dict[str, Any] = {"exclude_exchanges": False}
     if country:
-        kwargs["country"] = country
+        kwargs["country"] = country.replace("_", " ").title()
     if sector:
         kwargs["sector"] = sector
     if industry:
