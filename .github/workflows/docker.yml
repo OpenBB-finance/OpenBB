@@ -31,12 +31,12 @@ jobs:
           echo "OPENBB_LOGGING_COMMIT_HASH=${OPENBB_LOGGING_COMMIT_HASH}" >> openbb_terminal/.env
           cat openbb_terminal/.env
 
-      # - name: Building the Docker image
-      #   run: |
-      #     source docker/compose.env
-      #     source docker/build.sh
-      #     echo "OPENBBTERMINAL_DOCKER_POETRY_IMAGE=$OPENBBTERMINAL_DOCKER_POETRY_IMAGE" >> $GITHUB_ENV
+      - name: Building the Docker image
+        run: |
+          source docker/compose.env
+          source docker/build.sh
+          echo "OPENBBTERMINAL_DOCKER_POETRY_IMAGE=$OPENBBTERMINAL_DOCKER_POETRY_IMAGE" >> $GITHUB_ENV
           
-      # - name: Publishing the Docker image
-      #   run: |
-      #     docker push "${OPENBBTERMINAL_DOCKER_POETRY_IMAGE}"
+      - name: Publishing the Docker image
+        run: |
+          docker push "${OPENBBTERMINAL_DOCKER_POETRY_IMAGE}"
