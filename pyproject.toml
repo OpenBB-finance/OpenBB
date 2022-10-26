@@ -6,6 +6,7 @@ authors = ["Didier Rodrigues Lopes"]
 packages = [
     { include = "openbb_terminal" },
 ]
+readme = "README.md"
 
 [tool.poetry.scripts]
 openbb = 'openbb_terminal.terminal_controller:parse_args_and_run'
