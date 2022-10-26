@@ -7,11 +7,12 @@ import dotenv
 
 # IMPORTATION INTERNAL
 
-from openbb_terminal.core.config.paths import USER_ENV_FILE, REPOSITORY_ENV_FILE
+from openbb_terminal.core.config.paths import PACKAGE_ENV_FILE, USER_ENV_FILE, REPOSITORY_ENV_FILE
 from .helper_classes import TerminalStyle as _TerminalStyle
 
 dotenv.load_dotenv(USER_ENV_FILE)
 dotenv.load_dotenv(REPOSITORY_ENV_FILE, override=True)
+dotenv.load_dotenv(PACKAGE_ENV_FILE, override=True)
 
 # Terminal UX section
 MPL_STYLE = os.getenv("OPENBB_MPLSTYLE") or "dark"
@@ -46,6 +47,7 @@ LOGGING_AWS_ACCESS_KEY_ID = (
 LOGGING_AWS_SECRET_ACCESS_KEY = (
     os.getenv("OPENBB_LOGGING_AWS_SECRET_ACCESS_KEY") or "REPLACE_ME"
 )
+LOGGING_COMMIT_HASH = str(os.getenv("OPENBB_LOGGING_COMMIT_HASH", "REPLACE_ME"))
 # D | H | M | S
 LOGGING_FREQUENCY = os.getenv("OPENBB_LOGGING_FREQUENCY") or "H"
 # stdout,stderr,noop,file
