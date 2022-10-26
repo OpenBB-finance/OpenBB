@@ -7,7 +7,7 @@ geekdocCollapseSection: true
 ---
 The Forex menu enables you to <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/forex/load/" target="_blank">load</a> any combination of currencies (e.g. USDEUR or JPYGBP), show current <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/forex/quote/" target="_blank">quote</a> and historical data (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/forex/candle/" target="_blank">candle</a>) as well as
 forward rates (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/forex/fwd/" target="_blank">fwd</a>). Furthermore, the menu has the ability to also apply
-<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/ta/" target="_blank">Technical Analysis</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/prediction_techniques/" target="_blank">Prediction Techniques</a> while also having an integration with <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/forex/oanda/" target="_blank">Oanda</a>.
+<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/ta/" target="_blank">Technical Analysis</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/forecast/" target="_blank">Forecasting menu</a> while also having an integration with <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/forex/oanda/" target="_blank">Oanda</a>.
 
 ## How to use
 
