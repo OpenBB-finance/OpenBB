@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 import os
+import pandas as pd
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import export_data, print_rich_table
@@ -40,7 +41,9 @@ def print_recommendation(
         symbol, screener, exchange, interval
     )
 
-    if recom.empty:
+    if (isinstance(recom, pd.DataFrame) and recom.empty) or (
+        not isinstance(recom, pd.DataFrame) and not recom
+    ):
         console.print("[red]The API did not return any recommendations.[/red]\n")
         return
 
