@@ -291,7 +291,6 @@ def print_rich_table(
                 for idx, x in enumerate(values)
             ]
             table.add_row(*row)
-        console.print()
         console.print(table)
     else:
         console.print(df.to_string(col_space=0))
