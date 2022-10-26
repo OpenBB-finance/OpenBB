@@ -1120,7 +1120,7 @@ The following linters are used by our codebase:
 
 <img width="1676" alt="Screenshot 2022-10-26 at 12 17 19" src="https://user-images.githubusercontent.com/25267873/198012768-4cfecf7b-e961-4e55-a613-6648c0107b1e.png">
 
-It is important to keep a coherent UI/UX throughout the terminal. These are the rules we must abid:
+It is important to keep a coherent UI/UX throughout the terminal. These are the rules we must abide:
 
 - There is 1 single empty line between user input and start of the command output.
 - There is 1 single empty line between command output and the user input.
