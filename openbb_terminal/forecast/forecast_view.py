@@ -191,7 +191,6 @@ def display_corr(
 
     # correlation
     correlation = forecast_model.corr_df(dataset)
-    # sns.heatmap(correlation, vmax=1, square=True, annot=True, cmap="cubehelix")
     sns.heatmap(
         correlation,
         vmin=correlation.values.min(),
@@ -205,13 +204,11 @@ def display_corr(
 
     ax.set_title("Correlation Matrix")
 
-    # change the colour of the y axis tick labels
     for t in ax.get_yticklabels():
         t.set_fontsize(7)
         t.set_fontweight("bold")
         t.set_horizontalalignment("left")
 
-    # change the colour of the x axis tick labels
     for t in ax.get_xticklabels():
         t.set_fontsize(7)
         t.set_fontweight("bold")
