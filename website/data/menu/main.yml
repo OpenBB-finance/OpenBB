@@ -1767,6 +1767,8 @@ main:
                 ref: /SDK/common/ta/adx
               - name: aroon
                 ref: /SDK/common/ta/aroon
+              - name: atr
+                ref: /SDK/common/ta/atr
               - name: bbands
                 ref: /SDK/common/ta/bbands
               - name: cci
@@ -2980,6 +2982,8 @@ main:
             sub:
               - name: recom
                 ref: /SDK/stocks/ta/recom
+              - name: rsp
+                ref: /SDK/stocks/ta/rsp
               - name: summary
                 ref: /SDK/stocks/ta/summary
               - name: view
