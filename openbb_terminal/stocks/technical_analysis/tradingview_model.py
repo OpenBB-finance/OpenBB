@@ -91,8 +91,8 @@ def get_tradingview_recommendation(
     df_recommendation = pd.DataFrame()
     index_recommendation = []
     for an_interval in intervals:
-        # If the returned data was successful
-        if result.status_code == 200:
+
+        if exchange:
             stock_recommendation = TA_Handler(
                 symbol=symbol,
                 screener=screener,
@@ -108,6 +108,7 @@ def get_tradingview_recommendation(
                 axis=0,
             )
             index_recommendation.append(INTERVALS[an_interval])
+
         df_recommendation.index = index_recommendation
         df_recommendation[["BUY", "NEUTRAL", "SELL"]] = df_recommendation[
             ["BUY", "NEUTRAL", "SELL"]
