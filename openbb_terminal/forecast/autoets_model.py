@@ -72,16 +72,17 @@ def get_autoets_data(
     # statsforecast preprocessing
     # when including more time series
     # the preprocessing is similar
-    ticker_series = data[["date", target_column]]
+    _, ticker_series = helpers.get_series(data, target_column, is_scaler=use_scalers)
+    freq = ticker_series.freq_str
+    ticker_series = ticker_series.pd_dataframe().reset_index()
     ticker_series.columns = ["ds", "y"]
     ticker_series.insert(0, "unique_id", target_column)
-    ticker_series["ds"] = pd.to_datetime(ticker_series["ds"])
 
     # Model Init
     model_ets = ETS(
         season_length=int(seasonal_periods),
     )
-    fcst = StatsForecast(df=ticker_series, models=[model_ets], freq="B", verbose=True)
+    fcst = StatsForecast(df=ticker_series, models=[model_ets], freq=freq, verbose=True)
 
     # Historical backtesting
     historical_fcast_ets = fcst.cross_validation(
