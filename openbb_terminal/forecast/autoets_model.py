@@ -85,11 +85,12 @@ def get_autoets_data(
     fcst = StatsForecast(df=ticker_series, models=[model_ets], freq=freq, verbose=True)
 
     # Historical backtesting
+    last_training_point = int((len(ticker_series) - 1) * start_window)
     historical_fcast_ets = fcst.cross_validation(
         h=int(forecast_horizon),
-        test_size=int((1 - start_window) * len(data)),
+        test_size=len(ticker_series) - last_training_point,
         n_windows=None,
-        input_size=min(10 * forecast_horizon, len(data)),
+        input_size=min(10 * forecast_horizon, len(ticker_series)),
     )
 
     # train new model on entire timeseries to provide best current forecast
