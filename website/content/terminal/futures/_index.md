@@ -7,7 +7,7 @@ geekdocCollapseSection: true
 The Futures menu provides historical prices and the current term structure for an asset. This menu is accessible from the Main menu by typing `futures` and pressing the `enter` key.
 <img width="1135" alt="Futures Menu" src="https://user-images.githubusercontent.com/85772166/197641556-80d83abb-6290-4fc9-b80a-331bcc5751e5.png">
 
-##How to Use##
+## How to Use 
 
 There are three basic functions within this menu:
   -  Search
