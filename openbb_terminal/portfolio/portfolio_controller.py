@@ -160,7 +160,9 @@ class PortfolioController(BaseController):
         choices: dict = {c: {} for c in self.controller_choices}
 
         one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
-        zero_to_hundred_detailed = {str(c): {} for c in np.arange(0.0, 100.0, 0.1)}
+        zero_to_hundred_detailed = {
+            str(round(c, 2)): {} for c in np.arange(0.0, 100.0, 0.1)
+        }
         choices["load"] = {
             "--file": {c: {} for c in self.DATA_HOLDINGS_FILES},
             "-f": "--file",
