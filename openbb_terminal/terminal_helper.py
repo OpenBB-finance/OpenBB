@@ -16,7 +16,7 @@ import requests
 import matplotlib.pyplot as plt
 
 # IMPORTATION INTERNAL
-from openbb_terminal import config_terminal as cfg
+from openbb_terminal.config_terminal import LOGGING_APP_NAME, LOGGING_COMMIT_HASH
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import thought_of_the_day as thought
 from openbb_terminal.rich_config import console
@@ -88,7 +88,7 @@ def update_terminal():
     """Updates the terminal by running git pull in the directory.
     Runs poetry install if needed.
     """
-    if not WITH_GIT or obbff.LOGGING_COMMIT_HASH != "REPLACE_ME":
+    if not WITH_GIT or LOGGING_COMMIT_HASH != "REPLACE_ME":
         console.print("This feature is not available: Git dependencies not installed.")
         return 0
 
@@ -183,7 +183,7 @@ def is_packaged_application() -> bool:
         bool: If the application is packaged
     """
 
-    return cfg.LOGGING_APP_NAME == "gst_packaged"
+    return LOGGING_APP_NAME == "gst_packaged"
 
 
 def bootup():

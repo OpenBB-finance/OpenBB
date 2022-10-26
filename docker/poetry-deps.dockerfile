@@ -4,7 +4,7 @@ FROM ${OPENBBTERMINAL_DOCKER_PYTHON_IMAGE}
 
 LABEL org.opencontainers.image.source https://github.com/OpenBB-finance/OpenBBTerminal
 
-COPY --chown=python:python pyproject.toml poetry.lock /home/python/
+COPY --chown=python:python pyproject.toml poetry.lock README.md /home/python/
 
 RUN mkdir /home/python/openbb_terminal
 RUN touch openbb_terminal/__init__.py
