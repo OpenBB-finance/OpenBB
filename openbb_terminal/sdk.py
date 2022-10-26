@@ -2262,7 +2262,7 @@ class MainMenu:
         return """This is the OpenBB Terminal SDK.
         Use the SDK to get data directly into your jupyter notebook or directly use it in your application.
         ...
-        For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/sdk/
+        For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/SDK/
         """
 
 
@@ -2285,7 +2285,7 @@ class Loader:
         return """This is the OpenBB Terminal SDK.
         Use the SDK to get data directly into your jupyter notebook or directly use it in your application.
         ...
-        For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/api/
+        For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/SDK/
         """
 
     # TODO: Add settings
