@@ -7,6 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     env: 
       OPENBBTERMINAL_DOCKER_GITHUB_REPOSITORY: ${{ github.repository }}
+      OPENBB_LOGGING_APP_NAME: "gst_docker"
+
 
     steps:
       - name: Checkout Code
@@ -19,9 +21,15 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Check commit hash
+      - name: Setup commit hash
         run: |
-          echo $(git rev-parse --short "$GITHUB_SHA")
+          echo "OPENBB_LOGGING_COMMIT_HASH=$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_ENV
+
+      - name: Build env file
+        run: |
+          echo "OPENBB_LOGGING_APP_NAME=$OPENBB_LOGGING_APP_NAME" > openbb_terminal/.env
+          echo "OPENBB_LOGGING_COMMIT_HASH=${OPENBB_LOGGING_COMMIT_HASH}" >> openbb_terminal/.env
+          cat openbb_terminal/.env
 
       # - name: Building the Docker image
       #   run: |
