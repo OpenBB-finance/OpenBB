@@ -5,22 +5,15 @@ FROM --platform=linux/amd64 python:3.9-slim-bullseye as python
 
 LABEL org.opencontainers.image.source https://github.com/OpenBB-finance/OpenBBTerminal
 
-# PYTHONDONTWRITEBYTECODE: If given, Python won't try to write .pyc files on the import of source modules.
-# PIP_NO_CACHE_DIR: Not needed because docker caches instead (see: https://pip.pypa.io/en/stable/topics/caching/)
-# PIP_DISABLE_PIP_VERSION_CHECK: Don't show the pip upgrade warnings
 # PIP_DEFAULT_TIMEOUT: Set the default timeout for pip
 
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PIP_NO_CACHE_DIR=off \
-    PIP_DISABLE_PIP_VERSION_CHECK=on \
-    PIP_DEFAULT_TIMEOUT=100 \
+ENV PIP_DEFAULT_TIMEOUT=100 \
     POETRY_VERSION=1.1.15 \
     POETRY_HOME="/opt/poetry" \
     POETRY_VIRTUALENVS_IN_PROJECT=true \
     POETRY_NO_INTERACTION=1 \
     PYSETUP_PATH="/opt" \
-    VENV_PATH="/opt/.venv" \
-    TZ="America/New_York"
+    VENV_PATH="/opt/.venv"
 
 # prepend poetry and venv to path
 ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
@@ -59,7 +52,7 @@ RUN mkdir $PYSETUP_PATH/openbb_terminal
 RUN touch openbb_terminal/__init__.py
 
 # install runtime deps - uses $POETRY_VIRTUALENVS_IN_PROJECT internally
-RUN poetry install --no-dev
+RUN poetry install
 
 ###############################################
 # Production Image openbb poetry build
@@ -71,6 +64,7 @@ COPY --from=poetry-deps $PYSETUP_PATH $PYSETUP_PATH
 
 WORKDIR $PYSETUP_PATH
 COPY . .
+RUN pip install "u8darts[torch]"
 
 RUN echo "OPENBB_LOGGING_APP_NAME=gst_docker" > .env
 
