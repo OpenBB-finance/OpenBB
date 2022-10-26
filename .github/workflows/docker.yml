@@ -19,12 +19,17 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Building the Docker image
+      - name: Check commit hash
         run: |
-          source docker/compose.env
-          source docker/build.sh
-          echo "OPENBBTERMINAL_DOCKER_POETRY_IMAGE=$OPENBBTERMINAL_DOCKER_POETRY_IMAGE" >> $GITHUB_ENV
+          echo ${{ github.head_ref }}
+          echo ${{ github.sha }}
+
+      # - name: Building the Docker image
+      #   run: |
+      #     source docker/compose.env
+      #     source docker/build.sh
+      #     echo "OPENBBTERMINAL_DOCKER_POETRY_IMAGE=$OPENBBTERMINAL_DOCKER_POETRY_IMAGE" >> $GITHUB_ENV
           
-      - name: Publishing the Docker image
-        run: |
-          docker push "${OPENBBTERMINAL_DOCKER_POETRY_IMAGE}"
+      # - name: Publishing the Docker image
+      #   run: |
+      #     docker push "${OPENBBTERMINAL_DOCKER_POETRY_IMAGE}"
