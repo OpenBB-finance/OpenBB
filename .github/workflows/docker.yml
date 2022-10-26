@@ -23,7 +23,7 @@ jobs:
 
       - name: Setup commit hash
         run: |
-          echo "OPENBB_LOGGING_COMMIT_HASH=$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_ENV
+          echo "OPENBB_LOGGING_COMMIT_HASH=sha:$(git rev-parse --short=8 "$GITHUB_SHA")" >> $GITHUB_ENV
 
       - name: Build env file
         run: |
