@@ -885,6 +885,23 @@ main:
                 ref: /terminal/jupyter/dashboards/vsurf
           - name: reports
             ref: /terminal/jupyter/reports
+            sub:
+              - name: crypto
+                ref: /terminal/jupyter/reports/crypto
+              - name: economy
+                ref: /terminal/jupyter/reports/economy
+              - name: equity
+                ref: /terminal/jupyter/reports/equity
+              - name: etf
+                ref: /terminal/jupyter/reports/etf
+              - name: forecast
+                ref: /terminal/jupyter/reports/forecast
+              - name: forex
+                ref: /terminal/jupyter/reports/forex
+              - name: portfolio
+                ref: /terminal/jupyter/reports/portfolio
+              - name: run
+                ref: /terminal/jupyter/reports/run
       - name: portfolio
         ref: /terminal/portfolio
         sub:
