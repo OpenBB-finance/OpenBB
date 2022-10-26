@@ -107,7 +107,6 @@ If you wish to install the OpenBB Terminal or the OpenBB SDK, please use one of 
 |[PyPi](https://openbb-finance.github.io/OpenBBTerminal/SDK/)|Recommended way if you just want to use the OpenBB SDK|
 |[Python](openbb_terminal/README.md#anaconda--python)|If you wish to contribute to the development of the OpenBB SDK &nbsp; &nbsp; &nbsp; &nbsp;|
 
-
 ## 3. Contributing
 
 There are three main ways of contributing to this project. (Hopefully you have starred the project by now ⭐️)
