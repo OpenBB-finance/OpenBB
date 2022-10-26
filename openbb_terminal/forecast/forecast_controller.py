@@ -821,11 +821,22 @@ class ForecastController(BaseController):
             default=False,
             dest="ascend",
         )
+        parser.add_argument(
+            "--limit-col",
+            action="store",
+            dest="limit_col",
+            default=10,
+            type=check_positive,
+            help="Set the number of columns to display when showing the dataset",
+        )
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
+            parser,
+            other_args,
+            EXPORT_ONLY_RAW_DATA_ALLOWED,
+            limit=10,
         )
 
         if ns_parser:
@@ -851,7 +862,9 @@ class ForecastController(BaseController):
                     else:
                         df = df.sort_values(by=sort_column, ascending=ns_parser.ascend)
 
-                forecast_view.show_df(df, ns_parser.limit, name, ns_parser.export)
+                forecast_view.show_df(
+                    df, ns_parser.limit, ns_parser.limit_col, name, ns_parser.export
+                )
 
     @log_start_end(log=logger)
     def call_rename(self, other_args: List[str]):

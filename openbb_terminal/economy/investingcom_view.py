@@ -221,6 +221,7 @@ def display_yieldcurve(
         Export dataframe data to csv,json,xlsx file
     """
 
+    country = country.title()
     df = investingcom_model.get_yieldcurve(country)
 
     if not df.empty:
