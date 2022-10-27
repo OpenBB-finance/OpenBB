@@ -198,9 +198,9 @@ class TerminalController(BaseController):
             "-s",
             "--sources",
             dest="sources",
-            default="bloomberg.com",
+            default="bloomberg",
             type=str,
-            help="sources from where to get news from",
+            help="sources from where to get news from (sepate by comma)",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
@@ -210,7 +210,7 @@ class TerminalController(BaseController):
         if news_parser:
             feedparser_view.display_news(
                 term=" ".join(news_parser.term),
-                sources=news_parser.sources.replace(",", " "),
+                sources=news_parser.sources,
                 limit=news_parser.limit,
                 export=news_parser.export,
             )
