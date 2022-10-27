@@ -419,7 +419,9 @@ class SectorIndustryAnalysisController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
+
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
+
         if ns_parser:
             possible_industries = financedatabase_model.get_industries(
                 country=self.country,
@@ -742,7 +744,11 @@ class SectorIndustryAnalysisController(BaseController):
             help="Output all raw data",
         )
         parser.add_argument(
-            "--show-all", dest="show_all", action="store_true", default=False
+            "--show-all",
+            dest="show_all",
+            action="store_true",
+            default=False,
+            help="Show all available metrics",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-m")
@@ -855,7 +861,11 @@ class SectorIndustryAnalysisController(BaseController):
             default="USD",
         )
         parser.add_argument(
-            "--show-all", dest="show_all", action="store_true", default=False
+            "--show-all",
+            dest="show_all",
+            action="store_true",
+            default=False,
+            help="Show all available metrics",
         )
 
         if other_args and "-" not in other_args[0][0]:
