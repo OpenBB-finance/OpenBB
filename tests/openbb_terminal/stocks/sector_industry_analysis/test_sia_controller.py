@@ -763,11 +763,11 @@ def test_custom_reset(expected, ticker):
         MOCK_TUPLE + MOCK_SUMMARY_PROFILE_MISSING_SECTOR,
     ],
 )
-def test_call_load(countries, industries, mocker, sectors, summaryProfile):
+def test_call_select(countries, industries, mocker, sectors, summaryProfile):
     path_controller = "openbb_terminal.stocks.sector_industry_analysis.sia_controller"
 
     # MOCK LOAD
-    target = f"{path_controller}.stocks_helper.load"
+    target = f"{path_controller}.yf.download"
     mocker.patch(target=target, return_value=DF_STOCK)
 
     # MOCK GET_JSON
@@ -809,9 +809,9 @@ def test_call_load(countries, industries, mocker, sectors, summaryProfile):
         or not summaryProfile["industry"]
     ):
         with pytest.raises(Exception):
-            controller.call_load(other_args=other_args)
+            controller.call_select(other_args=other_args)
     else:
-        controller.call_load(other_args=other_args)
+        controller.call_select(other_args=other_args)
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -827,7 +827,7 @@ def test_call_load_market_cap(market_cap, mocker):
     path_controller = "openbb_terminal.stocks.sector_industry_analysis.sia_controller"
 
     # MOCK LOAD
-    target = f"{path_controller}.stocks_helper.load"
+    target = f"{path_controller}.yf.download"
     mocker.patch(target=target, return_value=DF_STOCK)
 
     # MOCK GET_JSON
@@ -861,10 +861,8 @@ def test_call_load_market_cap(market_cap, mocker):
 
     other_args = [
         "TSLA",
-        "--start=2021-12-17",
-        "--end=2021-12-18",
     ]
-    controller.call_load(other_args=other_args)
+    controller.call_select(other_args=other_args)
 
 
 @pytest.mark.vcr(record_mode="none")

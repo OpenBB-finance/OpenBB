@@ -19,8 +19,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sources
-from openbb_terminal.stocks import stocks_helper
+from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.stocks.comparison_analysis import ca_controller
 from openbb_terminal.stocks.sector_industry_analysis import (
     financedatabase_model,
@@ -39,7 +38,7 @@ class SectorIndustryAnalysisController(BaseController):
     """Sector Industry Analysis Controller class"""
 
     CHOICES_COMMANDS = [
-        "load",
+        "select",
         "clear",
         "industry",
         "sector",
@@ -183,12 +182,9 @@ class SectorIndustryAnalysisController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["load"] = {
+            choices["select"] = {
                 "--ticker": None,
                 "-t": "--ticker",
-                "--source": {
-                    c: {} for c in get_ordered_list_sources(f"{self.PATH}load")
-                },
             }
             choices["mktcap"] = {c: {} for c in self.mktcap_choices}
             choices["period"] = {c: {} for c in self.period_choices}
@@ -253,7 +249,7 @@ class SectorIndustryAnalysisController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("stocks/sia/")
-        mt.add_cmd("load")
+        mt.add_cmd("select")
         mt.add_raw("\n")
         mt.add_cmd("clear")
         mt.add_cmd("industry")
@@ -295,13 +291,13 @@ class SectorIndustryAnalysisController(BaseController):
         return []
 
     @log_start_end(log=logger)
-    def call_load(self, other_args: List[str]):
-        """Process load command"""
+    def call_select(self, other_args: List[str]):
+        """Process select command"""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="load",
-            description="Load stock ticker and alter the industry, sector, country and market cap "
+            prog="select",
+            description="Select stock ticker and alter the industry, sector, country and market cap "
             "accordingly for this ticker.",
         )
         parser.add_argument(
@@ -316,8 +312,9 @@ class SectorIndustryAnalysisController(BaseController):
             other_args.insert(0, "-t")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
-            df_stock_candidate = stocks_helper.load(
-                ns_parser.ticker,
+            # The historical data is not used, so this is a quick way to check if the ticker is valid
+            df_stock_candidate = yf.download(
+                ns_parser.ticker, period="1mo", progress=False
             )
             if not df_stock_candidate.empty:
                 if "." in ns_parser.ticker:

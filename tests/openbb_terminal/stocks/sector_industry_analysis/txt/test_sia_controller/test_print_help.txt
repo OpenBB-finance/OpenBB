@@ -1,4 +1,4 @@
-    load               load a specific ticker and all it's corresponding parameters    [YahooFinance, IEXCloud, AlphaVantage, Polygon, EODHD]
+    select             select a specific ticker and all it's corresponding parameters  [YahooFinance]
 
     clear              clear all or one of industry, sector, country and market cap parameters
     industry           see existing industries, or set industry if arg specified       [FinanceDatabase]
