@@ -95,7 +95,6 @@ def get_defi_protocols(
     df["tvl"] = df["tvl"].apply(lambda x: lambda_long_number_format(x))
 
     if description:
-        print(df.columns)
         orig = ["name", "symbol", "category", "description", "url"]
         selection = [x for x in orig if x in df.columns]
         df = df[selection]

@@ -942,13 +942,13 @@ class DefiController(BaseController):
             dest="sortby",
             type=str,
             help="Sort by given column. Default: timestamp",
-            default="timestamp",
+            default="Datetime",
             choices=graph_model.SWAPS_FILTERS,
         )
 
         parser.add_argument(
             "--descend",
-            action="store_false",
+            action="store_true",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
             default=False,
