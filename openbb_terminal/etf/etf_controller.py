@@ -521,7 +521,10 @@ class ETFController(BaseController):
             "--ma",
             dest="mov_avg",
             type=str,
-            help="Add moving average in number of days to plot and separate by a comma. Value for ma (moving average) keyword needs to be greater than 1.",  # noqa: E501
+            help=(
+                "Add moving average in number of days to plot and separate by a comma. "
+                "Value for ma (moving average) keyword needs to be greater than 1."
+            ),
             default="",
         )
 
