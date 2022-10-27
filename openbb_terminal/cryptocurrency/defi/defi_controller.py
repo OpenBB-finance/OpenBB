@@ -187,7 +187,7 @@ class DefiController(BaseController):
                 "-l": "--limit",
             }
             choices["anchor"] = {
-                "--adress": None,
+                "--address": None,
                 "--transactions": {},
             }
             choices["support"] = self.SUPPORT_CHOICES
