@@ -153,7 +153,7 @@ def parse_and_split_input(an_input: str, custom_filters: List) -> List[str]:
     # everything from ` -f ` to the next known extension
     file_flag = r"(\ -f |\ --file )"
     up_to = r".*?"
-    known_extensions = r"(\.xlsx|.csv|.xls|.tsv|.json|.yaml|.ini|.openbb)"
+    known_extensions = r"(\.xlsx|.csv|.xls|.tsv|.json|.yaml|.ini|.openbb|.ipynb)"
     unix_path_arg_exp = f"({file_flag}{up_to}{known_extensions})"
 
     # Add custom expressions to handle edge cases of individual controllers
