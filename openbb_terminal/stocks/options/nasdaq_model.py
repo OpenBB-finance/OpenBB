@@ -53,27 +53,30 @@ def get_full_chain(symbol: str) -> pd.DataFrame:
                 df["expirygroup"].replace("", np.nan).fillna(method="ffill")
             )
             # Make numeric
+            columns_w_types = {
+                "c_Last": float,
+                "c_Change": float,
+                "c_Bid": float,
+                "c_Ask": float,
+                "c_Volume": int,
+                "c_Openinterest": int,
+                "strike": float,
+                "p_Last": float,
+                "p_Change": float,
+                "p_Bid": float,
+                "p_Ask": float,
+                "p_Volume": int,
+                "p_Openinterest": int,
+            }
+
+            for key, _ in columns_w_types.items():
+                df[key] = df[key].replace(",", "", regex=True)
+
             df = (
                 df.fillna(np.nan)
                 .dropna(axis=0)
                 .replace("--", 0)
-                .astype(
-                    {
-                        "c_Last": float,
-                        "c_Change": float,
-                        "c_Bid": float,
-                        "c_Ask": float,
-                        "c_Volume": int,
-                        "c_Openinterest": int,
-                        "strike": float,
-                        "p_Last": float,
-                        "p_Change": float,
-                        "p_Bid": float,
-                        "p_Ask": float,
-                        "p_Volume": int,
-                        "p_Openinterest": int,
-                    }
-                )
+                .astype(columns_w_types)
             )
             df["DTE"] = df["expirygroup"].apply(lambda t: get_dte(t))
             df = df[df.DTE > 0]
@@ -142,23 +145,26 @@ def get_chain_given_expiration(symbol: str, expiration: str) -> pd.DataFrame:
                 .dropna(axis=0)
             )
             # Make numeric
-            df = df.replace("--", 0).astype(
-                {
-                    "c_Last": float,
-                    "c_Change": float,
-                    "c_Bid": float,
-                    "c_Ask": float,
-                    "c_Volume": int,
-                    "c_Openinterest": int,
-                    "strike": float,
-                    "p_Last": float,
-                    "p_Change": float,
-                    "p_Bid": float,
-                    "p_Ask": float,
-                    "p_Volume": int,
-                    "p_Openinterest": int,
-                }
-            )
+            columns_w_types = {
+                "c_Last": float,
+                "c_Change": float,
+                "c_Bid": float,
+                "c_Ask": float,
+                "c_Volume": int,
+                "c_Openinterest": int,
+                "strike": float,
+                "p_Last": float,
+                "p_Change": float,
+                "p_Bid": float,
+                "p_Ask": float,
+                "p_Volume": int,
+                "p_Openinterest": int,
+            }
+
+            for key, _ in columns_w_types.items():
+                df[key] = df[key].replace(",", "", regex=True)
+
+            df = df.replace("--", 0).astype(columns_w_types)
             return df
 
     console.print(f"[red]{symbol} Option Chain not found.[/red]\n")
