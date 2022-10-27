@@ -34,7 +34,7 @@ def get_news(
     show_newest: bool
         flag to show newest articles first
     sources: str
-        sources to exclusively show news from
+        sources to exclusively show news from (comma separated)
 
     Returns
     ----------
@@ -43,11 +43,15 @@ def get_news(
     """
     link = (
         f"https://newsapi.org/v2/everything?q={query}&from={start_date}&sortBy=publishedAt"
-        f"&language=en&apiKey={cfg.API_NEWS_TOKEN}"
+        "&language=en"
     )
 
     if sources:
-        link += f"&domain={sources}"
+        if "," in sources:
+            sources = ".com,".join(sources.split(","))
+        link += f"&domains={sources}.com"
+
+    link += f"&apiKey={cfg.API_NEWS_TOKEN}"
 
     response = requests.get(link)
 
@@ -83,15 +87,26 @@ def get_news(
     if articles:
         for idx, article in enumerate(articles):
             # Unnecessary to use source name because contained in link article["source"]["name"]
-            data = [
-                [article["publishedAt"].replace("T", " ").replace("Z", "")],
-                [f"{article['description']}"],
-                [article["url"]],
-            ]
+            if "description" in article:
+                data = [
+                    [article["publishedAt"].replace("T", " ").replace("Z", "")],
+                    [f"{article['description']}"],
+                    [article["url"]],
+                ]
+                table = pd.DataFrame(
+                    data, index=["published", "content", "link"], columns=["Content"]
+                )
 
-            table = pd.DataFrame(
-                data, index=["published", "content", "link"], columns=["Content"]
-            )
+            else:
+                data = [
+                    [article["publishedAt"].replace("T", " ").replace("Z", "")],
+                    [article["url"]],
+                ]
+
+                table = pd.DataFrame(
+                    data, index=["published", "link"], columns=["Content"]
+                )
+
             table.columns = table.columns.str.title()
             tables.append((table, article))
             if idx >= limit - 1:
