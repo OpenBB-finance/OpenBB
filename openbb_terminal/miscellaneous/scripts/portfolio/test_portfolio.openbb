@@ -42,6 +42,36 @@ perf -p 1y
 perf -p 5y
 perf -p 10y
 perf -p all
+holdv
+holdv --sum --raw -l 4
+holdp
+holdp --sum --raw -l 4
+yret
+yret -p 3y
+yret -p 5y
+yret -p 10y
+yret -p all --raw
+mret
+mret -p 3y -s
+mret -p 5y -s
+mret -p 10y -s
+mret -p all -s
+mret -p all -s --raw
+dret
+dret -p 3y
+dret -p 5y
+dret -p 10y
+dret -p all --raw -l 5
+distr -p mtd
+distr -p qtd
+distr -p ytd
+distr -p 3m
+distr -p 6m
+distr -p 1y
+distr -p 5y
+distr -p 10y
+distr -p all
+maxdd
 rvol -p mtd
 rvol -p qtd
 rvol -p ytd
