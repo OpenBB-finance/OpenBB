@@ -22,6 +22,7 @@ from openbb_terminal.etf import (
     yfinance_view,
 )
 from openbb_terminal.etf.discovery import disc_controller
+from openbb_terminal.etf import etf_helper
 from openbb_terminal.etf.screener import screener_controller
 from openbb_terminal.etf.technical_analysis import ta_controller
 from openbb_terminal.helper_funcs import (
@@ -307,7 +308,9 @@ class ETFController(BaseController):
 
             self.etf_name = ns_parser.ticker.upper()
             self.etf_data = df_etf_candidate
-
+            quote_type = etf_helper.get_quote_type(self.etf_name)
+            if quote_type != "ETF":
+                console.print(f"{self.etf_name} is: {quote_type.lower()}")
             holdings = stockanalysis_model.get_etf_holdings(self.etf_name)
             if holdings.empty:
                 console.print("No company holdings found!\n")
@@ -333,6 +336,8 @@ class ETFController(BaseController):
                 console.print(
                     f"Top company holdings found: {', '.join(self.etf_holdings)}"
                 )
+
+        console.print()
 
     @log_start_end(log=logger)
     def call_overview(self, other_args: List[str]):
@@ -384,6 +389,7 @@ class ETFController(BaseController):
                 limit=ns_parser.limit,
                 export=ns_parser.export,
             )
+            console.print()
 
     @log_start_end(log=logger)
     def call_news(self, other_args: List[str]):
@@ -453,6 +459,7 @@ class ETFController(BaseController):
                 )
             else:
                 console.print("Use 'load <ticker>' prior to this command!")
+        console.print()
 
     @log_start_end(log=logger)
     def call_candle(self, other_args: List[str]):
