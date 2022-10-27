@@ -317,20 +317,20 @@ class ETFController(BaseController):
             else:
                 self.etf_holdings = holdings.index[: ns_parser.limit].tolist()
 
-                if "n/a" in self.etf_holdings:
+                if "N/A" in self.etf_holdings:
                     na_tix_idx = [
                         str(idx)
                         for idx, item in enumerate(self.etf_holdings)
-                        if item == "n/a"
+                        if item == "N/A"
                     ]
 
                     console.print(
-                        f"n/a tickers found at position {','.join(na_tix_idx)}. "
-                        " Dropping these from holdings.\n"
+                        f"N/A tickers found at position {','.join(na_tix_idx)}. "
+                        "Dropping these from holdings.\n"
                     )
 
                 self.etf_holdings = list(
-                    filter(lambda x: x != "n/a", self.etf_holdings)
+                    filter(lambda x: x != "N/A", self.etf_holdings)
                 )
 
                 console.print(
@@ -694,7 +694,7 @@ class ETFController(BaseController):
                 self.queue,
             )
         else:
-            console.print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!")
 
     @log_start_end(log=logger)
     def call_ca(self, _):
