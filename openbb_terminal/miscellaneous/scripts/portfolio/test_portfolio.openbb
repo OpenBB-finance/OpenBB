@@ -6,6 +6,32 @@ alloc assets -t -l 4
 alloc sectors -t -l 4
 alloc countries -t -l 4
 alloc regions -t -l 4
+summary -p mtd -r 0.5
+summary -p qtd -r 0.5
+summary -p ytd -r 0.5
+summary -p 3m -r 0.5
+summary -p 6m -r 0.5
+summary -p 1y -r 0.5
+summary -p 5y -r 0.5
+summary -p 10y -r 0.5
+summary -p all -r 0.5
+metric volatility
+metric sharpe -r 0.5
+metric sortino -r 0.5
+metric maxdrawdown
+metric rsquare
+metric skew
+metric kurtosis
+metric gaintopain
+metric trackerr
+metric information
+metric tail
+metric commonsense
+metric jensens
+metric calmar
+metric kelly
+metric payoff
+metric profitfactor
 perf -t
 perf -p mtd
 perf -p qtd
