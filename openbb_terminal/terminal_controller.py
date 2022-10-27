@@ -803,7 +803,8 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
     an_input = ""
 
     if export_path:
-        # If the path selected does not start from the user root, give relative location from terminal root
+        # If the path selected does not start from the user root,
+        # give relative location from terminal root
         if export_path[0] == "~":
             export_path = export_path.replace("~", HOME_DIRECTORY.as_posix())
         elif export_path[0] != "/":
