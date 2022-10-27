@@ -105,7 +105,7 @@ def get_theta_data(
                 best_mape = res
                 best_theta = theta
         except Exception as e:  # noqa
-            error = e
+            error = str(e)
 
     if best_theta == 0:
         console.print(error)
