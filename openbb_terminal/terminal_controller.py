@@ -176,7 +176,6 @@ class TerminalController(BaseController):
         mt.add_menu("portfolio")
         mt.add_menu("dashboards")
         mt.add_menu("reports")
-        mt.add_raw("\n")
         console.print(text=mt.menu_text, menu="Home")
         self.update_runtime_choices()
 

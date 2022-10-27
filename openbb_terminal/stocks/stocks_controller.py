@@ -548,7 +548,7 @@ class StocksController(StockBaseController):
         )
         if ns_parser:
             if not self.ticker:
-                console.print("Use 'load <ticker>' prior to this command!", "\n")
+                console.print("Use 'load <ticker>' prior to this command!")
                 return
 
             if ns_parser.source == "NewsApi":
@@ -666,7 +666,7 @@ class StocksController(StockBaseController):
                 ResearchController, self.ticker, self.start, self.interval, self.queue
             )
         else:
-            console.print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!")
 
     @log_start_end(log=logger)
     def call_dd(self, _):
@@ -683,7 +683,7 @@ class StocksController(StockBaseController):
                 self.queue,
             )
         else:
-            console.print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!")
 
     @log_start_end(log=logger)
     def call_ca(self, _):
@@ -714,7 +714,7 @@ class StocksController(StockBaseController):
                 self.queue,
             )
         else:
-            console.print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!")
 
     @log_start_end(log=logger)
     def call_bt(self, _):
@@ -726,7 +726,7 @@ class StocksController(StockBaseController):
                 bt_controller.BacktestingController, self.ticker, self.stock, self.queue
             )
         else:
-            console.print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!")
 
     @log_start_end(log=logger)
     def call_ta(self, _):
@@ -743,7 +743,7 @@ class StocksController(StockBaseController):
                 self.queue,
             )
         else:
-            console.print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!")
 
     @log_start_end(log=logger)
     def call_ba(self, _):
@@ -772,7 +772,7 @@ class StocksController(StockBaseController):
                 self.queue,
             )
         else:
-            console.print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!")
 
     @log_start_end(log=logger)
     def call_forecast(self, _):
