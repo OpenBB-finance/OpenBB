@@ -90,6 +90,7 @@ def get_theta_data(
     thetas = np.linspace(-10, 10, 50)
     best_mape = float("inf")
     best_theta = 0
+    error = ""
     for theta in thetas:
         model = Theta(
             theta=theta,
