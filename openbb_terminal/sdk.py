@@ -7,7 +7,7 @@ import warnings
 import types
 import functools
 import importlib
-from typing import Optional, Callable, List
+from typing import Optional, Callable, List, Union
 import logging
 from traceback import format_stack
 
@@ -2262,7 +2262,7 @@ class MainMenu:
         return """This is the OpenBB Terminal SDK.
         Use the SDK to get data directly into your jupyter notebook or directly use it in your application.
         ...
-        For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/sdk/
+        For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/SDK/
         """
 
 
@@ -2285,7 +2285,7 @@ class Loader:
         return """This is the OpenBB Terminal SDK.
         Use the SDK to get data directly into your jupyter notebook or directly use it in your application.
         ...
-        For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/api/
+        For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/SDK/
         """
 
     # TODO: Add settings
@@ -2383,7 +2383,7 @@ class Loader:
         log_all_settings()
 
     @classmethod
-    def get_function(cls, function_path: str) -> Callable:
+    def get_function(cls, function_path: str) -> Union[Callable, None]:
         """Get function from string path.
 
         Parameters
@@ -2399,7 +2399,16 @@ class Loader:
             Function
         """
         module_path, function_name = function_path.rsplit(sep=".", maxsplit=1)
-        module = cls.__load_module(module_path=module_path)
+        try:
+            module = cls.__load_module(module_path=module_path)
+        except Exception as e:
+            # This avoids crash on loading SDK under installer application.
+            # SDK is used by papermill to generate reports and some dependencies
+            # are not compatible. Since the reports are run in a subprocess,
+            # this error message is actually not displayed on screen.
+            # TODO: Fix this.
+            console.print(f"Cannot load: {module_path} -> {e}")
+            return None
 
         try:
             function = getattr(module, function_name)

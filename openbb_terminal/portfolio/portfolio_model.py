@@ -56,7 +56,6 @@ class PortfolioModel:
 
     """
 
-    @log_start_end(log=logger)
     def __init__(self, orderbook: pd.DataFrame = pd.DataFrame()):
         """Initialize PortfolioModel class"""
 
@@ -129,7 +128,6 @@ class PortfolioModel:
         return df
 
     @staticmethod
-    @log_start_end(log=logger)
     def read_orderbook(path: str) -> pd.DataFrame:
         """Static method to read orderbook from file
 
@@ -148,23 +146,24 @@ class PortfolioModel:
 
     @log_start_end(log=logger)
     def preprocess_orderbook(self):
-        """Method to preprocess, format and compute auxiliary fields"""
+        """Method to preprocess, format and compute auxiliary fields
 
-        # Preprocessing steps:
-        # 0. If optional fields not in the orderbook add missing
-        # 1. Convert Date to datetime
-        # 2. Sort orderbook by date
-        # 3. Capitalize Ticker and Type [of instrument...]
-        # 4. Translate side: ["deposit", "buy"] -> 1 and ["withdrawal", "sell"] -> -1
-        # 5. Convert quantity to signed integer
-        # 6. Determining the investment/divestment value
-        # 7. Reformat crypto tickers to yfinance format (e.g. BTC -> BTC-USD)
-        # 8. Reformat STOCK/ETF tickers to yfinance format if ISIN provided
-        # 9. Remove unsupported ISINs that came out empty
-        # 10. Create tickers dictionary with structure {'Type': [Ticker]}
-        # 11. Create list with tickers except cash
-        # 12. Save orderbook inception date
-        # 13. Populate fields Sector, Industry and Country
+        Preprocessing steps:
+            0. If optional fields not in the orderbook add missing
+            1. Convert Date to datetime
+            2. Sort orderbook by date
+            3. Capitalize Ticker and Type [of instrument...]
+            4. Translate side: ["deposit", "buy"] -> 1 and ["withdrawal", "sell"] -> -1
+            5. Convert quantity to signed integer
+            6. Determining the investment/divestment value
+            7. Reformat crypto tickers to yfinance format (e.g. BTC -> BTC-USD)
+            8. Reformat STOCK/ETF tickers to yfinance format if ISIN provided
+            9. Remove unsupported ISINs that came out empty
+            10. Create tickers dictionary with structure {'Type': [Ticker]}
+            11. Create list with tickers except cash
+            12. Save orderbook inception date
+            13. Populate fields Sector, Industry and Country
+        """
 
         try:
             console.print(" Preprocessing orderbook: ", end="")
@@ -412,7 +411,6 @@ class PortfolioModel:
         full_shares: bool
             whether to mimic the portfolio trades exactly (partial shares) or round down the
             quantity to the nearest number.
-
         """
 
         console.print("\n       Loading benchmark: ", end="")
