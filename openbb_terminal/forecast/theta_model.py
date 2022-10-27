@@ -96,12 +96,19 @@ def get_theta_data(
             season_mode=seasonal,
             seasonality_period=seasonal_periods,
         )
-        model.fit(train)
-        pred_theta = model.predict(len(val))
-        res = mape(val, pred_theta)
-        if res < best_mape:
-            best_mape = res
-            best_theta = theta
+        try:
+            model.fit(train)
+            pred_theta = model.predict(len(val))
+            res = mape(val, pred_theta)
+            if res < best_mape:
+                best_mape = res
+                best_theta = theta
+        except Exception as e:
+            continue
+
+    if best_theta == 0:
+        console.print("Theta Model failed to find best theta")
+        return [], [], [], 0, 0, None
 
     best_theta_model = Theta(
         best_theta,
