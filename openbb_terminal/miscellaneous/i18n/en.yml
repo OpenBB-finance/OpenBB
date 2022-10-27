@@ -12,6 +12,7 @@ en:
   keys: set API keys and check their validity
   wiki: search for an expression in Wikipedia (https://www.wikipedia.org/)
   record: record session to be converted into a .openbb routine
+  account: interact with your openbb account
   stop: stop session recording
   intro: introduction on the OpenBB Terminal
   _configure_: Configure your own terminal
@@ -27,6 +28,12 @@ en:
   sources/_info_: Get and set default data sources
   sources/get: get available data sources associated with command
   sources/set: set default data source for a command
+  account/_auth_: connect your account
+  account/_save_: sync your information
+  account/login: login to your openbb account
+  account/register: register for an openbb account
+  account/upload: upload your settings
+  account/download: download your settings from the cloud
   featflags/_info_: Feature flags through environment variables
   featflags/retryload: retry misspelled commands with load first
   featflags/tab: use tabulate to print dataframes

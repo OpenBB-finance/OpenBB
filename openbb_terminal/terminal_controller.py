@@ -93,6 +93,7 @@ class TerminalController(BaseController):
         "sources",
         "forecast",
         "futures",
+        "account",
     ]
 
     PATH = "/"
@@ -176,6 +177,7 @@ class TerminalController(BaseController):
         mt.add_menu("portfolio")
         mt.add_menu("dashboards")
         mt.add_menu("reports")
+        mt.add_menu("account")
         mt.add_raw("\n")
         console.print(text=mt.menu_text, menu="Home")
         self.update_runtime_choices()
@@ -463,6 +465,12 @@ class TerminalController(BaseController):
         from openbb_terminal.futures.futures_controller import FuturesController
 
         self.queue = self.load_class(FuturesController, self.queue)
+
+    def call_account(self, _):
+        """Process account command"""
+        from openbb_terminal.account.account_controller import AccountController
+
+        self.queue = self.load_class(AccountController, self.queue)
 
     def call_intro(self, _):
         """Process intro command"""
