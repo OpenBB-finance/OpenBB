@@ -320,12 +320,13 @@ class ETFController(BaseController):
                     holdings.index[: ns_parser.limit].tolist(),
                     holdings["Name"].values[: ns_parser.limit].tolist(),
                 ):
-                    if tick != "N/A":
+                    if tick != "N/A" and " " not in tick:
                         if (
                             "ETF" not in name
                             and "Future" not in name
                             and "Bill" not in name
                             and "Portfolio" not in name
+                            and "%" not in name
                         ):
                             self.etf_holdings.append(tick)
 
