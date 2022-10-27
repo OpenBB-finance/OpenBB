@@ -175,7 +175,6 @@ pillow==9.2.0; python_version >= "3.7" and python_version < "4" and (python_vers
 platformdirs==2.5.2; python_version >= "3.7" and python_full_version >= "3.7.2"
 plotly==5.10.0; python_version >= "3.6"
 pluggy==1.0.0; python_full_version >= "3.7.0" and python_full_version < "4.0.0" and python_version >= "3.7"
-pmdarima==1.8.5; python_version >= "3.7"
 praw==7.6.0; python_version >= "3.7" and python_version < "4.0"
 prawcore==2.3.0; python_version >= "3.7" and python_version < "4.0"
 pre-commit==2.20.0; python_version >= "3.7"
