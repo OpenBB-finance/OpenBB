@@ -312,27 +312,17 @@ class ETFController(BaseController):
             if holdings.empty:
                 console.print("No company holdings found!\n")
             else:
-                self.etf_holdings = holdings.index[: ns_parser.limit].tolist()
-
-                if "N/A" in self.etf_holdings:
-                    na_tix_idx = [
-                        str(idx)
-                        for idx, item in enumerate(self.etf_holdings)
-                        if item == "N/A"
-                    ]
-
-                    console.print(
-                        f"N/A tickers found at position {','.join(na_tix_idx)}. "
-                        "Dropping these from holdings.\n"
-                    )
-
-                self.etf_holdings = list(
-                    filter(lambda x: x != "N/A", self.etf_holdings)
-                )
-
-                console.print(
-                    f"Top company holdings found: {', '.join(self.etf_holdings)}"
-                )
+                console.print("Top holdings found:")
+                for val in holdings['Name'].values[: ns_parser.limit].tolist():
+                    console.print(f"   {val}")
+                
+                for tick, name in zip(holdings.index[: ns_parser.limit].tolist(), holdings['Name'].values[: ns_parser.limit].tolist()):
+                    if tick != "N/A":
+                        if "ETF" not in name and "Future" not in name and "Bill" not in name and "Portfolio" not in name:
+                            self.etf_holdings.append(tick)
+                
+                if not self.etf_holdings:
+                    console.print("\n[red]No valid stock ticker was found![/red]")
 
     @log_start_end(log=logger)
     def call_overview(self, other_args: List[str]):
