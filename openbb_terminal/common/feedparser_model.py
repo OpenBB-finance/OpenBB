@@ -6,7 +6,7 @@ from urllib.parse import quote
 import certifi
 import feedparser
 import pandas as pd
-from typing import Dict, List
+from typing import List
 from openbb_terminal.rich_config import console
 
 
