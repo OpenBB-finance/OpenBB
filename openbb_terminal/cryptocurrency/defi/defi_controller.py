@@ -391,13 +391,6 @@ class DefiController(BaseController):
             default="total",
             choices=["active", "total"],
         )
-        parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=False,
-        )
 
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
