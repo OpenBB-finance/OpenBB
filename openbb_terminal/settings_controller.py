@@ -133,7 +133,6 @@ class SettingsController(BaseController):
         mt.add_raw("\n")
         mt.add_param("_data_source", obbff.PREFERRED_DATA_SOURCE_FILE)
         mt.add_raw("\n")
-
         console.print(text=mt.menu_text, menu="Settings")
 
     @log_start_end(log=logger)
