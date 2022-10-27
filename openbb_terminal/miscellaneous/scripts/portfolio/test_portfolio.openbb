@@ -1,30 +1,62 @@
 portfolio
 load -f Public_Equity_Orderbook.xlsx
 show
-bench SPDR S&P 500 ETF Trust (SPY)
-alloc assets
-alloc sectors
-alloc countries
-alloc regions
-perf
+bench Vanguard Total Stock Market ETF (VTI)
+alloc assets -t -l 4
+alloc sectors -t -l 4
+alloc countries -t -l 4
+alloc regions -t -l 4
 perf -t
-rolling
-rmr
-dd
-rvol
-rsharpe
-rsort
-rbeta
+perf -p mtd
+perf -p qtd
+perf -p ytd
+perf -p 3m
+perf -p 6m
+perf -p 1y
+perf -p 5y
+perf -p 10y
+perf -p all
 rvol -p mtd
-rsharpe -p qtd
-rsort -p ytd
+rvol -p qtd
+rvol -p ytd
+rvol -p 3m
+rvol -p 6m
+rvol -p 1y
+rvol -p 5y
+rvol -p 10y
+rvol -p all
+rsharpe -p mtd -r 0.5
+rsharpe -p qtd -r 0.5
+rsharpe -p ytd -r 0.5
+rsharpe -p 3m -r 0.5
+rsharpe -p 6m -r 0.5
+rsharpe -p 1y -r 0.5
+rsharpe -p 5y -r 0.5
+rsharpe -p 10y -r 0.5
+rsharpe -p all -r 0.5
+rsort -p mtd -r 0.5
+rsort -p qtd -r 0.5
+rsort -p ytd -r 0.5
+rsort -p 3m -r 0.5
+rsort -p 6m -r 0.5
+rsort -p 1y -r 0.5
+rsort -p 5y -r 0.5
+rsort -p 10y -r 0.5
+rsort -p all -r 0.5
+rbeta -p mtd
+rbeta -p qtd
+rbeta -p ytd
+rbeta -p 3m
+rbeta -p 6m
+rbeta -p 1y
+rbeta -p 5y
+rbeta -p 10y
 rbeta -p all
 var
 var -p 80
 es
 es -p 50
-sh
-so
 om
+om --start 0.05 --end 0.2
 q
 exit
