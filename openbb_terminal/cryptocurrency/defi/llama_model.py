@@ -10,6 +10,10 @@ import pandas as pd
 import requests
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.helper_funcs import lambda_long_number_format
+from openbb_terminal.cryptocurrency.dataframe_helpers import (
+    lambda_replace_underscores_in_column_names,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +32,9 @@ LLAMA_FILTERS = [
 
 
 @log_start_end(log=logger)
-def get_defi_protocols(limit: int = 100) -> pd.DataFrame:
+def get_defi_protocols(
+    limit: int = 100, sortby: str = "", ascend: bool = False, description: bool = False
+) -> pd.DataFrame:
     """Returns information about listed DeFi protocols, their current TVL and changes to it in the last hour/day/week.
     [Source: https://docs.llama.fi/api]
 
@@ -36,6 +42,12 @@ def get_defi_protocols(limit: int = 100) -> pd.DataFrame:
     ----------
     limit: int
         The number of dApps to display
+    sortby: str
+        Key by which to sort data
+    ascend: bool
+        Flag to sort data descending
+    description: bool
+        Flag to display description of protocol
 
     Returns
     -------
@@ -76,6 +88,30 @@ def get_defi_protocols(limit: int = 100) -> pd.DataFrame:
 
     df = df.sort_values("tvl", ascending=False).head(limit)
     df = df.set_index("name")
+    if sortby:
+        df = df.sort_values(by=sortby, ascending=ascend)
+    df = df.drop(columns="chain")
+
+    df["tvl"] = df["tvl"].apply(lambda x: lambda_long_number_format(x))
+
+    if description:
+        print(df.columns)
+        orig = ["name", "symbol", "category", "description", "url"]
+        selection = [x for x in orig if x in df.columns]
+        df = df[selection]
+    else:
+        df.drop(["description", "url"], axis=1, inplace=True)
+
+    df.columns = [lambda_replace_underscores_in_column_names(val) for val in df.columns]
+    df.rename(
+        columns={
+            "Change 1H": "Change 1H (%)",
+            "Change 1D": "Change 1D (%)",
+            "Change 7D": "Change 7D (%)",
+            "Tvl": "TVL ($)",
+        },
+        inplace=True,
+    )
     return df
 
 

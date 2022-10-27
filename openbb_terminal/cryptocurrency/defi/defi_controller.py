@@ -352,8 +352,8 @@ class DefiController(BaseController):
             terramoney_fcd_view.display_validators(
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
-                top=ns_parser.limit,
+                ascend=not ns_parser.descend,
+                limit=ns_parser.limit,
             )
 
     @log_start_end(log=logger)
@@ -614,7 +614,7 @@ class DefiController(BaseController):
 
         parser.add_argument(
             "--descend",
-            action="store_false",
+            action="store_true",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
             default=False,
@@ -622,7 +622,7 @@ class DefiController(BaseController):
 
         parser.add_argument(
             "--desc",
-            action="store_false",
+            action="store_true",
             help="Flag to display description of protocol",
             dest="description",
             default=False,
