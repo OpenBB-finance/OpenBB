@@ -191,8 +191,30 @@ def display_corr(
 
     # correlation
     correlation = forecast_model.corr_df(dataset)
-    sns.heatmap(correlation, vmax=1, square=True, annot=True, cmap="cubehelix")
+    sns.heatmap(
+        correlation,
+        vmin=correlation.values.min(),
+        vmax=1,
+        square=True,
+        linewidths=0.1,
+        annot=True,
+        annot_kws={"size": 8},
+        cbar_kws=dict(use_gridspec=True, location="left"),
+    )
+
     ax.set_title("Correlation Matrix")
+
+    for t in ax.get_yticklabels():
+        t.set_fontsize(7)
+        t.set_fontweight("bold")
+        t.set_horizontalalignment("left")
+
+    for t in ax.get_xticklabels():
+        t.set_fontsize(7)
+        t.set_fontweight("bold")
+        t.set_rotation(60)
+        t.set_horizontalalignment("right")
+
     theme.style_primary_axis(ax)
 
     if external_axes is None:
