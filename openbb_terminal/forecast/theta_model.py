@@ -103,7 +103,7 @@ def get_theta_data(
             if res < best_mape:
                 best_mape = res
                 best_theta = theta
-        except Exception as e:
+        except Exception:  # noqa
             continue
 
     if best_theta == 0:
