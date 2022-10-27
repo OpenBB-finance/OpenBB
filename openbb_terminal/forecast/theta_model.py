@@ -103,11 +103,11 @@ def get_theta_data(
             if res < best_mape:
                 best_mape = res
                 best_theta = theta
-        except Exception:  # noqa
-            continue
+        except Exception as e:  # noqa
+            error = e
 
     if best_theta == 0:
-        console.print("Theta Model failed to find best theta")
+        console.print(error)
         return [], [], [], 0, 0, None
 
     best_theta_model = Theta(
