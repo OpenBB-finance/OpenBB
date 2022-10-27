@@ -676,7 +676,6 @@ class SectorIndustryAnalysisController(BaseController):
             self.ticker = ""
             self.update_runtime_choices()
             self.stocks_data = {}
-            console.print()
 
     @log_start_end(log=logger)
     def call_period(self, other_args: List[str]):
