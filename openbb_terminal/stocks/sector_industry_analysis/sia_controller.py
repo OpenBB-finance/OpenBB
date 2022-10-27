@@ -6,7 +6,6 @@ import difflib
 import logging
 from typing import List
 
-import numpy as np
 import yfinance as yf
 
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -53,9 +52,7 @@ class SectorIndustryAnalysisController(BaseController):
         "cpis",
         "cpcs",
         "cpci",
-        "sama",
         "metric",
-        "satma",
         "vis",
     ]
     CHOICES_MENUS = [
@@ -96,7 +93,6 @@ class SectorIndustryAnalysisController(BaseController):
         "ev",
         "fpe",
     ]
-    satma_choices = ["BS", "bs", "IS", "is", "CF", "cf", ""]
     metric_yf_keys = {
         "roa": ("financialData", "returnOnAssets"),
         "roe": ("financialData", "returnOnEquity"),
@@ -187,11 +183,6 @@ class SectorIndustryAnalysisController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-
-            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
-            zero_to_one_detailed: dict = {
-                str(c): {} for c in np.arange(0.0, 1.0, 0.005)
-            }
             choices["load"] = {
                 "--ticker": None,
                 "-t": "--ticker",
@@ -203,10 +194,6 @@ class SectorIndustryAnalysisController(BaseController):
             choices["period"] = {c: {} for c in self.period_choices}
             choices["clear"] = {c: {} for c in self.clear_choices}
             standard_cp = {
-                "--max": one_to_hundred,
-                "-M": "--max",
-                "--min": zero_to_one_detailed,
-                "-m": "--min",
                 "--raw": {},
                 "-r": "--raw",
             }
@@ -220,20 +207,15 @@ class SectorIndustryAnalysisController(BaseController):
                 "-m": "--metric",
                 "--raw": {},
                 "-r": "--raw",
-                "--limit": one_to_hundred,
-                "-l": "--limit",
+                "--show-all": {},
             }
-            choices["satma"] = {c: {} for c in self.satma_choices}
             choices["vis"] = {
-                "--metric": {c: {} for c in self.metric_choices},
+                "--metric": {c: {} for c in self.vis_choices},
                 "-m": "--metric",
-                "--period": one_to_hundred,
-                "-p": "--period",
                 "--currency": None,
                 "-c": "--currency",
                 "--raw": {},
-                "--limit": one_to_hundred,
-                "-l": "--limit",
+                "--show-all": {},
             }
 
             choices["support"] = self.SUPPORT_CHOICES
@@ -299,9 +281,7 @@ class SectorIndustryAnalysisController(BaseController):
             mt.add_info("_financials_")
         else:
             mt.add_info("_financials_loaded_")
-        mt.add_cmd("sama")
         mt.add_cmd("metric")
-        mt.add_cmd("satma")
         mt.add_cmd("vis")
         mt.add_raw("\n")
         mt.add_param("_returned_tickers", ", ".join(self.tickers))
@@ -485,7 +465,7 @@ class SectorIndustryAnalysisController(BaseController):
                     console.print(industry)
 
             self.stocks_data = {}
-            console.print("")
+            console.print()
 
     @log_start_end(log=logger)
     def call_sector(self, other_args: List[str]):
@@ -546,7 +526,7 @@ class SectorIndustryAnalysisController(BaseController):
                     console.print(sector)
 
             self.stocks_data = {}
-            console.print("")
+            console.print()
 
     @log_start_end(log=logger)
     def call_country(self, other_args: List[str]):
@@ -604,7 +584,7 @@ class SectorIndustryAnalysisController(BaseController):
                     console.print(country)
 
             self.stocks_data = {}
-            console.print("")
+            console.print()
 
     @log_start_end(log=logger)
     def call_mktcap(self, other_args: List[str]):
@@ -635,7 +615,7 @@ class SectorIndustryAnalysisController(BaseController):
                 )
 
             self.stocks_data = {}
-            console.print("")
+            console.print()
 
     # pylint:disable=attribute-defined-outside-init
     @log_start_end(log=logger)
@@ -656,7 +636,7 @@ class SectorIndustryAnalysisController(BaseController):
             )
 
         self.stocks_data = {}
-        console.print("")
+        console.print()
 
     @log_start_end(log=logger)
     def call_clear(self, other_args: List[str]):
@@ -697,7 +677,7 @@ class SectorIndustryAnalysisController(BaseController):
             self.ticker = ""
             self.update_runtime_choices()
             self.stocks_data = {}
-            console.print("")
+            console.print()
 
     @log_start_end(log=logger)
     def call_period(self, other_args: List[str]):
@@ -726,55 +706,7 @@ class SectorIndustryAnalysisController(BaseController):
                 console.print("Select between period: Annual, Quarterly and Trailing")
 
             self.stocks_data = {}
-            console.print("")
-
-    @log_start_end(log=logger)
-    def call_sama(self, other_args: List[str]):
-        """Process sama command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="sama",
-            description="See all metrics available",
-        )
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            help_text = """
-        roa           return on assets
-        roe           return on equity
-        cr            current ratio
-        qr            quick ratio
-        de            debt to equity
-        tc            total cash
-        tcs           total cash per share
-        tr            total revenue
-        rps           revenue per share
-        rg            revenue growth
-        eg            earnings growth
-        pm            profit margins
-        gp            gross profits
-        gm            gross margins
-        ocf           operating cash flow
-        om            operating margins
-        fcf           free cash flow
-        td            total debt
-        ebitda        earnings before interest, taxes, depreciation and amortization
-        ebitdam       ebitda margins
-        rec           recommendation mean
-        mc            market cap
-        fte           full time employees
-        er            enterprise to revenue
-        bv            book value
-        ss            shares short
-        pb            price to book
-        beta          beta
-        fs            float shares
-        sr            short ratio
-        peg           peg ratio
-        ev            enterprise value
-        fpe           forward P/E
-            """
-            console.print(help_text)
+            console.print()
 
     @log_start_end(log=logger)
     def call_metric(self, other_args: List[str]):
@@ -789,7 +721,7 @@ class SectorIndustryAnalysisController(BaseController):
             "-m",
             "--metric",
             dest="metric",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--show-all" not in other_args,
             help="Metric to visualize",
             choices=self.metric_choices,
         )
@@ -809,13 +741,55 @@ class SectorIndustryAnalysisController(BaseController):
             default=False,
             help="Output all raw data",
         )
-
+        parser.add_argument(
+            "--show-all", dest="show_all", action="store_true", default=False
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-m")
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
+
+            if ns_parser.show_all:
+                help_text = """
+    roa           return on assets
+    roe           return on equity
+    cr            current ratio
+    qr            quick ratio
+    de            debt to equity
+    tc            total cash
+    tcs           total cash per share
+    tr            total revenue
+    rps           revenue per share
+    rg            revenue growth
+    eg            earnings growth
+    pm            profit margins
+    gp            gross profits
+    gm            gross margins
+    ocf           operating cash flow
+    om            operating margins
+    fcf           free cash flow
+    td            total debt
+    ebitda        earnings before interest, taxes, depreciation and amortization
+    ebitdam       ebitda margins
+    rec           recommendation mean
+    mc            market cap
+    fte           full time employees
+    er            enterprise to revenue
+    bv            book value
+    ss            shares short
+    pb            price to book
+    beta          beta
+    fs            float shares
+    sr            short ratio
+    peg           peg ratio
+    ev            enterprise value
+    fpe           forward P/E
+            """
+                console.print(help_text)
+                return
+
             if not self.country and not self.sector and not self.industry:
                 console.print(
                     "[red]Select at least one filter from sector, country or industry.[/red]\n"
@@ -848,53 +822,6 @@ class SectorIndustryAnalysisController(BaseController):
                     )
 
     @log_start_end(log=logger)
-    def call_satma(self, other_args: List[str]):
-        """Process satma command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="satma",
-            description="See all metrics available",
-        )
-
-        parser.add_argument(
-            "-s",
-            "--statement",
-            dest="statement",
-            help="See all metrics available for the given choice",
-            choices=self.satma_choices,
-        )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-s")
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-
-        help_text = ""
-        statement_string = {
-            "BS": "Balance Sheet Statement",
-            "IS": "Income Statement",
-            "CF": "Cash Flow Statement",
-        }
-
-        if ns_parser.statement:
-            ns_parser.statement = str(ns_parser.statement).upper()
-
-            if ns_parser.statement not in ("IS", "BS", "CF"):
-                console.print(f"{ns_parser.statement} is not a valid option.")
-
-            help_text += f"\n{statement_string[ns_parser.statement]}\n"
-            for k, v in stockanalysis_model.SA_KEYS[ns_parser.statement].items():
-                help_text += f"  {k} {(10 - len(k)) * ' '} {v} \n"
-
-        else:
-            for statement, statement_value in stockanalysis_model.SA_KEYS.items():
-                help_text += f"\n{statement_string[statement]}\n"
-                for k, v in statement_value.items():
-                    help_text += f"  {k} {(10 - len(k)) * ' '} {v} \n"
-
-        console.print(help_text)
-
-    @log_start_end(log=logger)
     def call_vis(self, other_args: List[str]):
         """Process vis command"""
         parser = argparse.ArgumentParser(
@@ -907,7 +834,7 @@ class SectorIndustryAnalysisController(BaseController):
             "-m",
             "--metric",
             dest="metric",
-            required="-h" not in other_args,
+            required="-h" not in other_args and "--show-all" not in other_args,
             help="Metric to visualize",
             choices=self.vis_choices,
         )
@@ -927,12 +854,33 @@ class SectorIndustryAnalysisController(BaseController):
             "to USD (US Dollars).",
             default="USD",
         )
+        parser.add_argument(
+            "--show-all", dest="show_all", action="store_true", default=False
+        )
+
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-m")
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, limit=10, raw=True
         )
         if ns_parser:
+
+            if ns_parser.show_all:
+                statement_string = {
+                    "BS": "Balance Sheet Statement",
+                    "IS": "Income Statement",
+                    "CF": "Cash Flow Statement",
+                }
+                help_text = ""
+
+                for statement, statement_value in stockanalysis_model.SA_KEYS.items():
+                    help_text += f"\n{statement_string[statement]}\n"
+                    for k, v in statement_value.items():
+                        help_text += f"  {k} {(10 - len(k)) * ' '} {v} \n"
+
+                console.print(help_text)
+                return
+
             if not self.country and not self.sector and not self.industry:
                 console.print(
                     "[red]Select at least one filter from sector, country or industry.[/red]\n"

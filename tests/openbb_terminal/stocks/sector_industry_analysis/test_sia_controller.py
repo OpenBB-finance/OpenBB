@@ -350,13 +350,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(),
         ),
         (
-            "call_sama",
-            [],
-            "",
-            [],
-            dict(),
-        ),
-        (
             "call_cps",
             [
                 "--max=1",
@@ -520,7 +513,6 @@ def test_call_func(
         "call_cpis",
         "call_cpcs",
         "call_cpci",
-        "call_sama",
         "call_metric",
     ],
 )

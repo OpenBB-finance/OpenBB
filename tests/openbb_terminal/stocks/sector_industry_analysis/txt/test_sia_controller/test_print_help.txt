@@ -23,9 +23,7 @@ Statistics:
 [unvl]    cpci               companies per Country based on Industry (and Market Cap)[/unvl]        [FinanceDatabase]
 
 Financials - loaded data (fast mode):
-    sama               see all metrics available                                       [YahooFinance]
     metric             visualize financial metric across filters selected              [YahooFinance]
-    satma              see all metrics available over time                             [StockAnalysis]
     vis                visualize financial metric across filters selected              [StockAnalysis]
 
 Returned tickers: 
