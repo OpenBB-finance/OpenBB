@@ -313,14 +313,22 @@ class ETFController(BaseController):
                 console.print("No company holdings found!\n")
             else:
                 console.print("Top holdings found:")
-                for val in holdings['Name'].values[: ns_parser.limit].tolist():
+                for val in holdings["Name"].values[: ns_parser.limit].tolist():
                     console.print(f"   {val}")
-                
-                for tick, name in zip(holdings.index[: ns_parser.limit].tolist(), holdings['Name'].values[: ns_parser.limit].tolist()):
+
+                for tick, name in zip(
+                    holdings.index[: ns_parser.limit].tolist(),
+                    holdings["Name"].values[: ns_parser.limit].tolist(),
+                ):
                     if tick != "N/A":
-                        if "ETF" not in name and "Future" not in name and "Bill" not in name and "Portfolio" not in name:
+                        if (
+                            "ETF" not in name
+                            and "Future" not in name
+                            and "Bill" not in name
+                            and "Portfolio" not in name
+                        ):
                             self.etf_holdings.append(tick)
-                
+
                 if not self.etf_holdings:
                     console.print("\n[red]No valid stock ticker was found![/red]")
 

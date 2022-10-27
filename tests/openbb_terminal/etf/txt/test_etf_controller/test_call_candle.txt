@@ -1,3 +1,6 @@
-Top company holdings found: ZM, TSLA, COIN, ROKU, SQ
-
-
+Top holdings found:
+   Zoom Video Communications, Inc.
+   Tesla, Inc.
+   Coinbase Global, Inc.
+   Roku, Inc.
+   Block, Inc.
