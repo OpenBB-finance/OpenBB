@@ -28,7 +28,7 @@ openbb_terminal/portfolio/portfolios/*
 *.swp
 *.http
 .coverage.*
-!openbb_terminal/custom_reports/*/.ipynb
+!openbb_terminal/reports/templates/*.ipynb
 
 # pyinstaller artifacts
 *.pyo

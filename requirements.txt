@@ -140,6 +140,7 @@ pandas-market-calendars==3.2; python_full_version >= "3.7.0"
 pandas-ta==0.3.14b
 pandas==1.5.1; python_version >= "3.8"
 pandocfilters==1.5.0; python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.7"
+papermill @ git+https://github.com/nteract/papermill.git@main ; python_version >= "3.7"
 parso==0.8.3; python_version >= "3.8"
 patsy==0.5.3; python_version >= "3.8"
 pexpect==4.8.0; sys_platform != "win32" and python_version >= "3.8"
@@ -232,7 +233,7 @@ stocksera==0.1.21; python_version >= "3.6"
 streamlit==1.13.0; (python_version >= "3.7" and python_full_version < "3.9.7") or (python_full_version > "3.9.7")
 tabulate==0.9.0; python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.7"
 temporal-cache==0.1.4
-tenacity==8.1.0; python_version >= "3.6"
+tenacity==8.1.0; python_version >= "3.7"
 terminado==0.16.0; python_version >= "3.7"
 thepassiveinvestor==1.0.10
 threadpoolctl==3.1.0; python_version >= "3.8" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.8"
@@ -242,7 +243,7 @@ toml==0.10.2; python_version >= "3.7" and python_full_version < "3.0.0" or pytho
 tomli==2.0.1; python_version >= "3.8"
 toolz==0.12.0; python_version >= "3.8" and python_version < "4.0" and python_full_version >= "3.7.0" and (python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7" and python_version >= "3.7")
 tornado==6.2; python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7" and python_version >= "3.7"
-tqdm==4.64.1; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
+tqdm==4.64.1; python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.7"
 tradingview-ta==3.3.0; python_version >= "3.6"
 traitlets==5.5.0; python_full_version >= "3.7.0" and python_version >= "3.8"
 typing-extensions==4.4.0; python_full_version >= "3.7.0" and python_full_version < "4.0.0" and python_version < "3.9" and python_version >= "3.7" and (python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7" and python_version >= "3.7") and (python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7")
