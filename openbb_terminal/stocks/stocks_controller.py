@@ -432,7 +432,7 @@ class StocksController(StockBaseController):
             "--ma",
             dest="mov_avg",
             type=str,
-            help="Add moving average in number of days to plot and separate by a comma",
+            help="Add moving average in number of days to plot and separate by a comma. Value for ma (moving average) keyword needs to be greater than 1.",
             default=None,
         )
         parser.add_argument(
@@ -491,10 +491,15 @@ class StocksController(StockBaseController):
 
                         for num in mov_list:
                             try:
-                                mov_avgs.append(int(num))
+                                num = int(num)
+
+                                if num <= 1:
+                                    raise ValueError
+
+                                mov_avgs.append(num)
                             except ValueError:
                                 console.print(
-                                    f"{num} is not a valid moving average, must be integer"
+                                    f"[red]{num} is not a valid moving average, must be an integer greater than 1."
                                 )
 
                     stocks_helper.display_candle(
