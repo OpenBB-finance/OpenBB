@@ -74,10 +74,10 @@ def generate_documentation(
 
     docstring: Optional[str] = model[2].__doc__ if model else None
 
-    # Wrap argument types around asterisks to .rst interpret them as italic
-    docstring = re.sub("(: )(.*)([a-z]*\n)(\d*)", r": *\2*\n", docstring)
-
     if docstring:
+
+        # Wrap argument types around asterisks to .rst interpret them as italic
+        docstring = re.sub("(: )(.*)([a-z]*\n)(\d*)", r": *\2*\n", docstring)
 
         # Locate elements of interest in docstring
         parameters_anchor = "Parameters\n    ----------\n"
@@ -271,13 +271,13 @@ if __name__ == "__main__":
     funcs = all_functions()
     grouped_funcs = groupby(funcs, 0)
     # Create the documentation files
-    x = 0
+    # x = 0
     for k, v in grouped_funcs.items():
         generate_documentation(base_folder_path, k, v)
 
-        x += 1
-        if x == 5:
-            exit()
+        # x += 1
+        # if x == 5:
+        #     exit()
 
     # Delete our old entry to main.yaml
     start_line = find_line(target_path, "# CODE BELOW THIS WILL BE DELETED FREQUENTLY")
