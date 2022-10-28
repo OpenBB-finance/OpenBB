@@ -1,5 +1,5 @@
 ```text
-usage: metric [-m {roa,roe,cr,qr,de,tc,tcs,tr,rps,rg,eg,pm,gp,gm,ocf,om,fcf,td,ebitda,ebitdam,rec,mc,fte,er,bv,ss,pb,beta,fs,peg,ev,fpe}] [-l LIMIT] [-r] [--show-all] [-h] [--export EXPORT]
+usage: metric [-m {roa,roe,cr,qr,de,tc,tcs,tr,rps,rg,eg,pm,gp,gm,ocf,om,fcf,td,ebitda,ebitdam,rec,mc,fte,er,bv,ss,pb,beta,fs,peg,ev,fpe}] [-l LIMIT] [-r] [-h] [--export EXPORT]
 
 Visualize a particular metric with the filters selected
 
@@ -10,7 +10,6 @@ optional arguments:
   -l LIMIT, --limit LIMIT
                         Limit number of companies to display (default: 10)
   -r, --raw             Output all raw data (default: False)
-  --show-all            Show all available metrics (default: False)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
   ```

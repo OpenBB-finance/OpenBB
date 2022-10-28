@@ -513,7 +513,6 @@ def test_call_func(
         "call_cpis",
         "call_cpcs",
         "call_cpci",
-        "call_metric",
     ],
 )
 def test_call_func_no_parser(func, mocker):

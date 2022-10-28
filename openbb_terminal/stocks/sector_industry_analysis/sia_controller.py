@@ -739,22 +739,11 @@ class SectorIndustryAnalysisController(BaseController):
             default=False,
             help="Output all raw data",
         )
-        parser.add_argument(
-            "--show-all",
-            dest="show_all",
-            action="store_true",
-            default=False,
-            help="Show all available metrics",
-        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-m")
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if ns_parser:
 
-            if ns_parser.show_all:
-                help_text = """
+        if not other_args:
+            help_text = """Available Metrics:
     roa           return on assets
     roe           return on equity
     cr            current ratio
@@ -789,8 +778,13 @@ class SectorIndustryAnalysisController(BaseController):
     ev            enterprise value
     fpe           forward P/E
             """
-                console.print(help_text)
-                return
+            console.print(help_text)
+            return
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
 
             if not self.country and not self.sector and not self.industry:
                 console.print(
@@ -856,36 +850,30 @@ class SectorIndustryAnalysisController(BaseController):
             "to USD (US Dollars).",
             default="USD",
         )
-        parser.add_argument(
-            "--show-all",
-            dest="show_all",
-            action="store_true",
-            default=False,
-            help="Show all available metrics",
-        )
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-m")
+
+        if not other_args:
+            statement_string = {
+                "BS": "Balance Sheet Statement",
+                "IS": "Income Statement",
+                "CF": "Cash Flow Statement",
+            }
+            help_text = ""
+
+            for statement, statement_value in stockanalysis_model.SA_KEYS.items():
+                help_text += f"\n{statement_string[statement]}\n"
+                for k, v in statement_value.items():
+                    help_text += f"  {k} {(10 - len(k)) * ' '} {v} \n"
+
+            console.print(help_text)
+            return
+
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, limit=10, raw=True
         )
         if ns_parser:
-
-            if ns_parser.show_all:
-                statement_string = {
-                    "BS": "Balance Sheet Statement",
-                    "IS": "Income Statement",
-                    "CF": "Cash Flow Statement",
-                }
-                help_text = ""
-
-                for statement, statement_value in stockanalysis_model.SA_KEYS.items():
-                    help_text += f"\n{statement_string[statement]}\n"
-                    for k, v in statement_value.items():
-                        help_text += f"  {k} {(10 - len(k)) * ' '} {v} \n"
-
-                console.print(help_text)
-                return
 
             if not self.country and not self.sector and not self.industry:
                 console.print(
