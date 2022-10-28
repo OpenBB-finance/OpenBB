@@ -108,7 +108,7 @@ def get_theta_data(
             error = str(e)
 
     if best_theta == 0:
-        console.print(error)
+        console.print(f"[red]{error}[/red]")
         return [], [], [], 0, 0, None
 
     best_theta_model = Theta(

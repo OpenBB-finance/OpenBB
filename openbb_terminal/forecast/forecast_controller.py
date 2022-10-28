@@ -155,6 +155,7 @@ class ForecastController(BaseController):
         # The full file name with extension, this allows the rest command to work
         self.files_full: List[List[str]] = []
         self.datasets: Dict[str, pd.DataFrame] = dict()
+        self.MINIMUM_DATA_LENGTH = 100
 
         if ticker and not data.empty:
             data = data.reset_index()
@@ -668,6 +669,16 @@ class ForecastController(BaseController):
 
     def load(self, ticker: str, data: pd.DataFrame):
         """Loads news dataframes into memory"""
+
+        # check if data has minimum number of rows
+        if len(data) < self.MINIMUM_DATA_LENGTH:
+            console.print(
+                f"[red]Dataset is smaller than recommended minimum {self.MINIMUM_DATA_LENGTH} datapoints. [/red]"
+            )
+            console.print(
+                f"[red]Please increase the number of datapoints for [ {ticker} ] and try again.[/red]"
+            )
+
         if not data.empty:
             data.columns = data.columns.map(lambda x: x.lower().replace(" ", "_"))
 
@@ -747,7 +758,6 @@ class ForecastController(BaseController):
                         "[red]The file/dataset selected has already been loaded.[/red]\n"
                     )
                     return
-
                 data = forecast_model.load(file, self.file_types, self.DATA_FILES)
                 self.files_full.append([ns_parser.file, ns_parser.alias])
 
