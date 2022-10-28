@@ -209,10 +209,7 @@ class EconomyController(BaseController):
                 "--date": None,
                 "-d": "--date",
                 "--raw": {},
-                "--source": {
-                    "investpy": {},
-                    "FRED": {},
-                },
+                "--source": {"FRED": {},},
             }
             self.choices["spread"] = {
                 "--group": {c: None for c in investingcom_model.MATRIX_CHOICES},
@@ -1164,6 +1161,7 @@ class EconomyController(BaseController):
                 else:
                     console.print("Source FRED is only available for united states.\n")
 
+            # TODO: Add `Investing` to sources again when `investpy` is fixed
             elif ns_parser.source == "Investing":
 
                 if ns_parser.date:
