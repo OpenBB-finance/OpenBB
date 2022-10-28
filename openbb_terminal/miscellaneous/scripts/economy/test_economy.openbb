@@ -26,6 +26,7 @@ ycrv -c united_states --source Investing
 events
 events --country united_states -i high --cat employment -s 2022-07-07 -e 2022-07-08
 events -c spain --source Investing
+edebt --limit 10
 spread
 spread --group PIIGS --color binary
 spread --countries portugal,spain,italy,united states --maturity 5Y --change=True --color openbb
