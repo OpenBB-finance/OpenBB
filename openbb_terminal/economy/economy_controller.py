@@ -224,7 +224,10 @@ class EconomyController(BaseController):
                 "--color": {c: None for c in investingcom_view.COLORS},
             }
             self.choices["events"] = {
-                "--country": {c: {} for c in investingcom_model.CALENDAR_COUNTRIES},
+                "--country": {
+                    c.replace(" ", "_"): {}
+                    for c in investingcom_model.CALENDAR_COUNTRIES
+                },
                 "-c": "--country",
                 "--importance": {c: {} for c in investingcom_model.IMPORTANCES},
                 "-i": "--importance",
