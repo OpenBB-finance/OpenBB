@@ -209,7 +209,9 @@ class EconomyController(BaseController):
                 "--date": None,
                 "-d": "--date",
                 "--raw": {},
-                "--source": {"FRED": {},},
+                "--source": {
+                    "FRED": {},
+                },
             }
             self.choices["spread"] = {
                 "--group": {c: None for c in investingcom_model.MATRIX_CHOICES},
@@ -1327,9 +1329,6 @@ class EconomyController(BaseController):
         )
 
         if ns_parser:
-            if isinstance(ns_parser.country, list):
-                if ns_parser.source == "Investing":
-                    ns_parser.country = " ".join(ns_parser.country)
 
             if ns_parser.start_date:
                 start_date = ns_parser.start_date.strftime("%Y-%m-%d")
@@ -1341,7 +1340,12 @@ class EconomyController(BaseController):
             else:
                 end_date = None
 
+            # TODO: Add `Investing` to sources again when `investpy` is fixed
             if ns_parser.source == "Investing":
+
+                if isinstance(ns_parser.country, list):
+                    ns_parser.country = " ".join(ns_parser.country)
+
                 investingcom_view.display_economic_calendar(
                     country=ns_parser.country,
                     importance=ns_parser.importance,

@@ -467,7 +467,7 @@
     "map": ["Finviz"],
     "bigmac": ["Nasdaq"],
     "ycrv": ["FRED"],
-    "events": ["Nasdaq","Investing"],
+    "events": ["Nasdaq"],
     "edebt": ["Wikipedia"],
     "rtps": ["AlphaVantage"],
     "valuation": ["Finviz"],
