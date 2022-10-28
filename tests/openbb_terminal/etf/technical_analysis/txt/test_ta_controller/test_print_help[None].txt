@@ -14,6 +14,8 @@ Momentum:
     stoch              stochastic oscillator
     fisher             fisher transform
     cg                 centre of gravity
+    clenow             etf/ta/clenow
+    demark             etf/ta/demark
 Trend:
     adx                average directional movement index
     aroon              aroon indicator
@@ -21,6 +23,7 @@ Volatility:
     bbands             bollinger bands
     donchian           donchian channels
     kc                 keltner channels
+    atr                etf/ta/atr
 Volume:
     ad                 accumulation/distribution line
     adosc              chaikin oscillator

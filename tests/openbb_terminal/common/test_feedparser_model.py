@@ -13,8 +13,8 @@ from openbb_terminal.common.feedparser_model import get_news
     [
         ("", ""),
         ("Apple", ""),
-        ("TSLA", "bloomberg cnn"),
-        ("Apple", "bloomberg.com"),
+        ("TSLA", "bloomberg"),
+        ("Apple", "bloomberg,Reuters"),
         ("asdf$#", ""),
     ],
 )
