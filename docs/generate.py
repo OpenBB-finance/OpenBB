@@ -1,4 +1,5 @@
 import re
+import sys
 from typing import Callable, Any, Optional, List, Tuple, Dict
 from inspect import signature
 import importlib
@@ -232,11 +233,11 @@ def generate_dict(paths: List):
     final_dict: Dict[str, Any] = {}
     added_paths = []
     for path, subs in paths:
-        if not final_dict and path == "sdk":
-            final_dict = {"name": "sdk", "ref": "/sdk", "sub": []}
+        if not final_dict and path == "SDK":
+            final_dict = {"name": "SDK", "ref": "/SDK", "sub": []}
             for sub in subs:
                 final_dict["sub"].append({"name": sub, "ref": f"/{path}/{sub}"})
-            added_paths.append("sdk")
+            added_paths.append("SDK")
         if path not in added_paths:
             final_dict = set_items(final_dict, path, subs)
             added_paths.append(path)
@@ -260,30 +261,31 @@ if __name__ == "__main__":
         "Warning: files created in same session are not added to the yaml."
         " To remedy this run this script twice in a row"
     )
-    base_folder_path = os.path.realpath("./website/content/sdk")
+    base_folder_path = os.path.realpath("./website/content/SDK")
     if not os.path.exists(base_folder_path):
         os.mkdir(base_folder_path)
     target_path = os.path.realpath("./website/data/menu/main.yml")
-    main_path = os.path.realpath("./website/content/sdk")
+    main_path = os.path.realpath("./website/content/SDK")
     folder_list = crawl_folders(main_path)
     for folder_path in [x[0] for x in folder_list]:
         folder_documentation(folder_path)
     funcs = all_functions()
     grouped_funcs = groupby(funcs, 0)
     # Create the documentation files
-    # x = 0
+
     for k, v in grouped_funcs.items():
-        generate_documentation(base_folder_path, k, v)
+        if k.split(".")[0] == "alt":
+            generate_documentation(base_folder_path, k, v)
 
-        # x += 1
-        # if x == 5:
-        #     exit()
-
-    # Delete our old entry to main.yaml
-    start_line = find_line(target_path, "# CODE BELOW THIS WILL BE DELETED FREQUENTLY")
-    delete_lines(target_path, start_line)
-    # Add our new entry to main.yaml
-    folders_dict = generate_dict(folder_list)
-    with open(target_path, "a") as fp:
-        yaml.dump({"ignore": [folders_dict]}, fp)
-    delete_line(target_path, start_line + 1)
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "-p":
+            # Delete our old entry to main.yaml
+            start_line = find_line(
+                target_path, "# CODE BELOW THIS WILL BE DELETED FREQUENTLY"
+            )
+            delete_lines(target_path, start_line)
+            # Add our new entry to main.yaml
+            folders_dict = generate_dict(folder_list)
+            with open(target_path, "a") as fp:
+                yaml.dump({"ignore": [folders_dict]}, fp)
+            delete_line(target_path, start_line + 1)
