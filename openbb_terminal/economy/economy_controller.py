@@ -288,7 +288,7 @@ class EconomyController(BaseController):
                 "--freq": {c: {} for c in econdb_model.TREASURIES["frequencies"]},
                 "--type": {c: {} for c in econdb_model.TREASURIES["instruments"]},
                 "-t": "--type",
-                "--show": {c: {} for c in self.macro_show},
+                "--show": {},
                 "--start": None,
                 "-s": "--start",
                 "--end": None,
