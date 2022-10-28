@@ -9,18 +9,18 @@
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
-alt.covid.slopes(days_back: int = 30, limit: int = 50, threshold: int = 10000, ascend: bool = False, chart = False)
+alt.covid.slopes(days_back: int = 30, limit: int = 50, threshold: int = 10000, ascend: bool = False, chart = False) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**
 
-    days_back: int
+    days_back: *int*
         Number of historical days to consider
-    limit: int
+    limit: *int*
         Number of rows to show
-    threshold: int
+    threshold: *int*
         Threshold for total number of cases
-    ascend: bool
+    ascend: *bool*
         Flag to sort in ascending order
 
     
