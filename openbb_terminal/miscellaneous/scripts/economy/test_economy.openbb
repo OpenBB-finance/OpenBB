@@ -59,6 +59,8 @@ rtps
 valuation
 performance
 spectrum
+fred DGS2,DGS5
+eval spread = DGS2 - DGS5
 qa
 summary
 normality
