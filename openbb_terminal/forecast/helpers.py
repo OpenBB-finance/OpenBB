@@ -1,7 +1,7 @@
 # pylint: disable=too-many-arguments
 import os
 import argparse
-from typing import Any, Union, Optional, List, Dict
+from typing import Any, Union, Optional, List, Dict, Tuple
 from datetime import timedelta, datetime, time
 import logging
 import pandas as pd
@@ -614,7 +614,7 @@ def dt_format(x) -> str:
 
 def get_series(
     data: pd.DataFrame, target_column: str = None, is_scaler: bool = True
-) -> tuple[Optional[Scaler], TimeSeries]:
+) -> Tuple[Optional[Scaler], TimeSeries]:
     filler = MissingValuesFiller()
     filler_kwargs = dict(
         df=data,

@@ -538,9 +538,8 @@ class StocksController(StockBaseController):
             "-s",
             "--sources",
             dest="sources",
-            default=[],
-            nargs="+",
-            help="Show news only from the sources specified (e.g bbc yahoo.com)",
+            type=str,
+            help="Show news only from the sources specified (e.g bloomberg,reuters)",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
@@ -549,15 +548,10 @@ class StocksController(StockBaseController):
         )
         if ns_parser:
             if not self.ticker:
-                console.print("Use 'load <ticker>' prior to this command!", "\n")
+                console.print("Use 'load <ticker>' prior to this command!")
                 return
 
-            if ns_parser.source == "NewsAPI":
-                sources = ns_parser.sources
-                for idx, source in enumerate(sources):
-                    if source.find(".") == -1:
-                        sources[idx] += ".com"
-
+            if ns_parser.source == "NewsApi":
                 d_stock = yf.Ticker(self.ticker).info
 
                 newsapi_view.display_news(
@@ -567,7 +561,7 @@ class StocksController(StockBaseController):
                     limit=ns_parser.limit,
                     start_date=ns_parser.n_start_date.strftime("%Y-%m-%d"),
                     show_newest=ns_parser.n_oldest,
-                    sources=",".join(sources),
+                    sources=ns_parser.sources,
                 )
 
             elif ns_parser.source == "Feedparser":
@@ -578,7 +572,7 @@ class StocksController(StockBaseController):
                     term=d_stock["shortName"].replace(" ", "+")
                     if "shortName" in d_stock
                     else self.ticker,
-                    sources=" ".join(ns_parser.sources),
+                    sources=ns_parser.sources,
                     limit=ns_parser.limit,
                     export=ns_parser.export,
                 )
@@ -672,7 +666,7 @@ class StocksController(StockBaseController):
                 ResearchController, self.ticker, self.start, self.interval, self.queue
             )
         else:
-            console.print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!")
 
     @log_start_end(log=logger)
     def call_dd(self, _):
@@ -689,7 +683,7 @@ class StocksController(StockBaseController):
                 self.queue,
             )
         else:
-            console.print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!")
 
     @log_start_end(log=logger)
     def call_ca(self, _):
@@ -720,7 +714,7 @@ class StocksController(StockBaseController):
                 self.queue,
             )
         else:
-            console.print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!")
 
     @log_start_end(log=logger)
     def call_bt(self, _):
@@ -732,7 +726,7 @@ class StocksController(StockBaseController):
                 bt_controller.BacktestingController, self.ticker, self.stock, self.queue
             )
         else:
-            console.print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!")
 
     @log_start_end(log=logger)
     def call_ta(self, _):
@@ -749,7 +743,7 @@ class StocksController(StockBaseController):
                 self.queue,
             )
         else:
-            console.print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!")
 
     @log_start_end(log=logger)
     def call_ba(self, _):
@@ -778,7 +772,7 @@ class StocksController(StockBaseController):
                 self.queue,
             )
         else:
-            console.print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!")
 
     @log_start_end(log=logger)
     def call_forecast(self, _):
