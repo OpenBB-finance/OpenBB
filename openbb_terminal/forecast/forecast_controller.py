@@ -678,6 +678,7 @@ class ForecastController(BaseController):
             console.print(
                 f"[red]Please increase the number of datapoints for [ {ticker} ] and try again.[/red]"
             )
+            return
 
         if not data.empty:
             data.columns = data.columns.map(lambda x: x.lower().replace(" ", "_"))
