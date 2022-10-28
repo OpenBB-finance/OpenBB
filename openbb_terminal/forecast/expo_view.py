@@ -101,6 +101,10 @@ def display_expo_forecast(
         start_window=start_window,
         forecast_horizon=forecast_horizon,
     )
+
+    if ticker_series == []:
+        return
+
     probabilistic = True
     helpers.plot_forecast(
         name="PES",
