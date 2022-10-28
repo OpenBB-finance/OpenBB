@@ -9,10 +9,11 @@
 
 
 
-    <meta name="description" content="TODO">
+    <meta name="description" content="The Futures menu provides historical prices and the current term structure for an asset. This menu is accessible from the Main menu by typing futures and pressing the enter key. How to Use    There are three basic functions within this menu:
+ Search Historical Curve  Search allows the user to find which instruments are supported, and can be searched by the description. For example, searching for silver will return these results:">
 
 
-    <meta name="keywords" content="forex,,currency,,money,,hedge,,dollar,,euro">
+    <meta name="keywords" content="forex,,currency,,money,,hedge,,dollar,,euro,,futures,,future,,interest,,rates,,forwards,,commodities,,bonds,,treasuries">
 
 
     <title>
@@ -47423,7 +47424,40 @@ code, img {
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Introduction to Futures</h1>
-        <p>TODO</p>
+        <p>The Futures menu provides historical prices and the current term structure for an asset. This menu is accessible from the Main menu by typing <code>futures</code> and pressing the <code>enter</code> key.
+<img width="1135" alt="Futures Menu" src="https://user-images.githubusercontent.com/85772166/197641556-80d83abb-6290-4fc9-b80a-331bcc5751e5.png"></p>
+<div class="gdoc-page__anchorwrap">
+    <h2 id="how-to-use">
+        How to Use
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/terminal/futures/#how-to-use" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor How to Use" href="#how-to-use">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h2>
+</div><p>There are three basic functions within this menu:</p>
+<ul>
+<li>Search</li>
+<li>Historical</li>
+<li>Curve</li>
+</ul>
+<p><code>Search</code> allows the user to find which instruments are supported, and can be searched by the description. For example, searching for silver will return these results:</p>
+<pre><code>search -d silver
+</code></pre><img width="603" alt="Search Futures" src="https://user-images.githubusercontent.com/85772166/197641622-8e90785a-f758-4911-9068-eb4f528f42e9.png">
+<p>To view an entire category, attach the <code>--category</code> flag to the function and select using the arrow keys.</p>
+<img width="275" alt="Futures Categories" src="https://user-images.githubusercontent.com/85772166/197641664-3e63b68b-a4be-4dd6-a7a8-47e0cbef0b61.png">
+<pre><code>search --category currency
+</code></pre><img width="493" alt="Currency Futures" src="https://user-images.githubusercontent.com/85772166/197641730-b488d1d0-3f82-4da4-8f07-8973b86e9585.png">
+<p>Both <code>curve</code> and <code>historical</code> use the ticker symbol shown by the search function, for example, to see a chart of the current Eurodollar Futures term structure, simply enter:</p>
+<pre><code>`curve GE`
+</code></pre><img width="1218" alt="Eurodollar Futures Curve" src="https://user-images.githubusercontent.com/85772166/197641789-dc56b59f-e5c3-4186-b88c-9f899cdf650a.png">
+<p>The raw data can be printed as a table or exported to a file, by attaching the optional arguments: <code>--raw</code>, or, <code>--export {filetype}</code>. For example, Global Emissions Offset Futures:</p>
+<pre><code>curve GEO --raw
+</code></pre><img width="386" alt="Futures Raw Data" src="https://user-images.githubusercontent.com/85772166/197641865-aa3c8649-21c2-4217-b921-f426776430b1.png">
+<p>The continuous chart is displayed with the <code>historical</code> command + the symbol. To see the optional arguments available for the command, deploy the <code>-h</code> flag. For example, the Eurodollar Futures contract for December 2024 expiry is displayed with:</p>
+<pre><code>historical GE -s 2015-01-01 -e 2024-12
+</code></pre><img width="1205" alt="Historical Price of GEZ24.CME" src="https://user-images.githubusercontent.com/85772166/197641999-599e2b0a-4578-4d36-b5c5-704c5ac9a0fa.png">
+<p>Multiple continuous charts can be plotted on the same chart by using a comma-separated list:</p>
+<pre><code>historical GE,ZQ -s 2007-01-01
+</code></pre><img width="1233" alt="Historical Price of GE=F & ZQ=F" src="https://user-images.githubusercontent.com/85772166/197642051-a5a02f15-6e5b-464f-9ba9-0d2299488021.png">
 
     </article>
  
