@@ -60,6 +60,7 @@ def groupby(orig_list: List[Any], index: int) -> Dict[Any, Any]:
 def generate_documentation(
     base: str, key: str, value: List[Tuple[str, str, Callable[..., Any]]]
 ):
+
     models = list(filter(lambda x: x[1] == "model", value))
     views = list(filter(lambda x: x[1] == "view", value))
     model_type = Optional[Tuple[str, str, Callable[..., Any]]]
@@ -69,25 +70,86 @@ def generate_documentation(
         base += f"/{end}"
         if not os.path.isdir(base):
             os.mkdir(base)
-    with open(f"{base}/_index.md", "w") as f:
-        if view:
-            f.write(
-                "To obtain charts, make sure to add `chart=True` as the last parameter\n\n"
-            )
+
+    # Locate elements of interest in docstring
+    docstring = model[2].__doc__
+
+    parameters_anchor = "Parameters\n    ----------\n"
+    parameters_position = docstring.find(parameters_anchor)
+
+    returns_anchor = "Returns\n    -------\n"
+    returns_position = docstring.find(returns_anchor)
+    if returns_position < 0:
+        returns_position = len(docstring)
+
+    examples_anchor = "Examples\n    --------\n"
+    examples_position = docstring.find(examples_anchor)
+    if examples_position < 0:
+        examples_position = len(docstring)
+
+    with open(f"{base}/_index.rst", "w") as f:
+        f.write(".. role:: python(code)\n    :language: python\n    :class: highlight")
+        f.write("\n\n|\n\n")
+
         if model:
-            f.write(f"## Get underlying data \n### {key}{signature(model[2])}\n\n")
-            m_docs = str(model[2].__doc__)[:-5]
-            f.write(f"{m_docs}\n")
-        if view:
-            if model:
+
+            # Summary
+            summary = "> " + docstring[:parameters_position].strip() + "\n"
+            f.write(summary)
+            f.write("-" * len(summary) + "\n")
+
+            # Signature
+            original_sig = str(signature(model[2]))
+            new_signature = original_sig
+
+            if view:
+                f.write(
+                    "To obtain charts, make sure to add :python:`chart = True` as the last parameter\n\n"
+                )
+
+                # TODO: This breaks if there is a ')' inside the function arguments
+                idx = original_sig.find(")")
+                new_signature = (
+                    original_sig[:idx] + ", chart = False" + original_sig[idx:]
+                )
+
+            f.write("{{< highlight python >}}")
+            f.write("\n")
+            f.write(f"{key}{new_signature}")
+            f.write("\n")
+            f.write("{{< /highlight >}}")
+            f.write("\n")
+
+            # Parameters
+            if parameters_position != len(docstring):
+
+                parameters = docstring[
+                    parameters_position + len(parameters_anchor) : returns_position
+                ]
+
+                f.write("\n* **Parameters**\n\n")
+                f.write(parameters)
+
+            # Returns
+            if returns_position != len(docstring):
+
+                returns = docstring[
+                    returns_position + len(returns_anchor) : examples_position
+                ]
+
+                f.write("\n* **Returns**\n\n")
+                f.write(returns)
+
+            # Examples
+            if examples_position != len(docstring):
+
+                examples = docstring[examples_position + len(examples_anchor) :]
+
+                f.write("\n* **Examples**\n\n")
+                f.write("    {{< highlight python >}}")
                 f.write("\n")
-            v_docs = str(view[2].__doc__)[:-5]
-            temp = str(signature(view[2]))
-            # TODO: This breaks if there is a ')' inside the function arguments
-            idx = temp.find(")")
-            new_signature = temp[:idx] + ", chart=True" + temp[idx:]
-            f.write(f"## Getting charts \n### {key}{new_signature}\n\n")
-            f.write(f"{v_docs}\n")
+                f.write(examples)
+                f.write("{{< /highlight >}}")
 
 
 def find_line(path: str, to_match: str) -> int:
@@ -201,6 +263,7 @@ if __name__ == "__main__":
     # Create the documentation files
     for k, v in grouped_funcs.items():
         generate_documentation(base_folder_path, k, v)
+        exit()
     # Delete our old entry to main.yaml
     start_line = find_line(target_path, "# CODE BELOW THIS WILL BE DELETED FREQUENTLY")
     delete_lines(target_path, start_line)
