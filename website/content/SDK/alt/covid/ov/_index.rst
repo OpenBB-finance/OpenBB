@@ -4,8 +4,12 @@
 
 |
 
-> Get historical cases and deaths by country
----------------------------------------------
+.. raw:: html
+
+    <h3>
+    > Get historical cases and deaths by country
+    </h3>
+
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}

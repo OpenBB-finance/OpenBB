@@ -4,8 +4,12 @@
 
 |
 
-> Get repos sorted by stars or forks. Can be filtered by categories
---------------------------------------------------------------------
+.. raw:: html
+
+    <h3>
+    > Get repos sorted by stars or forks. Can be filtered by categories
+    </h3>
+
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}

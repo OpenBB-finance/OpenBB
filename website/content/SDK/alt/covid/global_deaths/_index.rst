@@ -4,8 +4,12 @@
 
 |
 
-> Get historical deaths for given country
-------------------------------------------
+.. raw:: html
+
+    <h3>
+    > Get historical deaths for given country
+    </h3>
+
 {{< highlight python >}}
 alt.covid.global_deaths(country: str) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

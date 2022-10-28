@@ -4,8 +4,12 @@
 
 |
 
-> Load cases and find slope over period
-----------------------------------------
+.. raw:: html
+
+    <h3>
+    > Load cases and find slope over period
+    </h3>
+
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}

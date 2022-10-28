@@ -4,8 +4,12 @@
 
 |
 
-> Get repository star history
-------------------------------
+.. raw:: html
+
+    <h3>
+    > Get repository star history
+    </h3>
+
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}

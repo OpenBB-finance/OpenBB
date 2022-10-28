@@ -4,8 +4,12 @@
 
 |
 
-> Get repository summary
--------------------------
+.. raw:: html
+
+    <h3>
+    > Get repository summary
+    </h3>
+
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}

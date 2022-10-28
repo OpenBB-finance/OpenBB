@@ -4,8 +4,12 @@
 
 |
 
-> Helper methods that retries to make request
-----------------------------------------------
+.. raw:: html
+
+    <h3>
+    > Helper methods that retries to make request
+    </h3>
+
 {{< highlight python >}}
 alt.oss._retry_session(url: str, retries: int = 3, backoff_factor: float = 1.0) -> requests.sessions.Session
 {{< /highlight >}}

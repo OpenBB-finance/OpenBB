@@ -4,8 +4,12 @@
 
 |
 
-> Helper method to scrap
--------------------------
+.. raw:: html
+
+    <h3>
+    > Helper method to scrap
+    </h3>
+
 {{< highlight python >}}
 alt.oss._make_request(url: str) -> Optional[bs4.BeautifulSoup]
 {{< /highlight >}}

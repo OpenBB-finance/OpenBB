@@ -4,8 +4,12 @@
 
 |
 
-> Get repos sorted by stars or forks. Can be filtered by categories
---------------------------------------------------------------------
+.. raw:: html
+
+    <h3>
+    > Get repos sorted by stars or forks. Can be filtered by categories
+    </h3>
+
 {{< highlight python >}}
 alt.oss.search(sortby: str = 'stars', page: int = 1, categories: str = '') -> pandas.core.frame.DataFrame
 {{< /highlight >}}
