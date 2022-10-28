@@ -153,11 +153,23 @@ def get_case_slopes(
         Threshold for total number of cases
     ascend: bool
         Flag to sort in ascending order
+
     Returns
     -------
     pd.DataFrame
         Dataframe containing slopes
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+
+    ### Get the data
+    df = openbb.alt.covid.slopes(chart=False)
+
+    ### Get the chart
+    openbb.alt.covid.slopes(chart=True)
     """
+
     # Ignore the pandas warning for setting a slace with a value
     warnings.filterwarnings("ignore")
     data = pd.read_csv(global_cases_time_series)
