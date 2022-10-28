@@ -370,9 +370,9 @@ class EconomyController(BaseController):
                 economicdata = list()
                 for L in [1, 2]:
                     for subset in itertools.combinations(options, L):
-                        economicdata.append(" ".join(subset))
+                        economicdata.append(",".join(subset))
                         if len(subset) > 1:
-                            economicdata.append(" ".join(subset[::-1]))
+                            economicdata.append(",".join(subset[::-1]))
 
                 for argument in [
                     "--y1",
