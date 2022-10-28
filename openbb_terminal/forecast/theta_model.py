@@ -90,18 +90,26 @@ def get_theta_data(
     thetas = np.linspace(-10, 10, 50)
     best_mape = float("inf")
     best_theta = 0
+    error = ""
     for theta in thetas:
         model = Theta(
             theta=theta,
             season_mode=seasonal,
             seasonality_period=seasonal_periods,
         )
-        model.fit(train)
-        pred_theta = model.predict(len(val))
-        res = mape(val, pred_theta)
-        if res < best_mape:
-            best_mape = res
-            best_theta = theta
+        try:
+            model.fit(train)
+            pred_theta = model.predict(len(val))
+            res = mape(val, pred_theta)
+            if res < best_mape:
+                best_mape = res
+                best_theta = theta
+        except Exception as e:  # noqa
+            error = str(e)
+
+    if best_theta == 0:
+        console.print(f"[red]{error}[/red]")
+        return [], [], [], 0, 0, None
 
     best_theta_model = Theta(
         best_theta,
