@@ -71,85 +71,86 @@ def generate_documentation(
         if not os.path.isdir(base):
             os.mkdir(base)
 
-    # Locate elements of interest in docstring
-    docstring = model[2].__doc__
+    docstring: Optional[str] = model[2].__doc__ if model else None
 
-    parameters_anchor = "Parameters\n    ----------\n"
-    parameters_position = docstring.find(parameters_anchor)
+    if docstring:
 
-    returns_anchor = "Returns\n    -------\n"
-    returns_position = docstring.find(returns_anchor)
-    if returns_position < 0:
-        returns_position = len(docstring)
+        # Locate elements of interest in docstring
+        parameters_anchor = "Parameters\n    ----------\n"
+        parameters_position = docstring.find(parameters_anchor)
 
-    examples_anchor = "Examples\n    --------\n"
-    examples_position = docstring.find(examples_anchor)
-    if examples_position < 0:
-        examples_position = len(docstring)
+        returns_anchor = "Returns\n    -------\n"
+        returns_position = docstring.find(returns_anchor)
+        if returns_position < 0:
+            returns_position = len(docstring)
 
-    with open(f"{base}/_index.rst", "w") as f:
-        f.write(".. role:: python(code)\n    :language: python\n    :class: highlight")
-        f.write("\n\n|\n\n")
+        examples_anchor = "Examples\n    --------\n"
+        examples_position = docstring.find(examples_anchor)
+        if examples_position < 0:
+            examples_position = len(docstring)
 
-        if model:
+        with open(f"{base}/_index.rst", "w") as f:
+            f.write(
+                ".. role:: python(code)\n    :language: python\n    :class: highlight"
+            )
+            f.write("\n\n|\n\n")
 
-            # Summary
-            summary = "> " + docstring[:parameters_position].strip() + "\n"
-            f.write(summary)
-            f.write("-" * len(summary) + "\n")
+            if model:
+                # Summary
+                summary = "> " + docstring[:parameters_position].strip() + "\n"
+                f.write(summary)
+                f.write("-" * len(summary) + "\n")
 
-            # Signature
-            original_sig = str(signature(model[2]))
-            new_signature = original_sig
+                # Signature
+                original_sig = str(signature(model[2]))
+                new_signature = original_sig
 
-            if view:
-                f.write(
-                    "To obtain charts, make sure to add :python:`chart = True` as the last parameter\n\n"
-                )
+                if view:
+                    f.write(
+                        "To obtain charts, make sure to add :python:`chart = True` as the last parameter\n\n"
+                    )
 
-                # TODO: This breaks if there is a ')' inside the function arguments
-                idx = original_sig.find(")")
-                new_signature = (
-                    original_sig[:idx] + ", chart = False" + original_sig[idx:]
-                )
+                    # TODO: This breaks if there is a ')' inside the function arguments
+                    idx = original_sig.find(")")
+                    new_signature = original_sig[:idx] + ", chart = False)"
 
-            f.write("{{< highlight python >}}")
-            f.write("\n")
-            f.write(f"{key}{new_signature}")
-            f.write("\n")
-            f.write("{{< /highlight >}}")
-            f.write("\n")
-
-            # Parameters
-            if parameters_position != len(docstring):
-
-                parameters = docstring[
-                    parameters_position + len(parameters_anchor) : returns_position
-                ]
-
-                f.write("\n* **Parameters**\n\n")
-                f.write(parameters)
-
-            # Returns
-            if returns_position != len(docstring):
-
-                returns = docstring[
-                    returns_position + len(returns_anchor) : examples_position
-                ]
-
-                f.write("\n* **Returns**\n\n")
-                f.write(returns)
-
-            # Examples
-            if examples_position != len(docstring):
-
-                examples = docstring[examples_position + len(examples_anchor) :]
-
-                f.write("\n* **Examples**\n\n")
-                f.write("    {{< highlight python >}}")
+                f.write("{{< highlight python >}}")
                 f.write("\n")
-                f.write(examples)
+                f.write(f"{key}{new_signature}")
+                f.write("\n")
                 f.write("{{< /highlight >}}")
+                f.write("\n")
+
+                # Parameters
+                if parameters_position != len(docstring):
+
+                    parameters = docstring[
+                        parameters_position + len(parameters_anchor) : returns_position
+                    ]
+
+                    f.write("\n* **Parameters**\n\n")
+                    f.write(parameters)
+
+                # Returns
+                if returns_position != len(docstring):
+
+                    returns = docstring[
+                        returns_position + len(returns_anchor) : examples_position
+                    ]
+
+                    f.write("\n* **Returns**\n\n")
+                    f.write(returns)
+
+                # Examples
+                if examples_position != len(docstring):
+
+                    examples = docstring[examples_position + len(examples_anchor) :]
+
+                    f.write("\n* **Examples**\n\n")
+                    f.write("    {{< highlight python >}}")
+                    f.write("\n")
+                    f.write(examples)
+                    f.write("{{< /highlight >}}")
 
 
 def find_line(path: str, to_match: str) -> int:

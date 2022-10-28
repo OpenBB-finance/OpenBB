@@ -164,10 +164,10 @@ def get_case_slopes(
     >>> from openbb_terminal.sdk import openbb
 
     ### Get the data
-    df = openbb.alt.covid.slopes(chart=False)
+    df = openbb.alt.covid.slopes(chart = False)
 
     ### Get the chart
-    openbb.alt.covid.slopes(chart=True)
+    openbb.alt.covid.slopes(chart = True)
     """
 
     # Ignore the pandas warning for setting a slace with a value

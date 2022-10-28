@@ -9,7 +9,7 @@
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
-alt.covid.slopes(days_back: int = 30, limit: int = 50, threshold: int = 10000, ascend: bool = False, chart = False) -> pandas.core.frame.DataFrame
+alt.covid.slopes(days_back: int = 30, limit: int = 50, threshold: int = 10000, ascend: bool = False, chart = False)
 {{< /highlight >}}
 
 * **Parameters**
@@ -36,8 +36,8 @@ alt.covid.slopes(days_back: int = 30, limit: int = 50, threshold: int = 10000, a
     >>> from openbb_terminal.sdk import openbb
 
     ### Get the data
-    df = openbb.alt.covid.slopes(chart=False)
+    df = openbb.alt.covid.slopes(chart = False)
 
     ### Get the chart
-    openbb.alt.covid.slopes(chart=True)
+    openbb.alt.covid.slopes(chart = True)
     {{< /highlight >}}
