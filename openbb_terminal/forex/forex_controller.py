@@ -229,7 +229,10 @@ class ForexController(BaseController):
             "--ma",
             dest="mov_avg",
             type=str,
-            help=translate("stocks/CANDLE_mov_avg"),
+            help=translate(
+                "Add moving average in number of days to plot and separate by a comma. "
+                "Value for ma (moving average) keyword needs to be greater than 1."
+            ),
             default=None,
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
@@ -241,11 +244,17 @@ class ForexController(BaseController):
 
                     for num in mov_list:
                         try:
-                            mov_avgs.append(int(num))
+                            num = int(num)
+
+                            if num <= 1:
+                                raise ValueError
+
+                            mov_avgs.append(num)
                         except ValueError:
                             console.print(
-                                f"{num} is not a valid moving average, must be integer"
+                                f"[red]{num} is not a valid moving average, must be an integer greater than 1."
                             )
+
                 forex_helper.display_candle(
                     self.data, self.to_symbol, self.from_symbol, mov_avgs
                 )
