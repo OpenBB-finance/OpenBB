@@ -133,7 +133,7 @@ def get_expo_data(
                 "[red] Please increase size to at least 100 data points.[/red]"
             )
         else:
-            console.print(error)
+            console.print(f"[red]{error}[/red]")
         return [], [], [], None, None
 
     # train new model on entire timeseries to provide best current forecast
