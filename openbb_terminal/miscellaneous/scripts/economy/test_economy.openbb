@@ -65,6 +65,8 @@ normality
 unitroot --fuller_reg c --kps_reg ct
 line
 line --log
+hist
+hist -b 10
 cdf
 bw
 bw --yearly
