@@ -213,16 +213,16 @@ class EconomyController(BaseController):
                     "FRED": {},
                 },
             }
-            self.choices["spread"] = {
-                "--group": {c: None for c in investingcom_model.MATRIX_CHOICES},
-                "-g": "--group",
-                "--countries": {c: None for c in investingcom_model.BOND_COUNTRIES},
-                "-c": "--countries",
-                "--maturity": None,
-                "-m": "--maturity",
-                "--change": None,
-                "--color": {c: None for c in investingcom_view.COLORS},
-            }
+            # self.choices["spread"] = {
+            #     "--group": {c: None for c in investingcom_model.MATRIX_CHOICES},
+            #     "-g": "--group",
+            #     "--countries": {c: None for c in investingcom_model.BOND_COUNTRIES},
+            #     "-c": "--countries",
+            #     "--maturity": None,
+            #     "-m": "--maturity",
+            #     "--change": None,
+            #     "--color": {c: None for c in investingcom_view.COLORS},
+            # }
             self.choices["events"] = {
                 "--country": {
                     c.replace(" ", "_"): {}
