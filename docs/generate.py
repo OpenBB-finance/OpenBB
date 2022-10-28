@@ -1,3 +1,4 @@
+import re
 from typing import Callable, Any, Optional, List, Tuple, Dict
 from inspect import signature
 import importlib
@@ -73,6 +74,9 @@ def generate_documentation(
 
     docstring: Optional[str] = model[2].__doc__ if model else None
 
+    # Wrap argument types around asterisks to .rst interpret them as italic
+    docstring = re.sub("(: )(.*)([a-z]*\n)(\d*)", r": *\2*\n", docstring)
+
     if docstring:
 
         # Locate elements of interest in docstring
@@ -88,6 +92,9 @@ def generate_documentation(
         examples_position = docstring.find(examples_anchor)
         if examples_position < 0:
             examples_position = len(docstring)
+
+        if os.path.exists(f"{base}/_index.md"):
+            os.remove(f"{base}/_index.md")
 
         with open(f"{base}/_index.rst", "w") as f:
             f.write(
@@ -112,7 +119,9 @@ def generate_documentation(
 
                     # TODO: This breaks if there is a ')' inside the function arguments
                     idx = original_sig.find(")")
-                    new_signature = original_sig[:idx] + ", chart = False)"
+                    new_signature = (
+                        original_sig[:idx] + ", chart = False" + original_sig[idx:]
+                    )
 
                 f.write("{{< highlight python >}}")
                 f.write("\n")
@@ -223,11 +232,11 @@ def generate_dict(paths: List):
     final_dict: Dict[str, Any] = {}
     added_paths = []
     for path, subs in paths:
-        if not final_dict and path == "SDK":
-            final_dict = {"name": "SDK", "ref": "/SDK", "sub": []}
+        if not final_dict and path == "sdk":
+            final_dict = {"name": "sdk", "ref": "/sdk", "sub": []}
             for sub in subs:
                 final_dict["sub"].append({"name": sub, "ref": f"/{path}/{sub}"})
-            added_paths.append("SDK")
+            added_paths.append("sdk")
         if path not in added_paths:
             final_dict = set_items(final_dict, path, subs)
             added_paths.append(path)
@@ -251,20 +260,25 @@ if __name__ == "__main__":
         "Warning: files created in same session are not added to the yaml."
         " To remedy this run this script twice in a row"
     )
-    base_folder_path = os.path.realpath("./website/content/SDK")
+    base_folder_path = os.path.realpath("./website/content/sdk")
     if not os.path.exists(base_folder_path):
         os.mkdir(base_folder_path)
     target_path = os.path.realpath("./website/data/menu/main.yml")
-    main_path = os.path.realpath("./website/content/SDK")
+    main_path = os.path.realpath("./website/content/sdk")
     folder_list = crawl_folders(main_path)
     for folder_path in [x[0] for x in folder_list]:
         folder_documentation(folder_path)
     funcs = all_functions()
     grouped_funcs = groupby(funcs, 0)
     # Create the documentation files
+    x = 0
     for k, v in grouped_funcs.items():
         generate_documentation(base_folder_path, k, v)
-        exit()
+
+        x += 1
+        if x == 5:
+            exit()
+
     # Delete our old entry to main.yaml
     start_line = find_line(target_path, "# CODE BELOW THIS WILL BE DELETED FREQUENTLY")
     delete_lines(target_path, start_line)
