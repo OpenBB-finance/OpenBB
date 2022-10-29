@@ -85,12 +85,12 @@ If you don't have `Docker Compose` you can also use `Docker` directly to run the
 Here is the commands to run:
 
 ```bash
-docker pull ghcr.io/openbb-finance/openbbterminal/poetry:X.Y.Z
+docker pull ghcr.io/openbb-finance/openbbterminal-poetry:X.Y.Z
 
 docker run -v ~/.openbb_terminal/:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm ghcr.io/openbb-finance/openbbterminal/poetry:X.Y.Z
 ```
 
-Be sure to replace `X.Y.Z` with the version you want to pull and run.
+Be sure to replace `X.Y.Z` with the version you want to pull and run, or use `latest`.
 
 Note for windows:
 
