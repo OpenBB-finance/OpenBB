@@ -6,6 +6,7 @@ alloc assets
 alloc sectors
 alloc countries
 alloc regions
+attrib
 perf
 perf -t
 rolling
