@@ -692,6 +692,8 @@ main:
                 ref: /terminal/common/ta/adx
               - name: aroon
                 ref: /terminal/common/ta/aroon
+              - name: atr
+                ref: /terminal/common/ta/atr
               - name: bbands
                 ref: /terminal/common/ta/bbands
               - name: cci
