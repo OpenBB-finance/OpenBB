@@ -5,6 +5,7 @@ import argparse
 import logging
 import os
 from typing import List
+from datetime import date
 
 import numpy as np
 import pandas as pd
@@ -27,6 +28,7 @@ from openbb_terminal.portfolio import portfolio_model
 from openbb_terminal.portfolio import statics
 from openbb_terminal.portfolio import portfolio_view
 from openbb_terminal.portfolio import portfolio_helper
+from openbb_terminal.portfolio import attribution_model
 from openbb_terminal.portfolio.portfolio_optimization import po_controller
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.common.quantitative_analysis import qa_view
@@ -44,6 +46,7 @@ class PortfolioController(BaseController):
         "show",
         "bench",
         "alloc",
+        "attrib",
         "perf",
         "yret",
         "mret",
@@ -310,6 +313,7 @@ class PortfolioController(BaseController):
 
         mt.add_info("_metrics_")
         mt.add_cmd("alloc", self.portfolio_name and self.benchmark_name)
+        mt.add_cmd("attrib", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("summary", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("metric", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("perf", self.portfolio_name and self.benchmark_name)
@@ -352,6 +356,7 @@ class PortfolioController(BaseController):
 {("[/unvl]", "[/cmds]")[port_bench]}
 [info]Metrics:[/info]{("[unvl]", "[cmds]")[port_bench]}
     alloc            allocation on an asset, sector, countries or regions basis
+    attrib           display attribution of portfolio returns by sector
     summary          all portfolio vs benchmark metrics for a certain period of choice
     metric           portfolio vs benchmark metric for all different periods
     perf             performance of the portfolio versus benchmark{("[/unvl]", "[/cmds]")[port_bench]}
@@ -637,6 +642,146 @@ class PortfolioController(BaseController):
                         f"{ns_parser.agg} is not an available option. The options "
                         f"are: {', '.join(self.AGGREGATION_METRICS)}"
                     )
+
+    @log_start_end(log=logger)
+    def call_attrib(self, other_args: List[str]):
+        """Process attrib command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="attrib",
+            description="""
+                Show your portfolio attribution of each sector.
+            """,
+        )
+        parser.add_argument(
+            "-a",
+            "--agg",
+            default="sectors",
+            choices=self.AGGREGATION_METRICS,
+            dest="agg",
+            help="The type of attribution aggregation you wish to do",
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            type=str,
+            choices=portfolio_helper.PERIODS,
+            dest="period",
+            default="all",
+            help="The file to be loaded",
+        )
+
+        if other_args:
+            if other_args and "-" not in other_args[0][0]:
+                other_args.insert(0, "-a")
+
+        ns_parser = self.parse_known_args_and_warn(parser, other_args, limit=10)
+
+        if ns_parser and self.portfolio is not None:
+
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
+                if ns_parser.agg == "assets":
+                    console.print(
+                        f"{ns_parser.agg} is not an available option. Currently only 'sectors' are supported "
+                    )
+                elif ns_parser.agg == "sectors":
+
+                    # if self.portfolio.portfolio_assets_allocation.empty:
+                    #     self.portfolio.calculate_allocations("asset")
+
+                    if self.benchmark_name != "SPDR S&P 500 ETF Trust (SPY)":
+                        print(
+                            "Feature currently only available for SPY, please select SPY as benchmark"
+                        )
+                    else:
+                        # sector contribution
+                        end_date = date.today()
+                        # set correct time period
+                        if ns_parser.period == "all":
+                            start_date = self.portfolio.inception_date
+                        else:
+                            start_date = portfolio_helper.get_start_date_from_period(
+                                ns_parser.period
+                            )
+
+                        # calculate benchmark and portfolio contribution values
+                        bench_result = attribution_model.get_spy_sector_contributions(
+                            start_date, end_date
+                        )
+                        portfolio_result = (
+                            attribution_model.get_portfolio_sector_contributions(
+                                start_date, self.portfolio.get_orderbook()
+                            )
+                        )
+
+                        # using percentage contributions
+                        bench_df = bench_result.iloc[:, [1]]
+                        port_df = portfolio_result.iloc[:, [1]]
+                        categorisation_result = (
+                            attribution_model.percentage_attrib_categorizer(
+                                bench_df, port_df
+                            )
+                        )
+                        # round the values - percentages
+                        categorisation_result["S&P500 [%]"] = (
+                            categorisation_result["S&P500 [%]"].astype(float).round(2)
+                        )
+                        categorisation_result["Portfolio [%]"] = (
+                            categorisation_result["Portfolio [%]"]
+                            .astype(float)
+                            .round(2)
+                        )
+                        portfolio_view.display_attribution_categorisation(
+                            display=categorisation_result,
+                            time_period=ns_parser.period,
+                            attrib_type="Contributions as % of PF",
+                            plot_fields=["S&P500 [%]", "Portfolio [%]"],
+                            show_plot=True,
+                        )
+
+                        # using raw
+                        bench_df = bench_result.iloc[:, [0]]
+                        port_df = portfolio_result.iloc[:, [0]]
+                        categorisation_result = (
+                            attribution_model.raw_attrib_categorizer(bench_df, port_df)
+                        )
+                        # round the values - raw values
+                        categorisation_result["S&P500"] = (
+                            categorisation_result["S&P500"].astype(float).round(4)
+                        )
+                        categorisation_result["Portfolio"] = (
+                            categorisation_result["Portfolio"].astype(float).round(4)
+                        )
+                        portfolio_view.display_attribution_categorisation(
+                            display=categorisation_result,
+                            time_period=ns_parser.period,
+                            attrib_type="Raw contributions (Return x PF Weight)",
+                            plot_fields=["S&P500", "Portfolio"],
+                            show_plot=True,
+                        )
+
+                elif ns_parser.agg == "countries":
+                    console.print(
+                        f"{ns_parser.agg} is not an available option. Currently only 'sectors' are supported "
+                        f"are: {', '.join(self.AGGREGATION_METRICS)}"
+                    )
+                elif ns_parser.agg == "regions":
+                    console.print(
+                        f"{ns_parser.agg} is not an available option. Currently only 'sectors' are supported "
+                        f"are: {', '.join(self.AGGREGATION_METRICS)}"
+                    )
+
+                else:
+                    console.print(
+                        f"{ns_parser.agg} is not an available option. \
+                            Currently only sectors' are supported. Future supported"
+                        f"are: {', '.join(self.AGGREGATION_METRICS)}"
+                    )
+
+                console.print()
 
     @log_start_end(log=logger)
     def call_perf(self, other_args: List[str]):

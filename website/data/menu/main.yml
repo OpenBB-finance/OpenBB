@@ -905,6 +905,8 @@ main:
         sub:
           - name: alloc
             ref: /terminal/portfolio/alloc
+          - name: attrib
+            ref: /terminal/portfolio/attrib
           - name: bench
             ref: /terminal/portfolio/bench
           - name: brokers

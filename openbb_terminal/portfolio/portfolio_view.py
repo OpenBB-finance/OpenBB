@@ -1694,3 +1694,34 @@ def display_omega(
         threshold_start=threshold_start,
         threshold_end=threshold_end,
     )
+
+
+@log_start_end(log=logger)
+def display_attribution_categorisation(
+    display: pd.DataFrame,
+    time_period: str,
+    attrib_type: str,
+    plot_fields: list,
+    show_plot: bool,
+):
+    """Display attribution for sector comparison to portfolio
+
+    Parameters
+    ----------
+    display: dataframe to be displayed
+    """
+    print_rich_table(
+        display,
+        title=f"{attrib_type}: Portfolio vs. Benchmark Attribution Categorisation {time_period}",
+        show_index=True,
+        floatfmt=".2f",
+    )
+
+    if show_plot:
+        _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
+        plot_out = display[plot_fields]
+        plot_out.plot.barh(
+            ax=ax, align="center", width=0.8, color=["#1f77b4", "#ff7f0e"]
+        )
+        ax.set_title(f"{attrib_type} By Sector")
+        plt.tight_layout()
