@@ -1786,6 +1786,8 @@ main:
                 ref: /SDK/common/ta/adx
               - name: aroon
                 ref: /SDK/common/ta/aroon
+              - name: atr
+                ref: /SDK/common/ta/atr
               - name: bbands
                 ref: /SDK/common/ta/bbands
               - name: cci
