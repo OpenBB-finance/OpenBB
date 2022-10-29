@@ -529,19 +529,10 @@ class ETFController(BaseController):
         )
 
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             if self.etf_name:
-                export_data(
-                    ns_parser.export,
-                    os.path.join(
-                        os.path.dirname(os.path.abspath(__file__)), "raw_data"
-                    ),
-                    f"{self.etf_name}",
-                    self.etf_data,
-                )
-
                 if ns_parser.raw:
                     qa_view.display_raw(
                         data=self.etf_data,
@@ -580,6 +571,13 @@ class ETFController(BaseController):
                         ma=mov_avgs,
                         asset_type="ETF",
                     )
+
+                export_data(
+                    ns_parser.export,
+                    os.path.dirname(os.path.abspath(__file__)),
+                    f"{self.etf_name}",
+                    self.etf_data,
+                )
             else:
                 console.print("No ticker loaded. First use `load {ticker}`\n")
 
