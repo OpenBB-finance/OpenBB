@@ -73,7 +73,7 @@
       "divcal": ["Nasdaq"]
     },
     "sia": {
-      "load": ["YahooFinance", "IEXCloud", "AlphaVantage", "Polygon", "EODHD"],
+      "select": ["YahooFinance"],
       "clear": [],
       "industry": ["FinanceDatabase"],
       "sector": ["FinanceDatabase"],
@@ -86,9 +86,7 @@
       "cpis": ["FinanceDatabase"],
       "cpcs": ["FinanceDatabase"],
       "cpci": ["FinanceDatabase"],
-      "sama": ["YahooFinance"],
       "metric": ["YahooFinance"],
-      "satma": ["StockAnalysis"],
       "vis": ["StockAnalysis"]
     },
     "dps": {
