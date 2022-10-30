@@ -19,10 +19,10 @@ alt.oss.history(repo: str, chart = False)
 * **Parameters**
 
     repo : *str*
-            Repo to search for Format: *org/repo, e.g., openbb-finance/openbbterminal*
+            Repo to search for Format: org/repo, e.g., openbb-finance/openbbterminal
 
     
 * **Returns**
 
-    pd.DataFrame - Columns: *Date, Stars*
+    pd.DataFrame - Columns: Date, Stars
     
