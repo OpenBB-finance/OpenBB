@@ -78,8 +78,11 @@ def generate_documentation(
 
     if docstring:
 
+        # Escape literal asterisks
+        docstring = docstring.replace("_", r"\_")
+
         # Wrap argument types around asterisks to .rst interpret them as italic
-        docstring = re.sub("(: )([a-zA-Z0-9. ]+)(\n)(\d*)", r": *\2*\n", docstring)
+        docstring = re.sub("(: )([a-zA-Z0-9. _]+)(\n)(\d*)", r": *\2*\n", docstring)
 
         # Reformat dashes in case there is a size mismatch between title and number of dashes
         docstring = re.sub(
@@ -133,6 +136,8 @@ def generate_documentation(
 
                 # Signature
                 sig = str(signature(model[2]))
+                # Escape literal asterisks
+                sig = sig.replace("_", r"\_")
 
                 if view:
                     f.write(
