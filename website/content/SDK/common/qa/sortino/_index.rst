@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 common.qa.sortino(
     data: pandas.core.frame.DataFrame,
-    target_return: float = 0,
+    target\_return: float = 0,
     window: float = 252,
     adjusted: bool = False,
     chart: bool = False,
@@ -26,7 +26,7 @@ common.qa.sortino(
 
     data: *pd.DataFrame*
         selected dataframe
-    target_return: *float*
+    target\_return: *float*
         target return of the asset
     window: *float*
         length of the rolling window

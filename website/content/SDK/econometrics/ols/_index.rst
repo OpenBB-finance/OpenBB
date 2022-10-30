@@ -12,21 +12,21 @@
 
 {{< highlight python >}}
 econometrics.ols(
-    regression_variables: List[Tuple],
+    regression\_variables: List[Tuple],
     data: Dict[str, pandas.core.frame.DataFrame],
-    show_regression: bool = True,
+    show\_regression: bool = True,
     export: str = '',
     ) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any], Any]
 {{< /highlight >}}
 
 * **Parameters**
 
-    regression_variables : *list*
+    regression\_variables : *list*
         The regressions variables entered where the first variable is
         the dependent variable.
     data : *dict*
         A dictionary containing the datasets.
-    show_regression: *bool*
+    show\_regression: *bool*
         Whether to show the regression results table.
     export: *str*
         Format to export data

@@ -36,6 +36,6 @@ stocks.ta.recom(
     
 * **Returns**
 
-    df_recommendation: *pd.DataFrame*
+    df\_recommendation: *pd.DataFrame*
         Dataframe of tradingview recommendations based on technical indicators
     

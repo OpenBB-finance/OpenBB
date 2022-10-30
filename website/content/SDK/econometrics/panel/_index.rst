@@ -14,27 +14,27 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 econometrics.panel(
-    regression_type: str,
-    regression_variables: List[Tuple],
+    regression\_type: str,
+    regression\_variables: List[Tuple],
     data: Dict[str, pandas.core.frame.DataFrame],
-    entity_effects: bool = False,
-    time_effects: bool = False,
+    entity\_effects: bool = False,
+    time\_effects: bool = False,
     chart: bool = False,
     ) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any], Any]
 {{< /highlight >}}
 
 * **Parameters**
 
-    regression_type: *str*
+    regression\_type: *str*
         The type of regression you wish to execute.
-    regression_variables : *list*
+    regression\_variables : *list*
         The regressions variables entered where the first variable is
         the dependent variable.
     data : *dict*
         A dictionary containing the datasets.
-    entity_effects: *bool*
+    entity\_effects: *bool*
         Whether to apply Fixed Effects on entities.
-    time_effects: *bool*
+    time\_effects: *bool*
         Whether to apply Fixed Effects on time.
 
     

@@ -20,23 +20,23 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.defi.pairs(
-    last_days: int = 14,
-    min_volume: int = 100,
-    min_liquidity: int = 0,
-    min_tx: int = 100,
+    last\_days: int = 14,
+    min\_volume: int = 100,
+    min\_liquidity: int = 0,
+    min\_tx: int = 100,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**
 
-    last_days: *int*
+    last\_days: *int*
         How many days back to look for added pairs.
-    min_volume: *int*
+    min\_volume: *int*
         Minimum volume
-    min_liquidity: *int*
+    min\_liquidity: *int*
         Minimum liquidity
-    min_tx: *int*
+    min\_tx: *int*
         Minimum number of transactions done in given pool.
 
     

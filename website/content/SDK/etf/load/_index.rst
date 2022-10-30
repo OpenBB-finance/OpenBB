@@ -41,9 +41,9 @@
 {{< highlight python >}}
 etf.load(
     symbol: str,
-    start_date: datetime.datetime = None,
+    start\_date: datetime.datetime = None,
     interval: int = 1440,
-    end_date: datetime.datetime = None,
+    end\_date: datetime.datetime = None,
     prepost: bool = False,
     source: str = 'YahooFinance',
     iexrange: str = 'ytd',
@@ -56,11 +56,11 @@ etf.load(
 
     symbol: *str*
         Ticker to get data
-    start_date: *datetime*
+    start\_date: *datetime*
         Start date to get data from with
     interval: *int*
         Interval (in minutes) to get data 1, 5, 15, 30, 60 or 1440
-    end_date: *datetime*
+    end\_date: *datetime*
         End date to get data from with
     prepost: *bool*
         Pre and After hours data
@@ -76,6 +76,6 @@ etf.load(
     
 * **Returns**
 
-    df_stock_candidate: *pd.DataFrame*
+    df\_stock\_candidate: *pd.DataFrame*
         Dataframe of data
     

@@ -15,8 +15,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 econometrics.root(
     data: pandas.core.series.Series,
-    fuller_reg: str = 'c',
-    kpss_reg: str = 'c',
+    fuller\_reg: str = 'c',
+    kpss\_reg: str = 'c',
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -25,9 +25,9 @@ econometrics.root(
 
     data : *pd.Series*
         Series or column of DataFrame of target variable
-    fuller_reg : *str*
+    fuller\_reg : *str*
         Type of regression of ADF test
-    kpss_reg : *str*
+    kpss\_reg : *str*
         Type of regression for KPSS test
 
     

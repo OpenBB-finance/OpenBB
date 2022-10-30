@@ -14,24 +14,24 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.chart(
-    prices_df: 'pd.DataFrame',
-    to_symbol: 'str' = '',
-    from_symbol: 'str' = '',
+    prices\_df: 'pd.DataFrame',
+    to\_symbol: 'str' = '',
+    from\_symbol: 'str' = '',
     source: 'str' = '',
     exchange: 'str' = '',
     interval: 'str' = '',
-    external_axes: 'list[plt.Axes] | None' = None, yscale: 'str' = 'linear',
+    external\_axes: 'list[plt.Axes] | None' = None, yscale: 'str' = 'linear',
     chart: bool = False,
     ) -> 'None'
 {{< /highlight >}}
 
 * **Parameters**
 
-    prices_df: *pd.DataFrame*
+    prices\_df: *pd.DataFrame*
         Cryptocurrency
-    to_symbol: *str*
+    to\_symbol: *str*
         Coin (only used for chart title), by default ""
-    from_symbol: *str*
+    from\_symbol: *str*
         Currency (only used for chart title), by default ""
     yscale: *str*
         Scale for y axis of plot Either linear or log

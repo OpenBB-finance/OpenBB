@@ -12,13 +12,13 @@
 
 {{< highlight python >}}
 stocks.options.screen.check_presets(
-    preset_dict: dict,
+    preset\_dict: dict,
     ) -> str
 {{< /highlight >}}
 
 * **Parameters**
 
-    preset_dict: *dict*
+    preset\_dict: *dict*
         Defined presets from configparser
     
 * **Returns**

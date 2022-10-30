@@ -17,7 +17,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 stocks.ba.hist(
     symbol: str,
-    start_date: str = '2022-10-23', end_date: str = '2022-10-30', number: int = 100,
+    start\_date: str = '2022-10-23', end\_date: str = '2022-10-30', number: int = 100,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -26,9 +26,9 @@ stocks.ba.hist(
 
     symbol: *str*
         Ticker to view sentiment data
-    start_date: *str*
+    start\_date: *str*
         Initial date like string or unix timestamp (e.g. 12-21-2021)
-    end_date: *str*
+    end\_date: *str*
         End date like string or unix timestamp (e.g. 12-21-2021)
     number : *int*
         Number of results returned by API call

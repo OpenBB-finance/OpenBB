@@ -14,17 +14,17 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.dd.balance(
-    from_symbol: str,
-    to_symbol: str = 'USDT',
+    from\_symbol: str,
+    to\_symbol: str = 'USDT',
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**
 
-    from_symbol: *str*
+    from\_symbol: *str*
         Cryptocurrency
-    to_symbol: *str*
+    to\_symbol: *str*
         Cryptocurrency
 
     

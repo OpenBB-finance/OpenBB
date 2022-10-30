@@ -13,16 +13,16 @@
 {{< highlight python >}}
 stocks.ba.cnews(
     symbol: str,
-    start_date: str = '2022-09-30', end_date: str = '2022-10-30', ) -> List[Dict]
+    start\_date: str = '2022-09-30', end\_date: str = '2022-10-30', ) -> List[Dict]
 {{< /highlight >}}
 
 * **Parameters**
 
     symbol : *str*
         company ticker to look for news articles
-    start_date: *str*
+    start\_date: *str*
         date to start searching articles, with format YYYY-MM-DD
-    end_date: *str*
+    end\_date: *str*
         date to end searching articles, with format YYYY-MM-DD
 
     

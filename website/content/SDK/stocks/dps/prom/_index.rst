@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 stocks.dps.prom(
     limit: int = 1000,
-    tier_ats: str = 'T1',
+    tier\_ats: str = 'T1',
     chart: bool = False,
     ) -> Tuple[pandas.core.frame.DataFrame, Dict]
 {{< /highlight >}}
@@ -24,7 +24,7 @@ stocks.dps.prom(
 
     limit: *int*
         Number of tickers to filter from entire ATS data based on the sum of the total weekly shares quantity
-    tier_ats : *int*
+    tier\_ats : *int*
         Tier to process data from: T1, T2 or OTCE
 
     

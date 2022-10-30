@@ -16,8 +16,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 stocks.ba.infer(
     symbol: str,
     limit: int = 100,
-    start_date: Optional[str] = '',
-    end_date: Optional[str] = '',
+    start\_date: Optional[str] = '',
+    end\_date: Optional[str] = '',
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -28,14 +28,14 @@ stocks.ba.infer(
         Ticker symbol to search twitter for
     limit: *int*
         Number of tweets to analyze
-    start_date: Optional[str]
+    start\_date: Optional[str]
         If given, the start time to get tweets from
-    end_date: Optional[str]
+    end\_date: Optional[str]
         If given, the end time to get tweets from
 
     
 * **Returns**
 
-    df_tweet: *pd.DataFrame*
+    df\_tweet: *pd.DataFrame*
         Dataframe of tweets and sentiment
     

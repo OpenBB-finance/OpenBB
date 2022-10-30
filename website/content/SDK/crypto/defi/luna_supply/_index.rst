@@ -16,7 +16,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.defi.luna_supply(
-    supply_type: str = 'lunaSupplyChallengeStats',
+    supply\_type: str = 'lunaSupplyChallengeStats',
     days: int = 30,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
@@ -24,7 +24,7 @@ crypto.defi.luna_supply(
 
 * **Parameters**
 
-    supply_type: *str*
+    supply\_type: *str*
         Supply type to unpack json
     days: *int*
         Day count to fetch data

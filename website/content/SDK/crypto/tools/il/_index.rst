@@ -14,23 +14,23 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.tools.il(
-    price_changeA: float,
-    price_changeB: float,
+    price\_changeA: float,
+    price\_changeB: float,
     proportion: float,
-    initial_pool_value: float,
+    initial\_pool\_value: float,
     chart: bool = False,
     ) -> Tuple[pandas.core.frame.DataFrame, str]
 {{< /highlight >}}
 
 * **Parameters**
 
-    price_changeA: *float*
+    price\_changeA: *float*
         price change of crypto A in percentage
-    price_changeB: *float*
+    price\_changeB: *float*
         price change of crypto B in percentage
     proportion: *float*
         percentage of first token in pool
-    initial_pool_value: *float*
+    initial\_pool\_value: *float*
         initial value that pool contains
 
     

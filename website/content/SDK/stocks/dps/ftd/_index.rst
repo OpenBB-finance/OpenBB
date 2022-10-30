@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 stocks.dps.ftd(
     symbol: str,
-    start_date: str = '2022-08-31', end_date: str = '2022-10-30', limit: int = 0,
+    start\_date: str = '2022-08-31', end\_date: str = '2022-10-30', limit: int = 0,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -24,9 +24,9 @@ stocks.dps.ftd(
 
     symbol : *str*
         Stock ticker
-    start_date : *str*
+    start\_date : *str*
         Start of data, in YYYY-MM-DD format
-    end_date : *str*
+    end\_date : *str*
         End of data, in YYYY-MM-DD format
     limit : *int*
         Number of latest fails-to-deliver being printed

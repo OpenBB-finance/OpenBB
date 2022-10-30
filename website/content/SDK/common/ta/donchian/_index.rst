@@ -14,23 +14,23 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 common.ta.donchian(
-    high_prices: pandas.core.series.Series,
-    low_prices: pandas.core.series.Series,
-    upper_length: int = 20,
-    lower_length: int = 20,
+    high\_prices: pandas.core.series.Series,
+    low\_prices: pandas.core.series.Series,
+    upper\_length: int = 20,
+    lower\_length: int = 20,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**
 
-    high_prices : *pd.DataFrame*
+    high\_prices : *pd.DataFrame*
         High prices
-    low_prices : *pd.DataFrame*
+    low\_prices : *pd.DataFrame*
         Low prices
-    upper_length : *int*
+    upper\_length : *int*
         Length of window to calculate upper channel
-    lower_length : *int*
+    lower\_length : *int*
         Length of window to calculate lower channel
 
     

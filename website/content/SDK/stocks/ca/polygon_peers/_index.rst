@@ -13,7 +13,7 @@
 {{< highlight python >}}
 stocks.ca.polygon_peers(
     symbol: str,
-    us_only: bool = False,
+    us\_only: bool = False,
     ) -> List[str]
 {{< /highlight >}}
 
@@ -21,7 +21,7 @@ stocks.ca.polygon_peers(
 
     symbol: *str*
         Ticker to get similar companies of
-    us_only: *bool*
+    us\_only: *bool*
         Only stocks from the US stock exchanges
 
     

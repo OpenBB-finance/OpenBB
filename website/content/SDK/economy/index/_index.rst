@@ -16,8 +16,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 economy.index(
     indices: list,
     interval: str = '1d',
-    start_date: int = None,
-    end_date: int = None,
+    start\_date: int = None,
+    end\_date: int = None,
     column: str = 'Adj Close',
     returns: bool = False,
     chart: bool = False,
@@ -27,13 +27,13 @@ economy.index(
 * **Parameters**
 
     indices: *list*
-        A list of indices to get data. Available indices can be accessed through economy.available_indices().
+        A list of indices to get data. Available indices can be accessed through economy.available\_indices().
     interval: *str*
         Valid intervals: 1m,2m,5m,15m,30m,60m,90m,1h,1d,5d,1wk,1mo,3mo
         Intraday data cannot extend last 60 days
-    start_date : *str*
+    start\_date : *str*
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
-    end_date : *str*
+    end\_date : *str*
         The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
     column : *str*
         Which column to load in, by default this is the Adjusted Close.

@@ -16,7 +16,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 stocks.sia.cpci(
     industry: str = 'Internet Content & Information', mktcap: str = 'Large',
-    exclude_exchanges: bool = True,
+    exclude\_exchanges: bool = True,
     chart: bool = False,
     ) -> dict
 {{< /highlight >}}
@@ -27,7 +27,7 @@ stocks.sia.cpci(
         Select industry to get number of companies by each country
     mktcap: *str*
         Select market cap of companies to consider from Small, Mid and Large
-    exclude_exchanges : *bool*
+    exclude\_exchanges : *bool*
         Exclude international exchanges
 
     

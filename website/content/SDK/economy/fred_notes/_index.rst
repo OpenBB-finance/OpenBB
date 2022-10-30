@@ -12,13 +12,13 @@
 
 {{< highlight python >}}
 economy.fred_notes(
-    search_query: str,
+    search\_query: str,
     limit: int = -1, ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**
 
-    search_query : *str*
+    search\_query : *str*
         Text query to search on fred series notes database
     limit : *int*
         Maximum number of series notes to display

@@ -21,5 +21,5 @@ crypto.ov.cpplatforms(
 * **Returns**
 
     pandas.DataFrame
-        index, platform_id
+        index, platform\_id
     

@@ -17,8 +17,7 @@ forex.oanda.order(
     price: int = 0,
     units: int = 0,
     instrument: Optional[str] = None,
-    accountID: str = 'REPLACE_ME',
-    chart: bool = False,
+    accountID: str = 'REPLACE\_ME', chart: bool = False,
     ) -> Union[pandas.core.frame.DataFrame, bool]
 {{< /highlight >}}
 
@@ -31,7 +30,7 @@ forex.oanda.order(
     units : *int*
         The number of units to place in the order request.
     accountID : str, optional
-        Oanda account ID, by default cfg.OANDA_ACCOUNT
+        Oanda account ID, by default cfg.OANDA\_ACCOUNT
 
     
 * **Returns**

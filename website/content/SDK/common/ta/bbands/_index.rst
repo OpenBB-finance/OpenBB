@@ -14,9 +14,9 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 common.ta.bbands(
-    close_values: pandas.core.series.Series,
+    close\_values: pandas.core.series.Series,
     window: int = 15,
-    n_std: float = 2,
+    n\_std: float = 2,
     mamode: str = 'ema',
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
@@ -24,11 +24,11 @@ common.ta.bbands(
 
 * **Parameters**
 
-    close_values : *pd.DataFrame*
+    close\_values : *pd.DataFrame*
         DataFrame of sclose prices
     window : *int*
         Length of window to calculate BB
-    n_std : *float*
+    n\_std : *float*
         Number of standard deviations to show
     mamode : *str*
         Method of calculating average
@@ -36,6 +36,6 @@ common.ta.bbands(
     
 * **Returns**
 
-    df_ta: *pd.DataFrame*
+    df\_ta: *pd.DataFrame*
         Dataframe of bollinger band data
     

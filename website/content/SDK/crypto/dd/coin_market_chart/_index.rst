@@ -13,7 +13,7 @@
 {{< highlight python >}}
 crypto.dd.coin_market_chart(
     symbol: str = '',
-    vs_currency: str = 'usd',
+    vs\_currency: str = 'usd',
     days: int = 30,
     **kwargs: Any,
     ) -> pandas.core.frame.DataFrame
@@ -21,7 +21,7 @@ crypto.dd.coin_market_chart(
 
 * **Parameters**
 
-    vs_currency: *str*
+    vs\_currency: *str*
         currency vs which display data
     days: *int*
         number of days to display the data

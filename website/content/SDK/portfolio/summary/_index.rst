@@ -12,9 +12,8 @@
 
 {{< highlight python >}}
 portfolio.summary(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
-    window: str = 'all',
-    risk_free_rate: float = 0,
+    portfolio: openbb\_terminal.portfolio.portfolio\_model.PortfolioModel, window: str = 'all',
+    risk\_free\_rate: float = 0,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -24,7 +23,7 @@ portfolio.summary(
         Portfolio object with trades loaded
     window : *str*
         interval to compare cumulative returns and benchmark
-    risk_free_rate : *float*
+    risk\_free\_rate : *float*
         Risk free rate for calculations
     
 * **Returns**

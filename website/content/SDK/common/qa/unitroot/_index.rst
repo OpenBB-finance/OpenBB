@@ -15,8 +15,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 common.qa.unitroot(
     data: pandas.core.frame.DataFrame,
-    fuller_reg: str = 'c',
-    kpss_reg: str = 'c',
+    fuller\_reg: str = 'c',
+    kpss\_reg: str = 'c',
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -25,9 +25,9 @@ common.qa.unitroot(
 
     data : *pd.DataFrame*
         DataFrame of target variable
-    fuller_reg : *str*
+    fuller\_reg : *str*
         Type of regression of ADF test. Can be ‘c’,’ct’,’ctt’,’nc’ 'c' - Constant and t - trend order
-    kpss_reg : *str*
+    kpss\_reg : *str*
         Type of regression for KPSS test.  Can be ‘c’,’ct'
 
     

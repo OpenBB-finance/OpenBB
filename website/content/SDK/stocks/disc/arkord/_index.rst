@@ -12,17 +12,17 @@
 
 {{< highlight python >}}
 stocks.disc.arkord(
-    buys_only: bool = False,
-    sells_only: bool = False,
+    buys\_only: bool = False,
+    sells\_only: bool = False,
     fund: str = '',
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**
 
-    buys_only: *bool*
+    buys\_only: *bool*
         Flag to filter on buys only
-    sells_only: *bool*
+    sells\_only: *bool*
         Flag to sort on sells only
     fund: *str*
         Optional filter by fund

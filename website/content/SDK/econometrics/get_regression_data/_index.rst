@@ -13,20 +13,20 @@
 
 {{< highlight python >}}
 econometrics.get_regression_data(
-    regression_variables: List[tuple],
+    regression\_variables: List[tuple],
     data: Dict[str, pandas.core.frame.DataFrame],
-    regression_type: str = '',
+    regression\_type: str = '',
     ) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any]]
 {{< /highlight >}}
 
 * **Parameters**
 
-    regression_variables : *list*
+    regression\_variables : *list*
         The regressions variables entered where the first variable is
         the dependent variable.
     data : *dict*
         A dictionary containing the datasets.
-    regression_type: *str*
+    regression\_type: *str*
         The type of regression that is executed.
 
     

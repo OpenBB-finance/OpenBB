@@ -24,6 +24,6 @@ stocks.dd.analyst(
     
 * **Returns**
 
-    df_fa: *DataFrame*
+    df\_fa: *DataFrame*
         Analyst price targets
     

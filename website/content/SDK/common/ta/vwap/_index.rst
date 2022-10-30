@@ -29,6 +29,6 @@ common.ta.vwap(
     
 * **Returns**
 
-    df_vwap: *pd.DataFrame*
+    df\_vwap: *pd.DataFrame*
         Dataframe with VWAP data
     

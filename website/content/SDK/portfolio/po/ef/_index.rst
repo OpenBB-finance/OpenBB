@@ -16,19 +16,19 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 portfolio.po.ef(
     symbols: List[str],
     interval: str = '3y',
-    start_date: str = '',
-    end_date: str = '',
-    log_returns: bool = False,
+    start\_date: str = '',
+    end\_date: str = '',
+    log\_returns: bool = False,
     freq: str = 'D',
     maxnan: float = 0.05,
     threshold: float = 0,
     method: str = 'time',
-    risk_measure: str = 'MV',
-    risk_free_rate: float = 0,
+    risk\_measure: str = 'MV',
+    risk\_free\_rate: float = 0,
     alpha: float = 0.05,
     value: float = 1.0,
-    value_short: float = 0.0,
-    n_portfolios: int = 100,
+    value\_short: float = 0.0,
+    n\_portfolios: int = 100,
     seed: int = 123,
     chart: bool = False,
     ) -> Tuple
@@ -40,12 +40,12 @@ portfolio.po.ef(
         List of portfolio tickers
     interval : str, optional
         interval to look at returns from
-    start_date: str, optional
+    start\_date: str, optional
         If not using interval, start date string (YYYY-MM-DD)
-    end_date: str, optional
+    end\_date: str, optional
         If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
-    log_returns: bool, optional
+    log\_returns: bool, optional
         If True calculate log returns, else arithmetic returns. Default value
         is False
     freq: str, optional
@@ -63,8 +63,8 @@ portfolio.po.ef(
         Value used to replace outliers that are higher to threshold.
     method: *str*
         Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
-    risk_measure: str, optional
+        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`\_.
+    risk\_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
 
@@ -82,7 +82,7 @@ portfolio.po.ef(
         - 'EDaR': *Entropic Drawdown at Risk of uncompounded cumulative returns.*
         - 'MDD': *Maximum Drawdown of uncompounded cumulative returns.*
 
-    risk_free_rate: float, optional
+    risk\_free\_rate: float, optional
         Risk free rate, must be in the same interval of assets returns. Used for
         'FLPM' and 'SLPM' and Sharpe objective function. The default is 0.
     alpha: float, optional
@@ -90,9 +90,9 @@ portfolio.po.ef(
         The default is 0.05.
     value : float, optional
         Amount to allocate to portfolio in long positions, by default 1.0
-    value_short : float, optional
+    value\_short : float, optional
         Amount to allocate to portfolio in short positions, by default 0.0
-    n_portfolios: int, optional
+    n\_portfolios: int, optional
         "Number of portfolios to simulate. The default value is 100.
     seed: int, optional
         Seed used to generate random portfolios. The default value is 123.
@@ -101,5 +101,5 @@ portfolio.po.ef(
 * **Returns**
 
     Tuple
-        Parameters to create efficient frontier: frontier, mu, cov, stock_returns, weights, X1, Y1, port
+        Parameters to create efficient frontier: frontier, mu, cov, stock\_returns, weights, X1, Y1, port
     

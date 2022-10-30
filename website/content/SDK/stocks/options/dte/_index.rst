@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 stocks.options.dte(
-    date_value: str,
+    date\_value: str,
     ) -> int
 {{< /highlight >}}
 

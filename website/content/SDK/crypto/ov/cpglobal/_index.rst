@@ -8,9 +8,9 @@
 
     <h3>
     > Return data frame with most important global crypto statistics like:
-    market_cap_usd, volume_24h_usd, bitcoin_dominance_percentage, cryptocurrencies_number,
-    market_cap_ath_value, market_cap_ath_date, volume_24h_ath_value, volume_24h_ath_date,
-    market_cap_change_24h, volume_24h_change_24h, last_updated.   [Source: CoinPaprika]
+    market\_cap\_usd, volume\_24h\_usd, bitcoin\_dominance\_percentage, cryptocurrencies\_number,
+    market\_cap\_ath\_value, market\_cap\_ath\_date, volume\_24h\_ath\_value, volume\_24h\_ath\_date,
+    market\_cap\_change\_24h, volume\_24h\_change\_24h, last\_updated.   [Source: CoinPaprika]
     </h3>
 
 To obtain charts, make sure to add :python:`chart = True` as the last parameter

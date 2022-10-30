@@ -23,9 +23,9 @@ common.ta.cci(
 
 * **Parameters**
 
-    high_vals: *pd.Series*
+    high\_vals: *pd.Series*
         High values
-    low_values: *pd.Series*
+    low\_values: *pd.Series*
         Low values
     close-values: *pd.Series*
         Close values

@@ -17,7 +17,7 @@ stocks.options.grhist(
     symbol: str,
     expiry: str,
     strike: float,
-    chain_id: str = '',
+    chain\_id: str = '',
     put: bool = False,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
@@ -31,7 +31,7 @@ stocks.options.grhist(
         Option expiration date
     strike: *float*
         Strike price to look for
-    chain_id: *str*
+    chain\_id: *str*
         OCC option symbol.  Overwrites other inputs
     put: *bool*
         Is this a put option?

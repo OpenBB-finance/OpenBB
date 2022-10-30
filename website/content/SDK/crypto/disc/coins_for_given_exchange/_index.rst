@@ -12,14 +12,14 @@
 
 {{< highlight python >}}
 crypto.disc.coins_for_given_exchange(
-    exchange_id: str = 'binance',
+    exchange\_id: str = 'binance',
     page: int = 1,
     ) -> dict
 {{< /highlight >}}
 
 * **Parameters**
 
-    exchange_id: *str*
+    exchange\_id: *str*
         id of exchange
     page: *int*
         number of page. One page contains 100 records

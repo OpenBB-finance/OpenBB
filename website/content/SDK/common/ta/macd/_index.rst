@@ -15,9 +15,9 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 common.ta.macd(
     values: pandas.core.frame.DataFrame,
-    n_fast: int = 12,
-    n_slow: int = 26,
-    n_signal: int = 9,
+    n\_fast: int = 12,
+    n\_slow: int = 26,
+    n\_signal: int = 9,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -26,11 +26,11 @@ common.ta.macd(
 
     values: *pd.Series*
         Values for calculation
-    n_fast : *int*
+    n\_fast : *int*
         Fast period
-    n_slow : *int*
+    n\_slow : *int*
         Slow period
-    n_signal : *int*
+    n\_signal : *int*
         Signal period
     
 * **Returns**

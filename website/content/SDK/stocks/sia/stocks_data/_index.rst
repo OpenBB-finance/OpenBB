@@ -14,8 +14,8 @@
 {{< highlight python >}}
 stocks.sia.stocks_data(
     symbols: List[str] = None,
-    finance_key: str = 'ncf',
-    stocks_data: dict = None,
+    finance\_key: str = 'ncf',
+    stocks\_data: dict = None,
     period: str = 'annual',
     symbol: str = 'USD',
     )
@@ -25,10 +25,10 @@ stocks.sia.stocks_data(
 
     symbols: *list*
         A list of tickers that will be used to collect data for.
-    finance_key: *str*
-        The finance key used to search within the SA_KEYS for the correct name of item
+    finance\_key: *str*
+        The finance key used to search within the SA\_KEYS for the correct name of item
         on the financial statement
-    stocks_data : *dict*
+    stocks\_data : *dict*
         A dictionary that is empty on initialisation but filled once data is collected
         for the first time.
     period : *str*

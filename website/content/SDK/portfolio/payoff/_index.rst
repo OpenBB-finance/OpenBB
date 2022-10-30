@@ -17,8 +17,7 @@
 
 {{< highlight python >}}
 portfolio.payoff(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
-    )
+    portfolio: openbb\_terminal.portfolio.portfolio\_model.PortfolioModel, )
 {{< /highlight >}}
 
 * **Parameters**

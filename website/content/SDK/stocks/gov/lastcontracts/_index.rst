@@ -14,14 +14,14 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 stocks.gov.lastcontracts(
-    past_transaction_days: int = 2,
+    past\_transaction\_days: int = 2,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**
 
-    past_transaction_days: *int*
+    past\_transaction\_days: *int*
         Number of days to look back
 
     

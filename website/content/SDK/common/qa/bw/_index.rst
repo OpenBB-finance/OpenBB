@@ -18,8 +18,7 @@ common.qa.bw(
     target: str,
     symbol: str = '',
     yearly: bool = True,
-    external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
-    chart: bool = False,
+    external\_axes: Optional[List[matplotlib.axes.\_axes.Axes]] = None, chart: bool = False,
     ) -> None
 {{< /highlight >}}
 
@@ -33,6 +32,6 @@ common.qa.bw(
         Data column to look at
     yearly : *bool*
         Flag to indicate yearly accumulation
-    external_axes : Optional[List[plt.Axes]], optional
+    external\_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     

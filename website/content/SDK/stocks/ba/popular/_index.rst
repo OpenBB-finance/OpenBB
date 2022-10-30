@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 stocks.ba.popular(
     limit: int = 10,
-    post_limit: int = 50,
+    post\_limit: int = 50,
     subreddits: str = '',
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
@@ -25,7 +25,7 @@ stocks.ba.popular(
 
     limit : *int*
         Number of top tickers to get
-    post_limit : *int*
+    post\_limit : *int*
         How many posts to analyze in each subreddit
     subreddits : str, optional
         String of comma separated subreddits.

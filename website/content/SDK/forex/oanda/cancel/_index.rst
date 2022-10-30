@@ -15,8 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 forex.oanda.cancel(
     orderID: str,
-    accountID: str = 'REPLACE_ME',
-    chart: bool = False,
+    accountID: str = 'REPLACE\_ME', chart: bool = False,
     ) -> Union[str, bool]
 {{< /highlight >}}
 
@@ -25,5 +24,5 @@ forex.oanda.cancel(
     orderID : *str*
         The pending order ID to cancel.
     accountID : str, optional
-        Oanda account ID, by default cfg.OANDA_ACCOUNT
+        Oanda account ID, by default cfg.OANDA\_ACCOUNT
     

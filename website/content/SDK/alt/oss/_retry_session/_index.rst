@@ -14,7 +14,7 @@
 alt.oss._retry_session(
     url: str,
     retries: int = 3,
-    backoff_factor: float = 1.0,
+    backoff\_factor: float = 1.0,
     ) -> requests.sessions.Session
 {{< /highlight >}}
 
@@ -24,7 +24,7 @@ alt.oss._retry_session(
         Url to mount a session
     retries: *int*
         How many retries
-    backoff_factor: *float*
+    backoff\_factor: *float*
         Backoff schema - time periods between retry
 
     

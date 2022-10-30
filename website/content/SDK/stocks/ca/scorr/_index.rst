@@ -24,5 +24,5 @@ stocks.ca.scorr(
     similar : List[str]
         Similar companies to compare income with.
         Comparable companies can be accessed through
-        finnhub_peers(), finviz_peers(), polygon_peers().
+        finnhub\_peers(), finviz\_peers(), polygon\_peers().
     

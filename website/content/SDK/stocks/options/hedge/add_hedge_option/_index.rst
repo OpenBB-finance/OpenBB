@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 stocks.options.hedge.add_hedge_option(
     price: float = 100,
-    implied_volatility: float = 20,
+    implied\_volatility: float = 20,
     strike: float = 120,
     days: float = 30,
     sign: int = 1,
@@ -27,7 +27,7 @@ stocks.options.hedge.add_hedge_option(
 
     price: *float*
         The price.
-    implied_volatility: *float*
+    implied\_volatility: *float*
         The implied volatility.
     strike: *float*
         The strike price.

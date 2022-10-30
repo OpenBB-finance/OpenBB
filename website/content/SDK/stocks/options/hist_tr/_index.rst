@@ -19,7 +19,7 @@ stocks.options.hist_tr(
     expiry: str,
     strike: float = 0,
     put: bool = False,
-    chain_id: Optional[str] = None,
+    chain\_id: Optional[str] = None,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -34,12 +34,12 @@ stocks.options.hist_tr(
         Option strike price
     put: *bool*
         Is this a put option?
-    chain_id: Optional[str]
+    chain\_id: Optional[str]
         OCC chain ID
 
     
 * **Returns**
 
-    df_hist: *pd.DataFrame*
+    df\_hist: *pd.DataFrame*
         Dataframe of historical option prices
     

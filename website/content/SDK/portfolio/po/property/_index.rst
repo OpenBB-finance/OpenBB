@@ -16,14 +16,14 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 portfolio.po.property(
     symbols: List[str],
     interval: str = '3y',
-    start_date: str = '',
-    end_date: str = '',
-    log_returns: bool = False,
+    start\_date: str = '',
+    end\_date: str = '',
+    log\_returns: bool = False,
     freq: str = 'D',
     maxnan: float = 0.05,
     threshold: float = 0,
     method: str = 'time',
-    s_property: str = 'marketCap',
+    s\_property: str = 'marketCap',
     value: float = 1.0,
     chart: bool = False,
     ) -> Tuple
@@ -35,12 +35,12 @@ portfolio.po.property(
         List of portfolio stocks
     interval : str, optional
         interval to get stock data, by default "3mo"
-    start_date: str, optional
+    start\_date: str, optional
         If not using interval, start date string (YYYY-MM-DD)
-    end_date: str, optional
+    end\_date: str, optional
         If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
-    log_returns: bool, optional
+    log\_returns: bool, optional
         If True calculate log returns, else arithmetic returns. Default value
         is False
     freq: str, optional
@@ -58,8 +58,8 @@ portfolio.po.property(
         Value used to replace outliers that are higher to threshold.
     method: *str*
         Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
-    s_property : *str*
+        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`\_.
+    s\_property : *str*
         Property to weight portfolio by
     value : float, optional
         Amount of money to allocate

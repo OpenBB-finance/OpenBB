@@ -12,14 +12,14 @@
 
 {{< highlight python >}}
 stocks.gov.lasttrades(
-    gov_type: str = 'congress',
+    gov\_type: str = 'congress',
     limit: int = -1, representative: str = '',
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**
 
-    gov_type: *str*
+    gov\_type: *str*
         Type of government data between: congress, senate and house
     limit: *int*
         Number of days to look back

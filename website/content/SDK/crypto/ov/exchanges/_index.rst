@@ -31,5 +31,5 @@ crypto.ov.exchanges(
 * **Returns**
 
     pandas.DataFrame
-        Trust_Score, Id, Name, Country, Year_Established, Trade_Volume_24h_BTC, Url
+        Trust\_Score, Id, Name, Country, Year\_Established, Trade\_Volume\_24h\_BTC, Url
     

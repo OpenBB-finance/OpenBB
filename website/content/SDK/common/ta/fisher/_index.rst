@@ -14,8 +14,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 common.ta.fisher(
-    high_vals: pandas.core.series.Series,
-    low_vals: pandas.core.series.Series,
+    high\_vals: pandas.core.series.Series,
+    low\_vals: pandas.core.series.Series,
     window: int = 14,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
@@ -23,15 +23,15 @@ common.ta.fisher(
 
 * **Parameters**
 
-    high_vals: *pd.Series*
+    high\_vals: *pd.Series*
         High values
-    low_vals: *pd.Series*
+    low\_vals: *pd.Series*
         Low values
     window: *int*
         Length for indicator window
     
 * **Returns**
 
-    df_ta: *pd.DataFrame*
+    df\_ta: *pd.DataFrame*
         Dataframe of technical indicator
     

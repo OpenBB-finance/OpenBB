@@ -14,9 +14,9 @@
 portfolio.po.equal(
     symbols: List[str],
     interval: str = '3y',
-    start_date: str = '',
-    end_date: str = '',
-    log_returns: bool = False,
+    start\_date: str = '',
+    end\_date: str = '',
+    log\_returns: bool = False,
     freq: str = 'D',
     maxnan: float = 0.05,
     threshold: float = 0,
@@ -31,12 +31,12 @@ portfolio.po.equal(
         List of portfolio stocks
     interval : str, optional
         interval to get stock data, by default "3mo"
-    start_date: str, optional
+    start\_date: str, optional
         If not using interval, start date string (YYYY-MM-DD)
-    end_date: str, optional
+    end\_date: str, optional
         If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
-    log_returns: bool, optional
+    log\_returns: bool, optional
         If True calculate log returns, else arithmetic returns. Default value
         is False
     freq: str, optional
@@ -54,7 +54,7 @@ portfolio.po.equal(
         Value used to replace outliers that are higher to threshold.
     method: *str*
         Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`\_.
     value : float, optional
         Amount to allocate.  Returns percentages if set to 1.
 

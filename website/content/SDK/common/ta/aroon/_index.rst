@@ -14,8 +14,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 common.ta.aroon(
-    high_values: pandas.core.series.Series,
-    low_values: pandas.core.series.Series,
+    high\_values: pandas.core.series.Series,
+    low\_values: pandas.core.series.Series,
     window: int = 25,
     scalar: int = 100,
     chart: bool = False,
@@ -24,9 +24,9 @@ common.ta.aroon(
 
 * **Parameters**
 
-    high_values: *pd.Series*
+    high\_values: *pd.Series*
         High prices
-    low_values: *pd.Series*
+    low\_values: *pd.Series*
         Low prices
     window : *int*
         Length of window

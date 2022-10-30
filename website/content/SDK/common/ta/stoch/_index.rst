@@ -14,9 +14,9 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 common.ta.stoch(
-    high_vals: pandas.core.series.Series,
-    low_vals: pandas.core.series.Series,
-    close_vals: pandas.core.series.Series,
+    high\_vals: pandas.core.series.Series,
+    low\_vals: pandas.core.series.Series,
+    close\_vals: pandas.core.series.Series,
     fastkperiod: int = 14,
     slowdperiod: int = 3,
     slowkperiod: int = 3,
@@ -26,9 +26,9 @@ common.ta.stoch(
 
 * **Parameters**
 
-    high_vals: *pd.Series*
+    high\_vals: *pd.Series*
         High values
-    low_vals: *pd.Series*
+    low\_vals: *pd.Series*
         Low values
     close-vals: *pd.Series*
         Close values

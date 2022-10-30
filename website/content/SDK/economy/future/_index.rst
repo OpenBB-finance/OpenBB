@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 economy.future(
-    future_type: str = 'Indices',
+    future\_type: str = 'Indices',
     sortby: str = 'ticker',
     ascend: bool = False,
     ) -> pandas.core.frame.DataFrame
@@ -20,7 +20,7 @@ economy.future(
 
 * **Parameters**
 
-    future_type : *str*
+    future\_type : *str*
         From the following: Indices, Energy, Metals, Meats, Grains, Softs, Bonds, Currencies
     sortby : *str*
         Column to sort by

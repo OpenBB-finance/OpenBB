@@ -8,29 +8,29 @@
 
     <h3>
     > When effects are correlated with the regressors the RE and BE estimators are not consistent.
-    The usual solution is to use Fixed Effects which are called entity_effects when applied to
-    entities and time_effects when applied to the time dimension. [Source: LinearModels]
+    The usual solution is to use Fixed Effects which are called entity\_effects when applied to
+    entities and time\_effects when applied to the time dimension. [Source: LinearModels]
     </h3>
 
 {{< highlight python >}}
 econometrics.fe(
-    regression_variables: List[Tuple],
+    regression\_variables: List[Tuple],
     data: Dict[str, pandas.core.frame.DataFrame],
-    entity_effects: bool = False,
-    time_effects: bool = False,
+    entity\_effects: bool = False,
+    time\_effects: bool = False,
     ) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any], Any]
 {{< /highlight >}}
 
 * **Parameters**
 
-    regression_variables : *list*
+    regression\_variables : *list*
         The regressions variables entered where the first variable is
         the dependent variable.
     data : *dict*
         A dictionary containing the datasets.
-    entity_effects : *bool*
+    entity\_effects : *bool*
         Whether to include entity effects
-    time_effects : *bool*
+    time\_effects : *bool*
         Whether to include time effects
 
     

@@ -12,8 +12,7 @@
 
 {{< highlight python >}}
 portfolio.jensens(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
-    risk_free_rate: float = 0,
+    portfolio: openbb\_terminal.portfolio.portfolio\_model.PortfolioModel, risk\_free\_rate: float = 0,
     window: str = '1y',
     )
 {{< /highlight >}}
@@ -24,7 +23,7 @@ portfolio.jensens(
         Portfolio object with trades loaded
     window: *str*
         Interval used for rolling values
-    risk_free_rate: *float*
+    risk\_free\_rate: *float*
         Risk free rate
 
     

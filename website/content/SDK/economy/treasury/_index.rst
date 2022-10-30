@@ -17,7 +17,7 @@ economy.treasury(
     instruments: list = None,
     maturities: list = None,
     frequency: str = 'monthly',
-    start_date: str = '1900-01-01', end_date: str = '2022-10-30', chart: bool = False,
+    start\_date: str = '1900-01-01', end\_date: str = '2022-10-30', chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -25,19 +25,19 @@ economy.treasury(
 
     instruments: *list*
         Type(s) of treasuries, nominal, inflation-adjusted (long term average) or secondary market.
-        Available options can be accessed through economy.treasury_maturities().
+        Available options can be accessed through economy.treasury\_maturities().
     maturities : *list*
-        Treasury maturities to get. Available options can be accessed through economy.treasury_maturities().
+        Treasury maturities to get. Available options can be accessed through economy.treasury\_maturities().
     frequency : *str*
         Frequency of the data, this can be annually, monthly, weekly or daily.
-    start_date : *str*
+    start\_date : *str*
         Starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
-    end_date : *str*
+    end\_date : *str*
         End date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
 
     
 * **Returns**
 
-    treasury_data: *pd.Dataframe*
+    treasury\_data: *pd.Dataframe*
         Holds data of the selected types and maturities
     

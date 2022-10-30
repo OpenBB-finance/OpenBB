@@ -15,9 +15,9 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 common.qa.var(
     data: pandas.core.frame.DataFrame,
-    use_mean: bool = False,
-    adjusted_var: bool = False,
-    student_t: bool = False,
+    use\_mean: bool = False,
+    adjusted\_var: bool = False,
+    student\_t: bool = False,
     percentile: Union[int, float] = 99.9,
     portfolio: bool = False,
     chart: bool = False,
@@ -28,11 +28,11 @@ common.qa.var(
 
     data: *pd.DataFrame*
         Data dataframe
-    use_mean: *bool*
+    use\_mean: *bool*
         If one should use the data mean for calculation
-    adjusted_var: *bool*
+    adjusted\_var: *bool*
         If one should return VaR adjusted for skew and kurtosis
-    student_t: *bool*
+    student\_t: *bool*
         If one should use the student-t distribution
     percentile: Union[int,float]
         VaR percentile

@@ -27,7 +27,7 @@ crypto.dd.twitter(
     sortby: *str*
         Key by which to sort data. Every column name is valid
         (see for possible values:
-        https://api.coinpaprika.com/docs#tag/Coins/paths/~1coins~1%7Bcoin_id%7D~1twitter/get).
+        https://api.coinpaprika.com/docs#tag/Coins/paths/~1coins~1%7Bcoin\_id%7D~1twitter/get).
     ascend: *bool*
         Flag to sort data descending
     
@@ -35,5 +35,5 @@ crypto.dd.twitter(
 
     pandas.DataFrame
         Twitter timeline for given coin.
-        Columns: date, user_name, status, retweet_count, like_count
+        Columns: date, user\_name, status, retweet\_count, like\_count
     

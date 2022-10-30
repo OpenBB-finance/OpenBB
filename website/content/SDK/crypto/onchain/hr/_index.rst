@@ -17,8 +17,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 crypto.onchain.hr(
     symbol: str,
     interval: str = '24h',
-    start_date: int = 1288734297,
-    end_date: int = 1667166297,
+    start\_date: int = 1288740037,
+    end\_date: int = 1667172037,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -27,10 +27,10 @@ crypto.onchain.hr(
 
     symbol : *str*
         Blockchain to check hashrate (BTC or ETH)
-    start_date : *int*
-        Initial date timestamp (e.g., 1_614_556_800)
-    end_date : *int*
-        End date timestamp (e.g., 1_614_556_800)
+    start\_date : *int*
+        Initial date timestamp (e.g., 1\_614\_556\_800)
+    end\_date : *int*
+        End date timestamp (e.g., 1\_614\_556\_800)
     interval : *str*
         Interval frequency (e.g., 24h)
 

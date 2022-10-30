@@ -12,8 +12,7 @@
 
 {{< highlight python >}}
 portfolio.maxdrawdown(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
-    ) -> pandas.core.frame.DataFrame
+    portfolio: openbb\_terminal.portfolio.portfolio\_model.PortfolioModel, ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

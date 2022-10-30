@@ -17,8 +17,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 portfolio.max_drawdown_ratio(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
-    is_returns: bool = False,
+    portfolio: openbb\_terminal.portfolio.portfolio\_model.PortfolioModel, is\_returns: bool = False,
     chart: bool = False,
     ) -> pandas.core.series.Series
 {{< /highlight >}}
@@ -27,7 +26,7 @@ portfolio.max_drawdown_ratio(
 
     data: *pd.Series*
         Series of input values
-    is_returns: *bool*
+    is\_returns: *bool*
         Flag to indicate inputs are returns
 
     

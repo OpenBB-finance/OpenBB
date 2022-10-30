@@ -16,21 +16,20 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 portfolio.po.plot(
     weights, data: pandas.core.frame.DataFrame,
     category: Dict = None,
-    title_opt: str = '',
+    title\_opt: str = '',
     freq: str = 'D',
-    risk_measure: str = 'MV',
-    risk_free_rate: float = 0,
+    risk\_measure: str = 'MV',
+    risk\_free\_rate: float = 0,
     alpha: float = 0.05,
-    a_sim: float = 100,
+    a\_sim: float = 100,
     beta: float = None,
-    b_sim: float = None,
+    b\_sim: float = None,
     pie: bool = False,
     hist: bool = False,
     dd: bool = False,
-    rc_chart: bool = False,
+    rc\_chart: bool = False,
     heat: bool = False,
-    external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
-    chart: bool = False,
+    external\_axes: Optional[List[matplotlib.axes.\_axes.Axes]] = None, chart: bool = False,
     )
 {{< /highlight >}}
 
@@ -40,7 +39,7 @@ portfolio.po.plot(
         Dict of portfolio weights
     data: *pd.DataFrame*
         DataFrame of stock returns
-    title_opt: *str*
+    title\_opt: *str*
         Title to be used on the pie chart
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
@@ -49,7 +48,7 @@ portfolio.po.plot(
             - 'W' for weekly returns.
             - 'M' for monthly returns.
 
-    risk_measure: str, optional
+    risk\_measure: str, optional
         The risk measure used to optimize the portfolio. If model is 'NCO',
         the risk measures available depends on the objective function.
         The default is 'MV'. Possible values are:
@@ -73,26 +72,26 @@ portfolio.po.plot(
         - 'CDaR': *Conditional Drawdown at Risk of uncompounded cumulative returns.*
         - 'EDaR': *Entropic Drawdown at Risk of uncompounded cumulative returns.*
         - 'UCI': *Ulcer Index of uncompounded cumulative returns.*
-        - 'MDD_Rel': Maximum Drawdown of compounded cumulative returns (Calmar Ratio).
-        - 'ADD_Rel': *Average Drawdown of compounded cumulative returns.*
-        - 'DaR_Rel': *Drawdown at Risk of compounded cumulative returns.*
-        - 'CDaR_Rel': *Conditional Drawdown at Risk of compounded cumulative returns.*
-        - 'EDaR_Rel': *Entropic Drawdown at Risk of compounded cumulative returns.*
-        - 'UCI_Rel': *Ulcer Index of compounded cumulative returns.*
+        - 'MDD\_Rel': Maximum Drawdown of compounded cumulative returns (Calmar Ratio).
+        - 'ADD\_Rel': *Average Drawdown of compounded cumulative returns.*
+        - 'DaR\_Rel': *Drawdown at Risk of compounded cumulative returns.*
+        - 'CDaR\_Rel': *Conditional Drawdown at Risk of compounded cumulative returns.*
+        - 'EDaR\_Rel': *Entropic Drawdown at Risk of compounded cumulative returns.*
+        - 'UCI\_Rel': *Ulcer Index of compounded cumulative returns.*
 
-    risk_free_rate: float, optional
+    risk\_free\_rate: float, optional
         Risk free rate, must be in the same interval of assets returns.
         Used for 'FLPM' and 'SLPM'. The default is 0.
     alpha: float, optional
         Significance level of VaR, CVaR, EDaR, DaR, CDaR, EDaR, Tail Gini of losses.
         The default is 0.05.
-    a_sim: float, optional
+    a\_sim: float, optional
         Number of CVaRs used to approximate Tail Gini of losses. The default is 100.
     beta: float, optional
         Significance level of CVaR and Tail Gini of gains. If None it duplicates alpha value.
         The default is None.
-    b_sim: float, optional
-        Number of CVaRs used to approximate Tail Gini of gains. If None it duplicates a_sim value.
+    b\_sim: float, optional
+        Number of CVaRs used to approximate Tail Gini of gains. If None it duplicates a\_sim value.
         The default is None.
     pie : bool, optional
         Display a pie chart of values, by default False
@@ -104,6 +103,6 @@ portfolio.po.plot(
         Display a risk contribution chart for assets, by default False
     heat : float, optional
         Display a heatmap of correlation matrix with dendrogram, by default False
-    external_axes: Optional[List[plt.Axes]]
+    external\_axes: Optional[List[plt.Axes]]
         Optional axes to plot data on
     

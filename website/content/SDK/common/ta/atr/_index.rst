@@ -14,9 +14,9 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 common.ta.atr(
-    high_prices: pandas.core.series.Series,
-    low_prices: pandas.core.series.Series,
-    close_prices: pandas.core.series.Series,
+    high\_prices: pandas.core.series.Series,
+    low\_prices: pandas.core.series.Series,
+    close\_prices: pandas.core.series.Series,
     window: int = 14,
     mamode: str = 'ema',
     offset: int = 0,
@@ -26,11 +26,11 @@ common.ta.atr(
 
 * **Parameters**
 
-    high_prices : *pd.DataFrame*
+    high\_prices : *pd.DataFrame*
         High prices
-    low_prices : *pd.DataFrame*
+    low\_prices : *pd.DataFrame*
         Low prices
-    close_prices : *pd.DataFrame*
+    close\_prices : *pd.DataFrame*
         Close prices
     window : *int*
         Length of window

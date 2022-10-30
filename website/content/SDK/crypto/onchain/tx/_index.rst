@@ -14,13 +14,13 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.onchain.tx(
-    tx_hash, chart: bool = False,
+    tx\_hash, chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**
 
-    tx_hash: *str*
+    tx\_hash: *str*
         Transaction hash e.g. 0x9dc7b43ad4288c624fdd236b2ecb9f2b81c93e706b2ffd1d19b112c1df7849e6
 
     

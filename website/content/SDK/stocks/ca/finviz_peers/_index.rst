@@ -13,7 +13,7 @@
 {{< highlight python >}}
 stocks.ca.finviz_peers(
     symbol: str,
-    compare_list: List[str] = None,
+    compare\_list: List[str] = None,
     ) -> Tuple[List[str], str]
 {{< /highlight >}}
 
@@ -21,7 +21,7 @@ stocks.ca.finviz_peers(
 
     symbol : *str*
         Ticker to find comparisons for
-    compare_list : List[str]
+    compare\_list : List[str]
         List of fields to compare, ["Sector", "Industry", "Country"]
 
     

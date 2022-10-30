@@ -30,6 +30,6 @@ common.qa.kurtosis(
     
 * **Returns**
 
-    df_kurt : *pd.DataFrame*
+    df\_kurt : *pd.DataFrame*
         Dataframe of rolling kurtosis
     

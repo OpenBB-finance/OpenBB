@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 alt.covid.slopes(
-    days_back: int = 30,
+    days\_back: int = 30,
     limit: int = 50,
     threshold: int = 10000,
     ascend: bool = False,
@@ -24,7 +24,7 @@ alt.covid.slopes(
 
 * **Parameters**
 
-    days_back: *int*
+    days\_back: *int*
         Number of historical days to consider
     limit: *int*
         Number of rows to show
@@ -43,7 +43,7 @@ alt.covid.slopes(
 * **Examples**
 
     {{< highlight python >}}
-    >>> from openbb_terminal.sdk import openbb
+    >>> from openbb\_terminal.sdk import openbb
 
     ### Get the data
     df = openbb.alt.covid.slopes(chart = False)

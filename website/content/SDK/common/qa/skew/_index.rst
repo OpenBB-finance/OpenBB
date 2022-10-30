@@ -30,6 +30,6 @@ common.qa.skew(
     
 * **Returns**
 
-    data_skew : *pd.DataFrame*
+    data\_skew : *pd.DataFrame*
         Dataframe of rolling skew
     

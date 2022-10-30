@@ -12,13 +12,13 @@
 
 {{< highlight python >}}
 stocks.ba.text_sent(
-    post_data: List[str],
+    post\_data: List[str],
     ) -> float
 {{< /highlight >}}
 
 * **Parameters**
 
-    post_data: list[str]
+    post\_data: list[str]
         A post and its comments in string form
 
     

@@ -31,5 +31,5 @@ crypto.ov.cgproducts(
 * **Returns**
 
     pandas.DataFrame
-       Rank,  Platform, Identifier, Supply_Rate, Borrow_Rate
+       Rank,  Platform, Identifier, Supply\_Rate, Borrow\_Rate
     

@@ -12,15 +12,15 @@
 
 {{< highlight python >}}
 stocks.disc.pipo(
-    num_days_behind: int = 5,
-    start_date: Optional[str] = None,
+    num\_days\_behind: int = 5,
+    start\_date: Optional[str] = None,
     )
 {{< /highlight >}}
 
 * **Parameters**
 
-    num_days_behind: *int*
+    num\_days\_behind: *int*
         Number of days to look behind for IPOs dates
-    start_date: *str*
+    start\_date: *str*
         The starting date (format YYYY-MM-DD) to look for IPOs
     

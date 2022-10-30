@@ -12,8 +12,7 @@
 
 {{< highlight python >}}
 portfolio.sortino(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
-    risk_free_rate: float = 0,
+    portfolio: openbb\_terminal.portfolio.portfolio\_model.PortfolioModel, risk\_free\_rate: float = 0,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -21,7 +20,7 @@ portfolio.sortino(
 
     portfolio: *Portfolio*
         Portfolio object with trades loaded
-    risk_free_rate: *float*
+    risk\_free\_rate: *float*
         Risk free rate value
 
     

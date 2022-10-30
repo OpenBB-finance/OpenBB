@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.onchain.lt(
-    trade_amount_currency: str = 'USD',
+    trade\_amount\_currency: str = 'USD',
     limit: int = 90,
     sortby: str = 'tradeAmount',
     ascend: bool = True,
@@ -24,7 +24,7 @@ crypto.onchain.lt(
 
 * **Parameters**
 
-    trade_amount_currency: *str*
+    trade\_amount\_currency: *str*
         Currency of displayed trade amount. Default: *USD*
     limit: * int*
         Last n days to query data. Maximum 365 (bigger numbers can cause timeouts

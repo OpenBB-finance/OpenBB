@@ -12,14 +12,14 @@
 
 {{< highlight python >}}
 stocks.gov.government_trading(
-    gov_type: str = 'congress',
+    gov\_type: str = 'congress',
     symbol: str = '',
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**
 
-    gov_type: *str*
+    gov\_type: *str*
         Type of government data between:
         'congress', 'senate', 'house', 'contracts', 'quarter-contracts' and 'corporate-lobbying'
     symbol : *str*

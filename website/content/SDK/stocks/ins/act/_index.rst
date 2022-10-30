@@ -27,6 +27,6 @@ stocks.ins.act(
     
 * **Returns**
 
-    df_insider : *pd.DataFrame*
+    df\_insider : *pd.DataFrame*
         Get insider activity data
     

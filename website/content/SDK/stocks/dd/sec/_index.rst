@@ -27,6 +27,6 @@ stocks.dd.sec(
     
 * **Returns**
 
-    df_financials : *pd.DataFrame*
+    df\_financials : *pd.DataFrame*
         SEC filings data
     

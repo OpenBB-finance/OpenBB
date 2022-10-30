@@ -14,8 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 forex.oanda.price(
-    accountID: str = 'REPLACE_ME',
-    instrument: Optional[str] = None,
+    accountID: str = 'REPLACE\_ME', instrument: Optional[str] = None,
     chart: bool = False,
     ) -> Union[Dict[str, str], bool]
 {{< /highlight >}}
@@ -23,7 +22,7 @@ forex.oanda.price(
 * **Parameters**
 
     accountID : str, optional
-        Oanda account ID, by default cfg.OANDA_ACCOUNT
+        Oanda account ID, by default cfg.OANDA\_ACCOUNT
     instrument : Union[str, None]
         The loaded currency pair, by default None
 

@@ -28,7 +28,7 @@ common.qa.decompose(
 * **Returns**
 
     result: *Any*
-        Result of statsmodels seasonal_decompose
+        Result of statsmodels seasonal\_decompose
     cycle: *pd.DataFrame*
         Filtered cycle
     trend: *pd.DataFrame*

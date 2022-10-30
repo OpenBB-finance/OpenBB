@@ -16,8 +16,7 @@ crypto.disc.gainers_or_losers(
     limit: int = 20,
     interval: str = '1h',
     typ: str = 'gainers',
-    sortby: str = 'market_cap',
-    ) -> pandas.core.frame.DataFrame
+    sortby: str = 'market\_cap', ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**
@@ -36,5 +35,5 @@ crypto.disc.gainers_or_losers(
 
     pandas.DataFrame
         Top Gainers / Top Losers - coins which gain/lost most in price in given period of time.
-        Columns: Symbol, Name, Volume, Price, %Change_{interval}, Url
+        Columns: Symbol, Name, Volume, Price, %Change\_{interval}, Url
     

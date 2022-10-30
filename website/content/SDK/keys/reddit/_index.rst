@@ -12,21 +12,21 @@
 
 {{< highlight python >}}
 keys.reddit(
-    client_id: str,
-    client_secret: str,
+    client\_id: str,
+    client\_secret: str,
     password: str,
     username: str,
     useragent: str,
     persist: bool = False,
-    show_output: bool = False,
+    show\_output: bool = False,
     ) -> str
 {{< /highlight >}}
 
 * **Parameters**
 
-        client_id: *str*
+        client\_id: *str*
             Client ID
-        client_secret: *str*
+        client\_secret: *str*
             Client secret
         password: *str*
             User assword
@@ -38,7 +38,7 @@ keys.reddit(
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
             By default, False.
-        show_output: *bool*
+        show\_output: *bool*
             Display status string or not. By default, False.
     
 * **Returns**

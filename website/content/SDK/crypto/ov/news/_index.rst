@@ -15,13 +15,12 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 crypto.ov.news(
     limit: int = 60,
-    post_kind: str = 'news',
-    filter_: Optional[str] = None,
+    post\_kind: str = 'news',
+    filter\_: Optional[str] = None,
     region: str = 'en',
     source: Optional[str] = None,
     symbol: Optional[str] = None,
-    sortby: str = 'published_at',
-    ascend: bool = True,
+    sortby: str = 'published\_at', ascend: bool = True,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -30,9 +29,9 @@ crypto.ov.news(
 
     limit: *int*
         number of news to fetch
-    post_kind: *str*
+    post\_kind: *str*
         Filter by category of news. Available values: *news or media.*
-    filter_: Optional[str]
+    filter\_: Optional[str]
         Filter by kind of news. One from list: rising|hot|bullish|bearish|important|saved|lol
     region: *str*
         Filter news by regions. Available regions are: en (English), de (Deutsch), nl (Dutch),

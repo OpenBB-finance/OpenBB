@@ -15,8 +15,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 stocks.ba.sentiment(
     symbol: str,
-    n_tweets: int = 15,
-    n_days_past: int = 2,
+    n\_tweets: int = 15,
+    n\_days\_past: int = 2,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -25,8 +25,8 @@ stocks.ba.sentiment(
 
     symbol: *str*
         Stock ticker symbol to get sentiment for
-    n_tweets: *int*
+    n\_tweets: *int*
         Number of tweets to get per hour
-    n_days_past: *int*
+    n\_days\_past: *int*
         Number of days to extract tweets for
     

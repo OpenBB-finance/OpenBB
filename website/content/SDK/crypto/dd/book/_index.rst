@@ -14,9 +14,9 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.dd.book(
-    from_symbol: str,
+    from\_symbol: str,
     limit: int = 100,
-    to_symbol: str = 'USDT',
+    to\_symbol: str = 'USDT',
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -24,11 +24,11 @@ crypto.dd.book(
 * **Parameters**
 
 
-    from_symbol: *str*
+    from\_symbol: *str*
         Cryptocurrency symbol
     limit: *int*
         Limit parameter. Adjusts the weight
-    to_symbol: *str*
+    to\_symbol: *str*
         Quote currency (what to view coin vs)
 
     

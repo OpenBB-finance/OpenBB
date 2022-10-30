@@ -17,11 +17,10 @@ common.ta.ma(
     data: pandas.core.series.Series,
     window: List[int] = None,
     offset: int = 0,
-    ma_type: str = 'EMA',
+    ma\_type: str = 'EMA',
     symbol: str = '',
     export: str = '',
-    external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
-    chart: bool = False,
+    external\_axes: Optional[List[matplotlib.axes.\_axes.Axes]] = None, chart: bool = False,
     ) -> None
 {{< /highlight >}}
 
@@ -33,12 +32,12 @@ common.ta.ma(
         Length of EMA window
     offset: *int*
         Offset variable
-    ma_type: *str*
+    ma\_type: *str*
         Type of moving average.  Either "EMA" "ZLMA" or "SMA"
     symbol: *str*
         Ticker
     export: *str*
         Format to export data
-    external_axes: Optional[List[plt.Axes]], optional
+    external\_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     

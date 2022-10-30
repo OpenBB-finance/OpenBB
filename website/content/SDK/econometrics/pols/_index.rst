@@ -13,14 +13,14 @@
 
 {{< highlight python >}}
 econometrics.pols(
-    regression_variables: List[Tuple],
+    regression\_variables: List[Tuple],
     data: Dict[str, pandas.core.frame.DataFrame],
     ) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any], Any]
 {{< /highlight >}}
 
 * **Parameters**
 
-    regression_variables : *list*
+    regression\_variables : *list*
         The regressions variables entered where the first variable is
         the dependent variable.
     data : *dict*

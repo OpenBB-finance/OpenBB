@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 etf.disc.mover(
-    sort_type: str = 'gainers',
+    sort\_type: str = 'gainers',
     export: bool = False,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
@@ -22,7 +22,7 @@ etf.disc.mover(
 
 * **Parameters**
 
-    sort_type: *str*
+    sort\_type: *str*
         Data to get.  Can be "gainers", "decliners" or "active"
 
     

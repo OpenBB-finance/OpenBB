@@ -17,7 +17,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 stocks.sia.cpcs(
     sector: str = 'Technology',
     mktcap: str = 'Large',
-    exclude_exchanges: bool = True,
+    exclude\_exchanges: bool = True,
     chart: bool = False,
     ) -> dict
 {{< /highlight >}}
@@ -28,7 +28,7 @@ stocks.sia.cpcs(
         Select sector to get number of companies by each country
     mktcap: *str*
         Select market cap of companies to consider from Small, Mid and Large
-    exclude_exchanges : *bool*
+    exclude\_exchanges : *bool*
         Exclude international exchanges
 
     

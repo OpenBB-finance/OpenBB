@@ -16,19 +16,19 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 portfolio.po.relriskparity(
     symbols: List[str],
     interval: str = '3y',
-    start_date: str = '',
-    end_date: str = '',
-    log_returns: bool = False,
+    start\_date: str = '',
+    end\_date: str = '',
+    log\_returns: bool = False,
     freq: str = 'D',
     maxnan: float = 0.05,
     threshold: float = 0,
     method: str = 'time',
     version: str = 'A',
-    risk_cont: List[str] = None,
-    penal_factor: float = 1,
-    target_return: float = -1, mean: str = 'hist',
+    risk\_cont: List[str] = None,
+    penal\_factor: float = 1,
+    target\_return: float = -1, mean: str = 'hist',
     covariance: str = 'hist',
-    d_ewma: float = 0.94,
+    d\_ewma: float = 0.94,
     value: float = 1.0,
     chart: bool = False,
     ) -> Tuple
@@ -40,12 +40,12 @@ portfolio.po.relriskparity(
         List of portfolio stocks
     interval : str, optional
         interval to get stock data, by default "3mo"
-    start_date: str, optional
+    start\_date: str, optional
         If not using interval, start date string (YYYY-MM-DD)
-    end_date: str, optional
+    end\_date: str, optional
         If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
-    log_returns: bool, optional
+    log\_returns: bool, optional
         If True calculate log returns, else arithmetic returns. Default value
         is False
     freq: str, optional
@@ -63,7 +63,7 @@ portfolio.po.relriskparity(
         Value used to replace outliers that are higher to threshold.
     method: str, optional
         Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`\_.
     version : str, optional
         Relaxed risk parity model version. The default is 'A'.
         Possible values are:
@@ -72,13 +72,13 @@ portfolio.po.relriskparity(
         - 'B': *with regularization constraint but without penalization constraint.*
         - 'C': *with regularization and penalization constraints.*
 
-    risk_cont: List[str], optional
+    risk\_cont: List[str], optional
         The vector of risk contribution per asset. If empty, the default is
         1/n (number of assets).
-    penal_factor: float, optional
+    penal\_factor: float, optional
         The penalization factor of penalization constraints. Only used with
         version 'C'. The default is 1.
-    target_return: float, optional
+    target\_return: float, optional
         Constraint on minimum level of portfolio's return.
     mean: str, optional
         The method used to estimate the expected returns.
@@ -86,9 +86,9 @@ portfolio.po.relriskparity(
 
         - 'hist': *use historical estimates.*
         - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        `EWM <https://pandas.pydata.org/pandas-docs/stable/user\_guide/window.html#exponentially-weighted-window>`\_.
         - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        `EWM <https://pandas.pydata.org/pandas-docs/stable/user\_guide/window.html#exponentially-weighted-window>`\_.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
@@ -96,9 +96,9 @@ portfolio.po.relriskparity(
 
         - 'hist': *use historical estimates.*
         - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        `EWM <https://pandas.pydata.org/pandas-docs/stable/user\_guide/window.html#exponentially-weighted-window>`\_.
         - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        `EWM <https://pandas.pydata.org/pandas-docs/stable/user\_guide/window.html#exponentially-weighted-window>`\_.
         - 'ledoit': *use the Ledoit and Wolf Shrinkage method.*
         - 'oas': *use the Oracle Approximation Shrinkage method.*
         - 'shrunk': *use the basic Shrunk Covariance method.*
@@ -108,7 +108,7 @@ portfolio.po.relriskparity(
         - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
         - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
 
-    d_ewma: float, optional
+    d\_ewma: float, optional
         The smoothing factor of ewma methods.
         The default is 0.94.
     value : float, optional

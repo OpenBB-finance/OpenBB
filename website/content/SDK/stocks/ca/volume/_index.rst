@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 stocks.ca.volume(
     similar: List[str],
-    start_date: str = '2021-10-29', chart: bool = False,
+    start\_date: str = '2021-10-29', chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -24,7 +24,7 @@ stocks.ca.volume(
     similar : List[str]
         List of similar tickers.
         Comparable companies can be accessed through
-        finnhub_peers(), finviz_peers(), polygon_peers().
-    start_date : str, optional
+        finnhub\_peers(), finviz\_peers(), polygon\_peers().
+    start\_date : str, optional
         Start date of comparison, by default 1 year ago
     

@@ -15,14 +15,14 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.ov.cr(
-    rate_type: str = 'borrow',
+    rate\_type: str = 'borrow',
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**
 
-    rate_type : *str*
+    rate\_type : *str*
         Interest rate type: {borrow, supply}. Default: *supply*
     
 * **Returns**

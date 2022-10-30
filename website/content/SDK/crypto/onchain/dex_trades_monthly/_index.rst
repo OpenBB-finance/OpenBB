@@ -13,7 +13,7 @@
 
 {{< highlight python >}}
 crypto.onchain.dex_trades_monthly(
-    trade_amount_currency: str = 'USD',
+    trade\_amount\_currency: str = 'USD',
     limit: int = 90,
     ascend: bool = True,
     ) -> pandas.core.frame.DataFrame
@@ -21,7 +21,7 @@ crypto.onchain.dex_trades_monthly(
 
 * **Parameters**
 
-    trade_amount_currency: *str*
+    trade\_amount\_currency: *str*
         Currency of displayed trade amount. Default: *USD*
     limit: * int*
         Last n days to query data. Maximum 365 (bigger numbers can cause timeouts

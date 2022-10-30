@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 common.ta.ad(
     data: pandas.core.frame.DataFrame,
-    use_open: bool = False,
+    use\_open: bool = False,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -24,7 +24,7 @@ common.ta.ad(
 
     data : *pd.DataFrame*
         Dataframe of prices with OHLC and Volume
-    use_open : *bool*
+    use\_open : *bool*
         Whether to use open prices
 
     

@@ -16,7 +16,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 common.qa.quantile(
     data: pandas.core.frame.DataFrame,
     window: int = 14,
-    quantile_pct: float = 0.5,
+    quantile\_pct: float = 0.5,
     chart: bool = False,
     ) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
 {{< /highlight >}}
@@ -27,14 +27,14 @@ common.qa.quantile(
         Dataframe of targeted data
     window : *int*
         Length of window
-    quantile_pct: *float*
+    quantile\_pct: *float*
         Quantile to display
 
     
 * **Returns**
 
-    df_med : *pd.DataFrame*
+    df\_med : *pd.DataFrame*
         Dataframe of median prices over window
-    df_quantile : *pd.DataFrame*
+    df\_quantile : *pd.DataFrame*
         Dataframe of gievn quantile prices over window
     

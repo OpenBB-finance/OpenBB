@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 stocks.options.hedge.calc_hedge(
-    portfolio_option_amount: float = 100,
+    portfolio\_option\_amount: float = 100,
     side: str = 'Call',
     greeks: dict = {'Portfolio': {'Delta': 1, 'Gamma': 9.1268e-05, 'Vega': 5.4661}, 'Option A': {'Delta': 1, 'Gamma': 9.1268e-05, 'Vega': 5.4661}, 'Option B': {'Delta': 1, 'Gamma': 9.1268e-05, 'Vega': 5.4661}}, sign: int = 1,
     chart: bool = False,
@@ -24,7 +24,7 @@ stocks.options.hedge.calc_hedge(
 
 * **Parameters**
 
-    portfolio_option_amount: *float*
+    portfolio\_option\_amount: *float*
         Number to show
     side: *str*
         Whether you have a Call or Put instrument
@@ -40,5 +40,5 @@ stocks.options.hedge.calc_hedge(
     option A weight: *float*
     option B weight: *float*
     portfolio weight: *float*
-    is_singular: *boolean*
+    is\_singular: *boolean*
     

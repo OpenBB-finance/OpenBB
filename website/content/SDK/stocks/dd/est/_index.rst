@@ -24,10 +24,10 @@ stocks.dd.est(
     
 * **Returns**
 
-    df_year_estimates : *pd.DataFrame*
+    df\_year\_estimates : *pd.DataFrame*
         Year estimates
-    df_quarter_earnings : *pd.DataFrame*
+    df\_quarter\_earnings : *pd.DataFrame*
         Quarter earnings estimates
-    df_quarter_revenues : *pd.DataFrame*
+    df\_quarter\_revenues : *pd.DataFrame*
         Quarter revenues estimates
     

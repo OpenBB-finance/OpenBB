@@ -13,7 +13,7 @@
 {{< highlight python >}}
 stocks.ca.screener(
     similar: List[str],
-    data_type: str = 'overview',
+    data\_type: str = 'overview',
     )
 {{< /highlight >}}
 
@@ -22,8 +22,8 @@ stocks.ca.screener(
     similar:
         List of similar companies.
         Comparable companies can be accessed through
-        finnhub_peers(), finviz_peers(), polygon_peers().
-    data_type : *str*
+        finnhub\_peers(), finviz\_peers(), polygon\_peers().
+    data\_type : *str*
         Data type between: overview, valuation, financial, ownership, performance, technical
 
     

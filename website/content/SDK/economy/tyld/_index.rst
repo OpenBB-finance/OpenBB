@@ -16,7 +16,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 economy.tyld(
     interval: str = 'm',
     maturity: str = '10y',
-    start_date: str = '2010-01-01', chart: bool = False,
+    start\_date: str = '2010-01-01', chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -24,7 +24,7 @@ economy.tyld(
 
     interval : *str*
         Interval for data.  Can be "d","w","m" for daily, weekly or monthly, by default "m"
-    start_date: *str*
+    start\_date: *str*
         Start date for data.  Should be in YYYY-MM-DD format, by default "2010-01-01"
     maturity : *str*
         Maturity timeline.  Can be "3mo","5y","10y" or "30y", by default "10y"

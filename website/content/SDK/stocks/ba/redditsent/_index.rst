@@ -17,8 +17,8 @@ stocks.ba.redditsent(
     symbol: str,
     limit: int = 100,
     sortby: str = 'relevance',
-    time_frame: str = 'week',
-    full_search: bool = True,
+    time\_frame: str = 'week',
+    full\_search: bool = True,
     subreddits: str = 'all',
     chart: bool = False,
     ) -> Tuple[pandas.core.frame.DataFrame, list, float]
@@ -33,10 +33,10 @@ stocks.ba.redditsent(
     sortby: *str*
         Search type
         Possibilities: "relevance", "hot", "top", "new", or "comments"
-    time_frame: *str*
+    time\_frame: *str*
         Relative time of post
         Possibilities: "hour", "day", "week", "month", "year", "all"
-    full_search: *bool*
+    full\_search: *bool*
         Enable comprehensive search for ticker
     subreddits: *str*
         Comma-separated list of subreddits

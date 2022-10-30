@@ -12,13 +12,13 @@
 
 {{< highlight python >}}
 portfolio.po.load(
-    excel_file: str = '',
+    excel\_file: str = '',
     )
 {{< /highlight >}}
 
 * **Parameters**
 
-    excel_file: *str*
+    excel\_file: *str*
         The location of the Excel file that needs to be loaded.
 
     

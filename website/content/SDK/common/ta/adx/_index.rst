@@ -14,9 +14,9 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 common.ta.adx(
-    high_values: pandas.core.series.Series,
-    low_values: pandas.core.series.Series,
-    close_values: pandas.core.series.Series,
+    high\_values: pandas.core.series.Series,
+    low\_values: pandas.core.series.Series,
+    close\_values: pandas.core.series.Series,
     window: int = 14,
     scalar: int = 100,
     drift: int = 1,
@@ -26,11 +26,11 @@ common.ta.adx(
 
 * **Parameters**
 
-    high_values: *pd.Series*
+    high\_values: *pd.Series*
         High prices
-    low_values: *pd.Series*
+    low\_values: *pd.Series*
         Low prices
-    close_values: *pd.Series*
+    close\_values: *pd.Series*
         close prices
     window: *int*
         Length of window

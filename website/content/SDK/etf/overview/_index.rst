@@ -21,7 +21,7 @@ etf.overview(
 
 * **Parameters**
 
-    etf_symbol : *str*
+    etf\_symbol : *str*
         Etf symbol to get overview for
 
     

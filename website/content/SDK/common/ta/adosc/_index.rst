@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 common.ta.adosc(
     data: pandas.core.frame.DataFrame,
-    use_open: bool = False,
+    use\_open: bool = False,
     fast: int = 3,
     slow: int = 10,
     chart: bool = False,
@@ -26,7 +26,7 @@ common.ta.adosc(
 
     data : *pd.DataFrame*
         Dataframe of OHLC prices
-    use_open : *bool*
+    use\_open : *bool*
         Whether to use open prices
     fast: *int*
         Fast value

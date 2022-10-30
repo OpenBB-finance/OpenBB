@@ -14,8 +14,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.dd.pr(
-    main_coin: str,
-    to_symbol: Optional[str] = None,
+    main\_coin: str,
+    to\_symbol: Optional[str] = None,
     limit: Optional[int] = None,
     price: Optional[int] = None,
     chart: bool = False,
@@ -24,14 +24,14 @@ crypto.dd.pr(
 
 * **Parameters**
 
-    main_coin   : *str*
+    main\_coin   : *str*
         Coin loaded to check potential returns for (e.g., algorand)
-    to_symbol          : str | None
-        Coin to compare main_coin with (e.g., bitcoin)
+    to\_symbol          : str | None
+        Coin to compare main\_coin with (e.g., bitcoin)
     limit         : int | None
-        Number of coins with highest market cap to compare main_coin with (e.g., 5)
+        Number of coins with highest market cap to compare main\_coin with (e.g., 5)
     price
-        Target price of main_coin to check potential returns (e.g., 5)
+        Target price of main\_coin to check potential returns (e.g., 5)
 
     
 * **Returns**

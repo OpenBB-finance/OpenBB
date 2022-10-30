@@ -8,7 +8,7 @@
 
     <h3>
     > Get global statistics about crypto markets from CoinGecko API like:
-        Market_Cap, Volume, Market_Cap_Percentage
+        Market\_Cap, Volume, Market\_Cap\_Percentage
 
     [Source: CoinGecko]
     </h3>
@@ -24,5 +24,5 @@ crypto.ov.cgglobal(
 * **Returns**
 
     pandas.DataFrame
-        Market_Cap, Volume, Market_Cap_Percentage
+        Market\_Cap, Volume, Market\_Cap\_Percentage
     

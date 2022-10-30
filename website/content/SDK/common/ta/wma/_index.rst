@@ -30,6 +30,6 @@ common.ta.wma(
     
 * **Returns**
 
-    df_ta: *pd.DataFrame*
+    df\_ta: *pd.DataFrame*
         Dataframe containing prices and WMA
     

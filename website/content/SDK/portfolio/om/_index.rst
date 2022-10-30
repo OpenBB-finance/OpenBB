@@ -14,9 +14,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 portfolio.om(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
-    threshold_start: float = 0,
-    threshold_end: float = 1.5,
+    portfolio: openbb\_terminal.portfolio.portfolio\_model.PortfolioModel, threshold\_start: float = 0,
+    threshold\_end: float = 1.5,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -25,9 +24,9 @@ portfolio.om(
 
     portfolio: *Portfolio*
         Portfolio object with trades loaded
-    threshold_start: *float*
+    threshold\_start: *float*
         annualized target return threshold start of plotted threshold range
-    threshold_end: *float*
+    threshold\_end: *float*
         annualized target return threshold end of plotted threshold range
     
 * **Returns**

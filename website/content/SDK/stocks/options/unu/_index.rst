@@ -29,6 +29,6 @@ stocks.options.unu(
 
     df: *pd.DataFrame*
         Dataframe containing options information
-    last_updated: *pd.Timestamp*
+    last\_updated: *pd.Timestamp*
         Timestamp indicated when data was updated from website
     

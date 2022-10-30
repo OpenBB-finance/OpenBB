@@ -16,26 +16,26 @@
 
 {{< highlight python >}}
 stocks.options.hedge.calc_delta(
-    asset_price: float = 100,
-    asset_volatility: float = 20,
-    strike_price: float = 120,
-    time_to_expiration: float = 30,
-    risk_free_rate: float = 0,
+    asset\_price: float = 100,
+    asset\_volatility: float = 20,
+    strike\_price: float = 120,
+    time\_to\_expiration: float = 30,
+    risk\_free\_rate: float = 0,
     sign: int = 1,
     )
 {{< /highlight >}}
 
 * **Parameters**
 
-    asset_price: *int*
+    asset\_price: *int*
         The price.
-    asset_volatility: *float*
+    asset\_volatility: *float*
         The implied volatility.
-    strike_price: *float*
+    strike\_price: *float*
         The strike price.
-    time_to_expiration: *float*
+    time\_to\_expiration: *float*
         The amount of days until expiration. Use annual notation thus a month would be 30 / 360.
-    risk_free_rate: *float*
+    risk\_free\_rate: *float*
         The risk free rate.
     sign: *int*
         Whether you have a long (1) or short (-1) position

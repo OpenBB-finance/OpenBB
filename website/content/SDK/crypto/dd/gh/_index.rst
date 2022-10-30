@@ -17,10 +17,10 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 crypto.dd.gh(
     symbol: str,
-    dev_activity: bool = False,
+    dev\_activity: bool = False,
     interval: str = '1d',
-    start_date: str = '2021-10-30T21:44:57Z',
-    end_date: str = '2022-10-30T21:44:57Z',
+    start\_date: str = '2021-10-30T23:20:37Z',
+    end\_date: str = '2022-10-30T23:20:37Z',
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -29,11 +29,11 @@ crypto.dd.gh(
 
     symbol : *str*
         Crypto symbol to check github activity
-    dev_activity: *bool*
+    dev\_activity: *bool*
         Whether to filter only for development activity
-    start_date : *int*
+    start\_date : *int*
         Initial date like string (e.g., 2021-10-01)
-    end_date : *int*
+    end\_date : *int*
         End date like string (e.g., 2021-10-01)
     interval : *str*
         Interval frequency (e.g., 1d)

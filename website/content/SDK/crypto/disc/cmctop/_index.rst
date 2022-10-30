@@ -14,8 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.disc.cmctop(
-    sortby: str = 'CMC_Rank',
-    ascend: bool = True,
+    sortby: str = 'CMC\_Rank', ascend: bool = True,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

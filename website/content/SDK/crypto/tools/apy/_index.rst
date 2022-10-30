@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 crypto.tools.apy(
     apr: float,
-    compounding_times: int,
+    compounding\_times: int,
     chart: bool = False,
     ) -> Tuple[pandas.core.frame.DataFrame, str]
 {{< /highlight >}}
@@ -24,7 +24,7 @@ crypto.tools.apy(
 
     apr: *float*
         value in percentage
-    compounding_times: *int*
+    compounding\_times: *int*
         number of compounded periods in a year
 
     

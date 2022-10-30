@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.ov.cpexmarkets(
-    exchange_id: str = 'binance',
+    exchange\_id: str = 'binance',
     symbols: str = 'USD',
     sortby: str = 'pair',
     ascend: bool = True,
@@ -24,7 +24,7 @@ crypto.ov.cpexmarkets(
 
 * **Parameters**
 
-    exchange_id: *str*
+    exchange\_id: *str*
         identifier of exchange e.g for Binance Exchange -> binance
     symbols: *str*
         Comma separated quotes to return e.g quotes=USD,BTC
@@ -37,6 +37,6 @@ crypto.ov.cpexmarkets(
 * **Returns**
 
     pandas.DataFrame
-        pair, base_currency_name, quote_currency_name, market_url,
-        category, reported_volume_24h_share, trust_score,
+        pair, base\_currency\_name, quote\_currency\_name, market\_url,
+        category, reported\_volume\_24h\_share, trust\_score,
     

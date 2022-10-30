@@ -16,7 +16,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 crypto.onchain.baas(
     symbol: str = 'WETH',
-    to_symbol: str = 'USDT',
+    to\_symbol: str = 'USDT',
     limit: int = 30,
     sortby: str = 'tradeAmount',
     ascend: bool = True,
@@ -30,7 +30,7 @@ crypto.onchain.baas(
         Last n days to query data
     symbol: *str*
         ERC20 token symbol
-    to_symbol: *str*
+    to\_symbol: *str*
         Quoted currency.
     sortby: *str*
         Key by which to sort data

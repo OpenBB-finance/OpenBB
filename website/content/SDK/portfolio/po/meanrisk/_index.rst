@@ -16,23 +16,23 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 portfolio.po.meanrisk(
     symbols: List[str],
     interval: str = '3y',
-    start_date: str = '',
-    end_date: str = '',
-    log_returns: bool = False,
+    start\_date: str = '',
+    end\_date: str = '',
+    log\_returns: bool = False,
     freq: str = 'D',
     maxnan: float = 0.05,
     threshold: float = 0,
     method: str = 'time',
-    risk_measure: str = 'MV',
+    risk\_measure: str = 'MV',
     objective: str = 'Sharpe',
-    risk_free_rate: float = 0,
-    risk_aversion: float = 1,
+    risk\_free\_rate: float = 0,
+    risk\_aversion: float = 1,
     alpha: float = 0.05,
-    target_return: float = -1, target_risk: float = -1, mean: str = 'hist',
+    target\_return: float = -1, target\_risk: float = -1, mean: str = 'hist',
     covariance: str = 'hist',
-    d_ewma: float = 0.94,
+    d\_ewma: float = 0.94,
     value: float = 1.0,
-    value_short: float = 0.0,
+    value\_short: float = 0.0,
     chart: bool = False,
     ) -> Tuple
 {{< /highlight >}}
@@ -43,12 +43,12 @@ portfolio.po.meanrisk(
         List of portfolio stocks
     interval : str, optional
         interval to get stock data, by default "3mo"
-    start_date: str, optional
+    start\_date: str, optional
         If not using interval, start date string (YYYY-MM-DD)
-    end_date: str, optional
+    end\_date: str, optional
         If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
-    log_returns: bool, optional
+    log\_returns: bool, optional
         If True calculate log returns, else arithmetic returns. Default value
         is False
     freq: str, optional
@@ -66,7 +66,7 @@ portfolio.po.meanrisk(
         Value used to replace outliers that are higher to threshold.
     method: *str*
         Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`\_.
     objective: *str*
         Objective function of the optimization model.
         The default is 'Sharpe'. Possible values are:
@@ -76,7 +76,7 @@ portfolio.po.meanrisk(
         - 'Sharpe': *Maximize the risk adjusted return ratio based on the selected risk measure.*
         - 'MaxRet': *Maximize the expected return of the portfolio.*
 
-    risk_measure: str, optional
+    risk\_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
 
@@ -94,17 +94,17 @@ portfolio.po.meanrisk(
         - 'EDaR': *Entropic Drawdown at Risk of uncompounded cumulative returns.*
         - 'MDD': *Maximum Drawdown of uncompounded cumulative returns.*
 
-    risk_free_rate: float, optional
+    risk\_free\_rate: float, optional
         Risk free rate, must be in annual frequency. Used for
         'FLPM' and 'SLPM' and Sharpe objective function. The default is 0.
-    risk_aversion: float, optional
+    risk\_aversion: float, optional
         Risk aversion factor of the 'Utility' objective function.
         The default is 1.
     alpha: float, optional
         Significance level of CVaR, EVaR, CDaR and EDaR
-    target_return: float, optional
+    target\_return: float, optional
         Constraint on minimum level of portfolio's return.
-    target_risk: float, optional
+    target\_risk: float, optional
         Constraint on maximum level of portfolio's risk.
     mean: str, optional
         The method used to estimate the expected returns.
@@ -112,9 +112,9 @@ portfolio.po.meanrisk(
 
         - 'hist': *use historical estimates.*
         - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        `EWM <https://pandas.pydata.org/pandas-docs/stable/user\_guide/window.html#exponentially-weighted-window>`\_.
         - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        `EWM <https://pandas.pydata.org/pandas-docs/stable/user\_guide/window.html#exponentially-weighted-window>`\_.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
@@ -122,9 +122,9 @@ portfolio.po.meanrisk(
 
         - 'hist': *use historical estimates.*
         - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        `EWM <https://pandas.pydata.org/pandas-docs/stable/user\_guide/window.html#exponentially-weighted-window>`\_.
         - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        `EWM <https://pandas.pydata.org/pandas-docs/stable/user\_guide/window.html#exponentially-weighted-window>`\_.
         - 'ledoit': *use the Ledoit and Wolf Shrinkage method.*
         - 'oas': *use the Oracle Approximation Shrinkage method.*
         - 'shrunk': *use the basic Shrunk Covariance method.*
@@ -134,12 +134,12 @@ portfolio.po.meanrisk(
         - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
         - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
 
-    d_ewma: float, optional
+    d\_ewma: float, optional
         The smoothing factor of ewma methods.
         The default is 0.94.
     value : float, optional
         Amount of money to allocate. The default is 1.
-    value_short : float, optional
+    value\_short : float, optional
         Amount to allocate to portfolio in short positions. The default is 0.
 
     

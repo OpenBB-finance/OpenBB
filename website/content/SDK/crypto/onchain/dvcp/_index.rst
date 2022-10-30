@@ -16,7 +16,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 crypto.onchain.dvcp(
     limit: int = 100,
     symbol: str = 'UNI',
-    to_symbol: str = 'USDT',
+    to\_symbol: str = 'USDT',
     sortby: str = 'date',
     ascend: bool = True,
     chart: bool = False,
@@ -29,7 +29,7 @@ crypto.onchain.dvcp(
         Last n days to query data
     symbol: *str*
         ERC20 token symbol
-    to_symbol: *str*
+    to\_symbol: *str*
         Quote currency.
     sortby: *str*
         Key by which to sort data

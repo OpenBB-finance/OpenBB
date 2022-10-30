@@ -16,8 +16,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 crypto.disc.losers(
     interval: str = '1h',
     limit: int = 50,
-    sortby: str = 'market_cap_rank',
-    chart: bool = False,
+    sortby: str = 'market\_cap\_rank', chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -36,5 +35,5 @@ crypto.disc.losers(
 
     pd.DataFrame
         Top Losers  - coins which lost most in price in given period of time.
-        Columns: Symbol, Name, Volume, Price, %Change_{interval}, Url
+        Columns: Symbol, Name, Volume, Price, %Change\_{interval}, Url
     

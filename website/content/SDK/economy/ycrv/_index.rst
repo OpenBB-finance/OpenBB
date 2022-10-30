@@ -22,7 +22,7 @@ economy.ycrv(
 * **Parameters**
 
     country: *str*
-        Country to display yield curve. List of available countries is accessible through get_ycrv_countries().
+        Country to display yield curve. List of available countries is accessible through get\_ycrv\_countries().
 
     
 * **Returns**
