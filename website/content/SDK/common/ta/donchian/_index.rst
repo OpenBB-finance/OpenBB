@@ -18,9 +18,9 @@ common.ta.donchian(high_prices: pandas.core.series.Series, low_prices: pandas.co
 
 * **Parameters**
 
-    high_prices : pd.DataFrame
+    high_prices : *pd.DataFrame*
         High prices
-    low_prices : pd.DataFrame
+    low_prices : *pd.DataFrame*
         Low prices
     upper_length : *int*
         Length of window to calculate upper channel

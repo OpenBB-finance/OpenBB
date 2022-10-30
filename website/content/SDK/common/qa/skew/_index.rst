@@ -18,7 +18,7 @@ common.qa.skew(data: pandas.core.frame.DataFrame, window: int = 14, chart = Fals
 
 * **Parameters**
 
-    data: pd.DataFrame
+    data: *pd.DataFrame*
         Dataframe of targeted data
     window : *int*
         Length of window
@@ -26,6 +26,6 @@ common.qa.skew(data: pandas.core.frame.DataFrame, window: int = 14, chart = Fals
     
 * **Returns**
 
-    data_skew : pd.DataFrame
+    data_skew : *pd.DataFrame*
         Dataframe of rolling skew
     

@@ -18,7 +18,7 @@ common.ta.rsi(values: pandas.core.series.Series, window: int = 14, scalar: float
 
 * **Parameters**
 
-    values: pd.Series
+    values: *pd.Series*
         Dataframe of prices
     window: *int*
         Length of window

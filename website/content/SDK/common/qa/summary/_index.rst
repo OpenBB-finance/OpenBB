@@ -18,12 +18,12 @@ common.qa.summary(data: pandas.core.frame.DataFrame, chart = False) -> pandas.co
 
 * **Parameters**
 
-    data : pd.DataFrame
+    data : *pd.DataFrame*
         Dataframe to get summary statistics for
 
     
 * **Returns**
 
-    summary : pd.DataFrame
+    summary : *pd.DataFrame*
         Summary statistics
     

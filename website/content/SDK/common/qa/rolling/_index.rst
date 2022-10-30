@@ -18,7 +18,7 @@ common.qa.rolling(data: pandas.core.frame.DataFrame, window: int = 14, chart = F
 
 * **Parameters**
 
-    data: pd.DataFrame
+    data: *pd.DataFrame*
         Dataframe of target data
     window: *int*
         Length of rolling window

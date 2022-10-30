@@ -18,7 +18,7 @@ common.qa.quantile(data: pandas.core.frame.DataFrame, window: int = 14, quantile
 
 * **Parameters**
 
-    data: pd.DataFrame
+    data: *pd.DataFrame*
         Dataframe of targeted data
     window : *int*
         Length of window
@@ -28,8 +28,8 @@ common.qa.quantile(data: pandas.core.frame.DataFrame, window: int = 14, quantile
     
 * **Returns**
 
-    df_med : pd.DataFrame
+    df_med : *pd.DataFrame*
         Dataframe of median prices over window
-    df_quantile : pd.DataFrame
+    df_quantile : *pd.DataFrame*
         Dataframe of gievn quantile prices over window
     

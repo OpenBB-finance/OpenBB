@@ -18,7 +18,7 @@ common.ta.macd(values: pandas.core.frame.DataFrame, n_fast: int = 12, n_slow: in
 
 * **Parameters**
 
-    values: pd.Series
+    values: *pd.Series*
         Values for calculation
     n_fast : *int*
         Fast period

@@ -18,9 +18,9 @@ common.ta.aroon(high_values: pandas.core.series.Series, low_values: pandas.core.
 
 * **Parameters**
 
-    high_values: pd.Series
+    high_values: *pd.Series*
         High prices
-    low_values: pd.Series
+    low_values: *pd.Series*
         Low prices
     window : *int*
         Length of window

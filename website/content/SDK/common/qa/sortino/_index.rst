@@ -18,7 +18,7 @@ common.qa.sortino(data: pandas.core.frame.DataFrame, target_return: float = 0, w
 
 * **Parameters**
 
-    data: pd.DataFrame
+    data: *pd.DataFrame*
         selected dataframe
     target_return: *float*
         target return of the asset
@@ -30,6 +30,6 @@ common.qa.sortino(data: pandas.core.frame.DataFrame, target_return: float = 0, w
     
 * **Returns**
 
-    sortino: pd.DataFrame
+    sortino: *pd.DataFrame*
         sortino ratio
     

@@ -18,13 +18,13 @@ common.ta.vwap(data: pandas.core.frame.DataFrame, offset: int = 0, chart = False
 
 * **Parameters**
 
-    data: pd.DataFrame
+    data: *pd.DataFrame*
         Dataframe of dates and prices
     offset: *int*
         Length of offset
     
 * **Returns**
 
-    df_vwap: pd.DataFrame
+    df_vwap: *pd.DataFrame*
         Dataframe with VWAP data
     

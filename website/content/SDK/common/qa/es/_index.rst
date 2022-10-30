@@ -18,7 +18,7 @@ common.qa.es(data: pandas.core.frame.DataFrame, use_mean: bool = False, distribu
 
 * **Parameters**
 
-    data: pd.DataFrame
+    data: *pd.DataFrame*
         Data dataframe
     use_mean: *bool*
         If one should use the data mean for calculation

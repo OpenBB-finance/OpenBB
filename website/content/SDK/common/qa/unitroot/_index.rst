@@ -18,7 +18,7 @@ common.qa.unitroot(data: pandas.core.frame.DataFrame, fuller_reg: str = 'c', kps
 
 * **Parameters**
 
-    data : pd.DataFrame
+    data : *pd.DataFrame*
         DataFrame of target variable
     fuller_reg : *str*
         Type of regression of ADF test. Can be ‘c’,’ct’,’ctt’,’nc’ 'c' - Constant and t - trend order

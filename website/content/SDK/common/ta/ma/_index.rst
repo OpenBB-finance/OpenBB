@@ -18,7 +18,7 @@ common.ta.ma(data: pandas.core.series.Series, window: List[int] = None, offset: 
 
 * **Parameters**
 
-    data: pd.Series
+    data: *pd.Series*
         Series of prices
     window: List[int]
         Length of EMA window

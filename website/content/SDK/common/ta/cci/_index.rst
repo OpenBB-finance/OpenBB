@@ -18,11 +18,11 @@ common.ta.cci(data: pandas.core.frame.DataFrame, window: int = 14, scalar: float
 
 * **Parameters**
 
-    high_vals: pd.Series
+    high_vals: *pd.Series*
         High values
-    low_values: pd.Series
+    low_values: *pd.Series*
         Low values
-    close-values: pd.Series
+    close-values: *pd.Series*
         Close values
     window: *int*
         Length of window

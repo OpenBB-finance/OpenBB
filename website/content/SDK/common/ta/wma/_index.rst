@@ -16,7 +16,7 @@ common.ta.wma(data: pandas.core.frame.DataFrame, length: int = 50, offset: int =
 
 * **Parameters**
 
-    data: pd.DataFrame
+    data: *pd.DataFrame*
         Dataframe of dates and prices
     length: *int*
         Length of SMA window
@@ -26,6 +26,6 @@ common.ta.wma(data: pandas.core.frame.DataFrame, length: int = 50, offset: int =
     
 * **Returns**
 
-    df_ta: pd.DataFrame
+    df_ta: *pd.DataFrame*
         Dataframe containing prices and WMA
     

@@ -18,7 +18,7 @@ common.ta.ad(data: pandas.core.frame.DataFrame, use_open: bool = False, chart = 
 
 * **Parameters**
 
-    data : pd.DataFrame
+    data : *pd.DataFrame*
         Dataframe of prices with OHLC and Volume
     use_open : *bool*
         Whether to use open prices

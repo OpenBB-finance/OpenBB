@@ -18,7 +18,7 @@ common.qa.sharpe(data: pandas.core.frame.DataFrame, rfr: float = 0, window: floa
 
 * **Parameters**
 
-    data: pd.DataFrame
+    data: *pd.DataFrame*
         selected dataframe column
     rfr: *float*
         risk free rate
@@ -28,6 +28,6 @@ common.qa.sharpe(data: pandas.core.frame.DataFrame, rfr: float = 0, window: floa
     
 * **Returns**
 
-    sharpe: pd.DataFrame
+    sharpe: *pd.DataFrame*
         sharpe ratio
     

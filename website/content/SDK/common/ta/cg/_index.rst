@@ -18,7 +18,7 @@ common.ta.cg(values: pandas.core.series.Series, window: int, chart = False) -> p
 
 * **Parameters**
 
-    values: pd.DataFrame
+    values: *pd.DataFrame*
         Data to use with close being titled values
     window: *int*
         Length for indicator window

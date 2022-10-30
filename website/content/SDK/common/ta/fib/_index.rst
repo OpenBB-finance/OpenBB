@@ -18,7 +18,7 @@ common.ta.fib(data: pandas.core.frame.DataFrame, limit: int = 120, start_date: A
 
 * **Parameters**
 
-    data : pd.DataFrame
+    data : *pd.DataFrame*
         Dataframe of prices
     limit : *int*
         Days to look back for retracement
@@ -30,9 +30,9 @@ common.ta.fib(data: pandas.core.frame.DataFrame, limit: int = 120, start_date: A
     
 * **Returns**
 
-    df : pd.DataFrame
+    df : *pd.DataFrame*
         Dataframe of fib levels
-    min_date: pd.Timestamp
+    min_date: *pd.Timestamp*
         Date of min point
     max_date: pd.Timestamp:
         Date of max point

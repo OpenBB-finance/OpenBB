@@ -20,7 +20,7 @@ common.qa.bw(data: pandas.core.frame.DataFrame, target: str, symbol: str = '', y
 
     symbol : *str*
         Name of dataset
-    data : pd.DataFrame
+    data : *pd.DataFrame*
         Dataframe to look at
     target : *str*
         Data column to look at

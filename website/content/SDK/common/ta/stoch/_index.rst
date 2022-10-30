@@ -18,11 +18,11 @@ common.ta.stoch(high_vals: pandas.core.series.Series, low_vals: pandas.core.seri
 
 * **Parameters**
 
-    high_vals: pd.Series
+    high_vals: *pd.Series*
         High values
-    low_vals: pd.Series
+    low_vals: *pd.Series*
         Low values
-    close-vals: pd.Series
+    close-vals: *pd.Series*
         Close values
     fastkperiod : *int*
         Fast k period

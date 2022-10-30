@@ -20,7 +20,7 @@ common.qa.normality(data: pandas.core.frame.DataFrame, chart = False) -> pandas.
 
 * **Parameters**
 
-    data : pd.DataFrame
+    data : *pd.DataFrame*
         Dataframe of targeted data
 
     

@@ -18,7 +18,7 @@ common.ta.obv(data: pandas.core.frame.DataFrame, chart = False) -> pandas.core.f
 
 * **Parameters**
 
-    data: pd.DataFrame
+    data: *pd.DataFrame*
         Dataframe of OHLC prices
 
     

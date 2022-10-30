@@ -18,7 +18,7 @@ common.qa.kurtosis(data: pandas.core.frame.DataFrame, window: int = 14, chart = 
 
 * **Parameters**
 
-    data: pd.DataFrame
+    data: *pd.DataFrame*
         Dataframe of targeted data
     window: *int*
         Length of window
@@ -26,6 +26,6 @@ common.qa.kurtosis(data: pandas.core.frame.DataFrame, window: int = 14, chart = 
     
 * **Returns**
 
-    df_kurt : pd.DataFrame
+    df_kurt : *pd.DataFrame*
         Dataframe of rolling kurtosis
     

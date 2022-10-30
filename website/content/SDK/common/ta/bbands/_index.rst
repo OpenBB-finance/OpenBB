@@ -18,7 +18,7 @@ common.ta.bbands(close_values: pandas.core.series.Series, window: int = 15, n_st
 
 * **Parameters**
 
-    close_values : pd.DataFrame
+    close_values : *pd.DataFrame*
         DataFrame of sclose prices
     window : *int*
         Length of window to calculate BB
@@ -30,6 +30,6 @@ common.ta.bbands(close_values: pandas.core.series.Series, window: int = 15, n_st
     
 * **Returns**
 
-    df_ta: pd.DataFrame
+    df_ta: *pd.DataFrame*
         Dataframe of bollinger band data
     

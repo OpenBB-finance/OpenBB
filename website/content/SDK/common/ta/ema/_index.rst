@@ -16,7 +16,7 @@ common.ta.ema(data: pandas.core.frame.DataFrame, length: int = 50, offset: int =
 
 * **Parameters**
 
-    data: pd.DataFrame
+    data: *pd.DataFrame*
         Dataframe of dates and prices
     length: *int*
         Length of EMA window
