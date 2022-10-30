@@ -191,9 +191,10 @@ def get_equal_weights(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for m' for monthly returns.
 
     maxnan: float
         Max percentage of nan values accepted per asset to be included in
@@ -262,9 +263,10 @@ def get_property_weights(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float
         Max percentage of nan values accepted per asset to be included in
@@ -358,9 +360,10 @@ def get_mean_risk_portfolio(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float
         Max percentage of nan values accepted per asset to be included in
@@ -555,9 +558,10 @@ def get_max_sharpe(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -705,9 +709,10 @@ def get_min_risk(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -855,9 +860,10 @@ def get_max_util(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -1005,9 +1011,10 @@ def get_max_ret(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -1147,9 +1154,10 @@ def get_max_diversification_portfolio(
     freq: str
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float
         Max percentage of nan values accepted per asset to be included in
@@ -1263,9 +1271,10 @@ def get_max_decorrelation_portfolio(
     freq: str
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float
         Max percentage of nan values accepted per asset to be included in
@@ -1395,9 +1404,10 @@ def get_black_litterman_portfolio(
     freq: str
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float
         Max percentage of nan values accepted per asset to be included in
@@ -1558,9 +1568,10 @@ def get_ef(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -1736,9 +1747,10 @@ def get_risk_parity_portfolio(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -1897,9 +1909,10 @@ def get_rel_risk_parity_portfolio(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -2058,9 +2071,10 @@ def get_hcp_portfolio(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -2322,9 +2336,10 @@ def get_hrp(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -2558,9 +2573,10 @@ def get_herc(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -2794,9 +2810,10 @@ def get_nco(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in

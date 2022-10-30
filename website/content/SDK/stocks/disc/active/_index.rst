@@ -8,11 +8,6 @@
 
     <h3>
     > Get stocks ordered in descending order by intraday trade volume. [Source: Yahoo Finance]
-
-    Returns
-    -------
-    pd.DataFrame
-        Most active stocks
     </h3>
 
 {{< highlight python >}}

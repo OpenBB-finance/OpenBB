@@ -8,12 +8,6 @@
 
     <h3>
     > Returns low float DataFrame
-
-    Returns
-    -------
-    DataFrame
-        Low float DataFrame with the following columns:
-        Ticker, Company, Exchange, ShortInt, Float, Outstd, Industry
     </h3>
 
 {{< highlight python >}}

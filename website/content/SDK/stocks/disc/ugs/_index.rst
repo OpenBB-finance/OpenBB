@@ -9,11 +9,6 @@
     <h3>
     > Get stocks with earnings growth rates better than 25% and relatively low PE and PEG ratios.
     [Source: Yahoo Finance]
-
-    Returns
-    -------
-    pd.DataFrame
-        Undervalued stocks
     </h3>
 
 {{< highlight python >}}

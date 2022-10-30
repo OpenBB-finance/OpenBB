@@ -8,6 +8,9 @@
 
     <h3>
     > Get startups from ROSS index [Source: https://runacap.com/]
+
+    Parameters
+    ----------
     </h3>
 
 To obtain charts, make sure to add :python:`chart = True` as the last parameter

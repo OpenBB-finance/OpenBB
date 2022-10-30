@@ -8,11 +8,6 @@
 
     <h3>
     > Get global statistics about Decentralized Finances [Source: CoinGecko]
-
-    Returns
-    -------
-    pandas.DataFrame
-        Metric, Value
     </h3>
 
 To obtain charts, make sure to add :python:`chart = True` as the last parameter

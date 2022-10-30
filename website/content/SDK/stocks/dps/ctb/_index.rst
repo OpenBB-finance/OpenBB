@@ -8,11 +8,6 @@
 
     <h3>
     > Get stocks with highest cost to borrow [Source: Interactive Broker]
-
-    Returns
-    -------
-    pd.DataFrame
-        Cost to borrow
     </h3>
 
 {{< highlight python >}}

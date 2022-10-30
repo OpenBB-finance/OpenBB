@@ -9,6 +9,9 @@
     <h3>
     > Scrapes exchange withdrawal fees
     [Source: https://withdrawalfees.com/]
+
+    Parameters
+    ----------
     </h3>
 
 To obtain charts, make sure to add :python:`chart = True` as the last parameter

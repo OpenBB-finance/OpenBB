@@ -16,12 +16,6 @@
     are associated. More: https://docs.uniswap.org/protocol/V1/guides/connect-to-uniswap
     We use 0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f address to fetch all smart contracts that were
     created with usage of this factory.
-
-
-    Returns
-    -------
-    pd.DataFrame
-        Uniswap DEX statistics like liquidity, volume, number of pairs, number of transactions.
     </h3>
 
 To obtain charts, make sure to add :python:`chart = True` as the last parameter

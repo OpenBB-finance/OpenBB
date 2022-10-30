@@ -8,11 +8,6 @@
 
     <h3>
     > Get uniswap pools by volume. [Source: https://thegraph.com/en/]
-
-    Returns
-    -------
-    pd.DataFrame
-        Trade-able pairs listed on Uniswap by top volume.
     </h3>
 
 To obtain charts, make sure to add :python:`chart = True` as the last parameter

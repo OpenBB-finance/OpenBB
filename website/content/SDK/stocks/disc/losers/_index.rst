@@ -8,11 +8,6 @@
 
     <h3>
     > Get top losers. [Source: Yahoo Finance]
-
-    Returns
-    -------
-    pd.DataFrame
-        Stock Losers
     </h3>
 
 {{< highlight python >}}

@@ -8,11 +8,6 @@
 
     <h3>
     > Get most shorted stock screener [Source: Yahoo Finance]
-
-    Returns
-    -------
-    pd.DataFrame
-        Most Shorted Stocks
     </h3>
 
 {{< highlight python >}}

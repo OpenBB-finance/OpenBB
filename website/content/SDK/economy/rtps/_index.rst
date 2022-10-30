@@ -8,11 +8,6 @@
 
     <h3>
     > Get real-time performance sector data
-
-    Returns
-    -------
-    df_sectors : *pd.Dataframe*
-        Real-time performance data
     </h3>
 
 To obtain charts, make sure to add :python:`chart = True` as the last parameter

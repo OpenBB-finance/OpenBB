@@ -9,11 +9,6 @@
     <h3>
     > Scrape all substack newsletters from url list.
     [Source: substack.com]
-
-    Returns
-    -------
-    pd.DataFrame
-        DataFrame with recent news from most popular DeFi related newsletters.
     </h3>
 
 To obtain charts, make sure to add :python:`chart = True` as the last parameter

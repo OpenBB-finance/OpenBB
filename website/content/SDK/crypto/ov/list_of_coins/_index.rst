@@ -8,12 +8,6 @@
 
     <h3>
     > Get list of all available coins on CoinPaprika  [Source: CoinPaprika]
-
-    Returns
-    -------
-    pandas.DataFrame
-        Available coins on CoinPaprika
-        rank, id, name, symbol, type
     </h3>
 
 {{< highlight python >}}

@@ -8,10 +8,6 @@
 
     <h3>
     > Get properties to use on property optimization.
-    Returns
-    -------
-    List[str]:
-        List of available properties to use on property optimization.
     </h3>
 
 {{< highlight python >}}

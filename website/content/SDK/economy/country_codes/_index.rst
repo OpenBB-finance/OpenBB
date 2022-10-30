@@ -8,11 +8,6 @@
 
     <h3>
     > Get available country codes for Bigmac index
-
-    Returns
-    -------
-    List[str]
-        List of ISO-3 letter country codes.
     </h3>
 
 {{< highlight python >}}

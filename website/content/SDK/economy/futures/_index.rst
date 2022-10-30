@@ -8,11 +8,6 @@
 
     <h3>
     > Scrape data for top commodities
-
-    Returns
-    -------
-    commodities: *pd.DataFrame*
-        Dataframe containing name, price, net change and percent change
     </h3>
 
 {{< highlight python >}}

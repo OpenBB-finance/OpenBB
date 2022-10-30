@@ -8,12 +8,6 @@
 
     <h3>
     > Get list of coins available on CoinGecko [Source: CoinGecko]
-
-    Returns
-    -------
-    pandas.DataFrame
-        Coins available on CoinGecko
-        Columns: id, symbol, name
     </h3>
 
 {{< highlight python >}}

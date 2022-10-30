@@ -8,12 +8,6 @@
 
     <h3>
     > Helper methods that for every coin available on Binance add all quote assets. [Source: Binance]
-
-    Returns
-    -------
-    dict:
-        All quote assets for given coin
-        {'ETH' : ['BTC', 'USDT' ...], 'UNI' : ['ETH', 'BTC','BUSD', ...]
     </h3>
 
 {{< highlight python >}}

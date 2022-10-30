@@ -8,11 +8,6 @@
 
     <h3>
     > Get trending tickers from stocktwits [Source: stocktwits]
-
-    Returns
-    -------
-    pd.DataFrame
-        Dataframe of trending tickers and watchlist count
     </h3>
 
 {{< highlight python >}}

@@ -8,11 +8,6 @@
 
     <h3>
     > Get top gainers. [Source: Yahoo Finance]
-
-    Returns
-    -------
-    pd.DataFrame
-        Stock Gainers
     </h3>
 
 {{< highlight python >}}

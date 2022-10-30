@@ -9,11 +9,6 @@
     <h3>
     > Displays the 30-day history of the Anchor Yield Reserve.
     [Source: https://terra.engineer/]
-
-    Returns
-    -------
-    pd.DataFrame
-        Dataframe containing historical data
     </h3>
 
 To obtain charts, make sure to add :python:`chart = True` as the last parameter

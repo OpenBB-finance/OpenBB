@@ -8,11 +8,6 @@
 
     <h3>
     > Gets base Fama French data to calculate risk
-
-    Returns
-    -------
-    fama : *pd.DataFrame*
-        A data with fama french model information
     </h3>
 
 {{< highlight python >}}

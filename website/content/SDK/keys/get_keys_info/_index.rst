@@ -8,10 +8,6 @@
 
     <h3>
     > Get info on available APIs to use in set_keys.
-
-    Returns
-    -------
-    Dictionary of expected API keys and arguments:  Dict[str, List[str]]
     </h3>
 
 {{< highlight python >}}

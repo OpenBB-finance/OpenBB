@@ -18,7 +18,7 @@ crypto.dd.change(
     symbol: str,
     exchange: str = 'binance',
     start_date: int = 1262304000,
-    end_date: int = 1667165163,
+    end_date: int = 1667166297,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

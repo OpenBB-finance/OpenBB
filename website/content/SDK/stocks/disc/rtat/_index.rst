@@ -8,11 +8,6 @@
 
     <h3>
     > Gets the top 10 retail stocks per day
-
-    Returns
-    -------
-    pd.DataFrame
-        Dataframe of tickers
     </h3>
 
 {{< highlight python >}}

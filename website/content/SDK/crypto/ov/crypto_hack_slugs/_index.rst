@@ -9,10 +9,6 @@
     <h3>
     > Get all crypto hack slugs
     [Source: https://rekt.news]
-    Returns
-    -------
-    List[str]:
-        List with slugs
     </h3>
 
 {{< highlight python >}}

@@ -14,11 +14,6 @@
         - number of active crypto
 
     [Source: CoinGecko]
-
-    Returns
-    -------
-    pandas.DataFrame
-        Metric, Value
     </h3>
 
 {{< highlight python >}}

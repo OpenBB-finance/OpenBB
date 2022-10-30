@@ -9,11 +9,6 @@
     <h3>
     > Returns historical values of the total sum of TVLs from all listed protocols.
     [Source: https://docs.llama.fi/api]
-
-    Returns
-    -------
-    pd.DataFrame
-        Historical values of total sum of Total Value Locked from all listed protocols.
     </h3>
 
 To obtain charts, make sure to add :python:`chart = True` as the last parameter

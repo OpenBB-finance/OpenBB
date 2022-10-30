@@ -8,11 +8,6 @@
 
     <h3>
     > Get treasury maturity options [Source: EconDB]
-
-    Returns
-    -------
-    df: *pd.DataFrame*
-        Contains the name of the instruments and a string containing all options.
     </h3>
 
 {{< highlight python >}}

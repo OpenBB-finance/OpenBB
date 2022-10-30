@@ -62,9 +62,10 @@ portfolio.po.herc(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in

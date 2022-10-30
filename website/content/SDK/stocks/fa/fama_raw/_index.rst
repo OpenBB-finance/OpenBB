@@ -8,11 +8,6 @@
 
     <h3>
     > Get Fama French data
-
-    Returns
-    -------
-    df : *pd.DataFrame*
-        Fama French data
     </h3>
 
 {{< highlight python >}}

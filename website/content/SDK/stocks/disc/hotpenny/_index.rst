@@ -8,12 +8,6 @@
 
     <h3>
     > Returns today hot penny stocks
-
-    Returns
-    -------
-    DataFrame
-        Today hot penny stocks DataFrame with the following columns:
-        Ticker, Price, Change, $ Volume, Volume, # Trades
     </h3>
 
 {{< highlight python >}}

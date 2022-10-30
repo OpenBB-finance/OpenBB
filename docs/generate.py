@@ -112,20 +112,27 @@ def generate_documentation(
             f.write("\n\n|\n\n")
 
             if model:
+
+                has_param = False
+                if signature(model[2]).parameters:
+                    has_param = True
+
+                if has_param:
+                    summary_bottom = parameters_position
+                else:
+                    summary_bottom = returns_position
+
                 # Summary
                 f.write(".. raw:: html\n\n")
                 f.write("    <h3>")
                 f.write("\n")
-                summary = "    > " + docstring[:parameters_position].strip() + "\n"
+                summary = "    > " + docstring[:summary_bottom].strip() + "\n"
                 f.write(summary)
                 f.write("    </h3>")
                 f.write("\n\n")
 
                 # Signature
                 sig = str(signature(model[2]))
-                has_param = False
-                if signature(model[2]).parameters:
-                    has_param = True
 
                 if view:
                     f.write(

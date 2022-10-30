@@ -8,11 +8,6 @@
 
     <h3>
     > Scrape data for market overview
-
-    Returns
-    -------
-    overview: *pd.DataFrame*
-        Dataframe containing name, price, net change and percent change
     </h3>
 
 {{< highlight python >}}

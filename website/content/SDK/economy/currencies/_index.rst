@@ -8,11 +8,6 @@
 
     <h3>
     > Scrape data for global currencies
-
-    Returns
-    -------
-    currencies: *pd.DataFrame*
-        Dataframe containing name, price, net change and percent change
     </h3>
 
 {{< highlight python >}}

@@ -8,6 +8,9 @@
 
     <h3>
     > Returns trending coins [Source: CoinGecko]
+
+    Parameters
+    ----------
     </h3>
 
 To obtain charts, make sure to add :python:`chart = True` as the last parameter

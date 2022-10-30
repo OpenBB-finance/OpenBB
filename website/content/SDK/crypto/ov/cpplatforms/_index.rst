@@ -8,11 +8,6 @@
 
     <h3>
     > List all smart contract platforms like ethereum, solana, cosmos, polkadot, kusama ... [Source: CoinPaprika]
-
-    Returns
-    -------
-    pandas.DataFrame
-        index, platform_id
     </h3>
 
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
