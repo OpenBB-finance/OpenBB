@@ -17,10 +17,9 @@ common.qa.es(
     data: pandas.core.frame.DataFrame,
     use_mean: bool = False,
     distribution: str = 'normal',
-    percentile: Union[float,
-    int] = 99.9,
+    percentile: Union[float, int] = 99.9,
     portfolio: bool = False,
-    chart = False,
+    chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

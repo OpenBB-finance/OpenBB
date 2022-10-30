@@ -17,7 +17,7 @@ alt.oss.top(
     sortby: str,
     limit: int = 50,
     categories: str = '',
-    chart = False,
+    chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

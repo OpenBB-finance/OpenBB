@@ -20,7 +20,7 @@ common.ta.adx(
     window: int = 14,
     scalar: int = 100,
     drift: int = 1,
-    chart = False,
+    chart: bool = False,
     )
 {{< /highlight >}}
 

@@ -18,10 +18,9 @@ common.qa.var(
     use_mean: bool = False,
     adjusted_var: bool = False,
     student_t: bool = False,
-    percentile: Union[int,
-    float] = 99.9,
+    percentile: Union[int, float] = 99.9,
     portfolio: bool = False,
-    chart = False,
+    chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

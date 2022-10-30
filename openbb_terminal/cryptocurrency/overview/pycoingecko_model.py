@@ -257,7 +257,7 @@ def get_exchanges(sortby: str = "name", ascend: bool = False) -> pd.DataFrame:
 def get_financial_platforms(sortby: str = "Name", ascend: bool = True) -> pd.DataFrame:
     """Get list of financial platforms from CoinGecko API [Source: CoinGecko]
 
-    Parameter
+    Parameters
     ----------
     sortby: str
         Key by which to sort data

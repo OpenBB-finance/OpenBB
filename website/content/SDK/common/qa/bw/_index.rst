@@ -19,7 +19,7 @@ common.qa.bw(
     symbol: str = '',
     yearly: bool = True,
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
-    chart = False,
+    chart: bool = False,
     ) -> None
 {{< /highlight >}}
 

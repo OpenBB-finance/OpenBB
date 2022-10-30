@@ -20,7 +20,7 @@ common.ta.stoch(
     fastkperiod: int = 14,
     slowdperiod: int = 3,
     slowkperiod: int = 3,
-    chart = False,
+    chart: bool = False,
     )
 {{< /highlight >}}
 

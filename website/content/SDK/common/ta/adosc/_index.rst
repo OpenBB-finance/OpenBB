@@ -18,7 +18,7 @@ common.ta.adosc(
     use_open: bool = False,
     fast: int = 3,
     slow: int = 10,
-    chart = False,
+    chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

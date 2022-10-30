@@ -14,9 +14,7 @@
 common.qa.decompose(
     data: pandas.core.frame.DataFrame,
     multiplicative: bool = False,
-    ) -> Tuple[Any,
-    pandas.core.frame.DataFrame,
-    pandas.core.frame.DataFrame]
+    ) -> Tuple[Any, pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
 {{< /highlight >}}
 
 * **Parameters**

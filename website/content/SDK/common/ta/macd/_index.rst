@@ -18,7 +18,7 @@ common.ta.macd(
     n_fast: int = 12,
     n_slow: int = 26,
     n_signal: int = 9,
-    chart = False,
+    chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

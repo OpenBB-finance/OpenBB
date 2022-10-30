@@ -1,0 +1,36 @@
+.. role:: python(code)
+    :language: python
+    :class: highlight
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Gets all etf names and symbols
+
+    Returns
+    -------
+    etf_symbols: List[str]:
+        List of all available etf symbols
+    etf_names: List[str]
+        List of all available etf names
+    </h3>
+
+{{< highlight python >}}
+etf.symbols(
+    ) -> Tuple[List[str], List[str]]
+{{< /highlight >}}
+
+* **Parameters**
+
+mbols
+
+    
+* **Returns**
+
+    etf_symbols: List[str]:
+        List of all available etf symbols
+    etf_names: List[str]
+        List of all available etf names
+    

@@ -134,15 +134,19 @@ def generate_documentation(
 
                     # TODO: This breaks if there is a ')' inside the function arguments
                     if not has_param:
-                        sig = sig.replace(")", "chart = False, )")
+                        sig = sig.replace(")", "chart: bool = False, )")
                     else:
-                        sig = sig.replace(")", ", chart = False, )")
+                        sig = sig.replace(")", ", chart: bool = False, )")
                 elif has_param:
                     sig = sig.replace(")", ", )")
 
                 sig = sig.replace("(", "(\n    ")
-                # TODO: Change this to regex to avoid paragraph when arg has comma
-                sig = sig.replace(", ", ",\n    ")
+                # TODO: This requires type int for args
+                sig = re.sub(
+                    "([a-zA-Z0-9_ ]+)(:)([\[\]a-zA-Z0-9_ (),.=']*)(,)",
+                    r"\1\2\3\4\n   ",
+                    sig,
+                )
 
                 f.write("{{< highlight python >}}")
                 f.write("\n")

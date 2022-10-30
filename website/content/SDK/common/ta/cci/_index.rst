@@ -17,7 +17,7 @@ common.ta.cci(
     data: pandas.core.frame.DataFrame,
     window: int = 14,
     scalar: float = 0.0015,
-    chart = False,
+    chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

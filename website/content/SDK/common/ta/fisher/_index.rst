@@ -17,7 +17,7 @@ common.ta.fisher(
     high_vals: pandas.core.series.Series,
     low_vals: pandas.core.series.Series,
     window: int = 14,
-    chart = False,
+    chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

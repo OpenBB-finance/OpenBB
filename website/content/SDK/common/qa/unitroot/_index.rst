@@ -17,7 +17,7 @@ common.qa.unitroot(
     data: pandas.core.frame.DataFrame,
     fuller_reg: str = 'c',
     kpss_reg: str = 'c',
-    chart = False,
+    chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

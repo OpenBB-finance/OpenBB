@@ -16,9 +16,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 common.qa.spread(
     data: pandas.core.frame.DataFrame,
     window: int = 14,
-    chart = False,
-    ) -> Tuple[pandas.core.frame.DataFrame,
-    pandas.core.frame.DataFrame]
+    chart: bool = False,
+    ) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
 {{< /highlight >}}
 
 * **Parameters**

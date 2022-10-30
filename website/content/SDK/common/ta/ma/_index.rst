@@ -21,7 +21,7 @@ common.ta.ma(
     symbol: str = '',
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
-    chart = False,
+    chart: bool = False,
     ) -> None
 {{< /highlight >}}
 

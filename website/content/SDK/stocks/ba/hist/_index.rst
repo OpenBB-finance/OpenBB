@@ -1,0 +1,42 @@
+.. role:: python(code)
+    :language: python
+    :class: highlight
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Get hour-level sentiment data for the chosen symbol
+
+    Source: [Sentiment Investor]
+    </h3>
+
+To obtain charts, make sure to add :python:`chart = True` as the last parameter
+
+{{< highlight python >}}
+stocks.ba.hist(
+    symbol: str,
+    start_date: str = '2022-10-23', end_date: str = '2022-10-30', number: int = 100,
+    chart: bool = False,
+    ) -> pandas.core.frame.DataFrame
+{{< /highlight >}}
+
+* **Parameters**
+
+    symbol: *str*
+        Ticker to view sentiment data
+    start_date: *str*
+        Initial date like string or unix timestamp (e.g. 12-21-2021)
+    end_date: *str*
+        End date like string or unix timestamp (e.g. 12-21-2021)
+    number : *int*
+        Number of results returned by API call
+        Maximum 250 per api call
+
+    
+* **Returns**
+
+    pd.DataFrame
+        Dataframe of historical sentiment
+    

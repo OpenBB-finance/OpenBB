@@ -1,0 +1,36 @@
+.. role:: python(code)
+    :language: python
+    :class: highlight
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Get prices for given coin. [Source: CoinGecko]
+    </h3>
+
+{{< highlight python >}}
+crypto.dd.coin_market_chart(
+    symbol: str = '',
+    vs_currency: str = 'usd',
+    days: int = 30,
+    **kwargs: Any,
+    ) -> pandas.core.frame.DataFrame
+{{< /highlight >}}
+
+* **Parameters**
+
+    vs_currency: *str*
+        currency vs which display data
+    days: *int*
+        number of days to display the data
+    kwargs
+
+    
+* **Returns**
+
+    pandas.DataFrame
+        Prices for given coin
+        Columns: time, price, currency
+    
