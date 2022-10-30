@@ -982,6 +982,14 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             type=str,
             default="ytd",
         )
+        parser.add_argument(
+            "-v",
+            "--verbose",
+            action="store_true",
+            default=False,
+            help="Demonstrate info about the symbol that was just loaded.",
+            dest="verbose",
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
 
@@ -992,7 +1000,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
         if ns_parser:
             if ns_parser.weekly and ns_parser.monthly:
                 console.print(
-                    "[red]Only one of monthly or weekly can be selected.[/red]\n."
+                    "[red]Only one of monthly or weekly can be selected.[/red]."
                 )
                 return
             if ns_parser.filepath is None:
@@ -1005,6 +1013,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     ns_parser.source,
                     weekly=ns_parser.weekly,
                     monthly=ns_parser.monthly,
+                    verbose=ns_parser.verbose,
                 )
             else:
                 # This seems to block the .exe since the folder needs to be manually created
@@ -1016,7 +1025,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     if ns_parser.filepath not in file_list:
                         console.print(
                             f"[red]{ns_parser.filepath} not found in custom_imports/stocks/ "
-                            "folder[/red].\n"
+                            "folder[/red]."
                         )
                         return
                 except Exception as e:
@@ -1030,12 +1039,14 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     return
             if not df_stock_candidate.empty:
                 self.stock = df_stock_candidate
-                self.add_info = stocks_helper.additional_info_about_ticker(
-                    ns_parser.ticker
-                )
-                console.print(self.add_info)
+                if ns_parser.verbose:
+                    self.add_info = stocks_helper.additional_info_about_ticker(
+                        ns_parser.ticker
+                    )
+                    console.print(self.add_info)
                 if (
-                    ns_parser.interval == 1440
+                    ns_parser.verbose
+                    and ns_parser.interval == 1440
                     and not ns_parser.weekly
                     and not ns_parser.monthly
                     and ns_parser.filepath is None
@@ -1067,7 +1078,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     self.stock = self.stock.rename(columns={"Adj Close": "AdjClose"})
                     self.stock = self.stock.dropna()
                     self.stock.columns = [x.lower() for x in self.stock.columns]
-                    console.print()
+
                 export_data(
                     ns_parser.export,
                     os.path.dirname(os.path.abspath(__file__)),

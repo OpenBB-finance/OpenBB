@@ -180,6 +180,7 @@ def load(
     iexrange: str = "ytd",
     weekly: bool = False,
     monthly: bool = False,
+    verbose: str = "",
 ):
 
     """
@@ -233,6 +234,8 @@ def load(
         Flag to get weekly data
     monthly: bool
         Flag to get monthly data
+    verbose: str
+        Display what was symbol was loaded
 
     Returns
     -------
@@ -306,7 +309,6 @@ def load(
 
             # Check that loading a stock was not successful
             if df_stock_candidate.empty:
-                console.print()
                 return pd.DataFrame()
 
             df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
@@ -358,7 +360,6 @@ def load(
             df_stock_candidate = df_stock_candidate.set_index("date")
             # Check that loading a stock was not successful
             if df_stock_candidate.empty:
-                console.print()
                 return pd.DataFrame()
 
             df_stock_candidate.index = (
@@ -377,10 +378,11 @@ def load(
 
     s_intraday = (f"Intraday {s_interval}", int_string)[interval == 1440]
 
-    console.print(
-        f"Loading {s_intraday} {symbol.upper()} stock "
-        f"with starting period {s_start.strftime('%Y-%m-%d')} for analysis.",
-    )
+    if verbose:
+        console.print(
+            f"Loading {s_intraday} {symbol.upper()} stock "
+            f"with starting period {s_start.strftime('%Y-%m-%d')} for analysis.",
+        )
 
     return df_stock_candidate
 
