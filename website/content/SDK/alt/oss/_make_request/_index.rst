@@ -11,7 +11,9 @@
     </h3>
 
 {{< highlight python >}}
-alt.oss._make_request(url: str) -> Optional[bs4.BeautifulSoup]
+alt.oss._make_request(
+    url: str,
+    ) -> Optional[bs4.BeautifulSoup]
 {{< /highlight >}}
 
 * **Parameters**

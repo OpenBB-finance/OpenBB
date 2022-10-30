@@ -13,7 +13,10 @@
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
-alt.oss.history(repo: str, chart = False)
+alt.oss.history(
+    repo: str,
+    chart = False,
+    )
 {{< /highlight >}}
 
 * **Parameters**

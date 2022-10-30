@@ -13,7 +13,11 @@
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
-alt.covid.ov(country, limit: int = 100, chart = False) -> pandas.core.frame.DataFrame
+alt.covid.ov(
+    country,
+    limit: int = 100,
+    chart = False,
+    ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

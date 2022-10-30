@@ -11,7 +11,10 @@
     </h3>
 
 {{< highlight python >}}
-alt.oss.github_data(url: str, **kwargs)
+alt.oss.github_data(
+    url: str,
+    **kwargs,
+    )
 {{< /highlight >}}
 
 * **Parameters**

@@ -13,7 +13,9 @@
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
-alt.oss.ross(, chart = False) -> pandas.core.frame.DataFrame
+alt.oss.ross(
+    chart = False,
+    ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

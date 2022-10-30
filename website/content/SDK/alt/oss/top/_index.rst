@@ -13,7 +13,12 @@
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
-alt.oss.top(sortby: str, limit: int = 50, categories: str = '', chart = False) -> pandas.core.frame.DataFrame
+alt.oss.top(
+    sortby: str,
+    limit: int = 50,
+    categories: str = '',
+    chart = False,
+    ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

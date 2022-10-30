@@ -11,7 +11,9 @@
     </h3>
 
 {{< highlight python >}}
-alt.covid.global_deaths(country: str) -> pandas.core.frame.DataFrame
+alt.covid.global_deaths(
+    country: str,
+    ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**
