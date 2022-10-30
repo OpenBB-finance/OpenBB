@@ -21,7 +21,7 @@ alt.oss.top(sortby: str, limit: int = 50, categories: str = '', chart = False) -
     sortby : *str*
             Sort repos by {stars, forks}
     categories : *str*
-            Check for repo categories. If more than one separate with a comma: *e.g., finance,investment. Default: None*
+            Check for repo categories. If more than one separate with a comma: e.g., finance,investment. Default: *None*
     limit : *int*
             Number of repos to search for
     

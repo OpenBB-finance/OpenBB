@@ -19,7 +19,7 @@ alt.oss.search(sortby: str = 'stars', page: int = 1, categories: str = '') -> pa
     sortby : *str*
             Sort repos by {stars, forks}
     categories : *str*
-            Check for repo categories. If more than one separate with a comma: *e.g., finance,investment. Default: None*
+            Check for repo categories. If more than one separate with a comma: e.g., finance,investment. Default: *None*
     page : *int*
             Page number to get repos
     

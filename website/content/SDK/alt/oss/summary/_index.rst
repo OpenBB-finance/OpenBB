@@ -19,10 +19,10 @@ alt.oss.summary(repo: str, chart = False) -> pandas.core.frame.DataFrame
 * **Parameters**
 
     repo : *str*
-            Repo to search for Format: *org/repo, e.g., openbb-finance/openbbterminal*
+            Repo to search for Format: org/repo, e.g., openbb-finance/openbbterminal
 
     
 * **Returns**
 
-    pd.DataFrame - Columns: *Metric, Value*
+    pd.DataFrame - Columns: Metric, Value
     
