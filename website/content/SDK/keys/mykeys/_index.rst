@@ -18,9 +18,13 @@ keys.mykeys(
 
 * **Parameters**
 
-        show: *bool*
-            Flag to choose whether to show actual keys or not.
-            By default, False.
-    Returns:
-        pd.DataFrame: *currents keys*
+    show: *bool*
+        Flag to choose whether to show actual keys or not.
+        By default, False.
+
+    
+* **Returns**
+
+    pd.DataFrame
+        Currents keys
     
