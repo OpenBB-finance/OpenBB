@@ -1,5 +1,6 @@
 import re
 import sys
+from tkinter import N
 from typing import Callable, Any, Optional, List, Tuple, Dict
 from inspect import signature
 import importlib
@@ -121,8 +122,10 @@ def generate_documentation(
                 f.write("\n\n")
 
                 # Signature
-                original_sig = str(signature(model[2]))
-                new_signature = original_sig
+                sig = str(signature(model[2]))
+                has_param = False
+                if signature(model[2]).parameters:
+                    has_param = True
 
                 if view:
                     f.write(
@@ -130,14 +133,19 @@ def generate_documentation(
                     )
 
                     # TODO: This breaks if there is a ')' inside the function arguments
-                    idx = original_sig.find(")")
-                    new_signature = (
-                        original_sig[:idx] + ", chart = False" + original_sig[idx:]
-                    )
+                    if not has_param:
+                        sig = sig.replace(")", "chart = False, )")
+                    else:
+                        sig = sig.replace(")", ", chart = False, )")
+                elif has_param:
+                    sig = sig.replace(")", ", )")
+
+                sig = sig.replace("(", "(\n    ")
+                sig = sig.replace(", ", ",\n    ")
 
                 f.write("{{< highlight python >}}")
                 f.write("\n")
-                f.write(f"{key}{new_signature}")
+                f.write(f"{key}{sig}")
                 f.write("\n")
                 f.write("{{< /highlight >}}")
                 f.write("\n")
