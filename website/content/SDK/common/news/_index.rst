@@ -11,7 +11,11 @@
     </h3>
 
 {{< highlight python >}}
-common.news(term: str = '', sources: str = 'bloomberg.com', sort: str = 'published') -> pandas.core.frame.DataFrame
+common.news(
+    term: str = '',
+    sources: str = 'bloomberg.com',
+    sort: str = 'published',
+    ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

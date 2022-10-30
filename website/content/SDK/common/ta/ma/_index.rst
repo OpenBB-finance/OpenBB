@@ -13,7 +13,16 @@
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
-common.ta.ma(data: pandas.core.series.Series, window: List[int] = None, offset: int = 0, ma_type: str = 'EMA', symbol: str = '', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart = False) -> None
+common.ta.ma(
+    data: pandas.core.series.Series,
+    window: List[int] = None,
+    offset: int = 0,
+    ma_type: str = 'EMA',
+    symbol: str = '',
+    export: str = '',
+    external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
+    chart = False,
+    ) -> None
 {{< /highlight >}}
 
 * **Parameters**

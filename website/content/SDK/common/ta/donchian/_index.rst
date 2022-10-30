@@ -13,7 +13,13 @@
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
-common.ta.donchian(high_prices: pandas.core.series.Series, low_prices: pandas.core.series.Series, upper_length: int = 20, lower_length: int = 20, chart = False) -> pandas.core.frame.DataFrame
+common.ta.donchian(
+    high_prices: pandas.core.series.Series,
+    low_prices: pandas.core.series.Series,
+    upper_length: int = 20,
+    lower_length: int = 20,
+    chart = False,
+    ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

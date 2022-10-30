@@ -13,7 +13,11 @@
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
-common.qa.skew(data: pandas.core.frame.DataFrame, window: int = 14, chart = False) -> pandas.core.frame.DataFrame
+common.qa.skew(
+    data: pandas.core.frame.DataFrame,
+    window: int = 14,
+    chart = False,
+    ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

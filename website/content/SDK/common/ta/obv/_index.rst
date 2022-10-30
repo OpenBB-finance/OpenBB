@@ -13,7 +13,10 @@
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
-common.ta.obv(data: pandas.core.frame.DataFrame, chart = False) -> pandas.core.frame.DataFrame
+common.ta.obv(
+    data: pandas.core.frame.DataFrame,
+    chart = False,
+    ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

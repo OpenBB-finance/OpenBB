@@ -13,7 +13,15 @@
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
-common.qa.es(data: pandas.core.frame.DataFrame, use_mean: bool = False, distribution: str = 'normal', percentile: Union[float, int] = 99.9, portfolio: bool = False, chart = False) -> pandas.core.frame.DataFrame
+common.qa.es(
+    data: pandas.core.frame.DataFrame,
+    use_mean: bool = False,
+    distribution: str = 'normal',
+    percentile: Union[float,
+    int] = 99.9,
+    portfolio: bool = False,
+    chart = False,
+    ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

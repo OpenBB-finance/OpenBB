@@ -13,7 +13,12 @@
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
-common.ta.fisher(high_vals: pandas.core.series.Series, low_vals: pandas.core.series.Series, window: int = 14, chart = False) -> pandas.core.frame.DataFrame
+common.ta.fisher(
+    high_vals: pandas.core.series.Series,
+    low_vals: pandas.core.series.Series,
+    window: int = 14,
+    chart = False,
+    ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

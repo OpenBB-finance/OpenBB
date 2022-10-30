@@ -13,7 +13,13 @@
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
-common.ta.bbands(close_values: pandas.core.series.Series, window: int = 15, n_std: float = 2, mamode: str = 'ema', chart = False) -> pandas.core.frame.DataFrame
+common.ta.bbands(
+    close_values: pandas.core.series.Series,
+    window: int = 15,
+    n_std: float = 2,
+    mamode: str = 'ema',
+    chart = False,
+    ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

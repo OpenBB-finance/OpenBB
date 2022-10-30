@@ -13,7 +13,13 @@
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
-common.ta.rsi(values: pandas.core.series.Series, window: int = 14, scalar: float = 100, drift: int = 1, chart = False) -> pandas.core.frame.DataFrame
+common.ta.rsi(
+    values: pandas.core.series.Series,
+    window: int = 14,
+    scalar: float = 100,
+    drift: int = 1,
+    chart = False,
+    ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

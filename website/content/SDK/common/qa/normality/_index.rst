@@ -15,7 +15,10 @@
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
-common.qa.normality(data: pandas.core.frame.DataFrame, chart = False) -> pandas.core.frame.DataFrame
+common.qa.normality(
+    data: pandas.core.frame.DataFrame,
+    chart = False,
+    ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

@@ -13,7 +13,14 @@
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
-common.qa.bw(data: pandas.core.frame.DataFrame, target: str, symbol: str = '', yearly: bool = True, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart = False) -> None
+common.qa.bw(
+    data: pandas.core.frame.DataFrame,
+    target: str,
+    symbol: str = '',
+    yearly: bool = True,
+    external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
+    chart = False,
+    ) -> None
 {{< /highlight >}}
 
 * **Parameters**

@@ -13,7 +13,13 @@
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
-common.ta.aroon(high_values: pandas.core.series.Series, low_values: pandas.core.series.Series, window: int = 25, scalar: int = 100, chart = False) -> pandas.core.frame.DataFrame
+common.ta.aroon(
+    high_values: pandas.core.series.Series,
+    low_values: pandas.core.series.Series,
+    window: int = 25,
+    scalar: int = 100,
+    chart = False,
+    ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

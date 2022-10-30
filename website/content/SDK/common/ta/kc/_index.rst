@@ -13,7 +13,16 @@
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
-common.ta.kc(high_prices: pandas.core.series.Series, low_prices: pandas.core.series.Series, close_prices: pandas.core.series.Series, window: int = 20, scalar: float = 2, mamode: str = 'ema', offset: int = 0, chart = False) -> pandas.core.frame.DataFrame
+common.ta.kc(
+    high_prices: pandas.core.series.Series,
+    low_prices: pandas.core.series.Series,
+    close_prices: pandas.core.series.Series,
+    window: int = 20,
+    scalar: float = 2,
+    mamode: str = 'ema',
+    offset: int = 0,
+    chart = False,
+    ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

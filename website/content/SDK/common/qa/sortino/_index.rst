@@ -13,7 +13,13 @@
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
-common.qa.sortino(data: pandas.core.frame.DataFrame, target_return: float = 0, window: float = 252, adjusted: bool = False, chart = False) -> pandas.core.frame.DataFrame
+common.qa.sortino(
+    data: pandas.core.frame.DataFrame,
+    target_return: float = 0,
+    window: float = 252,
+    adjusted: bool = False,
+    chart = False,
+    ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

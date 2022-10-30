@@ -13,7 +13,11 @@
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
-common.ta.vwap(data: pandas.core.frame.DataFrame, offset: int = 0, chart = False) -> pandas.core.frame.DataFrame
+common.ta.vwap(
+    data: pandas.core.frame.DataFrame,
+    offset: int = 0,
+    chart = False,
+    ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

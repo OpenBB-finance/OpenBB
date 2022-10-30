@@ -13,7 +13,11 @@
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
-common.ta.cg(values: pandas.core.series.Series, window: int, chart = False) -> pandas.core.frame.DataFrame
+common.ta.cg(
+    values: pandas.core.series.Series,
+    window: int,
+    chart = False,
+    ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

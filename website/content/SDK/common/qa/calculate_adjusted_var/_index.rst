@@ -11,7 +11,13 @@
     </h3>
 
 {{< highlight python >}}
-common.qa.calculate_adjusted_var(kurtosis: float, skew: float, ndp: float, std: float, mean: float) -> float
+common.qa.calculate_adjusted_var(
+    kurtosis: float,
+    skew: float,
+    ndp: float,
+    std: float,
+    mean: float,
+    ) -> float
 {{< /highlight >}}
 
 * **Parameters**

@@ -13,7 +13,12 @@
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
-common.qa.sharpe(data: pandas.core.frame.DataFrame, rfr: float = 0, window: float = 252, chart = False) -> pandas.core.frame.DataFrame
+common.qa.sharpe(
+    data: pandas.core.frame.DataFrame,
+    rfr: float = 0,
+    window: float = 252,
+    chart = False,
+    ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

@@ -13,7 +13,12 @@
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
-common.qa.spread(data: pandas.core.frame.DataFrame, window: int = 14, chart = False) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
+common.qa.spread(
+    data: pandas.core.frame.DataFrame,
+    window: int = 14,
+    chart = False,
+    ) -> Tuple[pandas.core.frame.DataFrame,
+    pandas.core.frame.DataFrame]
 {{< /highlight >}}
 
 * **Parameters**

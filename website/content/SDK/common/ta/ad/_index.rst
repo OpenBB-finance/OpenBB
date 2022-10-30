@@ -13,7 +13,11 @@
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
-common.ta.ad(data: pandas.core.frame.DataFrame, use_open: bool = False, chart = False) -> pandas.core.frame.DataFrame
+common.ta.ad(
+    data: pandas.core.frame.DataFrame,
+    use_open: bool = False,
+    chart = False,
+    ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

@@ -13,7 +13,12 @@
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
-common.qa.unitroot(data: pandas.core.frame.DataFrame, fuller_reg: str = 'c', kpss_reg: str = 'c', chart = False) -> pandas.core.frame.DataFrame
+common.qa.unitroot(
+    data: pandas.core.frame.DataFrame,
+    fuller_reg: str = 'c',
+    kpss_reg: str = 'c',
+    chart = False,
+    ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**
