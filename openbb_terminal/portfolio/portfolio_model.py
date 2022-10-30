@@ -1364,7 +1364,6 @@ def get_maximum_drawdown(
         Holdings series
     pd.Series
         Drawdown series
-    -------
     """
     holdings: pd.Series = portfolio.portfolio_value
     if is_returns:
