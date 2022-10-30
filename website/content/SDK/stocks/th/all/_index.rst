@@ -18,10 +18,6 @@ stocks.th.all(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-
-    
 * **Returns**
 
     pd.DataFrame

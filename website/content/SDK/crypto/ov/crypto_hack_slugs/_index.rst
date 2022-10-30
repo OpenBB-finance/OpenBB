@@ -20,11 +20,6 @@ crypto.ov.crypto_hack_slugs(
     ) -> List[str]
 {{< /highlight >}}
 
-* **Parameters**
-
-
-    [Source: https://rekt.news]
-    
 * **Returns**
 
     List[str]:

@@ -22,7 +22,9 @@ keys.binance(
 * **Parameters**
 
         key: *str*
+            API key
         secret: *str*
+            API secret
         persist: *bool*
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.

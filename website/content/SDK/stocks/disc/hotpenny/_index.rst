@@ -21,11 +21,6 @@ stocks.disc.hotpenny(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-tocks
-
-    
 * **Returns**
 
     DataFrame

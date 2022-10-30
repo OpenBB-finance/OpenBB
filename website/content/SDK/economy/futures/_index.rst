@@ -20,11 +20,6 @@ economy.futures(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-dities
-
-    
 * **Returns**
 
     commodities: *pd.DataFrame*

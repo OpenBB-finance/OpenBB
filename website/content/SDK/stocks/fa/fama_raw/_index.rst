@@ -20,9 +20,6 @@ stocks.fa.fama_raw(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
- 
 * **Returns**
 
     df : *pd.DataFrame*

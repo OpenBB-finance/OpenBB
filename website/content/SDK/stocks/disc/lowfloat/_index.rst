@@ -21,11 +21,6 @@ stocks.disc.lowfloat(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-me
-
-    
 * **Returns**
 
     DataFrame

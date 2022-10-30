@@ -19,11 +19,6 @@ keys.get_keys_info(
     ) -> Dict[str, List[str]]
 {{< /highlight >}}
 
-* **Parameters**
-
-s to use in set_keys.
-
-    
 * **Returns**
 
     Dictionary of expected API keys and arguments:  Dict[str, List[str]]

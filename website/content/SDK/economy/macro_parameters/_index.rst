@@ -20,11 +20,6 @@ economy.macro_parameters(
     ) -> Dict[str, Dict[str, str]]
 {{< /highlight >}}
 
-* **Parameters**
-
- available macro parameters with detail.
-
-    
 * **Returns**
 
     Dict[str, Dict[str, str]]

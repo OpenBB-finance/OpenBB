@@ -20,11 +20,6 @@ stocks.disc.losers(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-Yahoo Finance]
-
-    
 * **Returns**
 
     pd.DataFrame

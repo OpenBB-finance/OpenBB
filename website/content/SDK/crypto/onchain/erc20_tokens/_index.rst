@@ -21,12 +21,6 @@ crypto.onchain.erc20_tokens(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-~1500 most traded erc20 token.
-    [Source: json file]
-
-    
 * **Returns**
 
     pd.DataFrame

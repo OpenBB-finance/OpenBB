@@ -20,11 +20,6 @@ economy.country_codes(
     ) -> List[str]
 {{< /highlight >}}
 
-* **Parameters**
-
-es for Bigmac index
-
-    
 * **Returns**
 
     List[str]

@@ -20,11 +20,6 @@ stocks.sia.maketcap(
     ) -> list
 {{< /highlight >}}
 
-* **Parameters**
-
-on in Yahoo Finance data. [Source: Finance Database]
-
-    
 * **Returns**
 
     list

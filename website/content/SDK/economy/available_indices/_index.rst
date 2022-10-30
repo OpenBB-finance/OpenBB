@@ -17,9 +17,3 @@
 economy.available_indices(
     ) -> dict
 {{< /highlight >}}
-
-* **Parameters**
-
-  Returns:
-        dict: *dictionary with available indices and respective detail*
-    

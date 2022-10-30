@@ -23,11 +23,6 @@ crypto.defi.pools(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-me. [Source: https://thegraph.com/en/]
-
-    
 * **Returns**
 
     pd.DataFrame

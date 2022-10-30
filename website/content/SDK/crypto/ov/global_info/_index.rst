@@ -26,17 +26,6 @@ crypto.ov.global_info(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-ut crypto from CoinGecko API like:
-        - market cap change
-        - number of markets
-        - icos
-        - number of active crypto
-
-    [Source: CoinGecko]
-
-    
 * **Returns**
 
     pandas.DataFrame

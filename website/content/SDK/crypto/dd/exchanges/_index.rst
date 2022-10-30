@@ -16,10 +16,6 @@ crypto.dd.exchanges(
     )
 {{< /highlight >}}
 
-* **Parameters**
-
-
-    
 * **Returns**
 
     List[str]

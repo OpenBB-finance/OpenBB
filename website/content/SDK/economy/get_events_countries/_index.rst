@@ -17,11 +17,3 @@
 economy.get_events_countries(
     ) -> list
 {{< /highlight >}}
-
-* **Parameters**
-
-or events command.
-
-    Returns:
-        list: *List of available countries.*
-    

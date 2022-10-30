@@ -20,11 +20,6 @@ stocks.disc.active(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-cending order by intraday trade volume. [Source: Yahoo Finance]
-
-    
 * **Returns**
 
     pd.DataFrame

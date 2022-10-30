@@ -24,12 +24,6 @@ crypto.defi.stvl(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
- of the total sum of TVLs from all listed protocols.
-    [Source: https://docs.llama.fi/api]
-
-    
 * **Returns**
 
     pd.DataFrame

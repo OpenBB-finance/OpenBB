@@ -20,11 +20,6 @@ stocks.ba.trending(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
- stocktwits [Source: stocktwits]
-
-    
 * **Returns**
 
     pd.DataFrame

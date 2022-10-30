@@ -20,11 +20,6 @@ economy.glbonds(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-nds
-
-    
 * **Returns**
 
     bonds: *pd.DataFrame*

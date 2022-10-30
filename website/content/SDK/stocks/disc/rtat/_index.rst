@@ -20,11 +20,6 @@ stocks.disc.rtat(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-ocks per day
-
-    
 * **Returns**
 
     pd.DataFrame

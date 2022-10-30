@@ -21,11 +21,6 @@ crypto.dd.binance_available_quotes_for_each_coin(
     ) -> dict
 {{< /highlight >}}
 
-* **Parameters**
-
-very coin available on Binance add all quote assets. [Source: Binance]
-
-    
 * **Returns**
 
     dict:

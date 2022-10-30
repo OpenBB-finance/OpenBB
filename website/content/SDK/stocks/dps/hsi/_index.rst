@@ -21,11 +21,6 @@ stocks.dps.hsi(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-rest DataFrame
-
-    
 * **Returns**
 
     DataFrame

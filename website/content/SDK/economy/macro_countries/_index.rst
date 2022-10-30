@@ -20,11 +20,6 @@ economy.macro_countries(
     ) -> Dict[str, str]
 {{< /highlight >}}
 
-* **Parameters**
-
- available countries and respective currencies.
-
-    
 * **Returns**
 
     Dict[str, str]

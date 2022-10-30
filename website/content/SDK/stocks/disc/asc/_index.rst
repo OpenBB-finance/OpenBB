@@ -21,12 +21,6 @@ stocks.disc.asc(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-ap stocks with earnings growth rates better than 25%.
-    [Source: Yahoo Finance]
-
-    
 * **Returns**
 
     pd.DataFrame

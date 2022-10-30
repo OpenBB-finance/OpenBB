@@ -23,11 +23,6 @@ crypto.onchain.btc_transac(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-nsactions [Source: https://api.blockchain.info/]
-
-    
 * **Returns**
 
     pd.DataFrame

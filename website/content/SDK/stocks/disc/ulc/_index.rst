@@ -21,12 +21,6 @@ stocks.disc.ulc(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-ally undervalued large cap stocks.
-    [Source: Yahoo Finance]
-
-    
 * **Returns**
 
     pd.DataFrame

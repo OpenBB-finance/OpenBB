@@ -17,11 +17,3 @@
 economy.get_ycrv_countries(
     ) -> list
 {{< /highlight >}}
-
-* **Parameters**
-
-or ycrv command.
-
-    Returns:
-        list: *List of available countries.*
-    

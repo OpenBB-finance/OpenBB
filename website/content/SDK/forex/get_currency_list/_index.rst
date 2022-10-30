@@ -14,7 +14,3 @@
 forex.get_currency_list(
     ) -> List
 {{< /highlight >}}
-
-* **Parameters**
-
-om a local file.

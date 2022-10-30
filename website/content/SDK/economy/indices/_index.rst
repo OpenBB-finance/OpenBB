@@ -20,9 +20,6 @@ economy.indices(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-   
 * **Returns**
 
     indices: *pd.DataFrame*

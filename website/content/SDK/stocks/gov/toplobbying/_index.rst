@@ -23,11 +23,6 @@ stocks.gov.toplobbying(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-s
-
-    
 * **Returns**
 
     pd.DataFrame

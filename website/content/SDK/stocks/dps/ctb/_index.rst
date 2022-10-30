@@ -20,11 +20,6 @@ stocks.dps.ctb(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-ost to borrow [Source: Interactive Broker]
-
-    
 * **Returns**
 
     pd.DataFrame

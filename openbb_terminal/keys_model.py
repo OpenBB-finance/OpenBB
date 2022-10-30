@@ -803,10 +803,15 @@ def set_reddit_key(
     Parameters
     ----------
         client_id: str
+            Client ID
         client_secret: str
+            Client secret
         password: str
+            User assword
         username: str
+            User username
         useragent: str
+            User useragent
         persist: bool
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
@@ -958,8 +963,11 @@ def set_twitter_key(
     Parameters
     ----------
         key: str
+            API key
         secret: str
+            API secret
         access_token: str
+            API token
         persist: bool
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
@@ -1034,7 +1042,9 @@ def set_rh_key(
     Parameters
     ----------
         username: str
+            User username
         password: str
+            User password
         persist: bool
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
@@ -1088,8 +1098,11 @@ def set_degiro_key(
     Parameters
     ----------
         username: str
+            User username
         password: str
+            User password
         secret: str
+            User secret
         persist: bool
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
@@ -1162,8 +1175,11 @@ def set_oanda_key(
     Parameters
     ----------
         account: str
+            User account
         access_token: str
+            User token
         account_type: str
+            User account type
         persist: bool
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
@@ -1229,7 +1245,9 @@ def set_binance_key(
     Parameters
     ----------
         key: str
+            API key
         secret: str
+            API secret
         persist: bool
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
@@ -1287,6 +1305,7 @@ def set_si_key(
     Parameters
     ----------
         key: str
+            API key
         persist: bool
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.
@@ -1351,8 +1370,11 @@ def set_coinbase_key(
     Parameters
     ----------
         key: str
+            API key
         secret: str
+            API secret
         passphrase: str
+            Account passphrase
         persist: bool
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.

@@ -20,11 +20,6 @@ economy.overview(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-erview
-
-    
 * **Returns**
 
     overview: *pd.DataFrame*

@@ -20,11 +20,6 @@ economy.currencies(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-rrencies
-
-    
 * **Returns**
 
     currencies: *pd.DataFrame*

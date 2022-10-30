@@ -23,11 +23,6 @@ crypto.onchain.btc_supply(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-upply [Source: https://api.blockchain.info/]
-
-    
 * **Returns**
 
     pd.DataFrame

@@ -21,12 +21,6 @@ stocks.disc.ugs(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-growth rates better than 25% and relatively low PE and PEG ratios.
-    [Source: Yahoo Finance]
-
-    
 * **Returns**
 
     pd.DataFrame

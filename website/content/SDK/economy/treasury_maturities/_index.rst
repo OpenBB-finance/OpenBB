@@ -20,11 +20,6 @@ economy.treasury_maturities(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-ions [Source: EconDB]
-
-    
 * **Returns**
 
     df: *pd.DataFrame*

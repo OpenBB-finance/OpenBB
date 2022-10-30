@@ -20,11 +20,6 @@ stocks.disc.gtech(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-h revenue and earnings growth in excess of 25%. [Source: Yahoo Finance]
-
-    
 * **Returns**
 
     pd.DataFrame

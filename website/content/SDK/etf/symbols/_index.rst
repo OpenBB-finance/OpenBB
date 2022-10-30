@@ -22,11 +22,6 @@ etf.symbols(
     ) -> Tuple[List[str], List[str]]
 {{< /highlight >}}
 
-* **Parameters**
-
-mbols
-
-    
 * **Returns**
 
     etf_symbols: List[str]:

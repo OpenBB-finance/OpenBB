@@ -19,10 +19,6 @@ portfolio.po.get_properties(
     ) -> List[str]
 {{< /highlight >}}
 
-* **Parameters**
-
-property optimization.
-    
 * **Returns**
 
     List[str]:

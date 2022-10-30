@@ -21,11 +21,6 @@ crypto.ov.list_of_coins(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
- coins on CoinPaprika  [Source: CoinPaprika]
-
-    
 * **Returns**
 
     pandas.DataFrame

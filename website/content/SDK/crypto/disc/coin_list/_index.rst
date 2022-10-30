@@ -21,11 +21,6 @@ crypto.disc.coin_list(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-le on CoinGecko [Source: CoinGecko]
-
-    
 * **Returns**
 
     pandas.DataFrame

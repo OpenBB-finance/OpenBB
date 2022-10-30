@@ -20,11 +20,6 @@ stocks.qa.fama_raw(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-a to calculate risk
-
-    
 * **Returns**
 
     fama : *pd.DataFrame*

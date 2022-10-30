@@ -20,10 +20,6 @@ economy.usbonds(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-
-    
 * **Returns**
 
     bonds: *pd.DataFrame*

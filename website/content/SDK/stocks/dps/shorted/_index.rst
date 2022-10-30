@@ -20,11 +20,6 @@ stocks.dps.shorted(
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-reener [Source: Yahoo Finance]
-
-    
 * **Returns**
 
     pd.DataFrame

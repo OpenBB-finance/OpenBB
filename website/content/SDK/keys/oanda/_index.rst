@@ -23,8 +23,11 @@ keys.oanda(
 * **Parameters**
 
         account: *str*
+            User account
         access_token: *str*
+            User token
         account_type: *str*
+            User account type
         persist: *bool*
             If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
             If True, api key change will be global, i.e. it will affect terminal environment variables.

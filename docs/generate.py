@@ -156,7 +156,7 @@ def generate_documentation(
                 f.write("\n")
 
                 # Parameters
-                if parameters_position != len(docstring):
+                if has_param:
 
                     parameters = docstring[
                         parameters_position + len(parameters_anchor) : returns_position
