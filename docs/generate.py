@@ -141,6 +141,7 @@ def generate_documentation(
                     sig = sig.replace(")", ", )")
 
                 sig = sig.replace("(", "(\n    ")
+                # TODO: Change this to regex to avoid paragraph when arg has comma
                 sig = sig.replace(", ", ",\n    ")
 
                 f.write("{{< highlight python >}}")
