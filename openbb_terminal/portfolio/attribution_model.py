@@ -1,12 +1,12 @@
 import os
 import json
-import yfinance as yf
-import yahooquery as yq
-import logging
-import pandas as pd
-from openbb_terminal.decorators import log_start_end
 from datetime import datetime
 from datetime import date
+import logging
+
+import yfinance as yf
+import pandas as pd
+from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
 
@@ -66,7 +66,12 @@ def get_spy_sector_contributions(
 
     # Load in info
     sp500_tickers_data = get_daily_sector_prices(start_date, end_date)
-    weights = yq.Ticker(sectors_ticker).fund_sector_weightings.to_dict()
+    weight_data = yf.Ticker("SPY").info["sectorWeightings"]
+
+    # reformat Data
+    weights = {"SPY":{}}
+    for sector in weight_data:
+        weights["SPY"].update(sector)
 
     # add the sectors + dates + adj close to the dataframe
     records = []
@@ -217,15 +222,11 @@ def percentage_attrib_categorizer(bench_df: pd.DataFrame, pf_df: pd.DataFrame):
 
     # 1. Excess Attribution
 
-    result["Excess Attribution"] = round(
-        result["Portfolio [%]"] - result["S&P500 [%]"], 2
-    )
+    result["Excess Attribution"] = result["Portfolio [%]"] - result["S&P500 [%]"]
 
     # 2. Attribution Ratio
 
-    result["Attribution Ratio"] = round(
-        result["Portfolio [%]"] / result["S&P500 [%]"], 2
-    )
+    result["Attribution Ratio"] = result["Portfolio [%]"] / result["S&P500 [%]"]
 
     # 3. Attribution Direction
 
@@ -286,11 +287,11 @@ def raw_attrib_categorizer(bench_df, pf_df):
 
     # 1. Excess Attribution
 
-    result["Excess Attribution"] = round(result["Portfolio"] - result["S&P500"], 4)
+    result["Excess Attribution"] = result["Portfolio"] - result["S&P500"]
 
     # 2. Attribution Ratio
 
-    result["Attribution Ratio"] = round(result["Portfolio"] / result["S&P500"], 2)
+    result["Attribution Ratio"] = result["Portfolio"] / result["S&P500"]
 
     # 3. Attribution Direction
 
