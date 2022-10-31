@@ -43,9 +43,9 @@ perf -p 5y
 perf -p 10y
 perf -p all
 holdv
-holdv --sum --raw -l 4
+holdv --unstack --raw -l 4
 holdp
-holdp --sum --raw -l 4
+holdp --unstack --raw -l 4
 yret
 yret -p 3y
 yret -p 5y
