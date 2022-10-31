@@ -1416,16 +1416,14 @@ def check_portfolio_benchmark_defined(portfolio_name: str, benchmark_name: str) 
     bool
         If both portfolio and benchmark have been defined
     """
-    if portfolio_name and benchmark_name:
-        return True
+
     if not portfolio_name:
-        if not benchmark_name:
-            console.print(
-                "[red]Please first define the portfolio (via 'load') "
-                "and the benchmark (via 'bench').[/red]\n"
-            )
-        else:
-            console.print("[red]Please first define the portfolio (via 'load')[/red]\n")
-    else:
+        console.print("[red]Please first define the portfolio (via 'load')[/red]\n")
+        return False
+
+    elif not benchmark_name:
         console.print("[red]Please first define the benchmark (via 'bench')[/red]\n")
-    return False
+        return False
+
+    else:
+        return True
