@@ -32,7 +32,7 @@ from openbb_terminal.cryptocurrency.due_diligence import (
     cryptopanic_view,
     tokenterminal_view,
 )
-from openbb_terminal.decorators import log_start_end
+from openbb_terminal.decorators import check_api_key, log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -1790,6 +1790,7 @@ class DueDiligenceController(CryptoBaseController):
             )
 
     @log_start_end(log=logger)
+    ##@check_api_key(["API_TOKEN_TERMINAL_KEY"])
     def call_funot(self, other_args):
         """Process fun command"""
         parser = argparse.ArgumentParser(
