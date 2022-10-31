@@ -14,7 +14,6 @@ from openbb_terminal.cryptocurrency.defi import (
     coindix_model,
     coindix_view,
     cryptosaurio_view,
-    defipulse_view,
     graph_model,
     graph_view,
     llama_model,
@@ -42,7 +41,6 @@ class DefiController(BaseController):
     """Defi Controller class"""
 
     CHOICES_COMMANDS = [
-        "dpi",
         "ldapps",
         "gdapps",
         "stvl",
@@ -73,24 +71,6 @@ class DefiController(BaseController):
             choices["newspaper"] = {
                 "--limit": {str(c): {} for c in range(1, 100)},
                 "-l": "--limit",
-            }
-            choices["dpi"] = {
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
-                "--sort": {
-                    c: {}
-                    for c in [
-                        "Rank",
-                        "Name",
-                        "Chain",
-                        "Category",
-                        "30D_Users",
-                        "TVL_$",
-                        "1_Day_%",
-                    ]
-                },
-                "-s": "--sort",
-                "--ascend": {},
             }
             choices["vaults"] = {
                 "--chain": {c: {} for c in coindix_model.CHAINS},
@@ -460,66 +440,6 @@ class DefiController(BaseController):
         if ns_parser:
             terramoney_fcd_view.display_staking_returns_history(
                 export=ns_parser.export, limit=ns_parser.limit
-            )
-
-    @log_start_end(log=logger)
-    def call_dpi(self, other_args: List[str]):
-        """Process dpi command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="dpi",
-            description="""
-                Displays DeFi Pulse crypto protocols.
-                [Source: https://defipulse.com/]
-            """,
-        )
-
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            type=check_positive,
-            help="Number of records to display",
-            default=15,
-        )
-
-        parser.add_argument(
-            "-s",
-            "--sort",
-            dest="sortby",
-            type=str,
-            help="Sort by given column. Default: Rank",
-            default="Rank",
-            choices=[
-                "Rank",
-                "Name",
-                "Chain",
-                "Category",
-                "30D_Users",
-                "TVL_$",
-                "1_Day_%",
-            ],
-        )
-
-        parser.add_argument(
-            "--ascend",
-            action="store_true",
-            help="Flag to sort in ascending order (highest first)",
-            dest="ascending",
-            default=False,
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
-            defipulse_view.display_defipulse(
-                limit=ns_parser.limit,
-                sortby=ns_parser.sortby,
-                ascend=ns_parser.ascending,
-                export=ns_parser.export,
             )
 
     @log_start_end(log=logger)

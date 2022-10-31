@@ -192,8 +192,6 @@ main:
                 ref: /terminal/crypto/defi/aterra
               - name: ayr
                 ref: /terminal/crypto/defi/ayr
-              - name: dpi
-                ref: /terminal/crypto/defi/dpi
               - name: dtvl
                 ref: /terminal/crypto/defi/dtvl
               - name: gacc
