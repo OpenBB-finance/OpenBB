@@ -123,13 +123,15 @@ class StocksController(StockBaseController):
             choices["search"] = {
                 "--query": None,
                 "-q": "--query",
-                "--country": {c: {} for c in self.country},
+                "--country": {c.lower(): {} for c in self.country},
                 "-c": "--country",
                 "--sector": {c: {} for c in self.sector},
                 "-s": "--sector",
                 "--industry": {c: {} for c in self.industry},
                 "-i": "--industry",
-                "--exchange": {c: {} for c in stocks_helper.market_coverage_suffix},
+                "--exchange": {
+                    c.lower(): {} for c in stocks_helper.market_coverage_suffix
+                },
                 "-e": "--exchange",
                 "--limit": one_to_hundred,
                 "-l": "--limit",
@@ -267,11 +269,12 @@ class StocksController(StockBaseController):
             dest="industry",
             help="Search by industry to find stocks matching the criteria",
         )
+        country_opts = [x.lower() for x in stocks_helper.market_coverage_suffix]
         parser.add_argument(
             "-e",
             "--exchange",
             default="",
-            choices=list(stocks_helper.market_coverage_suffix.keys()),
+            choices=country_opts,
             dest="exchange_country",
             help="Search by a specific exchange country to find stocks matching the criteria",
         )
