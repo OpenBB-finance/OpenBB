@@ -395,7 +395,9 @@ def display_acf(
     sm.graphics.tsa.plot_acf(np.diff(np.diff(data.values)), lags=lags, ax=ax1)
     ax1.set_title(f"{symbol} Returns Auto-Correlation", fontsize=9)
     # Diff Partial auto - correlation function for original time series
-    sm.graphics.tsa.plot_pacf(np.diff(np.diff(data.values)), lags=lags, ax=ax2)
+    sm.graphics.tsa.plot_pacf(
+        np.diff(np.diff(data.values)), lags=lags, ax=ax2, method="ywm"
+    )
     ax2.set_title(
         f"{symbol} Returns Partial Auto-Correlation",
         fontsize=9,
@@ -408,7 +410,9 @@ def display_acf(
         fontsize=9,
     )
     # Diff Diff Partial auto-correlation function for original time series
-    sm.graphics.tsa.plot_pacf(np.diff(np.diff(data.values)), lags=lags, ax=ax4)
+    sm.graphics.tsa.plot_pacf(
+        np.diff(np.diff(data.values)), lags=lags, ax=ax4, method="ywm"
+    )
     ax4.set_title(
         f"Change in {symbol} Returns Partial Auto-Correlation",
         fontsize=9,

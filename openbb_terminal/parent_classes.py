@@ -285,6 +285,8 @@ class BaseController(metaclass=ABCMeta):
         """
         actions = self.parse_input(an_input)
 
+        console.print()
+
         # Empty command
         if len(actions) == 0:
             pass
@@ -342,7 +344,6 @@ class BaseController(metaclass=ABCMeta):
     def call_home(self, _) -> None:
         """Process home command"""
         self.save_class()
-        console.print("")
         if self.PATH.count("/") == 1 and obbff.ENABLE_EXIT_AUTO_HELP:
             self.print_help()
         for _ in range(self.PATH.count("/") - 1):
@@ -388,7 +389,6 @@ class BaseController(metaclass=ABCMeta):
     def call_quit(self, _) -> None:
         """Process quit menu command"""
         self.save_class()
-        console.print("")
         self.queue.insert(0, "quit")
 
     @log_start_end(log=logger)
@@ -396,7 +396,6 @@ class BaseController(metaclass=ABCMeta):
         # Not sure how to handle controller loading here
         """Process exit terminal command"""
         self.save_class()
-        console.print("")
         for _ in range(self.PATH.count("/")):
             self.queue.insert(0, "quit")
 
@@ -825,6 +824,7 @@ class BaseController(metaclass=ABCMeta):
                     # Get input from user without auto-completion
                     else:
                         an_input = input(f"{get_flair()} {self.PATH} $ ")
+
                 except (KeyboardInterrupt, EOFError):
                     # Exit in case of keyboard interrupt
                     an_input = "exit"
@@ -836,6 +836,10 @@ class BaseController(metaclass=ABCMeta):
 
                 # Process the input command
                 self.queue = self.switch(an_input)
+                if not self.queue or (
+                    self.queue and self.queue[0] not in ("quit", "help")
+                ):
+                    console.print()
 
             except SystemExit:
                 if not self.contains_keys(an_input):
