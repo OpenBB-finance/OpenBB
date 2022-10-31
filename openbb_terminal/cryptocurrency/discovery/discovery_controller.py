@@ -181,13 +181,10 @@ class DiscoveryController(BaseController):
             default="Market Cap Rank"
             if get_ordered_list_sources(f"{self.PATH}top")[0] == "CoinGecko"
             else "CMC_Rank",
-            choices=pycoingecko_view.COINS_COLUMNS
-            if get_ordered_list_sources(f"{self.PATH}top")[0] == "CoinGecko"
-            else coinmarketcap_model.FILTERS,
         )
         parser.add_argument(
             "--descend",
-            action="store_false",
+            action="store_true",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
             default=False,
@@ -206,6 +203,7 @@ class DiscoveryController(BaseController):
                     category=ns_parser.category,
                     limit=ns_parser.limit,
                     export=ns_parser.export,
+                    ascend=not ns_parser.descend,
                 )
             elif ns_parser.source == "CoinMarketCap":
                 coinmarketcap_view.display_cmc_top_coins(
