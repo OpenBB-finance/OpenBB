@@ -39,8 +39,15 @@ def display_uni_tokens(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = graph_model.get_uni_tokens(skip=skip, sortby=sortby, ascend=ascend)
+    df = graph_model.get_uni_tokens(skip=skip)
     df_data = df.copy()
+
+    #Converting these to float
+    df['tradeVolumeUSD'] = df['tradeVolumeUSD'].astype(float)
+    df['totalLiquidity'] = df['totalLiquidity'].astype(float)
+    df['txCount'] = df['txCount'].astype(float)
+
+    df = df.sort_values(by=sortby, ascending=ascend)
 
     df[["totalLiquidity", "tradeVolumeUSD"]] = df[
         ["totalLiquidity", "tradeVolumeUSD"]
