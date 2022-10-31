@@ -1282,6 +1282,27 @@ class ForecastController(BaseController):
             prog="sto",
             description="Add in Stochastic Oscillator %K and %D",
         )
+        parser.add_argument(
+            "--close_col",
+            help="Close column name to use for Stochastic Oscillator",
+            dest="close_col",
+            type=str,
+            default="close",
+        )
+        parser.add_argument(
+            "--high_col",
+            help="High column name to use for Stochastic Oscillator",
+            dest="high_col",
+            type=str,
+            default="high",
+        )
+        parser.add_argument(
+            "--low_col",
+            help="Low column name to use for Stochastic Oscillator",
+            dest="low_col",
+            type=str,
+            default="low",
+        )
         # if user does not put in --target-dataset
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--target-dataset")
@@ -1297,7 +1318,10 @@ class ForecastController(BaseController):
 
             self.datasets[ns_parser.target_dataset] = forecast_model.add_sto(
                 self.datasets[ns_parser.target_dataset],
-                ns_parser.period,
+                close_column=ns_parser.close_col,
+                high_column=ns_parser.high_col,
+                low_column=ns_parser.low_col,
+                period=ns_parser.period,
             )
             console.print(
                 f"Successfully added 'STOK&D_{ns_parser.period}' to '{ns_parser.target_dataset}' dataset"

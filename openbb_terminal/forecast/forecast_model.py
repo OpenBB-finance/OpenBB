@@ -236,7 +236,13 @@ def add_ema(
 
 
 @log_start_end(log=logger)
-def add_sto(dataset: pd.DataFrame, period: int = 10) -> pd.DataFrame:
+def add_sto(
+    dataset: pd.DataFrame,
+    close_column: str = "close",
+    high_column: str = "high",
+    low_column: str = "low",
+    period: int = 10,
+) -> pd.DataFrame:
     """Stochastic Oscillator %K and %D : A stochastic oscillator is a momentum indicator comparing a particular closing
     price of a security to a range of its prices over a certain period of time. %K and %D are slow and fast indicators.
 
@@ -258,15 +264,15 @@ def add_sto(dataset: pd.DataFrame, period: int = 10) -> pd.DataFrame:
 
     # check if columns exist
     if (
-        "low" in dataset.columns
-        and "high" in dataset.columns
-        and "close" in dataset.columns
+        low_column in dataset.columns
+        and high_column in dataset.columns
+        and close_column in dataset.columns
     ):
         STOK = (
-            (dataset["close"] - dataset["low"].rolling(period).min())
+            (dataset[close_column] - dataset[low_column].rolling(period).min())
             / (
-                dataset["high"].rolling(period).max()
-                - dataset["low"].rolling(period).min()
+                dataset[high_column].rolling(period).max()
+                - dataset[low_column].rolling(period).min()
             )
         ) * 100
 
