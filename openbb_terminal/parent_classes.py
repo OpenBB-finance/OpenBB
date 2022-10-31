@@ -132,7 +132,9 @@ class BaseController(metaclass=ABCMeta):
         self.completer: Union[None, NestedCompleter] = None
 
         self.parser = argparse.ArgumentParser(
-            add_help=False, prog=self.path[-1] if self.PATH != "/" else "terminal", exit_on_error=False
+            add_help=False,
+            prog=self.path[-1] if self.PATH != "/" else "terminal",
+            exit_on_error=False,
         )
         self.parser.add_argument("cmd", choices=self.controller_choices)
 
@@ -305,7 +307,9 @@ class BaseController(metaclass=ABCMeta):
         # Single command fed, process
         else:
             try:
-                (known_args, other_args) = self.parser.parse_known_args(an_input.split())
+                (known_args, other_args) = self.parser.parse_known_args(
+                    an_input.split()
+                )
             except argparse.ArgumentError:  # noqa
                 raise SystemExit
 
