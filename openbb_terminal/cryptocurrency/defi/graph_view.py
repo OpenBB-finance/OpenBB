@@ -133,6 +133,11 @@ def display_recently_added(
     )
     df_data = df.copy()
 
+    #Converting these to float
+    df['volumeUSD'] = df['volumeUSD'].astype(float)
+    df['txCount'] = df['txCount'].astype(float)
+    df['totalSupply'] = df['totalSupply'].astype(float)
+
     df = df.sort_values(by=sortby, ascending=ascend)
 
     df[["volumeUSD", "totalSupply"]] = df[["volumeUSD", "totalSupply"]].applymap(
