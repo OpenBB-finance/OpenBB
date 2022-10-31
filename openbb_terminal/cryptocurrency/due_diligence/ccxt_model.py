@@ -38,7 +38,6 @@ def get_binance_currencies():
     exchange = ccxt.binance({"fetchCurrencies": True})
     exchange.load_markets()
     currencies = exchange.quoteCurrencies
-    print(currencies)
     return [c["code"] for c in currencies.values()]
 
 def get_orderbook(exchange_id: str, symbol: str, vs: str) -> Dict:
