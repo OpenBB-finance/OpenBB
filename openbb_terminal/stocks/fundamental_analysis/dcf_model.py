@@ -414,7 +414,9 @@ def create_dataframe(symbol: str, statement: str, period: str = "annual"):
         return pd.DataFrame(), None, None
 
     soup = BeautifulSoup(r.content, "html.parser")
-    phrase = soup.find("div", attrs={"class": "info-long svelte-f7kao3"})
+    phrase = soup.find(
+        "div", attrs={"class": "hidden pb-1 text-sm text-gray-600 lg:block"}
+    )
     phrase = phrase.get_text().lower() if phrase else ""
 
     if "thousand" in phrase:
