@@ -432,7 +432,10 @@ class StocksController(StockBaseController):
             "--ma",
             dest="mov_avg",
             type=str,
-            help="Add moving average in number of days to plot and separate by a comma",
+            help=(
+                "Add moving average in number of days to plot and separate by a comma. "
+                "Value for ma (moving average) keyword needs to be greater than 1."
+            ),
             default=None,
         )
         parser.add_argument(
@@ -491,10 +494,15 @@ class StocksController(StockBaseController):
 
                         for num in mov_list:
                             try:
-                                mov_avgs.append(int(num))
+                                num = int(num)
+
+                                if num <= 1:
+                                    raise ValueError
+
+                                mov_avgs.append(num)
                             except ValueError:
                                 console.print(
-                                    f"{num} is not a valid moving average, must be integer"
+                                    f"[red]{num} is not a valid moving average, must be an integer greater than 1."
                                 )
 
                     stocks_helper.display_candle(
@@ -538,9 +546,8 @@ class StocksController(StockBaseController):
             "-s",
             "--sources",
             dest="sources",
-            default=[],
-            nargs="+",
-            help="Show news only from the sources specified (e.g bbc yahoo.com)",
+            type=str,
+            help="Show news only from the sources specified (e.g bloomberg,reuters)",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
@@ -552,12 +559,7 @@ class StocksController(StockBaseController):
                 console.print("Use 'load <ticker>' prior to this command!")
                 return
 
-            if ns_parser.source == "NewsAPI":
-                sources = ns_parser.sources
-                for idx, source in enumerate(sources):
-                    if source.find(".") == -1:
-                        sources[idx] += ".com"
-
+            if ns_parser.source == "NewsApi":
                 d_stock = yf.Ticker(self.ticker).info
 
                 newsapi_view.display_news(
@@ -567,7 +569,7 @@ class StocksController(StockBaseController):
                     limit=ns_parser.limit,
                     start_date=ns_parser.n_start_date.strftime("%Y-%m-%d"),
                     show_newest=ns_parser.n_oldest,
-                    sources=",".join(sources),
+                    sources=ns_parser.sources,
                 )
 
             elif ns_parser.source == "Feedparser":
@@ -578,7 +580,7 @@ class StocksController(StockBaseController):
                     term=d_stock["shortName"].replace(" ", "+")
                     if "shortName" in d_stock
                     else self.ticker,
-                    sources=" ".join(ns_parser.sources),
+                    sources=ns_parser.sources,
                     limit=ns_parser.limit,
                     export=ns_parser.export,
                 )

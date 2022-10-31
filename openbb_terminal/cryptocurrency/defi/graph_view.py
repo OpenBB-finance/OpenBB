@@ -215,13 +215,7 @@ def display_last_uni_swaps(
         Export dataframe data to csv,json,xlsx file
     """
 
-    df = graph_model.get_last_uni_swaps(limit=limit).sort_values(
-        by=sortby, ascending=ascend
-    )
-    df["amountUSD"] = df["amountUSD"].apply(
-        lambda x: lambda_very_long_number_formatter(x)
-    )
-    df_data = df.copy()
+    df = graph_model.get_last_uni_swaps(limit=limit, sortby=sortby, ascend=ascend)
 
     print_rich_table(
         df, headers=list(df.columns), show_index=False, title="Last Uniswap Swaps"
@@ -231,5 +225,5 @@ def display_last_uni_swaps(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "swaps",
-        df_data,
+        df,
     )
