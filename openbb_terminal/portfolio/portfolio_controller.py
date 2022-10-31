@@ -181,8 +181,8 @@ class PortfolioController(BaseController):
         choices["bench"]["--full_shares"] = {}
         choices["bench"]["-s"] = "--full_shares"
         hold = {
-            "--sum": {},
-            "-s": "--sum",
+            "--unstack": {},
+            "-u": "--unstack",
             "--raw": {},
             "--limit": one_to_hundred,
             "-l": "--limit",
@@ -692,11 +692,11 @@ class PortfolioController(BaseController):
             description="Display holdings of assets (absolute value)",
         )
         parser.add_argument(
-            "-s",
-            "--sum",
+            "-u",
+            "--unstack",
             action="store_true",
             default=False,
-            dest="sum_assets",
+            dest="unstack",
             help="Sum all assets value over time",
         )
         ns_parser = self.parse_known_args_and_warn(
@@ -712,7 +712,7 @@ class PortfolioController(BaseController):
             ):
                 portfolio_view.display_holdings_value(
                     self.portfolio,
-                    ns_parser.sum_assets,
+                    ns_parser.unstack,
                     ns_parser.raw,
                     ns_parser.limit,
                     ns_parser.export,
@@ -728,11 +728,11 @@ class PortfolioController(BaseController):
             description="Display holdings of assets (in percentage)",
         )
         parser.add_argument(
-            "-s",
-            "--sum",
+            "-u",
+            "--unstack",
             action="store_true",
             default=False,
-            dest="sum_assets",
+            dest="unstack",
             help="Sum all assets percentage over time",
         )
         ns_parser = self.parse_known_args_and_warn(
@@ -748,7 +748,7 @@ class PortfolioController(BaseController):
             ):
                 portfolio_view.display_holdings_percentage(
                     self.portfolio,
-                    ns_parser.sum_assets,
+                    ns_parser.unstack,
                     ns_parser.raw,
                     ns_parser.limit,
                     ns_parser.export,

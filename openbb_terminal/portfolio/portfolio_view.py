@@ -621,7 +621,7 @@ def display_distribution_returns(
 @log_start_end(log=logger)
 def display_holdings_value(
     portfolio: portfolio_model.PortfolioModel,
-    sum_assets: bool = False,
+    unstack: bool = False,
     raw: bool = False,
     limit: int = 10,
     export: str = "",
@@ -633,8 +633,8 @@ def display_holdings_value(
     ----------
     portfolio: Portfolio
         Portfolio object with trades loaded
-    sum_assets: bool
-        Sum assets over time
+    unstack: bool
+        Individual assets over time
     raw : bool
         To display raw data
     limit : int
@@ -664,7 +664,8 @@ def display_holdings_value(
                 return
             ax = external_axes[0]
 
-        if sum_assets:
+        if not unstack:
+            all_holdings.drop(columns=["Total Value"], inplace=True)
             ax.stackplot(
                 all_holdings.index,
                 [all_holdings[col] for col in all_holdings.columns],
@@ -698,7 +699,7 @@ def display_holdings_value(
 @log_start_end(log=logger)
 def display_holdings_percentage(
     portfolio: portfolio_model.PortfolioModel,
-    sum_assets: bool = False,
+    unstack: bool = False,
     raw: bool = False,
     limit: int = 10,
     export: str = "",
@@ -710,8 +711,8 @@ def display_holdings_percentage(
     ----------
     portfolio: Portfolio
         Portfolio object with trades loaded
-    sum_assets: bool
-        Sum assets over time
+    unstack: bool
+        Individual assets over time
     raw : bool
         To display raw data
     limit : int
@@ -747,7 +748,7 @@ def display_holdings_percentage(
                 return
             ax = external_axes[0]
 
-        if sum_assets:
+        if not unstack:
             ax.stackplot(
                 all_holdings.index,
                 all_holdings.values.T,
