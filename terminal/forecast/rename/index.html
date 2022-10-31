@@ -11,7 +11,7 @@
 
     <meta name="description" content="usage: rename [-d {}] [-o OLDCOL] [-n NEWCOL] [-h] The column you want to rename from a dataset.
 optional arguments: -d {}, --dataset {} Dataset that will get a column renamed (default: None) -o OLDCOL, --oldcol OLDCOL Old column from dataset to be renamed (default: None) -n NEWCOL, --newcol NEWCOL New column from dataset to be renamed (default: None) -h, --help show this help message (default: False) Example:
-2022 Jul 23, 10:16 (🦋) /forecast/ $ show AAPL AAPL has following shape (rowxcolumn): (759, 7) Dataset AAPL | Showing 10 of 759 rows ┏━━━┳━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┓ ┃ ┃ date ┃ open ┃ high ┃ low ┃ close ┃ adj_close ┃ volume ┃ ┡━━━╇━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━┩ │ 0 │ 2019-07-15 │ 51.">
+2022 Jul 23, 10:16 (🦋) /forecast/ $ show AAPL AAPL dataset has shape (row, column): (759, 7) Dataset AAPL | Showing 10 of 759 rows ┏━━━┳━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┓ ┃ ┃ date ┃ open ┃ high ┃ low ┃ close ┃ adj_close ┃ volume ┃ ┡━━━╇━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━┩ │ 0 │ 2019-07-15 │ 51.">
 
 
 
@@ -47473,7 +47473,7 @@ code, img {
   -h, --help            show this help message (default: False)
 </code></pre><p>Example:</p>
 <pre><code>2022 Jul 23, 10:16 (🦋) /forecast/ $ show AAPL
-AAPL has following shape (rowxcolumn): (759, 7)
+AAPL dataset has shape (row, column): (759, 7)
 
                   Dataset AAPL | Showing 10 of 759 rows
 ┏━━━┳━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┓
@@ -47503,7 +47503,7 @@ AAPL has following shape (rowxcolumn): (759, 7)
 2022 Jul 23, 10:16 (🦋) /forecast/ $ rename AAPL -o close -n new_name
 
 2022 Jul 23, 10:16 (🦋) /forecast/ $ show AAPL
-AAPL has following shape (rowxcolumn): (759, 7)
+AAPL dataset has shape (row, column): (759, 7)
 
                    Dataset AAPL | Showing 10 of 759 rows
 ┏━━━┳━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┓

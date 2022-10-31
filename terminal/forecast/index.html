@@ -47702,7 +47702,7 @@ This can be seen in everyday applications:</p>
 <p>Before we go combining them, let&rsquo;s train a simple <code>Block RNN</code> model on MSFT <code>close</code> price to see how to use <code>past_covariates</code></p>
 <p>Make sure to always check your current data set to know the column names:</p>
 <pre><code>(🦋) /forecast/ $ show MSFT
-MSFT has following shape (rowxcolumn): (759, 7)
+MSFT dataset has shape (row, column): (759, 7)
 
                         Dataset MSFT | Showing 10 of 759 rows                         
 ┏━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┓
@@ -47815,7 +47815,7 @@ Block RNN model obtains MAPE: 4.26%
 <p>We will combine <code>MSFT</code> and <code>AAPL</code>.</p>
 <pre><code>(🦋) /forecast/ $ combine MSFT -c AAPL
 (🦋) /forecast/ $ show MSFT
-MSFT has following shape (rowxcolumn): (759, 13)
+MSFT dataset has shape (row, column): (759, 13)
 Dataframe has more than 10 columns. Please export to see all of the data.
 
 
