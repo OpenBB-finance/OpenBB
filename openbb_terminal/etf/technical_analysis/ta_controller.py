@@ -30,6 +30,7 @@ from openbb_terminal.helper_funcs import (
     check_positive,
     check_positive_list,
     valid_date,
+    EXPORT_ONLY_FIGURES_ALLOWED,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -47,6 +48,7 @@ class TechnicalAnalysisController(BaseController):
         "sma",
         "wma",
         "hma",
+        "vwap",
         "zlma",
         "cci",
         "macd",
@@ -63,6 +65,10 @@ class TechnicalAnalysisController(BaseController):
         "adosc",
         "obv",
         "fib",
+        "tv",
+        "clenow",
+        "demark",
+        "atr",
     ]
 
     PATH = "/etf/ta/"
@@ -80,7 +86,7 @@ class TechnicalAnalysisController(BaseController):
         self.ticker = ticker
         self.start = start
         self.data = data
-
+        self.interval = "1440min"
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
 
@@ -211,6 +217,8 @@ class TechnicalAnalysisController(BaseController):
         mt.add_cmd("stoch")
         mt.add_cmd("fisher")
         mt.add_cmd("cg")
+        mt.add_cmd("clenow")
+        mt.add_cmd("demark")
         mt.add_info("_trend_")
         mt.add_cmd("adx")
         mt.add_cmd("aroon")
@@ -218,6 +226,7 @@ class TechnicalAnalysisController(BaseController):
         mt.add_cmd("bbands")
         mt.add_cmd("donchian")
         mt.add_cmd("kc")
+        mt.add_cmd("atr")
         mt.add_info("_volume_")
         mt.add_cmd("ad")
         mt.add_cmd("adosc")
@@ -484,6 +493,67 @@ class TechnicalAnalysisController(BaseController):
                 data=self.data["Adj Close"],
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_vwap(self, other_args: List[str]):
+        """Process vwap command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="vwap",
+            description="""
+                The Volume Weighted Average Price that measures the average typical price
+                by volume. It is typically used with intraday charts to identify general direction.
+            """,
+        )
+        parser.add_argument(
+            "-o",
+            "--offset",
+            action="store",
+            dest="n_offset",
+            type=int,
+            default=0,
+            help="offset",
+        )
+        parser.add_argument(
+            "--start",
+            dest="start",
+            type=valid_date,
+            help="Starting date to select",
+            required="--end" in other_args,
+        )
+        parser.add_argument(
+            "--end",
+            dest="end",
+            type=valid_date,
+            help="Ending date to select",
+            required="--start" in other_args,
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+        if ns_parser:
+            # Daily
+            if self.interval == "1440min":
+                if not ns_parser.start:
+                    console.print(
+                        "If no date conditions, VWAP should be used with intraday data. \n"
+                    )
+                    return
+                interval_text = "Daily"
+            else:
+                interval_text = self.interval
+
+            overlap_view.view_vwap(
+                data=self.data,
+                symbol=self.ticker,
+                start_date=ns_parser.start,
+                end_date=ns_parser.end,
+                offset=ns_parser.n_offset,
+                interval=interval_text,
                 export=ns_parser.export,
             )
 
@@ -925,7 +995,7 @@ class TechnicalAnalysisController(BaseController):
             action="store",
             dest="n_length",
             type=check_positive,
-            default=5,
+            default=15,
             help="length",
         )
         parser.add_argument(
@@ -1244,5 +1314,123 @@ class TechnicalAnalysisController(BaseController):
                 limit=ns_parser.period,
                 start_date=ns_parser.start,
                 end_date=ns_parser.end,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_clenow(self, other_args: List[str]):
+        """Process clenow command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="clenow",
+            description="Calculates the Clenow Volatility Adjusted Momentum.",
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            dest="period",
+            help="Lookback period for regression",
+            default=90,
+            type=check_positive,
+        )
+
+        if self.interval != "1440min":
+            console.print(
+                "[red]This regression should be performed with daily data and at least 90 days.[/red]"
+            )
+            return
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
+        )
+        if ns_parser:
+            momentum_view.display_clenow_momentum(
+                self.data["Adj Close"],
+                self.ticker.upper(),
+                ns_parser.period,
+                ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_demark(self, other_args: List[str]):
+        """Process demark command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="demark",
+            description="Calculates the Demark sequential indicator.",
+        )
+        parser.add_argument(
+            "-m",
+            "--min",
+            help="Minimum value of indicator to show (declutters plot).",
+            dest="min_to_show",
+            type=check_positive,
+            default=5,
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_FIGURES_ALLOWED
+        )
+        if ns_parser:
+            momentum_view.display_demark(
+                self.data,
+                self.ticker.upper(),
+                min_to_show=ns_parser.min_to_show,
+                export=ns_parser.export,
+            )
+
+    @log_start_end(log=logger)
+    def call_atr(self, other_args: List[str]):
+        """Process atr command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="atr",
+            description="""
+                 Averge True Range is used to measure volatility, especially volatility caused by
+                gaps or limit moves.
+            """,
+        )
+        parser.add_argument(
+            "-l",
+            "--length",
+            action="store",
+            dest="n_length",
+            type=check_positive,
+            default=14,
+            help="Window length",
+        )
+        parser.add_argument(
+            "-m",
+            "--mamode",
+            action="store",
+            dest="s_mamode",
+            default="ema",
+            choices=volatility_model.MAMODES,
+            help="mamode",
+        )
+        parser.add_argument(
+            "-o",
+            "--offset",
+            action="store",
+            dest="n_offset",
+            type=int,
+            default=0,
+            help="offset",
+        )
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
+        )
+
+        if ns_parser:
+            volatility_view.display_atr(
+                data=self.data,
+                symbol=self.ticker,
+                window=ns_parser.n_length,
+                mamode=ns_parser.s_mamode,
+                offset=ns_parser.n_offset,
                 export=ns_parser.export,
             )

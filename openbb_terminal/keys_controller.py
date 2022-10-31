@@ -8,6 +8,7 @@ import logging
 from typing import Dict, List
 
 from tqdm import tqdm
+from requests import exceptions
 
 from openbb_terminal import feature_flags as obbff, keys_view
 from openbb_terminal import keys_model
@@ -65,9 +66,12 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         bool
             True if at least 1 key is defined, False otherwise
         """
-        for api in self.API_LIST:
-            if getattr(keys_model, "check_" + str(api) + "_key")() != "not defined":
-                return True
+        try:
+            for api in self.API_LIST:
+                if getattr(keys_model, "check_" + str(api) + "_key")() != "not defined":
+                    return True
+        except exceptions.ConnectionError:
+            return True
         return False
 
     def print_help(self):
