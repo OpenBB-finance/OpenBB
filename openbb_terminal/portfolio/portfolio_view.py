@@ -409,7 +409,7 @@ def display_monthly_returns(
     if raw:
         print_rich_table(
             portfolio_returns,
-            title="Monthly returns",
+            title="Monthly returns - portfolio [%]",
             headers=portfolio_returns.columns,
             show_index=True,
         )
@@ -417,7 +417,7 @@ def display_monthly_returns(
 
         print_rich_table(
             benchmark_returns,
-            title="Monthly returns",
+            title="Monthly returns - benchmark [%]",
             headers=benchmark_returns.columns,
             show_index=True,
         )
