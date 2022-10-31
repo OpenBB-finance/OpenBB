@@ -1283,21 +1283,21 @@ class ForecastController(BaseController):
             description="Add in Stochastic Oscillator %K and %D",
         )
         parser.add_argument(
-            "--close_col",
+            "--close-col",
             help="Close column name to use for Stochastic Oscillator",
             dest="close_col",
             type=str,
             default="close",
         )
         parser.add_argument(
-            "--high_col",
+            "--high-col",
             help="High column name to use for Stochastic Oscillator",
             dest="high_col",
             type=str,
             default="high",
         )
         parser.add_argument(
-            "--low_col",
+            "--low-col",
             help="Low column name to use for Stochastic Oscillator",
             dest="low_col",
             type=str,
@@ -1541,6 +1541,27 @@ class ForecastController(BaseController):
             prog="atr",
             description="Add Average True Range to dataset of specific stock ticker.",
         )
+        parser.add_argument(
+            "--close-col",
+            help="Close column name to use for Average True Range.",
+            dest="close_col",
+            type=str,
+            default="close",
+        )
+        parser.add_argument(
+            "--high-col",
+            help="High column name to use for Average True Range.",
+            dest="high_col",
+            type=str,
+            default="high",
+        )
+        parser.add_argument(
+            "--low-col",
+            help="Low column name to use for Average True Range.",
+            dest="low_col",
+            type=str,
+            default="low",
+        )
 
         # if user does not put in --target-dataset
         if other_args and "-" not in other_args[0][0]:
@@ -1560,7 +1581,10 @@ class ForecastController(BaseController):
 
             check = False
             self.datasets[ns_parser.target_dataset], check = forecast_model.add_atr(
-                self.datasets[ns_parser.target_dataset]
+                self.datasets[ns_parser.target_dataset],
+                close_column=ns_parser.close_col,
+                high_column=ns_parser.high_col,
+                low_column=ns_parser.low_col,
             )
             if check:
                 console.print(
