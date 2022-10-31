@@ -102,14 +102,18 @@ def get_series_notes(search_query: str, limit: int = -1) -> pd.DataFrame:
         else:
             console.print("No matches found. \n")
 
-        df_fred["notes"] = df_fred["notes"].apply(
-            lambda x: "\n".join(textwrap.wrap(x, width=100))
-            if isinstance(x, str)
-            else x
-        )
-        df_fred["title"] = df_fred["title"].apply(
-            lambda x: "\n".join(textwrap.wrap(x, width=50)) if isinstance(x, str) else x
-        )
+        if "notes" in df_fred.columns:
+            df_fred["notes"] = df_fred["notes"].apply(
+                lambda x: "\n".join(textwrap.wrap(x, width=100))
+                if isinstance(x, str)
+                else x
+            )
+        if "title" in df_fred.columns:
+            df_fred["title"] = df_fred["title"].apply(
+                lambda x: "\n".join(textwrap.wrap(x, width=50))
+                if isinstance(x, str)
+                else x
+            )
 
         if limit != -1:
             df_fred = df_fred[:limit]

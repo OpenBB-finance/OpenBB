@@ -12,7 +12,7 @@ The Insider Trading Menu has two general purposes:
   - A stock screener for SEC Form 4 filings.
   - Researching individual companies for executive and director transactions.
 
-Navaigate to the Insider Trading submenu from the `stocks` menu by typing `ins` and pressing `enter`. The features in this menu function only for companies registered with the SEC, that also trade in public markets.
+Navigate to the Insider Trading submenu from the `stocks` menu by typing `ins` and pressing `enter`. The features in this menu function only for companies registered with the SEC, that also trade in public markets.
 
 <img width="1174" alt="Insider Trading Menu" src="https://user-images.githubusercontent.com/85772166/173204667-6be5813f-ce80-4c11-b63b-35363d8caa44.png">
 

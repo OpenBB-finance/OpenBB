@@ -1,0 +1,13 @@
+reports
+
+## defaults
+etf
+
+etf --symbol VEA
+
+etf --symbol VWCE
+
+# test with random pairs
+etf --symbol ABCEF
+
+exit

@@ -17,7 +17,6 @@ else:
     WITH_GIT = True
 
 # IMPORTATION INTERNAL
-import openbb_terminal.feature_flags as obbff
 from openbb_terminal.config_terminal import (
     LOGGING_APP_NAME,
     LOGGING_AWS_ACCESS_KEY_ID,
@@ -26,6 +25,7 @@ from openbb_terminal.config_terminal import (
     LOGGING_HANDLERS,
     LOGGING_ROLLING_CLOCK,
     LOGGING_VERBOSITY,
+    LOGGING_COMMIT_HASH,
 )
 from openbb_terminal.core.log.generation.settings import (
     AppSettings,
@@ -68,11 +68,11 @@ def get_app_id() -> str:
     return app_id
 
 
-def get_commit_hash() -> str:
+def get_commit_hash(use_env=True) -> str:
     """Get Commit Short Hash"""
 
-    if obbff.LOGGING_COMMIT_HASH != "REPLACE_ME":
-        return obbff.LOGGING_COMMIT_HASH
+    if use_env and LOGGING_COMMIT_HASH != "REPLACE_ME":
+        return LOGGING_COMMIT_HASH
 
     git_dir = Path(__file__).parent.parent.joinpath(".git")
 

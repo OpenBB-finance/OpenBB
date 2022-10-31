@@ -18,7 +18,6 @@ from prompt_toolkit.completion import NestedCompleter
 from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 import pandas as pd
-
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal import keys_controller
 from openbb_terminal.terminal_helper import is_packaged_application
@@ -40,7 +39,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.loggers import setup_logging
 from openbb_terminal.core.log.generation.settings_logger import log_all_settings
-from openbb_terminal.menu import session
+from openbb_terminal.menu import session, is_papermill
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.terminal_helper import (
@@ -55,8 +54,9 @@ from openbb_terminal.terminal_helper import (
 )
 from openbb_terminal.helper_funcs import parse_and_split_input
 from openbb_terminal.common import feedparser_view
+from openbb_terminal.reports.reports_model import ipykernel_launcher
 
-# pylint: disable=too-many-public-methods,import-outside-toplevel
+# pylint: disable=too-many-public-methods,import-outside-toplevel, too-many-function-args
 # pylint: disable=too-many-branches,no-member,C0302,too-many-return-statements
 
 logger = logging.getLogger(__name__)
@@ -92,6 +92,7 @@ class TerminalController(BaseController):
         "econometrics",
         "sources",
         "forecast",
+        "futures",
     ]
 
     PATH = "/"
@@ -166,6 +167,7 @@ class TerminalController(BaseController):
         mt.add_menu("economy")
         mt.add_menu("forex")
         mt.add_menu("funds")
+        mt.add_menu("futures")
         mt.add_menu("alternative")
         mt.add_raw("\n")
         mt.add_info("_others_")
@@ -174,7 +176,6 @@ class TerminalController(BaseController):
         mt.add_menu("portfolio")
         mt.add_menu("dashboards")
         mt.add_menu("reports")
-        mt.add_raw("\n")
         console.print(text=mt.menu_text, menu="Home")
         self.update_runtime_choices()
 
@@ -197,9 +198,9 @@ class TerminalController(BaseController):
             "-s",
             "--sources",
             dest="sources",
-            default=["bloomberg.com"],
-            nargs="+",
-            help="sources from where to get news from",
+            default="bloomberg",
+            type=str,
+            help="sources from where to get news from (sepate by comma)",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
@@ -209,7 +210,7 @@ class TerminalController(BaseController):
         if news_parser:
             feedparser_view.display_news(
                 term=" ".join(news_parser.term),
-                sources=" ".join(news_parser.sources),
+                sources=news_parser.sources,
                 limit=news_parser.limit,
                 export=news_parser.export,
             )
@@ -455,6 +456,12 @@ class TerminalController(BaseController):
         from openbb_terminal.sources_controller import SourcesController
 
         self.queue = self.load_class(SourcesController, self.queue)
+
+    def call_futures(self, _):
+        """Process futures command"""
+        from openbb_terminal.futures.futures_controller import FuturesController
+
+        self.queue = self.load_class(FuturesController, self.queue)
 
     def call_intro(self, _):
         """Process intro command"""
@@ -795,7 +802,8 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
     an_input = ""
 
     if export_path:
-        # If the path selected does not start from the user root, give relative location from terminal root
+        # If the path selected does not start from the user root,
+        # give relative location from terminal root
         if export_path[0] == "~":
             export_path = export_path.replace("~", HOME_DIRECTORY.as_posix())
         elif export_path[0] != "/":
@@ -881,8 +889,10 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
                 except (KeyboardInterrupt, EOFError):
                     print_goodbye()
                     break
-            # Get input from user without auto-completion
+            elif is_papermill():
+                pass
             else:
+                # Get input from user without auto-completion
                 an_input = input(f"{get_flair()} / $ ")
 
         try:
@@ -1090,6 +1100,7 @@ def main(
     path_list: List[str],
     verbose: bool,
     routines_args: List[str] = None,
+    **kwargs,
 ):
     """
     Runs the terminal with various options
@@ -1111,12 +1122,16 @@ def main(
         E.g. GME,AMC,BTC-USD
     """
 
+    if kwargs["module"] == "ipykernel_launcher":
+        ipykernel_launcher(kwargs["module_file"], kwargs["module_hist_file"])
+
     if test:
         run_test_list(path_list=path_list, filtert=filtert, verbose=verbose)
         return
 
     if debug:
         os.environ["DEBUG_MODE"] = "true"
+
     if isinstance(path_list, list) and path_list[0].endswith(".openbb"):
         run_routine(file=path_list[0], routines_args=routines_args)
     elif path_list:
@@ -1178,10 +1193,41 @@ def parse_args_and_run():
         type=lambda s: [str(item) for item in s.split(",")],
         default=None,
     )
-
+    # The args -m, -f and --HistoryManager.hist_file are used only in reports menu
+    # by papermill and that's why they have suppress help.
+    parser.add_argument(
+        "-m",
+        help=argparse.SUPPRESS,
+        dest="module",
+        default="",
+        type=str,
+    )
+    parser.add_argument(
+        "-f",
+        help=argparse.SUPPRESS,
+        dest="module_file",
+        default="",
+        type=str,
+    )
+    parser.add_argument(
+        "--HistoryManager.hist_file",
+        help=argparse.SUPPRESS,
+        dest="module_hist_file",
+        default="",
+        type=str,
+    )
     if sys.argv[1:] and "-" not in sys.argv[1][0]:
         sys.argv.insert(1, "--file")
-    ns_parser = parser.parse_args()
+    ns_parser, unknown = parser.parse_known_args()
+
+    # This ensures that if terminal.py receives unknown args it will not start.
+    # Use -d flag if you want to see the unknown args.
+    if unknown:
+        if ns_parser.debug:
+            console.print(unknown)
+        else:
+            sys.exit(-1)
+
     main(
         ns_parser.debug,
         ns_parser.test,
@@ -1189,6 +1235,9 @@ def parse_args_and_run():
         ns_parser.path,
         ns_parser.verbose,
         ns_parser.routine_args,
+        module=ns_parser.module,
+        module_file=ns_parser.module_file,
+        module_hist_file=ns_parser.module_hist_file,
     )
 
 

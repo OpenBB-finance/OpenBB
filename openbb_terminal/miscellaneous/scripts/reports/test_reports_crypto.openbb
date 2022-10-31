@@ -1,0 +1,15 @@
+reports
+
+## defaults
+crypto
+
+## simple coin
+crypto --symbol BTC
+
+## small-cap coin
+crypto --symbol STEPN
+
+## shitcoins
+crypto --symbol LUCKY
+
+exit

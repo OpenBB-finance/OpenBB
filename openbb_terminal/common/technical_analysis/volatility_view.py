@@ -277,3 +277,80 @@ def view_kc(
         "kc",
         df_ta,
     )
+
+
+@log_start_end(log=logger)
+def display_atr(
+    data: pd.DataFrame,
+    symbol: str = "",
+    window: int = 14,
+    mamode: str = "sma",
+    offset: int = 0,
+    export: str = "",
+    external_axes: Optional[List[plt.Axes]] = None,
+):
+    """Show ATR
+
+    Parameters
+    ----------
+    data : pd.DataFrame
+        Dataframe of ohlc prices
+    symbol : str
+        Ticker symbol
+    window : int
+        Length of window to calculate upper channel
+    export : str
+        Format of export file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
+    """
+    df_ta = volatility_model.atr(
+        data["High"],
+        data["Low"],
+        data["Adj Close"],
+        window=window,
+        mamode=mamode,
+        offset=offset,
+    )
+
+    # This plot has 2 axes
+    if external_axes is None:
+        _, axes = plt.subplots(
+            2, 1, figsize=plot_autoscale(), sharex=True, dpi=PLOT_DPI
+        )
+        (ax1, ax2) = axes
+    elif is_valid_axes_count(external_axes, 2):
+        (ax1, ax2) = external_axes
+    else:
+        return
+
+    plot_data = pd.merge(data, df_ta, how="outer", left_index=True, right_index=True)
+    plot_data = reindex_dates(plot_data)
+
+    ax1.plot(plot_data.index, plot_data.iloc[:, 1].values)
+    ax1.set_title(f"{symbol} ATR")
+    ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
+    ax1.set_ylabel("Share Price ($)")
+    theme.style_primary_axis(
+        ax=ax1,
+        data_index=plot_data.index.to_list(),
+        tick_labels=plot_data["date"].to_list(),
+    )
+
+    ax2.plot(plot_data.index, plot_data[df_ta.columns[0]].values)
+    ax2.set_xlim(plot_data.index[0], plot_data.index[-1])
+    ax2.set_ylabel("ATR")
+    theme.style_primary_axis(
+        ax=ax2,
+        data_index=plot_data.index.to_list(),
+        tick_labels=plot_data["date"].to_list(),
+    )
+    if external_axes is None:
+        theme.visualize_output()
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)).replace("common", "stocks"),
+        "atr",
+        df_ta,
+    )

@@ -7,10 +7,11 @@ import warnings
 import types
 import functools
 import importlib
-from typing import Optional, Callable, List
+from typing import Optional, Callable, List, Union
 import logging
 from traceback import format_stack
 
+import openbb_terminal.config_terminal as cfg
 from openbb_terminal.rich_config import console
 from openbb_terminal.reports.reports_controller import ReportController
 from openbb_terminal.dashboards.dashboards_controller import DashboardsController
@@ -123,9 +124,9 @@ functions = {
         "model": "openbb_terminal.common.behavioural_analysis.reddit_model.get_popular_tickers",
         "view": "openbb_terminal.common.behavioural_analysis.reddit_view.display_popular_tickers",
     },
-    "stocks.ba.reddit_sent": {
+    "stocks.ba.redditsent": {
         "model": "openbb_terminal.common.behavioural_analysis.reddit_model.get_posts_about",
-        "view": "openbb_terminal.common.behavioural_analysis.reddit_view.display_reddit_sent",
+        "view": "openbb_terminal.common.behavioural_analysis.reddit_view.display_redditsent",
     },
     "stocks.ba.text_sent": {
         "model": "openbb_terminal.common.behavioural_analysis.reddit_model.get_sentiment"
@@ -133,7 +134,7 @@ functions = {
     "stocks.ba.spac": {
         "model": "openbb_terminal.common.behavioural_analysis.reddit_model.get_spac"
     },
-    "stocks.ba.spac_c": {
+    "stocks.ba.spacc": {
         "model": "openbb_terminal.common.behavioural_analysis.reddit_model.get_spac_community"
     },
     "stocks.ba.watchlist": {
@@ -324,6 +325,10 @@ functions = {
     "common.ta.obv": {
         "model": "openbb_terminal.common.technical_analysis.volume_model.obv",
         "view": "openbb_terminal.common.technical_analysis.volume_view.display_obv",
+    },
+    "common.ta.atr": {
+        "model": "openbb_terminal.common.technical_analysis.volatility_model.atr",
+        "view": "openbb_terminal.common.technical_analysis.volatility_view.display_atr",
     },
     "crypto.defi.vaults": {
         "model": "openbb_terminal.cryptocurrency.defi.coindix_model.get_defi_vaults",
@@ -1360,13 +1365,6 @@ functions = {
     #     "model": "openbb_terminal.stocks.backtesting.bt_model.rsi_strategy",
     #     "view": "openbb_terminal.stocks.backtesting.bt_view.display_rsi_strategy",
     # },
-    "stocks.ba.cramer": {
-        "model": "openbb_terminal.stocks.behavioural_analysis.cramer_model.get_cramer_daily"
-    },
-    "stocks.ba.cramer_ticker": {
-        "model": "openbb_terminal.stocks.behavioural_analysis.cramer_model.get_cramer_ticker",
-        "view": "openbb_terminal.stocks.behavioural_analysis.cramer_view.display_cramer_ticker",
-    },
     "stocks.ba.cnews": {
         "model": "openbb_terminal.stocks.behavioural_analysis.finnhub_model.get_company_news"
     },
@@ -2046,6 +2044,18 @@ forecast_extras = {
         "model": "openbb_terminal.forecast.nhits_model.get_nhits_data",
         "view": "openbb_terminal.forecast.nhits_view.display_nhits_forecast",
     },
+    "futures.search": {
+        "model": "openbb_terminal.futures.yfinance_model.get_search_futures",
+        "view": "openbb_terminal.futures.yfinance_view.display_search",
+    },
+    "futures.historical": {
+        "model": "openbb_terminal.futures.yfinance_model.get_historical_futures",
+        "view": "openbb_terminal.futures.yfinance_view.display_historical",
+    },
+    "futures.curve": {
+        "model": "openbb_terminal.futures.yfinance_model.get_curve_futures",
+        "view": "openbb_terminal.futures.yfinance_view.display_curve",
+    },
 }
 
 if forecasting:
@@ -2252,7 +2262,7 @@ class MainMenu:
         return """This is the OpenBB Terminal SDK.
         Use the SDK to get data directly into your jupyter notebook or directly use it in your application.
         ...
-        For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/sdk/
+        For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/SDK/
         """
 
 
@@ -2275,7 +2285,7 @@ class Loader:
         return """This is the OpenBB Terminal SDK.
         Use the SDK to get data directly into your jupyter notebook or directly use it in your application.
         ...
-        For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/api/
+        For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/SDK/
         """
 
     # TODO: Add settings
@@ -2368,11 +2378,12 @@ class Loader:
 
     @staticmethod
     def __initialize_logging():
-        setup_logging(app_name="gst_sdk")
+        cfg.LOGGING_SUB_APP = "sdk"
+        setup_logging()
         log_all_settings()
 
     @classmethod
-    def get_function(cls, function_path: str) -> Callable:
+    def get_function(cls, function_path: str) -> Union[Callable, None]:
         """Get function from string path.
 
         Parameters
@@ -2388,7 +2399,16 @@ class Loader:
             Function
         """
         module_path, function_name = function_path.rsplit(sep=".", maxsplit=1)
-        module = cls.__load_module(module_path=module_path)
+        try:
+            module = cls.__load_module(module_path=module_path)
+        except Exception as e:
+            # This avoids crash on loading SDK under installer application.
+            # SDK is used by papermill to generate reports and some dependencies
+            # are not compatible. Since the reports are run in a subprocess,
+            # this error message is actually not displayed on screen.
+            # TODO: Fix this.
+            console.print(f"Cannot load: {module_path} -> {e}")
+            return None
 
         try:
             function = getattr(module, function_name)

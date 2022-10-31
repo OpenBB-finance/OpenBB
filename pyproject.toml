@@ -6,6 +6,7 @@ authors = ["Didier Rodrigues Lopes"]
 packages = [
     { include = "openbb_terminal" },
 ]
+readme = "README.md"
 
 [tool.poetry.scripts]
 openbb = 'openbb_terminal.terminal_controller:parse_args_and_run'
@@ -47,7 +48,6 @@ oandapyV20 = "^0.6.3"
 valinvest = "^0.0.2"
 bt = "^0.2.9"
 vaderSentiment = "3.3.2"
-mypy = "^0.930"
 GitPython = "^3.1.17"
 pyEX = "^0.5.0"
 sentiment-investor = "^2.0.0"
@@ -61,7 +61,6 @@ python-i18n = "^0.3.9"
 thepassiveinvestor = "^1.0.10"
 pymongo = "^3.11"
 pandas-ta = "^0.3.14-beta.0"
-pmdarima = "^1.8.4"
 pyrsistent = "^0.18.0"
 openpyxl = "^3.0.9"
 jsonschema = "^3.2.0"
@@ -78,7 +77,6 @@ ascii-magic = "^1.6"
 squarify = "^0.4.3"
 finnhub-python = "^2.4.10"
 linearmodels = "^4.25"
-black = "^22.1"
 ipywidgets = "^7.7.0"
 Jinja2 = "^3.0.3"
 Riskfolio-Lib = "^3.1.1"
@@ -101,6 +99,7 @@ ipyflex = "^0.2.4"
 setuptools = "^65.4.1"
 investiny = "^0.5.0"
 numpy = "1.21.6"
+papermill = {git = "https://github.com/nteract/papermill.git", rev = "main"}
 stocksera = "^0.1.21"
 
 [tool.poetry.dev-dependencies]

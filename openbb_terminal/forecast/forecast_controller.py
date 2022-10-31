@@ -155,6 +155,7 @@ class ForecastController(BaseController):
         # The full file name with extension, this allows the rest command to work
         self.files_full: List[List[str]] = []
         self.datasets: Dict[str, pd.DataFrame] = dict()
+        self.MINIMUM_DATA_LENGTH = 100
 
         if ticker and not data.empty:
             data = data.reset_index()
@@ -668,6 +669,17 @@ class ForecastController(BaseController):
 
     def load(self, ticker: str, data: pd.DataFrame):
         """Loads news dataframes into memory"""
+
+        # check if data has minimum number of rows
+        if len(data) < self.MINIMUM_DATA_LENGTH:
+            console.print(
+                f"[red]Dataset is smaller than recommended minimum {self.MINIMUM_DATA_LENGTH} datapoints. [/red]"
+            )
+            console.print(
+                f"[red]Please increase the number of datapoints for [ {ticker} ] and try again.[/red]"
+            )
+            return
+
         if not data.empty:
             data.columns = data.columns.map(lambda x: x.lower().replace(" ", "_"))
 
@@ -747,7 +759,6 @@ class ForecastController(BaseController):
                         "[red]The file/dataset selected has already been loaded.[/red]\n"
                     )
                     return
-
                 data = forecast_model.load(file, self.file_types, self.DATA_FILES)
                 self.files_full.append([ns_parser.file, ns_parser.alias])
 
@@ -817,11 +828,22 @@ class ForecastController(BaseController):
             default=False,
             dest="ascend",
         )
+        parser.add_argument(
+            "--limit-col",
+            action="store",
+            dest="limit_col",
+            default=10,
+            type=check_positive,
+            help="Set the number of columns to display when showing the dataset",
+        )
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
+            parser,
+            other_args,
+            EXPORT_ONLY_RAW_DATA_ALLOWED,
+            limit=10,
         )
 
         if ns_parser:
@@ -847,7 +869,9 @@ class ForecastController(BaseController):
                     else:
                         df = df.sort_values(by=sort_column, ascending=ns_parser.ascend)
 
-                forecast_view.show_df(df, ns_parser.limit, name, ns_parser.export)
+                forecast_view.show_df(
+                    df, ns_parser.limit, ns_parser.limit_col, name, ns_parser.export
+                )
 
     @log_start_end(log=logger)
     def call_rename(self, other_args: List[str]):

@@ -22,6 +22,7 @@ from openbb_terminal.etf import (
     yfinance_view,
 )
 from openbb_terminal.etf.discovery import disc_controller
+from openbb_terminal.etf import etf_helper
 from openbb_terminal.etf.screener import screener_controller
 from openbb_terminal.etf.technical_analysis import ta_controller
 from openbb_terminal.helper_funcs import (
@@ -32,6 +33,7 @@ from openbb_terminal.helper_funcs import (
     export_data,
     valid_date,
     compose_export_path,
+    list_from_str,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -116,21 +118,8 @@ class ETFController(BaseController):
                 "--limit": one_to_fifty,
                 "-l": "--limit",
             }
-            choices["holdings"] = {
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-            }
             choices["weights"] = {"--min": one_to_hundred, "-m": "--min", "--raw": {}}
-            choices["holdings"] = {
-                "--date": None,
-                "-d": "--date",
-                "--oldest": {},
-                "-o": "--oldest",
-                "--sources": None,
-                "-s": "--sources",
-                "--limit": one_to_hundred,
-                "-l": "--limit",
-            }
+
             choices["candle"] = {
                 "--sort": {c: {} for c in self.CANDLE_COLUMNS},
                 "-s": "--sort",
@@ -222,9 +211,6 @@ class ETFController(BaseController):
             nargs="+",
             help="Name to look for ETFs",
             default="",
-            required="-h" not in other_args
-            and "-n" not in other_args
-            and "--name" not in other_args,
         )
 
         if other_args and "-" not in other_args[0][0]:
@@ -322,34 +308,36 @@ class ETFController(BaseController):
 
             self.etf_name = ns_parser.ticker.upper()
             self.etf_data = df_etf_candidate
-
+            quote_type = etf_helper.get_quote_type(self.etf_name)
+            if quote_type != "ETF":
+                console.print(f"{self.etf_name} is: {quote_type.lower()}")
             holdings = stockanalysis_model.get_etf_holdings(self.etf_name)
             if holdings.empty:
                 console.print("No company holdings found!\n")
             else:
                 self.etf_holdings = holdings.index[: ns_parser.limit].tolist()
 
-                if "n/a" in self.etf_holdings:
+                if "N/A" in self.etf_holdings:
                     na_tix_idx = [
                         str(idx)
                         for idx, item in enumerate(self.etf_holdings)
-                        if item == "n/a"
+                        if item == "N/A"
                     ]
 
                     console.print(
-                        f"n/a tickers found at position {','.join(na_tix_idx)}. "
-                        " Dropping these from holdings.\n"
+                        f"N/A tickers found at position {','.join(na_tix_idx)}. "
+                        "Dropping these from holdings.\n"
                     )
 
                 self.etf_holdings = list(
-                    filter(lambda x: x != "n/a", self.etf_holdings)
+                    filter(lambda x: x != "N/A", self.etf_holdings)
                 )
 
                 console.print(
-                    f"Top company holdings found: {', '.join(self.etf_holdings)}\n"
+                    f"Top company holdings found: {', '.join(self.etf_holdings)}"
                 )
 
-            console.print("")
+        console.print()
 
     @log_start_end(log=logger)
     def call_overview(self, other_args: List[str]):
@@ -386,6 +374,9 @@ class ETFController(BaseController):
             help="Number of holdings to get",
             default=10,
         )
+        if not self.etf_name:
+            console.print("Please load a ticker using <load name>. \n")
+            return
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-l")
 
@@ -398,6 +389,7 @@ class ETFController(BaseController):
                 limit=ns_parser.limit,
                 export=ns_parser.export,
             )
+            console.print()
 
     @log_start_end(log=logger)
     def call_news(self, other_args: List[str]):
@@ -439,8 +431,8 @@ class ETFController(BaseController):
         parser.add_argument(
             "-s",
             "--sources",
-            default=[],
-            nargs="+",
+            default="",
+            type=str,
             help="Show news only from the sources specified (e.g bbc yahoo.com)",
         )
         if other_args and "-" not in other_args[0][0]:
@@ -448,10 +440,11 @@ class ETFController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.etf_name:
-                sources = ns_parser.sources
+                sources = list_from_str(ns_parser.sources)
                 for idx, source in enumerate(sources):
                     if source.find(".") == -1:
                         sources[idx] += ".com"
+                clean_sources = ",".join(sources)
 
                 d_stock = yf.Ticker(self.etf_name).info
 
@@ -462,10 +455,11 @@ class ETFController(BaseController):
                     limit=ns_parser.limit,
                     start_date=ns_parser.n_start_date.strftime("%Y-%m-%d"),
                     show_newest=ns_parser.n_oldest,
-                    sources=",".join(sources),
+                    sources=clean_sources,
                 )
             else:
-                console.print("Use 'load <ticker>' prior to this command!", "\n")
+                console.print("Use 'load <ticker>' prior to this command!")
+        console.print()
 
     @log_start_end(log=logger)
     def call_candle(self, other_args: List[str]):
@@ -527,7 +521,10 @@ class ETFController(BaseController):
             "--ma",
             dest="mov_avg",
             type=str,
-            help="Add moving averaged to plot",
+            help=(
+                "Add moving average in number of days to plot and separate by a comma. "
+                "Value for ma (moving average) keyword needs to be greater than 1."
+            ),
             default="",
         )
 
@@ -556,11 +553,23 @@ class ETFController(BaseController):
                 else:
 
                     data = stocks_helper.process_candle(self.etf_data)
-                    mov_avgs = (
-                        tuple(int(num) for num in ns_parser.mov_avg.split(","))
-                        if ns_parser.mov_avg
-                        else None
-                    )
+                    mov_avgs = []
+
+                    if ns_parser.mov_avg:
+                        mov_list = (num for num in ns_parser.mov_avg.split(","))
+
+                        for num in mov_list:
+                            try:
+                                num = int(num)
+
+                                if num <= 1:
+                                    raise ValueError
+
+                                mov_avgs.append(num)
+                            except ValueError:
+                                console.print(
+                                    f"[red]{num} is not a valid moving average, must be an integer greater than 1."
+                                )
 
                     stocks_helper.display_candle(
                         symbol=self.etf_name,
@@ -588,11 +597,10 @@ class ETFController(BaseController):
         parser.add_argument(
             "-e",
             "--etfs",
-            nargs="+",
             type=str,
             dest="names",
             help="Symbols to create a report for (e.g. pir ARKW ARKQ QQQ VOO)",
-            default=[self.etf_name],
+            default=self.etf_name,
         )
         parser.add_argument(
             "--filename",
@@ -613,10 +621,15 @@ class ETFController(BaseController):
             other_args.insert(0, "-e")
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
+            etfs = list_from_str(ns_parser.names.upper())
             if ns_parser.names:
+                # Automatically creates the etf folder inside /OpenBBUserData/exports
+                # if it doesn't exist
+                if not os.path.isdir(ns_parser.folder):
+                    os.makedirs(ns_parser.folder)
                 try:
                     create_ETF_report(
-                        ns_parser.names,
+                        etfs,
                         filename=ns_parser.filename,
                         folder=ns_parser.folder,
                     )
@@ -696,7 +709,7 @@ class ETFController(BaseController):
                 self.queue,
             )
         else:
-            console.print("Use 'load <ticker>' prior to this command!", "\n")
+            console.print("Use 'load <ticker>' prior to this command!")
 
     @log_start_end(log=logger)
     def call_ca(self, _):
