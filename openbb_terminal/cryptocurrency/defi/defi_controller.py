@@ -83,6 +83,8 @@ class DefiController(BaseController):
                 "-t": "--top",
                 "--protocol": {c: {} for c in coindix_model.PROTOCOLS},
                 "-p": "--protocol",
+                "--links": None,
+                "-l": "--links",
                 "--descend": {},
             }
             choices["tokens"] = {
@@ -179,7 +181,6 @@ class DefiController(BaseController):
         """Print help"""
         mt = MenuText("crypto/defi/")
         mt.add_cmd("newsletter")
-        mt.add_cmd("dpi")
         mt.add_cmd("vaults")
         mt.add_cmd("tokens")
         mt.add_cmd("stats")
@@ -956,7 +957,7 @@ class DefiController(BaseController):
             action="store_false",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
-            default=False,
+            default=True,
         )
 
         parser.add_argument(
