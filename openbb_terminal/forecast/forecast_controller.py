@@ -1377,7 +1377,8 @@ class ForecastController(BaseController):
                 ns_parser.period,
             )
             console.print(
-                f"Successfully added 'RSI_{ns_parser.period}' to '{ns_parser.target_dataset}' dataset"
+                f"Successfully added 'RSI_{ns_parser.period}_{ns_parser.target_column}' "
+                f"to '{ns_parser.target_dataset}' dataset"
             )
 
             # update forecast menu with new column on modified dataset
