@@ -174,6 +174,11 @@ class PortfolioController(BaseController):
             "-l": "--limit",
         }
         choices["bench"] = {c: {} for c in statics.BENCHMARK_LIST}
+        choices["bench"] = {
+            "--benchmark": {c: {} for c in statics.BENCHMARK_LIST},
+            "-b": "--benchmark",
+        }
+
         choices["bench"]["--full_shares"] = {}
         choices["bench"]["-s"] = "--full_shares"
         hold = {
