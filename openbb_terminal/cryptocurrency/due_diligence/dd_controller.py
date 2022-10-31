@@ -1815,11 +1815,15 @@ class DueDiligenceController(CryptoBaseController):
         parser.add_argument(
             "-p",
             "--project",
-            required=True,
+            required="-h" not in other_args,
             choices=tokenterminal_model.get_project_ids(),
             dest="project",
             help="Choose project of interest",
         )
+
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-p")
+
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
@@ -1843,12 +1847,14 @@ class DueDiligenceController(CryptoBaseController):
             "-p",
             "--project",
             choices=tokenterminal_model.get_project_ids(),
-            required=True,
+            required="-h" not in other_args,
             dest="project",
             help="Choose project of interest",
         )
+
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "-p")
+
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
