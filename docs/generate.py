@@ -133,8 +133,6 @@ def generate_documentation(
 
                 # Signature
                 sig = str(signature(model[2]))
-                # Escape literal asterisks
-                sig = sig.replace("_", r"\_")
 
                 if view:
                     f.write(
