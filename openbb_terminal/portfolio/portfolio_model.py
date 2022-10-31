@@ -18,7 +18,7 @@ from openbb_terminal.portfolio import portfolio_helper, allocation_model
 from openbb_terminal.rich_config import console
 
 # pylint: disable=E1136,W0201,R0902,C0302
-# pylint: disable=unsupported-assignment-operation,redefined-outer-name,too-many-public-methods
+# pylint: disable=unsupported-assignment-operation,redefined-outer-name,too-many-public-methods, consider-using-f-string
 
 logger = logging.getLogger(__name__)
 cg = CoinGeckoAPI()
@@ -1793,7 +1793,7 @@ def get_summary(
             scipy.stats.kurtosis(portfolio_returns),
             scipy.stats.kurtosis(benchmark_returns),
         ],
-        "Maximum Drawdowwn": [
+        "Maximum Drawdown": [
             portfolio_helper.maximum_drawdown(portfolio_returns),
             portfolio_helper.maximum_drawdown(benchmark_returns),
         ],
@@ -1815,6 +1815,11 @@ def get_summary(
         metrics.values(), index=metrics.keys(), columns=["Portfolio", "Benchmark"]
     )
     summary["Difference"] = summary["Portfolio"] - summary["Benchmark"]
+    summary.loc["Volatility"] = summary.loc["Volatility"].apply("{:.2%}".format)
+    summary.loc["Maximum Drawdown"] = summary.loc["Maximum Drawdown"].apply(
+        "{:.2%}".format
+    )
+    summary.loc["R2 Score"] = summary.loc["R2 Score"].apply("{:.2%}".format)
 
     return summary
 
