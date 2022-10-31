@@ -49,16 +49,12 @@ ex --limit 3 --sort adjusted_volume_24h_share
 balance
 
 # oi
-oi
 
 # fundrate
-fundrate
 
 # liquidations
-liquidations
 
 # eb
-eb
 
 # trades
 trades
@@ -81,7 +77,6 @@ mcapdom
 mt
 
 # funot
-funot
 
 # team
 team
