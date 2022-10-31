@@ -23,7 +23,7 @@ Example:
 (🦋) /forecast/ $ combine --dataset TSLA --columns MSFT.volume
 
 (🦋) /forecast/ $ show TSLA
-TSLA has following shape (rowxcolumn): (611, 8)
+TSLA dataset has shape (row, column): (611, 8)
 
                             Dataset TSLA | Showing 10 of 611 rows
 ┏━━━┳━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓

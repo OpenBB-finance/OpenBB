@@ -26,7 +26,7 @@ Example:
 (🦋) /forecast/ $ load TSLA.csv
 
 (🦋) /forecast/ $ show TSLA
-TSLA has following shape (rowxcolumn): (611, 7)
+TSLA dataset has shape (row, column): (611, 7)
 
                     Dataset TSLA | Showing 10 of 611 rows
 ┏━━━┳━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
@@ -57,7 +57,7 @@ TSLA has following shape (rowxcolumn): (611, 7)
 Successfully added 'STOK&D_10' to 'TSLA' dataset
 
 (🦋) /forecast/ $ show TSLA
-TSLA has following shape (rowxcolumn): (611, 9)
+TSLA dataset has shape (row, column): (611, 9)
 
                               Dataset TSLA | Showing 10 of 611 rows
 ┏━━━┳━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┓
