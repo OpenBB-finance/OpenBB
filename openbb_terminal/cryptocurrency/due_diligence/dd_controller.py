@@ -32,7 +32,7 @@ from openbb_terminal.cryptocurrency.due_diligence import (
     cryptopanic_view,
     tokenterminal_view,
 )
-from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
@@ -130,6 +130,7 @@ class DueDiligenceController(CryptoBaseController):
         self.messari_timeseries = []
         df_mt = messari_model.get_available_timeseries()
         self.ccxt_exchanges = ccxt_model.get_exchanges()
+        self.binance_currencies = ccxt_model.get_binance_currencies()
 
         if not df_mt.empty:
             self.messari_timeseries = df_mt.index.to_list()
@@ -137,8 +138,10 @@ class DueDiligenceController(CryptoBaseController):
             choices: dict = {c: {} for c in self.controller_choices}
             choices["ob"] = {c: {} for c in self.ccxt_exchanges}
             choices["ob"]["-e"] = {c: {} for c in self.ccxt_exchanges}
+            choices["ob"]["--vs"] = {c: {} for c in self.binance_currencies}
             choices["trades"] = {c: {} for c in self.ccxt_exchanges}
             choices["trades"]["-e"] = {c: {} for c in self.ccxt_exchanges}
+            choices["trades"]["--vs"] = {c: {} for c in self.binance_currencies}
             choices["active"]["-i"] = {
                 c: None for c in glassnode_model.INTERVALS_ACTIVE_ADDRESSES
             }

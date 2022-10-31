@@ -21,6 +21,25 @@ def get_exchanges():
     """
     return ccxt.exchanges
 
+def get_binance_currencies():
+    """Helper method to get all the currenices supported by ccxt
+    [Source: https://docs.ccxt.com/en/latest/manual.html]
+
+    Parameters
+    ----------
+
+    Returns
+    -------
+    List[str]
+        list of all the currenices supported by ccxt
+    """
+
+    # Refactor this eventually to allow for any entered exchange - right now only works on default binace for "ob" and "trades"
+    exchange = ccxt.binance({"fetchCurrencies": True})
+    exchange.load_markets()
+    currencies = exchange.quoteCurrencies
+    print(currencies)
+    return [c["code"] for c in currencies.values()]
 
 def get_orderbook(exchange_id: str, symbol: str, vs: str) -> Dict:
     """Returns orderbook for a coin in a given exchange
