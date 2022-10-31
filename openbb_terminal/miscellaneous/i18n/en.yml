@@ -189,7 +189,7 @@ en:
   stocks/disc/rtat: top 10 retail traded stocks per day
   stocks/disc/divcal: dividend calendar for selected date
   stocks/disc/heatmap: heatmap of SP500 tickers
-  stocks/sia/load: load a specific ticker and all it's corresponding parameters
+  stocks/sia/select: select a specific ticker and all it's corresponding parameters
   stocks/sia/clear: clear all or one of industry, sector, country and market cap parameters
   stocks/sia/industry: see existing industries, or set industry if arg specified
   stocks/sia/sector: see existing sectors, or set sector if arg specified
@@ -211,9 +211,7 @@ en:
   stocks/sia/cpci: companies per Country based on Industry (and Market Cap)
   stocks/sia/_financials_: Financials
   stocks/sia/_financials_loaded_: Financials - loaded data (fast mode)
-  stocks/sia/sama: see all metrics available
   stocks/sia/metric: visualize financial metric across filters selected
-  stocks/sia/satma: see all metrics available over time
   stocks/sia/vis: visualize financial metric across filters selected
   stocks/sia/_returned_tickers: Returned tickers
   stocks/sia/ca: take these to comparison analysis menu
@@ -480,7 +478,7 @@ en:
   crypto/_exchange: Exchange
   crypto/headlines: crypto sentiment from 15+ major news headlines
   crypto/candle: view a candle chart for a specific cryptocurrency
-  crypto/prt: potential returns tool - check how much upside if ETH reaches BTC market cap
+  crypto/prt: potential returns (e.g. upside if ETH reaches BTC market cap)
   crypto/disc: discover trending cryptocurrencies,     top gainers, losers, top sentiment
   crypto/ov: overview of the cryptocurrencies,       market cap, DeFi, latest news, top exchanges, stables
   crypto/onchain: information on different blockchains,   eth gas fees, whale alerts, DEXes info
@@ -489,7 +487,7 @@ en:
   crypto/nft: non-fungible tokens,                    today drops
   crypto/dd: due-diligence for loaded coin,          coin information, social media, market stats
   crypto/ta: technical analysis for loaded coin,     ema, macd, rsi, adx, bbands, obv
-  crypto/forecast: forecast techniques,                 rnn, nbeats, transformer, block rnn
+  crypto/forecast: forecast techniques,                    rnn, nbeats, transformer, block rnn
   crypto/qa: quantitative analysis                   decompose, cusum, residuals analysis
   crypto/disc/cgtop: top coins (with or without category)
   crypto/disc/cgtrending: trending coins

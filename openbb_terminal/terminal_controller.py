@@ -178,7 +178,6 @@ class TerminalController(BaseController):
         mt.add_menu("dashboards")
         mt.add_menu("reports")
         mt.add_menu("account")
-        mt.add_raw("\n")
         console.print(text=mt.menu_text, menu="Home")
         self.update_runtime_choices()
 
@@ -201,9 +200,9 @@ class TerminalController(BaseController):
             "-s",
             "--sources",
             dest="sources",
-            default="bloomberg.com",
+            default="bloomberg",
             type=str,
-            help="sources from where to get news from",
+            help="sources from where to get news from (sepate by comma)",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
@@ -213,7 +212,7 @@ class TerminalController(BaseController):
         if news_parser:
             feedparser_view.display_news(
                 term=" ".join(news_parser.term),
-                sources=news_parser.sources.replace(",", " "),
+                sources=news_parser.sources,
                 limit=news_parser.limit,
                 export=news_parser.export,
             )
@@ -811,7 +810,8 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
     an_input = ""
 
     if export_path:
-        # If the path selected does not start from the user root, give relative location from terminal root
+        # If the path selected does not start from the user root,
+        # give relative location from terminal root
         if export_path[0] == "~":
             export_path = export_path.replace("~", HOME_DIRECTORY.as_posix())
         elif export_path[0] != "/":
