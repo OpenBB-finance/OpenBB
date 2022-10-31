@@ -116,13 +116,25 @@ def get_expo_data(
         random_state=42,
     )
 
-    # Historical backtesting
-    historical_fcast_es = model_es.historical_forecasts(
-        ticker_series,  # backtest on entire ts
-        start=float(start_window),
-        forecast_horizon=int(forecast_horizon),
-        verbose=True,
-    )
+    try:
+        # Historical backtesting
+        historical_fcast_es = model_es.historical_forecasts(
+            ticker_series,  # backtest on entire ts
+            start=float(start_window),
+            forecast_horizon=int(forecast_horizon),
+            verbose=True,
+        )
+    except Exception as e:  # noqa
+        error = str(e)
+        # lets translate this to something everyone understands
+        if "with`overlap_end` set to `False`." in error:
+            console.print(
+                "[red]Dataset too small.[/red]"
+                "[red] Please increase size to at least 100 data points.[/red]"
+            )
+        else:
+            console.print(f"[red]{error}[/red]")
+        return [], [], [], None, None
 
     # train new model on entire timeseries to provide best current forecast
     best_model = ExponentialSmoothing(
@@ -137,7 +149,7 @@ def get_expo_data(
     best_model.fit(ticker_series)
     probabilistic_forecast = best_model.predict(int(n_predict), num_samples=500)
     precision = mape(actual_series=ticker_series, pred_series=historical_fcast_es)
-    console.print(f"Exponential smoothing obtains MAPE: {precision:.2f}% \n")  # TODO
+    console.print(f"Exponential smoothing obtains MAPE: {precision:.2f}% \n")
 
     return (
         ticker_series,

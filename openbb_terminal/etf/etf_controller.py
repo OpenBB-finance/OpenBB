@@ -22,6 +22,7 @@ from openbb_terminal.etf import (
     yfinance_view,
 )
 from openbb_terminal.etf.discovery import disc_controller
+from openbb_terminal.etf import etf_helper
 from openbb_terminal.etf.screener import screener_controller
 from openbb_terminal.etf.technical_analysis import ta_controller
 from openbb_terminal.helper_funcs import (
@@ -307,7 +308,9 @@ class ETFController(BaseController):
 
             self.etf_name = ns_parser.ticker.upper()
             self.etf_data = df_etf_candidate
-
+            quote_type = etf_helper.get_quote_type(self.etf_name)
+            if quote_type != "ETF":
+                console.print(f"{self.etf_name} is: {quote_type.lower()}")
             holdings = stockanalysis_model.get_etf_holdings(self.etf_name)
             if holdings.empty:
                 console.print("No company holdings found!\n")
@@ -332,6 +335,8 @@ class ETFController(BaseController):
 
                 if not self.etf_holdings:
                     console.print("\n[red]No valid stock ticker was found![/red]")
+
+        console.print()
 
     @log_start_end(log=logger)
     def call_overview(self, other_args: List[str]):
@@ -383,6 +388,7 @@ class ETFController(BaseController):
                 limit=ns_parser.limit,
                 export=ns_parser.export,
             )
+            console.print()
 
     @log_start_end(log=logger)
     def call_news(self, other_args: List[str]):
@@ -452,6 +458,7 @@ class ETFController(BaseController):
                 )
             else:
                 console.print("Use 'load <ticker>' prior to this command!")
+        console.print()
 
     @log_start_end(log=logger)
     def call_candle(self, other_args: List[str]):
@@ -513,7 +520,10 @@ class ETFController(BaseController):
             "--ma",
             dest="mov_avg",
             type=str,
-            help="Add moving averaged to plot",
+            help=(
+                "Add moving average in number of days to plot and separate by a comma. "
+                "Value for ma (moving average) keyword needs to be greater than 1."
+            ),
             default="",
         )
 
@@ -542,11 +552,23 @@ class ETFController(BaseController):
                 else:
 
                     data = stocks_helper.process_candle(self.etf_data)
-                    mov_avgs = (
-                        tuple(int(num) for num in ns_parser.mov_avg.split(","))
-                        if ns_parser.mov_avg
-                        else None
-                    )
+                    mov_avgs = []
+
+                    if ns_parser.mov_avg:
+                        mov_list = (num for num in ns_parser.mov_avg.split(","))
+
+                        for num in mov_list:
+                            try:
+                                num = int(num)
+
+                                if num <= 1:
+                                    raise ValueError
+
+                                mov_avgs.append(num)
+                            except ValueError:
+                                console.print(
+                                    f"[red]{num} is not a valid moving average, must be an integer greater than 1."
+                                )
 
                     stocks_helper.display_candle(
                         symbol=self.etf_name,

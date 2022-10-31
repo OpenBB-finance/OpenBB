@@ -200,5 +200,4 @@ def display_plots_financials(
         item_name,
         df,
     )
-
     return stocks_data, company_tickers

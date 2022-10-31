@@ -6,7 +6,7 @@ Show candle for loaded fx data
 
 ```
 optional arguments:
-  --ma MOV_AVG  Add moving average in number of days to plot and separate by a comma (default: None)
+  --ma MOV_AVG  Add moving average in number of days to plot and separate by a comma. Value for ma (moving average) keyword needs to be greater than 1. (default: )
   -h, --help  show this help message (default: False)
 ```
 

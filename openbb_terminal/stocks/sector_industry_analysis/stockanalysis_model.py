@@ -129,9 +129,8 @@ def get_stocks_data(
                 symbol_statement, rounding, currency_dcf = create_dataframe(
                     top_item, item, period.lower()
                 )
-
                 if symbol_statement.empty:
-                    no_data.append(symbol)
+                    no_data.append(top_item)
                     continue
 
                 symbol_statement_rounded = (
