@@ -87,6 +87,10 @@ def display_autoets_forecast(
         start_window=start_window,
         forecast_horizon=forecast_horizon,
     )
+
+    if ticker_series == []:
+        return
+
     probabilistic = False
     helpers.plot_forecast(
         name="AutoETS",
