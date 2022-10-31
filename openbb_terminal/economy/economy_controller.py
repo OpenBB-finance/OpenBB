@@ -1155,31 +1155,16 @@ class EconomyController(BaseController):
         if ns_parser:
             country = ns_parser.country.lower().replace("_", " ")
 
-            if ns_parser.source == "FRED":
-
-                if country == "united states":
-                    fred_view.display_yield_curve(
-                        ns_parser.date,
-                        raw=ns_parser.raw,
-                        export=ns_parser.export,
-                    )
-                else:
-                    console.print("Source FRED is only available for united states.\n")
-
-            # TODO: Add `Investing` to sources again when `investpy` is fixed
-            elif ns_parser.source == "Investing":
-
-                if ns_parser.date:
-                    console.print(
-                        "Date ignored: historical data is only available for source 'FRED'"
-                        " and country 'united states'.\n"
-                    )
-
-                investingcom_view.display_yieldcurve(
-                    country=country,
+            if country == "united states":
+                fred_view.display_yield_curve(
+                    ns_parser.date,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
                 )
+            else:
+                console.print("Source FRED is only available for united states.\n")
+
+            # TODO: Add `Investing` to sources again when `investpy` is fixed
 
     @log_start_end(log=logger)
     def call_spread(self, other_args: List[str]):
@@ -1344,40 +1329,26 @@ class EconomyController(BaseController):
                 end_date = None
 
             # TODO: Add `Investing` to sources again when `investpy` is fixed
-            if ns_parser.source == "Investing":
 
-                if isinstance(ns_parser.country, list):
-                    ns_parser.country = " ".join(ns_parser.country)
+            countries = (
+                ns_parser.country.replace("_", " ").title().split(",")
+                if ns_parser.country
+                else []
+            )
 
-                investingcom_view.display_economic_calendar(
-                    country=ns_parser.country,
-                    importance=ns_parser.importance,
-                    category=ns_parser.category,
-                    start_date=start_date,
-                    end_date=end_date,
-                    limit=ns_parser.limit,
-                    export=ns_parser.export,
-                )
-            elif ns_parser.source == "Nasdaq":
-                countries = (
-                    ns_parser.country.replace("_", " ").title().split(",")
-                    if ns_parser.country
-                    else []
-                )
+            if ns_parser.spec_date:
+                start_date = ns_parser.spec_date.strftime("%Y-%m-%d")
+                end_date = ns_parser.spec_date.strftime("%Y-%m-%d")
 
-                if ns_parser.spec_date:
-                    start_date = ns_parser.spec_date.strftime("%Y-%m-%d")
-                    end_date = ns_parser.spec_date.strftime("%Y-%m-%d")
-
-                else:
-                    start_date, end_date = sorted([start_date, end_date])
-                nasdaq_view.display_economic_calendar(
-                    country=countries,
-                    start_date=start_date,
-                    end_date=end_date,
-                    limit=ns_parser.limit,
-                    export=ns_parser.export,
-                )
+            else:
+                start_date, end_date = sorted([start_date, end_date])
+            nasdaq_view.display_economic_calendar(
+                country=countries,
+                start_date=start_date,
+                end_date=end_date,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
     @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
