@@ -381,7 +381,7 @@ To figure out where you can obtain the API key, you can enter the command (e.g. 
 | eodhd      | EODHD                                    | https://eodhistoricaldata.com/                                                     |
 | santiment  | Santiment                                | https://app.santiment.net/                                                         |
 | shroom     | ShroomDK                                 | https://sdk.flipsidecrypto.xyz/shroomdk                                            |
-
+| tokenterminal    | Token Terminal                     | https://tokenterminal.com/                                                         |
 ---
 
 ## Available Menus Within the OpenBB Terminal

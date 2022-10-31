@@ -94,14 +94,18 @@ As a Python-based environment, OpenBBTerminal opens access to numerous Python da
 
 ## 2. Installation
 
-If you wish to install the OpenBBTerminal, there are currently four options:
+If you wish to install the OpenBB Terminal or the OpenBB SDK, please use one of the following options:
 
-|**Option**|**Use case**|
+|**OpenBB Terminal**|**Usage**|
 |:-|:-|
-|[Installer for Mac or Windows](https://openbb-finance.github.io/OpenBBTerminal/#accessing-the-openbb-terminal)|Recommended way if you just want to use the terminal.|
-|[Git clone](openbb_terminal/README.md#anaconda--python)|Best way if you want to contribute to the project : by adding code or documentation.|
-|[Pypi.org](openbb_terminal/SDK_README.md)|Best way if you want to use the SDK.|
-|[Using Docker](openbb_terminal/DOCKER_README.md)|An alternative way.|
+|[Installer](https://openbb-finance.github.io/OpenBBTerminal/#accessing-the-openbb-terminal)|Recommended way if you just want to use the OpenBB Terminal|
+|[Docker](openbb_terminal/DOCKER_README.md)|An alternative way if you just want to use the OpenBB Terminal|
+|[Python](openbb_terminal/README.md#anaconda--python)|If you wish to contribute to the development of the OpenBB Terminal|
+
+|**OpenBB SDK** &nbsp; &nbsp; &nbsp; &nbsp; |**Usage**|
+|:-|:-|
+|[PyPi](https://openbb-finance.github.io/OpenBBTerminal/SDK/)|Recommended way if you just want to use the OpenBB SDK|
+|[Python](openbb_terminal/README.md#anaconda--python)|If you wish to contribute to the development of the OpenBB SDK &nbsp; &nbsp; &nbsp; &nbsp;|
 
 ## 3. Contributing
 
