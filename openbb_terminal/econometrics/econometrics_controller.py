@@ -358,6 +358,7 @@ class EconometricsController(BaseController):
             and "-e" not in other_args
             and "-f" not in other_args
             and "-h" not in other_args
+            and "--file" not in other_args
         ):
             other_args.insert(0, "-f")
 
@@ -1290,12 +1291,12 @@ class EconometricsController(BaseController):
         )
 
         if ns_parser and ns_parser.column:
-            column, dataset = self.choices["norm"][ns_parser.column].keys()
+            dataset, column = ns_parser.column.split(".")
 
             if isinstance(self.datasets[dataset][column].index, pd.MultiIndex):
                 return console.print(
-                    f"The column '{column}' from the dataset '{dataset}' is a MultiIndex. To test for normality in a "
-                    "timeseries, make sure to set a singular time index.\n"
+                    f"The column '{column}' in '{dataset}' is a MultiIndex. To test for normality"
+                    ", make sure to set a singular time index.\n"
                 )
 
             if dataset in self.datasets:
@@ -1359,7 +1360,12 @@ class EconometricsController(BaseController):
         )
 
         if ns_parser and ns_parser.column:
-            column, dataset = self.choices["root"][ns_parser.column].keys()
+            if "." in ns_parser.column:
+                dataset, column = ns_parser.column.split(".")
+            else:
+                console.print(
+                    "[red]Column must be formatted as 'dataset.column'[/red]\n"
+                )
 
             if isinstance(self.datasets[dataset][column].index, pd.MultiIndex):
                 console.print(
@@ -1739,8 +1745,14 @@ class EconometricsController(BaseController):
                 if len(ns_parser.ts) > 1:
                     datasets = {}
                     for stock in ns_parser.ts:
-                        column, dataset = self.choices["coint"][stock].keys()
-                        datasets[stock] = self.datasets[dataset][column]
+                        if "." not in stock:
+                            console.print(
+                                "[red]Invalid time series format. Should be dataset.column, "
+                                "e.g. historical.open[/red]\n"
+                            )
+                        else:
+                            dataset, column = stock.split(".")
+                            datasets[stock] = self.datasets[dataset][column]
 
                     econometrics_view.display_cointegration_test(
                         datasets,
