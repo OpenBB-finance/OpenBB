@@ -28,7 +28,7 @@ Example:
 
 (🦋) /forecast/ $ show aapl
 
-aapl has following shape (rowxcolumn): (759, 7)
+aapl dataset has shape (row, column): (759, 7)
 
                   Dataset aapl | Showing 10 of 759 rows
 ┏━━━┳━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
