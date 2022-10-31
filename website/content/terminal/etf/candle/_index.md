@@ -12,7 +12,7 @@ optional arguments:
   --raw                 Shows raw data instead of chart (default: False)
   -n NUM, --num NUM     Number to show if raw selected (default: 20)
   -t, --trend           Flag to add high and low trends to candle. (default: False)
-  --ma MOV_AVG          Add moving averaged to plot (default: )
+  --ma MOV_AVG          Add moving average in number of days to plot and separate by a comma. Value for ma (moving average) keyword needs to be greater than 1. (default: )
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx (default: )

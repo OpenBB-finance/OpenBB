@@ -37,7 +37,7 @@ def get_brnn_data(
     model_save_name: str = "brnn_model",
     force_reset: bool = True,
     save_checkpoints: bool = True,
-) -> Tuple[list[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], Any]:
+) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], Any]:
     """Performs Block RNN forecasting
 
     Args:

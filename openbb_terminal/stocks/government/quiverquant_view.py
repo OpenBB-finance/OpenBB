@@ -135,8 +135,7 @@ def display_government_buys(
 
     ax.set_ylabel("Amount [1k $]")
     ax.set_title(
-        f"Top {limit} purchased stocks over last {past_transactions_months} "
-        f"months (upper bound) for {gov_type.upper()}"
+        f"{gov_type.upper()}'s top {limit} purchased stocks (upper) in last {past_transactions_months} months"
     )
     # plt.gcf().axes[0].yaxis.get_major_formatter().set_scientific(False)
 
