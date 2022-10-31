@@ -24,7 +24,7 @@ Keltner Channels
 
     Returns
     -------
-    df_en : pd.DataFrame
+    pd.DataFrame
         Dataframe of rolling kc
 
 ## Getting charts 
