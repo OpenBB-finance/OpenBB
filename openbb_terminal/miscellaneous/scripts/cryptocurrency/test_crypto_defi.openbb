@@ -1,15 +1,68 @@
 crypto
 defi
-ldapps
-gdapps
-stvl
+
+# newsletter
 newsletter
-dpi
+newsletter --limit 3
+
+# dpi BROKEN
+
+# vaults
+vaults
+vaults --chain ethereum --protocol aave --kind stable --top 3 --links
+
+# tokens
 tokens
+tokens --skip 3 --limit 3 --sort totalLiquidity
+
+# stats
 stats
+
+# pairs
+pairs --limit 3 --vol 150 --tx 150 --days 15 --sort volumeUSD
+
+# pools
 pools
-swaps
-ayr
-aterra --asset luna --address terra1tmnqgvg567ypvsvk6rwsga3srp7e3lg6u0elp8
-anchor terra13kc0x8kr3sq8226myf4nmanmn2mrk9s5s9wsnz
+pools --limit 3 --sort volumeUSD
+
+# swaps
+swaps --limit 3 --sort amountUSD
+
+# ldapps
+ldapps
+ldapps --limit 3 --sort tvl
+
+# gdapps
+gdapps
+gdapps --limit 3
+
+# stvl
+stvl
+stvl --limit 3
+
+# dtvl
+dtvl --dapps anchor
+
+# sinfo
+
+# validators
+
+# gacc
+gacc
+gacc --cumulative --limit 200 --kind active
+
+# sreturn
+sreturn
+sreturn --limit 200
+
+# lcsc
+
+# anchor
+anchor --address terra13kc0x8kr3sq8226myf4nmanmn2mrk9s5s9wsnz
+anchor --address terra13kc0x8kr3sq8226myf4nmanmn2mrk9s5s9wsnz --transactions
+
 exit
+
+# TERRA ADDRESSES FOR EXAMPLES
+# terra1tmnqgvg567ypvsvk6rwsga3srp7e3lg6u0elp8
+# terra13kc0x8kr3sq8226myf4nmanmn2mrk9s5s9wsnz

@@ -3,10 +3,6 @@ disc
 
 # gctop
 top
-top -c stablecoins
-top -l 5
-top -c stablecoins -l 5
-top -s Volume [$]
 top -c stablecoins -s Volume [$] -l 5
 
 # cgtrending
@@ -14,16 +10,10 @@ trending
 
 # cggainers
 gainers
-gainers -i 14
-gainers -l 5
-gainers -s Price [$]
 gainers -s Price [$] -l 5 -i 14d
 
 # cglosers
 losers
-losers -i 14
-losers -l 5
-losers -s Price [$]
 losers -s Price [$] -l 5 -i 14d
 
 # cpsearch CURRENTLY BUGGY
