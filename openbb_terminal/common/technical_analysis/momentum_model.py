@@ -85,13 +85,13 @@ def macd(
 
 @log_start_end(log=logger)
 def rsi(
-    values: pd.Series, window: int = 14, scalar: float = 100, drift: int = 1
+    data: pd.Series, window: int = 14, scalar: float = 100, drift: int = 1
 ) -> pd.DataFrame:
     """Relative strength index
 
     Parameters
     ----------
-    values: pd.Series
+    data: pd.Series
         Dataframe of prices
     window: int
         Length of window
@@ -105,9 +105,10 @@ def rsi(
     pd.DataFrame
         Dataframe of technical indicator
     """
-    return pd.DataFrame(
-        ta.rsi(values, length=window, scalar=scalar, drift=drift).dropna()
-    )
+    raw_data = ta.rsi(data, length=window, scalar=scalar, drift=drift)
+    if not raw_data:
+        return pd.DataFrame()
+    return pd.DataFrame(raw_data.dropna())
 
 
 @log_start_end(log=logger)

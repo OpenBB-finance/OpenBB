@@ -235,6 +235,9 @@ def display_rsi(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
     """
+    if isinstance(data, pd.DataFrame):
+        console.print("[red]Please send a series and not a dataframe[/red]\n")
+        return
     df_ta = momentum_model.rsi(data, window, scalar, drift)
 
     # This plot has 2 axes

@@ -7,6 +7,8 @@ import pandas as pd
 import pandas_ta as ta
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.common.technical_analysis import ta_helpers
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -98,4 +100,10 @@ def obv(data: pd.DataFrame) -> pd.DataFrame:
     pd.DataFrame
         Dataframe with technical indicator
     """
-    return pd.DataFrame(ta.obv(close=data["Adj Close"], volume=data["Volume"]).dropna())
+    close_col = ta_helpers.check_columns(data, high=False, low=False)
+    if close_col is None:
+        return pd.DataFrame()
+    if "Volume" not in data.columns:
+        console.print("[red]Volume column not found[/red]\n")
+        return pd.DataFrame()
+    return pd.DataFrame(ta.obv(close=data[close_col], volume=data["Volume"]).dropna())
