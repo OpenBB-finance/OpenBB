@@ -160,13 +160,12 @@ class PortfolioController(BaseController):
         choices: dict = {c: {} for c in self.controller_choices}
 
         one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
-        zero_to_hundred_detailed = {str(c): {} for c in np.arange(0.0, 100.0, 0.1)}
         choices["load"] = {
             "--file": {c: {} for c in self.DATA_HOLDINGS_FILES},
             "-f": "--file",
             "--name": None,
             "-n": "--name",
-            "--rfr": zero_to_hundred_detailed,
+            "--rfr": None,
             "-r": "--rfr",
         }
         choices["show"] = {
@@ -221,7 +220,7 @@ class PortfolioController(BaseController):
         r_auto_complete = {
             "--period": {c: {} for c in portfolio_helper.PERIODS},
             "-p": "--period",
-            "--rfr": zero_to_hundred_detailed,
+            "--rfr": None,
             "-r": "--rfr",
         }
         choices["rsharpe"] = r_auto_complete
@@ -241,7 +240,7 @@ class PortfolioController(BaseController):
         choices["metric"] = {c: {} for c in self.VALID_METRICS}
         choices["metric"]["--metric"] = {c: {} for c in self.VALID_METRICS}
         choices["metric"]["-m"] = "--metric"
-        choices["metric"]["--rfr"] = zero_to_hundred_detailed
+        choices["metric"]["--rfr"] = None
         choices["metric"]["-r"] = "--rfr"
         choices["perf"] = {
             "--period": {c: {} for c in portfolio_helper.PERIODS},
@@ -256,7 +255,7 @@ class PortfolioController(BaseController):
             "-a": "--adjusted",
             "--student": {},
             "-s": "--student",
-            "--percentile": zero_to_hundred_detailed,
+            "--percentile": None,
             "-p": "--percentile",
         }
         choices["es"] = {
@@ -264,7 +263,7 @@ class PortfolioController(BaseController):
             "-m": "--mean",
             "--dist": {c: {} for c in self.VALID_DISTRIBUTIONS},
             "-d": "--dist",
-            "--percentile": zero_to_hundred_detailed,
+            "--percentile": None,
             "-p": "--percentile",
         }
         choices["om"] = {
