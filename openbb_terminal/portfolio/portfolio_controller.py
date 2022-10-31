@@ -297,6 +297,12 @@ class PortfolioController(BaseController):
         mt.add_param("_benchmark", self.benchmark_name)
         mt.add_raw("\n")
 
+        mt.add_info("_metrics_")
+        mt.add_cmd("summary", self.portfolio_name and self.benchmark_name)
+        mt.add_cmd("alloc", self.portfolio_name and self.benchmark_name)
+        mt.add_cmd("metric", self.portfolio_name and self.benchmark_name)
+        mt.add_cmd("perf", self.portfolio_name and self.benchmark_name)
+
         mt.add_info("_graphs_")
         mt.add_cmd("holdv", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("holdp", self.portfolio_name and self.benchmark_name)
@@ -309,12 +315,6 @@ class PortfolioController(BaseController):
         mt.add_cmd("rsharpe", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("rsort", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("rbeta", self.portfolio_name and self.benchmark_name)
-
-        mt.add_info("_metrics_")
-        mt.add_cmd("alloc", self.portfolio_name and self.benchmark_name)
-        mt.add_cmd("summary", self.portfolio_name and self.benchmark_name)
-        mt.add_cmd("metric", self.portfolio_name and self.benchmark_name)
-        mt.add_cmd("perf", self.portfolio_name and self.benchmark_name)
 
         mt.add_info("_risk_")
         mt.add_cmd("var", self.portfolio_name and self.benchmark_name)
@@ -336,6 +336,12 @@ class PortfolioController(BaseController):
 [param]Risk Free Rate:  [/param] {self.risk_free_rate:.2%}
 [param]Benchmark:[/param] {self.benchmark_name or ""}
 
+[info]Metrics:[/info]{("[unvl]", "[cmds]")[port_bench]}
+    summary          all portfolio vs benchmark metrics for a certain period of choice
+    alloc            allocation on an asset, sector, countries or regions basis
+    metric           portfolio vs benchmark metric for all different periods
+    perf             performance of the portfolio versus benchmark{("[/unvl]", "[/cmds]")[port_bench]}
+
 [info]Graphs:[/info]{("[unvl]", "[cmds]")[port_bench]}
     holdv            holdings of assets (absolute value)
     holdp            portfolio holdings of assets (in percentage)
@@ -349,12 +355,6 @@ class PortfolioController(BaseController):
     rsort            rolling sortino
     rbeta            rolling beta
 {("[/unvl]", "[/cmds]")[port_bench]}
-[info]Metrics:[/info]{("[unvl]", "[cmds]")[port_bench]}
-    alloc            allocation on an asset, sector, countries or regions basis
-    summary          all portfolio vs benchmark metrics for a certain period of choice
-    metric           portfolio vs benchmark metric for all different periods
-    perf             performance of the portfolio versus benchmark{("[/unvl]", "[/cmds]")[port_bench]}
-
 [info]Risk Metrics:[/info]{("[unvl]", "[cmds]")[port]}
     var              display value at risk
     es               display expected shortfall
