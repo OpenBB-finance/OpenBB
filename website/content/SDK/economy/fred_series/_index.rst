@@ -14,9 +14,9 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 economy.fred_series(
-    series\_ids: List[str],
-    start\_date: str = None,
-    end\_date: str = None,
+    series_ids: List[str],
+    start_date: str = None,
+    end_date: str = None,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

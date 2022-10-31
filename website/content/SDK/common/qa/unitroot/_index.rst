@@ -15,8 +15,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 common.qa.unitroot(
     data: pandas.core.frame.DataFrame,
-    fuller\_reg: str = 'c',
-    kpss\_reg: str = 'c',
+    fuller_reg: str = 'c',
+    kpss_reg: str = 'c',
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

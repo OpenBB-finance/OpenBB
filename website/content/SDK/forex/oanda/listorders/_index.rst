@@ -14,9 +14,10 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 forex.oanda.listorders(
-    order\_state: str = 'PENDING',
-    order\_count: int = 0,
-    accountID: str = 'REPLACE\_ME', chart: bool = False,
+    order_state: str = 'PENDING',
+    order_count: int = 0,
+    accountID: str = 'REPLACE_ME',
+    chart: bool = False,
     ) -> Union[pandas.core.frame.DataFrame, bool]
 {{< /highlight >}}
 

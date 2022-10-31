@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 portfolio.rsharpe(
     portfolio: pandas.core.frame.DataFrame,
-    risk\_free\_rate: float = 0,
+    risk_free_rate: float = 0,
     window: str = '1y',
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame

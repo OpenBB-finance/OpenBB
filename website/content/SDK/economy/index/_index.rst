@@ -16,8 +16,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 economy.index(
     indices: list,
     interval: str = '1d',
-    start\_date: int = None,
-    end\_date: int = None,
+    start_date: int = None,
+    end_date: int = None,
     column: str = 'Adj Close',
     returns: bool = False,
     chart: bool = False,

@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 stocks.gov.government_trading(
-    gov\_type: str = 'congress',
+    gov_type: str = 'congress',
     symbol: str = '',
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

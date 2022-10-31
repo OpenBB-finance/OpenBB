@@ -12,7 +12,8 @@
 
 {{< highlight python >}}
 portfolio.profitfactor(
-    portfolio: openbb\_terminal.portfolio.portfolio\_model.PortfolioModel, )
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    )
 {{< /highlight >}}
 
 * **Parameters**

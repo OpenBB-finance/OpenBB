@@ -15,8 +15,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 common.qa.omega(
     data: pandas.core.frame.DataFrame,
-    threshold\_start: float = 0,
-    threshold\_end: float = 1.5,
+    threshold_start: float = 0,
+    threshold_end: float = 1.5,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

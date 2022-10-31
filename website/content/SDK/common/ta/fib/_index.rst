@@ -16,10 +16,10 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 common.ta.fib(
     data: pandas.core.frame.DataFrame,
     limit: int = 120,
-    start\_date: Any = None,
-    end\_date: Any = None,
+    start_date: Any = None,
+    end_date: Any = None,
     chart: bool = False,
-    ) -> Tuple[pandas.core.frame.DataFrame, pandas.\_libs.tslibs.timestamps.Timestamp, pandas.\_libs.tslibs.timestamps.Timestamp, float, float]
+    ) -> Tuple[pandas.core.frame.DataFrame, pandas._libs.tslibs.timestamps.Timestamp, pandas._libs.tslibs.timestamps.Timestamp, float, float]
 {{< /highlight >}}
 
 * **Parameters**

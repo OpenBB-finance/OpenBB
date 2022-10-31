@@ -13,7 +13,7 @@
 {{< highlight python >}}
 stocks.ca.screener(
     similar: List[str],
-    data\_type: str = 'overview',
+    data_type: str = 'overview',
     )
 {{< /highlight >}}
 

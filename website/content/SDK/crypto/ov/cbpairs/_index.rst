@@ -20,7 +20,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 crypto.ov.cbpairs(
     limit: int = 50,
-    sortby: str = 'quote\_increment', ascend: bool = True,
+    sortby: str = 'quote_increment',
+    ascend: bool = True,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

@@ -15,12 +15,13 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 crypto.ov.news(
     limit: int = 60,
-    post\_kind: str = 'news',
-    filter\_: Optional[str] = None,
+    post_kind: str = 'news',
+    filter_: Optional[str] = None,
     region: str = 'en',
     source: Optional[str] = None,
     symbol: Optional[str] = None,
-    sortby: str = 'published\_at', ascend: bool = True,
+    sortby: str = 'published_at',
+    ascend: bool = True,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

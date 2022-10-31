@@ -17,10 +17,11 @@ common.ta.ma(
     data: pandas.core.series.Series,
     window: List[int] = None,
     offset: int = 0,
-    ma\_type: str = 'EMA',
+    ma_type: str = 'EMA',
     symbol: str = '',
     export: str = '',
-    external\_axes: Optional[List[matplotlib.axes.\_axes.Axes]] = None, chart: bool = False,
+    external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
+    chart: bool = False,
     ) -> None
 {{< /highlight >}}
 

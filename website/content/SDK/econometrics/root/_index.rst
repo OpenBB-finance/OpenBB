@@ -15,8 +15,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 econometrics.root(
     data: pandas.core.series.Series,
-    fuller\_reg: str = 'c',
-    kpss\_reg: str = 'c',
+    fuller_reg: str = 'c',
+    kpss_reg: str = 'c',
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

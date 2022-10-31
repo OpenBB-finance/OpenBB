@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 common.ta.adosc(
     data: pandas.core.frame.DataFrame,
-    use\_open: bool = False,
+    use_open: bool = False,
     fast: int = 3,
     slow: int = 10,
     chart: bool = False,

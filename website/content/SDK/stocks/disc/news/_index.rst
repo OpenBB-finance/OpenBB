@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 stocks.disc.news(
-    news\_type: str = 'Top-News', limit: int = 5,
+    news_type: str = 'Top-News', limit: int = 5,
     ) -> List
 {{< /highlight >}}
 

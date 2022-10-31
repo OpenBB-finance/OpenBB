@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 stocks.options.hedge.calc_hedge(
-    portfolio\_option\_amount: float = 100,
+    portfolio_option_amount: float = 100,
     side: str = 'Call',
     greeks: dict = {'Portfolio': {'Delta': 1, 'Gamma': 9.1268e-05, 'Vega': 5.4661}, 'Option A': {'Delta': 1, 'Gamma': 9.1268e-05, 'Vega': 5.4661}, 'Option B': {'Delta': 1, 'Gamma': 9.1268e-05, 'Vega': 5.4661}}, sign: int = 1,
     chart: bool = False,

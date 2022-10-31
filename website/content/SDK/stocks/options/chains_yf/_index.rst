@@ -16,7 +16,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 stocks.options.chains_yf(
     symbol: str,
     expiry: str,
-    min\_sp: float = -1, max\_sp: float = -1, calls: bool = True,
+    min_sp: float = -1, max_sp: float = -1, calls: bool = True,
     puts: bool = True,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame

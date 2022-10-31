@@ -14,9 +14,9 @@
 portfolio.po.equal(
     symbols: List[str],
     interval: str = '3y',
-    start\_date: str = '',
-    end\_date: str = '',
-    log\_returns: bool = False,
+    start_date: str = '',
+    end_date: str = '',
+    log_returns: bool = False,
     freq: str = 'D',
     maxnan: float = 0.05,
     threshold: float = 0,

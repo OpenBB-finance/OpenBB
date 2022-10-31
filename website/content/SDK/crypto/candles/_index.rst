@@ -12,11 +12,11 @@
 
 {{< highlight python >}}
 crypto.candles(
-    candles\_df: 'pd.DataFrame',
+    candles_df: 'pd.DataFrame',
     volume: 'bool' = True,
     ylabel: 'str' = '',
     title: 'str' = '',
-    external\_axes: 'list[plt.Axes] | None' = None, yscale: 'str' = 'linear',
+    external_axes: 'list[plt.Axes] | None' = None, yscale: 'str' = 'linear',
     ) -> 'None'
 {{< /highlight >}}
 

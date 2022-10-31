@@ -14,9 +14,9 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 common.ta.bbands(
-    close\_values: pandas.core.series.Series,
+    close_values: pandas.core.series.Series,
     window: int = 15,
-    n\_std: float = 2,
+    n_std: float = 2,
     mamode: str = 'ema',
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame

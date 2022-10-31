@@ -14,13 +14,13 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.chart(
-    prices\_df: 'pd.DataFrame',
-    to\_symbol: 'str' = '',
-    from\_symbol: 'str' = '',
+    prices_df: 'pd.DataFrame',
+    to_symbol: 'str' = '',
+    from_symbol: 'str' = '',
     source: 'str' = '',
     exchange: 'str' = '',
     interval: 'str' = '',
-    external\_axes: 'list[plt.Axes] | None' = None, yscale: 'str' = 'linear',
+    external_axes: 'list[plt.Axes] | None' = None, yscale: 'str' = 'linear',
     chart: bool = False,
     ) -> 'None'
 {{< /highlight >}}

@@ -19,7 +19,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.ov.cgcategories(
-    sort\_filter: str = 'market\_cap\_desc', chart: bool = False,
+    sort_filter: str = 'market_cap_desc',
+    chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

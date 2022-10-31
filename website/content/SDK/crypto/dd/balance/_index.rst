@@ -14,8 +14,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.dd.balance(
-    from\_symbol: str,
-    to\_symbol: str = 'USDT',
+    from_symbol: str,
+    to_symbol: str = 'USDT',
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

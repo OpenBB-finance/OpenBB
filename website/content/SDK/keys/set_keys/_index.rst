@@ -12,9 +12,9 @@
 
 {{< highlight python >}}
 keys.set_keys(
-    keys\_dict: Dict[str, Dict[str, Union[str, bool]]],
+    keys_dict: Dict[str, Dict[str, Union[str, bool]]],
     persist: bool = False,
-    show\_output: bool = False,
+    show_output: bool = False,
     ) -> Dict
 {{< /highlight >}}
 

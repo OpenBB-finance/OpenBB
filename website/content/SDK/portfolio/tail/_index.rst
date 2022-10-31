@@ -12,7 +12,8 @@
 
 {{< highlight python >}}
 portfolio.tail(
-    portfolio: openbb\_terminal.portfolio.portfolio\_model.PortfolioModel, window: int = 252,
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    window: int = 252,
     )
 {{< /highlight >}}
 

@@ -41,9 +41,9 @@
 {{< highlight python >}}
 etf.load(
     symbol: str,
-    start\_date: datetime.datetime = None,
+    start_date: datetime.datetime = None,
     interval: int = 1440,
-    end\_date: datetime.datetime = None,
+    end_date: datetime.datetime = None,
     prepost: bool = False,
     source: str = 'YahooFinance',
     iexrange: str = 'ytd',

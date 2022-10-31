@@ -14,7 +14,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 portfolio.distr(
-    portfolio: openbb\_terminal.portfolio.portfolio\_model.PortfolioModel, window: str = 'all',
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    window: str = 'all',
     chart: bool = False,
     )
 {{< /highlight >}}

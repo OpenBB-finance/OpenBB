@@ -17,8 +17,8 @@ stocks.ba.redditsent(
     symbol: str,
     limit: int = 100,
     sortby: str = 'relevance',
-    time\_frame: str = 'week',
-    full\_search: bool = True,
+    time_frame: str = 'week',
+    full_search: bool = True,
     subreddits: str = 'all',
     chart: bool = False,
     ) -> Tuple[pandas.core.frame.DataFrame, list, float]

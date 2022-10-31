@@ -16,7 +16,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 common.qa.quantile(
     data: pandas.core.frame.DataFrame,
     window: int = 14,
-    quantile\_pct: float = 0.5,
+    quantile_pct: float = 0.5,
     chart: bool = False,
     ) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
 {{< /highlight >}}

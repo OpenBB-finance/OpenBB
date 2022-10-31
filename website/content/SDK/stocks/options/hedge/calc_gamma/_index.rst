@@ -17,11 +17,11 @@
 
 {{< highlight python >}}
 stocks.options.hedge.calc_gamma(
-    asset\_price: float = 100,
-    asset\_volatility: float = 20,
-    strike\_price: float = 120,
-    time\_to\_expiration: float = 30,
-    risk\_free\_rate: float = 0,
+    asset_price: float = 100,
+    asset_volatility: float = 20,
+    strike_price: float = 120,
+    time_to_expiration: float = 30,
+    risk_free_rate: float = 0,
     )
 {{< /highlight >}}
 

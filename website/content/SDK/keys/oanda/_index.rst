@@ -13,10 +13,10 @@
 {{< highlight python >}}
 keys.oanda(
     account: str,
-    access\_token: str,
-    account\_type: str = '',
+    access_token: str,
+    account_type: str = '',
     persist: bool = False,
-    show\_output: bool = False,
+    show_output: bool = False,
     ) -> str
 {{< /highlight >}}
 

@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.onchain.lt(
-    trade\_amount\_currency: str = 'USD',
+    trade_amount_currency: str = 'USD',
     limit: int = 90,
     sortby: str = 'tradeAmount',
     ascend: bool = True,

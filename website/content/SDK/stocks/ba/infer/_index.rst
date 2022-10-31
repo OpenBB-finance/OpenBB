@@ -16,8 +16,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 stocks.ba.infer(
     symbol: str,
     limit: int = 100,
-    start\_date: Optional[str] = '',
-    end\_date: Optional[str] = '',
+    start_date: Optional[str] = '',
+    end_date: Optional[str] = '',
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

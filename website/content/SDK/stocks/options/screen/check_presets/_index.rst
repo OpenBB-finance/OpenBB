@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 stocks.options.screen.check_presets(
-    preset\_dict: dict,
+    preset_dict: dict,
     ) -> str
 {{< /highlight >}}
 

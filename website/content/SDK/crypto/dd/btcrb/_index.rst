@@ -16,7 +16,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.dd.btcrb(
-    start\_date: str = '2010-01-01', end\_date: str = '2022-10-31', chart: bool = False,
+    start_date: str = '2010-01-01', end_date: str = '2022-10-31', chart: bool = False,
     )
 {{< /highlight >}}
 

@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 stocks.ba.popular(
     limit: int = 10,
-    post\_limit: int = 50,
+    post_limit: int = 50,
     subreddits: str = '',
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame

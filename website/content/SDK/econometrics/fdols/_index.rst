@@ -16,7 +16,7 @@
 
 {{< highlight python >}}
 econometrics.fdols(
-    regression\_variables: List[Tuple],
+    regression_variables: List[Tuple],
     data: Dict[str, pandas.core.frame.DataFrame],
     ) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any], Any]
 {{< /highlight >}}

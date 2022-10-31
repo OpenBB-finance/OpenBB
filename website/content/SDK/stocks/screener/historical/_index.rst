@@ -14,8 +14,9 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 stocks.screener.historical(
-    preset\_loaded: str = 'top\_gainers', limit: int = 10,
-    start\_date: str = '2022-05-04', type\_candle: str = 'a',
+    preset_loaded: str = 'top_gainers',
+    limit: int = 10,
+    start_date: str = '2022-05-04', type_candle: str = 'a',
     normalize: bool = True,
     chart: bool = False,
     )

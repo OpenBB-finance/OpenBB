@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 stocks.ba.text_sent(
-    post\_data: List[str],
+    post_data: List[str],
     ) -> float
 {{< /highlight >}}
 

@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 stocks.gov.contracts(
     symbol: str,
-    past\_transaction\_days: int = 10,
+    past_transaction_days: int = 10,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

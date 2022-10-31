@@ -12,8 +12,9 @@
 
 {{< highlight python >}}
 portfolio.summary(
-    portfolio: openbb\_terminal.portfolio.portfolio\_model.PortfolioModel, window: str = 'all',
-    risk\_free\_rate: float = 0,
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    window: str = 'all',
+    risk_free_rate: float = 0,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

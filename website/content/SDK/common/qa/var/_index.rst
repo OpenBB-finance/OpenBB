@@ -15,9 +15,9 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 common.qa.var(
     data: pandas.core.frame.DataFrame,
-    use\_mean: bool = False,
-    adjusted\_var: bool = False,
-    student\_t: bool = False,
+    use_mean: bool = False,
+    adjusted_var: bool = False,
+    student_t: bool = False,
     percentile: Union[int, float] = 99.9,
     portfolio: bool = False,
     chart: bool = False,

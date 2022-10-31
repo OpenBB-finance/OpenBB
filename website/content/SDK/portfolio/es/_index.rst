@@ -12,7 +12,8 @@
 
 {{< highlight python >}}
 portfolio.es(
-    portfolio: openbb\_terminal.portfolio.portfolio\_model.PortfolioModel, use\_mean: bool = False,
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    use_mean: bool = False,
     distribution: str = 'normal',
     percentile: float = 99.9,
     ) -> pandas.core.frame.DataFrame

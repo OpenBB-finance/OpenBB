@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 economy.bigmac(
-    country\_codes: List[str] = None,
+    country_codes: List[str] = None,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

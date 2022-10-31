@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 economy.inf(
-    start\_year: int = 2010,
+    start_year: int = 2010,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

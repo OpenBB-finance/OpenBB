@@ -17,7 +17,7 @@ stocks.sia.filter_stocks(
     sector: str = None,
     industry: str = None,
     marketcap: str = '',
-    exclude\_exchanges: bool = True,
+    exclude_exchanges: bool = True,
     ) -> list
 {{< /highlight >}}
 

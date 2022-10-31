@@ -17,7 +17,7 @@ economy.macro(
     parameters: list = None,
     countries: list = None,
     transform: str = '',
-    start\_date: str = '1900-01-01', end\_date=datetime.date(
+    start_date: str = '1900-01-01', end_date=datetime.date(
     2022, 10, 31, chart: bool = False, ),
     symbol: str = '',
     chart: bool = False,

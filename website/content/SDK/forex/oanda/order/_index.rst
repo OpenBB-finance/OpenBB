@@ -17,7 +17,8 @@ forex.oanda.order(
     price: int = 0,
     units: int = 0,
     instrument: Optional[str] = None,
-    accountID: str = 'REPLACE\_ME', chart: bool = False,
+    accountID: str = 'REPLACE_ME',
+    chart: bool = False,
     ) -> Union[pandas.core.frame.DataFrame, bool]
 {{< /highlight >}}
 

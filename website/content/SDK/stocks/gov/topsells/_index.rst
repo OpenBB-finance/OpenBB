@@ -14,8 +14,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 stocks.gov.topsells(
-    gov\_type: str = 'congress',
-    past\_transactions\_months: int = 6,
+    gov_type: str = 'congress',
+    past_transactions_months: int = 6,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

@@ -14,10 +14,10 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.tools.il(
-    price\_changeA: float,
-    price\_changeB: float,
+    price_changeA: float,
+    price_changeB: float,
     proportion: float,
-    initial\_pool\_value: float,
+    initial_pool_value: float,
     chart: bool = False,
     ) -> Tuple[pandas.core.frame.DataFrame, str]
 {{< /highlight >}}

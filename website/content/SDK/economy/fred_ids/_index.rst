@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 economy.fred_ids(
-    search\_query: str,
+    search_query: str,
     limit: int = -1, ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

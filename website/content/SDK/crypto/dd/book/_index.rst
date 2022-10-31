@@ -14,9 +14,9 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.dd.book(
-    from\_symbol: str,
+    from_symbol: str,
     limit: int = 100,
-    to\_symbol: str = 'USDT',
+    to_symbol: str = 'USDT',
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

@@ -16,7 +16,7 @@ stocks.search(
     country: str = '',
     sector: str = '',
     industry: str = '',
-    exchange\_country: str = '',
+    exchange_country: str = '',
     limit: int = 0,
     export: str = '',
     ) -> None

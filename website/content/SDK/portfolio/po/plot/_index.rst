@@ -16,20 +16,21 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 portfolio.po.plot(
     weights, data: pandas.core.frame.DataFrame,
     category: Dict = None,
-    title\_opt: str = '',
+    title_opt: str = '',
     freq: str = 'D',
-    risk\_measure: str = 'MV',
-    risk\_free\_rate: float = 0,
+    risk_measure: str = 'MV',
+    risk_free_rate: float = 0,
     alpha: float = 0.05,
-    a\_sim: float = 100,
+    a_sim: float = 100,
     beta: float = None,
-    b\_sim: float = None,
+    b_sim: float = None,
     pie: bool = False,
     hist: bool = False,
     dd: bool = False,
-    rc\_chart: bool = False,
+    rc_chart: bool = False,
     heat: bool = False,
-    external\_axes: Optional[List[matplotlib.axes.\_axes.Axes]] = None, chart: bool = False,
+    external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
+    chart: bool = False,
     )
 {{< /highlight >}}
 

@@ -14,10 +14,10 @@
 
 {{< highlight python >}}
 econometrics.fe(
-    regression\_variables: List[Tuple],
+    regression_variables: List[Tuple],
     data: Dict[str, pandas.core.frame.DataFrame],
-    entity\_effects: bool = False,
-    time\_effects: bool = False,
+    entity_effects: bool = False,
+    time_effects: bool = False,
     ) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any], Any]
 {{< /highlight >}}
 

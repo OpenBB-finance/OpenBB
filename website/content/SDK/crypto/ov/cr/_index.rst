@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.ov.cr(
-    rate\_type: str = 'borrow',
+    rate_type: str = 'borrow',
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

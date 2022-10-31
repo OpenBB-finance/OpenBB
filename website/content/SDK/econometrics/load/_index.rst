@@ -13,9 +13,9 @@
 {{< highlight python >}}
 econometrics.load(
     file: str,
-    file\_types: Optional[List[str]] = None,
-    data\_files: Optional[Dict[Any, Any]] = None,
-    data\_examples: Optional[Dict[Any, Any]] = None,
+    file_types: Optional[List[str]] = None,
+    data_files: Optional[Dict[Any, Any]] = None,
+    data_examples: Optional[Dict[Any, Any]] = None,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

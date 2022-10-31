@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 stocks.ca.hist(
     similar: List[str],
-    start\_date: str = '2021-10-30', candle\_type: str = 'a',
+    start_date: str = '2021-10-30', candle_type: str = 'a',
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

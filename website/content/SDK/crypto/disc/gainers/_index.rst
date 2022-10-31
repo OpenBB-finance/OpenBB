@@ -16,7 +16,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 crypto.disc.gainers(
     interval: str = '1h',
     limit: int = 50,
-    sortby: str = 'market\_cap\_rank', chart: bool = False,
+    sortby: str = 'market_cap_rank',
+    chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

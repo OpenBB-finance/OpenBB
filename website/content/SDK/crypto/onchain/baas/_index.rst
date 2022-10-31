@@ -16,7 +16,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 crypto.onchain.baas(
     symbol: str = 'WETH',
-    to\_symbol: str = 'USDT',
+    to_symbol: str = 'USDT',
     limit: int = 30,
     sortby: str = 'tradeAmount',
     ascend: bool = True,

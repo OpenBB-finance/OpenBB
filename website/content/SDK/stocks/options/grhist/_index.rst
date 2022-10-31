@@ -17,7 +17,7 @@ stocks.options.grhist(
     symbol: str,
     expiry: str,
     strike: float,
-    chain\_id: str = '',
+    chain_id: str = '',
     put: bool = False,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame

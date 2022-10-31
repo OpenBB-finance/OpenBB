@@ -14,9 +14,9 @@
 keys.twitter(
     key: str,
     secret: str,
-    access\_token: str,
+    access_token: str,
     persist: bool = False,
-    show\_output: bool = False,
+    show_output: bool = False,
     ) -> str
 {{< /highlight >}}
 

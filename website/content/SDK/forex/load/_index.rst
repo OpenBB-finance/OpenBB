@@ -12,11 +12,11 @@
 
 {{< highlight python >}}
 forex.load(
-    to\_symbol: str,
-    from\_symbol: str,
+    to_symbol: str,
+    from_symbol: str,
     resolution: str = 'd',
     interval: str = '1day',
-    start\_date: str = '2021-10-31', source: str = 'YahooFinance',
+    start_date: str = '2021-10-31', source: str = 'YahooFinance',
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

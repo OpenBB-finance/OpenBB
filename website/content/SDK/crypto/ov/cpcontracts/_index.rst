@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.ov.cpcontracts(
-    platform\_id: str = 'eth-ethereum', sortby: str = 'active',
+    platform_id: str = 'eth-ethereum', sortby: str = 'active',
     ascend: bool = True,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame

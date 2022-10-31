@@ -19,7 +19,7 @@ stocks.options.hist_tr(
     expiry: str,
     strike: float = 0,
     put: bool = False,
-    chain\_id: Optional[str] = None,
+    chain_id: Optional[str] = None,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

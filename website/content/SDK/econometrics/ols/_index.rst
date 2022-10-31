@@ -12,9 +12,9 @@
 
 {{< highlight python >}}
 econometrics.ols(
-    regression\_variables: List[Tuple],
+    regression_variables: List[Tuple],
     data: Dict[str, pandas.core.frame.DataFrame],
-    show\_regression: bool = True,
+    show_regression: bool = True,
     export: str = '',
     ) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any], Any]
 {{< /highlight >}}

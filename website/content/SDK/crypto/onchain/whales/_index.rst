@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.onchain.whales(
-    min\_value: int = 800000,
+    min_value: int = 800000,
     limit: int = 100,
     sortby: str = 'date',
     ascend: bool = False,

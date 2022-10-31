@@ -13,10 +13,11 @@
 {{< highlight python >}}
 forex.candle(
     data: pandas.core.frame.DataFrame,
-    to\_symbol: str = '',
-    from\_symbol: str = '',
+    to_symbol: str = '',
+    from_symbol: str = '',
     ma: Optional[Iterable[int]] = None,
-    external\_axes: Optional[List[matplotlib.axes.\_axes.Axes]] = None, )
+    external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
+    )
 {{< /highlight >}}
 
 * **Parameters**

@@ -12,11 +12,11 @@
 
 {{< highlight python >}}
 forex.hist(
-    to\_symbol: str = 'USD',
-    from\_symbol: str = 'EUR',
+    to_symbol: str = 'USD',
+    from_symbol: str = 'EUR',
     resolution: str = 'd',
     interval: int = 5,
-    start\_date: str = '',
+    start_date: str = '',
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

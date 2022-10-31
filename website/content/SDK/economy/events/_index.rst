@@ -15,8 +15,8 @@ economy.events(
     country: str = 'all',
     importance: str = '',
     category: str = '',
-    start\_date: str = '',
-    end\_date: str = '', limit=100,
+    start_date: str = '',
+    end_date: str = '', limit=100,
     ) -> Tuple[pandas.core.frame.DataFrame, str]
 {{< /highlight >}}
 

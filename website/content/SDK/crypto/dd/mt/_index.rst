@@ -16,9 +16,9 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 crypto.dd.mt(
     symbol: str,
-    timeseries\_id: str,
+    timeseries_id: str,
     interval: str = '1d',
-    start\_date: str = '2021-10-31', end\_date: str = '2022-10-31', chart: bool = False,
+    start_date: str = '2021-10-31', end_date: str = '2022-10-31', chart: bool = False,
     ) -> Tuple[pandas.core.frame.DataFrame, str]
 {{< /highlight >}}
 

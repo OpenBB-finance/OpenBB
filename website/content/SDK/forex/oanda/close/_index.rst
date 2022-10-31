@@ -16,7 +16,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 forex.oanda.close(
     orderID: str,
     units: Optional[int] = 0,
-    accountID: str = 'REPLACE\_ME', chart: bool = False,
+    accountID: str = 'REPLACE_ME',
+    chart: bool = False,
     ) -> Union[pandas.core.frame.DataFrame, bool]
 {{< /highlight >}}
 

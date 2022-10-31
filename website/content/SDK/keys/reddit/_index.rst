@@ -12,13 +12,13 @@
 
 {{< highlight python >}}
 keys.reddit(
-    client\_id: str,
-    client\_secret: str,
+    client_id: str,
+    client_secret: str,
     password: str,
     username: str,
     useragent: str,
     persist: bool = False,
-    show\_output: bool = False,
+    show_output: bool = False,
     ) -> str
 {{< /highlight >}}
 

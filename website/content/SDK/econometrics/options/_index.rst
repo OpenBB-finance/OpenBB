@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 econometrics.options(
     datasets: Dict[str, pandas.core.frame.DataFrame],
-    dataset\_name: str = '',
+    dataset_name: str = '',
     chart: bool = False,
     ) -> Dict[Union[str, Any], pandas.core.frame.DataFrame]
 {{< /highlight >}}

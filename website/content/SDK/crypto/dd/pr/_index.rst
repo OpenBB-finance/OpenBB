@@ -14,8 +14,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.dd.pr(
-    main\_coin: str,
-    to\_symbol: Optional[str] = None,
+    main_coin: str,
+    to_symbol: Optional[str] = None,
     limit: Optional[int] = None,
     price: Optional[int] = None,
     chart: bool = False,

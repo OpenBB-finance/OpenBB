@@ -14,8 +14,8 @@
 stocks.ba.getdd(
     symbol: str,
     limit: int = 5,
-    n\_days: int = 3,
-    show\_all\_flairs: bool = False,
+    n_days: int = 3,
+    show_all_flairs: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

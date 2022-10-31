@@ -12,8 +12,8 @@
 
 {{< highlight python >}}
 stocks.disc.pipo(
-    num\_days\_behind: int = 5,
-    start\_date: Optional[str] = None,
+    num_days_behind: int = 5,
+    start_date: Optional[str] = None,
     )
 {{< /highlight >}}
 

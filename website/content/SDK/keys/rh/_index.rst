@@ -15,7 +15,7 @@ keys.rh(
     username: str,
     password: str,
     persist: bool = False,
-    show\_output: bool = False,
+    show_output: bool = False,
     ) -> str
 {{< /highlight >}}
 

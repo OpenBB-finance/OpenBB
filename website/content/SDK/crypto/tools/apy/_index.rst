@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 crypto.tools.apy(
     apr: float,
-    compounding\_times: int,
+    compounding_times: int,
     chart: bool = False,
     ) -> Tuple[pandas.core.frame.DataFrame, str]
 {{< /highlight >}}

@@ -13,9 +13,9 @@
 {{< highlight python >}}
 keys.smartstake(
     key: str,
-    access\_token: str,
+    access_token: str,
     persist: bool = False,
-    show\_output: bool = False,
+    show_output: bool = False,
     )
 {{< /highlight >}}
 

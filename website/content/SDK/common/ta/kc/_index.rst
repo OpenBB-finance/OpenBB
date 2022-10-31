@@ -14,9 +14,9 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 common.ta.kc(
-    high\_prices: pandas.core.series.Series,
-    low\_prices: pandas.core.series.Series,
-    close\_prices: pandas.core.series.Series,
+    high_prices: pandas.core.series.Series,
+    low_prices: pandas.core.series.Series,
+    close_prices: pandas.core.series.Series,
     window: int = 20,
     scalar: float = 2,
     mamode: str = 'ema',

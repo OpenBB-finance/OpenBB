@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.ov.cpexmarkets(
-    exchange\_id: str = 'binance',
+    exchange_id: str = 'binance',
     symbols: str = 'USD',
     sortby: str = 'pair',
     ascend: bool = True,

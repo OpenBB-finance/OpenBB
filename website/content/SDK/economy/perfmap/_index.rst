@@ -13,7 +13,7 @@
 {{< highlight python >}}
 economy.perfmap(
     period: str = '1d',
-    map\_filter: str = 'sp500',
+    map_filter: str = 'sp500',
     )
 {{< /highlight >}}
 

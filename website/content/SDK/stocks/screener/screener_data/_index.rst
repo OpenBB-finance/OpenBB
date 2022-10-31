@@ -14,7 +14,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 stocks.screener.screener_data(
-    preset\_loaded: str = 'top\_gainers', data\_type: str = 'overview',
+    preset_loaded: str = 'top_gainers',
+    data_type: str = 'overview',
     limit: int = 10,
     ascend: bool = False,
     chart: bool = False,

@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 alt.covid.slopes(
-    days\_back: int = 30,
+    days_back: int = 30,
     limit: int = 50,
     threshold: int = 10000,
     ascend: bool = False,

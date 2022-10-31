@@ -15,7 +15,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 forex.oanda.orderbook(
     instrument: Optional[str] = None,
-    accountID: str = 'REPLACE\_ME', chart: bool = False,
+    accountID: str = 'REPLACE_ME',
+    chart: bool = False,
     ) -> Union[pandas.core.frame.DataFrame, bool]
 {{< /highlight >}}
 

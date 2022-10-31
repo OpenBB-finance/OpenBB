@@ -16,17 +16,17 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 portfolio.po.maxdecorr(
     symbols: List[str],
     interval: str = '3y',
-    start\_date: str = '',
-    end\_date: str = '',
-    log\_returns: bool = False,
+    start_date: str = '',
+    end_date: str = '',
+    log_returns: bool = False,
     freq: str = 'D',
     maxnan: float = 0.05,
     threshold: float = 0,
     method: str = 'time',
     covariance: str = 'hist',
-    d\_ewma: float = 0.94,
+    d_ewma: float = 0.94,
     value: float = 1.0,
-    value\_short: float = 0,
+    value_short: float = 0,
     chart: bool = False,
     ) -> Tuple
 {{< /highlight >}}

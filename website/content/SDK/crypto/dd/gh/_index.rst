@@ -17,10 +17,10 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 crypto.dd.gh(
     symbol: str,
-    dev\_activity: bool = False,
+    dev_activity: bool = False,
     interval: str = '1d',
-    start\_date: str = '2021-10-31T13:15:21Z',
-    end\_date: str = '2022-10-31T13:15:21Z',
+    start_date: str = '2021-10-31T13:19:54Z',
+    end_date: str = '2022-10-31T13:19:54Z',
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

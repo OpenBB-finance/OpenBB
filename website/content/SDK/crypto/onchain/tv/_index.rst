@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 crypto.onchain.tv(
     symbol: str = 'UNI',
-    trade\_amount\_currency: str = 'USD',
+    trade_amount_currency: str = 'USD',
     sortby: str = 'tradeAmount',
     ascend: bool = True,
     chart: bool = False,

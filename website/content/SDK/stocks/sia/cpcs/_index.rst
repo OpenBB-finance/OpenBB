@@ -17,7 +17,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 stocks.sia.cpcs(
     sector: str = 'Technology',
     mktcap: str = 'Large',
-    exclude\_exchanges: bool = True,
+    exclude_exchanges: bool = True,
     chart: bool = False,
     ) -> dict
 {{< /highlight >}}

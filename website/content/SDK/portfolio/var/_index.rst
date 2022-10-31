@@ -12,9 +12,10 @@
 
 {{< highlight python >}}
 portfolio.var(
-    portfolio: openbb\_terminal.portfolio.portfolio\_model.PortfolioModel, use\_mean: bool = False,
-    adjusted\_var: bool = False,
-    student\_t: bool = False,
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    use_mean: bool = False,
+    adjusted_var: bool = False,
+    student_t: bool = False,
     percentile: float = 99.9,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

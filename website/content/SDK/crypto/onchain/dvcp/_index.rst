@@ -16,7 +16,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 crypto.onchain.dvcp(
     limit: int = 100,
     symbol: str = 'UNI',
-    to\_symbol: str = 'USDT',
+    to_symbol: str = 'USDT',
     sortby: str = 'date',
     ascend: bool = True,
     chart: bool = False,
