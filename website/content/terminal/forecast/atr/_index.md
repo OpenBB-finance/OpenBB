@@ -23,7 +23,7 @@ Example:
 Successfully added 'Average True Range' to 'aapl_20220628_113243' dataset
 
 (🦋) /forecast/ $ show aapl_20220628_113243
-aapl_20220628_113243 has following shape (rowxcolumn): (759, 9)
+aapl_20220628_113243 dataset has shape (row, column): (759, 9)
 
                        Dataset aapl_20220628_113243 | Showing 10 of 759 rows
 ┏━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┓

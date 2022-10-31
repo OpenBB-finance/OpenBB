@@ -11,6 +11,7 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
 )
 from openbb_terminal.stocks.technical_analysis import rsp_model
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +36,7 @@ def display_rsp(
 
     rsp_stock, rsp_industry, df_stock_p, df_industries_p = rsp_model.get_rsp(s_ticker)
     if rsp_stock.empty or rsp_industry.empty:
-        print("Ticker not found")
+        console.print(f"[red]Ticker '{s_ticker}' not found.\n[/red]")
     else:
         tickers = pd.DataFrame(rsp_industry["Tickers"])
         del rsp_industry["Tickers"]
