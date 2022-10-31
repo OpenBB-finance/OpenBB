@@ -15,6 +15,7 @@ from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_replace_unicode,
 )
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -58,12 +59,18 @@ def _make_request(endpoint: str) -> dict:
         url, headers={"Accept": "application/json", "User-Agent": "GST"}
     )
     if not 200 <= response.status_code < 300:
-        raise Exception(f"fcd terra api exception: {response.text}")
+        console.print(
+            f"[red]fcd terra api exception: {response.json()['type']}[/red]\n"
+        )
+        return {}
     try:
         return response.json()
     except Exception as e:
         logger.exception("Invalid Response: %s", str(e))
-        raise ValueError(f"Invalid Response: {response.text}") from e
+        console.print(
+            f"[red]fcd terra api exception: {response.json()['type']}[/red]\n"
+        )
+        return {}
 
 
 @log_start_end(log=logger)

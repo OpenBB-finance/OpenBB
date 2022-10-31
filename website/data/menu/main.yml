@@ -1618,10 +1618,6 @@ main:
                 ref: /terminal/stocks/sia/mktcap
               - name: period
                 ref: /terminal/stocks/sia/period
-              - name: sama
-                ref: /terminal/stocks/sia/sama
-              - name: satma
-                ref: /terminal/stocks/sia/satma
               - name: sector
                 ref: /terminal/stocks/sia/sector
               - name: vis
@@ -3003,6 +2999,8 @@ main:
             sub:
               - name: recom
                 ref: /SDK/stocks/ta/recom
+              - name: rsp
+                ref: /SDK/stocks/ta/rsp
               - name: summary
                 ref: /SDK/stocks/ta/summary
               - name: view

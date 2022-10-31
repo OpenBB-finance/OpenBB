@@ -228,6 +228,7 @@ class ForecastController(BaseController):
             for feature in [
                 "plot",
                 "delete",
+                "season",
             ]:
                 self.choices[feature] = dataset_columns
 
@@ -258,10 +259,12 @@ class ForecastController(BaseController):
                 "linregr",
                 "trans",
                 "tft",
-                "season",
                 "nhits",
             ]:
                 self.choices[feature] = {c: None for c in self.files}
+
+            self.choices["combine"]["--columns"] = dataset_columns
+            self.choices["combine"]["-c"] = "--columns"
 
             pairs_timeseries = list()
             for dataset_col in list(dataset_columns.keys()):
@@ -575,7 +578,7 @@ class ForecastController(BaseController):
                 dest="dropout",
                 default=dropout,
                 type=check_positive_float,
-                help="Fraction of neurons afected by Dropout.",
+                help="Fraction of neurons afected by Dropout, from 0 to 1.",
             )
         if batch_size is not None:
             parser.add_argument(
@@ -764,10 +767,9 @@ class ForecastController(BaseController):
                     )
                     return
                 data = forecast_model.load(file, self.file_types, self.DATA_FILES)
-                self.files_full.append([ns_parser.file, ns_parser.alias])
-
-                self.load(alias, data)
-                console.print()
+                if not data.empty:
+                    self.files_full.append([ns_parser.file, ns_parser.alias])
+                    self.load(alias, data)
 
     # Show selected dataframe on console
     @log_start_end(log=logger)
@@ -785,7 +787,7 @@ class ForecastController(BaseController):
         )
 
         if ns_parser:
-            console.print()
+
             console.print(
                 f"[green]Current Compute Device (CPU or GPU):[/green] {self.device.upper()}"
             )
@@ -795,7 +797,6 @@ class ForecastController(BaseController):
             )
             console.print(f"[green]Torch version:[/green] {self.torch_version}")
             console.print(f"[green]Darts version:[/green] {self.darts_version}")
-            console.print()
 
     # Show selected dataframe on console
     @log_start_end(log=logger)
@@ -929,8 +930,11 @@ class ForecastController(BaseController):
                     self.datasets[dataset], column_old, column_new
                 )
             self.update_runtime_choices()
+            self.refresh_datasets_on_menu()
 
-        console.print()
+            console.print(
+                f"[green]Successfully renamed {column_old} into {column_new}, in {dataset}[/green]"
+            )
 
     # Show selected dataframe on console
     @log_start_end(log=logger)
@@ -975,7 +979,7 @@ class ForecastController(BaseController):
         parser.add_argument(
             "-v",
             "--values",
-            help="Dataset.column values to be displayed in a plot",
+            help="Dataset.column values to be displayed in a plot. Use comma to separate multiple",
             dest="values",
             type=str,
         )
@@ -1171,7 +1175,11 @@ class ForecastController(BaseController):
 
             self.datasets[ns_parser.dataset] = data
             self.update_runtime_choices()
-        console.print()
+            self.refresh_datasets_on_menu()
+
+            console.print(
+                f"[green]Successfully added {','.join(ns_parser.columns)} into {ns_parser.dataset}[/green]"
+            )
 
     @log_start_end(log=logger)
     def call_clean(self, other_args: List[str]):
@@ -1228,12 +1236,10 @@ class ForecastController(BaseController):
             )
             if not clean_status:
                 console.print(
-                    f"Successfully cleaned '{ns_parser.target_dataset}' dataset"
+                    f"[green]Successfully cleaned '{ns_parser.target_dataset}' dataset[/green]"
                 )
             else:
                 console.print(f"[red]{ns_parser.name} still contains NaNs.[/red]")
-
-        console.print()
 
     @log_start_end(log=logger)
     def call_ema(self, other_args: List[str]):
@@ -1275,7 +1281,6 @@ class ForecastController(BaseController):
             self.refresh_datasets_on_menu()
 
         self.update_runtime_choices()
-        console.print()
 
     @log_start_end(log=logger)
     def call_sto(self, other_args: List[str]):
@@ -1299,19 +1304,18 @@ class ForecastController(BaseController):
                 console.print("[red]Please enter valid dataset.\n[/red]")
                 return
 
-            self.datasets[ns_parser.target_dataset] = forecast_model.add_sto(
+            df = forecast_model.add_sto(
                 self.datasets[ns_parser.target_dataset],
                 ns_parser.period,
             )
-            console.print(
-                f"Successfully added 'STOK&D_{ns_parser.period}' to '{ns_parser.target_dataset}' dataset"
-            )
-
-            # update forecast menu with new column on modified dataset
-            self.refresh_datasets_on_menu()
-
-        self.update_runtime_choices()
-        console.print()
+            if not df.empty:
+                self.datasets[ns_parser.target_dataset] = df
+                console.print(
+                    f"Successfully added 'STOK&D_{ns_parser.period}' to '{ns_parser.target_dataset}' dataset"
+                )
+                # update forecast menu with new column on modified dataset
+                self.refresh_datasets_on_menu()
+                self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_delete(self, other_args: List[str]):
@@ -1346,7 +1350,11 @@ class ForecastController(BaseController):
                     forecast_model.delete_column(self.datasets[dataset], column)
 
             self.update_runtime_choices()
-        console.print()
+            self.refresh_datasets_on_menu()
+
+            console.print(
+                f"[green]Successfully deleted {', '.join(ns_parser.delete)}[/green]"
+            )
 
     @log_start_end(log=logger)
     def call_rsi(self, other_args: List[str]):
@@ -1388,7 +1396,6 @@ class ForecastController(BaseController):
             self.refresh_datasets_on_menu()
 
         self.update_runtime_choices()
-        console.print()
 
     @log_start_end(log=logger)
     def call_roc(self, other_args: List[str]):
@@ -1429,7 +1436,6 @@ class ForecastController(BaseController):
             self.refresh_datasets_on_menu()
 
         self.update_runtime_choices()
-        console.print()
 
     @log_start_end(log=logger)
     def call_mom(self, other_args: List[str]):
@@ -1470,7 +1476,6 @@ class ForecastController(BaseController):
             self.refresh_datasets_on_menu()
 
         self.update_runtime_choices()
-        console.print()
 
     @log_start_end(log=logger)
     def call_delta(self, other_args: List[str]):
@@ -1509,7 +1514,6 @@ class ForecastController(BaseController):
             self.refresh_datasets_on_menu()
 
         self.update_runtime_choices()
-        console.print()
 
     @log_start_end(log=logger)
     def call_atr(self, other_args: List[str]):
@@ -1554,7 +1558,6 @@ class ForecastController(BaseController):
             self.refresh_datasets_on_menu()
 
         self.update_runtime_choices()
-        console.print()
 
     @log_start_end(log=logger)
     def call_signal(self, other_args: List[str]):
@@ -1595,7 +1598,6 @@ class ForecastController(BaseController):
             self.refresh_datasets_on_menu()
 
         self.update_runtime_choices()
-        console.print()
 
     @log_start_end(log=logger)
     def call_export(self, other_args: List[str]):
@@ -1634,7 +1636,6 @@ class ForecastController(BaseController):
             ns_parser.type,
             ns_parser.target_dataset,
         )
-        console.print()
 
     # AutoETS Model
     @log_start_end(log=logger)

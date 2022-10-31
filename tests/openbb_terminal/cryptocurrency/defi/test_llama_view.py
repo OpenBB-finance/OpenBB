@@ -66,7 +66,9 @@ def gzip_data(response):
 @pytest.mark.vcr(before_record_response=filter_json_data)
 @pytest.mark.record_stdout
 def test_display_defi_protocols():
-    llama_view.display_defi_protocols(20, "tvl", False, False)
+    llama_view.display_defi_protocols(
+        limit=20, sortby="tvl", ascend=False, description=False
+    )
 
 
 @pytest.mark.vcr(before_record_response=gzip_data)
