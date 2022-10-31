@@ -76,23 +76,28 @@ class AccountController(BaseController):
                 "email": ns_parser.email,
                 "password": ns_parser.password,
                 "remember": True,
-                "ip_address": None,
             }
-            response = requests.post(self.base_url + "/login", json=data)
+            response = requests.post(self.base_url + "/terminal/login", json=data)
             code = response.status_code
             if code == 200:
                 console.print("Login successful\n")
                 self.token = response.json()
-                return
-            if code == 401:
+            elif code == 401:
                 console.print(f"[red]{response.json()['detail']}[/red]\n")
-                return
-            if code == 403:
+            elif code == 403:
                 console.print(f"[red]{response.json()['message']}[/red]\n")
-                return
-            console.print("[red]Unknown error[/red]\n")
+            else:
+                console.print("[red]Unknown error[/red]\n")
 
     @log_start_end(log=logger)
     def call_register(self, _):
         """Register"""
         webbrowser.open("https://my.openbb.dev/register")
+
+    @log_start_end(log=logger)
+    def call_upload(self, _):
+        data = {
+            "features_settings": {},
+            "feautures_keys": {},
+        }
+        # requests.put(self.base_url + "/terminal/user", json=data, headers=self.token)
