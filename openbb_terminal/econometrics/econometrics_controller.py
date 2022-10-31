@@ -1477,7 +1477,12 @@ class EconometricsController(BaseController):
 
                 if regression_vars and len(regression_vars) > 1:
                     for variable in regression_vars:
-                        column, dataset = self.choices["regressions"][variable].keys()
+                        if "." not in variable:
+                            console.print(
+                                "[red]Please follow the format 'dataset.column'[/red]\n"
+                            )
+                            continue
+                        dataset, column = variable.split(".")
                         if not isinstance(
                             self.datasets[dataset][column].index, pd.MultiIndex
                         ):
