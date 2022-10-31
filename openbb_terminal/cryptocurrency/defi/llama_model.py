@@ -33,7 +33,11 @@ LLAMA_FILTERS = [
 
 @log_start_end(log=logger)
 def get_defi_protocols(
-    limit: int = 100, sortby: str = "", ascend: bool = False, description: bool = False
+    limit: int = 100,
+    sortby: str = "",
+    ascend: bool = False,
+    description: bool = False,
+    drop_chain: bool = True,
 ) -> pd.DataFrame:
     """Returns information about listed DeFi protocols, their current TVL and changes to it in the last hour/day/week.
     [Source: https://docs.llama.fi/api]
@@ -48,6 +52,8 @@ def get_defi_protocols(
         Flag to sort data descending
     description: bool
         Flag to display description of protocol
+    drop_chain: bool
+        Whether to drop the chain column
 
     Returns
     -------
@@ -86,11 +92,11 @@ def get_defi_protocols(
         logger.exception("Wrong response type: %s", str(e))
         raise ValueError("Wrong response type\n") from e
 
-    df = df.sort_values("tvl", ascending=False).head(limit)
     df = df.set_index("name")
     if sortby:
         df = df.sort_values(by=sortby, ascending=ascend)
-    df = df.drop(columns="chain")
+    if drop_chain:
+        df = df.drop(columns="chain")
 
     df["tvl"] = df["tvl"].apply(lambda x: lambda_long_number_format(x))
 
@@ -111,7 +117,7 @@ def get_defi_protocols(
         },
         inplace=True,
     )
-    return df
+    return df.head(limit)
 
 
 @log_start_end(log=logger)
@@ -151,8 +157,8 @@ def get_grouped_defi_protocols(
     pd.DataFrame
         Information about DeFi protocols grouped by chain
     """
-    df = get_defi_protocols(limit)
-    return df.groupby("chain").size().index.values.tolist()
+    df = get_defi_protocols(limit, drop_chain=False)
+    return df.groupby("Chain").size().index.values.tolist()
 
 
 @log_start_end(log=logger)

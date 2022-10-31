@@ -41,7 +41,7 @@ def display_grouped_defi_protocols(
         External axes (1 axis is expected in the list), by default None
     """
 
-    df = llama_model.get_defi_protocols(limit)
+    df = llama_model.get_defi_protocols(limit, drop_chain=False)
     chains = llama_model.get_grouped_defi_protocols(limit)
 
     # This plot has 1 axis
@@ -55,13 +55,13 @@ def display_grouped_defi_protocols(
     colors = iter(cfg.theme.get_colors(reverse=True))
 
     for chain in chains:
-        chain_filter = df.loc[df.chain == chain]
+        chain_filter = df.loc[df.Chain == chain]
         ax.barh(
             y=chain_filter.index,
-            width=chain_filter.tvl,
+            width=chain_filter["TVL ($)"],
             label=chain,
             height=0.5,
-            color=next(colors),
+            color=next(colors, "#B6A9CB"),
         )
 
     ax.set_xlabel("Total Value Locked ($)")
