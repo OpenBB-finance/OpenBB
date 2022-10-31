@@ -423,7 +423,10 @@ def add_atr(
 
 
 @log_start_end(log=logger)
-def add_signal(dataset: pd.DataFrame) -> pd.DataFrame:
+def add_signal(
+    dataset: pd.DataFrame,
+    target_column: str = "close",
+) -> pd.DataFrame:
     """A price signal based on short/long term price.
 
     1 if the signal is that short term price will go up as compared to the long term.
@@ -445,8 +448,8 @@ def add_signal(dataset: pd.DataFrame) -> pd.DataFrame:
 
     # Create signals
     dataset["signal"] = np.where(
-        dataset["close"].rolling(window=10, min_periods=1, center=False).mean()
-        > dataset["close"].rolling(window=60, min_periods=1, center=False).mean(),
+        dataset[target_column].rolling(window=10, min_periods=1, center=False).mean()
+        > dataset[target_column].rolling(window=60, min_periods=1, center=False).mean(),
         1.0,
         0.0,
     )

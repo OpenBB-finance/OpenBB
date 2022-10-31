@@ -1,6 +1,6 @@
 ```
 usage: atr [--close-col CLOSE_COL] [--high-col HIGH_COL] [--low-col LOW_COL]
-[-d {AAPL}] [-c TARGET_COLUMN] [-h]
+[-d {}] [-c TARGET_COLUMN] [-h]
 ```
 
 Add Average True Range to dataset of specific stock ticker.
@@ -11,7 +11,7 @@ optional arguments:
                         Close column name to use for Average True Range. (default: close)
   --high-col HIGH_COL   High column name to use for Average True Range. (default: high)
   --low-col LOW_COL     Low column name to use for Average True Range. (default: low)
-  -d {AAPL}, --target-dataset {AAPL}
+  -d {}, --target-dataset {}
                         The name of the dataset you want to select (default: None)
   -c TARGET_COLUMN, --target-column TARGET_COLUMN
                         The name of the specific column you want to use (default: close)

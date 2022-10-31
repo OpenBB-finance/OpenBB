@@ -1630,7 +1630,8 @@ class ForecastController(BaseController):
                 return
 
             self.datasets[ns_parser.target_dataset] = forecast_model.add_signal(
-                self.datasets[ns_parser.target_dataset]
+                self.datasets[ns_parser.target_dataset],
+                target_column=ns_parser.target_column,
             )
             console.print(
                 f"Successfully added 'Price Signal' to '{ns_parser.target_dataset}' dataset"

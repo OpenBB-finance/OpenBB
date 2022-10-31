@@ -11,7 +11,7 @@ optional arguments:
                         Close column name to use for Stochastic Oscillator (default: close)
   --high-col HIGH_COL   High column name to use for Stochastic Oscillator (default: high)
   --low-col LOW_COL     Low column name to use for Stochastic Oscillator (default: low)
-  -d {AAPL}, --target-dataset {AAPL}
+  -d {}, --target-dataset {}
                         The name of the dataset you want to select (default: None)
   --period PERIOD       The period to use (default: 10)
   -h, --help            show this help message (default: False)
