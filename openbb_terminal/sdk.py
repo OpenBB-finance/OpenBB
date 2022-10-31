@@ -1883,6 +1883,10 @@ functions = {
         "model": "openbb_terminal.stocks.technical_analysis.tradingview_model.get_tradingview_recommendation",
         "view": "openbb_terminal.stocks.technical_analysis.tradingview_view.print_recommendation",
     },
+    "stocks.ta.rsp": {
+        "model": "openbb_terminal.stocks.technical_analysis.rsp_model.get_rsp",
+        "view": "openbb_terminal.stocks.technical_analysis.rsp_view.display_rsp",
+    },
     "stocks.th.check_if_open": {
         "model": "openbb_terminal.stocks.tradinghours.bursa_model.check_if_open"
     },
