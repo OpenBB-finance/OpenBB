@@ -219,9 +219,7 @@ def view_kc(
         External axes (2 axes are expected in the list), by default None
     """
     df_ta = volatility_model.kc(
-        data["High"],
-        data["Low"],
-        data["Adj Close"],
+        data,
         window,
         scalar,
         mamode,

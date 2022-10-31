@@ -9,8 +9,9 @@ import pandas as pd
 import pandas_ta as ta
 from sklearn.linear_model import LinearRegression
 
-from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.common.technical_analysis import ta_helpers
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -111,9 +112,7 @@ def rsi(
 
 @log_start_end(log=logger)
 def stoch(
-    high_vals: pd.Series,
-    low_vals: pd.Series,
-    close_vals: pd.Series,
+    data: pd.DataFrame,
     fastkperiod: int = 14,
     slowdperiod: int = 3,
     slowkperiod: int = 3,
@@ -122,12 +121,8 @@ def stoch(
 
     Parameters
     ----------
-    high_vals: pd.Series
-        High values
-    low_vals: pd.Series
-        Low values
-    close-vals: pd.Series
-        Close values
+    data : pd.DataFrame
+        Dataframe of OHLC prices
     fastkperiod : int
         Fast k period
     slowdperiod : int
@@ -139,11 +134,14 @@ def stoch(
     pd.DataFrame
         Dataframe of technical indicator
     """
+    close_col = ta_helpers.check_columns(data)
+    if close_col is None:
+        return pd.DataFrame()
     return pd.DataFrame(
         ta.stoch(
-            high=high_vals,
-            low=low_vals,
-            close=close_vals,
+            high=data["High"],
+            low=data["Low"],
+            close=data[close_col],
             k=fastkperiod,
             d=slowdperiod,
             smooth_k=slowkperiod,

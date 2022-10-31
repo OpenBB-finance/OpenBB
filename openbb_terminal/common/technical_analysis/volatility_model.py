@@ -7,6 +7,7 @@ import pandas as pd
 import pandas_ta as ta
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -82,9 +83,7 @@ def donchian(
 
 @log_start_end(log=logger)
 def kc(
-    high_prices: pd.Series,
-    low_prices: pd.Series,
-    close_prices: pd.Series,
+    data: pd.DataFrame,
     window: int = 20,
     scalar: float = 2,
     mamode: str = "ema",
@@ -94,12 +93,8 @@ def kc(
 
     Parameters
     ----------
-    high_prices : pd.DataFrame
-        High prices
-    low_prices : pd.DataFrame
-        Low prices
-    close_prices : pd.DataFrame
-        Close prices
+    data: pd.DataFrame
+        Dataframe of ohlc prices
     window : int
         Length of window
     scalar: float
@@ -114,12 +109,23 @@ def kc(
     pd.DataFrame
         Dataframe of rolling kc
     """
-    # Daily
+    close_col = "Adj Close" if "Adj Close" in data.columns else "Close"
+
+    if (
+        "High" not in data.columns
+        or "Low" not in data.columns
+        or close_col not in data.columns
+    ):
+        console.print(
+            "[red] Please make sure that the columns 'High', 'Low', and 'Close'"
+            " are in the dataframe.[/red]"
+        )
+        return pd.DataFrame()
     return pd.DataFrame(
         ta.kc(
-            high=high_prices,
-            low=low_prices,
-            close=close_prices,
+            high=data["High"],
+            low=data["Low"],
+            close=data["Adj Close"],
             length=window,
             scalar=scalar,
             mamode=mamode,

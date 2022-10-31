@@ -23,6 +23,7 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
 )
 from openbb_terminal.rich_config import console
+from openbb_terminal.common.technical_analysis import ta_helpers
 
 logger = logging.getLogger(__name__)
 
@@ -319,18 +320,11 @@ def display_stoch(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (3 axes are expected in the list), by default None
     """
-    close_col = "Adj Close" if "Adj Close" in data.columns else "Close"
-    if (
-        "High" not in data.columns
-        or "Low" not in data.columns
-        or close_col not in data.columns
-    ):
-        console.print("[red]Missing OHLC data. Cannot plot the signal.[/red]\n")
+    close_col = ta_helpers.check_columns(data)
+    if close_col is None:
         return
     df_ta = momentum_model.stoch(
-        data["High"],
-        data["Low"],
-        data[close_col],
+        data,
         fastkperiod,
         slowdperiod,
         slowkperiod,
