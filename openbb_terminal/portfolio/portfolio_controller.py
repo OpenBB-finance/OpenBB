@@ -168,8 +168,6 @@ class PortfolioController(BaseController):
             "-f": "--file",
             "--name": None,
             "-n": "--name",
-            "--rfr": zero_to_hundred_detailed,
-            "-r": "--rfr",
         }
         choices["show"] = {
             "--limit": one_to_hundred,
@@ -218,8 +216,6 @@ class PortfolioController(BaseController):
         r_auto_complete = {
             "--period": {c: {} for c in portfolio_helper.PERIODS},
             "-p": "--period",
-            "--rfr": zero_to_hundred_detailed,
-            "-r": "--rfr",
         }
         choices["rsharpe"] = r_auto_complete
         choices["rsort"] = r_auto_complete
@@ -238,8 +234,6 @@ class PortfolioController(BaseController):
         choices["metric"] = {c: {} for c in self.VALID_METRICS}
         choices["metric"]["--metric"] = {c: {} for c in self.VALID_METRICS}
         choices["metric"]["-m"] = "--metric"
-        choices["metric"]["--rfr"] = zero_to_hundred_detailed
-        choices["metric"]["-r"] = "--rfr"
         choices["perf"] = {
             "--period": {c: {} for c in portfolio_helper.PERIODS},
             "-p": "--period",
@@ -433,7 +427,7 @@ class PortfolioController(BaseController):
             type=float,
             default=0,
             dest="risk_free_rate",
-            help="Set the risk free rate.",
+            help="Set the risk free rate. 0.1 Equals 0.1%",
         )
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
@@ -1131,7 +1125,7 @@ class PortfolioController(BaseController):
             type=check_positive_float,
             dest="risk_free_rate",
             default=self.risk_free_rate,
-            help="Set risk free rate for calculations.",
+            help="Set risk free rate for calculations. 0.1 Equals 0.1%",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
@@ -1173,7 +1167,7 @@ class PortfolioController(BaseController):
             type=check_positive_float,
             dest="risk_free_rate",
             default=self.risk_free_rate,
-            help="Set risk free rate for calculations.",
+            help="Set risk free rate for calculations. 0.1 Equals 0.1%",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
@@ -1248,7 +1242,7 @@ class PortfolioController(BaseController):
             type=check_positive_float,
             dest="risk_free_rate",
             default=self.risk_free_rate,
-            help="Set risk free rate for calculations.",
+            help="Set risk free rate for calculations. 0.1 Equals 0.1%",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-m")
@@ -1380,7 +1374,7 @@ class PortfolioController(BaseController):
             type=check_positive_float,
             dest="risk_free_rate",
             default=self.risk_free_rate,
-            help="Set risk free rate for calculations.",
+            help="Set risk free rate for calculations. 0.1 Equals 0.1%",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
