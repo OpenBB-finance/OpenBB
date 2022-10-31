@@ -232,7 +232,7 @@ def show_df(
     export: str = "",
 ):
     console.print(
-        f"[green]{name} has following shape (rowxcolumn): {data.shape}[/green]"
+        f"[green]{name} dataset has shape (row, column): {data.shape}\n[/green]"
     )
     if len(data.columns) > limit_col:
         console.print(
