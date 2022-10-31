@@ -14,7 +14,7 @@ Use Python's built-in `help` to print docstrings by entering, `help(openbb.keys.
 
 ![Contextual Help](https://user-images.githubusercontent.com/85772166/198360190-753d4fd8-768a-4de6-9c24-44491804914f.png)
 
-  -  Note that if `persist = False`, the credentials will not be retained in the local installation. Set as `persist = True` to apply them permanently to the local installation of the Terminal application, or SDK.
+Note that if `persist = False`, the credentials will not be retained in the local installation. Set as `persist = True` to apply them permanently to the local installation of the Terminal application, or SDK.
 
 Expected values for all sources is printed with, `openbb.keys.get_keys_info()`, which describes what fields need to be included for each API. 
 
