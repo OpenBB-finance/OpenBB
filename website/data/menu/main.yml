@@ -1616,10 +1616,6 @@ main:
                 ref: /terminal/stocks/sia/mktcap
               - name: period
                 ref: /terminal/stocks/sia/period
-              - name: sama
-                ref: /terminal/stocks/sia/sama
-              - name: satma
-                ref: /terminal/stocks/sia/satma
               - name: sector
                 ref: /terminal/stocks/sia/sector
               - name: vis
@@ -1786,6 +1782,8 @@ main:
                 ref: /SDK/common/ta/adx
               - name: aroon
                 ref: /SDK/common/ta/aroon
+              - name: atr
+                ref: /SDK/common/ta/atr
               - name: bbands
                 ref: /SDK/common/ta/bbands
               - name: cci
