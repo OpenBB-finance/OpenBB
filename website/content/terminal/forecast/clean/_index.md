@@ -25,7 +25,7 @@ Example:
 ```
 (🦋) /forecast/ $ show TSLA
 
-TSLA has following shape (rowxcolumn): (611, 7)
+TSLA dataset has shape (row, column): (611, 7)
 
                     Dataset TSLA | Showing 10 of 611 rows
 ┏━━━┳━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
@@ -58,7 +58,7 @@ TSLA has following shape (rowxcolumn): (611, 7)
 Successfully added 'RSI_30' to 'TSLA' dataset
 
 (🦋) /forecast/ $ show TSLA
-TSLA has following shape (rowxcolumn): (611, 8)
+TSLA dataset has shape (row, column): (611, 8)
 
                          Dataset TSLA | Showing 10 of 611 rows
 ┏━━━┳━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┓
@@ -91,7 +91,7 @@ Successfully cleaned 'TSLA' dataset
 
 (🦋) /forecast/ $ show TSLA
 2022 Jul 11, 14:20 (🦋) /forecast/ $ show TSLA
-TSLA has following shape (rowxcolumn): (611, 8)
+TSLA dataset has shape (row, column): (611, 8)
 
                          Dataset TSLA | Showing 10 of 611 rows
 ┏━━━┳━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┓
