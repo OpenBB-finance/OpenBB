@@ -174,7 +174,14 @@ class EconometricsController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["load"]["-f"] = {c: {} for c in self.DATA_FILES.keys()}
+            choices["load"] = {
+                "--file": {c: {} for c in self.DATA_FILES.keys()},
+                "-f": "--file",
+                "-alias": None,
+                "-a": "-alias",
+                "--examples": None,
+                "-e": "--examples",
+            }
 
             for feature in ["export", "show", "desc", "clear", "index"]:
                 choices[feature] = {c: {} for c in self.files}
