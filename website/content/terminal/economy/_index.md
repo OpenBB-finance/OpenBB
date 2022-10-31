@@ -283,7 +283,7 @@ Note that I added some additional series not in the above table. This is because
 break-even inflation rates, the number after the `T` refers to the amount of years.
 
 ```
-2022 Jun 29, 10:27 (🦋) /economy/ $ fred T5YIEM T10YIEM T20YIEM T30YIEM
+2022 Jun 29, 10:27 (🦋) /economy/ $ fred T5YIEM,T10YIEM,T20YIEM,T30YIEM
 ```
 
 Which returns the following graph:
