@@ -101,7 +101,7 @@ def get_etf_holdings(symbol: str) -> pd.DataFrame:
         df = pd.read_html(r.content)[0]
         df["Symbol"] = df["Symbol"].fillna("N/A")
         df = df.set_index("Symbol")
-        df = df[["% Weight", "Shares"]]
+        df = df[["Name", "% Weight", "Shares"]]
         df = df.rename(columns={"% Weight": "% Of Etf"})
     except ValueError:
         df = pd.DataFrame()
