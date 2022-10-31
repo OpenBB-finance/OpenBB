@@ -35,8 +35,6 @@ from openbb_terminal.config_terminal import theme
 
 from openbb_terminal.helper_classes import TerminalStyle  # noqa: F401
 
-TerminalStyle().applyMPLstyle()
-
 from openbb_terminal import helper_funcs as helper  # noqa: F401
 from openbb_terminal.loggers import setup_logging
 from openbb_terminal.decorators import log_start_end, sdk_arg_logger
@@ -48,6 +46,7 @@ from .cryptocurrency.due_diligence.pycoingecko_model import Coin
 
 logger = logging.getLogger(__name__)
 
+TerminalStyle().applyMPLstyle()
 
 SUPPRESS_LOGGING_CLASSES = {
     ReportController: "ReportController",
