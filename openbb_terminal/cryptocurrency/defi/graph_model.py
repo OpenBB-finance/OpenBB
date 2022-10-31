@@ -11,6 +11,7 @@ from openbb_terminal.cryptocurrency.dataframe_helpers import (
     lambda_very_long_number_formatter,
 )
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.rich_config import console
 
 # pylint: disable=unsupported-assignment-operation
 
@@ -19,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 UNI_URL = "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2"
 
-SWAPS_FILTERS = ["timestamp", "token0", "token1", "amountUSD"]
+SWAPS_FILTERS = ["Datetime", "USD", "From", "To"]
 
 POOLS_FILTERS = [
     "volumeUSD",
@@ -292,13 +293,20 @@ def get_uni_pools_by_volume() -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_last_uni_swaps(limit: int = 100) -> pd.DataFrame:
+def get_last_uni_swaps(
+    limit: int = 100, sortby: str = "timestamp", ascend: bool = False
+) -> pd.DataFrame:
     """Get the last 100 swaps done on Uniswap [Source: https://thegraph.com/en/]
 
     Parameters
     -------
     limit: int
         Number of swaps to return. Maximum possible number: 1000.
+    sortby: str
+        Key by which to sort data. The table can be sorted by every of its columns
+        (see https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2).
+    ascend: bool
+        Flag to sort data descending
     Returns
     -------
     pd.DataFrame
@@ -332,5 +340,16 @@ def get_last_uni_swaps(limit: int = 100) -> pd.DataFrame:
     df["timestamp"] = df["timestamp"].apply(
         lambda x: datetime.datetime.fromtimestamp(int(x))
     )
-    df.columns = ["amountUSD", "timestamp", "token0", "token1"]
-    return df[["timestamp", "token0", "token1", "amountUSD"]]
+    df["amountUSD"] = df["amountUSD"].apply(lambda x: round(float(x), 2))
+    to_rename = {
+        "timestamp": "Datetime",
+        "amountUSD": "USD",
+        "pair.token0.symbol": "From",
+        "pair.token1.symbol": "To",
+    }
+    df = df.rename(columns=to_rename)
+    if sortby in df.columns:
+        df = df.sort_values(by=sortby, ascending=ascend)
+    else:
+        console.print(f"[red]Dataframe does not have column {sortby}[/red]\n")
+    return df
