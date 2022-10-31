@@ -820,7 +820,7 @@ class DefiController(BaseController):
             action="store_false",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
-            default=False,
+            default=True,
         )
 
         ns_parser = self.parse_known_args_and_warn(
