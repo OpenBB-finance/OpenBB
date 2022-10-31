@@ -26,7 +26,7 @@ crypto.onchain.tv(
 
     symbol: *str*
         ERC20 token symbol.
-    trade\_amount\_currency: *str*
+    trade_amount_currency: *str*
         Currency to display trade amount in.
     sortby: *str*
         Key by which to sort data

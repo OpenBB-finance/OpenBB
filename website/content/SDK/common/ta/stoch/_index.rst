@@ -26,9 +26,9 @@ common.ta.stoch(
 
 * **Parameters**
 
-    high\_vals: *pd.Series*
+    high_vals: *pd.Series*
         High values
-    low\_vals: *pd.Series*
+    low_vals: *pd.Series*
         Low values
     close-vals: *pd.Series*
         Close values

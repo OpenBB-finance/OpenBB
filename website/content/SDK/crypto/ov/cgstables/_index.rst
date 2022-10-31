@@ -34,5 +34,5 @@ crypto.ov.cgstables(
 * **Returns**
 
     pandas.DataFrame
-        Rank, Name, Symbol, Price, Change\_24h, Exchanges, Market\_Cap, Change\_30d, Url
+        Rank, Name, Symbol, Price, Change_24h, Exchanges, Market_Cap, Change_30d, Url
     

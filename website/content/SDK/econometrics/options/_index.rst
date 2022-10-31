@@ -24,13 +24,13 @@ econometrics.options(
 
     datasets: *dict*
         The available datasets.
-    dataset\_name: *str*
+    dataset_name: *str*
         The dataset you wish to show the options for.
 
     
 * **Returns**
 
-    option\_tables: *dict*
-        A dictionary with a DataFrame for each option. With dataset\_name set, only shows one
+    option_tables: *dict*
+        A dictionary with a DataFrame for each option. With dataset_name set, only shows one
         options table.
     

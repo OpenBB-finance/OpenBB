@@ -26,11 +26,11 @@ common.ta.macd(
 
     values: *pd.Series*
         Values for calculation
-    n\_fast : *int*
+    n_fast : *int*
         Fast period
-    n\_slow : *int*
+    n_slow : *int*
         Slow period
-    n\_signal : *int*
+    n_signal : *int*
         Signal period
     
 * **Returns**

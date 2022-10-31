@@ -18,7 +18,7 @@ economy.macro(
     countries: list = None,
     transform: str = '',
     start\_date: str = '1900-01-01', end\_date=datetime.date(
-    2022, 10, 30, chart: bool = False, ),
+    2022, 10, 31, chart: bool = False, ),
     symbol: str = '',
     chart: bool = False,
     ) -> Tuple[Any, Dict[Any, Dict[Any, Any]], str]
@@ -27,14 +27,14 @@ economy.macro(
 * **Parameters**
 
     parameters: *list*
-        The type of data you wish to download. Available parameters can be accessed through economy.macro\_parameters().
+        The type of data you wish to download. Available parameters can be accessed through economy.macro_parameters().
     countries : *list*
-        The selected country or countries. Available countries can be accessed through economy.macro\_countries().
+        The selected country or countries. Available countries can be accessed through economy.macro_countries().
     transform : *str*
-        The selected transform. Available transforms can be accessed through get\_macro\_transform().
-    start\_date : *str*
+        The selected transform. Available transforms can be accessed through get_macro_transform().
+    start_date : *str*
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
-    end\_date : *str*
+    end_date : *str*
         The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
     symbol : *str*
         In what currency you wish to convert all values.

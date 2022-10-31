@@ -27,7 +27,7 @@ stocks.options.hedge.add_hedge_option(
 
     price: *float*
         The price.
-    implied\_volatility: *float*
+    implied_volatility: *float*
         The implied volatility.
     strike: *float*
         The strike price.

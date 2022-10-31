@@ -25,9 +25,9 @@ common.qa.unitroot(
 
     data : *pd.DataFrame*
         DataFrame of target variable
-    fuller\_reg : *str*
+    fuller_reg : *str*
         Type of regression of ADF test. Can be ‘c’,’ct’,’ctt’,’nc’ 'c' - Constant and t - trend order
-    kpss\_reg : *str*
+    kpss_reg : *str*
         Type of regression for KPSS test.  Can be ‘c’,’ct'
 
     

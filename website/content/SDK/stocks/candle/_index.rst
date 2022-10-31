@@ -20,9 +20,9 @@ stocks.candle(
     ma: Optional[Iterable[int]] = None,
     asset\_type: str = '',
     start\_date: datetime.datetime = datetime.datetime(
-    2019, 10, 26, 23, 20, 36, 878267, ), interval: int = 1440,
+    2019, 10, 27, 13, 15, 20, 501592, ), interval: int = 1440,
     end\_date: datetime.datetime = datetime.datetime(
-    2022, 10, 30, 23, 20, 36, 878278, ), prepost: bool = False,
+    2022, 10, 31, 13, 15, 20, 501603, ), prepost: bool = False,
     source: str = 'YahooFinance',
     iexrange: str = 'ytd',
     weekly: bool = False,
@@ -38,25 +38,25 @@ stocks.candle(
         Ticker name
     data: *pd.DataFrame*
         Stock dataframe
-    use\_matplotlib: *bool*
+    use_matplotlib: *bool*
         Flag to use matplotlib instead of interactive plotly chart
     intraday: *bool*
         Flag for intraday data for plotly range breaks
-    add\_trend: *bool*
+    add_trend: *bool*
         Flag to add high and low trends to chart
     ma: Tuple[int]
         Moving averages to add to the candle
-    asset\_type\_: *str*
+    asset_type_: *str*
         String to include in title
-    external\_axes : Optional[List[plt.Axes]], optional
+    external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
-    asset\_type\_: *str*
+    asset_type_: *str*
         String to include in title
-    start\_date: *datetime*
+    start_date: *datetime*
         Start date to get data from with
     interval: *int*
         Interval (in minutes) to get data 1, 5, 15, 30, 60 or 1440
-    end\_date: *datetime*
+    end_date: *datetime*
         End date to get data from with
     prepost: *bool*
         Pre and After hours data

@@ -56,11 +56,11 @@ stocks.load(
 
     symbol: *str*
         Ticker to get data
-    start\_date: *datetime*
+    start_date: *datetime*
         Start date to get data from with
     interval: *int*
         Interval (in minutes) to get data 1, 5, 15, 30, 60 or 1440
-    end\_date: *datetime*
+    end_date: *datetime*
         End date to get data from with
     prepost: *bool*
         Pre and After hours data
@@ -76,6 +76,6 @@ stocks.load(
     
 * **Returns**
 
-    df\_stock\_candidate: *pd.DataFrame*
+    df_stock_candidate: *pd.DataFrame*
         Dataframe of data
     

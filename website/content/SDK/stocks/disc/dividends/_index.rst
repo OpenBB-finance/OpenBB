@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 stocks.disc.dividends(
-    date: str = '2022-10-30', ) -> pandas.core.frame.DataFrame
+    date: str = '2022-10-31', ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

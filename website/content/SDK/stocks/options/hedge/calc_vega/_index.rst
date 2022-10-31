@@ -26,15 +26,15 @@ stocks.options.hedge.calc_vega(
 
 * **Parameters**
 
-    asset\_price: *int*
+    asset_price: *int*
         The price.
-    asset\_volatility: *float*
+    asset_volatility: *float*
         The implied volatility.
-    strike\_price: *float*
+    strike_price: *float*
         The strike price.
-    time\_to\_expiration: *float*
+    time_to_expiration: *float*
         The amount of days until expiration. Use annual notation thus a month would be 30 / 360.
-    risk\_free\_rate: *float*
+    risk_free_rate: *float*
         The risk free rate.
 
     

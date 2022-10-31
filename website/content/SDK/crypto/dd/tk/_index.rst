@@ -25,7 +25,7 @@ crypto.dd.tk(
 
     symbol : *str*
         Crypto symbol to check tokenomics
-    coingecko\_id : *str*
+    coingecko_id : *str*
         ID from coingecko
     
 * **Returns**

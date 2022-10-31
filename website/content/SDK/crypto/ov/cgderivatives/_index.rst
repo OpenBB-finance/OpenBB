@@ -31,6 +31,6 @@ crypto.ov.cgderivatives(
 * **Returns**
 
     pandas.DataFrame
-        Rank, Market, Symbol, Price, Pct\_Change\_24h, Contract\_Type, Basis, Spread,
-        Funding\_Rate, Volume\_24h,
+        Rank, Market, Symbol, Price, Pct_Change_24h, Contract_Type, Basis, Spread,
+        Funding_Rate, Volume_24h,
     

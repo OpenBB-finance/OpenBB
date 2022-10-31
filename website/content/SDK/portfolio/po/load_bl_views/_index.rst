@@ -18,14 +18,14 @@ portfolio.po.load_bl_views(
 
 * **Parameters**
 
-    excel\_file: *str*
+    excel_file: *str*
         The location of the Excel file that needs to be loaded.
 
     
 * **Returns**
 
-    p\_views: *list*
-        Returns a list with p\_views matrix
-    q\_views: *list*
-        Returns a list with q\_views matrix
+    p_views: *list*
+        Returns a list with p_views matrix
+    q_views: *list*
+        Returns a list with q_views matrix
     

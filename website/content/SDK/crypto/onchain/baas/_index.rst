@@ -30,7 +30,7 @@ crypto.onchain.baas(
         Last n days to query data
     symbol: *str*
         ERC20 token symbol
-    to\_symbol: *str*
+    to_symbol: *str*
         Quoted currency.
     sortby: *str*
         Key by which to sort data

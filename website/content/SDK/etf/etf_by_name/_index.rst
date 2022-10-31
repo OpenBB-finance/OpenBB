@@ -21,7 +21,7 @@ etf.etf_by_name(
 
 * **Parameters**
 
-    name\_to\_search: *str*
+    name_to_search: *str*
         ETF name to match
 
     

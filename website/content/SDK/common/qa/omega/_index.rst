@@ -25,8 +25,8 @@ common.qa.omega(
 
     data: *pd.DataFrame*
         stock dataframe
-    threshold\_start: *float*
+    threshold_start: *float*
         annualized target return threshold start of plotted threshold range
-    threshold\_end: *float*
+    threshold_end: *float*
         annualized target return threshold end of plotted threshold range
     

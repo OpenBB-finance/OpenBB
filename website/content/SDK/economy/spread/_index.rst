@@ -24,7 +24,7 @@ economy.spread(
 * **Parameters**
 
     countries: Union[str, List[str]]
-        Countries or group of countries. List of available countries is accessible through get\_ycrv\_countries().
+        Countries or group of countries. List of available countries is accessible through get_ycrv_countries().
     maturity: *str*
         Maturity to get data. By default 10Y.
     change: *bool*

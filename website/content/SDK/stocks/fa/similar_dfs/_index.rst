@@ -27,12 +27,12 @@ stocks.fa.similar_dfs(
         The dictionary produced from the yfinance.info function
     n : *int*
         The number of similar companies to produce
-    no\_filter : *bool*
+    no_filter : *bool*
         True means that we do not filter based on market cap
 
     
 * **Returns**
 
-    new\_list : List[str, pd.DataFrame]
+    new_list : List[str, pd.DataFrame]
         A list of similar companies
     

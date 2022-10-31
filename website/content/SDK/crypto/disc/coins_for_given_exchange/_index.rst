@@ -19,7 +19,7 @@ crypto.disc.coins_for_given_exchange(
 
 * **Parameters**
 
-    exchange\_id: *str*
+    exchange_id: *str*
         id of exchange
     page: *int*
         number of page. One page contains 100 records

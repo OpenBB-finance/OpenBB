@@ -44,19 +44,19 @@ portfolio.po.blacklitterman(
         List of portfolio stocks
     benchmark : *Dict*
         Dict of portfolio weights
-    p\_views: *List*
+    p_views: *List*
         Matrix P of views that shows relationships among assets and returns.
         Default value to None.
-    q\_views: *List*
+    q_views: *List*
         Matrix Q of expected returns of views. Default value is None.
     interval : str, optional
         interval to get stock data, by default "3mo"
-    start\_date: *str*
+    start_date: *str*
         If not using interval, start date string (YYYY-MM-DD)
-    end\_date: *str*
+    end_date: *str*
         If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
-    log\_returns: *bool*
+    log_returns: *bool*
         If True calculate log returns, else arithmetic returns. Default value
         is False
     freq: *str*
@@ -74,7 +74,7 @@ portfolio.po.blacklitterman(
         Value used to replace outliers that are higher to threshold.
     method: *str*
         Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`\_.
+        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
     objective: *str*
         Objective function of the optimization model.
         The default is 'Sharpe'. Possible values are:
@@ -84,9 +84,9 @@ portfolio.po.blacklitterman(
         - 'Sharpe': *Maximize the risk adjusted return ratio based on the selected risk measure.*
         - 'MaxRet': *Maximize the expected return of the portfolio.*
 
-    risk\_free\_rate: float, optional
+    risk_free_rate: float, optional
         Risk free rate, must be in annual frequency. The default is 0.
-    risk\_aversion: float, optional
+    risk_aversion: float, optional
         Risk aversion factor of the 'Utility' objective function.
         The default is 1.
     delta: float, optional
@@ -101,7 +101,7 @@ portfolio.po.blacklitterman(
         Default value is True.
     value : float, optional
         Amount of money to allocate. The default is 1.
-    value\_short : float, optional
+    value_short : float, optional
         Amount to allocate to portfolio in short positions. The default is 0.
 
     

@@ -31,7 +31,7 @@ stocks.sia.filter_stocks(
         Search by industry to find stocks matching the criteria.
     marketcap: *str*
         Select stocks based on the market cap.
-    exclude\_exchanges: *bool*
+    exclude_exchanges: *bool*
         When you wish to include different exchanges use this boolean.
 
     

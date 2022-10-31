@@ -78,9 +78,6 @@ def generate_documentation(
 
     if docstring:
 
-        # Escape literal asterisks
-        docstring = docstring.replace("_", r"\_")
-
         # Wrap argument types around asterisks to .rst interpret them as italic
         docstring = re.sub("(: )([a-zA-Z0-9. _]+)(\n)(\d*)", r": *\2*\n", docstring)
 

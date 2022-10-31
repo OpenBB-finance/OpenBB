@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Screens the etfs pulled from my repo (https://github.com/jmaslek/etf\_scraper),
+    > Screens the etfs pulled from my repo (https://github.com/jmaslek/etf_scraper),
     which is updated hourly through the market day
     </h3>
 

@@ -24,7 +24,7 @@ crypto.defi.luna_supply(
 
 * **Parameters**
 
-    supply\_type: *str*
+    supply_type: *str*
         Supply type to unpack json
     days: *int*
         Day count to fetch data

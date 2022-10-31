@@ -20,7 +20,7 @@ crypto.onchain.tx(
 
 * **Parameters**
 
-    tx\_hash: *str*
+    tx_hash: *str*
         Transaction hash e.g. 0x9dc7b43ad4288c624fdd236b2ecb9f2b81c93e706b2ffd1d19b112c1df7849e6
 
     

@@ -23,15 +23,15 @@ common.ta.fisher(
 
 * **Parameters**
 
-    high\_vals: *pd.Series*
+    high_vals: *pd.Series*
         High values
-    low\_vals: *pd.Series*
+    low_vals: *pd.Series*
         Low values
     window: *int*
         Length for indicator window
     
 * **Returns**
 
-    df\_ta: *pd.DataFrame*
+    df_ta: *pd.DataFrame*
         Dataframe of technical indicator
     

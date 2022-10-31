@@ -17,12 +17,12 @@
     {
         "id": "17398-cme-april-first-trade",
         "date": "2018-04-02T00:00:00Z",
-        "date\_to": "string",
+        "date_to": "string",
         "name": "CME: April First Trade",
         "description": "First trade of Bitcoin futures contract for April 2018.",
-        "is\_conference": false,
-        "link": "http://www.cmegroup.com/trading/equity-index/us-index/bitcoin\_product\_calendar\_futures.html",
-        "proof\_image\_link": "https://static.coinpaprika.com/storage/cdn/event\_images/16635.jpg"
+        "is_conference": false,
+        "link": "http://www.cmegroup.com/trading/equity-index/us-index/bitcoin_product_calendar_futures.html",
+        "proof_image_link": "https://static.coinpaprika.com/storage/cdn/event_images/16635.jpg"
     }
     </h3>
 
@@ -42,7 +42,7 @@ crypto.dd.events(
     sortby: *str*
         Key by which to sort data. Every column name is valid
         (see for possible values:
-        https://api.coinpaprika.com/docs#tag/Coins/paths/~1coins~1%7Bcoin\_id%7D~1events/get).
+        https://api.coinpaprika.com/docs#tag/Coins/paths/~1coins~1%7Bcoin_id%7D~1events/get).
     ascend: *bool*
         Flag to sort data ascending
     
@@ -50,5 +50,5 @@ crypto.dd.events(
 
     pandas.DataFrame
         Events found for given coin
-        Columns: id, date , date\_to, name, description, is\_conference, link, proof\_image\_link
+        Columns: id, date , date_to, name, description, is_conference, link, proof_image_link
     

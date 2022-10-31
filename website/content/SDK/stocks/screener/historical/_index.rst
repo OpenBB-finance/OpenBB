@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 stocks.screener.historical(
     preset\_loaded: str = 'top\_gainers', limit: int = 10,
-    start\_date: str = '2022-05-03', type\_candle: str = 'a',
+    start\_date: str = '2022-05-04', type\_candle: str = 'a',
     normalize: bool = True,
     chart: bool = False,
     )
@@ -23,13 +23,13 @@ stocks.screener.historical(
 
 * **Parameters**
 
-    preset\_loaded: *str*
+    preset_loaded: *str*
         Preset loaded to filter for tickers
     limit: *int*
         Number of stocks to display
-    start\_date: *str*
+    start_date: *str*
         Start date to display historical data, in YYYY-MM-DD format
-    type\_candle: *str*
+    type_candle: *str*
         Type of candle to display
     normalize : *bool*
         Boolean to normalize all stock prices using MinMax

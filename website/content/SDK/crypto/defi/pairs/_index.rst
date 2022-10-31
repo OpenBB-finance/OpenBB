@@ -30,13 +30,13 @@ crypto.defi.pairs(
 
 * **Parameters**
 
-    last\_days: *int*
+    last_days: *int*
         How many days back to look for added pairs.
-    min\_volume: *int*
+    min_volume: *int*
         Minimum volume
-    min\_liquidity: *int*
+    min_liquidity: *int*
         Minimum liquidity
-    min\_tx: *int*
+    min_tx: *int*
         Minimum number of transactions done in given pool.
 
     

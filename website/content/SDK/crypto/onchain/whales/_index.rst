@@ -25,7 +25,7 @@ crypto.onchain.whales(
 
 * **Parameters**
 
-    min\_value: *int*
+    min_value: *int*
         Minimum value of trade to track.
     limit: *int*
         Limit of transactions. Max 100

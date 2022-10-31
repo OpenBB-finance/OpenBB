@@ -19,7 +19,7 @@ stocks.gov.lasttrades(
 
 * **Parameters**
 
-    gov\_type: *str*
+    gov_type: *str*
         Type of government data between: congress, senate and house
     limit: *int*
         Number of days to look back

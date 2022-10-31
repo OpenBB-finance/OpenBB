@@ -12,7 +12,7 @@
     Returns
     -------
     pandas.DataFrame
-       Rank, Name, Change\_1h, Change\_7d, Market\_Cap, Volume\_24h,Coins, Url
+       Rank, Name, Change_1h, Change_7d, Market_Cap, Volume_24h,Coins, Url
     </h3>
 
 To obtain charts, make sure to add :python:`chart = True` as the last parameter
@@ -31,5 +31,5 @@ ries [Source: CoinGecko]
 * **Returns**
 
     pandas.DataFrame
-       Rank, Name, Change\_1h, Change\_7d, Market\_Cap, Volume\_24h,Coins, Url
+       Rank, Name, Change_1h, Change_7d, Market_Cap, Volume_24h,Coins, Url
     

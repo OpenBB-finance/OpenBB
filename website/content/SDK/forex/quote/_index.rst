@@ -22,9 +22,9 @@ forex.quote(
 
 * **Parameters**
 
-    to\_symbol : *str*
+    to_symbol : *str*
         To forex symbol
-    from\_symbol : *str*
+    from_symbol : *str*
         From forex symbol
 
     

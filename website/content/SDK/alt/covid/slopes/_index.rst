@@ -24,7 +24,7 @@ alt.covid.slopes(
 
 * **Parameters**
 
-    days\_back: *int*
+    days_back: *int*
         Number of historical days to consider
     limit: *int*
         Number of rows to show
@@ -43,7 +43,7 @@ alt.covid.slopes(
 * **Examples**
 
     {{< highlight python >}}
-    >>> from openbb\_terminal.sdk import openbb
+    >>> from openbb_terminal.sdk import openbb
 
     ### Get the data
     df = openbb.alt.covid.slopes(chart = False)

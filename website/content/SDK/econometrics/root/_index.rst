@@ -25,9 +25,9 @@ econometrics.root(
 
     data : *pd.Series*
         Series or column of DataFrame of target variable
-    fuller\_reg : *str*
+    fuller_reg : *str*
         Type of regression of ADF test
-    kpss\_reg : *str*
+    kpss_reg : *str*
         Type of regression for KPSS test
 
     

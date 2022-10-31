@@ -24,7 +24,7 @@ stocks.gov.contracts(
 
     symbol: *str*
         Ticker to get congress trading data from
-    past\_transaction\_days: *int*
+    past_transaction_days: *int*
         Number of days to get transactions for
 
     

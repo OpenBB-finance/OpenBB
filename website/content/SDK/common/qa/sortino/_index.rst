@@ -26,7 +26,7 @@ common.qa.sortino(
 
     data: *pd.DataFrame*
         selected dataframe
-    target\_return: *float*
+    target_return: *float*
         target return of the asset
     window: *float*
         length of the rolling window

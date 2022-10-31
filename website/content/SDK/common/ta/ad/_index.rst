@@ -24,7 +24,7 @@ common.ta.ad(
 
     data : *pd.DataFrame*
         Dataframe of prices with OHLC and Volume
-    use\_open : *bool*
+    use_open : *bool*
         Whether to use open prices
 
     

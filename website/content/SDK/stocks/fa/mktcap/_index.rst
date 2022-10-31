@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 stocks.fa.mktcap(
     symbol: str,
-    start\_date: str = '2019-10-28', chart: bool = False,
+    start\_date: str = '2019-10-29', chart: bool = False,
     ) -> Tuple[pandas.core.frame.DataFrame, str]
 {{< /highlight >}}
 
@@ -23,7 +23,7 @@ stocks.fa.mktcap(
 
     symbol: *str*
         Ticker to get market cap over time
-    start\_date: *str*
+    start_date: *str*
         Start date to display market cap
 
     

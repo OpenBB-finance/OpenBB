@@ -24,7 +24,7 @@ forex.oanda.orderbook(
     instrument : Union[str, None]
         The loaded currency pair, by default None
     accountID : str, optional
-        Oanda account ID, by default cfg.OANDA\_ACCOUNT
+        Oanda account ID, by default cfg.OANDA_ACCOUNT
 
     
 * **Returns**

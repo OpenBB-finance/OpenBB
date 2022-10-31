@@ -25,8 +25,8 @@ stocks.ba.sentiment(
 
     symbol: *str*
         Stock ticker symbol to get sentiment for
-    n\_tweets: *int*
+    n_tweets: *int*
         Number of tweets to get per hour
-    n\_days\_past: *int*
+    n_days_past: *int*
         Number of days to extract tweets for
     

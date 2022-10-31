@@ -23,9 +23,9 @@ portfolio.rsharpe(
 
 * **Parameters**
 
-    portfolio\_returns : *pd.Series*
+    portfolio_returns : *pd.Series*
         Series of portfolio returns
-    risk\_free\_rate : *float*
+    risk_free_rate : *float*
         Risk free rate
     window : *str*
         Rolling window to use

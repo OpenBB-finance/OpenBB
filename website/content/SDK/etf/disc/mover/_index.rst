@@ -22,7 +22,7 @@ etf.disc.mover(
 
 * **Parameters**
 
-    sort\_type: *str*
+    sort_type: *str*
         Data to get.  Can be "gainers", "decliners" or "active"
 
     

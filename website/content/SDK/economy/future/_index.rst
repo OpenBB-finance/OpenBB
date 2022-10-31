@@ -20,7 +20,7 @@ economy.future(
 
 * **Parameters**
 
-    future\_type : *str*
+    future_type : *str*
         From the following: Indices, Energy, Metals, Meats, Grains, Softs, Bonds, Currencies
     sortby : *str*
         Column to sort by

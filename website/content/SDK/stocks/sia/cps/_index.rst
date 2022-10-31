@@ -27,7 +27,7 @@ stocks.sia.cps(
         Select country to get number of companies by each sector
     mktcap: *str*
         Select market cap of companies to consider from Small, Mid and Large
-    exclude\_exchanges : *bool*
+    exclude_exchanges : *bool*
         Exclude international exchanges
 
     

@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Open/High/Low/Close values with volume and market\_cap. [Source: CoinPaprika]
+    > Open/High/Low/Close values with volume and market_cap. [Source: CoinPaprika]
     Request example: https://api.coinpaprika.com/v1/coins/btc-bitcoin/ohlcv/historical?start=2019-01-01&end=2019-01-20
     if the last day is current day it can an change with every request until actual close of the day at 23:59:59
     </h3>
@@ -32,5 +32,5 @@ crypto.dd.ohlc_historical(
 * **Returns**
 
     pandas.DataFrame
-        Open/High/Low/Close values with volume and market\_cap.
+        Open/High/Low/Close values with volume and market_cap.
     

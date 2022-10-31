@@ -26,11 +26,11 @@ common.ta.adx(
 
 * **Parameters**
 
-    high\_values: *pd.Series*
+    high_values: *pd.Series*
         High prices
-    low\_values: *pd.Series*
+    low_values: *pd.Series*
         Low prices
-    close\_values: *pd.Series*
+    close_values: *pd.Series*
         close prices
     window: *int*
         Length of window

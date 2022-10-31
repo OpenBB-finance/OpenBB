@@ -22,7 +22,7 @@ crypto.dd.get_mt(
 
 * **Parameters**
 
-    only\_free : *bool*
+    only_free : *bool*
         Display only timeseries available for free
 
     

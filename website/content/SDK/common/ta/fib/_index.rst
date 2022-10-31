@@ -28,9 +28,9 @@ common.ta.fib(
         Dataframe of prices
     limit : *int*
         Days to look back for retracement
-    start\_date : *Any*
+    start_date : *Any*
         Custom start date for retracement
-    end\_date : *Any*
+    end_date : *Any*
         Custom end date for retracement
 
     
@@ -38,12 +38,12 @@ common.ta.fib(
 
     df : *pd.DataFrame*
         Dataframe of fib levels
-    min\_date: *pd.Timestamp*
+    min_date: *pd.Timestamp*
         Date of min point
-    max\_date: pd.Timestamp:
+    max_date: pd.Timestamp:
         Date of max point
-    min\_pr: *float*
+    min_pr: *float*
         Price at min point
-    max\_pr: *float*
+    max_pr: *float*
         Price at max point
     

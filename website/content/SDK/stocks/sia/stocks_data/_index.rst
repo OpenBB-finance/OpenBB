@@ -25,10 +25,10 @@ stocks.sia.stocks_data(
 
     symbols: *list*
         A list of tickers that will be used to collect data for.
-    finance\_key: *str*
-        The finance key used to search within the SA\_KEYS for the correct name of item
+    finance_key: *str*
+        The finance key used to search within the SA_KEYS for the correct name of item
         on the financial statement
-    stocks\_data : *dict*
+    stocks_data : *dict*
         A dictionary that is empty on initialisation but filled once data is collected
         for the first time.
     period : *str*

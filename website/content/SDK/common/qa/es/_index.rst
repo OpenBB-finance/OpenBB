@@ -27,10 +27,10 @@ common.qa.es(
 
     data: *pd.DataFrame*
         Data dataframe
-    use\_mean: *bool*
+    use_mean: *bool*
         If one should use the data mean for calculation
     distribution: *str*
-        Type of distribution, options: laplace, student\_t, normal
+        Type of distribution, options: laplace, student_t, normal
     percentile: Union[float,int]
         VaR percentile
     portfolio: *bool*

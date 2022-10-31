@@ -24,14 +24,14 @@ crypto.dd.pr(
 
 * **Parameters**
 
-    main\_coin   : *str*
+    main_coin   : *str*
         Coin loaded to check potential returns for (e.g., algorand)
-    to\_symbol          : str | None
-        Coin to compare main\_coin with (e.g., bitcoin)
+    to_symbol          : str | None
+        Coin to compare main_coin with (e.g., bitcoin)
     limit         : int | None
-        Number of coins with highest market cap to compare main\_coin with (e.g., 5)
+        Number of coins with highest market cap to compare main_coin with (e.g., 5)
     price
-        Target price of main\_coin to check potential returns (e.g., 5)
+        Target price of main_coin to check potential returns (e.g., 5)
 
     
 * **Returns**

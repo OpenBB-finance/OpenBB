@@ -18,7 +18,7 @@ stocks.options.screen.check_presets(
 
 * **Parameters**
 
-    preset\_dict: *dict*
+    preset_dict: *dict*
         Defined presets from configparser
     
 * **Returns**

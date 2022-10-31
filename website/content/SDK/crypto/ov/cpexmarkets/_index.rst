@@ -24,7 +24,7 @@ crypto.ov.cpexmarkets(
 
 * **Parameters**
 
-    exchange\_id: *str*
+    exchange_id: *str*
         identifier of exchange e.g for Binance Exchange -> binance
     symbols: *str*
         Comma separated quotes to return e.g quotes=USD,BTC
@@ -37,6 +37,6 @@ crypto.ov.cpexmarkets(
 * **Returns**
 
     pandas.DataFrame
-        pair, base\_currency\_name, quote\_currency\_name, market\_url,
-        category, reported\_volume\_24h\_share, trust\_score,
+        pair, base_currency_name, quote_currency_name, market_url,
+        category, reported_volume_24h_share, trust_score,
     

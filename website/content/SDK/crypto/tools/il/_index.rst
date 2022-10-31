@@ -24,13 +24,13 @@ crypto.tools.il(
 
 * **Parameters**
 
-    price\_changeA: *float*
+    price_changeA: *float*
         price change of crypto A in percentage
-    price\_changeB: *float*
+    price_changeB: *float*
         price change of crypto B in percentage
     proportion: *float*
         percentage of first token in pool
-    initial\_pool\_value: *float*
+    initial_pool_value: *float*
         initial value that pool contains
 
     

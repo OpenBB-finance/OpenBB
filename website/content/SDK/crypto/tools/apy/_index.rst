@@ -24,7 +24,7 @@ crypto.tools.apy(
 
     apr: *float*
         value in percentage
-    compounding\_times: *int*
+    compounding_times: *int*
         number of compounded periods in a year
 
     

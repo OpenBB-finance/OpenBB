@@ -24,7 +24,7 @@ stocks.dps.prom(
 
     limit: *int*
         Number of tickers to filter from entire ATS data based on the sum of the total weekly shares quantity
-    tier\_ats : *int*
+    tier_ats : *int*
         Tier to process data from: T1, T2 or OTCE
 
     

@@ -23,9 +23,9 @@ stocks.screener.screener_data(
 
 * **Parameters**
 
-    preset\_loaded : *str*
+    preset_loaded : *str*
         Loaded preset filter
-    data\_type : *str*
+    data_type : *str*
         Data type between: overview, valuation, financial, ownership, performance, technical
     limit : *int*
         Limit of stocks filtered with presets to print

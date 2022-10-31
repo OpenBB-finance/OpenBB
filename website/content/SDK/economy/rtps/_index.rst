@@ -20,6 +20,6 @@ economy.rtps(
 
 * **Returns**
 
-    df\_sectors : *pd.Dataframe*
+    df_sectors : *pd.Dataframe*
         Real-time performance data
     

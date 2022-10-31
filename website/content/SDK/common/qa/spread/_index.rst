@@ -30,8 +30,8 @@ common.qa.spread(
     
 * **Returns**
 
-    df\_sd: *pd.DataFrame*
+    df_sd: *pd.DataFrame*
         Dataframe of rolling standard deviation
-    df\_var: *pd.DataFrame*
+    df_var: *pd.DataFrame*
         Dataframe of rolling standard deviation
     

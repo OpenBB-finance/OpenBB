@@ -24,5 +24,5 @@ forex.oanda.cancel(
     orderID : *str*
         The pending order ID to cancel.
     accountID : str, optional
-        Oanda account ID, by default cfg.OANDA\_ACCOUNT
+        Oanda account ID, by default cfg.OANDA_ACCOUNT
     

@@ -14,7 +14,7 @@
 {{< highlight python >}}
 crypto.dd.close(
     symbol: str,
-    start\_date: str = '2010-01-01', end\_date: str = '2022-10-30', print\_errors: bool = True,
+    start\_date: str = '2010-01-01', end\_date: str = '2022-10-31', print\_errors: bool = True,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -22,11 +22,11 @@ crypto.dd.close(
 
     symbol : *str*
         Crypto to check close price (BTC or ETH)
-    start\_date : *str*
+    start_date : *str*
         Initial date, format YYYY-MM-DD
-    end\_date : *str*
+    end_date : *str*
         Final date, format YYYY-MM-DD
-    print\_errors: *bool*
+    print_errors: *bool*
         Flag to print errors. Default: *True*
 
     

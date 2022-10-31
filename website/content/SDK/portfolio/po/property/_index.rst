@@ -35,12 +35,12 @@ portfolio.po.property(
         List of portfolio stocks
     interval : str, optional
         interval to get stock data, by default "3mo"
-    start\_date: str, optional
+    start_date: str, optional
         If not using interval, start date string (YYYY-MM-DD)
-    end\_date: str, optional
+    end_date: str, optional
         If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
-    log\_returns: bool, optional
+    log_returns: bool, optional
         If True calculate log returns, else arithmetic returns. Default value
         is False
     freq: str, optional
@@ -58,8 +58,8 @@ portfolio.po.property(
         Value used to replace outliers that are higher to threshold.
     method: *str*
         Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`\_.
-    s\_property : *str*
+        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+    s_property : *str*
         Property to weight portfolio by
     value : float, optional
         Amount of money to allocate

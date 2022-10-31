@@ -23,11 +23,11 @@ economy.fred_series(
 
 * **Parameters**
 
-    series\_ids : List[str]
+    series_ids : List[str]
         Series ID to get data from
-    start\_date : *str*
+    start_date : *str*
         Start date to get data from, format yyyy-mm-dd
-    end\_date : *str*
+    end_date : *str*
         End data to get from, format yyyy-mm-dd
 
     

@@ -33,10 +33,10 @@ stocks.ba.redditsent(
     sortby: *str*
         Search type
         Possibilities: "relevance", "hot", "top", "new", or "comments"
-    time\_frame: *str*
+    time_frame: *str*
         Relative time of post
         Possibilities: "hour", "day", "week", "month", "year", "all"
-    full\_search: *bool*
+    full_search: *bool*
         Enable comprehensive search for ticker
     subreddits: *str*
         Comma-separated list of subreddits

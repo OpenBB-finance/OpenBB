@@ -21,7 +21,7 @@ stocks.gov.lastcontracts(
 
 * **Parameters**
 
-    past\_transaction\_days: *int*
+    past_transaction_days: *int*
         Number of days to look back
 
     

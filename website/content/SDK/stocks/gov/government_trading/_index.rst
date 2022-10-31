@@ -19,7 +19,7 @@ stocks.gov.government_trading(
 
 * **Parameters**
 
-    gov\_type: *str*
+    gov_type: *str*
         Type of government data between:
         'congress', 'senate', 'house', 'contracts', 'quarter-contracts' and 'corporate-lobbying'
     symbol : *str*

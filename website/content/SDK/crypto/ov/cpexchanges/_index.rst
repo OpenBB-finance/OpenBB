@@ -34,6 +34,6 @@ crypto.ov.cpexchanges(
 * **Returns**
 
     pandas.DataFrame
-        rank, name, currencies, markets, fiats, confidence\_score, reported\_volume\_24h,
-        reported\_volume\_7d ,reported\_volume\_30d, sessions\_per\_month,
+        rank, name, currencies, markets, fiats, confidence_score, reported_volume_24h,
+        reported_volume_7d ,reported_volume_30d, sessions_per_month,
     

@@ -35,5 +35,5 @@ crypto.disc.losers(
 
     pd.DataFrame
         Top Losers  - coins which lost most in price in given period of time.
-        Columns: Symbol, Name, Volume, Price, %Change\_{interval}, Url
+        Columns: Symbol, Name, Volume, Price, %Change_{interval}, Url
     

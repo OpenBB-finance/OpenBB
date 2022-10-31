@@ -22,10 +22,10 @@ forex.oanda.listorders(
 
 * **Parameters**
 
-    order\_state : *str*
+    order_state : *str*
         Filter orders by a specific state ("PENDING", "CANCELLED", etc.)
-    order\_count : *int*
+    order_count : *int*
         Limit the number of orders to retrieve
     accountID : str, optional
-        Oanda account ID, by default cfg.OANDA\_ACCOUNT
+        Oanda account ID, by default cfg.OANDA_ACCOUNT
     

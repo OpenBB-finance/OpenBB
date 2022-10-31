@@ -22,9 +22,9 @@ stocks.gov.topsells(
 
 * **Parameters**
 
-    gov\_type: *str*
+    gov_type: *str*
         Type of government data between: congress, senate and house
-    past\_transactions\_months: *int*
+    past_transactions_months: *int*
         Number of months to get trading for
 
     

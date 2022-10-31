@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Get info on available APIs to use in set\_keys.
+    > Get info on available APIs to use in set_keys.
     </h3>
 
 {{< highlight python >}}

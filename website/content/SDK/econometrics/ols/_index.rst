@@ -21,12 +21,12 @@ econometrics.ols(
 
 * **Parameters**
 
-    regression\_variables : *list*
+    regression_variables : *list*
         The regressions variables entered where the first variable is
         the dependent variable.
     data : *dict*
         A dictionary containing the datasets.
-    show\_regression: *bool*
+    show_regression: *bool*
         Whether to show the regression results table.
     export: *str*
         Format to export data

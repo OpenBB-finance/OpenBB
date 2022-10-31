@@ -24,13 +24,13 @@ common.ta.donchian(
 
 * **Parameters**
 
-    high\_prices : *pd.DataFrame*
+    high_prices : *pd.DataFrame*
         High prices
-    low\_prices : *pd.DataFrame*
+    low_prices : *pd.DataFrame*
         Low prices
-    upper\_length : *int*
+    upper_length : *int*
         Length of window to calculate upper channel
-    lower\_length : *int*
+    lower_length : *int*
         Length of window to calculate lower channel
 
     

@@ -24,7 +24,7 @@ stocks.options.hedge.calc_hedge(
 
 * **Parameters**
 
-    portfolio\_option\_amount: *float*
+    portfolio_option_amount: *float*
         Number to show
     side: *str*
         Whether you have a Call or Put instrument
@@ -40,5 +40,5 @@ stocks.options.hedge.calc_hedge(
     option A weight: *float*
     option B weight: *float*
     portfolio weight: *float*
-    is\_singular: *boolean*
+    is_singular: *boolean*
     

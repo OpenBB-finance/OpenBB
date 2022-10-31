@@ -22,9 +22,9 @@ crypto.dd.balance(
 
 * **Parameters**
 
-    from\_symbol: *str*
+    from_symbol: *str*
         Cryptocurrency
-    to\_symbol: *str*
+    to_symbol: *str*
         Cryptocurrency
 
     

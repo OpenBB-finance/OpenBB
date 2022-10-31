@@ -27,11 +27,11 @@ crypto.chart(
 
 * **Parameters**
 
-    prices\_df: *pd.DataFrame*
+    prices_df: *pd.DataFrame*
         Cryptocurrency
-    to\_symbol: *str*
+    to_symbol: *str*
         Coin (only used for chart title), by default ""
-    from\_symbol: *str*
+    from_symbol: *str*
         Currency (only used for chart title), by default ""
     yscale: *str*
         Scale for y axis of plot Either linear or log

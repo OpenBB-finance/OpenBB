@@ -24,11 +24,11 @@ crypto.dd.book(
 * **Parameters**
 
 
-    from\_symbol: *str*
+    from_symbol: *str*
         Cryptocurrency symbol
     limit: *int*
         Limit parameter. Adjusts the weight
-    to\_symbol: *str*
+    to_symbol: *str*
         Quote currency (what to view coin vs)
 
     

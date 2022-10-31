@@ -23,12 +23,12 @@ forex.candle(
 
     data : *pd.DataFrame*
         Loaded fx historical data
-    to\_symbol : *str*
+    to_symbol : *str*
         To forex symbol
-    from\_symbol : *str*
+    from_symbol : *str*
         From forex symbol
     ma : Optional[Iterable[int]]
         Moving averages
-    external\_axes: Optional[List[plt.Axes]]
+    external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list), by default None
     

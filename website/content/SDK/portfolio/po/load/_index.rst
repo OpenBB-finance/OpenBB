@@ -18,7 +18,7 @@ portfolio.po.load(
 
 * **Parameters**
 
-    excel\_file: *str*
+    excel_file: *str*
         The location of the Excel file that needs to be loaded.
 
     

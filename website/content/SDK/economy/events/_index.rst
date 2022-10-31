@@ -23,14 +23,14 @@ economy.events(
 * **Parameters**
 
     country: *str*
-        Country selected. List of available countries is accessible through get\_events\_countries().
+        Country selected. List of available countries is accessible through get_events_countries().
     importance: *str*
         Importance selected from high, medium, low or all
     category: *str*
-        Event category. List of available categories is accessible through get\_events\_categories().
-    start\_date: *datetime.date*
+        Event category. List of available categories is accessible through get_events_categories().
+    start_date: *datetime.date*
         First date to get events.
-    end\_date: *datetime.date*
+    end_date: *datetime.date*
         Last date to get events.
 
     

@@ -21,7 +21,7 @@ economy.unemp(
 
 * **Parameters**
 
-    start\_year : int, optional
+    start_year : int, optional
         Start year for plot, by default 2010
 
     

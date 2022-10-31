@@ -20,10 +20,10 @@ econometrics.granger(
 
 * **Parameters**
 
-    dependent\_series: *Series*
+    dependent_series: *Series*
         The series you want to test Granger Causality for.
-    independent\_series: *Series*
-        The series that you want to test whether it Granger-causes time\_series\_y
+    independent_series: *Series*
+        The series that you want to test whether it Granger-causes time_series_y
     lags : *int*
         The amount of lags for the Granger test. By default, this is set to 3.
     

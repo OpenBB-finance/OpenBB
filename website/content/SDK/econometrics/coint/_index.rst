@@ -11,15 +11,15 @@
     the two-step Engle & Granger test for cointegration.
 
     Uses a 2-step process to first estimate coefficients for the long-run relationship
-        y\_t = c + gamma * x\_t + z\_t
+        y_t = c + gamma * x_t + z_t
 
     and then the short-term relationship,
-        y\_t - y\_(t-1) = alpha * z\_(t-1) + epsilon\_t,
+        y_t - y_(t-1) = alpha * z_(t-1) + epsilon_t,
 
     with z the found residuals of the first equation.
 
     Then tests cointegration by Dickey-Fuller phi=1 vs phi < 1 in
-        z\_t = phi * z\_(t-1) + eta\_t
+        z_t = phi * z_(t-1) + eta_t
 
     If this implies phi < 1, the z series is stationary is concluded to be
     stationary, and thus the series y and x are concluded to be cointegrated.
@@ -35,29 +35,29 @@ econometrics.coint(
 
 * **Parameters**
 
-    dependent\_series : *pd.Series*
+    dependent_series : *pd.Series*
         The first time series of the pair to analyse.
 
-    independent\_series : *pd.Series*
+    independent_series : *pd.Series*
         The second time series of the pair to analyse.
 
     
 * **Returns**
 
     c : *float*
-        The constant term in the long-run relationship y\_t = c + gamma * x\_t + z\_t. This
+        The constant term in the long-run relationship y_t = c + gamma * x_t + z_t. This
         describes the static shift of y with respect to gamma * x.
 
     gamma : *float*
-        The gamma term in the long-run relationship y\_t = c + gamma * x\_t + z\_t. This
+        The gamma term in the long-run relationship y_t = c + gamma * x_t + z_t. This
         describes the ratio between the const-shifted y and x.
 
     alpha : *float*
-        The alpha term in the short-run relationship y\_t - y\_(t-1) = alpha * z\_(t-1) + epsilon. This
+        The alpha term in the short-run relationship y_t - y_(t-1) = alpha * z_(t-1) + epsilon. This
         gives an indication of the strength of the error correction toward the long-run mean.
 
     z : *pd.Series*
-        Series of residuals z\_t from the long-run relationship y\_t = c + gamma * x\_t + z\_t, representing
+        Series of residuals z_t from the long-run relationship y_t = c + gamma * x_t + z_t, representing
         the value of the error correction term.
 
     dfstat : *float*

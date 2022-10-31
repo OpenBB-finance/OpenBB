@@ -18,7 +18,7 @@ stocks.disc.news(
 
 * **Parameters**
 
-    news\_type : *str*
+    news_type : *str*
         From: Top-News, On-The-Move, Market-Pulse, Notable-Calls, Buybacks, Commodities, Crypto, Issuance, Global,
         Guidance, IPOs, SPACs, Politics, M-A, Consumer, Energy, Financials, Healthcare, MLPs, REITs, Technology
     limit : *int*

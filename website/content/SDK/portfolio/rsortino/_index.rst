@@ -27,7 +27,7 @@ portfolio.rsortino(
     window: *str*
         interval for window to consider
         Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y
-    risk\_free\_rate: *float*
+    risk_free_rate: *float*
         Value to use for risk free rate in sharpe/other calculations
     
 * **Returns**

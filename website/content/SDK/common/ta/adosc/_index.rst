@@ -26,7 +26,7 @@ common.ta.adosc(
 
     data : *pd.DataFrame*
         Dataframe of OHLC prices
-    use\_open : *bool*
+    use_open : *bool*
         Whether to use open prices
     fast: *int*
         Fast value

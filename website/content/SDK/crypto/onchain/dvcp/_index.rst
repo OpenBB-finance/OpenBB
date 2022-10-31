@@ -29,7 +29,7 @@ crypto.onchain.dvcp(
         Last n days to query data
     symbol: *str*
         ERC20 token symbol
-    to\_symbol: *str*
+    to_symbol: *str*
         Quote currency.
     sortby: *str*
         Key by which to sort data

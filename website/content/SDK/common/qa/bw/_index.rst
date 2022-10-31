@@ -32,6 +32,6 @@ common.qa.bw(
         Data column to look at
     yearly : *bool*
         Flag to indicate yearly accumulation
-    external\_axes : Optional[List[plt.Axes]], optional
+    external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     

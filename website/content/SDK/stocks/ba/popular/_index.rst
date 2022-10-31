@@ -25,7 +25,7 @@ stocks.ba.popular(
 
     limit : *int*
         Number of top tickers to get
-    post\_limit : *int*
+    post_limit : *int*
         How many posts to analyze in each subreddit
     subreddits : str, optional
         String of comma separated subreddits.

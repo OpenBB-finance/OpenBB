@@ -24,7 +24,7 @@ crypto.onchain.lt(
 
 * **Parameters**
 
-    trade\_amount\_currency: *str*
+    trade_amount_currency: *str*
         Currency of displayed trade amount. Default: *USD*
     limit: * int*
         Last n days to query data. Maximum 365 (bigger numbers can cause timeouts

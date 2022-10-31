@@ -9,10 +9,10 @@
     <h3>
     > Get a list of available currency pairs for trading. [Source: Coinbase]
 
-    base\_min\_size - min order size
-    base\_max\_size - max order size
-    min\_market\_funds -  min funds allowed in a market order.
-    max\_market\_funds - max funds allowed in a market order.
+    base_min_size - min order size
+    base_max_size - max order size
+    min_market_funds -  min funds allowed in a market order.
+    max_market_funds - max funds allowed in a market order.
     </h3>
 
 To obtain charts, make sure to add :python:`chart = True` as the last parameter

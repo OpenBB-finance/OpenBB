@@ -32,7 +32,7 @@ crypto.disc.cpsearch(
         Available options: currencies|exchanges|icos|people|tags
         Default: currencies,exchanges,icos,people,tags
     modifier: Optional[Any]
-        set modifier for search results. Available options: symbol\_search -
+        set modifier for search results. Available options: symbol_search -
         search only by symbol (works for currencies only)
     sortby: *str*
         Key to sort data. The table can be sorted by every of its columns. Refer to

@@ -23,7 +23,7 @@ portfolio.summary(
         Portfolio object with trades loaded
     window : *str*
         interval to compare cumulative returns and benchmark
-    risk\_free\_rate : *float*
+    risk_free_rate : *float*
         Risk free rate for calculations
     
 * **Returns**

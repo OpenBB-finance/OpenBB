@@ -21,12 +21,12 @@ econometrics.get_regression_data(
 
 * **Parameters**
 
-    regression\_variables : *list*
+    regression_variables : *list*
         The regressions variables entered where the first variable is
         the dependent variable.
     data : *dict*
         A dictionary containing the datasets.
-    regression\_type: *str*
+    regression_type: *str*
         The type of regression that is executed.
 
     

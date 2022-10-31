@@ -17,7 +17,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 crypto.ov.altindex(
     period: int = 30,
     start\_date: int = 1262304000,
-    end\_date: int = 1667172037,
+    end\_date: int = 1667222121,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -28,10 +28,10 @@ crypto.ov.altindex(
        Number of days {30,90,365} to check performance of coins and calculate the altcoin index.
        E.g., 365 checks yearly performance, 90 will check seasonal performance (90 days),
        30 will check monthly performance (30 days).
-    start\_date : *int*
-        Initial date timestamp (e.g., 1\_609\_459\_200)
-    end\_date : *int*
-        End date timestamp (e.g., 1\_641\_588\_030)
+    start_date : *int*
+        Initial date timestamp (e.g., 1_609_459_200)
+    end_date : *int*
+        End date timestamp (e.g., 1_641_588_030)
 
     
 * **Returns**

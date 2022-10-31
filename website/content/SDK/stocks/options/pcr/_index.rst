@@ -16,7 +16,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 stocks.options.pcr(
     symbol: str,
     window: int = 30,
-    start\_date: str = '2021-10-29', chart: bool = False,
+    start\_date: str = '2021-10-30', chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -26,6 +26,6 @@ stocks.options.pcr(
         Ticker symbol to look for
     window: int, optional
         Window to consider, by default 30
-    start\_date: str, optional
+    start_date: str, optional
         Start date to plot, by default last 366 days
     

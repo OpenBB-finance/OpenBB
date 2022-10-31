@@ -27,14 +27,14 @@ common.qa.quantile(
         Dataframe of targeted data
     window : *int*
         Length of window
-    quantile\_pct: *float*
+    quantile_pct: *float*
         Quantile to display
 
     
 * **Returns**
 
-    df\_med : *pd.DataFrame*
+    df_med : *pd.DataFrame*
         Dataframe of median prices over window
-    df\_quantile : *pd.DataFrame*
+    df_quantile : *pd.DataFrame*
         Dataframe of gievn quantile prices over window
     

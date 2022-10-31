@@ -21,7 +21,7 @@ stocks.ca.polygon_peers(
 
     symbol: *str*
         Ticker to get similar companies of
-    us\_only: *bool*
+    us_only: *bool*
         Only stocks from the US stock exchanges
 
     

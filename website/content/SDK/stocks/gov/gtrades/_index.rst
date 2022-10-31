@@ -25,9 +25,9 @@ stocks.gov.gtrades(
 
     symbol: *str*
         Ticker symbol to get congress trading data from
-    gov\_type: *str*
+    gov_type: *str*
         Type of government data between: congress, senate and house
-    past\_transactions\_months: *int*
+    past_transactions_months: *int*
         Number of months to get transactions for
 
     

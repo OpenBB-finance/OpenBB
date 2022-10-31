@@ -22,7 +22,7 @@ crypto.ov.cr(
 
 * **Parameters**
 
-    rate\_type : *str*
+    rate_type : *str*
         Interest rate type: {borrow, supply}. Default: *supply*
     
 * **Returns**

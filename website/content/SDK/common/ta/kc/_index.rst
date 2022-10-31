@@ -27,11 +27,11 @@ common.ta.kc(
 
 * **Parameters**
 
-    high\_prices : *pd.DataFrame*
+    high_prices : *pd.DataFrame*
         High prices
-    low\_prices : *pd.DataFrame*
+    low_prices : *pd.DataFrame*
         Low prices
-    close\_prices : *pd.DataFrame*
+    close_prices : *pd.DataFrame*
         Close prices
     window : *int*
         Length of window

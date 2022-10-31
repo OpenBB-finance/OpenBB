@@ -22,8 +22,8 @@ stocks.ca.screener(
     similar:
         List of similar companies.
         Comparable companies can be accessed through
-        finnhub\_peers(), finviz\_peers(), polygon\_peers().
-    data\_type : *str*
+        finnhub_peers(), finviz_peers(), polygon_peers().
+    data_type : *str*
         Data type between: overview, valuation, financial, ownership, performance, technical
 
     

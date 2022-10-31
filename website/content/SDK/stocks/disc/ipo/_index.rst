@@ -12,14 +12,14 @@
 
 {{< highlight python >}}
 stocks.disc.ipo(
-    start\_date: str = '2022-10-25', end\_date: str = '2022-10-30', ) -> pandas.core.frame.DataFrame
+    start\_date: str = '2022-10-26', end\_date: str = '2022-10-31', ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**
 
-    start\_date : *str*
+    start_date : *str*
         start date (%Y-%m-%d) to get IPO calendar
-    end\_date : *str*
+    end_date : *str*
         end date (%Y-%m-%d) to get IPO calendar
 
     

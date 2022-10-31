@@ -26,7 +26,7 @@ portfolio.maxdd(
 
     data: *pd.Series*
         Series of input values
-    is\_returns: *bool*
+    is_returns: *bool*
         Flag to indicate inputs are returns
 
     

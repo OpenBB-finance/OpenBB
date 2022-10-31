@@ -22,9 +22,9 @@ forex.oanda.fwd(
 
 * **Parameters**
 
-    to\_symbol: *str*
+    to_symbol: *str*
         To currency
-    from\_symbol: *str*
+    from_symbol: *str*
         From currency
 
     

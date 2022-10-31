@@ -19,8 +19,8 @@ crypto.dd.gh(
     symbol: str,
     dev\_activity: bool = False,
     interval: str = '1d',
-    start\_date: str = '2021-10-30T23:20:37Z',
-    end\_date: str = '2022-10-30T23:20:37Z',
+    start\_date: str = '2021-10-31T13:15:21Z',
+    end\_date: str = '2022-10-31T13:15:21Z',
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -29,11 +29,11 @@ crypto.dd.gh(
 
     symbol : *str*
         Crypto symbol to check github activity
-    dev\_activity: *bool*
+    dev_activity: *bool*
         Whether to filter only for development activity
-    start\_date : *int*
+    start_date : *int*
         Initial date like string (e.g., 2021-10-01)
-    end\_date : *int*
+    end_date : *int*
         End date like string (e.g., 2021-10-01)
     interval : *str*
         Interval frequency (e.g., 1d)

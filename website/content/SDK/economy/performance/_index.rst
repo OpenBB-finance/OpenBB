@@ -21,7 +21,7 @@ economy.performance(
 * **Parameters**
 
     group : *str*
-       Group by category. Available groups can be accessed through get\_groups().
+       Group by category. Available groups can be accessed through get_groups().
     sortby : *str*
         Column to sort by
     ascend : *bool*

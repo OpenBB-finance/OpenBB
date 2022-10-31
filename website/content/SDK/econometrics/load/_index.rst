@@ -23,11 +23,11 @@ econometrics.load(
 
     file: *str*
         Path to file
-    file\_types: *list*
+    file_types: *list*
         Supported file types
-    data\_files: *dict*
+    data_files: *dict*
         Contains all available data files within the Export folder
-    data\_examples: *dict*
+    data_examples: *dict*
         Contains all available examples from Statsmodels
 
     

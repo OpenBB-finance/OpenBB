@@ -21,8 +21,8 @@ economy.bigmac(
 
 * **Parameters**
 
-    country\_codes : List[str]
-        List of country codes (ISO-3 letter country code). Codes available through economy.country\_codes().
+    country_codes : List[str]
+        List of country codes (ISO-3 letter country code). Codes available through economy.country_codes().
 
     
 * **Returns**

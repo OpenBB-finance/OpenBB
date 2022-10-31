@@ -32,12 +32,12 @@ common.ta.ma(
         Length of EMA window
     offset: *int*
         Offset variable
-    ma\_type: *str*
+    ma_type: *str*
         Type of moving average.  Either "EMA" "ZLMA" or "SMA"
     symbol: *str*
         Ticker
     export: *str*
         Format to export data
-    external\_axes: Optional[List[plt.Axes]], optional
+    external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     

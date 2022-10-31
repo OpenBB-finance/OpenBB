@@ -20,7 +20,7 @@ portfolio.sortino(
 
     portfolio: *Portfolio*
         Portfolio object with trades loaded
-    risk\_free\_rate: *float*
+    risk_free_rate: *float*
         Risk free rate value
 
     

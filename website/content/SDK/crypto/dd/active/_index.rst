@@ -18,7 +18,7 @@ crypto.dd.active(
     symbol: str,
     interval: str = '24h',
     start\_date: int = 1262304000,
-    end\_date: int = 1667172037,
+    end\_date: int = 1667222121,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -27,10 +27,10 @@ crypto.dd.active(
 
     symbol : *str*
         Asset to search active addresses (e.g., BTC)
-    start\_date : *int*
-        Initial date timestamp (e.g., 1\_614\_556\_800)
-    end\_date : *int*
-        End date timestamp (e.g., 1\_614\_556\_800)
+    start_date : *int*
+        Initial date timestamp (e.g., 1_614_556_800)
+    end_date : *int*
+        End date timestamp (e.g., 1_614_556_800)
     interval : *str*
         Interval frequency (e.g., 24h)
 

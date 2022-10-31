@@ -18,7 +18,7 @@ economy.fred_ids(
 
 * **Parameters**
 
-    search\_query : *str*
+    search_query : *str*
         Text query to search on fred series notes database
     limit : *int*
         Maximum number of series IDs to output

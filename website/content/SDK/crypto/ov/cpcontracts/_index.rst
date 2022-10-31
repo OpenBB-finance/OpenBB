@@ -22,7 +22,7 @@ crypto.ov.cpcontracts(
 
 * **Parameters**
 
-    platform\_id: *str*
+    platform_id: *str*
         Blockchain platform like eth-ethereum
     sortby: *str*
         Key by which to sort data

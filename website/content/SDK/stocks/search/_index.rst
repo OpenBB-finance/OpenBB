@@ -32,7 +32,7 @@ stocks.search(
         Search by sector to find stocks matching the criteria
     industry : *str*
         Search by industry to find stocks matching the criteria
-    exchange\_country: *str*
+    exchange_country: *str*
         Search by exchange country to find stock matching
     limit : *int*
         The limit of companies shown.

@@ -24,9 +24,9 @@ portfolio.om(
 
     portfolio: *Portfolio*
         Portfolio object with trades loaded
-    threshold\_start: *float*
+    threshold_start: *float*
         annualized target return threshold start of plotted threshold range
-    threshold\_end: *float*
+    threshold_end: *float*
         annualized target return threshold end of plotted threshold range
     
 * **Returns**

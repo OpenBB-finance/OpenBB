@@ -25,16 +25,16 @@ econometrics.panel(
 
 * **Parameters**
 
-    regression\_type: *str*
+    regression_type: *str*
         The type of regression you wish to execute.
-    regression\_variables : *list*
+    regression_variables : *list*
         The regressions variables entered where the first variable is
         the dependent variable.
     data : *dict*
         A dictionary containing the datasets.
-    entity\_effects: *bool*
+    entity_effects: *bool*
         Whether to apply Fixed Effects on entities.
-    time\_effects: *bool*
+    time_effects: *bool*
         Whether to apply Fixed Effects on time.
 
     

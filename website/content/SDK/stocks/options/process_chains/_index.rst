@@ -24,6 +24,6 @@ stocks.options.process_chains(
     
 * **Returns**
 
-    opt\_chain: *pd.DataFrame*
+    opt_chain: *pd.DataFrame*
         Dataframe with all available options
     

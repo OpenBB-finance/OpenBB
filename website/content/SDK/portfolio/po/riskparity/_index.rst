@@ -41,12 +41,12 @@ portfolio.po.riskparity(
         List of portfolio stocks
     interval : str, optional
         interval to get stock data, by default "3mo"
-    start\_date: str, optional
+    start_date: str, optional
         If not using interval, start date string (YYYY-MM-DD)
-    end\_date: str, optional
+    end_date: str, optional
         If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
-    log\_returns: bool, optional
+    log_returns: bool, optional
         If True calculate log returns, else arithmetic returns. Default value
         is False
     freq: str, optional
@@ -64,8 +64,8 @@ portfolio.po.riskparity(
         Value used to replace outliers that are higher to threshold.
     method: str, optional
         Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`\_.
-    risk\_measure: str, optional
+        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+    risk_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
 
@@ -80,15 +80,15 @@ portfolio.po.riskparity(
         - 'CDaR': *Conditional Drawdown at Risk of uncompounded cumulative returns.*
         - 'EDaR': *Entropic Drawdown at Risk of uncompounded cumulative returns.*
 
-    risk\_cont: List[str], optional
+    risk_cont: List[str], optional
         The vector of risk contribution per asset. If empty, the default is
         1/n (number of assets).
-    risk\_free\_rate: float, optional
+    risk_free_rate: float, optional
         Risk free rate, must be in annual frequency. Used for
         'FLPM' and 'SLPM' and Sharpe objective function. The default is 0.
     alpha: float, optional
         Significance level of CVaR, EVaR, CDaR and EDaR
-    target\_return: float, optional
+    target_return: float, optional
         Constraint on minimum level of portfolio's return.
     mean: str, optional
         The method used to estimate the expected returns.
@@ -96,9 +96,9 @@ portfolio.po.riskparity(
 
         - 'hist': *use historical estimates.*
         - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user\_guide/window.html#exponentially-weighted-window>`\_.
+        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
         - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user\_guide/window.html#exponentially-weighted-window>`\_.
+        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
@@ -106,9 +106,9 @@ portfolio.po.riskparity(
 
         - 'hist': *use historical estimates.*
         - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user\_guide/window.html#exponentially-weighted-window>`\_.
+        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
         - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user\_guide/window.html#exponentially-weighted-window>`\_.
+        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
         - 'ledoit': *use the Ledoit and Wolf Shrinkage method.*
         - 'oas': *use the Oracle Approximation Shrinkage method.*
         - 'shrunk': *use the basic Shrunk Covariance method.*
@@ -118,7 +118,7 @@ portfolio.po.riskparity(
         - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
         - 'shrink': denoise using shrink method. For more information see chapter 2 of `a-MLforAM`.
 
-    d\_ewma: float, optional
+    d_ewma: float, optional
         The smoothing factor of ewma methods.
         The default is 0.94.
     value : float, optional

@@ -22,7 +22,7 @@ portfolio.es(
 
     portfolio: *Portfolio*
         Portfolio object with trades loaded
-    use\_mean:
+    use_mean:
         if one should use the data mean return
     distribution: *str*
         choose distribution to use: logistic, laplace, normal

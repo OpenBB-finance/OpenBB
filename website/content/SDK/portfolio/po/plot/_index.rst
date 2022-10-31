@@ -39,7 +39,7 @@ portfolio.po.plot(
         Dict of portfolio weights
     data: *pd.DataFrame*
         DataFrame of stock returns
-    title\_opt: *str*
+    title_opt: *str*
         Title to be used on the pie chart
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
@@ -48,7 +48,7 @@ portfolio.po.plot(
             - 'W' for weekly returns.
             - 'M' for monthly returns.
 
-    risk\_measure: str, optional
+    risk_measure: str, optional
         The risk measure used to optimize the portfolio. If model is 'NCO',
         the risk measures available depends on the objective function.
         The default is 'MV'. Possible values are:
@@ -72,26 +72,26 @@ portfolio.po.plot(
         - 'CDaR': *Conditional Drawdown at Risk of uncompounded cumulative returns.*
         - 'EDaR': *Entropic Drawdown at Risk of uncompounded cumulative returns.*
         - 'UCI': *Ulcer Index of uncompounded cumulative returns.*
-        - 'MDD\_Rel': Maximum Drawdown of compounded cumulative returns (Calmar Ratio).
-        - 'ADD\_Rel': *Average Drawdown of compounded cumulative returns.*
-        - 'DaR\_Rel': *Drawdown at Risk of compounded cumulative returns.*
-        - 'CDaR\_Rel': *Conditional Drawdown at Risk of compounded cumulative returns.*
-        - 'EDaR\_Rel': *Entropic Drawdown at Risk of compounded cumulative returns.*
-        - 'UCI\_Rel': *Ulcer Index of compounded cumulative returns.*
+        - 'MDD_Rel': Maximum Drawdown of compounded cumulative returns (Calmar Ratio).
+        - 'ADD_Rel': *Average Drawdown of compounded cumulative returns.*
+        - 'DaR_Rel': *Drawdown at Risk of compounded cumulative returns.*
+        - 'CDaR_Rel': *Conditional Drawdown at Risk of compounded cumulative returns.*
+        - 'EDaR_Rel': *Entropic Drawdown at Risk of compounded cumulative returns.*
+        - 'UCI_Rel': *Ulcer Index of compounded cumulative returns.*
 
-    risk\_free\_rate: float, optional
+    risk_free_rate: float, optional
         Risk free rate, must be in the same interval of assets returns.
         Used for 'FLPM' and 'SLPM'. The default is 0.
     alpha: float, optional
         Significance level of VaR, CVaR, EDaR, DaR, CDaR, EDaR, Tail Gini of losses.
         The default is 0.05.
-    a\_sim: float, optional
+    a_sim: float, optional
         Number of CVaRs used to approximate Tail Gini of losses. The default is 100.
     beta: float, optional
         Significance level of CVaR and Tail Gini of gains. If None it duplicates alpha value.
         The default is None.
-    b\_sim: float, optional
-        Number of CVaRs used to approximate Tail Gini of gains. If None it duplicates a\_sim value.
+    b_sim: float, optional
+        Number of CVaRs used to approximate Tail Gini of gains. If None it duplicates a_sim value.
         The default is None.
     pie : bool, optional
         Display a pie chart of values, by default False
@@ -103,6 +103,6 @@ portfolio.po.plot(
         Display a risk contribution chart for assets, by default False
     heat : float, optional
         Display a heatmap of correlation matrix with dendrogram, by default False
-    external\_axes: Optional[List[plt.Axes]]
+    external_axes: Optional[List[plt.Axes]]
         Optional axes to plot data on
     

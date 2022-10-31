@@ -18,7 +18,7 @@ stocks.ba.text_sent(
 
 * **Parameters**
 
-    post\_data: list[str]
+    post_data: list[str]
         A post and its comments in string form
 
     

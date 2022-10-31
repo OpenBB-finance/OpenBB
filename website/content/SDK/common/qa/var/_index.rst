@@ -28,11 +28,11 @@ common.qa.var(
 
     data: *pd.DataFrame*
         Data dataframe
-    use\_mean: *bool*
+    use_mean: *bool*
         If one should use the data mean for calculation
-    adjusted\_var: *bool*
+    adjusted_var: *bool*
         If one should return VaR adjusted for skew and kurtosis
-    student\_t: *bool*
+    student_t: *bool*
         If one should use the student-t distribution
     percentile: Union[int,float]
         VaR percentile

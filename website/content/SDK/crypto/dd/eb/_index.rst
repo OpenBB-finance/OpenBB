@@ -18,7 +18,7 @@ crypto.dd.eb(
     symbol: str,
     exchange: str = 'binance',
     start\_date: int = 1262304000,
-    end\_date: int = 1667172037,
+    end\_date: int = 1667222121,
     chart: bool = False,
     ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -29,10 +29,10 @@ crypto.dd.eb(
         Asset to search active addresses (e.g., BTC)
     exchange : *str*
         Exchange to check net position change (e.g., binance)
-    start\_date : *int*
-        Initial date timestamp (e.g., 1\_614\_556\_800)
-    end\_date : *int*
-        End date timestamp (e.g., 1\_614\_556\_800)
+    start_date : *int*
+        Initial date timestamp (e.g., 1_614_556_800)
+    end_date : *int*
+        End date timestamp (e.g., 1_614_556_800)
 
     
 * **Returns**

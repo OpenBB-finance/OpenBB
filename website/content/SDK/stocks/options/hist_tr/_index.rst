@@ -34,12 +34,12 @@ stocks.options.hist_tr(
         Option strike price
     put: *bool*
         Is this a put option?
-    chain\_id: Optional[str]
+    chain_id: Optional[str]
         OCC chain ID
 
     
 * **Returns**
 
-    df\_hist: *pd.DataFrame*
+    df_hist: *pd.DataFrame*
         Dataframe of historical option prices
     

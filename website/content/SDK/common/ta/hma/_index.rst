@@ -30,6 +30,6 @@ common.ta.hma(
     
 * **Returns**
 
-    df\_ta: *pd.DataFrame*
+    df_ta: *pd.DataFrame*
         Dataframe containing prices and HMA
     

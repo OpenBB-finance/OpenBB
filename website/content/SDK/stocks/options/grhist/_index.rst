@@ -31,7 +31,7 @@ stocks.options.grhist(
         Option expiration date
     strike: *float*
         Strike price to look for
-    chain\_id: *str*
+    chain_id: *str*
         OCC option symbol.  Overwrites other inputs
     put: *bool*
         Is this a put option?

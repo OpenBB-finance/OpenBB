@@ -21,7 +21,7 @@ forex.oanda.pending(
 * **Parameters**
 
     accountID : str, optional
-        Oanda account ID, by default cfg.OANDA\_ACCOUNT
+        Oanda account ID, by default cfg.OANDA_ACCOUNT
 
     
 * **Returns**

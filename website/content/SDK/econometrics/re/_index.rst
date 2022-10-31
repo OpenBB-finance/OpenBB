@@ -21,7 +21,7 @@ econometrics.re(
 
 * **Parameters**
 
-    regression\_variables : *list*
+    regression_variables : *list*
         The regressions variables entered where the first variable is
         the dependent variable.
     data : *dict*

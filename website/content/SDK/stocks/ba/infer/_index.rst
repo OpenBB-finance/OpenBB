@@ -28,14 +28,14 @@ stocks.ba.infer(
         Ticker symbol to search twitter for
     limit: *int*
         Number of tweets to analyze
-    start\_date: Optional[str]
+    start_date: Optional[str]
         If given, the start time to get tweets from
-    end\_date: Optional[str]
+    end_date: Optional[str]
         If given, the end time to get tweets from
 
     
 * **Returns**
 
-    df\_tweet: *pd.DataFrame*
+    df_tweet: *pd.DataFrame*
         Dataframe of tweets and sentiment
     

@@ -17,8 +17,8 @@ etf.symbols(
 
 * **Returns**
 
-    etf\_symbols: List[str]:
+    etf_symbols: List[str]:
         List of all available etf symbols
-    etf\_names: List[str]
+    etf_names: List[str]
         List of all available etf names
     
