@@ -1012,7 +1012,7 @@ def display_var(
     data_range: int = 0,
     portfolio: bool = False,
 ) -> None:
-    """Displays VaR of dataframe
+    """Displays VaR of dataframe.
 
     Parameters
     ----------
@@ -1070,7 +1070,7 @@ def display_es(
     percentile: float = 99.9,
     portfolio: bool = False,
 ) -> None:
-    """Displays expected shortfall
+    """Displays expected shortfall.
 
     Parameters
     ----------
@@ -1106,7 +1106,7 @@ def display_es(
         show_index=True,
         headers=list(df.columns),
         title=f"[bold]{symbol}{str_title}Expected Shortfall[/bold]",
-        floatfmt=".4f",
+        floatfmt=".2f",
     )
 
 

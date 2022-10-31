@@ -251,7 +251,7 @@ def get_var(
     Returns
     -------
     pd.DataFrame
-        DataFrame with value at risk per percentile
+        DataFrame with Value at Risk per percentile
     """
     if not portfolio:
         data = data[["adjclose"]].copy()
@@ -349,6 +349,7 @@ def get_var(
     )
 
     df.sort_index(inplace=True)
+    df = df.replace(np.nan, "-")
 
     return df
 
@@ -360,7 +361,7 @@ def get_es(
     percentile: Union[float, int] = 99.9,
     portfolio: bool = False,
 ) -> pd.DataFrame:
-    """Gets Expected Shortfall for specified stock dataframe
+    """Gets Expected Shortfall for specified stock dataframe.
 
     Parameters
     ----------
@@ -377,10 +378,8 @@ def get_es(
 
     Returns
     -------
-    list
-        list of ES
-    list
-        list of historical ES
+    pd.DataFrame
+        DataFrame with Expected Shortfall per percentile
     """
     if not portfolio:
         data = data[["adjclose"]].copy()
@@ -500,26 +499,31 @@ def get_es(
     # Historical Expected Shortfall
     df = get_var(data, use_mean, False, False, percentile, portfolio)
 
-    hist_var_list = list(df["Historical VaR"].values)
+    hist_var_list = list(df["Historical VaR [%]"].values)
 
     hist_es_90 = data_return[data_return <= hist_var_list[0]].mean()
     hist_es_95 = data_return[data_return <= hist_var_list[1]].mean()
     hist_es_99 = data_return[data_return <= hist_var_list[2]].mean()
     hist_es_custom = data_return[data_return <= hist_var_list[3]].mean()
 
-    es_list = [es_90, es_95, es_99, es_custom]
-    hist_es_list = [hist_es_90, hist_es_95, hist_es_99, hist_es_custom]
+    es_list = [es_90 * 100, es_95 * 100, es_99 * 100, es_custom * 100]
+    hist_es_list = [
+        hist_es_90 * 100,
+        hist_es_95 * 100,
+        hist_es_99 * 100,
+        hist_es_custom * 100,
+    ]
 
-    str_hist_label = "Historical ES"
+    str_hist_label = "Historical ES [%]"
 
     if distribution == "laplace":
-        str_es_label = "Laplace ES"
+        str_es_label = "Laplace ES [%]"
     elif distribution == "student_t":
-        str_es_label = "Student-t ES"
+        str_es_label = "Student-t ES [%]"
     elif distribution == "logistic":
-        str_es_label = "Logistic ES"
+        str_es_label = "Logistic ES [%]"
     else:
-        str_es_label = "ES"
+        str_es_label = "ES [%]"
 
     data_dictionary = {str_es_label: es_list, str_hist_label: hist_es_list}
     df = pd.DataFrame(
@@ -527,6 +531,7 @@ def get_es(
     )
 
     df.sort_index(inplace=True)
+    df = df.replace(np.nan, "-")
 
     return df
 
