@@ -1,5 +1,5 @@
 ---
-title: Introduction to the OpenBB SDK Economy Module
+title: Introduction to Economy
 keywords: "fred, sdk, api, bonds, treasury, treasuries, spread, events, calendar, futures, future, yield, curve, macro, index, indices, performance, bigmac, series, gdp, indicators"
 excerpt: "This guide introduces the Economy module within the OpenBB SDK and provides some use examples."
 geekdocCollapseSection: true
