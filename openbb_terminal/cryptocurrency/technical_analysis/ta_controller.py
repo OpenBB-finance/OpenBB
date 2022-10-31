@@ -590,7 +590,7 @@ class TechnicalAnalysisController(CryptoBaseController):
 
             overlap_view.view_vwap(
                 symbol=self.coin,
-                s_interval=interval_text,
+                interval=interval_text,
                 data=self.stock,
                 start_date=ns_parser.start,
                 end_date=ns_parser.end,
