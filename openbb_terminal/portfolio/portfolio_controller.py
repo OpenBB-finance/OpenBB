@@ -770,7 +770,7 @@ class PortfolioController(BaseController):
             "-m",
             "--mean",
             action="store_true",
-            default=False,
+            default=True,
             dest="use_mean",
             help="If one should use the mean of the portfolio return",
         )
@@ -842,7 +842,7 @@ class PortfolioController(BaseController):
             "-m",
             "--mean",
             action="store_true",
-            default=False,
+            default=True,
             dest="use_mean",
             help="If one should use the mean of the portfolios return",
         )

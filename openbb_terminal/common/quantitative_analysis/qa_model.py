@@ -231,7 +231,7 @@ def get_var(
     percentile: Union[int, float] = 99.9,
     portfolio: bool = False,
 ) -> pd.DataFrame:
-    """Gets value at risk for specified stock dataframe
+    """Gets value at risk for specified stock dataframe.
 
     Parameters
     ----------
@@ -250,10 +250,8 @@ def get_var(
 
     Returns
     -------
-    list
-        list of VaR
-    list
-        list of historical VaR
+    pd.DataFrame
+        DataFrame with value at risk per percentile
     """
     if not portfolio:
         data = data[["adjclose"]].copy()
@@ -310,10 +308,10 @@ def get_var(
 
     else:
         # Regular Var
-        var_90 = np.exp(mean + percentile_90 * std) - 1
-        var_95 = np.exp(mean + percentile_95 * std) - 1
-        var_99 = np.exp(mean + percentile_99 * std) - 1
-        var_custom = np.exp(mean + percentile_custom * std) - 1
+        var_90 = mean + percentile_90 * std
+        var_95 = mean + percentile_95 * std
+        var_99 = mean + percentile_99 * std
+        var_custom = mean + percentile_custom * std
 
     if not portfolio:
         data.sort_values("return", inplace=True, ascending=True)
@@ -328,17 +326,22 @@ def get_var(
     hist_var_99 = data_return.quantile(0.01)
     hist_var_custom = data_return.quantile(1 - percentile)
 
-    var_list = [var_90, var_95, var_99, var_custom]
-    hist_var_list = [hist_var_90, hist_var_95, hist_var_99, hist_var_custom]
+    var_list = [var_90 * 100, var_95 * 100, var_99 * 100, var_custom * 100]
+    hist_var_list = [
+        hist_var_90 * 100,
+        hist_var_95 * 100,
+        hist_var_99 * 100,
+        hist_var_custom * 100,
+    ]
 
-    str_hist_label = "Historical VaR"
+    str_hist_label = "Historical VaR [%]"
 
     if adjusted_var:
-        str_var_label = "Adjusted VaR"
+        str_var_label = "Adjusted VaR [%]"
     elif student_t:
-        str_var_label = "Student-t VaR"
+        str_var_label = "Student-t VaR [%]"
     else:
-        str_var_label = "VaR"
+        str_var_label = "Gaussian VaR [%]"
 
     data_dictionary = {str_var_label: var_list, str_hist_label: hist_var_list}
     df = pd.DataFrame(

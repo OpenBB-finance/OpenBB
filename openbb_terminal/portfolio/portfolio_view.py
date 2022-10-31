@@ -1609,7 +1609,7 @@ def display_summary(
 @log_start_end(log=logger)
 def display_var(
     portfolio: portfolio_model.PortfolioModel,
-    use_mean: bool = False,
+    use_mean: bool = True,
     adjusted_var: bool = False,
     student_t: bool = False,
     percentile: float = 99.9,
@@ -1629,6 +1629,7 @@ def display_var(
     percentile: float
         var percentile (%)
     """
+
     qa_view.display_var(
         data=portfolio.returns,
         symbol="Portfolio",
@@ -1643,7 +1644,7 @@ def display_var(
 @log_start_end(log=logger)
 def display_es(
     portfolio: portfolio_model.PortfolioModel,
-    use_mean: bool = False,
+    use_mean: bool = True,
     distribution: str = "normal",
     percentile: float = 99.9,
 ):

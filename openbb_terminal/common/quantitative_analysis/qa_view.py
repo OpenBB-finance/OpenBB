@@ -1058,7 +1058,7 @@ def display_var(
         show_index=True,
         headers=list(df.columns),
         title=f"[bold]{symbol}{str_title}Value at Risk[/bold]",
-        floatfmt=".4f",
+        floatfmt=".2f",
     )
 
 
