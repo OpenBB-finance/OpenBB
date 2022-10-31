@@ -410,7 +410,7 @@ def display_fisher(
         External axes (3 axes are expected in the list), by default None
     """
     df_ta = momentum_model.fisher(data, window)
-    if df_ta.empty():
+    if df_ta.empty:
         return
     plot_data = pd.merge(data, df_ta, how="outer", left_index=True, right_index=True)
     plot_data = reindex_dates(plot_data)
@@ -428,7 +428,10 @@ def display_fisher(
         return
 
     ax1.set_title(f"{symbol} Fisher Transform")
-    ax1.plot(plot_data.index, plot_data["Adj Close"].values)
+    close_col = ta_helpers.check_columns(data)
+    if close_col is None:
+        return
+    ax1.plot(plot_data.index, plot_data[close_col].values)
     ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
     ax1.set_ylabel("Price")
     theme.style_primary_axis(

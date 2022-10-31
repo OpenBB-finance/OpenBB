@@ -119,7 +119,7 @@ def kc(
         ta.kc(
             high=data["High"],
             low=data["Low"],
-            close=data["Adj Close"],
+            close=data[close_col],
             length=window,
             scalar=scalar,
             mamode=mamode,

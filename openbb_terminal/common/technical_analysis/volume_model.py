@@ -30,14 +30,13 @@ def ad(data: pd.DataFrame, use_open: bool = False) -> pd.DataFrame:
     kwargs = {}
     if use_open:
         kwargs["open"] = data["open"]
-    if use_open:
-        df_ta = ta.ad(
-            high=data["High"],
-            low=data["Low"],
-            close=data["Close"],
-            volume=data["Volume"],
-            **kwargs
-        ).dropna()
+    df_ta = ta.ad(
+        high=data["High"],
+        low=data["Low"],
+        close=data["Close"],
+        volume=data["Volume"],
+        **kwargs
+    ).dropna()
     return pd.DataFrame(df_ta)
 
 

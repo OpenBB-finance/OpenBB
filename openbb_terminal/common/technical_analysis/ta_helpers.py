@@ -1,8 +1,11 @@
 from typing import Optional
+import logging
 
 import pandas as pd
 
 from openbb_terminal.rich_config import console
+
+logger = logging.getLogger(__name__)
 
 
 def check_columns(
@@ -27,6 +30,12 @@ def check_columns(
         The name of the close column, none if df is invalid
 
     """
+    close_col = "Close"
+    for title in ["Adj Close", "Close", "adj_close", "Adj_Close"]:
+        if title in data.columns:
+            close_col = title
+            break
+
     close_col = "Adj Close" if "Adj Close" in data.columns else "Close"
     # pylint: disable=too-many-boolean-expressions
     if (
@@ -34,6 +43,7 @@ def check_columns(
         or ("Low" not in data.columns and low)
         or (close_col not in data.columns and close)
     ):
+        logger.error("Invalid columns. data has columns %s", data.columns)
         console.print(
             "[red] Please make sure that the columns 'High', 'Low', and 'Close'"
             " are in the dataframe.[/red]"

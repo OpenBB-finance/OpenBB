@@ -19,6 +19,7 @@ from openbb_terminal.helper_funcs import (
     is_valid_axes_count,
 )
 from openbb_terminal.rich_config import console
+from openbb_terminal.common.technical_analysis import ta_helpers
 
 logger = logging.getLogger(__name__)
 
@@ -84,7 +85,10 @@ def display_ad(
     else:
         return
 
-    ax1.plot(plot_data.index, plot_data["Adj Close"].values)
+    close_col = ta_helpers.check_columns(data)
+    if close_col is None:
+        return
+    ax1.plot(plot_data.index, plot_data[close_col].values)
     ax1.set_title(f"{symbol} AD", x=0.04, y=1)
     ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
     ax1.set_ylabel("Price")

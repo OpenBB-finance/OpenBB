@@ -18,6 +18,7 @@ from openbb_terminal.helper_funcs import (
     reindex_dates,
     is_valid_axes_count,
 )
+from openbb_terminal.common.technical_analysis import ta_helpers
 
 logger = logging.getLogger(__name__)
 
@@ -63,9 +64,12 @@ def display_bbands(
     else:
         return
 
+    close_col = ta_helpers.check_columns(data, high=False, low=False)
+    if close_col is None:
+        return
     ax.plot(
         plot_data.index,
-        plot_data["Adj Close"].values,
+        plot_data[close_col].values,
     )
     ax.plot(
         plot_data.index,
@@ -142,7 +146,10 @@ def display_donchian(
     else:
         return
 
-    ax.plot(plot_data.index, plot_data["Adj Close"].values)
+    close_col = ta_helpers.check_columns(data)
+    if close_col is None:
+        return
+    ax.plot(plot_data.index, plot_data[close_col].values)
     ax.plot(
         plot_data.index,
         plot_data[df_ta.columns[0]].values,
@@ -234,7 +241,10 @@ def view_kc(
     else:
         return
 
-    ax.plot(plot_data.index, plot_data["Adj Close"].values)
+    close_col = ta_helpers.check_columns(data)
+    if close_col is None:
+        return
+    ax.plot(plot_data.index, plot_data[close_col].values)
     ax.plot(
         plot_data.index,
         plot_data[df_ta.columns[0]].values,
@@ -316,7 +326,7 @@ def display_atr(
     plot_data = pd.merge(data, df_ta, how="outer", left_index=True, right_index=True)
     plot_data = reindex_dates(plot_data)
 
-    ax1.plot(plot_data.index, plot_data.iloc[:, 1].values)
+    ax1.plot(plot_data.index, plot_data.iloc[:, 1].values, color=theme.get_colors()[0])
     ax1.set_title(f"{symbol} ATR")
     ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
     ax1.set_ylabel("Share Price ($)")
@@ -326,7 +336,9 @@ def display_atr(
         tick_labels=plot_data["date"].to_list(),
     )
 
-    ax2.plot(plot_data.index, plot_data[df_ta.columns[0]].values)
+    ax2.plot(
+        plot_data.index, plot_data[df_ta.columns[0]].values, color=theme.get_colors()[1]
+    )
     ax2.set_xlim(plot_data.index[0], plot_data.index[-1])
     ax2.set_ylabel("ATR")
     theme.style_primary_axis(
