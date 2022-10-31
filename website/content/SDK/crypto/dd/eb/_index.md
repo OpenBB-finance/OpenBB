@@ -1,7 +1,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### crypto.dd.eb(symbol: str, exchange: str = 'binance', start_date: int = 1262300400, end_date: int = 1666620619) -> pandas.core.frame.DataFrame
+### crypto.dd.eb(symbol: str, exchange: str = 'binance', start_date: int = 1262300400, end_date: int = 1666777200) -> pandas.core.frame.DataFrame
 
 Returns the total amount of coins held on exchange addresses in units and percentage.
     [Source: https://glassnode.com]
