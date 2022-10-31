@@ -116,10 +116,10 @@ portfolio.po.minrisk(
         - 'oas': *use the Oracle Approximation Shrinkage method.*
         - 'shrunk': *use the basic Shrunk Covariance method.*
         - 'gl': *use the basic Graphical Lasso Covariance method.*
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `a-MLforAM`.
 
     d\_ewma: float, optional
         The smoothing factor of ewma methods.
