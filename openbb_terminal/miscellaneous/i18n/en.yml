@@ -910,7 +910,7 @@ en:
   portfolio/bro: brokers holdings,   supports robinhood, ally, degiro, coinbase
   portfolio/po: portfolio optimization,  optimize your portfolio weights efficiently
   portfolio/load: load data into the portfolio
-  portfolio/_loaded: Loaded orderbook
+  portfolio/_loaded: Loaded transactions
   portfolio/_riskfreerate: Risk Free Rate
   portfolio/show: show existing transactions
   portfolio/bench: define the benchmark

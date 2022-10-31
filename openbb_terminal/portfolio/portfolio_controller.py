@@ -289,14 +289,11 @@ class PortfolioController(BaseController):
         mt.add_raw("\n")
 
         mt.add_cmd("load")
+        mt.add_cmd("show")
+        mt.add_cmd("bench")
         mt.add_raw("\n")
         mt.add_param("_loaded", self.portfolio_name)
         mt.add_param("_riskfreerate", self.portfolio_name)
-        mt.add_raw("\n")
-        mt.add_cmd("show")
-        mt.add_raw("\n")
-        mt.add_cmd("bench")
-        mt.add_raw("\n")
         mt.add_param("_benchmark", self.benchmark_name)
         mt.add_raw("\n")
 
@@ -331,15 +328,12 @@ class PortfolioController(BaseController):
 >   bro              brokers holdings, \t\t supports: robinhood, ally, degiro, coinbase
 >   po               portfolio optimization, \t optimize your portfolio weights efficiently[/menu]
 [cmds]
-    load             load data into the portfolio[/cmds]
-
-[param]Loaded orderbook:[/param] {self.portfolio_name or ""}
+    load             load data into the portfolio
+    show             show existing transactions
+    bench            define the benchmark
+[/cmds]
+[param]Loaded transactions file:[/param] {self.portfolio_name or ""}
 [param]Risk Free Rate:  [/param] {self.risk_free_rate:.2%}
-{("[unvl]", "[cmds]")[port]}
-    show             show existing transactions{("[/unvl]", "[/cmds]")[port]}
-{("[unvl]", "[cmds]")[port]}
-    bench            define the benchmark{("[/unvl]", "[/cmds]")[port]}
-
 [param]Benchmark:[/param] {self.benchmark_name or ""}
 
 [info]Graphs:[/info]{("[unvl]", "[cmds]")[port_bench]}
@@ -413,7 +407,7 @@ class PortfolioController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
-            description="Load your portfolio",
+            description="Load your portfolio transactions.",
         )
         parser.add_argument(
             "-f",
@@ -447,10 +441,10 @@ class PortfolioController(BaseController):
             else:
                 file_location = ns_parser.file  # type: ignore
 
-            orderbook = portfolio_model.PortfolioModel.read_orderbook(
+            transactions = portfolio_model.PortfolioModel.read_transactions(
                 str(file_location)
             )
-            self.portfolio = portfolio_model.PortfolioModel(orderbook)
+            self.portfolio = portfolio_model.PortfolioModel(transactions)
             self.benchmark_name = ""
 
             if ns_parser.name:
@@ -494,7 +488,7 @@ class PortfolioController(BaseController):
             limit=10,
         )
         if ns_parser and self.portfolio is not None:
-            portfolio_view.display_orderbook(
+            portfolio_view.display_transactions(
                 self.portfolio,
                 show_index=False,
                 limit=ns_parser.limit,
@@ -557,7 +551,9 @@ class PortfolioController(BaseController):
                 )
 
             else:
-                console.print("[red]Please first load orderbook using 'load'[/red]\n")
+                console.print(
+                    "[red]Please first load transactions file using 'load'[/red]\n"
+                )
             console.print()
 
     @log_start_end(log=logger)

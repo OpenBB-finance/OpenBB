@@ -3,14 +3,11 @@
 >   po               portfolio optimization, 	 optimize your portfolio weights efficiently
 
     load             load data into the portfolio
+    show             show existing transactions
+    bench            define the benchmark
 
-Loaded orderbook: 
+Loaded transactions file: 
 Risk Free Rate:   0.00%
-[unvl]
-    show             show existing transactions[/unvl]
-[unvl]
-    bench            define the benchmark[/unvl]
-
 Benchmark: 
 
 Graphs:[unvl]

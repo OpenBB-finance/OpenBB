@@ -61,13 +61,13 @@ In order to load a CSV do the following:
 
 
 @log_start_end(log=logger)
-def display_orderbook(
+def display_transactions(
     portfolio=None,
     show_index=False,
     limit: int = 10,
     export: str = "",
 ):
-    """Display portfolio orderbook
+    """Display portfolio transactions
 
     Parameters
     ----------
@@ -82,10 +82,10 @@ def display_orderbook(
     """
 
     if portfolio.empty:
-        logger.warning("No orderbook loaded")
-        console.print("[red]No orderbook loaded.[/red]\n")
+        logger.warning("No transactions file loaded.")
+        console.print("[red]No transactions file loaded.[/red]\n")
     else:
-        df = portfolio.get_orderbook()
+        df = portfolio.get_transactions()
         print_rich_table(
             df=df[:limit],
             show_index=show_index,
