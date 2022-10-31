@@ -3,12 +3,15 @@ econometrics
 ## Exploration
 
 load nile
+desc nile
 load nile -a nile_2
 combine nile -c nile_2.volume
 load -f 20221008_221605_dataset
 rename -d 20221008_221605_dataset -o population -n pop
 load -e
 load -f wage_panel -a wp
+add -n wp.after_1990 -b wp.year -s > -c 1990
+add -n wp.after_1985 -b wp.year -s > -c 1985
 show -n wp -s year -a -l 20
 plot -v wp.nr,wp.exper,wp.hours
 index -n wp -i nr,year -a
@@ -17,9 +20,6 @@ type wp.year --format category
 desc -n wp.expersq
 clean wp -f cfill
 clean wp -d rdrop
-desc wp
-add -n wp.after_1990 -b wp.year -s > -c 1990
-add -n wp.after_1985 -b wp.year -s > -c 1985
 delete -d wp.black
 
 ## Tests
