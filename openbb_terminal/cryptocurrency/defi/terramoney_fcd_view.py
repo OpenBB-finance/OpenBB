@@ -23,6 +23,7 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
     is_valid_axes_count,
 )
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -48,6 +49,8 @@ def display_account_staking_info(
         print_rich_table(
             df.head(limit), headers=list(df.columns), show_index=False, title=report
         )
+    else:
+        console.print(f"[red]No data found for address {address}\n[/red]")
 
     export_data(
         export,

@@ -187,7 +187,7 @@ class DefiController(BaseController):
                 "-l": "--limit",
             }
             choices["anchor"] = {
-                "--adress": None,
+                "--address": None,
                 "--transactions": {},
             }
             choices["support"] = self.SUPPORT_CHOICES
@@ -352,8 +352,8 @@ class DefiController(BaseController):
             terramoney_fcd_view.display_validators(
                 export=ns_parser.export,
                 sortby=ns_parser.sortby,
-                descend=ns_parser.descend,
-                top=ns_parser.limit,
+                ascend=not ns_parser.descend,
+                limit=ns_parser.limit,
             )
 
     @log_start_end(log=logger)
@@ -390,13 +390,6 @@ class DefiController(BaseController):
             help="Total account count or active account count. Default: total",
             default="total",
             choices=["active", "total"],
-        )
-        parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=False,
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -621,7 +614,7 @@ class DefiController(BaseController):
 
         parser.add_argument(
             "--descend",
-            action="store_false",
+            action="store_true",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
             default=False,
@@ -629,7 +622,7 @@ class DefiController(BaseController):
 
         parser.add_argument(
             "--desc",
-            action="store_false",
+            action="store_true",
             help="Flag to display description of protocol",
             dest="description",
             default=False,
@@ -949,13 +942,13 @@ class DefiController(BaseController):
             dest="sortby",
             type=str,
             help="Sort by given column. Default: timestamp",
-            default="timestamp",
+            default="Datetime",
             choices=graph_model.SWAPS_FILTERS,
         )
 
         parser.add_argument(
             "--descend",
-            action="store_false",
+            action="store_true",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
             default=False,

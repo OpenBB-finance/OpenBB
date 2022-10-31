@@ -1,8 +1,7 @@
 ```text
 usage: metric [-m {roa,roe,cr,qr,de,tc,tcs,tr,rps,rg,eg,pm,gp,gm,ocf,om,fcf,td,ebitda,ebitdam,rec,mc,fte,er,bv,ss,pb,beta,fs,peg,ev,fpe}] [-l LIMIT] [-r] [-h] [--export EXPORT]
-```
 
-Visualise a particular metric with the filters selected [source: Yahoo Finance]
+Visualize a particular metric with the filters selected
 
 ```
 optional arguments:
@@ -13,8 +12,7 @@ optional arguments:
   -r, --raw             Output all raw data (default: False)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
-
-```
+  ```
 
 Return on Equity example:
 ```
@@ -23,7 +21,7 @@ Return on Equity example:
 │ Country           : United States                                                                                                                                                                                                       │
 │ Market Cap        : Large                                                                                                                                                                                                               │
 │ Exclude Exchanges : True                                                                                                                                                                                                                │
-│ Period            : Annual    
+│ Period            : Annual
 
 
 2022 Mar 21, 09:51 (✨) /stocks/sia/ $ metric roe
@@ -38,9 +36,8 @@ Full Time Employees example:
 │ Country           : United States                                                                                                                                                                                                       │
 │ Market Cap        : Large                                                                                                                                                                                                               │
 │ Exclude Exchanges : True                                                                                                                                                                                                                │
-│ Period            : Annual   
+│ Period            : Annual
 
 2022 Mar 21, 09:55 (✨) /stocks/sia/ $ metric fte
 ```
 ![metric fte](https://user-images.githubusercontent.com/46355364/159276335-d0ecb16f-eac2-421f-b69e-3bbffe126bd1.png)
-
