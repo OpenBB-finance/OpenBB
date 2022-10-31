@@ -148,8 +148,6 @@ class TechnicalAnalysisController(CryptoBaseController):
                 "-l": "--length",
                 "--scalar": None,
                 "-s": "--scalar",
-                "--drift": "--length",
-                "-d": "--drift",
             }
             choices["stoch"] = {
                 "--fastkperiod": one_to_hundred,
