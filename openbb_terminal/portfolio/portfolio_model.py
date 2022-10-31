@@ -169,7 +169,6 @@ class PortfolioModel:
         p_bar = tqdm(range(14), desc="Preprocessing transactions")
 
         try:
-            # console.print(" Preprocessing transactions: ", end="")
 
             # 0. If optional fields not in the transactions add missing
             optional_fields = [

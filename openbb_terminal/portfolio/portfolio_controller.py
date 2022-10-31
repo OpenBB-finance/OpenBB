@@ -589,7 +589,7 @@ class PortfolioController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args, limit=10)
 
         if ns_parser and self.portfolio is not None:
-            console.print()
+
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):

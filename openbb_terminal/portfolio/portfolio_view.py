@@ -120,6 +120,7 @@ def display_assets_allocation(
     include_separate_tables: bool
         Whether to include separate asset allocation tables
     """
+
     benchmark_allocation = benchmark_allocation.iloc[:limit]
     portfolio_allocation = portfolio_allocation.iloc[:limit]
 
@@ -137,8 +138,10 @@ def display_assets_allocation(
         floatfmt=["", ".2%", ".2%", ".2%"],
         show_index=False,
     )
+    console.print("\n")
 
     if include_separate_tables:
+
         print_rich_table(
             portfolio_allocation,
             headers=list(portfolio_allocation.columns),
@@ -147,6 +150,8 @@ def display_assets_allocation(
             floatfmt=[".2%", ".2%"],
             show_index=False,
         )
+        console.print("\n")
+
         print_rich_table(
             benchmark_allocation,
             headers=list(benchmark_allocation.columns),
@@ -155,6 +160,7 @@ def display_assets_allocation(
             floatfmt=[".2%", ".2%"],
             show_index=False,
         )
+        console.print("\n")
 
 
 @log_start_end(log=logger)
@@ -223,8 +229,10 @@ def display_category_allocation(
         floatfmt=[".2f", ".2%", ".2%", ".2%"],
         show_index=False,
     )
+    console.print("\n")
 
     if include_separate_tables:
+
         print_rich_table(
             pd.DataFrame(portfolio_allocation),
             headers=list(["Allocation"]),
@@ -233,6 +241,8 @@ def display_category_allocation(
             floatfmt=[".2%"],
             show_index=True,
         )
+        console.print("\n")
+
         print_rich_table(
             pd.DataFrame(benchmark_allocation),
             headers=list(["Allocation"]),
@@ -241,6 +251,7 @@ def display_category_allocation(
             floatfmt=[".2%"],
             show_index=True,
         )
+        console.print("\n")
 
 
 @log_start_end(log=logger)
@@ -402,12 +413,15 @@ def display_monthly_returns(
             headers=portfolio_returns.columns,
             show_index=True,
         )
+        console.print("\n")
+
         print_rich_table(
             benchmark_returns,
             title="Monthly returns",
             headers=benchmark_returns.columns,
             show_index=True,
         )
+        console.print("\n")
 
     else:
         if external_axes is None:
