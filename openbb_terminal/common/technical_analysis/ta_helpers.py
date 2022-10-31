@@ -5,13 +5,21 @@ import pandas as pd
 from openbb_terminal.rich_config import console
 
 
-def check_columns(data: pd.DataFrame) -> Optional[str]:
+def check_columns(
+    data: pd.DataFrame, high: bool = True, low: bool = True, close: bool = True
+) -> Optional[str]:
     """Returns the close columns, or None if the dataframe does not have required columns
 
     Parameters
     ----------
     data: pd.DataFrame
         The dataframe to check
+    high: bool
+        Whether to check for high column
+    low: bool
+        Whether to check for low column
+    close: bool
+        Whether to check for close column
 
     Returns
     ----------
@@ -20,10 +28,11 @@ def check_columns(data: pd.DataFrame) -> Optional[str]:
 
     """
     close_col = "Adj Close" if "Adj Close" in data.columns else "Close"
+    # pylint: disable=too-many-boolean-expressions
     if (
-        "High" not in data.columns
-        or "Low" not in data.columns
-        or close_col not in data.columns
+        ("High" not in data.columns and high)
+        or ("Low" not in data.columns and low)
+        or (close_col not in data.columns and close)
     ):
         console.print(
             "[red] Please make sure that the columns 'High', 'Low', and 'Close'"

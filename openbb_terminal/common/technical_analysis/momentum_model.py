@@ -150,15 +150,13 @@ def stoch(
 
 
 @log_start_end(log=logger)
-def fisher(high_vals: pd.Series, low_vals: pd.Series, window: int = 14) -> pd.DataFrame:
+def fisher(data: pd.DataFrame, window: int = 14) -> pd.DataFrame:
     """Fisher Transform
 
     Parameters
     ----------
-    high_vals: pd.Series
-        High values
-    low_vals: pd.Series
-        Low values
+    data : pd.DataFrame
+        Dataframe of OHLC prices
     window: int
         Length for indicator window
     Returns
@@ -167,7 +165,12 @@ def fisher(high_vals: pd.Series, low_vals: pd.Series, window: int = 14) -> pd.Da
         Dataframe of technical indicator
     """
     # Daily
-    return pd.DataFrame(ta.fisher(high=high_vals, low=low_vals, length=window).dropna())
+    close_col = ta_helpers.check_columns(data, close=False)
+    if close_col is None:
+        return pd.DataFrame()
+    return pd.DataFrame(
+        ta.fisher(high=data["High"], low=data["Low"], length=window).dropna()
+    )
 
 
 @log_start_end(log=logger)

@@ -27,21 +27,16 @@ def ad(data: pd.DataFrame, use_open: bool = False) -> pd.DataFrame:
     pd.DataFrame
         Dataframe with technical indicator
     """
+    kwargs = {}
+    if use_open:
+        kwargs["open"] = data["open"]
     if use_open:
         df_ta = ta.ad(
             high=data["High"],
             low=data["Low"],
             close=data["Close"],
             volume=data["Volume"],
-            open_=data["Open"],
-        ).dropna()
-    # Do not use open stock values
-    else:
-        df_ta = ta.ad(
-            high=data["High"],
-            low=data["Low"],
-            close=data["Close"],
-            volume=data["Volume"],
+            **kwargs
         ).dropna()
     return pd.DataFrame(df_ta)
 

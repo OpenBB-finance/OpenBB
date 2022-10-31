@@ -55,9 +55,7 @@ def display_adx(
         External axes (2 axes are expected in the list), by default None
     """
     df_ta = trend_indicators_model.adx(
-        high_values=data["High"],
-        low_values=data["Low"],
-        close_values=data["Adj Close"],
+        data=data,
         window=window,
         scalar=scalar,
         drift=drift,
@@ -145,8 +143,7 @@ def display_aroon(
         External axes (3 axes are expected in the list), by default None
     """
     df_ta = trend_indicators_model.aroon(
-        high_values=data["High"],
-        low_values=data["Low"],
+        data=data,
         window=window,
         scalar=scalar,
     )

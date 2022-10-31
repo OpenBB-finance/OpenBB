@@ -409,7 +409,9 @@ def display_fisher(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (3 axes are expected in the list), by default None
     """
-    df_ta = momentum_model.fisher(data["High"], data["Low"], window)
+    df_ta = momentum_model.fisher(data, window)
+    if df_ta.empty():
+        return
     plot_data = pd.merge(data, df_ta, how="outer", left_index=True, right_index=True)
     plot_data = reindex_dates(plot_data)
 

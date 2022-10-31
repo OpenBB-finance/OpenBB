@@ -51,7 +51,7 @@ def display_bbands(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df_ta = volatility_model.bbands(data["Adj Close"], window, n_std, mamode)
+    df_ta = volatility_model.bbands(data, window, n_std, mamode)
     plot_data = pd.merge(data, df_ta, how="outer", left_index=True, right_index=True)
     plot_data = reindex_dates(plot_data)
 
@@ -130,9 +130,7 @@ def display_donchian(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df_ta = volatility_model.donchian(
-        data["High"], data["Low"], upper_length, lower_length
-    )
+    df_ta = volatility_model.donchian(data, upper_length, lower_length)
     plot_data = pd.merge(data, df_ta, how="outer", left_index=True, right_index=True)
     plot_data = reindex_dates(plot_data)
 
@@ -302,14 +300,7 @@ def display_atr(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
-    df_ta = volatility_model.atr(
-        data["High"],
-        data["Low"],
-        data["Adj Close"],
-        window=window,
-        mamode=mamode,
-        offset=offset,
-    )
+    df_ta = volatility_model.atr(data, window=window, mamode=mamode, offset=offset)
 
     # This plot has 2 axes
     if external_axes is None:
