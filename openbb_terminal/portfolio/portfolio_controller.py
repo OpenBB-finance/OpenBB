@@ -332,9 +332,9 @@ class PortfolioController(BaseController):
     show             show existing transactions
     bench            define the benchmark
 [/cmds]
-[param]Loaded transactions file:[/param] {self.portfolio_name or ""}
+[param]Loaded transactions file:[/param] {self.portfolio_name}
 [param]Risk Free Rate:  [/param] {self.risk_free_rate:.2%}
-[param]Benchmark:[/param] {self.benchmark_name or ""}
+[param]Benchmark:[/param] {self.benchmark_name}
 
 [info]Metrics:[/info]{("[unvl]", "[cmds]")[port_bench]}
     summary          all portfolio vs benchmark metrics for a certain period of choice
