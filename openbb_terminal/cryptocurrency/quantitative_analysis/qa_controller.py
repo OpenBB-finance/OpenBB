@@ -268,7 +268,7 @@ class QaController(CryptoBaseController):
             qa_view.display_raw(
                 data=self.data[self.target],
                 limit=ns_parser.limit,
-                sortby="",
+                sortby="Close",
                 descend=ns_parser.descend,
                 export=ns_parser.export,
             )
