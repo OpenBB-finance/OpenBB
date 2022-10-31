@@ -316,14 +316,14 @@ class QaController(CryptoBaseController):
         )
         parser.add_argument(
             "--ml",
-            help="Draw vertical line markers to highlight certain events",
+            help="Draw vertical line markers to highlight certain events (comma separated dates, e.g. 2020-01-01,2020-02-01)",  # noqa: E501
             dest="ml",
             type=check_list_dates,
             default="",
         )
         parser.add_argument(
             "--ms",
-            help="Draw scatter markers to highlight certain events",
+            help="Draw scatter markers to highlight certain events (comma separated dates, e.g. 2021-01-01,2021-02-01)",
             dest="ms",
             type=check_list_dates,
             default="",
