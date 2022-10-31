@@ -10,6 +10,7 @@ import numpy as np
 import scipy
 import pandas as pd
 import yfinance as yf
+from tqdm import tqdm
 from sklearn.metrics import r2_score
 from pycoingecko import CoinGeckoAPI
 from openbb_terminal.common.quantitative_analysis import qa_model
@@ -146,7 +147,7 @@ class PortfolioModel:
 
     @log_start_end(log=logger)
     def preprocess_transactions(self):
-        """Method to preprocess, format and compute auxiliary fields
+        """Method to preprocess, format and compute auxiliary fields.
 
         Preprocessing steps:
             0. If optional fields not in the transactions add missing
@@ -165,8 +166,10 @@ class PortfolioModel:
             13. Populate fields Sector, Industry and Country
         """
 
+        p_bar = tqdm(range(14), desc="Preprocessing transactions")
+
         try:
-            console.print(" Preprocessing transactions: ", end="")
+            # console.print(" Preprocessing transactions: ", end="")
 
             # 0. If optional fields not in the transactions add missing
             optional_fields = [
@@ -183,13 +186,20 @@ class PortfolioModel:
                     if field not in self.__transactions.columns:
                         self.__transactions[field] = np.nan
 
+            p_bar.n += 1
+            p_bar.refresh()
+
             # 1. Convert Date to datetime
             self.__transactions["Date"] = pd.to_datetime(self.__transactions["Date"])
-            console.print(".", end="")
+
+            p_bar.n += 1
+            p_bar.refresh()
 
             # 2. Sort transactions by date
             self.__transactions = self.__transactions.sort_values(by="Date")
-            console.print(".", end="")
+
+            p_bar.n += 1
+            p_bar.refresh()
 
             # 3. Capitalize Ticker and Type [of instrument...]
             self.__transactions["Ticker"] = self.__transactions["Ticker"].map(
@@ -198,7 +208,9 @@ class PortfolioModel:
             self.__transactions["Type"] = self.__transactions["Type"].map(
                 lambda x: x.upper()
             )
-            console.print(".", end="")
+
+            p_bar.n += 1
+            p_bar.refresh()
 
             # 4. Translate side: ["deposit", "buy"] -> 1 and ["withdrawal", "sell"] -> -1
             self.__transactions["Signal"] = self.__transactions["Side"].map(
@@ -206,20 +218,26 @@ class PortfolioModel:
                 if x.lower() in ["deposit", "buy"]
                 else (-1 if x.lower() in ["withdrawal", "sell"] else 0)
             )
-            console.print(".", end="")
+
+            p_bar.n += 1
+            p_bar.refresh()
 
             # 5. Convert quantity to signed integer
             self.__transactions["Quantity"] = (
                 abs(self.__transactions["Quantity"]) * self.__transactions["Signal"]
             )
-            console.print(".", end="")
+
+            p_bar.n += 1
+            p_bar.refresh()
 
             # 6. Determining the investment/divestment value
             self.__transactions["Investment"] = (
                 self.__transactions["Quantity"] * self.__transactions["Price"]
                 + self.__transactions["Fees"]
             )
-            console.print(".", end="")
+
+            p_bar.n += 1
+            p_bar.refresh()
 
             # 7. Reformat crypto tickers to yfinance format (e.g. BTC -> BTC-USD)
             crypto_trades = self.__transactions[self.__transactions.Type == "CRYPTO"]
@@ -231,7 +249,9 @@ class PortfolioModel:
                     crypto_trades.Ticker, crypto_trades.Currency
                 )
             ]
-            console.print(".", end="")
+
+            p_bar.n += 1
+            p_bar.refresh()
 
             # 8. Reformat STOCK/ETF tickers to yfinance format if ISIN provided.
 
@@ -275,14 +295,17 @@ class PortfolioModel:
                 self.__transactions["Ticker"]
             )
 
-            console.print(".", end="")
+            p_bar.n += 1
+            p_bar.refresh()
 
             # 9. Remove unsupported ISINs that came out empty
             self.__transactions.drop(
                 self.__transactions[self.__transactions["Ticker"] == ""].index,
                 inplace=True,
             )
-            console.print(".", end="")
+
+            p_bar.n += 1
+            p_bar.refresh()
 
             # 10. Create tickers dictionary with structure {'Type': [Ticker]}
             for ticker_type in set(self.__transactions["Type"]):
@@ -293,15 +316,21 @@ class PortfolioModel:
                         ]["Ticker"]
                     )
                 )
-            console.print(".", end="")
+
+            p_bar.n += 1
+            p_bar.refresh()
 
             # 11. Create list with tickers except cash
             self.tickers_list = list(set(self.__transactions["Ticker"]))
-            console.print(".", end="")
+
+            p_bar.n += 1
+            p_bar.refresh()
 
             # 12. Save transactions inception date
             self.inception_date = self.__transactions["Date"][0]
-            console.print(".", end="")
+
+            p_bar.n += 1
+            p_bar.refresh()
 
             # 13. Populate fields Sector, Industry and Country
             if (
@@ -314,7 +343,9 @@ class PortfolioModel:
             ):
                 # If any fields is empty for stocks (overwrites any info there)
                 self.load_company_data()
-            console.print(".", end="")
+
+            p_bar.n += 1
+            p_bar.refresh()
 
             # Warn user of removed ISINs
             if removed_tickers:
@@ -331,8 +362,6 @@ class PortfolioModel:
     @log_start_end(log=logger)
     def load_company_data(self):
         """Method to populate company data for stocks such as sector, industry and country"""
-
-        console.print("\n    Loading company data: ", end="")
 
         for ticker_type, ticker_list in self.tickers.items():
             # yfinance only has sector, industry and country for stocks
@@ -358,9 +387,6 @@ class PortfolioModel:
                             ["Sector", "Industry", "Country", "Region"],
                         ] = info_list
 
-                        # Display progress
-                        console.print(".", end="")
-
             elif ticker_type == "CRYPTO":
                 for ticker in ticker_list:
                     if (
@@ -379,9 +405,6 @@ class PortfolioModel:
                             self.__transactions.Ticker == ticker,
                             ["Sector", "Industry", "Country", "Region"],
                         ] = info_list
-
-                        # Display progress
-                        console.print(".", end="")
 
             else:
                 for ticker in ticker_list:
@@ -402,9 +425,6 @@ class PortfolioModel:
                             ["Sector", "Industry", "Country", "Region"],
                         ] = info_list
 
-                        # Display progress
-                        console.print(".", end="")
-
     @log_start_end(log=logger)
     def load_benchmark(self, ticker: str = "SPY", full_shares: bool = False):
         """Adds benchmark dataframe
@@ -418,7 +438,7 @@ class PortfolioModel:
             quantity to the nearest number.
         """
 
-        console.print("\n       Loading benchmark: ", end="")
+        p_bar = tqdm(range(3), desc="         Loading benchmark")
 
         self.benchmark_ticker = ticker
 
@@ -428,6 +448,9 @@ class PortfolioModel:
             threads=False,
             progress=False,
         )["Adj Close"]
+
+        p_bar.n += 1
+        p_bar.refresh()
 
         self.mimic_trades_for_benchmark(full_shares)
 
@@ -441,11 +464,14 @@ class PortfolioModel:
         )["Adj Close"]
         self.benchmark_historical_prices.fillna(method="ffill", inplace=True)
 
+        p_bar.n += 1
+        p_bar.refresh()
+
         self.benchmark_returns = self.benchmark_historical_prices.pct_change().dropna()
         self.benchmark_info = yf.Ticker(ticker).info
 
-        # Display progress
-        console.print(".")
+        p_bar.n += 1
+        p_bar.refresh()
 
     @log_start_end(log=logger)
     def mimic_trades_for_benchmark(self, full_shares: bool = False):
@@ -587,7 +613,7 @@ class PortfolioModel:
             whether to use close or adjusted close prices
         """
 
-        console.print("\n      Loading price data: ", end="")
+        p_bar = tqdm(range(len(self.tickers)), desc="        Loading price data")
 
         for ticker_type, data in self.tickers.items():
             if ticker_type in ["STOCK", "ETF", "CRYPTO"]:
@@ -608,7 +634,8 @@ class PortfolioModel:
             else:
                 console.print(f"Type {ticker_type} not supported.")
 
-            console.print(".", end="")
+            p_bar.n += 1
+            p_bar.refresh()
 
             # Fill missing values with last known price
             self.portfolio_historical_prices.fillna(method="ffill", inplace=True)
@@ -659,7 +686,7 @@ class PortfolioModel:
     def calculate_value(self):
         """Calculate end of day value from historical data"""
 
-        console.print("\n     Calculating returns: ", end="")
+        p_bar = tqdm(range(1), desc="       Calculating returns")
 
         trade_data = self.historical_trade_data
 
@@ -698,7 +725,8 @@ class PortfolioModel:
                 0
             ]["Investment"][t]
 
-        console.print(".", end="")
+        p_bar.n += 1
+        p_bar.refresh()
 
         self.historical_trade_data = trade_data
 
