@@ -310,8 +310,8 @@ class BaseController(metaclass=ABCMeta):
                 (known_args, other_args) = self.parser.parse_known_args(
                     an_input.split()
                 )
-            except argparse.ArgumentError:  # noqa
-                raise SystemExit
+            except Exception as exc:
+                raise SystemExit from exc
 
             if RECORD_SESSION:
                 SESSION_RECORDED.append(an_input)
@@ -878,14 +878,12 @@ class BaseController(metaclass=ABCMeta):
                         an_input = similar_cmd[0]
                     if not self.contains_keys(an_input):
                         logger.warning("Replacing by %s", an_input)
-                    console.print(f"\n[green]Replacing by '{an_input}'.[/green]")
+                    console.print(f"\n[green]Replacing by '{an_input}'.[/green]\n")
                     self.queue.insert(0, an_input)
                 else:
                     if self.TRY_RELOAD and obbff.RETRY_WITH_LOAD:
                         console.print(f"\nTrying `load {an_input}`\n")
                         self.queue.insert(0, "load " + an_input)
-                    console.print("")
-
 
 class StockBaseController(BaseController, metaclass=ABCMeta):
     def __init__(self, queue):
