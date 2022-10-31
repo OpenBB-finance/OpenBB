@@ -2004,6 +2004,10 @@ forecast_extras = {
     "forecast.roc": {"model": "openbb_terminal.forecast.forecast_model.add_roc"},
     "forecast.mom": {"model": "openbb_terminal.forecast.forecast_model.add_momentum"},
     "forecast.delta": {"model": "openbb_terminal.forecast.forecast_model.add_delta"},
+    "forecast.autoets": {
+        "model": "openbb_terminal.forecast.autoets_model.get_autoets_data",
+        "view": "openbb_terminal.forecast.autoets_view.display_autoets_forecast",
+    },
     "forecast.expo": {
         "model": "openbb_terminal.forecast.expo_model.get_expo_data",
         "view": "openbb_terminal.forecast.expo_view.display_expo_forecast",
