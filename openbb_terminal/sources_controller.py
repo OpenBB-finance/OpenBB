@@ -3,9 +3,10 @@ __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
 import argparse
-from pathlib import Path
 import json
 import logging
+import os
+from pathlib import Path
 from typing import List, Dict
 
 # IMPORTATION THIRDPARTY
@@ -55,7 +56,11 @@ class SourcesController(BaseController):
             self.json_doc = json.load(json_file)
 
         # If the user has added sources to their own sources file in OpenBBUserData, then use that
-        if user_data_source.exists() and user_data_source.stat().st_size > 0:
+        if (
+            not os.getenv("TEST_MODE")
+            and user_data_source.exists()
+            and user_data_source.stat().st_size > 0
+        ):
             with open(str(user_data_source)) as json_file:
                 self.json_doc = json.load(json_file)
 
