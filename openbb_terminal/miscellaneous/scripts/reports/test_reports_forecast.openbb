@@ -1,0 +1,15 @@
+reports
+
+## defaults
+forecast
+
+## simple ticker
+forecast --symbol AAPL
+
+## Non-US ticker
+forecast --symbol NXPI
+
+## Non-US ticker with suffix
+forecast --symbol PETR3.SA
+
+exit
