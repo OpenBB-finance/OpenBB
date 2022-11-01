@@ -294,7 +294,7 @@ Before we go combining them, let's train a simple `Block RNN` model on MSFT `clo
 Make sure to always check your current data set to know the column names:
 ```
 (🦋) /forecast/ $ show MSFT
-MSFT has following shape (rowxcolumn): (759, 7)
+MSFT dataset has shape (row, column): (759, 7)
 
                         Dataset MSFT | Showing 10 of 759 rows                         
 ┏━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┓
@@ -428,7 +428,7 @@ We will combine `MSFT` and `AAPL`.
 ```
 (🦋) /forecast/ $ combine MSFT -c AAPL
 (🦋) /forecast/ $ show MSFT
-MSFT has following shape (rowxcolumn): (759, 13)
+MSFT dataset has shape (row, column): (759, 13)
 Dataframe has more than 10 columns. Please export to see all of the data.
 
 

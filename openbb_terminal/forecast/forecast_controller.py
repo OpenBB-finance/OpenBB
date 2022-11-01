@@ -55,6 +55,7 @@ from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.forecast import (
     forecast_model,
     forecast_view,
+    autoets_view,
     expo_model,
     expo_view,
     linregr_view,
@@ -108,6 +109,7 @@ class ForecastController(BaseController):
         "delta",
         "atr",
         "signal",
+        "autoets",
         "expo",
         "theta",
         "rnn",
@@ -226,6 +228,7 @@ class ForecastController(BaseController):
             for feature in [
                 "plot",
                 "delete",
+                "season",
             ]:
                 self.choices[feature] = dataset_columns
 
@@ -245,6 +248,7 @@ class ForecastController(BaseController):
                 "signal",
                 "combine",
                 "rename",
+                "autoets",
                 "expo",
                 "theta",
                 "rnn",
@@ -255,10 +259,12 @@ class ForecastController(BaseController):
                 "linregr",
                 "trans",
                 "tft",
-                "season",
                 "nhits",
             ]:
                 self.choices[feature] = {c: None for c in self.files}
+
+            self.choices["combine"]["--columns"] = dataset_columns
+            self.choices["combine"]["-c"] = "--columns"
 
             pairs_timeseries = list()
             for dataset_col in list(dataset_columns.keys()):
@@ -321,6 +327,7 @@ class ForecastController(BaseController):
         mt.add_cmd("signal", self.files)
         mt.add_raw("\n")
         mt.add_info("_tsforecasting_")
+        mt.add_cmd("autoets", self.files)
         mt.add_cmd("expo", self.files)
         mt.add_cmd("theta", self.files)
         mt.add_cmd("linregr", self.files)
@@ -571,7 +578,7 @@ class ForecastController(BaseController):
                 dest="dropout",
                 default=dropout,
                 type=check_positive_float,
-                help="Fraction of neurons afected by Dropout.",
+                help="Fraction of neurons afected by Dropout, from 0 to 1.",
             )
         if batch_size is not None:
             parser.add_argument(
@@ -760,10 +767,9 @@ class ForecastController(BaseController):
                     )
                     return
                 data = forecast_model.load(file, self.file_types, self.DATA_FILES)
-                self.files_full.append([ns_parser.file, ns_parser.alias])
-
-                self.load(alias, data)
-                console.print()
+                if not data.empty:
+                    self.files_full.append([ns_parser.file, ns_parser.alias])
+                    self.load(alias, data)
 
     # Show selected dataframe on console
     @log_start_end(log=logger)
@@ -781,7 +787,7 @@ class ForecastController(BaseController):
         )
 
         if ns_parser:
-            console.print()
+
             console.print(
                 f"[green]Current Compute Device (CPU or GPU):[/green] {self.device.upper()}"
             )
@@ -791,7 +797,6 @@ class ForecastController(BaseController):
             )
             console.print(f"[green]Torch version:[/green] {self.torch_version}")
             console.print(f"[green]Darts version:[/green] {self.darts_version}")
-            console.print()
 
     # Show selected dataframe on console
     @log_start_end(log=logger)
@@ -925,8 +930,11 @@ class ForecastController(BaseController):
                     self.datasets[dataset], column_old, column_new
                 )
             self.update_runtime_choices()
+            self.refresh_datasets_on_menu()
 
-        console.print()
+            console.print(
+                f"[green]Successfully renamed {column_old} into {column_new}, in {dataset}[/green]"
+            )
 
     # Show selected dataframe on console
     @log_start_end(log=logger)
@@ -971,7 +979,7 @@ class ForecastController(BaseController):
         parser.add_argument(
             "-v",
             "--values",
-            help="Dataset.column values to be displayed in a plot",
+            help="Dataset.column values to be displayed in a plot. Use comma to separate multiple",
             dest="values",
             type=str,
         )
@@ -1167,7 +1175,11 @@ class ForecastController(BaseController):
 
             self.datasets[ns_parser.dataset] = data
             self.update_runtime_choices()
-        console.print()
+            self.refresh_datasets_on_menu()
+
+            console.print(
+                f"[green]Successfully added {','.join(ns_parser.columns)} into {ns_parser.dataset}[/green]"
+            )
 
     @log_start_end(log=logger)
     def call_clean(self, other_args: List[str]):
@@ -1224,12 +1236,10 @@ class ForecastController(BaseController):
             )
             if not clean_status:
                 console.print(
-                    f"Successfully cleaned '{ns_parser.target_dataset}' dataset"
+                    f"[green]Successfully cleaned '{ns_parser.target_dataset}' dataset[/green]"
                 )
             else:
                 console.print(f"[red]{ns_parser.name} still contains NaNs.[/red]")
-
-        console.print()
 
     @log_start_end(log=logger)
     def call_ema(self, other_args: List[str]):
@@ -1271,7 +1281,6 @@ class ForecastController(BaseController):
             self.refresh_datasets_on_menu()
 
         self.update_runtime_choices()
-        console.print()
 
     @log_start_end(log=logger)
     def call_sto(self, other_args: List[str]):
@@ -1295,19 +1304,18 @@ class ForecastController(BaseController):
                 console.print("[red]Please enter valid dataset.\n[/red]")
                 return
 
-            self.datasets[ns_parser.target_dataset] = forecast_model.add_sto(
+            df = forecast_model.add_sto(
                 self.datasets[ns_parser.target_dataset],
                 ns_parser.period,
             )
-            console.print(
-                f"Successfully added 'STOK&D_{ns_parser.period}' to '{ns_parser.target_dataset}' dataset"
-            )
-
-            # update forecast menu with new column on modified dataset
-            self.refresh_datasets_on_menu()
-
-        self.update_runtime_choices()
-        console.print()
+            if not df.empty:
+                self.datasets[ns_parser.target_dataset] = df
+                console.print(
+                    f"Successfully added 'STOK&D_{ns_parser.period}' to '{ns_parser.target_dataset}' dataset"
+                )
+                # update forecast menu with new column on modified dataset
+                self.refresh_datasets_on_menu()
+                self.update_runtime_choices()
 
     @log_start_end(log=logger)
     def call_delete(self, other_args: List[str]):
@@ -1342,7 +1350,11 @@ class ForecastController(BaseController):
                     forecast_model.delete_column(self.datasets[dataset], column)
 
             self.update_runtime_choices()
-        console.print()
+            self.refresh_datasets_on_menu()
+
+            console.print(
+                f"[green]Successfully deleted {', '.join(ns_parser.delete)}[/green]"
+            )
 
     @log_start_end(log=logger)
     def call_rsi(self, other_args: List[str]):
@@ -1384,7 +1396,6 @@ class ForecastController(BaseController):
             self.refresh_datasets_on_menu()
 
         self.update_runtime_choices()
-        console.print()
 
     @log_start_end(log=logger)
     def call_roc(self, other_args: List[str]):
@@ -1425,7 +1436,6 @@ class ForecastController(BaseController):
             self.refresh_datasets_on_menu()
 
         self.update_runtime_choices()
-        console.print()
 
     @log_start_end(log=logger)
     def call_mom(self, other_args: List[str]):
@@ -1466,7 +1476,6 @@ class ForecastController(BaseController):
             self.refresh_datasets_on_menu()
 
         self.update_runtime_choices()
-        console.print()
 
     @log_start_end(log=logger)
     def call_delta(self, other_args: List[str]):
@@ -1505,7 +1514,6 @@ class ForecastController(BaseController):
             self.refresh_datasets_on_menu()
 
         self.update_runtime_choices()
-        console.print()
 
     @log_start_end(log=logger)
     def call_atr(self, other_args: List[str]):
@@ -1550,7 +1558,6 @@ class ForecastController(BaseController):
             self.refresh_datasets_on_menu()
 
         self.update_runtime_choices()
-        console.print()
 
     @log_start_end(log=logger)
     def call_signal(self, other_args: List[str]):
@@ -1591,7 +1598,6 @@ class ForecastController(BaseController):
             self.refresh_datasets_on_menu()
 
         self.update_runtime_choices()
-        console.print()
 
     @log_start_end(log=logger)
     def call_export(self, other_args: List[str]):
@@ -1630,7 +1636,60 @@ class ForecastController(BaseController):
             ns_parser.type,
             ns_parser.target_dataset,
         )
-        console.print()
+
+    # AutoETS Model
+    @log_start_end(log=logger)
+    def call_autoets(self, other_args: List[str]):
+        """Process autoets command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="autoets",
+            description="""
+                Perform Automatic ETS (Error, Trend, Seasonality) forecast
+            """,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--target-dataset")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+            target_dataset=True,
+            target_column=True,
+            n_days=True,
+            seasonal="A",
+            periods=True,
+            window=True,
+            residuals=True,
+            forecast_only=True,
+            start=True,
+            end=True,
+            naive=True,
+            export_pred_raw=True,
+        )
+        # TODO Convert this to multi series
+        if ns_parser:
+            if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+
+            autoets_view.display_autoets_forecast(
+                data=self.datasets[ns_parser.target_dataset],
+                dataset_name=ns_parser.target_dataset,
+                n_predict=ns_parser.n_days,
+                target_column=ns_parser.target_column,
+                seasonal_periods=ns_parser.seasonal_periods,
+                start_window=ns_parser.start_window,
+                forecast_horizon=ns_parser.n_days,
+                export=ns_parser.export,
+                residuals=ns_parser.residuals,
+                forecast_only=ns_parser.forecast_only,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
+                naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
+            )
 
     # EXPO Model
     @log_start_end(log=logger)
