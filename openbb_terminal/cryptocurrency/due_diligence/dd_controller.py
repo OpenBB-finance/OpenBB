@@ -176,8 +176,27 @@ class DueDiligenceController(CryptoBaseController):
                 "--descend": {},
             }
             choices["events"]["-s"] = {c: None for c in coinpaprika_view.EVENTS_FILTERS}
-            choices["twitter"]["-s"] = {
-                c: None for c in coinpaprika_view.TWEETS_FILTERS
+            choices["twitter"] = {
+                "--sort": {c: {} for c in coinpaprika_view.TWEETS_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+            }
+            choices["news"] = {
+                "--sort": {c: {} for c in cryptopanic_model.SORT_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+                "--urls": {},
+                "-u": "--urls",
+                "--kind": {c: {} for c in cryptopanic_model.CATEGORIES},
+                "-k": "--kind",
+                "--filter": {c: {} for c in cryptopanic_model.FILTERS},
+                "-f": "--filter",
+                "--region": {c: {} for c in cryptopanic_model.REGIONS},
+                "-r": "--region",
             }
             choices["mt"] = {c: None for c in self.messari_timeseries}
             choices["mt"]["-i"] = {c: None for c in messari_model.INTERVALS_TIMESERIES}
@@ -1056,7 +1075,7 @@ class DueDiligenceController(CryptoBaseController):
 
         parser.add_argument(
             "--descend",
-            action="store_false",
+            action="store_true",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
             default=False,
@@ -1245,7 +1264,7 @@ class DueDiligenceController(CryptoBaseController):
 
         parser.add_argument(
             "--descend",
-            action="store_false",
+            action="store_true",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
             default=False,

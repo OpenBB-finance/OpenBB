@@ -108,7 +108,7 @@ class OnchainController(BaseController):
                 "--limit": {str(c): {} for c in range(1, 100)},
                 "-l": "--limit",
                 "--descend": {},
-                "--adress": {},
+                "--address": {},
                 "-a": {},
             }
             choices["hr"] = {c: {} for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS}
@@ -1190,7 +1190,7 @@ class OnchainController(BaseController):
 
         parser.add_argument(
             "--descend",
-            action="store_false",
+            action="store_true",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
             default=False,
@@ -1234,15 +1234,6 @@ class OnchainController(BaseController):
         )
 
         parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            type=check_positive,
-            help="display N number records",
-            default=10,
-        )
-
-        parser.add_argument(
             "-vs", "--vs", dest="vs", type=str, help="Quote currency", default="USDT"
         )
 
@@ -1267,7 +1258,7 @@ class OnchainController(BaseController):
 
         parser.add_argument(
             "--descend",
-            action="store_false",
+            action="store_true",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
             default=False,
@@ -1343,7 +1334,7 @@ class OnchainController(BaseController):
 
         parser.add_argument(
             "--descend",
-            action="store_false",
+            action="store_true",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
             default=False,
@@ -1413,7 +1404,7 @@ class OnchainController(BaseController):
 
         parser.add_argument(
             "--descend",
-            action="store_false",
+            action="store_true",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
             default=False,

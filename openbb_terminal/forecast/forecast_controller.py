@@ -55,6 +55,7 @@ from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.forecast import (
     forecast_model,
     forecast_view,
+    autoets_view,
     expo_model,
     expo_view,
     linregr_view,
@@ -108,6 +109,7 @@ class ForecastController(BaseController):
         "delta",
         "atr",
         "signal",
+        "autoets",
         "expo",
         "theta",
         "rnn",
@@ -246,6 +248,7 @@ class ForecastController(BaseController):
                 "signal",
                 "combine",
                 "rename",
+                "autoets",
                 "expo",
                 "theta",
                 "rnn",
@@ -324,6 +327,7 @@ class ForecastController(BaseController):
         mt.add_cmd("signal", self.files)
         mt.add_raw("\n")
         mt.add_info("_tsforecasting_")
+        mt.add_cmd("autoets", self.files)
         mt.add_cmd("expo", self.files)
         mt.add_cmd("theta", self.files)
         mt.add_cmd("linregr", self.files)
@@ -1287,6 +1291,27 @@ class ForecastController(BaseController):
             prog="sto",
             description="Add in Stochastic Oscillator %K and %D",
         )
+        parser.add_argument(
+            "--close-col",
+            help="Close column name to use for Stochastic Oscillator",
+            dest="close_col",
+            type=str,
+            default="close",
+        )
+        parser.add_argument(
+            "--high-col",
+            help="High column name to use for Stochastic Oscillator",
+            dest="high_col",
+            type=str,
+            default="high",
+        )
+        parser.add_argument(
+            "--low-col",
+            help="Low column name to use for Stochastic Oscillator",
+            dest="low_col",
+            type=str,
+            default="low",
+        )
         # if user does not put in --target-dataset
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--target-dataset")
@@ -1302,7 +1327,10 @@ class ForecastController(BaseController):
 
             df = forecast_model.add_sto(
                 self.datasets[ns_parser.target_dataset],
-                ns_parser.period,
+                close_column=ns_parser.close_col,
+                high_column=ns_parser.high_col,
+                low_column=ns_parser.low_col,
+                period=ns_parser.period,
             )
             if not df.empty:
                 self.datasets[ns_parser.target_dataset] = df
@@ -1385,7 +1413,8 @@ class ForecastController(BaseController):
                 ns_parser.period,
             )
             console.print(
-                f"Successfully added 'RSI_{ns_parser.period}' to '{ns_parser.target_dataset}' dataset"
+                f"Successfully added 'RSI_{ns_parser.period}_{ns_parser.target_column}' "
+                f"to '{ns_parser.target_dataset}' dataset"
             )
 
             # update forecast menu with new column on modified dataset
@@ -1520,6 +1549,27 @@ class ForecastController(BaseController):
             prog="atr",
             description="Add Average True Range to dataset of specific stock ticker.",
         )
+        parser.add_argument(
+            "--close-col",
+            help="Close column name to use for Average True Range.",
+            dest="close_col",
+            type=str,
+            default="close",
+        )
+        parser.add_argument(
+            "--high-col",
+            help="High column name to use for Average True Range.",
+            dest="high_col",
+            type=str,
+            default="high",
+        )
+        parser.add_argument(
+            "--low-col",
+            help="Low column name to use for Average True Range.",
+            dest="low_col",
+            type=str,
+            default="low",
+        )
 
         # if user does not put in --target-dataset
         if other_args and "-" not in other_args[0][0]:
@@ -1539,7 +1589,10 @@ class ForecastController(BaseController):
 
             check = False
             self.datasets[ns_parser.target_dataset], check = forecast_model.add_atr(
-                self.datasets[ns_parser.target_dataset]
+                self.datasets[ns_parser.target_dataset],
+                close_column=ns_parser.close_col,
+                high_column=ns_parser.high_col,
+                low_column=ns_parser.low_col,
             )
             if check:
                 console.print(
@@ -1584,7 +1637,8 @@ class ForecastController(BaseController):
                 return
 
             self.datasets[ns_parser.target_dataset] = forecast_model.add_signal(
-                self.datasets[ns_parser.target_dataset]
+                self.datasets[ns_parser.target_dataset],
+                target_column=ns_parser.target_column,
             )
             console.print(
                 f"Successfully added 'Price Signal' to '{ns_parser.target_dataset}' dataset"
@@ -1632,6 +1686,60 @@ class ForecastController(BaseController):
             ns_parser.type,
             ns_parser.target_dataset,
         )
+
+    # AutoETS Model
+    @log_start_end(log=logger)
+    def call_autoets(self, other_args: List[str]):
+        """Process autoets command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="autoets",
+            description="""
+                Perform Automatic ETS (Error, Trend, Seasonality) forecast
+            """,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--target-dataset")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+            target_dataset=True,
+            target_column=True,
+            n_days=True,
+            seasonal="A",
+            periods=True,
+            window=True,
+            residuals=True,
+            forecast_only=True,
+            start=True,
+            end=True,
+            naive=True,
+            export_pred_raw=True,
+        )
+        # TODO Convert this to multi series
+        if ns_parser:
+            if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+
+            autoets_view.display_autoets_forecast(
+                data=self.datasets[ns_parser.target_dataset],
+                dataset_name=ns_parser.target_dataset,
+                n_predict=ns_parser.n_days,
+                target_column=ns_parser.target_column,
+                seasonal_periods=ns_parser.seasonal_periods,
+                start_window=ns_parser.start_window,
+                forecast_horizon=ns_parser.n_days,
+                export=ns_parser.export,
+                residuals=ns_parser.residuals,
+                forecast_only=ns_parser.forecast_only,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
+                naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
+            )
 
     # EXPO Model
     @log_start_end(log=logger)
