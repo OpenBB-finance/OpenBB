@@ -59,7 +59,7 @@ def cci(
 
 @log_start_end(log=logger)
 def macd(
-    values: pd.DataFrame,
+    data: pd.Series,
     n_fast: int = 12,
     n_slow: int = 26,
     n_signal: int = 9,
@@ -68,7 +68,7 @@ def macd(
 
     Parameters
     ----------
-    values: pd.Series
+    data: pd.Series
         Values for calculation
     n_fast : int
         Fast period
@@ -81,8 +81,11 @@ def macd(
     pd.DataFrame
         Dataframe of technical indicator
     """
+    if isinstance(data, pd.DataFrame):
+        console.print("[red]Please send a series and not a DataFrame.[/red]\n")
+        return pd.DataFrame()
     return pd.DataFrame(
-        ta.macd(values, fast=n_fast, slow=n_slow, signal=n_signal).dropna()
+        ta.macd(data, fast=n_fast, slow=n_slow, signal=n_signal).dropna()
     )
 
 
@@ -110,6 +113,7 @@ def rsi(
     """
     if isinstance(data, pd.DataFrame):
         console.print("[red]Please send a series and not a DataFrame.[/red]\n")
+        return pd.DataFrame()
     raw_data = ta.rsi(data, length=window, scalar=scalar, drift=drift)
     if raw_data.empty:
         return pd.DataFrame()

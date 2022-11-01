@@ -35,6 +35,7 @@ def ema(data: pd.Series, length: int = 50, offset: int = 0) -> pd.DataFrame:
     """
     if isinstance(data, pd.DataFrame):
         console.print("[red]Please send a series and not a DataFrame.[/red]\n")
+        return pd.DataFrame()
     return pd.DataFrame(ta.ema(data, length=length, offset=offset)).dropna()
 
 
@@ -58,6 +59,7 @@ def sma(data: pd.Series, length: int = 50, offset: int = 0) -> pd.DataFrame:
     """
     if isinstance(data, pd.DataFrame):
         console.print("[red]Please send a series and not a DataFrame.[/red]\n")
+        return pd.DataFrame()
     return pd.DataFrame(ta.sma(data, length=length, offset=offset)).dropna()
 
 
@@ -81,6 +83,7 @@ def wma(data: pd.Series, length: int = 50, offset: int = 0) -> pd.DataFrame:
     """
     if isinstance(data, pd.DataFrame):
         console.print("[red]Please send a series and not a DataFrame.[/red]\n")
+        return pd.DataFrame()
     return pd.DataFrame(ta.wma(data, length=length, offset=offset)).dropna()
 
 
@@ -104,6 +107,7 @@ def hma(data: pd.Series, length: int = 50, offset: int = 0) -> pd.DataFrame:
     """
     if isinstance(data, pd.DataFrame):
         console.print("[red]Please send a series and not a DataFrame.[/red]\n")
+        return pd.DataFrame()
     return pd.DataFrame(ta.hma(data, length=length, offset=offset)).dropna()
 
 
@@ -127,6 +131,7 @@ def zlma(data: pd.Series, length: int = 50, offset: int = 0) -> pd.DataFrame:
     """
     if isinstance(data, pd.DataFrame):
         console.print("[red]Please send a series and not a DataFrame.[/red]\n")
+        return pd.DataFrame()
     return pd.DataFrame(ta.zlma(data, length=length, offset=offset)).dropna()
 
 
