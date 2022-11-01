@@ -9,12 +9,14 @@
 
 
 
-    <meta name="description" content="OpenBB Terminal Documentation">
+    <meta name="description" content="The Economy module wraps the functions of the Economy menu, within the OpenBB Terminal, and provides the user with more control over their workflow. In a Jupyter Notebook environment, it is quick and easy to get going. Start a new .ipynb Notebook file, or a .py Python script by importing the necessary modules for the tasks at hand. For the purpose of these examples, two additional modules will be imported:">
 
+
+    <meta name="keywords" content="fred,,sdk,,api,,bonds,,treasury,,treasuries,,spread,,events,,calendar,,futures,,future,,yield,,curve,,macro,,index,,indices,,performance,,bigmac,,series,,gdp,,indicators">
 
 
     <title>
-      economy | OpenBB Terminal Documentation
+      Introduction to Economy | OpenBB Terminal Documentation
     </title>
 
     <link rel="icon" href="/OpenBBTerminal/favicon/favicon-32x32.png" type="image/x-icon">
@@ -47459,7 +47461,7 @@ code, img {
         
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>OpenBB Terminal Documentation</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/SDK/' href='/OpenBBTerminal/SDK/'><span itemprop='name'>OpenBB Python SDK</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>economy</span><meta itemprop='position' content='4' /></li>
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>OpenBB Terminal Documentation</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/SDK/' href='/OpenBBTerminal/SDK/'><span itemprop='name'>OpenBB Python SDK</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Introduction to Economy</span><meta itemprop='position' content='4' /></li>
     
 
     
@@ -47482,8 +47484,67 @@ code, img {
 </div>
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
-        <h1>economy</h1>
-        
+        <h1>Introduction to Economy</h1>
+        <p>The Economy module wraps the functions of the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/economy/" target="_blank">Economy menu</a>, within the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/" target="_blank">OpenBB Terminal</a>, and provides the user with more control over their workflow. In a Jupyter Notebook environment, it is quick and easy to get going. Start a new <code>.ipynb</code> Notebook file, or a <code>.py</code> Python script by importing the necessary modules for the tasks at hand. For the purpose of these examples, two additional modules will be imported:</p>
+<pre><code>from openbb_terminal.sdk import openbb
+import pandas as pd
+%matplotlib inline
+</code></pre><p>Jupyter Lab can be launched from the command line, in the <code>OpenBBTerminal</code> folder and with the Conda environment already activated, by entering either: <code>jupyter lab</code>, or, <code>jupyter notebook</code>; and then pressing <code>enter</code>. This will launch a browser window for the session.</p>
+<p>To get the most out of these functions, it is highly recommended to acquire an API key to access the FRED data library. This is free, just create an account <a href="https://fred.stlouisfed.org" target="_blank"> here</a>, then look in the account settings for the assigned API key.</p>
+<p>Refer to the <a href="https://openbb-finance.github.io/OpenBBTerminal/SDK/keys/" target="_blank">Introduction Guide to API Keys within the OpenBB SDK</a> for instructions on setting the API keys, with the Keys module.</p>
+<div class="gdoc-page__anchorwrap">
+    <h2 id="how-to-use">
+        How to Use
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/economy/#how-to-use" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor How to Use" href="#how-to-use">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h2>
+</div><p>With the modules imported, the code completion is activated after entering the <code>.</code> after, <code>openbb.economy</code></p>
+<p><img src="https://user-images.githubusercontent.com/85772166/198433265-69073c7a-5494-4275-a0e7-bdcc1c4b431c.png" alt="Economy Menu Code Completion"  /></p>
+<p>Just like the other modules, there are several methods for returning the docstrings of a single function:</p>
+<ul>
+<li>Use Python&rsquo;s built-in help: <code>help(openbb.economy.index)</code></li>
+<li>View the documentation online: <a class="gdoc-markdown__link" href="https://openbb-finance.github.io/OpenBBTerminal/SDK/economy/index/">https://openbb-finance.github.io/OpenBBTerminal/SDK/economy/index/</a></li>
+<li>Open the Contextual Help window</li>
+</ul>
+<pre><code>openbb.economy.index(indices = ['nyse', 'nasdaq', 'amex', 'ca_tsx', 'dow_dji', 'in_nse50'])
+</code></pre><p><img src="https://user-images.githubusercontent.com/85772166/198433406-b61f3bed-21fe-47c3-95d0-ee3c17931f92.png" alt="Contextual Help"  /></p>
+<p>There are some differences when comparing SDK functions against the OpenBB Terminal commands. For example, the Terminal command, <code>/economy/index --show</code>, becomes: <code>openbb.economy.available_indices()</code>. This returns a list of dictionaries; convert them to a DataFrame with:</p>
+<pre><code>pd.DataFrame.from_dict(openbb.economy.available_indices()).transpose()
+</code></pre><p><img src="https://user-images.githubusercontent.com/85772166/198433551-921ec05d-6a96-44ff-b164-c7af18602d82.png" alt="openbb.economy.available_indices()"  /></p>
+<p>To display a chart inside the Notebook, instead of a DataFrame, add <code>chart = True</code> to the command syntax. For example:</p>
+<pre><code>openbb.economy.index(indices = ['sp500', 'sp500tr'], chart = True)
+</code></pre><p><img src="https://user-images.githubusercontent.com/85772166/198433750-c62794ee-a26e-4da8-85b7-0782196efd11.png" alt="S&amp;amp;P 500 vs. S&amp;amp;P 500 Total Return Index"  /></p>
+<p>It is also possible to make a DataFrame of a stock and an index. The list of symbols fed to the <code>index</code> function can be the dictionary name from, <code>openbb.economy.available_indices()</code>, or it can be a ticker symbol that is recognized by <code>yFinance</code>. As an example:</p>
+<pre><code>openbb.economy.index(indices = ['move', 'aapl'], chart = True, start_date = '2016-01-01')
+</code></pre><p><img src="https://user-images.githubusercontent.com/85772166/198433917-ebd06b62-e5a1-4d53-94be-ea2680297139.png" alt="AAPL vs MOVE Index"  /></p>
+<p>Another notable difference, between OpenBB Terminal commands and their corresponding SDK functions, is the way <code>fred</code> works. With the OpenBB SDK, the <code>fred</code> function is broken down into four components, as shown here:</p>
+<p><img src="https://user-images.githubusercontent.com/85772166/198434069-a0f4deb0-6db3-421e-bd49-2a3e63565949.png" alt="FRED functions in the OpenBB SDK"  /></p>
+<p><code>openbb.economy.fred_yield_curve()</code> returns a Tuple with the raw data for composing the chart presented by the OpenBB Terminal function, <code>/economy/ycrv --source fred</code>.</p>
+<pre><code>data, date = openbb.economy.fred_yield_curve()
+</code></pre><p><img src="https://user-images.githubusercontent.com/85772166/198434188-0eacedab-ff27-40dc-917d-c7bf5929d9ad.png" alt="FRED Yield Curve Raw Data"  /></p>
+<p>The FRED library can be searched, by key words and phrases, in two ways:</p>
+<ul>
+<li><code>openbb.economy.fred_notes('search term')</code></li>
+<li><code>openbb.economy.fred_ids('search term')</code></li>
+</ul>
+<p>The former, giving more details than the latter.</p>
+<p><img src="https://user-images.githubusercontent.com/85772166/198434480-97d630fb-62a1-45b7-b8d2-a171fdf3c0ae.png" alt="FRED Query"  /></p>
+<p>Retrieving the time-series data is then accomplished by using the <code>fred_series</code> function:</p>
+<pre><code>openbb.economy.fred_series(series_ids = ['PCENOW','GDPNOW'])
+</code></pre><p><img src="https://user-images.githubusercontent.com/85772166/198434607-8e421db7-56fa-4dda-8796-12a28373c1d8.png" alt="fred_series"  /></p>
+<p>Other functions more closely resemble their counterpart within the OpenBB Terminal, such as: <code>openbb.economy.bigmac(country_codes = ['CAN','USA'])</code></p>
+<p><img src="https://user-images.githubusercontent.com/85772166/198434807-59b77a92-bbaa-4916-9b03-2e375bfcbc79.png" alt="BigMac Index"  /></p>
+<p>Adding <code>chart = True</code> to the syntax will display the graph:</p>
+<pre><code>openbb.economy.bigmac(country_codes = ['CAN','USA'], chart = True)
+</code></pre><p><img src="https://user-images.githubusercontent.com/85772166/198435081-63077337-ff31-49f2-b2df-f46c9571e98d.png" alt="BigMac Index Chart"  /></p>
+<p>The <code>performance</code> and <code>valuation</code> functions, compared against the OpenBB Terminal, are also similar. Note that data returned by these functions are inclusive only of companies with an active and public US listing.</p>
+<pre><code>openbb.economy.performance()
+openbb.economy.valuation()
+</code></pre><p><img src="https://user-images.githubusercontent.com/85772166/198435213-4c9158f1-3432-442a-b2bb-edf282264e4a.png" alt="Economic Performance"  /></p>
+<pre><code>openbb.economy.performance(group = 'industry')
+</code></pre><p><img src="https://user-images.githubusercontent.com/85772166/198435374-0bb6a0fc-9fb0-4de4-bab0-c7b959694193.png" alt="Performance by Industry"  /></p>
+
     </article>
  
 

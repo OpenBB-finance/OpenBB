@@ -9,12 +9,15 @@
 
 
 
-    <meta name="description" content="OpenBB Terminal Documentation">
+    <meta name="description" content="The keys module provides the same functionality as the Keys menu does in the OpenBB Terminal. Each data source requiring authentication will have slight differences of required inputs. Refer to the table here for a compiled list of links for each data source.
+How to Use    Use Python&rsquo;s built-in help to print docstrings by entering, help(openbb.keys.reddit). Alternatively, the contextual help window of a Jupyter session can be opened to view them.">
 
+
+    <meta name="keywords" content="api,keys,key,secret,token,bearer,credentials,secrets,data,sources">
 
 
     <title>
-      keys | OpenBB Terminal Documentation
+      API Keys | OpenBB Terminal Documentation
     </title>
 
     <link rel="icon" href="/OpenBBTerminal/favicon/favicon-32x32.png" type="image/x-icon">
@@ -47459,7 +47462,7 @@ code, img {
         
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>OpenBB Terminal Documentation</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/SDK/' href='/OpenBBTerminal/SDK/'><span itemprop='name'>OpenBB Python SDK</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>keys</span><meta itemprop='position' content='4' /></li>
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>OpenBB Terminal Documentation</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/SDK/' href='/OpenBBTerminal/SDK/'><span itemprop='name'>OpenBB Python SDK</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>API Keys</span><meta itemprop='position' content='4' /></li>
     
 
     
@@ -47482,8 +47485,34 @@ code, img {
 </div>
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
-        <h1>keys</h1>
-        
+        <h1>API Keys</h1>
+        <p>The <code>keys</code> module provides the same functionality as the <a href="https://openbb-finance.github.io/OpenBBTerminal/#accessing-other-sources-of-data-via-api-keys" target="_blank"> Keys menu</a> does in the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/" target="_blank">OpenBB Terminal</a>. Each data source requiring authentication will have slight differences of required inputs. Refer to the table <a href="https://openbb-finance.github.io/OpenBBTerminal/#accessing-other-sources-of-data-via-api-keys" target="_blank">here</a> for a compiled list of links for each data source.</p>
+<p><img src="https://user-images.githubusercontent.com/85772166/198151758-7fdf1e00-29c2-4fb1-bfb1-7421cc9b8986.png" alt="openbb.keys.mykeys()"  /></p>
+<div class="gdoc-page__anchorwrap">
+    <h2 id="how-to-use">
+        How to Use
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/keys/#how-to-use" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor How to Use" href="#how-to-use">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h2>
+</div><p>Use Python&rsquo;s built-in <code>help</code> to print docstrings by entering, <code>help(openbb.keys.reddit)</code>. Alternatively, the contextual help window of a Jupyter session can be opened to view them.</p>
+<p><img src="https://user-images.githubusercontent.com/85772166/198360190-753d4fd8-768a-4de6-9c24-44491804914f.png" alt="Contextual Help"  /></p>
+<p>Note that if <code>persist = False</code>, the credentials will not be retained in the local installation. Set as <code>persist = True</code> to apply them permanently to the local installation of the Terminal application, or SDK.</p>
+<p>Expected values for all sources is printed with, <code>openbb.keys.get_keys_info()</code>, which describes what fields need to be included for each API.</p>
+<p><img src="https://user-images.githubusercontent.com/85772166/198151924-08f97592-08ce-4631-b333-0f6568124874.png" alt="get_keys_info"  /></p>
+<p>Referencing the information above, they are then defined like, <code>openbb.keys.av(key='putyourkeyhere')</code></p>
+<p>A source with multiple inputs should be defined like, <code>openbb.keys.binance(key='apikeyhere', secret='thesecretstring')</code></p>
+<p>Code completion is activated after the <code>.</code> is added to <code>openbb.keys</code>. This provides a list which is browsable with the arrow keys.</p>
+<p><img src="https://user-images.githubusercontent.com/85772166/198151847-a09e9589-43b8-4c40-9cd1-be18092a8004.png" alt="Code Completion"  /></p>
+<p>Enter multiple keys by creating a list of dictionaries:</p>
+<p><img src="https://user-images.githubusercontent.com/85772166/198152166-94ed3544-a03a-4790-9b4a-c76f2419e3d5.png" alt="Multiple Keys"  /></p>
+<p>A simple CSV backup of all credentials can be made generated by utilizing Pandas DataFrame:</p>
+<pre><code>from openbb_terminal.sdk import openbb
+import pandas as pd
+
+keys_backup = openbb.keys.mykeys(show = True)
+pd.DataFrame(keys_backup).to_csv('keys_backup.csv')
+</code></pre>
     </article>
  
 
