@@ -49,6 +49,8 @@ class DiscoveryController(BaseController):
 
     PATH = "/crypto/disc/"
 
+    ORDERED_LIST_SOURCES_TOP = get_ordered_list_sources(f"{PATH}top")
+
     def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__(queue)
@@ -73,7 +75,8 @@ class DiscoveryController(BaseController):
             }
             choices["top"] = {
                 "--sort": {c: {} for c in pycoingecko_view.COINS_COLUMNS}
-                if get_ordered_list_sources(f"{self.PATH}top")[0] == "CoinGecko"
+                if self.ORDERED_LIST_SOURCES_TOP
+                and self.ORDERED_LIST_SOURCES_TOP[0] == "CoinGecko"
                 else {c: {} for c in coinmarketcap_model.FILTERS},
                 "-s": "--sort",
                 "--category": {c: {} for c in pycoingecko_model.get_categories_keys()},
@@ -82,7 +85,7 @@ class DiscoveryController(BaseController):
                 "-l": "--limit",
                 "--descend": {},
                 "--source": {
-                    c: {} for c in get_ordered_list_sources(f"{self.PATH}top")
+                    c: {} for c in self.ORDERED_LIST_SOURCES_TOP)
                 },
             }
             choices["search"] = {
@@ -179,7 +182,8 @@ class DiscoveryController(BaseController):
             nargs="+",
             help="Sort by given column. Default: Market Cap Rank",
             default="Market Cap Rank"
-            if get_ordered_list_sources(f"{self.PATH}top")[0] == "CoinGecko"
+            if self.ORDERED_LIST_SOURCES_TOP
+            and self.ORDERED_LIST_SOURCES_TOP[0] == "CoinGecko"
             else "CMC_Rank",
         )
         parser.add_argument(
