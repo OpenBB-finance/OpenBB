@@ -871,10 +871,12 @@ def display_raw(
         df1 = data.copy()
 
     if sortby:
-        if sortby.lower() not in df1.columns:
+        try:
+            sort_col = [x.lower() for x in df1.columns].index(sortby.lower())
+        except ValueError:
             console.print("[red]The provided column is not a valid option[/red]\n")
             return
-        df1 = df1.sort_values(by=sortby.lower(), ascending=ascend)
+        df1 = df1.sort_values(by=data.columns[sort_col], ascending=ascend)
     df1.index = [x.strftime("%Y-%m-%d") for x in df1.index]
 
     print_rich_table(
