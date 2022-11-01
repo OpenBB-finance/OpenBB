@@ -43,7 +43,10 @@ class CovidController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["country"] = {c: None for c in self.COUNTRY_LIST}
+            choices["country"] = {
+                "--country": {c: None for c in self.COUNTRY_LIST},
+                "-c": "--country",
+            }
             choices["ov"] = {
                 "--raw": {},
                 "--limit": {str(c): {} for c in range(1, 1000)},
