@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 alt.oss._make_request(
-    url: str
+    url: str,
 ) -> Optional[bs4.BeautifulSoup]
 {{< /highlight >}}
 

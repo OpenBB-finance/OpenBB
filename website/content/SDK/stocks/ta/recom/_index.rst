@@ -18,7 +18,7 @@ stocks.ta.recom(
     screener: str = 'america',
     exchange: str = '',
     interval: str = '',
-    chart: bool = False
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

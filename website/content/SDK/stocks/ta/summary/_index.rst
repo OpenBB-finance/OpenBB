@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 stocks.ta.summary(
     symbol: str,
-    chart: bool = False
+    chart: bool = False,
 ) -> str
 {{< /highlight >}}
 

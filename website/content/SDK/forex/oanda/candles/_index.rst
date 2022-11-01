@@ -17,7 +17,7 @@ forex.oanda.candles(
     instrument: Optional[str] = None,
     granularity: str = 'D',
     candlecount: int = 180,
-    chart: bool = False
+    chart: bool = False,
 ) -> Union[pandas.core.frame.DataFrame, bool]
 {{< /highlight >}}
 

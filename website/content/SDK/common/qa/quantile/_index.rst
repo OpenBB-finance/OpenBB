@@ -17,7 +17,7 @@ common.qa.quantile(
     data: pandas.core.frame.DataFrame,
     window: int = 14,
     quantile_pct: float = 0.5,
-    chart: bool = False
+    chart: bool = False,
 ) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
 {{< /highlight >}}
 

@@ -13,7 +13,7 @@
 {{< highlight python >}}
 portfolio.trackerr(
     portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
-    window: int = 252
+    window: int = 252,
 )
 {{< /highlight >}}
 

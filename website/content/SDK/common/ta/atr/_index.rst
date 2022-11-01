@@ -20,7 +20,7 @@ common.ta.atr(
     window: int = 14,
     mamode: str = 'ema',
     offset: int = 0,
-    chart: bool = False
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

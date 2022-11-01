@@ -14,10 +14,15 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.defi.pools(
-    chart: bool = False
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
+* **Parameters**
+
+me. [Source: https://thegraph.com/en/]
+
+    
 * **Returns**
 
     pd.DataFrame

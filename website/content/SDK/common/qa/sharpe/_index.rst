@@ -17,7 +17,7 @@ common.qa.sharpe(
     data: pandas.core.frame.DataFrame,
     rfr: float = 0,
     window: float = 252,
-    chart: bool = False
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 economy.fred_yield_curve(
     date: datetime.datetime = None,
-    chart: bool = False
+    chart: bool = False,
 ) -> Tuple[pandas.core.frame.DataFrame, datetime.datetime]
 {{< /highlight >}}
 

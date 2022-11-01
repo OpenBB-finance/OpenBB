@@ -13,7 +13,7 @@
 {{< highlight python >}}
 stocks.dps.pos(
     sortby: str = 'dpp_dollar',
-    ascend: bool = False
+    ascend: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

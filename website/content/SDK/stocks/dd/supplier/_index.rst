@@ -13,7 +13,7 @@
 {{< highlight python >}}
 stocks.dd.supplier(
     symbol: str,
-    limit: int = 50
+    limit: int = 50,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

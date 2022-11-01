@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 stocks.options.price(
-    symbol: str
+    symbol: str,
 ) -> float
 {{< /highlight >}}
 

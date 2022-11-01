@@ -14,7 +14,7 @@
 economy.valuation(
     group: str = 'sector',
     sortby: str = 'Name',
-    ascend: bool = True
+    ascend: bool = True,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

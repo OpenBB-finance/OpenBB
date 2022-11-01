@@ -15,7 +15,7 @@
 {{< highlight python >}}
 crypto.dd.ohlc_historical(
     symbol: str = 'eth-ethereum', quotes: str = 'USD',
-    days: int = 90
+    days: int = 90,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

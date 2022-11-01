@@ -18,7 +18,7 @@ stocks.search(
     industry: str = '',
     exchange_country: str = '',
     limit: int = 0,
-    export: str = ''
+    export: str = '',
 ) -> None
 {{< /highlight >}}
 

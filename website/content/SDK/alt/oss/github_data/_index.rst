@@ -13,7 +13,7 @@
 {{< highlight python >}}
 alt.oss.github_data(
     url: str,
-    **kwargs
+    **kwargs,
 )
 {{< /highlight >}}
 

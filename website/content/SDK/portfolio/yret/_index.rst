@@ -16,7 +16,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 portfolio.yret(
     portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
     window: str = 'all',
-    chart: bool = False
+    chart: bool = False,
 )
 {{< /highlight >}}
 

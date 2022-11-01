@@ -14,7 +14,7 @@
 stocks.options.x_values(
     current_price: float,
     options: List[Dict[str,
-    int]]
+    int]],
 ) -> List[float]
 {{< /highlight >}}
 

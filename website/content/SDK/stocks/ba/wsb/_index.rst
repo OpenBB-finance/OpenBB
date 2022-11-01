@@ -13,7 +13,7 @@
 {{< highlight python >}}
 stocks.ba.wsb(
     limit: int = 10,
-    new: bool = False
+    new: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

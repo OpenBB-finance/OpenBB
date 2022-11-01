@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 stocks.ba.spac(
-    limit: int = 5
+    limit: int = 5,
 ) -> Tuple[pandas.core.frame.DataFrame, dict, int]
 {{< /highlight >}}
 

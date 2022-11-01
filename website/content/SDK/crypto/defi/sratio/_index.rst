@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 crypto.defi.sratio(
     limit: int = 200,
-    chart: bool = False
+    chart: bool = False,
 )
 {{< /highlight >}}
 

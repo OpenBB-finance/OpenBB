@@ -14,7 +14,7 @@
 stocks.fa.growth(
     symbol: str,
     limit: int = 5,
-    quarterly: bool = False
+    quarterly: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

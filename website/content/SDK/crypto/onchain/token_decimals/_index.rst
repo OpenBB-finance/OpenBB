@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 crypto.onchain.token_decimals(
-    address: str
+    address: str,
 ) -> Optional[int]
 {{< /highlight >}}
 

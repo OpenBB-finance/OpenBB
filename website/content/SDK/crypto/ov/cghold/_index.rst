@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 crypto.ov.cghold(
     endpoint: str = 'bitcoin',
-    chart: bool = False
+    chart: bool = False,
 ) -> List[Any]
 {{< /highlight >}}
 

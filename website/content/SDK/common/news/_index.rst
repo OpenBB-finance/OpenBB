@@ -13,8 +13,8 @@
 {{< highlight python >}}
 common.news(
     term: str = '',
-    sources: str = 'bloomberg.com',
-    sort: str = 'published'
+    sources: str = '',
+    sort: str = 'published',
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -23,7 +23,7 @@ common.news(
     term : *str*
         term to search on the news articles
     sources: *str*
-        sources to exclusively show news from
+        sources to exclusively show news from (separated by commas)
     sort: *str*
         the column to sort by
 

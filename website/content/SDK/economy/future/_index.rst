@@ -14,7 +14,7 @@
 economy.future(
     future_type: str = 'Indices',
     sortby: str = 'ticker',
-    ascend: bool = False
+    ascend: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

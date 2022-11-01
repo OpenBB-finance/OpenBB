@@ -17,7 +17,7 @@ stocks.fa.yf_financials(
     symbol: str,
     statement: str,
     ratios: bool = False,
-    chart: bool = False
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

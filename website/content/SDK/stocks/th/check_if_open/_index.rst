@@ -13,7 +13,7 @@
 {{< highlight python >}}
 stocks.th.check_if_open(
     bursa: pandas.core.frame.DataFrame,
-    exchange: str
+    exchange: str,
 ) -> bool
 {{< /highlight >}}
 

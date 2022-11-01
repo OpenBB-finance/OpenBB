@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 keys.mykeys(
-    show: bool = False
+    show: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

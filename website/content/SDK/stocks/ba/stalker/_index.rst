@@ -13,7 +13,7 @@
 {{< highlight python >}}
 stocks.ba.stalker(
     user: str,
-    limit: int = 30
+    limit: int = 30,
 ) -> List[Dict]
 {{< /highlight >}}
 

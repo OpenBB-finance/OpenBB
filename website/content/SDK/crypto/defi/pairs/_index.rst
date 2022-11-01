@@ -24,7 +24,7 @@ crypto.defi.pairs(
     min_volume: int = 100,
     min_liquidity: int = 0,
     min_tx: int = 100,
-    chart: bool = False
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

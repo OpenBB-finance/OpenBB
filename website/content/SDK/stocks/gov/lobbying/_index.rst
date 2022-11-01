@@ -13,7 +13,7 @@
 {{< highlight python >}}
 stocks.gov.lobbying(
     symbol: str,
-    limit: int = 10
+    limit: int = 10,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

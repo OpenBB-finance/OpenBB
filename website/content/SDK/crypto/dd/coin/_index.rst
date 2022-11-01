@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 crypto.dd.coin(
-    symbol: str = 'eth-ethereum'
+    symbol: str = 'eth-ethereum',
 ) -> dict
 {{< /highlight >}}
 

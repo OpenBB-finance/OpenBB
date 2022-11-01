@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 stocks.fa.score(
-    symbol: str
+    symbol: str,
 ) -> Optional[numpy.number]
 {{< /highlight >}}
 

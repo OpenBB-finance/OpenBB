@@ -16,7 +16,7 @@ common.qa.calculate_adjusted_var(
     skew: float,
     ndp: float,
     std: float,
-    mean: float
+    mean: float,
 ) -> float
 {{< /highlight >}}
 

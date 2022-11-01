@@ -16,7 +16,7 @@ keys.degiro(
     password: str,
     secret: str = '',
     persist: bool = False,
-    show_output: bool = False
+    show_output: bool = False,
 ) -> str
 {{< /highlight >}}
 

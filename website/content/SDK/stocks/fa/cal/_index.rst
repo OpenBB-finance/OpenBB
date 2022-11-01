@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 stocks.fa.cal(
-    symbol: str
+    symbol: str,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

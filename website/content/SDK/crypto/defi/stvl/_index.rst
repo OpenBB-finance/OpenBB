@@ -15,10 +15,16 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.defi.stvl(
-    chart: bool = False
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
+* **Parameters**
+
+ of the total sum of TVLs from all listed protocols.
+    [Source: https://docs.llama.fi/api]
+
+    
 * **Returns**
 
     pd.DataFrame

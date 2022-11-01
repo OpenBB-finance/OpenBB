@@ -18,7 +18,7 @@ crypto.tools.il(
     price_changeB: float,
     proportion: float,
     initial_pool_value: float,
-    chart: bool = False
+    chart: bool = False,
 ) -> Tuple[pandas.core.frame.DataFrame, str]
 {{< /highlight >}}
 

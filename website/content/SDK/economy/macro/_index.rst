@@ -18,9 +18,9 @@ economy.macro(
     countries: list = None,
     transform: str = '',
     start_date: str = '1900-01-01', end_date=datetime.date(
-    2022, 11, 1, chart: bool = False
+    2022, 11, 1, chart: bool = False,
 ), symbol: str = '',
-    chart: bool = False
+    chart: bool = False,
 ) -> Tuple[Any, Dict[Any, Dict[Any, Any]], str]
 {{< /highlight >}}
 

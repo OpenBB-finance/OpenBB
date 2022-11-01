@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.rsquare(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

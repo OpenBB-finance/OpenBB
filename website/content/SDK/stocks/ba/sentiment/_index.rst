@@ -17,7 +17,7 @@ stocks.ba.sentiment(
     symbol: str,
     n_tweets: int = 15,
     n_days_past: int = 2,
-    chart: bool = False
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

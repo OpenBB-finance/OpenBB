@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 crypto.dd.trading_pair_info(
-    symbol: str
+    symbol: str,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

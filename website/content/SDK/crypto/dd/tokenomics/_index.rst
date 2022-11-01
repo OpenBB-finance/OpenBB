@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 crypto.dd.tokenomics(
-    symbol: str = ''
+    symbol: str = '',
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

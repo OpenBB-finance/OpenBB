@@ -13,7 +13,7 @@
 {{< highlight python >}}
 stocks.fa.shrs(
     symbol: str,
-    holder: str = 'institutional'
+    holder: str = 'institutional',
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

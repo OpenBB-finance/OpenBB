@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 stocks.fa.website(
-    symbol: str
+    symbol: str,
 ) -> str
 {{< /highlight >}}
 

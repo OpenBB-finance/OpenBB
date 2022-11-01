@@ -25,7 +25,7 @@ portfolio.po.property(
     method: str = 'time',
     s_property: str = 'marketCap',
     value: float = 1.0,
-    chart: bool = False
+    chart: bool = False,
 ) -> Tuple
 {{< /highlight >}}
 

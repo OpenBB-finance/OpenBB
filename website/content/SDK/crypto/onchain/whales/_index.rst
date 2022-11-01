@@ -19,7 +19,7 @@ crypto.onchain.whales(
     limit: int = 100,
     sortby: str = 'date',
     ascend: bool = False,
-    chart: bool = False
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

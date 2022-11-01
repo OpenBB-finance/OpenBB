@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.po.load_bl_views(
-    excel_file: str = ''
+    excel_file: str = '',
 )
 {{< /highlight >}}
 

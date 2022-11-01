@@ -18,7 +18,7 @@ crypto.onchain.ueat(
     limit: int = 90,
     sortby: str = 'tradeAmount',
     ascend: bool = True,
-    chart: bool = False
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

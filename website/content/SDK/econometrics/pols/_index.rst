@@ -15,7 +15,7 @@
 econometrics.pols(
     regression_variables: List[Tuple],
     data: Dict[str,
-    pandas.core.frame.DataFrame]
+    pandas.core.frame.DataFrame],
 ) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any], Any]
 {{< /highlight >}}
 

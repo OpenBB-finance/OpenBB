@@ -21,7 +21,7 @@ crypto.chart(
     exchange: 'str' = '',
     interval: 'str' = '',
     external_axes: 'list[plt.Axes] | None' = None, yscale: 'str' = 'linear',
-    chart: bool = False
+    chart: bool = False,
 ) -> 'None'
 {{< /highlight >}}
 

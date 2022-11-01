@@ -15,10 +15,16 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.defi.ayr(
-    chart: bool = False
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
+* **Parameters**
+
+ry of the Anchor Yield Reserve.
+    [Source: https://terra.engineer/]
+
+    
 * **Returns**
 
     pd.DataFrame

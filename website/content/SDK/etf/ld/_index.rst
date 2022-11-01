@@ -16,7 +16,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 etf.ld(
     description: str,
-    chart: bool = False
+    chart: bool = False,
 ) -> Dict
 {{< /highlight >}}
 

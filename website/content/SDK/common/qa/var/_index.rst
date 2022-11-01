@@ -20,7 +20,7 @@ common.qa.var(
     student_t: bool = False,
     percentile: Union[int, float] = 99.9,
     portfolio: bool = False,
-    chart: bool = False
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

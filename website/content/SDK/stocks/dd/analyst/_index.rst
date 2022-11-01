@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 stocks.dd.analyst(
-    symbol: str
+    symbol: str,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

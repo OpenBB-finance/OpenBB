@@ -18,7 +18,7 @@ stocks.fa.poly_financials(
     statement: str,
     quarterly: bool = False,
     ratios: bool = False,
-    chart: bool = False
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

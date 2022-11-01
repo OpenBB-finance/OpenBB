@@ -30,7 +30,7 @@ portfolio.po.ef(
     value_short: float = 0.0,
     n_portfolios: int = 100,
     seed: int = 123,
-    chart: bool = False
+    chart: bool = False,
 ) -> Tuple
 {{< /highlight >}}
 

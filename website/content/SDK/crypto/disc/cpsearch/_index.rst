@@ -19,7 +19,7 @@ crypto.disc.cpsearch(
     modifier: Optional[Any] = None,
     sortby: str = 'id',
     ascend: bool = True,
-    chart: bool = False
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

@@ -18,7 +18,7 @@ stocks.screener.historical(
     limit: int = 10,
     start_date: str = '2022-05-05', type_candle: str = 'a',
     normalize: bool = True,
-    chart: bool = False
+    chart: bool = False,
 )
 {{< /highlight >}}
 

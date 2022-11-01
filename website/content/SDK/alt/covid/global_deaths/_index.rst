@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 alt.covid.global_deaths(
-    country: str
+    country: str,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

@@ -17,7 +17,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 crypto.defi.aterra(
     asset: str = 'ust',
     address: str = 'terra1tmnqgvg567ypvsvk6rwsga3srp7e3lg6u0elp8',
-    chart: bool = False
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

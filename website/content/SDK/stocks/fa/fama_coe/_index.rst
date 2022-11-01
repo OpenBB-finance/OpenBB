@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 stocks.fa.fama_coe(
-    symbol: str
+    symbol: str,
 ) -> float
 {{< /highlight >}}
 

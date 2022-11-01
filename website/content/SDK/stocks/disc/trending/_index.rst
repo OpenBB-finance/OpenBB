@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 stocks.disc.trending(
-    limit: int = 5
+    limit: int = 5,
 ) -> list
 {{< /highlight >}}
 

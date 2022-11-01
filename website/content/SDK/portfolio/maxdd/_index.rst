@@ -19,7 +19,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 portfolio.maxdd(
     portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
     is_returns: bool = False,
-    chart: bool = False
+    chart: bool = False,
 ) -> pandas.core.series.Series
 {{< /highlight >}}
 

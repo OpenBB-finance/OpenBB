@@ -17,10 +17,18 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.ov.cgglobal(
-    chart: bool = False
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
+* **Parameters**
+
+ut crypto markets from CoinGecko API like:
+        Market_Cap, Volume, Market_Cap_Percentage
+
+    [Source: CoinGecko]
+
+    
 * **Returns**
 
     pandas.DataFrame

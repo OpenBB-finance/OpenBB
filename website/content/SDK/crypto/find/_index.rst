@@ -25,7 +25,7 @@ crypto.find(
     source: 'str' = 'CoinGecko',
     key: 'str' = 'symbol',
     limit: 'int' = 10,
-    export: 'str' = ''
+    export: 'str' = '',
 ) -> 'None'
 {{< /highlight >}}
 

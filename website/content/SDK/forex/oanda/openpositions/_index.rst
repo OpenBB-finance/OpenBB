@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 forex.oanda.openpositions(
     accountID: str = 'REPLACE_ME',
-    chart: bool = False
+    chart: bool = False,
 ) -> Union[pandas.core.frame.DataFrame, bool]
 {{< /highlight >}}
 

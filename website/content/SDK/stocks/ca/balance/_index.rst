@@ -14,7 +14,7 @@
 stocks.ca.balance(
     similar: List[str],
     timeframe: str = '2021',
-    quarter: bool = False
+    quarter: bool = False,
 )
 {{< /highlight >}}
 

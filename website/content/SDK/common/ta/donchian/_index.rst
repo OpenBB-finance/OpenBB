@@ -18,7 +18,7 @@ common.ta.donchian(
     low_prices: pandas.core.series.Series,
     upper_length: int = 20,
     lower_length: int = 20,
-    chart: bool = False
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

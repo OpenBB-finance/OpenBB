@@ -17,7 +17,7 @@ crypto.disc.losers(
     interval: str = '1h',
     limit: int = 50,
     sortby: str = 'market_cap_rank',
-    chart: bool = False
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

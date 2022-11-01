@@ -14,10 +14,15 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.ov.cgdefi(
-    chart: bool = False
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
+* **Parameters**
+
+ut Decentralized Finances [Source: CoinGecko]
+
+    
 * **Returns**
 
     pandas.DataFrame

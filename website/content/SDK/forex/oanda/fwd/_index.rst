@@ -16,7 +16,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 forex.oanda.fwd(
     to_symbol: str = 'USD',
     from_symbol: str = 'EUR',
-    chart: bool = False
+    chart: bool = False,
 )
 {{< /highlight >}}
 

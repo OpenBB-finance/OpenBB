@@ -19,7 +19,7 @@ common.qa.es(
     distribution: str = 'normal',
     percentile: Union[float, int] = 99.9,
     portfolio: bool = False,
-    chart: bool = False
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

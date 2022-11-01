@@ -16,7 +16,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 stocks.ins.print_insider_data(
     type_insider: str = 'lcb',
     limit: int = 10,
-    chart: bool = False
+    chart: bool = False,
 )
 {{< /highlight >}}
 

@@ -16,7 +16,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 economy.tyld(
     interval: str = 'm',
     maturity: str = '10y',
-    start_date: str = '2010-01-01', chart: bool = False
+    start_date: str = '2010-01-01', chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

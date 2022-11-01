@@ -14,7 +14,7 @@
 keys.quandl(
     key: str,
     persist: bool = False,
-    show_output: bool = False
+    show_output: bool = False,
 ) -> str
 {{< /highlight >}}
 

@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 stocks.qa.historical_5(
-    symbol: str
+    symbol: str,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

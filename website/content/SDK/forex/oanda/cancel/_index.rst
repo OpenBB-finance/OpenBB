@@ -16,7 +16,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 forex.oanda.cancel(
     orderID: str,
     accountID: str = 'REPLACE_ME',
-    chart: bool = False
+    chart: bool = False,
 ) -> Union[str, bool]
 {{< /highlight >}}
 

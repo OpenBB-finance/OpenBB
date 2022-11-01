@@ -13,7 +13,7 @@
 {{< highlight python >}}
 stocks.ba.queries(
     symbol: str,
-    limit: int = 10
+    limit: int = 10,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

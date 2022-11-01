@@ -17,7 +17,7 @@ stocks.ba.popular(
     limit: int = 10,
     post_limit: int = 50,
     subreddits: str = '',
-    chart: bool = False
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

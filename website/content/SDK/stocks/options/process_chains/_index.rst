@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 stocks.options.process_chains(
-    response: requests.models.Response
+    response: requests.models.Response,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

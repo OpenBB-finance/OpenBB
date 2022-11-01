@@ -17,7 +17,7 @@ crypto.dd.trades(
     symbol: str,
     limit: int = 1000,
     side: Optional[Any] = None,
-    chart: bool = False
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 stocks.fa.hq(
-    symbol: str
+    symbol: str,
 ) -> str
 {{< /highlight >}}
 

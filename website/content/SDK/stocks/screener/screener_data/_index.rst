@@ -18,7 +18,7 @@ stocks.screener.screener_data(
     data_type: str = 'overview',
     limit: int = 10,
     ascend: bool = False,
-    chart: bool = False
+    chart: bool = False,
 )
 {{< /highlight >}}
 

@@ -18,7 +18,7 @@ crypto.dd.pr(
     to_symbol: Optional[str] = None,
     limit: Optional[int] = None,
     price: Optional[int] = None,
-    chart: bool = False
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

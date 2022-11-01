@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.commonsense(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
 )
 {{< /highlight >}}
 

@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 crypto.dd.check_valid_binance_str(
-    symbol: str
+    symbol: str,
 ) -> str
 {{< /highlight >}}
 

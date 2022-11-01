@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 stocks.disc.upcoming(
-    limit: int = 10
+    limit: int = 10,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

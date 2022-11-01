@@ -17,7 +17,7 @@ forex.oanda.close(
     orderID: str,
     units: Optional[int] = 0,
     accountID: str = 'REPLACE_ME',
-    chart: bool = False
+    chart: bool = False,
 ) -> Union[pandas.core.frame.DataFrame, bool]
 {{< /highlight >}}
 

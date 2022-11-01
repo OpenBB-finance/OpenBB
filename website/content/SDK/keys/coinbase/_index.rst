@@ -16,7 +16,7 @@ keys.coinbase(
     secret: str,
     passphrase: str,
     persist: bool = False,
-    show_output: bool = False
+    show_output: bool = False,
 ) -> str
 {{< /highlight >}}
 

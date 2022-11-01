@@ -14,7 +14,7 @@
 portfolio.jensens(
     portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
     risk_free_rate: float = 0,
-    window: str = '1y'
+    window: str = '1y',
 )
 {{< /highlight >}}
 

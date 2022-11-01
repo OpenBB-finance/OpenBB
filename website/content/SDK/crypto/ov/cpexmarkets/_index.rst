@@ -18,7 +18,7 @@ crypto.ov.cpexmarkets(
     symbols: str = 'USD',
     sortby: str = 'pair',
     ascend: bool = True,
-    chart: bool = False
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

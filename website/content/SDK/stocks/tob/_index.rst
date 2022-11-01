@@ -13,7 +13,7 @@
 {{< highlight python >}}
 stocks.tob(
     symbol: str,
-    exchange: str = 'BZX'
+    exchange: str = 'BZX',
 ) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
 {{< /highlight >}}
 

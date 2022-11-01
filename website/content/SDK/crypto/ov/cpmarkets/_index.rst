@@ -17,7 +17,7 @@ crypto.ov.cpmarkets(
     symbols: str = 'USD',
     sortby: str = 'rank',
     ascend: bool = True,
-    chart: bool = False
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

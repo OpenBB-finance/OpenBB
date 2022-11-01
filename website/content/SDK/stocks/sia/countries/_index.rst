@@ -13,7 +13,7 @@
 {{< highlight python >}}
 stocks.sia.countries(
     industry: str = '',
-    sector: str = ''
+    sector: str = '',
 ) -> list
 {{< /highlight >}}
 

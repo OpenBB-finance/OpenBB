@@ -18,7 +18,7 @@ stocks.sia.cpic(
     country: str = 'United States',
     mktcap: str = 'Large',
     exclude_exchanges: bool = True,
-    chart: bool = False
+    chart: bool = False,
 )
 {{< /highlight >}}
 

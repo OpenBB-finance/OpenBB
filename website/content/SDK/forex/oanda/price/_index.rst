@@ -16,7 +16,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 forex.oanda.price(
     accountID: str = 'REPLACE_ME',
     instrument: Optional[str] = None,
-    chart: bool = False
+    chart: bool = False,
 ) -> Union[Dict[str, str], bool]
 {{< /highlight >}}
 

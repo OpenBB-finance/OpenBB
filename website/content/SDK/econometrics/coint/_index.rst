@@ -29,7 +29,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 econometrics.coint(
-    dependent_series, independent_series, chart: bool = False
+    dependent_series, independent_series, chart: bool = False,
 )
 {{< /highlight >}}
 

@@ -17,7 +17,7 @@ economy.fred_series(
     series_ids: List[str],
     start_date: str = None,
     end_date: str = None,
-    chart: bool = False
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

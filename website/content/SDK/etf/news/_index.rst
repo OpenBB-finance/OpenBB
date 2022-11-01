@@ -18,7 +18,7 @@ etf.news(
     limit: int = 10,
     start_date: str = '2022-10-25', show_newest: bool = True,
     sources: str = '',
-    chart: bool = False
+    chart: bool = False,
 ) -> List[Tuple[Any, Any]]
 {{< /highlight >}}
 
@@ -31,7 +31,7 @@ etf.news(
     show_newest: *bool*
         flag to show newest articles first
     sources: *str*
-        sources to exclusively show news from
+        sources to exclusively show news from (comma separated)
 
     
 * **Returns**

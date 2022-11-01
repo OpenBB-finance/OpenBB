@@ -16,7 +16,7 @@ stocks.fa.av_balance(
     limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
-    plot: bool = False
+    plot: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

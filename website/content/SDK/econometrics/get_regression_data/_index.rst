@@ -15,7 +15,7 @@
 econometrics.get_regression_data(
     regression_variables: List[tuple],
     data: Dict[str, pandas.core.frame.DataFrame],
-    regression_type: str = ''
+    regression_type: str = '',
 ) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any]]
 {{< /highlight >}}
 

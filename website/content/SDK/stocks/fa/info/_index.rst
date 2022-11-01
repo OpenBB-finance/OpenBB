@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 stocks.fa.info(
-    symbol: str
+    symbol: str,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

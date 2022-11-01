@@ -17,7 +17,7 @@ stocks.ca.income(
     similar: List[str],
     timeframe: str = '2021',
     quarter: bool = False,
-    chart: bool = False
+    chart: bool = False,
 )
 {{< /highlight >}}
 

@@ -18,7 +18,7 @@ crypto.defi.tokens(
     limit: int = 100,
     sortby: str = 'index',
     ascend: bool = False,
-    chart: bool = False
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

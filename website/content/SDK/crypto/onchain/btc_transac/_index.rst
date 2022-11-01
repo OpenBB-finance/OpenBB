@@ -14,10 +14,15 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.onchain.btc_transac(
-    chart: bool = False
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
+* **Parameters**
+
+nsactions [Source: https://api.blockchain.info/]
+
+    
 * **Returns**
 
     pd.DataFrame

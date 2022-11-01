@@ -18,7 +18,7 @@ stocks.sia.cpcs(
     sector: str = 'Technology',
     mktcap: str = 'Large',
     exclude_exchanges: bool = True,
-    chart: bool = False
+    chart: bool = False,
 ) -> dict
 {{< /highlight >}}
 

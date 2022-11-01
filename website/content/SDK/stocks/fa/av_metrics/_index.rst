@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 stocks.fa.av_metrics(
-    symbol: str
+    symbol: str,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

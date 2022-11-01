@@ -19,7 +19,7 @@ stocks.options.grhist(
     strike: float,
     chain_id: str = '',
     put: bool = False,
-    chart: bool = False
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

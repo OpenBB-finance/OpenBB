@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 stocks.fa.sust(
-    symbol: str
+    symbol: str,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

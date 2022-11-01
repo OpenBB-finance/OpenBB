@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 stocks.dd.est(
-    symbol: str
+    symbol: str,
 ) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
 {{< /highlight >}}
 

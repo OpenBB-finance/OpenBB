@@ -17,7 +17,7 @@ stocks.sia.stocks_data(
     finance_key: str = 'ncf',
     stocks_data: dict = None,
     period: str = 'annual',
-    symbol: str = 'USD'
+    symbol: str = 'USD',
 )
 {{< /highlight >}}
 
