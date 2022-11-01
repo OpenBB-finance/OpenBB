@@ -1418,9 +1418,8 @@ def check_portfolio_benchmark_defined(portfolio_name: str, benchmark_name: str) 
         console.print("[red]Please first define the portfolio (via 'load')[/red]\n")
         return False
 
-    elif not benchmark_name:
+    if not benchmark_name:
         console.print("[red]Please first define the benchmark (via 'bench')[/red]\n")
         return False
 
-    else:
-        return True
+    return True
