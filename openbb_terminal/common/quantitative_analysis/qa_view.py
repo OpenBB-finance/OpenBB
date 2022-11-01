@@ -845,7 +845,7 @@ def display_unitroot(
 def display_raw(
     data: pd.DataFrame,
     sortby: str = "",
-    descend: bool = False,
+    ascend: bool = False,
     limit: int = 20,
     export: str = "",
 ) -> None:
@@ -857,7 +857,7 @@ def display_raw(
         DataFrame with historical information
     sortby : str
         The column to sort by
-    descend : bool
+    ascend : bool
         Whether to sort descending
     limit : int
         Number of rows to show
@@ -871,9 +871,10 @@ def display_raw(
         df1 = data.copy()
 
     if sortby:
-        df1 = df1.sort_values(
-            by=sortby if sortby != "AdjClose" else "Adj Close", ascending=not descend
-        )
+        if sortby.lower() not in df1.columns:
+            console.print("[red]The provided column is not a valid option[/red]\n")
+            return
+        df1 = df1.sort_values(by=sortby.lower(), ascending=ascend)
     df1.index = [x.strftime("%Y-%m-%d") for x in df1.index]
 
     print_rich_table(
