@@ -253,6 +253,9 @@ class CovidController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
         )
         if ns_parser:
+            if ns_parser.days < 2:
+                console.print("[red]Days must be greater than 1[/red]")
+                return
             covid_view.display_case_slopes(
                 days_back=ns_parser.days,
                 limit=ns_parser.limit,
