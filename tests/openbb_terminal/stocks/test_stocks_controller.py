@@ -294,7 +294,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(
                 data=EMPTY_DF,
                 sortby="Open",
-                descend=False,
+                ascend=False,
                 limit=1,
             ),
         ),

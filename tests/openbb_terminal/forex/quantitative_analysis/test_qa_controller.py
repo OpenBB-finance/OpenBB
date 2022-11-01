@@ -314,7 +314,7 @@ def test_call_func_expect_queue(expected_queue, queue, func):
                 data=QA_CONTROLLER.data[QA_CONTROLLER.target],
                 limit=1,
                 sortby="",
-                descend=True,
+                ascend=True,
                 export="csv",
             ),
         ),
