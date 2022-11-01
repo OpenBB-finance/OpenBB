@@ -263,11 +263,15 @@ class QaController(StockBaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+        if isinstance(self.data, pd.Series):
+            data = self.data.to_frame()
+        else:
+            data = self.data
         if ns_parser:
             qa_view.display_raw(
-                data=self.data,
+                data=data,
                 limit=ns_parser.limit,
-                sortby="",
+                sortby=ns_parser.sortby,
                 ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )

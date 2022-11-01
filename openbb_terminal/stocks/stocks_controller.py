@@ -408,9 +408,9 @@ class StocksController(StockBaseController):
         parser.add_argument(
             "-d",
             "--descending",
-            action="store_false",
+            action="store_true",
             dest="descending",
-            default=True,
+            default=False,
             help="Sort selected column descending. Only works when raw data is displayed.",
         )
         parser.add_argument(
@@ -472,7 +472,7 @@ class StocksController(StockBaseController):
                     qa_view.display_raw(
                         data=self.stock,
                         sortby=ns_parser.sort,
-                        descend=ns_parser.descending,
+                        ascend=not ns_parser.descending,
                         limit=ns_parser.limit,
                     )
 
