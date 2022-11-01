@@ -42,10 +42,10 @@ def display_uni_tokens(
     df = graph_model.get_uni_tokens(skip=skip)
     df_data = df.copy()
 
-    #Converting these to float
-    df['tradeVolumeUSD'] = df['tradeVolumeUSD'].astype(float)
-    df['totalLiquidity'] = df['totalLiquidity'].astype(float)
-    df['txCount'] = df['txCount'].astype(float)
+    # Converting these to float
+    df["tradeVolumeUSD"] = df["tradeVolumeUSD"].astype(float)
+    df["totalLiquidity"] = df["totalLiquidity"].astype(float)
+    df["txCount"] = df["txCount"].astype(float)
 
     df = df.sort_values(by=sortby, ascending=ascend)
 
@@ -140,10 +140,10 @@ def display_recently_added(
     )
     df_data = df.copy()
 
-    #Converting these to float
-    df['volumeUSD'] = df['volumeUSD'].astype(float)
-    df['txCount'] = df['txCount'].astype(float)
-    df['totalSupply'] = df['totalSupply'].astype(float)
+    # Converting these to float
+    df["volumeUSD"] = df["volumeUSD"].astype(float)
+    df["txCount"] = df["txCount"].astype(float)
+    df["totalSupply"] = df["totalSupply"].astype(float)
 
     df = df.sort_values(by=sortby, ascending=ascend)
 
@@ -188,9 +188,9 @@ def display_uni_pools(
 
     df = graph_model.get_uni_pools_by_volume()
 
-    #Converting these to float
-    df['volumeUSD'] = df['volumeUSD'].astype(float)
-    df['txCount'] = df['txCount'].astype(float)
+    # Converting these to float
+    df["volumeUSD"] = df["volumeUSD"].astype(float)
+    df["txCount"] = df["txCount"].astype(float)
 
     df = df.sort_values(by=sortby, ascending=ascend)
 

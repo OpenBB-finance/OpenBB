@@ -12,13 +12,12 @@ logger = logging.getLogger(__name__)
 token_terminal = TokenTerminal(key=cfg.API_TOKEN_TERMINAL_KEY)
 
 
-
 # Fetch all data for projects'
 try:
     PROJECTS_DATA = token_terminal.get_all_projects()
 
     # This is to catch the invalid header and raise Exception to load the autocomplete tickers
-    if PROJECTS_DATA['message'] == "Invalid authorization header":
+    if PROJECTS_DATA["message"] == "Invalid authorization header":
         raise Exception
 except Exception:
     PROJECTS_DATA = [
@@ -187,7 +186,8 @@ def get_project_ids() -> List[str]:
         A list with the all the project IDs
     """
 
-    # check if its a dict - which would be a successful api call - might need to add error checking here later if they messed up the API key though.
+    # check if its a dict - which would be a successful api call -
+    # might need to add error checking here later if they messed up the API key though.
     if isinstance(PROJECTS_DATA, dict):
         return [project["project_id"] for project in PROJECTS_DATA]
     return PROJECTS_DATA

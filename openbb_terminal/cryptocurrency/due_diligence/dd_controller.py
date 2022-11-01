@@ -131,7 +131,7 @@ class DueDiligenceController(CryptoBaseController):
         df_mt = messari_model.get_available_timeseries()
         self.ccxt_exchanges = ccxt_model.get_exchanges()
         self.binance_currencies = ccxt_model.get_binance_currencies()
-        self.coinbase_currencies = {'USD', 'USDC', 'GBP', 'USDT', 'EUR'}
+        self.coinbase_currencies = {"USD", "USDC", "GBP", "USDT", "EUR"}
 
         if not df_mt.empty:
             self.messari_timeseries = df_mt.index.to_list()
@@ -1795,7 +1795,6 @@ class DueDiligenceController(CryptoBaseController):
             )
 
     @log_start_end(log=logger)
-    ##@check_api_key(["API_TOKEN_TERMINAL_KEY"])
     def call_funot(self, other_args):
         """Process fun command"""
         parser = argparse.ArgumentParser(
