@@ -885,6 +885,7 @@ class BaseController(metaclass=ABCMeta):
                         console.print(f"\nTrying `load {an_input}`\n")
                         self.queue.insert(0, "load " + an_input)
 
+
 class StockBaseController(BaseController, metaclass=ABCMeta):
     def __init__(self, queue):
         """
