@@ -228,7 +228,6 @@ class OverviewController(BaseController):
                 "--kind": {c: {} for c in cryptopanic_model.CATEGORIES},
                 "-k": "--kind",
                 "--filter": {c: {} for c in cryptopanic_model.FILTERS},
-                "-f": "--filter",
                 "--region": {c: {} for c in cryptopanic_model.REGIONS},
                 "-r": "--region",
                 "--sort": {c: {} for c in cryptopanic_model.SORT_FILTERS},
@@ -1573,7 +1572,6 @@ class OverviewController(BaseController):
         )
 
         parser.add_argument(
-            "-f",
             "--filter",
             dest="filter",
             type=str,
