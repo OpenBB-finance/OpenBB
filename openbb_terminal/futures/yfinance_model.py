@@ -148,4 +148,6 @@ def get_curve_futures(
     if not futures_index:
         return pd.DataFrame()
 
+    futures_index = pd.to_datetime(futures_index)
+
     return pd.DataFrame(index=futures_index, data=futures_curve, columns=["Futures"])
