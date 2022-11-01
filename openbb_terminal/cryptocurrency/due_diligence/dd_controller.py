@@ -189,6 +189,21 @@ class DueDiligenceController(CryptoBaseController):
                 "-l": "--limit",
                 "--descend": {},
             }
+            choices["news"] = {
+                "--sort": {c: {} for c in cryptopanic_model.SORT_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+                "--urls": {},
+                "-u": "--urls",
+                "--kind": {c: {} for c in cryptopanic_model.CATEGORIES},
+                "-k": "--kind",
+                "--filter": {c: {} for c in cryptopanic_model.FILTERS},
+                "-f": "--filter",
+                "--region": {c: {} for c in cryptopanic_model.REGIONS},
+                "-r": "--region",
+            }
             choices["mt"] = {c: None for c in self.messari_timeseries}
             choices["mt"]["-i"] = {c: None for c in messari_model.INTERVALS_TIMESERIES}
             choices["mcapdom"]["-i"] = {
