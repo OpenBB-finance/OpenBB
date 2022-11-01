@@ -33,7 +33,11 @@ COINS_COLUMNS = [
 
 @log_start_end(log=logger)
 def display_coins(
-    category: str, limit: int = 250, sortby: str = "Symbol", export: str = ""
+    category: str,
+    limit: int = 250,
+    sortby: str = "Symbol",
+    export: str = "",
+    ascend: bool = False,
 ) -> None:
     """Display top coins [Source: CoinGecko]
 
@@ -47,8 +51,15 @@ def display_coins(
         Key to sort data
     export : str
         Export dataframe data to csv,json,xlsx file
+    ascend: bool
+        Sort data in ascending order
     """
-    df = pycoingecko_model.get_coins(limit=limit, category=category, sortby=sortby)
+    df = pycoingecko_model.get_coins(
+        limit=limit,
+        category=category,
+        sortby=sortby,
+        ascend=ascend,
+    )
     if not df.empty:
         df = df[
             [
@@ -64,7 +75,7 @@ def display_coins(
         df = df.set_axis(
             COINS_COLUMNS,
             axis=1,
-            inplace=False,
+            copy=True,
         )
         for col in ["Volume [$]", "Market Cap"]:
             if col in df.columns:

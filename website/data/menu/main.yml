@@ -743,6 +743,8 @@ main:
         sub:
           - name: atr
             ref: terminal/forecast/atr
+          - name: autoets
+            ref: terminal/forecast/autoets
           - name: brnn
             ref: terminal/forecast/brnn
           - name: clean
@@ -2995,6 +2997,8 @@ main:
             sub:
               - name: recom
                 ref: /SDK/stocks/ta/recom
+              - name: rsp
+                ref: /SDK/stocks/ta/rsp
               - name: summary
                 ref: /SDK/stocks/ta/summary
               - name: view

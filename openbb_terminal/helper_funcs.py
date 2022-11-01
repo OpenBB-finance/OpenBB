@@ -1278,11 +1278,11 @@ def compose_export_path(func_name: str, dir_path: str) -> Path:
     if resolve_path.parts[-2] == "openbb_terminal":
         path_cmd = f"{resolve_path.parts[-1]}"
     else:
-        path_cmd = f"{resolve_path.parts[-2]}//{resolve_path.parts[-1]}"
+        path_cmd = f"{resolve_path.parts[-2]}_{resolve_path.parts[-1]}"
 
-    default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{func_name}"
+    default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}"
 
-    full_path = USER_EXPORTS_DIRECTORY / path_cmd / default_filename
+    full_path = USER_EXPORTS_DIRECTORY / default_filename
 
     return full_path
 
@@ -1333,9 +1333,9 @@ def export_data(
             elif exp_type.endswith("svg"):
                 plt.savefig(saved_path)
             else:
-                console.print("Wrong export file specified.\n")
+                console.print("Wrong export file specified.")
 
-            console.print(f"Saved file: {saved_path}\n")
+            console.print(f"Saved file: {saved_path}")
 
 
 def get_rf() -> float:

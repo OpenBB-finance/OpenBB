@@ -19,7 +19,7 @@ Example:
 Successfully added 'ROC_10' to 'TSLA' dataset
 
 (🦋) /forecast/ $ show
-TSLA has following shape (rowxcolumn): (611, 8)
+TSLA dataset has shape (row, column): (611, 8)
 
                          Dataset TSLA | Showing 10 of 611 rows
 ┏━━━┳━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┓
@@ -49,7 +49,7 @@ TSLA has following shape (rowxcolumn): (611, 8)
 (🦋) /forecast/ $ delete TSLA.ROC_10
 
 (🦋) /forecast/ $ show TSLA
-TSLA has following shape (rowxcolumn): (611, 7)
+TSLA dataset has shape (row, column): (611, 7)
 
                     Dataset TSLA | Showing 10 of 611 rows
 ┏━━━┳━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
