@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Main Terminal Module"""
+"""Main Terminal Module."""
 __docformat__ = "numpy"
 
 import argparse
@@ -65,7 +65,7 @@ env_file = str(USER_ENV_FILE)
 
 
 class TerminalController(BaseController):
-    """Terminal Controller class"""
+    """Terminal Controller class."""
 
     CHOICES_COMMANDS = [
         "keys",
@@ -103,7 +103,7 @@ class TerminalController(BaseController):
     GUESS_CORRECTLY = 0
 
     def __init__(self, jobs_cmds: List[str] = None):
-        """Constructor"""
+        """Construct terminal controller."""
         super().__init__(jobs_cmds)
 
         self.queue: List[str] = list()
@@ -118,7 +118,7 @@ class TerminalController(BaseController):
         self.update_runtime_choices()
 
     def update_runtime_choices(self):
-        """Update runtime choices"""
+        """Update runtime choices."""
         self.ROUTINE_FILES = {
             filepath.name: filepath
             for filepath in (MISCELLANEOUS_DIRECTORY / "routines").rglob("*.openbb")
@@ -138,7 +138,7 @@ class TerminalController(BaseController):
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
-        """Print help"""
+        """Print help."""
         mt = MenuText("")
         mt.add_info("_home_")
         mt.add_cmd("intro")
@@ -180,7 +180,7 @@ class TerminalController(BaseController):
         self.update_runtime_choices()
 
     def call_news(self, other_args: List[str]) -> None:
-        """Process news command"""
+        """Process news command."""
         parse = argparse.ArgumentParser(
             add_help=False,
             prog="news",
@@ -216,7 +216,7 @@ class TerminalController(BaseController):
             )
 
     def call_guess(self, other_args: List[str]) -> None:
-        """Process guess command"""
+        """Process guess command."""
         import time
         import json
         import random
@@ -328,11 +328,11 @@ class TerminalController(BaseController):
 
     @staticmethod
     def call_survey(_) -> None:
-        """Process survey command"""
+        """Process survey command."""
         webbrowser.open("https://openbb.co/survey")
 
     def call_update(self, _):
-        """Process update command"""
+        """Process update command."""
         if not is_packaged_application():
             self.update_success = not update_terminal()
         else:
@@ -342,49 +342,49 @@ class TerminalController(BaseController):
             )
 
     def call_keys(self, _):
-        """Process keys command"""
+        """Process keys command."""
         from openbb_terminal.keys_controller import KeysController
 
         self.queue = self.load_class(KeysController, self.queue, env_file)
 
     def call_settings(self, _):
-        """Process settings command"""
+        """Process settings command."""
         from openbb_terminal.settings_controller import SettingsController
 
         self.queue = self.load_class(SettingsController, self.queue, env_file)
 
     def call_featflags(self, _):
-        """Process feature flags command"""
+        """Process feature flags command."""
         from openbb_terminal.featflags_controller import FeatureFlagsController
 
         self.queue = self.load_class(FeatureFlagsController, self.queue)
 
     def call_stocks(self, _):
-        """Process stocks command"""
+        """Process stocks command."""
         from openbb_terminal.stocks.stocks_controller import StocksController
 
         self.queue = self.load_class(StocksController, self.queue)
 
     def call_crypto(self, _):
-        """Process crypto command"""
+        """Process crypto command."""
         from openbb_terminal.cryptocurrency.crypto_controller import CryptoController
 
         self.queue = self.load_class(CryptoController, self.queue)
 
     def call_economy(self, _):
-        """Process economy command"""
+        """Process economy command."""
         from openbb_terminal.economy.economy_controller import EconomyController
 
         self.queue = self.load_class(EconomyController, self.queue)
 
     def call_etf(self, _):
-        """Process etf command"""
+        """Process etf command."""
         from openbb_terminal.etf.etf_controller import ETFController
 
         self.queue = self.load_class(ETFController, self.queue)
 
     def call_funds(self, _):
-        """Process etf command"""
+        """Process etf command."""
         from openbb_terminal.mutual_funds.mutual_fund_controller import (
             FundController,
         )
@@ -392,13 +392,13 @@ class TerminalController(BaseController):
         self.queue = self.load_class(FundController, self.queue)
 
     def call_forex(self, _):
-        """Process forex command"""
+        """Process forex command."""
         from openbb_terminal.forex.forex_controller import ForexController
 
         self.queue = self.load_class(ForexController, self.queue)
 
     def call_reports(self, _):
-        """Process reports command"""
+        """Process reports command."""
         from openbb_terminal.reports.reports_controller import (
             ReportController,
         )
@@ -406,7 +406,7 @@ class TerminalController(BaseController):
         self.queue = self.load_class(ReportController, self.queue)
 
     def call_dashboards(self, _):
-        """Process dashboards command"""
+        """Process dashboards command."""
         if not is_packaged_application():
             from openbb_terminal.dashboards.dashboards_controller import (
                 DashboardsController,
@@ -420,7 +420,7 @@ class TerminalController(BaseController):
             )
 
     def call_alternative(self, _):
-        """Process alternative command"""
+        """Process alternative command."""
         from openbb_terminal.alternative.alt_controller import (
             AlternativeDataController,
         )
@@ -428,7 +428,7 @@ class TerminalController(BaseController):
         self.queue = self.load_class(AlternativeDataController, self.queue)
 
     def call_econometrics(self, _):
-        """Process econometrics command"""
+        """Process econometrics command."""
         from openbb_terminal.econometrics.econometrics_controller import (
             EconometricsController,
         )
@@ -436,7 +436,7 @@ class TerminalController(BaseController):
         self.queue = EconometricsController(self.queue).menu()
 
     def call_forecast(self, _):
-        """Process forecast command"""
+        """Process forecast command."""
         from openbb_terminal.forecast.forecast_controller import (
             ForecastController,
         )
@@ -444,7 +444,7 @@ class TerminalController(BaseController):
         self.queue = self.load_class(ForecastController, "", pd.DataFrame(), self.queue)
 
     def call_portfolio(self, _):
-        """Process portfolio command"""
+        """Process portfolio command."""
         from openbb_terminal.portfolio.portfolio_controller import (
             PortfolioController,
         )
@@ -452,19 +452,19 @@ class TerminalController(BaseController):
         self.queue = self.load_class(PortfolioController, self.queue)
 
     def call_sources(self, _):
-        """Process sources command"""
+        """Process sources command."""
         from openbb_terminal.sources_controller import SourcesController
 
         self.queue = self.load_class(SourcesController, self.queue)
 
     def call_futures(self, _):
-        """Process futures command"""
+        """Process futures command."""
         from openbb_terminal.futures.futures_controller import FuturesController
 
         self.queue = self.load_class(FuturesController, self.queue)
 
     def call_intro(self, _):
-        """Process intro command"""
+        """Process intro command."""
         console.print(panel.Panel("[purple]Welcome to the OpenBB Terminal.[/purple]"))
         console.print(
             "\nThe following walkthrough will guide you towards making the most out of the OpenBB Terminal.\n\n"
@@ -504,7 +504,8 @@ class TerminalController(BaseController):
         console.print(panel.Panel("[purple]#3 - Setting API Keys[/purple]"))
         console.print(
             "\nThe OpenBB Terminal does not own any of the data you have access to.\n\n"
-            "Instead, we provide the infrastructure to access over 100 different data sources from a single location.\n\n"
+            "Instead, we provide the infrastructure to access over 100 different data sources "
+            "from a single location.\n\n"
             "Thus, it is necessary for each user to set their own API keys for the various third party sources\n\n"
             "You can find more about this on the '[param]keys[/param]' menu.\n\n"
             "For many commands, there are multiple data sources that can be selected.\n\n"
@@ -554,12 +555,14 @@ class TerminalController(BaseController):
 
         console.print(panel.Panel("[purple]#6 - Command Pipeline[/purple]"))
         console.print(
-            "\nThe terminal offers the capability of allowing users to speed up their navigation and command execution."
+            "\nThe terminal offers the capability of allowing users to speed up their "
+            "navigation and command execution."
             "\n\nTherefore, typing the following prompt is valid:\n"
             "2022 Oct 18, 21:53 (🦋) / $ [param]stocks/load TSLA/dd/pt[/param]\n\n"
             "In this example, the terminal - in a single action - will go into '[param]stocks[/param]' menu, "
             "run command '[param]load[/param]' with '[param]TSLA[/param]' as input, \n"
-            "go into sub-menu '[param]dd[/param]' (due diligence) and run the command '[param]pt[/param]' (price target)."
+            "go into sub-menu '[param]dd[/param]' (due diligence) and run the command "
+            "'[param]pt[/param]' (price target)."
         )
         if input("") == "q":
             return
@@ -638,7 +641,7 @@ class TerminalController(BaseController):
         )
 
     def call_exe(self, other_args: List[str]):
-        """Process exe command"""
+        """Process exe command."""
         # Merge rest of string path to other_args and remove queue since it is a dir
         other_args += self.queue
 
@@ -782,8 +785,7 @@ class TerminalController(BaseController):
 
 # pylint: disable=global-statement
 def terminal(jobs_cmds: List[str] = None, test_mode=False):
-    """Terminal Menu"""
-
+    """Terminal Menu."""
     if not test_mode:
         setup_logging()
     logger.info("START")
@@ -944,6 +946,7 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
 
 
 def insert_start_slash(cmds: List[str]) -> List[str]:
+    """Insert a slash at the beginning of a command sequence."""
     if not cmds[0].startswith("/"):
         cmds[0] = f"/{cmds[0]}"
     if cmds[0].startswith("/home"):
@@ -957,7 +960,7 @@ def run_scripts(
     verbose: bool = False,
     routines_args: List[str] = None,
 ):
-    """Runs a given .openbb scripts
+    """Run given .openbb scripts.
 
     Parameters
     ----------
@@ -971,7 +974,6 @@ def run_scripts(
         One or multiple inputs to be replaced in the routine and separated by commas.
         E.g. GME,AMC,BTC-USD
     """
-
     if path.exists():
         with path.open() as fp:
             raw_lines = [x for x in fp if (not is_reset(x)) and ("#" not in x) and x]
@@ -1020,6 +1022,7 @@ def run_scripts(
 
 
 def build_test_path_list(path_list: List[str], filtert: str) -> List[Path]:
+    """Build the paths to use in test mode."""
     if path_list == "":
         console.print("Please send a path when using test mode")
         return []
@@ -1051,6 +1054,7 @@ def build_test_path_list(path_list: List[str], filtert: str) -> List[Path]:
 
 
 def run_test_list(path_list: List[str], filtert: str, verbose: bool):
+    """Run commands in test mode."""
     os.environ["DEBUG_MODE"] = "true"
 
     test_files = build_test_path_list(path_list=path_list, filtert=filtert)
@@ -1080,6 +1084,7 @@ def run_test_list(path_list: List[str], filtert: str, verbose: bool):
 
 
 def run_routine(file: str, routines_args=List[str]):
+    """Execute command routine from .openbb file."""
     user_routine_path = USER_DATA_DIRECTORY / "routines" / file
     default_routine_path = MISCELLANEOUS_DIRECTORY / "routines" / file
 
@@ -1102,8 +1107,7 @@ def main(
     routines_args: List[str] = None,
     **kwargs,
 ):
-    """
-    Runs the terminal with various options
+    """Run the terminal with various options.
 
     Parameters
     ----------
@@ -1121,7 +1125,6 @@ def main(
         One or multiple inputs to be replaced in the routine and separated by commas.
         E.g. GME,AMC,BTC-USD
     """
-
     if kwargs["module"] == "ipykernel_launcher":
         ipykernel_launcher(kwargs["module_file"], kwargs["module_hist_file"])
 
@@ -1143,6 +1146,7 @@ def main(
 
 
 def parse_args_and_run():
+    """Parse input arguments and run terminal."""
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         prog="terminal",

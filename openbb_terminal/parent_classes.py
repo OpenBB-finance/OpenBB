@@ -1,4 +1,4 @@
-"""Parent Classes"""
+"""Parent Classes."""
 __docformat__ = "numpy"
 
 # pylint: disable=C0301,C0302,R0902,global-statement
@@ -74,6 +74,8 @@ SESSION_RECORDED_NAME = ""
 
 
 class BaseController(metaclass=ABCMeta):
+    """Base class for a terminal controller."""
+
     CHOICES_COMMON = [
         "cls",
         "home",
@@ -107,9 +109,9 @@ class BaseController(metaclass=ABCMeta):
     FILE_PATH: str = ""
 
     def __init__(self, queue: List[str] = None) -> None:
-        """
-        This is the base class for any controller in the codebase.
-        It's used to simplify the creation of menus.
+        """Create the base class for any controller in the codebase.
+
+        Used to simplify the creation of menus.
 
         queue: List[str]
             The current queue of jobs to process separated by "/"
@@ -164,6 +166,7 @@ class BaseController(metaclass=ABCMeta):
         self.SUPPORT_CHOICES = support_choices
 
     def check_path(self) -> None:
+        """Check if command path is valid."""
         path = self.PATH
         if path[0] != "/":
             raise ValueError("Path must begin with a '/' character.")
@@ -175,7 +178,7 @@ class BaseController(metaclass=ABCMeta):
             )
 
     def load_class(self, class_ins, *args, **kwargs):
-        """Checks for an existing instance of the controller before creating a new one"""
+        """Check for an existing instance of the controller before creating a new one."""
         self.save_class()
         arguments = len(args) + len(kwargs)
         # Due to the 'arguments == 1' condition, we actually NEVER load a class
@@ -205,20 +208,24 @@ class BaseController(metaclass=ABCMeta):
         return class_ins(*args, **kwargs).menu()
 
     def save_class(self) -> None:
-        """Saves the current instance of the class to be loaded later"""
+        """Save the current instance of the class to be loaded later."""
         if obbff.REMEMBER_CONTEXTS:
             controllers[self.PATH] = self
 
     def custom_reset(self) -> List[str]:
-        """This will be replaced by any children with custom_reset functions"""
+        """Implement custom reset.
+
+        This will be replaced by any children with custom_reset functions.
+        """
         return []
 
     @abstractmethod
     def print_help(self) -> None:
+        """Print help placeholder."""
         raise NotImplementedError("Must override print_help.")
 
     def parse_input(self, an_input: str) -> list:
-        """Parse controller input
+        """Parse controller input.
 
         Splits the command chain from user input into a list of individual commands
         while respecting the forward slash in the command arguments.
@@ -246,11 +253,13 @@ class BaseController(metaclass=ABCMeta):
         return commands
 
     def contains_keys(self, string_to_check: str) -> bool:
+        """Check if string contains keys."""
         if self.KEYS_MENU in string_to_check or self.KEYS_MENU in self.PATH:
             return True
         return False
 
     def log_queue(self) -> None:
+        """Log command queue."""
         joined_queue = self.COMMAND_SEPARATOR.join(self.queue)
         if self.queue and not self.contains_keys(joined_queue):
             logger.info(
@@ -262,6 +271,17 @@ class BaseController(metaclass=ABCMeta):
     def log_cmd_and_queue(
         self, known_cmd: str, other_args_str: str, the_input: str
     ) -> None:
+        """Log command and command queue.
+
+        Parameters
+        ----------
+        known_cmd : str
+            Current command
+        other_args_str : str
+            Command arguments
+        the_input : str
+            Raw command input (command queue)
+        """
         if not self.contains_keys(the_input):
             cmd = {
                 "path": self.PATH,
@@ -276,7 +296,7 @@ class BaseController(metaclass=ABCMeta):
 
     @log_start_end(log=logger)
     def switch(self, an_input: str) -> List[str]:
-        """Process and dispatch input
+        """Process and dispatch input.
 
         Returns
         -------
@@ -337,12 +357,12 @@ class BaseController(metaclass=ABCMeta):
 
     @log_start_end(log=logger)
     def call_cls(self, _) -> None:
-        """Process cls command"""
+        """Process cls command."""
         system_clear()
 
     @log_start_end(log=logger)
     def call_home(self, _) -> None:
-        """Process home command"""
+        """Process home command."""
         self.save_class()
         if self.PATH.count("/") == 1 and obbff.ENABLE_EXIT_AUTO_HELP:
             self.print_help()
@@ -351,12 +371,12 @@ class BaseController(metaclass=ABCMeta):
 
     @log_start_end(log=logger)
     def call_help(self, _) -> None:
-        """Process help command"""
+        """Process help command."""
         self.print_help()
 
     @log_start_end(log=logger)
     def call_about(self, other_args: List[str]) -> None:
-        """Process about command"""
+        """Process about command."""
         description = "Display the documentation of the menu or command."
         if self.CHOICES_COMMANDS and self.CHOICES_MENUS:
             description += (
@@ -387,22 +407,24 @@ class BaseController(metaclass=ABCMeta):
 
     @log_start_end(log=logger)
     def call_quit(self, _) -> None:
-        """Process quit menu command"""
+        """Process quit menu command."""
         self.save_class()
         self.queue.insert(0, "quit")
 
     @log_start_end(log=logger)
     def call_exit(self, _) -> None:
         # Not sure how to handle controller loading here
-        """Process exit terminal command"""
+        """Process exit terminal command."""
         self.save_class()
         for _ in range(self.PATH.count("/")):
             self.queue.insert(0, "quit")
 
     @log_start_end(log=logger)
     def call_reset(self, _) -> None:
-        """Process reset command. If you would like to have customization in the
-        reset process define a method `custom_reset` in the child class.
+        """Process reset command.
+
+        If you would like to have customization in the reset process define a method
+        `custom_reset` in the child class.
         """
         self.save_class()
         if self.PATH != "/":
@@ -417,7 +439,7 @@ class BaseController(metaclass=ABCMeta):
 
     @log_start_end(log=logger)
     def call_resources(self, _) -> None:
-        """Process resources command"""
+        """Process resources command."""
         if os.path.isfile(self.FILE_PATH):
             with open(self.FILE_PATH) as f:
                 console.print(Markdown(f.read()))
@@ -427,8 +449,7 @@ class BaseController(metaclass=ABCMeta):
 
     @log_start_end(log=logger)
     def call_support(self, other_args: List[str]) -> None:
-        """Process support command"""
-
+        """Process support command."""
         self.save_class()
         console.print("")
 
@@ -491,7 +512,7 @@ class BaseController(metaclass=ABCMeta):
 
     @log_start_end(log=logger)
     def call_glossary(self, other_args: List[str]) -> None:
-        """Process glossary command"""
+        """Process glossary command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -527,7 +548,7 @@ class BaseController(metaclass=ABCMeta):
 
     @log_start_end(log=logger)
     def call_wiki(self, other_args: List[str]) -> None:
-        """Process wiki command"""
+        """Process wiki command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -556,7 +577,7 @@ class BaseController(metaclass=ABCMeta):
 
     @log_start_end(log=logger)
     def call_record(self, other_args) -> None:
-        """Process record command"""
+        """Process record command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -592,7 +613,7 @@ class BaseController(metaclass=ABCMeta):
 
     @log_start_end(log=logger)
     def call_stop(self, _) -> None:
-        """Process stop command"""
+        """Process stop command."""
         global RECORD_SESSION
         global SESSION_RECORDED
 
@@ -628,7 +649,7 @@ class BaseController(metaclass=ABCMeta):
 
     @log_start_end(log=logger)
     def call_screenshot(self, other_args: List[str]) -> None:
-        """Process screenshot command"""
+        """Process screenshot command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -650,7 +671,7 @@ class BaseController(metaclass=ABCMeta):
         raw: bool = False,
         limit: int = 0,
     ):
-        """Parses list of arguments into the supplied parser
+        """Parse list of arguments into the supplied parser.
 
         Parameters
         ----------
@@ -753,6 +774,7 @@ class BaseController(metaclass=ABCMeta):
         return ns_parser
 
     def menu(self, custom_path_menu_above: str = ""):
+        """Enter controller menu."""
         an_input = "HELP_ME"
 
         while True:
@@ -883,10 +905,10 @@ class BaseController(metaclass=ABCMeta):
 
 
 class StockBaseController(BaseController, metaclass=ABCMeta):
+    """Base controller class for stocks related menus."""
+
     def __init__(self, queue):
-        """
-        This is a base class for Stock Controllers that use a load function.
-        """
+        """Instantiate the base class for Stock Controllers that use a load function."""
         super().__init__(queue)
         self.stock = pd.DataFrame()
         self.interval = "1440min"
@@ -897,7 +919,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
         self.TRY_RELOAD = True
 
     def call_load(self, other_args: List[str]):
-        """Process load command"""
+        """Process load command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -1078,10 +1100,10 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
 
 
 class CryptoBaseController(BaseController, metaclass=ABCMeta):
+    """Base controller class for crypto related menus."""
+
     def __init__(self, queue):
-        """
-        This is a base class for Crypto Controllers that use a load function.
-        """
+        """Instantiate the base class for Crypto Controllers that use a load function."""
         super().__init__(queue)
 
         self.symbol = ""
@@ -1098,7 +1120,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
         self.exchanges = cryptocurrency_helpers.get_exchanges_ohlc()
 
     def call_load(self, other_args):
-        """Process load command"""
+        """Process load command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,

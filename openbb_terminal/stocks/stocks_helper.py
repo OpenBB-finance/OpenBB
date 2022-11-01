@@ -1,4 +1,4 @@
-"""Main helper"""
+"""Main helper."""
 __docformat__ = "numpy"
 
 # pylint: disable=unsupported-assignment-operation,too-many-lines
@@ -182,9 +182,7 @@ def load(
     monthly: bool = False,
     verbose: bool = True,
 ):
-
-    """
-    Load a symbol to perform analysis using the string above as a template.
+    """Load a symbol to perform analysis using the string above as a template.
 
     Optional arguments and their descriptions are listed above.
 
@@ -197,7 +195,7 @@ def load(
     Please note that certain analytical features are exclusive to the specific source.
 
     To load a symbol from an exchange outside of the NYSE/NASDAQ default, use yFinance as the source and
-    add the corresponding exchange to the end of the symbol. i.e. ‘BNS.TO’.  Note this may be possible with
+    add the corresponding exchange to the end of the symbol. i.e. `BNS.TO`.  Note this may be possible with
     other paid sources check their docs.
 
     BNS is a dual-listed stock, there are separate options chains and order books for each listing.
@@ -208,8 +206,8 @@ def load(
     https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html
 
     Certain analytical features, such as VWAP, require the ticker to be loaded as intraday
-    using the ‘-i x’ argument.  When encountering this error, simply reload the symbol using
-    the interval argument. i.e. ‘load -t BNS -s YYYY-MM-DD -i 1 -p’ loads one-minute intervals,
+    using the `-i x` argument.  When encountering this error, simply reload the symbol using
+    the interval argument. i.e. `load -t BNS -s YYYY-MM-DD -i 1 -p` loads one-minute intervals,
     including Pre/After Market data, using the default source, yFinance.
 
     Certain features, such as the Prediction menu, require the symbol to be loaded as daily and not intraday.
@@ -234,8 +232,8 @@ def load(
         Flag to get weekly data
     monthly: bool
         Flag to get monthly data
-    verbose: str
-        Display what was symbol was loaded
+    verbose: bool
+        Display verbose information on what was the symbol that was loaded
 
     Returns
     -------
@@ -407,7 +405,9 @@ def display_candle(
     raw: bool = False,
     yscale: str = "linear",
 ):
-    """Shows candle plot of loaded ticker. [Source: Yahoo Finance, IEX Cloud or Alpha Vantage]
+    """Show candle plot of loaded ticker.
+
+    [Source: Yahoo Finance, IEX Cloud or Alpha Vantage]
 
     Parameters
     ----------
@@ -450,7 +450,6 @@ def display_candle(
     yscale: str
         Linear or log for yscale
     """
-
     if data is None:
         data = load(
             symbol,
@@ -711,7 +710,7 @@ def display_candle(
 
 
 def quote(symbol: str) -> pd.DataFrame:
-    """Ticker quote
+    """Ticker quote.
 
     Parameters
     ----------
@@ -772,8 +771,9 @@ def quote(symbol: str) -> pd.DataFrame:
 def load_ticker(
     ticker: str, start_date: Union[str, datetime], end_date: Union[str, datetime] = ""
 ) -> pd.DataFrame:
-    """Loads a ticker data from Yahoo Finance, adds a data index column data_id and Open-Close
-    High/Low columns.
+    """Load a ticker data from Yahoo Finance.
+
+    Adds a data index column data_id and Open-Close High/Low columns after loading.
 
     Parameters
     ----------
@@ -808,7 +808,7 @@ def load_ticker(
 
 
 def process_candle(data: pd.DataFrame) -> pd.DataFrame:
-    """Process DataFrame into candle style plot
+    """Process DataFrame into candle style plot.
 
     Parameters
     ----------
@@ -839,7 +839,7 @@ def process_candle(data: pd.DataFrame) -> pd.DataFrame:
 def find_trendline(
     df_data: pd.DataFrame, y_key: str, high_low: str = "high"
 ) -> pd.DataFrame:
-    """Attempts to find a trend line based on y_key column from a given stock ticker data frame.
+    """Attempt to find a trend line based on y_key column from a given stock ticker data frame.
 
     Parameters
     ----------
@@ -858,7 +858,6 @@ def find_trendline(
         If no trend was found,
             An original Panda's data frame
     """
-
     for iteration in [3, 4, 5, 6, 7]:
         df_temp = df_data.copy()
         while len(df_temp) > iteration:
@@ -893,7 +892,10 @@ def find_trendline(
 
 
 def additional_info_about_ticker(ticker: str) -> str:
-    """Information about trading the ticker such as exchange, currency, timezone and market status
+    """Get information about trading the ticker.
+
+    Includes exchange, currency, timezone and market status.
+
     Parameters
     ----------
     ticker : str
@@ -935,7 +937,7 @@ def additional_info_about_ticker(ticker: str) -> str:
 
 
 def clean_fraction(num, denom):
-    """Returns the decimal value or NA if the operation cannot be performed
+    """Return the decimal value or NA if the operation cannot be performed.
 
     Parameters
     ----------
@@ -945,7 +947,7 @@ def clean_fraction(num, denom):
         The denominator for the fraction
 
     Returns
-    ----------
+    -------
     val : Any
         The value of the fraction
     """
@@ -956,7 +958,7 @@ def clean_fraction(num, denom):
 
 
 def load_custom(file_path: str) -> pd.DataFrame:
-    """Loads in a custom csv file
+    """Load in a custom csv file.
 
     Parameters
     ----------
@@ -1003,7 +1005,10 @@ def load_custom(file_path: str) -> pd.DataFrame:
 
 
 def clean_function(entry: str) -> Union[str, float]:
-    """Helper function for cleaning stock data from csv.  This can be customized for csvs"""
+    """Clean stock data from csv.
+
+    This can be customized for csvs.
+    """
     # If there is a digit, get rid of common characters and return float
     if any(char.isdigit() for char in entry):
         return float(entry.replace("$", "").replace(",", ""))
@@ -1011,7 +1016,10 @@ def clean_function(entry: str) -> Union[str, float]:
 
 
 def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
-    """Show quick performance stats of stock prices.  Daily prices expected"""
+    """Show quick performance stats of stock prices.
+
+    Daily prices expected.
+    """
     closes = stock_df["Adj Close"]
     volumes = stock_df["Volume"]
 
@@ -1055,7 +1063,7 @@ def show_quick_performance(stock_df: pd.DataFrame, ticker: str):
 
 
 def show_codes_polygon(ticker: str):
-    """Show FIGI, SIC and SIK codes for ticker
+    """Show FIGI, SIC and SIK codes for ticker.
 
     Parameters
     ----------
