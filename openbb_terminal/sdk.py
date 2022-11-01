@@ -31,9 +31,10 @@ except ImportError:
         " This part of the SDK will not be usable"
     )
 
-from .config_terminal import theme
+from openbb_terminal.config_terminal import theme
 
 from openbb_terminal.helper_classes import TerminalStyle  # noqa: F401
+
 from openbb_terminal import helper_funcs as helper  # noqa: F401
 from openbb_terminal.loggers import setup_logging
 from openbb_terminal.decorators import log_start_end, sdk_arg_logger
@@ -45,6 +46,7 @@ from .cryptocurrency.due_diligence.pycoingecko_model import Coin
 
 logger = logging.getLogger(__name__)
 
+TerminalStyle().applyMPLstyle()
 
 SUPPRESS_LOGGING_CLASSES = {
     ReportController: "ReportController",
@@ -1008,10 +1010,6 @@ functions = {
         "model": "openbb_terminal.economy.investingcom_model.get_yieldcurve",
         "view": "openbb_terminal.economy.investingcom_view.display_yieldcurve",
     },
-    "economy.spread": {
-        "model": "openbb_terminal.economy.investingcom_model.get_spread_matrix",
-        "view": "openbb_terminal.economy.investingcom_view.display_spread_matrix",
-    },
     "economy.country_codes": {
         "model": "openbb_terminal.economy.nasdaq_model.get_country_codes"
     },
@@ -1881,6 +1879,10 @@ functions = {
         "model": "openbb_terminal.stocks.technical_analysis.tradingview_model.get_tradingview_recommendation",
         "view": "openbb_terminal.stocks.technical_analysis.tradingview_view.print_recommendation",
     },
+    "stocks.ta.rsp": {
+        "model": "openbb_terminal.stocks.technical_analysis.rsp_model.get_rsp",
+        "view": "openbb_terminal.stocks.technical_analysis.rsp_view.display_rsp",
+    },
     "stocks.th.check_if_open": {
         "model": "openbb_terminal.stocks.tradinghours.bursa_model.check_if_open"
     },
@@ -2000,6 +2002,10 @@ forecast_extras = {
     "forecast.roc": {"model": "openbb_terminal.forecast.forecast_model.add_roc"},
     "forecast.mom": {"model": "openbb_terminal.forecast.forecast_model.add_momentum"},
     "forecast.delta": {"model": "openbb_terminal.forecast.forecast_model.add_delta"},
+    "forecast.autoets": {
+        "model": "openbb_terminal.forecast.autoets_model.get_autoets_data",
+        "view": "openbb_terminal.forecast.autoets_view.display_autoets_forecast",
+    },
     "forecast.expo": {
         "model": "openbb_terminal.forecast.expo_model.get_expo_data",
         "view": "openbb_terminal.forecast.expo_view.display_expo_forecast",

@@ -218,9 +218,9 @@ class FuturesController(BaseController):
             dest="ticker",
             type=str,
             choices=self.all_tickers,
-            default="",
             help="Future curve to be selected",
             metavar="Futures symbol",
+            required="-h" not in other_args,
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
