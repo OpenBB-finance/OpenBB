@@ -17,7 +17,6 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    check_positive_float,
 )
 
 from openbb_terminal.menu import session
@@ -1126,7 +1125,7 @@ class PortfolioController(BaseController):
         parser.add_argument(
             "-r",
             "--rfr",
-            type=check_positive_float,
+            type=float,
             dest="risk_free_rate",
             default=self.risk_free_rate,
             help="Set risk free rate for calculations.",
@@ -1168,7 +1167,7 @@ class PortfolioController(BaseController):
         parser.add_argument(
             "-r",
             "--rfr",
-            type=check_positive_float,
+            type=float,
             dest="risk_free_rate",
             default=self.risk_free_rate,
             help="Set risk free rate for calculations.",
@@ -1243,7 +1242,7 @@ class PortfolioController(BaseController):
         parser.add_argument(
             "-r",
             "--rfr",
-            type=check_positive_float,
+            type=float,
             dest="risk_free_rate",
             default=self.risk_free_rate,
             help="Set risk free rate for calculations.",
@@ -1375,7 +1374,7 @@ class PortfolioController(BaseController):
         parser.add_argument(
             "-r",
             "--rfr",
-            type=check_positive_float,
+            type=float,
             dest="risk_free_rate",
             default=self.risk_free_rate,
             help="Set risk free rate for calculations.",
