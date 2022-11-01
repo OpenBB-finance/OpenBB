@@ -52,8 +52,6 @@ class NFTController(BaseController):
             choices["stats"] = {
                 "--slug": None,
                 "-s": None,
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
             }
             choices["collections"] = {
                 "--fp": {},
