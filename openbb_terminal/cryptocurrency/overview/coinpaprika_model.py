@@ -272,7 +272,10 @@ def get_coins_market_info(
         "pct_from_ath",
     ]
     df = _get_coins_info_helper(symbols=symbols)[cols].sort_values(by="rank")
-    df.sort_values(by=sortby, ascending=ascend)
+    if sortby == "rank":
+        df = df.sort_values(by=sortby, ascending=False if ascend else True)
+    else:
+        df = df.sort_values(by=sortby, ascending=ascend)
     return df
 
 
