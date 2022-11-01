@@ -1008,10 +1008,6 @@ functions = {
         "model": "openbb_terminal.economy.investingcom_model.get_yieldcurve",
         "view": "openbb_terminal.economy.investingcom_view.display_yieldcurve",
     },
-    "economy.spread": {
-        "model": "openbb_terminal.economy.investingcom_model.get_spread_matrix",
-        "view": "openbb_terminal.economy.investingcom_view.display_spread_matrix",
-    },
     "economy.country_codes": {
         "model": "openbb_terminal.economy.nasdaq_model.get_country_codes"
     },
