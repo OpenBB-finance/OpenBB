@@ -10,7 +10,6 @@ optional arguments:
   --cumulative          Show cumulative or discrete values. For active accounts only discrete value are available (default: True)
   -k {active,total}, --kind {active,total}
                         Total account count or active account count. Default: total (default: total)
-  --descend             Flag to sort in descending order (lowest first) (default: False)
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx,png,jpg,pdf,svg}
                         Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )

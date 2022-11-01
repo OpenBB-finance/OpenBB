@@ -18,6 +18,7 @@ from openbb_terminal.helper_funcs import (
     reindex_dates,
     is_valid_axes_count,
 )
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -49,7 +50,14 @@ def display_ad(
     df_vol = data["Volume"] / divisor
     df_vol.name = "Adj Volume"
     df_ta = volume_model.ad(data, use_open)
-    df_cal = df_ta["AD"] / divisor
+    # check if AD exists in dataframe
+    if "AD" in df_ta.columns:
+        df_cal = df_ta["AD"] / divisor
+    elif "ADo" in df_ta.columns:
+        df_cal = df_ta["ADo"] / divisor
+    else:
+        console.print("AD not found in dataframe")
+        return
     df_cal.name = "Adj AD"
 
     plot_data = pd.merge(data, df_vol, how="outer", left_index=True, right_index=True)

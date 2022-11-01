@@ -19,7 +19,7 @@ For more information and examples, use 'about mom' to access the related guide.
 Example:
 ```
 (🦋) /forecast/ $ show TSLA
-TSLA has following shape (rowxcolumn): (611, 7)
+TSLA dataset has shape (row, column): (611, 7)
 
                     Dataset TSLA | Showing 10 of 611 rows
 ┏━━━┳━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
@@ -50,7 +50,7 @@ TSLA has following shape (rowxcolumn): (611, 7)
 Successfully added 'Momentum_10' to 'TSLA' dataset
 
 (🦋) /forecast/ $ show TSLA
-TSLA has following shape (rowxcolumn): (611, 8)
+TSLA dataset has shape (row, column): (611, 8)
 
                            Dataset TSLA | Showing 10 of 611 rows
 ┏━━━┳━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━┓
@@ -82,7 +82,7 @@ Namespace(drop='', fill='', help=False, limit=5, target_dataset='TSLA')
 Successfully cleaned 'TSLA' dataset
 
 (🦋) /forecast/ $ show TSLA
-TSLA has following shape (rowxcolumn): (601, 8)
+TSLA dataset has shape (row, column): (601, 8)
 
                            Dataset TSLA | Showing 10 of 601 rows
 ┏━━━┳━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━┓
