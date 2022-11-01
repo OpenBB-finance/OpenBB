@@ -177,7 +177,7 @@ class DueDiligenceController(CryptoBaseController):
             }
             choices["events"]["-s"] = {c: None for c in coinpaprika_view.EVENTS_FILTERS}
             choices["twitter"] = {
-                "--sort": {c: {} for c in coinpaprika_view.EX_FILTERS},
+                "--sort": {c: {} for c in coinpaprika_view.TWEETS_FILTERS},
                 "-s": "--sort",
                 "--limit": {str(c): {} for c in range(1, 100)},
                 "-l": "--limit",
