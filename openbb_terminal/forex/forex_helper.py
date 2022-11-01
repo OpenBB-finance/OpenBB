@@ -83,6 +83,7 @@ def load(
     interval: str = "1day",
     start_date: str = last_year.strftime("%Y-%m-%d"),
     source: str = "YahooFinance",
+    verbose: bool = True,
 ) -> pd.DataFrame:
     """Loads forex for two given symbols
 
@@ -110,11 +111,12 @@ def load(
         interval_map = INTERVAL_MAPS[source]
 
         if interval not in interval_map.keys() and resolution != "d":
-            console.print(
-                f"Interval not supported by {FOREX_SOURCES[source]}."
-                " Need to be one of the following options",
-                list(interval_map.keys()),
-            )
+            if verbose:
+                console.print(
+                    f"Interval not supported by {FOREX_SOURCES[source]}."
+                    " Need to be one of the following options",
+                    list(interval_map.keys()),
+                )
             return pd.DataFrame()
 
         if source == "AlphaVantage":
@@ -136,6 +138,7 @@ def load(
                 f"{from_symbol}{to_symbol}=X",
                 start_date=datetime.strptime(start_date, "%Y-%m-%d"),
                 interval=int(interval.replace("m", "")),
+                verbose=verbose,
             )
 
     if source == "Polygon":
