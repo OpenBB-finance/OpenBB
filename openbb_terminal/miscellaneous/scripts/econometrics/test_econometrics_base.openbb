@@ -24,8 +24,8 @@ delete -d wp.black
 
 ## Tests
 
-## load fair
-## root fair.yrs_married
+load fair
+root fair.yrs_married
 
 ## Load custom datasets - this can only be tested locally for now
 ## load -f 20221031_095631_AAPL.xlsx -a aapl
@@ -33,7 +33,7 @@ delete -d wp.black
 ## load -f 20221031_095706_MSFT.xlsx -a msft
 ## coint msft.adj_close,aapl.adj_close,tsla.adj_close
 ## norm tsla.adj_close -p
-## norm msft.return -p
+## norm msft.volume -p
 
 load strikes
 granger strikes.duration,strikes.iprod
