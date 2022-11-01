@@ -12,8 +12,8 @@
 
 {{< highlight python >}}
 stocks.options.dividend(
-    symbol: str,
-    ) -> pandas.core.series.Series
+    symbol: str
+) -> pandas.core.series.Series
 {{< /highlight >}}
 
 * **Parameters**

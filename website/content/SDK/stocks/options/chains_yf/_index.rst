@@ -18,8 +18,8 @@ stocks.options.chains_yf(
     expiry: str,
     min_sp: float = -1, max_sp: float = -1, calls: bool = True,
     puts: bool = True,
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

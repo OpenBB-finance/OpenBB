@@ -15,8 +15,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 stocks.dps.psi_sg(
     symbol: str,
-    chart: bool = False,
-    ) -> Tuple[pandas.core.frame.DataFrame, List]
+    chart: bool = False
+) -> Tuple[pandas.core.frame.DataFrame, List]
 {{< /highlight >}}
 
 * **Parameters**

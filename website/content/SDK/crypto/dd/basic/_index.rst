@@ -14,8 +14,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.dd.basic(
-    symbol: str = 'btc-bitcoin', chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    symbol: str = 'btc-bitcoin', chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

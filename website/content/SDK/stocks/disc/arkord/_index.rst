@@ -14,8 +14,8 @@
 stocks.disc.arkord(
     buys_only: bool = False,
     sells_only: bool = False,
-    fund: str = '',
-    ) -> pandas.core.frame.DataFrame
+    fund: str = ''
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

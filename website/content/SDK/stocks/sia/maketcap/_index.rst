@@ -11,8 +11,7 @@
     </h3>
 
 {{< highlight python >}}
-stocks.sia.maketcap(
-    ) -> list
+stocks.sia.maketcap() -> list
 {{< /highlight >}}
 
 * **Returns**

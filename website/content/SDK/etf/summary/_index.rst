@@ -15,8 +15,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 etf.summary(
     name: str,
-    chart: bool = False,
-    ) -> str
+    chart: bool = False
+) -> str
 {{< /highlight >}}
 
 * **Parameters**

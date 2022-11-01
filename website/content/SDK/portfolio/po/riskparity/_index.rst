@@ -31,8 +31,8 @@ portfolio.po.riskparity(
     covariance: str = 'hist',
     d_ewma: float = 0.94,
     value: float = 1.0,
-    chart: bool = False,
-    ) -> Tuple
+    chart: bool = False
+) -> Tuple
 {{< /highlight >}}
 
 * **Parameters**

@@ -17,8 +17,8 @@ crypto.ov.cpexchanges(
     symbols: str = 'USD',
     sortby: str = 'rank',
     ascend: bool = True,
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

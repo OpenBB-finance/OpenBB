@@ -13,8 +13,8 @@
 {{< highlight python >}}
 stocks.fa.shrs(
     symbol: str,
-    holder: str = 'institutional',
-    ) -> pandas.core.frame.DataFrame
+    holder: str = 'institutional'
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

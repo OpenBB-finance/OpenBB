@@ -11,8 +11,7 @@
     </h3>
 
 {{< highlight python >}}
-stocks.disc.hotpenny(
-    ) -> pandas.core.frame.DataFrame
+stocks.disc.hotpenny() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Returns**

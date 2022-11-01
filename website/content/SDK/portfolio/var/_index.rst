@@ -16,8 +16,8 @@ portfolio.var(
     use_mean: bool = False,
     adjusted_var: bool = False,
     student_t: bool = False,
-    percentile: float = 99.9,
-    ) -> pandas.core.frame.DataFrame
+    percentile: float = 99.9
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

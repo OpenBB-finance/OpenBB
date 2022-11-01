@@ -16,8 +16,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 stocks.dps.prom(
     limit: int = 1000,
     tier_ats: str = 'T1',
-    chart: bool = False,
-    ) -> Tuple[pandas.core.frame.DataFrame, Dict]
+    chart: bool = False
+) -> Tuple[pandas.core.frame.DataFrame, Dict]
 {{< /highlight >}}
 
 * **Parameters**

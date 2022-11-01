@@ -18,8 +18,8 @@ common.ta.bbands(
     window: int = 15,
     n_std: float = 2,
     mamode: str = 'ema',
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

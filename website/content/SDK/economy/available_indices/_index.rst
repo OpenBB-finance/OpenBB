@@ -14,6 +14,5 @@
     </h3>
 
 {{< highlight python >}}
-economy.available_indices(
-    ) -> dict
+economy.available_indices() -> dict
 {{< /highlight >}}

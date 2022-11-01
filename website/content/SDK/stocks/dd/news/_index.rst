@@ -12,8 +12,8 @@
 
 {{< highlight python >}}
 stocks.dd.news(
-    symbol: str,
-    ) -> List[Any]
+    symbol: str
+) -> List[Any]
 {{< /highlight >}}
 
 * **Parameters**

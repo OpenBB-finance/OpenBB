@@ -22,8 +22,8 @@ crypto.ov.news(
     symbol: Optional[str] = None,
     sortby: str = 'published_at',
     ascend: bool = True,
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

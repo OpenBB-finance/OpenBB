@@ -12,8 +12,8 @@
 
 {{< highlight python >}}
 stocks.dps.sidtc(
-    sortby: str = 'float',
-    ) -> pandas.core.frame.DataFrame
+    sortby: str = 'float'
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

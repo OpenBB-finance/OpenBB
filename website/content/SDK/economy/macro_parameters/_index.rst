@@ -11,8 +11,7 @@
     </h3>
 
 {{< highlight python >}}
-economy.macro_parameters(
-    ) -> Dict[str, Dict[str, str]]
+economy.macro_parameters() -> Dict[str, Dict[str, str]]
 {{< /highlight >}}
 
 * **Returns**

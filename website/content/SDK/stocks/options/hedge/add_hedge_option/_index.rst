@@ -19,8 +19,8 @@ stocks.options.hedge.add_hedge_option(
     strike: float = 120,
     days: float = 30,
     sign: int = 1,
-    chart: bool = False,
-    ) -> tuple
+    chart: bool = False
+) -> tuple
 {{< /highlight >}}
 
 * **Parameters**

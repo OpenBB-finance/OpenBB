@@ -18,8 +18,8 @@ stocks.ba.infer(
     limit: int = 100,
     start_date: Optional[str] = '',
     end_date: Optional[str] = '',
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

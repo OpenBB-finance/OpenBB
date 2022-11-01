@@ -12,8 +12,8 @@
 
 {{< highlight python >}}
 portfolio.volatility(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
-    ) -> pandas.core.frame.DataFrame
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

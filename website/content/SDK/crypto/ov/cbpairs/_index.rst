@@ -22,8 +22,8 @@ crypto.ov.cbpairs(
     limit: int = 50,
     sortby: str = 'quote_increment',
     ascend: bool = True,
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

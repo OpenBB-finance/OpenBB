@@ -14,8 +14,8 @@
 common.news(
     term: str = '',
     sources: str = 'bloomberg.com',
-    sort: str = 'published',
-    ) -> pandas.core.frame.DataFrame
+    sort: str = 'published'
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

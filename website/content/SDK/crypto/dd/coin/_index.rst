@@ -12,7 +12,8 @@
 
 {{< highlight python >}}
 crypto.dd.coin(
-    symbol: str = 'eth-ethereum', ) -> dict
+    symbol: str = 'eth-ethereum'
+) -> dict
 {{< /highlight >}}
 
 * **Parameters**

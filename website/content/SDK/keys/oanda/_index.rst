@@ -16,8 +16,8 @@ keys.oanda(
     access_token: str,
     account_type: str = '',
     persist: bool = False,
-    show_output: bool = False,
-    ) -> str
+    show_output: bool = False
+) -> str
 {{< /highlight >}}
 
 * **Parameters**

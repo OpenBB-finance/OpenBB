@@ -16,8 +16,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 forex.oanda.calendar(
     days: int,
     instrument: Optional[str] = None,
-    chart: bool = False,
-    ) -> Union[pandas.core.frame.DataFrame, bool]
+    chart: bool = False
+) -> Union[pandas.core.frame.DataFrame, bool]
 {{< /highlight >}}
 
 * **Parameters**

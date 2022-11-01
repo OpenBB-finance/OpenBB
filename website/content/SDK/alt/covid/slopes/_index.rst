@@ -18,8 +18,8 @@ alt.covid.slopes(
     limit: int = 50,
     threshold: int = 10000,
     ascend: bool = False,
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

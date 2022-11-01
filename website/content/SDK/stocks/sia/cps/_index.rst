@@ -17,8 +17,8 @@ stocks.sia.cps(
     country: str = 'United States',
     mktcap: str = 'Large',
     exclude_exchanges: bool = True,
-    chart: bool = False,
-    ) -> dict
+    chart: bool = False
+) -> dict
 {{< /highlight >}}
 
 * **Parameters**

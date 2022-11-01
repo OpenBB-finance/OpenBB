@@ -16,8 +16,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 common.ta.cg(
     values: pandas.core.series.Series,
     window: int,
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

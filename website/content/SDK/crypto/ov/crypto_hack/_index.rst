@@ -13,8 +13,8 @@
 
 {{< highlight python >}}
 crypto.ov.crypto_hack(
-    slug: str,
-    ) -> Optional[str]
+    slug: str
+) -> Optional[str]
 {{< /highlight >}}
 
 * **Parameters**

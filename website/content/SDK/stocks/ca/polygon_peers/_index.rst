@@ -13,8 +13,8 @@
 {{< highlight python >}}
 stocks.ca.polygon_peers(
     symbol: str,
-    us_only: bool = False,
-    ) -> List[str]
+    us_only: bool = False
+) -> List[str]
 {{< /highlight >}}
 
 * **Parameters**

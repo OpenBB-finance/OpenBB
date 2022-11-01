@@ -21,8 +21,8 @@ portfolio.po.equal(
     maxnan: float = 0.05,
     threshold: float = 0,
     method: str = 'time',
-    value: float = 1.0,
-    ) -> Tuple
+    value: float = 1.0
+) -> Tuple
 {{< /highlight >}}
 
 * **Parameters**

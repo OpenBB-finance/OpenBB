@@ -16,8 +16,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 funds.info(
     name: str,
     country: str = 'united states',
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

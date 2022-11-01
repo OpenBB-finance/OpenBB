@@ -12,8 +12,8 @@
 
 {{< highlight python >}}
 stocks.qa.capm_information(
-    symbol: str,
-    ) -> Tuple[float, float]
+    symbol: str
+) -> Tuple[float, float]
 {{< /highlight >}}
 
 * **Parameters**

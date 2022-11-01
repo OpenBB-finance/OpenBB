@@ -30,8 +30,8 @@ portfolio.po.plot(
     rc_chart: bool = False,
     heat: bool = False,
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
-    chart: bool = False,
-    )
+    chart: bool = False
+)
 {{< /highlight >}}
 
 * **Parameters**

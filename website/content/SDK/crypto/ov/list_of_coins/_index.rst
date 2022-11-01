@@ -11,8 +11,7 @@
     </h3>
 
 {{< highlight python >}}
-crypto.ov.list_of_coins(
-    ) -> pandas.core.frame.DataFrame
+crypto.ov.list_of_coins() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Returns**

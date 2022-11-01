@@ -19,8 +19,8 @@ stocks.fa.av_cash(
     quarterly: bool = False,
     ratios: bool = False,
     plot: bool = False,
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

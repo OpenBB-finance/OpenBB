@@ -11,8 +11,7 @@
     </h3>
 
 {{< highlight python >}}
-stocks.dps.shorted(
-    ) -> pandas.core.frame.DataFrame
+stocks.dps.shorted() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Returns**

@@ -18,8 +18,8 @@ crypto.defi.gov_proposals(
     sortby: str = 'id',
     ascend: bool = True,
     limit: int = 10,
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

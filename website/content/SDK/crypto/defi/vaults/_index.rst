@@ -20,8 +20,8 @@ crypto.defi.vaults(
     kind: Optional[str] = None,
     ascend: bool = True,
     sortby: str = 'apy',
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

@@ -13,8 +13,8 @@
 {{< highlight python >}}
 crypto.disc.coins_for_given_exchange(
     exchange_id: str = 'binance',
-    page: int = 1,
-    ) -> dict
+    page: int = 1
+) -> dict
 {{< /highlight >}}
 
 * **Parameters**

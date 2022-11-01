@@ -12,8 +12,8 @@
 
 {{< highlight python >}}
 econometrics.comparison(
-    regressions, export: str = '',
-    )
+    regressions, export: str = ''
+)
 {{< /highlight >}}
 
 * **Parameters**

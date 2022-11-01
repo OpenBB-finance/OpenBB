@@ -12,8 +12,8 @@
 
 {{< highlight python >}}
 stocks.quote(
-    symbol: str,
-    ) -> pandas.core.frame.DataFrame
+    symbol: str
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

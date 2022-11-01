@@ -12,8 +12,8 @@
 
 {{< highlight python >}}
 stocks.options.process_chains(
-    response: requests.models.Response,
-    ) -> pandas.core.frame.DataFrame
+    response: requests.models.Response
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

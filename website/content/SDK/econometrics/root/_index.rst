@@ -17,8 +17,8 @@ econometrics.root(
     data: pandas.core.series.Series,
     fuller_reg: str = 'c',
     kpss_reg: str = 'c',
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

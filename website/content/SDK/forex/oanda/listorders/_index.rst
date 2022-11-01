@@ -17,8 +17,8 @@ forex.oanda.listorders(
     order_state: str = 'PENDING',
     order_count: int = 0,
     accountID: str = 'REPLACE_ME',
-    chart: bool = False,
-    ) -> Union[pandas.core.frame.DataFrame, bool]
+    chart: bool = False
+) -> Union[pandas.core.frame.DataFrame, bool]
 {{< /highlight >}}
 
 * **Parameters**

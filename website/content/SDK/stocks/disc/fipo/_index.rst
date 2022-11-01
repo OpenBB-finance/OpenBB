@@ -13,8 +13,8 @@
 {{< highlight python >}}
 stocks.disc.fipo(
     num_days_ahead: int = 5,
-    end_date: Optional[str] = None,
-    )
+    end_date: Optional[str] = None
+)
 {{< /highlight >}}
 
 * **Parameters**

@@ -16,8 +16,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 econometrics.bgod(
     model: pandas.core.frame.DataFrame,
     lags: int = 3,
-    chart: bool = False,
-    ) -> tuple
+    chart: bool = False
+) -> tuple
 {{< /highlight >}}
 
 * **Parameters**

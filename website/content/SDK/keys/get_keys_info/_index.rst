@@ -11,8 +11,7 @@
     </h3>
 
 {{< highlight python >}}
-keys.get_keys_info(
-    ) -> Dict[str, List[str]]
+keys.get_keys_info() -> Dict[str, List[str]]
 {{< /highlight >}}
 
 * **Returns**

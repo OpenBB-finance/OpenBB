@@ -14,8 +14,8 @@
 common.ta.sma(
     data: pandas.core.frame.DataFrame,
     length: int = 50,
-    offset: int = 0,
-    ) -> pandas.core.frame.DataFrame
+    offset: int = 0
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

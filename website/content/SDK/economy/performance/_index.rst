@@ -14,8 +14,8 @@
 economy.performance(
     group: str = 'sector',
     sortby: str = 'Name',
-    ascend: bool = True,
-    ) -> pandas.core.frame.DataFrame
+    ascend: bool = True
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

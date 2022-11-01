@@ -11,8 +11,7 @@
     </h3>
 
 {{< highlight python >}}
-portfolio.po.get_properties(
-    ) -> List[str]
+portfolio.po.get_properties() -> List[str]
 {{< /highlight >}}
 
 * **Returns**

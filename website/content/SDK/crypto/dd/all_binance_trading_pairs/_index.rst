@@ -13,8 +13,7 @@
     </h3>
 
 {{< highlight python >}}
-crypto.dd.all_binance_trading_pairs(
-    ) -> pandas.core.frame.DataFrame
+crypto.dd.all_binance_trading_pairs() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Returns**

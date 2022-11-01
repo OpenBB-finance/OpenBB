@@ -18,8 +18,8 @@ common.ta.aroon(
     low_values: pandas.core.series.Series,
     window: int = 25,
     scalar: int = 100,
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

@@ -16,8 +16,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 crypto.defi.anchor_data(
     address: str = '',
-    chart: bool = False,
-    ) -> Tuple[Any, Any, str]
+    chart: bool = False
+) -> Tuple[Any, Any, str]
 {{< /highlight >}}
 
 * **Parameters**

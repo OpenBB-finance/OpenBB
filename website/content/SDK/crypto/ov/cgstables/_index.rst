@@ -17,8 +17,8 @@ crypto.ov.cgstables(
     limit: int = 20,
     sortby: str = 'rank',
     ascend: bool = False,
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

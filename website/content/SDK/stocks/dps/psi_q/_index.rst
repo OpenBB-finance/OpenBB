@@ -18,8 +18,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 stocks.dps.psi_q(
     symbol: str,
     nyse: bool = False,
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

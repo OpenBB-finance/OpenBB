@@ -15,8 +15,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 stocks.ba.bullbear(
     symbol: str,
-    chart: bool = False,
-    ) -> Tuple[int, int, int, int]
+    chart: bool = False
+) -> Tuple[int, int, int, int]
 {{< /highlight >}}
 
 * **Parameters**

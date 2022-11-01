@@ -13,8 +13,8 @@
 {{< highlight python >}}
 stocks.ba.rise(
     symbol: str,
-    limit: int = 10,
-    ) -> pandas.core.frame.DataFrame
+    limit: int = 10
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

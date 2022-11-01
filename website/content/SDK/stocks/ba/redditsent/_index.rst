@@ -20,8 +20,8 @@ stocks.ba.redditsent(
     time_frame: str = 'week',
     full_search: bool = True,
     subreddits: str = 'all',
-    chart: bool = False,
-    ) -> Tuple[pandas.core.frame.DataFrame, list, float]
+    chart: bool = False
+) -> Tuple[pandas.core.frame.DataFrame, list, float]
 {{< /highlight >}}
 
 * **Parameters**

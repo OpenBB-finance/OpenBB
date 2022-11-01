@@ -11,8 +11,7 @@
     </h3>
 
 {{< highlight python >}}
-economy.treasury_maturities(
-    ) -> pandas.core.frame.DataFrame
+economy.treasury_maturities() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Returns**

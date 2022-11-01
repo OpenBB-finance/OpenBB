@@ -13,8 +13,8 @@
 {{< highlight python >}}
 stocks.ca.finviz_peers(
     symbol: str,
-    compare_list: List[str] = None,
-    ) -> Tuple[List[str], str]
+    compare_list: List[str] = None
+) -> Tuple[List[str], str]
 {{< /highlight >}}
 
 * **Parameters**

@@ -15,8 +15,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 crypto.dd.cbbook(
     symbol: str,
-    chart: bool = False,
-    ) -> Tuple[numpy.ndarray, numpy.ndarray, str, dict]
+    chart: bool = False
+) -> Tuple[numpy.ndarray, numpy.ndarray, str, dict]
 {{< /highlight >}}
 
 * **Parameters**

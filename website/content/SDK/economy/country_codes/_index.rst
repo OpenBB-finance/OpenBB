@@ -11,8 +11,7 @@
     </h3>
 
 {{< highlight python >}}
-economy.country_codes(
-    ) -> List[str]
+economy.country_codes() -> List[str]
 {{< /highlight >}}
 
 * **Returns**

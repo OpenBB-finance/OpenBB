@@ -12,8 +12,8 @@
 
 {{< highlight python >}}
 portfolio.po.load(
-    excel_file: str = '',
-    )
+    excel_file: str = ''
+)
 {{< /highlight >}}
 
 * **Parameters**

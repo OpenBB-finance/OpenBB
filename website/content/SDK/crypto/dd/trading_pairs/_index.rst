@@ -12,8 +12,7 @@
     </h3>
 
 {{< highlight python >}}
-crypto.dd.trading_pairs(
-    ) -> List[dict]
+crypto.dd.trading_pairs() -> List[dict]
 {{< /highlight >}}
 
 * **Returns**

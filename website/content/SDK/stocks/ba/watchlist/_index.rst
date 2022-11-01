@@ -15,8 +15,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 stocks.ba.watchlist(
     limit: int = 5,
-    chart: bool = False,
-    ) -> Tuple[List[praw.models.reddit.submission.Submission], dict, int]
+    chart: bool = False
+) -> Tuple[List[praw.models.reddit.submission.Submission], dict, int]
 {{< /highlight >}}
 
 * **Parameters**

@@ -11,8 +11,7 @@
     </h3>
 
 {{< highlight python >}}
-economy.macro_countries(
-    ) -> Dict[str, str]
+economy.macro_countries() -> Dict[str, str]
 {{< /highlight >}}
 
 * **Returns**

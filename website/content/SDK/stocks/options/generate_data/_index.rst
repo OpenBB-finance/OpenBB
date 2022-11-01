@@ -14,8 +14,8 @@
 stocks.options.generate_data(
     current_price: float,
     options: List[Dict[str, int]],
-    underlying: int,
-    ) -> Tuple[List[float], List[float], List[float]]
+    underlying: int
+) -> Tuple[List[float], List[float], List[float]]
 {{< /highlight >}}
 
 * **Parameters**

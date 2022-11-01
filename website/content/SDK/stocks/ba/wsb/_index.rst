@@ -13,8 +13,8 @@
 {{< highlight python >}}
 stocks.ba.wsb(
     limit: int = 10,
-    new: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    new: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

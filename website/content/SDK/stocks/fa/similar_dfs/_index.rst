@@ -15,8 +15,8 @@ stocks.fa.similar_dfs(
     symbol: str,
     info: Dict[str, Any],
     n: int,
-    no_filter: bool = False,
-    )
+    no_filter: bool = False
+)
 {{< /highlight >}}
 
 * **Parameters**

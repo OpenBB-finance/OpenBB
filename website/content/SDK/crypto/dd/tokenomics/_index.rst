@@ -12,8 +12,8 @@
 
 {{< highlight python >}}
 crypto.dd.tokenomics(
-    symbol: str = '',
-    ) -> pandas.core.frame.DataFrame
+    symbol: str = ''
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

@@ -12,8 +12,7 @@
     </h3>
 
 {{< highlight python >}}
-stocks.disc.ulc(
-    ) -> pandas.core.frame.DataFrame
+stocks.disc.ulc() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Returns**

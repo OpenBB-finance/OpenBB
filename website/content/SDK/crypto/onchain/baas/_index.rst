@@ -20,8 +20,8 @@ crypto.onchain.baas(
     limit: int = 30,
     sortby: str = 'tradeAmount',
     ascend: bool = True,
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

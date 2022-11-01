@@ -11,8 +11,7 @@
     </h3>
 
 {{< highlight python >}}
-etf.symbols(
-    ) -> Tuple[List[str], List[str]]
+etf.symbols() -> Tuple[List[str], List[str]]
 {{< /highlight >}}
 
 * **Returns**

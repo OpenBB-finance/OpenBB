@@ -11,8 +11,7 @@
     </h3>
 
 {{< highlight python >}}
-stocks.dps.ctb(
-    ) -> pandas.core.frame.DataFrame
+stocks.dps.ctb() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Returns**

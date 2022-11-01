@@ -12,8 +12,8 @@
 
 {{< highlight python >}}
 keys.mykeys(
-    show: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    show: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

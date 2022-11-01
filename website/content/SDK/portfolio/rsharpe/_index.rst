@@ -17,8 +17,8 @@ portfolio.rsharpe(
     portfolio: pandas.core.frame.DataFrame,
     risk_free_rate: float = 0,
     window: str = '1y',
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

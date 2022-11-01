@@ -12,8 +12,8 @@
 
 {{< highlight python >}}
 stocks.ca.finnhub_peers(
-    symbol: str,
-    ) -> List[str]
+    symbol: str
+) -> List[str]
 {{< /highlight >}}
 
 * **Parameters**

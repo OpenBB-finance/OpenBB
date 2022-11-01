@@ -16,8 +16,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 crypto.ov.wfpe(
     symbol: str,
-    chart: bool = False,
-    ) -> List[Any]
+    chart: bool = False
+) -> List[Any]
 {{< /highlight >}}
 
 * **Parameters**

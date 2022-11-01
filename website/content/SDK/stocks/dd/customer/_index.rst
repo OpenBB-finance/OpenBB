@@ -13,8 +13,8 @@
 {{< highlight python >}}
 stocks.dd.customer(
     symbol: str,
-    limit: int = 50,
-    ) -> pandas.core.frame.DataFrame
+    limit: int = 50
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

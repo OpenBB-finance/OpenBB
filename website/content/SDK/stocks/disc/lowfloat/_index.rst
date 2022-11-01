@@ -11,8 +11,7 @@
     </h3>
 
 {{< highlight python >}}
-stocks.disc.lowfloat(
-    ) -> pandas.core.frame.DataFrame
+stocks.disc.lowfloat() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Returns**

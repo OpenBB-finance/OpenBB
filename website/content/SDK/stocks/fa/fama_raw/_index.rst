@@ -11,8 +11,7 @@
     </h3>
 
 {{< highlight python >}}
-stocks.fa.fama_raw(
-    ) -> pandas.core.frame.DataFrame
+stocks.fa.fama_raw() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Returns**

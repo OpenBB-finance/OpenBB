@@ -18,8 +18,8 @@ common.qa.sortino(
     target_return: float = 0,
     window: float = 252,
     adjusted: bool = False,
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

@@ -11,8 +11,7 @@
     </h3>
 
 {{< highlight python >}}
-stocks.disc.gtech(
-    ) -> pandas.core.frame.DataFrame
+stocks.disc.gtech() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Returns**

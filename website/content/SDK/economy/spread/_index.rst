@@ -17,8 +17,8 @@ economy.spread(
     countries: Union[str, List[str]] = 'G7',
     maturity: str = '10Y',
     change: bool = False,
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

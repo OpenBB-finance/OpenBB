@@ -15,8 +15,8 @@ keys.binance(
     key: str,
     secret: str,
     persist: bool = False,
-    show_output: bool = False,
-    ) -> str
+    show_output: bool = False
+) -> str
 {{< /highlight >}}
 
 * **Parameters**

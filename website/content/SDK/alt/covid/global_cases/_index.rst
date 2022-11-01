@@ -12,8 +12,8 @@
 
 {{< highlight python >}}
 alt.covid.global_cases(
-    country: str,
-    ) -> pandas.core.frame.DataFrame
+    country: str
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

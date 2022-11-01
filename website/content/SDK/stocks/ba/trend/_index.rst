@@ -18,11 +18,11 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 stocks.ba.trend(
     start_date: datetime.datetime = datetime.datetime(
-    2022, 10, 31, 13, 19, 53, 864769, chart: bool = False, ),
-    hour: int = 0,
+    2022, 11, 1, 10, 6, 36, 650475, chart: bool = False
+), hour: int = 0,
     number: int = 10,
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

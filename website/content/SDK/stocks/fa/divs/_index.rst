@@ -12,8 +12,8 @@
 
 {{< highlight python >}}
 stocks.fa.divs(
-    symbol: str,
-    ) -> pandas.core.frame.DataFrame
+    symbol: str
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

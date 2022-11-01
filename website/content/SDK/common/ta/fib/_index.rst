@@ -18,8 +18,8 @@ common.ta.fib(
     limit: int = 120,
     start_date: Any = None,
     end_date: Any = None,
-    chart: bool = False,
-    ) -> Tuple[pandas.core.frame.DataFrame, pandas._libs.tslibs.timestamps.Timestamp, pandas._libs.tslibs.timestamps.Timestamp, float, float]
+    chart: bool = False
+) -> Tuple[pandas.core.frame.DataFrame, pandas._libs.tslibs.timestamps.Timestamp, pandas._libs.tslibs.timestamps.Timestamp, float, float]
 {{< /highlight >}}
 
 * **Parameters**

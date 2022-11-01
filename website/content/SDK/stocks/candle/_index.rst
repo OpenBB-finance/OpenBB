@@ -20,17 +20,19 @@ stocks.candle(
     ma: Optional[Iterable[int]] = None,
     asset_type: str = '',
     start_date: datetime.datetime = datetime.datetime(
-    2019, 10, 27, 13, 19, 53, 241291, ), interval: int = 1440,
+    2019, 10, 28, 10, 6, 36, 33043
+), interval: int = 1440,
     end_date: datetime.datetime = datetime.datetime(
-    2022, 10, 31, 13, 19, 53, 241301, ), prepost: bool = False,
+    2022, 11, 1, 10, 6, 36, 33053
+), prepost: bool = False,
     source: str = 'YahooFinance',
     iexrange: str = 'ytd',
     weekly: bool = False,
     monthly: bool = False,
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
     raw: bool = False,
-    yscale: str = 'linear',
-    )
+    yscale: str = 'linear'
+)
 {{< /highlight >}}
 
 * **Parameters**

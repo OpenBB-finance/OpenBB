@@ -12,8 +12,8 @@
 
 {{< highlight python >}}
 stocks.process_candle(
-    data: pandas.core.frame.DataFrame,
-    ) -> pandas.core.frame.DataFrame
+    data: pandas.core.frame.DataFrame
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

@@ -15,8 +15,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 stocks.ta.view(
     symbol: str,
-    chart: bool = False,
-    ) -> bytes
+    chart: bool = False
+) -> bytes
 {{< /highlight >}}
 
 * **Parameters**

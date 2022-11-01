@@ -17,8 +17,8 @@ crypto.dd.book(
     from_symbol: str,
     limit: int = 100,
     to_symbol: str = 'USDT',
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

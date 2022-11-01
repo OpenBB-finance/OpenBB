@@ -12,8 +12,8 @@
 
 {{< highlight python >}}
 crypto.onchain.token_decimals(
-    address: str,
-    ) -> Optional[int]
+    address: str
+) -> Optional[int]
 {{< /highlight >}}
 
 * **Parameters**

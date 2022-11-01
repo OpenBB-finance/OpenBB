@@ -19,8 +19,8 @@ crypto.onchain.dvcp(
     to_symbol: str = 'USDT',
     sortby: str = 'date',
     ascend: bool = True,
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

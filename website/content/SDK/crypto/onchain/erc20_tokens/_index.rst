@@ -12,8 +12,7 @@
     </h3>
 
 {{< highlight python >}}
-crypto.onchain.erc20_tokens(
-    ) -> pandas.core.frame.DataFrame
+crypto.onchain.erc20_tokens() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Returns**

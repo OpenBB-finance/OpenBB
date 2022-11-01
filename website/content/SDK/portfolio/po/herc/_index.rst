@@ -41,8 +41,8 @@ portfolio.po.herc(
     leaf_order: bool = True,
     d_ewma: float = 0.94,
     value: float = 1.0,
-    chart: bool = False,
-    ) -> Tuple
+    chart: bool = False
+) -> Tuple
 {{< /highlight >}}
 
 * **Parameters**

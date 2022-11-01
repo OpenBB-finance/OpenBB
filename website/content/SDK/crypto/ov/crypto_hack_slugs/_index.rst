@@ -12,8 +12,7 @@
     </h3>
 
 {{< highlight python >}}
-crypto.ov.crypto_hack_slugs(
-    ) -> List[str]
+crypto.ov.crypto_hack_slugs() -> List[str]
 {{< /highlight >}}
 
 * **Returns**

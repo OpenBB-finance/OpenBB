@@ -16,8 +16,8 @@ forex.load(
     from_symbol: str,
     resolution: str = 'd',
     interval: str = '1day',
-    start_date: str = '2021-10-31', source: str = 'YahooFinance',
-    ) -> pandas.core.frame.DataFrame
+    start_date: str = '2021-11-01', source: str = 'YahooFinance'
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

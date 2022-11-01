@@ -19,8 +19,8 @@ econometrics.panel(
     data: Dict[str, pandas.core.frame.DataFrame],
     entity_effects: bool = False,
     time_effects: bool = False,
-    chart: bool = False,
-    ) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any], Any]
+    chart: bool = False
+) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any], Any]
 {{< /highlight >}}
 
 * **Parameters**

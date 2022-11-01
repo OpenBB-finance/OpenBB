@@ -11,8 +11,7 @@
     </h3>
 
 {{< highlight python >}}
-crypto.disc.coin_list(
-    ) -> pandas.core.frame.DataFrame
+crypto.disc.coin_list() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Returns**

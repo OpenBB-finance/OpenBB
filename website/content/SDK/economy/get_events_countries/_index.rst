@@ -14,6 +14,5 @@
     </h3>
 
 {{< highlight python >}}
-economy.get_events_countries(
-    ) -> list
+economy.get_events_countries() -> list
 {{< /highlight >}}

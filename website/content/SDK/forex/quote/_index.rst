@@ -16,8 +16,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 forex.quote(
     to_symbol: str = 'USD',
     from_symbol: str = 'EUR',
-    chart: bool = False,
-    ) -> Dict
+    chart: bool = False
+) -> Dict
 {{< /highlight >}}
 
 * **Parameters**

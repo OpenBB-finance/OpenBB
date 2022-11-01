@@ -12,8 +12,8 @@
 
 {{< highlight python >}}
 stocks.options.last_price(
-    symbol: str,
-    )
+    symbol: str
+)
 {{< /highlight >}}
 
 * **Parameters**

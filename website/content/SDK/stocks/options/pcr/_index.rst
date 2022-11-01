@@ -16,8 +16,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 stocks.options.pcr(
     symbol: str,
     window: int = 30,
-    start_date: str = '2021-10-30', chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    start_date: str = '2021-10-31', chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

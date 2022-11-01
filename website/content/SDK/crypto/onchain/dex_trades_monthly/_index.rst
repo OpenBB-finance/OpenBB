@@ -15,8 +15,8 @@
 crypto.onchain.dex_trades_monthly(
     trade_amount_currency: str = 'USD',
     limit: int = 90,
-    ascend: bool = True,
-    ) -> pandas.core.frame.DataFrame
+    ascend: bool = True
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

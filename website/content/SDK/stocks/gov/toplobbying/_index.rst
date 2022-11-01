@@ -14,8 +14,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 stocks.gov.toplobbying(
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Returns**

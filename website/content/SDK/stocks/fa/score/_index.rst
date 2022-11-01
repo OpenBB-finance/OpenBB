@@ -12,8 +12,8 @@
 
 {{< highlight python >}}
 stocks.fa.score(
-    symbol: str,
-    ) -> Optional[numpy.number]
+    symbol: str
+) -> Optional[numpy.number]
 {{< /highlight >}}
 
 * **Parameters**

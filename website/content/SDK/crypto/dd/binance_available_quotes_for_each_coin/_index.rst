@@ -11,8 +11,7 @@
     </h3>
 
 {{< highlight python >}}
-crypto.dd.binance_available_quotes_for_each_coin(
-    ) -> dict
+crypto.dd.binance_available_quotes_for_each_coin() -> dict
 {{< /highlight >}}
 
 * **Returns**

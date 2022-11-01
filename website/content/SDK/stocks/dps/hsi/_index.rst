@@ -11,8 +11,7 @@
     </h3>
 
 {{< highlight python >}}
-stocks.dps.hsi(
-    ) -> pandas.core.frame.DataFrame
+stocks.dps.hsi() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Returns**

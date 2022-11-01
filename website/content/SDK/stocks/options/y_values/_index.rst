@@ -15,8 +15,8 @@ stocks.options.y_values(
     base: float,
     price: float,
     options: List[Dict[Any, Any]],
-    underlying: int,
-    ) -> float
+    underlying: int
+) -> float
 {{< /highlight >}}
 
 * **Parameters**

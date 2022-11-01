@@ -15,8 +15,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 econometrics.bpag(
     model: pandas.core.frame.DataFrame,
-    chart: bool = False,
-    ) -> tuple
+    chart: bool = False
+) -> tuple
 {{< /highlight >}}
 
 * **Parameters**

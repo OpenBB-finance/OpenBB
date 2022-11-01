@@ -17,8 +17,8 @@ common.qa.omega(
     data: pandas.core.frame.DataFrame,
     threshold_start: float = 0,
     threshold_end: float = 1.5,
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

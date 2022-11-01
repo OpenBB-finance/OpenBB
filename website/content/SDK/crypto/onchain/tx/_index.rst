@@ -14,8 +14,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.onchain.tx(
-    tx_hash, chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    tx_hash, chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

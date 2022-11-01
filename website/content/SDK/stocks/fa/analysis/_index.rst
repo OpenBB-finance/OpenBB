@@ -12,8 +12,8 @@
 
 {{< highlight python >}}
 stocks.fa.analysis(
-    symbol: str,
-    ) -> pandas.core.frame.DataFrame
+    symbol: str
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

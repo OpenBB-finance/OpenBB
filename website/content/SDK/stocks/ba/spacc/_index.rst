@@ -13,8 +13,8 @@
 {{< highlight python >}}
 stocks.ba.spacc(
     limit: int = 10,
-    popular: bool = False,
-    ) -> Tuple[pandas.core.frame.DataFrame, dict]
+    popular: bool = False
+) -> Tuple[pandas.core.frame.DataFrame, dict]
 {{< /highlight >}}
 
 * **Parameters**

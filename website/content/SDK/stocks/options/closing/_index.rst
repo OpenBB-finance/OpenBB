@@ -12,8 +12,8 @@
 
 {{< highlight python >}}
 stocks.options.closing(
-    symbol: str,
-    ) -> pandas.core.series.Series
+    symbol: str
+) -> pandas.core.series.Series
 {{< /highlight >}}
 
 * **Parameters**

@@ -15,8 +15,8 @@ econometrics.clean(
     dataset: pandas.core.frame.DataFrame,
     fill: str = '',
     drop: str = '',
-    limit: Optional[int] = None,
-    ) -> pandas.core.frame.DataFrame
+    limit: Optional[int] = None
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

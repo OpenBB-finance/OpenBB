@@ -25,8 +25,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 crypto.ov.cgindexes(
     sortby: str = 'Name',
     ascend: bool = True,
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

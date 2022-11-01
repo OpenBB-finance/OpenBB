@@ -18,8 +18,8 @@ crypto.onchain.balance(
     address: str,
     sortby: str = 'index',
     ascend: bool = False,
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

@@ -11,8 +11,7 @@
     </h3>
 
 {{< highlight python >}}
-stocks.disc.rtat(
-    ) -> pandas.core.frame.DataFrame
+stocks.disc.rtat() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Returns**

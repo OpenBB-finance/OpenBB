@@ -12,8 +12,8 @@
 
 {{< highlight python >}}
 stocks.ba.text_sent(
-    post_data: List[str],
-    ) -> float
+    post_data: List[str]
+) -> float
 {{< /highlight >}}
 
 * **Parameters**

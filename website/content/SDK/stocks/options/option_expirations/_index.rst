@@ -12,8 +12,8 @@
 
 {{< highlight python >}}
 stocks.options.option_expirations(
-    symbol: str,
-    )
+    symbol: str
+)
 {{< /highlight >}}
 
 * **Parameters**

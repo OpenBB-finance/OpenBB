@@ -13,8 +13,8 @@
 {{< highlight python >}}
 stocks.fa.fraud(
     symbol: str,
-    detail: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    detail: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

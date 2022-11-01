@@ -14,8 +14,8 @@
 keys.set_keys(
     keys_dict: Dict[str, Dict[str, Union[str, bool]]],
     persist: bool = False,
-    show_output: bool = False,
-    ) -> Dict
+    show_output: bool = False
+) -> Dict
 {{< /highlight >}}
 
 * **Parameters**

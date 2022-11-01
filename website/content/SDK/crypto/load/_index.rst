@@ -14,12 +14,14 @@
 crypto.load(
     symbol: 'str',
     start_date: 'datetime' = datetime.datetime(
-    2019, 10, 27, 13, 19, 53, 605535, ), interval: 'str' = '1440',
+    2019, 10, 28, 10, 6, 36, 395121
+), interval: 'str' = '1440',
     exchange: 'str' = 'binance',
     vs_currency: 'str' = 'usdt',
     end_date: 'datetime' = datetime.datetime(
-    2022, 10, 31, 13, 19, 53, 605544, ), source: 'str' = 'CCXT',
-    ) -> 'pd.DataFrame'
+    2022, 11, 1, 10, 6, 36, 395130
+), source: 'str' = 'CCXT'
+) -> 'pd.DataFrame'
 {{< /highlight >}}
 
 * **Parameters**

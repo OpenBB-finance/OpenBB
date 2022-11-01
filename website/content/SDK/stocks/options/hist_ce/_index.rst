@@ -17,8 +17,8 @@ stocks.options.hist_ce(
     symbol: str = 'GME',
     date: str = '2021-02-05', call: bool = True,
     price: str = '90',
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

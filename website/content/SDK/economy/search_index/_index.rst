@@ -13,8 +13,8 @@
 {{< highlight python >}}
 economy.search_index(
     keyword: list,
-    limit: int = 10,
-    ) -> pandas.core.frame.DataFrame
+    limit: int = 10
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

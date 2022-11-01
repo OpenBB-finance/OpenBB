@@ -14,8 +14,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 econometrics.granger(
-    dependent_series, independent_series, lags, chart: bool = False,
-    )
+    dependent_series, independent_series, lags, chart: bool = False
+)
 {{< /highlight >}}
 
 * **Parameters**

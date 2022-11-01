@@ -13,8 +13,8 @@
 {{< highlight python >}}
 stocks.fa.earnings(
     symbol: str,
-    quarterly: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    quarterly: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

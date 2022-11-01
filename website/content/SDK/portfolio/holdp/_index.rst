@@ -15,8 +15,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 portfolio.holdp(
     portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
-    chart: bool = False,
-    )
+    chart: bool = False
+)
 {{< /highlight >}}
 
 * **Parameters**

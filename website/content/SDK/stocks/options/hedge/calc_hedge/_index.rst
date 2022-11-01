@@ -18,8 +18,8 @@ stocks.options.hedge.calc_hedge(
     portfolio_option_amount: float = 100,
     side: str = 'Call',
     greeks: dict = {'Portfolio': {'Delta': 1, 'Gamma': 9.1268e-05, 'Vega': 5.4661}, 'Option A': {'Delta': 1, 'Gamma': 9.1268e-05, 'Vega': 5.4661}, 'Option B': {'Delta': 1, 'Gamma': 9.1268e-05, 'Vega': 5.4661}}, sign: int = 1,
-    chart: bool = False,
-    )
+    chart: bool = False
+)
 {{< /highlight >}}
 
 * **Parameters**

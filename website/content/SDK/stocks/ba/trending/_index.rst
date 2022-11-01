@@ -11,8 +11,7 @@
     </h3>
 
 {{< highlight python >}}
-stocks.ba.trending(
-    ) -> pandas.core.frame.DataFrame
+stocks.ba.trending() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Returns**

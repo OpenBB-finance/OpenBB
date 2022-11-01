@@ -14,6 +14,5 @@
     </h3>
 
 {{< highlight python >}}
-economy.get_ycrv_countries(
-    ) -> list
+economy.get_ycrv_countries() -> list
 {{< /highlight >}}

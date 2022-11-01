@@ -17,8 +17,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 stocks.sia.cpci(
     industry: str = 'Internet Content & Information', mktcap: str = 'Large',
     exclude_exchanges: bool = True,
-    chart: bool = False,
-    ) -> dict
+    chart: bool = False
+) -> dict
 {{< /highlight >}}
 
 * **Parameters**

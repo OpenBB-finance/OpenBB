@@ -13,8 +13,8 @@
 {{< highlight python >}}
 stocks.ba.stalker(
     user: str,
-    limit: int = 30,
-    ) -> List[Dict]
+    limit: int = 30
+) -> List[Dict]
 {{< /highlight >}}
 
 * **Parameters**

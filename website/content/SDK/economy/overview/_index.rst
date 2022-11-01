@@ -11,8 +11,7 @@
     </h3>
 
 {{< highlight python >}}
-economy.overview(
-    ) -> pandas.core.frame.DataFrame
+economy.overview() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Returns**

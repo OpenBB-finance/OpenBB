@@ -17,8 +17,8 @@ stocks.gov.gtrades(
     symbol: str,
     gov_type: str = 'congress',
     past_transactions_months: int = 6,
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

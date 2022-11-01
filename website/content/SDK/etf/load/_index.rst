@@ -48,8 +48,8 @@ etf.load(
     source: str = 'YahooFinance',
     iexrange: str = 'ytd',
     weekly: bool = False,
-    monthly: bool = False,
-    )
+    monthly: bool = False
+)
 {{< /highlight >}}
 
 * **Parameters**

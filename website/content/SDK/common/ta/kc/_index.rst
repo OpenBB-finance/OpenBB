@@ -21,8 +21,8 @@ common.ta.kc(
     scalar: float = 2,
     mamode: str = 'ema',
     offset: int = 0,
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

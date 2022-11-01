@@ -17,8 +17,8 @@ portfolio.om(
     portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
     threshold_start: float = 0,
     threshold_end: float = 1.5,
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

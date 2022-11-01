@@ -12,8 +12,8 @@
 
 {{< highlight python >}}
 stocks.fa.website(
-    symbol: str,
-    ) -> str
+    symbol: str
+) -> str
 {{< /highlight >}}
 
 * **Parameters**

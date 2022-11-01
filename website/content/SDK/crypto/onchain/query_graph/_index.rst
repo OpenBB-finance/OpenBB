@@ -13,8 +13,8 @@
 {{< highlight python >}}
 crypto.onchain.query_graph(
     url: str,
-    query: str,
-    ) -> dict
+    query: str
+) -> dict
 {{< /highlight >}}
 
 * **Parameters**

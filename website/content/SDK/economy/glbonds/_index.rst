@@ -11,8 +11,7 @@
     </h3>
 
 {{< highlight python >}}
-economy.glbonds(
-    ) -> pandas.core.frame.DataFrame
+economy.glbonds() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Returns**

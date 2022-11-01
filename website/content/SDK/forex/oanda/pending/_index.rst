@@ -15,8 +15,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 forex.oanda.pending(
     accountID: str = 'REPLACE_ME',
-    chart: bool = False,
-    ) -> Union[pandas.core.frame.DataFrame, bool]
+    chart: bool = False
+) -> Union[pandas.core.frame.DataFrame, bool]
 {{< /highlight >}}
 
 * **Parameters**

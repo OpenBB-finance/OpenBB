@@ -18,9 +18,9 @@ crypto.dd.eb(
     symbol: str,
     exchange: str = 'binance',
     start_date: int = 1262304000,
-    end_date: int = 1667222394,
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    end_date: int = 1667297196,
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

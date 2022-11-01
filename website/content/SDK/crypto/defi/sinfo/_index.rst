@@ -15,8 +15,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 crypto.defi.sinfo(
     address: str = '',
-    chart: bool = False,
-    ) -> Tuple[pandas.core.frame.DataFrame, str]
+    chart: bool = False
+) -> Tuple[pandas.core.frame.DataFrame, str]
 {{< /highlight >}}
 
 * **Parameters**

@@ -12,8 +12,8 @@
 
 {{< highlight python >}}
 stocks.dd.est(
-    symbol: str,
-    ) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
+    symbol: str
+) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
 {{< /highlight >}}
 
 * **Parameters**

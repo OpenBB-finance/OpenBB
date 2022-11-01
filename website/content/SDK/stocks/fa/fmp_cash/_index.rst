@@ -16,8 +16,8 @@ stocks.fa.fmp_cash(
     limit: int = 5,
     quarterly: bool = False,
     ratios: bool = False,
-    plot: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    plot: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

@@ -11,8 +11,7 @@
     </h3>
 
 {{< highlight python >}}
-economy.indices(
-    ) -> pandas.core.frame.DataFrame
+economy.indices() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Returns**

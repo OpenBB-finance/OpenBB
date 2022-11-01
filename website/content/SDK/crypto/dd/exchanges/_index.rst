@@ -15,8 +15,7 @@
     </h3>
 
 {{< highlight python >}}
-crypto.dd.exchanges(
-    )
+crypto.dd.exchanges()
 {{< /highlight >}}
 
 * **Returns**

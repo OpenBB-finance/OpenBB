@@ -14,8 +14,8 @@
 stocks.fa.fmp_ratios(
     symbol: str,
     limit: int = 5,
-    quarterly: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    quarterly: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

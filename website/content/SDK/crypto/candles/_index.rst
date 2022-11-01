@@ -16,8 +16,8 @@ crypto.candles(
     volume: 'bool' = True,
     ylabel: 'str' = '',
     title: 'str' = '',
-    external_axes: 'list[plt.Axes] | None' = None, yscale: 'str' = 'linear',
-    ) -> 'None'
+    external_axes: 'list[plt.Axes] | None' = None, yscale: 'str' = 'linear'
+) -> 'None'
 {{< /highlight >}}
 
 * **Parameters**

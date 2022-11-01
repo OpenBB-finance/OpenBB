@@ -14,8 +14,8 @@
 alt.oss.search(
     sortby: str = 'stars',
     page: int = 1,
-    categories: str = '',
-    ) -> pandas.core.frame.DataFrame
+    categories: str = ''
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

@@ -16,8 +16,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 crypto.dd.gov(
     symbol: str,
-    chart: bool = False,
-    ) -> Tuple[str, pandas.core.frame.DataFrame]
+    chart: bool = False
+) -> Tuple[str, pandas.core.frame.DataFrame]
 {{< /highlight >}}
 
 * **Parameters**

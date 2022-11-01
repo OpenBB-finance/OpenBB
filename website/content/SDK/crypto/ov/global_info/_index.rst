@@ -17,8 +17,7 @@
     </h3>
 
 {{< highlight python >}}
-crypto.ov.global_info(
-    ) -> pandas.core.frame.DataFrame
+crypto.ov.global_info() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Returns**

@@ -13,8 +13,8 @@
 {{< highlight python >}}
 stocks.ca.screener(
     similar: List[str],
-    data_type: str = 'overview',
-    )
+    data_type: str = 'overview'
+)
 {{< /highlight >}}
 
 * **Parameters**

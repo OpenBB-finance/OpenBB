@@ -13,8 +13,8 @@
 {{< highlight python >}}
 stocks.options.option_chain(
     symbol: str,
-    expiry: str,
-    )
+    expiry: str
+)
 {{< /highlight >}}
 
 * **Parameters**

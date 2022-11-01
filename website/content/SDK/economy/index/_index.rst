@@ -20,8 +20,8 @@ economy.index(
     end_date: int = None,
     column: str = 'Adj Close',
     returns: bool = False,
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

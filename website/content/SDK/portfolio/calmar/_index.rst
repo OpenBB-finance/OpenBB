@@ -13,8 +13,8 @@
 {{< highlight python >}}
 portfolio.calmar(
     portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
-    window: int = 756,
-    )
+    window: int = 756
+)
 {{< /highlight >}}
 
 * **Parameters**

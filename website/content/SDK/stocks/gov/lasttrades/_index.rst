@@ -13,8 +13,8 @@
 {{< highlight python >}}
 stocks.gov.lasttrades(
     gov_type: str = 'congress',
-    limit: int = -1, representative: str = '',
-    ) -> pandas.core.frame.DataFrame
+    limit: int = -1, representative: str = ''
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

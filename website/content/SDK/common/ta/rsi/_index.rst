@@ -18,8 +18,8 @@ common.ta.rsi(
     window: int = 14,
     scalar: float = 100,
     drift: int = 1,
-    chart: bool = False,
-    ) -> pandas.core.frame.DataFrame
+    chart: bool = False
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 * **Parameters**

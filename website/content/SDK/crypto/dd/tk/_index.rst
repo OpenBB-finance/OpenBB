@@ -17,8 +17,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 crypto.dd.tk(
     symbol: str,
     coingecko_id: str,
-    chart: bool = False,
-    ) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
+    chart: bool = False
+) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
 {{< /highlight >}}
 
 * **Parameters**

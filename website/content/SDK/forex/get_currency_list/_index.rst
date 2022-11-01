@@ -11,6 +11,5 @@
     </h3>
 
 {{< highlight python >}}
-forex.get_currency_list(
-    ) -> List
+forex.get_currency_list() -> List
 {{< /highlight >}}
