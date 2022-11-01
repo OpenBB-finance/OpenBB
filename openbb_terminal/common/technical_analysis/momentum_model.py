@@ -43,11 +43,14 @@ def cci(
         Dataframe of technical indicator
     """
 
+    close_col = ta_helpers.check_columns(data)
+    if close_col is None:
+        return pd.DataFrame()
     return pd.DataFrame(
         ta.cci(
             high=data["High"],
             low=data["Low"],
-            close=data["Adj Close"],
+            close=data[close_col],
             length=window,
             scalar=scalar,
         ).dropna()
@@ -105,8 +108,10 @@ def rsi(
     pd.DataFrame
         Dataframe of technical indicator
     """
+    if isinstance(data, pd.DataFrame):
+        console.print("[red]Please send a series and not a DataFrame.[/red]\n")
     raw_data = ta.rsi(data, length=window, scalar=scalar, drift=drift)
-    if not raw_data:
+    if raw_data.empty:
         return pd.DataFrame()
     return pd.DataFrame(raw_data.dropna())
 

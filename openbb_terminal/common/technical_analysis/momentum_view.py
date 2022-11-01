@@ -73,10 +73,13 @@ def display_cci(
     else:
         return
 
+    close_col = ta_helpers.check_columns(data)
+    if close_col is None:
+        return
     ax1.set_title(f"{symbol} CCI")
     ax1.plot(
         plot_data.index,
-        plot_data["Adj Close"].values,
+        plot_data[close_col].values,
     )
     ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
     ax1.set_ylabel("Share Price ($)")
@@ -637,8 +640,8 @@ def display_demark(
 
     Parameters
     ----------
-    data : pd.Series
-        Series of values
+    data : pd.DataFrame
+        DataFrame of values
     symbol : str
         Symbol that the data corresponds to
     min_to_show: int
@@ -652,7 +655,10 @@ def display_demark(
     -------
 
     """
-    demark_df = momentum_model.demark_seq(data["Adj Close"])
+    close_col = ta_helpers.check_columns(data, high=False, low=False)
+    if close_col is None:
+        return
+    demark_df = momentum_model.demark_seq(data[close_col])
     demark_df.index = data.index
 
     stock_data = data.copy()
