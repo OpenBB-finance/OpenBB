@@ -982,14 +982,7 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
             type=str,
             default="ytd",
         )
-        parser.add_argument(
-            "-v",
-            "--verbose",
-            action="store_true",
-            default=False,
-            help="Demonstrate info about the symbol that was just loaded.",
-            dest="verbose",
-        )
+
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
 
@@ -1013,7 +1006,6 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     ns_parser.source,
                     weekly=ns_parser.weekly,
                     monthly=ns_parser.monthly,
-                    verbose=ns_parser.verbose,
                 )
             else:
                 # This seems to block the .exe since the folder needs to be manually created
@@ -1039,14 +1031,12 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     return
             if not df_stock_candidate.empty:
                 self.stock = df_stock_candidate
-                if ns_parser.verbose:
-                    self.add_info = stocks_helper.additional_info_about_ticker(
-                        ns_parser.ticker
-                    )
-                    console.print(self.add_info)
+                self.add_info = stocks_helper.additional_info_about_ticker(
+                    ns_parser.ticker
+                )
+                console.print(self.add_info)
                 if (
-                    ns_parser.verbose
-                    and ns_parser.interval == 1440
+                    ns_parser.interval == 1440
                     and not ns_parser.weekly
                     and not ns_parser.monthly
                     and ns_parser.filepath is None

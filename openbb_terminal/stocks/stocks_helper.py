@@ -180,7 +180,7 @@ def load(
     iexrange: str = "ytd",
     weekly: bool = False,
     monthly: bool = False,
-    verbose: str = "",
+    verbose: bool = True,
 ):
 
     """
@@ -380,8 +380,8 @@ def load(
 
     if verbose:
         console.print(
-            f"Loading {s_intraday} {symbol.upper()} stock "
-            f"with starting period {s_start.strftime('%Y-%m-%d')} for analysis.",
+            f"Loading {s_intraday} data for {symbol.upper()} "
+            f"with starting period {s_start.strftime('%Y-%m-%d')}.",
         )
 
     return df_stock_candidate

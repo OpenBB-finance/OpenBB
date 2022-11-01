@@ -1180,7 +1180,12 @@ def parse_args_and_run():
         type=str,
     )
     parser.add_argument(
-        "-v", "--verbose", dest="verbose", action="store_true", default=False
+        "-v",
+        "--verbose",
+        help="Enable verbose output for debugging",
+        dest="verbose",
+        action="store_true",
+        default=False,
     )
     parser.add_argument(
         "-i",
