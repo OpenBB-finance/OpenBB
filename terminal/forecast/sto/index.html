@@ -9,8 +9,8 @@
 
 
 
-    <meta name="description" content="usage: sto [-d {}] [--period PERIOD] [-h] [-l LIMIT] Add in Stochastic Oscillator %K and %D
-optional arguments: -d {}, --target-dataset {} The name of the dataset you want to select (default: None) --period PERIOD The period to use (default: 10) -h, --help show this help message (default: False) -l LIMIT, --limit LIMIT Number of entries to show in data. (default: 5) For more information and examples, use &#39;about sto&#39; to access the related guide.">
+    <meta name="description" content="usage: sto [--close-col CLOSE_COL] [--high-col HIGH_COL] [--low-col LOW_COL] [-d {AAPL}] [--period PERIOD] [-h] [-l LIMIT] Add in Stochastic Oscillator %K and %D
+optional arguments: --close-col CLOSE_COL Close column name to use for Stochastic Oscillator (default: close) --high-col HIGH_COL High column name to use for Stochastic Oscillator (default: high) --low-col LOW_COL Low column name to use for Stochastic Oscillator (default: low) -d {}, --target-dataset {} The name of the dataset you want to select (default: None) --period PERIOD The period to use (default: 10) -h, --help show this help message (default: False) -l LIMIT, --limit LIMIT Number of entries to show in data.">
 
 
 
@@ -47492,9 +47492,14 @@ code, img {
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Sto</h1>
-        <pre><code>usage: sto [-d {}] [--period PERIOD] [-h] [-l LIMIT]
+        <pre><code>usage: sto [--close-col CLOSE_COL] [--high-col HIGH_COL] [--low-col LOW_COL]
+[-d {AAPL}] [--period PERIOD] [-h] [-l LIMIT]
 </code></pre><p>Add in Stochastic Oscillator %K and %D</p>
 <pre><code>optional arguments:
+  --close-col CLOSE_COL
+                        Close column name to use for Stochastic Oscillator (default: close)
+  --high-col HIGH_COL   High column name to use for Stochastic Oscillator (default: high)
+  --low-col LOW_COL     Low column name to use for Stochastic Oscillator (default: low)
   -d {}, --target-dataset {}
                         The name of the dataset you want to select (default: None)
   --period PERIOD       The period to use (default: 10)

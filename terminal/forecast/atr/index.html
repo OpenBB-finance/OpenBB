@@ -9,8 +9,8 @@
 
 
 
-    <meta name="description" content="usage: atr [-d {}] [-c TARGET_COLUMN] [-h] Add Average True Range to dataset of specific stock ticker.
-optional arguments: -d {}, --target-dataset {} The name of the dataset you want to select (default: None) -c TARGET_COLUMN, --target-column TARGET_COLUMN The name of the specific column you want to use (default: close) -h, --help show this help message (default: False) For more information and examples, use &#39;about rsi&#39; to access the related guide.">
+    <meta name="description" content="usage: atr [--close-col CLOSE_COL] [--high-col HIGH_COL] [--low-col LOW_COL] [-d {}] [-c TARGET_COLUMN] [-h] Add Average True Range to dataset of specific stock ticker.
+optional arguments: --close-col CLOSE_COL Close column name to use for Average True Range. (default: close) --high-col HIGH_COL High column name to use for Average True Range. (default: high) --low-col LOW_COL Low column name to use for Average True Range. (default: low) -d {}, --target-dataset {} The name of the dataset you want to select (default: None) -c TARGET_COLUMN, --target-column TARGET_COLUMN The name of the specific column you want to use (default: close) -h, --help show this help message (default: False) For more information and examples, use &#39;about atr&#39; to access the related guide.">
 
 
 
@@ -47492,16 +47492,21 @@ code, img {
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Atr</h1>
-        <pre><code>usage: atr [-d {}] [-c TARGET_COLUMN] [-h]
+        <pre><code>usage: atr [--close-col CLOSE_COL] [--high-col HIGH_COL] [--low-col LOW_COL]
+[-d {}] [-c TARGET_COLUMN] [-h]
 </code></pre><p>Add Average True Range to dataset of specific stock ticker.</p>
 <pre><code>optional arguments:
+  --close-col CLOSE_COL
+                        Close column name to use for Average True Range. (default: close)
+  --high-col HIGH_COL   High column name to use for Average True Range. (default: high)
+  --low-col LOW_COL     Low column name to use for Average True Range. (default: low)
   -d {}, --target-dataset {}
                         The name of the dataset you want to select (default: None)
   -c TARGET_COLUMN, --target-column TARGET_COLUMN
                         The name of the specific column you want to use (default: close)
   -h, --help            show this help message (default: False)
 
-For more information and examples, use 'about rsi' to access the related guide.
+For more information and examples, use 'about atr' to access the related guide.
 </code></pre><p>Example:</p>
 <pre><code>(🦋) /forecast/ $ load aapl_20220628_113243.csv
 
