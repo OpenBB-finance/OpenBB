@@ -170,7 +170,7 @@ class OverviewController(BaseController):
                 "-l": "--limit",
                 "--descend": {},
             }
-            choices["derivates"] = {
+            choices["derivatives"] = {
                 "--sort": {c: {} for c in pycoingecko_model.DERIVATIVES_FILTERS},
                 "-s": "--sort",
                 "--limit": {str(c): {} for c in range(1, 100)},
@@ -228,6 +228,7 @@ class OverviewController(BaseController):
                 "--kind": {c: {} for c in cryptopanic_model.CATEGORIES},
                 "-k": "--kind",
                 "--filter": {c: {} for c in cryptopanic_model.FILTERS},
+                "-f": "--filter",
                 "--region": {c: {} for c in cryptopanic_model.REGIONS},
                 "-r": "--region",
                 "--sort": {c: {} for c in cryptopanic_model.SORT_FILTERS},
@@ -1129,10 +1130,10 @@ class OverviewController(BaseController):
 
         parser.add_argument(
             "--descend",
-            action="store_false",
+            action="store_true",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
-            default=True,
+            default=False,
         )
 
         ns_parser = self.parse_known_args_and_warn(
@@ -1572,6 +1573,7 @@ class OverviewController(BaseController):
         )
 
         parser.add_argument(
+            "-f",
             "--filter",
             dest="filter",
             type=str,
