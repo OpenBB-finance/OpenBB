@@ -126,7 +126,7 @@ class CreateExcelFA:
     def get_data(self, statement: str, row: int, header: bool) -> pd.DataFrame:
         df, rounding, _ = dcf_model.create_dataframe(self.info["symbol"], statement)
         if df.empty:
-            raise ValueError("Could generate a dataframe for the ticker symbol")
+            raise ValueError("Could not generate a dataframe for the ticker symbol")
         self.info["rounding"] = rounding
         if not self.info["len_data"]:
             self.info["len_data"] = len(df.columns)
