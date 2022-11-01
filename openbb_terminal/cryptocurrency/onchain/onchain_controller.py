@@ -135,7 +135,6 @@ class OnchainController(BaseController):
                 "--since": None,
                 "-s": "--since",
             }
-            choices["ttcp"] = {c: {} for c in bitquery_model.DECENTRALIZED_EXCHANGES}
             choices["baas"]["-c"] = {c: {} for c in bitquery_model.POSSIBLE_CRYPTOS}
             choices["baas"]["--coin"] = {c: {} for c in bitquery_model.POSSIBLE_CRYPTOS}
             choices["balance"] = {
@@ -226,7 +225,10 @@ class OnchainController(BaseController):
                 "-s": "--sort",
                 "--descend": {},
             }
-            choices["ttcp"] = {c: {} for c in bitquery_model.DECENTRALIZED_EXCHANGES}
+            choices["ttcp"]["--exchanges"] = {
+                c: {} for c in bitquery_model.DECENTRALIZED_EXCHANGES
+            }
+            choices["ttcp"]["-e"] = "--exchanges"
             choices["ttcp"]["--sort"] = {c: None for c in bitquery_model.TTCP_FILTERS}
             choices["ttcp"]["-s"] = "--sort"
             choices["ttcp"]["--days"] = {str(c): {} for c in range(1, 100)}
@@ -1483,7 +1485,7 @@ class OnchainController(BaseController):
 
         parser.add_argument(
             "--descend",
-            action="store_false",
+            action="store_true",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
             default=False,
