@@ -1777,7 +1777,7 @@ class DueDiligenceController(CryptoBaseController):
 
         parser.add_argument(
             "--descend",
-            action="store_true",
+            action="store_false",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
             default=True,
