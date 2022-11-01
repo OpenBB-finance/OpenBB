@@ -153,6 +153,14 @@ class QaController(CryptoBaseController):
             choices["raw"] = {
                 "--limit": {str(c): {} for c in range(1, 100)},
                 "-l": "--limit",
+                "--sortby": {
+                    c: {}
+                    for c in [
+                        x.title().replace(" ", "") if x != "adjclose" else "AdjClose"
+                        for x in self.data.columns
+                    ]
+                },
+                "-s": "--sortby",
                 "--descend": {},
             }
             choices["decompose"] = {
@@ -271,6 +279,10 @@ class QaController(CryptoBaseController):
             "--sortby",
             help="The column to sort by",
             type=str,
+            choices=[
+                x.title().replace(" ", "") if x != "adjclose" else "AdjClose"
+                for x in self.data.columns
+            ],
             dest="sortby",
         )
 

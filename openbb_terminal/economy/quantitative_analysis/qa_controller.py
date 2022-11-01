@@ -136,6 +136,8 @@ class QaController(StockBaseController):
             choices["raw"] = {
                 "--limit": {str(c): {} for c in range(1, 100)},
                 "-l": "--limit",
+                "--sortby": {},
+                "-s": "--sortby",
                 "--descend": {},
             }
             choices["decompose"] = {

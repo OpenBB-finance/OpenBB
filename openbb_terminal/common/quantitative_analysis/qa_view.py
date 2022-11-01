@@ -872,15 +872,19 @@ def display_raw(
 
     if sortby:
         try:
+            if sortby == "AdjClose":
+                sortby = "Adj Close"
             sort_col = [x.lower() for x in df1.columns].index(sortby.lower())
         except ValueError:
             console.print("[red]The provided column is not a valid option[/red]\n")
             return
         df1 = df1.sort_values(by=data.columns[sort_col], ascending=ascend)
+    else:
+        df1 = df1.sort_index(ascending=ascend)
     df1.index = [x.strftime("%Y-%m-%d") for x in df1.index]
 
     print_rich_table(
-        df1.head(limit) if sortby else df1.tail(limit),
+        df1.head(limit),
         headers=[x.title() if x != "" else "Date" for x in df1.columns],
         title="[bold]Raw Data[/bold]",
         show_index=True,

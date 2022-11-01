@@ -479,6 +479,7 @@ class ETFController(BaseController):
         )
         parser.add_argument(
             "--sort",
+            "-s",
             choices=self.CANDLE_COLUMNS,
             default="",
             type=str,
