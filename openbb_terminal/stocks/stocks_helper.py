@@ -107,6 +107,11 @@ def search(
             " please check if you can access this website without a VPN.[/red]\n"
         )
         data = {}
+    except ValueError:
+        console.print(
+            "[red]No companies were found that match the given criteria.[/red]\n"
+        )
+        return
     if not data:
         console.print("No companies found.\n")
         return
@@ -150,15 +155,22 @@ def search(
     if query:
         title += f" on term {query}"
     if exchange_country:
-        title += f" {exchange_country} exchange"
+        title += f" on an exchange in {exchange_country.replace('_', ' ').title()}"
     if country:
-        title += f" in {country}"
+        title += f" in {country.replace('_', ' ').title()}"
     if sector:
         title += f" within {sector}"
         if industry:
             title += f" and {industry}"
     if not sector and industry:
         title += f" within {industry}"
+
+    df["exchange"] = df["exchange"].apply(
+        lambda x: x.replace("_", " ").title() if x else None
+    )
+    df["exchange"] = df["exchange"].apply(
+        lambda x: "United States" if x == "Usa" else None
+    )
 
     print_rich_table(
         df.iloc[:limit] if limit else df,

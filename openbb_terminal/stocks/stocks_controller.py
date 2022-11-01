@@ -123,7 +123,7 @@ class StocksController(StockBaseController):
             choices["search"] = {
                 "--query": None,
                 "-q": "--query",
-                "--country": {c.lower(): {} for c in self.country},
+                "--country": {c.lower().replace(" ", "_"): {} for c in self.country},
                 "-c": "--country",
                 "--sector": {c: {} for c in self.sector},
                 "-s": "--sector",
@@ -248,6 +248,7 @@ class StocksController(StockBaseController):
             default="",
             choices=clean_countries,
             dest="country",
+            metavar="country_name",
             type=str,
             help="Search by country to find stocks matching the criteria",
         )
@@ -275,6 +276,7 @@ class StocksController(StockBaseController):
             "--exchange",
             default="",
             choices=country_opts,
+            metavar="country_name",
             dest="exchange_country",
             help="Search by a specific exchange country to find stocks matching the criteria",
         )
