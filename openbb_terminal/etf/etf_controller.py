@@ -315,27 +315,26 @@ class ETFController(BaseController):
             if holdings.empty:
                 console.print("No company holdings found!\n")
             else:
-                self.etf_holdings = holdings.index[: ns_parser.limit].tolist()
+                console.print("Top holdings found:")
+                for val in holdings["Name"].values[: ns_parser.limit].tolist():
+                    console.print(f"   {val}")
 
-                if "N/A" in self.etf_holdings:
-                    na_tix_idx = [
-                        str(idx)
-                        for idx, item in enumerate(self.etf_holdings)
-                        if item == "N/A"
-                    ]
+                for tick, name in zip(
+                    holdings.index[: ns_parser.limit].tolist(),
+                    holdings["Name"].values[: ns_parser.limit].tolist(),
+                ):
+                    if tick != "N/A" and " " not in tick:
+                        if (
+                            "ETF" not in name
+                            and "Future" not in name
+                            and "Bill" not in name
+                            and "Portfolio" not in name
+                            and "%" not in name
+                        ):
+                            self.etf_holdings.append(tick)
 
-                    console.print(
-                        f"N/A tickers found at position {','.join(na_tix_idx)}. "
-                        "Dropping these from holdings.\n"
-                    )
-
-                self.etf_holdings = list(
-                    filter(lambda x: x != "N/A", self.etf_holdings)
-                )
-
-                console.print(
-                    f"Top company holdings found: {', '.join(self.etf_holdings)}"
-                )
+                if not self.etf_holdings:
+                    console.print("\n[red]No valid stock ticker was found![/red]")
 
         console.print()
 
@@ -529,19 +528,10 @@ class ETFController(BaseController):
         )
 
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
             if self.etf_name:
-                export_data(
-                    ns_parser.export,
-                    os.path.join(
-                        os.path.dirname(os.path.abspath(__file__)), "raw_data"
-                    ),
-                    f"{self.etf_name}",
-                    self.etf_data,
-                )
-
                 if ns_parser.raw:
                     qa_view.display_raw(
                         data=self.etf_data,
@@ -580,6 +570,13 @@ class ETFController(BaseController):
                         ma=mov_avgs,
                         asset_type="ETF",
                     )
+
+                export_data(
+                    ns_parser.export,
+                    os.path.dirname(os.path.abspath(__file__)),
+                    f"{self.etf_name}",
+                    self.etf_data,
+                )
             else:
                 console.print("No ticker loaded. First use `load {ticker}`\n")
 
