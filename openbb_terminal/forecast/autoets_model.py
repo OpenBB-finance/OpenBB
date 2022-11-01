@@ -78,11 +78,23 @@ def get_autoets_data(
     ticker_series.columns = ["ds", "y"]
     ticker_series.insert(0, "unique_id", target_column)
 
-    # Model Init
-    model_ets = ETS(
-        season_length=int(seasonal_periods),
-    )
-    fcst = StatsForecast(df=ticker_series, models=[model_ets], freq=freq, verbose=True)
+    try:
+        # Model Init
+        model_ets = ETS(
+            season_length=int(seasonal_periods),
+        )
+        fcst = StatsForecast(
+            df=ticker_series, models=[model_ets], freq=freq, verbose=True
+        )
+    except Exception as e:  # noqa
+        error = str(e)
+        if "got an unexpected keyword argument" in error:
+            console.print(
+                "[red]Please update statsforecast to version 1.1.3 or higher.[/red]"
+            )
+        else:
+            console.print(f"[red]{error}[/red]")
+        return [], [], [], None, None
 
     # Historical backtesting
     last_training_point = int((len(ticker_series) - 1) * start_window)

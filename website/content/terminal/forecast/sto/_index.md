@@ -1,11 +1,16 @@
 ```
-usage: sto [-d {}] [--period PERIOD] [-h] [-l LIMIT]
+usage: sto [--close-col CLOSE_COL] [--high-col HIGH_COL] [--low-col LOW_COL]
+[-d {AAPL}] [--period PERIOD] [-h] [-l LIMIT]
 ```
 
 Add in Stochastic Oscillator %K and %D
 
 ```
 optional arguments:
+  --close-col CLOSE_COL
+                        Close column name to use for Stochastic Oscillator (default: close)
+  --high-col HIGH_COL   High column name to use for Stochastic Oscillator (default: high)
+  --low-col LOW_COL     Low column name to use for Stochastic Oscillator (default: low)
   -d {}, --target-dataset {}
                         The name of the dataset you want to select (default: None)
   --period PERIOD       The period to use (default: 10)
