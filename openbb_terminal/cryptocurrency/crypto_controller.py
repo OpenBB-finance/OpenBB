@@ -462,7 +462,7 @@ class CryptoController(CryptoBaseController):
             -l, --limit it displays top N number of records.
             coins: Shows list of coins available on CoinGecko, CoinPaprika and Binance.If you provide name of
             coin then in result you will see ids of coins with best match for all mentioned services.
-            If you provide ALL keyword in your search query, then all coins will be displayed. To move over coins you
+            If you provide "ALL" in your coin search query, then all coins will be displayed. To move over coins you
             can use pagination mechanism with skip, top params. E.g. coins ALL --skip 100 --limit 30 then all coins
             from 100 to 130 will be displayed. By default skip = 0, limit = 10.
             If you won't provide source of the data everything will be displayed (CoinGecko, CoinPaprika, Binance).
@@ -512,22 +512,24 @@ class CryptoController(CryptoBaseController):
             EXPORT_ONLY_RAW_DATA_ALLOWED,
         )
         # TODO: merge find + display_all_coins
-        if ns_parser and ns_parser.coin:
-            find(
-                query=ns_parser.coin,
-                source=ns_parser.source,
-                key=ns_parser.key,
-                limit=ns_parser.limit,
-                export=ns_parser.export,
-            )
-            display_all_coins(
-                symbol=ns_parser.coin,
-                source=ns_parser.source,
-                limit=ns_parser.limit,
-                skip=ns_parser.skip,
-                show_all=bool("ALL" in other_args),
-                export=ns_parser.export,
-            )
+        if ns_parser:
+            if ns_parser.coin == "ALL":
+                display_all_coins(
+                    symbol=ns_parser.coin,
+                    source=ns_parser.source,
+                    limit=ns_parser.limit,
+                    skip=ns_parser.skip,
+                    show_all=True,
+                    export=ns_parser.export,
+                )
+            else:
+                find(
+                    query=ns_parser.coin,
+                    source=ns_parser.source,
+                    key=ns_parser.key,
+                    limit=ns_parser.limit,
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_forecast(self, _):

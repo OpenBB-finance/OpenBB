@@ -119,6 +119,7 @@ def get_list_of_coins() -> pd.DataFrame:
     coins = session.make_request(session.ENDPOINTS["coins"])
     df = pd.DataFrame(coins)
     df = df[df["is_active"]]
+    print(df)
     return df[["rank", "id", "name", "symbol", "type"]]
 
 
