@@ -281,7 +281,7 @@ def display_curve(
             marker="o",
             linestyle="dashed",
             linewidth=2,
-            markersize=12,
+            markersize=8,
             color=next(colors, "#FCED00"),
         )
         make_white(ax)

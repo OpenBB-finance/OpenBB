@@ -56,10 +56,18 @@ def realtime_performance_sector(
         )
 
     else:
+
+        if external_axes is None:
+            _, ax = plt.subplots(figsize=plot_autoscale(), dpi=cfp.PLOT_DPI)
+        elif is_valid_axes_count(external_axes, 1):
+            (ax,) = external_axes
+        else:
+            return
+
         df_rtp.set_index("Sector", inplace=True)
         df_rtp = df_rtp.squeeze(axis=1)
         colors = [theme.up_color if x > 0 else theme.down_color for x in df_rtp.values]
-        ax = df_rtp.plot(kind="barh", color=colors)
+        df_rtp.plot(kind="barh", color=colors, ax=ax)
         theme.style_primary_axis(ax)
         ax.set_title("Real Time Performance (%) per Sector")
         ax.tick_params(axis="x", labelrotation=90)
