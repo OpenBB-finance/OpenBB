@@ -27,6 +27,7 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     check_positive,
     check_positive_list,
+    check_positive_float,
     valid_date,
 )
 from openbb_terminal.forex.forex_helper import FOREX_SOURCES
@@ -812,7 +813,7 @@ class TechnicalAnalysisController(StockBaseController):
             "--std",
             action="store",
             dest="n_std",
-            type=check_positive,
+            type=check_positive_float,
             default=2,
             help="std",
         )
