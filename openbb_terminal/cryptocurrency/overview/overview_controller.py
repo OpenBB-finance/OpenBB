@@ -93,6 +93,10 @@ class OverviewController(BaseController):
         """Constructor"""
         super().__init__(queue)
 
+        self.combined_filters = (
+            pycoingecko_model.EXCHANGES_FILTERS + coinpaprika_model.EXCHANGES_FILTERS
+        )
+
         if session and obbff.USE_PROMPT_TOOLKIT:
             crypto_hack_slugs = rekt_model.get_crypto_hack_slugs()
             choices: dict = {c: {} for c in self.controller_choices}
@@ -142,9 +146,7 @@ class OverviewController(BaseController):
                 "--pie": {},
             }
             choices["exchanges"] = {
-                "--sort": {c: {} for c in pycoingecko_model.EXCHANGES_FILTERS}
-                if get_ordered_list_sources(f"{self.PATH}exchanges")[0] == "CoinGecko"
-                else {c: {} for c in coinpaprika_model.EXCHANGES_FILTERS},
+                "--sort": {c: {} for c in self.combined_filters},
                 "-s": "--sort",
                 "--limit": {str(c): {} for c in range(1, 100)},
                 "-l": "--limit",
@@ -903,6 +905,9 @@ class OverviewController(BaseController):
     @log_start_end(log=logger)
     def call_exchanges(self, other_args):
         """Process exchanges command"""
+        filters = (
+            pycoingecko_model.EXCHANGES_FILTERS + coinpaprika_model.EXCHANGES_FILTERS
+        )
         parser = argparse.ArgumentParser(
             prog="exchanges",
             add_help=False,
@@ -910,6 +915,9 @@ class OverviewController(BaseController):
             description="""Shows Top Crypto Exchanges
                 You can display only N number exchanges with --limit parameter.
                 You can sort data by Trust_Score, Id, Name, Country, Year_Established, Trade_Volume_24h_BTC with --sort
+                Or you can sort data by 'name', 'currencies', 'markets', 'fiats', 'confidence',
+                'volume_24h', 'volume_7d', 'volume_30d', 'sessions_per_month'
+                if you are using the alternative source CoinPaprika
                 and also with --descend flag to sort descending.
                 Flag --urls will display urls.
                 Displays: Trust_Score, Id, Name, Country, Year_Established, Trade_Volume_24h_BTC""",
@@ -930,11 +938,8 @@ class OverviewController(BaseController):
             dest="sortby",
             type=str,
             help="Sort by given column. Default: Rank",
-            default="Rank"
-            if get_ordered_list_sources(f"{self.PATH}exchanges")[0] == "CoinGecko"
-            else "rank",
-            choices=pycoingecko_model.EXCHANGES_FILTERS
-            and coinpaprika_model.EXCHANGES_FILTERS,
+            default="Rank",
+            choices=filters,
         )
         parser.add_argument(
             "--descend",

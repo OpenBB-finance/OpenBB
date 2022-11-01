@@ -483,7 +483,7 @@ def display_categories(
 
 @log_start_end(log=logger)
 def display_exchanges(
-    sortby: str = "name",
+    sortby: str = "Rank",
     ascend: bool = False,
     limit: int = 15,
     links: bool = False,

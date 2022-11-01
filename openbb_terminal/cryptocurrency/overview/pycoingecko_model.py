@@ -209,7 +209,7 @@ def get_stable_coins(
 
 
 @log_start_end(log=logger)
-def get_exchanges(sortby: str = "name", ascend: bool = False) -> pd.DataFrame:
+def get_exchanges(sortby: str = "Rank", ascend: bool = True) -> pd.DataFrame:
     """Get list of top exchanges from CoinGecko API [Source: CoinGecko]
 
     Parameters
@@ -249,7 +249,10 @@ def get_exchanges(sortby: str = "name", ascend: bool = False) -> pd.DataFrame:
         "Url",
     ]
     create_df_index(df, "Rank")
-    df = df.sort_values(by=sortby, ascending=ascend)
+    if sortby == "Rank":
+        df = df.sort_values(by=sortby, ascending=False if ascend else True)
+    else:
+        df = df.sort_values(by=sortby, ascending=ascend)
     return df
 
 
