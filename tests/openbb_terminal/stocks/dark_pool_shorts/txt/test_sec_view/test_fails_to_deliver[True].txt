@@ -1,5 +1,4 @@
-
-Loading Daily TSLA stock with starting period 2021-12-20 for analysis.
+Loading Daily data for TSLA with starting period 2021-12-17.
   SETTLEMENT DATE  QUANTITY (FAILS)
 0      2021-11-26                27
 1      2021-11-30              2440

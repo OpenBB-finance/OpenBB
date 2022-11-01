@@ -1,7 +1,7 @@
-    load               get historical data                         [YahooFinance, AlphaVantage, Polygon, Oanda]
+    load               get historical data                         [AlphaVantage, YahooFinance, Polygon, Oanda]
 
 Ticker: 
-Source: YahooFinance
+Source: AlphaAdvantage
 
 [unvl]    quote              get last quote[/unvl]                              [YahooFinance, AlphaVantage]
 [unvl]    candle             show candle plot for loaded pair[/unvl]
