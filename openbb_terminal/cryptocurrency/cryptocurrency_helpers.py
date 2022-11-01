@@ -304,6 +304,172 @@ def get_coinpaprika_id(symbol: str):
     return coinpaprika_id
 
 
+def load_from_ccxt(
+    symbol: str,
+    start_date: datetime = (datetime.now() - timedelta(days=1100)),
+    interval: str = "1440",
+    exchange: str = "binance",
+    vs_currency: str = "usdt",
+) -> pd.DataFrame:
+    """Load crypto currency data [Source: https://github.com/ccxt/ccxt]
+
+    Parameters
+    ----------
+    symbol: str
+        Coin to get
+    start_date: datetime
+        The datetime to start at
+    interval: str
+        The interval between data points in minutes.
+        Choose from: 1, 15, 30, 60, 240, 1440, 10080, 43200
+    exchange: str:
+        The exchange to get data from.
+    vs_currency: str
+        Quote Currency (Defaults to usdt)
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe consisting of price and volume data
+    """
+    df = pd.DataFrame()
+    pair = f"{symbol.upper()}/{vs_currency.upper()}"
+
+    try:
+        df = fetch_ccxt_ohlc(
+            exchange,
+            3,
+            pair,
+            CCXT_INTERVAL_MAP[interval],
+            int(datetime.timestamp(start_date)) * 1000,
+            1000,
+        )
+        if df.empty:
+            console.print(f"\nPair {pair} not found in {exchange}\n")
+            return pd.DataFrame()
+    except Exception:
+        console.print(f"\nPair {pair} not found on {exchange}\n")
+        return df
+    return df
+
+
+def load_from_coingecko(
+    symbol: str,
+    start_date: datetime = (datetime.now() - timedelta(days=1100)),
+    vs_currency: str = "usdt",
+) -> pd.DataFrame:
+    """Load crypto currency data [Source: https://www.coingecko.com/]
+
+    Parameters
+    ----------
+    symbol: str
+        Coin to get
+    start_date: datetime
+        The datetime to start at
+    vs_currency: str
+        Quote Currency (Defaults to usdt)
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe consisting of price and volume data
+    """
+    df = pd.DataFrame()
+    delta = datetime.now() - start_date
+    days = delta.days
+
+    if days > 365:
+        console.print("Coingecko free tier only allows a max of 365 days\n")
+        days = 365
+
+    coingecko_id = get_coingecko_id(symbol)
+    if not coingecko_id:
+        console.print(f"{symbol} not found in Coingecko\n")
+        return df
+
+    df = pycoingecko_model.get_ohlc(coingecko_id, vs_currency, days)
+    df_coin = yf.download(
+        f"{symbol}-{vs_currency}",
+        end=datetime.now(),
+        start=start_date,
+        progress=False,
+        interval="1d",
+    ).sort_index(ascending=False)
+
+    if not df_coin.empty:
+        df = pd.merge(df, df_coin[::-1][["Volume"]], left_index=True, right_index=True)
+    df.index.name = "date"
+    return df
+
+
+def load_from_yahoofinance(
+    symbol: str,
+    start_date: datetime = (datetime.now() - timedelta(days=1100)),
+    interval: str = "1440",
+    vs_currency: str = "usdt",
+    end_date: datetime = datetime.now(),
+) -> pd.DataFrame:
+    """Load crypto currency data [Source: https://finance.yahoo.com/]
+
+    Parameters
+    ----------
+    symbol: str
+        Coin to get
+    start_date: datetime
+        The datetime to start at
+    interval: str
+        The interval between data points in minutes.
+        Choose from: 1, 15, 30, 60, 240, 1440, 10080, 43200
+    vs_currency: str
+        Quote Currency (Defaults to usdt)
+    end_date: datetime
+       The datetime to end at
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe consisting of price and volume data
+    """
+    pair = f"{symbol}-{vs_currency}"
+    if int(interval) >= 1440:
+        YF_INTERVAL_MAP = {
+            "1440": "1d",
+            "10080": "1wk",
+            "43200": "1mo",
+        }
+        df = yf.download(
+            pair,
+            end=end_date,
+            start=start_date,
+            progress=False,
+            interval=YF_INTERVAL_MAP[interval],
+        ).sort_index(ascending=True)
+    else:
+        s_int = str(interval) + "m"
+        d_granularity = {"1m": 6, "5m": 59, "15m": 59, "30m": 59, "60m": 729}
+        s_start_dt = datetime.utcnow() - timedelta(days=d_granularity[s_int])
+        s_date_start = s_start_dt.strftime("%Y-%m-%d")
+        df = yf.download(
+            pair,
+            start=s_date_start
+            if s_start_dt > start_date
+            else start_date.strftime("%Y-%m-%d"),
+            progress=False,
+            interval=s_int,
+        )
+
+    open_sum = df["Open"].sum()
+    if open_sum == 0:
+        console.print(f"\nPair {pair} has invalid data on Yahoo Finance\n")
+        return pd.DataFrame()
+
+    if df.empty:
+        console.print(f"\nPair {pair} not found in Yahoo Finance\n")
+        return pd.DataFrame()
+    df.index.name = "date"
+    return df
+
+
 def load(
     symbol: str,
     start_date: datetime = (datetime.now() - timedelta(days=1100)),
@@ -313,7 +479,7 @@ def load(
     end_date: datetime = datetime.now(),
     source: str = "CCXT",
 ) -> pd.DataFrame:
-    """Load crypto currency to get data for.
+    """Load crypto currency to get data for
 
     Parameters
     ----------
@@ -339,90 +505,16 @@ def load(
     pd.DataFrame
         Dataframe consisting of price and volume data
     """
-    df = pd.DataFrame()
     if source == "CCXT":
-        pair = f"{symbol.upper()}/{vs_currency.upper()}"
-        try:
-            df = fetch_ccxt_ohlc(
-                exchange,
-                3,
-                pair,
-                CCXT_INTERVAL_MAP[interval],
-                int(datetime.timestamp(start_date)) * 1000,
-                1000,
-            )
-            if df.empty:
-                console.print(f"\nPair {pair} not found in {exchange}\n")
-                return pd.DataFrame()
-        except Exception:
-            console.print(f"\nPair {pair} not found on {exchange}\n")
-            return df
-    elif source == "CoinGecko":
-        delta = datetime.now() - start_date
-        days = delta.days
-        if days > 365:
-            console.print("Coingecko free tier only allows a max of 365 days\n")
-            days = 365
-        coingecko_id = get_coingecko_id(symbol)
-        if not coingecko_id:
-            console.print(f"{symbol} not found in Coingecko\n")
-            return df
-        df = pycoingecko_model.get_ohlc(coingecko_id, vs_currency, days)
-        df_coin = yf.download(
-            f"{symbol}-{vs_currency}",
-            end=datetime.now(),
-            start=start_date,
-            progress=False,
-            interval="1d",
-        ).sort_index(ascending=False)
-
-        if not df_coin.empty:
-            df = pd.merge(
-                df, df_coin[::-1][["Volume"]], left_index=True, right_index=True
-            )
-        df.index.name = "date"
-
-    elif source == "YahooFinance":
-        pair = f"{symbol}-{vs_currency}"
-        if int(interval) >= 1440:
-            YF_INTERVAL_MAP = {
-                "1440": "1d",
-                "10080": "1wk",
-                "43200": "1mo",
-            }
-            df = yf.download(
-                pair,
-                end=end_date,
-                start=start_date,
-                progress=False,
-                interval=YF_INTERVAL_MAP[interval],
-            ).sort_index(ascending=True)
-        else:
-            s_int = str(interval) + "m"
-            d_granularity = {"1m": 6, "5m": 59, "15m": 59, "30m": 59, "60m": 729}
-            s_start_dt = datetime.utcnow() - timedelta(days=d_granularity[s_int])
-            s_date_start = s_start_dt.strftime("%Y-%m-%d")
-            df = yf.download(
-                pair,
-                start=s_date_start
-                if s_start_dt > start_date
-                else start_date.strftime("%Y-%m-%d"),
-                progress=False,
-                interval=s_int,
-            )
-
-        open_sum = df["Open"].sum()
-        if open_sum == 0:
-            console.print(f"\nPair {pair} has invalid data on Yahoo Finance\n")
-            return pd.DataFrame()
-
-        if df.empty:
-            console.print(f"\nPair {pair} not found in Yahoo Finance\n")
-            return pd.DataFrame()
-        df.index.name = "date"
-    else:
-        console.print("[red]Invalid source sent[/red]\n")
-    return df
+        return load_from_ccxt(symbol, start_date, interval, exchange, vs_currency)
+    if source == "CoinGecko":
+        return load_from_coingecko(symbol, start_date, vs_currency)
+    if source == "YahooFinance":
+        return load_from_yahoofinance(
+            symbol, start_date, interval, vs_currency, end_date
+        )
+    console.print("[red]Invalid source sent[/red]\n")
+    return pd.DataFrame()
 
 
 def show_quick_performance(

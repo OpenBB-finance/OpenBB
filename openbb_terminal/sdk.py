@@ -31,9 +31,10 @@ except ImportError:
         " This part of the SDK will not be usable"
     )
 
-from .config_terminal import theme
+from openbb_terminal.config_terminal import theme
 
 from openbb_terminal.helper_classes import TerminalStyle  # noqa: F401
+
 from openbb_terminal import helper_funcs as helper  # noqa: F401
 from openbb_terminal.loggers import setup_logging
 from openbb_terminal.decorators import log_start_end, sdk_arg_logger
@@ -45,6 +46,7 @@ from .cryptocurrency.due_diligence.pycoingecko_model import Coin
 
 logger = logging.getLogger(__name__)
 
+TerminalStyle().applyMPLstyle()
 
 SUPPRESS_LOGGING_CLASSES = {
     ReportController: "ReportController",
@@ -1007,10 +1009,6 @@ functions = {
     "economy.ycrv": {
         "model": "openbb_terminal.economy.investingcom_model.get_yieldcurve",
         "view": "openbb_terminal.economy.investingcom_view.display_yieldcurve",
-    },
-    "economy.spread": {
-        "model": "openbb_terminal.economy.investingcom_model.get_spread_matrix",
-        "view": "openbb_terminal.economy.investingcom_view.display_spread_matrix",
     },
     "economy.country_codes": {
         "model": "openbb_terminal.economy.nasdaq_model.get_country_codes"
