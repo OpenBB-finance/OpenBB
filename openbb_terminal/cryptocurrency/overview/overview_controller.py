@@ -111,6 +111,8 @@ class OverviewController(BaseController):
             choices["cr"]["-p"] = "--platforms"
             choices["cr"]["--limit"] = {str(c): {} for c in range(1, 100)}
             choices["cr"]["-l"] = "--limit"
+            choices["cr"]["--type"] = {c: {} for c in ["borrow", "supply"]}
+            choices["cr"]["-t"] = "--type"
             choices["ch"] = {
                 "--sort": {c: {} for c in rekt_model.HACKS_COLUMNS},
                 "--slug": {c: {} for c in crypto_hack_slugs},
