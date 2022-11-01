@@ -7,7 +7,7 @@ import warnings
 import types
 import functools
 import importlib
-from typing import Optional, Callable, List
+from typing import Optional, Callable, List, Union
 import logging
 from traceback import format_stack
 
@@ -1885,6 +1885,10 @@ functions = {
         "model": "openbb_terminal.stocks.technical_analysis.tradingview_model.get_tradingview_recommendation",
         "view": "openbb_terminal.stocks.technical_analysis.tradingview_view.print_recommendation",
     },
+    "stocks.ta.rsp": {
+        "model": "openbb_terminal.stocks.technical_analysis.rsp_model.get_rsp",
+        "view": "openbb_terminal.stocks.technical_analysis.rsp_view.display_rsp",
+    },
     "stocks.th.check_if_open": {
         "model": "openbb_terminal.stocks.tradinghours.bursa_model.check_if_open"
     },
@@ -2005,6 +2009,10 @@ forecast_extras = {
     "forecast.roc": {"model": "openbb_terminal.forecast.forecast_model.add_roc"},
     "forecast.mom": {"model": "openbb_terminal.forecast.forecast_model.add_momentum"},
     "forecast.delta": {"model": "openbb_terminal.forecast.forecast_model.add_delta"},
+    "forecast.autoets": {
+        "model": "openbb_terminal.forecast.autoets_model.get_autoets_data",
+        "view": "openbb_terminal.forecast.autoets_view.display_autoets_forecast",
+    },
     "forecast.expo": {
         "model": "openbb_terminal.forecast.expo_model.get_expo_data",
         "view": "openbb_terminal.forecast.expo_view.display_expo_forecast",
@@ -2267,7 +2275,7 @@ class MainMenu:
         return """This is the OpenBB Terminal SDK.
         Use the SDK to get data directly into your jupyter notebook or directly use it in your application.
         ...
-        For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/sdk/
+        For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/SDK/
         """
 
 
@@ -2290,7 +2298,7 @@ class Loader:
         return """This is the OpenBB Terminal SDK.
         Use the SDK to get data directly into your jupyter notebook or directly use it in your application.
         ...
-        For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/api/
+        For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/SDK/
         """
 
     # TODO: Add settings
@@ -2388,7 +2396,7 @@ class Loader:
         log_all_settings()
 
     @classmethod
-    def get_function(cls, function_path: str) -> Callable:
+    def get_function(cls, function_path: str) -> Union[Callable, None]:
         """Get function from string path.
 
         Parameters
@@ -2404,7 +2412,16 @@ class Loader:
             Function
         """
         module_path, function_name = function_path.rsplit(sep=".", maxsplit=1)
-        module = cls.__load_module(module_path=module_path)
+        try:
+            module = cls.__load_module(module_path=module_path)
+        except Exception as e:
+            # This avoids crash on loading SDK under installer application.
+            # SDK is used by papermill to generate reports and some dependencies
+            # are not compatible. Since the reports are run in a subprocess,
+            # this error message is actually not displayed on screen.
+            # TODO: Fix this.
+            console.print(f"Cannot load: {module_path} -> {e}")
+            return None
 
         try:
             function = getattr(module, function_name)

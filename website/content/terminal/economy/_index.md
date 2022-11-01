@@ -13,7 +13,7 @@ Next to that, the databases of <a href="https://www.econdb.com/" target="_blank"
 can be accessed via <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/economy/macro/" target="_blank">macro</a>,
 <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/economy/fred/" target="_blank">fred</a> and
 <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/economy/index/" target="_blank">index</a> respectively.
-All of this can also be further analysed with <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/pred/" target="_blank">Prediction Techniques</a> (`pred`) and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/qa/" target="_blank">Quantitative Techniques</a> (`qa`).
+All of this can also be further analysed with <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/forecast/" target="_blank">Forecasting menu</a> (`forecast`) and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/qa/" target="_blank">Quantitative Techniques</a> (`qa`).
 
 ## How to use
 
@@ -283,7 +283,7 @@ Note that I added some additional series not in the above table. This is because
 break-even inflation rates, the number after the `T` refers to the amount of years.
 
 ```
-2022 Jun 29, 10:27 (🦋) /economy/ $ fred T5YIEM T10YIEM T20YIEM T30YIEM
+2022 Jun 29, 10:27 (🦋) /economy/ $ fred T5YIEM,T10YIEM,T20YIEM,T30YIEM
 ```
 
 Which returns the following graph:
@@ -319,7 +319,7 @@ Resulting in the following graph:
 
 The Economy menu has a few sub-menus available to delve further into a specific macroeconomic indicator. To find more information about each menu, click on one of the following:
 
-- <a href="/OpenBBTerminal/terminal/common/pred" target="_blank">Introduction to Prediction Techniques</a>: apply advanced AI and Machine Learning models to form prediction of future macroeconomic indicators including Recurrent Neural Network (RNN),
+- <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/forecast/" target="_blank">Introduction to Forecasting menu</a>: apply advanced AI and Machine Learning models to form prediction of future macroeconomic indicators including Recurrent Neural Network (RNN),
   Autoregressive Integrated Moving Average (ARIMA) and Monte Carlo forecasting.
 - <a href="/OpenBBTerminal/terminal/common/qa" target="_blank">Introduction to Quantitative Analysis</a>: analyse the macroeconomic indicators extensively for seasonality, rolling windows and statistical techniques.
 

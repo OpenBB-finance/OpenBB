@@ -1,33 +1,33 @@
-Symbol,% Of Etf,Shares
-ZM,8.34%,1215537
-TSLA,8.11%,455991
-COIN,6.81%,1247789
-ROKU,6.63%,1488303
-SQ,5.97%,1260701
-RBLX,5.88%,1608016
-GBTC,5.71%,5904028
-TWLO,5.60%,920052
-SHOP,5.20%,2036813
-DKNG,5.00%,4375253
-PATH,3.95%,3973513
-TDOC,3.80%,1850462
-HOOD,3.17%,3761658
-U,3.05%,1164826
-PD,2.82%,1458386
-MELI,2.27%,32228
-MNDY,2.02%,241708
-GENI,1.83%,5115645
-VUZI,1.72%,3914512
-NVDA,1.50%,143345
-NET,1.44%,313293
-ADYEY,1.26%,1121984
-VCYT,1.22%,930375
-ADBE,1.21%,46434
-KIND,1.15%,4943870
-CRWD,1.11%,84085
-SPOT,1.07%,142491
-EDR,0.84%,459865
-NU,0.59%,1557214
-TWOU,0.54%,1138810
-n/a,0.17%,1993399
-SE,0.00%,399
+Symbol,Name,% Of Etf,Shares
+ZM,"Zoom Video Communications, Inc.",8.24%,1216922
+TSLA,"Tesla, Inc.",8.16%,455122
+COIN,"Coinbase Global, Inc.",7.53%,1245412
+ROKU,"Roku, Inc.",6.64%,1489131
+SQ,"Block, Inc.",6.07%,1263217
+GBTC,Grayscale Bitcoin Trust,5.80%,5892782
+TWLO,Twilio Inc.,5.77%,935316
+RBLX,Roblox Corporation,5.09%,1381792
+DKNG,DraftKings Holdings Inc.,4.96%,4366919
+SHOP,"Shopify, Inc.",4.79%,1991272
+TDOC,"Teladoc Health, Inc.",3.98%,1846937
+PATH,"UiPath, Inc.",3.96%,3965944
+HOOD,"Robinhood Markets, Inc.",3.29%,3770995
+PD,"PagerDuty, Inc.",2.96%,1455608
+U,"Unity Software, Inc.",2.87%,1200723
+MELI,"MercadoLibre, Inc.",2.24%,32167
+MNDY,monday.com Ltd.,2.14%,241248
+GENI,Genius Sports Ltd.,1.80%,5114700
+VUZI,Vuzix Corporation,1.57%,3907055
+NVDA,NVIDIA Corporation,1.53%,143072
+NET,"Cloudflare, Inc.",1.45%,312696
+VCYT,"Veracyte, Inc.",1.32%,928603
+ADYEY,Adyen N.V.,1.29%,1119846
+ADBE,Adobe Inc.,1.21%,46345
+SPOT,Spotify Technology S.A.,1.11%,142219
+CRWD,"CrowdStrike Holdings, Inc.",1.10%,83925
+KIND,"Nextdoor Holdings, Inc.",1.07%,4934453
+EDR,"Endeavor Group Holdings, Inc.",0.80%,458989
+NU,Nu Holdings Ltd.,0.57%,1554247
+TWOU,"2U, Inc.",0.51%,1136640
+N/A,DREYFUS GOVT CASH MAN INS,0.19%,2348257
+SE,Sea Limited,0.00%,100

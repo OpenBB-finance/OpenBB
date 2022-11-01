@@ -191,8 +191,30 @@ def display_corr(
 
     # correlation
     correlation = forecast_model.corr_df(dataset)
-    sns.heatmap(correlation, vmax=1, square=True, annot=True, cmap="cubehelix")
+    sns.heatmap(
+        correlation,
+        vmin=correlation.values.min(),
+        vmax=1,
+        square=True,
+        linewidths=0.1,
+        annot=True,
+        annot_kws={"size": 8},
+        cbar_kws=dict(use_gridspec=True, location="left"),
+    )
+
     ax.set_title("Correlation Matrix")
+
+    for t in ax.get_yticklabels():
+        t.set_fontsize(7)
+        t.set_fontweight("bold")
+        t.set_horizontalalignment("left")
+
+    for t in ax.get_xticklabels():
+        t.set_fontsize(7)
+        t.set_fontweight("bold")
+        t.set_rotation(60)
+        t.set_horizontalalignment("right")
+
     theme.style_primary_axis(ax)
 
     if external_axes is None:
@@ -202,16 +224,23 @@ def display_corr(
 
 
 @log_start_end(log=logger)
-def show_df(data: pd.DataFrame, limit: int = 15, name: str = "", export: str = ""):
+def show_df(
+    data: pd.DataFrame,
+    limit: int = 15,
+    limit_col: int = 10,
+    name: str = "",
+    export: str = "",
+):
     console.print(
-        f"[green]{name} has following shape (rowxcolumn): {data.shape}[/green]"
+        f"[green]{name} dataset has shape (row, column): {data.shape}\n[/green]"
     )
-    if len(data.columns) > 10:
+    if len(data.columns) > limit_col:
         console.print(
-            "[red]Dataframe has more than 10 columns. Please export"
-            " to see all of the data.[/red]\n"
+            f"[red]Dataframe has more than {limit_col} columns."
+            " If you have extra screen space, consider increasing the `limit_col`,"
+            " else export to see all of the data.[/red]\n"
         )
-        data = data.iloc[:, :10]
+        data = data.iloc[:, :limit_col]
     print_rich_table(
         data.head(limit),
         headers=list(data.columns),

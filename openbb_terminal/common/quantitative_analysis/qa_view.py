@@ -395,7 +395,9 @@ def display_acf(
     sm.graphics.tsa.plot_acf(np.diff(np.diff(data.values)), lags=lags, ax=ax1)
     ax1.set_title(f"{symbol} Returns Auto-Correlation", fontsize=9)
     # Diff Partial auto - correlation function for original time series
-    sm.graphics.tsa.plot_pacf(np.diff(np.diff(data.values)), lags=lags, ax=ax2)
+    sm.graphics.tsa.plot_pacf(
+        np.diff(np.diff(data.values)), lags=lags, ax=ax2, method="ywm"
+    )
     ax2.set_title(
         f"{symbol} Returns Partial Auto-Correlation",
         fontsize=9,
@@ -408,7 +410,9 @@ def display_acf(
         fontsize=9,
     )
     # Diff Diff Partial auto-correlation function for original time series
-    sm.graphics.tsa.plot_pacf(np.diff(np.diff(data.values)), lags=lags, ax=ax4)
+    sm.graphics.tsa.plot_pacf(
+        np.diff(np.diff(data.values)), lags=lags, ax=ax4, method="ywm"
+    )
     ax4.set_title(
         f"Change in {symbol} Returns Partial Auto-Correlation",
         fontsize=9,
@@ -861,21 +865,14 @@ def display_raw(
         Export data as CSV, JSON, XLSX
     """
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "history",
-        data,
-    )
-
     if isinstance(data, pd.Series):
         df1 = pd.DataFrame(data)
     else:
         df1 = data.copy()
 
     if sortby:
-        df1 = data.sort_values(
-            by=sortby if sortby != "AdjClose" else "Adj Close", ascending=descend
+        df1 = df1.sort_values(
+            by=sortby if sortby != "AdjClose" else "Adj Close", ascending=not descend
         )
     df1.index = [x.strftime("%Y-%m-%d") for x in df1.index]
 
@@ -885,6 +882,13 @@ def display_raw(
         title="[bold]Raw Data[/bold]",
         show_index=True,
         floatfmt=".3f",
+    )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "raw",
+        data,
     )
 
 

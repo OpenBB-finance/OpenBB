@@ -92,7 +92,7 @@ def search(
     """
     kwargs: Dict[str, Any] = {"exclude_exchanges": False}
     if country:
-        kwargs["country"] = country
+        kwargs["country"] = country.replace("_", " ").title()
     if sector:
         kwargs["sector"] = sector
     if industry:
@@ -378,7 +378,7 @@ def load(
     s_intraday = (f"Intraday {s_interval}", int_string)[interval == 1440]
 
     console.print(
-        f"\nLoading {s_intraday} {symbol.upper()} stock "
+        f"Loading {s_intraday} {symbol.upper()} stock "
         f"with starting period {s_start.strftime('%Y-%m-%d')} for analysis.",
     )
 

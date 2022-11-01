@@ -1,20 +1,25 @@
 ```
-usage: show [-n {}] [-s SORTCOL [SORTCOL ...]] [-a] [-h] [--export EXPORT] [-l LIMIT]
+usage: show [-n {}] [-s SORTCOL [SORTCOL ...]] [-a]
+      [--limit-col LIMIT_COL] [-h] [--export EXPORT] [-l LIMIT]
 ```
 
-Show a portion of the, with `--name` defined, dataset or show a portion of all datasets when
-`--name` is not defined.
+Show a portion of the loaded dataset
 
 ```
 optional arguments:
-  -n {}, --name {}      The name of the database you want to show data for (default: None)
+  -n {}, --name {AAPL,MSFT,TSLA}
+                        The name of the database you want to show data for (default: None)
   -s SORTCOL [SORTCOL ...], --sortcol SORTCOL [SORTCOL ...]
                         Sort based on a column in the DataFrame (default: )
   -a, --ascend          Use this argument to sort in a descending order (default: False)
+  --limit-col LIMIT_COL
+                        Set the number of columns to display when showing the dataset (default: 10)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export raw data into csv, json, xlsx (default: )
   -l LIMIT, --limit LIMIT
                         Number of entries to show in data. (default: 10)
+
+For more information and examples, use 'about show' to access the related guide.
 ```
 
 Example:
@@ -23,7 +28,7 @@ Example:
 
 (🦋) /forecast/ $ show aapl
 
-aapl has following shape (rowxcolumn): (759, 7)
+aapl dataset has shape (row, column): (759, 7)
 
                   Dataset aapl | Showing 10 of 759 rows
 ┏━━━┳━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓

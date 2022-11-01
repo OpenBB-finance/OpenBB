@@ -153,7 +153,7 @@ def parse_and_split_input(an_input: str, custom_filters: List) -> List[str]:
     # everything from ` -f ` to the next known extension
     file_flag = r"(\ -f |\ --file )"
     up_to = r".*?"
-    known_extensions = r"(\.xlsx|.csv|.xls|.tsv|.json|.yaml|.ini|.openbb)"
+    known_extensions = r"(\.xlsx|.csv|.xls|.tsv|.json|.yaml|.ini|.openbb|.ipynb)"
     unix_path_arg_exp = f"({file_flag}{up_to}{known_extensions})"
 
     # Add custom expressions to handle edge cases of individual controllers
@@ -291,7 +291,6 @@ def print_rich_table(
                 for idx, x in enumerate(values)
             ]
             table.add_row(*row)
-        console.print()
         console.print(table)
     else:
         console.print(df.to_string(col_space=0))
@@ -1279,11 +1278,11 @@ def compose_export_path(func_name: str, dir_path: str) -> Path:
     if resolve_path.parts[-2] == "openbb_terminal":
         path_cmd = f"{resolve_path.parts[-1]}"
     else:
-        path_cmd = f"{resolve_path.parts[-2]}//{resolve_path.parts[-1]}"
+        path_cmd = f"{resolve_path.parts[-2]}_{resolve_path.parts[-1]}"
 
-    default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{func_name}"
+    default_filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{path_cmd}_{func_name}"
 
-    full_path = USER_EXPORTS_DIRECTORY / path_cmd / default_filename
+    full_path = USER_EXPORTS_DIRECTORY / default_filename
 
     return full_path
 
@@ -1334,9 +1333,9 @@ def export_data(
             elif exp_type.endswith("svg"):
                 plt.savefig(saved_path)
             else:
-                console.print("Wrong export file specified.\n")
+                console.print("Wrong export file specified.")
 
-            console.print(f"Saved file: {saved_path}\n")
+            console.print(f"Saved file: {saved_path}")
 
 
 def get_rf() -> float:
@@ -1805,3 +1804,21 @@ def load_json(path: str) -> Dict[str, str]:
         )
         console.print(f"[red]{e}[/red]")
         return {}
+
+
+def list_from_str(value: str) -> List[str]:
+    """Converts a string to a list
+
+    Parameter
+    ----------
+    value : str
+        The string to convert
+
+    Returns
+    ----------
+    new_value: List[str]
+        The list of strings
+    """
+    if value:
+        return value.split(",")
+    return []

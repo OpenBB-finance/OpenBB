@@ -10,7 +10,7 @@ optional arguments:
   -d, --descending      Sort selected column descending. Only works when raw data is displayed. (default: True)
   --raw                 Shows raw data instead of chart. If sort is set those are the top ones, otherwise we grab latest data to date (default: False)
   -t, --trend           Flag to add high and low trends to candle (default: False)
-  --ma MOV_AVG          Add moving average in number of days to plot and separate by a comma (default: None)
+  --ma MOV_AVG          Add moving average in number of days to plot and separate by a comma. Value for ma (moving average) keyword needs to be greater than 1. (default: None)
   --log                 Plot with y axis on log scale (default: False)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export raw data into csv, json, xlsx (default: )

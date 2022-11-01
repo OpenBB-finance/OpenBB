@@ -6,9 +6,9 @@ with a brief overview of the features."
 geekdocCollapseSection: true
 ---
 
-The Cryptocurrency Discovery menu provides the option to look into a wide selection of trending coins (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/disc/cgtrending/" target="_blank">cgtrending</a>), gainers and losers
-(<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/disc/cggainers/" target="_blank">cggainers</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/disc/cglosers/" target="_blank">cglosers</a>) as well as
-NFTs (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/disc/drnft/" target="_blank">drnft</a>) and decentralized apps (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/disc/drdex/" target="_blank">drdex</a>).
+The Cryptocurrency Discovery menu provides the option to look into a wide selection of trending coins (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/disc/trending/" target="_blank">trending</a>), gainers and losers
+(<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/disc/gainers/" target="_blank">gainers</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/disc/losers/" target="_blank">losers</a>) as well as
+NFTs (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/disc/nft/" target="_blank">nft</a>) and decentralized apps (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/crypto/disc/dex/" target="_blank">dex</a>).
 
 ## How to use
 
@@ -18,10 +18,10 @@ The Cryptocurrency Discovery menu is called upon by typing `disc`, while inside 
 
 Alternatively, you can also type `/crypto/disc`. Within the Cryptocurrency Discovery menu you have a variety of options
 to find that information about a coin, a NFT, a specific blockchain game, decentralized app or exchange. E.g. we can
-look into the top coins by typing `cgtop` which returns the following table:
+look into the top coins by typing `top` which returns the following table:
 
 ```
-2022 Jul 12, 05:06 (🦋) /crypto/disc/ $ cgtop
+2022 Jul 12, 05:06 (🦋) /crypto/disc/ $ top
 
 ┏━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
 ┃ Symbol ┃ Name        ┃ Volume [$] ┃ Market Cap ┃ Market Cap Rank ┃ 7D Change [%] ┃ 24H Change [%] ┃
@@ -50,11 +50,11 @@ look into the top coins by typing `cgtop` which returns the following table:
 
 ## Examples
 
-It is possible to delve deeper into a specific country by defining this for `cgtop`. For example, you can look at
-stable coins by typing `cgtop stablecoins` which returns the following:
+It is possible to delve deeper into a specific country by defining this for `top`. For example, you can look at
+stable coins by typing `top stablecoins` which returns the following:
 
 ```
-2022 Jul 12, 05:13 (🦋) /crypto/disc/ $ cgtop stablecoins
+2022 Jul 12, 05:13 (🦋) /crypto/disc/ $ top stablecoins
 
 ┏━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓
 ┃ Symbol ┃ Name            ┃ Volume [$] ┃ Market Cap ┃ Market Cap Rank ┃ 7D Change [%] ┃ 24H Change [%] ┃
@@ -81,11 +81,11 @@ stable coins by typing `cgtop stablecoins` which returns the following:
 └────────┴─────────────────┴────────────┴────────────┴─────────────────┴───────────────┴────────────────┘
 ```
 
-Furthermore, we can also look into NFTs by calling `drnft` where we can apply sorting by using the `--sort` flag and 
+Furthermore, we can also look into NFTs by calling `nft` where we can apply sorting by using the `--sort` flag and 
 selecting one of the options (using the arrow keys). For example:
 
 ```
-2022 Jul 12, 05:16 (🦋) /crypto/disc/ $ drnft --sort Avg Price [$]
+2022 Jul 12, 05:16 (🦋) /crypto/disc/ $ nft --sort Avg Price [$]
 
                                             Top NFT collections
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┓
@@ -123,11 +123,11 @@ selecting one of the options (using the arrow keys). For example:
 └──────────────────────────────┴───────────┴─────────────────┴───────────────┴────────────────┴────────────┘
 ```
 
-Lastly, we can obtain the top 5 decentralized applications, sorted by daily user by using `drdapps` which returns
+Lastly, we can obtain the top 5 decentralized applications, sorted by daily user by using `dapps` which returns
 the following:
 
 ```
-2022 Jul 12, 05:19 (🦋) /crypto/disc/ $ drdapps -l 5
+2022 Jul 12, 05:19 (🦋) /crypto/disc/ $ dapps -l 5
 
                             Top Decentralized Applications
 ┏━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┓

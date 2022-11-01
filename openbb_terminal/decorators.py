@@ -6,7 +6,9 @@ import os
 import json
 import inspect
 from typing import Callable
+from ssl import SSLError
 import pandas as pd
+from requests.exceptions import RequestException
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.rich_config import console  # pragma: allowlist secret
@@ -70,6 +72,28 @@ def log_start_end(func=None, log=None):
                 value = func(*args, **kwargs)
                 logger_used.info("END", extra={"func_name_override": func.__name__})
                 return value
+            except RequestException as e:
+                console.print(
+                    "[red]There was an error connecting to the API."
+                    " Please try again later.\n[/red]"
+                )
+                logger_used.exception(
+                    "Exception: %s",
+                    str(e),
+                    extra={"func_name_override": func.__name__},
+                )
+                return []
+            except SSLError as e:
+                console.print(
+                    "[red]There was an error connecting to the API."
+                    " Please check whether your wifi is blocking this site.\n[/red]"
+                )
+                logger_used.exception(
+                    "Exception: %s",
+                    str(e),
+                    extra={"func_name_override": func.__name__},
+                )
+                return []
             except Exception as e:
                 console.print(f"[red]Error: {e}\n[/red]")
                 logger_used.exception(
