@@ -1,3 +1,4 @@
+"""Forex helper."""
 from datetime import datetime, timedelta
 from typing import List, Optional, Dict, Iterable
 import os
@@ -85,22 +86,24 @@ def load(
     source: str = "YahooFinance",
     verbose: bool = True,
 ) -> pd.DataFrame:
-    """Loads forex for two given symbols
+    """Load forex for two given symbols.
 
     Parameters
     ----------
     to_symbol : str
         The from currency symbol. Ex: USD, EUR, GBP, YEN
-    from_symbol: str
+    from_symbol : str
         The from currency symbol. Ex: USD, EUR, GBP, YEN
-    resolution: str
-        The resolution for the data
-    interval: str
-        What interval to get data for
-    start_date: str
-        When to begin loading in data
-    source: str
-        Where to get data from
+    resolution : str, optional
+        The resolution for the data, by default "d"
+    interval : str, optional
+        What interval to get data for, by default "1day"
+    start_date : str, optional
+        When to begin loading in data, by default last_year.strftime("%Y-%m-%d")
+    source : str, optional
+        Where to get data from, by default "YahooFinance"
+    verbose : bool, optional
+        Display verbose information on what was the pair that was loaded, by default True
 
     Returns
     -------
@@ -142,7 +145,7 @@ def load(
             )
 
     if source == "Polygon":
-        # Interval for polygon gets broken into mulltiplier and timeframe
+        # Interval for polygon gets broken into multiplier and timeframe
         temp = re.split(r"(\d+)", interval)
         multiplier = int(temp[1])
         timeframe = temp[2]
@@ -171,7 +174,7 @@ YF_CURRENCY_LIST = get_yf_currency_list()
 
 @log_start_end(log=logger)
 def check_valid_yf_forex_currency(fx_symbol: str) -> str:
-    """Check if given symbol is supported on Yahoo Finance
+    """Check if given symbol is supported on Yahoo Finance.
 
     Parameters
     ----------
@@ -268,7 +271,7 @@ def display_candle(
 
 @log_start_end(log=logger)
 def parse_forex_symbol(input_symbol):
-    """Parses potential forex symbols"""
+    """Parse potential forex symbols."""
     for potential_split in ["-", "/"]:
         if potential_split in input_symbol:
             symbol = input_symbol.replace(potential_split, "")
