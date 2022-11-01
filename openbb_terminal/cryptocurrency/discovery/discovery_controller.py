@@ -84,9 +84,7 @@ class DiscoveryController(BaseController):
                 "--limit": {str(c): {} for c in range(1, 100)},
                 "-l": "--limit",
                 "--descend": {},
-                "--source": {
-                    c: {} for c in self.ORDERED_LIST_SOURCES_TOP)
-                },
+                "--source": {c: {} for c in self.ORDERED_LIST_SOURCES_TOP},
             }
             choices["search"] = {
                 "--query": None,
