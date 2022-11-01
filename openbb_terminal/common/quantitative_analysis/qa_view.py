@@ -865,21 +865,14 @@ def display_raw(
         Export data as CSV, JSON, XLSX
     """
 
-    export_data(
-        export,
-        os.path.dirname(os.path.abspath(__file__)),
-        "history",
-        data,
-    )
-
     if isinstance(data, pd.Series):
         df1 = pd.DataFrame(data)
     else:
         df1 = data.copy()
 
     if sortby:
-        df1 = data.sort_values(
-            by=sortby if sortby != "AdjClose" else "Adj Close", ascending=descend
+        df1 = df1.sort_values(
+            by=sortby if sortby != "AdjClose" else "Adj Close", ascending=not descend
         )
     df1.index = [x.strftime("%Y-%m-%d") for x in df1.index]
 
@@ -889,6 +882,13 @@ def display_raw(
         title="[bold]Raw Data[/bold]",
         show_index=True,
         floatfmt=".3f",
+    )
+
+    export_data(
+        export,
+        os.path.dirname(os.path.abspath(__file__)),
+        "raw",
+        data,
     )
 
 
