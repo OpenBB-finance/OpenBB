@@ -41,10 +41,10 @@ def get_rsp(
     df_industries_p = pd.read_csv(
         "https://raw.githubusercontent.com/soggyomelette/rs-log/main/output/rs_industries.csv"
     )
-    if s_ticker == "":
-        rsp_stock = pd.DataFrame()
-        rsp_industry = pd.DataFrame()
-    else:
+    rsp_stock = pd.DataFrame()
+    rsp_industry = pd.DataFrame()
+
+    if s_ticker != "":
         rsp_stock = df_stock_p[df_stock_p["Ticker"].str.match(s_ticker)]
         for i in range(len(df_industries_p)):
             if s_ticker in df_industries_p.iloc[i]["Tickers"]:
