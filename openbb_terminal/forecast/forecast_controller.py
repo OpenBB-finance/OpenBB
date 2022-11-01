@@ -1291,6 +1291,27 @@ class ForecastController(BaseController):
             prog="sto",
             description="Add in Stochastic Oscillator %K and %D",
         )
+        parser.add_argument(
+            "--close-col",
+            help="Close column name to use for Stochastic Oscillator",
+            dest="close_col",
+            type=str,
+            default="close",
+        )
+        parser.add_argument(
+            "--high-col",
+            help="High column name to use for Stochastic Oscillator",
+            dest="high_col",
+            type=str,
+            default="high",
+        )
+        parser.add_argument(
+            "--low-col",
+            help="Low column name to use for Stochastic Oscillator",
+            dest="low_col",
+            type=str,
+            default="low",
+        )
         # if user does not put in --target-dataset
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--target-dataset")
@@ -1306,7 +1327,10 @@ class ForecastController(BaseController):
 
             df = forecast_model.add_sto(
                 self.datasets[ns_parser.target_dataset],
-                ns_parser.period,
+                close_column=ns_parser.close_col,
+                high_column=ns_parser.high_col,
+                low_column=ns_parser.low_col,
+                period=ns_parser.period,
             )
             if not df.empty:
                 self.datasets[ns_parser.target_dataset] = df
@@ -1389,7 +1413,8 @@ class ForecastController(BaseController):
                 ns_parser.period,
             )
             console.print(
-                f"Successfully added 'RSI_{ns_parser.period}' to '{ns_parser.target_dataset}' dataset"
+                f"Successfully added 'RSI_{ns_parser.period}_{ns_parser.target_column}' "
+                f"to '{ns_parser.target_dataset}' dataset"
             )
 
             # update forecast menu with new column on modified dataset
@@ -1524,6 +1549,27 @@ class ForecastController(BaseController):
             prog="atr",
             description="Add Average True Range to dataset of specific stock ticker.",
         )
+        parser.add_argument(
+            "--close-col",
+            help="Close column name to use for Average True Range.",
+            dest="close_col",
+            type=str,
+            default="close",
+        )
+        parser.add_argument(
+            "--high-col",
+            help="High column name to use for Average True Range.",
+            dest="high_col",
+            type=str,
+            default="high",
+        )
+        parser.add_argument(
+            "--low-col",
+            help="Low column name to use for Average True Range.",
+            dest="low_col",
+            type=str,
+            default="low",
+        )
 
         # if user does not put in --target-dataset
         if other_args and "-" not in other_args[0][0]:
@@ -1543,7 +1589,10 @@ class ForecastController(BaseController):
 
             check = False
             self.datasets[ns_parser.target_dataset], check = forecast_model.add_atr(
-                self.datasets[ns_parser.target_dataset]
+                self.datasets[ns_parser.target_dataset],
+                close_column=ns_parser.close_col,
+                high_column=ns_parser.high_col,
+                low_column=ns_parser.low_col,
             )
             if check:
                 console.print(
@@ -1588,7 +1637,8 @@ class ForecastController(BaseController):
                 return
 
             self.datasets[ns_parser.target_dataset] = forecast_model.add_signal(
-                self.datasets[ns_parser.target_dataset]
+                self.datasets[ns_parser.target_dataset],
+                target_column=ns_parser.target_column,
             )
             console.print(
                 f"Successfully added 'Price Signal' to '{ns_parser.target_dataset}' dataset"
