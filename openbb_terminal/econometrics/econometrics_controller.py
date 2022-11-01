@@ -174,7 +174,14 @@ class EconometricsController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["load"]["-f"] = {c: {} for c in self.DATA_FILES.keys()}
+            choices["load"] = {
+                "--file": {c: {} for c in self.DATA_FILES.keys()},
+                "-f": "--file",
+                "-alias": None,
+                "-a": "-alias",
+                "--examples": None,
+                "-e": "--examples",
+            }
 
             for feature in ["export", "show", "desc", "clear", "index"]:
                 choices[feature] = {c: {} for c in self.files}
@@ -351,6 +358,7 @@ class EconometricsController(BaseController):
             and "-e" not in other_args
             and "-f" not in other_args
             and "-h" not in other_args
+            and "--file" not in other_args
         ):
             other_args.insert(0, "-f")
 
@@ -1283,12 +1291,12 @@ class EconometricsController(BaseController):
         )
 
         if ns_parser and ns_parser.column:
-            column, dataset = self.choices["norm"][ns_parser.column].keys()
+            dataset, column = ns_parser.column.split(".")
 
             if isinstance(self.datasets[dataset][column].index, pd.MultiIndex):
                 return console.print(
-                    f"The column '{column}' from the dataset '{dataset}' is a MultiIndex. To test for normality in a "
-                    "timeseries, make sure to set a singular time index.\n"
+                    f"The column '{column}' in '{dataset}' is a MultiIndex. To test for normality"
+                    ", make sure to set a singular time index.\n"
                 )
 
             if dataset in self.datasets:
@@ -1352,7 +1360,12 @@ class EconometricsController(BaseController):
         )
 
         if ns_parser and ns_parser.column:
-            column, dataset = self.choices["root"][ns_parser.column].keys()
+            if "." in ns_parser.column:
+                dataset, column = ns_parser.column.split(".")
+            else:
+                console.print(
+                    "[red]Column must be formatted as 'dataset.column'[/red]\n"
+                )
 
             if isinstance(self.datasets[dataset][column].index, pd.MultiIndex):
                 console.print(
@@ -1464,7 +1477,12 @@ class EconometricsController(BaseController):
 
                 if regression_vars and len(regression_vars) > 1:
                     for variable in regression_vars:
-                        column, dataset = self.choices["regressions"][variable].keys()
+                        if "." not in variable:
+                            console.print(
+                                "[red]Please follow the format 'dataset.column'[/red]\n"
+                            )
+                            continue
+                        dataset, column = variable.split(".")
                         if not isinstance(
                             self.datasets[dataset][column].index, pd.MultiIndex
                         ):
@@ -1732,8 +1750,14 @@ class EconometricsController(BaseController):
                 if len(ns_parser.ts) > 1:
                     datasets = {}
                     for stock in ns_parser.ts:
-                        column, dataset = self.choices["coint"][stock].keys()
-                        datasets[stock] = self.datasets[dataset][column]
+                        if "." not in stock:
+                            console.print(
+                                "[red]Invalid time series format. Should be dataset.column, "
+                                "e.g. historical.open[/red]\n"
+                            )
+                        else:
+                            dataset, column = stock.split(".")
+                            datasets[stock] = self.datasets[dataset][column]
 
                     econometrics_view.display_cointegration_test(
                         datasets,
