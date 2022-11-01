@@ -21,14 +21,6 @@ crypto.ov.cgglobal(
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-ut crypto markets from CoinGecko API like:
-        Market_Cap, Volume, Market_Cap_Percentage
-
-    [Source: CoinGecko]
-
-    
 * **Returns**
 
     pandas.DataFrame

@@ -19,12 +19,6 @@ crypto.defi.newsletters(
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-etters from url list.
-    [Source: substack.com]
-
-    
 * **Returns**
 
     pd.DataFrame

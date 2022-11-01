@@ -21,10 +21,6 @@ alt.oss.ross(
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-
-    
 * **Returns**
 
     pandas.DataFrame:

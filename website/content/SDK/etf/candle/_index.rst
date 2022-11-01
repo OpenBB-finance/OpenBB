@@ -20,10 +20,10 @@ etf.candle(
     ma: Optional[Iterable[int]] = None,
     asset_type: str = '',
     start_date: datetime.datetime = datetime.datetime(
-    2019, 10, 28, 10, 31, 57, 526826,
+    2019, 10, 28, 12, 52, 16, 481384,
 ), interval: int = 1440,
     end_date: datetime.datetime = datetime.datetime(
-    2022, 11, 1, 10, 31, 57, 526837,
+    2022, 11, 1, 12, 52, 16, 481396,
 ), prepost: bool = False,
     source: str = 'YahooFinance',
     iexrange: str = 'ytd',

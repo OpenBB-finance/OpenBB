@@ -18,11 +18,6 @@ crypto.ov.cgdefi(
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-ut Decentralized Finances [Source: CoinGecko]
-
-    
 * **Returns**
 
     pandas.DataFrame

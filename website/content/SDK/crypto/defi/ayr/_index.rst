@@ -19,12 +19,6 @@ crypto.defi.ayr(
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-ry of the Anchor Yield Reserve.
-    [Source: https://terra.engineer/]
-
-    
 * **Returns**
 
     pd.DataFrame

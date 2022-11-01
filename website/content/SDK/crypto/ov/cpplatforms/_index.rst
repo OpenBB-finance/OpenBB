@@ -18,11 +18,6 @@ crypto.ov.cpplatforms(
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-latforms like ethereum, solana, cosmos, polkadot, kusama ... [Source: CoinPaprika]
-
-    
 * **Returns**
 
     pandas.DataFrame

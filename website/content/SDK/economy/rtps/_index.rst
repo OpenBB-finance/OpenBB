@@ -18,11 +18,6 @@ economy.rtps(
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
- sector data
-
-    
 * **Returns**
 
     df_sectors : *pd.Dataframe*

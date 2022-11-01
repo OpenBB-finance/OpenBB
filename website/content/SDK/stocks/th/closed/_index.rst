@@ -21,10 +21,6 @@ stocks.th.closed(
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-
-    
 * **Returns**
 
     pd.DataFrame

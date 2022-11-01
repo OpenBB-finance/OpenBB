@@ -22,10 +22,6 @@ crypto.onchain.gwei(
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-
-    
 * **Returns**
 
     pd.DataFrame

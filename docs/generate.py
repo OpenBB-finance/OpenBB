@@ -142,21 +142,28 @@ def generate_documentation(
                     # TODO: This breaks if there is a ')' inside the function arguments
                     if not has_param:
                         sig = sig.replace(")", "chart: bool = False)")
-                        has_param = True
                     else:
                         sig = sig.replace(")", ", chart: bool = False)")
 
-                if has_param:
                     sig = sig.replace("(", "(\n    ")
-
                     # TODO: This requires type int for args, adds new line after each arg
                     sig = re.sub(
                         "([a-zA-Z0-9_ ]+)(:)([\[\]a-zA-Z0-9_ (,.=']*)(,)",
                         r"\1\2\3\4\n   ",
                         sig,
                     )
-
                     sig = sig.replace(")", ",\n)")
+
+                else:
+                    if has_param:
+                        sig = sig.replace("(", "(\n    ")
+                        # TODO: This requires type int for args, adds new line after each arg
+                        sig = re.sub(
+                            "([a-zA-Z0-9_ ]+)(:)([\[\]a-zA-Z0-9_ (,.=']*)(,)",
+                            r"\1\2\3\4\n   ",
+                            sig,
+                        )
+                        sig = sig.replace(")", ",\n)")
 
                 f.write("{{< highlight python >}}")
                 f.write("\n")
