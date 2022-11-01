@@ -58,8 +58,8 @@ logger = logging.getLogger(__name__)
 exch_file_path = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), "mappings", "Mic_Codes.csv"
 )
-exhcnage_df = pd.read_csv(exch_file_path, index_col=0, header=None)
-exchange_mappings = exhcnage_df.squeeze("columns").to_dict()
+exchange_df = pd.read_csv(exch_file_path, index_col=0, header=None)
+exchange_mappings = exchange_df.squeeze("columns").to_dict()
 
 
 def search(
@@ -1085,8 +1085,8 @@ def show_codes_polygon(ticker: str):
     r_json = r_json["results"]
     cols = ["cik", "composite_figi", "share_class_figi", "sic_code"]
     vals = [r_json[col] for col in cols]
-    polyon_df = pd.DataFrame({"codes": [c.upper() for c in cols], "vals": vals})
-    polyon_df.codes = polyon_df.codes.apply(lambda x: x.replace("_", " "))
+    polygon_df = pd.DataFrame({"codes": [c.upper() for c in cols], "vals": vals})
+    polygon_df.codes = polygon_df.codes.apply(lambda x: x.replace("_", " "))
     print_rich_table(
-        polyon_df, show_index=False, headers=["", ""], title=f"{ticker.upper()} Codes"
+        polygon_df, show_index=False, headers=["", ""], title=f"{ticker.upper()} Codes"
     )

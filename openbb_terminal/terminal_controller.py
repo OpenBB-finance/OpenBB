@@ -200,7 +200,7 @@ class TerminalController(BaseController):
             dest="sources",
             default="bloomberg",
             type=str,
-            help="sources from where to get news from (sepate by comma)",
+            help="sources from where to get news from (separated by comma)",
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-t")
