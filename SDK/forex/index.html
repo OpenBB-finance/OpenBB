@@ -9,12 +9,15 @@
 
 
 
-    <meta name="description" content="OpenBB Terminal Documentation">
+    <meta name="description" content="The Forex module provides a way for users to get currency pair data, from a number of sources. API keys for them are handled by the Keys module. After importing the entire OpenBB SDK, no further action is required to authorize the sources. This module also provides Oanda account holders additional functionality.
+For the purpose of demonstration, additional modules will be imported to begin the Python script or Notebook file.">
 
+
+    <meta name="keywords" content="sdk,,api,,forex,,fx,,foreign,,exchange,,currency,,pair,,pairs,,forward,,rate,,rates,,eurodollar,,usd,,us,,dollar,,euro,,yen,,franc,,central,,bank,,currencies,,oanda">
 
 
     <title>
-      forex | OpenBB Terminal Documentation
+      Introduction to Forex | OpenBB Terminal Documentation
     </title>
 
     <link rel="icon" href="/OpenBBTerminal/favicon/favicon-32x32.png" type="image/x-icon">
@@ -47459,7 +47462,7 @@ code, img {
         
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>OpenBB Terminal Documentation</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/SDK/' href='/OpenBBTerminal/SDK/'><span itemprop='name'>OpenBB Python SDK</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>forex</span><meta itemprop='position' content='4' /></li>
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>OpenBB Terminal Documentation</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/SDK/' href='/OpenBBTerminal/SDK/'><span itemprop='name'>OpenBB Python SDK</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Introduction to Forex</span><meta itemprop='position' content='4' /></li>
     
 
     
@@ -47482,8 +47485,73 @@ code, img {
 </div>
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
-        <h1>forex</h1>
-        
+        <h1>Introduction to Forex</h1>
+        <p>The Forex module provides a way for users to get currency pair data, from a number of sources. API keys for them are handled by the <a class="gdoc-markdown__link" href="https://openbb-finance.github.io/OpenBBTerminal/SDK/keys/">Keys module</a>. After importing the entire OpenBB SDK, no further action is required to authorize the sources. This module also provides Oanda account holders <a class="gdoc-markdown__link" href="https://openbb-finance.github.io/OpenBBTerminal/terminal/forex/oanda/">additional functionality</a>.</p>
+<p>For the purpose of demonstration, additional modules will be imported to begin the Python script or Notebook file.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">openbb_terminal.sdk</span> <span class="kn">import</span> <span class="n">openbb</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+</code></pre></div><p><img src="https://user-images.githubusercontent.com/85772166/199393284-bf9e2f57-4041-4304-9679-69ac07816fe4.png" alt="The Forex Module"  title="The Forex Module" /></p>
+<div class="gdoc-page__anchorwrap">
+    <h2 id="how-to-use">
+        How to Use
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/forex/#how-to-use" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor How to Use" href="#how-to-use">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h2>
+</div><p>To load historical data for a desired currency pair, copy and paste the code below:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">currency_pair</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">forex</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
+    <span class="n">from_symbol</span><span class="o">=</span><span class="s1">&#39;USD&#39;</span><span class="p">,</span>
+    <span class="n">to_symbol</span><span class="o">=</span><span class="s1">&#39;EUR&#39;</span><span class="p">,</span> 
+    <span class="n">source</span> <span class="o">=</span> <span class="s1">&#39;Polygon&#39;</span><span class="p">,</span>
+    <span class="n">start_date</span> <span class="o">=</span> <span class="s1">&#39;2000-01-01&#39;</span><span class="p">,</span>
+    <span class="n">resolution</span> <span class="o">=</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span>
+    <span class="n">interval</span> <span class="o">=</span> <span class="s1">&#39;1day&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div><p>Note that <code>source</code> can be any of: AlphaVantage, Oanda, Polygon, or, YahooFinance. It returns a Pandas DataFrame:</p>
+<p><img src="https://user-images.githubusercontent.com/85772166/199393745-9c57b9d1-2613-4350-b6c2-a291ee5d9ee9.png" alt="openbb.forex.load"  title="openbb.forex.load" /></p>
+<p>Cached as a DataFrame, it can then be passed along to any time-series function within the OpenBB SDK; such as, the <a class="gdoc-markdown__link" href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/ta/">Technical Analysis</a> and <a class="gdoc-markdown__link" href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/qa/">Quantitative Analysis</a> modules. Pandas can also be used to further process data, for example, using the cached example above:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">daily_range</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;range&#39;</span><span class="p">])</span>
+
+<span class="n">daily_range</span><span class="o">.</span><span class="n">range</span> <span class="o">=</span> <span class="n">currency_pair</span><span class="p">[</span><span class="s1">&#39;High&#39;</span><span class="p">]</span><span class="o">-</span><span class="n">currency_pair</span><span class="p">[</span><span class="s1">&#39;Low&#39;</span><span class="p">]</span>
+
+<span class="n">openbb</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">qa</span><span class="o">.</span><span class="n">bw</span><span class="p">(</span><span class="n">daily_range</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="s1">&#39;range&#39;</span><span class="p">,</span> <span class="n">symbol</span> <span class="o">=</span> <span class="s1">&#39;Daily Variance EUR/USD&#39;</span><span class="p">)</span>
+
+</code></pre></div><p><img src="https://user-images.githubusercontent.com/85772166/199393844-bb177938-d1b4-4e95-bdcd-5c415508f391.png" alt="Box Plot of Yearly EUR/USD Variance"  title="Box Plot of Yearly EUR/USD Variance" /></p>
+<p>One free set of data, from the Oanda subset of functions, is the current forward rates of a currency pair. Data is returned as a table, for example:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">openbb</span><span class="o">.</span><span class="n">forex</span><span class="o">.</span><span class="n">oanda</span><span class="o">.</span><span class="n">fwd</span><span class="p">(</span><span class="n">from_symbol</span> <span class="o">=</span> <span class="s1">&#39;EUR&#39;</span><span class="p">,</span> <span class="n">to_symbol</span> <span class="o">=</span> <span class="s1">&#39;USD&#39;</span><span class="p">)</span>
+</code></pre></div><p><img src="https://user-images.githubusercontent.com/85772166/199394298-466b350d-5574-401e-a750-d645192e3db6.png" alt="openbb.forex.oanda.fwd"  title="openbb.forex.oanda.fwd" /></p>
+<p>This code snippet returns a Pandas DataFrame containing forward points for two currency pairs, JPY/USD &amp; USD/EUR:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">openbb_terminal.sdk</span> <span class="kn">import</span> <span class="n">openbb</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">JPYUSD</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">forex</span><span class="o">.</span><span class="n">oanda</span><span class="o">.</span><span class="n">fwd</span><span class="p">(</span><span class="n">to_symbol</span><span class="o">=</span><span class="s1">&#39;JPY&#39;</span><span class="p">,</span> <span class="n">from_symbol</span><span class="o">=</span><span class="s1">&#39;USD&#39;</span><span class="p">)</span>
+<span class="n">Expiration</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">JPYUSD</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="n">JPYUSD_points</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">JPYUSD</span><span class="o">.</span><span class="n">Points</span><span class="p">)</span>
+<span class="n">USDEUR</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">forex</span><span class="o">.</span><span class="n">oanda</span><span class="o">.</span><span class="n">fwd</span><span class="p">(</span><span class="n">to_symbol</span><span class="o">=</span><span class="s1">&#39;USD&#39;</span><span class="p">,</span> <span class="n">from_symbol</span><span class="o">=</span><span class="s1">&#39;EUR&#39;</span><span class="p">)</span>
+<span class="n">USDEUR_points</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">USDEUR</span><span class="o">.</span><span class="n">Points</span><span class="p">)</span>
+
+<span class="n">fwd_spread</span> <span class="o">=</span> <span class="n">Expiration</span><span class="p">,</span><span class="n">JPYUSD_points</span><span class="p">,</span><span class="n">USDEUR_points</span>
+
+<span class="n">pair_spreads</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">fwd_spread</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+<span class="n">pair_spreads</span> <span class="o">=</span> <span class="n">pair_spreads</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pair_spreads</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="s2">&#34;Expiration&#34;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&#34;JPY/USD Points&#34;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&#34;USD/EUR Points&#34;</span><span class="p">,</span>
+    <span class="p">},</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="n">pair_spreads</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;Expiration&#39;</span><span class="p">],</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="n">pair_spreads</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pair_spreads</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;JPY/USD Points&#39;</span><span class="p">,</span> <span class="s1">&#39;USD/EUR Points&#39;</span><span class="p">])</span>
+
+<span class="n">pair_spreads</span>
+</code></pre></div><p><img src="https://user-images.githubusercontent.com/85772166/199394778-a4aa6e9f-af18-42c3-b9af-43cf9a037508.png" alt="Points Spread"  title="Comparing JPY/USD USD/EUR Points" /></p>
+
     </article>
  
 
