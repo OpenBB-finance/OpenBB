@@ -10,7 +10,7 @@
 
 
     <meta name="description" content="usage: raw [-n NUM] [-d] [-h] [--export {csv,json,xlsx}] Shows historical daily value for the target value.
-optional arguments: -n NUM, --num NUM Number to show (default: 20) -d, --descend Sort in descending order (default: False) -h, --help show this help message (default: False) --export {csv,json,xlsx} Export raw data into csv, json, xlsx (default: ) Example:
+optional arguments: -n NUM, --num NUM Number to show (default: 20) -s SORTBY, --sortby SORTBY The column to sort by (default: None) -d, --descend Sort in descending order (default: False) -h, --help show this help message (default: False) --export {csv,json,xlsx} Export raw data into csv, json, xlsx (default: ) Example:
 2022 Feb 16, 11:05 (✨) /stocks/qa/ $ raw Raw Data ┏━━━━━━━━━━━━┳━━━━━━━━━━┓ ┃ ┃ Adjclose ┃ ┡━━━━━━━━━━━━╇━━━━━━━━━━┩ │ 2022-01-19 │ 995.">
 
 
@@ -47412,6 +47412,8 @@ code, img {
 </code></pre></div><p>Shows historical daily value for the target value.</p>
 <pre><code>optional arguments:
   -n NUM, --num NUM     Number to show (default: 20)
+  -s SORTBY, --sortby SORTBY
+                        The column to sort by (default: None)
   -d, --descend         Sort in descending order (default: False)
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx}
