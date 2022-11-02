@@ -1001,7 +1001,7 @@ functions = {
         "model": "openbb_terminal.economy.investingcom_model.get_events_countries"
     },
     "economy.events": {
-        "model": "openbb_terminal.economy.investingcom_model.get_economic_calendar"
+        "model": "openbb_terminal.economy.nasdaq_model.get_economic_calendar"
     },
     "economy.get_ycrv_countries": {
         "model": "openbb_terminal.economy.investingcom_model.get_ycrv_countries"

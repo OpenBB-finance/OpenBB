@@ -396,8 +396,8 @@ main:
                 ref: /terminal/crypto/onchain/ds
               - name: dt
                 ref: /terminal/crypto/onchain/dt
-          - name: nft
-            ref: "/terminal/crypto/nft"
+          - name: ov
+            ref: "/terminal/crypto/ov"
             sub:
               - name: altindex
                 ref: /terminal/crypto/ov/altindex

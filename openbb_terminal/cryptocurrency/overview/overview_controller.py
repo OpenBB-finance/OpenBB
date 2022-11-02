@@ -89,6 +89,8 @@ class OverviewController(BaseController):
 
     PATH = "/crypto/ov/"
 
+    ORDERED_LIST_SOURCES_EXCHANGES = get_ordered_list_sources(f"{PATH}exchanges")
+
     def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__(queue)
@@ -145,7 +147,8 @@ class OverviewController(BaseController):
             }
             choices["exchanges"] = {
                 "--sort": {c: {} for c in pycoingecko_model.EXCHANGES_FILTERS}
-                if get_ordered_list_sources(f"{self.PATH}exchanges")[0] == "CoinGecko"
+                if self.ORDERED_LIST_SOURCES_EXCHANGES
+                and self.ORDERED_LIST_SOURCES_EXCHANGES[0] == "CoinGecko"
                 else {c: {} for c in coinpaprika_model.EXCHANGES_FILTERS},
                 "-s": "--sort",
                 "--limit": {str(c): {} for c in range(1, 100)},
@@ -154,9 +157,7 @@ class OverviewController(BaseController):
                 "--urls": {},
                 "-u": "--urls",
                 "--vs": {c: {} for c in CURRENCIES},
-                "--source": {
-                    c: {} for c in get_ordered_list_sources(f"{self.PATH}exchanges")
-                },
+                "--source": {c: {} for c in self.ORDERED_LIST_SOURCES_EXCHANGES},
             }
             choices["exrates"] = {
                 "--sort": {c: {} for c in pycoingecko_model.EXRATES_FILTERS},
@@ -933,7 +934,8 @@ class OverviewController(BaseController):
             type=str,
             help="Sort by given column. Default: Rank",
             default="Rank"
-            if get_ordered_list_sources(f"{self.PATH}exchanges")[0] == "CoinGecko"
+            if self.ORDERED_LIST_SOURCES_EXCHANGES
+            and self.ORDERED_LIST_SOURCES_EXCHANGES[0] == "CoinGecko"
             else "rank",
             choices=pycoingecko_model.EXCHANGES_FILTERS
             and coinpaprika_model.EXCHANGES_FILTERS,
