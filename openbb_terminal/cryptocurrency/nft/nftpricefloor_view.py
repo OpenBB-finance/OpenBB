@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_collections(
-    show_fp: bool = False, show_sales: bool = False, num: int = 5, export: str = ""
+    show_fp: bool = False, show_sales: bool = False, limit: int = 5, export: str = ""
 ):
     """Display NFT collections. [Source: https://nftpricefloor.com/]
 
@@ -33,7 +33,7 @@ def display_collections(
     ----------
     show_fp : bool
         Show NFT Price Floor for top collections
-    num: int
+    limit: int
         Number of NFT collections to display
     export : str
         Export dataframe data to csv,json,xlsx file
@@ -54,7 +54,7 @@ def display_collections(
         ]
         if show_fp or show_sales:
             _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
-            for collection in df["slug"].head(num).values:
+            for collection in df["slug"].head(limit).values:
                 df_collection = nftpricefloor_model.get_floor_price(collection)
                 if not df_collection.empty:
                     values = (
@@ -70,7 +70,7 @@ def display_collections(
             cfg.theme.visualize_output()
 
         print_rich_table(
-            df.head(num),
+            df.head(limit),
             headers=list(df.columns),
             show_index=False,
             title="NFT Collections",

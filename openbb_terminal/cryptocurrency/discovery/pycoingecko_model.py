@@ -89,6 +89,15 @@ DEX_FILTERS = [
     "Market_Share",
 ]
 
+GAINERS_LOSERS_COLUMNS = [
+    "Symbol",
+    "Name",
+    "Price [$]",
+    "Market Cap",
+    "Market Cap Rank",
+    "Volume [$]",
+]
+
 
 @log_start_end(log=logger)
 def read_file_data(file_name: str) -> dict:
@@ -166,21 +175,14 @@ def get_coins(
             df = pd.concat([df, pd.DataFrame(data)], ignore_index=True)
             limit -= page_size
             page += 1
+
     if sortby in COINS_COLUMNS_MAP:
         df = df[(df["total_volume"].notna()) & (df["market_cap"].notna())]
         df = df.sort_values(by=COINS_COLUMNS_MAP[sortby], ascending=ascend)
+
     df = df.astype({"market_cap_rank": "Int64"})
+
     return df.head(table_size)
-
-
-GAINERS_LOSERS_COLUMNS = [
-    "Symbol",
-    "Name",
-    "Price [$]",
-    "market_cap",
-    "market_cap_rank",
-    "total_volume",
-]
 
 
 @log_start_end(log=logger)
@@ -236,9 +238,14 @@ def get_gainers_or_losers(
         axis=1,
         copy=True,
     )
-    if sortby in COINS_COLUMNS_MAP:
-        df = df[(df["total_volume"].notna()) & (df["market_cap"].notna())]
-        df = df.sort_values(by=COINS_COLUMNS_MAP[sortby], ascending=True)
+
+    if sortby in GAINERS_LOSERS_COLUMNS:
+
+        sorted_df = sorted_df[
+            (sorted_df["Volume [$]"].notna()) & (sorted_df["Market Cap"].notna())
+        ]
+        sorted_df = sorted_df.sort_values(by=sortby, ascending=True)
+
     return sorted_df
 
 
