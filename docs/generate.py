@@ -1,6 +1,5 @@
 import re
 import sys
-from tkinter import N
 from typing import Callable, Any, Optional, List, Tuple, Dict
 from inspect import signature
 import importlib
@@ -58,6 +57,39 @@ def groupby(orig_list: List[Any], index: int) -> Dict[Any, Any]:
         else:
             grouped[item[index]] = [item]
     return grouped
+
+
+def write_section(
+    title: str, start: int, end: int, docstring: str, file, code_snippet: bool = False
+):
+    """Writes text to documentation files.
+
+    Parameters
+    ----------
+        title: str
+            Section title
+        start: int
+            Section start
+        end: int
+            Section end
+        docstring: str
+            Docstring text
+        file:
+            File to write documentation
+        code_snippet: bool
+            Format section content as code snippet
+    """
+
+    text = docstring[start:end]
+
+    file.write(f"\n* **{title}**\n\n")
+
+    if code_snippet:
+        file.write("    {{< highlight python >}}\n")
+        file.write(text)
+        file.write("{{< /highlight >}}")
+    else:
+        file.write(text)
 
 
 def generate_documentation(
@@ -148,7 +180,7 @@ def generate_documentation(
                     sig = sig.replace("(", "(\n    ")
                     # TODO: This requires type int for args, adds new line after each arg
                     sig = re.sub(
-                        "([a-zA-Z0-9_ ]+)(:)([\[\]a-zA-Z0-9_ (,.=']*)(,)",
+                        "([a-zA-Z0-9_ ]+)(:)([\[\]a-zA-Z0-9_ (,.='-]*)(,)",
                         r"\1\2\3\4\n   ",
                         sig,
                     )
@@ -159,7 +191,7 @@ def generate_documentation(
                         sig = sig.replace("(", "(\n    ")
                         # TODO: This requires type int for args, adds new line after each arg
                         sig = re.sub(
-                            "([a-zA-Z0-9_ ]+)(:)([\[\]a-zA-Z0-9_ (,.=']*)(,)",
+                            "([a-zA-Z0-9_ ]+)(:)([\[\]a-zA-Z0-9_ (,.='-]*)(,)",
                             r"\1\2\3\4\n   ",
                             sig,
                         )
@@ -174,34 +206,34 @@ def generate_documentation(
 
                 # Parameters
                 if has_param:
-
-                    parameters = docstring[
-                        parameters_position + len(parameters_anchor) : returns_position
-                    ]
-
-                    f.write("\n* **Parameters**\n\n")
-                    f.write(parameters)
+                    write_section(
+                        title="Parameters",
+                        start=parameters_position + len(parameters_anchor),
+                        end=returns_position,
+                        docstring=docstring,
+                        file=f,
+                    )
 
                 # Returns
                 if returns_position != len(docstring):
-
-                    returns = docstring[
-                        returns_position + len(returns_anchor) : examples_position
-                    ]
-
-                    f.write("\n* **Returns**\n\n")
-                    f.write(returns)
+                    write_section(
+                        title="Returns",
+                        start=returns_position + len(returns_anchor),
+                        end=examples_position,
+                        docstring=docstring,
+                        file=f,
+                    )
 
                 # Examples
                 if examples_position != len(docstring):
-
-                    examples = docstring[examples_position + len(examples_anchor) :]
-
-                    f.write("\n* **Examples**\n\n")
-                    f.write("    {{< highlight python >}}")
-                    f.write("\n")
-                    f.write(examples)
-                    f.write("{{< /highlight >}}")
+                    write_section(
+                        title="Examples",
+                        start=examples_position + len(examples_anchor),
+                        end=len(docstring),
+                        docstring=docstring,
+                        file=f,
+                        code_snippet=True,
+                    )
 
 
 def find_line(path: str, to_match: str) -> int:
