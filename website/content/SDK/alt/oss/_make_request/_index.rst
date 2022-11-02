@@ -21,8 +21,6 @@ alt.oss._make_request(
     url : *str*
         url to scrape
 
-    
 * **Returns**
 
-        BeautifulSoup object
-   
+    BeautifulSoup object

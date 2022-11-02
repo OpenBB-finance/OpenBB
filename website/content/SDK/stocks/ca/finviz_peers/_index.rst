@@ -24,9 +24,7 @@ stocks.ca.finviz_peers(
     compare_list : List[str]
         List of fields to compare, ["Sector", "Industry", "Country"]
 
-    
 * **Returns**
 
     List[str]
         List of similar companies
-   

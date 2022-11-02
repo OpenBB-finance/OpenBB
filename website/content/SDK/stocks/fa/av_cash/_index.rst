@@ -10,7 +10,8 @@
     > Get cash flows for company
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 stocks.fa.av_cash(
@@ -20,6 +21,7 @@ stocks.fa.av_cash(
     ratios: bool = False,
     plot: bool = False,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -35,10 +37,12 @@ stocks.fa.av_cash(
         Shows percentage change, by default False
     plot: *bool*
         If the data shall be formatted ready to plot
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     pd.DataFrame
         Dataframe of cash flow statements
-   

@@ -24,9 +24,7 @@ stocks.gov.lobbying(
     limit: *int*
         Number of events to show
 
-    
 * **Returns**
 
     pd.DataFrame
         Dataframe with corporate lobbying data
-   

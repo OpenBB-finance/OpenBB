@@ -10,7 +10,8 @@
     > Get news for a given term. [Source: NewsAPI]
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 etf.news(
@@ -20,6 +21,7 @@ etf.news(
     show_newest: bool = True,
     sources: str = '',
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> List[Tuple[Any, Any]]
 {{< /highlight >}}
 
@@ -33,10 +35,12 @@ etf.news(
         flag to show newest articles first
     sources: *str*
         sources to exclusively show news from (comma separated)
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     tables : List[Tuple]
         List of tuples containing news df in first index and dict containing title of news df
-   

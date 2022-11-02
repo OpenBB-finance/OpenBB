@@ -21,9 +21,7 @@ stocks.fa.data(
     symbol : *str*
         Stock ticker symbol
 
-    
 * **Returns**
 
     pd.DataFrame
         DataFrame of fundamental data
-   

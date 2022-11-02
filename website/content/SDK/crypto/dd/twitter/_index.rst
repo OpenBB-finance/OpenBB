@@ -10,7 +10,8 @@
     > Get twitter timeline for given coin id. Not more than last 50 tweets [Source: CoinPaprika]
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.dd.twitter(
@@ -18,6 +19,7 @@ crypto.dd.twitter(
     sortby: str = 'date',
     ascend: bool = True,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -31,10 +33,13 @@ crypto.dd.twitter(
         https://api.coinpaprika.com/docs#tag/Coins/paths/~1coins~1%7Bcoin_id%7D~1twitter/get).
     ascend: *bool*
         Flag to sort data descending
-    
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
+
 * **Returns**
 
     pandas.DataFrame
         Twitter timeline for given coin.
         Columns: date, user_name, status, retweet_count, like_count
-   

@@ -12,16 +12,18 @@
     [Source: https://santiment.net/]
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.dd.gh(
     symbol: str,
     dev_activity: bool = False,
     interval: str = '1d',
-    start_date: str = '2021-11-02T13:16:02Z',
-    end_date: str = '2022-11-02T13:16:02Z',
+    start_date: str = '2021-11-02T14:05:27Z',
+    end_date: str = '2022-11-02T14:05:27Z',
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -37,10 +39,12 @@ crypto.dd.gh(
         End date like string (e.g., 2021-10-01)
     interval : *str*
         Interval frequency (e.g., 1d)
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     pd.DataFrame
         developer activity over time
-   

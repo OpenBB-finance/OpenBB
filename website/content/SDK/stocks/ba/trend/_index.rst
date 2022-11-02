@@ -13,15 +13,18 @@
     Source: [Sentiment Investor]
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 stocks.ba.trend(
     start_date: datetime.datetime = datetime.datetime(
-    2022, 11, 2, 13, 16, 2, 229477, chart: bool = False,
+    2022, 11, 2, 14, 5, 27, 550871, chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ), hour: int = 0,
     number: int = 10,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -34,10 +37,12 @@ stocks.ba.trend(
     number : *int*
         Number of results returned by API call
         Maximum 250 per api call
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     pd.DataFrame
         Dataframe of trending data
-   

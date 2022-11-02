@@ -25,7 +25,6 @@ portfolio.tail(
     window: *int*
         Interval used for rolling values
 
-    
 * **Returns**
 
     pd.DataFrame
@@ -34,4 +33,3 @@ portfolio.tail(
         Series of the portfolios rolling tail ratio
     pd.Series
         Series of the benchmarks rolling tail ratio
-   

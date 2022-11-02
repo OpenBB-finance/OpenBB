@@ -34,9 +34,7 @@ economy.events(
     end_date: *datetime.date*
         Last date to get events.
 
-    
 * **Returns**
 
     Tuple[pd.DataFrame, str]
         Economic calendar Dataframe and detail string about country/time zone.
-   

@@ -19,4 +19,3 @@ stocks.disc.lowfloat() -> pandas.core.frame.DataFrame
     DataFrame
         Low float DataFrame with the following columns:
         Ticker, Company, Exchange, ShortInt, Float, Outstd, Industry
-   

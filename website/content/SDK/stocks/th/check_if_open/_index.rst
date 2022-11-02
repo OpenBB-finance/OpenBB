@@ -24,9 +24,7 @@ stocks.th.check_if_open(
     exchange : *str*
         bursa pd.DataFrame index value for exchange
 
-    
 * **Returns**
 
     bool
         If market is open
-   

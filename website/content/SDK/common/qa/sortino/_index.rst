@@ -10,7 +10,8 @@
     > Calculates the sortino ratio
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 common.qa.sortino(
@@ -19,6 +20,7 @@ common.qa.sortino(
     window: float = 252,
     adjusted: bool = False,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -32,10 +34,12 @@ common.qa.sortino(
         length of the rolling window
     adjusted: *bool*
         adjust the sortino ratio
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     sortino: *pd.DataFrame*
         sortino ratio
-   

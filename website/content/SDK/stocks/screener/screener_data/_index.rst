@@ -10,7 +10,8 @@
     > Screener Overview
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 stocks.screener.screener_data(
@@ -19,6 +20,7 @@ stocks.screener.screener_data(
     limit: int = 10,
     ascend: bool = False,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 )
 {{< /highlight >}}
 
@@ -32,10 +34,12 @@ stocks.screener.screener_data(
         Limit of stocks filtered with presets to print
     ascend : *bool*
         Ascended order of stocks filtered to print
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     pd.DataFrame
         Dataframe with loaded filtered stocks
-   

@@ -21,9 +21,7 @@ stocks.fa.profile(
     symbol : *str*
         Stock ticker symbol
 
-    
 * **Returns**
 
     pd.DataFrame:
         Dataframe of ticker profile
-   

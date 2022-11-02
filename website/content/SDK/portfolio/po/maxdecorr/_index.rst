@@ -10,7 +10,8 @@
     > Builds a maximal decorrelation portfolio
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 portfolio.po.maxdecorr(
@@ -28,6 +29,7 @@ portfolio.po.maxdecorr(
     value: float = 1.0,
     value_short: float = 0,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> Tuple
 {{< /highlight >}}
 
@@ -86,10 +88,12 @@ portfolio.po.maxdecorr(
         Amount of money to allocate. The default is 1.
     value_short : float, optional
         Amount to allocate to portfolio in short positions. The default is 0.
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     Tuple
         Dictionary of portfolio weights and DataFrame of stock returns
-   

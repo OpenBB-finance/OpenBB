@@ -23,9 +23,8 @@ economy.fred_notes(
         Text query to search on fred series notes database
     limit : *int*
         Maximum number of series notes to display
-    
+
 * **Returns**
 
     pd.DataFrame
         DataFrame of matched series
-   

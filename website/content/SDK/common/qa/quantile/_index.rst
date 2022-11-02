@@ -10,7 +10,8 @@
     > Overlay Median & Quantile
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 common.qa.quantile(
@@ -18,6 +19,7 @@ common.qa.quantile(
     window: int = 14,
     quantile_pct: float = 0.5,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
 {{< /highlight >}}
 
@@ -29,12 +31,14 @@ common.qa.quantile(
         Length of window
     quantile_pct: *float*
         Quantile to display
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     df_med : *pd.DataFrame*
         Dataframe of median prices over window
     df_quantile : *pd.DataFrame*
         Dataframe of gievn quantile prices over window
-   

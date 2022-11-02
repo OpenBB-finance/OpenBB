@@ -18,4 +18,3 @@ economy.indices() -> pandas.core.frame.DataFrame
 
     indices: *pd.DataFrame*
         Dataframe containing name, price, net change and percent change
-   

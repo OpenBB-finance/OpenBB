@@ -37,9 +37,7 @@ stocks.sia.stocks_data(
         Choose in what currency you wish to convert each company's financial statement.
         Default is USD (US Dollars).
 
-    
 * **Returns**
 
     dict
         Dictionary of filtered stocks data separated by financial statement
-   

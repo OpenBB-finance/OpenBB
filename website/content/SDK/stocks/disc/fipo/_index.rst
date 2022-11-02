@@ -23,4 +23,3 @@ stocks.disc.fipo(
         Number of days to look ahead for IPOs dates
     end_date: *datetime*
         The end date (format YYYY-MM-DD) to look for IPOs from today onwards
-   

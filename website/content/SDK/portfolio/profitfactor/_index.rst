@@ -21,9 +21,7 @@ portfolio.profitfactor(
     portfolio: *Portfolio*
         Portfolio object with trades loaded
 
-    
 * **Returns**
 
     pd.DataFrame
         DataFrame of profit factor of the portfolio during different time periods
-   

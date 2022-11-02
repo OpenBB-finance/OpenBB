@@ -24,9 +24,7 @@ portfolio.sharpe(
     risk_free_rate: *float*
         Risk free rate value
 
-    
 * **Returns**
 
     pd.DataFrame
         DataFrame with sharpe ratio for portfolio and benchmark for different periods
-   

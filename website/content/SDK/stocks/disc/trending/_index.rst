@@ -21,9 +21,7 @@ stocks.disc.trending(
     limit: *int*
         Number of articles
 
-    
 * **Returns**
 
     list
         Trending articles list
-   

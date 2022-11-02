@@ -18,4 +18,3 @@ economy.macro_countries() -> Dict[str, str]
 
     Dict[str, str]
         A dictionary with the available countries and respective currencies.
-   

@@ -24,11 +24,9 @@ stocks.ba.spacc(
     popular : *bool*
         Search by hot instead of new
 
-    
 * **Returns**
 
     pd.DataFrame:
         Dataframe of reddit submission
     dict:
         Dictionary of tickers and number of mentions
-   

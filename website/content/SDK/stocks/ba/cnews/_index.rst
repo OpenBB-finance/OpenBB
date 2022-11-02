@@ -27,9 +27,7 @@ stocks.ba.cnews(
     end_date: *str*
         date to end searching articles, with format YYYY-MM-DD
 
-    
 * **Returns**
 
     articles : *List*
         term to search on the news articles
-   

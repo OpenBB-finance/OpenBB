@@ -27,9 +27,7 @@ stocks.fa.dcf(
     quarterly : bool, optional
         Flag to get quarterly data, by default False
 
-    
 * **Returns**
 
     pd.DataFrame
         Dataframe of dcf data
-   

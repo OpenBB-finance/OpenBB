@@ -10,11 +10,13 @@
     > Get startups from ROSS index [Source: https://runacap.com/]
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 alt.oss.ross(
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -22,4 +24,3 @@ alt.oss.ross(
 
     pandas.DataFrame:
         list of startups
-   

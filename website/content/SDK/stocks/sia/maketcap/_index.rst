@@ -18,4 +18,3 @@ stocks.sia.maketcap() -> list
 
     list
         List of possible market caps
-   

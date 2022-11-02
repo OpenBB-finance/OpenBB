@@ -21,9 +21,7 @@ portfolio.kelly(
     portfolio: *Portfolio*
         Portfolio object with trades loaded
 
-    
 * **Returns**
 
     pd.DataFrame
         DataFrame of kelly criterion of the portfolio during different time periods
-   

@@ -23,8 +23,6 @@ econometrics.comparison(
     export : *str*
         Format to export data
 
-    
 * **Returns**
 
     Returns a PanelModelComparison which shows an overview of the different regression results.
-   

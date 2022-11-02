@@ -32,9 +32,7 @@ portfolio.var(
         If one should use the student-t distribution
     percentile: *float*
         var percentile (%)
-    
+
 * **Returns**
 
     pd.DataFrame
-
-   

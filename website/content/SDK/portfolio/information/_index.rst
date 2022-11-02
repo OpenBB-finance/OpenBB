@@ -21,9 +21,7 @@ portfolio.information(
     portfolio: *Portfolio*
         Portfolio object with trades loaded
 
-    
 * **Returns**
 
     pd.DataFrame
         DataFrame of the information ratio during different time periods
-   

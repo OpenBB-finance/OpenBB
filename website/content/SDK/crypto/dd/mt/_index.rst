@@ -11,7 +11,8 @@
     [Source: https://messari.io/]
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.dd.mt(
@@ -21,6 +22,7 @@ crypto.dd.mt(
     start_date: str = '2021-11-02',
     end_date: str = '2022-11-02',
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> Tuple[pandas.core.frame.DataFrame, str]
 {{< /highlight >}}
 
@@ -36,12 +38,14 @@ crypto.dd.mt(
         Initial date like string (e.g., 2021-10-01)
     end : *int*
         End date like string (e.g., 2021-10-01)
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     pd.DataFrame
         messari timeserie over time
     str
         timeserie title
-   

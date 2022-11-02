@@ -24,9 +24,7 @@ stocks.fa.fraud(
     detail : *bool*
         Whether to provide extra m-score details
 
-    
 * **Returns**
 
     metrics : *pd.DataFrame*
         The fraud ratios
-   

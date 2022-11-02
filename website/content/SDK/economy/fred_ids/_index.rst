@@ -23,9 +23,8 @@ economy.fred_ids(
         Text query to search on fred series notes database
     limit : *int*
         Maximum number of series IDs to output
-    
+
 * **Returns**
 
     pd.Dataframe
         Dataframe with series IDs and titles
-   

@@ -39,4 +39,3 @@ crypto.dd.trading_pairs() -> List[dict]
         {'filterType': 'MAX_NUM_ALGO_ORDERS', 'maxNumAlgoOrders': 5}], 'permissions': ['SPOT', 'MARGIN']},
         ...
         ]
-   

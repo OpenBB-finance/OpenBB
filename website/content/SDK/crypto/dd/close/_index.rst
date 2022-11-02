@@ -31,9 +31,7 @@ crypto.dd.close(
     print_errors: *bool*
         Flag to print errors. Default: *True*
 
-    
 * **Returns**
 
     pd.DataFrame
         price over time
-   

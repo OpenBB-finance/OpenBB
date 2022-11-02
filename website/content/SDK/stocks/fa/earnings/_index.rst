@@ -24,9 +24,7 @@ stocks.fa.earnings(
     quarterly : bool, optional
         Flag to get quarterly and not annual, by default False
 
-    
 * **Returns**
 
     pd.DataFrame
         Dataframe of earnings
-   

@@ -21,9 +21,7 @@ alt.covid.global_cases(
     country: *str*
         Country to search for
 
-    
 * **Returns**
 
     pd.DataFrame
         Dataframe of historical cases
-   

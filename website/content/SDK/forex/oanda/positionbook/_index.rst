@@ -10,13 +10,15 @@
     > Request position book data for plotting.
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 forex.oanda.positionbook(
     instrument: Optional[str] = None,
     accountID: str = 'REPLACE_ME',
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> Union[pandas.core.frame.DataFrame, bool]
 {{< /highlight >}}
 
@@ -26,10 +28,12 @@ forex.oanda.positionbook(
         The loaded currency pair, by default None
     accountID : str, optional
         Oanda account ID, by default cfg.OANDA_ACCOUNT
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     Union[pd.DataFrame, bool]
         Position book data or False
-   

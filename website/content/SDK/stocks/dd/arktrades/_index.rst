@@ -21,9 +21,7 @@ stocks.dd.arktrades(
     symbol : *str*
         Ticker to get trades for
 
-    
 * **Returns**
 
     pd.DataFrame
         DataFrame of trades
-   

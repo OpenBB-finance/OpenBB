@@ -38,9 +38,7 @@ stocks.options.hedge.calc_gamma(
     risk_free_rate: *float*
         The risk free rate.
 
-    
 * **Returns**
 
     gamma: *float*
         Returns the value for the gamma.
-   

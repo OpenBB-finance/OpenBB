@@ -27,9 +27,7 @@ economy.future(
     ascend : *bool*
         Flag to sort in ascending order
 
-    
 * **Returns**
 
     pd.Dataframe
        Indices, Energy, Metals, Meats, Grains, Softs, Bonds, Currencies
-   

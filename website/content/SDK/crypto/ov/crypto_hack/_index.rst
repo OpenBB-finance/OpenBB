@@ -22,9 +22,7 @@ crypto.ov.crypto_hack(
     slug: *str*
         slug of crypto hack
 
-    
 * **Returns**
 
     pandas.DataFrame:
         Hacks with columns {Platform,Date,Amount [$],Audited,URL}
-   

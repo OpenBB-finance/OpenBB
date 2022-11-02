@@ -29,9 +29,7 @@ econometrics.get_regression_data(
     regression_type: *str*
         The type of regression that is executed.
 
-    
 * **Returns**
 
     The dataset used, the dependent variable, the independent variable and
     the OLS model.
-   

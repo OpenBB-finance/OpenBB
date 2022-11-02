@@ -10,13 +10,15 @@
     > Get information about balance historical transactions. [Source: Ethplorer]
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.onchain.hist(
     address, sortby: str = 'timestamp',
     ascend: bool = True,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -28,10 +30,12 @@ crypto.onchain.hist(
         Key to sort by.
     ascend: *str*
         Sort in ascending order.
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     pd.DataFrame:
         DataFrame with balance historical transactions (last 100)
-   

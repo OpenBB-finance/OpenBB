@@ -11,7 +11,8 @@
     Supported blockchain: Bitcoin, Ethereum, Ripple, NEO, EOS, Stellar and Tron. [Source: https://docs.whale-alert.io/]
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.onchain.whales(
@@ -20,6 +21,7 @@ crypto.onchain.whales(
     sortby: str = 'date',
     ascend: bool = False,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -33,10 +35,12 @@ crypto.onchain.whales(
         Key to sort by.
     ascend: *str*
         Sort in ascending order.
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     pd.DataFrame
         Crypto wales transactions
-   

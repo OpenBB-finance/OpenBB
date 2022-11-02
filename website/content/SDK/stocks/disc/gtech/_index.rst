@@ -18,4 +18,3 @@ stocks.disc.gtech() -> pandas.core.frame.DataFrame
 
     pd.DataFrame
         Growth technology stocks
-   

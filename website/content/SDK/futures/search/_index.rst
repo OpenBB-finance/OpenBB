@@ -10,7 +10,8 @@
     > Get search futures [Source: Yahoo Finance]
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 futures.search(
@@ -18,6 +19,7 @@ futures.search(
     exchange: str = '',
     description: str = '',
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 )
 {{< /highlight >}}
 
@@ -29,4 +31,7 @@ futures.search(
         Select the exchange where the future exists
     description: *str*
         Select the description where the future exists
-   
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot

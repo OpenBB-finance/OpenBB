@@ -33,9 +33,7 @@ econometrics.fe(
     time_effects : *bool*
         Whether to include time effects
 
-    
 * **Returns**
 
     The dataset used, the dependent variable, the independent variable and
     the OLS model.
-   

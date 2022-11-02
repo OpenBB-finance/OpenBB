@@ -26,9 +26,7 @@ portfolio.perf(
         interval to consider performance. From: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all
     show_all_trades: *bool*
         Whether to also show all trades made and their performance (default is False)
-    
+
 * **Returns**
 
     pd.DataFrame
-
-   

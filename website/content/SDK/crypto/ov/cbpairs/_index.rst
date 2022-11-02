@@ -15,7 +15,8 @@
     max_market_funds - max funds allowed in a market order.
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.ov.cbpairs(
@@ -23,6 +24,7 @@ crypto.ov.cbpairs(
     sortby: str = 'quote_increment',
     ascend: bool = True,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -34,10 +36,12 @@ crypto.ov.cbpairs(
         Key to sortby data
     ascend: *bool*
         Sort descending flag
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     pd.DataFrame
         Available trading pairs on Coinbase
-   

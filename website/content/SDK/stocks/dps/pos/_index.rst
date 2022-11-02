@@ -27,9 +27,7 @@ stocks.dps.pos(
     ascend : *bool*
         Data in ascending order
 
-    
 * **Returns**
 
     pd.DataFrame
         Dark pool short position data
-   

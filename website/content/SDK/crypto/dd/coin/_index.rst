@@ -20,9 +20,8 @@ crypto.dd.coin(
 
     symbol: *str*
         id of coin from coinpaprika e.g. Ethereum - > 'eth-ethereum'
-    
+
 * **Returns**
 
     dict
         Coin response
-   

@@ -10,7 +10,8 @@
     > Get U.S. Treasury rates [Source: EconDB]
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 economy.treasury(
@@ -20,6 +21,7 @@ economy.treasury(
     start_date: str = '1900-01-01',
     end_date: str = '2022-11-02',
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -36,10 +38,12 @@ economy.treasury(
         Starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : *str*
         End date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     treasury_data: *pd.Dataframe*
         Holds data of the selected types and maturities
-   

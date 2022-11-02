@@ -10,13 +10,15 @@
     > Get candles for chosen trading pair and time interval. [Source: Coinbase]
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.dd.candles(
     symbol: str,
     interval: str = '24h',
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -26,10 +28,12 @@ crypto.dd.candles(
         Trading pair of coins on Coinbase e.g ETH-USDT or UNI-ETH
     interval: *str*
         Time interval. One from 1min, 5min ,15min, 1hour, 6hour, 24hour
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     pd.DataFrame
         Candles for chosen trading pair.
-   

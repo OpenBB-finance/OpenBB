@@ -21,9 +21,7 @@ stocks.fa.cal(
     symbol: *str*
         Stock ticker symbol
 
-    
 * **Returns**
 
     pd.DataFrame
         Dataframe of calendar earnings
-   

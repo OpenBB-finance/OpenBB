@@ -21,9 +21,7 @@ stocks.dd.rating(
     symbol : *str*
         Stock ticker symbol
 
-    
 * **Returns**
 
     pd.DataFrame
         Rating data
-   

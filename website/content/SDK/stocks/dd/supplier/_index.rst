@@ -24,9 +24,7 @@ stocks.dd.supplier(
     limit: *int*
         The maximum number of rows to show
 
-    
 * **Returns**
 
     pd.DataFrame
         A dataframe of suppliers
-   

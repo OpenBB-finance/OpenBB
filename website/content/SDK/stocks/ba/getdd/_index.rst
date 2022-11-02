@@ -30,9 +30,7 @@ stocks.ba.getdd(
     show_all_flairs: *bool*
         Search through all flairs (apart from Yolo and Meme)
 
-    
 * **Returns**
 
     pd.DataFrame
         Dataframe of submissions
-   

@@ -24,7 +24,6 @@ common.qa.decompose(
     multiplicative : *bool*
         Boolean to indicate multiplication instead of addition
 
-    
 * **Returns**
 
     result: *Any*
@@ -33,4 +32,3 @@ common.qa.decompose(
         Filtered cycle
     trend: *pd.DataFrame*
         Filtered Trend
-   

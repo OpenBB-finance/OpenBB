@@ -21,9 +21,7 @@ stocks.options.dividend(
     symbol: *str*
         Ticker symbol to get options for
 
-    
 * **Returns**
 
     chains: *yf.ticker.Dividends*
         Dividends
-   

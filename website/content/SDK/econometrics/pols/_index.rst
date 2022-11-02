@@ -27,9 +27,7 @@ econometrics.pols(
     data : *dict*
         A dictionary containing the datasets.
 
-    
 * **Returns**
 
     The dataset used, the dependent variable, the independent variable and
     the Pooled OLS model.
-   

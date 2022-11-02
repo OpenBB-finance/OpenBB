@@ -27,9 +27,7 @@ stocks.gov.lasttrades(
     representative: *str*
         Specific representative to look at
 
-    
 * **Returns**
 
     pd.DataFrame
         Last government trading
-   

@@ -24,9 +24,6 @@ stocks.ba.queries(
     limit: *int*
         Number of queries to show
 
-    
 * **Returns**
 
     dict : {'top': pd.DataFrame or None, 'rising': pd.DataFrame or None}
-
-   

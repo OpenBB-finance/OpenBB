@@ -21,9 +21,7 @@ stocks.ca.finnhub_peers(
     symbol : *str*
         Ticker to find comparisons for
 
-    
 * **Returns**
 
     List[str]
         List of similar companies
-   

@@ -21,9 +21,7 @@ crypto.dd.tokenomics(
     symbol: *str*
         coin symbol to check tokenomics
 
-    
 * **Returns**
 
     pandas.DataFrame
         Metric, Value with tokenomics
-   

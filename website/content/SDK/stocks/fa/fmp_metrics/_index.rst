@@ -27,9 +27,7 @@ stocks.fa.fmp_metrics(
     quarterly : bool, optional
         Flag to get quarterly data, by default False
 
-    
 * **Returns**
 
     pd.DataFrame
         Dataframe of key metrics
-   

@@ -10,7 +10,8 @@
     > Builds a relaxed risk parity portfolio using the least squares approach
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 portfolio.po.relriskparity(
@@ -32,6 +33,7 @@ portfolio.po.relriskparity(
     d_ewma: float = 0.94,
     value: float = 1.0,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> Tuple
 {{< /highlight >}}
 
@@ -114,10 +116,12 @@ portfolio.po.relriskparity(
         The default is 0.94.
     value : float, optional
         Amount of money to allocate. The default is 1.
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     Tuple
         Dictionary of portfolio weights and DataFrame of stock returns
-   

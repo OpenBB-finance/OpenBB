@@ -33,9 +33,7 @@ common.qa.calculate_adjusted_var(
     mean: *float*
         mean of data
 
-    
 * **Returns**
 
     float
         Real adjusted VaR
-   

@@ -25,9 +25,7 @@ stocks.disc.news(
     limit : *int*
         Number of news to display
 
-    
 * **Returns**
 
     List[dict]
         List of dict news
-   

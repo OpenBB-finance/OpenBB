@@ -10,13 +10,15 @@
     > Get token historical prices with volume and market cap, and average price. [Source: Ethplorer]
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.onchain.prices(
     address, sortby: str = 'date',
     ascend: bool = False,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -28,10 +30,12 @@ crypto.onchain.prices(
         Key to sort by.
     ascend: *str*
         Sort in descending order.
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     pd.DataFrame:
         DataFrame with token historical prices.
-   

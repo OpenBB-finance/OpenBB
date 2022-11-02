@@ -18,11 +18,13 @@
     created with usage of this factory.
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.defi.stats(
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -30,4 +32,3 @@ crypto.defi.stats(
 
     pd.DataFrame
         Uniswap DEX statistics like liquidity, volume, number of pairs, number of transactions.
-   

@@ -31,9 +31,7 @@ econometrics.load(
     data_examples: *dict*
         Contains all available examples from Statsmodels
 
-    
 * **Returns**
 
     pd.DataFrame:
         Dataframe with custom data
-   

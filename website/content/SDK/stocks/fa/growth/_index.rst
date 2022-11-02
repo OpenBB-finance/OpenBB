@@ -27,9 +27,7 @@ stocks.fa.growth(
     quarterly : bool, optional
         Flag to get quarterly data, by default False
 
-    
 * **Returns**
 
     pd.DataFrame
         Dataframe of financial statement growth
-   

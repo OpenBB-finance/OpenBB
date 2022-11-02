@@ -10,7 +10,8 @@
     > Search CoinPaprika. [Source: CoinPaprika]
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.disc.cpsearch(
@@ -20,6 +21,7 @@ crypto.disc.cpsearch(
     sortby: str = 'id',
     ascend: bool = True,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -39,11 +41,13 @@ crypto.disc.cpsearch(
         API documentation (see https://api.coinpaprika.com/docs#tag/Tools/paths/~1search/get)
     ascend: *bool*
         Flag to sort data descending
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     pandas.DataFrame
         Search Results
         Columns: Metric, Value
-   

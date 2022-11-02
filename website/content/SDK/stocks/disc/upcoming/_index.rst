@@ -21,9 +21,7 @@ stocks.disc.upcoming(
     limit : *int*
         Number of pages
 
-    
 * **Returns**
 
     DataFrame
         Upcoming earnings DataFrame
-   

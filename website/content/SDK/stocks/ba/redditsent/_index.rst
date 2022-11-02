@@ -10,7 +10,8 @@
     > Finds posts related to a specific search term in Reddit
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 stocks.ba.redditsent(
@@ -21,6 +22,7 @@ stocks.ba.redditsent(
     full_search: bool = True,
     subreddits: str = 'all',
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> Tuple[pandas.core.frame.DataFrame, list, float]
 {{< /highlight >}}
 
@@ -40,12 +42,14 @@ stocks.ba.redditsent(
         Enable comprehensive search for ticker
     subreddits: *str*
         Comma-separated list of subreddits
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     tuple[pd.DataFrame, list, float]:
         Dataframe of submissions related to the search term,
         List of polarity scores,
         Average polarity score
-   

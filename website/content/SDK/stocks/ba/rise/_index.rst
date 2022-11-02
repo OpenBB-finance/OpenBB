@@ -24,9 +24,7 @@ stocks.ba.rise(
     limit: *int*
         Number of queries to show
 
-    
 * **Returns**
 
     pd.DataFrame
         Dataframe containing rising related queries
-   

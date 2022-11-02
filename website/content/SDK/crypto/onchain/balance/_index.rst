@@ -11,7 +11,8 @@
     have name and symbol. [Source: Ethplorer]
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.onchain.balance(
@@ -19,6 +20,7 @@ crypto.onchain.balance(
     sortby: str = 'index',
     ascend: bool = False,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -30,10 +32,12 @@ crypto.onchain.balance(
         Key to sort by.
     ascend: *str*
         Sort in descending order.
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     pd.DataFrame:
         DataFrame with list of tokens and their balances.
-   

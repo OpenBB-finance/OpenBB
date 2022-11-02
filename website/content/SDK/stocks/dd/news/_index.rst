@@ -21,9 +21,7 @@ stocks.dd.news(
     symbol : *str*
         Stock ticker symbol
 
-    
 * **Returns**
 
     List[Any]
         News
-   

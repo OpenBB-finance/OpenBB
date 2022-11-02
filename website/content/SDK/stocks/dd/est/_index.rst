@@ -21,7 +21,6 @@ stocks.dd.est(
     symbol : *str*
         Ticker to get analysts' estimates
 
-    
 * **Returns**
 
     df_year_estimates : *pd.DataFrame*
@@ -30,4 +29,3 @@ stocks.dd.est(
         Quarter earnings estimates
     df_quarter_revenues : *pd.DataFrame*
         Quarter revenues estimates
-   

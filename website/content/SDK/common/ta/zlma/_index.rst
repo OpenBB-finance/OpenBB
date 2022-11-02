@@ -27,9 +27,7 @@ common.ta.zlma(
     offset: *int*
         Length of offset
 
-    
 * **Returns**
 
     df_ta: *pd.DataFrame*
         Dataframe containing prices and EMA
-   

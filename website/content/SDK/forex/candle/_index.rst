@@ -32,4 +32,3 @@ forex.candle(
         Moving averages
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list), by default None
-   

@@ -25,11 +25,13 @@
     stationary, and thus the series y and x are concluded to be cointegrated.
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 econometrics.coint(
     dependent_series, independent_series, chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 )
 {{< /highlight >}}
 
@@ -40,8 +42,11 @@ econometrics.coint(
 
     independent_series : *pd.Series*
         The second time series of the pair to analyse.
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     c : *float*
@@ -67,5 +72,3 @@ econometrics.coint(
     pvalue : *float*
         The p-value corresponding to the Dickey Fuller test-statistic. A lower value implies
         stronger rejection of no-cointegration, thus stronger evidence of cointegration.
-
-   

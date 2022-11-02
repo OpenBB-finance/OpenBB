@@ -10,7 +10,8 @@
     > Builds a hierarchical risk parity portfolio
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 portfolio.po.hrp(
@@ -42,6 +43,7 @@ portfolio.po.hrp(
     d_ewma: float = 0.94,
     value: float = 1.0,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> Tuple
 {{< /highlight >}}
 
@@ -215,4 +217,7 @@ portfolio.po.hrp(
         Amount to allocate to portfolio in short positions, by default 0.0
     table: bool, optional
         True if plot table weights, by default False
-   
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot

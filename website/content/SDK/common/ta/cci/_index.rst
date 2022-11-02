@@ -10,7 +10,8 @@
     > Commodity channel index
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 common.ta.cci(
@@ -18,6 +19,7 @@ common.ta.cci(
     window: int = 14,
     scalar: float = 0.0015,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -33,10 +35,12 @@ common.ta.cci(
         Length of window
     scalar: *float*
         Scalar variable
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     pd.DataFrame
         Dataframe of technical indicator
-   

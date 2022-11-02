@@ -16,12 +16,14 @@
         List of DeFi Pulse protocols.
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.defi.dpi(
     sortby: str = 'TVL_$', ascend: bool = False,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -29,4 +31,3 @@ crypto.defi.dpi(
 
     pd.DataFrame
         List of DeFi Pulse protocols.
-   

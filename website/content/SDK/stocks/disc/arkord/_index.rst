@@ -27,10 +27,8 @@ stocks.disc.arkord(
     fund: *str*
         Optional filter by fund
 
-    
 * **Returns**
 
     DataFrame
         ARK orders data frame with the following columns:
         ticker, date, shares, weight, fund, direction
-   

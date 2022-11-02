@@ -18,4 +18,3 @@ stocks.dps.shorted() -> pandas.core.frame.DataFrame
 
     pd.DataFrame
         Most Shorted Stocks
-   

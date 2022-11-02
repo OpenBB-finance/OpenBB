@@ -10,7 +10,8 @@
     > Display fails-to-deliver data for a given ticker. [Source: SEC]
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 stocks.dps.ftd(
@@ -19,6 +20,7 @@ stocks.dps.ftd(
     end_date: str = '2022-11-02',
     limit: int = 0,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -32,10 +34,12 @@ stocks.dps.ftd(
         End of data, in YYYY-MM-DD format
     limit : *int*
         Number of latest fails-to-deliver being printed
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     pd.DataFrame
         Fail to deliver data
-   

@@ -24,9 +24,7 @@ stocks.ba.wsb(
     new : bool, optional
         Flag to sort by new instead of hot, by default False
 
-    
 * **Returns**
 
     pd.DataFrame
         Dataframe of reddit submissions
-   

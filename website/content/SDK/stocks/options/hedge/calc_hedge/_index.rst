@@ -11,7 +11,8 @@
     underlying asset to hold a neutral portfolio
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 stocks.options.hedge.calc_hedge(
@@ -19,6 +20,7 @@ stocks.options.hedge.calc_hedge(
     side: str = 'Call',
     greeks: dict = {'Portfolio': {'Delta': 1, 'Gamma': 9.1268e-05, 'Vega': 5.4661}, 'Option A': {'Delta': 1, 'Gamma': 9.1268e-05, 'Vega': 5.4661}, 'Option B': {'Delta': 1, 'Gamma': 9.1268e-05, 'Vega': 5.4661}}, sign: int = 1,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 )
 {{< /highlight >}}
 
@@ -33,12 +35,14 @@ stocks.options.hedge.calc_hedge(
         as follows: {'Portfolio': {'Delta': VALUE, 'Gamma': VALUE, 'Vega': VALUE}} etc
     sign: *int*
         Whether you have a long (1) or short (-1) position
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     option A weight: *float*
     option B weight: *float*
     portfolio weight: *float*
     is_singular: *boolean*
-   

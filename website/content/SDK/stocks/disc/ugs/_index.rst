@@ -19,4 +19,3 @@ stocks.disc.ugs() -> pandas.core.frame.DataFrame
 
     pd.DataFrame
         Undervalued stocks
-   

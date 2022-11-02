@@ -11,7 +11,8 @@
     the request to tradier for historical premiums.
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 stocks.options.hist_tr(
@@ -21,6 +22,7 @@ stocks.options.hist_tr(
     put: bool = False,
     chain_id: Optional[str] = None,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -36,10 +38,12 @@ stocks.options.hist_tr(
         Is this a put option?
     chain_id: Optional[str]
         OCC chain ID
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     df_hist: *pd.DataFrame*
         Dataframe of historical option prices
-   

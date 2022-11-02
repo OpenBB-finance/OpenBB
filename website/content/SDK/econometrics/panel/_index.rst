@@ -10,7 +10,8 @@
     > Based on the regression type, this function decides what regression to run.
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 econometrics.panel(
@@ -20,6 +21,7 @@ econometrics.panel(
     entity_effects: bool = False,
     time_effects: bool = False,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any], Any]
 {{< /highlight >}}
 
@@ -36,10 +38,12 @@ econometrics.panel(
         Whether to apply Fixed Effects on entities.
     time_effects: *bool*
         Whether to apply Fixed Effects on time.
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     The dataset used, the dependent variable, the independent variable and
     the regression model.
-   

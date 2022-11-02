@@ -13,13 +13,15 @@
      DD = (current value - rolling maximum) / rolling maximum
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 portfolio.max_drawdown_ratio(
     portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
     is_returns: bool = False,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.series.Series
 {{< /highlight >}}
 
@@ -29,12 +31,14 @@ portfolio.max_drawdown_ratio(
         Series of input values
     is_returns: *bool*
         Flag to indicate inputs are returns
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     pd.Series
         Holdings series
     pd.Series
         Drawdown series
-   

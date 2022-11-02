@@ -21,7 +21,6 @@ stocks.fa.website(
     symbol: *str*
         Stock ticker symbol
 
-    
 * **Returns**
 
     str

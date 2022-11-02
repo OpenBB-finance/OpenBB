@@ -20,4 +20,3 @@ stocks.quote(
 
     symbol : *str*
         Ticker
-   

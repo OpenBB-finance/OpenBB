@@ -21,9 +21,7 @@ stocks.fa.info(
     symbol: *str*
         Stock ticker symbol
 
-    
 * **Returns**
 
     pd.DataFrame
         DataFrame of yfinance information
-   

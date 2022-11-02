@@ -10,11 +10,13 @@
     > Calculate granger tests
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 econometrics.granger(
     dependent_series, independent_series, lags, chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 )
 {{< /highlight >}}
 
@@ -26,4 +28,7 @@ econometrics.granger(
         The series that you want to test whether it Granger-causes time_series_y
     lags : *int*
         The amount of lags for the Granger test. By default, this is set to 3.
-   
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot

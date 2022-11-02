@@ -21,9 +21,7 @@ stocks.options.price(
     symbol : *str*
         The ticker symbol to get the price for
 
-    
 * **Returns**
 
     price : *float*
         The price of the ticker
-   

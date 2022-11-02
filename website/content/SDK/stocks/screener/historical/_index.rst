@@ -10,7 +10,8 @@
     > View historical price of stocks that meet preset
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 stocks.screener.historical(
@@ -20,6 +21,7 @@ stocks.screener.historical(
     type_candle: str = 'a',
     normalize: bool = True,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 )
 {{< /highlight >}}
 
@@ -35,8 +37,11 @@ stocks.screener.historical(
         Type of candle to display
     normalize : *bool*
         Boolean to normalize all stock prices using MinMax
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     pd.DataFrame
@@ -45,4 +50,3 @@ stocks.screener.historical(
         List of stocks
     bool
         Whether some random stock selection due to limitations
-   

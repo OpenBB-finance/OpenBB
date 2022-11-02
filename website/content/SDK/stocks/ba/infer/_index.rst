@@ -10,7 +10,8 @@
     > Load tweets from twitter API and analyzes using VADER
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 stocks.ba.infer(
@@ -19,6 +20,7 @@ stocks.ba.infer(
     start_date: Optional[str] = '',
     end_date: Optional[str] = '',
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -32,10 +34,12 @@ stocks.ba.infer(
         If given, the start time to get tweets from
     end_date: Optional[str]
         If given, the end time to get tweets from
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     df_tweet: *pd.DataFrame*
         Dataframe of tweets and sentiment
-   

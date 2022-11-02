@@ -21,9 +21,7 @@ stocks.fa.sust(
     symbol : *str*
         Stock ticker symbol
 
-    
 * **Returns**
 
     pd.DataFrame
         Dataframe of sustainability metrics
-   

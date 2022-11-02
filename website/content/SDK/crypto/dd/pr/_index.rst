@@ -10,7 +10,8 @@
     > Fetch data to calculate potential returns of a certain coin. [Source: CoinGecko]
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.dd.pr(
@@ -19,6 +20,7 @@ crypto.dd.pr(
     limit: Optional[int] = None,
     price: Optional[int] = None,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -32,11 +34,13 @@ crypto.dd.pr(
         Number of coins with highest market cap to compare main_coin with (e.g., 5)
     price
         Target price of main_coin to check potential returns (e.g., 5)
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     pd.DataFrame
             Potential returns data
             Columns: Coin, Current Price, Target Coin, Potential Price, Potential Market Cap ($), Change (%)
-   

@@ -27,9 +27,7 @@ alt.oss._retry_session(
     backoff_factor: *float*
         Backoff schema - time periods between retry
 
-    
 * **Returns**
 
     requests.Session
         Mounted session
-   

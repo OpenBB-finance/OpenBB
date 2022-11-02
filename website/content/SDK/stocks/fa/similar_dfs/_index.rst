@@ -30,9 +30,7 @@ stocks.fa.similar_dfs(
     no_filter : *bool*
         True means that we do not filter based on market cap
 
-    
 * **Returns**
 
     new_list : List[str, pd.DataFrame]
         A list of similar companies
-   

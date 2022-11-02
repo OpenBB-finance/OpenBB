@@ -13,11 +13,13 @@
     market_cap_change_24h, volume_24h_change_24h, last_updated.   [Source: CoinPaprika]
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.ov.cpglobal(
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -26,4 +28,3 @@ crypto.ov.cpglobal(
     pandas.DataFrame
         Most important global crypto statistics
         Metric, Value
-   

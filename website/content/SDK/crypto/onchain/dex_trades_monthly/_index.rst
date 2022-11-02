@@ -29,9 +29,7 @@ crypto.onchain.dex_trades_monthly(
     ascend: *bool*
         Flag to sort data ascending
 
-    
 * **Returns**
 
     pd.DataFrame
         Trades on Decentralized Exchanges monthly aggregated
-   

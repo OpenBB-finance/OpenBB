@@ -10,13 +10,15 @@
     > Get top dexes by daily volume and users [Source: https://dappradar.com/]
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.disc.top_dexes(
     sortby: str = '',
     limit: int = 10,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -24,10 +26,12 @@ crypto.disc.top_dexes(
 
     sortby: *str*
         Key by which to sort data
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     pd.DataFrame
         Top decentralized exchanges. Columns: Name, Daily Users, Daily Volume [$]
-   

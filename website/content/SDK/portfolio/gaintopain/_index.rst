@@ -21,9 +21,7 @@ portfolio.gaintopain(
     portfolio: *Portfolio*
         Portfolio object with trades loaded
 
-    
 * **Returns**
 
     pd.DataFrame
         DataFrame of the portfolio's gain-to-pain ratio
-   

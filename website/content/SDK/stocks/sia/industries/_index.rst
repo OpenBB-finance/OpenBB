@@ -24,9 +24,7 @@ stocks.sia.industries(
     sector : *str*
         Filter retrieved industries by sector
 
-    
 * **Returns**
 
     list
         List of possible industries
-   

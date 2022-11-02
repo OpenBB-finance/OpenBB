@@ -24,9 +24,7 @@ stocks.fa.shrs(
     holder : *str*
         Which holder to get table for
 
-    
 * **Returns**
 
     pd.DataFrame
         Major holders
-   

@@ -21,9 +21,7 @@ portfolio.volatility(
     portfolio: *Portfolio*
         Portfolio object with trades loaded
 
-    
 * **Returns**
 
     pd.DataFrame
         DataFrame with volatility for portfolio and benchmark for different periods
-   

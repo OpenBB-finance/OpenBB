@@ -26,9 +26,7 @@ stocks.ca.screener(
     data_type : *str*
         Data type between: overview, valuation, financial, ownership, performance, technical
 
-    
 * **Returns**
 
     pd.DataFrame
         Dataframe with overview, valuation, financial, ownership, performance or technical
-   

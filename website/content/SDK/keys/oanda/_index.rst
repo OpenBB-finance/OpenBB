@@ -35,8 +35,6 @@ keys.oanda(
     show_output: *bool*
         Display status string or not. By default, False.
 
-    
 * **Returns**
 
     status: *str*
-   

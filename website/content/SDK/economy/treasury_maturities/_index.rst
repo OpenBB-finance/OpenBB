@@ -18,4 +18,3 @@ economy.treasury_maturities() -> pandas.core.frame.DataFrame
 
     df: *pd.DataFrame*
         Contains the name of the instruments and a string containing all options.
-   

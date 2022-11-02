@@ -73,9 +73,7 @@ stocks.load(
     monthly: *bool*
         Flag to get monthly data
 
-    
 * **Returns**
 
     df_stock_candidate: *pd.DataFrame*
         Dataframe of data
-   

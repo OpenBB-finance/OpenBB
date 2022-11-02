@@ -24,11 +24,9 @@ portfolio.calmar(
     window: *int*
         Interval used for rolling values
 
-    
 * **Returns**
 
     pd.DataFrame
         DataFrame of calmar ratio of the benchmark and portfolio during different time periods
     pd.Series
         Series of calmar ratio data
-   

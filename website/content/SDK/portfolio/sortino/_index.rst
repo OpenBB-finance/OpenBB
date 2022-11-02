@@ -24,9 +24,7 @@ portfolio.sortino(
     risk_free_rate: *float*
         Risk free rate value
 
-    
 * **Returns**
 
     pd.DataFrame
         DataFrame with sortino ratio for portfolio and benchmark for different periods
-   

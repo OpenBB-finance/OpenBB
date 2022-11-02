@@ -19,5 +19,3 @@ crypto.dd.binance_available_quotes_for_each_coin() -> dict
     dict:
         All quote assets for given coin
         {'ETH' : ['BTC', 'USDT' ...], 'UNI' : ['ETH', 'BTC','BUSD', ...]
-
-   

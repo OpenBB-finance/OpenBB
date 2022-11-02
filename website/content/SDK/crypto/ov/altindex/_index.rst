@@ -11,14 +11,16 @@
     [Source: https://blockchaincenter.net]
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.ov.altindex(
     period: int = 30,
     start_date: int = 1262304000,
-    end_date: int = 1667394962,
+    end_date: int = 1667397927,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -32,10 +34,12 @@ crypto.ov.altindex(
         Initial date timestamp (e.g., 1_609_459_200)
     end_date : *int*
         End date timestamp (e.g., 1_641_588_030)
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     pandas.DataFrame:
         Date, Value (Altcoin Index)
-   

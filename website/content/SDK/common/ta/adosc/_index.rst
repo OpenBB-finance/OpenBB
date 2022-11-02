@@ -10,7 +10,8 @@
     > Calculate AD oscillator technical indicator
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 common.ta.adosc(
@@ -19,6 +20,7 @@ common.ta.adosc(
     fast: int = 3,
     slow: int = 10,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -32,10 +34,12 @@ common.ta.adosc(
         Fast value
     slow: *int*
         Slow value
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     pd.DataFrame
         Dataframe with technical indicator
-   

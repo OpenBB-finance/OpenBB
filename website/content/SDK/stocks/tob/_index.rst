@@ -24,12 +24,9 @@ stocks.tob(
     exchange: *str*
         Exchange to look at.  Can be `BZX`,`EDGX`, `BYX`, `EDGA`
 
-    
 * **Returns**
 
     pd.DatatFrame
         Dataframe of Bids
     pd.DataFrame
         Dataframe of asks
-
-   

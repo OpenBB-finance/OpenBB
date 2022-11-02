@@ -21,9 +21,7 @@ stocks.fa.hq(
     symbol: *str*
         Stock ticker symbol
 
-    
 * **Returns**
 
     str
         Headquarter google maps url
-   

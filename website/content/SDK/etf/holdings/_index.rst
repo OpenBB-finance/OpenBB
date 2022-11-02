@@ -10,12 +10,14 @@
     > Get ETF holdings
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 etf.holdings(
     symbol: str,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -23,10 +25,12 @@ etf.holdings(
 
     symbol: *str*
         Symbol to get holdings for
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     df: *pd.DataFrame*
         Dataframe of holdings
-   

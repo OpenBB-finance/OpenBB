@@ -21,9 +21,7 @@ stocks.fa.score(
     symbol : *str*
         Stock ticker symbol
 
-    
 * **Returns**
 
     np.number
         Value score
-   

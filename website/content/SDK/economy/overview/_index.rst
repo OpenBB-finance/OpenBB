@@ -18,4 +18,3 @@ economy.overview() -> pandas.core.frame.DataFrame
 
     overview: *pd.DataFrame*
         Dataframe containing name, price, net change and percent change
-   

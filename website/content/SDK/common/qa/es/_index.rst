@@ -10,7 +10,8 @@
     > Gets Expected Shortfall for specified stock dataframe
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 common.qa.es(
@@ -20,6 +21,7 @@ common.qa.es(
     percentile: Union[float, int] = 99.9,
     portfolio: bool = False,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -35,12 +37,14 @@ common.qa.es(
         VaR percentile
     portfolio: *bool*
         If the data is a portfolio
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     list
         list of ES
     list
         list of historical ES
-   

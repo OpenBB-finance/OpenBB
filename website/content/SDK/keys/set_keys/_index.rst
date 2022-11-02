@@ -30,8 +30,6 @@ keys.set_keys(
     show_output: *bool*
         Display status string or not. By default, False.
 
-    
 * **Returns**
 
     status_dict: *Dict*
-   

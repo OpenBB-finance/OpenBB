@@ -19,4 +19,3 @@ stocks.dps.hsi() -> pandas.core.frame.DataFrame
     DataFrame
         High short interest Dataframe with the following columns:
         Ticker, Company, Exchange, ShortInt, Float, Outstd, Industry
-   

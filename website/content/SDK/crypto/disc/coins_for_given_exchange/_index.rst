@@ -24,9 +24,7 @@ crypto.disc.coins_for_given_exchange(
     page: *int*
         number of page. One page contains 100 records
 
-    
 * **Returns**
 
     dict
         dictionary with all trading pairs on binance
-   

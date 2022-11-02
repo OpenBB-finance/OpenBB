@@ -24,9 +24,7 @@ stocks.ca.polygon_peers(
     us_only: *bool*
         Only stocks from the US stock exchanges
 
-    
 * **Returns**
 
     List[str]:
         List of similar tickers
-   

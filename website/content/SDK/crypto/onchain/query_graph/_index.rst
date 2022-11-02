@@ -24,9 +24,7 @@ crypto.onchain.query_graph(
     query: *str*
         Graphql query
 
-    
 * **Returns**
 
     dict:
         Dictionary with response data
-   

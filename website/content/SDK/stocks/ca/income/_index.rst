@@ -10,7 +10,8 @@
     > Get income data. [Source: Marketwatch]
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 stocks.ca.income(
@@ -18,6 +19,7 @@ stocks.ca.income(
     timeframe: str = '2021',
     quarter: bool = False,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 )
 {{< /highlight >}}
 
@@ -33,4 +35,7 @@ stocks.ca.income(
         Whether to use quarterly statements, by default False
     export : str, optional
         Format to export data
-   
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot

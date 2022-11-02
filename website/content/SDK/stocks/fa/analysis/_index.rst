@@ -21,9 +21,7 @@ stocks.fa.analysis(
     symbol: *str*
         Ticker symbol to see analysis of filings
 
-    
 * **Returns**
 
     str
         Analysis of filings text
-   

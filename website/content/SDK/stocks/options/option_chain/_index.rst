@@ -24,9 +24,7 @@ stocks.options.option_chain(
     expiry: *str*
         Date to get options for. YYYY-MM-DD
 
-    
 * **Returns**
 
     chains: *yf.ticker.Options*
         Options chain
-   

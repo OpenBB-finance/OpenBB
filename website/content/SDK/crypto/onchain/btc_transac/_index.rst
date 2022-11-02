@@ -10,11 +10,13 @@
     > Returns BTC confirmed transactions [Source: https://api.blockchain.info/]
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.onchain.btc_transac(
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -22,4 +24,3 @@ crypto.onchain.btc_transac(
 
     pd.DataFrame
         BTC confirmed transactions
-   

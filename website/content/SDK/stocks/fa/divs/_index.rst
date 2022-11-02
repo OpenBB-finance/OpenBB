@@ -21,9 +21,7 @@ stocks.fa.divs(
     symbol: *str*
         Ticker symbol to get dividend for
 
-    
 * **Returns**
 
     pd.DataFrame:
         Dataframe of dividends and dates
-   

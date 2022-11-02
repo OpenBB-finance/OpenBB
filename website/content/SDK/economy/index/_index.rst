@@ -10,7 +10,8 @@
     > Get data on selected indices over time [Source: Yahoo Finance]
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 economy.index(
@@ -21,6 +22,7 @@ economy.index(
     column: str = 'Adj Close',
     returns: bool = False,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -39,9 +41,12 @@ economy.index(
         Which column to load in, by default this is the Adjusted Close.
     returns: *bool*
         Flag to show cumulative returns on index
-    
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
+
 * **Returns**
 
     pd.Dataframe
         Dataframe with historical data on selected indices.
-   

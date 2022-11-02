@@ -10,7 +10,8 @@
     > Plot additional charts
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 portfolio.po.plot(
@@ -31,6 +32,7 @@ portfolio.po.plot(
     heat: bool = False,
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 )
 {{< /highlight >}}
 
@@ -106,4 +108,7 @@ portfolio.po.plot(
         Display a heatmap of correlation matrix with dendrogram, by default False
     external_axes: Optional[List[plt.Axes]]
         Optional axes to plot data on
-   
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot

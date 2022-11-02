@@ -33,9 +33,7 @@ stocks.fa.av_balance(
     plot: *bool*
         If the data shall be formatted ready to plot
 
-    
 * **Returns**
 
     pd.DataFrame
         DataFrame of the balance sheet
-   

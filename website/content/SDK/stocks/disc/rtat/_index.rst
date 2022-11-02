@@ -18,4 +18,3 @@ stocks.disc.rtat() -> pandas.core.frame.DataFrame
 
     pd.DataFrame
         Dataframe of tickers
-   

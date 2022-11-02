@@ -21,9 +21,7 @@ stocks.fa.av_overview(
     symbol : *str*
         Stock ticker symbol
 
-    
 * **Returns**
 
     pd.DataFrame
         Dataframe of fundamentals
-   

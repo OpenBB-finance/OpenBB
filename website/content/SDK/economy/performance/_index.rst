@@ -27,9 +27,7 @@ economy.performance(
     ascend : *bool*
         Flag to sort in ascending order
 
-    
 * **Returns**
 
     pd.DataFrame
         dataframe with performance data
-   

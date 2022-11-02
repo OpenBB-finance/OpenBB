@@ -34,9 +34,7 @@ stocks.sia.filter_stocks(
     exclude_exchanges: *bool*
         When you wish to include different exchanges use this boolean.
 
-    
 * **Returns**
 
     list
         List of filtered stocks
-   

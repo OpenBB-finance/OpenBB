@@ -80,16 +80,16 @@ def write_section(
             Format section content as code snippet
     """
 
-    text = docstring[start:end]
+    text = docstring[start:end].strip()
 
     file.write(f"\n* **{title}**\n\n")
 
     if code_snippet:
         file.write("    {{< highlight python >}}\n")
-        file.write(text)
+        file.write("    " + text)
         file.write("{{< /highlight >}}")
     else:
-        file.write(text)
+        file.write("    " + text)
 
 
 def format_docstring(docstring: str):
@@ -154,7 +154,7 @@ def write_summary(bottom: int, docstring: str, file):
     file.write("    </h3>\n\n")
 
 
-def insert_chart_arg(has_parameters: bool, sig: str) -> str:
+def insert_chart_args(has_parameters: bool, sig: str) -> str:
     """Insert chart argument in signature.
 
     Parameters
@@ -170,10 +170,13 @@ def insert_chart_arg(has_parameters: bool, sig: str) -> str:
             String with chart argument
     """
     # TODO: This breaks if there is a ')' inside the function arguments
+
+    chart_args = "chart: bool = False, external_axes: Optional[List[plt.Axes]] = None)"
+
     if not has_parameters:
-        sig = sig.replace(")", "chart: bool = False)")
+        sig = sig.replace(")", chart_args)
     else:
-        sig = sig.replace(")", ", chart: bool = False)")
+        sig = sig.replace(")", ", " + chart_args)
 
     return sig
 
@@ -271,9 +274,9 @@ def generate_documentation(
 
                 if view:
                     f.write(
-                        "To obtain charts, make sure to add :python:`chart = True` as the last parameter\n\n"
+                        "To obtain charts, make sure to add :python:`chart = True` as the last parameter.\nUse the :python:`external_axes` argument to provide axes of external figures.\n\n"
                     )
-                    sig = insert_chart_arg(has_parameters, sig)
+                    sig = insert_chart_args(has_parameters, sig)
                     sig = format_signature(sig)
                 else:
                     if has_parameters:
@@ -292,6 +295,13 @@ def generate_documentation(
                         docstring=formatted_docstring,
                         file=f,
                     )
+                    if view:
+                        f.write("\n")
+                        f.write("    chart: *bool*\n")
+                        f.write("       Flag to display chart\n")
+                        f.write("    external_axes: Optional[List[plt.Axes]]\n")
+                        f.write("        List of external axes to include in plot")
+                    f.write("\n")
 
                 # Returns
                 if returns_title_start > 0:
@@ -302,6 +312,7 @@ def generate_documentation(
                         docstring=formatted_docstring,
                         file=f,
                     )
+                    f.write("\n")
 
                 # Examples
                 if examples_title_start > 0:
@@ -313,6 +324,7 @@ def generate_documentation(
                         file=f,
                         code_snippet=True,
                     )
+                    f.write("\n")
 
 
 def find_line(path: str, to_match: str) -> int:

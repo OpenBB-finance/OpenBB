@@ -27,9 +27,7 @@ economy.valuation(
     ascend : *bool*
         Flag to sort in ascending order
 
-    
 * **Returns**
 
     pd.DataFrame
         dataframe with valuation/performance data
-   

@@ -10,7 +10,8 @@
     > Calculate Bollinger Bands
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 common.ta.bbands(
@@ -19,6 +20,7 @@ common.ta.bbands(
     n_std: float = 2,
     mamode: str = 'ema',
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -32,10 +34,12 @@ common.ta.bbands(
         Number of standard deviations to show
     mamode : *str*
         Method of calculating average
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     df_ta: *pd.DataFrame*
         Dataframe of bollinger band data
-   

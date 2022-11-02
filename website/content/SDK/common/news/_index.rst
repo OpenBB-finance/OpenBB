@@ -27,9 +27,7 @@ common.news(
     sort: *str*
         the column to sort by
 
-    
 * **Returns**
 
     articles : *dict*
         term to search on the news articles
-   

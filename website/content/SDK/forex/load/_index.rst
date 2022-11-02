@@ -36,9 +36,7 @@ forex.load(
     source: *str*
         Where to get data from
 
-    
 * **Returns**
 
     pd.DataFrame
         The loaded data
-   

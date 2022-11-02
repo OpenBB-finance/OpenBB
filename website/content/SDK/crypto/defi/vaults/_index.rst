@@ -11,7 +11,8 @@
     maximize returns of its crypto assets. [Source: https://coindix.com/]
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.defi.vaults(
@@ -21,6 +22,7 @@ crypto.defi.vaults(
     ascend: bool = True,
     sortby: str = 'apy',
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -41,10 +43,12 @@ crypto.defi.vaults(
         ]
     kind: *str*
         Kind/type of vault - one from list: ['lp','single','noimploss','stable']
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     pd.DataFrame
         Top 100 DeFi Vaults for given chain/protocol sorted by APY.
-   

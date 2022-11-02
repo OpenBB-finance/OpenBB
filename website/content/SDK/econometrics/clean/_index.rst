@@ -32,9 +32,7 @@ econometrics.clean(
     limit : *int*
         The maximum limit you wish to apply that can be forward or backward filled
 
-    
 * **Returns**
 
     pd.DataFrame:
         Dataframe with cleaned up data
-   

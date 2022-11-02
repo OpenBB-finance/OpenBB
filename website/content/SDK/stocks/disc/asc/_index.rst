@@ -19,4 +19,3 @@ stocks.disc.asc() -> pandas.core.frame.DataFrame
 
     pd.DataFrame
         Most aggressive small cap stocks
-   

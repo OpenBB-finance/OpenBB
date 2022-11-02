@@ -27,9 +27,7 @@ stocks.fa.enterprise(
     quarterly: *bool*
         Flag to get quarterly data
 
-    
 * **Returns**
 
     pd.DataFrame:
         Dataframe of enterprise information
-   

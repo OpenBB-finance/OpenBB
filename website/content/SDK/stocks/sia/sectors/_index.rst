@@ -24,9 +24,7 @@ stocks.sia.sectors(
     country : *str*
         Filter retrieved sectors by country
 
-    
 * **Returns**
 
     list
         List of possible sectors
-   

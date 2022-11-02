@@ -58,9 +58,7 @@ portfolio.po.equal(
     value : float, optional
         Amount to allocate.  Returns percentages if set to 1.
 
-    
 * **Returns**
 
     dict
         Dictionary of weights where keys are the tickers
-   

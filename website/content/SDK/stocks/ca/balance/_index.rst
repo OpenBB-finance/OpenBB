@@ -30,4 +30,3 @@ stocks.ca.balance(
         Whether to use quarterly statements, by default False
     export : str, optional
         Format to export data
-   

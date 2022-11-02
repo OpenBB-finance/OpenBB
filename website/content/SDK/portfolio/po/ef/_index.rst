@@ -10,7 +10,8 @@
     > Get efficient frontier
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 portfolio.po.ef(
@@ -31,6 +32,7 @@ portfolio.po.ef(
     n_portfolios: int = 100,
     seed: int = 123,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> Tuple
 {{< /highlight >}}
 
@@ -96,10 +98,12 @@ portfolio.po.ef(
         "Number of portfolios to simulate. The default value is 100.
     seed: int, optional
         Seed used to generate random portfolios. The default value is 123.
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     Tuple
         Parameters to create efficient frontier: frontier, mu, cov, stock_returns, weights, X1, Y1, port
-   

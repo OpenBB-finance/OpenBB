@@ -33,9 +33,7 @@ stocks.fa.av_income(
     plot: *bool*
         If the data shall be formatted ready to plot
 
-    
 * **Returns**
 
     pd.DataFrame
         DataFrame of income statements
-   

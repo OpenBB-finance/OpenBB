@@ -21,9 +21,7 @@ stocks.fa.dupont(
     symbol : *str*
         Stock ticker symbol
 
-    
 * **Returns**
 
     dupont : *pd.DataFrame*
         The dupont ratio breakdown
-   

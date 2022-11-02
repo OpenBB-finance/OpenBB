@@ -10,7 +10,8 @@
     > This functions groups the data queried from the EconDB database [Source: EconDB]
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 economy.macro(
@@ -20,8 +21,10 @@ economy.macro(
     start_date: str = '1900-01-01',
     end_date=datetime.date(
     2022, 11, 2, chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ), symbol: str = '',
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> Tuple[Any, Dict[Any, Dict[Any, Any]], str]
 {{< /highlight >}}
 
@@ -39,8 +42,11 @@ economy.macro(
         The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
     symbol : *str*
         In what currency you wish to convert all values.
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     pd.DataFrame
@@ -49,4 +55,3 @@ economy.macro(
         A dictionary containing the units of each country's parameter (e.g. EUR)
     str
         Denomination which can be Trillions, Billions, Millions, Thousands
-   

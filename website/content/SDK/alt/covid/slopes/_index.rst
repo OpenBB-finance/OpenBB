@@ -10,7 +10,8 @@
     > Load cases and find slope over period
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 alt.covid.slopes(
@@ -19,6 +20,7 @@ alt.covid.slopes(
     threshold: int = 10000,
     ascend: bool = False,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -32,14 +34,16 @@ alt.covid.slopes(
         Threshold for total number of cases
     ascend: *bool*
         Flag to sort in ascending order
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     pd.DataFrame
         Dataframe containing slopes
 
-    
 * **Examples**
 
     {{< highlight python >}}
@@ -49,5 +53,4 @@ alt.covid.slopes(
     df = openbb.alt.covid.slopes(chart = False)
 
     ### Get the chart
-    openbb.alt.covid.slopes(chart = True)
-    {{< /highlight >}}
+    openbb.alt.covid.slopes(chart = True){{< /highlight >}}

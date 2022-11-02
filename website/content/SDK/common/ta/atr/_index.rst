@@ -10,7 +10,8 @@
     > Average True Range
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 common.ta.atr(
@@ -21,6 +22,7 @@ common.ta.atr(
     mamode: str = 'ema',
     offset: int = 0,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -38,10 +40,12 @@ common.ta.atr(
         Type of filter
     offset : *int*
         Offset value
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     pd.DataFrame
         Dataframe of atr
-   

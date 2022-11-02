@@ -21,7 +21,6 @@ stocks.ba.spac(
     limit : int, optional
         Number of posts to get for each subreddit, by default 5
 
-    
 * **Returns**
 
     pd.DataFrame :
@@ -30,4 +29,3 @@ stocks.ba.spac(
         Dictionary of tickers and counts
     int :
         Number of posts found.
-   

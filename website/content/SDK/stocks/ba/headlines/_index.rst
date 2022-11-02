@@ -10,12 +10,14 @@
     > Gets Sentiment analysis provided by FinBrain's API [Source: finbrain]
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 stocks.ba.headlines(
     symbol: str,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -23,10 +25,12 @@ stocks.ba.headlines(
 
     symbol : *str*
         Ticker symbol to get the sentiment analysis from
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     DataFrame()
         Empty if there was an issue with data retrieval
-   

@@ -27,10 +27,8 @@ crypto.dd.coin_market_chart(
         number of days to display the data
     kwargs
 
-    
 * **Returns**
 
     pandas.DataFrame
         Prices for given coin
         Columns: time, price, currency
-   

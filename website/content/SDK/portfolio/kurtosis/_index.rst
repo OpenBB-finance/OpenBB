@@ -21,9 +21,7 @@ portfolio.kurtosis(
     portfolio: *Portfolio*
         Portfolio object with trades loaded
 
-    
 * **Returns**
 
     pd.DataFrame
         DataFrame with kurtosis for portfolio and benchmark for different periods
-   

@@ -33,9 +33,7 @@ stocks.fa.fmp_cash(
     plot: *bool*
         If the data shall be formatted ready to plot
 
-    
 * **Returns**
 
     pd.DataFrame
         Dataframe of company cash flow
-   

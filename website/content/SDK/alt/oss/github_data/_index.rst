@@ -23,8 +23,7 @@ alt.oss.github_data(
         github api endpoint
     params: *dict*
         params to pass to api endpoint
-    
+
 * **Returns**
 
     dict with data
-   

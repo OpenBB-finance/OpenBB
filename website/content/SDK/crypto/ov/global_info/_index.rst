@@ -24,4 +24,3 @@ crypto.ov.global_info() -> pandas.core.frame.DataFrame
 
     pandas.DataFrame
         Metric, Value
-   

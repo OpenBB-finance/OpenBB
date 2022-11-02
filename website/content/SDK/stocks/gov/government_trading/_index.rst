@@ -25,9 +25,7 @@ stocks.gov.government_trading(
     symbol : *str*
         Ticker symbol to get congress trading data from
 
-    
 * **Returns**
 
     pd.DataFrame
         Most recent transactions by members of U.S. Congress
-   

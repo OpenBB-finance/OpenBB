@@ -26,8 +26,7 @@ alt.oss.search(
             Check for repo categories. If more than one separate with a comma: e.g., finance,investment. Default: *None*
     page : *int*
             Page number to get repos
-    
+
 * **Returns**
 
     pd.DataFrame with list of repos
-   

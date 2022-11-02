@@ -21,9 +21,7 @@ stocks.qa.historical_5(
     symbol : *str*
         A ticker symbol in string form
 
-    
 * **Returns**
 
     data : *pd.DataFrame*
         A dataframe with historical information
-   

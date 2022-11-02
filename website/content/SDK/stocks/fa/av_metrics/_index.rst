@@ -21,9 +21,7 @@ stocks.fa.av_metrics(
     symbol : *str*
         Stock ticker symbol
 
-    
 * **Returns**
 
     pd.DataFrame
         Dataframe of key metrics
-   

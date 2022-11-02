@@ -31,9 +31,7 @@ econometrics.ols(
     export: *str*
         Format to export data
 
-    
 * **Returns**
 
     The dataset used, the dependent variable, the independent variable and
     the OLS model.
-   

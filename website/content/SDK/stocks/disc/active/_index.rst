@@ -18,4 +18,3 @@ stocks.disc.active() -> pandas.core.frame.DataFrame
 
     pd.DataFrame
         Most active stocks
-   

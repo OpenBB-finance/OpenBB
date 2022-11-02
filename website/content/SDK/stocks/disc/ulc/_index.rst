@@ -19,4 +19,3 @@ stocks.disc.ulc() -> pandas.core.frame.DataFrame
 
     pd.DataFrame
         Most undervalued large cap stocks
-   

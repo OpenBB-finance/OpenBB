@@ -27,9 +27,7 @@ common.ta.wma(
     offset: *int*
         Length of offset
 
-    
 * **Returns**
 
     df_ta: *pd.DataFrame*
         Dataframe containing prices and WMA
-   

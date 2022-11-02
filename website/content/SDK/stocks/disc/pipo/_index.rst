@@ -23,4 +23,3 @@ stocks.disc.pipo(
         Number of days to look behind for IPOs dates
     start_date: *str*
         The starting date (format YYYY-MM-DD) to look for IPOs
-   

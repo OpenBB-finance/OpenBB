@@ -10,7 +10,8 @@
     > ADX technical indicator
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 common.ta.adx(
@@ -21,6 +22,7 @@ common.ta.adx(
     scalar: int = 100,
     drift: int = 1,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 )
 {{< /highlight >}}
 
@@ -38,10 +40,12 @@ common.ta.adx(
         Scalar variable
     drift: *int*
         Drift variable
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     pd.DataFrame
         DataFrame with adx indicator
-   

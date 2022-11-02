@@ -21,9 +21,7 @@ stocks.dd.analyst(
     symbol : *str*
         Stock ticker symbol
 
-    
 * **Returns**
 
     df_fa: *DataFrame*
         Analyst price targets
-   

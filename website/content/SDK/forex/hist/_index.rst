@@ -33,9 +33,7 @@ forex.hist(
     start_date : str, optional
         Start date for data.
 
-    
 * **Returns**
 
     pd.DataFrame
         Historical data for forex pair
-   

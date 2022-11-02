@@ -18,4 +18,3 @@ stocks.dps.ctb() -> pandas.core.frame.DataFrame
 
     pd.DataFrame
         Cost to borrow
-   

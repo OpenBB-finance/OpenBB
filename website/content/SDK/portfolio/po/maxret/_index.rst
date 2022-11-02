@@ -10,7 +10,8 @@
     > Builds a maximal return/risk ratio portfolio
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 portfolio.po.maxret(
@@ -35,6 +36,7 @@ portfolio.po.maxret(
     value: float = 1.0,
     value_short: float = 0.0,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> Tuple
 {{< /highlight >}}
 
@@ -130,10 +132,12 @@ portfolio.po.maxret(
         Amount to allocate to portfolio in long positions, by default 1.0
     value_short : float, optional
         Amount to allocate to portfolio in short positions, by default 0.0
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     Tuple
         Dictionary of portfolio weights and DataFrame of stock returns
-   

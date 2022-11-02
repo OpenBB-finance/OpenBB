@@ -29,9 +29,7 @@ crypto.dd.ohlc_historical(
     days: *int*
         time range for chart in days. Maximum 365
 
-    
 * **Returns**
 
     pandas.DataFrame
         Open/High/Low/Close values with volume and market_cap.
-   

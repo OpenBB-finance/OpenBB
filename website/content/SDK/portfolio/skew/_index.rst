@@ -28,4 +28,3 @@ portfolio.skew(
 
     pd.DataFrame
         DataFrame with skewness for portfolio and benchmark for different periods
-   

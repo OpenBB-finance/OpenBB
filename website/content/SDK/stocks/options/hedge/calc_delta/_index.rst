@@ -40,9 +40,7 @@ stocks.options.hedge.calc_delta(
     sign: *int*
         Whether you have a long (1) or short (-1) position
 
-    
 * **Returns**
 
     delta: *float*
         Returns the value for the delta.
-   

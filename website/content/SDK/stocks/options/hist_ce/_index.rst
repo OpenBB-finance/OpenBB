@@ -10,7 +10,8 @@
     > Historic prices for a specific option [chartexchange]
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 stocks.options.hist_ce(
@@ -19,6 +20,7 @@ stocks.options.hist_ce(
     call: bool = True,
     price: str = '90',
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -32,10 +34,12 @@ stocks.options.hist_ce(
         Whether to show a call or a put
     price : *str*
         Strike price for a specific option
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     historical : *pd.Dataframe*
         Historic information for an option
-   

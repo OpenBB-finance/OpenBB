@@ -29,9 +29,7 @@ portfolio.es(
         choose distribution to use: logistic, laplace, normal
     percentile: *float*
         es percentile (%)
-    
+
 * **Returns**
 
     pd.DataFrame
-
-   

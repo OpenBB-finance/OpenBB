@@ -10,7 +10,8 @@
     > Calculate Fibonacci levels
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 common.ta.fib(
@@ -19,6 +20,7 @@ common.ta.fib(
     start_date: Any = None,
     end_date: Any = None,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> Tuple[pandas.core.frame.DataFrame, pandas._libs.tslibs.timestamps.Timestamp, pandas._libs.tslibs.timestamps.Timestamp, float, float]
 {{< /highlight >}}
 
@@ -32,8 +34,11 @@ common.ta.fib(
         Custom start date for retracement
     end_date : *Any*
         Custom end date for retracement
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     df : *pd.DataFrame*
@@ -46,4 +51,3 @@ common.ta.fib(
         Price at min point
     max_pr: *float*
         Price at max point
-   

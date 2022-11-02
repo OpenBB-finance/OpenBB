@@ -11,7 +11,8 @@
     [Source: https://messari.io/]
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.dd.mcapdom(
@@ -20,6 +21,7 @@ crypto.dd.mcapdom(
     start_date: str = '2021-11-02',
     end_date: str = '2022-11-02',
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
@@ -33,10 +35,12 @@ crypto.dd.mcapdom(
         Initial date like string (e.g., 2021-10-01)
     end_date : *int*
         End date like string (e.g., 2021-10-01)
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     pd.DataFrame
         market dominance percentage over time
-   

@@ -24,11 +24,9 @@ portfolio.trackerr(
     window: *int*
         Interval used for rolling values
 
-    
 * **Returns**
 
     pd.DataFrame
         DataFrame of tracking errors during different time windows
     pd.Series
         Series of rolling tracking error
-   

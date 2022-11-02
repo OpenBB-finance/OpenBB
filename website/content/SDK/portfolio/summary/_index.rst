@@ -26,9 +26,7 @@ portfolio.summary(
         interval to compare cumulative returns and benchmark
     risk_free_rate : *float*
         Risk free rate for calculations
-    
+
 * **Returns**
 
     pd.DataFrame
-
-   

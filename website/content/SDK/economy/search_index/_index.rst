@@ -23,9 +23,8 @@ economy.search_index(
         The keyword you wish to search for. This can include spaces.
     limit: *int*
         The amount of views you want to show, by default this is set to 10.
-    
+
 * **Returns**
 
     pd.Dataframe
         Dataframe with the available options.
-   

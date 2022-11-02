@@ -10,7 +10,8 @@
     > Calculate portfolio weights based on selected property
     </h3>
 
-To obtain charts, make sure to add :python:`chart = True` as the last parameter
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 portfolio.po.property(
@@ -26,6 +27,7 @@ portfolio.po.property(
     s_property: str = 'marketCap',
     value: float = 1.0,
     chart: bool = False,
+    external_axes: Optional[List[plt.Axes]] = None,
 ) -> Tuple
 {{< /highlight >}}
 
@@ -63,10 +65,12 @@ portfolio.po.property(
         Property to weight portfolio by
     value : float, optional
         Amount of money to allocate
+    chart: *bool*
+       Flag to display chart
+    external_axis: Optional[List[plt.Axes]]
+        List of external axes to include in plot
 
-    
 * **Returns**
 
     Dict
         Dictionary of portfolio weights or allocations
-   

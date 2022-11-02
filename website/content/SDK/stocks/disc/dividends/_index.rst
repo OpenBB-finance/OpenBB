@@ -21,9 +21,7 @@ stocks.disc.dividends(
     date: *datetime*
         Date to get for in format YYYY-MM-DD
 
-    
 * **Returns**
 
     pd.DataFrame:
         Dataframe of dividend calendar
-   

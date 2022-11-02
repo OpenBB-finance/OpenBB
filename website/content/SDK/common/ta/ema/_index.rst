@@ -27,9 +27,7 @@ common.ta.ema(
     offset: *int*
         Length of offset
 
-    
 * **Returns**
 
     pd.DataFrame
         Dataframe containing prices and EMA
-   

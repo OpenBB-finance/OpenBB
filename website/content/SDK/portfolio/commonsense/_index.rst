@@ -21,9 +21,7 @@ portfolio.commonsense(
     portfolio: *Portfolio*
         Portfolio object with trades loaded
 
-    
 * **Returns**
 
     pd.DataFrame
         DataFrame of the portfolios and the benchmarks common sense ratio during different time periods
-   
