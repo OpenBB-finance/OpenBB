@@ -563,8 +563,8 @@ functions = {
         "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_close_price",
     },
     "crypto.dd.btcrb": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_btc_rainbow",
-        "view": "openbb_terminal.cryptocurrency.due_diligence.glassnode_view.display_btc_rainbow",
+        "model": "openbb_terminal.cryptocurrency.overview.glassnode_model.get_btc_rainbow",
+        "view": "openbb_terminal.cryptocurrency.overview.glassnode_view.display_btc_rainbow",
     },
     "crypto.dd.eb": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_exchange_balances",
