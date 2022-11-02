@@ -120,7 +120,7 @@ def load(
         if source == "AlphaVantage":
             if "min" in interval:
                 resolution = "i"
-            df = av_model.get_historical(
+            return av_model.get_historical(
                 to_symbol=to_symbol,
                 from_symbol=from_symbol,
                 resolution=resolution,
@@ -132,7 +132,7 @@ def load(
 
             # This works but its not pretty :(
             interval = interval_map[interval] if interval != "1day" else "1440m"
-            df = stocks_helper.load(
+            return stocks_helper.load(
                 f"{from_symbol}{to_symbol}=X",
                 start_date=datetime.strptime(start_date, "%Y-%m-%d"),
                 interval=int(interval.replace("m", "")),
@@ -145,14 +145,15 @@ def load(
         timeframe = temp[2]
         if timeframe == "min":
             timeframe = "minute"
-        df = polygon_model.get_historical(
+        return polygon_model.get_historical(
             f"{from_symbol}{to_symbol}",
             multiplier=multiplier,
             timespan=timeframe,
             from_date=start_date,
         )
 
-    return df
+    console.print(f"Source {source} not supported")
+    return pd.DataFrame()
 
 
 @log_start_end(log=logger)
