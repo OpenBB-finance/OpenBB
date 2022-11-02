@@ -14,7 +14,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.dd.mkt(
-    symbol: str = 'eth-ethereum', quotes: str = 'USD',
+    symbol: str = 'eth-ethereum',
+    quotes: str = 'USD',
     sortby: str = 'pct_volume_share',
     ascend: bool = True,
     chart: bool = False,

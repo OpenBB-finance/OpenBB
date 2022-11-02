@@ -14,7 +14,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 
 {{< highlight python >}}
 crypto.dd.twitter(
-    symbol: str = 'eth-ethereum', sortby: str = 'date',
+    symbol: str = 'eth-ethereum',
+    sortby: str = 'date',
     ascend: bool = True,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame

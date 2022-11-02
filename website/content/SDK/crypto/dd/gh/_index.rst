@@ -19,8 +19,8 @@ crypto.dd.gh(
     symbol: str,
     dev_activity: bool = False,
     interval: str = '1d',
-    start_date: str = '2021-11-01T12:52:17Z',
-    end_date: str = '2022-11-01T12:52:17Z',
+    start_date: str = '2021-11-02T11:04:09Z',
+    end_date: str = '2022-11-02T11:04:09Z',
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

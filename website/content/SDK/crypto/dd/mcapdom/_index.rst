@@ -17,7 +17,9 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 crypto.dd.mcapdom(
     symbol: str,
     interval: str = '1d',
-    start_date: str = '2021-11-01', end_date: str = '2022-11-01', chart: bool = False,
+    start_date: str = '2021-11-02',
+    end_date: str = '2022-11-02',
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 

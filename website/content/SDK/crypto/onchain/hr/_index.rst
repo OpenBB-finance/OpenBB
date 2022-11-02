@@ -17,8 +17,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 crypto.onchain.hr(
     symbol: str,
     interval: str = '24h',
-    start_date: int = 1288875137,
-    end_date: int = 1667307137,
+    start_date: int = 1288955049,
+    end_date: int = 1667387049,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

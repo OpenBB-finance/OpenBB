@@ -13,7 +13,8 @@
 {{< highlight python >}}
 stocks.ba.cnews(
     symbol: str,
-    start_date: str = '2022-10-02', end_date: str = '2022-11-01',
+    start_date: str = '2022-10-03',
+    end_date: str = '2022-11-02',
 ) -> List[Dict]
 {{< /highlight >}}
 

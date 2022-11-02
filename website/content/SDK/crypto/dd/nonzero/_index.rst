@@ -17,7 +17,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 crypto.dd.nonzero(
     symbol: str,
     start_date: int = 1262304000,
-    end_date: int = 1667307137,
+    end_date: int = 1667387049,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

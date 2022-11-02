@@ -15,7 +15,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 {{< highlight python >}}
 stocks.ca.hcorr(
     similar: List[str],
-    start_date: str = '2021-10-31', candle_type: str = 'a',
+    start_date: str = '2021-11-01',
+    candle_type: str = 'a',
     chart: bool = False,
 )
 {{< /highlight >}}

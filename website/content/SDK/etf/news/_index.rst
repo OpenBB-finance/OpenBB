@@ -16,7 +16,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 etf.news(
     query: str,
     limit: int = 10,
-    start_date: str = '2022-10-25', show_newest: bool = True,
+    start_date: str = '2022-10-26',
+    show_newest: bool = True,
     sources: str = '',
     chart: bool = False,
 ) -> List[Tuple[Any, Any]]
