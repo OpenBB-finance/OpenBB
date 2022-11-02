@@ -5,6 +5,7 @@ import argparse
 import logging
 import os
 from typing import List, Union
+from datetime import timedelta
 
 from datetime import datetime as dt
 import pandas as pd
@@ -20,7 +21,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 def get_economic_calendar(
     countries: Union[List[str], str] = "",
-    start_date: str = dt.now().strftime("%Y-%m-%d"),
+    start_date: str = (dt.now() - timedelta(weeks=52)).strftime("%Y-%m-%d"),
     end_date: str = dt.now().strftime("%Y-%m-%d"),
 ) -> pd.DataFrame:
     """Get economic calendar for countries between specified dates
@@ -39,6 +40,7 @@ def get_economic_calendar(
     pd.DataFrame
         Economic calendar
     """
+    print(f"{countries}-{start_date}-{end_date}")
     if isinstance(countries, str):
         countries = [countries]
     if start_date == end_date:
