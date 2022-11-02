@@ -133,7 +133,14 @@ def display_daily_volume_for_given_pair(
     df[["Trade amount", "Trades"]] = df[["Trade amount", "Trades"]].applymap(
         lambda x: lambda_very_long_number_formatter(x)
     )
-
+    # The -d command takes the place of what would normally be -l. This means
+    # we want to print out all of the data from each --day. If there is
+    # more exchange data per day then we will have more than -d amount of
+    # rows. If we do not change this value then only -d amount of rows will
+    # be printed out, not -d amount of days which is what we want. So we set
+    # this to an arbitrary amount to cover the potential for more than
+    # one row per day
+    limit = 10
     print_rich_table(
         df.head(limit),
         headers=list(df.columns),
