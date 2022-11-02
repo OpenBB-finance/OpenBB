@@ -33,7 +33,7 @@ economy.spread(
         Flag to use 1 day change or not. By default False.
     chart: *bool*
        Flag to display chart
-    external_axis: Optional[List[plt.Axes]]
+    external_axes: Optional[List[plt.Axes]]
         List of external axes to include in plot
 
 * **Returns**

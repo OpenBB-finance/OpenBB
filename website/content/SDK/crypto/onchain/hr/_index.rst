@@ -18,8 +18,8 @@ Use the :python:`external_axes` argument to provide axes of external figures.
 crypto.onchain.hr(
     symbol: str,
     interval: str = '24h',
-    start_date: int = 1288965927,
-    end_date: int = 1667397927,
+    start_date: int = 1288966713,
+    end_date: int = 1667398713,
     chart: bool = False,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
@@ -37,7 +37,7 @@ crypto.onchain.hr(
         Interval frequency (e.g., 24h)
     chart: *bool*
        Flag to display chart
-    external_axis: Optional[List[plt.Axes]]
+    external_axes: Optional[List[plt.Axes]]
         List of external axes to include in plot
 
 * **Returns**

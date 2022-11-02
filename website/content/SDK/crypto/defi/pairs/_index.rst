@@ -42,7 +42,7 @@ crypto.defi.pairs(
         Minimum number of transactions done in given pool.
     chart: *bool*
        Flag to display chart
-    external_axis: Optional[List[plt.Axes]]
+    external_axes: Optional[List[plt.Axes]]
         List of external axes to include in plot
 
 * **Returns**

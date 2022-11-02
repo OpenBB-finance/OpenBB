@@ -30,7 +30,7 @@ crypto.dd.candles(
         Time interval. One from 1min, 5min ,15min, 1hour, 6hour, 24hour
     chart: *bool*
        Flag to display chart
-    external_axis: Optional[List[plt.Axes]]
+    external_axes: Optional[List[plt.Axes]]
         List of external axes to include in plot
 
 * **Returns**

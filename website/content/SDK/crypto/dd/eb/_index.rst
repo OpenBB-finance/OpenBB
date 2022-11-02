@@ -19,7 +19,7 @@ crypto.dd.eb(
     symbol: str,
     exchange: str = 'binance',
     start_date: int = 1262304000,
-    end_date: int = 1667397927,
+    end_date: int = 1667398713,
     chart: bool = False,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
@@ -37,7 +37,7 @@ crypto.dd.eb(
         End date timestamp (e.g., 1_614_556_800)
     chart: *bool*
        Flag to display chart
-    external_axis: Optional[List[plt.Axes]]
+    external_axes: Optional[List[plt.Axes]]
         List of external axes to include in plot
 
 * **Returns**

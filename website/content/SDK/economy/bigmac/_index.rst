@@ -27,7 +27,7 @@ economy.bigmac(
         List of country codes (ISO-3 letter country code). Codes available through economy.country_codes().
     chart: *bool*
        Flag to display chart
-    external_axis: Optional[List[plt.Axes]]
+    external_axes: Optional[List[plt.Axes]]
         List of external axes to include in plot
 
 * **Returns**

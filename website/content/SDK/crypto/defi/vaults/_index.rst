@@ -45,7 +45,7 @@ crypto.defi.vaults(
         Kind/type of vault - one from list: ['lp','single','noimploss','stable']
     chart: *bool*
        Flag to display chart
-    external_axis: Optional[List[plt.Axes]]
+    external_axes: Optional[List[plt.Axes]]
         List of external axes to include in plot
 
 * **Returns**

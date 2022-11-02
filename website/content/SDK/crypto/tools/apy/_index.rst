@@ -30,7 +30,7 @@ crypto.tools.apy(
         number of compounded periods in a year
     chart: *bool*
        Flag to display chart
-    external_axis: Optional[List[plt.Axes]]
+    external_axes: Optional[List[plt.Axes]]
         List of external axes to include in plot
 
 * **Returns**

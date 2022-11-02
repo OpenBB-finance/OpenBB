@@ -44,7 +44,7 @@ econometrics.coint(
         The second time series of the pair to analyse.
     chart: *bool*
        Flag to display chart
-    external_axis: Optional[List[plt.Axes]]
+    external_axes: Optional[List[plt.Axes]]
         List of external axes to include in plot
 
 * **Returns**

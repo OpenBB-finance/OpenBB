@@ -28,7 +28,7 @@ etf.disc.mover(
         Data to get.  Can be "gainers", "decliners" or "active"
     chart: *bool*
        Flag to display chart
-    external_axis: Optional[List[plt.Axes]]
+    external_axes: Optional[List[plt.Axes]]
         List of external axes to include in plot
 
 * **Returns**

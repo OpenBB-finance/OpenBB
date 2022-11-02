@@ -37,7 +37,7 @@ stocks.options.hedge.calc_hedge(
         Whether you have a long (1) or short (-1) position
     chart: *bool*
        Flag to display chart
-    external_axis: Optional[List[plt.Axes]]
+    external_axes: Optional[List[plt.Axes]]
         List of external axes to include in plot
 
 * **Returns**

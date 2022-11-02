@@ -34,7 +34,7 @@ portfolio.rsortino(
         Value to use for risk free rate in sharpe/other calculations
     chart: *bool*
        Flag to display chart
-    external_axis: Optional[List[plt.Axes]]
+    external_axes: Optional[List[plt.Axes]]
         List of external axes to include in plot
 
 * **Returns**

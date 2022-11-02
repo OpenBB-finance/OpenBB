@@ -44,7 +44,7 @@ economy.macro(
         In what currency you wish to convert all values.
     chart: *bool*
        Flag to display chart
-    external_axis: Optional[List[plt.Axes]]
+    external_axes: Optional[List[plt.Axes]]
         List of external axes to include in plot
 
 * **Returns**

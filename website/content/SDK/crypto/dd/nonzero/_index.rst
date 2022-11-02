@@ -18,7 +18,7 @@ Use the :python:`external_axes` argument to provide axes of external figures.
 crypto.dd.nonzero(
     symbol: str,
     start_date: int = 1262304000,
-    end_date: int = 1667397927,
+    end_date: int = 1667398713,
     chart: bool = False,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
@@ -34,7 +34,7 @@ crypto.dd.nonzero(
         End date timestamp (e.g., 1_609_459_200)
     chart: *bool*
        Flag to display chart
-    external_axis: Optional[List[plt.Axes]]
+    external_axes: Optional[List[plt.Axes]]
         List of external axes to include in plot
 
 * **Returns**

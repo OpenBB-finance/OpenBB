@@ -33,7 +33,7 @@ portfolio.max_drawdown_ratio(
         Flag to indicate inputs are returns
     chart: *bool*
        Flag to display chart
-    external_axis: Optional[List[plt.Axes]]
+    external_axes: Optional[List[plt.Axes]]
         List of external axes to include in plot
 
 * **Returns**

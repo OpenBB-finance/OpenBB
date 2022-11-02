@@ -28,7 +28,7 @@ crypto.ov.wf(
         Number of coins to search, by default n=100, one page has 100 coins, so 1 page is scraped.
     chart: *bool*
        Flag to display chart
-    external_axis: Optional[List[plt.Axes]]
+    external_axes: Optional[List[plt.Axes]]
         List of external axes to include in plot
 
 * **Returns**

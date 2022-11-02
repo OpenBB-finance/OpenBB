@@ -33,7 +33,7 @@ economy.tyld(
         Maturity timeline.  Can be "3mo","5y","10y" or "30y", by default "10y"
     chart: *bool*
        Flag to display chart
-    external_axis: Optional[List[plt.Axes]]
+    external_axes: Optional[List[plt.Axes]]
         List of external axes to include in plot
 
 * **Returns**

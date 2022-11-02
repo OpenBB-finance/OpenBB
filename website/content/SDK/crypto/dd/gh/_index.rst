@@ -20,8 +20,8 @@ crypto.dd.gh(
     symbol: str,
     dev_activity: bool = False,
     interval: str = '1d',
-    start_date: str = '2021-11-02T14:05:27Z',
-    end_date: str = '2022-11-02T14:05:27Z',
+    start_date: str = '2021-11-02T14:18:33Z',
+    end_date: str = '2022-11-02T14:18:33Z',
     chart: bool = False,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
@@ -41,7 +41,7 @@ crypto.dd.gh(
         Interval frequency (e.g., 1d)
     chart: *bool*
        Flag to display chart
-    external_axis: Optional[List[plt.Axes]]
+    external_axes: Optional[List[plt.Axes]]
         List of external axes to include in plot
 
 * **Returns**

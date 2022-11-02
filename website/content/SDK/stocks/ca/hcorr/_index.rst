@@ -35,5 +35,5 @@ stocks.ca.hcorr(
         OHLCA column to use for candles or R for returns, by default "a" for Adjusted Close
     chart: *bool*
        Flag to display chart
-    external_axis: Optional[List[plt.Axes]]
+    external_axes: Optional[List[plt.Axes]]
         List of external axes to include in plot

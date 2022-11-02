@@ -36,7 +36,7 @@ crypto.dd.pr(
         Target price of main_coin to check potential returns (e.g., 5)
     chart: *bool*
        Flag to display chart
-    external_axis: Optional[List[plt.Axes]]
+    external_axes: Optional[List[plt.Axes]]
         List of external axes to include in plot
 
 * **Returns**

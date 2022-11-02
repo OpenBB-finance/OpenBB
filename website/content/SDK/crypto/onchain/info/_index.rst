@@ -26,7 +26,7 @@ crypto.onchain.info(
         Token balance e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
     chart: *bool*
        Flag to display chart
-    external_axis: Optional[List[plt.Axes]]
+    external_axes: Optional[List[plt.Axes]]
         List of external axes to include in plot
 
 * **Returns**
