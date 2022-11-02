@@ -6,7 +6,7 @@ import importlib
 import os
 from ruamel.yaml import YAML
 
-from openbb_terminal.sdk import functions
+from openbb_terminal.sdk import functions, forecast_extras
 
 # NOTE: The main.yml and documentation _index.md files are automaticallty overridden
 # every time this is ran. Folder level _index.md files are NOT overridden after creation
@@ -15,7 +15,7 @@ yaml = YAML()
 yaml.indent(mapping=2, sequence=4, offset=2)
 
 
-def all_functions() -> List[Tuple[str, str, Callable[..., Any]]]:
+def list_endpoints_info(functions_: dict) -> List[Tuple[str, str, Callable[..., Any]]]:
     """Uses the base SDK functions dictionary to get a list of all functions we have linked
     in our SDK.
 
@@ -25,7 +25,7 @@ def all_functions() -> List[Tuple[str, str, Callable[..., Any]]]:
         A list of functions organized as (path_to_func, view/model, the_function)
     """
     func_list = []
-    for key, sub_dict in functions.items():
+    for key, sub_dict in functions_.items():
         for sub_key, item_path in sub_dict.items():
             full_path = item_path.split(".")
             module_path = ".".join(full_path[:-1])
@@ -324,7 +324,7 @@ def find_line(path: str, to_match: str) -> int:
     return -1
 
 
-def delete_lines(path: str, start: int):
+def delete_lines_after(path: str, start: int):
     """Deletes all file lines after a given number"""
 
     with open(path, "r+") as file:
@@ -421,20 +421,19 @@ if __name__ == "__main__":
     folder_list = crawl_folders(main_path)
     for folder_path in [x[0] for x in folder_list]:
         folder_documentation(folder_path)
-    funcs = all_functions()
+    funcs = list_endpoints_info(functions)
     grouped_funcs = groupby(funcs, 0)
 
+    # Create the documentation files
     for k, v in grouped_funcs.items():
         generate_documentation(base_folder_path, k, v)
 
-    if "-p" in sys.argv:
-        # Delete our old entry to main.yaml
-        start_line = find_line(
-            target_path, "# CODE BELOW THIS WILL BE DELETED FREQUENTLY"
-        )
-        delete_lines(target_path, start_line)
-        # Add our new entry to main.yaml
-        folders_dict = generate_dict(folder_list)
-        with open(target_path, "a") as fp:
-            yaml.dump({"ignore": [folders_dict]}, fp)
-        delete_line(target_path, start_line + 1)
+    # Delete our old entry to main.yaml
+    start_line = find_line(target_path, "# CODE BELOW THIS WILL BE DELETED FREQUENTLY")
+    delete_lines_after(target_path, start_line)
+
+    # Add our new entry to main.yaml
+    folders_dict = generate_dict(folder_list)
+    with open(target_path, "a") as fp:
+        yaml.dump({"ignore": [folders_dict]}, fp)
+    delete_line(target_path, start_line + 1)
