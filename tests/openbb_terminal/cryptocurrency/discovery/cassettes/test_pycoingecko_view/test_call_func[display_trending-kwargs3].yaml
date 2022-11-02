@@ -9,29 +9,27 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - python-requests/2.27.1
+      - python-requests/2.28.1
     method: GET
     uri: https://api.coingecko.com/api/v3/search/trending
   response:
     body:
       string: !!binary |
-        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
+        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
     headers:
-      Accept-CH:
-      - Sec-CH-UA,Sec-CH-UA-Mobile,Sec-CH-UA-Platform,Sec-CH-UA-Arch,Sec-CH-UA-Full-Version-List,Sec-CH-UA-Model,Sec-CH-Device-Memory
       Access-Control-Allow-Headers:
       - Origin, X-Requested-With, Content-Type, Accept, Authorization
       Access-Control-Allow-Methods:
@@ -42,16 +40,14 @@ interactions:
       - link, per-page, total
       Access-Control-Request-Method:
       - '*'
-      Age:
-      - '184'
       Alternate-Protocol:
       - 443:npn-spdy/2
       CF-Cache-Status:
-      - HIT
-      CF-Ray:
-      - 71ae2d417eadad86-ATL
+      - EXPIRED
+      CF-RAY:
+      - 763611dd3aca5d2b-LIS
       Cache-Control:
-      - public, max-age=300
+      - public, max-age=120
       Connection:
       - keep-alive
       Content-Encoding:
@@ -59,28 +55,33 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 13 Jun 2022 22:14:01 GMT
+      - Tue, 01 Nov 2022 16:40:01 GMT
       ETag:
-      - W/"fc93f20daf9ac2e1218390a5c1ba699e"
-      Expect-CT:
-      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      - W/"b811cab7d278d187099a533eaeccd5e5"
       Expires:
-      - Mon, 13 Jun 2022 22:19:01 GMT
+      - Tue, 01 Nov 2022 16:42:01 GMT
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
       Server:
       - cloudflare
-      Set-Cookie:
-      - datadome=ibcZKCz7FWk9RDK~XErzgLrVmGd~7076nESn0ewVmZ9wqJzpHXMi613Vnjjx.4.w5H9uJ3FSIHP~HVNuP8FlcnytMx5nqKyjwIUNMwAxadU4IM0AGa1kSdQg9wi_3Wm;
-        Max-Age=31536000; Domain=.coingecko.com; Path=/; Secure; SameSite=Lax
       Transfer-Encoding:
       - chunked
       Vary:
       - Accept-Encoding, Origin
-      X-DataDome:
-      - protected
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
       X-Request-Id:
-      - a3713ba5-559a-4de3-9474-5a32d2ece04f
+      - b66484aa-98e0-48fb-a75d-f19a512f69e5
       X-Runtime:
-      - '0.009930'
+      - '0.033346'
+      X-XSS-Protection:
+      - 1; mode=block
     status:
       code: 200
       message: OK
