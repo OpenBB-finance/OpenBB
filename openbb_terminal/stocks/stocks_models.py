@@ -23,7 +23,7 @@ def load_stock_av(
             symbol=symbol, outputsize="full"
         )[0]
     except Exception as e:
-        console.print(e, "")
+        console.print(e)
         return pd.DataFrame()
 
     df_stock_candidate.columns = [
@@ -36,7 +36,7 @@ def load_stock_av(
 
     # Check that loading a stock was not successful
     if df_stock_candidate.empty:
-        console.print("No data found.\n")
+        console.print("No data found.")
         return pd.DataFrame()
 
     df_stock_candidate.index = df_stock_candidate.index.tz_localize(None)
@@ -77,7 +77,6 @@ def load_stock_yf(
 
     # Check that loading a stock was not successful
     if df_stock_candidate.empty:
-        console.print("")
         return pd.DataFrame()
 
     df_stock_candidate.index.name = "date", int_string
@@ -109,7 +108,7 @@ def load_stock_eodhd(
     if r.status_code != 200:
         console.print("[red]Invalid API Key for eodhistoricaldata [/red]")
         console.print(
-            "Get your Key here: https://eodhistoricaldata.com/r/?ref=869U7F4J\n"
+            "Get your Key here: https://eodhistoricaldata.com/r/?ref=869U7F4J"
         )
         return pd.DataFrame()
 
@@ -119,7 +118,7 @@ def load_stock_eodhd(
 
     # Check that loading a stock was not successful
     if df_stock_candidate.empty:
-        console.print("No data found from End Of Day Historical Data.\n")
+        console.print("No data found from End Of Day Historical Data.")
         return df_stock_candidate
 
     df_stock_candidate = df_stock_candidate[
@@ -154,14 +153,14 @@ def load_stock_iex_cloud(symbol: str, iexrange: str) -> pd.DataFrame:
 
         # Check that loading a stock was not successful
         if df_stock_candidate.empty:
-            console.print("No data found.\n")
+            console.print("No data found.")
             return df_stock_candidate
 
     except Exception as e:
         if "The API key provided is not valid" in str(e):
-            console.print("[red]Invalid API Key[/red]\n")
+            console.print("[red]Invalid API Key[/red]")
         else:
-            console.print(e, "\n")
+            console.print(e)
 
         return df_stock_candidate
 

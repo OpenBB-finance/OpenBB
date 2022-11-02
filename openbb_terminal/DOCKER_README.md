@@ -85,9 +85,9 @@ If you don't have `Docker Compose` you can also use `Docker` directly to run the
 Here is the commands to run:
 
 ```bash
-docker pull ghcr.io/openbb-finance/openbbterminal/poetry:X.Y.Z
+docker pull ghcr.io/openbb-finance/openbbterminal-poetry:X.Y.Z
 
-docker run -v ~/.openbb_terminal/:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm ghcr.io/openbb-finance/openbbterminal/poetry:X.Y.Z
+docker run -v ~/.openbb_terminal/:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm ghcr.io/openbb-finance/openbbterminal-poetry:X.Y.Z
 ```
 
 Be sure to replace `X.Y.Z` with the version you want to pull and run.
@@ -122,7 +122,7 @@ docker compose run poetry
 Or run `Docker` directly:
 
 ```bash
-docker run -v ~/.openbb_terminal:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm --env DISPLAY=host.docker.internal:0.0 ghcr.io/openbb-finance/openbbterminal/poetry:X.Y.Z
+docker run -v ~/.openbb_terminal:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm --env DISPLAY=host.docker.internal:0.0 ghcr.io/openbb-finance/openbbterminal-poetry:X.Y.Z
 ```
 
 ### X-Server on macOS
@@ -150,8 +150,8 @@ xhost + $IP
 
 Now we can run the docker container, adding the display to the environment:
 
-```bach
-docker run -v ~/.openbb_terminal/:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm --env-file=path/to/setenv --env DISPLAY=$IP:0 ghcr.io/openbb-finance/openbbterminal/poetry:X.Y.Z
+```bash
+docker run -v ~/.openbb_terminal/:/home/python/.openbb_terminal -v ~/OpenBBUserData:/home/python/OpenBBUserData -it --rm --env-file=path/to/setenv --env DISPLAY=$IP:0 ghcr.io/openbb-finance/openbbterminal-poetry:X.Y.Z
 ```
 
 This container will be able to display all the same plots as the terminal interface.
@@ -174,7 +174,7 @@ And run the following commands.
 
 ```bash
 xhost +local:
-docker run -it --rm --name openbb --env-file=./.env -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix ghcr.io/openbb-finance/openbbterminal/poetry:X.Y.Z
+docker run -it --rm --name openbb --env-file=./.env -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix ghcr.io/openbb-finance/openbbterminal-poetry:X.Y.Z
 xhost -local:
 ```
 

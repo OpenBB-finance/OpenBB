@@ -89,6 +89,8 @@ class OverviewController(BaseController):
 
     PATH = "/crypto/ov/"
 
+    ORDERED_LIST_SOURCES_EXCHANGES = get_ordered_list_sources(f"{PATH}exchanges")
+
     def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__(queue)
@@ -115,6 +117,8 @@ class OverviewController(BaseController):
             choices["cr"]["-p"] = "--platforms"
             choices["cr"]["--limit"] = {str(c): {} for c in range(1, 100)}
             choices["cr"]["-l"] = "--limit"
+            choices["cr"]["--type"] = {c: {} for c in ["borrow", "supply"]}
+            choices["cr"]["-t"] = "--type"
             choices["ch"] = {
                 "--sort": {c: {} for c in rekt_model.HACKS_COLUMNS},
                 "--slug": {c: {} for c in crypto_hack_slugs},
@@ -154,9 +158,7 @@ class OverviewController(BaseController):
                 "--urls": {},
                 "-u": "--urls",
                 "--vs": {c: {} for c in CURRENCIES},
-                "--source": {
-                    c: {} for c in get_ordered_list_sources(f"{self.PATH}exchanges")
-                },
+                "--source": {c: {} for c in self.ORDERED_LIST_SOURCES_EXCHANGES},
             }
             choices["exrates"] = {
                 "--sort": {c: {} for c in pycoingecko_model.EXRATES_FILTERS},
@@ -172,7 +174,7 @@ class OverviewController(BaseController):
                 "-l": "--limit",
                 "--descend": {},
             }
-            choices["derivates"] = {
+            choices["derivatives"] = {
                 "--sort": {c: {} for c in pycoingecko_model.DERIVATIVES_FILTERS},
                 "-s": "--sort",
                 "--limit": {str(c): {} for c in range(1, 100)},
@@ -1134,10 +1136,10 @@ class OverviewController(BaseController):
 
         parser.add_argument(
             "--descend",
-            action="store_false",
+            action="store_true",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
-            default=True,
+            default=False,
         )
 
         ns_parser = self.parse_known_args_and_warn(

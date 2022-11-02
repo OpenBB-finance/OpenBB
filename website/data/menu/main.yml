@@ -192,8 +192,6 @@ main:
                 ref: /terminal/crypto/defi/aterra
               - name: ayr
                 ref: /terminal/crypto/defi/ayr
-              - name: dpi
-                ref: /terminal/crypto/defi/dpi
               - name: dtvl
                 ref: /terminal/crypto/defi/dtvl
               - name: gacc
@@ -398,8 +396,8 @@ main:
                 ref: /terminal/crypto/onchain/ds
               - name: dt
                 ref: /terminal/crypto/onchain/dt
-          - name: nft
-            ref: "/terminal/crypto/nft"
+          - name: ov
+            ref: "/terminal/crypto/ov"
             sub:
               - name: altindex
                 ref: /terminal/crypto/ov/altindex
@@ -745,6 +743,8 @@ main:
         sub:
           - name: atr
             ref: terminal/forecast/atr
+          - name: autoets
+            ref: terminal/forecast/autoets
           - name: brnn
             ref: terminal/forecast/brnn
           - name: clean
@@ -846,8 +846,6 @@ main:
             ref: /terminal/funds/info
           - name: load
             ref: /terminal/funds/load
-          - name: overview
-            ref: /terminal/funds/overview
           - name: plot
             ref: /terminal/funds/plot
           - name: search
@@ -2395,8 +2393,6 @@ main:
         sub:
           - name: info
             ref: /SDK/funds/info
-          - name: overview
-            ref: /SDK/funds/overview
           - name: search
             ref: /SDK/funds/search
       - name: futures
@@ -2997,6 +2993,8 @@ main:
             sub:
               - name: recom
                 ref: /SDK/stocks/ta/recom
+              - name: rsp
+                ref: /SDK/stocks/ta/rsp
               - name: summary
                 ref: /SDK/stocks/ta/summary
               - name: view
