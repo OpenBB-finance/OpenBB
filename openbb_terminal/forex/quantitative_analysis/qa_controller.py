@@ -155,10 +155,7 @@ class QaController(CryptoBaseController):
                 "-l": "--limit",
                 "--sortby": {
                     c: {}
-                    for c in [
-                        x.title().replace(" ", "") if x != "adjclose" else "AdjClose"
-                        for x in self.data.columns
-                    ]
+                    for c in [x.lower().replace(" ", "") for x in self.data.columns]
                 },
                 "-s": "--sortby",
                 "--descend": {},
@@ -279,10 +276,7 @@ class QaController(CryptoBaseController):
             "--sortby",
             help="The column to sort by",
             type=str.lower,
-            choices=[
-                x.title().replace(" ", "") if x != "adjclose" else "AdjClose"
-                for x in self.data.columns
-            ],
+            choices=[x.lower().replace(" ", "") for x in self.data.columns],
             dest="sortby",
         )
 

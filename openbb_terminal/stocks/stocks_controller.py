@@ -452,69 +452,53 @@ class StocksController(StockBaseController):
             limit=20,
         )
         if ns_parser:
-            if self.ticker:
-                if ns_parser.sort and not self.stock.empty:
-                    sort = (
-                        ns_parser.sort if ns_parser.sort != "AdjClose" else "Adj Close"
-                    )
-                    if sort not in self.stock.columns:
-                        col_names_no_spaces = [
-                            "'" + col.replace(" ", "") + "'"
-                            for col in self.stock.columns
-                        ]
-                        console.print(
-                            f"candle: error: argument --sort: invalid choice: '{sort}' for the source chosen "
-                            f"(choose from {(', '.join(list(col_names_no_spaces)))})"
-                        )
-                        return
-
-                if ns_parser.raw:
-                    qa_view.display_raw(
-                        data=self.stock,
-                        sortby=ns_parser.sort,
-                        ascend=not ns_parser.descending,
-                        limit=ns_parser.limit,
-                    )
-
-                else:
-                    data = stocks_helper.process_candle(self.stock)
-                    mov_avgs = []
-
-                    if ns_parser.mov_avg:
-                        mov_list = (num for num in ns_parser.mov_avg.split(","))
-
-                        for num in mov_list:
-                            try:
-                                num = int(num)
-
-                                if num <= 1:
-                                    raise ValueError
-
-                                mov_avgs.append(num)
-                            except ValueError:
-                                console.print(
-                                    f"[red]{num} is not a valid moving average, must be an integer greater than 1."
-                                )
-
-                    stocks_helper.display_candle(
-                        symbol=self.ticker,
-                        data=data,
-                        use_matplotlib=ns_parser.plotly,
-                        intraday=self.interval != "1440min",
-                        add_trend=ns_parser.trendlines,
-                        ma=mov_avgs,
-                        yscale="log" if ns_parser.logy else "linear",
-                    )
-
-                export_data(
-                    ns_parser.export,
-                    os.path.dirname(os.path.abspath(__file__)),
-                    f"{self.ticker}",
-                    self.stock,
+            if not self.ticker:
+                console.print("No ticker loaded. First use 'load <ticker>'")
+                return
+            if ns_parser.raw:
+                qa_view.display_raw(
+                    data=self.stock,
+                    sortby=ns_parser.sort,
+                    ascend=not ns_parser.descending,
+                    limit=ns_parser.limit,
                 )
 
             else:
-                console.print("No ticker loaded. First use 'load <ticker>'")
+                data = stocks_helper.process_candle(self.stock)
+                mov_avgs = []
+
+                if ns_parser.mov_avg:
+                    mov_list = (num for num in ns_parser.mov_avg.split(","))
+
+                    for num in mov_list:
+                        try:
+                            num = int(num)
+
+                            if num <= 1:
+                                raise ValueError
+
+                            mov_avgs.append(num)
+                        except ValueError:
+                            console.print(
+                                f"[red]{num} is not a valid moving average, must be an integer greater than 1."
+                            )
+
+                stocks_helper.display_candle(
+                    symbol=self.ticker,
+                    data=data,
+                    use_matplotlib=ns_parser.plotly,
+                    intraday=self.interval != "1440min",
+                    add_trend=ns_parser.trendlines,
+                    ma=mov_avgs,
+                    yscale="log" if ns_parser.logy else "linear",
+                )
+
+            export_data(
+                ns_parser.export,
+                os.path.dirname(os.path.abspath(__file__)),
+                f"{self.ticker}",
+                self.stock,
+            )
 
     @log_start_end(log=logger)
     def call_news(self, other_args: List[str]):

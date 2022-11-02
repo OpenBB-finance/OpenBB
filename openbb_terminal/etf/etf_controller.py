@@ -70,14 +70,14 @@ class ETFController(BaseController):
         "disc",
     ]
     CANDLE_COLUMNS = [
-        "AdjClose",
-        "Open",
-        "Close",
-        "High",
-        "Low",
-        "Volume",
-        "Returns",
-        "LogRet",
+        "adjclose",
+        "open",
+        "close",
+        "high",
+        "low",
+        "volume",
+        "returns",
+        "logret",
     ]
 
     PATH = "/etf/"
@@ -534,6 +534,7 @@ class ETFController(BaseController):
         if ns_parser:
             if not self.etf_name:
                 console.print("No ticker loaded. First use `load {ticker}`\n")
+                return
             if ns_parser.raw:
                 qa_view.display_raw(
                     data=self.etf_data,

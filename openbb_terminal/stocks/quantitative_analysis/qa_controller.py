@@ -177,7 +177,7 @@ class QaController(StockBaseController):
                 "--descend": {},
                 "-d": "--descend",
                 "--export": {x: {} for x in ["csv", "json", "xlsx"]},
-                "--sortby": {c: {} for c in stocks_helper.CANDLE_SORT},
+                "--sortby": {c.lower(): {} for c in stocks_helper.CANDLE_SORT},
                 "-s": "--sortby",
             }
             choices["decompose"] = {
@@ -343,7 +343,7 @@ class QaController(StockBaseController):
             "-s",
             "--sortby",
             help="The column to sort by",
-            choices=[x.lower() for x in self.stock.columns],
+            choices=[x.lower().replace(" ", "") for x in self.stock.columns],
             type=str.lower,
             dest="sortby",
         )
