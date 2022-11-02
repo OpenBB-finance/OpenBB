@@ -107,10 +107,10 @@ class ForexController(BaseController):
         mt.add_raw("\n")
         mt.add_menu("ta", self.fx_pair)
         mt.add_menu("qa", self.fx_pair)
+        mt.add_menu("forecast")
         mt.add_raw("\n")
         mt.add_info("forex")
         mt.add_menu("oanda")
-        mt.add_menu("forecast")
         console.print(text=mt.menu_text, menu="Forex")
 
     def custom_reset(self):
