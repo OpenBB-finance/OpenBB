@@ -249,7 +249,7 @@ class StocksController(StockBaseController):
             choices=clean_countries,
             dest="country",
             metavar="country_name",
-            type=str,
+            type=str.lower,
             help="Search by country to find stocks matching the criteria",
         )
         parser.add_argument(
@@ -276,6 +276,7 @@ class StocksController(StockBaseController):
             "--exchange",
             default="",
             choices=country_opts,
+            type=str.lower,
             metavar="country_name",
             dest="exchange_country",
             help="Search by a specific exchange country to find stocks matching the criteria",
