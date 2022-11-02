@@ -8,6 +8,7 @@ import pandas as pd
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
+from openbb_terminal.common.technical_analysis import ta_helpers
 
 logger = logging.getLogger(__name__)
 
@@ -45,6 +46,9 @@ def calculate_fib_levels(
     max_pr: float
         Price at max point
     """
+    close_col = ta_helpers.check_columns(data, high=False, low=False)
+    if close_col is None:
+        return pd.DataFrame(), pd.Timestamp(), pd.Timestamp(), 0, 0
     if start_date and end_date:
         if start_date not in data.index:
             date0 = data.index[data.index.get_loc(start_date, method="nearest")]
@@ -57,8 +61,8 @@ def calculate_fib_levels(
         else:
             date1 = end_date
 
-        data0 = data.loc[date0, "Adj Close"]
-        data1 = data.loc[date1, "Adj Close"]
+        data0 = data.loc[date0, close_col]
+        data1 = data.loc[date1, close_col]
 
         min_pr = min(data0, data1)
         max_pr = max(data0, data1)
@@ -70,7 +74,7 @@ def calculate_fib_levels(
             min_date = date1
             max_date = date0
     else:
-        data_to_use = data.iloc[limit:]["Adj Close"]
+        data_to_use = data.iloc[limit:][close_col]
 
         min_pr = data_to_use.min()
         min_date = data_to_use.idxmin()

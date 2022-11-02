@@ -119,14 +119,13 @@ def display_gainers(
     """
 
     df = pycoingecko_model.get_gainers(limit=limit, interval=interval, sortby=sortby)
+
     if not df.empty:
-        if sortby in COINS_COLUMNS:
-            df = df[
-                (df["total_volume"].notna()) & (df["market_cap"].notna())
-            ].sort_values(by=sortby, ascending=True)
-        for col in ["total_volume", "market_cap"]:
+
+        for col in ["Volume [$]", "Market Cap"]:
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
+
         print_rich_table(
             df.head(limit),
             headers=list(df.columns),
@@ -166,10 +165,13 @@ def display_losers(
     """
 
     df = pycoingecko_model.get_losers(limit=limit, interval=interval, sortby=sortby)
+
     if not df.empty:
+
         for col in ["Volume [$]", "Market Cap"]:
             if col in df.columns:
                 df[col] = df[col].apply(lambda x: lambda_very_long_number_formatter(x))
+
         print_rich_table(
             df.head(limit),
             headers=list(df.columns),

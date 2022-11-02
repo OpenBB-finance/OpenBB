@@ -136,6 +136,8 @@ class QaController(StockBaseController):
             choices["raw"] = {
                 "--limit": {str(c): {} for c in range(1, 100)},
                 "-l": "--limit",
+                "--sortby": {},
+                "-s": "--sortby",
                 "--descend": {},
             }
             choices["decompose"] = {
@@ -252,16 +254,27 @@ class QaController(StockBaseController):
             dest="descend",
             help="Sort in descending order",
         )
+        parser.add_argument(
+            "-s",
+            "--sortby",
+            help="The column to sort by",
+            type=str.lower,
+            dest="sortby",
+        )
 
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
+        if isinstance(self.data, pd.Series):
+            data = self.data.to_frame()
+        else:
+            data = self.data
         if ns_parser:
             qa_view.display_raw(
-                data=self.data,
+                data=data,
                 limit=ns_parser.limit,
-                sortby="",
-                descend=ns_parser.descend,
+                sortby=ns_parser.sortby,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 

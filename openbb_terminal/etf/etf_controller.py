@@ -70,14 +70,14 @@ class ETFController(BaseController):
         "disc",
     ]
     CANDLE_COLUMNS = [
-        "AdjClose",
-        "Open",
-        "Close",
-        "High",
-        "Low",
-        "Volume",
-        "Returns",
-        "LogRet",
+        "adjclose",
+        "open",
+        "close",
+        "high",
+        "low",
+        "volume",
+        "returns",
+        "logret",
     ]
 
     PATH = "/etf/"
@@ -479,18 +479,19 @@ class ETFController(BaseController):
         )
         parser.add_argument(
             "--sort",
+            "-s",
             choices=self.CANDLE_COLUMNS,
             default="",
-            type=str,
+            type=str.lower,
             dest="sort",
             help="Choose a column to sort by",
         )
         parser.add_argument(
             "-d",
             "--descending",
-            action="store_false",
+            action="store_true",
             dest="descending",
-            default=True,
+            default=False,
             help="Sort selected column descending",
         )
         parser.add_argument(
@@ -531,54 +532,54 @@ class ETFController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            if self.etf_name:
-                if ns_parser.raw:
-                    qa_view.display_raw(
-                        data=self.etf_data,
-                        sortby=ns_parser.sort,
-                        descend=ns_parser.descending,
-                        limit=ns_parser.num,
-                    )
-
-                else:
-
-                    data = stocks_helper.process_candle(self.etf_data)
-                    mov_avgs = []
-
-                    if ns_parser.mov_avg:
-                        mov_list = (num for num in ns_parser.mov_avg.split(","))
-
-                        for num in mov_list:
-                            try:
-                                num = int(num)
-
-                                if num <= 1:
-                                    raise ValueError
-
-                                mov_avgs.append(num)
-                            except ValueError:
-                                console.print(
-                                    f"[red]{num} is not a valid moving average, must be an integer greater than 1."
-                                )
-
-                    stocks_helper.display_candle(
-                        symbol=self.etf_name,
-                        data=data,
-                        use_matplotlib=ns_parser.plotly,
-                        intraday=False,
-                        add_trend=ns_parser.trendlines,
-                        ma=mov_avgs,
-                        asset_type="ETF",
-                    )
-
-                export_data(
-                    ns_parser.export,
-                    os.path.dirname(os.path.abspath(__file__)),
-                    f"{self.etf_name}",
-                    self.etf_data,
-                )
-            else:
+            if not self.etf_name:
                 console.print("No ticker loaded. First use `load {ticker}`\n")
+                return
+            if ns_parser.raw:
+                qa_view.display_raw(
+                    data=self.etf_data,
+                    sortby=ns_parser.sort,
+                    ascend=not ns_parser.descending,
+                    limit=ns_parser.num,
+                )
+
+            else:
+                data = stocks_helper.process_candle(self.etf_data)
+                mov_avgs = []
+
+                if ns_parser.mov_avg:
+                    mov_list = (num for num in ns_parser.mov_avg.split(","))
+
+                    for num in mov_list:
+                        try:
+                            num = int(num)
+
+                            if num <= 1:
+                                raise ValueError
+
+                            mov_avgs.append(num)
+                        except ValueError:
+                            console.print(
+                                f"[red]{num} is not a valid moving average, must be an integer "
+                                "greater than 1.[/red]\n"
+                            )
+
+                stocks_helper.display_candle(
+                    symbol=self.etf_name,
+                    data=data,
+                    use_matplotlib=ns_parser.plotly,
+                    intraday=False,
+                    add_trend=ns_parser.trendlines,
+                    ma=mov_avgs,
+                    asset_type="ETF",
+                )
+
+            export_data(
+                ns_parser.export,
+                os.path.dirname(os.path.abspath(__file__)),
+                f"{self.etf_name}",
+                self.etf_data,
+            )
 
     @log_start_end(log=logger)
     def call_pir(self, other_args):

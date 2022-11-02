@@ -340,10 +340,6 @@ functions = {
         "model": "openbb_terminal.cryptocurrency.defi.cryptosaurio_model.get_anchor_data",
         "view": "openbb_terminal.cryptocurrency.defi.cryptosaurio_view.display_anchor_data",
     },
-    "crypto.defi.dpi": {
-        "model": "openbb_terminal.cryptocurrency.defi.defipulse_model.get_defipulse_index",
-        "view": "openbb_terminal.cryptocurrency.defi.defipulse_view.display_defipulse",
-    },
     "crypto.defi.swaps": {
         "model": "openbb_terminal.cryptocurrency.defi.graph_model.get_last_uni_swaps",
         "view": "openbb_terminal.cryptocurrency.defi.graph_view.display_last_uni_swaps",
@@ -1005,7 +1001,7 @@ functions = {
         "model": "openbb_terminal.economy.investingcom_model.get_events_countries"
     },
     "economy.events": {
-        "model": "openbb_terminal.economy.investingcom_model.get_economic_calendar"
+        "model": "openbb_terminal.economy.nasdaq_model.get_economic_calendar"
     },
     "economy.get_ycrv_countries": {
         "model": "openbb_terminal.economy.investingcom_model.get_ycrv_countries"
