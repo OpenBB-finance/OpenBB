@@ -175,7 +175,13 @@ class DueDiligenceController(CryptoBaseController):
                 "-l": "--limit",
                 "--descend": {},
             }
-            choices["events"]["-s"] = {c: None for c in coinpaprika_view.EVENTS_FILTERS}
+            choices["events"] = {
+                "--sort": {c: {} for c in coinpaprika_view.EVENTS_FILTERS},
+                "-s": "--sort",
+                "--limit": {str(c): {} for c in range(1, 100)},
+                "-l": "--limit",
+                "--descend": {},
+            }
             choices["twitter"] = {
                 "--sort": {c: {} for c in coinpaprika_view.TWEETS_FILTERS},
                 "-s": "--sort",
@@ -1201,7 +1207,7 @@ class DueDiligenceController(CryptoBaseController):
             action="store_false",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
-            default=False,
+            default=True,
         )
 
         parser.add_argument(
