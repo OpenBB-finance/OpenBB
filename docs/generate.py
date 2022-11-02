@@ -121,6 +121,7 @@ def locate_section(title: str, docstring: str) -> Tuple[int, int]:
             Title string
         docstring: str
             Docstring text
+
     Returns
     -------
         Tuple[int, int]
@@ -162,6 +163,7 @@ def insert_chart_arg(has_parameters: bool, sig: str) -> str:
             Flags if function already has parameters or not
         sig: str
             Function signature
+
     Returns
     -------
         str:
@@ -183,6 +185,7 @@ def format_signature(sig: str) -> str:
     ----------
         sig: str
             Function signature
+
     Returns
     -------
         str:
@@ -421,21 +424,8 @@ if __name__ == "__main__":
     funcs = all_functions()
     grouped_funcs = groupby(funcs, 0)
 
-    # Run this file with -m alt to regenerate docs for alt menu for e.g.
-
-    # Create the documentation files
-    menu = ""
-    if "-m" in sys.argv:
-        m_val = sys.argv.index("-m") + 1
-        if m_val < len(sys.argv):
-            menu = sys.argv[sys.argv.index("-m") + 1]
-
     for k, v in grouped_funcs.items():
-        if menu:
-            if k.split(".")[0] == menu:
-                generate_documentation(base_folder_path, k, v)
-        else:
-            generate_documentation(base_folder_path, k, v)
+        generate_documentation(base_folder_path, k, v)
 
     if "-p" in sys.argv:
         # Delete our old entry to main.yaml
