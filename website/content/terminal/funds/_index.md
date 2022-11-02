@@ -1,12 +1,12 @@
 ---
 title: Introduction to Funds
 keywords: "funds, mutual funds, fund, basket, retail, institutional"
-excerpt: "The Introduction to Funds explains how to use the 
+excerpt: "The Introduction to Funds explains how to use the
 menu and provides a brief description of its sub-menus"
 geekdocCollapseSection: true
 ---
 The Funds menu enables you to lookup any fund based on the selected <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/funds/country/" target="_blank">country</a> by using
-<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/funds/overview/" target="_blank">overview</a> and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/funds/search/" target="_blank">search</a>. Then, there is the ability to load in the symbol with <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/funds/load/" target="_blank">load</a>.
+<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/funds/search/" target="_blank">search</a>. Then, there is the ability to load in the symbol with <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/funds/load/" target="_blank">load</a>.
 This opens up options to look into <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/funds/info/" target="_blank">fund information</a>, <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/funds/sector/" target="_blank">sector holdings</a>  and <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/funds/equity/" target="_blank">equity holdings</a>
 as well as <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/funds/plot/" target="_blank">plot</a> the historical data.
 
@@ -16,7 +16,7 @@ The Funds menu is called upon by typing `funds` which opens the following menu:
 
 ![Funds Menu](https://user-images.githubusercontent.com/46355364/174990788-3b432068-f303-4548-b9b5-0cb158e62628.png)
 
-You have the ability to look up any fund (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/funds/overview/" target="_blank">overview</a> or <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/funds/search/" target="_blank">search</a>). With the example below, the `search` command is used that searches the name and description of the fund. Then the search query is entered which is `total market`. Lastly, the `-l` argument is included which refers to `limit` and is maxed to `10` funds.
+You have the ability to look up any fund (<a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/funds/search/" target="_blank">search</a>). With the example below, the `search` command is used that searches the name and description of the fund. Then the search query is entered which is `total market`. Lastly, the `-l` argument is included which refers to `limit` and is maxed to `10` funds.
 ````
 2022 Jun 22, 04:20 (🦋) /funds/ $ search total market -l 10
 
@@ -59,7 +59,7 @@ which shows a chart for the defined period (by default set to a year by `load`):
 
 ![Plot](https://user-images.githubusercontent.com/46355364/174990848-8f0be3b3-945b-4e4d-801a-5a6a036b62c0.png)
 
-By calling `?` or `help` the Funds menu re-appears. Here you can see that multiple commands have turned blue. Because of loading 
+By calling `?` or `help` the Funds menu re-appears. Here you can see that multiple commands have turned blue. Because of loading
 a symbol, these commands can now be used in combination with the chosen symbol as seen above.
 
 ![Funds Menu with Fund Loaded](https://user-images.githubusercontent.com/46355364/174990913-0a4e69bd-30d6-4a7f-adda-b921cfb21076.png)
@@ -141,7 +141,7 @@ the `search` command where we specify with `-l` we wish to see `15` funds max.
 Here, we decide to grab a corporate bond fund, Western Asset Corporate Bond Fund Class A (SIGAX) by loading in the data with <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/funds/load" target="_blank">load</a>.
 Also, a larger period is chosen by using `-s` as shown in the documentation:
 
-```` 
+````
 2022 Jun 22, 04:58 (🦋) /funds/ $ load SIGAX -s 2015-01-01
 Name: Western Asset Corporate Bond Fund Class A found for SIGAX in country: United States.
 ````
