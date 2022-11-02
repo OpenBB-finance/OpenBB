@@ -1,4 +1,4 @@
-"""Stock Context Controller"""
+"""Stock Context Controller."""
 __docformat__ = "numpy"
 
 import argparse
@@ -40,7 +40,7 @@ logger = logging.getLogger(__name__)
 
 
 class StocksController(StockBaseController):
-    """Stocks Controller class"""
+    """Stocks Controller class."""
 
     CHOICES_COMMANDS = [
         "search",
@@ -81,7 +81,7 @@ class StocksController(StockBaseController):
     TOB_EXCHANGES = ["BZX", "EDGX", "BYX", "EDGA"]
 
     def __init__(self, queue: List[str] = None):
-        """Constructor"""
+        """Construct stocks controller."""
         super().__init__(queue)
 
         if session and obbff.USE_PROMPT_TOOLKIT:
@@ -169,7 +169,7 @@ class StocksController(StockBaseController):
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def print_help(self):
-        """Print help"""
+        """Print help."""
         stock_text = ""
         if self.ticker:
             s_intraday = (f"Intraday {self.interval}", "Daily")[
@@ -212,7 +212,7 @@ class StocksController(StockBaseController):
         console.print(text=mt.menu_text, menu="Stocks")
 
     def custom_reset(self):
-        """Class specific component of reset command"""
+        """Class specific component of reset command."""
         if self.ticker:
             return [
                 "stocks",
@@ -224,7 +224,7 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_search(self, other_args: List[str]):
-        """Process search command"""
+        """Process search command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -302,7 +302,7 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_tob(self, other_args: List[str]):
-        """Process quote command"""
+        """Process quote command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -337,7 +337,7 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_quote(self, other_args: List[str]):
-        """Process quote command"""
+        """Process quote command."""
         ticker = self.ticker + "." + self.suffix if self.suffix else self.ticker
         parser = argparse.ArgumentParser(
             add_help=False,
@@ -372,7 +372,7 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_codes(self, _):
-        """Process codes command"""
+        """Process codes command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -388,7 +388,7 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_candle(self, other_args: List[str]):
-        """Process candle command"""
+        """Process candle command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -524,7 +524,7 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_news(self, other_args: List[str]):
-        """Process news command"""
+        """Process news command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             prog="news",
@@ -593,14 +593,14 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_disc(self, _):
-        """Process disc command"""
+        """Process disc command."""
         from openbb_terminal.stocks.discovery.disc_controller import DiscoveryController
 
         self.queue = self.load_class(DiscoveryController, self.queue)
 
     @log_start_end(log=logger)
     def call_dps(self, _):
-        """Process dps command"""
+        """Process dps command."""
         from openbb_terminal.stocks.dark_pool_shorts.dps_controller import (
             DarkPoolShortsController,
         )
@@ -611,7 +611,7 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_scr(self, _):
-        """Process scr command"""
+        """Process scr command."""
         from openbb_terminal.stocks.screener.screener_controller import (
             ScreenerController,
         )
@@ -620,7 +620,7 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_sia(self, _):
-        """Process ins command"""
+        """Process ins command."""
         from openbb_terminal.stocks.sector_industry_analysis.sia_controller import (
             SectorIndustryAnalysisController,
         )
@@ -631,7 +631,7 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_ins(self, _):
-        """Process ins command"""
+        """Process ins command."""
         from openbb_terminal.stocks.insider.insider_controller import InsiderController
 
         self.queue = self.load_class(
@@ -645,21 +645,21 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_gov(self, _):
-        """Process gov command"""
+        """Process gov command."""
         from openbb_terminal.stocks.government.gov_controller import GovController
 
         self.queue = self.load_class(GovController, self.ticker, self.queue)
 
     @log_start_end(log=logger)
     def call_options(self, _):
-        """Process options command"""
+        """Process options command."""
         from openbb_terminal.stocks.options.options_controller import OptionsController
 
         self.queue = self.load_class(OptionsController, self.ticker, self.queue)
 
     @log_start_end(log=logger)
     def call_th(self, _):
-        """Process th command"""
+        """Process th command."""
         from openbb_terminal.stocks.tradinghours import tradinghours_controller
 
         self.queue = self.load_class(
@@ -670,7 +670,7 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_res(self, _):
-        """Process res command"""
+        """Process res command."""
         if self.ticker:
             from openbb_terminal.stocks.research.res_controller import (
                 ResearchController,
@@ -684,7 +684,7 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_dd(self, _):
-        """Process dd command"""
+        """Process dd command."""
         if self.ticker:
             from openbb_terminal.stocks.due_diligence import dd_controller
 
@@ -701,8 +701,7 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_ca(self, _):
-        """Process ca command"""
-
+        """Process ca command."""
         from openbb_terminal.stocks.comparison_analysis import ca_controller
 
         self.queue = self.load_class(
@@ -715,7 +714,7 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_fa(self, _):
-        """Process fa command"""
+        """Process fa command."""
         if self.ticker:
             from openbb_terminal.stocks.fundamental_analysis import fa_controller
 
@@ -732,7 +731,7 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_bt(self, _):
-        """Process bt command"""
+        """Process bt command."""
         if self.ticker:
             from openbb_terminal.stocks.backtesting import bt_controller
 
@@ -744,7 +743,7 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_ta(self, _):
-        """Process ta command"""
+        """Process ta command."""
         if self.ticker:
             from openbb_terminal.stocks.technical_analysis import ta_controller
 
@@ -761,7 +760,7 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_ba(self, _):
-        """Process ba command"""
+        """Process ba command."""
         from openbb_terminal.stocks.behavioural_analysis import ba_controller
 
         self.queue = self.load_class(
@@ -773,7 +772,7 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_qa(self, _):
-        """Process qa command"""
+        """Process qa command."""
         if self.ticker:
             from openbb_terminal.stocks.quantitative_analysis import qa_controller
 
@@ -790,7 +789,7 @@ class StocksController(StockBaseController):
 
     @log_start_end(log=logger)
     def call_forecast(self, _):
-        """Process forecast command"""
+        """Process forecast command."""
         from openbb_terminal.forecast import forecast_controller
 
         self.queue = self.load_class(
