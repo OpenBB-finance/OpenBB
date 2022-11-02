@@ -177,8 +177,8 @@ class QaController(StockBaseController):
                 "--descend": {},
                 "-d": "--descend",
                 "--export": {x: {} for x in ["csv", "json", "xlsx"]},
-                "--sort": {c: {} for c in stocks_helper.CANDLE_SORT},
-                "-s": "--sort",
+                "--sortby": {c: {} for c in stocks_helper.CANDLE_SORT},
+                "-s": "--sortby",
             }
             choices["decompose"] = {
                 "--multiplicative": None,

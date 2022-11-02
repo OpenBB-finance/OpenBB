@@ -872,9 +872,9 @@ def display_raw(
 
     if sortby:
         try:
-            if sortby == "AdjClose":
-                sortby = "Adj Close"
-            sort_col = [x.lower() for x in df1.columns].index(sortby.lower())
+            sort_col = [x.lower().replace(" ", "") for x in df1.columns].index(
+                sortby.lower().replace(" ", "")
+            )
         except ValueError:
             console.print("[red]The provided column is not a valid option[/red]\n")
             return
