@@ -60,8 +60,8 @@ def get_ordered_list_sources(command_path: str):
 
     Returns
     -------
-    str:
-        The preferred source for the given command
+    list:
+        list of sources
     """
     try:
         # Loading in both source files: default sources and user sources

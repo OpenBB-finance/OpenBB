@@ -169,6 +169,6 @@ class NFTController(BaseController):
             nftpricefloor_view.display_collections(
                 show_sales=ns_parser.sales,
                 show_fp=ns_parser.fp,
-                num=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )
