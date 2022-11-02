@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Set Twitter key
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -17,8 +17,15 @@ keys.twitter(
     access_token: str,
     persist: bool = False,
     show_output: bool = False,
+    chart: bool = False,
 ) -> str
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Set Twitter key
+    </p>
 
 * **Parameters**
 

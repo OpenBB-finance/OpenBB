@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Gets ticker quote from FMP
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.fa.quote(
     symbol: str,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Gets ticker quote from FMP
+    </p>
 
 * **Parameters**
 

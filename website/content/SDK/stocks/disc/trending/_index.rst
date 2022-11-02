@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Returns a list of trending articles
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.disc.trending(
     limit: int = 5,
+    chart: bool = False,
 ) -> list
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Returns a list of trending articles
+    </p>
 
 * **Parameters**
 

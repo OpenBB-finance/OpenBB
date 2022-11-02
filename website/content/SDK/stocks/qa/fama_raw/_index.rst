@@ -7,12 +7,18 @@
 .. raw:: html
 
     <h3>
-    > Gets base Fama French data to calculate risk
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.qa.fama_raw() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Gets base Fama French data to calculate risk
+    </p>
 
 * **Returns**
 

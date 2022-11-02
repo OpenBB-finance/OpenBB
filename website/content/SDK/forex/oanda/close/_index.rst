@@ -4,14 +4,13 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Close a trade.
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 forex.oanda.close(
@@ -19,9 +18,14 @@ forex.oanda.close(
     units: Optional[int] = 0,
     accountID: str = 'REPLACE_ME',
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> Union[pandas.core.frame.DataFrame, bool]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Close a trade.
+    </p>
 
 * **Parameters**
 
@@ -33,10 +37,44 @@ forex.oanda.close(
         Oanda account ID, by default cfg.OANDA_ACCOUNT
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     Union[pd.DataFrame, bool]
         Close trades data or False
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+forex.oanda.close(
+    accountID: str,
+    orderID: str = '',
+    units: Optional[int] = None,
+    chart: bool = False,
+)
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Close a trade.
+    </p>
+
+* **Parameters**
+
+    accountID : *str*
+        Oanda user account ID
+    orderID : *str*
+        ID of the order to close
+    units : Union[int, None]
+        Number of units to close. If empty default to all.
+    chart: *bool*
+       Flag to display chart
+

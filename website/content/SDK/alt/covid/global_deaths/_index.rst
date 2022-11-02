@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Get historical deaths for given country
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 alt.covid.global_deaths(
     country: str,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get historical deaths for given country
+    </p>
 
 * **Parameters**
 

@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Get posts containing SPAC from top subreddits [Source: reddit]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.ba.spac(
     limit: int = 5,
+    chart: bool = False,
 ) -> Tuple[pandas.core.frame.DataFrame, dict, int]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get posts containing SPAC from top subreddits [Source: reddit]
+    </p>
 
 * **Parameters**
 

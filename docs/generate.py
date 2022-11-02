@@ -148,10 +148,10 @@ def write_summary(bottom: int, docstring: str, file):
     """
 
     file.write(".. raw:: html\n\n")
-    file.write("    <h3>\n")
-    summary = "    > " + docstring[:bottom].strip() + "\n"
+    file.write("    <p>\n")
+    summary = "    " + docstring[:bottom].strip() + "\n"
     file.write(summary)
-    file.write("    </h3>\n\n")
+    file.write("    </p>\n")
 
 
 def insert_chart_args(has_parameters: bool, sig: str) -> str:
@@ -171,7 +171,7 @@ def insert_chart_args(has_parameters: bool, sig: str) -> str:
     """
     # TODO: This breaks if there is a ')' inside the function arguments
 
-    chart_args = "chart: bool = False, external_axes: Optional[List[plt.Axes]] = None)"
+    chart_args = "chart: bool = False)"
 
     if not has_parameters:
         sig = sig.replace(")", chart_args)
@@ -207,24 +207,11 @@ def format_signature(sig: str) -> str:
     return sig
 
 
-def generate_documentation(
-    base: str, key: str, value: List[Tuple[str, str, Callable[..., Any]]]
-):
+def write_docstring(name: str, func, file, view: bool):
 
-    models = list(filter(lambda x: x[1] == "model", value))
-    views = list(filter(lambda x: x[1] == "view", value))
-    model_type = Optional[Tuple[str, str, Callable[..., Any]]]
-    model: model_type = models[0] if models else None
-    view: model_type = views[0] if views else None
-    for end in key.split("."):
-        base += f"/{end}"
-        if not os.path.isdir(base):
-            os.mkdir(base)
-
-    docstring: Optional[str] = model[2].__doc__ if model else None
+    docstring: Optional[str] = func[2].__doc__ if func else None
 
     if docstring:
-
         formatted_docstring = format_docstring(docstring=docstring)
 
         parameters_title_start, parameters_title_end = locate_section(
@@ -239,92 +226,115 @@ def generate_documentation(
             title="Examples\n    --------\n", docstring=formatted_docstring
         )
 
-        # Remove .md file if already there
-        if os.path.exists(f"{base}/_index.md"):
-            os.remove(f"{base}/_index.md")
+        has_parameters = False
+        if signature(func[2]).parameters:
+            has_parameters = True
 
-        with open(f"{base}/_index.rst", "w") as f:
-            f.write(
-                ".. role:: python(code)\n    :language: python\n    :class: highlight"
+        # Signature
+        sig = str(signature(func[2]))
+
+        if has_parameters:
+            sig = insert_chart_args(has_parameters, sig)
+            sig = format_signature(sig)
+
+        file.write("{{< highlight python >}}\n")
+        file.write(f"{name}{sig}\n")
+        file.write("{{< /highlight >}}\n\n")
+
+        # Summary
+        if has_parameters:
+            bottom = parameters_title_start
+        else:
+            bottom = returns_title_start
+
+        write_summary(
+            bottom=bottom,
+            docstring=formatted_docstring,
+            file=file,
+        )
+
+        # Parameters
+        if parameters_title_start > 0:
+            write_section(
+                title="Parameters",
+                start=parameters_title_end,
+                end=returns_title_start,
+                docstring=formatted_docstring,
+                file=file,
             )
-            f.write("\n\n|\n\n")
+            if view:
+                file.write("\n")
+                file.write("    chart: *bool*\n")
+                file.write("       Flag to display chart\n")
+            file.write("\n")
 
+        # Returns
+        if returns_title_start > 0:
+            write_section(
+                title="Returns",
+                start=returns_title_end,
+                end=examples_title_start,
+                docstring=formatted_docstring,
+                file=file,
+            )
+            file.write("\n")
+
+        # Examples
+        if examples_title_start > 0:
+            write_section(
+                title="Examples",
+                start=examples_title_end,
+                end=len(formatted_docstring),
+                docstring=formatted_docstring,
+                file=file,
+                code_snippet=True,
+            )
+            file.write("\n")
+
+
+def generate_documentation(
+    base: str, key: str, value: List[Tuple[str, str, Callable[..., Any]]]
+):
+
+    models = list(filter(lambda x: x[1] == "model", value))
+    views = list(filter(lambda x: x[1] == "view", value))
+    model_type = Optional[Tuple[str, str, Callable[..., Any]]]
+    model: model_type = models[0] if models else None
+    view: model_type = views[0] if views else None
+    for end in key.split("."):
+        base += f"/{end}"
+        if not os.path.isdir(base):
+            os.mkdir(base)
+
+    # Remove .md file if already there
+    if os.path.exists(f"{base}/_index.md"):
+        os.remove(f"{base}/_index.md")
+
+    with open(f"{base}/_index.rst", "w") as f:
+        f.write(".. role:: python(code)\n    :language: python\n    :class: highlight")
+        f.write("\n\n|\n\n")
+
+        if view:
+            f.write(
+                "To obtain charts, make sure to add :python:`chart = True` as the last parameter.\n\n"
+            )
+
+        if model:
+            f.write(".. raw:: html\n\n")
+            f.write("    <h3>\n")
+            f.write("    > Getting data\n")
+            f.write("    </h3>\n\n")
+            write_docstring(key, model, f, view)
+
+        if view:
             if model:
+                f.write("\n|\n\n")
 
-                has_parameters = False
-                if signature(model[2]).parameters:
-                    has_parameters = True
-
-                # Summary
-                if has_parameters:
-                    write_summary(
-                        bottom=parameters_title_start,
-                        docstring=formatted_docstring,
-                        file=f,
-                    )
-                else:
-                    write_summary(
-                        bottom=returns_title_start,
-                        docstring=formatted_docstring,
-                        file=f,
-                    )
-
-                # Signature
-                sig = str(signature(model[2]))
-
-                if view:
-                    f.write(
-                        "To obtain charts, make sure to add :python:`chart = True` as the last parameter.\nUse the :python:`external_axes` argument to provide axes of external figures.\n\n"
-                    )
-                    sig = insert_chart_args(has_parameters, sig)
-                    sig = format_signature(sig)
-                else:
-                    if has_parameters:
-                        sig = format_signature(sig)
-
-                f.write("{{< highlight python >}}\n")
-                f.write(f"{key}{sig}\n")
-                f.write("{{< /highlight >}}\n")
-
-                # Parameters
-                if parameters_title_start > 0:
-                    write_section(
-                        title="Parameters",
-                        start=parameters_title_end,
-                        end=returns_title_start,
-                        docstring=formatted_docstring,
-                        file=f,
-                    )
-                    if view:
-                        f.write("\n")
-                        f.write("    chart: *bool*\n")
-                        f.write("       Flag to display chart\n")
-                        f.write("    external_axes: Optional[List[plt.Axes]]\n")
-                        f.write("        List of external axes to include in plot")
-                    f.write("\n")
-
-                # Returns
-                if returns_title_start > 0:
-                    write_section(
-                        title="Returns",
-                        start=returns_title_end,
-                        end=examples_title_start,
-                        docstring=formatted_docstring,
-                        file=f,
-                    )
-                    f.write("\n")
-
-                # Examples
-                if examples_title_start > 0:
-                    write_section(
-                        title="Examples",
-                        start=examples_title_end,
-                        end=len(formatted_docstring),
-                        docstring=formatted_docstring,
-                        file=f,
-                        code_snippet=True,
-                    )
-                    f.write("\n")
+            f.write(".. raw:: html\n\n")
+            f.write("    <h3>\n")
+            f.write("    > Getting charts\n")
+            f.write("    </h3>\n\n")
+            write_docstring(key, view, f, view)
 
 
 def find_line(path: str, to_match: str) -> int:

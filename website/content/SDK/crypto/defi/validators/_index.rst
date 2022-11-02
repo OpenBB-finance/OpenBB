@@ -4,23 +4,27 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Get information about terra validators [Source: https://fcd.terra.dev/swagger]
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.defi.validators(
     sortby: str = 'votingPower',
     ascend: bool = True,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get information about terra validators [Source: https://fcd.terra.dev/swagger]
+    </p>
 
 * **Parameters**
 
@@ -31,10 +35,48 @@ crypto.defi.validators(
         Flag to sort data descending
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     pd.DataFrame
         terra validators details
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+crypto.defi.validators(
+    limit: int = 10,
+    sortby: str = 'votingPower',
+    ascend: bool = True,
+    export: str = '',
+    chart: bool = False,
+) -> None
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Display information about terra validators [Source: https://fcd.terra.dev/swagger]
+    </p>
+
+* **Parameters**
+
+    limit: *int*
+        Number of records to display
+    sortby: *str*
+        Key by which to sort data. Choose from:
+        validatorName, tokensAmount, votingPower, commissionRate, status, uptime
+    ascend: *bool*
+        Flag to sort data descending
+    export : *str*
+        Export dataframe data to csv,json,xlsx file
+    chart: *bool*
+       Flag to display chart
+

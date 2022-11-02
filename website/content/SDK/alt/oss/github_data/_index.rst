@@ -7,15 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Get repository stats
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 alt.oss.github_data(
     url: str,
-    **kwargs,
+    **kwargs, chart: bool = False,
 )
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get repository stats
+    </p>
 
 * **Parameters**
 

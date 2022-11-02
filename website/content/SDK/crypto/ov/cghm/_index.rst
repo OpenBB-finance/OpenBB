@@ -4,23 +4,27 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Get N coins from CoinGecko [Source: CoinGecko]
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.ov.cghm(
     limit: int = 250,
     category: str = '', sortby='Symbol',
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get N coins from CoinGecko [Source: CoinGecko]
+    </p>
 
 * **Parameters**
 
@@ -30,10 +34,47 @@ crypto.ov.cghm(
         Key to sort data
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     pandas.DataFrame
         N coins
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+crypto.ov.cghm(
+    category: str = '',
+    limit: int = 15,
+    export: str = '',
+    external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
+    chart: bool = False,
+) -> None
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Shows cryptocurrencies heatmap [Source: CoinGecko]
+    </p>
+
+* **Parameters**
+
+    caterogy: *str*
+        Category (e.g., stablecoins). Empty for no category (default: )
+    limit: *int*
+        Number of top cryptocurrencies to display
+    export: *str*
+        Export dataframe data to csv,json,xlsx
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
+    chart: *bool*
+       Flag to display chart
+

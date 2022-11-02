@@ -4,10 +4,24 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Estimates long-run and short-run cointegration relationship for series y and x and apply
+    > Getting data
+    </h3>
+
+{{< highlight python >}}
+econometrics.coint(
+    dependent_series, independent_series, chart: bool = False,
+)
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Estimates long-run and short-run cointegration relationship for series y and x and apply
     the two-step Engle & Granger test for cointegration.
 
     Uses a 2-step process to first estimate coefficients for the long-run relationship
@@ -23,17 +37,7 @@
 
     If this implies phi < 1, the z series is stationary is concluded to be
     stationary, and thus the series y and x are concluded to be cointegrated.
-    </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
-
-{{< highlight python >}}
-econometrics.coint(
-    dependent_series, independent_series, chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
-)
-{{< /highlight >}}
+    </p>
 
 * **Parameters**
 
@@ -44,8 +48,7 @@ econometrics.coint(
         The second time series of the pair to analyse.
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
@@ -72,3 +75,59 @@ econometrics.coint(
     pvalue : *float*
         The p-value corresponding to the Dickey Fuller test-statistic. A lower value implies
         stronger rejection of no-cointegration, thus stronger evidence of cointegration.
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+econometrics.coint(
+    datasets: Union[pandas.core.frame.DataFrame, Dict[str, pandas.core.series.Series]],
+    significant: bool = False,
+    plot: bool = False,
+    export: str = '',
+    external_axes: Optional[List[axes]] = None,
+    chart: bool = False,
+)
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Estimates long-run and short-run cointegration relationship for series y and x and apply
+    the two-step Engle & Granger test for cointegration.
+
+    Uses a 2-step process to first estimate coefficients for the long-run relationship
+        y_t = c + gamma * x_t + z_t
+
+    and then the short-term relationship,
+        y_t - y_(t-1) = alpha * z_(t-1) + epsilon_t,
+
+    with z the found residuals of the first equation.
+
+    Then tests co-integration with the Dickey-Fuller phi=1 vs phi < 1 in
+        z_t = phi * z_(t-1) + eta_t
+
+    If this implies phi < 1, the z series is stationary is concluded to be
+    stationary, and thus the series y and x are concluded to be cointegrated.
+    </p>
+
+* **Parameters**
+
+    datasets: Union[pd.DataFrame, Dict[str, pd.Series]]
+        All time series to perform co-integration tests on.
+    significant: *float*
+        Show only companies that have p-values lower than this percentage
+    plot: *bool*
+        Whether you wish to plot the z-values of all pairs.
+    export : *str*
+        Format to export data
+    external_axes:Optional[List[plt.axes]]
+        External axes to plot on
+    chart: *bool*
+       Flag to display chart
+

@@ -4,23 +4,27 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Request price for a forex pair.
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 forex.oanda.price(
     accountID: str = 'REPLACE_ME',
     instrument: Optional[str] = None,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> Union[Dict[str, str], bool]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Request price for a forex pair.
+    </p>
 
 * **Parameters**
 
@@ -30,10 +34,41 @@ forex.oanda.price(
         The loaded currency pair, by default None
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     Union[Dict[str, str], bool]
         The currency pair price or False
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+forex.oanda.price(
+    account: str,
+    instrument: Optional[str] = '',
+    chart: bool = False,
+)
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    View price for loaded currency pair.
+    </p>
+
+* **Parameters**
+
+    accountID : *str*
+        Oanda account ID
+    instrument : Union[str, None]
+        Instrument code or None
+    chart: *bool*
+       Flag to display chart
+

@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Gets kelly criterion
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 portfolio.kelly(
     portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    chart: bool = False,
 )
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Gets kelly criterion
+    </p>
 
 * **Parameters**
 

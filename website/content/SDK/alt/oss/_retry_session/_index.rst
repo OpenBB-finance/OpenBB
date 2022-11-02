@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Helper methods that retries to make request
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -15,8 +15,15 @@ alt.oss._retry_session(
     url: str,
     retries: int = 3,
     backoff_factor: float = 1.0,
+    chart: bool = False,
 ) -> requests.sessions.Session
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Helper methods that retries to make request
+    </p>
 
 * **Parameters**
 

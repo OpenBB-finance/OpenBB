@@ -4,14 +4,13 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Load cases and find slope over period
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 alt.covid.slopes(
@@ -20,9 +19,14 @@ alt.covid.slopes(
     threshold: int = 10000,
     ascend: bool = False,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Load cases and find slope over period
+    </p>
 
 * **Parameters**
 
@@ -36,8 +40,7 @@ alt.covid.slopes(
         Flag to sort in ascending order
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
@@ -54,3 +57,44 @@ alt.covid.slopes(
 
     ### Get the chart
     openbb.alt.covid.slopes(chart = True){{< /highlight >}}
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+alt.covid.slopes(
+    days_back: int = 30,
+    limit: int = 10,
+    threshold: int = 10000,
+    ascend: bool = False,
+    export: str = '',
+    chart: bool = False,
+) -> None
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    
+    </p>
+
+* **Parameters**
+
+    days_back: *int*
+        Number of historical days to get slope for
+    limit: *int*
+        Number to show in table
+    ascend: *bool*
+        Flag to sort in ascending order
+    threshold: *int*
+        Threshold for total cases over period
+    export : *str*
+        Format to export data
+    chart: *bool*
+       Flag to display chart
+

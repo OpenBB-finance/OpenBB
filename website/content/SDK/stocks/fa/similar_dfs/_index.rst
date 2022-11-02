@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Get dataframes for similar companies
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -16,8 +16,15 @@ stocks.fa.similar_dfs(
     info: Dict[str, Any],
     n: int,
     no_filter: bool = False,
+    chart: bool = False,
 )
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get dataframes for similar companies
+    </p>
 
 * **Parameters**
 

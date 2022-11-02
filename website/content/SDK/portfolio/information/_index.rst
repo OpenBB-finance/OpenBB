@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Get information ratio
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 portfolio.information(
     portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    chart: bool = False,
 )
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get information ratio
+    </p>
 
 * **Parameters**
 

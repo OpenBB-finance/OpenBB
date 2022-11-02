@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Check if market open helper function
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.th.check_if_open(
     bursa: pandas.core.frame.DataFrame,
     exchange: str,
+    chart: bool = False,
 ) -> bool
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Check if market open helper function
+    </p>
 
 * **Parameters**
 

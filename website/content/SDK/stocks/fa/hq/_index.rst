@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Gets google map url for headquarter
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.fa.hq(
     symbol: str,
+    chart: bool = False,
 ) -> str
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Gets google map url for headquarter
+    </p>
 
 * **Parameters**
 

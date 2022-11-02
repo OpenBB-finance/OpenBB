@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Get tokenomics for given coin. [Source: CoinGecko]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 crypto.dd.tokenomics(
     symbol: str = '',
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get tokenomics for given coin. [Source: CoinGecko]
+    </p>
 
 * **Parameters**
 

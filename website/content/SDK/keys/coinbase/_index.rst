@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Set Coinbase key
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -17,8 +17,15 @@ keys.coinbase(
     passphrase: str,
     persist: bool = False,
     show_output: bool = False,
+    chart: bool = False,
 ) -> str
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Set Coinbase key
+    </p>
 
 * **Parameters**
 

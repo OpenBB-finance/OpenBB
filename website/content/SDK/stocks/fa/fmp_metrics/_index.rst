@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Get key metrics
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -15,8 +15,15 @@ stocks.fa.fmp_metrics(
     symbol: str,
     limit: int = 5,
     quarterly: bool = False,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get key metrics
+    </p>
 
 * **Parameters**
 

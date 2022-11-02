@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Set GitHub key.
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -15,8 +15,15 @@ keys.github(
     key: str,
     persist: bool = False,
     show_output: bool = False,
+    chart: bool = False,
 ) -> str
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Set GitHub key.
+    </p>
 
 * **Parameters**
 

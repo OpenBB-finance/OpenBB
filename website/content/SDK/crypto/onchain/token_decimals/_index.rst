@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Helper methods that gets token decimals number. [Source: Ethplorer]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 crypto.onchain.token_decimals(
     address: str,
+    chart: bool = False,
 ) -> Optional[int]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Helper methods that gets token decimals number. [Source: Ethplorer]
+    </p>
 
 * **Parameters**
 

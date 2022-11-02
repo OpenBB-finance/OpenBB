@@ -7,12 +7,18 @@
 .. raw:: html
 
     <h3>
-    > Get stocks with highest cost to borrow [Source: Interactive Broker]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.dps.ctb() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get stocks with highest cost to borrow [Source: Interactive Broker]
+    </p>
 
 * **Returns**
 

@@ -4,23 +4,27 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Get token historical prices with volume and market cap, and average price. [Source: Ethplorer]
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.onchain.prices(
     address, sortby: str = 'date',
     ascend: bool = False,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get token historical prices with volume and market cap, and average price. [Source: Ethplorer]
+    </p>
 
 * **Parameters**
 
@@ -32,10 +36,51 @@ crypto.onchain.prices(
         Sort in descending order.
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     pd.DataFrame:
         DataFrame with token historical prices.
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+crypto.onchain.prices(
+    address: str,
+    limit: int = 30,
+    sortby: str = 'date',
+    ascend: bool = False,
+    export: str = '',
+    chart: bool = False,
+) -> None
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Display token historical prices with volume and market cap, and average price.
+    [Source: Ethplorer]
+    </p>
+
+* **Parameters**
+
+    address: *str*
+        Token balance e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
+    limit: *int*
+        Limit of transactions. Maximum 100
+    sortby: *str*
+        Key to sort by.
+    ascend: *str*
+        Sort in descending order.
+    export : *str*
+        Export dataframe data to csv,json,xlsx file
+    chart: *bool*
+       Flag to display chart
+

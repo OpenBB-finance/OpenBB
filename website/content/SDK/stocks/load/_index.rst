@@ -7,7 +7,28 @@
 .. raw:: html
 
     <h3>
-    > Load a symbol to perform analysis using the string above as a template.
+    > Getting data
+    </h3>
+
+{{< highlight python >}}
+stocks.load(
+    symbol: str,
+    start_date: datetime.datetime = None,
+    interval: int = 1440,
+    end_date: datetime.datetime = None,
+    prepost: bool = False,
+    source: str = 'YahooFinance',
+    iexrange: str = 'ytd',
+    weekly: bool = False,
+    monthly: bool = False,
+    chart: bool = False,
+)
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Load a symbol to perform analysis using the string above as a template.
 
     Optional arguments and their descriptions are listed above.
 
@@ -36,21 +57,7 @@
     including Pre/After Market data, using the default source, yFinance.
 
     Certain features, such as the Prediction menu, require the symbol to be loaded as daily and not intraday.
-    </h3>
-
-{{< highlight python >}}
-stocks.load(
-    symbol: str,
-    start_date: datetime.datetime = None,
-    interval: int = 1440,
-    end_date: datetime.datetime = None,
-    prepost: bool = False,
-    source: str = 'YahooFinance',
-    iexrange: str = 'ytd',
-    weekly: bool = False,
-    monthly: bool = False,
-)
-{{< /highlight >}}
+    </p>
 
 * **Parameters**
 

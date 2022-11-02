@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Class method that retrieves maximum drawdown ratio for portfolio and benchmark selected
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 portfolio.maxdrawdown(
     portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Class method that retrieves maximum drawdown ratio for portfolio and benchmark selected
+    </p>
 
 * **Parameters**
 

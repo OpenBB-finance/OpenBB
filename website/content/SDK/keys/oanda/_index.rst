@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Set Oanda key
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -17,8 +17,15 @@ keys.oanda(
     account_type: str = '',
     persist: bool = False,
     show_output: bool = False,
+    chart: bool = False,
 ) -> str
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Set Oanda key
+    </p>
 
 * **Parameters**
 

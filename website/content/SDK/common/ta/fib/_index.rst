@@ -4,14 +4,13 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Calculate Fibonacci levels
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 common.ta.fib(
@@ -20,9 +19,14 @@ common.ta.fib(
     start_date: Any = None,
     end_date: Any = None,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> Tuple[pandas.core.frame.DataFrame, pandas._libs.tslibs.timestamps.Timestamp, pandas._libs.tslibs.timestamps.Timestamp, float, float]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Calculate Fibonacci levels
+    </p>
 
 * **Parameters**
 
@@ -36,8 +40,7 @@ common.ta.fib(
         Custom end date for retracement
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
@@ -51,3 +54,50 @@ common.ta.fib(
         Price at min point
     max_pr: *float*
         Price at max point
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+common.ta.fib(
+    data: pandas.core.frame.DataFrame,
+    limit: int = 120,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    symbol: str = '',
+    export: str = '',
+    external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
+    chart: bool = False,
+)
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Calculate fibonacci retracement levels
+    </p>
+
+* **Parameters**
+
+    data: *pd.DataFrame*
+        OHLC data
+    limit: *int*
+        Days to lookback
+    start_date: Optional[str, None]
+        User picked date for starting retracement
+    end_date: Optional[str, None]
+        User picked date for ending retracement
+    symbol: *str*
+        Ticker symbol
+    export: *str*
+        Format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (2 axes are expected in the list), by default None
+    chart: *bool*
+       Flag to display chart
+

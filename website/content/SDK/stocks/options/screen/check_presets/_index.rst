@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Checks option screener preset values
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.options.screen.check_presets(
     preset_dict: dict,
+    chart: bool = False,
 ) -> str
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Checks option screener preset values
+    </p>
 
 * **Parameters**
 

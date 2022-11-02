@@ -4,23 +4,27 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > 
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 funds.info(
     name: str,
     country: str = 'united states',
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    
+    </p>
 
 * **Parameters**
 
@@ -30,10 +34,41 @@ funds.info(
         Country of fund
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     pd.DataFrame
         Dataframe of fund information
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+funds.info(
+    name: str,
+    country: str = 'united states',
+    chart: bool = False,
+)
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Display fund information.  Finds name from symbol first if name is false
+    </p>
+
+* **Parameters**
+
+    name: *str*
+        Fund name to get info for
+    country : *str*
+        Country of fund
+    chart: *bool*
+       Flag to display chart
+

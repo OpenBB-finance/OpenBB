@@ -7,12 +7,18 @@
 .. raw:: html
 
     <h3>
-    > Get treasury maturity options [Source: EconDB]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 economy.treasury_maturities() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get treasury maturity options [Source: EconDB]
+    </p>
 
 * **Returns**
 

@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Gets simple moving average (EMA) for stock
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -15,8 +15,15 @@ common.ta.sma(
     data: pandas.core.frame.DataFrame,
     length: int = 50,
     offset: int = 0,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Gets simple moving average (EMA) for stock
+    </p>
 
 * **Parameters**
 

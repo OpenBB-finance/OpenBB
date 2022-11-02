@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Process DataFrame into candle style plot
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.process_candle(
     data: pandas.core.frame.DataFrame,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Process DataFrame into candle style plot
+    </p>
 
 * **Parameters**
 

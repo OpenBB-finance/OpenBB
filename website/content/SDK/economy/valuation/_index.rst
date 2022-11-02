@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Get group (sectors, industry or country) valuation data. [Source: Finviz]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -15,8 +15,15 @@ economy.valuation(
     group: str = 'sector',
     sortby: str = 'Name',
     ascend: bool = True,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get group (sectors, industry or country) valuation data. [Source: Finviz]
+    </p>
 
 * **Parameters**
 

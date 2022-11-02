@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Future IPOs dates. [Source: Finnhub]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.disc.fipo(
     num_days_ahead: int = 5,
     end_date: Optional[str] = None,
+    chart: bool = False,
 )
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Future IPOs dates. [Source: Finnhub]
+    </p>
 
 * **Parameters**
 

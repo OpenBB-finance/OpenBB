@@ -7,12 +7,18 @@
 .. raw:: html
 
     <h3>
-    > This function returns the available countries and respective currencies.
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 economy.macro_countries() -> Dict[str, str]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    This function returns the available countries and respective currencies.
+    </p>
 
 * **Returns**
 

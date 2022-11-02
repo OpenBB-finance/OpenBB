@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Calculates VaR, which is adjusted for skew and kurtosis (Cornish-Fischer-Expansion)
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -17,8 +17,15 @@ common.qa.calculate_adjusted_var(
     ndp: float,
     std: float,
     mean: float,
+    chart: bool = False,
 ) -> float
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Calculates VaR, which is adjusted for skew and kurtosis (Cornish-Fischer-Expansion)
+    </p>
 
 * **Parameters**
 

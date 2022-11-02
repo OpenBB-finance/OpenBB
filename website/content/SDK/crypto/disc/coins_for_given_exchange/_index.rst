@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Helper method to get all coins available on binance exchange [Source: CoinGecko]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 crypto.disc.coins_for_given_exchange(
     exchange_id: str = 'binance',
     page: int = 1,
+    chart: bool = False,
 ) -> dict
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Helper method to get all coins available on binance exchange [Source: CoinGecko]
+    </p>
 
 * **Parameters**
 

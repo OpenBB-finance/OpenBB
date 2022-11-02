@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Get tail ratio
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 portfolio.tail(
     portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
     window: int = 252,
+    chart: bool = False,
 )
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get tail ratio
+    </p>
 
 * **Parameters**
 

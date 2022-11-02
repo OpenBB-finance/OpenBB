@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Set Smartstake key.
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -16,8 +16,15 @@ keys.smartstake(
     access_token: str,
     persist: bool = False,
     show_output: bool = False,
+    chart: bool = False,
 )
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Set Smartstake key.
+    </p>
 
 * **Parameters**
 

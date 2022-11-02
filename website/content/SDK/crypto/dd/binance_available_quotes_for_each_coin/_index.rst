@@ -7,12 +7,18 @@
 .. raw:: html
 
     <h3>
-    > Helper methods that for every coin available on Binance add all quote assets. [Source: Binance]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 crypto.dd.binance_available_quotes_for_each_coin() -> dict
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Helper methods that for every coin available on Binance add all quote assets. [Source: Binance]
+    </p>
 
 * **Returns**
 

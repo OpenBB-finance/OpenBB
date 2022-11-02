@@ -7,12 +7,18 @@
 .. raw:: html
 
     <h3>
-    > Gets the top 10 retail stocks per day
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.disc.rtat() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Gets the top 10 retail stocks per day
+    </p>
 
 * **Returns**
 

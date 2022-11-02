@@ -4,22 +4,26 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Get rating over time data. [Source: Finnhub]
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 stocks.dd.rot(
     symbol: str,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get rating over time data. [Source: Finnhub]
+    </p>
 
 * **Parameters**
 
@@ -27,10 +31,50 @@ stocks.dd.rot(
         Ticker symbol to get ratings from
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     pd.DataFrame
         Get dataframe with ratings
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+stocks.dd.rot(
+    symbol: str,
+    limit: int = 10,
+    raw: bool = False,
+    export: str = '',
+    external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
+    chart: bool = False,
+)
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Rating over time (monthly). [Source: Finnhub]
+    </p>
+
+* **Parameters**
+
+    ticker : *str*
+        Ticker to get ratings from
+    limit : *int*
+        Number of last months ratings to show
+    raw: *bool*
+        Display raw data only
+    export: *str*
+        Export dataframe data to csv,json,xlsx file
+    external_axes : Optional[List[plt.Axes]]
+        External axes (1 axis is expected in the list), by default None
+    chart: *bool*
+       Flag to display chart
+

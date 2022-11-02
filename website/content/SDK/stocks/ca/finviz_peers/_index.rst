@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Get similar companies from Finviz
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.ca.finviz_peers(
     symbol: str,
     compare_list: List[str] = None,
+    chart: bool = False,
 ) -> Tuple[List[str], str]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get similar companies from Finviz
+    </p>
 
 * **Parameters**
 

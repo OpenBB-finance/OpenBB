@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Get dupont ratios
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.fa.dupont(
     symbol: str,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get dupont ratios
+    </p>
 
 * **Parameters**
 

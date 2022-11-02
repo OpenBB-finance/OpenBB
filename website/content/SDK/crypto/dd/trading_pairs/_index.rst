@@ -7,13 +7,19 @@
 .. raw:: html
 
     <h3>
-    > Helper method that return all trading pairs on binance. Methods ause this data for input for e.g
-    building dataframe with all coins, or to build dict of all trading pairs. [Source: Binance]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 crypto.dd.trading_pairs() -> List[dict]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Helper method that return all trading pairs on binance. Methods ause this data for input for e.g
+    building dataframe with all coins, or to build dict of all trading pairs. [Source: Binance]
+    </p>
 
 * **Returns**
 

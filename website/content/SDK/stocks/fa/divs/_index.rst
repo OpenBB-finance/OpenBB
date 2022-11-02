@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Get historical dividend for ticker
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.fa.divs(
     symbol: str,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get historical dividend for ticker
+    </p>
 
 * **Parameters**
 

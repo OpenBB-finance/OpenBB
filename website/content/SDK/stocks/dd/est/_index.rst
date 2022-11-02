@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Get analysts' estimates for a given ticker. [Source: Business Insider]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.dd.est(
     symbol: str,
+    chart: bool = False,
 ) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get analysts' estimates for a given ticker. [Source: Business Insider]
+    </p>
 
 * **Parameters**
 

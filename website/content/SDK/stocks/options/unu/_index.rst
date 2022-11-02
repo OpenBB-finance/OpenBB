@@ -4,22 +4,26 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Get unusual option activity from fdscanner.com
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 stocks.options.unu(
     limit: int = 100,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 )
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get unusual option activity from fdscanner.com
+    </p>
 
 * **Parameters**
 
@@ -27,8 +31,7 @@ stocks.options.unu(
         Number to show
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
@@ -36,3 +39,46 @@ stocks.options.unu(
         Dataframe containing options information
     last_updated: *pd.Timestamp*
         Timestamp indicated when data was updated from website
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+stocks.options.unu(
+    limit: int = 20,
+    sortby: str = 'Vol/OI', ascend: bool = False,
+    calls_only: bool = False,
+    puts_only: bool = False,
+    export: str = '',
+    chart: bool = False,
+)
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Displays the unusual options table
+    </p>
+
+* **Parameters**
+
+    limit: *int*
+        Number of rows to show
+    sortby: *str*
+        Data column to sort on
+    ascend: *bool*
+        Whether to sort in ascend order
+    calls_only : *bool*
+        Flag to only show calls
+    puts_only : *bool*
+        Flag to show puts only
+    export: *str*
+        File type to export
+    chart: *bool*
+       Flag to display chart
+

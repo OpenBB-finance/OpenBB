@@ -4,23 +4,27 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Get current exchange rate quote from alpha vantage.
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 forex.quote(
     to_symbol: str = 'USD',
     from_symbol: str = 'EUR',
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> Dict
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get current exchange rate quote from alpha vantage.
+    </p>
 
 * **Parameters**
 
@@ -30,10 +34,41 @@ forex.quote(
         From forex symbol
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     Dict
         Dictionary of exchange rate
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+forex.quote(
+    to_symbol: str = 'USD',
+    from_symbol: str = 'EUR',
+    chart: bool = False,
+)
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Display current forex pair exchange rate.
+    </p>
+
+* **Parameters**
+
+    to_symbol : *str*
+        To symbol
+    from_symbol : *str*
+        From forex symbol
+    chart: *bool*
+       Flag to display chart
+

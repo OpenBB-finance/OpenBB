@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Get currently set API keys.
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 keys.mykeys(
     show: bool = False,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get currently set API keys.
+    </p>
 
 * **Parameters**
 

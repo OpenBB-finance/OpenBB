@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Opens Finviz map website in a browser. [Source: Finviz]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 economy.perfmap(
     period: str = '1d',
     map_filter: str = 'sp500',
+    chart: bool = False,
 )
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Opens Finviz map website in a browser. [Source: Finviz]
+    </p>
 
 * **Parameters**
 

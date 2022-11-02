@@ -7,13 +7,19 @@
 .. raw:: html
 
     <h3>
-    > Get stocks with earnings growth rates better than 25% and relatively low PE and PEG ratios.
-    [Source: Yahoo Finance]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.disc.ugs() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get stocks with earnings growth rates better than 25% and relatively low PE and PEG ratios.
+    [Source: Yahoo Finance]
+    </p>
 
 * **Returns**
 

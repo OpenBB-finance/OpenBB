@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Get news for a given term and source. [Source: Feedparser]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -15,8 +15,15 @@ common.news(
     term: str = '',
     sources: str = '',
     sort: str = 'published',
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get news for a given term and source. [Source: Feedparser]
+    </p>
 
 * **Parameters**
 

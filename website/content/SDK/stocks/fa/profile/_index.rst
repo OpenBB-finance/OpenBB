@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Get ticker profile from FMP
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.fa.profile(
     symbol: str,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get ticker profile from FMP
+    </p>
 
 * **Parameters**
 

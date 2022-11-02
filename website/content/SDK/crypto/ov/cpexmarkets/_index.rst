@@ -4,14 +4,13 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > List markets by exchange ID [Source: CoinPaprika]
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.ov.cpexmarkets(
@@ -20,9 +19,14 @@ crypto.ov.cpexmarkets(
     sortby: str = 'pair',
     ascend: bool = True,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    List markets by exchange ID [Source: CoinPaprika]
+    </p>
 
 * **Parameters**
 
@@ -36,11 +40,54 @@ crypto.ov.cpexmarkets(
         Flag to sort data ascending
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     pandas.DataFrame
         pair, base_currency_name, quote_currency_name, market_url,
         category, reported_volume_24h_share, trust_score,
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+crypto.ov.cpexmarkets(
+    exchange: str = 'binance',
+    sortby: str = 'pair',
+    ascend: bool = True,
+    limit: int = 15,
+    links: bool = False,
+    export: str = '',
+    chart: bool = False,
+) -> None
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get all markets for given exchange [Source: CoinPaprika]
+    </p>
+
+* **Parameters**
+
+    exchange: *str*
+        Exchange identifier e.g Binance
+    limit: *int*
+        Number of records to display
+    sortby: *str*
+        Key by which to sort data
+    ascend: *bool*
+        Flag to sort data descending
+    links: *bool*
+        Flag to display urls
+    export : *str*
+        Export dataframe data to csv,json,xlsx file
+    chart: *bool*
+       Flag to display chart
+

@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Get summary portfolio and benchmark returns
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -15,8 +15,15 @@ portfolio.summary(
     portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
     window: str = 'all',
     risk_free_rate: float = 0,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get summary portfolio and benchmark returns
+    </p>
 
 * **Parameters**
 

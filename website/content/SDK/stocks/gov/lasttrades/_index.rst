@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Get last government trading [Source: quiverquant.com]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -15,8 +15,15 @@ stocks.gov.lasttrades(
     gov_type: str = 'congress',
     limit: int = -1,
     representative: str = '',
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get last government trading [Source: quiverquant.com]
+    </p>
 
 * **Parameters**
 

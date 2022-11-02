@@ -7,8 +7,7 @@
 .. raw:: html
 
     <h3>
-    > This function creates a DataFrame with the required regression data as
-    well sets up the dependent and independent variables.
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -16,8 +15,16 @@ econometrics.get_regression_data(
     regression_variables: List[tuple],
     data: Dict[str, pandas.core.frame.DataFrame],
     regression_type: str = '',
+    chart: bool = False,
 ) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any]]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    This function creates a DataFrame with the required regression data as
+    well sets up the dependent and independent variables.
+    </p>
 
 * **Parameters**
 

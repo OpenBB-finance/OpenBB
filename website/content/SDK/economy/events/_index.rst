@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Get economic calendar [Source: Investing.com]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -16,10 +16,16 @@ economy.events(
     importance: str = '',
     category: str = '',
     start_date: str = '',
-    end_date: str = '',
-    limit=100,
+    end_date: str = '', limit=100,
+    chart: bool = False,
 ) -> Tuple[pandas.core.frame.DataFrame, str]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get economic calendar [Source: Investing.com]
+    </p>
 
 * **Parameters**
 

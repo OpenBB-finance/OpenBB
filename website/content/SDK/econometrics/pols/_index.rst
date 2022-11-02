@@ -7,17 +7,23 @@
 .. raw:: html
 
     <h3>
-    > PooledOLS is just plain OLS that understands that various panel data structures.
-    It is useful as a base model. [Source: LinearModels]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 econometrics.pols(
     regression_variables: List[Tuple],
-    data: Dict[str,
-    pandas.core.frame.DataFrame],
+    data: Dict[str, pandas.core.frame.DataFrame],
+    chart: bool = False,
 ) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any], Any]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    PooledOLS is just plain OLS that understands that various panel data structures.
+    It is useful as a base model. [Source: LinearModels]
+    </p>
 
 * **Parameters**
 

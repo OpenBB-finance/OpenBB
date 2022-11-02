@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Shows candle plot of loaded ticker. [Source: Yahoo Finance, IEX Cloud or Alpha Vantage]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -20,10 +20,10 @@ stocks.candle(
     ma: Optional[Iterable[int]] = None,
     asset_type: str = '',
     start_date: datetime.datetime = datetime.datetime(
-    2019, 10, 29, 14, 18, 32, 324725,
+    2019, 10, 29, 23, 45, 32, 185065, chart: bool = False,
 ), interval: int = 1440,
     end_date: datetime.datetime = datetime.datetime(
-    2022, 11, 2, 14, 18, 32, 324738,
+    2022, 11, 2, 23, 45, 32, 185079, chart: bool = False,
 ), prepost: bool = False,
     source: str = 'YahooFinance',
     iexrange: str = 'ytd',
@@ -32,8 +32,15 @@ stocks.candle(
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
     raw: bool = False,
     yscale: str = 'linear',
+    chart: bool = False,
 )
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Shows candle plot of loaded ticker. [Source: Yahoo Finance, IEX Cloud or Alpha Vantage]
+    </p>
 
 * **Parameters**
 

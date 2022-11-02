@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Get cashflow data. [Source: Marketwatch]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -15,8 +15,15 @@ stocks.ca.cashflow(
     similar: List[str],
     timeframe: str = '2021',
     quarter: bool = False,
+    chart: bool = False,
 )
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get cashflow data. [Source: Marketwatch]
+    </p>
 
 * **Parameters**
 

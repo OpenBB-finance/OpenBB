@@ -4,22 +4,26 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Request information on pending orders.
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 forex.oanda.pending(
     accountID: str = 'REPLACE_ME',
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> Union[pandas.core.frame.DataFrame, bool]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Request information on pending orders.
+    </p>
 
 * **Parameters**
 
@@ -27,10 +31,38 @@ forex.oanda.pending(
         Oanda account ID, by default cfg.OANDA_ACCOUNT
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     Union[pd.DataFrame, bool]
         Pending orders data or False
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+forex.oanda.pending(
+    accountID: str,
+    chart: bool = False,
+)
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get information about pending orders.
+    </p>
+
+* **Parameters**
+
+    accountID : *str*
+        Oanda user account ID
+    chart: *bool*
+       Flag to display chart
+

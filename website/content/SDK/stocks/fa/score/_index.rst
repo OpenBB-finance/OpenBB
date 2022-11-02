@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Gets value score from fmp
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.fa.score(
     symbol: str,
+    chart: bool = False,
 ) -> Optional[numpy.number]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Gets value score from fmp
+    </p>
 
 * **Parameters**
 

@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Gets hull moving average (HMA) for stock
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -15,8 +15,15 @@ common.ta.hma(
     data: pandas.core.frame.DataFrame,
     length: int = 50,
     offset: int = 0,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Gets hull moving average (HMA) for stock
+    </p>
 
 * **Parameters**
 

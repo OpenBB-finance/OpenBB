@@ -7,12 +7,18 @@
 .. raw:: html
 
     <h3>
-    > Get most shorted stock screener [Source: Yahoo Finance]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.dps.shorted() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get most shorted stock screener [Source: Yahoo Finance]
+    </p>
 
 * **Returns**
 

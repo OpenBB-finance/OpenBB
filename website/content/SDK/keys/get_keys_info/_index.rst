@@ -7,12 +7,18 @@
 .. raw:: html
 
     <h3>
-    > Get info on available APIs to use in set_keys.
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 keys.get_keys_info() -> Dict[str, List[str]]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get info on available APIs to use in set_keys.
+    </p>
 
 * **Returns**
 

@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Get similar companies from Polygon
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.ca.polygon_peers(
     symbol: str,
     us_only: bool = False,
+    chart: bool = False,
 ) -> List[str]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get similar companies from Polygon
+    </p>
 
 * **Parameters**
 

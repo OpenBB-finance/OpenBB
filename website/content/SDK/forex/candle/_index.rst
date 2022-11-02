@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Show candle plot for fx data.
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -17,8 +17,15 @@ forex.candle(
     from_symbol: str = '',
     ma: Optional[Iterable[int]] = None,
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
+    chart: bool = False,
 )
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Show candle plot for fx data.
+    </p>
 
 * **Parameters**
 

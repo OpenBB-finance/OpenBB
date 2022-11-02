@@ -4,22 +4,26 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Gets bullbear sentiment for ticker [Source: stocktwits]
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 stocks.ba.bullbear(
     symbol: str,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> Tuple[int, int, int, int]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Gets bullbear sentiment for ticker [Source: stocktwits]
+    </p>
 
 * **Parameters**
 
@@ -27,8 +31,7 @@ stocks.ba.bullbear(
         Ticker symbol to look at
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
@@ -40,3 +43,33 @@ stocks.ba.bullbear(
         Number of bullish statements
     int
         Number of bearish statements
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+stocks.ba.bullbear(
+    symbol: str,
+    chart: bool = False,
+)
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Print bullbear sentiment based on last 30 messages on the board.
+    Also prints the watchlist_count. [Source: Stocktwits]
+    </p>
+
+* **Parameters**
+
+    symbol: *str*
+        Stock ticker symbol
+    chart: *bool*
+       Flag to display chart
+

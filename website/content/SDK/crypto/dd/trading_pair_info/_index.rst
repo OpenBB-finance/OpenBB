@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Get information about chosen trading pair. [Source: Coinbase]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 crypto.dd.trading_pair_info(
     symbol: str,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get information about chosen trading pair. [Source: Coinbase]
+    </p>
 
 * **Parameters**
 

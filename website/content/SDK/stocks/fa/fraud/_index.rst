@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Get fraud ratios based on fundamentals
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.fa.fraud(
     symbol: str,
     detail: bool = False,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get fraud ratios based on fundamentals
+    </p>
 
 * **Parameters**
 

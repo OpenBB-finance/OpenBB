@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Get crypto hack
-    [Source: https://rekt.news]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 crypto.ov.crypto_hack(
     slug: str,
+    chart: bool = False,
 ) -> Optional[str]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get crypto hack
+    [Source: https://rekt.news]
+    </p>
 
 * **Parameters**
 

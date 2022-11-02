@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Perform seasonal decomposition
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 common.qa.decompose(
     data: pandas.core.frame.DataFrame,
     multiplicative: bool = False,
+    chart: bool = False,
 ) -> Tuple[Any, pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Perform seasonal decomposition
+    </p>
 
 * **Parameters**
 

@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Clean up NaNs from the dataset
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -16,8 +16,15 @@ econometrics.clean(
     fill: str = '',
     drop: str = '',
     limit: Optional[int] = None,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Clean up NaNs from the dataset
+    </p>
 
 * **Parameters**
 

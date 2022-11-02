@@ -7,12 +7,18 @@
 .. raw:: html
 
     <h3>
-    > This function returns the available macro parameters with detail.
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 economy.macro_parameters() -> Dict[str, Dict[str, str]]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    This function returns the available macro parameters with detail.
+    </p>
 
 * **Returns**
 

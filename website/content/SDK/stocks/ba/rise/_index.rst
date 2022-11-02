@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Get top rising related queries with this stock's query [Source: google]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.ba.rise(
     symbol: str,
     limit: int = 10,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get top rising related queries with this stock's query [Source: google]
+    </p>
 
 * **Parameters**
 

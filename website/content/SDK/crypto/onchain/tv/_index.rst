@@ -4,14 +4,13 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Get token volume on different Decentralized Exchanges. [Source: https://graphql.bitquery.io/]
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.onchain.tv(
@@ -20,9 +19,14 @@ crypto.onchain.tv(
     sortby: str = 'tradeAmount',
     ascend: bool = True,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get token volume on different Decentralized Exchanges. [Source: https://graphql.bitquery.io/]
+    </p>
 
 * **Parameters**
 
@@ -36,10 +40,59 @@ crypto.onchain.tv(
         Flag to sort data ascending
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     pd.DataFrame
         Token volume on Decentralized Exchanges
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+crypto.onchain.tv(
+    symbol: str = 'WBTC',
+    trade_amount_currency: str = 'USD',
+    limit: int = 10,
+    sortby: str = 'tradeAmount',
+    ascend: bool = True,
+    export: str = '',
+    chart: bool = False,
+) -> None
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Display token volume on different Decentralized Exchanges.
+    [Source: https://graphql.bitquery.io/]
+    </p>
+
+* **Parameters**
+
+    symbol: *str*
+        ERC20 token symbol or address
+    trade_amount_currency: *str*
+        Currency of displayed trade amount. Default: *USD*
+    limit: *int*
+        Number of records to display
+    sortby: *str*
+        Key by which to sort data
+    ascend: *bool*
+        Flag to sort data ascending
+    export : *str*
+        Export dataframe data to csv,json,xlsx file
+    chart: *bool*
+       Flag to display chart
+
+
+* **Returns**
+
+    pd.DataFrame
+        Token volume on different decentralized exchanges

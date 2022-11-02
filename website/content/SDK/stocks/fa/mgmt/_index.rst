@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Get company managers from Business Insider
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.fa.mgmt(
     symbol: str,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get company managers from Business Insider
+    </p>
 
 * **Parameters**
 

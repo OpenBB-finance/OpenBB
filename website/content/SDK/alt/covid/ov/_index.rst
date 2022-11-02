@@ -4,22 +4,26 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Get historical cases and deaths by country
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 alt.covid.ov(
     country, limit: int = 100,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get historical cases and deaths by country
+    </p>
 
 * **Parameters**
 
@@ -29,5 +33,44 @@ alt.covid.ov(
         Number of raw data to show
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+alt.covid.ov(
+    country, raw: bool = False,
+    limit: int = 10,
+    export: str = '',
+    plot: bool = True,
+    chart: bool = False,
+) -> None
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Show historical cases and deaths by country
+    </p>
+
+* **Parameters**
+
+    country: *str*
+        Country to get data for
+    raw: *bool*
+        Flag to display raw data
+    limit: *int*
+        Number of raw data to show
+    export: *str*
+        Format to export data
+    plot: *bool*
+        Flag to display historical plot
+    chart: *bool*
+       Flag to display chart
+

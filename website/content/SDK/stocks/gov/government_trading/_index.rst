@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Returns the most recent transactions by members of government
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.gov.government_trading(
     gov_type: str = 'congress',
     symbol: str = '',
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Returns the most recent transactions by members of government
+    </p>
 
 * **Parameters**
 

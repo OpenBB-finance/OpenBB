@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Get portfolio expected shortfall
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -16,8 +16,15 @@ portfolio.es(
     use_mean: bool = False,
     distribution: str = 'normal',
     percentile: float = 99.9,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get portfolio expected shortfall
+    </p>
 
 * **Parameters**
 

@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Get current price for a given ticker
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.options.price(
     symbol: str,
+    chart: bool = False,
 ) -> float
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get current price for a given ticker
+    </p>
 
 * **Parameters**
 

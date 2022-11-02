@@ -4,23 +4,27 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Get candles for chosen trading pair and time interval. [Source: Coinbase]
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.dd.candles(
     symbol: str,
     interval: str = '24h',
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get candles for chosen trading pair and time interval. [Source: Coinbase]
+    </p>
 
 * **Parameters**
 
@@ -30,10 +34,44 @@ crypto.dd.candles(
         Time interval. One from 1min, 5min ,15min, 1hour, 6hour, 24hour
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     pd.DataFrame
         Candles for chosen trading pair.
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+crypto.dd.candles(
+    symbol: str,
+    interval: str = '24h',
+    export: str = '',
+    chart: bool = False,
+) -> None
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get candles for chosen trading pair and time interval. [Source: Coinbase]
+    </p>
+
+* **Parameters**
+
+    symbol: *str*
+        Trading pair of coins on Coinbase e.g ETH-USDT or UNI-ETH
+    interval: *str*
+        Time interval. One from 1m, 5m ,15m, 1h, 6h, 24h
+    export : *str*
+        Export dataframe data to csv,json,xlsx file
+    chart: *bool*
+       Flag to display chart
+

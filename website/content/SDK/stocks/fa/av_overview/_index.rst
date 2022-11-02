@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Get alpha vantage company overview
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.fa.av_overview(
     symbol: str,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get alpha vantage company overview
+    </p>
 
 * **Parameters**
 

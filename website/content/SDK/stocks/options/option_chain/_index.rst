@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Gets option chain from yf for given ticker and expiration
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.options.option_chain(
     symbol: str,
     expiry: str,
+    chart: bool = False,
 )
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Gets option chain from yf for given ticker and expiration
+    </p>
 
 * **Parameters**
 

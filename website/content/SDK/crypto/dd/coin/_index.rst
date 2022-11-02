@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Get coin by id [Source: CoinPaprika]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 crypto.dd.coin(
     symbol: str = 'eth-ethereum',
+    chart: bool = False,
 ) -> dict
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get coin by id [Source: CoinPaprika]
+    </p>
 
 * **Parameters**
 

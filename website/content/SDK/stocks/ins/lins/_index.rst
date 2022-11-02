@@ -4,22 +4,26 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Get last insider activity for a given stock ticker. [Source: Finviz]
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 stocks.ins.lins(
     symbol: str,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get last insider activity for a given stock ticker. [Source: Finviz]
+    </p>
 
 * **Parameters**
 
@@ -30,5 +34,39 @@ stocks.ins.lins(
         Latest insider trading activity
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+stocks.ins.lins(
+    symbol: str,
+    limit: int = 10,
+    export: str = '',
+    chart: bool = False,
+)
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Display insider activity for a given stock ticker. [Source: Finviz]
+    </p>
+
+* **Parameters**
+
+    symbol : *str*
+        Stock ticker symbol
+    limit : *int*
+        Number of latest insider activity to display
+    export : *str*
+        Export dataframe data to csv,json,xlsx file
+    chart: *bool*
+       Flag to display chart
+

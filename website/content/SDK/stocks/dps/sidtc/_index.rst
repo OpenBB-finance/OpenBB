@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Get short interest and days to cover. [Source: Stockgrid]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.dps.sidtc(
     sortby: str = 'float',
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get short interest and days to cover. [Source: Stockgrid]
+    </p>
 
 * **Parameters**
 

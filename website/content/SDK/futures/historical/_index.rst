@@ -4,23 +4,27 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Get historical futures [Source: Yahoo Finance]
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 futures.historical(
     tickers: List[str],
     expiry: str = '',
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> Dict
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get historical futures [Source: Yahoo Finance]
+    </p>
 
 * **Parameters**
 
@@ -30,10 +34,53 @@ futures.historical(
         Future expiry date with format YYYY-MM
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     Dict
         Dictionary with sector weightings allocation
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+futures.historical(
+    tickers: List[str],
+    expiry: str = '',
+    start_date: str = '2019-11-03',
+    raw: bool = False,
+    export: str = '',
+    external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
+    chart: bool = False,
+)
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Display historical futures [Source: Yahoo Finance]
+    </p>
+
+* **Parameters**
+
+    tickers: List[str]
+        List of future timeseries tickers to display
+    expiry: *str*
+        Future expiry date with format YYYY-MM
+    start_date : *str*
+        Initial date like string (e.g., 2021-10-01)
+    raw: *bool*
+        Display futures timeseries in raw format
+    export: *str*
+        Type of format to export data
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
+    chart: *bool*
+       Flag to display chart
+

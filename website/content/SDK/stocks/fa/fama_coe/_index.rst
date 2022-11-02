@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Use Fama and French to get the cost of equity for a company
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.fa.fama_coe(
     symbol: str,
+    chart: bool = False,
 ) -> float
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Use Fama and French to get the cost of equity for a company
+    </p>
 
 * **Parameters**
 

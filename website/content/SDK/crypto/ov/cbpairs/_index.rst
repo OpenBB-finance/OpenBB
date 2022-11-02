@@ -4,19 +4,13 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Get a list of available currency pairs for trading. [Source: Coinbase]
-
-    base_min_size - min order size
-    base_max_size - max order size
-    min_market_funds -  min funds allowed in a market order.
-    max_market_funds - max funds allowed in a market order.
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.ov.cbpairs(
@@ -24,9 +18,19 @@ crypto.ov.cbpairs(
     sortby: str = 'quote_increment',
     ascend: bool = True,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get a list of available currency pairs for trading. [Source: Coinbase]
+
+    base_min_size - min order size
+    base_max_size - max order size
+    min_market_funds -  min funds allowed in a market order.
+    max_market_funds - max funds allowed in a market order.
+    </p>
 
 * **Parameters**
 
@@ -38,10 +42,47 @@ crypto.ov.cbpairs(
         Sort descending flag
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     pd.DataFrame
         Available trading pairs on Coinbase
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+crypto.ov.cbpairs(
+    limit: int = 20,
+    sortby: str = 'quote_increment',
+    ascend: bool = True,
+    export: str = '',
+    chart: bool = False,
+) -> None
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Displays a list of available currency pairs for trading. [Source: Coinbase]
+    </p>
+
+* **Parameters**
+
+    limit: *int*
+        Top n of pairs
+    sortby: *str*
+        Key to sortby data
+    ascend: *bool*
+        Sort ascending flag
+    export : *str*
+        Export dataframe data to csv,json,xlsx file
+    chart: *bool*
+       Flag to display chart
+

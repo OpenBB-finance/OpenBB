@@ -7,8 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Returns data about top gainers - coins which gain the most in given period and
-    top losers - coins that lost the most in given period of time. [Source: CoinGecko]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -17,8 +16,16 @@ crypto.disc.gainers_or_losers(
     interval: str = '1h',
     typ: str = 'gainers',
     sortby: str = 'market_cap',
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Returns data about top gainers - coins which gain the most in given period and
+    top losers - coins that lost the most in given period of time. [Source: CoinGecko]
+    </p>
 
 * **Parameters**
 

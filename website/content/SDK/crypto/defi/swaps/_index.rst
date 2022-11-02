@@ -4,14 +4,13 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Get the last 100 swaps done on Uniswap [Source: https://thegraph.com/en/]
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.defi.swaps(
@@ -19,9 +18,14 @@ crypto.defi.swaps(
     sortby: str = 'timestamp',
     ascend: bool = False,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get the last 100 swaps done on Uniswap [Source: https://thegraph.com/en/]
+    </p>
 
 * **Parameters**
 
@@ -34,10 +38,49 @@ crypto.defi.swaps(
         Flag to sort data descending
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     pd.DataFrame
         Last 100 swaps on Uniswap
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+crypto.defi.swaps(
+    limit: int = 10,
+    sortby: str = 'timestamp',
+    ascend: bool = False,
+    export: str = '',
+    chart: bool = False,
+) -> None
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Displays last swaps done on Uniswap
+    [Source: https://thegraph.com/en/]
+    </p>
+
+* **Parameters**
+
+    limit: *int*
+        Number of records to display
+    sortby: *str*
+        Key by which to sort data. The table can be sorted by every of its columns
+        (see https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2).
+    ascend: *bool*
+        Flag to sort data descending
+    export : *str*
+        Export dataframe data to csv,json,xlsx file
+    chart: *bool*
+       Flag to display chart
+

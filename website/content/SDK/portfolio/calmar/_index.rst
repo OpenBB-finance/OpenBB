@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Get calmar ratio
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 portfolio.calmar(
     portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
     window: int = 756,
+    chart: bool = False,
 )
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get calmar ratio
+    </p>
 
 * **Parameters**
 

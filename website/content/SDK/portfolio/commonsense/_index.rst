@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Get common sense ratio
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 portfolio.commonsense(
     portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    chart: bool = False,
 )
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get common sense ratio
+    </p>
 
 * **Parameters**
 

@@ -4,22 +4,26 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Get reddit users watchlists [Source: reddit]
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 stocks.ba.watchlist(
     limit: int = 5,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> Tuple[List[praw.models.reddit.submission.Submission], dict, int]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get reddit users watchlists [Source: reddit]
+    </p>
 
 * **Parameters**
 
@@ -27,8 +31,7 @@ stocks.ba.watchlist(
         Number of posts to look through
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
@@ -38,3 +41,32 @@ stocks.ba.watchlist(
         Dictionary of tickers and counts
     int
         Count of how many posts were analyzed
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+stocks.ba.watchlist(
+    limit: int = 5,
+    chart: bool = False,
+)
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Print other users watchlist. [Source: Reddit]
+    </p>
+
+* **Parameters**
+
+    limit: *int*
+        Maximum number of submissions to look at
+    chart: *bool*
+       Flag to display chart
+

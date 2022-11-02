@@ -7,8 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Get stocks data based on a list of stocks and the finance key. The function searches for the
-    correct financial statement automatically. [Source: StockAnalysis]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -18,8 +17,16 @@ stocks.sia.stocks_data(
     stocks_data: dict = None,
     period: str = 'annual',
     symbol: str = 'USD',
+    chart: bool = False,
 )
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get stocks data based on a list of stocks and the finance key. The function searches for the
+    correct financial statement automatically. [Source: StockAnalysis]
+    </p>
 
 * **Parameters**
 

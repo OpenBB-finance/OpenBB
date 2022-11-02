@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Gets option chain from yf for given ticker and expiration
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.options.dividend(
     symbol: str,
+    chart: bool = False,
 ) -> pandas.core.series.Series
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Gets option chain from yf for given ticker and expiration
+    </p>
 
 * **Parameters**
 

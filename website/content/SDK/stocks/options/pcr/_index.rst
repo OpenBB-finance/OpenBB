@@ -4,14 +4,13 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Gets put call ratio over last time window [Source: AlphaQuery.com]
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 stocks.options.pcr(
@@ -19,9 +18,14 @@ stocks.options.pcr(
     window: int = 30,
     start_date: str = '2021-11-01',
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Gets put call ratio over last time window [Source: AlphaQuery.com]
+    </p>
 
 * **Parameters**
 
@@ -33,5 +37,45 @@ stocks.options.pcr(
         Start date to plot, by default last 366 days
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+stocks.options.pcr(
+    symbol: str,
+    window: int = 30,
+    start_date: str = '2021-11-01',
+    export: str = '',
+    external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
+    chart: bool = False,
+)
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Display put call ratio [Source: AlphaQuery.com]
+    </p>
+
+* **Parameters**
+
+    symbol : *str*
+        Stock ticker symbol
+    window : int, optional
+        Window length to look at, by default 30
+    start_date : str, optional
+        Starting date for data, by default (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d")
+    export : str, optional
+        Format to export data, by default ""
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
+    chart: *bool*
+       Flag to display chart
+

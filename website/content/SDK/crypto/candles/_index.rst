@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Plot candle chart from dataframe. [Source: Binance]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -17,8 +17,15 @@ crypto.candles(
     ylabel: 'str' = '',
     title: 'str' = '',
     external_axes: 'list[plt.Axes] | None' = None, yscale: 'str' = 'linear',
+    chart: bool = False,
 ) -> 'None'
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Plot candle chart from dataframe. [Source: Binance]
+    </p>
 
 * **Parameters**
 

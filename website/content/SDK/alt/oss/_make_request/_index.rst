@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Helper method to scrap
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 alt.oss._make_request(
     url: str,
+    chart: bool = False,
 ) -> Optional[bs4.BeautifulSoup]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Helper method to scrap
+    </p>
 
 * **Parameters**
 

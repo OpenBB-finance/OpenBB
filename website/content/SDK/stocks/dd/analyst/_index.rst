@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Get analyst data. [Source: Finviz]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.dd.analyst(
     symbol: str,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get analyst data. [Source: Finviz]
+    </p>
 
 * **Parameters**
 

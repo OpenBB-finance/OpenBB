@@ -4,23 +4,27 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Request cancellation of a pending order.
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 forex.oanda.cancel(
     orderID: str,
     accountID: str = 'REPLACE_ME',
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> Union[str, bool]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Request cancellation of a pending order.
+    </p>
 
 * **Parameters**
 
@@ -30,5 +34,36 @@ forex.oanda.cancel(
         Oanda account ID, by default cfg.OANDA_ACCOUNT
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+forex.oanda.cancel(
+    accountID: str,
+    orderID: str = '',
+    chart: bool = False,
+)
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Cancel a Pending Order.
+    </p>
+
+* **Parameters**
+
+    accountID : *str*
+        Oanda user account ID
+    orderID : *str*
+        The pending order ID to cancel.
+    chart: *bool*
+       Flag to display chart
+

@@ -7,12 +7,18 @@
 .. raw:: html
 
     <h3>
-    > Get all market cap division in Yahoo Finance data. [Source: Finance Database]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.sia.maketcap() -> list
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get all market cap division in Yahoo Finance data. [Source: Finance Database]
+    </p>
 
 * **Returns**
 

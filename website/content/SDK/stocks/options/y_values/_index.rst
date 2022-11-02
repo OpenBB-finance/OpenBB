@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Generates y values for corresponding x value
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -16,5 +16,12 @@ stocks.options.y_values(
     price: float,
     options: List[Dict[Any, Any]],
     underlying: int,
+    chart: bool = False,
 ) -> float
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Generates y values for corresponding x value
+    </p>

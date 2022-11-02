@@ -4,26 +4,30 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Returns dataframe with mean hashrate of btc or eth blockchain and symbol price
-    [Source: https://glassnode.com]
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.onchain.hr(
     symbol: str,
     interval: str = '24h',
-    start_date: int = 1288966713,
-    end_date: int = 1667398713,
+    start_date: int = 1289000732,
+    end_date: int = 1667432732,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Returns dataframe with mean hashrate of btc or eth blockchain and symbol price
+    [Source: https://glassnode.com]
+    </p>
 
 * **Parameters**
 
@@ -37,10 +41,54 @@ crypto.onchain.hr(
         Interval frequency (e.g., 24h)
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     pd.DataFrame
         mean hashrate and symbol price over time
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+crypto.onchain.hr(
+    symbol: str,
+    start_date: int = 1635896732,
+    end_date: int = 1667432732,
+    interval: str = '24h',
+    export: str = '',
+    external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
+    chart: bool = False,
+) -> None
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Display dataframe with mean hashrate of btc or eth blockchain and symbol price.
+    [Source: https://glassnode.org]
+    </p>
+
+* **Parameters**
+
+    symbol : *str*
+        Blockchain to check mean hashrate (BTC or ETH)
+    start_date : *int*
+        Initial date timestamp (e.g., 1_614_556_800)
+    end_date : *int*
+        End date timestamp (e.g., 1_614_556_800)
+    interval : *str*
+        Interval frequency (possible values are: 24, 1w, 1month)
+    export : *str*
+        Export dataframe data to csv,json,xlsx file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (2 axes are expected in the list), by default None
+    chart: *bool*
+       Flag to display chart
+

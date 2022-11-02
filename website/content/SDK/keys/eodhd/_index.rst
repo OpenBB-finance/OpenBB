@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Set Eodhd key.
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -15,8 +15,15 @@ keys.eodhd(
     key: str,
     persist: bool = False,
     show_output: bool = False,
+    chart: bool = False,
 ) -> str
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Set Eodhd key.
+    </p>
 
 * **Parameters**
 

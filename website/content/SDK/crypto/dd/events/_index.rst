@@ -4,10 +4,26 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Get all events related to given coin like conferences, start date of futures trading etc.
+    > Getting data
+    </h3>
+
+{{< highlight python >}}
+crypto.dd.events(
+    symbol: str = 'eth-ethereum', sortby='date',
+    ascend: bool = False,
+    chart: bool = False,
+) -> pandas.core.frame.DataFrame
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get all events related to given coin like conferences, start date of futures trading etc.
     [Source: CoinPaprika]
 
     Example of response from API:
@@ -24,19 +40,7 @@
         "link": "http://www.cmegroup.com/trading/equity-index/us-index/bitcoin_product_calendar_futures.html",
         "proof_image_link": "https://static.coinpaprika.com/storage/cdn/event_images/16635.jpg"
     }
-    </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
-
-{{< highlight python >}}
-crypto.dd.events(
-    symbol: str = 'eth-ethereum', sortby='date',
-    ascend: bool = False,
-    chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
-) -> pandas.core.frame.DataFrame
-{{< /highlight >}}
+    </p>
 
 * **Parameters**
 
@@ -50,11 +54,56 @@ crypto.dd.events(
         Flag to sort data ascending
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     pandas.DataFrame
         Events found for given coin
         Columns: id, date , date_to, name, description, is_conference, link, proof_image_link
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+crypto.dd.events(
+    symbol: str = 'BTC',
+    limit: int = 10,
+    sortby: str = 'date',
+    ascend: bool = False,
+    links: bool = False,
+    export: str = '',
+    chart: bool = False,
+) -> None
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get all events for given coin id. [Source: CoinPaprika]
+    </p>
+
+* **Parameters**
+
+    symbol: *str*
+        Cryptocurrency symbol (e.g. BTC)
+    limit: *int*
+        Number of records to display
+    sortby: *str*
+        Key by which to sort data. Every column name is valid
+        (see for possible values:
+        https://api.coinpaprika.com/docs#tag/Coins/paths/~1coins~1%7Bcoin_id%7D~1events/get).
+    ascend: *bool*
+        Flag to sort data ascending
+    links: *bool*
+        Flag to display urls
+    export : *str*
+        Export dataframe data to csv,json,xlsx file
+    chart: *bool*
+       Flag to display chart
+

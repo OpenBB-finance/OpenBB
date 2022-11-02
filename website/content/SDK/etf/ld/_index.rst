@@ -4,23 +4,27 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Return a selection of ETFs based on description filtered by total assets.
-    [Source: Finance Database]
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 etf.ld(
     description: str,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> Dict
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Return a selection of ETFs based on description filtered by total assets.
+    [Source: Finance Database]
+    </p>
 
 * **Parameters**
 
@@ -28,10 +32,45 @@ etf.ld(
         Search by description to find ETFs matching the criteria.
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     data : *Dict*
         Dictionary with ETFs that match a certain description
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+etf.ld(
+    description: str,
+    limit: int = 10,
+    export: str = '',
+    chart: bool = False,
+)
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Display a selection of ETFs based on description filtered by total assets.
+    [Source: Finance Database]
+    </p>
+
+* **Parameters**
+
+    description: *str*
+        Search by description to find ETFs matching the criteria.
+    limit: *int*
+        Limit of ETFs to display
+    export: *str*
+        Type of format to export data
+    chart: *bool*
+       Flag to display chart
+

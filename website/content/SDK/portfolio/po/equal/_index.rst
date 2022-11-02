@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Equally weighted portfolio, where weight = 1/# of symbols
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -22,8 +22,15 @@ portfolio.po.equal(
     threshold: float = 0,
     method: str = 'time',
     value: float = 1.0,
+    chart: bool = False,
 ) -> Tuple
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Equally weighted portfolio, where weight = 1/# of symbols
+    </p>
 
 * **Parameters**
 

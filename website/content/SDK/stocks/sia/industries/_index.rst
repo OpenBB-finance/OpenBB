@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Get all industries in Yahoo Finance data based on country or sector. [Source: Finance Database]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.sia.industries(
     country: str = '',
     sector: str = '',
+    chart: bool = False,
 ) -> list
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get all industries in Yahoo Finance data based on country or sector. [Source: Finance Database]
+    </p>
 
 * **Parameters**
 

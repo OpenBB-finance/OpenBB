@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Get portfolio performance vs the benchmark
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -15,8 +15,15 @@ portfolio.perf(
     portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
     interval: str = 'all',
     show_all_trades: bool = False,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get portfolio performance vs the benchmark
+    </p>
 
 * **Parameters**
 

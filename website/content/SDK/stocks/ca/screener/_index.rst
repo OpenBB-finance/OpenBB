@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Screener Overview
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.ca.screener(
     similar: List[str],
     data_type: str = 'overview',
+    chart: bool = False,
 )
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Screener Overview
+    </p>
 
 * **Parameters**
 

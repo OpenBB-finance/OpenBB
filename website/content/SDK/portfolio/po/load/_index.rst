@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Load in the Excel file to determine the allocation that needs to be set.
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 portfolio.po.load(
     excel_file: str = '',
+    chart: bool = False,
 )
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Load in the Excel file to determine the allocation that needs to be set.
+    </p>
 
 * **Parameters**
 

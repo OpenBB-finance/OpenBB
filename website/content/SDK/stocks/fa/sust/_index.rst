@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Get sustainability metrics from yahoo
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.fa.sust(
     symbol: str,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get sustainability metrics from yahoo
+    </p>
 
 * **Parameters**
 

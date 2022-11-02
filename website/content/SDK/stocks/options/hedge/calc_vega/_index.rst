@@ -7,11 +7,7 @@
 .. raw:: html
 
     <h3>
-    > The first-order partial-derivative with respect to the underlying asset volatility of
-    the Black-Scholes equation is known as vega. Vega refers to how the option value
-    changes when there is a change in the underlying asset volatility. Multiplying vega by
-    a +-1% change in the underlying asset volatility, holding all other parameters constant, will give
-    you the new value of the option. Vega will be positive for long positions and negative for short positions.
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -21,8 +17,19 @@ stocks.options.hedge.calc_vega(
     strike_price: float = 120,
     time_to_expiration: float = 30,
     risk_free_rate: float = 0,
+    chart: bool = False,
 )
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    The first-order partial-derivative with respect to the underlying asset volatility of
+    the Black-Scholes equation is known as vega. Vega refers to how the option value
+    changes when there is a change in the underlying asset volatility. Multiplying vega by
+    a +-1% change in the underlying asset volatility, holding all other parameters constant, will give
+    you the new value of the option. Vega will be positive for long positions and negative for short positions.
+    </p>
 
 * **Parameters**
 

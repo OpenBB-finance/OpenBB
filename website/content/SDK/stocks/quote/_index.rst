@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Ticker quote
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.quote(
     symbol: str,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Ticker quote
+    </p>
 
 * **Parameters**
 

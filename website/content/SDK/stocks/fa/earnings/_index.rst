@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Get earnings calendar for ticker
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.fa.earnings(
     symbol: str,
     quarterly: bool = False,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get earnings calendar for ticker
+    </p>
 
 * **Parameters**
 

@@ -4,23 +4,27 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Get top dexes by daily volume and users [Source: https://dappradar.com/]
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.disc.top_dexes(
     sortby: str = '',
     limit: int = 10,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get top dexes by daily volume and users [Source: https://dappradar.com/]
+    </p>
 
 * **Parameters**
 
@@ -28,10 +32,44 @@ crypto.disc.top_dexes(
         Key by which to sort data
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     pd.DataFrame
         Top decentralized exchanges. Columns: Name, Daily Users, Daily Volume [$]
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+crypto.disc.top_dexes(
+    limit: int = 10,
+    export: str = '',
+    sortby: str = '',
+    chart: bool = False,
+) -> None
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Displays top decentralized exchanges [Source: https://dappradar.com/]
+    </p>
+
+* **Parameters**
+
+    limit: *int*
+        Number of records to display
+    sortby: *str*
+        Key by which to sort data
+    export : *str*
+        Export dataframe data to csv,json,xlsx file
+    chart: *bool*
+       Flag to display chart
+

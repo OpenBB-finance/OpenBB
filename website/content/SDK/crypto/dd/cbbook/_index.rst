@@ -4,22 +4,26 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Get orders book for chosen trading pair. [Source: Coinbase]
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.dd.cbbook(
     symbol: str,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> Tuple[numpy.ndarray, numpy.ndarray, str, dict]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get orders book for chosen trading pair. [Source: Coinbase]
+    </p>
 
 * **Parameters**
 
@@ -27,8 +31,7 @@ crypto.dd.cbbook(
         Trading pair of coins on Coinbase e.g ETH-USDT or UNI-ETH
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
@@ -37,3 +40,38 @@ crypto.dd.cbbook(
         array with ask prices, order sizes and cumulative order sizes
         trading pair
         dict with raw data
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+crypto.dd.cbbook(
+    symbol: str,
+    export: str = '',
+    external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
+    chart: bool = False,
+) -> None
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Displays a list of available currency pairs for trading. [Source: Coinbase]
+    </p>
+
+* **Parameters**
+
+    symbol: *str*
+        Trading pair of coins on Coinbase e.g ETH-USDT or UNI-ETH
+    export : *str*
+        Export dataframe data to csv,json,xlsx file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
+    chart: *bool*
+       Flag to display chart
+

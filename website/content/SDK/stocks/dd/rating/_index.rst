@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Get ratings for a given ticker. [Source: Financial Modeling Prep]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.dd.rating(
     symbol: str,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get ratings for a given ticker. [Source: Financial Modeling Prep]
+    </p>
 
 * **Parameters**
 

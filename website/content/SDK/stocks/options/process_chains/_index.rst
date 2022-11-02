@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Function to take in the requests.get and return a DataFrame
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.options.process_chains(
     response: requests.models.Response,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Function to take in the requests.get and return a DataFrame
+    </p>
 
 * **Parameters**
 

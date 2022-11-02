@@ -4,14 +4,13 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Gets value at risk for specified stock dataframe
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 common.qa.var(
@@ -22,9 +21,14 @@ common.qa.var(
     percentile: Union[int, float] = 99.9,
     portfolio: bool = False,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Gets value at risk for specified stock dataframe
+    </p>
 
 * **Parameters**
 
@@ -42,8 +46,7 @@ common.qa.var(
         If the data is a portfolio
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
@@ -51,3 +54,53 @@ common.qa.var(
         list of VaR
     list
         list of historical VaR
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+common.qa.var(
+    data: pandas.core.frame.DataFrame,
+    symbol: str = '',
+    use_mean: bool = False,
+    adjusted_var: bool = False,
+    student_t: bool = False,
+    percentile: float = 99.9,
+    data_range: int = 0,
+    portfolio: bool = False,
+    chart: bool = False,
+) -> None
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Displays VaR of dataframe
+    </p>
+
+* **Parameters**
+
+    data: *pd.Dataframe*
+        Data dataframe
+    use_mean: *bool*
+        if one should use the data mean return
+    symbol: *str*
+        name of the data
+    adjusted_var: *bool*
+        if one should have VaR adjusted for skew and kurtosis (Cornish-Fisher-Expansion)
+    student_t: *bool*
+        If one should use the student-t distribution
+    percentile: *int*
+        var percentile
+    data_range: *int*
+        Number of rows you want to use VaR over
+    portfolio: *bool*
+        If the data is a portfolio
+    chart: *bool*
+       Flag to display chart
+

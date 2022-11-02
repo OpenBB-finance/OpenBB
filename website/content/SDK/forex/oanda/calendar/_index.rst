@@ -4,23 +4,27 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Request data of significant events calendar.
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 forex.oanda.calendar(
     days: int,
     instrument: Optional[str] = None,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> Union[pandas.core.frame.DataFrame, bool]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Request data of significant events calendar.
+    </p>
 
 * **Parameters**
 
@@ -30,10 +34,41 @@ forex.oanda.calendar(
         Number of days in advance
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     Union[pd.DataFrame, bool]
         Calendar events data or False
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+forex.oanda.calendar(
+    instrument: str,
+    days: int = 7,
+    chart: bool = False,
+)
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    View calendar of significant events.
+    </p>
+
+* **Parameters**
+
+    instrument : *str*
+        The loaded currency pair
+    days : *int*
+        Number of days in advance
+    chart: *bool*
+       Flag to display chart
+

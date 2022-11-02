@@ -4,23 +4,27 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Get account holdings for asset. [Source: Binance]
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.dd.balance(
     from_symbol: str,
     to_symbol: str = 'USDT',
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get account holdings for asset. [Source: Binance]
+    </p>
 
 * **Parameters**
 
@@ -30,10 +34,44 @@ crypto.dd.balance(
         Cryptocurrency
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     pd.DataFrame
         Dataframe with account holdings for an asset
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+crypto.dd.balance(
+    from_symbol: str,
+    to_symbol: str = 'USDT',
+    export: str = '',
+    chart: bool = False,
+) -> None
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get account holdings for asset. [Source: Binance]
+    </p>
+
+* **Parameters**
+
+    from_symbol: *str*
+        Cryptocurrency
+    to_symbol: *str*
+        Cryptocurrency
+    export: *str*
+        Export dataframe data to csv,json,xlsx
+    chart: *bool*
+       Flag to display chart
+

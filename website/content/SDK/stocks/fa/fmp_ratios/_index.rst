@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Get key ratios
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -15,8 +15,15 @@ stocks.fa.fmp_ratios(
     symbol: str,
     limit: int = 5,
     quarterly: bool = False,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get key ratios
+    </p>
 
 * **Parameters**
 

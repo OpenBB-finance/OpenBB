@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Get series notes. [Source: FRED]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 economy.fred_notes(
     search_query: str,
     limit: int = -1,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get series notes. [Source: FRED]
+    </p>
 
 * **Parameters**
 

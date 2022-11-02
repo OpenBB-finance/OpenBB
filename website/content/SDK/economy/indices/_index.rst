@@ -7,12 +7,18 @@
 .. raw:: html
 
     <h3>
-    > Get the top US indices
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 economy.indices() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get the top US indices
+    </p>
 
 * **Returns**
 

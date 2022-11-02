@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Get portfolio VaR
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -17,8 +17,15 @@ portfolio.var(
     adjusted_var: bool = False,
     student_t: bool = False,
     percentile: float = 99.9,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get portfolio VaR
+    </p>
 
 * **Parameters**
 

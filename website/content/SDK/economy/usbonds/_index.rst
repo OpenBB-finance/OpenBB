@@ -7,12 +7,18 @@
 .. raw:: html
 
     <h3>
-    > Scrape data for us bonds
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 economy.usbonds() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Scrape data for us bonds
+    </p>
 
 * **Returns**
 

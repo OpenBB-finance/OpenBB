@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Compare regression results between Panel Data regressions.
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 econometrics.comparison(
     regressions, export: str = '',
+    chart: bool = False,
 )
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Compare regression results between Panel Data regressions.
+    </p>
 
 * **Parameters**
 

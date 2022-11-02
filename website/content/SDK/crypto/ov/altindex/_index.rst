@@ -4,25 +4,29 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Get altcoin index overtime
-    [Source: https://blockchaincenter.net]
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.ov.altindex(
     period: int = 30,
     start_date: int = 1262304000,
-    end_date: int = 1667398713,
+    end_date: int = 1667432732,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get altcoin index overtime
+    [Source: https://blockchaincenter.net]
+    </p>
 
 * **Parameters**
 
@@ -36,10 +40,53 @@ crypto.ov.altindex(
         End date timestamp (e.g., 1_641_588_030)
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     pandas.DataFrame:
         Date, Value (Altcoin Index)
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+crypto.ov.altindex(
+    period: int = 365,
+    start_date: int = 1262304000,
+    end_date: int = 1667432732,
+    export: str = '',
+    external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
+    chart: bool = False,
+) -> None
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Displays altcoin index overtime
+     [Source: https://blockchaincenter.net]
+    </p>
+
+* **Parameters**
+
+    start_date : *int*
+        Initial date timestamp (e.g., 1_609_459_200)
+    end_date : *int*
+        End date timestamp (e.g., 1_641_588_030)
+    period: *int*
+        Number of days to check the performance of coins and calculate the altcoin index.
+        E.g., 365 will check yearly performance , 90 will check seasonal performance (90 days),
+        30 will check monthly performance (30 days).
+    export : *str*
+        Export dataframe data to csv,json,xlsx file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
+    chart: *bool*
+       Flag to display chart
+

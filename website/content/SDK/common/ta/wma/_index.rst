@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Gets weighted moving average (WMA) for stock
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -15,8 +15,15 @@ common.ta.wma(
     data: pandas.core.frame.DataFrame,
     length: int = 50,
     offset: int = 0,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Gets weighted moving average (WMA) for stock
+    </p>
 
 * **Parameters**
 

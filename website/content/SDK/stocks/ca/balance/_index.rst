@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Get balance data. [Source: Marketwatch]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -15,8 +15,15 @@ stocks.ca.balance(
     similar: List[str],
     timeframe: str = '2021',
     quarter: bool = False,
+    chart: bool = False,
 )
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get balance data. [Source: Marketwatch]
+    </p>
 
 * **Parameters**
 

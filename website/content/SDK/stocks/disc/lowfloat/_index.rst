@@ -7,12 +7,18 @@
 .. raw:: html
 
     <h3>
-    > Returns low float DataFrame
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.disc.lowfloat() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Returns low float DataFrame
+    </p>
 
 * **Returns**
 

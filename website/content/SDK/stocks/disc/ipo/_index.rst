@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Get IPO calendar
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.disc.ipo(
     start_date: str = '2022-10-28',
     end_date: str = '2022-11-02',
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get IPO calendar
+    </p>
 
 * **Parameters**
 

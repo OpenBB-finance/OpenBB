@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Gets ticker symbol info
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.fa.info(
     symbol: str,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Gets ticker symbol info
+    </p>
 
 * **Parameters**
 

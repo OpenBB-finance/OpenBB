@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Gets messages from given user [Source: stocktwits]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.ba.stalker(
     user: str,
     limit: int = 30,
+    chart: bool = False,
 ) -> List[Dict]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Gets messages from given user [Source: stocktwits]
+    </p>
 
 * **Parameters**
 

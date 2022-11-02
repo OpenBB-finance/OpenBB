@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Get historical forex data.
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -17,8 +17,15 @@ forex.hist(
     resolution: str = 'd',
     interval: int = 5,
     start_date: str = '',
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get historical forex data.
+    </p>
 
 * **Parameters**
 

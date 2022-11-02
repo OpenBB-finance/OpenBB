@@ -7,12 +7,18 @@
 .. raw:: html
 
     <h3>
-    > Scrape data for market overview
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 economy.overview() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Scrape data for market overview
+    </p>
 
 * **Returns**
 

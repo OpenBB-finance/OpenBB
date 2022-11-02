@@ -4,23 +4,27 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Returns coin product info
-    [Source: https://messari.io/]
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.dd.pi(
     symbol: str,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame, pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Returns coin product info
+    [Source: https://messari.io/]
+    </p>
 
 * **Parameters**
 
@@ -28,8 +32,7 @@ crypto.dd.pi(
         Crypto symbol to check product info
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
@@ -41,3 +44,36 @@ crypto.dd.pi(
         coin audits
     pd.DataFrame
         coin known exploits/vulns
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+crypto.dd.pi(
+    symbol: str,
+    export: str = '',
+    chart: bool = False,
+) -> None
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Display project info
+    [Source: https://messari.io/]
+    </p>
+
+* **Parameters**
+
+    symbol : *str*
+        Crypto symbol to check project info
+    export : *str*
+        Export dataframe data to csv,json,xlsx file
+    chart: *bool*
+       Flag to display chart
+

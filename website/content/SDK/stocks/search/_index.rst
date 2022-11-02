@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Search selected query for tickers.
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -19,8 +19,15 @@ stocks.search(
     exchange_country: str = '',
     limit: int = 0,
     export: str = '',
+    chart: bool = False,
 ) -> None
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Search selected query for tickers.
+    </p>
 
 * **Parameters**
 

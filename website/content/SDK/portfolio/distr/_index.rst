@@ -4,23 +4,27 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Display daily returns
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 portfolio.distr(
     portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
     window: str = 'all',
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 )
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Display daily returns
+    </p>
 
 * **Parameters**
 
@@ -30,5 +34,47 @@ portfolio.distr(
         interval to compare cumulative returns and benchmark
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+portfolio.distr(
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    window: str = 'all',
+    raw: bool = False,
+    export: str = '',
+    external_axes: Optional[matplotlib.axes._axes.Axes] = None,
+    chart: bool = False,
+)
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Display daily returns
+    </p>
+
+* **Parameters**
+
+    portfolio_returns : *pd.Series*
+        Returns of the portfolio
+    benchmark_returns : *pd.Series*
+        Returns of the benchmark
+    interval : *str*
+        interval to compare cumulative returns and benchmark
+    raw : *False*
+        Display raw data from cumulative return
+    export : *str*
+        Export certain type of data
+    external_axes: *plt.Axes*
+        Optional axes to display plot on
+    chart: *bool*
+       Flag to display chart
+

@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Gets dividend calendar for given date.  Date represents Ex-Dividend Date
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.disc.dividends(
     date: str = '2022-11-02',
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Gets dividend calendar for given date.  Date represents Ex-Dividend Date
+    </p>
 
 * **Parameters**
 

@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Get related queries from google api [Source: google]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.ba.queries(
     symbol: str,
     limit: int = 10,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get related queries from google api [Source: google]
+    </p>
 
 * **Parameters**
 

@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Get wsb posts [Source: reddit]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.ba.wsb(
     limit: int = 10,
     new: bool = False,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get wsb posts [Source: reddit]
+    </p>
 
 * **Parameters**
 

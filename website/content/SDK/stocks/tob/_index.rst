@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Get top of book bid and ask for ticker on exchange [CBOE.com]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.tob(
     symbol: str,
     exchange: str = 'BZX',
+    chart: bool = False,
 ) -> Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get top of book bid and ask for ticker on exchange [CBOE.com]
+    </p>
 
 * **Parameters**
 

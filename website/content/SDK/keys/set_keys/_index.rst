@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Set API keys in bundle.
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -15,8 +15,15 @@ keys.set_keys(
     keys_dict: Dict[str, Dict[str, Union[str, bool]]],
     persist: bool = False,
     show_output: bool = False,
+    chart: bool = False,
 ) -> Dict
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Set API keys in bundle.
+    </p>
 
 * **Parameters**
 

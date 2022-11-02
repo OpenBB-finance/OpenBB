@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Get dark pool short positions. [Source: Stockgrid]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.dps.pos(
     sortby: str = 'dpp_dollar',
     ascend: bool = False,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get dark pool short positions. [Source: Stockgrid]
+    </p>
 
 * **Parameters**
 

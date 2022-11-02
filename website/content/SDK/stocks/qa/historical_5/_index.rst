@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Get 5 year monthly historical performance for a ticker with dividends filtered
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.qa.historical_5(
     symbol: str,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get 5 year monthly historical performance for a ticker with dividends filtered
+    </p>
 
 * **Parameters**
 

@@ -7,11 +7,7 @@
 .. raw:: html
 
     <h3>
-    > The first-order partial-derivative with respect to the underlying asset of the Black-Scholes
-    equation is known as delta. Delta refers to how the option value changes when there is a change in
-    the underlying asset price. Multiplying delta by a +-$1 change in the underlying asset, holding all other
-    parameters constant, will give you the new value of the option. Delta will be positive for long call and
-    short put positions, negative for short call and long put positions.
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -22,8 +18,19 @@ stocks.options.hedge.calc_delta(
     time_to_expiration: float = 30,
     risk_free_rate: float = 0,
     sign: int = 1,
+    chart: bool = False,
 )
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    The first-order partial-derivative with respect to the underlying asset of the Black-Scholes
+    equation is known as delta. Delta refers to how the option value changes when there is a change in
+    the underlying asset price. Multiplying delta by a +-$1 change in the underlying asset, holding all other
+    parameters constant, will give you the new value of the option. Delta will be positive for long call and
+    short put positions, negative for short call and long put positions.
+    </p>
 
 * **Parameters**
 

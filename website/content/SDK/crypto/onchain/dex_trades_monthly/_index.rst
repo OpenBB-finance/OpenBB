@@ -7,8 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Get list of trades on Decentralized Exchanges monthly aggregated.
-    [Source: https://graphql.bitquery.io/]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -16,8 +15,16 @@ crypto.onchain.dex_trades_monthly(
     trade_amount_currency: str = 'USD',
     limit: int = 90,
     ascend: bool = True,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get list of trades on Decentralized Exchanges monthly aggregated.
+    [Source: https://graphql.bitquery.io/]
+    </p>
 
 * **Parameters**
 

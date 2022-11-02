@@ -4,23 +4,27 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Scrape data for top etf movers.
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 etf.disc.mover(
     sort_type: str = 'gainers',
     export: bool = False,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Scrape data for top etf movers.
+    </p>
 
 * **Parameters**
 
@@ -28,10 +32,43 @@ etf.disc.mover(
         Data to get.  Can be "gainers", "decliners" or "active"
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     etfmovers: *pd.DataFrame*
         Datafame containing the name, price, change and the volume of the etf
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+etf.disc.mover(
+    sort_type: str = 'gainers',
+    limit: int = 10, export='',
+    chart: bool = False,
+)
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Show top ETF movers from wsj.com
+    </p>
+
+* **Parameters**
+
+    sort_type: *str*
+         What to show.  Either Gainers, Decliners or Activity
+    limit: *int*
+         Number of etfs to show
+     export: *str*
+         Format to export data
+    chart: *bool*
+       Flag to display chart
+

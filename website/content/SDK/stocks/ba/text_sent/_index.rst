@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Find the sentiment of a post and related comments
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.ba.text_sent(
     post_data: List[str],
+    chart: bool = False,
 ) -> float
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Find the sentiment of a post and related comments
+    </p>
 
 * **Parameters**
 

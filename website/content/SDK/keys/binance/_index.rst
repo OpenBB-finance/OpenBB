@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Set Binance key
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -16,8 +16,15 @@ keys.binance(
     secret: str,
     persist: bool = False,
     show_output: bool = False,
+    chart: bool = False,
 ) -> str
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Set Binance key
+    </p>
 
 * **Parameters**
 

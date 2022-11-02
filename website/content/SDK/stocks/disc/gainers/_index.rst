@@ -7,12 +7,18 @@
 .. raw:: html
 
     <h3>
-    > Get top gainers. [Source: Yahoo Finance]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.disc.gainers() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get top gainers. [Source: Yahoo Finance]
+    </p>
 
 * **Returns**
 

@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Gets a dataframe of ARK trades for ticker
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.dd.arktrades(
     symbol: str,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Gets a dataframe of ARK trades for ticker
+    </p>
 
 * **Parameters**
 

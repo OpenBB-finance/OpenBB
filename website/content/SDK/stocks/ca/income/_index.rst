@@ -4,14 +4,13 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Get income data. [Source: Marketwatch]
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 stocks.ca.income(
@@ -19,9 +18,14 @@ stocks.ca.income(
     timeframe: str = '2021',
     quarter: bool = False,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 )
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get income data. [Source: Marketwatch]
+    </p>
 
 * **Parameters**
 
@@ -37,5 +41,45 @@ stocks.ca.income(
         Format to export data
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+stocks.ca.income(
+    symbols: List[str],
+    timeframe: str = '2021',
+    quarter: bool = False,
+    export: str = '',
+    chart: bool = False,
+)
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Display income data. [Source: Marketwatch]
+    </p>
+
+* **Parameters**
+
+    symbols : List[str]
+        List of tickers to compare. Enter tickers you want to see as shown below:
+        ["TSLA", "AAPL", "NFLX", "BBY"]
+        You can also get a list of comparable peers with
+        finnhub_peers(), finviz_peers(), polygon_peers().
+    timeframe : *str*
+        What year to look at
+    quarter : bool, optional
+        Whether to use quarterly statements, by default False
+    export : str, optional
+        Format to export data
+    chart: *bool*
+       Flag to display chart
+

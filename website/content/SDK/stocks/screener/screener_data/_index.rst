@@ -4,14 +4,13 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Screener Overview
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 stocks.screener.screener_data(
@@ -20,9 +19,14 @@ stocks.screener.screener_data(
     limit: int = 10,
     ascend: bool = False,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 )
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Screener Overview
+    </p>
 
 * **Parameters**
 
@@ -36,10 +40,58 @@ stocks.screener.screener_data(
         Ascended order of stocks filtered to print
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     pd.DataFrame
         Dataframe with loaded filtered stocks
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+stocks.screener.screener_data(
+    loaded_preset: str = 'top_gainers',
+    data_type: str = 'overview',
+    limit: int = 10,
+    ascend: bool = False,
+    sortby: str = '',
+    export: str = '',
+    chart: bool = False,
+) -> List[str]
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Screener one of the following: overview, valuation, financial, ownership, performance, technical.
+    </p>
+
+* **Parameters**
+
+    loaded_preset: *str*
+        Preset loaded to filter for tickers
+    data_type : *str*
+        Data type string between: overview, valuation, financial, ownership, performance, technical
+    limit : *int*
+        Limit of stocks to display
+    ascend : *bool*
+        Order of table to ascend or descend
+    sortby: *str*
+        Column to sort table by
+    export : *str*
+        Export dataframe data to csv,json,xlsx file
+    chart: *bool*
+       Flag to display chart
+
+
+* **Returns**
+
+    List[str]
+        List of stocks that meet preset criteria

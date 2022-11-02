@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Provides information that relates to the CAPM model
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.qa.capm_information(
     symbol: str,
+    chart: bool = False,
 ) -> Tuple[float, float]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Provides information that relates to the CAPM model
+    </p>
 
 * **Parameters**
 

@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Makes api request for last price
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.options.last_price(
     symbol: str,
+    chart: bool = False,
 )
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Makes api request for last price
+    </p>
 
 * **Parameters**
 

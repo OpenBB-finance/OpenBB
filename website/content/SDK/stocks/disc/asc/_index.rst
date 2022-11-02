@@ -7,13 +7,19 @@
 .. raw:: html
 
     <h3>
-    > Get Yahoo Finance small cap stocks with earnings growth rates better than 25%.
-    [Source: Yahoo Finance]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.disc.asc() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get Yahoo Finance small cap stocks with earnings growth rates better than 25%.
+    [Source: Yahoo Finance]
+    </p>
 
 * **Returns**
 

@@ -7,16 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Find similar coin by coin name,symbol or id.
-
-    If you don't know exact name or id of the Coin at CoinGecko CoinPaprika, Binance or Coinbase
-    you use this command to display coins with similar name, symbol or id to your search query.
-    Example: coin name is something like "polka". So I can try: find -c polka -k name -t 25
-    It will search for coin that has similar name to polka and display top 25 matches.
-
-        -c, --coin stands for coin - you provide here your search query
-        -k, --key it's a searching key. You can search by symbol, id or name of coin
-        -t, --top it displays top N number of records.
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -26,8 +17,24 @@ crypto.find(
     key: 'str' = 'symbol',
     limit: 'int' = 10,
     export: 'str' = '',
+    chart: bool = False,
 ) -> 'None'
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Find similar coin by coin name,symbol or id.
+
+    If you don't know exact name or id of the Coin at CoinGecko CoinPaprika, Binance or Coinbase
+    you use this command to display coins with similar name, symbol or id to your search query.
+    Example: coin name is something like "polka". So I can try: find -c polka -k name -t 25
+    It will search for coin that has similar name to polka and display top 25 matches.
+
+        -c, --coin stands for coin - you provide here your search query
+        -k, --key it's a searching key. You can search by symbol, id or name of coin
+        -t, --top it displays top N number of records.
+    </p>
 
 * **Parameters**
 

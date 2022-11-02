@@ -4,22 +4,26 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Get price vs short interest volume. [Source: Stockgrid]
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 stocks.dps.psi_sg(
     symbol: str,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> Tuple[pandas.core.frame.DataFrame, List]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get price vs short interest volume. [Source: Stockgrid]
+    </p>
 
 * **Parameters**
 
@@ -27,8 +31,7 @@ stocks.dps.psi_sg(
         Stock to get data from
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
@@ -36,3 +39,44 @@ stocks.dps.psi_sg(
         Short interest volume data
     List
         Price data
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+stocks.dps.psi_sg(
+    symbol: str,
+    limit: int = 84,
+    raw: bool = False,
+    export: str = '',
+    external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
+    chart: bool = False,
+)
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Plot price vs short interest volume. [Source: Stockgrid]
+    </p>
+
+* **Parameters**
+
+    symbol : *str*
+        Stock to plot for
+    limit : *int*
+        Number of last open market days to show
+    raw : *bool*
+        Flag to print raw data instead
+    export : *str*
+        Export dataframe data to csv,json,xlsx file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (3 axes are expected in the list), by default None
+    chart: *bool*
+       Flag to display chart
+

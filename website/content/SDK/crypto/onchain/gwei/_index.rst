@@ -4,33 +4,34 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Returns the most recent Ethereum gas fees in gwei
+    > Getting data
+    </h3>
+
+{{< highlight python >}}
+crypto.onchain.gwei() -> pandas.core.frame.DataFrame
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Returns the most recent Ethereum gas fees in gwei
     [Source: https://ethgasstation.info]
 
     Parameters
     ----------
-    </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
-
-{{< highlight python >}}
-crypto.onchain.gwei(
-    chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
-) -> pandas.core.frame.DataFrame
-{{< /highlight >}}
+    </p>
 
 * **Parameters**
 
     
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
@@ -39,3 +40,33 @@ crypto.onchain.gwei(
             (fees for slow, average, fast and
             fastest transactions in gwei and
             its average durations in seconds)
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+crypto.onchain.gwei(
+    export: str = '',
+    chart: bool = False,
+) -> None
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Current gwei fees
+    [Source: https://ethgasstation.info]
+    </p>
+
+* **Parameters**
+
+    export : *str*
+        Export dataframe data to csv,json,xlsx file
+    chart: *bool*
+       Flag to display chart
+

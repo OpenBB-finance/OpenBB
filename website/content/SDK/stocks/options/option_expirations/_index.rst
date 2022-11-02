@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Get available expiration dates for given ticker
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.options.option_expirations(
     symbol: str,
+    chart: bool = False,
 )
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get available expiration dates for given ticker
+    </p>
 
 * **Parameters**
 

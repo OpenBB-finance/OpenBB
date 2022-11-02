@@ -4,14 +4,13 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Returns basic coin information for all coins from CoinPaprika API [Source: CoinPaprika]
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.ov.cpinfo(
@@ -19,9 +18,14 @@ crypto.ov.cpinfo(
     sortby: str = 'rank',
     ascend: bool = True,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Returns basic coin information for all coins from CoinPaprika API [Source: CoinPaprika]
+    </p>
 
 * **Parameters**
 
@@ -33,11 +37,53 @@ crypto.ov.cpinfo(
         Flag to sort data descending
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     pandas.DataFrame
         rank, name, symbol, price, volume_24h, circulating_supply, total_supply,
         max_supply, market_cap, beta_value, ath_price,
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+crypto.ov.cpinfo(
+    symbol: str,
+    sortby: str = 'rank',
+    ascend: bool = True,
+    limit: int = 15,
+    export: str = '',
+    chart: bool = False,
+) -> None
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Displays basic coin information for all coins from CoinPaprika API. [Source: CoinPaprika]
+    </p>
+
+* **Parameters**
+
+    symbol: *str*
+        Quoted currency
+    limit: *int*
+        Number of records to display
+    sortby: *str*
+        Key by which to sort data
+    ascend: *bool*
+        Flag to sort data descending
+    links: *bool*
+        Flag to display urls
+    export : *str*
+        Export dataframe data to csv,json,xlsx file
+    chart: *bool*
+       Flag to display chart
+

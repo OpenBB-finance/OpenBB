@@ -7,12 +7,18 @@
 .. raw:: html
 
     <h3>
-    > Get properties to use on property optimization.
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 portfolio.po.get_properties() -> List[str]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get properties to use on property optimization.
+    </p>
 
 * **Returns**
 

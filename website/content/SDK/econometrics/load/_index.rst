@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Load custom file into dataframe.
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -15,10 +15,16 @@ econometrics.load(
     file: str,
     file_types: Optional[List[str]] = None,
     data_files: Optional[Dict[Any, Any]] = None,
-    data_examples: Optional[Dict[Any,
-    Any]] = None,
+    data_examples: Optional[Dict[Any, Any]] = None,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Load custom file into dataframe.
+    </p>
 
 * **Parameters**
 

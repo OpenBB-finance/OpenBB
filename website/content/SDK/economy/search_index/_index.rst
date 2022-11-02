@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Search indices by keyword. [Source: FinanceDatabase]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 economy.search_index(
     keyword: list,
     limit: int = 10,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Search indices by keyword. [Source: FinanceDatabase]
+    </p>
 
 * **Parameters**
 

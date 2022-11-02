@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Get suppliers from ticker provided. [Source: CSIMarket]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.dd.supplier(
     symbol: str,
     limit: int = 50,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get suppliers from ticker provided. [Source: CSIMarket]
+    </p>
 
 * **Parameters**
 

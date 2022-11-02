@@ -7,12 +7,18 @@
 .. raw:: html
 
     <h3>
-    > Get trending tickers from stocktwits [Source: stocktwits]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.ba.trending() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get trending tickers from stocktwits [Source: stocktwits]
+    </p>
 
 * **Returns**
 

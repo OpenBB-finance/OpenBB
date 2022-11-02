@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Get Series IDs. [Source: FRED]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 economy.fred_ids(
     search_query: str,
     limit: int = -1,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get Series IDs. [Source: FRED]
+    </p>
 
 * **Parameters**
 

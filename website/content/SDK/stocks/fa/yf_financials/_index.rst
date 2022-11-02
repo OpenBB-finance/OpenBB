@@ -4,14 +4,13 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Get cashflow statement for company
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 stocks.fa.yf_financials(
@@ -19,9 +18,14 @@ stocks.fa.yf_financials(
     statement: str,
     ratios: bool = False,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get cashflow statement for company
+    </p>
 
 * **Parameters**
 
@@ -36,10 +40,55 @@ stocks.fa.yf_financials(
         Shows percentage change
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     pd.DataFrame
         Dataframe of Financial statement
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+stocks.fa.yf_financials(
+    symbol: str,
+    statement: str,
+    limit: int = 12,
+    ratios: bool = False,
+    plot: list = None,
+    export: str = '',
+    chart: bool = False,
+)
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Display tickers balance sheet, income statement or cash-flow
+    </p>
+
+* **Parameters**
+
+    symbol: *str*
+        Stock ticker symbol
+    statement: *str*
+        can be:
+            cash-flow
+            financials for Income
+            balance-sheet
+    limit: *int*
+    ratios: *bool*
+        Shows percentage change
+    plot: *list*
+        List of row labels to plot
+    export: *str*
+        Format to export data
+    chart: *bool*
+       Flag to display chart
+

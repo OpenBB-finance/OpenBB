@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Gets website of company from yfinance
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.fa.website(
     symbol: str,
+    chart: bool = False,
 ) -> str
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Gets website of company from yfinance
+    </p>
 
 * **Parameters**
 

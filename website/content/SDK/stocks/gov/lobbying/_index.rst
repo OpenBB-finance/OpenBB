@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Corporate lobbying details
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.gov.lobbying(
     symbol: str,
     limit: int = 10,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Corporate lobbying details
+    </p>
 
 * **Parameters**
 

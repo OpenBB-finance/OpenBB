@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Get balance sheets
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -17,8 +17,15 @@ stocks.fa.fmp_balance(
     quarterly: bool = False,
     ratios: bool = False,
     plot: bool = False,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get balance sheets
+    </p>
 
 * **Parameters**
 

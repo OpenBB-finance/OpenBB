@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Get similar companies from Finhub
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.ca.finnhub_peers(
     symbol: str,
+    chart: bool = False,
 ) -> List[str]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get similar companies from Finhub
+    </p>
 
 * **Parameters**
 

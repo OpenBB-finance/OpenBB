@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Gets zero-lagged exponential moving average (ZLEMA) for stock
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -15,8 +15,15 @@ common.ta.zlma(
     data: pandas.core.frame.DataFrame,
     length: int = 50,
     offset: int = 0,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Gets zero-lagged exponential moving average (ZLEMA) for stock
+    </p>
 
 * **Parameters**
 

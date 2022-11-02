@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Load a Excel file with views for Black Litterman model.
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 portfolio.po.load_bl_views(
     excel_file: str = '',
+    chart: bool = False,
 )
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Load a Excel file with views for Black Litterman model.
+    </p>
 
 * **Parameters**
 

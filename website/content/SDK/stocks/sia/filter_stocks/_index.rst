@@ -7,8 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Filter stocks based on country, sector, industry, market cap and exclude exchanges.
-    [Source: Finance Database]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -18,8 +17,16 @@ stocks.sia.filter_stocks(
     industry: str = None,
     marketcap: str = '',
     exclude_exchanges: bool = True,
+    chart: bool = False,
 ) -> list
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Filter stocks based on country, sector, industry, market cap and exclude exchanges.
+    [Source: Finance Database]
+    </p>
 
 * **Parameters**
 

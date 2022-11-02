@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Get income statements for company
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -17,8 +17,15 @@ stocks.fa.av_income(
     quarterly: bool = False,
     ratios: bool = False,
     plot: bool = False,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get income statements for company
+    </p>
 
 * **Parameters**
 

@@ -7,12 +7,18 @@
 .. raw:: html
 
     <h3>
-    > Scrape data for global bonds
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 economy.glbonds() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Scrape data for global bonds
+    </p>
 
 * **Returns**
 

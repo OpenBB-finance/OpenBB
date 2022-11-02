@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Get news from Finviz
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.dd.news(
     symbol: str,
+    chart: bool = False,
 ) -> List[Any]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get news from Finviz
+    </p>
 
 * **Parameters**
 

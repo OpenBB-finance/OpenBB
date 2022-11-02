@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Loads forex for two given symbols
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -18,8 +18,15 @@ forex.load(
     interval: str = '1day',
     start_date: str = '2021-11-02',
     source: str = 'YahooFinance',
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Loads forex for two given symbols
+    </p>
 
 * **Parameters**
 

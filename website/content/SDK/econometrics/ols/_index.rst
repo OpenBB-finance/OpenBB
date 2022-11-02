@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Performs an OLS regression on timeseries data. [Source: Statsmodels]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -16,8 +16,15 @@ econometrics.ols(
     data: Dict[str, pandas.core.frame.DataFrame],
     show_regression: bool = True,
     export: str = '',
+    chart: bool = False,
 ) -> Tuple[pandas.core.frame.DataFrame, Any, List[Any], Any]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Performs an OLS regression on timeseries data. [Source: Statsmodels]
+    </p>
 
 * **Parameters**
 

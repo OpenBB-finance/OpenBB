@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Gets profit factor
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 portfolio.profitfactor(
     portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    chart: bool = False,
 )
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Gets profit factor
+    </p>
 
 * **Parameters**
 

@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Print customers from ticker provided
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.dd.customer(
     symbol: str,
     limit: int = 50,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Print customers from ticker provided
+    </p>
 
 * **Parameters**
 

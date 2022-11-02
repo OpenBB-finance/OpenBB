@@ -7,12 +7,18 @@
 .. raw:: html
 
     <h3>
-    > Scrape data for global currencies
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 economy.currencies() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Scrape data for global currencies
+    </p>
 
 * **Returns**
 

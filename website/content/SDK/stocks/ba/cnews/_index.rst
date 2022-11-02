@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Get news from a company. [Source: Finnhub]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -15,8 +15,15 @@ stocks.ba.cnews(
     symbol: str,
     start_date: str = '2022-10-03',
     end_date: str = '2022-11-02',
+    chart: bool = False,
 ) -> List[Dict]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get news from a company. [Source: Finnhub]
+    </p>
 
 * **Parameters**
 

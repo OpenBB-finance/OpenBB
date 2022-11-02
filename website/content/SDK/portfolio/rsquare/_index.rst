@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Class method that retrieves R2 Score for portfolio and benchmark selected
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 portfolio.rsquare(
     portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Class method that retrieves R2 Score for portfolio and benchmark selected
+    </p>
 
 * **Parameters**
 

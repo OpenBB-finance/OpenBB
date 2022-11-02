@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Returns ARK orders in a Dataframe
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -15,8 +15,15 @@ stocks.disc.arkord(
     buys_only: bool = False,
     sells_only: bool = False,
     fund: str = '',
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Returns ARK orders in a Dataframe
+    </p>
 
 * **Parameters**
 

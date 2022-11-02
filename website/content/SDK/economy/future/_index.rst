@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Get futures data. [Source: Finviz]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -15,8 +15,15 @@ economy.future(
     future_type: str = 'Indices',
     sortby: str = 'ticker',
     ascend: bool = False,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get futures data. [Source: Finviz]
+    </p>
 
 * **Parameters**
 

@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Gets news. [Source: SeekingAlpha]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.disc.news(
     news_type: str = 'Top-News',
     limit: int = 5,
+    chart: bool = False,
 ) -> List
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Gets news. [Source: SeekingAlpha]
+    </p>
 
 * **Parameters**
 

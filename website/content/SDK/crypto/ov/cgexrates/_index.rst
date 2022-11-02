@@ -4,23 +4,27 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Get list of crypto, fiats, commodity exchange rates from CoinGecko API [Source: CoinGecko]
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.ov.cgexrates(
     sortby: str = 'Name',
     ascend: bool = False,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get list of crypto, fiats, commodity exchange rates from CoinGecko API [Source: CoinGecko]
+    </p>
 
 * **Parameters**
 
@@ -30,10 +34,47 @@ crypto.ov.cgexrates(
         Flag to sort data ascending
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     pandas.DataFrame
         Index, Name, Unit, Value, Type
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+crypto.ov.cgexrates(
+    sortby: str = 'Name',
+    ascend: bool = False,
+    limit: int = 15,
+    export: str = '',
+    chart: bool = False,
+) -> None
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Shows  list of crypto, fiats, commodity exchange rates. [Source: CoinGecko]
+    </p>
+
+* **Parameters**
+
+    limit: *int*
+        Number of records to display
+    sortby: *str*
+        Key by which to sort data
+    ascend: *bool*
+        Flag to sort data ascending
+    export : *str*
+        Export dataframe data to csv,json,xlsx file
+    chart: *bool*
+       Flag to display chart
+

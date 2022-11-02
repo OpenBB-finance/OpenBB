@@ -7,14 +7,21 @@
 .. raw:: html
 
     <h3>
-    > Get closing prices for a given ticker
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.options.closing(
     symbol: str,
+    chart: bool = False,
 ) -> pandas.core.series.Series
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get closing prices for a given ticker
+    </p>
 
 * **Parameters**
 

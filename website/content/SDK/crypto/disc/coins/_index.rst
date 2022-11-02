@@ -4,23 +4,27 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Get N coins from CoinGecko [Source: CoinGecko]
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 crypto.disc.coins(
     limit: int = 250,
     category: str = '', sortby='Symbol',
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get N coins from CoinGecko [Source: CoinGecko]
+    </p>
 
 * **Parameters**
 
@@ -30,10 +34,47 @@ crypto.disc.coins(
         Key to sort data
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     pandas.DataFrame
         N coins
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+crypto.disc.coins(
+    category: str,
+    limit: int = 250,
+    sortby: str = 'Symbol',
+    export: str = '',
+    chart: bool = False,
+) -> None
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Display top coins [Source: CoinGecko]
+    </p>
+
+* **Parameters**
+
+    category: *str*
+        If no category is passed it will search for all coins. (E.g., smart-contract-platform)
+    limit: *int*
+        Number of records to display
+    sortby: *str*
+        Key to sort data
+    export : *str*
+        Export dataframe data to csv,json,xlsx file
+    chart: *bool*
+       Flag to display chart
+

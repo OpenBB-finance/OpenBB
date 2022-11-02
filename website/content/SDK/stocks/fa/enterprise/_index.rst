@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Financial Modeling Prep ticker enterprise
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -15,8 +15,15 @@ stocks.fa.enterprise(
     symbol: str,
     limit: int = 5,
     quarterly: bool = False,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Financial Modeling Prep ticker enterprise
+    </p>
 
 * **Parameters**
 

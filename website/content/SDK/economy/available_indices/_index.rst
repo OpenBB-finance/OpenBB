@@ -7,12 +7,18 @@
 .. raw:: html
 
     <h3>
-    > Get available indices
-
-    Returns:
-        dict: *dictionary with available indices and respective detail*
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 economy.available_indices() -> dict
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get available indices
+
+    Returns:
+        dict: *dictionary with available indices and respective detail*
+    </p>

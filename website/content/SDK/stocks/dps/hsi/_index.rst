@@ -7,12 +7,18 @@
 .. raw:: html
 
     <h3>
-    > Returns a high short interest DataFrame
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.dps.hsi() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Returns a high short interest DataFrame
+    </p>
 
 * **Returns**
 

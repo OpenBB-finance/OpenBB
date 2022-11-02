@@ -7,12 +7,18 @@
 .. raw:: html
 
     <h3>
-    > Get available country codes for Bigmac index
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 economy.country_codes() -> List[str]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get available country codes for Bigmac index
+    </p>
 
 * **Returns**
 

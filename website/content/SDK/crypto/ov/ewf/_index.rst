@@ -4,35 +4,66 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Scrapes exchange withdrawal fees
+    > Getting data
+    </h3>
+
+{{< highlight python >}}
+crypto.ov.ewf() -> pandas.core.frame.DataFrame
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Scrapes exchange withdrawal fees
     [Source: https://withdrawalfees.com/]
 
     Parameters
     ----------
-    </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
-
-{{< highlight python >}}
-crypto.ov.ewf(
-    chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
-) -> pandas.core.frame.DataFrame
-{{< /highlight >}}
+    </p>
 
 * **Parameters**
 
     
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     pandas.DataFrame:
         Exchange, Coins, Lowest, Average, Median, Highest
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+crypto.ov.ewf(
+    export: str = '',
+    chart: bool = False,
+) -> None
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Exchange withdrawal fees
+    [Source: https://withdrawalfees.com/]
+    </p>
+
+* **Parameters**
+
+    export : *str*
+        Export dataframe data to csv,json,xlsx file
+    chart: *bool*
+       Flag to display chart
+

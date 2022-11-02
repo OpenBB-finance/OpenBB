@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Gets exponential moving average (EMA) for stock
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -15,8 +15,15 @@ common.ta.ema(
     data: pandas.core.frame.DataFrame,
     length: int = 50,
     offset: int = 0,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Gets exponential moving average (EMA) for stock
+    </p>
 
 * **Parameters**
 

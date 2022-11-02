@@ -7,15 +7,22 @@
 .. raw:: html
 
     <h3>
-    > Past IPOs dates. [Source: Finnhub]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.disc.pipo(
     num_days_behind: int = 5,
     start_date: Optional[str] = None,
+    chart: bool = False,
 )
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Past IPOs dates. [Source: Finnhub]
+    </p>
 
 * **Parameters**
 

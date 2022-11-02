@@ -4,14 +4,13 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Finds posts related to a specific search term in Reddit
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 stocks.ba.redditsent(
@@ -22,9 +21,14 @@ stocks.ba.redditsent(
     full_search: bool = True,
     subreddits: str = 'all',
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> Tuple[pandas.core.frame.DataFrame, list, float]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Finds posts related to a specific search term in Reddit
+    </p>
 
 * **Parameters**
 
@@ -44,8 +48,7 @@ stocks.ba.redditsent(
         Comma-separated list of subreddits
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
@@ -53,3 +56,59 @@ stocks.ba.redditsent(
         Dataframe of submissions related to the search term,
         List of polarity scores,
         Average polarity score
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+stocks.ba.redditsent(
+    symbol: str,
+    sortby: str = 'relevance',
+    limit: int = 100,
+    graphic: bool = False,
+    time_frame: str = 'week',
+    full_search: bool = True,
+    subreddits: str = 'all',
+    display: bool = False,
+    export: str = '',
+    external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
+    chart: bool = False,
+)
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Determine Reddit sentiment about a search term
+    </p>
+
+* **Parameters**
+
+    symbol: *str*
+        The ticker symbol being search for in Reddit
+    sortby: *str*
+        Type of search
+    limit: *str*
+        Number of posts to get at most
+    graphic: *bool*
+        Displays box and whisker plot
+    time_frame: *str*
+        Time frame for search
+    full_search: *bool*
+        Enable comprehensive search for ticker
+    subreddits: *str*
+        Comma-separated list of subreddits
+    display: *bool*
+        Enable printing of raw sentiment values for each post
+    export: *str*
+        Format to export data
+    external_axes: Optional[List[plt.Axes]]
+        If supplied, expect 1 external axis
+    chart: *bool*
+       Flag to display chart
+

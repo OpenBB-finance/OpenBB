@@ -7,12 +7,18 @@
 .. raw:: html
 
     <h3>
-    > Gets all etf names and symbols
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 etf.symbols() -> Tuple[List[str], List[str]]
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Gets all etf names and symbols
+    </p>
 
 * **Returns**
 

@@ -7,12 +7,18 @@
 .. raw:: html
 
     <h3>
-    > Get Fama French data
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.fa.fama_raw() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get Fama French data
+    </p>
 
 * **Returns**
 

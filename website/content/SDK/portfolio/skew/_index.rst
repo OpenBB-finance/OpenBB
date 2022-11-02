@@ -7,7 +7,20 @@
 .. raw:: html
 
     <h3>
-    > Class method that retrieves skewness for portfolio and benchmark selected
+    > Getting data
+    </h3>
+
+{{< highlight python >}}
+portfolio.skew(
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    chart: bool = False,
+) -> pandas.core.frame.DataFrame
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Class method that retrieves skewness for portfolio and benchmark selected
 
     portfolio: *Portfolio*
         Portfolio object with trades loaded
@@ -16,13 +29,7 @@
     -------
     pd.DataFrame
         DataFrame with skewness for portfolio and benchmark for different periods
-    </h3>
-
-{{< highlight python >}}
-portfolio.skew(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
-) -> pandas.core.frame.DataFrame
-{{< /highlight >}}
+    </p>
 
 * **Returns**
 

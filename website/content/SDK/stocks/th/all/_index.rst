@@ -4,34 +4,63 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Get all exchanges.
+    > Getting data
+    </h3>
+
+{{< highlight python >}}
+stocks.th.all() -> pandas.core.frame.DataFrame
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get all exchanges.
 
     Parameters
     ----------
-    </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
-
-{{< highlight python >}}
-stocks.th.all(
-    chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
-) -> pandas.core.frame.DataFrame
-{{< /highlight >}}
+    </p>
 
 * **Parameters**
 
     
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     pd.DataFrame
         All available exchanges
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+stocks.th.all()
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Display all exchanges.
+
+    Parameters
+    ----------
+    </p>
+
+* **Parameters**
+
+    
+    chart: *bool*
+       Flag to display chart
+

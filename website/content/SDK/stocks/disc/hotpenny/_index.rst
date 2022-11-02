@@ -7,12 +7,18 @@
 .. raw:: html
 
     <h3>
-    > Returns today hot penny stocks
+    > Getting data
     </h3>
 
 {{< highlight python >}}
 stocks.disc.hotpenny() -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Returns today hot penny stocks
+    </p>
 
 * **Returns**
 

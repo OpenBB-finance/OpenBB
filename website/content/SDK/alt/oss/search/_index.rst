@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Get repos sorted by stars or forks. Can be filtered by categories
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -15,8 +15,15 @@ alt.oss.search(
     sortby: str = 'stars',
     page: int = 1,
     categories: str = '',
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get repos sorted by stars or forks. Can be filtered by categories
+    </p>
 
 * **Parameters**
 

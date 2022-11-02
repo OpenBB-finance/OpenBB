@@ -4,14 +4,13 @@
 
 |
 
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
 .. raw:: html
 
     <h3>
-    > Get Series data. [Source: FRED]
+    > Getting data
     </h3>
-
-To obtain charts, make sure to add :python:`chart = True` as the last parameter.
-Use the :python:`external_axes` argument to provide axes of external figures.
 
 {{< highlight python >}}
 economy.fred_series(
@@ -19,9 +18,14 @@ economy.fred_series(
     start_date: str = None,
     end_date: str = None,
     chart: bool = False,
-    external_axes: Optional[List[plt.Axes]] = None,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Get Series data. [Source: FRED]
+    </p>
 
 * **Parameters**
 
@@ -33,10 +37,56 @@ economy.fred_series(
         End data to get from, format yyyy-mm-dd
     chart: *bool*
        Flag to display chart
-    external_axes: Optional[List[plt.Axes]]
-        List of external axes to include in plot
+
 
 * **Returns**
 
     pd.DataFrame
         Series data
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+{{< highlight python >}}
+economy.fred_series(
+    series_ids: List[str],
+    start_date: str = None,
+    end_date: str = None,
+    limit: int = 10,
+    raw: bool = False,
+    export: str = '',
+    external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
+    chart: bool = False,
+)
+{{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]
+    </p>
+
+* **Parameters**
+
+    series_ids : List[str]
+        FRED Series ID from https://fred.stlouisfed.org. For multiple series use: series1,series2,series3
+    start_date : *str*
+        Starting date (YYYY-MM-DD) of data
+    end_date : *str*
+        Ending date (YYYY-MM-DD) of data
+    limit : *int*
+        Number of data points to display.
+    raw : *bool*
+        Output only raw data
+    export : *str*
+        Export data to csv,json,xlsx or png,jpg,pdf,svg file
+    external_axes : Optional[List[plt.Axes]], optional
+        External axes (1 axis is expected in the list), by default None
+    chart: *bool*
+       Flag to display chart
+

@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Gets due diligence posts from list of subreddits [Source: reddit]
+    > Getting data
     </h3>
 
 {{< highlight python >}}
@@ -16,8 +16,15 @@ stocks.ba.getdd(
     limit: int = 5,
     n_days: int = 3,
     show_all_flairs: bool = False,
+    chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
+
+.. raw:: html
+
+    <p>
+    Gets due diligence posts from list of subreddits [Source: reddit]
+    </p>
 
 * **Parameters**
 
