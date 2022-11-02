@@ -7,6 +7,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal.stocks import stocks_controller
+from tests.test_helpers import no_dfs
 
 # pylint: disable=E1101
 # pylint: disable=W0603
@@ -463,7 +464,7 @@ def test_call_func(
 
         getattr(controller, tested_func)(other_args)
 
-        if called_args or called_kwargs:
+        if called_args or called_kwargs and no_dfs(called_args, called_kwargs):
             mock.assert_called_once_with(*called_args, **called_kwargs)
         else:
             mock.assert_called_once()
