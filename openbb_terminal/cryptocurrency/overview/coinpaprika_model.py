@@ -119,7 +119,6 @@ def get_list_of_coins() -> pd.DataFrame:
     coins = session.make_request(session.ENDPOINTS["coins"])
     df = pd.DataFrame(coins)
     df = df[df["is_active"]]
-    print(df)
     return df[["rank", "id", "name", "symbol", "type"]]
 
 
@@ -274,7 +273,7 @@ def get_coins_market_info(
     ]
     df = _get_coins_info_helper(symbols=symbols)[cols].sort_values(by="rank")
     if sortby == "rank":
-        df = df.sort_values(by=sortby, ascending=False if ascend else True)
+        df = df.sort_values(by=sortby, ascending=not ascend)
     else:
         df = df.sort_values(by=sortby, ascending=ascend)
     return df
@@ -338,7 +337,7 @@ def get_list_of_exchanges(
     )
     df.columns = [x.replace("reported_", "") for x in df.columns]
     if sortby == "Rank":
-        df = df.sort_values(by=sortby, ascending=False if ascend else True)
+        df = df.sort_values(by=sortby, ascending=not ascend)
     else:
         df = df.sort_values(by=sortby, ascending=ascend)
     return df
