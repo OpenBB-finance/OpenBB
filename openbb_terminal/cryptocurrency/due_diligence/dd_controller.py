@@ -130,6 +130,8 @@ class DueDiligenceController(CryptoBaseController):
         self.messari_timeseries = []
         df_mt = messari_model.get_available_timeseries()
         self.ccxt_exchanges = ccxt_model.get_exchanges()
+        self.binance_currencies = ccxt_model.get_binance_currencies()
+        self.coinbase_currencies = {"USD", "USDC", "GBP", "USDT", "EUR"}
 
         if not df_mt.empty:
             self.messari_timeseries = df_mt.index.to_list()
@@ -137,8 +139,10 @@ class DueDiligenceController(CryptoBaseController):
             choices: dict = {c: {} for c in self.controller_choices}
             choices["ob"] = {c: {} for c in self.ccxt_exchanges}
             choices["ob"]["-e"] = {c: {} for c in self.ccxt_exchanges}
+            choices["ob"]["--vs"] = {c: {} for c in self.binance_currencies}
             choices["trades"] = {c: {} for c in self.ccxt_exchanges}
             choices["trades"]["-e"] = {c: {} for c in self.ccxt_exchanges}
+            choices["trades"]["--vs"] = {c: {} for c in self.binance_currencies}
             choices["active"]["-i"] = {
                 c: None for c in glassnode_model.INTERVALS_ACTIVE_ADDRESSES
             }
@@ -156,6 +160,7 @@ class DueDiligenceController(CryptoBaseController):
             choices["eb"]["-p"] = {}
             choices["oi"]["--interval"] = {c: {} for c in coinglass_model.INTERVALS}
             choices["oi"]["-i"] = "--interval"
+            choices["stats"]["--vs"] = {c: {} for c in self.coinbase_currencies}
             choices["atl"]["--vs"] = {c: {} for c in FILTERS_VS_USD_BTC}
             choices["ath"]["--vs"] = {c: {} for c in FILTERS_VS_USD_BTC}
             choices["mkt"] = {
@@ -1834,11 +1839,15 @@ class DueDiligenceController(CryptoBaseController):
         parser.add_argument(
             "-p",
             "--project",
-            required=True,
+            required="-h" not in other_args,
             choices=tokenterminal_model.get_project_ids(),
             dest="project",
             help="Choose project of interest",
         )
+
+        if other_args and not other_args[0][0] == "-":
+            other_args.insert(0, "-p")
+
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
@@ -1862,12 +1871,14 @@ class DueDiligenceController(CryptoBaseController):
             "-p",
             "--project",
             choices=tokenterminal_model.get_project_ids(),
-            required=True,
+            required="-h" not in other_args,
             dest="project",
             help="Choose project of interest",
         )
+
         if other_args and not other_args[0][0] == "-":
             other_args.insert(0, "-p")
+
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )

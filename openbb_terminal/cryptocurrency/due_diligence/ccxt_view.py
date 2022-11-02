@@ -32,7 +32,7 @@ def display_order_book(
         exchange id
     symbol : str
         coin symbol
-    to_symbol : str
+    vs : str
         currency to compare coin against
     export : str
         Export dataframe data to csv,json,xlsx file
