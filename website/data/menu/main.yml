@@ -848,8 +848,6 @@ main:
             ref: /terminal/funds/info
           - name: load
             ref: /terminal/funds/load
-          - name: overview
-            ref: /terminal/funds/overview
           - name: plot
             ref: /terminal/funds/plot
           - name: search
@@ -2397,8 +2395,6 @@ main:
         sub:
           - name: info
             ref: /SDK/funds/info
-          - name: overview
-            ref: /SDK/funds/overview
           - name: search
             ref: /SDK/funds/search
       - name: futures
