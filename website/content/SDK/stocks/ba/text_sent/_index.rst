@@ -26,4 +26,4 @@ stocks.ba.text_sent(
 
     float
         A number in the range [-1, 1] representing sentiment
-    
+   

@@ -38,4 +38,4 @@ common.ta.aroon(
 
     pd.DataFrame
         DataFrame with aroon indicator
-    
+   

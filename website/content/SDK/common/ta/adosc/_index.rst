@@ -38,4 +38,4 @@ common.ta.adosc(
 
     pd.DataFrame
         Dataframe with technical indicator
-    
+   

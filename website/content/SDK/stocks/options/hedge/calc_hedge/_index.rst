@@ -41,4 +41,4 @@ stocks.options.hedge.calc_hedge(
     option B weight: *float*
     portfolio weight: *float*
     is_singular: *boolean*
-    
+   

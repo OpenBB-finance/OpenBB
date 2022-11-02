@@ -31,4 +31,4 @@ portfolio.trackerr(
         DataFrame of tracking errors during different time windows
     pd.Series
         Series of rolling tracking error
-    
+   

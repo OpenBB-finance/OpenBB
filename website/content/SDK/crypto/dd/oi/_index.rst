@@ -33,4 +33,4 @@ crypto.dd.oi(
 
     pd.DataFrame
         open interest by exchange and price
-    
+   

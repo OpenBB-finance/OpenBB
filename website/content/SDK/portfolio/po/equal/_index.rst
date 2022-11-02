@@ -63,4 +63,4 @@ portfolio.po.equal(
 
     dict
         Dictionary of weights where keys are the tickers
-    
+   

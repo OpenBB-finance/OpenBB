@@ -29,4 +29,4 @@ stocks.disc.ipo(
 
     pd.DataFrame
         Get dataframe with economic calendar events
-    
+   

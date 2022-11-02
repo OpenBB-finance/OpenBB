@@ -52,4 +52,4 @@ crypto.dd.events(
     pandas.DataFrame
         Events found for given coin
         Columns: id, date , date_to, name, description, is_conference, link, proof_image_link
-    
+   

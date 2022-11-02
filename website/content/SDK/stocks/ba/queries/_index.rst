@@ -29,4 +29,4 @@ stocks.ba.queries(
 
     dict : {'top': pd.DataFrame or None, 'rising': pd.DataFrame or None}
 
-    
+   

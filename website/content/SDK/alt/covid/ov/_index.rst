@@ -25,4 +25,4 @@ alt.covid.ov(
         Country to get data for
     limit: *int*
         Number of raw data to show
-    
+   

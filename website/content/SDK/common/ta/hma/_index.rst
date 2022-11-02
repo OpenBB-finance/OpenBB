@@ -32,4 +32,4 @@ common.ta.hma(
 
     df_ta: *pd.DataFrame*
         Dataframe containing prices and HMA
-    
+   

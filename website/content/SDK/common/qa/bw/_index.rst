@@ -35,4 +35,4 @@ common.qa.bw(
         Flag to indicate yearly accumulation
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    
+   

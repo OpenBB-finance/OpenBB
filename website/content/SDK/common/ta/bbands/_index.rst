@@ -38,4 +38,4 @@ common.ta.bbands(
 
     df_ta: *pd.DataFrame*
         Dataframe of bollinger band data
-    
+   

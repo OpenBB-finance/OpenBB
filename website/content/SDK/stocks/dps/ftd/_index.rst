@@ -38,4 +38,4 @@ stocks.dps.ftd(
 
     pd.DataFrame
         Fail to deliver data
-    
+   

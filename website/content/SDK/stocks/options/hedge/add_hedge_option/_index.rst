@@ -42,4 +42,4 @@ stocks.options.hedge.add_hedge_option(
     delta: *float*
     gamma: *float*
     portfolio: *float*
-    
+   

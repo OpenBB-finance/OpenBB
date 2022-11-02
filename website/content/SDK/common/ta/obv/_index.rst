@@ -29,4 +29,4 @@ common.ta.obv(
 
     pd.DataFrame
         Dataframe with technical indicator
-    
+   

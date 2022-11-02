@@ -38,4 +38,4 @@ stocks.fa.fmp_income(
 
     pd.DataFrame
         Dataframe of the income statements
-    
+   

@@ -35,4 +35,4 @@ stocks.sia.cps(
 
     dict
         Dictionary of sectors and number of companies in a specific country
-    
+   

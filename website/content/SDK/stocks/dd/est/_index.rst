@@ -30,4 +30,4 @@ stocks.dd.est(
         Quarter earnings estimates
     df_quarter_revenues : *pd.DataFrame*
         Quarter revenues estimates
-    
+   

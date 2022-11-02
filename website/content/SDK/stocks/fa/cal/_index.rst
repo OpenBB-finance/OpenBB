@@ -26,4 +26,4 @@ stocks.fa.cal(
 
     pd.DataFrame
         Dataframe of calendar earnings
-    
+   

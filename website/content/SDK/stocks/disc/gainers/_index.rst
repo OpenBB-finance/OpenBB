@@ -18,4 +18,4 @@ stocks.disc.gainers() -> pandas.core.frame.DataFrame
 
     pd.DataFrame
         Stock Gainers
-    
+   

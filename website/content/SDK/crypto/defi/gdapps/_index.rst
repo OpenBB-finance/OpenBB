@@ -30,4 +30,4 @@ crypto.defi.gdapps(
 
     pd.DataFrame
         Information about DeFi protocols grouped by chain
-    
+   

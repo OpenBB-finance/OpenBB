@@ -28,4 +28,4 @@ econometrics.dwat(
 * **Returns**
 
     Test statistic of the Durbin Watson test.
-    
+   

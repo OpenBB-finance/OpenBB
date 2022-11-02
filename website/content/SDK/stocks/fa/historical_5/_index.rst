@@ -26,4 +26,4 @@ stocks.fa.historical_5(
 
     df: *pd.DataFrame*
         Historical data
-    
+   

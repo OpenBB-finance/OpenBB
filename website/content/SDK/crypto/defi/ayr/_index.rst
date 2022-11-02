@@ -23,4 +23,4 @@ crypto.defi.ayr(
 
     pd.DataFrame
         Dataframe containing historical data
-    
+   

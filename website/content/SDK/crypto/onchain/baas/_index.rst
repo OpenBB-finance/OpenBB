@@ -42,4 +42,4 @@ crypto.onchain.baas(
 
     pd.DataFrame
        Average bid and ask prices, spread for given crypto pair for chosen time period
-    
+   

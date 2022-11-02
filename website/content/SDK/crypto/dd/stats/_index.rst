@@ -30,4 +30,4 @@ crypto.dd.stats(
 
     pd.DataFrame
         24h stats for chosen trading pair
-    
+   

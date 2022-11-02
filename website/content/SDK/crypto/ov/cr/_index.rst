@@ -28,4 +28,4 @@ crypto.ov.cr(
 * **Returns**
 
     pandas.DataFrame: *crypto interest rates per platform*
-    
+   

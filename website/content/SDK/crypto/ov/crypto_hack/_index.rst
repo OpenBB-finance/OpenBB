@@ -27,4 +27,4 @@ crypto.ov.crypto_hack(
 
     pandas.DataFrame:
         Hacks with columns {Platform,Date,Amount [$],Audited,URL}
-    
+   

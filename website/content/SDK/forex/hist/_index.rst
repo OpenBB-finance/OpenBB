@@ -38,4 +38,4 @@ forex.hist(
 
     pd.DataFrame
         Historical data for forex pair
-    
+   

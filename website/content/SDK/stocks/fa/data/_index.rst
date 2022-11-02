@@ -26,4 +26,4 @@ stocks.fa.data(
 
     pd.DataFrame
         DataFrame of fundamental data
-    
+   

@@ -35,4 +35,4 @@ stocks.ba.popular(
 
     pd.DataFrame
         DataFrame of top tickers from supplied subreddits
-    
+   

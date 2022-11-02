@@ -29,4 +29,4 @@ crypto.defi.sratio(
 
     pd.DataFrame
         historical staking ratio
-    
+   

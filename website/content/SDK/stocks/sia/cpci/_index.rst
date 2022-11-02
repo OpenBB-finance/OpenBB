@@ -35,4 +35,4 @@ stocks.sia.cpci(
 
     dict
         Dictionary of countries and number of companies in a specific sector
-    
+   

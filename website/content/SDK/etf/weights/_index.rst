@@ -29,4 +29,4 @@ etf.weights(
 
     Dict
         Dictionary with sector weightings allocation
-    
+   

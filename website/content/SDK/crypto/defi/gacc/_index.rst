@@ -28,4 +28,4 @@ crypto.defi.gacc(
 
     pd.DataFrame
         historical data of accounts growth
-    
+   

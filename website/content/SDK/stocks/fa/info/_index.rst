@@ -26,4 +26,4 @@ stocks.fa.info(
 
     pd.DataFrame
         DataFrame of yfinance information
-    
+   

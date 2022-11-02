@@ -38,4 +38,4 @@ stocks.options.hist_ce(
 
     historical : *pd.Dataframe*
         Historic information for an option
-    
+   

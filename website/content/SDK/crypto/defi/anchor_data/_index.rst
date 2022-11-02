@@ -31,4 +31,4 @@ crypto.defi.anchor_data(
         - pandas.DataFrame: *Earnings over time in UST*
         - pandas.DataFrame: *History of transactions*
         - str: *             Overall statistics*
-    
+   

@@ -34,4 +34,4 @@ crypto.dd.tk(
         Metric Value tokenomics
     pd.DataFrame
         Circulating supply overtime
-    
+   

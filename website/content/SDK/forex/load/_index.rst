@@ -41,4 +41,4 @@ forex.load(
 
     pd.DataFrame
         The loaded data
-    
+   

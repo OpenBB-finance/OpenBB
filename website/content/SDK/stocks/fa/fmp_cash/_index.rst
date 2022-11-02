@@ -38,4 +38,4 @@ stocks.fa.fmp_cash(
 
     pd.DataFrame
         Dataframe of company cash flow
-    
+   

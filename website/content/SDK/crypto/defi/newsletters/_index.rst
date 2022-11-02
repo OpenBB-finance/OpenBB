@@ -23,4 +23,4 @@ crypto.defi.newsletters(
 
     pd.DataFrame
         DataFrame with recent news from most popular DeFi related newsletters.
-    
+   

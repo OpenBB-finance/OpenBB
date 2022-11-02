@@ -32,4 +32,4 @@ crypto.dd.candles(
 
     pd.DataFrame
         Candles for chosen trading pair.
-    
+   

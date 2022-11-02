@@ -29,4 +29,4 @@ stocks.fa.shrs(
 
     pd.DataFrame
         Major holders
-    
+   

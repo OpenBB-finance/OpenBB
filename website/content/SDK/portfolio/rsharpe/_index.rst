@@ -36,4 +36,4 @@ portfolio.rsharpe(
 
     pd.DataFrame
         Rolling sharpe ratio DataFrame
-    
+   

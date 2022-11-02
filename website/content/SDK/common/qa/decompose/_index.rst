@@ -33,4 +33,4 @@ common.qa.decompose(
         Filtered cycle
     trend: *pd.DataFrame*
         Filtered Trend
-    
+   

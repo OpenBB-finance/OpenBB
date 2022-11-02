@@ -32,4 +32,4 @@ stocks.ba.messages(
 
     pd.DataFrame
         Dataframe of messages
-    
+   

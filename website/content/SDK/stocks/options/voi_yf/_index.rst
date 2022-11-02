@@ -26,4 +26,4 @@ stocks.options.voi_yf(
         Stock ticker symbol
     expiry: *str*
         Option expiration
-    
+   

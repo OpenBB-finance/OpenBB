@@ -26,4 +26,4 @@ stocks.fa.sust(
 
     pd.DataFrame
         Dataframe of sustainability metrics
-    
+   

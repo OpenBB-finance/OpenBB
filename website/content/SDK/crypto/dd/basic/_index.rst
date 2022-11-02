@@ -29,4 +29,4 @@ crypto.dd.basic(
 
     pd.DataFrame
         Metric, Value
-    
+   

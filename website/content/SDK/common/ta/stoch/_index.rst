@@ -43,4 +43,4 @@ common.ta.stoch(
 
     pd.DataFrame
         Dataframe of technical indicator
-    
+   

@@ -31,4 +31,4 @@ common.ta.vwap(
 
     df_vwap: *pd.DataFrame*
         Dataframe with VWAP data
-    
+   

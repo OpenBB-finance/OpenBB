@@ -24,16 +24,8 @@ portfolio.skew(
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-es skewness for portfolio and benchmark selected
-
-    portfolio: *Portfolio*
-        Portfolio object with trades loaded
-
-    
 * **Returns**
 
     pd.DataFrame
         DataFrame with skewness for portfolio and benchmark for different periods
-    
+   

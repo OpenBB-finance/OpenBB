@@ -26,4 +26,4 @@ crypto.dd.tokenomics(
 
     pandas.DataFrame
         Metric, Value with tokenomics
-    
+   

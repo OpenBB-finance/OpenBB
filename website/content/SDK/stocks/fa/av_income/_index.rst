@@ -38,4 +38,4 @@ stocks.fa.av_income(
 
     pd.DataFrame
         DataFrame of income statements
-    
+   

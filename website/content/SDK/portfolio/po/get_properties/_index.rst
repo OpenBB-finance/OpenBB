@@ -18,4 +18,4 @@ portfolio.po.get_properties() -> List[str]
 
     List[str]:
         List of available properties to use on property optimization.
-    
+   

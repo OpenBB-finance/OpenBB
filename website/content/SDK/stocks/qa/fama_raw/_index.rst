@@ -18,4 +18,4 @@ stocks.qa.fama_raw() -> pandas.core.frame.DataFrame
 
     fama : *pd.DataFrame*
         A data with fama french model information
-    
+   

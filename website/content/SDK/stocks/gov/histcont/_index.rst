@@ -29,4 +29,4 @@ stocks.gov.histcont(
 
     pd.DataFrame
         Historical quarterly government contracts
-    
+   

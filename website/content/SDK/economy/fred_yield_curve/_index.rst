@@ -31,4 +31,4 @@ economy.fred_yield_curve(
         Dataframe of yields and maturities
     str
         Date for which the yield curve is obtained
-    
+   

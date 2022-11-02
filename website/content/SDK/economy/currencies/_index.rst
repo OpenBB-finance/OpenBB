@@ -18,4 +18,4 @@ economy.currencies() -> pandas.core.frame.DataFrame
 
     currencies: *pd.DataFrame*
         Dataframe containing name, price, net change and percent change
-    
+   

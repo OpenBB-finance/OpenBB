@@ -30,4 +30,4 @@ stocks.ba.spac(
         Dictionary of tickers and counts
     int :
         Number of posts found.
-    
+   

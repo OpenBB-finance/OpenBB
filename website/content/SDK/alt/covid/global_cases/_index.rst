@@ -26,4 +26,4 @@ alt.covid.global_cases(
 
     pd.DataFrame
         Dataframe of historical cases
-    
+   

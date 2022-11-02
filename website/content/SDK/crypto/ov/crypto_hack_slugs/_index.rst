@@ -19,4 +19,4 @@ crypto.ov.crypto_hack_slugs() -> List[str]
 
     List[str]:
         List with slugs
-    
+   

@@ -30,4 +30,4 @@ crypto.disc.top_nfts(
 
     pd.DataFrame
         NFTs Columns: Name, Protocols, Floor Price [$], Avg Price [$], Market Cap [$], Volume [$]
-    
+   

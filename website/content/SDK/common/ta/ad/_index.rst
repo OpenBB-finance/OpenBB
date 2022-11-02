@@ -32,4 +32,4 @@ common.ta.ad(
 
     pd.DataFrame
         Dataframe with technical indicator
-    
+   

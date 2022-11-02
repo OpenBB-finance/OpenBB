@@ -32,4 +32,4 @@ stocks.gov.qtrcontracts(
 
     pd.DataFrame
         Dataframe with tickers and total amount if total selected.
-    
+   

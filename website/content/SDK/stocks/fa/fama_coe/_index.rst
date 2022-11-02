@@ -26,4 +26,4 @@ stocks.fa.fama_coe(
 
     coef : *float*
         The stock's Fama French coefficient
-    
+   

@@ -31,4 +31,4 @@ common.qa.normality(
 
     pd.DataFrame
         Dataframe containing statistics of normality
-    
+   

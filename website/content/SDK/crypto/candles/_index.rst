@@ -34,4 +34,4 @@ crypto.candles(
         External axes (1 axis is expected in the list), by default None
     yscale : *str*
         Scaling for y axis.  Either linear or log
-    
+   

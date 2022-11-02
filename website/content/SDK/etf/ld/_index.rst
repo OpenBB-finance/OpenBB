@@ -30,4 +30,4 @@ etf.ld(
 
     data : *Dict*
         Dictionary with ETFs that match a certain description
-    
+   

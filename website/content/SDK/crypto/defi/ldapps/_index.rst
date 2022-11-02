@@ -42,4 +42,4 @@ crypto.defi.ldapps(
 
     pd.DataFrame
         Information about DeFi protocols
-    
+   

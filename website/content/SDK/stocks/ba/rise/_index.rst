@@ -29,4 +29,4 @@ stocks.ba.rise(
 
     pd.DataFrame
         Dataframe containing rising related queries
-    
+   

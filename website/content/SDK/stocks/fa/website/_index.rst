@@ -25,4 +25,4 @@ stocks.fa.website(
 * **Returns**
 
     str
-        Company website
+        Company websit

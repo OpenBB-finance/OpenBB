@@ -36,4 +36,4 @@ economy.spread(
     pd.DataFrame
         Spread matrix.
 
-    
+   

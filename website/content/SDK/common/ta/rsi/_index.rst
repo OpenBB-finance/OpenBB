@@ -38,4 +38,4 @@ common.ta.rsi(
 
     pd.DataFrame
         Dataframe of technical indicator
-    
+   

@@ -31,4 +31,4 @@ common.ta.cg(
 
     pd.DataFrame
         Dataframe of technical indicator
-    
+   

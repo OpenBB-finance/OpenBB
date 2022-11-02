@@ -27,4 +27,4 @@ stocks.dps.sidtc(
 
     pd.DataFrame
         Short interest and days to cover data
-    
+   

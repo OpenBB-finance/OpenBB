@@ -26,4 +26,4 @@ stocks.ins.lins(
 
     pd.DataFrame
         Latest insider trading activity
-    
+   

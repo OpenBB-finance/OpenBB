@@ -27,4 +27,4 @@ stocks.process_candle(
     DataFrame
         A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume,
         date_id, OC-High, OC-Low.
-    
+   

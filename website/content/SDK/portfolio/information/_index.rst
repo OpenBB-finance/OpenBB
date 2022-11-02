@@ -26,4 +26,4 @@ portfolio.information(
 
     pd.DataFrame
         DataFrame of the information ratio during different time periods
-    
+   

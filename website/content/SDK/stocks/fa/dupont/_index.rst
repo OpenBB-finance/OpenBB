@@ -26,4 +26,4 @@ stocks.fa.dupont(
 
     dupont : *pd.DataFrame*
         The dupont ratio breakdown
-    
+   

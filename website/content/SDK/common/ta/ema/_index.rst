@@ -32,4 +32,4 @@ common.ta.ema(
 
     pd.DataFrame
         Dataframe containing prices and EMA
-    
+   

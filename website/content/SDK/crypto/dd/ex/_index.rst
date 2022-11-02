@@ -37,4 +37,4 @@ crypto.dd.ex(
     pandas.DataFrame
         All exchanges for given coin
         Columns: id, name, adjusted_volume_24h_share, fiats
-    
+   

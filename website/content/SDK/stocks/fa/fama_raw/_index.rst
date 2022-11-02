@@ -18,4 +18,4 @@ stocks.fa.fama_raw() -> pandas.core.frame.DataFrame
 
     df : *pd.DataFrame*
         Fama French data
-    
+   

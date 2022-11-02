@@ -29,4 +29,4 @@ stocks.fa.fraud(
 
     metrics : *pd.DataFrame*
         The fraud ratios
-    
+   

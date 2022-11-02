@@ -29,4 +29,4 @@ economy.gdpc(
 
     pd.DataFrame
         DataFrame of GDP per Capita
-    
+   

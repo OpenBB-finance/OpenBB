@@ -38,4 +38,4 @@ stocks.fa.yf_financials(
 
     pd.DataFrame
         Dataframe of Financial statement
-    
+   

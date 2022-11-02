@@ -49,4 +49,4 @@ economy.macro(
         A dictionary containing the units of each country's parameter (e.g. EUR)
     str
         Denomination which can be Trillions, Billions, Millions, Thousands
-    
+   

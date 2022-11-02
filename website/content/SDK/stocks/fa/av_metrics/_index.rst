@@ -26,4 +26,4 @@ stocks.fa.av_metrics(
 
     pd.DataFrame
         Dataframe of key metrics
-    
+   

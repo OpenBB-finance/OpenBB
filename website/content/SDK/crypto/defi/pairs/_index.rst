@@ -44,4 +44,4 @@ crypto.defi.pairs(
 
     pd.DataFrame
         Lastly added pairs on Uniswap DEX.
-    
+   

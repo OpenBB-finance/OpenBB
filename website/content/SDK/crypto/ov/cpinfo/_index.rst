@@ -36,4 +36,4 @@ crypto.ov.cpinfo(
     pandas.DataFrame
         rank, name, symbol, price, volume_24h, circulating_supply, total_supply,
         max_supply, market_cap, beta_value, ath_price,
-    
+   

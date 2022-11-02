@@ -29,4 +29,4 @@ stocks.options.pcr(
         Window to consider, by default 30
     start_date: str, optional
         Start date to plot, by default last 366 days
-    
+   

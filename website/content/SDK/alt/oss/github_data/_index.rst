@@ -27,4 +27,4 @@ alt.oss.github_data(
 * **Returns**
 
     dict with data
-    
+   

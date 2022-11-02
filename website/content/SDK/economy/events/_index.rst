@@ -39,4 +39,4 @@ economy.events(
 
     Tuple[pd.DataFrame, str]
         Economic calendar Dataframe and detail string about country/time zone.
-    
+   

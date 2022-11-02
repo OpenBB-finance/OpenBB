@@ -34,4 +34,4 @@ portfolio.jensens(
         DataFrame of jensens's alpha during different time windows
     pd.Series
         Series of jensens's alpha data
-    
+   

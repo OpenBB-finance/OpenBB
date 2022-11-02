@@ -33,4 +33,4 @@ stocks.ba.watchlist(
         Dictionary of tickers and counts
     int
         Count of how many posts were analyzed
-    
+   

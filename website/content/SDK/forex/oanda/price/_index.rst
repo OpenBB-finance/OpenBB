@@ -32,4 +32,4 @@ forex.oanda.price(
 
     Union[Dict[str, str], bool]
         The currency pair price or False
-    
+   

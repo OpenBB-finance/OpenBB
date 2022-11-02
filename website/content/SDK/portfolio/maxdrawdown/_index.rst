@@ -26,4 +26,4 @@ portfolio.maxdrawdown(
 
     pd.DataFrame
         DataFrame with maximum drawdown for portfolio and benchmark for different periods
-    
+   

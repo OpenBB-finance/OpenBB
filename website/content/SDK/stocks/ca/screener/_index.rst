@@ -31,4 +31,4 @@ stocks.ca.screener(
 
     pd.DataFrame
         Dataframe with overview, valuation, financial, ownership, performance or technical
-    
+   

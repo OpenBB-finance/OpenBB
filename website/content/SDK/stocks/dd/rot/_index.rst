@@ -29,4 +29,4 @@ stocks.dd.rot(
 
     pd.DataFrame
         Get dataframe with ratings
-    
+   

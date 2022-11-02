@@ -32,4 +32,4 @@ common.qa.skew(
 
     data_skew : *pd.DataFrame*
         Dataframe of rolling skew
-    
+   

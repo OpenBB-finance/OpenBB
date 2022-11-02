@@ -44,4 +44,4 @@ common.ta.atr(
 
     pd.DataFrame
         Dataframe of atr
-    
+   

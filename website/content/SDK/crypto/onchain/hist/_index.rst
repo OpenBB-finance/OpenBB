@@ -34,4 +34,4 @@ crypto.onchain.hist(
 
     pd.DataFrame:
         DataFrame with balance historical transactions (last 100)
-    
+   

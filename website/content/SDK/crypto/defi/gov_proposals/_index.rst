@@ -38,4 +38,4 @@ crypto.defi.gov_proposals(
 
     pd.DataFrame
         Terra blockchain governance proposals list
-    
+   

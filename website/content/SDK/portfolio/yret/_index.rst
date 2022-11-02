@@ -26,4 +26,4 @@ portfolio.yret(
         Portfolio object with trades loaded
     window : *str*
         interval to compare cumulative returns and benchmark
-    
+   

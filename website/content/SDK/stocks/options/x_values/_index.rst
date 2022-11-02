@@ -17,7 +17,3 @@ stocks.options.x_values(
     int]],
 ) -> List[float]
 {{< /highlight >}}
-
-* **Parameters**
-
- values that need to be tested

@@ -33,4 +33,4 @@ keys.eodhd(
 * **Returns**
 
     status: *str*
-    
+   

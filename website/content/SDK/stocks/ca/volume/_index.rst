@@ -28,4 +28,4 @@ stocks.ca.volume(
         finnhub_peers(), finviz_peers(), polygon_peers().
     start_date : str, optional
         Start date of comparison, by default 1 year ago
-    
+   

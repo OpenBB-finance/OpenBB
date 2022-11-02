@@ -26,4 +26,4 @@ portfolio.rsquare(
 
     pd.DataFrame
         DataFrame with R2 Score between portfolio and benchmark for different periods
-    
+   

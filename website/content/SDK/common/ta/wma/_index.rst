@@ -32,4 +32,4 @@ common.ta.wma(
 
     df_ta: *pd.DataFrame*
         Dataframe containing prices and WMA
-    
+   

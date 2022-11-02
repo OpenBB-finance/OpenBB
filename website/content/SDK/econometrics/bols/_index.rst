@@ -33,4 +33,4 @@ econometrics.bols(
 
     The dataset used, the dependent variable, the independent variable and
     the Between OLS model.
-    
+   

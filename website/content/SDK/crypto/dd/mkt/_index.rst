@@ -44,4 +44,4 @@ crypto.dd.mkt(
 
     pandas.DataFrame
         All markets for given coin and currency
-    
+   

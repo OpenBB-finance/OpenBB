@@ -35,4 +35,4 @@ common.qa.unitroot(
 
     pd.DataFrame
         Dataframe with results of ADF test and KPSS test
-    
+   

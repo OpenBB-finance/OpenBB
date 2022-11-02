@@ -26,4 +26,4 @@ stocks.dd.rating(
 
     pd.DataFrame
         Rating data
-    
+   

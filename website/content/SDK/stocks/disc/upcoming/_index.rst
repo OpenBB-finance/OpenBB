@@ -26,4 +26,4 @@ stocks.disc.upcoming(
 
     DataFrame
         Upcoming earnings DataFrame
-    
+   

@@ -35,4 +35,4 @@ common.qa.sharpe(
 
     sharpe: *pd.DataFrame*
         sharpe ratio
-    
+   

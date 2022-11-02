@@ -47,4 +47,4 @@ crypto.defi.vaults(
 
     pd.DataFrame
         Top 100 DeFi Vaults for given chain/protocol sorted by APY.
-    
+   

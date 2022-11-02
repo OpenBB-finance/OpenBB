@@ -23,4 +23,4 @@ stocks.ba.snews(
 
     symbol : *str*
         Ticker of company
-    
+   

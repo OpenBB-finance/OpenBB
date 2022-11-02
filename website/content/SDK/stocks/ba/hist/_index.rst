@@ -41,4 +41,4 @@ stocks.ba.hist(
 
     pd.DataFrame
         Dataframe of historical sentiment
-    
+   

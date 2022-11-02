@@ -15,7 +15,3 @@ crypto.dd.check_valid_binance_str(
     symbol: str,
 ) -> str
 {{< /highlight >}}
-
-* **Parameters**
-
-ined binance. [Source: Binance]

@@ -78,4 +78,4 @@ stocks.load(
 
     df_stock_candidate: *pd.DataFrame*
         Dataframe of data
-    
+   

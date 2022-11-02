@@ -29,4 +29,4 @@ stocks.fa.earnings(
 
     pd.DataFrame
         Dataframe of earnings
-    
+   

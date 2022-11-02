@@ -36,4 +36,4 @@ keys.binance(
 * **Returns**
 
     status: *str*
-    
+   

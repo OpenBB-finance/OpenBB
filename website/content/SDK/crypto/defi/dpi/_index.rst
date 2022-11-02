@@ -25,14 +25,8 @@ crypto.defi.dpi(
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-lse with all DeFi Pulse crypto protocols.
-    [Source: https://defipulse.com/]
-
-    
 * **Returns**
 
     pd.DataFrame
         List of DeFi Pulse protocols.
-    
+   

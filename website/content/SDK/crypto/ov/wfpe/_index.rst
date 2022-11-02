@@ -30,4 +30,4 @@ crypto.ov.wfpe(
     List:
         - str:              Overall statistics (exchanges, lowest, average and median)
         - pandas.DataFrame: Exchange, Withdrawal Fee, Minimum Withdrawal Amount
-    
+   

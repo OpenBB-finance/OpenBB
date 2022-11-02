@@ -37,4 +37,4 @@ crypto.dd.book(
 
     pd.DataFrame
         Dataframe containing orderbook
-    
+   

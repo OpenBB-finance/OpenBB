@@ -28,4 +28,4 @@ economy.search_index(
 
     pd.Dataframe
         Dataframe with the available options.
-    
+   

@@ -39,4 +39,4 @@ common.ta.cci(
 
     pd.DataFrame
         Dataframe of technical indicator
-    
+   

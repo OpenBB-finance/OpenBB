@@ -29,4 +29,4 @@ etf.summary(
 
     str
         Summary description of the ETF
-    
+   

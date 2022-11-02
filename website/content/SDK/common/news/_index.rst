@@ -32,4 +32,4 @@ common.news(
 
     articles : *dict*
         term to search on the news articles
-    
+   

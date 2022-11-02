@@ -30,4 +30,4 @@ crypto.defi.stats(
 
     pd.DataFrame
         Uniswap DEX statistics like liquidity, volume, number of pairs, number of transactions.
-    
+   

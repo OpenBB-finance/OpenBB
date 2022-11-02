@@ -33,4 +33,4 @@ stocks.disc.arkord(
     DataFrame
         ARK orders data frame with the following columns:
         ticker, date, shares, weight, fund, direction
-    
+   

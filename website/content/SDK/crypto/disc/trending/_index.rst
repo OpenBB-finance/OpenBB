@@ -21,8 +21,12 @@ crypto.disc.trending(
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
+* **Parameters**
+
+
+    
 * **Returns**
 
     pandas.DataFrame:
         Trending Coins
-    
+   

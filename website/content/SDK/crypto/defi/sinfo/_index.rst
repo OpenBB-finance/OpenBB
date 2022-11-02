@@ -28,4 +28,4 @@ crypto.defi.sinfo(
 
     Tuple[pd.DataFrame, str]:
         luna delegations and summary report for given address
-    
+   

@@ -33,4 +33,4 @@ keys.quandl(
 * **Returns**
 
     status: *str*
-    
+   

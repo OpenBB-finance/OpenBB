@@ -35,4 +35,4 @@ stocks.fa.similar_dfs(
 
     new_list : List[str, pd.DataFrame]
         A list of similar companies
-    
+   

@@ -28,4 +28,4 @@ alt.covid.stat(
         Statistic to get.  Either "cases", "deaths" or "rates"
     limit: *int*
         Number of raw data to show
-    
+   

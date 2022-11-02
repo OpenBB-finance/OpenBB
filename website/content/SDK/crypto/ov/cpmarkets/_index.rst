@@ -36,4 +36,4 @@ crypto.ov.cpmarkets(
     pandas.DataFrame
         rank, name, symbol, price, volume_24h, mcap_change_24h,
         pct_change_1h, pct_change_24h, ath_price, pct_from_ath,
-    
+   

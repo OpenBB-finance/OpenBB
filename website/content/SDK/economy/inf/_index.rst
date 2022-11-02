@@ -29,4 +29,4 @@ economy.inf(
 
     pd.DataFrame
         DataFrame of inflation rates
-    
+   

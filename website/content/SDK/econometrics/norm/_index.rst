@@ -31,4 +31,4 @@ econometrics.norm(
 
     pd.DataFrame
         Dataframe containing statistics of normality
-    
+   

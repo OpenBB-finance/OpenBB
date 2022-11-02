@@ -41,4 +41,4 @@ crypto.onchain.dvcp(
 
     pd.DataFrame
          Daily volume for given pair
-    
+   

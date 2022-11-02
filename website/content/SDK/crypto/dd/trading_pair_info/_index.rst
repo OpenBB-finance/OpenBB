@@ -26,4 +26,4 @@ crypto.dd.trading_pair_info(
 
     pd.DataFrame
         Basic information about given trading pair
-    
+   

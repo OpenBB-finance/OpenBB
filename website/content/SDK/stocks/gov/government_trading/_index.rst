@@ -30,4 +30,4 @@ stocks.gov.government_trading(
 
     pd.DataFrame
         Most recent transactions by members of U.S. Congress
-    
+   

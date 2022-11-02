@@ -29,4 +29,4 @@ crypto.disc.coins_for_given_exchange(
 
     dict
         dictionary with all trading pairs on binance
-    
+   

@@ -34,4 +34,4 @@ crypto.onchain.dex_trades_monthly(
 
     pd.DataFrame
         Trades on Decentralized Exchanges monthly aggregated
-    
+   

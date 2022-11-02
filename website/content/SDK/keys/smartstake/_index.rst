@@ -36,4 +36,4 @@ keys.smartstake(
 * **Returns**
 
     status: *str*
-    
+   

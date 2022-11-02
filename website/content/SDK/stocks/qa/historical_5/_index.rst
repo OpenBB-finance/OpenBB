@@ -26,4 +26,4 @@ stocks.qa.historical_5(
 
     data : *pd.DataFrame*
         A dataframe with historical information
-    
+   

@@ -26,4 +26,4 @@ portfolio.volatility(
 
     pd.DataFrame
         DataFrame with volatility for portfolio and benchmark for different periods
-    
+   

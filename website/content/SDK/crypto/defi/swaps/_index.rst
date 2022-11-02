@@ -35,4 +35,4 @@ crypto.defi.swaps(
 
     pd.DataFrame
         Last 100 swaps on Uniswap
-    
+   

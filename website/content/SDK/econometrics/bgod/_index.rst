@@ -31,4 +31,4 @@ econometrics.bgod(
 * **Returns**
 
     Test results from the Breusch-Godfrey Test
-    
+   

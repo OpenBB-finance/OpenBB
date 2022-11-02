@@ -38,4 +38,4 @@ stocks.ba.infer(
 
     df_tweet: *pd.DataFrame*
         Dataframe of tweets and sentiment
-    
+   

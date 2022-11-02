@@ -32,4 +32,4 @@ economy.future(
 
     pd.Dataframe
        Indices, Energy, Metals, Meats, Grains, Softs, Bonds, Currencies
-    
+   

@@ -38,4 +38,4 @@ stocks.search(
         The limit of companies shown.
     export : *str*
         Export data
-    
+   

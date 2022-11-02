@@ -29,4 +29,4 @@ stocks.dps.spos(
 
     pd.DataFrame
         Net short position
-    
+   

@@ -37,4 +37,4 @@ stocks.ca.hist(
 
     pd.DataFrame
         Dataframe containing candle type variable for each ticker
-    
+   

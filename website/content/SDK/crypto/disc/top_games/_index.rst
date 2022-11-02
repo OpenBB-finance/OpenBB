@@ -31,4 +31,4 @@ crypto.disc.top_games(
 
     pd.DataFrame
         Top blockchain games. Columns: Name, Daily Users, Daily Volume [$]
-    
+   

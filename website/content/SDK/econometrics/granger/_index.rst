@@ -26,4 +26,4 @@ econometrics.granger(
         The series that you want to test whether it Granger-causes time_series_y
     lags : *int*
         The amount of lags for the Granger test. By default, this is set to 3.
-    
+   

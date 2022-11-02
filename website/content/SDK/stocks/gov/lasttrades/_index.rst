@@ -32,4 +32,4 @@ stocks.gov.lasttrades(
 
     pd.DataFrame
         Last government trading
-    
+   

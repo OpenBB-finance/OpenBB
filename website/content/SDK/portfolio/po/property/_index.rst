@@ -69,4 +69,4 @@ portfolio.po.property(
 
     Dict
         Dictionary of portfolio weights or allocations
-    
+   

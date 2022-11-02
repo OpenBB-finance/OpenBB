@@ -25,13 +25,8 @@ crypto.onchain.top(
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-e: Ethplorer]
-
-    
 * **Returns**
 
     pd.DataFrame:
         DataFrame with list of top 50 tokens.
-    
+   

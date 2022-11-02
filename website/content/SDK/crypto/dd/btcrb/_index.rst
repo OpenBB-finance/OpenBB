@@ -28,4 +28,4 @@ crypto.dd.btcrb(
         Initial date, format YYYY-MM-DD
     end_date : *str*
         Final date, format YYYY-MM-DD
-    
+   

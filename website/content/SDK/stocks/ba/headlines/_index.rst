@@ -29,4 +29,4 @@ stocks.ba.headlines(
 
     DataFrame()
         Empty if there was an issue with data retrieval
-    
+   

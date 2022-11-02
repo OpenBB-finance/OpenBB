@@ -29,4 +29,4 @@ crypto.onchain.query_graph(
 
     dict:
         Dictionary with response data
-    
+   

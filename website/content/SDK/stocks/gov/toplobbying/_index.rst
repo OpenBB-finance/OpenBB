@@ -23,4 +23,4 @@ stocks.gov.toplobbying(
     pd.DataFrame
         DataFrame of top corporate lobbying
 
-    
+   

@@ -26,4 +26,4 @@ stocks.disc.trending(
 
     list
         Trending articles list
-    
+   

@@ -29,4 +29,4 @@ portfolio.sharpe(
 
     pd.DataFrame
         DataFrame with sharpe ratio for portfolio and benchmark for different periods
-    
+   

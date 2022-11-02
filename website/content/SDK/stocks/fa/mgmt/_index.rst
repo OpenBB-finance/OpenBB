@@ -26,4 +26,4 @@ stocks.fa.mgmt(
 
     pd.DataFrame
         Dataframe of managers
-    
+   

@@ -22,4 +22,4 @@ crypto.dd.all_binance_trading_pairs() -> pandas.core.frame.DataFrame
         All available pairs on Binance
         Columns: symbol, baseAsset, quoteAsset
 
-    
+   

@@ -34,4 +34,4 @@ econometrics.get_regression_data(
 
     The dataset used, the dependent variable, the independent variable and
     the OLS model.
-    
+   

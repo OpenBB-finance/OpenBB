@@ -28,4 +28,4 @@ economy.fred_notes(
 
     pd.DataFrame
         DataFrame of matched series
-    
+   

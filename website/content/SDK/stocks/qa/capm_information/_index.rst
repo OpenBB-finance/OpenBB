@@ -28,4 +28,4 @@ stocks.qa.capm_information(
         The beta for a stock
     sys : *float*
         The systematic risk for a stock
-    
+   

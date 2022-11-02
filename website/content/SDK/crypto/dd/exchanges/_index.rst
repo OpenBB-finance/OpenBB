@@ -18,8 +18,12 @@
 crypto.dd.exchanges()
 {{< /highlight >}}
 
+* **Parameters**
+
+
+    
 * **Returns**
 
     List[str]
         list of all the exchanges supported by ccxt
-    
+   

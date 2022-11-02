@@ -32,4 +32,4 @@ common.ta.sma(
 
     pd.DataFrame
          Dataframe containing prices and SMA
-    
+   

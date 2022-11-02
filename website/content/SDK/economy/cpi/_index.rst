@@ -32,4 +32,4 @@ economy.cpi(
 
     pd.DataFrame
         Dataframe of CPI
-    
+   

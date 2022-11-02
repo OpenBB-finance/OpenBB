@@ -39,4 +39,4 @@ crypto.dd.pr(
     pd.DataFrame
             Potential returns data
             Columns: Coin, Current Price, Target Coin, Potential Price, Potential Market Cap ($), Change (%)
-    
+   

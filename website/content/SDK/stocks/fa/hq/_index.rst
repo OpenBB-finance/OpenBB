@@ -26,4 +26,4 @@ stocks.fa.hq(
 
     str
         Headquarter google maps url
-    
+   

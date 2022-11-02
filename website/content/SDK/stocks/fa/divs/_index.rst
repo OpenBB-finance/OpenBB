@@ -26,4 +26,4 @@ stocks.fa.divs(
 
     pd.DataFrame:
         Dataframe of dividends and dates
-    
+   

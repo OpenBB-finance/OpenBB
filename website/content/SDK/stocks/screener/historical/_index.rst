@@ -45,4 +45,4 @@ stocks.screener.historical(
         List of stocks
     bool
         Whether some random stock selection due to limitations
-    
+   

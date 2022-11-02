@@ -39,4 +39,4 @@ etf.news(
 
     tables : List[Tuple]
         List of tuples containing news df in first index and dict containing title of news df
-    
+   

@@ -39,4 +39,4 @@ stocks.sia.filter_stocks(
 
     list
         List of filtered stocks
-    
+   

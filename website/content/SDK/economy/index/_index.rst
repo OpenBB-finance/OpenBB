@@ -44,4 +44,4 @@ economy.index(
 
     pd.Dataframe
         Dataframe with historical data on selected indices.
-    
+   

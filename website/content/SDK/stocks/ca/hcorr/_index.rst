@@ -31,4 +31,4 @@ stocks.ca.hcorr(
         Start date of comparison, by default 1 year ago
     candle_type : str, optional
         OHLCA column to use for candles or R for returns, by default "a" for Adjusted Close
-    
+   

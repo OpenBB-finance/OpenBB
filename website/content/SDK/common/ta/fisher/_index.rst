@@ -34,4 +34,4 @@ common.ta.fisher(
 
     df_ta: *pd.DataFrame*
         Dataframe of technical indicator
-    
+   

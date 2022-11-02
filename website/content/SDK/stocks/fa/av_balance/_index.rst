@@ -38,4 +38,4 @@ stocks.fa.av_balance(
 
     pd.DataFrame
         DataFrame of the balance sheet
-    
+   

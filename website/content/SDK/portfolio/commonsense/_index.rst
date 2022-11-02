@@ -26,4 +26,4 @@ portfolio.commonsense(
 
     pd.DataFrame
         DataFrame of the portfolios and the benchmarks common sense ratio during different time periods
-    
+   

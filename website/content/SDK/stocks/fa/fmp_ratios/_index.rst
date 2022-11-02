@@ -32,4 +32,4 @@ stocks.fa.fmp_ratios(
 
     pd.DataFrame
         Dataframe of key ratios
-    
+   

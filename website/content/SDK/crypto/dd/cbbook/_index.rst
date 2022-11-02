@@ -32,4 +32,4 @@ crypto.dd.cbbook(
         array with ask prices, order sizes and cumulative order sizes
         trading pair
         dict with raw data
-    
+   

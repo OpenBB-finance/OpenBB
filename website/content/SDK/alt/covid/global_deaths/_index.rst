@@ -26,4 +26,4 @@ alt.covid.global_deaths(
 
     pd.DataFrame
         Dataframe of historical deaths
-    
+   

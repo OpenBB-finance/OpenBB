@@ -29,4 +29,4 @@ stocks.ba.mentions(
 
     pd.DataFrame
         Dataframe of interest over time
-    
+   

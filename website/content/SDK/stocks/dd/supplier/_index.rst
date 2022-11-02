@@ -29,4 +29,4 @@ stocks.dd.supplier(
 
     pd.DataFrame
         A dataframe of suppliers
-    
+   

@@ -26,4 +26,4 @@ stocks.ca.finnhub_peers(
 
     List[str]
         List of similar companies
-    
+   

@@ -38,4 +38,4 @@ common.qa.calculate_adjusted_var(
 
     float
         Real adjusted VaR
-    
+   

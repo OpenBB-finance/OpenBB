@@ -26,4 +26,4 @@ stocks.fa.analysis(
 
     str
         Analysis of filings text
-    
+   

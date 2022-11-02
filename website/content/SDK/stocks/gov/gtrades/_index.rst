@@ -35,4 +35,4 @@ stocks.gov.gtrades(
 
     pd.DataFrame
         DataFrame of tickers government trading
-    
+   

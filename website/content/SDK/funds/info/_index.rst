@@ -32,4 +32,4 @@ funds.info(
 
     pd.DataFrame
         Dataframe of fund information
-    
+   

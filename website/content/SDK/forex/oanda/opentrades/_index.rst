@@ -29,4 +29,4 @@ forex.oanda.opentrades(
 
     Union[pd.DataFrame, bool]
         Open trades data or False
-    
+   

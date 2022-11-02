@@ -31,4 +31,4 @@ stocks.ba.spacc(
         Dataframe of reddit submission
     dict:
         Dictionary of tickers and number of mentions
-    
+   

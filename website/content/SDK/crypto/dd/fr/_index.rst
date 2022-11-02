@@ -36,4 +36,4 @@ crypto.dd.fr(
         Treasury Accounts
     pd.DataFrame
         Metric Value launch details
-    
+   

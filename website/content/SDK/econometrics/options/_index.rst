@@ -33,4 +33,4 @@ econometrics.options(
     option_tables: *dict*
         A dictionary with a DataFrame for each option. With dataset_name set, only shows one
         options table.
-    
+   

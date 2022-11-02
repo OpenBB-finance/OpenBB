@@ -39,4 +39,4 @@ keys.degiro(
 * **Returns**
 
     status: *str*
-    
+   

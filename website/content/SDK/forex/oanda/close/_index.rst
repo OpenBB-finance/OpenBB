@@ -35,4 +35,4 @@ forex.oanda.close(
 
     Union[pd.DataFrame, bool]
         Close trades data or False
-    
+   

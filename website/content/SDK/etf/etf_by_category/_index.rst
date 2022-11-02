@@ -30,4 +30,4 @@ etf.etf_by_category(
 
     data : *Dict*
         Dictionary with ETFs that match a certain description
-    
+   

@@ -30,4 +30,4 @@ crypto.dd.links(
 
     pd.DataFrame
         asset links
-    
+   

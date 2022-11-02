@@ -39,4 +39,4 @@ crypto.onchain.lt(
 
     pd.DataFrame
         Trades on Decentralized Exchanges aggregated by DEX
-    
+   

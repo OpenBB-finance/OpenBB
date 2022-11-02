@@ -29,4 +29,4 @@ forex.oanda.pending(
 
     Union[pd.DataFrame, bool]
         Pending orders data or False
-    
+   

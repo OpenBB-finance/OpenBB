@@ -30,4 +30,4 @@ crypto.ov.cghold(
     List:
         - str: *             Overall statistics*
         - pandas.DataFrame: *Companies holding crypto*
-    
+   

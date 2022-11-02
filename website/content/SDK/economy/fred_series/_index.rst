@@ -35,4 +35,4 @@ economy.fred_series(
 
     pd.DataFrame
         Series data
-    
+   

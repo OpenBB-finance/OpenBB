@@ -18,4 +18,4 @@ stocks.disc.losers() -> pandas.core.frame.DataFrame
 
     pd.DataFrame
         Stock Losers
-    
+   

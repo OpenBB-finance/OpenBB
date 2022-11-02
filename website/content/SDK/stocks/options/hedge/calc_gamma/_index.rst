@@ -43,4 +43,4 @@ stocks.options.hedge.calc_gamma(
 
     gamma: *float*
         Returns the value for the gamma.
-    
+   

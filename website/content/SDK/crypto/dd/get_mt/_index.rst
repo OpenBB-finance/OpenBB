@@ -30,4 +30,4 @@ crypto.dd.get_mt(
 
     pd.DataFrame
         available timeseries
-    
+   

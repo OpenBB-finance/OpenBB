@@ -47,4 +47,4 @@ common.ta.kc(
 
     pd.DataFrame
         Dataframe of rolling kc
-    
+   

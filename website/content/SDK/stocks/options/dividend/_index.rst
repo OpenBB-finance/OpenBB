@@ -26,4 +26,4 @@ stocks.options.dividend(
 
     chains: *yf.ticker.Dividends*
         Dividends
-    
+   

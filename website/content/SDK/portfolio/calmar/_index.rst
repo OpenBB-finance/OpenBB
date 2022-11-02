@@ -31,4 +31,4 @@ portfolio.calmar(
         DataFrame of calmar ratio of the benchmark and portfolio during different time periods
     pd.Series
         Series of calmar ratio data
-    
+   

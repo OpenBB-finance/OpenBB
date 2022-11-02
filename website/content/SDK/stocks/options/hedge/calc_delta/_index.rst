@@ -45,4 +45,4 @@ stocks.options.hedge.calc_delta(
 
     delta: *float*
         Returns the value for the delta.
-    
+   

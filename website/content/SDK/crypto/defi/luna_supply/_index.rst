@@ -34,4 +34,4 @@ crypto.defi.luna_supply(
 
     pd.DataFrame
         Dataframe of supply history data
-    
+   

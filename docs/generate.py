@@ -92,6 +92,26 @@ def write_section(
         file.write(text)
 
 
+def format_docstring(docstring: str):
+    """Format docstring section titles.
+
+    Parameters
+    ----------
+        docstring: str
+            Docstring text
+    """
+
+    # Wrap argument types around asterisks to .rst interpret them as italic
+    docstring = re.sub("(: )([a-zA-Z0-9. _]+)(\n)(\d*)", r": *\2*\n", docstring)
+
+    # Reformat dashes in case there is a size mismatch between title and number of dashes
+    docstring = re.sub("(Parameters\n)(.*)(\n)(\d*)", r"\1    ----------\n", docstring)
+    docstring = re.sub("(Returns\n)(.*)(\n)(\d*)", r"\1    -------\n", docstring)
+    docstring = re.sub("(Examples\n)(.*)(\n)(\d*)", r"\1    --------\n", docstring)
+
+    return docstring
+
+
 def generate_documentation(
     base: str, key: str, value: List[Tuple[str, str, Callable[..., Any]]]
 ):
@@ -110,29 +130,17 @@ def generate_documentation(
 
     if docstring:
 
-        # Wrap argument types around asterisks to .rst interpret them as italic
-        docstring = re.sub("(: )([a-zA-Z0-9. _]+)(\n)(\d*)", r": *\2*\n", docstring)
-
-        # Reformat dashes in case there is a size mismatch between title and number of dashes
-        docstring = re.sub(
-            "(Parameters\n)(.*)(\n)(\d*)", r"\1    ----------\n", docstring
-        )
-        docstring = re.sub("(Returns\n)(.*)(\n)(\d*)", r"\1    -------\n", docstring)
-        docstring = re.sub("(Examples\n)(.*)(\n)(\d*)", r"\1    --------\n", docstring)
+        formatted_docstring = format_docstring(docstring=docstring)
 
         # Locate elements of interest in docstring
         parameters_anchor = "Parameters\n    ----------\n"
-        parameters_position = docstring.find(parameters_anchor)
+        parameters_position = formatted_docstring.find(parameters_anchor)
 
         returns_anchor = "Returns\n    -------\n"
-        returns_position = docstring.find(returns_anchor)
-        if returns_position < 0:
-            returns_position = len(docstring)
+        returns_position = formatted_docstring.find(returns_anchor)
 
         examples_anchor = "Examples\n    --------\n"
-        examples_position = docstring.find(examples_anchor)
-        if examples_position < 0:
-            examples_position = len(docstring)
+        examples_position = formatted_docstring.find(examples_anchor)
 
         if os.path.exists(f"{base}/_index.md"):
             os.remove(f"{base}/_index.md")
@@ -145,11 +153,11 @@ def generate_documentation(
 
             if model:
 
-                has_param = False
+                has_parameters = False
                 if signature(model[2]).parameters:
-                    has_param = True
+                    has_parameters = True
 
-                if has_param:
+                if has_parameters:
                     summary_bottom = parameters_position
                 else:
                     summary_bottom = returns_position
@@ -158,7 +166,7 @@ def generate_documentation(
                 f.write(".. raw:: html\n\n")
                 f.write("    <h3>")
                 f.write("\n")
-                summary = "    > " + docstring[:summary_bottom].strip() + "\n"
+                summary = "    > " + formatted_docstring[:summary_bottom].strip() + "\n"
                 f.write(summary)
                 f.write("    </h3>")
                 f.write("\n\n")
@@ -172,7 +180,7 @@ def generate_documentation(
                     )
 
                     # TODO: This breaks if there is a ')' inside the function arguments
-                    if not has_param:
+                    if not has_parameters:
                         sig = sig.replace(")", "chart: bool = False)")
                     else:
                         sig = sig.replace(")", ", chart: bool = False)")
@@ -187,7 +195,7 @@ def generate_documentation(
                     sig = sig.replace(")", ",\n)")
 
                 else:
-                    if has_param:
+                    if has_parameters:
                         sig = sig.replace("(", "(\n    ")
                         # TODO: This requires type int for args, adds new line after each arg
                         sig = re.sub(
@@ -205,32 +213,32 @@ def generate_documentation(
                 f.write("\n")
 
                 # Parameters
-                if has_param:
+                if parameters_position > 0:
                     write_section(
                         title="Parameters",
                         start=parameters_position + len(parameters_anchor),
                         end=returns_position,
-                        docstring=docstring,
+                        docstring=formatted_docstring,
                         file=f,
                     )
 
                 # Returns
-                if returns_position != len(docstring):
+                if returns_position > 0:
                     write_section(
                         title="Returns",
                         start=returns_position + len(returns_anchor),
                         end=examples_position,
-                        docstring=docstring,
+                        docstring=formatted_docstring,
                         file=f,
                     )
 
                 # Examples
-                if examples_position != len(docstring):
+                if examples_position > 0:
                     write_section(
                         title="Examples",
                         start=examples_position + len(examples_anchor),
-                        end=len(docstring),
-                        docstring=docstring,
+                        end=len(formatted_docstring),
+                        docstring=formatted_docstring,
                         file=f,
                         code_snippet=True,
                     )

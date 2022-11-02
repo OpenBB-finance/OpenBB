@@ -37,4 +37,4 @@ crypto.dd.twitter(
     pandas.DataFrame
         Twitter timeline for given coin.
         Columns: date, user_name, status, retweet_count, like_count
-    
+   

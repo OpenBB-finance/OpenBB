@@ -29,4 +29,4 @@ common.qa.summary(
 
     summary : *pd.DataFrame*
         Summary statistics
-    
+   

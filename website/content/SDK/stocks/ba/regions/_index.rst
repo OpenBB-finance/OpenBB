@@ -29,4 +29,4 @@ stocks.ba.regions(
 
     pd.DataFrame
         Dataframe of interest by region
-    
+   

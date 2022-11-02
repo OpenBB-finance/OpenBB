@@ -32,4 +32,4 @@ crypto.disc.coins(
 
     pandas.DataFrame
         N coins
-    
+   

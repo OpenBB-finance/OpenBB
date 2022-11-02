@@ -37,4 +37,4 @@ crypto.disc.gainers_or_losers(
     pandas.DataFrame
         Top Gainers / Top Losers - coins which gain/lost most in price in given period of time.
         Columns: Symbol, Name, Volume, Price, %Change_{interval}, Url
-    
+   

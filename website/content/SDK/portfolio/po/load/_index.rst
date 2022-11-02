@@ -28,4 +28,4 @@ portfolio.po.load(
         Returns a list with ticker symbols
     categories: *dictionary*
         Returns a dictionary that specifies each category
-    
+   

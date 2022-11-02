@@ -22,6 +22,10 @@ crypto.onchain.gwei(
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
+* **Parameters**
+
+
+    
 * **Returns**
 
     pd.DataFrame
@@ -29,4 +33,4 @@ crypto.onchain.gwei(
             (fees for slow, average, fast and
             fastest transactions in gwei and
             its average durations in seconds)
-    
+   

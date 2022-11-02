@@ -29,4 +29,4 @@ economy.bigmac(
 
     pd.DataFrame
         Dataframe with Big Mac indices converted to USD equivalent.
-    
+   

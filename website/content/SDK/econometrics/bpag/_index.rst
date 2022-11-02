@@ -28,4 +28,4 @@ econometrics.bpag(
 * **Returns**
 
     Test results from the Breusch-Pagan Test
-    
+   

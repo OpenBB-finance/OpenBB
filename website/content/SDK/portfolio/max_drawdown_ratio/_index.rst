@@ -37,4 +37,4 @@ portfolio.max_drawdown_ratio(
         Holdings series
     pd.Series
         Drawdown series
-    
+   

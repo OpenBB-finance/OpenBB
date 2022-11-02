@@ -19,4 +19,4 @@ crypto.onchain.erc20_tokens() -> pandas.core.frame.DataFrame
 
     pd.DataFrame
         ERC20 tokens with address, symbol and name
-    
+   

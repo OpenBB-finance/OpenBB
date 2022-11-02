@@ -38,4 +38,4 @@ stocks.fa.fmp_balance(
 
     pd.DataFrame
         Dataframe of balance sheet
-    
+   

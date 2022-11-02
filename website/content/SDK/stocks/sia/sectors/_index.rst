@@ -29,4 +29,4 @@ stocks.sia.sectors(
 
     list
         List of possible sectors
-    
+   

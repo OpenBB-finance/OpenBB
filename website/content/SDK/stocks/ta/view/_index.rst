@@ -29,4 +29,4 @@ stocks.ta.view(
 
     bytes
         Image in byte format
-    
+   

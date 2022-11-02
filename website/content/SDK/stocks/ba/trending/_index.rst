@@ -18,4 +18,4 @@ stocks.ba.trending() -> pandas.core.frame.DataFrame
 
     pd.DataFrame
         Dataframe of trending tickers and watchlist count
-    
+   

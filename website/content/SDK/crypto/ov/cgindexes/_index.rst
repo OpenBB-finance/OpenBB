@@ -29,11 +29,6 @@ crypto.ov.cgindexes(
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-s from CoinGecko API [Source: CoinGecko]
-
-    
 * **Returns**
 
     pandas.DataFrame
@@ -42,4 +37,4 @@ s from CoinGecko API [Source: CoinGecko]
         Key by which to sort data
     ascend: *bool*
         Flag to sort data descending
-    
+   

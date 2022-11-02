@@ -33,4 +33,4 @@ portfolio.rbeta(
 
     pd.DataFrame
         DataFrame of the portfolio's rolling beta
-    
+   

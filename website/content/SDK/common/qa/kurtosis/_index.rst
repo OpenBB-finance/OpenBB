@@ -32,4 +32,4 @@ common.qa.kurtosis(
 
     df_kurt : *pd.DataFrame*
         Dataframe of rolling kurtosis
-    
+   

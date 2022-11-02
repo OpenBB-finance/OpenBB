@@ -32,4 +32,4 @@ stocks.fa.growth(
 
     pd.DataFrame
         Dataframe of financial statement growth
-    
+   

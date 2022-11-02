@@ -26,4 +26,4 @@ stocks.fa.quote(
 
     pd.DataFrame:
         Dataframe of ticker quote
-    
+   

@@ -26,4 +26,4 @@ portfolio.gaintopain(
 
     pd.DataFrame
         DataFrame of the portfolio's gain-to-pain ratio
-    
+   

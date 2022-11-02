@@ -32,4 +32,4 @@ crypto.dd.gov(
         governance summary
     pd.DataFrame
         Metric Value with governance details
-    
+   

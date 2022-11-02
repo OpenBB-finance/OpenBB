@@ -29,4 +29,4 @@ stocks.gov.lobbying(
 
     pd.DataFrame
         Dataframe with corporate lobbying data
-    
+   

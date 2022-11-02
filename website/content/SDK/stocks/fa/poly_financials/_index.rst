@@ -38,4 +38,4 @@ stocks.fa.poly_financials(
 
     pd.DataFrame
         Balance Sheets or Income Statements
-    
+   

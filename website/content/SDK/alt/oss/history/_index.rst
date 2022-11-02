@@ -28,4 +28,4 @@ alt.oss.history(
 * **Returns**
 
     pd.DataFrame - Columns: Date, Stars
-    
+   

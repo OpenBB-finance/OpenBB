@@ -38,4 +38,4 @@ stocks.screener.screener_data(
 
     pd.DataFrame
         Dataframe with loaded filtered stocks
-    
+   

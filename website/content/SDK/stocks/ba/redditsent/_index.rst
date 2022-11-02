@@ -48,4 +48,4 @@ stocks.ba.redditsent(
         Dataframe of submissions related to the search term,
         List of polarity scores,
         Average polarity score
-    
+   

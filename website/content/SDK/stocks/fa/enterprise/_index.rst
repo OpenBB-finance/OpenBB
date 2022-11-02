@@ -32,4 +32,4 @@ stocks.fa.enterprise(
 
     pd.DataFrame:
         Dataframe of enterprise information
-    
+   

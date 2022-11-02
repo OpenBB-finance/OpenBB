@@ -17,7 +17,3 @@ stocks.options.generate_data(
     underlying: int,
 ) -> Tuple[List[float], List[float], List[float]]
 {{< /highlight >}}
-
-* **Parameters**
-
-es before and after premiums

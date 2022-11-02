@@ -38,4 +38,4 @@ common.qa.sortino(
 
     sortino: *pd.DataFrame*
         sortino ratio
-    
+   

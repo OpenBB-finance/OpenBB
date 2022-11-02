@@ -32,4 +32,4 @@ crypto.ov.cgproducts(
 
     pandas.DataFrame
        Rank,  Platform, Identifier, Supply_Rate, Borrow_Rate
-    
+   

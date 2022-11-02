@@ -26,4 +26,4 @@ stocks.fa.score(
 
     np.number
         Value score
-    
+   

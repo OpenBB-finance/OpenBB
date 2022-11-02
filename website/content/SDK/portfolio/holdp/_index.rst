@@ -23,4 +23,4 @@ portfolio.holdp(
 
     portfolio: *Portfolio*
         Portfolio object with trades loaded
-    
+   

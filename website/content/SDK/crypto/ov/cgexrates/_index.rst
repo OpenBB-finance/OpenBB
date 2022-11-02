@@ -32,4 +32,4 @@ crypto.ov.cgexrates(
 
     pandas.DataFrame
         Index, Name, Unit, Value, Type
-    
+   

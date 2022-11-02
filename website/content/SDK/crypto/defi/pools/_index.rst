@@ -22,4 +22,4 @@ crypto.defi.pools(
 
     pd.DataFrame
         Trade-able pairs listed on Uniswap by top volume.
-    
+   

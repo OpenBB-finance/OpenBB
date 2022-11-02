@@ -32,4 +32,4 @@ stocks.gov.topbuys(
 
     pd.DataFrame
         DataFrame of top government buy trading
-    
+   

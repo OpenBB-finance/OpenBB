@@ -26,4 +26,4 @@ stocks.disc.dividends(
 
     pd.DataFrame:
         Dataframe of dividend calendar
-    
+   

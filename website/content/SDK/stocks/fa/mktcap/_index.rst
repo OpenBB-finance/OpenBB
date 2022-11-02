@@ -34,4 +34,4 @@ stocks.fa.mktcap(
         Dataframe of estimated market cap over time
     str:
         Currency of ticker
-    
+   

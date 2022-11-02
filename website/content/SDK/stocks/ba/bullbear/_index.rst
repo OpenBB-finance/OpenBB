@@ -35,4 +35,4 @@ stocks.ba.bullbear(
         Number of bullish statements
     int
         Number of bearish statements
-    
+   

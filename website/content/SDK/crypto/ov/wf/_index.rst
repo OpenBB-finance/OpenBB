@@ -29,4 +29,4 @@ crypto.ov.wf(
 
     pandas.DataFrame:
         Coin, Lowest, Average, Median, Highest, Exchanges Compared
-    
+   

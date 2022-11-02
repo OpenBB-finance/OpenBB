@@ -69,4 +69,4 @@ crypto.dd.ps(
     pandas.DataFrame
         Most important ticker related information
         Columns: Metric, Value
-    
+   

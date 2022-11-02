@@ -32,4 +32,4 @@ stocks.fa.dcf(
 
     pd.DataFrame
         Dataframe of dcf data
-    
+   

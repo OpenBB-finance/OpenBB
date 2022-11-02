@@ -44,4 +44,4 @@ common.ta.adx(
 
     pd.DataFrame
         DataFrame with adx indicator
-    
+   

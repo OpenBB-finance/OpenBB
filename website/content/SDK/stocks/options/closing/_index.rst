@@ -26,4 +26,4 @@ stocks.options.closing(
 
     price : List[float]
         A list of closing prices for a ticker
-    
+   

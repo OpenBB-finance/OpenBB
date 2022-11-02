@@ -28,4 +28,4 @@ economy.fred_ids(
 
     pd.Dataframe
         Dataframe with series IDs and titles
-    
+   

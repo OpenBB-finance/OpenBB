@@ -32,4 +32,4 @@ crypto.dd.team(
         individuals
     pd.DataFrame
         organizations
-    
+   

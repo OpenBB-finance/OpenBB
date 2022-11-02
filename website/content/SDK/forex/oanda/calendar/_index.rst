@@ -32,4 +32,4 @@ forex.oanda.calendar(
 
     Union[pd.DataFrame, bool]
         Calendar events data or False
-    
+   

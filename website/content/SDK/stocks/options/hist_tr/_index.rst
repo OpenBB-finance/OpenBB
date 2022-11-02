@@ -42,4 +42,4 @@ stocks.options.hist_tr(
 
     df_hist: *pd.DataFrame*
         Dataframe of historical option prices
-    
+   

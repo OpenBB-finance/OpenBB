@@ -40,4 +40,4 @@ crypto.ov.cbpairs(
 
     pd.DataFrame
         Available trading pairs on Coinbase
-    
+   

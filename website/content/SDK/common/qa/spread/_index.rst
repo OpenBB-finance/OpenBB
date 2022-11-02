@@ -34,4 +34,4 @@ common.qa.spread(
         Dataframe of rolling standard deviation
     df_var: *pd.DataFrame*
         Dataframe of rolling standard deviation
-    
+   

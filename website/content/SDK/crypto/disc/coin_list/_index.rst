@@ -19,4 +19,4 @@ crypto.disc.coin_list() -> pandas.core.frame.DataFrame
     pandas.DataFrame
         Coins available on CoinGecko
         Columns: id, symbol, name
-    
+   

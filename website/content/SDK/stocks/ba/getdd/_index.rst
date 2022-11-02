@@ -35,4 +35,4 @@ stocks.ba.getdd(
 
     pd.DataFrame
         Dataframe of submissions
-    
+   

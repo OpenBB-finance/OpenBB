@@ -37,4 +37,4 @@ econometrics.clean(
 
     pd.DataFrame:
         Dataframe with cleaned up data
-    
+   

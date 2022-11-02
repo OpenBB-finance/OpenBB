@@ -26,4 +26,4 @@ crypto.ov.cpglobal(
     pandas.DataFrame
         Most important global crypto statistics
         Metric, Value
-    
+   

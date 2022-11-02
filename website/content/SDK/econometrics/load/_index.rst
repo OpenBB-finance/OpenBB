@@ -36,4 +36,4 @@ econometrics.load(
 
     pd.DataFrame:
         Dataframe with custom data
-    
+   

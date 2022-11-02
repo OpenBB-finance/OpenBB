@@ -41,4 +41,4 @@ stocks.options.grhist(
 
     df: *pd.DataFrame*
         Dataframe containing historical greeks
-    
+   

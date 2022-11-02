@@ -29,4 +29,4 @@ stocks.ba.wsb(
 
     pd.DataFrame
         Dataframe of reddit submissions
-    
+   

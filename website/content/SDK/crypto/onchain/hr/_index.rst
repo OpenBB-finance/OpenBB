@@ -17,8 +17,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 crypto.onchain.hr(
     symbol: str,
     interval: str = '24h',
-    start_date: int = 1288955049,
-    end_date: int = 1667387049,
+    start_date: int = 1288956318,
+    end_date: int = 1667388318,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -39,4 +39,4 @@ crypto.onchain.hr(
 
     pd.DataFrame
         mean hashrate and symbol price over time
-    
+   

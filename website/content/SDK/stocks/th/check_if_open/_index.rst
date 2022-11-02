@@ -29,4 +29,4 @@ stocks.th.check_if_open(
 
     bool
         If market is open
-    
+   

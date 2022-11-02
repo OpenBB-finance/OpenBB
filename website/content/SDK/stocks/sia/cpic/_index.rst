@@ -36,4 +36,4 @@ stocks.sia.cpic(
 
     dict
         Dictionary of industries and number of companies in a specific country
-    
+   

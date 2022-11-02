@@ -32,4 +32,4 @@ crypto.ov.exchanges(
 
     pandas.DataFrame
         Trust_Score, Id, Name, Country, Year_Established, Trade_Volume_24h_BTC, Url
-    
+   

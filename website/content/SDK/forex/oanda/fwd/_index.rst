@@ -32,4 +32,4 @@ forex.oanda.fwd(
 
     df: *pd.DataFrame*
 
-    
+   

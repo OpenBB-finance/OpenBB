@@ -31,4 +31,4 @@ crypto.disc.top_dapps(
     pd.DataFrame
         Top decentralized exchanges.
         Columns: Name, Category, Protocols, Daily Users, Daily Volume [$]
-    
+   

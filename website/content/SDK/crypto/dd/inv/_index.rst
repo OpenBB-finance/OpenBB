@@ -32,4 +32,4 @@ crypto.dd.inv(
         individuals
     pd.DataFrame
         organizations
-    
+   

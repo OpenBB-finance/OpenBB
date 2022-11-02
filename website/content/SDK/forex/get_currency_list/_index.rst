@@ -7,7 +7,7 @@
 .. raw:: html
 
     <h3>
-    > Load AV currency codes from a local file.
+    > Load AV currency codes from a local file
     </h3>
 
 {{< highlight python >}}

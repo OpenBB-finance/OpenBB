@@ -33,4 +33,4 @@ crypto.defi.validators(
 
     pd.DataFrame
         terra validators details
-    
+   

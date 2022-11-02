@@ -17,7 +17,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter
 crypto.ov.altindex(
     period: int = 30,
     start_date: int = 1262304000,
-    end_date: int = 1667387049,
+    end_date: int = 1667388318,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -38,4 +38,4 @@ crypto.ov.altindex(
 
     pandas.DataFrame:
         Date, Value (Altcoin Index)
-    
+   

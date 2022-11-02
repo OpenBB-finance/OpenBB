@@ -32,4 +32,4 @@ econometrics.pols(
 
     The dataset used, the dependent variable, the independent variable and
     the Pooled OLS model.
-    
+   

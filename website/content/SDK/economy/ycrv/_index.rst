@@ -29,4 +29,4 @@ economy.ycrv(
 
     pd.DataFrame
         Country yield curve
-    
+   

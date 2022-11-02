@@ -15,7 +15,3 @@ stocks.options.dte(
     date_value: str,
 ) -> int
 {{< /highlight >}}
-
-* **Parameters**
-
-rom yfinance option date

@@ -26,4 +26,4 @@ stocks.fa.profile(
 
     pd.DataFrame:
         Dataframe of ticker profile
-    
+   

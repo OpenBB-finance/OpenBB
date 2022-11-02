@@ -37,4 +37,4 @@ common.ta.macd(
 
     pd.DataFrame
         Dataframe of technical indicator
-    
+   

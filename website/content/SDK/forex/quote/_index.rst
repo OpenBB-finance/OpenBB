@@ -32,4 +32,4 @@ forex.quote(
 
     Dict
         Dictionary of exchange rate
-    
+   

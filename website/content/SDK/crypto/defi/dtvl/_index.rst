@@ -25,14 +25,8 @@ crypto.defi.dtvl(
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
- historical tvl of a defi protocol.
-    [Source: https://docs.llama.fi/api]
-
-    
 * **Returns**
 
     pd.DataFrame
         Historical tvl
-    
+   

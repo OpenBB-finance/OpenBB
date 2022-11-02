@@ -18,4 +18,4 @@ economy.macro_parameters() -> Dict[str, Dict[str, str]]
 
     Dict[str, Dict[str, str]]
         A dictionary with the available macro parameters.
-    
+   

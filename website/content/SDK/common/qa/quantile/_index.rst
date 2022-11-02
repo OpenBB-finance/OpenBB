@@ -37,4 +37,4 @@ common.qa.quantile(
         Dataframe of median prices over window
     df_quantile : *pd.DataFrame*
         Dataframe of gievn quantile prices over window
-    
+   

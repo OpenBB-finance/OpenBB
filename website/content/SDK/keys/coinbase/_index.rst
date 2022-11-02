@@ -39,4 +39,4 @@ keys.coinbase(
 * **Returns**
 
     status: *str*
-    
+   

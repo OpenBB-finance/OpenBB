@@ -22,4 +22,4 @@ crypto.ov.cpplatforms(
 
     pandas.DataFrame
         index, platform_id
-    
+   

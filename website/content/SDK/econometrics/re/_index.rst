@@ -33,4 +33,4 @@ econometrics.re(
 
     The dataset used, the dependent variable, the independent variable and
     the RandomEffects model.
-    
+   

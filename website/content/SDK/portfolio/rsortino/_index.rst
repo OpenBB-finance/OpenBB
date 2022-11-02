@@ -35,4 +35,4 @@ portfolio.rsortino(
 
     pd.DataFrame
         Rolling sortino ratio DataFrame
-    
+   

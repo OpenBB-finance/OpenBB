@@ -29,4 +29,4 @@ stocks.ta.summary(
 
     report:str
         technical summary report
-    
+   

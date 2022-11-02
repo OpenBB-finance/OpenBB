@@ -32,4 +32,4 @@ stocks.ba.cnews(
 
     articles : *List*
         term to search on the news articles
-    
+   

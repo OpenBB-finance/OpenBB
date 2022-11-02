@@ -29,4 +29,4 @@ stocks.ca.polygon_peers(
 
     List[str]:
         List of similar tickers
-    
+   

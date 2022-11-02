@@ -25,4 +25,4 @@ crypto.dd.coin(
 
     dict
         Coin response
-    
+   

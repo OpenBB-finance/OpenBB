@@ -36,4 +36,4 @@ crypto.onchain.balance(
 
     pd.DataFrame:
         DataFrame with list of tokens and their balances.
-    
+   

@@ -42,4 +42,4 @@ stocks.sia.stocks_data(
 
     dict
         Dictionary of filtered stocks data separated by financial statement
-    
+   

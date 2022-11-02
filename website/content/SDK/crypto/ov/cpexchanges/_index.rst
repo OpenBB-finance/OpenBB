@@ -36,4 +36,4 @@ crypto.ov.cpexchanges(
     pandas.DataFrame
         rank, name, currencies, markets, fiats, confidence_score, reported_volume_24h,
         reported_volume_7d ,reported_volume_30d, sessions_per_month,
-    
+   

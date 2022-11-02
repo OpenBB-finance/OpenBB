@@ -19,4 +19,4 @@ crypto.ov.list_of_coins() -> pandas.core.frame.DataFrame
     pandas.DataFrame
         Available coins on CoinPaprika
         rank, id, name, symbol, type
-    
+   

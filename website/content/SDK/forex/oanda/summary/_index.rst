@@ -29,4 +29,4 @@ forex.oanda.summary(
 
     Union[pd.DataFrame, bool]
         Account summary data or False
-    
+   

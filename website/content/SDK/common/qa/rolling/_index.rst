@@ -34,4 +34,4 @@ common.qa.rolling(
         Dataframe of rolling mean
     pd.DataFrame:
         Dataframe of rolling standard deviation
-    
+   

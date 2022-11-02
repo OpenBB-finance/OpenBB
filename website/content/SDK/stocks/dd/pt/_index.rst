@@ -29,4 +29,4 @@ stocks.dd.pt(
 
     pd.DataFrame
         Analysts data
-    
+   

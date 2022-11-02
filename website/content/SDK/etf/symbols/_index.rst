@@ -20,4 +20,4 @@ etf.symbols() -> Tuple[List[str], List[str]]
         List of all available etf symbols
     etf_names: List[str]
         List of all available etf names
-    
+   

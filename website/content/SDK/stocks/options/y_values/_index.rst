@@ -18,7 +18,3 @@ stocks.options.y_values(
     underlying: int,
 ) -> float
 {{< /highlight >}}
-
-* **Parameters**
-
-rresponding x values

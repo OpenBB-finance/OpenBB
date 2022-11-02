@@ -41,4 +41,4 @@ stocks.fa.av_cash(
 
     pd.DataFrame
         Dataframe of cash flow statements
-    
+   

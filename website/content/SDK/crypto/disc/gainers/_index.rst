@@ -37,4 +37,4 @@ crypto.disc.gainers(
     pd.DataFrame
         Top Gainers  - coins which gain most in price in given period of time.
         Columns: Symbol, Name, Volume, Price, %Change_{interval}, Url
-    
+   

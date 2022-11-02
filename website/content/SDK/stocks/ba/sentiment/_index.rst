@@ -29,4 +29,4 @@ stocks.ba.sentiment(
         Number of tweets to get per hour
     n_days_past: *int*
         Number of days to extract tweets for
-    
+   

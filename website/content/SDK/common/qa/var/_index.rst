@@ -46,4 +46,4 @@ common.qa.var(
         list of VaR
     list
         list of historical VaR
-    
+   

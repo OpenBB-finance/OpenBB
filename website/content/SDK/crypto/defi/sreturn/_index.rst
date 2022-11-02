@@ -29,4 +29,4 @@ crypto.defi.sreturn(
 
     pd.DataFrame
         historical staking returns
-    
+   

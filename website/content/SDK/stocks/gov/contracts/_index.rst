@@ -32,4 +32,4 @@ stocks.gov.contracts(
 
     pd.DataFrame
         Most recent transactions by members of U.S. Congress
-    
+   

@@ -68,4 +68,4 @@ econometrics.coint(
         The p-value corresponding to the Dickey Fuller test-statistic. A lower value implies
         stronger rejection of no-cointegration, thus stronger evidence of cointegration.
 
-    
+   

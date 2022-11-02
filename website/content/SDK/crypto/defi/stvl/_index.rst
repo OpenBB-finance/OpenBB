@@ -23,4 +23,4 @@ crypto.defi.stvl(
 
     pd.DataFrame
         Historical values of total sum of Total Value Locked from all listed protocols.
-    
+   

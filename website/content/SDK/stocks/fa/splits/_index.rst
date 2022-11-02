@@ -29,4 +29,4 @@ stocks.fa.splits(
 
     pd.DataFrame:
         Dataframe of forward and reverse splits
-    
+   

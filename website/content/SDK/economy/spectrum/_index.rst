@@ -23,4 +23,4 @@ economy.spectrum(
 
     group : *str*
        Group by category. Available groups can be accessed through get_groups().
-    
+   

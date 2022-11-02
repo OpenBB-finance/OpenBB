@@ -32,4 +32,4 @@ crypto.ov.platforms(
 
     pandas.DataFrame
         Rank, Name, Category, Centralized, Url
-    
+   

@@ -32,4 +32,4 @@ crypto.dd.balance(
 
     pd.DataFrame
         Dataframe with account holdings for an asset
-    
+   

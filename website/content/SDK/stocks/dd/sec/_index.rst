@@ -29,4 +29,4 @@ stocks.dd.sec(
 
     df_financials : *pd.DataFrame*
         SEC filings data
-    
+   

@@ -32,4 +32,4 @@ stocks.tob(
     pd.DataFrame
         Dataframe of asks
 
-    
+   

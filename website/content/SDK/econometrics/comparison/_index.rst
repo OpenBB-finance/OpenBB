@@ -27,4 +27,4 @@ econometrics.comparison(
 * **Returns**
 
     Returns a PanelModelComparison which shows an overview of the different regression results.
-    
+   

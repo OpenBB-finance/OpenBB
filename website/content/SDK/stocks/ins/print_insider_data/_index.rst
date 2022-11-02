@@ -26,4 +26,4 @@ stocks.ins.print_insider_data(
         Insider type of data. Available types can be accessed through get_insider_types().
     limit: *int*
         Limit of data rows to display
-    
+   

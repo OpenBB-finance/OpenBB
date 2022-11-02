@@ -26,4 +26,4 @@ stocks.dd.arktrades(
 
     pd.DataFrame
         DataFrame of trades
-    
+   

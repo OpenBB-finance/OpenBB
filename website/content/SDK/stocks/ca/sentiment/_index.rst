@@ -31,4 +31,4 @@ stocks.ca.sentiment(
 
     pd.DataFrame
         Contains sentiment analysis from several tickers
-    
+   

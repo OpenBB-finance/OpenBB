@@ -24,13 +24,8 @@ crypto.ov.cgcategories(
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
-* **Parameters**
-
-ries [Source: CoinGecko]
-
-    
 * **Returns**
 
     pandas.DataFrame
        Rank, Name, Change_1h, Change_7d, Market_Cap, Volume_24h,Coins, Url
-    
+   

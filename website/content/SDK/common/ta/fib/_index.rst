@@ -46,4 +46,4 @@ common.ta.fib(
         Price at min point
     max_pr: *float*
         Price at max point
-    
+   

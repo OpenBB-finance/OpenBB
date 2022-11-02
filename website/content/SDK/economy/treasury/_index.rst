@@ -42,4 +42,4 @@ economy.treasury(
 
     treasury_data: *pd.Dataframe*
         Holds data of the selected types and maturities
-    
+   

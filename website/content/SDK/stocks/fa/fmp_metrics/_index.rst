@@ -32,4 +32,4 @@ stocks.fa.fmp_metrics(
 
     pd.DataFrame
         Dataframe of key metrics
-    
+   

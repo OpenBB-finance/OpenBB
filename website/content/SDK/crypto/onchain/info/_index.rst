@@ -28,4 +28,4 @@ crypto.onchain.info(
 
     pd.DataFrame:
         DataFrame with information about provided ERC20 token.
-    
+   

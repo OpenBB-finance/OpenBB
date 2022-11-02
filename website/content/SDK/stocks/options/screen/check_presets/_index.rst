@@ -25,4 +25,4 @@ stocks.options.screen.check_presets(
 
     error: *str*
         String of all errors accumulated
-    
+   

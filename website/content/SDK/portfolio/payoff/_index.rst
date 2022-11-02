@@ -21,11 +21,8 @@ portfolio.payoff(
 )
 {{< /highlight >}}
 
-* **Parameters**
-
-
 * **Returns**
 
     pd.DataFrame
         DataFrame of payoff ratio of the portfolio during different time periods
-    
+   

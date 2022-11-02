@@ -34,4 +34,4 @@ crypto.dd.trades(
 
     pd.DataFrame
         Last N trades for chosen trading pairs.
-    
+   

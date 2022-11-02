@@ -35,4 +35,4 @@ forex.oanda.candles(
 
     Union[pd.DataFrame, bool]
         Candle chart data or False
-    
+   

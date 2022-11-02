@@ -26,4 +26,4 @@ stocks.fa.av_overview(
 
     pd.DataFrame
         Dataframe of fundamentals
-    
+   

@@ -29,4 +29,4 @@ crypto.nft.stats(
 
     pd.DataFrame
         collection stats
-    
+   

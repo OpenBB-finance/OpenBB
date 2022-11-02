@@ -26,4 +26,4 @@ portfolio.profitfactor(
 
     pd.DataFrame
         DataFrame of profit factor of the portfolio during different time periods
-    
+   

@@ -47,4 +47,4 @@ crypto.ov.news(
 
     pd.DataFrame
         DataFrame with recent news from different sources filtered by provided parameters.
-    
+   

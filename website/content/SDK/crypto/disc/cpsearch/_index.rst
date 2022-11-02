@@ -46,4 +46,4 @@ crypto.disc.cpsearch(
     pandas.DataFrame
         Search Results
         Columns: Metric, Value
-    
+   

@@ -19,4 +19,4 @@ stocks.disc.hotpenny() -> pandas.core.frame.DataFrame
     DataFrame
         Today hot penny stocks DataFrame with the following columns:
         Ticker, Price, Change, $ Volume, Volume, # Trades
-    
+   

@@ -29,4 +29,4 @@ stocks.gov.lastcontracts(
 
     pd.DataFrame
         DataFrame of government contracts
-    
+   
