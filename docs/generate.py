@@ -102,17 +102,17 @@ def format_docstring(docstring: str):
     """
 
     # Wrap argument types around asterisks to .rst interpret them as italic
-    docstring = re.sub("(: )([a-zA-Z0-9. _]+)(\n)(\d*)", r": *\2*\n", docstring)
+    docstring = re.sub(r"(: )([a-zA-Z0-9. _]+)(\n)(\d*)", r": *\2*\n", docstring)
 
     # Reformat dashes in case there is a size mismatch between title and number of dashes
-    docstring = re.sub("(Parameters\n)(.*)(\n)(\d*)", r"\1    ----------\n", docstring)
-    docstring = re.sub("(Returns\n)(.*)(\n)(\d*)", r"\1    -------\n", docstring)
-    docstring = re.sub("(Examples\n)(.*)(\n)(\d*)", r"\1    --------\n", docstring)
+    docstring = re.sub(r"(Parameters\n)(.*)(\n)(\d*)", r"\1    ----------\n", docstring)
+    docstring = re.sub(r"(Returns\n)(.*)(\n)(\d*)", r"\1    -------\n", docstring)
+    docstring = re.sub(r"(Examples\n)(.*)(\n)(\d*)", r"\1    --------\n", docstring)
 
     return docstring
 
 
-def locate_section(title: str, docstring: str):
+def locate_section(title: str, docstring: str) -> Tuple[int, int]:
     """Locate section titles.
 
     Parameters
@@ -121,6 +121,10 @@ def locate_section(title: str, docstring: str):
             Title string
         docstring: str
             Docstring text
+    Returns
+    -------
+        Tuple[int, int]
+            Title start and end positions
     """
 
     title_start = docstring.find(title)
@@ -143,15 +147,13 @@ def write_summary(bottom: int, docstring: str, file):
     """
 
     file.write(".. raw:: html\n\n")
-    file.write("    <h3>")
-    file.write("\n")
+    file.write("    <h3>\n")
     summary = "    > " + docstring[:bottom].strip() + "\n"
     file.write(summary)
-    file.write("    </h3>")
-    file.write("\n\n")
+    file.write("    </h3>\n\n")
 
 
-def indent_signature(sig: str):
+def format_signature(sig: str) -> str:
     """Indent and paragraph each signature argument.
 
     Parameters
@@ -163,7 +165,7 @@ def indent_signature(sig: str):
     sig = sig.replace("(", "(\n    ")
     # TODO: This requires type int for args, adds new line after each arg
     sig = re.sub(
-        "([a-zA-Z0-9_ ]+)(:)([\[\]a-zA-Z0-9_ (,.='-]*)(,)",
+        r"([a-zA-Z0-9_ ]+)(:)([\[\]a-zA-Z0-9_ (,.='-]*)(,)",
         r"\1\2\3\4\n   ",
         sig,
     )
@@ -172,7 +174,7 @@ def indent_signature(sig: str):
     return sig
 
 
-def insert_chart_arg(has_parameters: bool, sig: str):
+def insert_chart_arg(has_parameters: bool, sig: str) -> str:
     """Insert chart argument in signature.
 
     Parameters
@@ -261,16 +263,16 @@ def generate_documentation(
                         "To obtain charts, make sure to add :python:`chart = True` as the last parameter\n\n"
                     )
                     sig = insert_chart_arg(has_parameters, sig)
-                    sig = indent_signature(sig)
+                    sig = format_signature(sig)
                 else:
                     if has_parameters:
-                        sig = indent_signature(sig)
+                        sig = format_signature(sig)
 
                 f.write("{{< highlight python >}}\n")
                 f.write(f"{key}{sig}\n")
                 f.write("{{< /highlight >}}\n")
 
-                # Parameters, returns and examples
+                # Parameters
                 if parameters_title_start > 0:
                     write_section(
                         title="Parameters",
@@ -280,6 +282,7 @@ def generate_documentation(
                         file=f,
                     )
 
+                # Returns
                 if returns_title_start > 0:
                     write_section(
                         title="Returns",
@@ -289,6 +292,7 @@ def generate_documentation(
                         file=f,
                     )
 
+                # Examples
                 if examples_title_start > 0:
                     write_section(
                         title="Examples",
