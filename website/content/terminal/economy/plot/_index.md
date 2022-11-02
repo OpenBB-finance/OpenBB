@@ -13,7 +13,6 @@ optional arguments:
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx (default: )
-  --raw                 Flag to display raw data (default: False)
   -l LIMIT, --limit LIMIT
                         Number of entries to show in data. (default: 10)
 ```

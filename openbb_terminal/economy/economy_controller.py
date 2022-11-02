@@ -1409,7 +1409,6 @@ class EconomyController(BaseController):
             parser,
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
-            raw=True,
             limit=10,
         )
 
