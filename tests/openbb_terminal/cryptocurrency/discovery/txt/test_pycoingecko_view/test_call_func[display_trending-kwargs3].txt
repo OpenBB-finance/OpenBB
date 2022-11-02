@@ -1,8 +1,8 @@
-                 Symbol             Name  market_cap Cap Rank
-0          xcad-network     XCAD Network                  232
-1  celsius-degree-token  Celsius Network                  193
-2                  usdd             USDD                   66
-3              optimism         Optimism                  217
-4                 evmos            Evmos                  131
-5                 movez            MoveZ                  883
-6              ethereum         Ethereum                    2
+            Symbol             Name  market_cap Cap Rank
+0  battle-infinity  Battle Infinity                  903
+1         dogecoin         Dogecoin                    8
+2            aptos            Aptos                   55
+3  metavault-trade  Metavault Trade                 1001
+4        dogechain        Dogechain                  359
+5            floki            FLOKI                  229
+6             gala             Gala                  128
