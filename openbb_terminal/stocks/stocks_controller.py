@@ -552,6 +552,7 @@ class StocksController(StockBaseController):
             "--sources",
             dest="sources",
             type=str,
+            default="",
             help="Show news only from the sources specified (e.g bloomberg,reuters)",
         )
         if other_args and "-" not in other_args[0][0]:
