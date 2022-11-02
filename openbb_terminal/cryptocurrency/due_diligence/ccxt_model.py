@@ -43,7 +43,7 @@ def get_binance_currencies():
     return [c["code"] for c in currencies.values()]
 
 
-def get_orderbook(exchange_id: str, symbol: str, vs: str) -> Dict:
+def get_orderbook(exchange_id: str, symbol: str, to_symbol: str) -> Dict:
     """Returns orderbook for a coin in a given exchange
     [Source: https://docs.ccxt.com/en/latest/manual.html]
 
@@ -53,7 +53,7 @@ def get_orderbook(exchange_id: str, symbol: str, vs: str) -> Dict:
         exchange id
     symbol : str
         coin symbol
-    vs : str
+    to_symbol : str
         currency to compare coin against
 
     Returns
@@ -62,7 +62,7 @@ def get_orderbook(exchange_id: str, symbol: str, vs: str) -> Dict:
     """
     exchange_class = getattr(ccxt, exchange_id)
     exchange = exchange_class()
-    ob = exchange.fetch_order_book(f"{symbol.upper()}/{vs.upper()}")
+    ob = exchange.fetch_order_book(f"{symbol.upper()}/{to_symbol.upper()}")
     return ob
 
 
