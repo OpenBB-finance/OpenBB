@@ -128,7 +128,10 @@ class CryptoController(CryptoBaseController):
                     ]
                 },
             }
-            choices["price"] = {c: {} for c in pyth_model.ASSETS.keys()}
+            choices["price"] = {
+                "--symbol": {c: {} for c in pyth_model.ASSETS.keys()},
+                "-s": "--symbol",
+            }
             choices["headlines"] = {c: {} for c in finbrain_crypto_view.COINS}
             # choices["prt"]["--vs"] = {c: {} for c in coingecko_coin_ids} # list is huge. makes typing buggy
 
@@ -258,12 +261,14 @@ class CryptoController(CryptoBaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
         if ns_parser:
-
-            if ns_parser.symbol in pyth_model.ASSETS.keys():
+            upper_symbol = ns_parser.symbol.upper()
+            if "-USD" not in ns_parser.symbol:
+                upper_symbol += "-USD"
+            if upper_symbol in pyth_model.ASSETS.keys():
                 console.print(
                     "[param]If it takes too long, you can use 'Ctrl + C' to cancel.\n[/param]"
                 )
-                pyth_view.display_price(ns_parser.symbol)
+                pyth_view.display_price(upper_symbol)
             else:
                 console.print("[red]The symbol selected does not exist.[/red]\n")
 
