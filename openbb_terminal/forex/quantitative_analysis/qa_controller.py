@@ -278,7 +278,7 @@ class QaController(CryptoBaseController):
             "-s",
             "--sortby",
             help="The column to sort by",
-            type=str,
+            type=str.lower,
             choices=[
                 x.title().replace(" ", "") if x != "adjclose" else "AdjClose"
                 for x in self.data.columns

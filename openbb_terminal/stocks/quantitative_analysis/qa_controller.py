@@ -343,10 +343,8 @@ class QaController(StockBaseController):
             "-s",
             "--sortby",
             help="The column to sort by",
-            choices=[
-                x.title() if x != "adjclose" else "AdjClose" for x in self.stock.columns
-            ],
-            type=str,
+            choices=[x.lower() for x in self.stock.columns],
+            type=str.lower,
             dest="sortby",
         )
 

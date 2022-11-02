@@ -258,7 +258,7 @@ class QaController(StockBaseController):
             "-s",
             "--sortby",
             help="The column to sort by",
-            type=str,
+            type=str.lower,
             dest="sortby",
         )
 

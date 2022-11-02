@@ -401,7 +401,7 @@ class StocksController(StockBaseController):
             "--sort",
             choices=stocks_helper.CANDLE_SORT,
             default="",
-            type=str,
+            type=str.lower,
             dest="sort",
             help="Choose a column to sort by. Only works when raw data is displayed.",
         )

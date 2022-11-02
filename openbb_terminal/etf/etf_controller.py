@@ -482,7 +482,7 @@ class ETFController(BaseController):
             "-s",
             choices=self.CANDLE_COLUMNS,
             default="",
-            type=str,
+            type=str.lower,
             dest="sort",
             help="Choose a column to sort by",
         )

@@ -277,7 +277,7 @@ class QaController(CryptoBaseController):
                 x.title().replace(" ", "") if x != "adjclose" else "AdjClose"
                 for x in self.data.columns
             ],
-            type=str,
+            type=str.lower,
             dest="sortby",
         )
 
