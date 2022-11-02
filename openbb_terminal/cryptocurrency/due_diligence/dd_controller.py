@@ -896,7 +896,7 @@ class DueDiligenceController(CryptoBaseController):
             ccxt_view.display_order_book(
                 ns_parser.exchange,
                 symbol=self.symbol,
-                vs=ns_parser.vs,
+                to_symbol=ns_parser.vs,
                 export=ns_parser.export,
             )
 
@@ -939,7 +939,7 @@ class DueDiligenceController(CryptoBaseController):
             ccxt_view.display_trades(
                 ns_parser.exchange,
                 symbol=self.symbol,
-                vs=ns_parser.vs,
+                to_symbol=ns_parser.vs,
                 export=ns_parser.export,
                 limit=ns_parser.limit,
             )
