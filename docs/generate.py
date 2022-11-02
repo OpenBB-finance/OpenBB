@@ -153,6 +153,29 @@ def write_summary(bottom: int, docstring: str, file):
     file.write("    </h3>\n\n")
 
 
+def insert_chart_arg(has_parameters: bool, sig: str) -> str:
+    """Insert chart argument in signature.
+
+    Parameters
+    ----------
+        has_parameters: bool
+            Flags if function already has parameters or not
+        sig: str
+            Function signature
+    Returns
+    -------
+        str:
+            String with chart argument
+    """
+    # TODO: This breaks if there is a ')' inside the function arguments
+    if not has_parameters:
+        sig = sig.replace(")", "chart: bool = False)")
+    else:
+        sig = sig.replace(")", ", chart: bool = False)")
+
+    return sig
+
+
 def format_signature(sig: str) -> str:
     """Indent and paragraph each signature argument.
 
@@ -160,6 +183,10 @@ def format_signature(sig: str) -> str:
     ----------
         sig: str
             Function signature
+    Returns
+    -------
+        str:
+            String with formatted signature
     """
 
     sig = sig.replace("(", "(\n    ")
@@ -170,25 +197,6 @@ def format_signature(sig: str) -> str:
         sig,
     )
     sig = sig.replace(")", ",\n)")
-
-    return sig
-
-
-def insert_chart_arg(has_parameters: bool, sig: str) -> str:
-    """Insert chart argument in signature.
-
-    Parameters
-    ----------
-        has_parameters: bool
-            Flags if function already has parameters or not
-        sig: str
-            Function signature
-    """
-    # TODO: This breaks if there is a ')' inside the function arguments
-    if not has_parameters:
-        sig = sig.replace(")", "chart: bool = False)")
-    else:
-        sig = sig.replace(")", ", chart: bool = False)")
 
     return sig
 
