@@ -37,19 +37,13 @@ def test_display_search(category):
     ],
 )
 def test_display_historical(mocker, tickers):
-    yf_download = yfinance_view.yfinance_model.yf.download
-    # yf_download = yfinance.download
+    yf_download = yfinance.download
 
     def mock_yf_download(*args, **kwargs):
         kwargs["threads"] = False
         return yf_download(*args, **kwargs)
 
-    mocker.patch(
-        # "openbb_terminal.futures.yfinance_view.yfinance_model.yf.download",
-        "openbb_terminal.futures.yfinance_model.yf.download",
-        side_effect=mock_yf_download,
-    )
-    # mocker.patch("yfinance.download", side_effect=mock_yf_download)
+    mocker.patch("yfinance.download", side_effect=mock_yf_download)
 
     yfinance_view.display_historical(
         tickers=tickers,
