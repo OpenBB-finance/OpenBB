@@ -42,7 +42,6 @@ def display_economic_calendar(
     export : str
         Export data to csv or excel file
     """
-    print(f"{country}-{start_date}-{end_date}")
     df = nasdaq_model.get_economic_calendar(country, start_date, end_date)
     if df.empty:
         return
