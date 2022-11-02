@@ -22,7 +22,7 @@ def get_exchanges():
     return ccxt.exchanges
 
 
-def get_orderbook(exchange_id: str, symbol: str, vs: str) -> Dict:
+def get_orderbook(exchange_id: str, symbol: str, to_symbol: str) -> Dict:
     """Returns orderbook for a coin in a given exchange
     [Source: https://docs.ccxt.com/en/latest/manual.html]
 
@@ -32,7 +32,7 @@ def get_orderbook(exchange_id: str, symbol: str, vs: str) -> Dict:
         exchange id
     symbol : str
         coin symbol
-    vs : str
+    to_symbol : str
         currency to compare coin against
 
     Returns
@@ -41,11 +41,11 @@ def get_orderbook(exchange_id: str, symbol: str, vs: str) -> Dict:
     """
     exchange_class = getattr(ccxt, exchange_id)
     exchange = exchange_class()
-    ob = exchange.fetch_order_book(f"{symbol.upper()}/{vs.upper()}")
+    ob = exchange.fetch_order_book(f"{symbol.upper()}/{to_symbol.upper()}")
     return ob
 
 
-def get_trades(exchange_id: str, symbol: str, vs: str) -> pd.DataFrame:
+def get_trades(exchange_id: str, symbol: str, to_symbol: str) -> pd.DataFrame:
     """Returns trades for a coin in a given exchange
     [Source: https://docs.ccxt.com/en/latest/manual.html]
 
@@ -55,7 +55,7 @@ def get_trades(exchange_id: str, symbol: str, vs: str) -> pd.DataFrame:
         exchange id
     symbol : str
         coin symbol
-    vs : str
+    to_symbol : str
         currency to compare coin against
 
     Returns
@@ -65,7 +65,7 @@ def get_trades(exchange_id: str, symbol: str, vs: str) -> pd.DataFrame:
     """
     exchange_class = getattr(ccxt, exchange_id)
     exchange = exchange_class()
-    trades = exchange.fetch_trades(f"{symbol.upper()}/{vs.upper()}")
+    trades = exchange.fetch_trades(f"{symbol.upper()}/{to_symbol.upper()}")
     df = pd.DataFrame(trades, columns=["datetime", "price", "amount", "cost", "side"])
     df["datetime"] = pd.to_datetime(df["datetime"])
     df.rename(columns={"datetime": "date"}, inplace=True)
