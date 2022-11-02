@@ -112,6 +112,85 @@ def format_docstring(docstring: str):
     return docstring
 
 
+def locate_section(title: str, docstring: str):
+    """Locate section titles.
+
+    Parameters
+    ----------
+        title: str
+            Title string
+        docstring: str
+            Docstring text
+    """
+
+    title_start = docstring.find(title)
+    title_end = title_start + len(title)
+
+    return title_start, title_end
+
+
+def write_summary(bottom: int, docstring: str, file):
+    """Locate section titles.
+
+    Parameters
+    ----------
+        bottom: int
+            Summary string bottom position
+        docstring: str
+            Docstring text
+        file:
+            File to write documentation
+    """
+
+    file.write(".. raw:: html\n\n")
+    file.write("    <h3>")
+    file.write("\n")
+    summary = "    > " + docstring[:bottom].strip() + "\n"
+    file.write(summary)
+    file.write("    </h3>")
+    file.write("\n\n")
+
+
+def indent_signature(sig: str):
+    """Indent and paragraph each signature argument.
+
+    Parameters
+    ----------
+        sig: str
+            Function signature
+    """
+
+    sig = sig.replace("(", "(\n    ")
+    # TODO: This requires type int for args, adds new line after each arg
+    sig = re.sub(
+        "([a-zA-Z0-9_ ]+)(:)([\[\]a-zA-Z0-9_ (,.='-]*)(,)",
+        r"\1\2\3\4\n   ",
+        sig,
+    )
+    sig = sig.replace(")", ",\n)")
+
+    return sig
+
+
+def insert_chart_arg(has_parameters: bool, sig: str):
+    """Insert chart argument in signature.
+
+    Parameters
+    ----------
+        has_parameters: bool
+            Flags if function already has parameters or not
+        sig: str
+            Function signature
+    """
+    # TODO: This breaks if there is a ')' inside the function arguments
+    if not has_parameters:
+        sig = sig.replace(")", "chart: bool = False)")
+    else:
+        sig = sig.replace(")", ", chart: bool = False)")
+
+    return sig
+
+
 def generate_documentation(
     base: str, key: str, value: List[Tuple[str, str, Callable[..., Any]]]
 ):
@@ -132,16 +211,19 @@ def generate_documentation(
 
         formatted_docstring = format_docstring(docstring=docstring)
 
-        # Locate elements of interest in docstring
-        parameters_anchor = "Parameters\n    ----------\n"
-        parameters_position = formatted_docstring.find(parameters_anchor)
+        parameters_title_start, parameters_title_end = locate_section(
+            title="Parameters\n    ----------\n", docstring=formatted_docstring
+        )
 
-        returns_anchor = "Returns\n    -------\n"
-        returns_position = formatted_docstring.find(returns_anchor)
+        returns_title_start, returns_title_end = locate_section(
+            title="Returns\n    -------\n", docstring=formatted_docstring
+        )
 
-        examples_anchor = "Examples\n    --------\n"
-        examples_position = formatted_docstring.find(examples_anchor)
+        examples_title_start, examples_title_end = locate_section(
+            title="Examples\n    --------\n", docstring=formatted_docstring
+        )
 
+        # Remove .md file if already there
         if os.path.exists(f"{base}/_index.md"):
             os.remove(f"{base}/_index.md")
 
@@ -157,19 +239,19 @@ def generate_documentation(
                 if signature(model[2]).parameters:
                     has_parameters = True
 
-                if has_parameters:
-                    summary_bottom = parameters_position
-                else:
-                    summary_bottom = returns_position
-
                 # Summary
-                f.write(".. raw:: html\n\n")
-                f.write("    <h3>")
-                f.write("\n")
-                summary = "    > " + formatted_docstring[:summary_bottom].strip() + "\n"
-                f.write(summary)
-                f.write("    </h3>")
-                f.write("\n\n")
+                if has_parameters:
+                    write_summary(
+                        bottom=parameters_title_start,
+                        docstring=formatted_docstring,
+                        file=f,
+                    )
+                else:
+                    write_summary(
+                        bottom=returns_title_start,
+                        docstring=formatted_docstring,
+                        file=f,
+                    )
 
                 # Signature
                 sig = str(signature(model[2]))
@@ -178,65 +260,39 @@ def generate_documentation(
                     f.write(
                         "To obtain charts, make sure to add :python:`chart = True` as the last parameter\n\n"
                     )
-
-                    # TODO: This breaks if there is a ')' inside the function arguments
-                    if not has_parameters:
-                        sig = sig.replace(")", "chart: bool = False)")
-                    else:
-                        sig = sig.replace(")", ", chart: bool = False)")
-
-                    sig = sig.replace("(", "(\n    ")
-                    # TODO: This requires type int for args, adds new line after each arg
-                    sig = re.sub(
-                        "([a-zA-Z0-9_ ]+)(:)([\[\]a-zA-Z0-9_ (,.='-]*)(,)",
-                        r"\1\2\3\4\n   ",
-                        sig,
-                    )
-                    sig = sig.replace(")", ",\n)")
-
+                    sig = insert_chart_arg(has_parameters, sig)
+                    sig = indent_signature(sig)
                 else:
                     if has_parameters:
-                        sig = sig.replace("(", "(\n    ")
-                        # TODO: This requires type int for args, adds new line after each arg
-                        sig = re.sub(
-                            "([a-zA-Z0-9_ ]+)(:)([\[\]a-zA-Z0-9_ (,.='-]*)(,)",
-                            r"\1\2\3\4\n   ",
-                            sig,
-                        )
-                        sig = sig.replace(")", ",\n)")
+                        sig = indent_signature(sig)
 
-                f.write("{{< highlight python >}}")
-                f.write("\n")
-                f.write(f"{key}{sig}")
-                f.write("\n")
-                f.write("{{< /highlight >}}")
-                f.write("\n")
+                f.write("{{< highlight python >}}\n")
+                f.write(f"{key}{sig}\n")
+                f.write("{{< /highlight >}}\n")
 
-                # Parameters
-                if parameters_position > 0:
+                # Parameters, returns and examples
+                if parameters_title_start > 0:
                     write_section(
                         title="Parameters",
-                        start=parameters_position + len(parameters_anchor),
-                        end=returns_position,
+                        start=parameters_title_end,
+                        end=returns_title_start,
                         docstring=formatted_docstring,
                         file=f,
                     )
 
-                # Returns
-                if returns_position > 0:
+                if returns_title_start > 0:
                     write_section(
                         title="Returns",
-                        start=returns_position + len(returns_anchor),
-                        end=examples_position,
+                        start=returns_title_end,
+                        end=examples_title_start,
                         docstring=formatted_docstring,
                         file=f,
                     )
 
-                # Examples
-                if examples_position > 0:
+                if examples_title_start > 0:
                     write_section(
                         title="Examples",
-                        start=examples_position + len(examples_anchor),
+                        start=examples_title_end,
                         end=len(formatted_docstring),
                         docstring=formatted_docstring,
                         file=f,
