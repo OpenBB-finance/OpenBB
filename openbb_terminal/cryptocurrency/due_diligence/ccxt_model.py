@@ -53,7 +53,7 @@ def get_orderbook(exchange_id: str, symbol: str, vs: str) -> Dict:
         exchange id
     symbol : str
         coin symbol
-    to_symbol : str
+    vs : str
         currency to compare coin against
 
     Returns
@@ -62,7 +62,7 @@ def get_orderbook(exchange_id: str, symbol: str, vs: str) -> Dict:
     """
     exchange_class = getattr(ccxt, exchange_id)
     exchange = exchange_class()
-    ob = exchange.fetch_order_book(f"{symbol.upper()}/{to_symbol.upper()}")
+    ob = exchange.fetch_order_book(f"{symbol.upper()}/{vs.upper()}")
     return ob
 
 
