@@ -19,11 +19,11 @@ losers -s Price [$] -l 5 -i 14d
 # cpsearch CURRENTLY BUGGY
 search bitcoin
 search -q bitcoin -s name
-cpssearchearch -q bitcoin -c exchanges -l 2
+search -q bitcoin -c exchanges -l 2
 
-# # Broken commands
-# nft
-# games
-# dapps
-# dex
+nft
+games
+dapps
+dex
+
 exit
