@@ -482,34 +482,33 @@ en:
   crypto/ta: technical analysis for loaded coin,     ema, macd, rsi, adx, bbands, obv
   crypto/forecast: forecast techniques,                    rnn, nbeats, transformer, block rnn
   crypto/qa: quantitative analysis                   decompose, cusum, residuals analysis
-  crypto/disc/cgtop: top coins (with or without category)
-  crypto/disc/cgtrending: trending coins
-  crypto/disc/cggainers: top gainers - coins which price gained the most in given period
-  crypto/disc/cglosers: top losers - coins which price dropped the most in given period
-  crypto/disc/cpsearch: search for coins
-  crypto/disc/cmctop: top coins
-  crypto/disc/drnft: top non fungible tokens
-  crypto/disc/drgames: top blockchain games
-  crypto/disc/drdapps: top decentralized apps
-  crypto/disc/drdex: top decentralized exchanges
-  crypto/ov/cgglobal: global crypto market info
-  crypto/ov/cgdefi: global DeFi market info
-  crypto/ov/cgstables: stablecoins
-  crypto/ov/cgexchanges: top crypto exchanges
-  crypto/ov/cgexrates: coin exchange rates
-  crypto/ov/cgindexes: crypto indexes
-  crypto/ov/cgderivatives: crypto derivatives
-  crypto/ov/cgcategories: crypto categories
-  crypto/ov/cghold: ethereum, bitcoin holdings overview statistics
+  crypto/disc/top: top coins
+  crypto/disc/trending: trending coins
+  crypto/disc/gainers: top gainers
+  crypto/disc/losers: top losers
+  crypto/disc/search: search for coins
+  crypto/disc/nft: top non fungible tokens
+  crypto/disc/games: top blockchain games
+  crypto/disc/dapps: top decentralized apps
+  crypto/disc/dex: top decentralized exchanges
+  crypto/ov/global: global crypto market info
+  crypto/ov/defi: global DeFi market info
+  crypto/ov/stables: stablecoins
+  crypto/ov/exchanges: top crypto exchanges
+  crypto/ov/exrates: coin exchange rates
+  crypto/ov/indexes: crypto indexes
+  crypto/ov/derivatives: crypto derivatives
+  crypto/ov/categories: crypto categories
+  crypto/ov/hold: ethereum, bitcoin holdings overview statistics
   crypto/ov/hm: crypto heatmap
-  crypto/ov/cpglobal: global crypto market info
-  crypto/ov/cpinfo: basic info about all coins available
-  crypto/ov/cpmarkets: market related info about all coins available
-  crypto/ov/cpexchanges: list all exchanges
-  crypto/ov/cpexmarkets: all available markets on given exchange
-  crypto/ov/cpplatforms: list blockchain platforms eg. ethereum, solana, kusama, terra
-  crypto/ov/cpcontracts: all smart contracts for given platform
-  crypto/ov/cbpairs: info about available trading pairs
+  crypto/ov/global: global crypto market info
+  crypto/ov/info: basic info about all coins available
+  crypto/ov/markets: market related info about all coins available
+  crypto/ov/exchanges: list all exchanges
+  crypto/ov/exmarkets: all available markets on given exchange
+  crypto/ov/platforms: list blockchain platforms eg. ethereum, solana, kusama, terra
+  crypto/ov/contracts: all smart contracts for given platform
+  crypto/ov/pairs: info about available trading pairs
   crypto/ov/news: recent crypto news
   crypto/ov/wf: overall withdrawal fees
   crypto/ov/ewf: overall exchange withdrawal fees
@@ -1045,6 +1044,7 @@ en:
   forecast/atr: Add Average True Range
   forecast/signal: Add Price Signal (short vs. long term)
   forecast/_tsforecasting_: TimeSeries Forecasting
+  forecast/autoets: Automatic ETS (Error, Trend, Seasonality) Model
   forecast/arima: Arima (Non-darts)
   forecast/expo: Probabilistic Exponential Smoothing
   forecast/theta: Theta Method

@@ -19,7 +19,7 @@ For more information and examples, use 'about roc' to access the related guide.
 Example:
 ```
 (🦋) /forecast/ $ show TSLA
-TSLA has following shape (rowxcolumn): (611, 7)
+TSLA dataset has shape (row, column): (611, 7)
 
                     Dataset TSLA | Showing 10 of 611 rows
 ┏━━━┳━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
@@ -50,7 +50,7 @@ TSLA has following shape (rowxcolumn): (611, 7)
 Successfully added 'ROC_10' to 'TSLA' dataset
 
 (🦋) /forecast/ $ show TSLA
-TSLA has following shape (rowxcolumn): (611, 8)
+TSLA dataset has shape (row, column): (611, 8)
 
                          Dataset TSLA | Showing 10 of 611 rows
 ┏━━━┳━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┓

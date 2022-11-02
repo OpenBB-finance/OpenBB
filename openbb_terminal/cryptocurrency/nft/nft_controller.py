@@ -51,8 +51,6 @@ class NFTController(BaseController):
             choices["stats"] = {
                 "--slug": None,
                 "-s": None,
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
             }
             choices["collections"] = {
                 "--fp": {},
@@ -171,6 +169,6 @@ class NFTController(BaseController):
             nftpricefloor_view.display_collections(
                 show_sales=ns_parser.sales,
                 show_fp=ns_parser.fp,
-                num=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )

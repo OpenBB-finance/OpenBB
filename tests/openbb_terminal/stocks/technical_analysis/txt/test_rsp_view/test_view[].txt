@@ -1,1 +1,2 @@
-Ticker not found
+[red]Ticker '' not found.
+[/red]

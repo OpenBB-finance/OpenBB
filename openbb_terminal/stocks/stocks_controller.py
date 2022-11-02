@@ -453,15 +453,6 @@ class StocksController(StockBaseController):
         )
         if ns_parser:
             if self.ticker:
-                export_data(
-                    ns_parser.export,
-                    os.path.join(
-                        os.path.dirname(os.path.abspath(__file__)), "raw_data"
-                    ),
-                    f"{self.ticker}",
-                    self.stock,
-                )
-
                 if ns_parser.sort and not self.stock.empty:
                     sort = (
                         ns_parser.sort if ns_parser.sort != "AdjClose" else "Adj Close"
@@ -514,8 +505,16 @@ class StocksController(StockBaseController):
                         ma=mov_avgs,
                         yscale="log" if ns_parser.logy else "linear",
                     )
+
+                export_data(
+                    ns_parser.export,
+                    os.path.dirname(os.path.abspath(__file__)),
+                    f"{self.ticker}",
+                    self.stock,
+                )
+
             else:
-                console.print("No ticker loaded. First use `load {ticker}`\n")
+                console.print("No ticker loaded. First use 'load <ticker>'")
 
     @log_start_end(log=logger)
     def call_news(self, other_args: List[str]):
@@ -547,6 +546,7 @@ class StocksController(StockBaseController):
             "--sources",
             dest="sources",
             type=str,
+            default="",
             help="Show news only from the sources specified (e.g bloomberg,reuters)",
         )
         if other_args and "-" not in other_args[0][0]:

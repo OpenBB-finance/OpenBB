@@ -1,31 +1,123 @@
 crypto
-load btc
+load eth
 dd
-liquidations
-fundrate
-oi
-nonzero
+
+# info
 info
-market
-ath
-atl
+
+# ath
+ath --vs usd
+
+# atl
+atl --vs usd
+
+# web
 web
-social
-score
-dev
+
+# bc
 bc
-mcapdom
-mt --list
-rm
-tk
+
+# pi
 pi
-team
-inv
+
+# gov
 gov
-fr
-links
-gh
-news
-ob
+
+# basic
+basic
+
+# stats
+stats
+stats --vs GBP
+
+# desc
+desc
+
+# market
+market
+
+# mkt
+mkt
+mkt --urls
+mkt --vs ETH --limit 3 --sort volume --urls
+
+# ex
+ex
+ex --limit 3 --sort adjusted_volume_24h_share
+
+# balance
+balance
+
+# oi
+
+# fundrate
+
+# liquidations
+
+# eb
+
+# trades
 trades
+trades -e aax
+trades --vs GBP
+
+# ob
+ob
+ob -e aax
+ob --vs GBP
+
+# ps
+ps
+ps --vs ETH
+
+# mcapdom
+mcapdom
+
+# mt
+mt
+
+# funot
+
+# team
+team
+
+# inv
+inv
+
+# tk
+tk
+
+# fr
+fr
+
+# rm
+rm
+
+# events
+events
+events --limit 3 --sort name --urls
+
+# news
+news
+news --limit 3 -k media -r en --filter bullish
+
+# links
+links
+
+# twitter
+twitter
+twitter --limit 3 --sort retweet_count
+
+# social
+social
+
+# score
+score
+
+# dev
+dev
+
+# gh
+gh
+
 exit

@@ -138,6 +138,14 @@ class TechnicalAnalysisController(CryptoBaseController):
                 "--scalar": None,
                 "-s": "--scalar",
             }
+            choices["rsi"] = {
+                "--length": one_to_hundred,
+                "-l": "--length",
+                "--scalar": None,
+                "-s": "--scalar",
+                "--drift": one_to_hundred,
+                "-d": "--drift",
+            }
             choices["macd"] = {
                 "--fast": one_to_hundred,
                 "--slow": "--fast",
@@ -148,8 +156,6 @@ class TechnicalAnalysisController(CryptoBaseController):
                 "-l": "--length",
                 "--scalar": None,
                 "-s": "--scalar",
-                "--drift": "--length",
-                "-d": "--drift",
             }
             choices["stoch"] = {
                 "--fastkperiod": one_to_hundred,
@@ -592,7 +598,7 @@ class TechnicalAnalysisController(CryptoBaseController):
 
             overlap_view.view_vwap(
                 symbol=self.coin,
-                s_interval=interval_text,
+                interval=interval_text,
                 data=self.stock,
                 start_date=ns_parser.start,
                 end_date=ns_parser.end,
