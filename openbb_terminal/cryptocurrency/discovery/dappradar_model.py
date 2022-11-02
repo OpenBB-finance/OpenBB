@@ -110,7 +110,7 @@ def get_top_nfts(sortby: str = "", limit: int = 10) -> pd.DataFrame:
         df = df.set_axis(
             NFT_COLUMNS,
             axis=1,
-            inplace=False,
+            copy=False,
         )
         df["Protocols"] = df["Protocols"].apply(lambda x: ",".join(x))
     if sortby in NFT_COLUMNS:
