@@ -115,6 +115,8 @@ def rsi(
         console.print("[red]Please send a series and not a DataFrame.[/red]\n")
         return pd.DataFrame()
     raw_data = ta.rsi(data, length=window, scalar=scalar, drift=drift)
+    if raw_data is None:
+        return pd.DataFrame()
     if raw_data.empty:
         return pd.DataFrame()
     return pd.DataFrame(raw_data.dropna())
