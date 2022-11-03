@@ -260,11 +260,7 @@ class NestedCompleter(Completer):
                                 self.flags_processed.remove(same_flags[1])
 
                 if cmd and self.original_options.get(cmd):
-                    self.options = {
-                        k: self.original_options.get(cmd).options[k]  # type: ignore
-                        for k in self.original_options.get(cmd).options.keys()  # type: ignore
-                        if k not in self.flags_processed
-                    }
+                    self.options = self.original_options
                 else:
                     self.options = {
                         k: self.original_options[k]

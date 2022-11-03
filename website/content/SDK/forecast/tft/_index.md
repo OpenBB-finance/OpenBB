@@ -1,7 +1,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
-## Get underlying data 
-### forecast.tft(data: Union[pandas.core.series.Series, pandas.core.frame.DataFrame], target_column: str = 'close', n_predict: int = 30, past_covariates: str = None, train_split: float = 0.85, forecast_horizon: int = 5, input_chunk_length: int = 14, output_chunk_length: int = 5, hidden_size: int = 16, lstm_layers: int = 1, num_attention_heads: int = 4, full_attention: bool = False, dropout: float = 0.1, hidden_continuous_size: int = 8, n_epochs: int = 200, batch_size: int = 32, model_save_name: str = 'tft_model', force_reset: bool = True, save_checkpoints: bool = True) -> Tuple[List[darts.timeseries.TimeSeries], List[darts.timeseries.TimeSeries], List[darts.timeseries.TimeSeries], Optional[float], Any]
+## Get underlying data
+### forecast.tft(data: Union[pandas.core.series.Series, pandas.core.frame.DataFrame], target_column: str = 'close', n_predict: int = 5, past_covariates: str = None, train_split: float = 0.85, forecast_horizon: int = 5, input_chunk_length: int = 14, output_chunk_length: int = 5, hidden_size: int = 16, lstm_layers: int = 1, num_attention_heads: int = 4, full_attention: bool = False, dropout: float = 0.1, hidden_continuous_size: int = 8, n_epochs: int = 200, batch_size: int = 32, model_save_name: str = 'tft_model', force_reset: bool = True, save_checkpoints: bool = True) -> Tuple[List[darts.timeseries.TimeSeries], List[darts.timeseries.TimeSeries], List[darts.timeseries.TimeSeries], Optional[float], Any]
 
 Performs Temporal Fusion Transformer forecasting
     The TFT applies multi-head attention queries on future inputs from mandatory future_covariates.
@@ -70,8 +70,8 @@ Performs Temporal Fusion Transformer forecasting
     Any
         Fit Prob. TFT model object.
 
-## Getting charts 
-### forecast.tft(data: Union[pandas.core.series.Series, pandas.core.frame.DataFrame], target_column: str = 'close', dataset_name: str = '', n_predict: int = 30, past_covariates: str = None, train_split: float = 0.85, forecast_horizon: int = 5, input_chunk_length: int = 14, output_chunk_length: int = 5, hidden_size: int = 16, lstm_layers: int = 1, num_attention_heads: int = 4, full_attention: bool = False, dropout: float = 0.1, hidden_continuous_size: int = 8, n_epochs: int = 200, batch_size: int = 32, model_save_name: str = 'tft_model', force_reset: bool = True, save_checkpoints: bool = True, export: str = '', residuals: bool = False, forecast_only: bool = False, start_date: Optional[datetime.datetime] = None, end_date: Optional[datetime.datetime] = None, naive: bool = False, export_pred_raw: bool = False, external_axes: Optional[List[axes]] = None, chart=True)
+## Getting charts
+### forecast.tft(data: Union[pandas.core.series.Series, pandas.core.frame.DataFrame], target_column: str = 'close', dataset_name: str = '', n_predict: int = 5, past_covariates: str = None, train_split: float = 0.85, forecast_horizon: int = 5, input_chunk_length: int = 14, output_chunk_length: int = 5, hidden_size: int = 16, lstm_layers: int = 1, num_attention_heads: int = 4, full_attention: bool = False, dropout: float = 0.1, hidden_continuous_size: int = 8, n_epochs: int = 200, batch_size: int = 32, model_save_name: str = 'tft_model', force_reset: bool = True, save_checkpoints: bool = True, export: str = '', residuals: bool = False, forecast_only: bool = False, start_date: Optional[datetime.datetime] = None, end_date: Optional[datetime.datetime] = None, naive: bool = False, export_pred_raw: bool = False, external_axes: Optional[List[axes]] = None, chart=True)
 
 Display Temporal Fusion Transformer forecast
 

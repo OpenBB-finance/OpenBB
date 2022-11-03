@@ -45,6 +45,7 @@ class NFTController(BaseController):
             choices["support"] = self.SUPPORT_CHOICES
             choices["about"] = self.ABOUT_CHOICES
             choices["fp"] = {c: {} for c in nft_price_floor_collections}
+            choices["fp"]["--slug"] = {c: {} for c in nft_price_floor_collections}
             choices["fp"]["--raw"] = {}
             choices["fp"]["--limit"] = {str(c): {} for c in range(1, 100)}
             choices["fp"]["-l"] = "--limit"
