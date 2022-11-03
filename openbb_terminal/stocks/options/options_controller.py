@@ -145,8 +145,8 @@ class OptionsController(BaseController):
             one_to_thousand: dict = {str(c): {} for c in range(1, 1000)}
             minus_one_to_thousand: dict = {str(c): {} for c in range(-1, 1000)}
             choices["unu"] = {
-                "--sort": {c: {} for c in self.unu_sortby_choices},
-                "-s": "--sort",
+                "--sortby": {c: {} for c in self.unu_sortby_choices},
+                "-s": "--sortby",
                 "--ascending": {},
                 "-a": "--ascending",
                 "--puts_only": {},
@@ -283,7 +283,7 @@ class OptionsController(BaseController):
         See `BaseController.parse_input()` for details.
         """
         # Filtering out sorting parameters with forward slashes like P/E
-        sort_filter = r"((\ -s |\ --sort ).*?(Vol\/OI)*)"
+        sort_filter = r"((\ -s |\ --sortby ).*?(Vol\/OI)*)"
 
         custom_filters = [sort_filter]
 
