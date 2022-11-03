@@ -133,7 +133,7 @@ def get_coin_potential_returns(
         )
         return format_df(df)
 
-    if to_symbol:  # user passed a coin
+    elif to_symbol:  # user passed a coin
         data = client.get_price(
             ids=f"{main_coin},{to_symbol}",
             vs_currencies="usd",
@@ -168,7 +168,7 @@ def get_coin_potential_returns(
             )
             return format_df(df)
 
-    if price and price > 0:  # user passed a price
+    elif price and price > 0:  # user passed a price
         data = client.get_price(
             ids=main_coin,
             vs_currencies="usd",
@@ -194,7 +194,7 @@ def get_coin_potential_returns(
                         main_coin,
                         main_coin_data["usd"],
                         main_coin_data["usd_market_cap"],
-                        "",
+                        main_coin,
                         future_price,
                         final_market_cap,
                         market_cap_difference_percentage,
