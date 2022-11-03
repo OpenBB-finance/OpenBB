@@ -10,7 +10,7 @@ optional arguments:
   --descend             Flag to sort in descending order (lowest first) (default: False)
   -c, --chart           Flag to show chart (default: False)
   -g, --growth          Flag to show growth chart (default: False)
-  -ct {stars,forks}, --chart-type {stars,forks}
+  -t {stars,forks}, --chart-type {stars,forks}
                         Chart type: {stars, forks} (default: stars)
   -h, --help            show this help message (default: False)
   --export EXPORT       Export raw data into csv, json, xlsx (default: )

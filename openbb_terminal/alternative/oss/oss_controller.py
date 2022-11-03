@@ -45,7 +45,7 @@ class OSSController(BaseController):
                 "--growth": {},
                 "-g": "--growth",
                 "--chart-type": {c: {} for c in ["stars", "forks"]},
-                "-ct": "--chart-type",
+                "-t": "--chart-type",
                 "--limit": {str(c): {} for c in range(1, 50)},
                 "-l": "--limit",
             }
@@ -193,7 +193,7 @@ class OSSController(BaseController):
             default=False,
         )
         parser.add_argument(
-            "-ct",
+            "-t",
             "--chart-type",
             type=str,
             dest="chart_type",
