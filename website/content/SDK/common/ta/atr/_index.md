@@ -1,18 +1,14 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### common.ta.atr(high_prices: pandas.core.series.Series, low_prices: pandas.core.series.Series, close_prices: pandas.core.series.Series, window: int = 14, mamode: str = 'ema', offset: int = 0) -> pandas.core.frame.DataFrame
+### common.ta.atr(data: pandas.core.frame.DataFrame, window: int = 14, mamode: str = 'ema', offset: int = 0) -> pandas.core.frame.DataFrame
 
 Average True Range
 
     Parameters
     ----------
-    high_prices : pd.DataFrame
-        High prices
-    low_prices : pd.DataFrame
-        Low prices
-    close_prices : pd.DataFrame
-        Close prices
+    data : pd.DataFrame
+        Dataframe of ohlc prices
     window : int
         Length of window
     mamode: str

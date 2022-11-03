@@ -1,13 +1,13 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### common.ta.rsi(values: pandas.core.series.Series, window: int = 14, scalar: float = 100, drift: int = 1) -> pandas.core.frame.DataFrame
+### common.ta.rsi(data: pandas.core.series.Series, window: int = 14, scalar: float = 100, drift: int = 1) -> pandas.core.frame.DataFrame
 
 Relative strength index
 
     Parameters
     ----------
-    values: pd.Series
+    data: pd.Series
         Dataframe of prices
     window: int
         Length of window

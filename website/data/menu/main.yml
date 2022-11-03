@@ -1871,6 +1871,8 @@ main:
                 ref: /SDK/crypto/dd/news
               - name: nonzero
                 ref: /SDK/crypto/dd/nonzero
+              - name: ob
+                ref: /SDK/crypto/dd/ob
               - name: ohlc_historical
                 ref: /SDK/crypto/dd/ohlc_historical
               - name: oi
@@ -1986,6 +1988,10 @@ main:
           - name: nft
             ref: /SDK/crypto/nft
             sub:
+              - name: collections
+                ref: /SDK/crypto/nft/collections
+              - name: fp
+                ref: /SDK/crypto/nft/fp
               - name: stats
                 ref: /SDK/crypto/nft/stats
           - name: onchain
@@ -2102,6 +2108,8 @@ main:
                 ref: /SDK/crypto/ov/wf
               - name: wfpe
                 ref: /SDK/crypto/ov/wfpe
+          - name: price
+            ref: /SDK/crypto/price
           - name: tools
             ref: /SDK/crypto/tools
             sub:
@@ -2269,6 +2277,8 @@ main:
         sub:
           - name: atr
             ref: /SDK/forecast/atr
+          - name: autoets
+            ref: /SDK/forecast/autoets
           - name: brnn
             ref: /SDK/forecast/brnn
           - name: clean
@@ -2371,13 +2381,6 @@ main:
                 ref: /SDK/forex/oanda/summary
           - name: quote
             ref: /SDK/forex/quote
-      - name: funds
-        ref: /SDK/funds
-        sub:
-          - name: info
-            ref: /SDK/funds/info
-          - name: search
-            ref: /SDK/funds/search
       - name: futures
         ref: /SDK/futures
         sub:
