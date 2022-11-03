@@ -141,6 +141,10 @@ def view_historical_greeks(
         External axes (1 axis is expected in the list), by default None
     """
     df = syncretism_model.get_historical_greeks(symbol, expiry, strike, chain_id, put)
+    if df is None:
+        return
+    if df.empty:
+        return
 
     if raw:
         print_rich_table(
@@ -154,7 +158,12 @@ def view_historical_greeks(
     else:
         return
 
-    im1 = ax.plot(df.index, df[greek], label=greek.title(), color=theme.up_color)
+    try:
+        greek_df = df[greek.lower()]
+    except KeyError:
+        console.print(f"[red]Could not find greek {greek} in data.[/red]\n")
+        return
+    im1 = ax.plot(df.index, greek_df, label=greek.title(), color=theme.up_color)
     ax.set_ylabel(greek)
     ax1 = ax.twinx()
     im2 = ax1.plot(df.index, df.price, label="Stock Price", color=theme.down_color)
