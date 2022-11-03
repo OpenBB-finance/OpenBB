@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import configparser
 import logging
 import os
-from typing import List, Optional
+from typing import List, Optional, Union
 
 import matplotlib.pyplot as plt
 
@@ -106,7 +106,7 @@ def view_screener_output(
 def view_historical_greeks(
     symbol: str,
     expiry: str,
-    strike: float,
+    strike: Union[float, str],
     greek: str = "Delta",
     chain_id: str = "",
     put: bool = False,
@@ -123,7 +123,7 @@ def view_historical_greeks(
         Stock ticker
     expiry: str
         Expiration date
-    strike: float
+    strike: Union[str, float]
         Strike price to consider
     greek: str
         Greek variable to plot
