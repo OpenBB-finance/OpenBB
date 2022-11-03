@@ -378,16 +378,14 @@ class NestedCompleter(Completer):
                             if k not in self.flags_processed
                         }
 
-            if (
-                cmd
-                and cmd in self.options.keys()
-                and [
-                    text in val
-                    for val in [
-                        f"{cmd} {opt}" for opt in self.options.get(cmd).options.keys()  # type: ignore
-                    ]
-                ]
-            ):
+            command = self.options.get(cmd)
+            if command:
+                options = command.options  # type: ignore
+            else:
+                options = {}
+            command_options = [f"{cmd} {opt}" for opt in options.keys()]
+            text_list = [text in val for val in command_options]
+            if cmd and cmd in self.options.keys() and text_list:
                 completer = WordCompleter(
                     list(self.options.get(cmd).options.keys()),  # type: ignore
                     ignore_case=self.ignore_case,

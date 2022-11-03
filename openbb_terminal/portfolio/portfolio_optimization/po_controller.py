@@ -1412,7 +1412,7 @@ class PortfolioOptimizationController(BaseController):
             if "historic_period_sa" in vars(ns_parser):
                 table = False
 
-            console.print("Optimization can take time. Please be patient...")
+            console.print("Optimization can take time. Please be patient...\n")
 
             weights = optimizer_view.display_max_sharpe(
                 symbols=self.tickers,
@@ -1595,7 +1595,7 @@ class PortfolioOptimizationController(BaseController):
             if "historic_period_sa" in vars(ns_parser):
                 table = False
 
-            console.print("Optimization can take time. Please be patient...")
+            console.print("Optimization can take time. Please be patient...\n")
 
             weights = optimizer_view.display_min_risk(
                 symbols=self.tickers,
@@ -1790,7 +1790,7 @@ class PortfolioOptimizationController(BaseController):
             if "historic_period_sa" in vars(ns_parser):
                 table = False
 
-            console.print("Optimization can take time. Please be patient...")
+            console.print("Optimization can take time. Please be patient...\n")
 
             weights = optimizer_view.display_max_util(
                 symbols=self.tickers,
@@ -1977,7 +1977,7 @@ class PortfolioOptimizationController(BaseController):
             if "historic_period_sa" in vars(ns_parser):
                 table = False
 
-            console.print("Optimization can take time. Please be patient...")
+            console.print("Optimization can take time. Please be patient...\n")
 
             weights = optimizer_view.display_max_ret(
                 symbols=self.tickers,
@@ -2133,7 +2133,7 @@ class PortfolioOptimizationController(BaseController):
             if "historic_period_sa" in vars(ns_parser):
                 table = False
 
-            console.print("Optimization can take time. Please be patient...")
+            console.print("Optimization can take time. Please be patient...\n")
 
             weights = optimizer_view.display_max_div(
                 symbols=self.tickers,
@@ -2277,7 +2277,7 @@ class PortfolioOptimizationController(BaseController):
             if "historic_period_sa" in vars(ns_parser):
                 table = False
 
-            console.print("Optimization can take time. Please be patient...")
+            console.print("Optimization can take time. Please be patient...\n")
 
             weights = optimizer_view.display_max_decorr(
                 symbols=self.tickers,
@@ -2499,7 +2499,7 @@ class PortfolioOptimizationController(BaseController):
             if "historic_period_sa" in vars(ns_parser):
                 table = False
 
-            console.print("Optimization can take time. Please be patient...")
+            console.print("Optimization can take time. Please be patient...\n")
 
             weights = optimizer_view.display_black_litterman(
                 symbols=self.tickers,
@@ -2779,7 +2779,7 @@ class PortfolioOptimizationController(BaseController):
             if "historic_period_sa" in vars(ns_parser):
                 table = False
 
-            console.print("Optimization can take time. Please be patient...")
+            console.print("Optimization can take time. Please be patient...\n")
 
             weights = optimizer_view.display_risk_parity(
                 symbols=self.tickers,
@@ -2937,7 +2937,7 @@ class PortfolioOptimizationController(BaseController):
             if "historic_period_sa" in vars(ns_parser):
                 table = False
 
-            console.print("Optimization can take time. Please be patient...")
+            console.print("Optimization can take time. Please be patient...\n")
 
             weights = optimizer_view.display_rel_risk_parity(
                 symbols=self.tickers,
@@ -3220,7 +3220,7 @@ class PortfolioOptimizationController(BaseController):
             if "historic_period_sa" in vars(ns_parser):
                 table = False
 
-            console.print("Optimization can take time. Please be patient...")
+            console.print("Optimization can take time. Please be patient...\n")
 
             weights = optimizer_view.display_hrp(
                 symbols=self.tickers,
@@ -3521,7 +3521,7 @@ class PortfolioOptimizationController(BaseController):
             if "historic_period_sa" in vars(ns_parser):
                 table = False
 
-            console.print("Optimization can take time. Please be patient...")
+            console.print("Optimization can take time. Please be patient...\n")
 
             weights = optimizer_view.display_herc(
                 symbols=self.tickers,
@@ -3776,7 +3776,7 @@ class PortfolioOptimizationController(BaseController):
             if "historic_period_sa" in vars(ns_parser):
                 table = False
 
-            console.print("Optimization can take time. Please be patient...")
+            console.print("Optimization can take time. Please be patient...\n")
 
             weights = optimizer_view.display_nco(
                 symbols=self.tickers,
