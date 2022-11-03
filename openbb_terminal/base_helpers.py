@@ -6,7 +6,7 @@ from rich.console import Console
 
 console = Console()
 
-menus = Literal["", "feature flags", "settings"]
+menus = Literal["", "featflags", "settings"]
 
 
 def handle_error(name: str, default: Any, menu: menus = ""):
@@ -58,7 +58,7 @@ def load_env_vars(
     Any
         The value or the default
     """
-    raw_var = os.getenv(name)
+    raw_var = os.getenv(name, str(default))
     try:
         return converter(raw_var)
     except ValueError:
