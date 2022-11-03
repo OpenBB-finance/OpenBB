@@ -137,7 +137,7 @@ class BaseController(metaclass=ABCMeta):
             add_help=False,
             prog=self.path[-1] if self.PATH != "/" else "terminal",
         )
-        self.parser.exit_on_error = False
+        self.parser.exit_on_error = False  # type: ignore
         self.parser.add_argument("cmd", choices=self.controller_choices)
 
         theme.applyMPLstyle()
