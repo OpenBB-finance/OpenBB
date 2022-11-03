@@ -124,10 +124,10 @@ class OptionsController(BaseController):
 
         if ticker:
             if API_TRADIER_TOKEN == "REPLACE_ME":  # nosec
-                console.print("Loaded expiry dates from Yahoo Finance")
+                console.print("Loaded expiry dates from Yahoo Finance\n")
                 self.expiry_dates = yfinance_model.option_expirations(self.ticker)
             else:
-                console.print("Loaded expiry dates from Tradier")
+                console.print("Loaded expiry dates from Tradier\n")
                 self.expiry_dates = tradier_model.option_expirations(self.ticker)
         else:
             self.expiry_dates = []
@@ -621,6 +621,7 @@ class OptionsController(BaseController):
             "--limit",
             dest="limit",
             default=20,
+            type=int,
             help="Limit of raw data rows to display",
         )
         if other_args and "-" not in other_args[0][0]:
