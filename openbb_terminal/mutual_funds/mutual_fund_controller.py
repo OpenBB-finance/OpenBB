@@ -42,7 +42,6 @@ class FundController(BaseController):
         "resources",
         "country",
         "search",
-        "overview",
         "info",
         "load",
         "plot",
@@ -133,7 +132,6 @@ class FundController(BaseController):
         mt.add_raw("\n")
         mt.add_param("_country", self.country.title())
         mt.add_raw("\n")
-        mt.add_cmd("overview")
         mt.add_cmd("search")
         mt.add_cmd("load")
         mt.add_raw("\n")

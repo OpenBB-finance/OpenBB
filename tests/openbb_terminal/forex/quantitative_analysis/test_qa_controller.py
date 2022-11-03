@@ -7,6 +7,7 @@ import pytest
 
 # IMPORTATION INTERNAL
 from openbb_terminal.forex.quantitative_analysis import qa_controller
+from tests.test_helpers import no_dfs
 
 
 DF_PAIR = pd.DataFrame.from_dict(
@@ -311,10 +312,10 @@ def test_call_func_expect_queue(expected_queue, queue, func):
             "qa_view.display_raw",
             [],
             dict(
-                data=QA_CONTROLLER.data[QA_CONTROLLER.target],
+                data=QA_CONTROLLER.data,
                 limit=1,
                 sortby="",
-                descend=True,
+                ascend=True,
                 export="csv",
             ),
         ),
@@ -516,7 +517,7 @@ def test_call_func(
 
         getattr(QA_CONTROLLER, tested_func)(other_args=other_args)
 
-        if called_args or called_kwargs:
+        if called_args or called_kwargs and no_dfs(called_args, called_kwargs):
             mock.assert_called_once_with(*called_args, **called_kwargs)
         else:
             mock.assert_called_once()

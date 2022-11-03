@@ -189,6 +189,8 @@ class SectorIndustryAnalysisController(BaseController):
             choices["mktcap"] = {c: {} for c in self.mktcap_choices}
             choices["period"] = {c: {} for c in self.period_choices}
             choices["clear"] = {c: {} for c in self.clear_choices}
+            choices["clear"]["--param"] = {c: {} for c in self.clear_choices}
+            choices["clear"]["-p"] = "--param"
             standard_cp = {
                 "--raw": {},
                 "-r": "--raw",

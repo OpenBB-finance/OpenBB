@@ -1,16 +1,106 @@
 crypto
 ov
-pairs
+
+# global
+global
+global --pie
+
+# defi
+defi
+
+# stables
+stables
+stables --pie
+stables --limit 3 --sort current_price
+
+# exchanges
 exchanges
-cr
-hold
-hm
-global
+exchanges --source CoinGecko
+exchanges --source CoinPaprika
+exchanges --urls
+exchanges --vs ETH
+exchanges --source CoinGecko --limit 3 --sort Trust_Score
+
+# exrates
+exrates
+exrates --sort Value --limit 3
+
+# indexes
+indexes
+indexes --sort Last --limit 3
+
+# derivatives
+derivatives
+derivatives --sort Basis --limit 3
+
+# categories
 categories
-global
-altindex
-btcrb
-wf
-ch
+categories --pie
+categories --sort Market_Cap --limit 3
+
+# hold
+hold
+hold --bar
+hold --limit 1 --coin ethereum --bar
+
+# hm
+hm
+hm --category stablecoins --limit 3
+
+# info
+info
+info --vs ETH --sort price --limit 3
+
+# markets
+markets
+markets --vs ETH --sort price --limit 3
+
+# exmarkets
+exmarkets
+exmarkets --limit 3--sort quote_currency_name
+exmarkets --urls
+
+# platforms
+platforms
+
+# contracts
+contracts
+contracts --platform eth-ethereum --limit 3 --sort type
+
+# pairs
+pairs
+
+# news
 news
+news --region es
+news --limit 3 --kind media --filter hot --sort title
+
+# wf
+wf
+wf --limit 3
+
+# ewf
+ewf
+
+# wfpe
+wfpe
+wfpe -c ethereum
+
+# altindex
+altindex
+altindex --period 30 --since 2020-10-25 --until 2021-12-01
+
+
+# ch
+ch
+ch --limit 3 --sort Amount [$]
+ch --slug polynetwork-rekt
+
+# cr
+cr
+cr -t borrow --limit 1
+cr --cryptocurrrencies ZRX
+cr --platforms Compound
+cr --cryptocurrrencies ZRX --platforms Compound
+
 exit
