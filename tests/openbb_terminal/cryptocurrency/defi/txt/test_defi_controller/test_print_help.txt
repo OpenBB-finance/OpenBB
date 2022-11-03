@@ -1,5 +1,4 @@
     newsletter         recent DeFi related newsletters                                 [Substack]
-    dpi                DeFi protocols listed on DefiPulse                              [DeFiPulse]
     vaults             top DeFi Vaults on different blockchains                        [Coindix]
     tokens             tokens trade-able on Uniswap                                    [TheGraph]
     stats              base statistics about Uniswap                                   [TheGraph]
