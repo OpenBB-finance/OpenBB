@@ -64,7 +64,7 @@ class Breadcrumb:
         trail_map: Optional[TrailMap] = None,
     ) -> None:
         trail_map = trail_map or TrailMap()
-        operation_builder = operation_builder or OperationBuilder()
+        operation_builder = operation_builder or OperationBuilder(trail_map=trail_map)
         metadata = metadata or MetadataBuilder.build(trail=trail, trail_map=trail_map)
 
         self.__metadata = metadata
