@@ -227,13 +227,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             dict(),
         ),
         (
-            "call_dpi",
-            [],
-            "defipulse_view.display_defipulse",
-            [],
-            dict(),
-        ),
-        (
             "call_gdapps",
             [],
             "llama_view.display_grouped_defi_protocols",

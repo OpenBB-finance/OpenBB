@@ -23,6 +23,7 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
 )
 from openbb_terminal.rich_config import console
+from openbb_terminal.common.technical_analysis import ta_helpers
 
 logger = logging.getLogger(__name__)
 
@@ -72,10 +73,13 @@ def display_cci(
     else:
         return
 
+    close_col = ta_helpers.check_columns(data)
+    if close_col is None:
+        return
     ax1.set_title(f"{symbol} CCI")
     ax1.plot(
         plot_data.index,
-        plot_data["Adj Close"].values,
+        plot_data[close_col].values,
     )
     ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
     ax1.set_ylabel("Share Price ($)")
@@ -234,6 +238,9 @@ def display_rsi(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
     """
+    if isinstance(data, pd.DataFrame):
+        console.print("[red]Please send a series and not a dataframe[/red]\n")
+        return
     df_ta = momentum_model.rsi(data, window, scalar, drift)
 
     # This plot has 2 axes
@@ -319,10 +326,11 @@ def display_stoch(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (3 axes are expected in the list), by default None
     """
+    close_col = ta_helpers.check_columns(data)
+    if close_col is None:
+        return
     df_ta = momentum_model.stoch(
-        data["High"],
-        data["Low"],
-        data["Adj Close"],
+        data,
         fastkperiod,
         slowdperiod,
         slowkperiod,
@@ -342,7 +350,7 @@ def display_stoch(
     plot_data = pd.merge(data, df_ta, how="outer", left_index=True, right_index=True)
     plot_data = reindex_dates(plot_data)
 
-    ax1.plot(plot_data.index, plot_data["Adj Close"].values)
+    ax1.plot(plot_data.index, plot_data[close_col].values)
 
     ax1.set_title(f"Stochastic Relative Strength Index (STOCH RSI) on {symbol}")
     ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
@@ -407,7 +415,9 @@ def display_fisher(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (3 axes are expected in the list), by default None
     """
-    df_ta = momentum_model.fisher(data["High"], data["Low"], window)
+    df_ta = momentum_model.fisher(data, window)
+    if df_ta.empty:
+        return
     plot_data = pd.merge(data, df_ta, how="outer", left_index=True, right_index=True)
     plot_data = reindex_dates(plot_data)
 
@@ -424,7 +434,10 @@ def display_fisher(
         return
 
     ax1.set_title(f"{symbol} Fisher Transform")
-    ax1.plot(plot_data.index, plot_data["Adj Close"].values)
+    close_col = ta_helpers.check_columns(data)
+    if close_col is None:
+        return
+    ax1.plot(plot_data.index, plot_data[close_col].values)
     ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
     ax1.set_ylabel("Price")
     theme.style_primary_axis(
@@ -627,8 +640,8 @@ def display_demark(
 
     Parameters
     ----------
-    data : pd.Series
-        Series of values
+    data : pd.DataFrame
+        DataFrame of values
     symbol : str
         Symbol that the data corresponds to
     min_to_show: int
@@ -642,7 +655,10 @@ def display_demark(
     -------
 
     """
-    demark_df = momentum_model.demark_seq(data["Adj Close"])
+    close_col = ta_helpers.check_columns(data, high=False, low=False)
+    if close_col is None:
+        return
+    demark_df = momentum_model.demark_seq(data[close_col])
     demark_df.index = data.index
 
     stock_data = data.copy()
