@@ -218,6 +218,13 @@ class CryptoController(CryptoBaseController):
             )
 
             if ns_parser:
+                num_args = 0
+                for arg in vars(ns_parser):
+                    if getattr(ns_parser, arg):
+                        num_args = num_args + 1
+                        if num_args > 1:
+                            console.print("[red]Please chose only one flag[/red]\n")
+                            return
                 current_coin_id = cryptocurrency_helpers.get_coingecko_id(self.symbol)
                 if ns_parser.vs is not None:
                     coin_found = cryptocurrency_helpers.get_coingecko_id(ns_parser.vs)
