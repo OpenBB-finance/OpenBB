@@ -63,6 +63,19 @@ class Breadcrumb:
         trail: str = "",
         trail_map: Optional[TrailMap] = None,
     ) -> None:
+        """
+        Generate a 'trail' that allows accessing OpenBB Terminal SDK methods.
+
+        Example:
+            openbb.forex.get_currency_list()
+            Breadcrumb(trail="").Breadcrumb(trail="forex").Operation(trail="forex.get_currency_list")()
+
+        Args:
+            metadata (Optional[Metadata], optional): _description_. Defaults to None.
+            operation_builder (Optional[OperationBuilder], optional): _description_. Defaults to None.
+            trail (str, optional): _description_. Defaults to "".
+            trail_map (Optional[TrailMap], optional): _description_. Defaults to None.
+        """
         trail_map = trail_map or TrailMap()
         operation_builder = operation_builder or OperationBuilder(trail_map=trail_map)
         metadata = metadata or MetadataBuilder.build(trail=trail, trail_map=trail_map)
