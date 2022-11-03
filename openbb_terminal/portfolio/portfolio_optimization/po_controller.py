@@ -383,6 +383,47 @@ class PortfolioOptimizationController(BaseController):
             self.choices["load"] = {c: {} for c in self.DATA_ALLOCATION_FILES}
             self.choices["load"]["--file"] = {c: {} for c in self.DATA_ALLOCATION_FILES}
             self.choices["load"]["-f"] = "--file"
+            self.choices["plot"]["--portfolios"] = None
+            self.choices["plot"]["-pf"] = "--portfolios"
+            self.choices["plot"]["--pie"] = None
+            self.choices["plot"]["-pi"] = "--pie"
+            self.choices["plot"]["--hist"] = None
+            self.choices["plot"]["-hi"] = "--hist"
+            self.choices["plot"]["--drawdown"] = None
+            self.choices["plot"]["-dd"] = "--drawdown"
+            self.choices["plot"]["--rc-chart"] = None
+            self.choices["plot"]["-rc"] = "--rc-chart"
+            self.choices["plot"]["--heat"] = None
+            self.choices["plot"]["-he"] = "--heat"
+            self.choices["plot"]["--risk-measure"] = {
+                c: {} for c in self.MEAN_RISK_CHOICES
+            }
+            self.choices["plot"]["-rm"] = "--risk-measure"
+            self.choices["plot"]["--method"] = {c: {} for c in self.METHOD_CHOICES}
+            self.choices["plot"]["-mt"] = "--method"
+            self.choices["plot"]["--categories"] = None
+            self.choices["plot"]["-ct"] = "--categories"
+            self.choices["plot"]["--period"] = {c: {} for c in self.PERIOD_CHOICES}
+            self.choices["plot"]["-p"] = "--period"
+            self.choices["plot"]["--start"] = None
+            self.choices["plot"]["-s"] = "--start"
+            self.choices["plot"]["--end"] = None
+            self.choices["plot"]["-e"] = "--end"
+            self.choices["plot"]["--log-returns"] = None
+            self.choices["plot"]["-lr"] = "--log-returns"
+            self.choices["plot"]["--freq"] = {c: {} for c in ["d", "w", "m"]}
+            self.choices["plot"]["--maxnan"] = None
+            self.choices["plot"]["-mn"] = "--maxnan"
+            self.choices["plot"]["--threshold"] = None
+            self.choices["plot"]["-th"] = "--threshold"
+            self.choices["plot"]["--risk-free-rate"] = None
+            self.choices["plot"]["-r"] = "--risk-free-rate"
+            self.choices["plot"]["--alpha"] = None
+            self.choices["plot"]["-a"] = "--alpha"
+            self.choices["plot"]["--value"] = None
+            self.choices["plot"]["-v"] = "--value"
+            self.choices["rpf"]["--portfolios"] = None
+            self.choices["rpf"]["--pf"] = "--portfolios"
             for fn in models:
                 self.choices[fn]["-p"] = {c: {} for c in self.PERIOD_CHOICES}
                 self.choices[fn]["--period"] = {c: {} for c in self.PERIOD_CHOICES}
@@ -469,7 +510,6 @@ class PortfolioOptimizationController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             if self.portfolios:
                 self.choices["show"] = {c: {} for c in list(self.portfolios.keys())}
-                self.choices["plot"] = {c: {} for c in list(self.portfolios.keys())}
 
                 self.choices = {**self.choices, **self.SUPPORT_CHOICES}
                 self.completer = NestedCompleter.from_nested_dict(self.choices)
