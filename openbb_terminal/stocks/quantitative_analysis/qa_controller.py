@@ -27,6 +27,7 @@ from openbb_terminal.rich_config import console, MenuText, get_ordered_list_sour
 from openbb_terminal.stocks.quantitative_analysis.beta_view import beta_view
 from openbb_terminal.stocks.quantitative_analysis.factors_view import capm_view
 from openbb_terminal.stocks.quantitative_analysis.qa_model import full_stock_df
+from openbb_terminal.stocks import stocks_helper
 
 # pylint: disable=C0302
 
@@ -174,6 +175,10 @@ class QaController(StockBaseController):
                 "--limit": {str(c): {} for c in range(1, 100)},
                 "-l": "--limit",
                 "--descend": {},
+                "-d": "--descend",
+                "--export": {x: {} for x in ["csv", "json", "xlsx"]},
+                "--sortby": {c.lower(): {} for c in stocks_helper.CANDLE_SORT},
+                "-s": "--sortby",
             }
             choices["decompose"] = {
                 "--multiplicative": None,
@@ -334,16 +339,24 @@ class QaController(StockBaseController):
             dest="descend",
             help="Sort in descending order",
         )
+        parser.add_argument(
+            "-s",
+            "--sortby",
+            help="The column to sort by",
+            choices=[x.lower().replace(" ", "") for x in self.stock.columns],
+            type=str.lower,
+            dest="sortby",
+        )
 
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             qa_view.display_raw(
-                data=self.stock[self.target],
+                data=self.stock,
                 limit=ns_parser.limit,
-                sortby="",
-                descend=ns_parser.descend,
+                sortby=ns_parser.sortby,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 

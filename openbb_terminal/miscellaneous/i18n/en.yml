@@ -851,7 +851,6 @@ en:
   forex/oanda/positionbook: print positionbook
   funds/country: set a country for filtering
   funds/_country: Current Country
-  funds/overview: overview of top funds by country
   funds/search: search for Mutual Funds
   funds/load: load historical fund data
   funds/_fund: Current Fund

@@ -111,7 +111,10 @@ def display_stats(symbol: str, export: str = "") -> None:
     df = coinbase_model.get_product_stats(symbol)
 
     print_rich_table(
-        df, headers=list(df.columns), show_index=False, title="24 hr Product Stats"
+        df,
+        headers=list(df.columns),
+        show_index=False,
+        title=f"Coinbase:{symbol.upper()} 24 hr Product Stats",
     )
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "stats", df)
