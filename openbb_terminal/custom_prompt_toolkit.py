@@ -271,7 +271,7 @@ class NestedCompleter(Completer):
             if "-" not in text:
                 completer = self.options.get(first_term)
             else:
-                if cmd in self.options:
+                if cmd in self.options and self.options.get(cmd):
                     completer = self.options.get(cmd).options.get(first_term)  # type: ignore
                 else:
                     completer = self.options.get(first_term)

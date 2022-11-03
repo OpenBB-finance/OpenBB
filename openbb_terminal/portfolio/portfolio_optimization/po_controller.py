@@ -1315,6 +1315,7 @@ class PortfolioOptimizationController(BaseController):
             default=self.params["target_return"]
             if "target_return" in self.params
             else -1,
+            type=int,
             help="Constraint on minimum level of portfolio's return",
         )
         parser.add_argument(
