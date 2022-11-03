@@ -50,7 +50,7 @@ stocks.dd.pt(
 stocks.dd.pt(
     symbol: str,
     data: pandas.core.frame.DataFrame,
-    start_date: str = '2022-11-02',
+    start_date: str = '2022-11-03',
     limit: int = 10,
     raw: bool = False,
     export: str = '',

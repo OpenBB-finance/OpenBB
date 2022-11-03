@@ -207,7 +207,7 @@ def format_signature(sig: str) -> str:
     return sig
 
 
-def write_docstring(name: str, func, file, view: bool):
+def write_docstring(name: str, func, file, chart: bool):
 
     docstring: Optional[str] = func[2].__doc__ if func else None
 
@@ -262,7 +262,7 @@ def write_docstring(name: str, func, file, view: bool):
                 docstring=formatted_docstring,
                 file=file,
             )
-            if view:
+            if chart:
                 file.write("\n")
                 file.write("    chart: *bool*\n")
                 file.write("       Flag to display chart\n")
@@ -314,17 +314,19 @@ def generate_documentation(
         f.write(".. role:: python(code)\n    :language: python\n    :class: highlight")
         f.write("\n\n|\n\n")
 
+        chart = False
         if view:
             f.write(
                 "To obtain charts, make sure to add :python:`chart = True` as the last parameter.\n\n"
             )
+            chart = True
 
         if model:
             f.write(".. raw:: html\n\n")
             f.write("    <h3>\n")
             f.write("    > Getting data\n")
             f.write("    </h3>\n\n")
-            write_docstring(key, model, f, view)
+            write_docstring(key, model, f, chart)
 
         if view:
             if model:
@@ -334,7 +336,7 @@ def generate_documentation(
             f.write("    <h3>\n")
             f.write("    > Getting charts\n")
             f.write("    </h3>\n\n")
-            write_docstring(key, view, f, view)
+            write_docstring(key, view, f, chart)
 
 
 def find_line(path: str, to_match: str) -> int:
