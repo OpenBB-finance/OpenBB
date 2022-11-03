@@ -6,16 +6,20 @@ import pandas as pd
 
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 
+
 class PERSISTENCE_FORMAT(Enum):
     PICKLE = 1
     CSV = 2
+
 
 class TrailMap:
     MAP_PICKLE_PATH = MISCELLANEOUS_DIRECTORY / "library" / "trail_map.pickle"
     MAP_CSV_PATH = MISCELLANEOUS_DIRECTORY / "library" / "trail_map.csv"
 
     @classmethod
-    def load_pickle(cls, ) -> List[Dict[str, str]]:
+    def load_pickle(
+        cls,
+    ) -> List[Dict[str, str]]:
         map_list = []
         with cls.MAP_PICKLE_PATH.open("rb") as f:
             map_list = pickle.load(f)

@@ -5,6 +5,7 @@ from openbb_terminal.core.library.trail_map import TrailMap
 
 from openbb_terminal.core.library.operation import OperationBuilder
 
+
 class MetadataBuilder:
     @staticmethod
     def build_dir_list(trail: str, trail_map: TrailMap) -> List[str]:
@@ -13,7 +14,7 @@ class MetadataBuilder:
             if trail == "":
                 option = key.split(".")[0]
             elif key.startswith(trail):
-                option = key[len(trail)+1:].split(".")[0]
+                option = key[len(trail) + 1 :].split(".")[0]
             else:
                 option = None
 
@@ -30,7 +31,10 @@ class MetadataBuilder:
             For more information see the official documentation at: https://openbb-finance.github.io/OpenBBTerminal/SDK/
             """
         else:
-            doc_string = trail.rsplit(".")[-1].upper() + " Menu\n\nThe SDK commands of the the menu:"
+            doc_string = (
+                trail.rsplit(".")[-1].upper()
+                + " Menu\n\nThe SDK commands of the the menu:"
+            )
             for command in dir_list:
                 doc_string += f"\n\t<openbb>.{trail}.{command}"
 

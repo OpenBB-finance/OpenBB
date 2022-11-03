@@ -3,6 +3,7 @@ from typing import Any, Callable, Optional
 from openbb_terminal.core.library.metadata import Metadata
 from openbb_terminal.core.library.trail_map import TrailMap
 
+
 class MetadataBuilder:
     def __init__(self, model: Optional[Callable], view: Optional[Callable]) -> None:
         self.__model = model
@@ -44,6 +45,7 @@ class MetadataBuilder:
 
         return metadata
 
+
 class Operation:
     def __init__(
         self,
@@ -62,11 +64,7 @@ class Operation:
         model = self.__model
         view = self.__view
 
-        if (
-            view
-            and "chart" in kwargs
-            and kwargs["chart"] is True
-        ):
+        if view and "chart" in kwargs and kwargs["chart"] is True:
             method = view
         elif model:
             method = model
@@ -74,6 +72,7 @@ class Operation:
             raise Exception("Unknown action")
 
         return method(*args, **kwargs)
+
 
 class OperationBuilder:
     @staticmethod

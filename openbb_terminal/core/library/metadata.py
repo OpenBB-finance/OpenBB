@@ -1,5 +1,6 @@
 from typing import List
 
+
 class Metadata:
     @property
     def dir_list(self):
