@@ -20,6 +20,8 @@ warnings.simplefilter("ignore")
 
 logger = logging.getLogger(__name__)
 
+# pylint: disable=E1123
+
 
 @log_start_end(log=logger)
 def get_autoets_data(
