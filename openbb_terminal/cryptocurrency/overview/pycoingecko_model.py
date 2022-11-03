@@ -250,7 +250,7 @@ def get_exchanges(sortby: str = "Rank", ascend: bool = True) -> pd.DataFrame:
     ]
     create_df_index(df, "Rank")
     if sortby == "Rank":
-        df = df.sort_values(by=sortby, ascending=False if ascend else True)
+        df = df.sort_values(by=sortby, ascending=not ascend)
     else:
         df = df.sort_values(by=sortby, ascending=ascend)
     return df

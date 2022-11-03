@@ -142,7 +142,7 @@ class OverviewController(BaseController):
                 "--pie": {},
             }
             choices["stables"] = {
-                "by": {c: {} for c in pycoingecko_model.COINS_COLUMNS},
+                "--sortby": {c: {} for c in pycoingecko_model.COINS_COLUMNS},
                 "-s": "--sortby",
                 "--limit": {str(c): {} for c in range(1, 100)},
                 "-l": "--limit",
@@ -812,7 +812,7 @@ class OverviewController(BaseController):
 
         parser.add_argument(
             "-s",
-            "by",
+            "--sortby",
             dest="sortby",
             type=str,
             help="Sort by given column. Default: market_cap",
