@@ -917,7 +917,7 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
                 an_input,
             )
             console.print(
-                f"\nThe command '{an_input}' doesn't exist on the / menu", end=""
+                f"[red]The command '{an_input}' doesn't exist on the / menu.[/red]",
             )
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
@@ -939,7 +939,7 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
                 else:
                     an_input = similar_cmd[0]
 
-                console.print(f" Replacing by '{an_input}'.")
+                console.print(f"\n[green]Replacing by '{an_input}'.[/green]")
                 t_controller.queue.insert(0, an_input)
             else:
                 console.print("\n")
