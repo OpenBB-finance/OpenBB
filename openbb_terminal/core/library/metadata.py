@@ -3,11 +3,11 @@ from typing import List
 
 class Metadata:
     @property
-    def dir_list(self):
+    def dir_list(self) -> List[str]:
         return self.__dir_list
 
     @property
-    def doc_string(self):
+    def doc_string(self) -> str:
         return self.__doc_string
 
     def __init__(

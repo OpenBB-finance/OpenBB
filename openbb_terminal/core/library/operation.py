@@ -1,5 +1,5 @@
 from importlib import import_module
-from typing import Any, Callable, Optional
+from typing import Any, Callable, List, Optional
 from openbb_terminal.core.library.metadata import Metadata
 from openbb_terminal.core.library.trail_map import TrailMap
 
@@ -14,24 +14,27 @@ class MetadataBuilder:
         model: Optional[Callable],
         view: Optional[Callable],
     ) -> str:
-        if view.__doc__ is not None:
-            index = view.__doc__.find("Parameters")
+        if view is not None:
+            view_doc = view.__doc__ or ""
+            model_doc = model.__doc__ or ""
+            index = view_doc.find("Parameters")
+            
             all_parameters = (
                 "\nSDK function, use the chart kwarg for getting the view model and it's plot. "
                 "See every parameter below:\n\n    "
-                + view.__doc__[index:]
+                + view_doc[index:]
                 + """chart: bool
         If the view and its chart shall be used"""
             )
             doc_string = (
                 all_parameters
                 + "\n\nModel doc:\n"
-                + model.__doc__
+                + model_doc
                 + "\n\nView doc:\n"
-                + view.__doc__
+                + view_doc
             )
         else:
-            doc_string = model.__doc__
+            doc_string = model.__doc__ or ""
 
         return doc_string
 
@@ -39,7 +42,7 @@ class MetadataBuilder:
         model = self.__model
         view = self.__view
 
-        dir_list = []
+        dir_list: List[str] = []
         docstring = self.build_doc_string(model=model, view=view)
         metadata = Metadata(dir_list=dir_list, doc_string=docstring)
 
