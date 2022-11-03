@@ -121,7 +121,7 @@ class DueDiligenceController(CryptoBaseController):
     ):
         """Constructor"""
         super().__init__(queue)
-
+        
         for _, value in self.SPECIFIC_CHOICES.items():
             self.controller_choices.extend(value)
 
@@ -239,7 +239,7 @@ class DueDiligenceController(CryptoBaseController):
         mt.add_cmd("load")
         mt.add_raw("\n")
         mt.add_param("_symbol", self.symbol)
-        mt.add_param("_source", "cg" if self.source != "" else "")
+        mt.add_param("_source", self.source)
         mt.add_raw("\n")
 
         mt.add_info("_overview_")
