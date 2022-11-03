@@ -7,6 +7,8 @@ Shows historical daily value for the target value.
 ```
 optional arguments:
   -n NUM, --num NUM     Number to show (default: 20)
+  -s SORTBY, --sortby SORTBY
+                        The column to sort by (default: None)
   -d, --descend         Sort in descending order (default: False)
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx}
