@@ -103,7 +103,7 @@ class CryptoController(CryptoBaseController):
                 },
                 "-i": "--interval",
                 "--exchange": {c: {} for c in self.exchanges},
-                "--source": {c: {} for c in ["CCXT", "YahooFinance", "CoingGecko"]},
+                "--source": {c: {} for c in ["CCXT", "YahooFinance", "CoinGecko"]},
                 "--vs": {c: {} for c in ["usd", "eur"]},
                 "--start": None,
                 "-s": "--start",

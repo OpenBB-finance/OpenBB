@@ -11,6 +11,7 @@ import yfinance as yf
 
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import is_intraday
+from openbb_terminal.common.technical_analysis import ta_helpers
 
 logger = logging.getLogger(__name__)
 
@@ -31,8 +32,11 @@ def get_data(symbol: str, start_date: str = "2019-01-01") -> pd.DataFrame:
     prices: pd.DataFrame
         Dataframe of Adj Close with columns = [ticker]
     """
-    prices = yf.download(symbol, start=start_date, progress=False)
-    prices = pd.DataFrame(prices["Adj Close"])
+    data = yf.download(symbol, start=start_date, progress=False)
+    close_col = ta_helpers.check_columns(data, high=False, low=False)
+    if close_col is None:
+        return pd.DataFrame()
+    prices = pd.DataFrame(data[close_col])
     prices.columns = [symbol]
     return prices
 
@@ -106,7 +110,10 @@ def ema_strategy(
     symbol = symbol.lower()
     ema = pd.DataFrame()
     start_date = data.index[0]
-    prices = pd.DataFrame(data["Adj Close"])
+    close_col = ta_helpers.check_columns(data, high=False, low=False)
+    if close_col is None:
+        return bt.backtest.Result()
+    prices = pd.DataFrame(data[close_col])
     prices.columns = [symbol]
     ema[symbol] = ta.ema(prices[symbol], ema_length)
     bt_strategy = bt.Strategy(
@@ -166,7 +173,10 @@ def emacross_strategy(
     """
     symbol = symbol.lower()
     start_date = data.index[0]
-    prices = pd.DataFrame(data["Adj Close"])
+    close_col = ta_helpers.check_columns(data, low=False, high=False)
+    if close_col is None:
+        return bt.backtest.Result()
+    prices = pd.DataFrame(data[close_col])
     prices.columns = [symbol]
     short_ema = pd.DataFrame(ta.ema(prices[symbol], short_length))
     short_ema.columns = [symbol]
@@ -197,7 +207,9 @@ def emacross_strategy(
         stock_bt = buy_and_hold(symbol, start_date, symbol.upper() + " Hold")
         backtests.append(stock_bt)
 
-    res = bt.run(*backtests)
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore")
+        res = bt.run(*backtests)
     return res
 
 
@@ -240,7 +252,10 @@ def rsi_strategy(
     """
     symbol = symbol.lower()
     start_date = data.index[0]
-    prices = pd.DataFrame(data["Adj Close"])
+    close_col = ta_helpers.check_columns(data, high=False, low=False)
+    if close_col is None:
+        return pd.DataFrame()
+    prices = pd.DataFrame(data[close_col])
     prices.columns = [symbol]
     rsi = pd.DataFrame(ta.rsi(prices[symbol], periods))
     rsi.columns = [symbol]
@@ -269,5 +284,7 @@ def rsi_strategy(
             stock_bt = buy_and_hold(symbol, start_date, symbol.upper() + " Hold")
             backtests.append(stock_bt)
 
-    res = bt.run(*backtests)
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore")
+        res = bt.run(*backtests)
     return res
