@@ -1,3 +1,6 @@
+"""Oanda Model."""
+__docformat__ = "numpy"
+
 import json
 import logging
 from datetime import datetime
