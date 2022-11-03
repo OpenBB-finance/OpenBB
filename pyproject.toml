@@ -101,6 +101,7 @@ investiny = "^0.5.0"
 numpy = "1.21.6"
 papermill = {git = "https://github.com/nteract/papermill.git", rev = "main"}
 stocksera = "^0.1.21"
+ipython = "8.5.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
