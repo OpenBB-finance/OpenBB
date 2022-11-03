@@ -200,9 +200,10 @@ class OverviewController(BaseController):
                 "--urls": {},
                 "-u": "--urls",
             }
-            choices["contracts"] = {
+            choices["contracts"]["--platform"] = {
                 c: None for c in get_all_contract_platforms()["platform_id"].tolist()
             }
+            choices["contracts"]["-p"] = "--platform"
             choices["contracts"]["--sortby"] = {
                 c: None for c in coinpaprika_model.CONTRACTS_FILTERS
             }
@@ -210,7 +211,8 @@ class OverviewController(BaseController):
             choices["contracts"]["--limit"] = {str(c): {} for c in range(1, 100)}
             choices["contracts"]["-l"] = "--limit"
             choices["contracts"]["--descend"] = {}
-            choices["hm"] = {c: {} for c in get_categories_keys()}
+            choices["hm"]["--category"] = {c: {} for c in get_categories_keys()}
+            choices["hm"]["-c"] = "--category"
             choices["hm"]["--limit"] = {str(c): {} for c in range(1, 100)}
             choices["hm"]["-l"] = "--limit"
             choices["info"] = {

@@ -19,6 +19,7 @@ from openbb_terminal.helper_funcs import (
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     valid_date,
+    parse_and_split_input,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -144,8 +145,8 @@ class OptionsController(BaseController):
             one_to_thousand: dict = {str(c): {} for c in range(1, 1000)}
             minus_one_to_thousand: dict = {str(c): {} for c in range(-1, 1000)}
             choices["unu"] = {
-                "--sort": {c: {} for c in self.unu_sortby_choices},
-                "-s": "--sort",
+                "--sortby": {c: {} for c in self.unu_sortby_choices},
+                "-s": "--sortby",
                 "--ascending": {},
                 "-a": "--ascending",
                 "--puts_only": {},
@@ -274,6 +275,22 @@ class OptionsController(BaseController):
             # This menu contains dynamic choices that may change during runtime
             self.choices = choices
             self.completer = NestedCompleter.from_nested_dict(choices)
+
+    def parse_input(self, an_input: str) -> List:
+        """Parse controller input
+
+        Overrides the parent class function to handle github org/repo path convention.
+        See `BaseController.parse_input()` for details.
+        """
+        # Filtering out sorting parameters with forward slashes like P/E
+        sort_filter = r"((\ -s |\ --sortby ).*?(Vol\/OI)*)"
+
+        custom_filters = [sort_filter]
+
+        commands = parse_and_split_input(
+            an_input=an_input, custom_filters=custom_filters
+        )
+        return commands
 
     def update_runtime_choices(self):
         """Update runtime choices"""

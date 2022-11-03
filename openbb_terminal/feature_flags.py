@@ -28,92 +28,106 @@ load_dotenv(REPOSITORY_ENV_FILE, override=True)
 load_dotenv(PACKAGE_ENV_FILE, override=True)
 
 # Retry unknown commands with `load`
-RETRY_WITH_LOAD = base_helpers.load_env_vars("OPENBB_RETRY_WITH_LOAD", strtobool, False)
+RETRY_WITH_LOAD = base_helpers.load_env_vars(
+    "OPENBB_RETRY_WITH_LOAD", strtobool, False, "featflags"
+)
 
 # Use tabulate to print dataframes
-USE_TABULATE_DF = base_helpers.load_env_vars("OPENBB_USE_TABULATE_DF", strtobool, True)
+USE_TABULATE_DF = base_helpers.load_env_vars(
+    "OPENBB_USE_TABULATE_DF", strtobool, True, "featflags"
+)
 
 # Use clear console after each command
 USE_CLEAR_AFTER_CMD = base_helpers.load_env_vars(
-    "OPENBB_USE_CLEAR_AFTER_CMD", strtobool, False
+    "OPENBB_USE_CLEAR_AFTER_CMD", strtobool, False, "featflags"
 )
 
 # Use coloring features
-USE_COLOR = base_helpers.load_env_vars("OPENBB_USE_COLOR", strtobool, True)
+USE_COLOR = base_helpers.load_env_vars("OPENBB_USE_COLOR", strtobool, True, "featflags")
 
 # Select console flair (choose from config_terminal.py list)
 USE_FLAIR = str(os.getenv("OPENBB_USE_FLAIR", ":openbb"))
 
 # Add date and time to command line
-USE_DATETIME = base_helpers.load_env_vars("OPENBB_USE_DATETIME", strtobool, True)
+USE_DATETIME = base_helpers.load_env_vars(
+    "OPENBB_USE_DATETIME", strtobool, True, "featflags"
+)
 
 # Enable interactive matplotlib mode
-USE_ION = base_helpers.load_env_vars("OPENBB_USE_ION", strtobool, True)
+USE_ION = base_helpers.load_env_vars("OPENBB_USE_ION", strtobool, True, "featflags")
 
 # Enable watermark in the figures
-USE_WATERMARK = base_helpers.load_env_vars("OPENBB_USE_WATERMARK", strtobool, True)
+USE_WATERMARK = base_helpers.load_env_vars(
+    "OPENBB_USE_WATERMARK", strtobool, True, "featflags"
+)
 
 # Enable command and source in the figures
 USE_CMD_LOCATION_FIGURE = base_helpers.load_env_vars(
-    "OPENBB_USE_CMD_LOCATION_FIGURE", strtobool, True
+    "OPENBB_USE_CMD_LOCATION_FIGURE", strtobool, True, "featflags"
 )
 
 # Enable Prompt Toolkit
 USE_PROMPT_TOOLKIT = base_helpers.load_env_vars(
-    "OPENBB_USE_PROMPT_TOOLKIT", strtobool, True
+    "OPENBB_USE_PROMPT_TOOLKIT", strtobool, True, "featflags"
 )
 
 # Enable plot autoscaling
 USE_PLOT_AUTOSCALING = base_helpers.load_env_vars(
-    "OPENBB_USE_PLOT_AUTOSCALING", strtobool, False
+    "OPENBB_USE_PLOT_AUTOSCALING", strtobool, False, "featflags"
 )
 
 # Enable thoughts of the day
 ENABLE_THOUGHTS_DAY = base_helpers.load_env_vars(
-    "OPENBB_ENABLE_THOUGHTS_DAY", strtobool, False
+    "OPENBB_ENABLE_THOUGHTS_DAY", strtobool, False, "featflags"
 )
 
 # Quick exit for testing
 ENABLE_QUICK_EXIT = base_helpers.load_env_vars(
-    "OPENBB_ENABLE_QUICK_EXIT", strtobool, False
+    "OPENBB_ENABLE_QUICK_EXIT", strtobool, False, "featflags"
 )
 
 # Open report as HTML, otherwise notebook
 OPEN_REPORT_AS_HTML = base_helpers.load_env_vars(
-    "OPENBB_OPEN_REPORT_AS_HTML", strtobool, True
+    "OPENBB_OPEN_REPORT_AS_HTML", strtobool, True, "featflags"
 )
 
 # Enable auto print_help when exiting menus
 ENABLE_EXIT_AUTO_HELP = base_helpers.load_env_vars(
-    "OPENBB_ENABLE_EXIT_AUTO_HELP", strtobool, True
+    "OPENBB_ENABLE_EXIT_AUTO_HELP", strtobool, True, "featflags"
 )
 
 # Remember contexts during session
 REMEMBER_CONTEXTS = base_helpers.load_env_vars(
-    "OPENBB_REMEMBER_CONTEXTS", strtobool, True
+    "OPENBB_REMEMBER_CONTEXTS", strtobool, True, "featflags"
 )
 
 # Use the colorful rich terminal
-ENABLE_RICH = base_helpers.load_env_vars("OPENBB_ENABLE_RICH", strtobool, True)
+ENABLE_RICH = base_helpers.load_env_vars(
+    "OPENBB_ENABLE_RICH", strtobool, True, "featflags"
+)
 
 # Use the colorful rich terminal
 ENABLE_RICH_PANEL = base_helpers.load_env_vars(
-    "OPENBB_ENABLE_RICH_PANEL", strtobool, True
+    "OPENBB_ENABLE_RICH_PANEL", strtobool, True, "featflags"
 )
 
 # Check API KEYS before running a command
 ENABLE_CHECK_API = base_helpers.load_env_vars(
-    "OPENBB_ENABLE_CHECK_API", strtobool, True
+    "OPENBB_ENABLE_CHECK_API", strtobool, True, "featflags"
 )
 
 # Send logs to data lake
-LOG_COLLECTION = base_helpers.load_env_vars("OPENBB_LOG_COLLECT", strtobool, True)
+LOG_COLLECTION = base_helpers.load_env_vars(
+    "OPENBB_LOG_COLLECT", strtobool, True, "featflags"
+)
 
 # Provide export folder path. If empty that means default.
 EXPORT_FOLDER_PATH = str(os.getenv("OPENBB_EXPORT_FOLDER_PATH", ""))
 
 # Toolbar hint
-TOOLBAR_HINT = base_helpers.load_env_vars("OPENBB_TOOLBAR_HINT", strtobool, True)
+TOOLBAR_HINT = base_helpers.load_env_vars(
+    "OPENBB_TOOLBAR_HINT", strtobool, True, "featflags"
+)
 
 # Select language to be used
 USE_LANGUAGE = str(os.getenv("OPENBB_USE_LANGUAGE", "en"))
