@@ -19,32 +19,32 @@ class TrailMap:
     @classmethod
     def load_pickle(
         cls,
-    ) -> List[Dict[str, str]]:
-        map_list = []
+    ) -> Dict[str, Dict[str, str]]:
+        map_list = {}
         with cls.MAP_PICKLE_PATH.open("rb") as f:
             map_list = pickle.load(f)
         return map_list
 
     @classmethod
-    def save_pickle(cls, map_list: List[Dict[str, str]]) -> None:
+    def save_pickle(cls, map_list: Dict[str, Dict[str, str]]) -> None:
         cls.MAP_PICKLE_PATH.parent.mkdir(parents=True, exist_ok=True)
         with cls.MAP_PICKLE_PATH.open("wb") as f:
             pickle.dump(map_list, f)
 
     @classmethod
-    def load_csv(cls) -> List[Dict[str, str]]:
+    def load_csv(cls) -> Dict[str, Dict[str, str]]:
         df = pd.read_csv(cls.MAP_CSV_PATH, keep_default_na=False)
         df.set_index("trail", inplace=True)
         return df.to_dict(orient="index")
 
     @classmethod
-    def save_csv(cls, map_list: List[Dict[str, str]]) -> None:
+    def save_csv(cls, map_list: Dict[str, Dict[str, str]]) -> None:
         df = pd.DataFrame.from_dict(data=map_list, orient="index")
         df.index.name = "trail"
         df.to_csv(path_or_buf=cls.MAP_CSV_PATH)
 
     @property
-    def map_list(self) -> List[Dict[str, str]]:
+    def map_list(self) -> Dict[str, Dict[str, str]]:
         return self.__map_list
 
     def load(self):

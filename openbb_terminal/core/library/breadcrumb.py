@@ -1,9 +1,8 @@
-from typing import Any, Optional, List
+from typing import Any, Optional, List, Union
 
 from openbb_terminal.core.library.metadata import Metadata
 from openbb_terminal.core.library.trail_map import TrailMap
-
-from openbb_terminal.core.library.operation import OperationBuilder
+from openbb_terminal.core.library.operation import OperationBuilder, Operation
 
 
 class MetadataBuilder:
@@ -105,7 +104,7 @@ class Breadcrumb:
         method = operation_builder.build(trail=trail_next)
 
         if method:
-            attr = method
+            attr: Union[Breadcrumb, Operation] = method
         elif name in self.__metadata.dir_list:
             attr = Breadcrumb(
                 metadata=MetadataBuilder.build(trail=trail_next, trail_map=trail_map),

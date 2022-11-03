@@ -18,7 +18,7 @@ class MetadataBuilder:
             view_doc = view.__doc__ or ""
             model_doc = model.__doc__ or ""
             index = view_doc.find("Parameters")
-            
+
             all_parameters = (
                 "\nSDK function, use the chart kwarg for getting the view model and it's plot. "
                 "See every parameter below:\n\n    "
