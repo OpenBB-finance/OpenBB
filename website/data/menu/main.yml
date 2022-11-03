@@ -835,23 +835,6 @@ main:
                 ref: /terminal/forex/oanda/positions
           - name: quote
             ref: /terminal/forex/quote
-      - name: funds
-        ref: /terminal/funds
-        sub:
-          - name: country
-            ref: /terminal/funds/country
-          - name: equity
-            ref: /terminal/funds/equity
-          - name: info
-            ref: /terminal/funds/info
-          - name: load
-            ref: /terminal/funds/load
-          - name: plot
-            ref: /terminal/funds/plot
-          - name: search
-            ref: /terminal/funds/search
-          - name: sector
-            ref: /terminal/funds/sector
       - name: futures
         ref: /terminal/futures
         sub:
