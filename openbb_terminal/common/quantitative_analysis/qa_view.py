@@ -994,13 +994,14 @@ def display_line(
 
     if title:
         ax.set_title(title)
-    if draw:
-        LineAnnotateDrawer(ax).draw_lines_and_annotate()
 
     theme.style_primary_axis(ax)
 
-    if external_axes is None:
-        theme.visualize_output()
+    if draw:
+        LineAnnotateDrawer(ax).draw_lines_and_annotate()
+    else:
+        if external_axes is None:
+            theme.visualize_output()
 
     export_data(
         export,

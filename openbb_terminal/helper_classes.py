@@ -33,10 +33,10 @@ class LineAnnotateDrawer:
         )
 
         while True:
-            xy = plt.ginput(2)
+            xy = plt.ginput(2, timeout=3)
             # Check whether the user has closed the window or not
             if not plt.get_fignums():
-                console.print("")
+                console.print("Closed window. Returning to terminal.")
                 return
 
             if len(xy) == 2:
