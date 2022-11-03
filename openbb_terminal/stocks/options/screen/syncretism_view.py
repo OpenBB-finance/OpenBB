@@ -111,7 +111,7 @@ def view_historical_greeks(
     chain_id: str = "",
     put: bool = False,
     raw: bool = False,
-    limit: int = 20,
+    limit: Union[int, str] = 20,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -146,9 +146,20 @@ def view_historical_greeks(
     if df.empty:
         return
 
+    if isinstance(limit, str):
+        try:
+            limit = int(limit)
+        except ValueError:
+            console.print(
+                f"[red]Could not convert limit of {limit} to a number.[/red]\n"
+            )
+            return
     if raw:
         print_rich_table(
-            df.tail(limit), headers=list(df.columns), title="Historical Greeks"
+            df.tail(limit),
+            headers=list(df.columns),
+            title="Historical Greeks",
+            show_index=True,
         )
 
     if not external_axes:
