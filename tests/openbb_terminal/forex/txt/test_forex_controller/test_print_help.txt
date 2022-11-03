@@ -9,8 +9,8 @@ Source: YahooFinance
 
 [unvl]>   ta                 technical analysis,          ema, macd, rsi, adx, bbands, obv[/unvl]
 [unvl]>   qa                 quantitative analysis,       decompose, cusum, residuals analysis[/unvl]
+>   forecast           forecast techniques
 
 Forex brokerages:
 >   oanda              Oanda menu
->   forecast           forecast techniques
 

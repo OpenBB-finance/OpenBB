@@ -158,8 +158,10 @@ def display_holdings_overview(
 
             for _, row in df.iterrows():
                 ax.bar(x=row["Symbol"], height=row["Total Holdings"])
-
-            ax.set_ylabel("BTC Number")
+            if symbol == "bitcoin":
+                ax.set_ylabel("BTC Number")
+            else:
+                ax.set_ylabel("ETH Number")
             ax.get_yaxis().set_major_formatter(
                 ticker.FuncFormatter(
                     lambda x, _: lambda_long_number_format_with_type_check(x)
@@ -167,7 +169,10 @@ def display_holdings_overview(
             )
             ax.set_xlabel("Company Symbol")
             fig.tight_layout(pad=8)
-            ax.set_title("Total BTC Holdings per company")
+            if symbol == "bitcoin":
+                ax.set_title("Total BTC Holdings per company")
+            else:
+                ax.set_title("Total ETH Holdings per company")
             ax.tick_params(axis="x", labelrotation=90)
         console.print(f"\n{stats_string}\n")
         df = df.applymap(lambda x: lambda_long_number_format_with_type_check(x))
@@ -483,7 +488,7 @@ def display_categories(
 
 @log_start_end(log=logger)
 def display_exchanges(
-    sortby: str = "name",
+    sortby: str = "Rank",
     ascend: bool = False,
     limit: int = 15,
     links: bool = False,
