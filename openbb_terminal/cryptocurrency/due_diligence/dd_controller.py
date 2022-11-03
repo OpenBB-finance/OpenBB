@@ -121,7 +121,7 @@ class DueDiligenceController(CryptoBaseController):
     ):
         """Constructor"""
         super().__init__(queue)
-        
+
         for _, value in self.SPECIFIC_CHOICES.items():
             self.controller_choices.extend(value)
 
