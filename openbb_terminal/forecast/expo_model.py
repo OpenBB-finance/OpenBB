@@ -37,7 +37,7 @@ def get_expo_data(
     seasonal: str = "A",
     seasonal_periods: int = 7,
     dampen: str = "F",
-    n_predict: int = 30,
+    n_predict: int = 5,
     start_window: float = 0.85,
     forecast_horizon: int = 5,
 ) -> Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], Any]:
