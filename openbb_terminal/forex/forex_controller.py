@@ -27,6 +27,7 @@ from openbb_terminal.rich_config import (
     MenuText,
     get_ordered_list_sources,
 )
+from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.decorators import check_api_key
 from openbb_terminal.forex.forex_helper import parse_forex_symbol
 
@@ -316,7 +317,7 @@ class ForexController(BaseController):
                 )
 
             else:
-                data = forex_helper.process_candle(self.data)
+                data = stocks_helper.process_candle(self.data)
                 mov_avgs = []
 
                 if ns_parser.mov_avg:

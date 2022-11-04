@@ -9,6 +9,7 @@ import re
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
+from matplotlib.ticker import LogLocator, ScalarFormatter
 import mplfinance as mpf
 import numpy as np
 import plotly.graph_objects as go
@@ -16,14 +17,12 @@ from plotly.subplots import make_subplots
 from openbb_terminal.forex import av_model, polygon_model
 from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import log_start_end
-from matplotlib.ticker import LogLocator, ScalarFormatter
-from openbb_terminal.stocks import stocks_helper
-from scipy import stats
-from openbb_terminal import config_terminal as cfg
+import openbb_terminal.config_terminal as cfg
 from openbb_terminal.helper_funcs import (
     plot_autoscale,
     lambda_long_number_format_y_axis,
 )
+from openbb_terminal.stocks import stocks_helper
 
 CANDLE_SORT = [
     "adjclose",
@@ -243,11 +242,13 @@ def display_candle(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list), by default None
     """
+    # We check if there's Volume data to avoid errors and empty subplots
+    has_volume = bool(data["Volume"].sum() > 0)
 
     if add_trend:
         if (data.index[1] - data.index[0]).total_seconds() >= 86400:
-            data = find_trendline(data, "OC_High", "high")
-            data = find_trendline(data, "OC_Low", "low")
+            data = stocks_helper.find_trendline(data, "OC_High", "high")
+            data = stocks_helper.find_trendline(data, "OC_Low", "low")
 
     if not raw:
         if use_matplotlib:
@@ -274,7 +275,7 @@ def display_candle(
             candle_chart_kwargs = {
                 "type": "candle",
                 "style": cfg.theme.mpf_style,
-                "volume": True,
+                "volume": has_volume,
                 "addplot": ap0,
                 "xrotation": cfg.theme.xticks_rotation,
                 "scale_padding": {"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
@@ -288,7 +289,8 @@ def display_candle(
                 "yscale": yscale,
             }
 
-            kwargs = {"mav": ma} if ma else {}
+            if ma:
+                candle_chart_kwargs["mav"] = ma
 
             if external_axes is None:
                 candle_chart_kwargs["returnfig"] = True
@@ -297,8 +299,10 @@ def display_candle(
                 candle_chart_kwargs["figsize"] = plot_autoscale()
                 candle_chart_kwargs["warn_too_much_data"] = 100_000
 
-                fig, ax = mpf.plot(data, **candle_chart_kwargs, **kwargs)
-                lambda_long_number_format_y_axis(data, "Volume", ax)
+                fig, ax = mpf.plot(data, **candle_chart_kwargs)
+
+                if has_volume:
+                    lambda_long_number_format_y_axis(data, "Volume", ax)
 
                 fig.suptitle(
                     f"{from_symbol}/{to_symbol}",
@@ -329,17 +333,21 @@ def display_candle(
                     return pd.DataFrame()
                 ax1, ax2 = external_axes
                 candle_chart_kwargs["ax"] = ax1
-                candle_chart_kwargs["volume"] = ax2
+                if has_volume:
+                    candle_chart_kwargs["volume"] = ax2
                 mpf.plot(data, **candle_chart_kwargs)
 
         else:
             fig = make_subplots(
-                rows=2,
+                rows=2 if has_volume else 1,
                 cols=1,
                 shared_xaxes=True,
                 vertical_spacing=0.06,
-                subplot_titles=(f"{from_symbol}/{to_symbol}", "Volume"),
-                row_width=[0.2, 0.7],
+                subplot_titles=(
+                    f"{from_symbol}/{to_symbol}",
+                    "Volume" if has_volume else None,
+                ),
+                row_width=[0.2, 0.7] if has_volume else [1],
             )
             fig.add_trace(
                 go.Candlestick(
@@ -407,20 +415,21 @@ def display_candle(
                         col=1,
                     )
 
-            colors = [
-                "red" if row.Open < row["Adj Close"] else "green"
-                for _, row in data.iterrows()
-            ]
-            fig.add_trace(
-                go.Bar(
-                    x=data.index,
-                    y=data.Volume,
-                    name="Volume",
-                    marker_color=colors,
-                ),
-                row=2,
-                col=1,
-            )
+            if has_volume:
+                colors = [
+                    "red" if row.Open < row["Adj Close"] else "green"
+                    for _, row in data.iterrows()
+                ]
+                fig.add_trace(
+                    go.Bar(
+                        x=data.index,
+                        y=data.Volume,
+                        name="Volume",
+                        marker_color=colors,
+                    ),
+                    row=2,
+                    col=1,
+                )
             fig.update_layout(
                 yaxis_title="Stock Price ($)",
                 xaxis=dict(
@@ -491,87 +500,3 @@ def parse_forex_symbol(input_symbol):
     if len(input_symbol) != 6:
         raise argparse.ArgumentTypeError("Input symbol should be 6 characters.\n ")
     return input_symbol.upper()
-
-
-def process_candle(data: pd.DataFrame) -> pd.DataFrame:
-    """Process DataFrame into candle style plot.
-
-    Parameters
-    ----------
-    data : DataFrame
-        Stock dataframe.
-
-    Returns
-    -------
-    DataFrame
-        A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume,
-        date_id, OC-High, OC-Low.
-    """
-    df_data = data.copy()
-    df_data["date_id"] = (df_data.index.date - df_data.index.date.min()).astype(
-        "timedelta64[D]"
-    )
-    df_data["date_id"] = df_data["date_id"].dt.days + 1
-
-    df_data["OC_High"] = df_data[["Open", "Close"]].max(axis=1)
-    df_data["OC_Low"] = df_data[["Open", "Close"]].min(axis=1)
-
-    df_data["ma20"] = df_data["Close"].rolling(20).mean().fillna(method="bfill")
-    df_data["ma50"] = df_data["Close"].rolling(50).mean().fillna(method="bfill")
-
-    return df_data
-
-
-def find_trendline(
-    df_data: pd.DataFrame, y_key: str, high_low: str = "high"
-) -> pd.DataFrame:
-    """Attempt to find a trend line based on y_key column from a given stock ticker data frame.
-
-    Parameters
-    ----------
-    df_data : DataFrame
-        The stock ticker data frame with at least date_id, y_key columns.
-    y_key : str
-        Column name to base the trend line on.
-    high_low: str, optional
-        Either "high" or "low". High is the default.
-
-    Returns
-    -------
-    DataFrame
-        If a trend is successfully found,
-            An updated Panda's data frame with a trend data {y_key}_trend column.
-        If no trend was found,
-            An original Panda's data frame
-    """
-    for iteration in [3, 4, 5, 6, 7]:
-        df_temp = df_data.copy()
-        while len(df_temp) > iteration:
-            reg = stats.linregress(
-                x=df_temp["date_id"],
-                y=df_temp[y_key],
-            )
-
-            if high_low == "high":
-                df_temp = df_temp.loc[
-                    df_temp[y_key] > reg[0] * df_temp["date_id"] + reg[1]
-                ]
-            else:
-                df_temp = df_temp.loc[
-                    df_temp[y_key] < reg[0] * df_temp["date_id"] + reg[1]
-                ]
-
-        if len(df_temp) > 1:
-            break
-
-    if len(df_temp) == 1:
-        return df_data
-
-    reg = stats.linregress(
-        x=df_temp["date_id"],
-        y=df_temp[y_key],
-    )
-
-    df_data[f"{y_key}_trend"] = reg[0] * df_data["date_id"] + reg[1]
-
-    return df_data
