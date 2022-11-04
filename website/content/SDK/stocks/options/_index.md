@@ -35,7 +35,7 @@ unusual_options
 Get up to ten years of historical put/call ratios (US equity options only), with the `PCR` function:
 
 ```python
-pcr_spy = openbb.stocks.options.pcr(symbol = 'SPY', start_date = ' 2012-11-03')
+pcr_spy = openbb.stocks.options.pcr(symbol = 'SPY', start_date = '2012-11-03')
 pcr_spy.rename(columns = {'PCR': 'Put/Call Ratio'})
 ```
 
