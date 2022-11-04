@@ -1,9 +1,9 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### crypto.dd.trades(exchange_id: str, symbol: str, to_symbol: str) -> pandas.core.frame.DataFrame
+### crypto.dd.ob(exchange_id: str, symbol: str, to_symbol: str) -> Dict
 
-Returns trades for a coin in a given exchange
+Returns orderbook for a coin in a given exchange
     [Source: https://docs.ccxt.com/en/latest/manual.html]
 
     Parameters
@@ -17,13 +17,12 @@ Returns trades for a coin in a given exchange
 
     Returns
     -------
-    pd.DataFrame
-        trades for a coin in a given exchange
+    Dict with bids and asks
 
 ## Getting charts 
-### crypto.dd.trades(exchange: str, symbol: str, to_symbol: str, limit: int = 10, export: str = '', chart=True)
+### crypto.dd.ob(exchange: str, symbol: str, to_symbol: str, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
-Displays trades for a coin in a given exchange
+Displays order book for a coin in a given exchange
     [Source: https://docs.ccxt.com/en/latest/manual.html]
 
     Parameters
@@ -32,9 +31,7 @@ Displays trades for a coin in a given exchange
         exchange id
     symbol : str
         coin symbol
-    to_symbol : str
+    vs : str
         currency to compare coin against
-    limit : int
-        number of trades to display
     export : str
         Export dataframe data to csv,json,xlsx file

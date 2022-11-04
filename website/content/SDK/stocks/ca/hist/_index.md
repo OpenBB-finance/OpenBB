@@ -1,7 +1,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### stocks.ca.hist(similar: List[str], start_date: str = '2021-10-25', candle_type: str = 'a') -> pandas.core.frame.DataFrame
+### stocks.ca.hist(similar: List[str], start_date: str = '2021-11-02', candle_type: str = 'a') -> pandas.core.frame.DataFrame
 
 Get historical prices for all comparison stocks
 
@@ -22,7 +22,7 @@ Get historical prices for all comparison stocks
         Dataframe containing candle type variable for each ticker
 
 ## Getting charts 
-### stocks.ca.hist(similar: List[str], start_date: str = '2021-10-25', candle_type: str = 'a', normalize: bool = True, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.ca.hist(similar: List[str], start_date: str = '2021-11-02', candle_type: str = 'a', normalize: bool = True, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display historical stock prices. [Source: Yahoo Finance]
 

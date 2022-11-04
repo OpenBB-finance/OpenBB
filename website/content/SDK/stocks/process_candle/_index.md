@@ -1,7 +1,7 @@
 ## Get underlying data 
 ### stocks.process_candle(data: pandas.core.frame.DataFrame) -> pandas.core.frame.DataFrame
 
-Process DataFrame into candle style plot
+Process DataFrame into candle style plot.
 
     Parameters
     ----------
