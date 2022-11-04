@@ -19,7 +19,6 @@ from prompt_toolkit.styles import Style
 from prompt_toolkit.formatted_text import HTML
 import pandas as pd
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal import keys_controller
 from openbb_terminal.terminal_helper import is_packaged_application
 
 from openbb_terminal.core.config.paths import (
@@ -52,7 +51,7 @@ from openbb_terminal.terminal_helper import (
     update_terminal,
     welcome_message,
 )
-from openbb_terminal.helper_funcs import parse_and_split_input
+from openbb_terminal.helper_funcs import parse_and_split_input, first_time_user
 from openbb_terminal.common import feedparser_view
 from openbb_terminal.reports.reports_model import ipykernel_launcher
 
@@ -819,7 +818,7 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
     if not jobs_cmds:
         welcome_message()
 
-        if not keys_controller.KeysController().is_there_at_least_one_key_defined():
+        if first_time_user():
             t_controller.call_intro(None)
 
         t_controller.print_help()

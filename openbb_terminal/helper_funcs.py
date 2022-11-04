@@ -47,6 +47,7 @@ from openbb_terminal.core.config.paths import (
     USER_EXPORTS_DIRECTORY,
 )
 from openbb_terminal.core.config import paths
+from openbb_terminal import keys_model
 
 logger = logging.getLogger(__name__)
 
@@ -1803,3 +1804,19 @@ def list_from_str(value: str) -> List[str]:
     if value:
         return value.split(",")
     return []
+
+
+def first_time_user() -> bool:
+    """Whether or not a user is a first time user. We are defining a first time user as someone
+    with an empty .env file. If this is true, it also adds an env variable to make sure this does
+    no run the next time.
+
+    Returns
+    ----------
+    bool
+        Whether or not the user is a first time user
+    """
+    if USER_ENV_FILE.stat().st_size == 0:
+        keys_model.set_key("OPENBB_PREVIOUS_USE", "True", True)
+        return True
+    return False
