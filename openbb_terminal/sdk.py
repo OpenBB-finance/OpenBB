@@ -884,7 +884,7 @@ functions = {
         "view": "openbb_terminal.econometrics.econometrics_view.display_root",
     },
     "econometrics.load": {
-        "model": "openbb_terminal.econometrics.econometrics_model.load"
+        "model": "openbb_terminal.common.common_model.load"
     },
     "econometrics.bgod": {
         "model": "openbb_terminal.econometrics.regression_model.get_bgod",
@@ -1964,7 +1964,7 @@ functions = {
     "keys.shroom": {"model": "openbb_terminal.keys_model.set_shroom_key"},
 }
 forecast_extras = {
-    "forecast.load": {"model": "openbb_terminal.forecast.forecast_model.load"},
+    "forecast.load": {"model": "openbb_terminal.common.common_model.load"},
     "forecast.show": {
         "model": "openbb_terminal.forecast.forecast_view.show_df",
         "view": "openbb_terminal.forecast.forecast_view.show_df",

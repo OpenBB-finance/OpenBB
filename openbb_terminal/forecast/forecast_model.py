@@ -439,23 +439,23 @@ def combine_dfs(
 
 
 @log_start_end(log=logger)
-def delete_column(df: pd.DataFrame, column: str) -> None:
-    if column not in df:
+def delete_column(data: pd.DataFrame, column: str) -> None:
+    if column not in data:
         console.print(
             f"Not able to find the column {column}. Please choose one of "
-            f"the following: {', '.join(df.columns)}"
+            f"the following: {', '.join(data.columns)}"
         )
     else:
-        del df[column]
+        del data[column]
 
 
 @log_start_end(log=logger)
-def rename_column(df: pd.DataFrame, old_column: str, new_column: str) -> pd.DataFrame:
+def rename_column(data: pd.DataFrame, old_column: str, new_column: str) -> pd.DataFrame:
     """Rename a column in a dataframe
 
     Parameters
     ----------
-    df: pd.DataFrame
+    data: pd.DataFrame
         The dataframe to have a column renamed
     old_column: str
         The column that will have its name changed
@@ -467,22 +467,22 @@ def rename_column(df: pd.DataFrame, old_column: str, new_column: str) -> pd.Data
     new_df: pd.DataFrame
         The dataframe with the renamed column
     """
-    if old_column not in df:
+    if old_column not in data:
         console.print(
             f"Not able to find the column {old_column}. Please choose one of "
-            f"the following: {', '.join(df.columns)}"
+            f"the following: {', '.join(data.columns)}"
         )
-        return df
-    return df.rename(columns={old_column: new_column})
+        return data
+    return data.rename(columns={old_column: new_column})
 
 
 @log_start_end(log=logger)
-def describe_df(df: pd.DataFrame) -> pd.DataFrame:
+def describe_df(data: pd.DataFrame) -> pd.DataFrame:
     """Returns statistics for a given df
 
     Parameters
     ----------
-    df: pd.DataFrame
+    data: pd.DataFrame
         The df to produce statistics for
 
     Returns
@@ -490,16 +490,16 @@ def describe_df(df: pd.DataFrame) -> pd.DataFrame:
     df: pd.DataFrame
         The df with the new data
     """
-    return df.describe()
+    return data.describe()
 
 
 @log_start_end(log=logger)
-def corr_df(df: pd.DataFrame) -> pd.DataFrame:
+def corr_df(data: pd.DataFrame) -> pd.DataFrame:
     """Returns correlation for a given df
 
     Parameters
     ----------
-    df: pd.DataFrame
+    data: pd.DataFrame
         The df to produce statistics for
 
     Returns
@@ -507,5 +507,5 @@ def corr_df(df: pd.DataFrame) -> pd.DataFrame:
     df: pd.DataFrame
         The df with the new data
     """
-    corr = df.corr(numeric_only=True)
+    corr = data.corr(numeric_only=True)
     return corr

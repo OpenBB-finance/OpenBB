@@ -11,16 +11,15 @@ from openbb_terminal.common import common_model
 
 @pytest.mark.vcr()
 @pytest.mark.parametrize(
-    "file, file_types, data_files, data_examples",
+    "file, data_files, data_examples",
     [
-        ("wage_panel", ["csv", "xlsx"], {}, {"wage_panel": "wage_panel"}),
-        ("sunspots", ["csv", "xlsx"], {}, {"sunspots": "sunspots"}),
+        ("wage_panel", {}, {"wage_panel": "wage_panel"}),
+        ("sunspots", {}, {"sunspots": "sunspots"}),
     ],
 )
-def test_load(recorder, file, file_types, data_files, data_examples):
+def test_load(recorder, file, data_files, data_examples):
     result = common_model.load(
         file=file,
-        file_types=file_types,
         data_files=data_files,
         data_examples=data_examples,
     )
