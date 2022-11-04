@@ -883,9 +883,7 @@ functions = {
         "model": "openbb_terminal.econometrics.econometrics_model.get_root",
         "view": "openbb_terminal.econometrics.econometrics_view.display_root",
     },
-    "econometrics.load": {
-        "model": "openbb_terminal.common.common_model.load"
-    },
+    "econometrics.load": {"model": "openbb_terminal.common.common_model.load"},
     "econometrics.bgod": {
         "model": "openbb_terminal.econometrics.regression_model.get_bgod",
         "view": "openbb_terminal.econometrics.regression_view.display_bgod",

@@ -7,7 +7,7 @@ from typing import Dict, Any, Optional
 
 import pandas as pd
 import statsmodels.api as sm
-from pandas.errors import ParserError
+from pandas import errors
 from linearmodels.datasets import wage_panel
 
 from openbb_terminal.decorators import log_start_end
@@ -91,23 +91,22 @@ def load(
 
     file_type = Path(full_file).suffix
 
-    if file_type == ".xlsx":
-        try:
+    try:
+        if file_type == ".xlsx":
             data = pd.read_excel(full_file)
-        except ParserError:
-            console.print("[red]The given file is not properly formatted.[/red]\b")
-            return pd.DataFrame()
-    elif file_type == ".csv":
-        try:
+        elif file_type == ".csv":
             data = pd.read_csv(full_file)
-        except ParserError:
-            console.print("[red]The given file is not properly formatted.[/red]\b")
+        else:
+            console.print(
+                f"The file type {file_type} is not supported. Use .xlsx or .csv."
+            )
             return pd.DataFrame()
-    else:
-        return console.print(
-            f"The file type {file_type} is not supported. Please choose one of the following: "
-            f"{', '.join(file_types)}"
-        )
+    except errors.ParserError:
+        console.print("[red]The given file is not properly formatted.[/red]\b")
+        return pd.DataFrame()
+    except errors.EmptyDataError:
+        console.print("[red]The given file is empty.[/red]\b")
+        return pd.DataFrame()
 
     if data is None:
         return pd.DataFrame()
