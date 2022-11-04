@@ -308,16 +308,21 @@ class ForexController(BaseController):
                 console.print("No ticker loaded. First use 'load <ticker>'")
                 return
 
+            data = stocks_helper.process_candle(self.data)
             if ns_parser.raw:
+                if ns_parser.trendlines:
+                    if (data.index[1] - data.index[0]).total_seconds() >= 86400:
+                        data = stocks_helper.find_trendline(data, "OC_High", "high")
+                        data = stocks_helper.find_trendline(data, "OC_Low", "low")
+
                 qa_view.display_raw(
-                    data=self.data,
+                    data=data,
                     sortby=ns_parser.sort,
                     ascend=not ns_parser.descending,
                     limit=ns_parser.limit,
                 )
 
             else:
-                data = stocks_helper.process_candle(self.data)
                 mov_avgs = []
 
                 if ns_parser.mov_avg:
