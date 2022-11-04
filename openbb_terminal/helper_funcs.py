@@ -1807,9 +1807,8 @@ def list_from_str(value: str) -> List[str]:
 
 
 def first_time_user() -> bool:
-    """Whether or not a user is a first time user. We are defining a first time user as someone
-    with an empty .env file. If this is true, it also adds an env variable to make sure this does
-    no run the next time.
+    """Whether a user is a first time user. A first time user is someone with an empty .env file.
+    If this is true, it also adds an env variable to make sure this does not run again.
 
     Returns
     ----------
