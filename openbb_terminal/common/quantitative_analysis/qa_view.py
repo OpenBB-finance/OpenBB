@@ -993,11 +993,8 @@ def display_line(
 
     theme.style_primary_axis(ax)
 
-    if draw:
-        LineAnnotateDrawer(ax).draw_lines_and_annotate()
-    else:
-        if external_axes is None:
-            theme.visualize_output()
+    if external_axes is None:
+        theme.visualize_output()
 
     export_data(
         export,
