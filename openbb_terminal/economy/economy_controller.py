@@ -1385,7 +1385,6 @@ class EconomyController(BaseController):
             parser,
             other_args,
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
-            raw=True,
             limit=10,
         )
 
@@ -1783,4 +1782,9 @@ class EconomyController(BaseController):
                     for col in list(self.DATASETS[source].columns):
                         data[col] = self.DATASETS[source][col].to_frame()
 
-        self.queue = self.load_class(QaController, data, self.queue)
+        if data:
+            self.queue = self.load_class(QaController, data, self.queue)
+        else:
+            console.print(
+                "[red]Please load a dataset before moving to the qa menu[/red]\n"
+            )

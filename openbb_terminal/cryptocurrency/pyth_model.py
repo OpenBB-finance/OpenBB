@@ -20,7 +20,6 @@ ASSETS = {
     "APE-USD": {"feedID": "EfnLcrwxCgwALc5vXr4cwPZMVcmotZAuqmHa8afG8zJe"},
     "ATLAS-USD": {"feedID": "Dzs6SE1cssUqBpWCKzE4jeS5PrmRK1Fp2Kw1WMaDCiVR"},
     "ATOM-USD": {"feedID": "7YAze8qFUMkBnyLVdKT4TFUUFui99EwS5gfRArMcrvFk"},
-    "AUST-UST": {"feedID": "9g8mGLKcDiKSrWahbjKGtpGCcrLkC5kbwmpFFGRs6euf"},
     "AVAX-USD": {"feedID": "FVb5h1VmHPfVb1RfqZckchq18GxRv4iKt8T4eVTQAqdz"},
     "BCH-USD": {"feedID": "4EQrNZYk5KR1RnjyzbaaRbHsv8VqZWzSUtvx58wLsZbj"},
     "BETH-USD": {"feedID": "HyShqBUTtwAaCas9Dnib3ut6GmEDk9hTdKsrNfRffX8E"},

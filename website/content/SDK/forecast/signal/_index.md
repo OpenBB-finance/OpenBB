@@ -1,5 +1,5 @@
 ## Get underlying data 
-### forecast.signal(dataset: pandas.core.frame.DataFrame) -> pandas.core.frame.DataFrame
+### forecast.signal(dataset: pandas.core.frame.DataFrame, target_column: str = 'close') -> pandas.core.frame.DataFrame
 
 A price signal based on short/long term price.
 

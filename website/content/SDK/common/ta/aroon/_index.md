@@ -1,16 +1,14 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### common.ta.aroon(high_values: pandas.core.series.Series, low_values: pandas.core.series.Series, window: int = 25, scalar: int = 100) -> pandas.core.frame.DataFrame
+### common.ta.aroon(data: pandas.core.frame.DataFrame, window: int = 25, scalar: int = 100) -> pandas.core.frame.DataFrame
 
 Aroon technical indicator
 
     Parameters
     ----------
-    high_values: pd.Series
-        High prices
-    low_values: pd.Series
-        Low prices
+    data : pd.DataFrame
+        Dataframe with OHLC price data
     window : int
         Length of window
     scalar : int

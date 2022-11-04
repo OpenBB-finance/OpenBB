@@ -340,10 +340,6 @@ functions = {
         "model": "openbb_terminal.cryptocurrency.defi.cryptosaurio_model.get_anchor_data",
         "view": "openbb_terminal.cryptocurrency.defi.cryptosaurio_view.display_anchor_data",
     },
-    "crypto.defi.dpi": {
-        "model": "openbb_terminal.cryptocurrency.defi.defipulse_model.get_defipulse_index",
-        "view": "openbb_terminal.cryptocurrency.defi.defipulse_view.display_defipulse",
-    },
     "crypto.defi.swaps": {
         "model": "openbb_terminal.cryptocurrency.defi.graph_model.get_last_uni_swaps",
         "view": "openbb_terminal.cryptocurrency.defi.graph_view.display_last_uni_swaps",
@@ -1011,8 +1007,8 @@ functions = {
         "model": "openbb_terminal.economy.investingcom_model.get_ycrv_countries"
     },
     "economy.ycrv": {
-        "model": "openbb_terminal.economy.investingcom_model.get_yieldcurve",
-        "view": "openbb_terminal.economy.investingcom_view.display_yieldcurve",
+        "model": "openbb_terminal.economy.fred_model.get_yield_curve",
+        "view": "openbb_terminal.economy.fred_view.display_yield_curve",
     },
     "economy.country_codes": {
         "model": "openbb_terminal.economy.nasdaq_model.get_country_codes"
@@ -1147,18 +1143,6 @@ functions = {
     "forex.oanda.positionbook": {
         "model": "openbb_terminal.forex.oanda.oanda_model.positionbook_plot_data_request",
         "view": "openbb_terminal.forex.oanda.oanda_view.get_position_book",
-    },
-    "funds.info": {
-        "model": "openbb_terminal.mutual_funds.investpy_model.get_fund_info",
-        "view": "openbb_terminal.mutual_funds.investpy_view.display_fund_info",
-    },
-    "funds.overview": {
-        "model": "openbb_terminal.mutual_funds.investpy_model.get_overview",
-        "view": "openbb_terminal.mutual_funds.investpy_view.display_overview",
-    },
-    "funds.search": {
-        "model": "openbb_terminal.mutual_funds.investpy_model.search_funds",
-        "view": "openbb_terminal.mutual_funds.investpy_view.display_search",
     },
     "portfolio.holdv": {
         "model": "openbb_terminal.portfolio.portfolio_model.get_holdings_value",

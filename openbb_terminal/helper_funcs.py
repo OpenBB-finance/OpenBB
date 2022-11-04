@@ -1,4 +1,4 @@
-"""Helper functions"""
+"""Helper functions."""
 __docformat__ = "numpy"
 # pylint: disable=too-many-lines
 import argparse
@@ -69,7 +69,7 @@ command_location = ""
 
 # pylint: disable=global-statement
 def set_command_location(cmd_loc: str):
-    """Set command location
+    """Set command location.
 
     Parameters
     ----------
@@ -82,7 +82,7 @@ def set_command_location(cmd_loc: str):
 
 # pylint: disable=global-statement
 def set_user_data_folder(env_file: str = ".env", path_folder: str = ""):
-    """Set user data folder location
+    """Set user data folder location.
 
     Parameters
     ----------
@@ -96,7 +96,7 @@ def set_user_data_folder(env_file: str = ".env", path_folder: str = ""):
 
 
 def check_path(path: str) -> str:
-    """Check that path file exists
+    """Check that path file exists.
 
     Parameters
     ----------
@@ -125,7 +125,7 @@ def check_path(path: str) -> str:
 
 
 def parse_and_split_input(an_input: str, custom_filters: List) -> List[str]:
-    """Filter and split the input queue
+    """Filter and split the input queue.
 
     Uses regex to filters command arguments that have forward slashes so that it doesn't
     break the execution of the command queue.
@@ -195,13 +195,13 @@ def parse_and_split_input(an_input: str, custom_filters: List) -> List[str]:
 
 
 def log_and_raise(error: Union[argparse.ArgumentTypeError, ValueError]) -> None:
+    """Log and output an error."""
     logger.error(str(error))
     raise error
 
 
 def similar(a: str, b: str) -> float:
-    """
-    Return a similarity float between string a and string b
+    """Return a similarity float between string a and string b.
 
     Parameters
     ----------
@@ -227,7 +227,7 @@ def print_rich_table(
     floatfmt: Union[str, List[str]] = ".2f",
     show_header: bool = True,
 ):
-    """Prepare a table from df in rich
+    """Prepare a table from df in rich.
 
     Parameters
     ----------
@@ -297,8 +297,7 @@ def print_rich_table(
 
 
 def check_int_range(mini: int, maxi: int):
-    """
-    Checks if argparse argument is an int between 2 values.
+    """Check if argparse argument is an int between 2 values.
 
     Parameters
     ----------
@@ -312,11 +311,9 @@ def check_int_range(mini: int, maxi: int):
     int_range_checker:
         Function that compares the three integers
     """
-
     # Define the function with default arguments
     def int_range_checker(num: int) -> int:
-        """
-        Checks if int is between a high and low value
+        """Check if int is between a high and low value.
 
         Parameters
         ----------
@@ -329,7 +326,7 @@ def check_int_range(mini: int, maxi: int):
             Input number if conditions are met
 
         Raises
-        -------
+        ------
         argparse.ArgumentTypeError
             Input number not between min and max values
         """
@@ -345,7 +342,7 @@ def check_int_range(mini: int, maxi: int):
 
 
 def check_non_negative(value) -> int:
-    """Argparse type to check non negative int"""
+    """Argparse type to check non negative int."""
     new_value = int(value)
     if new_value < 0:
         log_and_raise(argparse.ArgumentTypeError(f"{value} is negative"))
@@ -353,7 +350,9 @@ def check_non_negative(value) -> int:
 
 
 def check_terra_address_format(address: str) -> str:
-    """Validate if terra account address has proper format: ^terra1[a-z0-9]{38}$
+    """Validate that terra account address has proper format.
+
+    Example: ^terra1[a-z0-9]{38}$
 
     Parameters
     ----------
@@ -364,7 +363,6 @@ def check_terra_address_format(address: str) -> str:
     str
         Terra blockchain address or raise argparse exception
     """
-
     pattern = re.compile(r"^terra1[a-z0-9]{38}$")
     if not pattern.match(address):
         log_and_raise(
@@ -376,7 +374,7 @@ def check_terra_address_format(address: str) -> str:
 
 
 def check_non_negative_float(value) -> float:
-    """Argparse type to check non negative int"""
+    """Argparse type to check non negative int."""
     new_value = float(value)
     if new_value < 0:
         log_and_raise(argparse.ArgumentTypeError(f"{value} is negative"))
@@ -384,7 +382,7 @@ def check_non_negative_float(value) -> float:
 
 
 def check_positive_list(value) -> List[int]:
-    """Argparse type to return list of positive ints"""
+    """Argparse type to return list of positive ints."""
     list_of_nums = value.split(",")
     list_of_pos = []
     for a_value in list_of_nums:
@@ -398,7 +396,7 @@ def check_positive_list(value) -> List[int]:
 
 
 def check_positive(value) -> int:
-    """Argparse type to check positive int"""
+    """Argparse type to check positive int."""
     new_value = int(value)
     if new_value <= 0:
         log_and_raise(
@@ -408,7 +406,7 @@ def check_positive(value) -> int:
 
 
 def check_positive_float(value) -> float:
-    """Argparse type to check positive int"""
+    """Argparse type to check positive int."""
     new_value = float(value)
     if new_value <= 0:
         log_and_raise(
@@ -418,19 +416,20 @@ def check_positive_float(value) -> float:
 
 
 def check_percentage_range(num) -> float:
-    """
-    Checks if float is between 0 and 100. If so, return it.
+    """Check if float is between 0 and 100. If so, return it.
 
     Parameters
     ----------
     num: float
         Input float
+
     Returns
     -------
     num: float
         Input number if conditions are met
+
     Raises
-    -------
+    ------
     argparse.ArgumentTypeError
         Input number not between min and max values
     """
@@ -443,8 +442,7 @@ def check_percentage_range(num) -> float:
 
 
 def check_proportion_range(num) -> float:
-    """
-    Checks if float is between 0 and 1. If so, return it.
+    """Check if float is between 0 and 1. If so, return it.
 
     Parameters
     ----------
@@ -468,7 +466,7 @@ def check_proportion_range(num) -> float:
 
 
 def valid_date_in_past(s: str) -> datetime:
-    """Argparse type to check date is in valid format"""
+    """Argparse type to check date is in valid format."""
     try:
         delta = datetime.now() - datetime.strptime(s, "%Y-%m-%d")
         if delta.days < 1:
@@ -484,7 +482,7 @@ def valid_date_in_past(s: str) -> datetime:
 
 
 def check_list_dates(str_dates: str) -> List[datetime]:
-    """Argparse type to check list of dates provided have a valid format
+    """Argparse type to check list of dates provided have a valid format.
 
     Parameters
     ----------
@@ -508,7 +506,7 @@ def check_list_dates(str_dates: str) -> List[datetime]:
 
 
 def valid_date(s: str) -> datetime:
-    """Argparse type to check date is in valid format"""
+    """Argparse type to check date is in valid format."""
     try:
         return datetime.strptime(s, "%Y-%m-%d")
     except ValueError as value_error:
@@ -517,7 +515,7 @@ def valid_date(s: str) -> datetime:
 
 
 def valid_repo(repo: str) -> str:
-    """Argparse type to check github repo is in valid format"""
+    """Argparse type to check github repo is in valid format."""
     result = re.search(r"^[a-zA-Z0-9-_.]+\/[a-zA-Z0-9-_.]+$", repo)  # noqa: W605
     if not result:
         log_and_raise(
@@ -529,8 +527,7 @@ def valid_repo(repo: str) -> str:
 
 
 def valid_hour(hr: str) -> int:
-    """Argparse type to check hour is valid with 24-hour notation"""
-
+    """Argparse type to check hour is valid with 24-hour notation."""
     new_hr = int(hr)
 
     if (new_hr < 0) or (new_hr > 24):
@@ -541,8 +538,8 @@ def valid_hour(hr: str) -> int:
 
 
 def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
-    """
-    Plot the loaded stock dataframe
+    """Plot the loaded stock dataframe.
+
     Parameters
     ----------
     df: Dataframe
@@ -551,7 +548,6 @@ def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
         Symbol of ticker
     interval: str
         Stock data resolution for plotting purposes
-
     """
     df.sort_index(ascending=True, inplace=True)
     bar_colors = ["r" if x[1].Open < x[1].Close else "g" for x in df.iterrows()]
@@ -622,7 +618,7 @@ def plot_view_stock(df: pd.DataFrame, symbol: str, interval: str):
 
 
 def us_market_holidays(years) -> list:
-    """Get US market holidays"""
+    """Get US market holidays."""
     if isinstance(years, int):
         years = [
             years,
@@ -683,8 +679,7 @@ def us_market_holidays(years) -> list:
 
 
 def lambda_long_number_format(num, round_decimal=3) -> str:
-    """Format a long number"""
-
+    """Format a long number."""
     if isinstance(num, float):
         magnitude = 0
         while abs(num) >= 1000:
@@ -714,6 +709,7 @@ def lambda_long_number_format(num, round_decimal=3) -> str:
 
 
 def lambda_long_number_format_y_axis(df, y_column, ax):
+    """Format long number that goes onto Y axis."""
     max_values = df[y_column].values.max()
 
     magnitude = 0
@@ -738,7 +734,7 @@ def lambda_long_number_format_y_axis(df, y_column, ax):
 
 
 def lambda_clean_data_values_to_float(val: str) -> float:
-    """Cleans data to float based on string ending"""
+    """Clean data to float based on string ending."""
     # Remove any leading or trailing parentheses and spaces
     val = val.strip("( )")
     if val == "-":
@@ -757,7 +753,7 @@ def lambda_clean_data_values_to_float(val: str) -> float:
 
 
 def lambda_int_or_round_float(x) -> str:
-    """Format int or round float"""
+    """Format int or round float."""
     # If the data is inf, -inf, or NaN then simply return '~' because it is either too
     # large, too small, or we do not have data to display for it
     if x in (np.inf, -np.inf, np.nan):
@@ -769,14 +765,17 @@ def lambda_int_or_round_float(x) -> str:
 
 
 def divide_chunks(data, n):
-    """Split into chunks"""
+    """Split into chunks."""
     # looping till length of data
     for i in range(0, len(data), n):
         yield data[i : i + n]  # noqa: E203
 
 
 def get_next_stock_market_days(last_stock_day, n_next_days) -> list:
-    """Gets the next stock market day. Checks against weekends and holidays"""
+    """Get the next stock market day.
+
+    Checks against weekends and holidays.
+    """
     n_days = 0
     l_pred_days = []
     years: list = []
@@ -852,7 +851,7 @@ def reindex_dates(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def get_data(tweet):
-    """Gets twitter data from API request"""
+    """Get twitter data from API request."""
     if "+" in tweet["created_at"]:
         s_datetime = tweet["created_at"].split(" +")[0]
     else:
@@ -865,7 +864,7 @@ def get_data(tweet):
 
 
 def clean_tweet(tweet: str, symbol: str) -> str:
-    """Cleans tweets to be fed to sentiment model"""
+    """Clean tweets to be fed to sentiment model."""
     whitespace = re.compile(r"\s+")
     web_address = re.compile(r"(?i)http(s):\/\/[a-z0-9.~_\-\/]+")
     ticker = re.compile(rf"(?i)@{symbol}(?=\b)")
@@ -880,7 +879,7 @@ def clean_tweet(tweet: str, symbol: str) -> str:
 
 
 def get_user_agent() -> str:
-    """Get a not very random user agent"""
+    """Get a not very random user agent."""
     user_agent_strings = [
         "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:86.1) Gecko/20100101 Firefox/86.1",
         "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:86.1) Gecko/20100101 Firefox/86.1",
@@ -895,19 +894,19 @@ def get_user_agent() -> str:
 
 
 def text_adjustment_init(self):
-    """Adjust text monkey patch for Pandas"""
+    """Adjust text monkey patch for Pandas."""
     self.ansi_regx = re.compile(r"\x1B[@-_][0-?]*[ -/]*[@-~]")
     self.encoding = get_option("display.encoding")
 
 
 def text_adjustment_len(self, text):
-    """Get the length of the text adjustment"""
+    """Get the length of the text adjustment."""
     # return compat.strlen(self.ansi_regx.sub("", text), encoding=self.encoding)
     return len(self.ansi_regx.sub("", text))
 
 
 def text_adjustment_justify(self, texts, max_len, mode="right"):
-    """Justify text"""
+    """Apply 'Justify' text alignment."""
     justify = (
         str.ljust
         if (mode == "left")
@@ -931,7 +930,7 @@ def text_adjustment_justify(self, texts, max_len, mode="right"):
 
 # pylint: disable=unused-argument
 def text_adjustment_join_unicode(self, lines, sep=""):
-    """Join Unicode"""
+    """Join Unicode."""
     try:
         return sep.join(lines)
     except UnicodeDecodeError:
@@ -941,7 +940,7 @@ def text_adjustment_join_unicode(self, lines, sep=""):
 
 # pylint: disable=unused-argument
 def text_adjustment_adjoin(self, space, *lists, **kwargs):
-    """Adjoin"""
+    """Join text."""
     # Add space for all but the last column:
     pads = ([space] * (len(lists) - 1)) + [0]
     max_col_len = max(len(col) for col in lists)
@@ -960,7 +959,7 @@ def text_adjustment_adjoin(self, space, *lists, **kwargs):
 
 # https://github.com/pandas-dev/pandas/issues/18066#issuecomment-522192922
 def patch_pandas_text_adjustment():
-    """Set pandas text adjustment settings"""
+    """Set pandas text adjustment settings."""
     pandas.io.formats.format.TextAdjustment.__init__ = text_adjustment_init
     pandas.io.formats.format.TextAdjustment.len = text_adjustment_len
     pandas.io.formats.format.TextAdjustment.justify = text_adjustment_justify
@@ -969,7 +968,7 @@ def patch_pandas_text_adjustment():
 
 
 def parse_simple_args(parser: argparse.ArgumentParser, other_args: List[str]):
-    """Parses list of arguments into the supplied parser
+    """Parse list of arguments into the supplied parser.
 
     Parameters
     ----------
@@ -1010,7 +1009,7 @@ def parse_simple_args(parser: argparse.ArgumentParser, other_args: List[str]):
 
 
 def lambda_financials_colored_values(val: str) -> str:
-    """Add a color to a value"""
+    """Add a color to a value."""
     if val == "N/A" or str(val) == "nan":
         val = "[yellow]N/A[/yellow]"
     elif sum(c.isalpha() for c in val) < 2:
@@ -1022,14 +1021,14 @@ def lambda_financials_colored_values(val: str) -> str:
 
 
 def check_ohlc(type_ohlc: str) -> str:
-    """Check that data is in ohlc"""
+    """Check that data is in ohlc."""
     if bool(re.match("^[ohlca]+$", type_ohlc)):
         return type_ohlc
     raise argparse.ArgumentTypeError("The type specified is not recognized")
 
 
 def lett_to_num(word: str) -> str:
-    """Matches ohlca to integers"""
+    """Match ohlca to integers."""
     replacements = [("o", "1"), ("h", "2"), ("l", "3"), ("c", "4"), ("a", "5")]
     for (a, b) in replacements:
         word = word.replace(a, b)
@@ -1037,7 +1036,7 @@ def lett_to_num(word: str) -> str:
 
 
 def get_flair() -> str:
-    """Get a flair icon"""
+    """Get a flair icon."""
     flairs = {
         ":openbb": "(🦋)",
         ":rocket": "(🚀)",
@@ -1086,8 +1085,7 @@ def get_flair() -> str:
 
 
 def set_default_timezone() -> None:
-    """Sets a default (America/New_York) timezone if one doesn't exist"""
-
+    """Set a default (America/New_York) timezone if one doesn't exist."""
     dotenv.load_dotenv(USER_ENV_FILE)
     user_tz = os.getenv("OPENBB_TIMEZONE")
     if not user_tz:
@@ -1095,7 +1093,7 @@ def set_default_timezone() -> None:
 
 
 def is_timezone_valid(user_tz: str) -> bool:
-    """Check whether user timezone is valid
+    """Check whether user timezone is valid.
 
     Parameters
     ----------
@@ -1111,7 +1109,7 @@ def is_timezone_valid(user_tz: str) -> bool:
 
 
 def get_user_timezone() -> str:
-    """Get user timezone if it is a valid one
+    """Get user timezone if it is a valid one.
 
     Returns
     -------
@@ -1126,7 +1124,7 @@ def get_user_timezone() -> str:
 
 
 def get_user_timezone_or_invalid() -> str:
-    """Get user timezone if it is a valid one
+    """Get user timezone if it is a valid one.
 
     Returns
     -------
@@ -1140,7 +1138,7 @@ def get_user_timezone_or_invalid() -> str:
 
 
 def replace_user_timezone(user_tz: str) -> None:
-    """Replace user timezone
+    """Replace user timezone.
 
     Parameters
     ----------
@@ -1155,7 +1153,7 @@ def replace_user_timezone(user_tz: str) -> None:
 
 
 def str_to_bool(value) -> bool:
-    """Match a string to a boolean value"""
+    """Match a string to a boolean value."""
     if isinstance(value, bool):
         return value
     if value.lower() in {"false", "f", "0", "no", "n"}:
@@ -1166,7 +1164,7 @@ def str_to_bool(value) -> bool:
 
 
 def get_screeninfo():
-    """Get screeninfo"""
+    """Get screeninfo."""
     screens = get_monitors()  # Get all available monitors
     if len(screens) - 1 < cfgPlot.MONITOR:  # Check to see if chosen monitor is detected
         monitor = 0
@@ -1181,8 +1179,7 @@ def get_screeninfo():
 
 
 def plot_autoscale():
-    """Autoscale plot"""
-
+    """Autoscale plot."""
     if obbff.USE_PLOT_AUTOSCALING:
         x, y = get_screeninfo()  # Get screen size
         x = ((x) * cfgPlot.PLOT_WIDTH_PERCENTAGE * 10**-2) / (
@@ -1198,7 +1195,7 @@ def plot_autoscale():
 
 
 def get_last_time_market_was_open(dt):
-    """Get last time the US market was open"""
+    """Get last time the US market was open."""
     # Check if it is a weekend
     if dt.date().weekday() > 4:
         dt = get_last_time_market_was_open(dt - timedelta(hours=24))
@@ -1213,7 +1210,7 @@ def get_last_time_market_was_open(dt):
 
 
 def check_file_type_saved(valid_types: List[str] = None):
-    """Provide valid types for the user to be able to select
+    """Provide valid types for the user to be able to select.
 
     Parameters
     ----------
@@ -1227,7 +1224,7 @@ def check_file_type_saved(valid_types: List[str] = None):
     """
 
     def check_filenames(filenames: str = "") -> str:
-        """Checks if filenames are valid
+        """Check if filenames are valid.
 
         Parameters
         ----------
@@ -1255,7 +1252,7 @@ def check_file_type_saved(valid_types: List[str] = None):
 
 
 def compose_export_path(func_name: str, dir_path: str) -> Path:
-    """Compose export path for data from the terminal
+    """Compose export path for data from the terminal.
 
     Creates a path to a folder and a filename based on conditions.
 
@@ -1340,8 +1337,7 @@ def export_data(
 
 
 def get_rf() -> float:
-    """
-    Uses the fiscaldata.gov API to get most recent T-Bill rate
+    """Use the fiscaldata.gov API to get most recent T-Bill rate.
 
     Returns
     -------
@@ -1360,13 +1356,12 @@ def get_rf() -> float:
 
 
 def system_clear():
-    """Clear screen"""
+    """Clear screen."""
     os.system("cls||clear")  # nosec
 
 
 def excel_columns() -> List[str]:
-    """
-    Returns potential columns for excel
+    """Return potential columns for excel.
 
     Returns
     -------
@@ -1385,8 +1380,7 @@ def excel_columns() -> List[str]:
 
 
 def handle_error_code(requests_obj, error_code_map):
-    """
-    Helper function to handle error code of HTTP requests.
+    """Handle error code of HTTP requests.
 
     Parameters
     ----------
@@ -1402,7 +1396,7 @@ def handle_error_code(requests_obj, error_code_map):
 
 
 def prefill_form(ticket_type, menu, path, command, message):
-    """Pre-fille Google Form and open it in the browser"""
+    """Pre-fill Google Form and open it in the browser."""
     form_url = "https://openbb.co/support?"
 
     params = {
@@ -1419,8 +1413,7 @@ def prefill_form(ticket_type, menu, path, command, message):
 
 
 def get_closing_price(ticker, days):
-
-    """Get historical close price for n days in past for market asset
+    """Get historical close price for n days in past for market asset.
 
     Parameters
     ----------
@@ -1430,7 +1423,7 @@ def get_closing_price(ticker, days):
         No. of days in past
 
     Returns
-    ----------
+    -------
     data : pd.DataFrame
         Historic close prices for ticker for given days
     """
@@ -1446,7 +1439,7 @@ def get_closing_price(ticker, days):
 
 
 def camel_case_split(string: str) -> str:
-    """Converts a camel case string to separate words
+    """Convert a camel-case string to separate words.
 
     Parameters
     ----------
@@ -1454,11 +1447,10 @@ def camel_case_split(string: str) -> str:
         The string to be converted
 
     Returns
-    ----------
+    -------
     new_string: str
         The formatted string
     """
-
     words = [[string[0]]]
 
     for c in string[1:]:
@@ -1472,8 +1464,9 @@ def camel_case_split(string: str) -> str:
 
 
 def choice_check_after_action(action=None, choices=None):
-    """return an action class that checks choice after action call
-    for argument of argparse.ArgumentParser.add_argument function
+    """Return an action class that checks choice after action call.
+
+    Does that for argument of argparse.ArgumentParser.add_argument function.
 
     Parameters
     ----------
@@ -1493,7 +1486,6 @@ def choice_check_after_action(action=None, choices=None):
     Class
         Class extended argparse.Action
     """
-
     if isinstance(choices, Iterable):
 
         def choice_checker(value):
@@ -1541,12 +1533,10 @@ def is_valid_axes_count(
     prefix_text: Optional[str] = None,
     suffix_text: Optional[str] = None,
 ):
-    """Check if axes list length is equal to n
-    and log text if check result is false
+    """Check if axes list length is equal to n and log text if check result is false.
 
     Parameters
     ----------
-
     axes: List[plt.Axes]
         External axes (2 axes are expected in the list)
     n: int
@@ -1558,7 +1548,6 @@ def is_valid_axes_count(
     suffix_text: Optional[str] = None
         suffix text to add after text to log
     """
-
     if len(axes) == n:
         return True
 
@@ -1578,15 +1567,12 @@ def is_valid_axes_count(
 
 
 def support_message(s: str) -> str:
-    """Argparse type to check string is in valid format
-    for the support command
-    """
+    """Argparse type to check string is in valid format for the support command."""
     return s.replace('"', "")
 
 
 def check_list_values(valid_values: List[str]):
-    """
-    Get valid values to test arguments given by user
+    """Get valid values to test arguments given by user.
 
     Parameters
     ----------
@@ -1598,12 +1584,11 @@ def check_list_values(valid_values: List[str]):
     check_list_values_from_valid_values_list:
         Function that ensures that the valid values go through and notifies user when value is not valid.
     """
-
     # Define the function with default arguments
     def check_list_values_from_valid_values_list(given_values: str) -> List[str]:
-        """
-        Checks if argparse argument is an str with format: value1,value2,value3 and that
-        the values value1, value2 and value3 are valid.
+        """Check if argparse argument is an str format.
+
+        Ensure that value1,value2,value3 and that the values value1, value2 and value3 are valid.
 
         Parameters
         ----------
@@ -1611,7 +1596,7 @@ def check_list_values(valid_values: List[str]):
             values provided by the user
 
         Raises
-        -------
+        ------
         argparse.ArgumentTypeError
             Input number not between min and max values
         """
@@ -1640,14 +1625,13 @@ def check_list_values(valid_values: List[str]):
 
 
 def search_wikipedia(expression: str) -> None:
-    """
-    Search wikipedia for a given expression"
+    """Search wikipedia for a given expression.
+
     Parameters
     ----------
     expression: str
         Expression to search for
     """
-
     url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{expression}"
 
     response = requests.request("GET", url, headers={}, data={})
@@ -1675,8 +1659,7 @@ def search_wikipedia(expression: str) -> None:
 
 
 def screenshot() -> None:
-    """
-    Screenshot the terminal window or the plot window
+    """Screenshot the terminal window or the plot window.
 
     Parameters
     ----------
@@ -1699,8 +1682,7 @@ def screenshot() -> None:
 
 
 def screenshot_to_canvas(shot, plot_exists: bool = False):
-    """
-    Frame image to OpenBB canvas.
+    """Frame image to OpenBB canvas.
 
     Parameters
     ----------
@@ -1709,7 +1691,6 @@ def screenshot_to_canvas(shot, plot_exists: bool = False):
     plot_exists: bool
         Variable to say whether the image is a plot or screenshot of terminal
     """
-
     WHITE_LINE_WIDTH = 3
     OUTSIDE_CANVAS_WIDTH = shot.width + 4 * WHITE_LINE_WIDTH + 5
     OUTSIDE_CANVAS_HEIGHT = shot.height + 4 * WHITE_LINE_WIDTH + 5
@@ -1783,7 +1764,7 @@ def screenshot_to_canvas(shot, plot_exists: bool = False):
 
 @lru_cache
 def load_json(path: str) -> Dict[str, str]:
-    """Loads a dictionary from a json file path
+    """Load a dictionary from a json file path.
 
     Parameter
     ----------
@@ -1791,7 +1772,7 @@ def load_json(path: str) -> Dict[str, str]:
         The path for the json file
 
     Returns
-    ----------
+    -------
     Dict[str, str]
         The dictionary loaded from json
     """
@@ -1808,15 +1789,15 @@ def load_json(path: str) -> Dict[str, str]:
 
 
 def list_from_str(value: str) -> List[str]:
-    """Converts a string to a list
+    """Convert a string to a list.
 
     Parameter
-    ----------
+    ---------
     value : str
         The string to convert
 
     Returns
-    ----------
+    -------
     new_value: List[str]
         The list of strings
     """
