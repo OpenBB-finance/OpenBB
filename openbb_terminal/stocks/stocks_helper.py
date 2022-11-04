@@ -65,7 +65,7 @@ exchange_mappings = exchange_df.squeeze("columns").to_dict()
 def check_datetime(
     ck_date: Optional[Union[datetime, str]] = None, start: bool = True
 ) -> datetime:
-    """Checks if given argument is string and trys to convert to datetime.
+    """Checks if given argument is string and attempts to convert to datetime.
 
     Parameters
     ----------
