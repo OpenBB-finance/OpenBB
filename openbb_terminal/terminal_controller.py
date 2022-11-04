@@ -51,7 +51,8 @@ from openbb_terminal.terminal_helper import (
     update_terminal,
     welcome_message,
 )
-from openbb_terminal.helper_funcs import parse_and_split_input, first_time_user
+from openbb_terminal.helper_funcs import parse_and_split_input
+from openbb_terminal.keys_model import first_time_user
 from openbb_terminal.common import feedparser_view
 from openbb_terminal.reports.reports_model import ipykernel_launcher
 
