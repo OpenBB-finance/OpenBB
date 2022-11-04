@@ -1,5 +1,5 @@
 ## Get underlying data 
-### forecast.sto(dataset: pandas.core.frame.DataFrame, period: int = 10) -> pandas.core.frame.DataFrame
+### forecast.sto(dataset: pandas.core.frame.DataFrame, close_column: str = 'close', high_column: str = 'high', low_column: str = 'low', period: int = 10) -> pandas.core.frame.DataFrame
 
 Stochastic Oscillator %K and %D : A stochastic oscillator is a momentum indicator comparing a particular closing
     price of a security to a range of its prices over a certain period of time. %K and %D are slow and fast indicators.

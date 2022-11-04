@@ -1,7 +1,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### stocks.options.pcr(symbol: str, window: int = 30, start_date: str = '2021-10-25') -> pandas.core.frame.DataFrame
+### stocks.options.pcr(symbol: str, window: int = 30, start_date: str = '2021-11-02') -> pandas.core.frame.DataFrame
 
 Gets put call ratio over last time window [Source: AlphaQuery.com]
 
@@ -15,7 +15,7 @@ Gets put call ratio over last time window [Source: AlphaQuery.com]
         Start date to plot, by default last 366 days
 
 ## Getting charts 
-### stocks.options.pcr(symbol: str, window: int = 30, start_date: str = '2021-10-25', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.options.pcr(symbol: str, window: int = 30, start_date: str = '2021-11-02', export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display put call ratio [Source: AlphaQuery.com]
 
