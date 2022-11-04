@@ -47238,11 +47238,10 @@ code, img {
 <pre><code>2022 Aug 08, 12:14 /stocks/qa/ $ line -h
 usage: line [--log] [-d] [--ml ML] [--ms MS] [-h] [--export EXPORT]
 
-Show line plot of selected data and allow to draw lines or highlight specific datetimes.
+Show line plot of selected data or highlight specific datetimes.
 
 options:
   --log            Plot with y on log scale (default: False)
-  -d, --draw       Draw lines and annotate on the plot (default: False)
   --ml ML          Draw vertical line markers to highlight certain events (default: )
   --ms MS          Draw scatter markers to highlight certain events (default: )
   -h, --help       show this help message (default: False)
@@ -47252,49 +47251,68 @@ For more information and examples, use 'about line' to access the related guide.
 
 2022 Aug 08, 12:20 /stocks/qa/ $ pick high
 
-2022 Aug 08, 12:20 /stocks/qa/ $ line --draw
-Click twice for annotation.
-Close window to keep using terminal.
+Compare the beta between the loaded asset and another, using the `-r` flag to deviate from the defaulted comparison, $SPY.
 
-Annotation: Lower Highs
-</code></pre><p><img src="https://user-images.githubusercontent.com/85772166/183483798-82fb59f6-df9a-4b03-8dd5-542d7d20dcc6.png" alt="Annotated line chart"  /></p>
-<p>Compare the beta between the loaded asset and another, using the <code>-r</code> flag to deviate from the defaulted comparison, $SPY.</p>
-<pre><code>2022 Aug 08, 12:34 /stocks/qa/ $ beta -r MSFT
+</code></pre><p>2022 Aug 08, 12:34 /stocks/qa/ $ beta -r MSFT</p>
+<p>Loading Daily MSFT stock with starting period 2019-08-05 for analysis.</p>
+<pre><code>
+&lt;img width=&quot;762&quot; alt=&quot;Beta of $AAPL relative to $MSFT&quot; src=&quot;https://user-images.githubusercontent.com/85772166/183483898-dac417a8-0afe-46d2-b8e9-e855e8752fc8.png&quot;&gt;
 
-Loading Daily MSFT stock with starting period 2019-08-05 for analysis.
-</code></pre><img width="762" alt="Beta of $AAPL relative to $MSFT" src="https://user-images.githubusercontent.com/85772166/183483898-dac417a8-0afe-46d2-b8e9-e855e8752fc8.png">
-<p>Most outputs are equipped with an <code>--export</code> flag, allowing the user to save the tables as a CSV, JSON, or XLSX file. The exports can then be imported into other menus like <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/econometrics/" target="_blank"> Econometrics</a>. Additional information on each specific command is displayed by attaching <code>-h</code> to it.</p>
-<h2>Examples</h2>
-<p>Box and Whisker plots for monthly and yearly scales:</p>
-<pre><code>2022 Aug 08, 12:47 /stocks/qa/ $ bw
-</code></pre><p><img src="https://user-images.githubusercontent.com/85772166/183483965-a6c2d076-4896-47ec-a314-fc6a574ad8de.png" alt="Monthly box and whisker plot for Apple"  /></p>
-<pre><code>2022 Aug 08, 12:47 /stocks/qa/ $ bw -y
-</code></pre><p><img src="https://user-images.githubusercontent.com/85772166/183484096-73eadd0c-1618-4e95-a27b-79e81cd6afad.png" alt="Yearly box and whisker plot for Apple"  /></p>
-<p>Pick <code>logret</code> for rate of change to the returns of the asset:</p>
-<pre><code>2022 Aug 08, 12:47 /stocks/qa/ $ pick logret
+Most outputs are equipped with an `--export` flag, allowing the user to save the tables as a CSV, JSON, or XLSX file. The exports can then be imported into other menus like &lt;a href=&quot;https://openbb-finance.github.io/OpenBBTerminal/terminal/econometrics/&quot; target=&quot;_blank&quot;&gt; Econometrics&lt;/a&gt;. Additional information on each specific command is displayed by attaching `-h` to it.
 
-2022 Aug 08, 12:51 /stocks/qa/ $ bw -y
-</code></pre><p><img src="https://user-images.githubusercontent.com/85772166/183484172-5c001e9d-911c-44cd-848c-9ae5ec13dbc2.png" alt="Yearly rate of change on returns from Apple"  /></p>
-<p><code>decompose</code> shows a visual representation of trend and seasonality.</p>
-<p><img src="https://user-images.githubusercontent.com/85772166/183484221-8e65e855-8a18-4bfd-8d49-b44ad50691b1.png" alt="Additive Decompose of daily $AAPL data"  /></p>
-<p><code>skew</code> shows the asymmetric distribution over a specified window (default of 14).</p>
-<p><img src="https://user-images.githubusercontent.com/85772166/183484305-0ca714c4-a138-4c69-aee4-16fcc3aa3ac4.png" alt="Apple skewness indicator"  /></p>
-<p><code>skew -w 5</code> Changing the window to five takes out some of the smoothness:</p>
-<p><img src="https://user-images.githubusercontent.com/85772166/183484465-5c121ebc-d2d9-4f1d-a51f-10366aa4456a.png" alt="Apple skewness indicator with a window of 5 days"  /></p>
-<p>Sharpe Ratio over time, <code>sh</code>:</p>
-<p><img src="https://user-images.githubusercontent.com/85772166/183484549-6bc723e3-42cc-4c2a-96d6-72ab96402833.png" alt="Sharpe Ratio for Apple over time"  /></p>
-<p><code>cdf</code> calls the cumulative distribution function. Apple over the long term exhibits a steep curve.</p>
-<p><img src="https://user-images.githubusercontent.com/85772166/183484623-00e6ce46-4378-4391-94e3-9ea2045d2fb4.png" alt="Cumulative Distribution Function of Apple"  /></p>
-<p>Compared with Apple, Amazon is a more gently sloping s-curve.</p>
-<p><img src="https://user-images.githubusercontent.com/85772166/183484706-86874eb7-d454-4d38-aa78-d521fa56b1bd.png" alt="Cumulative Distribution Function of AMZN"  /></p>
-<p><code>capm</code> shows the stock&rsquo;s risk against the market&rsquo;s. $AAPL carries the risk of whatever happens to the markets, happens to the stock.</p>
-<pre><code>2022 Aug 08, 13:51 /stocks/qa/ $ capm
+&lt;h2&gt;Examples&lt;/h2&gt;
+
+Box and Whisker plots for monthly and yearly scales:
+
+</code></pre><p>2022 Aug 08, 12:47 /stocks/qa/ $ bw</p>
+<pre><code>
+![Monthly box and whisker plot for Apple](https://user-images.githubusercontent.com/85772166/183483965-a6c2d076-4896-47ec-a314-fc6a574ad8de.png)
+
+</code></pre><p>2022 Aug 08, 12:47 /stocks/qa/ $ bw -y</p>
+<pre><code>
+![Yearly box and whisker plot for Apple](https://user-images.githubusercontent.com/85772166/183484096-73eadd0c-1618-4e95-a27b-79e81cd6afad.png)
+
+Pick `logret` for rate of change to the returns of the asset:
+
+</code></pre><p>2022 Aug 08, 12:47 /stocks/qa/ $ pick logret</p>
+<p>2022 Aug 08, 12:51 /stocks/qa/ $ bw -y</p>
+<pre><code>
+![Yearly rate of change on returns from Apple](https://user-images.githubusercontent.com/85772166/183484172-5c001e9d-911c-44cd-848c-9ae5ec13dbc2.png)
+
+`decompose` shows a visual representation of trend and seasonality.
+
+![Additive Decompose of daily $AAPL data](https://user-images.githubusercontent.com/85772166/183484221-8e65e855-8a18-4bfd-8d49-b44ad50691b1.png)
+
+`skew` shows the asymmetric distribution over a specified window (default of 14).
+
+![Apple skewness indicator](https://user-images.githubusercontent.com/85772166/183484305-0ca714c4-a138-4c69-aee4-16fcc3aa3ac4.png)
+
+`skew -w 5` Changing the window to five takes out some of the smoothness:
+
+![Apple skewness indicator with a window of 5 days](https://user-images.githubusercontent.com/85772166/183484465-5c121ebc-d2d9-4f1d-a51f-10366aa4456a.png)
+
+Sharpe Ratio over time, `sh`:
+
+![Sharpe Ratio for Apple over time](https://user-images.githubusercontent.com/85772166/183484549-6bc723e3-42cc-4c2a-96d6-72ab96402833.png)
+
+`cdf` calls the cumulative distribution function. Apple over the long term exhibits a steep curve.
+
+![Cumulative Distribution Function of Apple](https://user-images.githubusercontent.com/85772166/183484623-00e6ce46-4378-4391-94e3-9ea2045d2fb4.png)
+
+Compared with Apple, Amazon is a more gently sloping s-curve.
+
+![Cumulative Distribution Function of AMZN](https://user-images.githubusercontent.com/85772166/183484706-86874eb7-d454-4d38-aa78-d521fa56b1bd.png)
+
+`capm` shows the stock's risk against the market's. $AAPL carries the risk of whatever happens to the markets, happens to the stock.
+
+</code></pre><p>2022 Aug 08, 13:51 /stocks/qa/ $ capm
 Beta:                   1.15
 Systematic Risk:        46.40%
-Unsystematic Risk:      53.60%
-</code></pre><p>Read more about this subject on Wikipedia: <a class="gdoc-markdown__link" href="https://en.wikipedia.org/wiki/Quantitative_analysis_%28finance%29">https://en.wikipedia.org/wiki/Quantitative_analysis_(finance)</a></p>
-<p>Back to the <a href = "https://openbb-finance.github.io/OpenBBTerminal/" target="_blank">Getting Started Guide</a></p>
+Unsystematic Risk:      53.60%</p>
+<pre><code>Read more about this subject on Wikipedia: https://en.wikipedia.org/wiki/Quantitative_analysis_(finance)
 
+Back to the &lt;a href = &quot;https://openbb-finance.github.io/OpenBBTerminal/&quot; target=&quot;_blank&quot;&gt;Getting Started Guide&lt;/a&gt;
+</code></pre>
     </article>
  
 
