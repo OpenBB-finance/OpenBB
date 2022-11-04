@@ -87,7 +87,6 @@ class TerminalController(BaseController):
         "etf",
         "reports",
         "dashboards",
-        "funds",
         "alternative",
         "econometrics",
         "sources",
@@ -166,7 +165,6 @@ class TerminalController(BaseController):
         mt.add_menu("etf")
         mt.add_menu("economy")
         mt.add_menu("forex")
-        mt.add_menu("funds")
         mt.add_menu("futures")
         mt.add_menu("alternative")
         mt.add_raw("\n")
@@ -382,14 +380,6 @@ class TerminalController(BaseController):
         from openbb_terminal.etf.etf_controller import ETFController
 
         self.queue = self.load_class(ETFController, self.queue)
-
-    def call_funds(self, _):
-        """Process etf command."""
-        from openbb_terminal.mutual_funds.mutual_fund_controller import (
-            FundController,
-        )
-
-        self.queue = self.load_class(FundController, self.queue)
 
     def call_forex(self, _):
         """Process forex command."""
