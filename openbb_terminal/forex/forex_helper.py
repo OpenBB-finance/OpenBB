@@ -519,8 +519,6 @@ def process_candle(data: pd.DataFrame) -> pd.DataFrame:
     df_data["ma20"] = df_data["Close"].rolling(20).mean().fillna(method="bfill")
     df_data["ma50"] = df_data["Close"].rolling(50).mean().fillna(method="bfill")
 
-    print(df_data)
-
     return df_data
 
 
