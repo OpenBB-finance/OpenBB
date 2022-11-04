@@ -15,6 +15,7 @@ from openbb_terminal.core.config.paths import (
     USER_DATA_DIRECTORY,
 )
 
+
 # pylint: disable=too-few-public-methods
 class ModelsNamespace:
     """A namespace placeholder for the menu models.

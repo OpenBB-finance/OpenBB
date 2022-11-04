@@ -218,7 +218,7 @@ class ForexController(BaseController):
 
     @log_start_end(log=logger)
     def call_candle(self, other_args: List[str]):
-        """Process quote command."""
+        """Process candle command."""
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
