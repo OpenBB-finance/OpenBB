@@ -58,13 +58,13 @@ class ScreenerController(BaseController):
 
     PRESETS_PATH_DEFAULT = Path(__file__).parent / "presets"
     preset_choices = {
-        filepath.name.strip(".ini"): filepath
+        filepath.name.replace(".ini", ""): filepath
         for filepath in PRESETS_PATH.iterdir()
         if filepath.suffix == ".ini"
     }
     preset_choices.update(
         {
-            filepath.name.strip(".ini"): filepath
+            filepath.name.replace(".ini", ""): filepath
             for filepath in PRESETS_PATH_DEFAULT.iterdir()
             if filepath.suffix == ".ini"
         }
