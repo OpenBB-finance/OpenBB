@@ -14,6 +14,7 @@ from openbb_terminal.economy import economy_controller
 # pylint: disable=W0603
 # pylint: disable=E1111
 
+# These are for the MACRO tests
 MOCK_DF = pd.DataFrame.from_dict(
     {
         ("United Kingdom", "CPI"): {
@@ -27,6 +28,29 @@ MOCK_DF = pd.DataFrame.from_dict(
     }
 )
 MOCK_UNITS = {"United States": {"CPI": "Index"}, "United Kingdom": {"CPI": "Index"}}
+
+MOCK_FRED_NOTES = pd.DataFrame.from_dict(
+    {
+        "id": {0: "UNRATE"},
+        "realtime_start": {0: "2022-11-04"},
+        "realtime_end": {0: "2022-11-04"},
+        "title": {0: "Unemployment Rate"},
+        "observation_start": {0: "1948-01-01"},
+        "observation_end": {0: "2022-10-01"},
+        "frequency": {0: "Monthly"},
+        "frequency_short": {0: "M"},
+        "units": {0: "Percent"},
+        "units_short": {0: "%"},
+        "seasonal_adjustment": {0: "Seasonally Adjusted"},
+        "seasonal_adjustment_short": {0: "SA"},
+        "last_updated": {0: "2022-11-04 07:44:03-05"},
+        "popularity": {0: 94},
+        "group_popularity": {0: 94},
+        "notes": {
+            0: "The unemployment rate represents the number of unemployed as a percentage of the labor force. Labor\nforce data are restricted to people 16 years of age and older, who currently reside in 1 of the 50\nstates or the District of Columbia, who do not reside in institutions (e.g., penal and mental\nfacilities, homes for the aged), and who are not on active duty in the Armed Forces.    This rate is\nalso defined as the U-3 measure of labor underutilization.    The series comes from the 'Current\nPopulation Survey (Household Survey)'    The source code is: LNS14000000"
+        },
+    }
+)
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -703,3 +727,27 @@ def test_call_macro(mocked_func, other_args, called_args, called_kwargs, mocker)
         mock.assert_called_once_with(*called_args, **called_kwargs)
     else:
         mock.assert_called_once()
+
+
+@pytest.mark.vcr(record_mode="none")
+def test_call_fred_query(mocker):
+    path_controller = "openbb_terminal.economy.economy_controller"
+
+    # MOCK REMOVE
+    mocker.patch(target=f"{path_controller}.os.remove")
+
+    mocker.patch(
+        target=f"{path_controller}.fred_model.get_series_notes",
+        return_value=MOCK_FRED_NOTES,
+    )
+
+    mock = mocker.Mock()
+    mocker.patch(
+        target=f"{path_controller}.fred_view.notes",
+        new=mock,
+    )
+
+    controller = economy_controller.EconomyController(queue=None)
+    controller.choices = {}
+    controller.call_fred(["--query", "MOCK_QUERY", "--limit", "1"])
+    mock.assert_called_once_with(**dict(search_query="MOCK_QUERY", limit=1))
