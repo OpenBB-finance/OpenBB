@@ -45,11 +45,10 @@ Optional arguments to this command allows the user to draw and annotate on the c
 2022 Aug 08, 12:14 /stocks/qa/ $ line -h
 usage: line [--log] [-d] [--ml ML] [--ms MS] [-h] [--export EXPORT]
 
-Show line plot of selected data and allow to draw lines or highlight specific datetimes.
+Show line plot of selected data or highlight specific datetimes.
 
 options:
   --log            Plot with y on log scale (default: False)
-  -d, --draw       Draw lines and annotate on the plot (default: False)
   --ml ML          Draw vertical line markers to highlight certain events (default: )
   --ms MS          Draw scatter markers to highlight certain events (default: )
   -h, --help       show this help message (default: False)
@@ -58,15 +57,6 @@ options:
 For more information and examples, use 'about line' to access the related guide.
 
 2022 Aug 08, 12:20 /stocks/qa/ $ pick high
-
-2022 Aug 08, 12:20 /stocks/qa/ $ line --draw
-Click twice for annotation.
-Close window to keep using terminal.
-
-Annotation: Lower Highs
-````
-
-![Annotated line chart](https://user-images.githubusercontent.com/85772166/183483798-82fb59f6-df9a-4b03-8dd5-542d7d20dcc6.png)
 
 Compare the beta between the loaded asset and another, using the `-r` flag to deviate from the defaulted comparison, $SPY.
 
