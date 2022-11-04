@@ -766,7 +766,7 @@ class ForecastController(BaseController):
                         "[red]The file/dataset selected has already been loaded.[/red]\n"
                     )
                     return
-                data = common_model.load(file, self.DATA_FILES)
+                data = common_model.load(file, self.DATA_FILES, {})
                 if not data.empty:
                     self.files_full.append([ns_parser.file, ns_parser.alias])
                     self.load(alias, data)
