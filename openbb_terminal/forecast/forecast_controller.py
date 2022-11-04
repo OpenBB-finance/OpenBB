@@ -70,6 +70,7 @@ from openbb_terminal.forecast import (
     trans_view,
     nhits_view,
 )
+from openbb_terminal.common import common_model
 
 logger = logging.getLogger(__name__)
 empty_df = pd.DataFrame()
@@ -185,7 +186,6 @@ class ForecastController(BaseController):
             "mod": "%",
             "pow": "**",
         }
-        self.file_types = forecast_model.base_file_types
         self.DATA_FILES = forecast_model.get_default_files()
 
         # setting device on GPU if available, else CPU
@@ -766,7 +766,7 @@ class ForecastController(BaseController):
                         "[red]The file/dataset selected has already been loaded.[/red]\n"
                     )
                     return
-                data = forecast_model.load(file, self.file_types, self.DATA_FILES)
+                data = common_model.load(file, self.DATA_FILES, {})
                 if not data.empty:
                     self.files_full.append([ns_parser.file, ns_parser.alias])
                     self.load(alias, data)
@@ -1663,7 +1663,7 @@ class ForecastController(BaseController):
             "--type",
             help="The file type you wish to export to",
             dest="type",
-            choices=self.file_types,
+            choices=common_model.file_types,
             type=str,
             default="xlsx",
         )

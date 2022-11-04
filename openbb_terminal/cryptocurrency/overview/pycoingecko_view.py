@@ -88,12 +88,17 @@ def display_crypto_heatmap(
             axis=1,
         )
 
+        # index needs to get sorted - was matching with different values
+        df.sort_index(inplace=True)
+        df_copy.sort_index(inplace=True)
         squarify.plot(
             df["market_cap"],
-            alpha=0.8,
+            alpha=0.5,
             color=colors,
         )
+
         text_sizes = squarify.normalize_sizes(df["market_cap"], 100, 100)
+
         rects = squarify.squarify(text_sizes, 0, 0, 100, 100)
         for la, r in zip(df_copy["symbol"], rects):
             x, y, dx, dy = r["x"], r["y"], r["dx"], r["dy"]
