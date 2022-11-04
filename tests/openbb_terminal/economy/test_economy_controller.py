@@ -3,6 +3,8 @@ import os
 
 # IMPORTATION THIRDPARTY
 import pytest
+import pandas as pd
+from pandas import Timestamp
 
 # IMPORTATION INTERNAL
 from openbb_terminal.economy import economy_controller
@@ -11,6 +13,20 @@ from openbb_terminal.economy import economy_controller
 # pylint: disable=E1101
 # pylint: disable=W0603
 # pylint: disable=E1111
+
+MOCK_DF = pd.DataFrame.from_dict(
+    {
+        ("United Kingdom", "CPI"): {
+            Timestamp("2022-08-01 00:00:00"): 123.1,
+            Timestamp("2022-09-01 00:00:00"): 123.8,
+        },
+        ("United States", "CPI"): {
+            Timestamp("2022-08-01 00:00:00"): 295.6,
+            Timestamp("2022-09-01 00:00:00"): 296.8,
+        },
+    }
+)
+MOCK_UNITS = {"United States": {"CPI": "Index"}, "United Kingdom": {"CPI": "Index"}}
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -598,3 +614,92 @@ def test_call_bigmac_countries(mocker):
         raw=True,
         export="csv",
     )
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "other_args, mocked_func, called_args, called_kwargs",
+    [
+        (
+            [],
+            "econdb_view.show_macro_data",
+            [],
+            dict(
+                parameters=["CPI"],
+                countries=["united_states"],
+                transform="",
+                start_date=None,
+                end_date=None,
+                symbol=False,
+                raw=False,
+                export="",
+            ),
+        ),
+        (
+            ["--countries=united_states,united_kingdom,CANADA"],
+            "econdb_view.show_macro_data",
+            [],
+            dict(
+                parameters=["CPI"],
+                countries=["united_states", "united_kingdom", "canada"],
+                transform="",
+                start_date=None,
+                end_date=None,
+                symbol=False,
+                raw=False,
+                export="",
+            ),
+        ),
+        (
+            [
+                "--countries=united_states,united_kingdom",
+                "-s=2022-01-01",
+                "-p=GDP,PPI",
+                "-e=2022-10-10",
+                "--export=csv",
+                "--raw",
+            ],
+            "econdb_view.show_macro_data",
+            [],
+            dict(
+                parameters=["GDP", "PPI"],
+                countries=["united_states", "united_kingdom"],
+                transform="",
+                start_date="2022-01-01",
+                end_date="2022-10-10",
+                symbol=False,
+                raw=True,
+                export="csv",
+            ),
+        ),
+    ],
+)
+def test_call_macro(mocked_func, other_args, called_args, called_kwargs, mocker):
+    path_controller = "openbb_terminal.economy.economy_controller"
+
+    # MOCK REMOVE
+    mocker.patch(target=f"{path_controller}.os.remove")
+    # MOCK the econdb.get_aggregated_macro_data
+    mocker.patch(
+        target=f"{path_controller}.econdb_model.get_aggregated_macro_data",
+        return_value=(MOCK_DF, MOCK_UNITS, "MOCK_NOTHINGS"),
+    )
+    mocker.patch(
+        target="openbb_terminal.feature_flags.ENABLE_EXIT_AUTO_HELP",
+        new=False,
+    )
+
+    mock = mocker.Mock()
+    mocker.patch(
+        target=f"{path_controller}.{mocked_func}",
+        new=mock,
+    )
+
+    controller = economy_controller.EconomyController(queue=None)
+    controller.choices = {}
+    controller.call_macro(other_args)
+
+    if called_args or called_kwargs:
+        mock.assert_called_once_with(*called_args, **called_kwargs)
+    else:
+        mock.assert_called_once()
