@@ -903,7 +903,6 @@ def display_line(
     data: pd.Series,
     title: str = "",
     log_y: bool = True,
-    draw: bool = False,
     markers_lines: Optional[List[datetime]] = None,
     markers_scatter: Optional[List[datetime]] = None,
     export: str = "",
@@ -919,8 +918,6 @@ def display_line(
         Title for plot
     log_y: bool
         Flag for showing y on log scale
-    draw: bool
-        Flag for drawing lines and annotating on the plot
     markers_lines: Optional[List[datetime]]
         List of dates to highlight using vertical lines
     markers_scatter: Optional[List[datetime]]
