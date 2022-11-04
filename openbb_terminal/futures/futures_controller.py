@@ -75,6 +75,13 @@ class FuturesController(BaseController):
             self.choices["about"] = self.ABOUT_CHOICES
 
             self.choices["historical"] = {c: None for c in self.all_tickers}
+            self.choices["historical"]["--ticker"] = {c: None for c in self.all_tickers}
+            self.choices["historical"]["-t"] = "--ticker"
+            self.choices["historical"]["--start"] = {}
+            self.choices["historical"]["-s"] = "--start"
+            self.choices["historical"]["--expiry"] = {}
+            self.choices["historical"]["-e"] = "--expiry"
+
             self.choices["curve"] = {c: None for c in self.all_tickers}
 
             self.completer = NestedCompleter.from_nested_dict(self.choices)  # type: ignore

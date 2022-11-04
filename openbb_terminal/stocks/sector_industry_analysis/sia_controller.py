@@ -205,7 +205,6 @@ class SectorIndustryAnalysisController(BaseController):
                 "-m": "--metric",
                 "--raw": {},
                 "-r": "--raw",
-                "--show-all": {},
             }
             choices["vis"] = {
                 "--metric": {c: {} for c in self.vis_choices},
@@ -213,7 +212,6 @@ class SectorIndustryAnalysisController(BaseController):
                 "--currency": None,
                 "-c": "--currency",
                 "--raw": {},
-                "--show-all": {},
             }
 
             choices["support"] = self.SUPPORT_CHOICES
@@ -721,7 +719,7 @@ class SectorIndustryAnalysisController(BaseController):
             "-m",
             "--metric",
             dest="metric",
-            required="-h" not in other_args and "--show-all" not in other_args,
+            required="-h" not in other_args,
             help="Metric to visualize",
             choices=self.metric_choices,
         )
@@ -832,7 +830,7 @@ class SectorIndustryAnalysisController(BaseController):
             "-m",
             "--metric",
             dest="metric",
-            required="-h" not in other_args and "--show-all" not in other_args,
+            required="-h" not in other_args,
             help="Metric to visualize",
             choices=self.vis_choices,
         )
