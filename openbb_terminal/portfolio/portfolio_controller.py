@@ -356,7 +356,7 @@ class PortfolioController(BaseController):
 {("[/unvl]", "[/cmds]")[port_bench]}
 [info]Metrics:[/info]{("[unvl]", "[cmds]")[port_bench]}
     alloc            allocation on an asset, sector, countries or regions basis
-    attrib           display attribution of portfolio returns by sector
+    attrib           display sector attribution of the portfolio compared to the S&P 500
     summary          all portfolio vs benchmark metrics for a certain period of choice
     metric           portfolio vs benchmark metric for all different periods
     perf             performance of the portfolio versus benchmark{("[/unvl]", "[/cmds]")[port_bench]}
@@ -651,16 +651,8 @@ class PortfolioController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="attrib",
             description="""
-                Show your portfolio attribution of each sector.
-            """,
-        )
-        parser.add_argument(
-            "-a",
-            "--agg",
-            default="sectors",
-            choices=self.AGGREGATION_METRICS,
-            dest="agg",
-            help="The type of attribution aggregation you wish to do",
+                Displays sector attribution of the portfolio compared to the S&P 500            
+                """,
         )
         parser.add_argument(
             "-p",
@@ -670,6 +662,25 @@ class PortfolioController(BaseController):
             dest="period",
             default="all",
             help="The file to be loaded",
+        )
+        parser.add_argument(
+            "-t",
+            "--type",
+            type=str,
+            choices=["relative","absolute"],
+            dest="type",
+            default="relative",
+            help="select between relative or absolute attribution values",
+        )
+        parser.add_argument(
+            "-r",
+            "--raw",
+            type=bool,
+            dest="raw",
+            default=False,
+            const=True,
+            nargs="?",
+            help="view attribution in a graph visualisation format",
         )
 
         if other_args:
@@ -683,105 +694,60 @@ class PortfolioController(BaseController):
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):
-                if ns_parser.agg == "assets":
-                    console.print(
-                        f"{ns_parser.agg} is not an available option. Currently only 'sectors' are supported "
+                if self.benchmark_name != "SPDR S&P 500 ETF Trust (SPY)":
+                    print(
+                        "This feature uses S&P 500 as benchmark and will disregard selected benchmark if different."
                     )
-                elif ns_parser.agg == "sectors":
-
-                    # if self.portfolio.portfolio_assets_allocation.empty:
-                    #     self.portfolio.calculate_allocations("asset")
-
-                    if self.benchmark_name != "SPDR S&P 500 ETF Trust (SPY)":
-                        print(
-                            "Feature currently only available for SPY, please select SPY as benchmark"
-                        )
-                    else:
-                        # sector contribution
-                        end_date = date.today()
-                        # set correct time period
-                        if ns_parser.period == "all":
-                            start_date = self.portfolio.inception_date
-                        else:
-                            start_date = portfolio_helper.get_start_date_from_period(
-                                ns_parser.period
-                            )
-
-                        # calculate benchmark and portfolio contribution values
-                        bench_result = attribution_model.get_spy_sector_contributions(
-                            start_date, end_date
-                        )
-                        portfolio_result = (
-                            attribution_model.get_portfolio_sector_contributions(
-                                start_date, self.portfolio.get_orderbook()
-                            )
-                        )
-
-                        # using percentage contributions
-                        bench_df = bench_result.iloc[:, [1]]
-                        port_df = portfolio_result.iloc[:, [1]]
-                        categorisation_result = (
-                            attribution_model.percentage_attrib_categorizer(
-                                bench_df, port_df
-                            )
-                        )
-                        # round the values - percentages
-                        categorisation_result["S&P500 [%]"] = (
-                            categorisation_result["S&P500 [%]"].astype(float).round(2)
-                        )
-                        categorisation_result["Portfolio [%]"] = (
-                            categorisation_result["Portfolio [%]"]
-                            .astype(float)
-                            .round(2)
-                        )
-                        portfolio_view.display_attribution_categorisation(
-                            display=categorisation_result,
-                            time_period=ns_parser.period,
-                            attrib_type="Contributions as % of PF",
-                            plot_fields=["S&P500 [%]", "Portfolio [%]"],
-                            show_plot=True,
-                        )
-
-                        # using raw
-                        bench_df = bench_result.iloc[:, [0]]
-                        port_df = portfolio_result.iloc[:, [0]]
-                        categorisation_result = (
-                            attribution_model.raw_attrib_categorizer(bench_df, port_df)
-                        )
-                        # round the values - raw values
-                        categorisation_result["S&P500"] = (
-                            categorisation_result["S&P500"].astype(float).round(4)
-                        )
-                        categorisation_result["Portfolio"] = (
-                            categorisation_result["Portfolio"].astype(float).round(4)
-                        )
-                        portfolio_view.display_attribution_categorisation(
-                            display=categorisation_result,
-                            time_period=ns_parser.period,
-                            attrib_type="Raw contributions (Return x PF Weight)",
-                            plot_fields=["S&P500", "Portfolio"],
-                            show_plot=True,
-                        )
-
-                elif ns_parser.agg == "countries":
-                    console.print(
-                        f"{ns_parser.agg} is not an available option. Currently only 'sectors' are supported "
-                        f"are: {', '.join(self.AGGREGATION_METRICS)}"
-                    )
-                elif ns_parser.agg == "regions":
-                    console.print(
-                        f"{ns_parser.agg} is not an available option. Currently only 'sectors' are supported "
-                        f"are: {', '.join(self.AGGREGATION_METRICS)}"
-                    )
-
+                # sector contribution
+                end_date = date.today()
+                # set correct time period
+                if ns_parser.period == "all":
+                    start_date = self.portfolio.inception_date
                 else:
-                    console.print(
-                        f"{ns_parser.agg} is not an available option. \
-                            Currently only sectors' are supported. Future supported"
-                        f"are: {', '.join(self.AGGREGATION_METRICS)}"
+                    start_date = portfolio_helper.get_start_date_from_period(
+                        ns_parser.period
                     )
 
-                console.print()
+                # calculate benchmark and portfolio contribution values
+                bench_result = attribution_model.get_spy_sector_contributions(
+                    start_date, end_date
+                )
+                portfolio_result = (
+                    attribution_model.get_portfolio_sector_contributions(
+                        start_date, self.portfolio.get_orderbook()
+                    )
+                )                   
+                # relative results - the proportions of return attribution
+                if ns_parser.type == "relative":
+                    categorisation_result = (
+                        attribution_model.percentage_attrib_categorizer(
+                            bench_result, portfolio_result
+                        )
+                    )
+
+                    portfolio_view.display_attribution_categorisation(
+                        display=categorisation_result,
+                        time_period=ns_parser.period,
+                        attrib_type="Contributions as % of PF",
+                        plot_fields=["S&P500 [%]", "Portfolio [%]"],
+                        show_table = ns_parser.raw,
+                    )
+
+                # absolute - the raw values of return attribution
+                if ns_parser.type == "absolute":
+                    categorisation_result = (
+                        attribution_model.raw_attrib_categorizer(bench_result, portfolio_result)
+                    )
+
+                    portfolio_view.display_attribution_categorisation(
+                        display=categorisation_result,
+                        time_period=ns_parser.period,
+                        attrib_type="Raw contributions (Return x PF Weight)",
+                        plot_fields=["S&P500", "Portfolio"],
+                        show_table = ns_parser.raw,
+                    )
+
+            console.print()
 
     @log_start_end(log=logger)
     def call_perf(self, other_args: List[str]):

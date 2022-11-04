@@ -7,6 +7,8 @@ alloc sectors
 alloc countries
 alloc regions
 attrib
+attrib --raw
+attrib --type absolute
 perf
 perf -t
 rolling

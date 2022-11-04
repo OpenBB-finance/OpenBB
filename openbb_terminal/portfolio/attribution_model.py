@@ -66,12 +66,12 @@ def get_spy_sector_contributions(
 
     # Load in info
     sp500_tickers_data = get_daily_sector_prices(start_date, end_date)
-    weight_data = yf.Ticker("SPY").info["sectorWeightings"]
+    weight_data = yf.Ticker(sectors_ticker).info["sectorWeightings"]
 
     # reformat Data
     weights = {"SPY":{}}
     for sector in weight_data:
-        weights["SPY"].update(sector)
+        weights[sectors_ticker].update(sector)
 
     # add the sectors + dates + adj close to the dataframe
     records = []
@@ -215,6 +215,10 @@ def percentage_attrib_categorizer(bench_df: pd.DataFrame, pf_df: pd.DataFrame):
         dataframe of S&P500 and PF attribution as a proportion
     """
 
+    # using percentage contributions
+    bench_df = bench_df.iloc[:, [1]]
+    pf_df = pf_df.iloc[:, [1]]
+
     # rename columns
     bench_df.rename(columns={"contribution_as_pct": "S&P500 [%]"}, inplace=True)
     pf_df.rename(columns={"contribution_as_pct": "Portfolio [%]"}, inplace=True)
@@ -254,6 +258,16 @@ def percentage_attrib_categorizer(bench_df: pd.DataFrame, pf_df: pd.DataFrame):
 
     result["Attribution Sensitivity"] = sensitivity
 
+    # 5. round values before output
+    result["S&P500 [%]"] = (
+        result["S&P500 [%]"].astype(float).round(2)
+    )
+    result["Portfolio [%]"] = (
+        result["Portfolio [%]"]
+        .astype(float)
+        .round(2)
+    )
+
     return result
 
 
@@ -279,6 +293,9 @@ def raw_attrib_categorizer(bench_df, pf_df):
     result : pd.DataFrame
         dataframe of S&P500 and PF attribution as raw values.
     """
+
+    bench_df = bench_df.iloc[:, [0]]
+    pf_df = pf_df.iloc[:, [0]]
 
     # rename columns
     bench_df.rename(columns={"contribution": "S&P500"}, inplace=True)
@@ -319,6 +336,15 @@ def raw_attrib_categorizer(bench_df, pf_df):
 
     result["Attribution Sensitivity"] = sensitivity
 
+                        
+    # 5. round values before output
+    result["S&P500"] = (
+        result["S&P500"].astype(float).round(4)
+    )
+    result["Portfolio"] = (
+        result["Portfolio"].astype(float).round(4)
+    )
+
     return result
 
 
@@ -339,22 +365,31 @@ def get_daily_sector_prices(start_date, end_date):
     sp500_tickers_data : Dictionary
         dictionary of dataframes with SPY daily sector prices
     """
-    # Load tickers from json file
-    ticker_json_path = os.path.join(
-        os.path.abspath(os.path.dirname(__file__)), "sp500_sectors_and_industries.json"
-    )
-    sp500_tickers = json.load(open(ticker_json_path))
+    # sector ticker information
+    sp500_tickers = {
+        "S&P 500 Materials (Sector)": "^SP500-15",
+        "S&P 500 Industrials (Sector)":"^SP500-20",
+        "S&P 500 Consumer Discretionary (Sector)":"^SP500-25",
+        "S&P 500 Consumer Staples (Sector)":"^SP500-30",
+        "S&P 500 Health Care (Sector)":"^SP500-35",
+        "S&P 500 Financials (Sector)":"^SP500-40",
+        "S&P 500 Information Technology (Sector)":"^SP500-45",
+        "S&P 500 Telecommunication Services (Sector)":"^SP500-50",
+        "S&P 500 Utilities (Sector)":"^SP500-55",
+        "S&P 500 Real Estate (Sector)":"^SP500-60",
+        "S&P 500 Energy (Sector)":"^GSPE",
+    }
 
     sp500_tickers_data = {}  # to store data
 
     for (
         sector,
-        industry_groups,
-    ) in sp500_tickers.items():  # iterate thru the sectors in the json file
-        # load the data required
-        sp500_tickers_data[sector] = {  # builds a dictionary for the sector
+        sector_ticker,
+    ) in sp500_tickers.items():  # iterate thru the sectors
+        # load the data required from yfinance
+        sp500_tickers_data[sector] = {  # builds a dictionary entry for the sector with adj close data
             "sector_data": yf.download(
-                industry_groups["sector_ticker"],
+                sector_ticker,
                 start=start_date,
                 end=end_date,
                 progress=False,
