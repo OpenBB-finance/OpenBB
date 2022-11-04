@@ -1,7 +1,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### common.ta.vwap(data: pandas.core.frame.DataFrame, offset: int = 0) -> pandas.core.frame.DataFrame
+### common.ta.vwap(data: pandas.core.series.Series, offset: int = 0) -> pandas.core.frame.DataFrame
 
 Gets volume weighted average price (VWAP)
 
