@@ -9,7 +9,7 @@ from typing import Dict, Union, Any, Optional, List
 from itertools import chain
 
 import pandas as pd
-from pandas import DataFrame
+from pandas.errors import ParserError
 import numpy as np
 
 from openbb_terminal.decorators import log_start_end
@@ -94,14 +94,24 @@ def load(
     file_type = Path(full_file).suffix
 
     if file_type == ".xlsx":
-        data = pd.read_excel(full_file)
+        try:
+            data = pd.read_excel(full_file)
+        except ParserError:
+            console.print("[red]The given file is not properly formatted.[/red]\b")
+            return pd.DataFrame()
     elif file_type == ".csv":
-        data = pd.read_csv(full_file)
+        try:
+            data = pd.read_csv(full_file)
+        except ParserError:
+            console.print("[red]The given file is not properly formatted.[/red]\b")
+            return pd.DataFrame()
     else:
-        return console.print(
+        console.print(
             f"The file type {file_type} is not supported. Please choose one of the following: "
             f"{', '.join(file_types)}"
         )
+        return pd.DataFrame()
+    data.columns = [x.replace("/", "_") for x in data.columns]
 
     return data
 
@@ -109,7 +119,7 @@ def load(
 @log_start_end(log=logger)
 def get_options(
     datasets: Dict[str, pd.DataFrame], dataset_name: str = None
-) -> Dict[Union[str, Any], DataFrame]:
+) -> Dict[Union[str, Any], pd.DataFrame]:
     """Obtain columns-dataset combinations from loaded in datasets that can be used in other commands
 
     Parameters
