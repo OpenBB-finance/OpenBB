@@ -110,6 +110,7 @@ class SourcesController(BaseController):
             action="store",
             dest="cmd",
             choices=list(self.commands_with_sources.keys()),
+            required="-h" not in other_args,
             help="Command that we want to check the available data sources and the default one.",
             metavar="COMMAND",
         )
@@ -117,7 +118,14 @@ class SourcesController(BaseController):
             other_args.insert(0, "-c")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            if self.commands_with_sources[ns_parser.cmd]:
+            try:
+                the_item = self.commands_with_sources[ns_parser.cmd]
+            except KeyError:
+                console.print(
+                    [f"[red]'{ns_parser.cmd}' is not a valid command.[/red]\n"]
+                )
+                return
+            if the_item:
                 console.print(
                     f"\n[param]Default   :[/param] {self.commands_with_sources[ns_parser.cmd][0]}"
                 )

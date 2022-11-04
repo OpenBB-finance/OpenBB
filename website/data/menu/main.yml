@@ -11,6 +11,8 @@ main:
             sub:
               - name: cases
                 ref: /terminal/alternative/covid/cases
+              - name: country
+                ref: /terminal/alternative/covid/country
               - name: deaths
                 ref: /terminal/alternative/covid/deaths
               - name: ov
