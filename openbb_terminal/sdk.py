@@ -883,9 +883,7 @@ functions = {
         "model": "openbb_terminal.econometrics.econometrics_model.get_root",
         "view": "openbb_terminal.econometrics.econometrics_view.display_root",
     },
-    "econometrics.load": {
-        "model": "openbb_terminal.econometrics.econometrics_model.load"
-    },
+    "econometrics.load": {"model": "openbb_terminal.common.common_model.load"},
     "econometrics.bgod": {
         "model": "openbb_terminal.econometrics.regression_model.get_bgod",
         "view": "openbb_terminal.econometrics.regression_view.display_bgod",
@@ -1007,8 +1005,8 @@ functions = {
         "model": "openbb_terminal.economy.investingcom_model.get_ycrv_countries"
     },
     "economy.ycrv": {
-        "model": "openbb_terminal.economy.investingcom_model.get_yieldcurve",
-        "view": "openbb_terminal.economy.investingcom_view.display_yieldcurve",
+        "model": "openbb_terminal.economy.fred_model.get_yield_curve",
+        "view": "openbb_terminal.economy.fred_view.display_yield_curve",
     },
     "economy.country_codes": {
         "model": "openbb_terminal.economy.nasdaq_model.get_country_codes"
@@ -1952,7 +1950,7 @@ functions = {
     "keys.shroom": {"model": "openbb_terminal.keys_model.set_shroom_key"},
 }
 forecast_extras = {
-    "forecast.load": {"model": "openbb_terminal.forecast.forecast_model.load"},
+    "forecast.load": {"model": "openbb_terminal.common.common_model.load"},
     "forecast.show": {
         "model": "openbb_terminal.forecast.forecast_view.show_df",
         "view": "openbb_terminal.forecast.forecast_view.show_df",
