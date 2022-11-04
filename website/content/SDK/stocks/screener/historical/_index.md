@@ -1,7 +1,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### stocks.screener.historical(preset_loaded: str = 'top_gainers', limit: int = 10, start_date: str = '2022-05-07', type_candle: str = 'a', normalize: bool = True)
+### stocks.screener.historical(preset_loaded: str = 'top_gainers', limit: int = 10, start_date: str = '2022-05-08', type_candle: str = 'a', normalize: bool = True)
 
 View historical price of stocks that meet preset
 
@@ -28,7 +28,7 @@ View historical price of stocks that meet preset
         Whether some random stock selection due to limitations
 
 ## Getting charts 
-### stocks.screener.historical(preset_loaded: str = 'top_gainers', limit: int = 10, start_date: str = '2022-05-07', type_candle: str = 'a', normalize: bool = True, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> List[str]
+### stocks.screener.historical(preset_loaded: str = 'top_gainers', limit: int = 10, start_date: str = '2022-05-08', type_candle: str = 'a', normalize: bool = True, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> List[str]
 
 View historical price of stocks that meet preset
 

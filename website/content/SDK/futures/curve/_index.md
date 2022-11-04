@@ -1,24 +1,24 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### futures.curve(ticker: str = '')
+### futures.curve(symbol: str = '')
 
 Get curve futures [Source: Yahoo Finance]
 
     Parameters
     ----------
-    ticker: str
-        Ticker to get forward curve
+    symbol: str
+        symbol to get forward curve
 
 ## Getting charts 
-### futures.curve(ticker: str, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### futures.curve(symbol: str, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display curve futures [Source: Yahoo Finance]
 
     Parameters
     ----------
-    ticker: str
-        Curve future ticker to display
+    symbol: str
+        Curve future symbol to display
     raw: bool
         Display futures timeseries in raw format
     export: str

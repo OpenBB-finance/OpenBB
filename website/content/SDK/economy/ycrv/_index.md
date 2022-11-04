@@ -1,28 +1,30 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### economy.ycrv(country: str = 'United States') -> pandas.core.frame.DataFrame
+### economy.ycrv(date: datetime.datetime = None) -> Tuple[pandas.core.frame.DataFrame, datetime.datetime]
 
-Get yield curve for specified country. [Source: Investing.com]
+Gets yield curve data from FRED
 
     Parameters
     ----------
-    country: str
-        Country to display yield curve. List of available countries is accessible through get_ycrv_countries().
+    date: datetime
+        Date to get curve for.  If None, gets most recent date
 
     Returns
     -------
-    pd.DataFrame
-        Country yield curve
+    pd.DataFrame:
+        Dataframe of yields and maturities
+    str
+        Date for which the yield curve is obtained
 
 ## Getting charts 
-### economy.ycrv(country: str = 'United States', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, raw: bool = False, export: str = '', chart=True)
+### economy.ycrv(date: datetime.datetime = None, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, raw: bool = False, export: str = '', chart=True)
 
-Display yield curve for specified country. [Source: Investing.com]
+Display yield curve based on US Treasury rates for a specified date.
 
     Parameters
     ----------
-    country: str
-        Country to display yield curve. List of available countries is accessible through get_ycrv_countries().
-    export : str
-        Export dataframe data to csv,json,xlsx file
+    date: datetime
+        Date to get yield curve for
+    external_axes: Optional[List[plt.Axes]]
+        External axes to plot data on

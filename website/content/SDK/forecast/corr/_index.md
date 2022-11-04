@@ -1,13 +1,13 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### forecast.corr(df: pandas.core.frame.DataFrame) -> pandas.core.frame.DataFrame
+### forecast.corr(data: pandas.core.frame.DataFrame) -> pandas.core.frame.DataFrame
 
 Returns correlation for a given df
 
     Parameters
     ----------
-    df: pd.DataFrame
+    data: pd.DataFrame
         The df to produce statistics for
 
     Returns

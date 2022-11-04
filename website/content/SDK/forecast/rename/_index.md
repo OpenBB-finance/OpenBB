@@ -1,11 +1,11 @@
 ## Get underlying data 
-### forecast.rename(df: pandas.core.frame.DataFrame, old_column: str, new_column: str) -> pandas.core.frame.DataFrame
+### forecast.rename(data: pandas.core.frame.DataFrame, old_column: str, new_column: str) -> pandas.core.frame.DataFrame
 
 Rename a column in a dataframe
 
     Parameters
     ----------
-    df: pd.DataFrame
+    data: pd.DataFrame
         The dataframe to have a column renamed
     old_column: str
         The column that will have its name changed

@@ -1,7 +1,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### stocks.ba.trend(start_date: datetime.datetime = datetime.datetime(2022, 11, 3, 17, 23, 0, 782290), hour: int = 0, number: int = 10) -> pandas.core.frame.DataFrame
+### stocks.ba.trend(start_date: datetime.datetime = datetime.datetime(2022, 11, 4, 16, 3, 3, 197446), hour: int = 0, number: int = 10) -> pandas.core.frame.DataFrame
 
 Get sentiment data on the most talked about tickers
     within the last hour
@@ -24,7 +24,7 @@ Get sentiment data on the most talked about tickers
         Dataframe of trending data
 
 ## Getting charts 
-### stocks.ba.trend(start_date: datetime.datetime = datetime.datetime(2022, 11, 3, 17, 23, 0, 782624, chart=True), hour: int = 0, number: int = 10, limit: int = 10, export: str = '')
+### stocks.ba.trend(start_date: datetime.datetime = datetime.datetime(2022, 11, 4, 16, 3, 3, 197757, chart=True), hour: int = 0, number: int = 10, limit: int = 10, export: str = '')
 
 Display most talked about tickers within
     the last hour together with their sentiment data.

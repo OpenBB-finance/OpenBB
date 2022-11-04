@@ -1,5 +1,5 @@
 ## Get underlying data 
-### forecast.load(file: str, file_types: Optional[List[str]] = None, data_files: Optional[Dict[Any, Any]] = None, add_extension: bool = False) -> pandas.core.frame.DataFrame
+### forecast.load(file: str, data_files: Optional[Dict[Any, Any]] = None, data_examples: Optional[Dict[Any, Any]] = None) -> pandas.core.frame.DataFrame
 
 Load custom file into dataframe.
 
@@ -7,12 +7,10 @@ Load custom file into dataframe.
     ----------
     file: str
         Path to file
-    file_types: list
-        Supported file types
     data_files: dict
         Contains all available data files within the Export folder
-    add_extension:
-        Takes a file name and tries loading with csv or xlsx extension
+    data_examples: dict
+        Contains all available examples from Statsmodels
 
     Returns
     -------

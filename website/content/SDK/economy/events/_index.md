@@ -1,5 +1,5 @@
 ## Get underlying data 
-### economy.events(countries: Union[List[str], str] = '', start_date: str = '2022-11-03', end_date: str = '2022-11-03') -> pandas.core.frame.DataFrame
+### economy.events(countries: Union[List[str], str] = '', start_date: str = '2022-11-04', end_date: str = '2022-11-04') -> pandas.core.frame.DataFrame
 
 Get economic calendar for countries between specified dates
 
