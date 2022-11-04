@@ -477,12 +477,12 @@ def display_candle(
         External axes (2 axes are expected in the list), by default None
     asset_type_: str
         String to include in title
-    start_date: datetime
-        Start date to get data from with
+    start_date: str or datetime, optional
+        Start date to get data from with. - datetime or string format (YYYY-MM-DD)
     interval: int
         Interval (in minutes) to get data 1, 5, 15, 30, 60 or 1440
-    end_date: datetime
-        End date to get data from with
+    end_date: str or datetime, optional
+        End date to get data from with. - datetime or string format (YYYY-MM-DD)
     prepost: bool
         Pre and After hours data
     source: str
