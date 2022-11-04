@@ -1,5 +1,5 @@
 ---
-title: Introductions to the Stock Options Module
+title: Introductions to Options
 keywords: "stocks, options, calls, puts, gamma, delta, iv, theta, rho, greeks, charm, vanna, vomma, derivatives, contracts, ^SPX, ^VIX, ^NDX, chains, oi, vol, volume, open, interest, expiration, dte, volatility, underlying"
 excerpt: "This guide introduces the Stock Options module, within the context of the OpenBB SDK"
 geekdocCollapseSection: true
@@ -80,20 +80,3 @@ options_df
 Depending on the depth of options available, compiling the data may take upwards of thirty seconds.
 
 ![DataFrame With all Expirations](https://user-images.githubusercontent.com/85772166/199893166-35ef062d-c16e-464d-a392-378ef4c6a1ee.png "DataFrame With all Expirations")
-
-The data can then be cleaned for better presentation, indexing, or analysis; for example:
-
-```python
-option_df_index = pd.Series(options_df.index).str.extractall(r'^(?P<Ticker>\D*)(?P<Expiration>\d*)(?P<Type>\D*)(?P<Strike>\d*)')
-option_df_index.reset_index(inplace = True)
-option_df_index = pd.DataFrame(option_df_index, columns = ['Ticker', 'Expiration', 'Strike', 'Type'])
-option_df_index['Strike'] = options_df['strike'].values
-option_df_index['Type'] = options_df['option_type'].values
-option_df_index['Expiration'] = pd.DatetimeIndex(data = option_df_index['Expiration'], yearfirst = True).strftime('%Y-%m-%d')
-option_df_index['Type'] = pd.DataFrame(option_df_index['Type']).replace(to_replace = ['put', 'call'], value = ['Put', 'Call'])
-df_columns = list(options_df.columns)
-option_df_index.set_index(keys = ['Ticker', 'Expiration', 'Strike', 'Type'], inplace = True)
-options_df = pd.DataFrame(data = options_df.values, index = option_df_index.index, columns = df_columns)
-```
-
-![Cleaning Options Data](https://user-images.githubusercontent.com/85772166/199898649-0ff7ae37-a0bd-4936-8749-c443fa40bb9a.png "Cleaning Options Data")
