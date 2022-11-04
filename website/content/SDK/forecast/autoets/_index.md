@@ -1,13 +1,14 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### forecast.expo(data: Union[pandas.core.series.Series, pandas.core.frame.DataFrame], target_column: str = 'close', trend: str = 'A', seasonal: str = 'A', seasonal_periods: int = 7, dampen: str = 'F', n_predict: int = 5, start_window: float = 0.85, forecast_horizon: int = 5) -> Tuple[List[darts.timeseries.TimeSeries], List[darts.timeseries.TimeSeries], List[darts.timeseries.TimeSeries], Optional[float], Any]
+### forecast.autoets(data: Union[pandas.core.series.Series, pandas.core.frame.DataFrame], target_column: str = 'close', seasonal_periods: int = 7, n_predict: int = 5, start_window: float = 0.85, forecast_horizon: int = 5) -> Tuple[list[numpy.ndarray], List[numpy.ndarray], List[numpy.ndarray], Optional[float], Any]
 
-Performs Probabilistic Exponential Smoothing forecasting
-    This is a wrapper around statsmodels Holt-Winters' Exponential Smoothing;
+Performs Automatic ETS forecasting
+    This is a wrapper around StatsForecast ETS;
     we refer to this link for the original and more complete documentation of the parameters.
 
-    https://unit8co.github.io/darts/generated_api/darts.models.forecasting.exponential_smoothing.html?highlight=exponential
+
+        https://nixtla.github.io/statsforecast/models.html#ets
 
     Parameters
     ----------
@@ -15,17 +16,9 @@ Performs Probabilistic Exponential Smoothing forecasting
         Input data.
     target_column (str, optional):
         Target column to forecast. Defaults to "close".
-    trend: str
-        Trend component.  One of [N, A, M]
-        Defaults to ADDITIVE.
-    seasonal: str
-        Seasonal component.  One of [N, A, M]
-        Defaults to ADDITIVE.
     seasonal_periods: int
         Number of seasonal periods in a year (7 for daily data)
         If not set, inferred from frequency of the series.
-    dampen: str
-        Dampen the function
     n_predict: int
         Number of days to forecast
     start_window: float
@@ -44,12 +37,12 @@ Performs Probabilistic Exponential Smoothing forecasting
     Optional[float]
         precision
     Any
-        Fit Prob. Expo model object.
+        Fit ETS model object.
 
 ## Getting charts 
-### forecast.expo(data: Union[pandas.core.frame.DataFrame, pandas.core.series.Series], target_column: str = 'close', dataset_name: str = '', trend: str = 'A', seasonal: str = 'A', seasonal_periods: int = 7, dampen: str = 'F', n_predict: int = 5, start_window: float = 0.85, forecast_horizon: int = 5, export: str = '', residuals: bool = False, forecast_only: bool = False, start_date: Optional[datetime.datetime] = None, end_date: Optional[datetime.datetime] = None, naive: bool = False, export_pred_raw: bool = False, external_axes: Optional[List[axes]] = None, chart=True)
+### forecast.autoets(data: Union[pandas.core.frame.DataFrame, pandas.core.series.Series], target_column: str = 'close', dataset_name: str = '', seasonal_periods: int = 7, n_predict: int = 5, start_window: float = 0.85, forecast_horizon: int = 5, export: str = '', residuals: bool = False, forecast_only: bool = False, start_date: Optional[datetime.datetime] = None, end_date: Optional[datetime.datetime] = None, naive: bool = False, export_pred_raw: bool = False, external_axes: Optional[List[axes]] = None, chart=True)
 
-Display Probabilistic Exponential Smoothing forecast
+Display Automatic ETS (Error, Trend, Sesonality) Model
 
     Parameters
     ----------
@@ -59,17 +52,9 @@ Display Probabilistic Exponential Smoothing forecast
         The name of the ticker to be predicted
     target_column (str, optional):
         Target column to forecast. Defaults to "close".
-    trend: str
-        Trend component.  One of [N, A, M]
-        Defaults to ADDITIVE.
-    seasonal: str
-        Seasonal component.  One of [N, A, M]
-        Defaults to ADDITIVE.
     seasonal_periods: int
         Number of seasonal periods in a year
         If not set, inferred from frequency of the series.
-    dampen: str
-        Dampen the function
     n_predict: int
         Number of days to forecast
     start_window: float

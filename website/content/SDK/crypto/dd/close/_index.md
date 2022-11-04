@@ -1,5 +1,5 @@
 ## Get underlying data 
-### crypto.dd.close(symbol: str, start_date: str = '2010-01-01', end_date: str = '2022-10-26', print_errors: bool = True) -> pandas.core.frame.DataFrame
+### crypto.dd.close(symbol: str, start_date: str = '2010-01-01', end_date: str = '2022-11-03', print_errors: bool = True) -> pandas.core.frame.DataFrame
 
 Returns the price of a cryptocurrency
     [Source: https://glassnode.com]
