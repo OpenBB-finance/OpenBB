@@ -87,7 +87,6 @@ class TerminalController(BaseController):
         "etf",
         "reports",
         "dashboards",
-        "funds",
         "alternative",
         "econometrics",
         "sources",
@@ -166,7 +165,6 @@ class TerminalController(BaseController):
         mt.add_menu("etf")
         mt.add_menu("economy")
         mt.add_menu("forex")
-        mt.add_menu("funds")
         mt.add_menu("futures")
         mt.add_menu("alternative")
         mt.add_raw("\n")
@@ -382,14 +380,6 @@ class TerminalController(BaseController):
         from openbb_terminal.etf.etf_controller import ETFController
 
         self.queue = self.load_class(ETFController, self.queue)
-
-    def call_funds(self, _):
-        """Process etf command."""
-        from openbb_terminal.mutual_funds.mutual_fund_controller import (
-            FundController,
-        )
-
-        self.queue = self.load_class(FundController, self.queue)
 
     def call_forex(self, _):
         """Process forex command."""
@@ -917,7 +907,7 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
                 an_input,
             )
             console.print(
-                f"\nThe command '{an_input}' doesn't exist on the / menu", end=""
+                f"[red]The command '{an_input}' doesn't exist on the / menu.[/red]",
             )
             similar_cmd = difflib.get_close_matches(
                 an_input.split(" ")[0] if " " in an_input else an_input,
@@ -939,7 +929,7 @@ def terminal(jobs_cmds: List[str] = None, test_mode=False):
                 else:
                     an_input = similar_cmd[0]
 
-                console.print(f" Replacing by '{an_input}'.")
+                console.print(f"\n[green]Replacing by '{an_input}'.[/green]")
                 t_controller.queue.insert(0, an_input)
             else:
                 console.print("\n")

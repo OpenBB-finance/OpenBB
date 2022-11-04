@@ -82,6 +82,9 @@ API_DICT: Dict = {
     "stocksera": "STOCKSERA",
 }
 
+# sorting api key section by name
+API_DICT = dict(sorted(API_DICT.items()))
+
 
 class KeyStatus(str, Enum):
     """Class to handle status messages and colors"""

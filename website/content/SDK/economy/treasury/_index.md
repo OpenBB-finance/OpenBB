@@ -1,7 +1,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### economy.treasury(instruments: list = None, maturities: list = None, frequency: str = 'monthly', start_date: str = '1900-01-01', end_date: str = '2022-10-26') -> pandas.core.frame.DataFrame
+### economy.treasury(instruments: list = None, maturities: list = None, frequency: str = 'monthly', start_date: str = '1900-01-01', end_date: str = '2022-11-03') -> pandas.core.frame.DataFrame
 
 Get U.S. Treasury rates [Source: EconDB]
 
@@ -25,7 +25,7 @@ Get U.S. Treasury rates [Source: EconDB]
         Holds data of the selected types and maturities
 
 ## Getting charts 
-### economy.treasury(instruments: list = None, maturities: list = None, frequency: str = 'monthly', start_date: str = '1900-01-01', end_date: str = '2022-10-26', raw: bool = False, external_axes: Optional[List[axes]] = None, export: str = '', chart=True)
+### economy.treasury(instruments: list = None, maturities: list = None, frequency: str = 'monthly', start_date: str = '1900-01-01', end_date: str = '2022-11-03', raw: bool = False, external_axes: Optional[List[axes]] = None, export: str = '', chart=True)
 
 Display U.S. Treasury rates [Source: EconDB]
 

@@ -6,7 +6,7 @@ Returns data about top gainers - coins which gain the most in given period and
 
     Parameters
     ----------
-    top: int
+    limit: int
         Num of coins to get
     sortby: str
         Key to sort data. The table can be sorted by every of its columns. Refer to
