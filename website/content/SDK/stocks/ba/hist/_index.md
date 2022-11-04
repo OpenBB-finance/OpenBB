@@ -1,7 +1,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### stocks.ba.hist(symbol: str, start_date: str = '2022-10-19', end_date: str = '2022-10-26', number: int = 100) -> pandas.core.frame.DataFrame
+### stocks.ba.hist(symbol: str, start_date: str = '2022-10-27', end_date: str = '2022-11-03', number: int = 100) -> pandas.core.frame.DataFrame
 
 Get hour-level sentiment data for the chosen symbol
 
@@ -25,7 +25,7 @@ Get hour-level sentiment data for the chosen symbol
         Dataframe of historical sentiment
 
 ## Getting charts 
-### stocks.ba.hist(symbol: str, start_date: str = '2022-10-19', end_date: str = '2022-10-26', number: int = 100, raw: bool = False, limit: int = 10, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.ba.hist(symbol: str, start_date: str = '2022-10-27', end_date: str = '2022-11-03', number: int = 100, raw: bool = False, limit: int = 10, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display historical sentiment data of a ticker,
     and plot a chart with RHI and AHI.
