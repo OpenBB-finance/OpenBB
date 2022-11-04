@@ -1007,8 +1007,8 @@ functions = {
         "model": "openbb_terminal.economy.investingcom_model.get_ycrv_countries"
     },
     "economy.ycrv": {
-        "model": "openbb_terminal.economy.investingcom_model.get_yieldcurve",
-        "view": "openbb_terminal.economy.investingcom_view.display_yieldcurve",
+        "model": "openbb_terminal.economy.fred_model.get_yield_curve",
+        "view": "openbb_terminal.economy.fred_view.display_yield_curve",
     },
     "economy.country_codes": {
         "model": "openbb_terminal.economy.nasdaq_model.get_country_codes"
