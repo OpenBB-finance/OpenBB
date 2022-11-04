@@ -9,8 +9,8 @@
 
 
 
-    <meta name="description" content="Get underlying data    economy.events(country: str = &lsquo;all&rsquo;, importance: str = &lsquo;&rsquo;, category: str = &lsquo;&rsquo;, start_date: str = &lsquo;&rsquo;, end_date: str = &lsquo;&rsquo;, limit=100) -&gt; Tuple[pandas.core.frame.DataFrame, str]    Get economic calendar [Source: Investing.com]
-Parameters ---------- country: str Country selected. List of available countries is accessible through get_events_countries(). importance: str Importance selected from high, medium, low or all category: str Event category. List of available categories is accessible through get_events_categories().">
+    <meta name="description" content="Get underlying data    economy.events(countries: Union[List[str], str] = &lsquo;&rsquo;, start_date: str = &lsquo;2022-11-03&rsquo;, end_date: str = &lsquo;2022-11-03&rsquo;) -&gt; pandas.core.frame.DataFrame    Get economic calendar for countries between specified dates
+Parameters ---------- countries : [List[str],str] List of countries to include in calendar. Empty returns all start_date : str Start date for calendar end_date : str End date for calendar Returns ------- pd.DataFrame Economic calendar  ">
 
 
 
@@ -13315,270 +13315,6 @@ code, img {
                 <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/forex/quote/"
                     class="gdoc-nav__entry ">
                     quote
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-</ul>
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <input type="checkbox" id="navtree-47d62c16" class="gdoc-nav__toggle" >
-            <label for="navtree-47d62c16" class="flex justify-between">
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/funds/"
-                    class="gdoc-nav__entry ">
-                    funds
-                </a>
-            </span>
-            
-            <svg class="icon gdoc_keyborad_arrow_left"><use xlink:href="#gdoc_keyborad_arrow_left"></use></svg>
-            <svg class="icon gdoc_keyborad_arrow_down hidden"><use xlink:href="#gdoc_keyborad_arrow_down"></use></svg>
-            </label>
-            
-        
-
-        
-            
-
-
-
-<ul class="gdoc-nav__list">
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/funds/country/"
-                    class="gdoc-nav__entry ">
-                    country
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/funds/equity/"
-                    class="gdoc-nav__entry ">
-                    equity
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/funds/info/"
-                    class="gdoc-nav__entry ">
-                    info
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/funds/load/"
-                    class="gdoc-nav__entry ">
-                    load
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/funds/plot/"
-                    class="gdoc-nav__entry ">
-                    plot
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/funds/search/"
-                    class="gdoc-nav__entry ">
-                    search
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/funds/sector/"
-                    class="gdoc-nav__entry ">
-                    sector
                 </a>
             </span>
             
@@ -29605,6 +29341,37 @@ code, img {
             
             <span class="flex">
                 
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/crypto/dd/ob/"
+                    class="gdoc-nav__entry ">
+                    ob
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
                 <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/crypto/dd/ohlc_historical/"
                     class="gdoc-nav__entry ">
                     ohlc_historical
@@ -31369,6 +31136,68 @@ code, img {
 
 
 <ul class="gdoc-nav__list">
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/crypto/nft/collections/"
+                    class="gdoc-nav__entry ">
+                    collections
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/crypto/nft/fp/"
+                    class="gdoc-nav__entry ">
+                    fp
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
 
     
     
@@ -33170,6 +32999,37 @@ code, img {
 
 
 </ul>
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/crypto/price/"
+                    class="gdoc-nav__entry ">
+                    price
+                </a>
+            </span>
+            
+        
 
         
     </li>
@@ -35786,6 +35646,37 @@ code, img {
             
             <span class="flex">
                 
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/forecast/autoets/"
+                    class="gdoc-nav__entry ">
+                    autoets
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
                 <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/forecast/brnn/"
                     class="gdoc-nav__entry ">
                     brnn
@@ -37340,115 +37231,6 @@ code, img {
                 <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/forex/quote/"
                     class="gdoc-nav__entry ">
                     quote
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-</ul>
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <input type="checkbox" id="navtree-3c0cb2fa" class="gdoc-nav__toggle" >
-            <label for="navtree-3c0cb2fa" class="flex justify-between">
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/"
-                    class="gdoc-nav__entry ">
-                    funds
-                </a>
-            </span>
-            
-            <svg class="icon gdoc_keyborad_arrow_left"><use xlink:href="#gdoc_keyborad_arrow_left"></use></svg>
-            <svg class="icon gdoc_keyborad_arrow_down hidden"><use xlink:href="#gdoc_keyborad_arrow_down"></use></svg>
-            </label>
-            
-        
-
-        
-            
-
-
-
-<ul class="gdoc-nav__list">
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/info/"
-                    class="gdoc-nav__entry ">
-                    info
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/search/"
-                    class="gdoc-nav__entry ">
-                    search
                 </a>
             </span>
             
@@ -47407,30 +47189,26 @@ code, img {
         </a>
     </h2>
 </div><div class="gdoc-page__anchorwrap">
-    <h3 id="economyeventscountry-str--all-importance-str---category-str---start_date-str---end_date-str---limit100---tuplepandascoreframedataframe-str">
-        economy.events(country: str = &lsquo;all&rsquo;, importance: str = &lsquo;&rsquo;, category: str = &lsquo;&rsquo;, start_date: str = &lsquo;&rsquo;, end_date: str = &lsquo;&rsquo;, limit=100) -&gt; Tuple[pandas.core.frame.DataFrame, str]
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/economy/events/#economyeventscountry-str--all-importance-str---category-str---start_date-str---end_date-str---limit100---tuplepandascoreframedataframe-str" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor economy.events(country: str = &lsquo;all&rsquo;, importance: str = &lsquo;&rsquo;, category: str = &lsquo;&rsquo;, start_date: str = &lsquo;&rsquo;, end_date: str = &lsquo;&rsquo;, limit=100) -&gt; Tuple[pandas.core.frame.DataFrame, str]" href="#economyeventscountry-str--all-importance-str---category-str---start_date-str---end_date-str---limit100---tuplepandascoreframedataframe-str">
+    <h3 id="economyeventscountries-unionliststr-str---start_date-str--2022-11-03-end_date-str--2022-11-03---pandascoreframedataframe">
+        economy.events(countries: Union[List[str], str] = &lsquo;&rsquo;, start_date: str = &lsquo;2022-11-03&rsquo;, end_date: str = &lsquo;2022-11-03&rsquo;) -&gt; pandas.core.frame.DataFrame
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/economy/events/#economyeventscountries-unionliststr-str---start_date-str--2022-11-03-end_date-str--2022-11-03---pandascoreframedataframe" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor economy.events(countries: Union[List[str], str] = &lsquo;&rsquo;, start_date: str = &lsquo;2022-11-03&rsquo;, end_date: str = &lsquo;2022-11-03&rsquo;) -&gt; pandas.core.frame.DataFrame" href="#economyeventscountries-unionliststr-str---start_date-str--2022-11-03-end_date-str--2022-11-03---pandascoreframedataframe">
             <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
         </a>
     </h3>
-</div><p>Get economic calendar [Source: Investing.com]</p>
+</div><p>Get economic calendar for countries between specified dates</p>
 <pre><code>Parameters
 ----------
-country: str
-    Country selected. List of available countries is accessible through get_events_countries().
-importance: str
-    Importance selected from high, medium, low or all
-category: str
-    Event category. List of available categories is accessible through get_events_categories().
-start_date: datetime.date
-    First date to get events.
-end_date: datetime.date
-    Last date to get events.
+countries : [List[str],str]
+    List of countries to include in calendar.  Empty returns all
+start_date : str
+    Start date for calendar
+end_date : str
+    End date for calendar
 
 Returns
 -------
-Tuple[pd.DataFrame, str]
-    Economic calendar Dataframe and detail string about country/time zone.
+pd.DataFrame
+    Economic calendar
 </code></pre>
 
     </article>
@@ -55389,167 +55167,8 @@ Tuple[pd.DataFrame, str]
         
         
     
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-            
-    
-    
-
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
 
         
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-
-        
     
         
         
@@ -64600,8 +64219,27 @@ Tuple[pd.DataFrame, str]
         
             
     
+    
+
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
 
+        
+        
     
         
         
@@ -66254,9 +65892,47 @@ Tuple[pd.DataFrame, str]
         
         
             
+    
     
+
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
 
+        
+        
     
         
         
@@ -67355,7 +67031,26 @@ Tuple[pd.DataFrame, str]
         
         
     
+
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
 
+            
+
+            
+
+            
+        
+
+        
         
     
         
@@ -69484,6 +69179,25 @@ Tuple[pd.DataFrame, str]
         
         
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
 
         
     
@@ -69876,70 +69590,6 @@ Tuple[pd.DataFrame, str]
         
     
 
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-            
-    
-    
-
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
         
     
         

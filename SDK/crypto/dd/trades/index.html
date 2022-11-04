@@ -10,8 +10,8 @@
 
 
     <meta name="description" content="To obtain charts, make sure to add chart=True as the last parameter
-Get underlying data    crypto.dd.trades(symbol: str, limit: int = 1000, side: Optional[Any] = None) -&gt; pandas.core.frame.DataFrame    Get last N trades for chosen trading pair. [Source: Coinbase]
-Parameters ---------- symbol: str Trading pair of coins on Coinbase e.g ETH-USDT or UNI-ETH limit: int Last &lt;limit&gt; of trades. Maximum is 1000. side: str You can chose either sell or buy side.">
+Get underlying data    crypto.dd.trades(exchange_id: str, symbol: str, to_symbol: str) -&gt; pandas.core.frame.DataFrame    Returns trades for a coin in a given exchange [Source: https://docs.ccxt.com/en/latest/manual.html]
+Parameters ---------- exchange_id : str exchange id symbol : str coin symbol to_symbol : str currency to compare coin against Returns ------- pd.DataFrame trades for a coin in a given exchange  Getting charts    crypto.">
 
 
 
@@ -13316,270 +13316,6 @@ code, img {
                 <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/forex/quote/"
                     class="gdoc-nav__entry ">
                     quote
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-</ul>
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <input type="checkbox" id="navtree-47d62c16" class="gdoc-nav__toggle" >
-            <label for="navtree-47d62c16" class="flex justify-between">
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/funds/"
-                    class="gdoc-nav__entry ">
-                    funds
-                </a>
-            </span>
-            
-            <svg class="icon gdoc_keyborad_arrow_left"><use xlink:href="#gdoc_keyborad_arrow_left"></use></svg>
-            <svg class="icon gdoc_keyborad_arrow_down hidden"><use xlink:href="#gdoc_keyborad_arrow_down"></use></svg>
-            </label>
-            
-        
-
-        
-            
-
-
-
-<ul class="gdoc-nav__list">
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/funds/country/"
-                    class="gdoc-nav__entry ">
-                    country
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/funds/equity/"
-                    class="gdoc-nav__entry ">
-                    equity
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/funds/info/"
-                    class="gdoc-nav__entry ">
-                    info
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/funds/load/"
-                    class="gdoc-nav__entry ">
-                    load
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/funds/plot/"
-                    class="gdoc-nav__entry ">
-                    plot
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/funds/search/"
-                    class="gdoc-nav__entry ">
-                    search
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/funds/sector/"
-                    class="gdoc-nav__entry ">
-                    sector
                 </a>
             </span>
             
@@ -29606,6 +29342,37 @@ code, img {
             
             <span class="flex">
                 
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/crypto/dd/ob/"
+                    class="gdoc-nav__entry ">
+                    ob
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
                 <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/crypto/dd/ohlc_historical/"
                     class="gdoc-nav__entry ">
                     ohlc_historical
@@ -31370,6 +31137,68 @@ code, img {
 
 
 <ul class="gdoc-nav__list">
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/crypto/nft/collections/"
+                    class="gdoc-nav__entry ">
+                    collections
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/crypto/nft/fp/"
+                    class="gdoc-nav__entry ">
+                    fp
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
 
     
     
@@ -33171,6 +33000,37 @@ code, img {
 
 
 </ul>
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/crypto/price/"
+                    class="gdoc-nav__entry ">
+                    price
+                </a>
+            </span>
+            
+        
 
         
     </li>
@@ -35787,6 +35647,37 @@ code, img {
             
             <span class="flex">
                 
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/forecast/autoets/"
+                    class="gdoc-nav__entry ">
+                    autoets
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
                 <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/forecast/brnn/"
                     class="gdoc-nav__entry ">
                     brnn
@@ -37341,115 +37232,6 @@ code, img {
                 <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/forex/quote/"
                     class="gdoc-nav__entry ">
                     quote
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-</ul>
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <input type="checkbox" id="navtree-3c0cb2fa" class="gdoc-nav__toggle" >
-            <label for="navtree-3c0cb2fa" class="flex justify-between">
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/"
-                    class="gdoc-nav__entry ">
-                    funds
-                </a>
-            </span>
-            
-            <svg class="icon gdoc_keyborad_arrow_left"><use xlink:href="#gdoc_keyborad_arrow_left"></use></svg>
-            <svg class="icon gdoc_keyborad_arrow_down hidden"><use xlink:href="#gdoc_keyborad_arrow_down"></use></svg>
-            </label>
-            
-        
-
-        
-            
-
-
-
-<ul class="gdoc-nav__list">
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/info/"
-                    class="gdoc-nav__entry ">
-                    info
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/search/"
-                    class="gdoc-nav__entry ">
-                    search
                 </a>
             </span>
             
@@ -47417,25 +47199,27 @@ code, img {
         </a>
     </h2>
 </div><div class="gdoc-page__anchorwrap">
-    <h3 id="cryptoddtradessymbol-str-limit-int--1000-side-optionalany--none---pandascoreframedataframe">
-        crypto.dd.trades(symbol: str, limit: int = 1000, side: Optional[Any] = None) -&gt; pandas.core.frame.DataFrame
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/crypto/dd/trades/#cryptoddtradessymbol-str-limit-int--1000-side-optionalany--none---pandascoreframedataframe" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor crypto.dd.trades(symbol: str, limit: int = 1000, side: Optional[Any] = None) -&gt; pandas.core.frame.DataFrame" href="#cryptoddtradessymbol-str-limit-int--1000-side-optionalany--none---pandascoreframedataframe">
+    <h3 id="cryptoddtradesexchange_id-str-symbol-str-to_symbol-str---pandascoreframedataframe">
+        crypto.dd.trades(exchange_id: str, symbol: str, to_symbol: str) -&gt; pandas.core.frame.DataFrame
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/crypto/dd/trades/#cryptoddtradesexchange_id-str-symbol-str-to_symbol-str---pandascoreframedataframe" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor crypto.dd.trades(exchange_id: str, symbol: str, to_symbol: str) -&gt; pandas.core.frame.DataFrame" href="#cryptoddtradesexchange_id-str-symbol-str-to_symbol-str---pandascoreframedataframe">
             <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
         </a>
     </h3>
-</div><p>Get last N trades for chosen trading pair. [Source: Coinbase]</p>
+</div><p>Returns trades for a coin in a given exchange
+[Source: https://docs.ccxt.com/en/latest/manual.html]</p>
 <pre><code>Parameters
 ----------
-symbol: str
-    Trading pair of coins on Coinbase e.g ETH-USDT or UNI-ETH
-limit: int
-    Last &lt;limit&gt; of trades. Maximum is 1000.
-side: str
-    You can chose either sell or buy side. If side is not set then all trades will be displayed.
+exchange_id : str
+    exchange id
+symbol : str
+    coin symbol
+to_symbol : str
+    currency to compare coin against
+
 Returns
 -------
 pd.DataFrame
-    Last N trades for chosen trading pairs.
+    trades for a coin in a given exchange
 </code></pre>
 <div class="gdoc-page__anchorwrap">
     <h2 id="getting-charts">
@@ -47445,21 +47229,24 @@ pd.DataFrame
         </a>
     </h2>
 </div><div class="gdoc-page__anchorwrap">
-    <h3 id="cryptoddtradessymbol-str-limit-int--20-side-optionalstr--none-export-str---charttrue---none">
-        crypto.dd.trades(symbol: str, limit: int = 20, side: Optional[str] = None, export: str = &lsquo;&rsquo;, chart=True) -&gt; None
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/crypto/dd/trades/#cryptoddtradessymbol-str-limit-int--20-side-optionalstr--none-export-str---charttrue---none" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor crypto.dd.trades(symbol: str, limit: int = 20, side: Optional[str] = None, export: str = &lsquo;&rsquo;, chart=True) -&gt; None" href="#cryptoddtradessymbol-str-limit-int--20-side-optionalstr--none-export-str---charttrue---none">
+    <h3 id="cryptoddtradesexchange-str-symbol-str-to_symbol-str-limit-int--10-export-str---charttrue">
+        crypto.dd.trades(exchange: str, symbol: str, to_symbol: str, limit: int = 10, export: str = &lsquo;&rsquo;, chart=True)
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/crypto/dd/trades/#cryptoddtradesexchange-str-symbol-str-to_symbol-str-limit-int--10-export-str---charttrue" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor crypto.dd.trades(exchange: str, symbol: str, to_symbol: str, limit: int = 10, export: str = &lsquo;&rsquo;, chart=True)" href="#cryptoddtradesexchange-str-symbol-str-to_symbol-str-limit-int--10-export-str---charttrue">
             <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
         </a>
     </h3>
-</div><p>Display last N trades for chosen trading pair. [Source: Coinbase]</p>
+</div><p>Displays trades for a coin in a given exchange
+[Source: https://docs.ccxt.com/en/latest/manual.html]</p>
 <pre><code>Parameters
 ----------
-symbol: str
-    Trading pair of coins on Coinbase e.g ETH-USDT or UNI-ETH
-limit: int
-    Last &lt;limit&gt; of trades. Maximum is 1000.
-side: Optional[str]
-    You can chose either sell or buy side. If side is not set then all trades will be displayed.
+exchange : str
+    exchange id
+symbol : str
+    coin symbol
+to_symbol : str
+    currency to compare coin against
+limit : int
+    number of trades to display
 export : str
     Export dataframe data to csv,json,xlsx file
 </code></pre>
@@ -55420,167 +55207,8 @@ export : str
         
         
     
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
 
-            
-
-            
-        
-
-        
-        
-            
-    
-    
-
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
         
-        
-    
-
-        
     
         
         
@@ -64630,9 +64258,28 @@ export : str
         
         
             
+    
     
+
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
 
+        
+        
     
         
         
@@ -66314,7 +65961,45 @@ export : str
         
         
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
 
+            
+
+            
+        
+
+        
+        
+    
+
         
     
         
@@ -67389,11 +67074,30 @@ export : str
             
         
 
+        
         
+    
+
         
     
+        
+        
 
         
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
     
         
         
@@ -69512,10 +69216,7 @@ export : str
             
         
 
-        
         
-    
-
         
     
         
@@ -69536,10 +69237,9 @@ export : str
 
         
         
-            
     
-    
 
+        
     
         
         
@@ -69555,29 +69255,14 @@ export : str
             
 
             
-        
-
         
-        
-    
-        
-        
 
         
         
-            
-            
-            
-
-            
-
             
-
-            
-        
+    
+    
 
-        
-        
     
         
         
@@ -69635,11 +69320,7 @@ export : str
 
         
         
-            
     
-    
-
-    
         
         
 
@@ -69677,7 +69358,11 @@ export : str
 
         
         
+            
     
+    
+
+    
         
         
 
@@ -69906,9 +69591,6 @@ export : str
         
         
     
-
-        
-    
         
         
 
@@ -69925,10 +69607,7 @@ export : str
             
         
 
-        
         
-    
-
         
     
         
@@ -69949,28 +69628,8 @@ export : str
 
         
         
-            
     
-    
-
-    
-        
-        
-
-        
-        
-            
-            
-            
 
-            
-
-            
-
-            
-        
-
-        
         
     
         

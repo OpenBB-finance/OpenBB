@@ -10,8 +10,8 @@
 
 
     <meta name="description" content="To obtain charts, make sure to add chart=True as the last parameter
-Get underlying data    common.ta.bbands(close_values: pandas.core.series.Series, window: int = 15, n_std: float = 2, mamode: str = &lsquo;ema&rsquo;) -&gt; pandas.core.frame.DataFrame    Calculate Bollinger Bands
-Parameters ---------- close_values : pd.DataFrame DataFrame of sclose prices window : int Length of window to calculate BB n_std : float Number of standard deviations to show mamode : str Method of calculating average Returns ------- df_ta: pd.">
+Get underlying data    common.ta.bbands(data: pandas.core.frame.DataFrame, window: int = 15, n_std: float = 2, mamode: str = &lsquo;ema&rsquo;) -&gt; pandas.core.frame.DataFrame    Calculate Bollinger Bands
+Parameters ---------- data : pd.DataFrame Dataframe of ohlc prices window : int Length of window to calculate BB n_std : float Number of standard deviations to show mamode : str Method of calculating average Returns ------- df_ta: pd.">
 
 
 
@@ -13316,270 +13316,6 @@ code, img {
                 <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/forex/quote/"
                     class="gdoc-nav__entry ">
                     quote
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-</ul>
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <input type="checkbox" id="navtree-47d62c16" class="gdoc-nav__toggle" >
-            <label for="navtree-47d62c16" class="flex justify-between">
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/funds/"
-                    class="gdoc-nav__entry ">
-                    funds
-                </a>
-            </span>
-            
-            <svg class="icon gdoc_keyborad_arrow_left"><use xlink:href="#gdoc_keyborad_arrow_left"></use></svg>
-            <svg class="icon gdoc_keyborad_arrow_down hidden"><use xlink:href="#gdoc_keyborad_arrow_down"></use></svg>
-            </label>
-            
-        
-
-        
-            
-
-
-
-<ul class="gdoc-nav__list">
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/funds/country/"
-                    class="gdoc-nav__entry ">
-                    country
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/funds/equity/"
-                    class="gdoc-nav__entry ">
-                    equity
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/funds/info/"
-                    class="gdoc-nav__entry ">
-                    info
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/funds/load/"
-                    class="gdoc-nav__entry ">
-                    load
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/funds/plot/"
-                    class="gdoc-nav__entry ">
-                    plot
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/funds/search/"
-                    class="gdoc-nav__entry ">
-                    search
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/terminal/funds/sector/"
-                    class="gdoc-nav__entry ">
-                    sector
                 </a>
             </span>
             
@@ -29606,6 +29342,37 @@ code, img {
             
             <span class="flex">
                 
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/crypto/dd/ob/"
+                    class="gdoc-nav__entry ">
+                    ob
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
                 <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/crypto/dd/ohlc_historical/"
                     class="gdoc-nav__entry ">
                     ohlc_historical
@@ -31370,6 +31137,68 @@ code, img {
 
 
 <ul class="gdoc-nav__list">
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/crypto/nft/collections/"
+                    class="gdoc-nav__entry ">
+                    collections
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/crypto/nft/fp/"
+                    class="gdoc-nav__entry ">
+                    fp
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
 
     
     
@@ -33171,6 +33000,37 @@ code, img {
 
 
 </ul>
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/crypto/price/"
+                    class="gdoc-nav__entry ">
+                    price
+                </a>
+            </span>
+            
+        
 
         
     </li>
@@ -35787,6 +35647,37 @@ code, img {
             
             <span class="flex">
                 
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/forecast/autoets/"
+                    class="gdoc-nav__entry ">
+                    autoets
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
                 <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/forecast/brnn/"
                     class="gdoc-nav__entry ">
                     brnn
@@ -37341,115 +37232,6 @@ code, img {
                 <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/forex/quote/"
                     class="gdoc-nav__entry ">
                     quote
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-</ul>
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <input type="checkbox" id="navtree-3c0cb2fa" class="gdoc-nav__toggle" >
-            <label for="navtree-3c0cb2fa" class="flex justify-between">
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/"
-                    class="gdoc-nav__entry ">
-                    funds
-                </a>
-            </span>
-            
-            <svg class="icon gdoc_keyborad_arrow_left"><use xlink:href="#gdoc_keyborad_arrow_left"></use></svg>
-            <svg class="icon gdoc_keyborad_arrow_down hidden"><use xlink:href="#gdoc_keyborad_arrow_down"></use></svg>
-            </label>
-            
-        
-
-        
-            
-
-
-
-<ul class="gdoc-nav__list">
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/info/"
-                    class="gdoc-nav__entry ">
-                    info
-                </a>
-            </span>
-            
-        
-
-        
-    </li>
-
-
-    
-    
-
-    <li style="margin-top: 15px; text-transform: capitalize;">
-        
-        
-            
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
-            <span class="flex">
-                
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/search/"
-                    class="gdoc-nav__entry ">
-                    search
                 </a>
             </span>
             
@@ -47417,17 +47199,17 @@ code, img {
         </a>
     </h2>
 </div><div class="gdoc-page__anchorwrap">
-    <h3 id="commontabbandsclose_values-pandascoreseriesseries-window-int--15-n_std-float--2-mamode-str--ema---pandascoreframedataframe">
-        common.ta.bbands(close_values: pandas.core.series.Series, window: int = 15, n_std: float = 2, mamode: str = &lsquo;ema&rsquo;) -&gt; pandas.core.frame.DataFrame
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/common/ta/bbands/#commontabbandsclose_values-pandascoreseriesseries-window-int--15-n_std-float--2-mamode-str--ema---pandascoreframedataframe" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor common.ta.bbands(close_values: pandas.core.series.Series, window: int = 15, n_std: float = 2, mamode: str = &lsquo;ema&rsquo;) -&gt; pandas.core.frame.DataFrame" href="#commontabbandsclose_values-pandascoreseriesseries-window-int--15-n_std-float--2-mamode-str--ema---pandascoreframedataframe">
+    <h3 id="commontabbandsdata-pandascoreframedataframe-window-int--15-n_std-float--2-mamode-str--ema---pandascoreframedataframe">
+        common.ta.bbands(data: pandas.core.frame.DataFrame, window: int = 15, n_std: float = 2, mamode: str = &lsquo;ema&rsquo;) -&gt; pandas.core.frame.DataFrame
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/common/ta/bbands/#commontabbandsdata-pandascoreframedataframe-window-int--15-n_std-float--2-mamode-str--ema---pandascoreframedataframe" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor common.ta.bbands(data: pandas.core.frame.DataFrame, window: int = 15, n_std: float = 2, mamode: str = &lsquo;ema&rsquo;) -&gt; pandas.core.frame.DataFrame" href="#commontabbandsdata-pandascoreframedataframe-window-int--15-n_std-float--2-mamode-str--ema---pandascoreframedataframe">
             <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
         </a>
     </h3>
 </div><p>Calculate Bollinger Bands</p>
 <pre><code>Parameters
 ----------
-close_values : pd.DataFrame
-    DataFrame of sclose prices
+data : pd.DataFrame
+    Dataframe of ohlc prices
 window : int
     Length of window to calculate BB
 n_std : float
@@ -55429,165 +55211,6 @@ external_axes : Optional[List[plt.Axes]], optional
         
         
     
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-            
-    
-    
-
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
 
         
     
@@ -65504,6 +65127,25 @@ external_axes : Optional[List[plt.Axes]], optional
         
         
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
 
         
     
@@ -66300,9 +65942,47 @@ external_axes : Optional[List[plt.Axes]], optional
         
         
             
+    
     
+
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
 
+            
+
+            
+        
+
+        
+        
     
         
         
@@ -67398,11 +67078,30 @@ external_axes : Optional[List[plt.Axes]], optional
             
         
 
+        
         
+    
+
         
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
 
         
+        
     
         
         
@@ -69521,10 +69220,7 @@ external_axes : Optional[List[plt.Axes]], optional
             
         
 
-        
         
-    
-
         
     
         
@@ -69545,10 +69241,9 @@ external_axes : Optional[List[plt.Axes]], optional
 
         
         
-            
-    
     
 
+        
     
         
         
@@ -69564,29 +69259,14 @@ external_axes : Optional[List[plt.Axes]], optional
             
 
             
-        
-
         
-        
-    
-        
-        
 
         
         
-            
-            
-            
-
             
-
-            
-
-            
-        
+    
+    
 
-        
-        
     
         
         
@@ -69644,10 +69324,6 @@ external_axes : Optional[List[plt.Axes]], optional
 
         
         
-            
-    
-    
-
     
         
         
@@ -69686,6 +69362,10 @@ external_axes : Optional[List[plt.Axes]], optional
 
         
         
+            
+    
+    
+
     
         
         
@@ -69915,9 +69595,6 @@ external_axes : Optional[List[plt.Axes]], optional
         
         
     
-
-        
-    
         
         
 
@@ -69934,10 +69611,7 @@ external_axes : Optional[List[plt.Axes]], optional
             
         
 
-        
         
-    
-
         
     
         
@@ -69958,28 +69632,8 @@ external_axes : Optional[List[plt.Axes]], optional
 
         
         
-            
-    
-    
-
     
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
 
-        
         
     
         
