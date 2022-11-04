@@ -4,6 +4,7 @@ from openbb_terminal.helper_funcs import print_rich_table
 
 
 def display_quote(symbol: str) -> pd.DataFrame:
+    """Display quote from YahooFinance"""
     quote_data = stocks_models.load_quote(symbol)
     if quote_data is None:
         return pd.DataFrame()

@@ -7,7 +7,6 @@ import requests
 import pandas as pd
 import yfinance as yf
 from alpha_vantage.timeseries import TimeSeries
-from numpy.core.fromnumeric import transpose
 
 from openbb_terminal.decorators import check_api_key
 from openbb_terminal.rich_config import console
@@ -232,7 +231,7 @@ def load_stock_polygon(
 
 
 def load_quote(symbol: str) -> pd.DataFrame:
-    """Ticker quote.
+    """Ticker quote.  [Source: YahooFinance]
 
     Parameters
     ----------
@@ -279,7 +278,7 @@ def load_quote(symbol: str) -> pd.DataFrame:
 
         quote_df = quote_df.set_index("Symbol")
 
-        quote_data = transpose(quote_df)
+        quote_data = quote_df.T
 
         return quote_data
 
