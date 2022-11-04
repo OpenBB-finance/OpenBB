@@ -38,6 +38,7 @@ from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.econometrics import econometrics_model, econometrics_view
+from openbb_terminal.common import common_model
 
 logger = logging.getLogger(__name__)
 
@@ -99,38 +100,6 @@ class EconometricsController(BaseController):
         self.datasets: Dict[str, pd.DataFrame] = dict()
         self.regression: Dict[Any[Dict, Any], Any] = dict()
 
-        self.DATA_EXAMPLES: Dict[str, str] = {
-            "anes96": "American National Election Survey 1996",
-            "cancer": "Breast Cancer Data",
-            "ccard": "Bill Greene’s credit scoring data.",
-            "cancer_china": "Smoking and lung cancer in eight cities in China.",
-            "co2": "Mauna Loa Weekly Atmospheric CO2 Data",
-            "committee": "First 100 days of the US House of Representatives 1995",
-            "copper": "World Copper Market 1951-1975 Dataset",
-            "cpunish": "US Capital Punishment dataset.",
-            "danish_data": "Danish Money Demand Data",
-            "elnino": "El Nino - Sea Surface Temperatures",
-            "engel": "Engel (1857) food expenditure data",
-            "fair": "Affairs dataset",
-            "fertility": "World Bank Fertility Data",
-            "grunfeld": "Grunfeld (1950) Investment Data",
-            "heart": "Transplant Survival Data",
-            "interest_inflation": "(West) German interest and inflation rate 1972-1998",
-            "longley": "Longley dataset",
-            "macrodata": "United States Macroeconomic data",
-            "modechoice": "Travel Mode Choice",
-            "nile": "Nile River flows at Ashwan 1871-1970",
-            "randhie": "RAND Health Insurance Experiment Data",
-            "scotland": "Taxation Powers Vote for the Scottish Parliament 1997",
-            "spector": "Spector and Mazzeo (1980) - Program Effectiveness Data",
-            "stackloss": "Stack loss data",
-            "star98": "Star98 Educational Dataset",
-            "statecrim": "Statewide Crime Data 2009",
-            "strikes": "U.S. Strike Duration Data",
-            "sunspots": "Yearly sunspots data 1700-2008",
-            "wage_panel": "Veila and M. Verbeek (1998): Whose Wages Do Unions Raise?",
-        }
-
         self.DATA_TYPES: List[str] = ["int", "float", "str", "bool", "category", "date"]
 
         for regression in [
@@ -159,10 +128,9 @@ class EconometricsController(BaseController):
             "mod": "%",
             "pow": "**",
         }
-        self.file_types = ["csv", "xlsx"]
         self.DATA_FILES = {
             filepath.name: filepath
-            for file_type in self.file_types
+            for file_type in common_model.file_types
             for filepath in chain(
                 Path(USER_EXPORTS_DIRECTORY).rglob(f"*.{file_type}"),
                 Path(USER_CUSTOM_IMPORTS_DIRECTORY / "econometrics").rglob(
@@ -367,7 +335,7 @@ class EconometricsController(BaseController):
         if ns_parser:
             # show examples from statsmodels
             if ns_parser.examples:
-                df = pd.DataFrame.from_dict(self.DATA_EXAMPLES, orient="index")
+                df = pd.DataFrame.from_dict(common_model.DATA_EXAMPLES, orient="index")
                 print_rich_table(
                     df,
                     headers=list(["description"]),
@@ -377,59 +345,56 @@ class EconometricsController(BaseController):
                 )
                 return
 
-            if ns_parser.file:
-                possible_data = list(self.DATA_EXAMPLES.keys()) + list(
-                    self.DATA_FILES.keys()
-                )
-                if ns_parser.file not in possible_data:
-                    file = ""
-                    # Try to see if the user is just missing the extension
-                    for file_ext in list(self.DATA_FILES.keys()):
-                        if file_ext.startswith(ns_parser.file):
-                            # found the correct file
-                            file = file_ext
-                            break
+            if not ns_parser.file:
+                return
+            possible_data = list(common_model.DATA_EXAMPLES.keys()) + list(
+                self.DATA_FILES.keys()
+            )
+            if ns_parser.file not in possible_data:
+                file = ""
+                # Try to see if the user is just missing the extension
+                for file_ext in list(self.DATA_FILES.keys()):
+                    if file_ext.startswith(ns_parser.file):
+                        # found the correct file
+                        file = file_ext
+                        break
 
-                    if not file:
-                        console.print(
-                            "[red]The file/dataset selected does not exist.[/red]\n"
-                        )
-                        return
-                else:
-                    file = ns_parser.file
-
-                if ns_parser.alias:
-                    alias = ns_parser.alias
-                else:
-                    if "." in ns_parser.file:
-                        alias = ".".join(ns_parser.file.split(".")[:-1])
-                    else:
-                        alias = ns_parser.file
-
-                # check if this dataset has been added already
-                if alias in self.files:
+                if not file:
                     console.print(
-                        "[red]The file/dataset selected has already been loaded.[/red]\n"
+                        "[red]The file/dataset selected does not exist.[/red]\n"
                     )
                     return
+            else:
+                file = ns_parser.file
 
-                data = econometrics_model.load(
-                    file, self.file_types, self.DATA_FILES, self.DATA_EXAMPLES
+            if ns_parser.alias:
+                alias = ns_parser.alias
+            else:
+                if "." in ns_parser.file:
+                    alias = ".".join(ns_parser.file.split(".")[:-1])
+                else:
+                    alias = ns_parser.file
+
+            # check if this dataset has been added already
+            if alias in self.files:
+                console.print(
+                    "[red]The file/dataset selected has already been loaded.[/red]\n"
                 )
+                return
 
-                if not data.empty:
-                    data.columns = data.columns.map(
-                        lambda x: x.lower().replace(" ", "_")
-                    )
+            data = common_model.load(file, self.DATA_FILES, common_model.DATA_EXAMPLES)
 
-                    self.files.append(alias)
-                    self.datasets[alias] = data
+            if not data.empty:
+                data.columns = data.columns.map(lambda x: x.lower().replace(" ", "_"))
 
-                    self.update_runtime_choices()
+                self.files.append(alias)
+                self.datasets[alias] = data
 
-                    self.update_loaded()
+                self.update_runtime_choices()
 
-                    console.print()
+                self.update_loaded()
+
+                console.print()
 
     @log_start_end(log=logger)
     def call_export(self, other_args: List[str]):
@@ -454,7 +419,7 @@ class EconometricsController(BaseController):
             "--type",
             help="The file type you wish to export to",
             dest="type",
-            choices=self.file_types,
+            choices=common_model.file_types,
             type=str,
             default="xlsx",
         )

@@ -5,11 +5,10 @@ __docformat__ = "numpy"
 
 import logging
 from pathlib import Path
-from typing import Dict, Union, Any, Optional, List
+from typing import Dict, Union, Any, Optional
 from itertools import chain
 
 import pandas as pd
-from pandas.errors import ParserError
 import numpy as np
 
 from openbb_terminal.decorators import log_start_end
@@ -18,11 +17,9 @@ from openbb_terminal.core.config.paths import (
     USER_EXPORTS_DIRECTORY,
     USER_CUSTOM_IMPORTS_DIRECTORY,
 )
+from openbb_terminal.common import common_model
 
 logger = logging.getLogger(__name__)
-
-
-base_file_types = ["csv", "xlsx"]
 
 
 def get_default_files() -> Dict[str, Path]:
@@ -35,7 +32,7 @@ def get_default_files() -> Dict[str, Path]:
     """
     default_files = {
         filepath.name: filepath
-        for file_type in base_file_types
+        for file_type in common_model.file_types
         for filepath in chain(
             USER_EXPORTS_DIRECTORY.rglob(f"*.{file_type}"),
             USER_CUSTOM_IMPORTS_DIRECTORY.rglob(f"*.{file_type}"),
@@ -43,77 +40,6 @@ def get_default_files() -> Dict[str, Path]:
         if filepath.is_file()
     }
     return default_files
-
-
-@log_start_end(log=logger)
-def load(
-    file: str,
-    file_types: Optional[List[str]] = None,
-    data_files: Optional[Dict[Any, Any]] = None,
-    add_extension: bool = False,
-) -> pd.DataFrame:
-    """Load custom file into dataframe.
-
-    Parameters
-    ----------
-    file: str
-        Path to file
-    file_types: list
-        Supported file types
-    data_files: dict
-        Contains all available data files within the Export folder
-    add_extension:
-        Takes a file name and tries loading with csv or xlsx extension
-
-    Returns
-    -------
-    pd.DataFrame:
-        Dataframe with custom data
-    """
-    if file_types is None:
-        file_types = ["csv", "xlsx"]
-    if data_files is None:
-        data_files = get_default_files()
-
-    if file in data_files:
-        full_file = data_files[file]
-    else:
-        full_file = file
-
-    if add_extension:
-        for ext in ["xlsx", "csv"]:
-            tmp = f"{full_file}.{ext}"
-            if tmp in data_files:
-                full_file = data_files[tmp]
-
-    if not Path(full_file).exists():
-        console.print(f"[red]Cannot find the file {full_file}[/red]\n")
-
-        return pd.DataFrame()
-
-    file_type = Path(full_file).suffix
-
-    if file_type == ".xlsx":
-        try:
-            data = pd.read_excel(full_file)
-        except ParserError:
-            console.print("[red]The given file is not properly formatted.[/red]\b")
-            return pd.DataFrame()
-    elif file_type == ".csv":
-        try:
-            data = pd.read_csv(full_file)
-        except ParserError:
-            console.print("[red]The given file is not properly formatted.[/red]\b")
-            return pd.DataFrame()
-    else:
-        console.print(
-            f"The file type {file_type} is not supported. Please choose one of the following: "
-            f"{', '.join(file_types)}"
-        )
-        return pd.DataFrame()
-    data.columns = [x.replace("/", "_") for x in data.columns]
-
-    return data
 
 
 @log_start_end(log=logger)
