@@ -55,7 +55,7 @@ SPY221111 = openbb.stocks.options.chains_yf(symbol = 'SPY', expiry = '2022-11-11
 SPY221111
 ```
 
-![openbb.stocks.options.chains_yf](https://user-images.githubusercontent.com/85772166/199892748-85163bd5-0b29-4554-b2a2-ff4747ac0b52.png "openbb.stocks.options.chains_yf")
+![openbb.stocks.options.chains_yf](https://user-images.githubusercontent.com/85772166/199900266-668af99d-ae72-4bca-9b40-14228b25279b.png "openbb.stocks.options.chains_yf")
 
 Getting all option chains for the underlying symbol as a single Pandas DataFrame requires a little bit of scripting prior to analysis. This will query Tradier as the data source:
 
