@@ -74,14 +74,13 @@ class FuturesController(BaseController):
             self.choices["support"] = self.SUPPORT_CHOICES
             self.choices["about"] = self.ABOUT_CHOICES
 
-            self.choices["historical"] = {
-                "--ticker": {c: None for c in self.all_tickers},
-                "-t": "--ticker",
-                "--start": {},
-                "-s": "--start",
-                "--expiry": {},
-                "-e": "--expiry",
-            }
+            self.choices["historical"] = {c: None for c in self.all_tickers}
+            self.choices["historical"]["--ticker"] = {c: None for c in self.all_tickers}
+            self.choices["historical"]["-t"] = "--ticker"
+            self.choices["historical"]["--start"] = {}
+            self.choices["historical"]["-s"] = "--start"
+            self.choices["historical"]["--expiry"] = {}
+            self.choices["historical"]["-e"] = "--expiry"
 
             self.choices["curve"] = {c: None for c in self.all_tickers}
 
