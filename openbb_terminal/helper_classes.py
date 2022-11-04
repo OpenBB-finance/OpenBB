@@ -7,7 +7,6 @@ import json
 from importlib import machinery, util
 from typing import Union, List, Dict, Optional
 
-import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib import font_manager, ticker
 
@@ -15,42 +14,6 @@ from openbb_terminal.core.config.paths import (
     MISCELLANEOUS_DIRECTORY,
     USER_DATA_DIRECTORY,
 )
-
-
-class LineAnnotateDrawer:
-    """Line drawing class."""
-
-    def __init__(self, ax: matplotlib.axes = None):
-        self.ax = ax
-
-    # pylint: disable=import-outside-toplevel
-    def draw_lines_and_annotate(self):
-        """Draw lines."""
-        from openbb_terminal.rich_config import console
-
-        console.print(
-            "Click twice for annotation.\nClose window to keep using terminal.\n"
-        )
-
-        while True:
-            xy = plt.ginput(2, timeout=3)
-            # Check whether the user has closed the window or not
-            if not plt.get_fignums():
-                console.print("Closed window. Returning to terminal.")
-                return
-
-            if len(xy) == 2:
-                x = [p[0] for p in xy]
-                y = [p[1] for p in xy]
-
-                if (x[0] == x[1]) and (y[0] == y[1]):
-                    txt = input("Annotation: ")
-                    self.ax.annotate(txt, (x[0], y[1]), ha="center", va="center")
-                else:
-                    self.ax.plot(x, y)
-
-                self.ax.figure.canvas.draw()
-
 
 # pylint: disable=too-few-public-methods
 class ModelsNamespace:
