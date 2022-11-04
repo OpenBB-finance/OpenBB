@@ -32,7 +32,7 @@ unusual_options
 
 ![Unusual Options](https://user-images.githubusercontent.com/85772166/199891691-da3af87e-99c3-4d01-881f-62b6b0d3ae34.png "Unusual Options")
 
-Get up to ten years of historical put/call ratios (US equity options only), with the`PCR` function:
+Get up to ten years of historical put/call ratios (US equity options only), with the `PCR` function:
 
 ```python
 pcr_spy = openbb.stocks.options.pcr(symbol = 'SPY', start_date = ' 2012-11-03')
