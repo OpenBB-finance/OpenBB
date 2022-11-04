@@ -1142,18 +1142,6 @@ functions = {
         "model": "openbb_terminal.forex.oanda.oanda_model.positionbook_plot_data_request",
         "view": "openbb_terminal.forex.oanda.oanda_view.get_position_book",
     },
-    "funds.info": {
-        "model": "openbb_terminal.mutual_funds.investpy_model.get_fund_info",
-        "view": "openbb_terminal.mutual_funds.investpy_view.display_fund_info",
-    },
-    "funds.overview": {
-        "model": "openbb_terminal.mutual_funds.investpy_model.get_overview",
-        "view": "openbb_terminal.mutual_funds.investpy_view.display_overview",
-    },
-    "funds.search": {
-        "model": "openbb_terminal.mutual_funds.investpy_model.search_funds",
-        "view": "openbb_terminal.mutual_funds.investpy_view.display_search",
-    },
     "portfolio.holdv": {
         "model": "openbb_terminal.portfolio.portfolio_model.get_holdings_value",
         "view": "openbb_terminal.portfolio.portfolio_view.display_holdings_value",
