@@ -221,10 +221,11 @@ def check_for_updates() -> None:
         r = None
 
     if r is not None and r.status_code == 200:
-        release = r.json()["html_url"].split("/")[-1].replace("v", "").split(".")
+        release: str = r.json()["html_url"].split("/")[-1].replace("v", "")
+        lastest_split = release.split(".")
         current = obbff.VERSION.replace("m", "").split(".")
         for i in range(3):
-            if int(release[i]) > int(current[i]):
+            if int(lastest_split[i]) > int(current[i]):
                 console.print(
                     "[bold red]You are not using the latest version[/bold red]"
                 )
@@ -232,7 +233,9 @@ def check_for_updates() -> None:
                     "[yellow]Check for updates at https://openbb.co/products/terminal#get-started[/yellow]"
                 )
                 break
-            if int(release[i]) < int(current[i]):
+            if int(lastest_split[i]) < int(
+                current[i]
+            ) or release == obbff.VERSION.replace("m", ""):
                 console.print("[green]You are using the latest version[/green]")
                 break
     else:
