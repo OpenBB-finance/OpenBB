@@ -178,7 +178,7 @@ class DueDiligenceController(CryptoBaseController):
                 "-s": "--sort",
                 "--limit": {str(c): {} for c in range(1, 100)},
                 "-l": "--limit",
-                "--descend": {},
+                "--ascend": {},
             }
             choices["events"] = {
                 "--sort": {c: {} for c in coinpaprika_view.EVENTS_FILTERS},
@@ -239,7 +239,7 @@ class DueDiligenceController(CryptoBaseController):
         mt.add_cmd("load")
         mt.add_raw("\n")
         mt.add_param("_symbol", self.symbol)
-        mt.add_param("_source", "cg" if self.source != "" else "")
+        mt.add_param("_source", self.source)
         mt.add_raw("\n")
 
         mt.add_info("_overview_")
@@ -1126,7 +1126,7 @@ class DueDiligenceController(CryptoBaseController):
             description="""Get all exchanges found for given coin.
                 You can display only top N number of exchanges with --top parameter.
                 You can sort data by  id, name, adjusted_volume_24h_share, fiats --sort parameter
-                and also with --descend flag to sort descending.
+                and also with --ascend flag to sort ascending.
                 Displays:
                     id, name, adjusted_volume_24h_share, fiats""",
         )
@@ -1151,10 +1151,10 @@ class DueDiligenceController(CryptoBaseController):
         )
 
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
+            "--ascend",
+            action="store_true",
+            help="Flag to sort in ascending order (lowest first)",
+            dest="ascend",
             default=False,
         )
 
@@ -1167,7 +1167,7 @@ class DueDiligenceController(CryptoBaseController):
                     symbol=self.symbol,
                     limit=ns_parser.limit,
                     sortby=ns_parser.sortby,
-                    ascend=not ns_parser.descend,
+                    ascend=ns_parser.ascend,
                     export=ns_parser.export,
                 )
 
