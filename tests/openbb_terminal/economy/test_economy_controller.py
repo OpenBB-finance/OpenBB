@@ -903,3 +903,62 @@ def test_call_fred_params(mocked_func, other_args, called_args, called_kwargs, m
         mock.assert_called_once_with(*called_args, **called_kwargs)
     else:
         mock.assert_called_once()
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.record_stdout
+def test_show_indices():
+    controller = economy_controller.EconomyController(queue=None)
+    controller.call_index(["--show"])
+
+
+MOCK_INDEX = pd.DataFrame.from_dict(
+    {
+        Timestamp("2022-11-02 00:00:00"): 3759.68994140625,
+        Timestamp("2022-11-03 00:00:00"): 3719.889892578125,
+        Timestamp("2022-11-04 00:00:00"): 3770.550048828125,
+    },
+    orient="index",
+)
+
+
+@pytest.mark.vcr(record_mode="none")
+def test_call_index(mocker):
+    path_controller = "openbb_terminal.economy.economy_controller"
+
+    # MOCK REMOVE
+    mocker.patch(target=f"{path_controller}.os.remove")
+
+    # MOCK the fred functions used
+    mocker.patch(
+        target=f"{path_controller}.yfinance_model.get_index",
+        return_value=MOCK_INDEX,
+    )
+
+    mocker.patch(
+        target="openbb_terminal.feature_flags.ENABLE_EXIT_AUTO_HELP",
+        new=False,
+    )
+
+    mock = mocker.Mock()
+    mocker.patch(
+        target=f"{path_controller}.yfinance_view.show_indices",
+        new=mock,
+    )
+
+    controller = economy_controller.EconomyController(queue=None)
+    controller.choices = {}
+    controller.call_index(["-i", "SP500,DOW_DJUS", "-s", "2022-10-01"])
+
+    mock.assert_called_once_with(
+        **dict(
+            indices=["SP500", "DOW_DJUS"],
+            start_date="2022-10-01",
+            end_date=None,
+            raw=False,
+            export="",
+            interval="1d",
+            column="Adj Close",
+            returns=False,
+        )
+    )
