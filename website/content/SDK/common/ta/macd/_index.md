@@ -1,13 +1,13 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### common.ta.macd(values: pandas.core.frame.DataFrame, n_fast: int = 12, n_slow: int = 26, n_signal: int = 9) -> pandas.core.frame.DataFrame
+### common.ta.macd(data: pandas.core.series.Series, n_fast: int = 12, n_slow: int = 26, n_signal: int = 9) -> pandas.core.frame.DataFrame
 
 Moving average convergence divergence
 
     Parameters
     ----------
-    values: pd.Series
+    data: pd.Series
         Values for calculation
     n_fast : int
         Fast period

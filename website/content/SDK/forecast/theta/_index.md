@@ -1,6 +1,6 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
-## Get underlying data
+## Get underlying data 
 ### forecast.theta(data: Union[pandas.core.series.Series, pandas.core.frame.DataFrame], target_column: str = 'close', seasonal: str = 'M', seasonal_periods: int = 7, n_predict: int = 5, start_window: float = 0.85, forecast_horizon: int = 5) -> Tuple[List[darts.timeseries.TimeSeries], List[darts.timeseries.TimeSeries], List[darts.timeseries.TimeSeries], float, float, Any]
 
 Performs Theta forecasting
@@ -42,7 +42,7 @@ Performs Theta forecasting
     Any
         Theta Model
 
-## Getting charts
+## Getting charts 
 ### forecast.theta(data: Union[pandas.core.frame.DataFrame, pandas.core.series.Series], target_column: str = 'close', dataset_name: str = '', seasonal: str = 'M', seasonal_periods: int = 7, n_predict: int = 5, start_window: float = 0.85, forecast_horizon: int = 5, export: str = '', residuals: bool = False, forecast_only: bool = False, start_date: Optional[datetime.datetime] = None, end_date: Optional[datetime.datetime] = None, naive: bool = False, export_pred_raw: bool = False, external_axes: Optional[List[axes]] = None, chart=True)
 
 Display Theta forecast

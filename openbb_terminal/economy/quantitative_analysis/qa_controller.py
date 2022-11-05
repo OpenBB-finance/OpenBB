@@ -94,8 +94,6 @@ class QaController(StockBaseController):
             }
             choices["line"] = {
                 "--log": {},
-                "--draw": {},
-                "-d": "--draw",
                 "--ml": None,
                 "--ms": None,
             }
@@ -304,20 +302,12 @@ class QaController(StockBaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             add_help=False,
             prog="line",
-            description="Show line plot of selected data and allow to draw lines or highlight specific datetimes.",
+            description="Show line plot of selected data or highlight specific datetimes.",
         )
         parser.add_argument(
             "--log",
             help="Plot with y on log scale",
             dest="log",
-            action="store_true",
-            default=False,
-        )
-        parser.add_argument(
-            "-d",
-            "--draw",
-            help="Draw lines and annotate on the plot",
-            dest="draw",
             action="store_true",
             default=False,
         )
@@ -344,7 +334,6 @@ class QaController(StockBaseController):
                 self.data,
                 title=f"{self.current_id.upper()}",
                 log_y=ns_parser.log,
-                draw=ns_parser.draw,
                 markers_lines=ns_parser.ml,
                 markers_scatter=ns_parser.ms,
             )

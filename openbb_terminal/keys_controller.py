@@ -8,7 +8,6 @@ import logging
 from typing import Dict, List
 
 from tqdm import tqdm
-from requests import exceptions
 
 from openbb_terminal import feature_flags as obbff, keys_view
 from openbb_terminal import keys_model
@@ -56,23 +55,6 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
         """Check keys status"""
         for api in tqdm(self.API_LIST, desc="Checking keys status"):
             self.status_dict[api] = getattr(keys_model, "check_" + str(api) + "_key")()
-
-    def is_there_at_least_one_key_defined(self) -> bool:
-        """Check if there is at least 1 API key defined.
-        This is a good proxy to understand whether we are in presence of a first time user or not
-
-        Returns
-        -------
-        bool
-            True if at least 1 key is defined, False otherwise
-        """
-        try:
-            for api in self.API_LIST:
-                if getattr(keys_model, "check_" + str(api) + "_key")() != "not defined":
-                    return True
-        except exceptions.ConnectionError:
-            return True
-        return False
 
     def print_help(self):
         """Print help"""

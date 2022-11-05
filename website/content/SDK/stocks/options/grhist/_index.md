@@ -1,7 +1,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### stocks.options.grhist(symbol: str, expiry: str, strike: float, chain_id: str = '', put: bool = False) -> pandas.core.frame.DataFrame
+### stocks.options.grhist(symbol: str, expiry: str, strike: Union[str, float], chain_id: str = '', put: bool = False) -> pandas.core.frame.DataFrame
 
 Get histoical option greeks
 
@@ -11,7 +11,7 @@ Get histoical option greeks
         Stock ticker symbol
     expiry: str
         Option expiration date
-    strike: float
+    strike: Union[str, float]
         Strike price to look for
     chain_id: str
         OCC option symbol.  Overwrites other inputs
@@ -24,7 +24,7 @@ Get histoical option greeks
         Dataframe containing historical greeks
 
 ## Getting charts 
-### stocks.options.grhist(symbol: str, expiry: str, strike: float, greek: str = 'Delta', chain_id: str = '', put: bool = False, raw: bool = False, limit: int = 20, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.options.grhist(symbol: str, expiry: str, strike: Union[float, str], greek: str = 'Delta', chain_id: str = '', put: bool = False, raw: bool = False, limit: Union[int, str] = 20, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Plots historical greeks for a given option. [Source: Syncretism]
 
@@ -34,7 +34,7 @@ Plots historical greeks for a given option. [Source: Syncretism]
         Stock ticker
     expiry: str
         Expiration date
-    strike: float
+    strike: Union[str, float]
         Strike price to consider
     greek: str
         Greek variable to plot
