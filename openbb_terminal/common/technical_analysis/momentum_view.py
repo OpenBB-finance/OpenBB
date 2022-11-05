@@ -177,7 +177,11 @@ def display_macd(
     )
 
     ax2.plot(plot_data.index, plot_data.iloc[:, 2].values)
-    ax2.plot(plot_data.index, plot_data.iloc[:, 4].values, color=theme.down_color)
+    ax2.plot(
+        plot_data.index,
+        plot_data.iloc[:, 4].values,
+        color=theme.down_color,
+    )
     ax2.bar(
         plot_data.index,
         plot_data.iloc[:, 3].values,
@@ -189,7 +193,9 @@ def display_macd(
             f"MACD Line {plot_data.columns[2]}",
             f"Signal Line {plot_data.columns[4]}",
             f"Histogram {plot_data.columns[3]}",
-        ]
+        ],
+        loc=2,
+        prop={"size": 6},
     )
     ax2.set_xlim(plot_data.index[0], plot_data.index[-1])
     theme.style_primary_axis(
@@ -379,7 +385,11 @@ def display_stoch(
 
     ax2.set_yticks([20, 80])
     ax2.set_yticklabels(["OVERSOLD", "OVERBOUGHT"])
-    ax2.legend([f"%K {df_ta.columns[0]}", f"%D {df_ta.columns[1]}"])
+    ax2.legend(
+        [f"%K {df_ta.columns[0]}", f"%D {df_ta.columns[1]}"],
+        loc=2,
+        prop={"size": 6},
+    )
 
     if external_axes is None:
         theme.visualize_output()
@@ -472,7 +482,7 @@ def display_fisher(
 
     ax2.set_yticks([-2, 0, 2])
     ax2.set_yticklabels(["-2 STDEV", "0", "+2 STDEV"])
-    ax2.legend()
+    ax2.legend(loc=2, prop={"size": 6})
 
     if external_axes is None:
         theme.visualize_output()
