@@ -48,7 +48,7 @@ MOCK_FRED_NOTES = pd.DataFrame.from_dict(
         "popularity": {0: 94},
         "group_popularity": {0: 94},
         "notes": {
-            0: "The unemployment rate represents the number of unemployed as a percentage of the labor force. Labor\nforce data are restricted to people 16 years of age and older, who currently reside in 1 of the 50\nstates or the District of Columbia, who do not reside in institutions (e.g., penal and mental\nfacilities, homes for the aged), and who are not on active duty in the Armed Forces.    This rate is\nalso defined as the U-3 measure of labor underutilization.    The series comes from the 'Current\nPopulation Survey (Household Survey)'    The source code is: LNS14000000"
+            0: "The unemployment rate represents the number of unemployed"
         },
     }
 )
@@ -61,7 +61,7 @@ MOCK_CHECK_IDS2 = {
             "id": "DGS5",
             "realtime_start": "2022-11-04",
             "realtime_end": "2022-11-04",
-            "title": "Market Yield on U.S. Treasury Securities at 5-Year Constant Maturity, Quoted on an Investment Basis",
+            "title": "Market Yield on U.S. Treasury Securities at 5-Year Cons",
             "observation_start": "1962-01-02",
             "observation_end": "2022-11-03",
             "frequency": "Daily",
@@ -72,7 +72,7 @@ MOCK_CHECK_IDS2 = {
             "seasonal_adjustment_short": "NSA",
             "last_updated": "2022-11-04 15:18:14-05",
             "popularity": 79,
-            "notes": "For further information regarding treasury constant maturity data, please refer to the H.15 Statistical Release notes (https://www.federalreserve.gov/releases/h15/default.htm) and the Treasury Yield Curve Methodology (https://home.treasury.gov/policy-issues/financing-the-government/interest-rate-statistics/treasury-yield-curve-methodology).",
+            "notes": "For further information regarding treasury con",
         }
     ],
 }
@@ -85,7 +85,7 @@ MOCK_CHECK_IDS1 = {
             "id": "DGS2",
             "realtime_start": "2022-11-04",
             "realtime_end": "2022-11-04",
-            "title": "Market Yield on U.S. Treasury Securities at 2-Year Constant Maturity, Quoted on an Investment Basis",
+            "title": "Market Yield on U.S. Treasury Securities at 2-Year Constant Masis",
             "observation_start": "1976-06-01",
             "observation_end": "2022-11-03",
             "frequency": "Daily",
@@ -96,7 +96,7 @@ MOCK_CHECK_IDS1 = {
             "seasonal_adjustment_short": "NSA",
             "last_updated": "2022-11-04 15:18:11-05",
             "popularity": 82,
-            "notes": "For further information regarding treasury constant maturity data, please refer to the H.15 Statistical Release notes (https://www.federalreserve.gov/releases/h15/default.htm) and the Treasury Yield Curve Methodology (https://home.treasury.gov/policy-issues/financing-the-government/interest-rate-statistics/treasury-yield-curve-methodology).",
+            "notes": "For further information regarding treasury constant maturity data, please refer to ",
         }
     ],
 }
@@ -116,11 +116,11 @@ MOCK_FRED_AGG = pd.DataFrame.from_dict(
 
 MOCK_DETAIL = {
     "dgs2": {
-        "title": "Market Yield on U.S. Treasury Securities at 2-Year Constant Maturity, Quoted on an Investment Basis",
+        "title": "Market Yield on U.S. Treasury Securities at 2-Year Constant M",
         "units": "%",
     },
     "dgs5": {
-        "title": "Market Yield on U.S. Treasury Securities at 5-Year Constant Maturity, Quoted on an Investment Basis",
+        "title": "Market Yield on U.S. Treasury Securities at 5-Year Constant ",
         "units": "%",
     },
 }
