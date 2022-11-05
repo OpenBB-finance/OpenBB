@@ -189,6 +189,21 @@ def get_keys_info() -> Dict[str, List[str]]:
     return args_dict
 
 
+def first_time_user() -> bool:
+    """Whether a user is a first time user. A first time user is someone with an empty .env file.
+    If this is true, it also adds an env variable to make sure this does not run again.
+
+    Returns
+    ----------
+    bool
+        Whether or not the user is a first time user
+    """
+    if USER_ENV_FILE.stat().st_size == 0:
+        set_key("OPENBB_PREVIOUS_USE", "True", True)
+        return True
+    return False
+
+
 def set_key(env_var_name: str, env_var_value: str, persist: bool = False) -> None:
     """Set API key.
     Parameters

@@ -1,7 +1,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### forex.oanda.calendar(days: int, instrument: Optional[str] = None) -> Union[pandas.core.frame.DataFrame, bool]
+### forex.oanda.calendar(days: int = 14, instrument: Optional[str] = None) -> Union[pandas.core.frame.DataFrame, bool]
 
 Request data of significant events calendar.
 
