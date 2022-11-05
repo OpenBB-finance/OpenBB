@@ -854,7 +854,7 @@ def test_call_fred_query(mocker):
                 limit=100,
                 raw=True,
                 export="csv",
-            )
+            ),
         ),
         (
             ["--parameter=DgS2,dgs5", "--export=csv", "--start=2022-10-10"],
@@ -867,7 +867,7 @@ def test_call_fred_query(mocker):
                 limit=100,
                 raw=False,
                 export="csv",
-            )
+            ),
         ),
     ],
 )
