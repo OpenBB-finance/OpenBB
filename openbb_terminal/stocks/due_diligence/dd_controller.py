@@ -69,7 +69,6 @@ class DueDiligenceController(StockBaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
 
-            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
             choices["load"] = {
                 "--ticker": None,
                 "-t": "--ticker",
@@ -82,7 +81,7 @@ class DueDiligenceController(StockBaseController):
                 "--prepost": {},
                 "-p": "--prepost",
                 "--file": None,
-                "-f": "--file",
+                # "-f": "--file",
                 "--monthly": {},
                 "-m": "--monthly",
                 "--weekly": {},
@@ -94,18 +93,18 @@ class DueDiligenceController(StockBaseController):
                 },
             }
             limit = {
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["rating"] = limit
-            limit_raw = {"--limit": one_to_hundred, "-l": "--limit", "--raw": {}}
-            choices["rot"] = limit_raw
-            choices["pt"] = limit_raw
+
+            choices["rot"] = {"--limit": None, "-l": "--limit", "--raw": {}}
+            choices["pt"] = {"--limit": None, "-l": "--limit", "--raw": {}}
             choices["est"]["--estimate"] = {c: {} for c in self.ESTIMATE_CHOICES}
             choices["est"]["-e"] = "--estimate"
             choices["sec"] = limit
             choices["arktrades"] = {
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--show_symbol": {},
                 "-s": "--show_symbol",

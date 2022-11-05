@@ -153,7 +153,7 @@ class OptionsController(BaseController):
                 "-p": "--puts_only",
                 "--calls_only": {},
                 "-c": "--calls_only",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["calc"] = {
@@ -236,7 +236,7 @@ class OptionsController(BaseController):
                 "--chain": None,
                 "-c": "--chain",
                 "--raw": {},
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["plot"] = {
@@ -303,7 +303,7 @@ class OptionsController(BaseController):
             }
 
             if self.chain and self.source != "Nasdaq":
-                one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
+
                 self.choices["hist"] = {
                     str(c): {}
                     for c in self.chain.puts["strike"] + self.chain.calls["strike"]
@@ -313,7 +313,7 @@ class OptionsController(BaseController):
                 self.choices["hist"]["--chain"] = None
                 self.choices["hist"]["-c"] = "--chain"
                 self.choices["hist"]["--raw"] = {}
-                self.choices["hist"]["--limit"] = one_to_hundred
+                self.choices["hist"]["--limit"] = None
                 self.choices["hist"]["-l"] = "--limit"
                 self.choices["grhist"]["--strike"] = {
                     str(c): {}
