@@ -156,6 +156,7 @@ def get_autostatsforecast_data(
         for model in model_names
     ]
     precision = pd.DataFrame({"precision": precision_per_model}, index=model_names)
+    precision = precision.sort_values(by="precision")
     # select best model
     best_precision = precision["precision"].min()
     best_model = precision["precision"].idxmin()
@@ -170,8 +171,8 @@ def get_autostatsforecast_data(
         precision,
         show_index=True,
         index_name="Model",
-        headers=["Precision"],
-        title=f"Performance per model. Best model: {best_model}",
+        headers=["MAPE"],
+        title=f"Performance per model.\nBest model: [#00AAFF]{best_model}[/#00AAFF]",
     )
 
     # transform outputs to make them compatible with
