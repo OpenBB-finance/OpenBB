@@ -23,7 +23,6 @@ import requests
 from requests.exceptions import ReadTimeout
 
 import yfinance as yf
-from numpy.core.fromnumeric import transpose
 from plotly.subplots import make_subplots
 from scipy import stats
 
@@ -719,65 +718,6 @@ def display_candle(
             fig.show(config=dict({"scrollZoom": True}))
     else:
         return data
-
-
-def quote(symbol: str) -> pd.DataFrame:
-    """Ticker quote.
-
-    Parameters
-    ----------
-    symbol : str
-        Ticker
-    """
-    ticker = yf.Ticker(symbol)
-
-    try:
-        quote_df = pd.DataFrame(
-            [
-                {
-                    "Symbol": ticker.info["symbol"],
-                    "Name": ticker.info["shortName"],
-                    "Price": ticker.info["regularMarketPrice"],
-                    "Open": ticker.info["regularMarketOpen"],
-                    "High": ticker.info["dayHigh"],
-                    "Low": ticker.info["dayLow"],
-                    "Previous Close": ticker.info["previousClose"],
-                    "Volume": ticker.info["volume"],
-                    "52 Week High": ticker.info["fiftyTwoWeekHigh"],
-                    "52 Week Low": ticker.info["fiftyTwoWeekLow"],
-                }
-            ]
-        )
-
-        quote_df["Change"] = quote_df["Price"] - quote_df["Previous Close"]
-        quote_df["Change %"] = quote_df.apply(
-            lambda x: f'{((x["Change"] / x["Previous Close"]) * 100):.2f}%',
-            axis="columns",
-        )
-        for c in [
-            "Price",
-            "Open",
-            "High",
-            "Low",
-            "Previous Close",
-            "52 Week High",
-            "52 Week Low",
-            "Change",
-        ]:
-            quote_df[c] = quote_df[c].apply(lambda x: f"{x:.2f}")
-        quote_df["Volume"] = quote_df["Volume"].apply(lambda x: f"{x:,}")
-
-        quote_df = quote_df.set_index("Symbol")
-
-        quote_data = transpose(quote_df)
-
-        print_rich_table(quote_data, title="Ticker Quote", show_index=True)
-        return quote_data
-
-    except KeyError:
-        logger.exception("Invalid stock ticker")
-        console.print(f"Invalid stock ticker: {symbol}")
-        return ""
 
 
 def load_ticker(
