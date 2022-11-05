@@ -1,5 +1,6 @@
 # IMPORTATION STANDARD
 import os
+import datetime
 
 # IMPORTATION THIRDPARTY
 import pytest
@@ -51,6 +52,78 @@ MOCK_FRED_NOTES = pd.DataFrame.from_dict(
         },
     }
 )
+
+MOCK_CHECK_IDS2 = {
+    "realtime_start": "2022-11-04",
+    "realtime_end": "2022-11-04",
+    "seriess": [
+        {
+            "id": "DGS5",
+            "realtime_start": "2022-11-04",
+            "realtime_end": "2022-11-04",
+            "title": "Market Yield on U.S. Treasury Securities at 5-Year Constant Maturity, Quoted on an Investment Basis",
+            "observation_start": "1962-01-02",
+            "observation_end": "2022-11-03",
+            "frequency": "Daily",
+            "frequency_short": "D",
+            "units": "Percent",
+            "units_short": "%",
+            "seasonal_adjustment": "Not Seasonally Adjusted",
+            "seasonal_adjustment_short": "NSA",
+            "last_updated": "2022-11-04 15:18:14-05",
+            "popularity": 79,
+            "notes": "For further information regarding treasury constant maturity data, please refer to the H.15 Statistical Release notes (https://www.federalreserve.gov/releases/h15/default.htm) and the Treasury Yield Curve Methodology (https://home.treasury.gov/policy-issues/financing-the-government/interest-rate-statistics/treasury-yield-curve-methodology).",
+        }
+    ],
+}
+
+MOCK_CHECK_IDS1 = {
+    "realtime_start": "2022-11-04",
+    "realtime_end": "2022-11-04",
+    "seriess": [
+        {
+            "id": "DGS2",
+            "realtime_start": "2022-11-04",
+            "realtime_end": "2022-11-04",
+            "title": "Market Yield on U.S. Treasury Securities at 2-Year Constant Maturity, Quoted on an Investment Basis",
+            "observation_start": "1976-06-01",
+            "observation_end": "2022-11-03",
+            "frequency": "Daily",
+            "frequency_short": "D",
+            "units": "Percent",
+            "units_short": "%",
+            "seasonal_adjustment": "Not Seasonally Adjusted",
+            "seasonal_adjustment_short": "NSA",
+            "last_updated": "2022-11-04 15:18:11-05",
+            "popularity": 82,
+            "notes": "For further information regarding treasury constant maturity data, please refer to the H.15 Statistical Release notes (https://www.federalreserve.gov/releases/h15/default.htm) and the Treasury Yield Curve Methodology (https://home.treasury.gov/policy-issues/financing-the-government/interest-rate-statistics/treasury-yield-curve-methodology).",
+        }
+    ],
+}
+
+MOCK_FRED_AGG = pd.DataFrame.from_dict(
+    {
+        "dgs2": {
+            Timestamp("2022-11-02 00:00:00"): 4.61,
+            Timestamp("2022-11-03 00:00:00"): 4.71,
+        },
+        "dgs5": {
+            Timestamp("2022-11-02 00:00:00"): 4.3,
+            Timestamp("2022-11-03 00:00:00"): 4.36,
+        },
+    }
+)
+
+MOCK_DETAIL = {
+    "dgs2": {
+        "title": "Market Yield on U.S. Treasury Securities at 2-Year Constant Maturity, Quoted on an Investment Basis",
+        "units": "%",
+    },
+    "dgs5": {
+        "title": "Market Yield on U.S. Treasury Securities at 5-Year Constant Maturity, Quoted on an Investment Basis",
+        "units": "%",
+    },
+}
 
 
 @pytest.mark.vcr(record_mode="none")
@@ -751,3 +824,84 @@ def test_call_fred_query(mocker):
     controller.choices = {}
     controller.call_fred(["--query", "MOCK_QUERY", "--limit", "1"])
     mock.assert_called_once_with(**dict(search_query="MOCK_QUERY", limit=1))
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "other_args, mocked_func, called_args, called_kwargs",
+    [
+        (
+            ["--parameter=dgs2,dgs5"],
+            "fred_view.display_fred_series",
+            [],
+            dict(
+                series_ids=["DGS2", "DGS5"],
+                start_date=None,
+                end_date=None,
+                limit=100,
+                raw=False,
+                export="",
+            ),
+        ),
+        (
+            ["--parameter=DgS2,dgs5", "--export=csv", "--raw"],
+            "fred_view.display_fred_series",
+            [],
+            dict(
+                series_ids=["DGS2", "DGS5"],
+                start_date=None,
+                end_date=None,
+                limit=100,
+                raw=True,
+                export="csv",
+            )
+        ),
+        (
+            ["--parameter=DgS2,dgs5", "--export=csv", "--start=2022-10-10"],
+            "fred_view.display_fred_series",
+            [],
+            dict(
+                series_ids=["DGS2", "DGS5"],
+                start_date=datetime.datetime(2022, 10, 10, 0, 0),
+                end_date=None,
+                limit=100,
+                raw=False,
+                export="csv",
+            )
+        ),
+    ],
+)
+def test_call_fred_params(mocked_func, other_args, called_args, called_kwargs, mocker):
+    path_controller = "openbb_terminal.economy.economy_controller"
+
+    # MOCK REMOVE
+    mocker.patch(target=f"{path_controller}.os.remove")
+
+    # MOCK the fred functions used
+    mocker.patch(
+        target=f"{path_controller}.fred_model.check_series_id",
+        side_effect=[MOCK_CHECK_IDS1, MOCK_CHECK_IDS2],
+    )
+    mocker.patch(
+        target=f"{path_controller}.fred_model.get_aggregated_series_data",
+        return_value=(MOCK_FRED_AGG, MOCK_DETAIL),
+    )
+    mocker.patch(
+        target="openbb_terminal.feature_flags.ENABLE_EXIT_AUTO_HELP",
+        new=False,
+    )
+
+    mock = mocker.Mock()
+    mocker.patch(
+        target=f"{path_controller}.{mocked_func}",
+        new=mock,
+    )
+
+    controller = economy_controller.EconomyController(queue=None)
+    controller.choices = {}
+    controller.call_fred(other_args)
+
+    if called_args or called_kwargs:
+        mock.assert_called_once_with(*called_args, **called_kwargs)
+    else:
+        mock.assert_called_once()
