@@ -23,6 +23,7 @@ from openbb_terminal.helper_funcs import (
     print_rich_table,
 )
 from openbb_terminal.rich_config import console
+from openbb_terminal.common.technical_analysis import ta_helpers
 
 logger = logging.getLogger(__name__)
 
@@ -72,10 +73,13 @@ def display_cci(
     else:
         return
 
+    close_col = ta_helpers.check_columns(data)
+    if close_col is None:
+        return
     ax1.set_title(f"{symbol} CCI")
     ax1.plot(
         plot_data.index,
-        plot_data["Adj Close"].values,
+        plot_data[close_col].values,
     )
     ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
     ax1.set_ylabel("Share Price ($)")
@@ -173,7 +177,11 @@ def display_macd(
     )
 
     ax2.plot(plot_data.index, plot_data.iloc[:, 2].values)
-    ax2.plot(plot_data.index, plot_data.iloc[:, 4].values, color=theme.down_color)
+    ax2.plot(
+        plot_data.index,
+        plot_data.iloc[:, 4].values,
+        color=theme.down_color,
+    )
     ax2.bar(
         plot_data.index,
         plot_data.iloc[:, 3].values,
@@ -185,7 +193,9 @@ def display_macd(
             f"MACD Line {plot_data.columns[2]}",
             f"Signal Line {plot_data.columns[4]}",
             f"Histogram {plot_data.columns[3]}",
-        ]
+        ],
+        loc=2,
+        prop={"size": 6},
     )
     ax2.set_xlim(plot_data.index[0], plot_data.index[-1])
     theme.style_primary_axis(
@@ -234,6 +244,9 @@ def display_rsi(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
     """
+    if isinstance(data, pd.DataFrame):
+        console.print("[red]Please send a series and not a dataframe[/red]\n")
+        return
     df_ta = momentum_model.rsi(data, window, scalar, drift)
 
     # This plot has 2 axes
@@ -319,10 +332,11 @@ def display_stoch(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (3 axes are expected in the list), by default None
     """
+    close_col = ta_helpers.check_columns(data)
+    if close_col is None:
+        return
     df_ta = momentum_model.stoch(
-        data["High"],
-        data["Low"],
-        data["Adj Close"],
+        data,
         fastkperiod,
         slowdperiod,
         slowkperiod,
@@ -342,7 +356,7 @@ def display_stoch(
     plot_data = pd.merge(data, df_ta, how="outer", left_index=True, right_index=True)
     plot_data = reindex_dates(plot_data)
 
-    ax1.plot(plot_data.index, plot_data["Adj Close"].values)
+    ax1.plot(plot_data.index, plot_data[close_col].values)
 
     ax1.set_title(f"Stochastic Relative Strength Index (STOCH RSI) on {symbol}")
     ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
@@ -371,7 +385,11 @@ def display_stoch(
 
     ax2.set_yticks([20, 80])
     ax2.set_yticklabels(["OVERSOLD", "OVERBOUGHT"])
-    ax2.legend([f"%K {df_ta.columns[0]}", f"%D {df_ta.columns[1]}"])
+    ax2.legend(
+        [f"%K {df_ta.columns[0]}", f"%D {df_ta.columns[1]}"],
+        loc=2,
+        prop={"size": 6},
+    )
 
     if external_axes is None:
         theme.visualize_output()
@@ -407,7 +425,9 @@ def display_fisher(
     external_axes : Optional[List[plt.Axes]], optional
         External axes (3 axes are expected in the list), by default None
     """
-    df_ta = momentum_model.fisher(data["High"], data["Low"], window)
+    df_ta = momentum_model.fisher(data, window)
+    if df_ta.empty:
+        return
     plot_data = pd.merge(data, df_ta, how="outer", left_index=True, right_index=True)
     plot_data = reindex_dates(plot_data)
 
@@ -424,7 +444,10 @@ def display_fisher(
         return
 
     ax1.set_title(f"{symbol} Fisher Transform")
-    ax1.plot(plot_data.index, plot_data["Adj Close"].values)
+    close_col = ta_helpers.check_columns(data)
+    if close_col is None:
+        return
+    ax1.plot(plot_data.index, plot_data[close_col].values)
     ax1.set_xlim(plot_data.index[0], plot_data.index[-1])
     ax1.set_ylabel("Price")
     theme.style_primary_axis(
@@ -459,7 +482,7 @@ def display_fisher(
 
     ax2.set_yticks([-2, 0, 2])
     ax2.set_yticklabels(["-2 STDEV", "0", "+2 STDEV"])
-    ax2.legend()
+    ax2.legend(loc=2, prop={"size": 6})
 
     if external_axes is None:
         theme.visualize_output()
@@ -627,8 +650,8 @@ def display_demark(
 
     Parameters
     ----------
-    data : pd.Series
-        Series of values
+    data : pd.DataFrame
+        DataFrame of values
     symbol : str
         Symbol that the data corresponds to
     min_to_show: int
@@ -642,7 +665,10 @@ def display_demark(
     -------
 
     """
-    demark_df = momentum_model.demark_seq(data["Adj Close"])
+    close_col = ta_helpers.check_columns(data, high=False, low=False)
+    if close_col is None:
+        return
+    demark_df = momentum_model.demark_seq(data[close_col])
     demark_df.index = data.index
 
     stock_data = data.copy()

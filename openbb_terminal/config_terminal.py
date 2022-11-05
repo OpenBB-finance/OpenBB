@@ -7,7 +7,12 @@ import dotenv
 
 # IMPORTATION INTERNAL
 
-from openbb_terminal.core.config.paths import PACKAGE_ENV_FILE, USER_ENV_FILE, REPOSITORY_ENV_FILE
+from openbb_terminal.core.config.paths import (
+    PACKAGE_ENV_FILE,
+    USER_ENV_FILE,
+    REPOSITORY_ENV_FILE,
+)
+from openbb_terminal import base_helpers
 from .helper_classes import TerminalStyle as _TerminalStyle
 
 dotenv.load_dotenv(USER_ENV_FILE)
@@ -24,9 +29,6 @@ theme = _TerminalStyle(
     PMF_STYLE,
     RICH_STYLE,
 )
-
-# Set to True to see full stack traces for debugging/error reporting
-DEBUG_MODE = False
 
 # By default the jupyter notebook will be run on port 8888
 PAPERMILL_NOTEBOOK_REPORT_PORT = (
@@ -52,8 +54,8 @@ LOGGING_COMMIT_HASH = str(os.getenv("OPENBB_LOGGING_COMMIT_HASH", "REPLACE_ME"))
 LOGGING_FREQUENCY = os.getenv("OPENBB_LOGGING_FREQUENCY") or "H"
 # stdout,stderr,noop,file
 LOGGING_HANDLERS = os.getenv("OPENBB_LOGGING_HANDLERS") or "file"
-LOGGING_ROLLING_CLOCK = bool(
-    strtobool(os.getenv("OPENBB_LOGGING_ROLLING_CLOCK", "False"))
+LOGGING_ROLLING_CLOCK = base_helpers.load_env_vars(
+    "OPENBB_LOGGING_ROLLING_CLOCK", strtobool, False
 )
 # CRITICAL = 50
 # FATAL = CRITICAL
@@ -63,7 +65,7 @@ LOGGING_ROLLING_CLOCK = bool(
 # INFO = 20
 # DEBUG = 10
 # NOTSET = 0
-LOGGING_VERBOSITY = int(os.getenv("OPENBB_LOGGING_VERBOSITY") or 20)
+LOGGING_VERBOSITY = base_helpers.load_env_vars("OPENBB_LOGGING_VERBOSITY", int, 20)
 # LOGGING SUB APP
 LOGGING_SUB_APP = os.getenv("OPENBB_LOGGING_SUB_APP") or "terminal"
 

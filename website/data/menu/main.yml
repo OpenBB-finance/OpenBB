@@ -11,6 +11,8 @@ main:
             sub:
               - name: cases
                 ref: /terminal/alternative/covid/cases
+              - name: country
+                ref: /terminal/alternative/covid/country
               - name: deaths
                 ref: /terminal/alternative/covid/deaths
               - name: ov
@@ -192,8 +194,6 @@ main:
                 ref: /terminal/crypto/defi/aterra
               - name: ayr
                 ref: /terminal/crypto/defi/ayr
-              - name: dpi
-                ref: /terminal/crypto/defi/dpi
               - name: dtvl
                 ref: /terminal/crypto/defi/dtvl
               - name: gacc
@@ -398,8 +398,8 @@ main:
                 ref: /terminal/crypto/onchain/ds
               - name: dt
                 ref: /terminal/crypto/onchain/dt
-          - name: nft
-            ref: "/terminal/crypto/nft"
+          - name: ov
+            ref: "/terminal/crypto/ov"
             sub:
               - name: altindex
                 ref: /terminal/crypto/ov/altindex
@@ -745,6 +745,8 @@ main:
         sub:
           - name: atr
             ref: terminal/forecast/atr
+          - name: autoets
+            ref: terminal/forecast/autoets
           - name: brnn
             ref: terminal/forecast/brnn
           - name: clean
@@ -835,25 +837,6 @@ main:
                 ref: /terminal/forex/oanda/positions
           - name: quote
             ref: /terminal/forex/quote
-      - name: funds
-        ref: /terminal/funds
-        sub:
-          - name: country
-            ref: /terminal/funds/country
-          - name: equity
-            ref: /terminal/funds/equity
-          - name: info
-            ref: /terminal/funds/info
-          - name: load
-            ref: /terminal/funds/load
-          - name: overview
-            ref: /terminal/funds/overview
-          - name: plot
-            ref: /terminal/funds/plot
-          - name: search
-            ref: /terminal/funds/search
-          - name: sector
-            ref: /terminal/funds/sector
       - name: futures
         ref: /terminal/futures
         sub:
@@ -1890,6 +1873,8 @@ main:
                 ref: /SDK/crypto/dd/news
               - name: nonzero
                 ref: /SDK/crypto/dd/nonzero
+              - name: ob
+                ref: /SDK/crypto/dd/ob
               - name: ohlc_historical
                 ref: /SDK/crypto/dd/ohlc_historical
               - name: oi
@@ -2005,6 +1990,10 @@ main:
           - name: nft
             ref: /SDK/crypto/nft
             sub:
+              - name: collections
+                ref: /SDK/crypto/nft/collections
+              - name: fp
+                ref: /SDK/crypto/nft/fp
               - name: stats
                 ref: /SDK/crypto/nft/stats
           - name: onchain
@@ -2121,6 +2110,8 @@ main:
                 ref: /SDK/crypto/ov/wf
               - name: wfpe
                 ref: /SDK/crypto/ov/wfpe
+          - name: price
+            ref: /SDK/crypto/price
           - name: tools
             ref: /SDK/crypto/tools
             sub:
@@ -2288,6 +2279,8 @@ main:
         sub:
           - name: atr
             ref: /SDK/forecast/atr
+          - name: autoets
+            ref: /SDK/forecast/autoets
           - name: brnn
             ref: /SDK/forecast/brnn
           - name: clean
@@ -2390,15 +2383,6 @@ main:
                 ref: /SDK/forex/oanda/summary
           - name: quote
             ref: /SDK/forex/quote
-      - name: funds
-        ref: /SDK/funds
-        sub:
-          - name: info
-            ref: /SDK/funds/info
-          - name: overview
-            ref: /SDK/funds/overview
-          - name: search
-            ref: /SDK/funds/search
       - name: futures
         ref: /SDK/futures
         sub:
@@ -2997,6 +2981,8 @@ main:
             sub:
               - name: recom
                 ref: /SDK/stocks/ta/recom
+              - name: rsp
+                ref: /SDK/stocks/ta/rsp
               - name: summary
                 ref: /SDK/stocks/ta/summary
               - name: view

@@ -45,14 +45,13 @@ class NFTController(BaseController):
             choices["support"] = self.SUPPORT_CHOICES
             choices["about"] = self.ABOUT_CHOICES
             choices["fp"] = {c: {} for c in nft_price_floor_collections}
+            choices["fp"]["--slug"] = {c: {} for c in nft_price_floor_collections}
             choices["fp"]["--raw"] = {}
             choices["fp"]["--limit"] = {str(c): {} for c in range(1, 100)}
             choices["fp"]["-l"] = "--limit"
             choices["stats"] = {
                 "--slug": None,
                 "-s": None,
-                "--limit": {str(c): {} for c in range(1, 100)},
-                "-l": "--limit",
             }
             choices["collections"] = {
                 "--fp": {},
@@ -171,6 +170,6 @@ class NFTController(BaseController):
             nftpricefloor_view.display_collections(
                 show_sales=ns_parser.sales,
                 show_fp=ns_parser.fp,
-                num=ns_parser.limit,
+                limit=ns_parser.limit,
                 export=ns_parser.export,
             )

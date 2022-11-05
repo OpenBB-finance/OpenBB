@@ -643,7 +643,7 @@ def get_candles_dataframe(
 
 @log_start_end(log=logger)
 def get_calendar_request(
-    days: int, instrument: Union[str, None] = None
+    days: int = 14, instrument: Union[str, None] = None
 ) -> Union[pd.DataFrame, bool]:
     """Request data of significant events calendar.
 
@@ -672,62 +672,62 @@ def get_calendar_request(
     try:
         request = forexlabs.Calendar(params=parameters)
         response = client.request(request)
-
-        l_data = []
-        for i in enumerate(response):
-            if "forecast" in response[i[0]]:
-                forecast = response[i[0]]["forecast"]
-                if response[i[0]]["unit"] != "Index":
-                    forecast += response[i[0]]["unit"]
-            else:
-                forecast = ""
-
-            if "market" in response[i[0]]:
-                market = response[i[0]]["market"]
-                if response[i[0]]["unit"] != "Index":
-                    market += response[i[0]]["unit"]
-            else:
-                market = ""
-
-            if "actual" in response[i[0]]:
-                actual = response[i[0]]["actual"]
-                if response[i[0]]["unit"] != "Index":
-                    actual += response[i[0]]["unit"]
-            else:
-                actual = ""
-
-            if "previous" in response[i[0]]:
-                previous = response[i[0]]["previous"]
-                if response[i[0]]["unit"] != "Index":
-                    previous += response[i[0]]["unit"]
-            else:
-                previous = ""
-
-            if "impact" in response[i[0]]:
-                impact = response[i[0]]["impact"]
-            else:
-                impact = ""
-
-            l_data.append(
-                {
-                    "Title": response[i[0]]["title"],
-                    "Time": datetime.fromtimestamp(response[i[0]]["timestamp"]),
-                    "Impact": impact,
-                    "Forecast": forecast,
-                    "Market Forecast": market,
-                    "Currency": response[i[0]]["currency"],
-                    "Region": response[i[0]]["region"],
-                    "Actual": actual,
-                    "Previous": previous,
-                }
-            )
-        if len(l_data) == 0:
-            df_calendar = pd.DataFrame()
-        else:
-            df_calendar = pd.DataFrame(l_data)
-        return df_calendar
     except V20Error as e:
         logger.exception(str(e))
         d_error = json.loads(e.msg)
         console.print(d_error["message"], "\n")
         return False
+
+    l_data = []
+    for i in enumerate(response):
+        if "forecast" in response[i[0]]:
+            forecast = response[i[0]]["forecast"]
+            if response[i[0]]["unit"] != "Index":
+                forecast += response[i[0]]["unit"]
+        else:
+            forecast = ""
+
+        if "market" in response[i[0]]:
+            market = response[i[0]]["market"]
+            if response[i[0]]["unit"] != "Index":
+                market += response[i[0]]["unit"]
+        else:
+            market = ""
+
+        if "actual" in response[i[0]]:
+            actual = response[i[0]]["actual"]
+            if response[i[0]]["unit"] != "Index":
+                actual += response[i[0]]["unit"]
+        else:
+            actual = ""
+
+        if "previous" in response[i[0]]:
+            previous = response[i[0]]["previous"]
+            if response[i[0]]["unit"] != "Index":
+                previous += response[i[0]]["unit"]
+        else:
+            previous = ""
+
+        if "impact" in response[i[0]]:
+            impact = response[i[0]]["impact"]
+        else:
+            impact = ""
+
+        l_data.append(
+            {
+                "Title": response[i[0]]["title"],
+                "Time": datetime.fromtimestamp(response[i[0]]["timestamp"]),
+                "Impact": impact,
+                "Forecast": forecast,
+                "Market Forecast": market,
+                "Currency": response[i[0]]["currency"],
+                "Region": response[i[0]]["region"],
+                "Actual": actual,
+                "Previous": previous,
+            }
+        )
+    if len(l_data) == 0:
+        df_calendar = pd.DataFrame()
+    else:
+        df_calendar = pd.DataFrame(l_data)
+    return df_calendar

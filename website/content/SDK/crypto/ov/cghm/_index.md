@@ -1,7 +1,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### crypto.ov.cghm(limit: int = 250, category: str = '', sortby='Symbol') -> pandas.core.frame.DataFrame
+### crypto.ov.cghm(limit: int = 250, category: str = '', sortby: str = 'Symbol', ascend: bool = False) -> pandas.core.frame.DataFrame
 
 Get N coins from CoinGecko [Source: CoinGecko]
 
@@ -9,8 +9,12 @@ Get N coins from CoinGecko [Source: CoinGecko]
     ----------
     limit: int
         Number of top coins to grab from CoinGecko
+    category: str
+        Category of the coins we want to retrieve
     sortby: str
         Key to sort data
+    ascend: bool
+        Sort data in ascending order
 
     Returns
     -------

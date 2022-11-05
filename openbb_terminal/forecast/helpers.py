@@ -385,14 +385,14 @@ def print_pretty_prediction(df_pred: pd.DataFrame, last_price: float):
         )
     if check_dates(df_pred.index.to_series()):
         df_pred.index = df_pred.index.date
-        print_rich_table(
-            df_pred,
-            show_index=True,
-            index_name="Datetime",
-            headers=["Prediction"],
-            floatfmt=".2f",
-            title=f"Actual price: [yellow]{last_price:.2f} [/yellow]",
-        )
+    print_rich_table(
+        df_pred,
+        show_index=True,
+        index_name="Datetime",
+        headers=["Prediction"],
+        floatfmt=".2f",
+        title=f"Actual price: [yellow]{last_price:.2f} [/yellow]",
+    )
 
 
 def past_covs(past_covariates, data, train_split, is_scaler=True):
@@ -613,12 +613,15 @@ def dt_format(x) -> str:
 
 
 def get_series(
-    data: pd.DataFrame, target_column: str = None, is_scaler: bool = True
+    data: pd.DataFrame,
+    target_column: str = None,
+    is_scaler: bool = True,
+    time_col: str = "date",
 ) -> Tuple[Optional[Scaler], TimeSeries]:
     filler = MissingValuesFiller()
     filler_kwargs = dict(
         df=data,
-        time_col="date",
+        time_col=time_col,
         value_cols=[target_column],
         freq="B",
         fill_missing_dates=True,
@@ -939,6 +942,9 @@ def check_output(
 def check_dates(s: pd.Series) -> bool:
     """Checks whether all hours, minutes, seconds and milliseconds are 0""" ""
     for _, value in s.items():
-        if value.time() != time(0, 0, 0, 0):
+        try:
+            if value.time() != time(0, 0, 0, 0):
+                return False
+        except AttributeError:
             return False
     return True

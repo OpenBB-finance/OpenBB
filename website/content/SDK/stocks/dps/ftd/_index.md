@@ -1,7 +1,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### stocks.dps.ftd(symbol: str, start_date: str = '2022-08-25', end_date: str = '2022-10-24', limit: int = 0) -> pandas.core.frame.DataFrame
+### stocks.dps.ftd(symbol: str, start_date: str = '2022-09-04', end_date: str = '2022-11-03', limit: int = 0) -> pandas.core.frame.DataFrame
 
 Display fails-to-deliver data for a given ticker. [Source: SEC]
 
@@ -22,7 +22,7 @@ Display fails-to-deliver data for a given ticker. [Source: SEC]
         Fail to deliver data
 
 ## Getting charts 
-### stocks.dps.ftd(symbol: str, data: pandas.core.frame.DataFrame, start_date: str = '2022-08-25', end_date: str = '2022-10-24', limit: int = 0, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### stocks.dps.ftd(symbol: str, data: pandas.core.frame.DataFrame, start_date: str = '2022-09-04', end_date: str = '2022-11-03', limit: int = 0, raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display fails-to-deliver data for a given ticker. [Source: SEC]
 
