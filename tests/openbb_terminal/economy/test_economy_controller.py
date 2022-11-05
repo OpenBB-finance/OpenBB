@@ -47,9 +47,7 @@ MOCK_FRED_NOTES = pd.DataFrame.from_dict(
         "last_updated": {0: "2022-11-04 07:44:03-05"},
         "popularity": {0: 94},
         "group_popularity": {0: 94},
-        "notes": {
-            0: "The unemployment rate represents the number of unemployed"
-        },
+        "notes": {0: "The unemployment rate represents the number of unemployed"},
     }
 )
 
