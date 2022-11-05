@@ -505,6 +505,23 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             ),
         ),
         (
+            "call_valuation",
+            [
+                "basic_materials",
+                "--sortby=P/E",
+                "-a",
+                "--export=csv",
+            ],
+            "finviz_view.display_valuation",
+            [],
+            dict(
+                group="basic_materials",
+                sortby="P/E",
+                ascend=True,
+                export="csv",
+            ),
+        ),
+        (
             "call_performance",
             [
                 "--g=sector",
@@ -619,6 +636,19 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 end_date="2023-10-20",
                 export="csv",
                 limit=10,
+            ),
+        ),
+        (
+            "call_edebt",
+            [
+                "--export=csv",
+                "--limit=20",
+            ],
+            "commodity_view.display_debt",
+            [],
+            dict(
+                export="csv",
+                limit=20,
             ),
         ),
     ],
@@ -793,7 +823,8 @@ def test_call_macro(mocked_func, other_args, called_args, called_kwargs, mocker)
     controller = economy_controller.EconomyController(queue=None)
     controller.choices = {}
     controller.call_macro(other_args)
-
+    assert "macro" in controller.DATASETS
+    assert not controller.DATASETS["macro"].empty
     if called_args or called_kwargs:
         mock.assert_called_once_with(*called_args, **called_kwargs)
     else:
@@ -898,7 +929,8 @@ def test_call_fred_params(mocked_func, other_args, called_args, called_kwargs, m
     controller = economy_controller.EconomyController(queue=None)
     controller.choices = {}
     controller.call_fred(other_args)
-
+    assert "fred" in controller.DATASETS
+    assert not controller.DATASETS["fred"].empty
     if called_args or called_kwargs:
         mock.assert_called_once_with(*called_args, **called_kwargs)
     else:
@@ -910,6 +942,13 @@ def test_call_fred_params(mocked_func, other_args, called_args, called_kwargs, m
 def test_show_indices():
     controller = economy_controller.EconomyController(queue=None)
     controller.call_index(["--show"])
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.record_stdout
+def test_show_treasury():
+    controller = economy_controller.EconomyController(queue=None)
+    controller.call_treasury(["--show"])
 
 
 MOCK_INDEX = pd.DataFrame.from_dict(
@@ -962,3 +1001,65 @@ def test_call_index(mocker):
             returns=False,
         )
     )
+
+
+MOCK_TREASURY_DEFAULT = pd.DataFrame.from_dict(
+    {
+        "Nominal_3-month": {"2022-10-01": 3.87},
+        "Nominal_10-year": {"2022-10-01": 3.87},
+        "Long-term average_Longer than 10-year": {"2022-10-01": 1.9},
+    },
+    orient="index",
+)
+
+
+@pytest.mark.vcr(record_mode="none")
+@pytest.mark.parametrize(
+    "other_args, mocked_func, called_args, called_kwargs",
+    [
+        (
+            ["-m=3m,10y", "-t=nominal,average"],
+            "econdb_view.show_treasuries",
+            [],
+            dict(
+                maturities=["3m", "10y"],
+                instruments=["nominal", "average"],
+                frequency="monthly",
+                start_date="1934-01-31",
+                end_date=datetime.date(2022, 11, 4),
+                raw=False,
+                export="",
+            ),
+        )
+    ],
+)
+def test_call_treasury(mocked_func, other_args, called_args, called_kwargs, mocker):
+    path_controller = "openbb_terminal.economy.economy_controller"
+
+    # MOCK REMOVE
+    mocker.patch(target=f"{path_controller}.os.remove")
+    # MOCK the econdb.get_aggregated_macro_data
+    mocker.patch(
+        target=f"{path_controller}.econdb_model.get_treasuries",
+        return_value=MOCK_TREASURY_DEFAULT,
+    )
+    mocker.patch(
+        target="openbb_terminal.feature_flags.ENABLE_EXIT_AUTO_HELP",
+        new=False,
+    )
+
+    mock = mocker.Mock()
+    mocker.patch(
+        target=f"{path_controller}.{mocked_func}",
+        new=mock,
+    )
+
+    controller = economy_controller.EconomyController(queue=None)
+    controller.choices = {}
+    controller.call_treasury(other_args)
+    assert "treasury" in controller.DATASETS
+    assert not controller.DATASETS["treasury"].empty
+    if called_args or called_kwargs:
+        mock.assert_called_once_with(*called_args, **called_kwargs)
+    else:
+        mock.assert_called_once()
