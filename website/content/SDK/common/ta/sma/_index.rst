@@ -28,11 +28,11 @@ common.ta.sma(
 * **Parameters**
 
     data: *pd.DataFrame*
-         Dataframe of dates and prices
-     length: *int*
-         Length of SMA window
-     offset: *int*
-         Length of offset
+        Dataframe of dates and prices
+    length: *int*
+        Length of SMA window
+    offset: *int*
+        Length of offset
 
 * **Returns**
 

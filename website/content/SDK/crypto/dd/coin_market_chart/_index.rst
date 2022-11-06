@@ -33,6 +33,7 @@ crypto.dd.coin_market_chart(
     days: *int*
         number of days to display the data
     kwargs
+        unspecified keyword arguments
 
 * **Returns**
 

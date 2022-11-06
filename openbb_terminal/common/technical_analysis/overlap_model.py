@@ -39,17 +39,17 @@ def ema(data: pd.DataFrame, length: int = 50, offset: int = 0) -> pd.DataFrame:
 def sma(data: pd.DataFrame, length: int = 50, offset: int = 0) -> pd.DataFrame:
     """Gets simple moving average (EMA) for stock
 
-     Parameters
-     ----------
-     data: pd.DataFrame
-         Dataframe of dates and prices
-     length: int
-         Length of SMA window
-     offset: int
-         Length of offset
+    Parameters
+    ----------
+    data: pd.DataFrame
+        Dataframe of dates and prices
+    length: int
+        Length of SMA window
+    offset: int
+        Length of offset
 
-     Returns
-     ----------
+    Returns
+    ----------
     pd.DataFrame
          Dataframe containing prices and SMA
     """
