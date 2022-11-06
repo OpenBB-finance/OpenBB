@@ -1,7 +1,7 @@
 ---
-title: Introduction to the OpenBB SDK Technical Analysis Module
+title: Introduction Technical Analysis
 keywords: "ta, technical, analysis, ad, adosc, adx, aroon, bbands, cci, cg, donchian, ema, fib, fisher, hma, kc, ma, macd, obv, rsi, sma, stoch, vwap, wma, zlma"
-excerpt: "This guide introduces the common Technical Analysis functions, between all asset classes, avaialble through the OpenBB SDK"
+excerpt: "This guide introduces the common Technical Analysis functions, between all asset classes, available through the OpenBB SDK"
 geekdocCollapseSection: true
 ---
 The <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/ta/" target="_blank">Technical Analysis</a> module, of the OpenBB SDK, provides programmatic access to the same functions available within the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/" target="_blank">OpenBB Terminal</a>. This allows the user to feed alternative data and sources to the inputs of functions, to customize the workflow, and to create custom processes with unique analysis. Import the OpenBB SDK in a new Jupyter Notebook file, or Python script, to begin exploring this module. Entering the `.` after `openbb.common.ta` will activate the code completion, which is scrollable with up and down arrow keys.
