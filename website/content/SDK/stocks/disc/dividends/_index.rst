@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 stocks.disc.dividends(
-    date: str = '2022-11-03',
+    date: str = '2022-11-06',
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

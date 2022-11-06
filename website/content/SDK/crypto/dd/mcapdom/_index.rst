@@ -16,8 +16,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 crypto.dd.mcapdom(
     symbol: str,
     interval: str = '1d',
-    start_date: str = '2021-11-03',
-    end_date: str = '2022-11-03',
+    start_date: str = '2021-11-06',
+    end_date: str = '2022-11-06',
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -59,8 +59,8 @@ crypto.dd.mcapdom(
 {{< highlight python >}}
 crypto.dd.mcapdom(
     symbol: str,
-    start_date: str = '2021-11-03',
-    end_date: str = '2022-11-03',
+    start_date: str = '2021-11-06',
+    end_date: str = '2022-11-06',
     interval: str = '1d',
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,

@@ -15,8 +15,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 {{< highlight python >}}
 stocks.dps.ftd(
     symbol: str,
-    start_date: str = '2022-09-04',
-    end_date: str = '2022-11-03',
+    start_date: str = '2022-09-07',
+    end_date: str = '2022-11-06',
     limit: int = 0,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
@@ -59,8 +59,8 @@ stocks.dps.ftd(
 stocks.dps.ftd(
     symbol: str,
     data: pandas.core.frame.DataFrame,
-    start_date: str = '2022-09-04',
-    end_date: str = '2022-11-03',
+    start_date: str = '2022-09-07',
+    end_date: str = '2022-11-06',
     limit: int = 0,
     raw: bool = False,
     export: str = '',

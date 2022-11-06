@@ -14,7 +14,7 @@
 crypto.dd.close(
     symbol: str,
     start_date: str = '2010-01-01',
-    end_date: str = '2022-11-03',
+    end_date: str = '2022-11-06',
     print_errors: bool = True,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame

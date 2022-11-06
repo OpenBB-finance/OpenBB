@@ -15,8 +15,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 {{< highlight python >}}
 stocks.ba.hist(
     symbol: str,
-    start_date: str = '2022-10-27',
-    end_date: str = '2022-11-03',
+    start_date: str = '2022-10-30',
+    end_date: str = '2022-11-06',
     number: int = 100,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
@@ -61,8 +61,8 @@ stocks.ba.hist(
 {{< highlight python >}}
 stocks.ba.hist(
     symbol: str,
-    start_date: str = '2022-10-27',
-    end_date: str = '2022-11-03',
+    start_date: str = '2022-10-30',
+    end_date: str = '2022-11-06',
     number: int = 100,
     raw: bool = False,
     limit: int = 10,
