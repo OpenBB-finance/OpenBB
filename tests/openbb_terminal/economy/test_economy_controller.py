@@ -14,6 +14,7 @@ from openbb_terminal.economy import economy_controller
 # pylint: disable=E1101
 # pylint: disable=W0603
 # pylint: disable=E1111
+# pylint: disable=C0302
 
 # These are for the MACRO tests
 MOCK_DF = pd.DataFrame.from_dict(
