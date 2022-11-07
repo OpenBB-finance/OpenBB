@@ -807,6 +807,7 @@ class EconomyController(BaseController):
         )
         if ns_parser:
             parameters = list_from_str(ns_parser.parameter.upper())
+
             if ns_parser.query:
                 query = ns_parser.query.replace(",", " ")
                 df_search = fred_model.get_series_notes(search_query=query)
@@ -816,6 +817,11 @@ class EconomyController(BaseController):
 
                     self.fred_query = df_search["id"].head(ns_parser.limit)
                     self.update_runtime_choices()
+
+                if parameters:
+                    console.print(
+                        "\nWarning: -p/--parameter is ignored when using -q/--query."
+                    )
 
                 return self.queue
 
@@ -868,6 +874,14 @@ class EconomyController(BaseController):
                     self.update_runtime_choices()
                     if obbff.ENABLE_EXIT_AUTO_HELP:
                         self.print_help()
+
+                else:
+                    console.print("[red]No data found for the given Series ID[/red]")
+
+            elif not parameters and ns_parser.raw:
+                console.print(
+                    "Warning: -r/--raw should be combined with -p/--parameter."
+                )
 
     @log_start_end(log=logger)
     def call_index(self, other_args: List[str]):

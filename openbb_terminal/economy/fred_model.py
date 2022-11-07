@@ -236,15 +236,12 @@ def get_aggregated_series_data(
             }
 
     for s_id in series_ids:
-        data = pd.concat(
-            [
-                data,
-                pd.DataFrame(
-                    get_series_data(s_id, start_date, end_date), columns=[s_id]
-                ),
-            ],
-            axis=1,
-        )
+
+        series = pd.DataFrame(
+            get_series_data(s_id, start_date, end_date), columns=[s_id]
+        ).dropna()
+
+        data[s_id] = series[s_id]
 
     return data, detail
 
