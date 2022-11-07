@@ -42,6 +42,7 @@ jobs:
           poetry install -E installer
       - name: Install Specific Papermill
         run: |
+          conda activate obb
           pip uninstall papermill -y
           pip install git+https://github.com/nteract/papermill.git@main
       # Building ------------
