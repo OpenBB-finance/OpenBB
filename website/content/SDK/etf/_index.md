@@ -53,16 +53,6 @@ performance.sort_values(by=['Perf Quart'])
 
 ![Comparing Performance Metrics of Technology ETFs](https://user-images.githubusercontent.com/85772166/200064802-d91b4552-e912-4c99-8c04-883f2fef18dc.png "Comparing Performance Metrics of Technology ETFs")
 
-To group the list of similar tickers into weightings, using portfolio optimization, feed the list of tickers to the functions within the Portfolio Optimization module. 
-
-```python
-weights,returns = openbb.portfolio.po.minrisk(symbols = tickers)
-
-openbb.portfolio.po.plot(weights = weights, data = returns, pie = True, chart = True)
-```
-
-![Optimizing for Minimum Risk](https://user-images.githubusercontent.com/85772166/200064865-f10b8b02-5568-40fc-b5b6-af7fed82fef9.png "Optimizing for Minimum Risk")
-
 To peer into the holdings of a specific ETF:
 
 ```python
