@@ -1,4 +1,4 @@
-from typing import Any, Optional, List, Union
+from typing import Any, Optional, List
 
 from openbb_terminal.core.library.metadata import Metadata
 from openbb_terminal.core.library.trail_map import TrailMap
