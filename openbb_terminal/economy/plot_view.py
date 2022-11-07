@@ -55,7 +55,6 @@ def show_plot(
         )
         ax_1_coloring += 1
 
-    ax1.set_xlim(dataset_yaxis_1.index[0], dataset_yaxis_1.index[-1])
     theme.style_primary_axis(ax1)
 
     if not dataset_yaxis_2.empty:

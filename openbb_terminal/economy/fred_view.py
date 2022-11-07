@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import logging
 import os
 import textwrap
-from typing import Dict, Optional, List, Tuple
+from typing import Dict, Optional, List
 from datetime import datetime
 
 import matplotlib.pyplot as plt
@@ -82,7 +82,7 @@ def display_fred_series(
     raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
-) -> Tuple[pd.DataFrame, dict]:
+):
     """Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]
 
     Parameters
@@ -101,13 +101,6 @@ def display_fred_series(
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-
-    Returns
-    ----------
-    pd.DataFrame
-        Series data
-    dict
-        Dictionary of series ids and titles
     """
 
     data, detail = fred_model.get_aggregated_series_data(
@@ -117,7 +110,6 @@ def display_fred_series(
     if data.empty:
         logger.error("No data")
         console.print("[red]No data available.[/red]\n")
-        return
     else:
         # Try to get everything onto the same 0-10 scale.
         # To do so, think in scientific notation.  Divide the data by whatever the E would be
@@ -128,17 +120,27 @@ def display_fred_series(
         else:
             return
 
-        for s_id, sub_dict in detail.items():
-
-            data_to_plot, title = format_data_to_plot(data[s_id], sub_dict)
-
+        if len(series_ids) == 1:
+            s_id = series_ids[0]
+            sub_dict: Dict = detail[s_id]
+            title = f"{sub_dict['title']} ({sub_dict['units']})"
             ax.plot(
-                data_to_plot.index,
-                data_to_plot,
-                label="\n".join(textwrap.wrap(title, 80))
-                if len(series_ids) < 5
-                else title,
+                data.index, data.iloc[:, 0], label="\n".join(textwrap.wrap(title, 80))
             )
+        else:
+            for s_id, sub_dict in detail.items():
+                data_to_plot = data[s_id].dropna()
+                exponent = int(np.log10(data_to_plot.max()))
+                data_to_plot /= 10**exponent
+                multiplier = f"x {format_units(10**exponent)}" if exponent > 0 else ""
+                title = f"{sub_dict['title']} ({sub_dict['units']}) {'['+multiplier+']' if multiplier else ''}"
+                ax.plot(
+                    data_to_plot.index,
+                    data_to_plot,
+                    label="\n".join(textwrap.wrap(title, 80))
+                    if len(series_ids) < 5
+                    else title,
+                )
 
         ax.legend(
             bbox_to_anchor=(0, 0.40, 1, -0.52),
@@ -150,7 +152,6 @@ def display_fred_series(
 
         ax.set_xlim(data.index[0], data.index[-1])
         theme.style_primary_axis(ax)
-
         if external_axes is None:
             theme.visualize_output()
 
@@ -170,22 +171,6 @@ def display_fred_series(
             "fred",
             data,
         )
-
-    return data, detail
-
-
-def format_data_to_plot(data: pd.DataFrame, detail: dict) -> Tuple[pd.DataFrame, str]:
-    """Helper to format data to plot"""
-
-    data_to_plot = data.dropna()
-    exponent = int(np.log10(data_to_plot.max()))
-    data_to_plot /= 10**exponent
-    multiplier = f"x {format_units(10**exponent)}" if exponent > 0 else ""
-    title = f"{detail['title']} ({detail['units']}) {'['+multiplier+']' if multiplier else ''}"
-
-    data_to_plot.index = pd.to_datetime(data_to_plot.index)
-
-    return data_to_plot, title
 
 
 @log_start_end(log=logger)

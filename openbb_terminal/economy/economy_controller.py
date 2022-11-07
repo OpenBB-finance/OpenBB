@@ -798,7 +798,6 @@ class EconomyController(BaseController):
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-p")
-
         ns_parser = self.parse_known_args_and_warn(
             parser,
             other_args,
@@ -806,10 +805,8 @@ class EconomyController(BaseController):
             raw=True,
             limit=100,
         )
-
         if ns_parser:
             parameters = list_from_str(ns_parser.parameter.upper())
-
             if ns_parser.query:
                 query = ns_parser.query.replace(",", " ")
                 df_search = fred_model.get_series_notes(search_query=query)
@@ -819,11 +816,6 @@ class EconomyController(BaseController):
 
                     self.fred_query = df_search["id"].head(ns_parser.limit)
                     self.update_runtime_choices()
-
-                if parameters:
-                    console.print(
-                        "\nWarning: -p/--parameter is ignored when using -q/--query."
-                    )
 
                 return self.queue
 
@@ -843,40 +835,39 @@ class EconomyController(BaseController):
                 if not series_dict:
                     return self.queue
 
-                df, detail = fred_view.display_fred_series(
+                df, detail = fred_model.get_aggregated_series_data(
                     series_ids=parameters,
                     start_date=ns_parser.start_date,
                     end_date=ns_parser.end_date,
-                    limit=ns_parser.limit,
-                    raw=ns_parser.raw,
-                    export=ns_parser.export,
                 )
 
+                for series_id, data in detail.items():
+                    self.FRED_TITLES[series_id] = f"{data['title']} ({data['units']})"
+
                 if not df.empty:
-
-                    for series_id, data in detail.items():
-                        self.FRED_TITLES[
-                            series_id
-                        ] = f"{data['title']} ({data['units']})"
-
-                        # Making data available at the class level
-                        self.DATASETS["fred"][series_id] = df[series_id]
+                    self.DATASETS["fred"] = pd.concat(
+                        [
+                            self.DATASETS["fred"],
+                            df,
+                        ]
+                    )
 
                     self.stored_datasets = (
                         economy_helpers.update_stored_datasets_string(self.DATASETS)
                     )
 
+                    fred_view.display_fred_series(
+                        series_ids=parameters,
+                        start_date=ns_parser.start_date,
+                        end_date=ns_parser.end_date,
+                        limit=ns_parser.limit,
+                        raw=ns_parser.raw,
+                        export=ns_parser.export,
+                    )
+
                     self.update_runtime_choices()
                     if obbff.ENABLE_EXIT_AUTO_HELP:
                         self.print_help()
-
-                else:
-                    console.print("[red]No data found for the given Series ID[/red]")
-
-            elif not parameters and ns_parser.raw:
-                console.print(
-                    "Warning: -r/--raw should be combined with -p/--parameter."
-                )
 
     @log_start_end(log=logger)
     def call_index(self, other_args: List[str]):
@@ -1447,18 +1438,9 @@ class EconomyController(BaseController):
                                         f"{country}{transformtype}[{parameter}, Units: {units}]"
                                     ] = data[variable]
                                 elif key == "fred":
-
-                                    compound_detail = self.FRED_TITLES[variable]
-                                    detail = {
-                                        "units": compound_detail.split("(")[-1].split(
-                                            ")"
-                                        )[0],
-                                        "title": compound_detail.split("(")[0].strip(),
-                                    }
-                                    data_to_plot, title = fred_view.format_data_to_plot(
-                                        data[variable], detail
-                                    )
-                                    dataset_yaxis1[title] = data_to_plot
+                                    dataset_yaxis1[self.FRED_TITLES[variable]] = data[
+                                        variable
+                                    ]
                                 elif (
                                     key == "index"
                                     and variable in yfinance_model.INDICES
@@ -1518,17 +1500,9 @@ class EconomyController(BaseController):
                                         f"{country}{transformtype}[{parameter}, Units: {units}]"
                                     ] = data[variable]
                                 elif key == "fred":
-                                    compound_detail = self.FRED_TITLES[variable]
-                                    detail = {
-                                        "units": compound_detail.split("(")[-1].split(
-                                            ")"
-                                        )[0],
-                                        "title": compound_detail.split("(")[0].strip(),
-                                    }
-                                    data_to_plot, title = fred_view.format_data_to_plot(
-                                        data[variable], detail
-                                    )
-                                    dataset_yaxis2[title] = data_to_plot
+                                    dataset_yaxis2[self.FRED_TITLES[variable]] = data[
+                                        variable
+                                    ]
                                 elif (
                                     key == "index"
                                     and variable in yfinance_model.INDICES
