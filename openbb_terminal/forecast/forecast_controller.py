@@ -55,7 +55,7 @@ from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.forecast import (
     forecast_model,
     forecast_view,
-    autostatsforecast_view,
+    beststatsmodel_view,
     autoets_view,
     expo_model,
     expo_view,
@@ -111,7 +111,7 @@ class ForecastController(BaseController):
         "delta",
         "atr",
         "signal",
-        "autostatsforecast",
+        "beststatsmodel",
         "autoets",
         "expo",
         "theta",
@@ -250,7 +250,7 @@ class ForecastController(BaseController):
                 "signal",
                 "combine",
                 "rename",
-                "autostatsforecast",
+                "beststatsmodel",
                 "autoets",
                 "expo",
                 "theta",
@@ -330,7 +330,7 @@ class ForecastController(BaseController):
         mt.add_cmd("signal", self.files)
         mt.add_raw("\n")
         mt.add_info("_tsforecasting_")
-        mt.add_cmd("autostatsforecast", self.files)
+        mt.add_cmd("beststatsmodel", self.files)
         mt.add_cmd("autoets", self.files)
         mt.add_cmd("expo", self.files)
         mt.add_cmd("theta", self.files)
@@ -1691,14 +1691,14 @@ class ForecastController(BaseController):
             ns_parser.target_dataset,
         )
 
-    # AutoStatsForecast
+    # Best Statistical Model
     @log_start_end(log=logger)
-    def call_autostatsforecast(self, other_args: List[str]):
+    def call_beststatsmodel(self, other_args: List[str]):
         """Process autoets command"""
         parser = argparse.ArgumentParser(
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             add_help=False,
-            prog="autostatsforecast",
+            prog="beststatsmodel",
             description="""
                 Perform Automatic Statistical Forecast
                 (select best statistical model from AutoARIMA, AutoETS, AutoCES, MSTL, ...)
@@ -1729,7 +1729,7 @@ class ForecastController(BaseController):
             if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
 
-            autostatsforecast_view.display_autostatsforecast_forecast(
+            beststatsmodel_view.display_beststatsmodel_forecast(
                 data=self.datasets[ns_parser.target_dataset],
                 dataset_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,

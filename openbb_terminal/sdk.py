@@ -1989,9 +1989,9 @@ forecast_extras = {
     "forecast.roc": {"model": "openbb_terminal.forecast.forecast_model.add_roc"},
     "forecast.mom": {"model": "openbb_terminal.forecast.forecast_model.add_momentum"},
     "forecast.delta": {"model": "openbb_terminal.forecast.forecast_model.add_delta"},
-    "forecast.autostatsforecast": {
-        "model": "openbb_terminal.forecast.autoets_model.get_autostatsforecast_data",
-        "view": "openbb_terminal.forecast.autoets_view.display_autostatsforecast_forecast",
+    "forecast.beststatsmodel": {
+        "model": "openbb_terminal.forecast.beststatsmodel_model.get_beststatsmodel_data",
+        "view": "openbb_terminal.forecast.beststatsmodel_view.display_beststatsmodel_forecast",
     },
     "forecast.autoets": {
         "model": "openbb_terminal.forecast.autoets_model.get_autoets_data",

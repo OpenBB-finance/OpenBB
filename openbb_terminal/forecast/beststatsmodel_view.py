@@ -8,7 +8,7 @@ from datetime import datetime
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from openbb_terminal.forecast import autostatsforecast_model
+from openbb_terminal.forecast import beststatsmodel_model
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forecast import helpers
 
@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_autostatsforecast_forecast(
+def display_beststatsmodel_forecast(
     data: Union[pd.DataFrame, pd.Series],
     target_column: str = "close",
     dataset_name: str = "",
@@ -80,7 +80,7 @@ def display_autostatsforecast_forecast(
         precision,
         _model,
         best_model,
-    ) = autostatsforecast_model.get_autostatsforecast_data(
+    ) = beststatsmodel_model.get_beststatsmodel_data(
         data=data,
         target_column=target_column,
         seasonal_periods=seasonal_periods,

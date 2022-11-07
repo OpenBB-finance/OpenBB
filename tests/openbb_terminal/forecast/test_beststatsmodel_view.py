@@ -1,14 +1,14 @@
 import pytest
 
 try:
-    from openbb_terminal.forecast import autostatsforecast_view
+    from openbb_terminal.forecast import beststatsmodel_view
 except ImportError:
     pytest.skip(allow_module_level=True)
 
 
-def test_display_autostatsforecast_forecast(tsla_csv):
+def test_display_beststatsmodel_forecast(tsla_csv):
     with pytest.raises(AttributeError):
-        autostatsforecast_view.display_autostatsforecast_forecast(
+        beststatsmodel_view.display_beststatsmodel_forecast(
             tsla_csv,
             target_column="close",
             seasonal_periods=3,

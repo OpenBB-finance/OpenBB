@@ -747,8 +747,8 @@ main:
             ref: terminal/forecast/atr
           - name: autoets
             ref: terminal/forecast/autoets
-          - name: autostatsforecast
-            ref: terminal/forecast/autostatsforecast
+          - name: beststatsmodel
+            ref: terminal/forecast/beststatsmodel
           - name: brnn
             ref: terminal/forecast/brnn
           - name: clean

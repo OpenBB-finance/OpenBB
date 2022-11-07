@@ -39,7 +39,7 @@ def precision_format(best_model: str, index: str, val: float) -> str:
 
 
 @log_start_end(log=logger)
-def get_autostatsforecast_data(
+def get_beststatsmodel_data(
     data: Union[pd.Series, pd.DataFrame],
     target_column: str = "close",
     seasonal_periods: int = 7,
