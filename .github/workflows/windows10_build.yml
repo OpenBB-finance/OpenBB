@@ -40,6 +40,10 @@ jobs:
         run: |
           conda activate obb
           poetry install -E installer
+      - name: Install Specific Papermill
+        run: |
+          pip uninstall papermill -y
+          pip install git+https://github.com/nteract/papermill.git@main
       # Building ------------
       - name: Build Terminal.spec file
         run: |
