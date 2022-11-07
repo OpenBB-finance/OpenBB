@@ -1,4 +1,0 @@
-stocks
-load AAPL
-forecast
-beststatsmodel AAPL
