@@ -1,0 +1,4 @@
+stocks
+load AAPL
+forecast
+autoarima AAPL
