@@ -204,7 +204,7 @@ def get_series_data(
 @check_api_key(["API_FRED_KEY"])
 def get_aggregated_series_data(
     series_ids: List[str], start_date: str = None, end_date: str = None
-) -> pd.DataFrame:
+) -> Tuple[pd.DataFrame, dict]:
     """Get Series data. [Source: FRED]
     Parameters
     ----------
@@ -219,6 +219,8 @@ def get_aggregated_series_data(
     ----------
     pd.DataFrame
         Series data
+    dict
+        Dictionary of series ids and titles
     """
 
     data = pd.DataFrame()

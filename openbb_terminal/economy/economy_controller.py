@@ -1438,9 +1438,17 @@ class EconomyController(BaseController):
                                         f"{country}{transformtype}[{parameter}, Units: {units}]"
                                     ] = data[variable]
                                 elif key == "fred":
-                                    dataset_yaxis1[self.FRED_TITLES[variable]] = data[
-                                        variable
-                                    ]
+                                    compound_detail = self.FRED_TITLES[variable]
+                                    detail = {
+                                        "units": compound_detail.split("(")[-1].split(
+                                            ")"
+                                        )[0],
+                                        "title": compound_detail.split("(")[0].strip(),
+                                    }
+                                    data_to_plot, title = fred_view.format_data_to_plot(
+                                        data[variable], detail
+                                    )
+                                    dataset_yaxis1[title] = data_to_plot
                                 elif (
                                     key == "index"
                                     and variable in yfinance_model.INDICES
@@ -1500,9 +1508,17 @@ class EconomyController(BaseController):
                                         f"{country}{transformtype}[{parameter}, Units: {units}]"
                                     ] = data[variable]
                                 elif key == "fred":
-                                    dataset_yaxis2[self.FRED_TITLES[variable]] = data[
-                                        variable
-                                    ]
+                                    compound_detail = self.FRED_TITLES[variable]
+                                    detail = {
+                                        "units": compound_detail.split("(")[-1].split(
+                                            ")"
+                                        )[0],
+                                        "title": compound_detail.split("(")[0].strip(),
+                                    }
+                                    data_to_plot, title = fred_view.format_data_to_plot(
+                                        data[variable], detail
+                                    )
+                                    dataset_yaxis2[title] = data_to_plot
                                 elif (
                                     key == "index"
                                     and variable in yfinance_model.INDICES
