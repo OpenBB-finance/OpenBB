@@ -1019,7 +1019,7 @@ MOCK_TREASURY_DEFAULT = pd.DataFrame.from_dict(
     "other_args, mocked_func, called_args, called_kwargs",
     [
         (
-            ["-m=3m,10y", "-t=nominal,average"],
+            ["-m=3m,10y", "-t=nominal,average", "-e=2022-11-04"],
             "econdb_view.show_treasuries",
             [],
             dict(
@@ -1027,7 +1027,7 @@ MOCK_TREASURY_DEFAULT = pd.DataFrame.from_dict(
                 instruments=["nominal", "average"],
                 frequency="monthly",
                 start_date="1934-01-31",
-                end_date=datetime.date(2022, 11, 4),
+                end_date="2022-11-04",
                 raw=False,
                 export="",
             ),
