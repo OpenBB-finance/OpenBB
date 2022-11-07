@@ -137,6 +137,8 @@ class Operation:
             method_chosen=method_chosen,
         )
 
+        if "chart" in kwargs:
+            kwargs.pop("chart")
         method_result = method_chosen(*args, **kwargs)
 
         OperationLogger.log_after_call(
