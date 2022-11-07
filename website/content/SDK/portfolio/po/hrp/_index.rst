@@ -79,8 +79,7 @@ portfolio.po.hrp(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str, optional
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     codependence: str, optional
         The codependence or similarity matrix used to build the distance
         metric and clusters. The default is 'pearson'. Possible values are:
@@ -97,17 +96,15 @@ portfolio.po.hrp(
             .. math:: D_{i,j} = \sqrt{(1-\rho^{distance}_{i,j})}
         - 'mutual_info': mutual information matrix. Distance used is variation information matrix.
         - 'tail': lower tail dependence index matrix. Dissimilarity formula:
-            .. math:: D_{i,j} = -\log{\lambda_{i,j}}`.
+            .. math:: D_{i,j} = -\log{\lambda_{i,j}}.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
@@ -175,8 +172,7 @@ portfolio.po.hrp(
         Number of CVaRs used to approximate Tail Gini of gains. If None it duplicates a_sim value.
         The default is None.
     linkage: str, optional
-        Linkage method of hierarchical clustering. For more information see
-        `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html>`_.
+        Linkage method of hierarchical clustering. For more information see `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html>`__.
         The default is 'single'. Possible values are:
 
         - 'single'.
@@ -199,12 +195,9 @@ portfolio.po.hrp(
         Number of bins used to calculate variation of information. The default
         value is 'KN'. Possible values are:
 
-        - 'KN': Knuth's choice method. For more information see
-        `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`_.
-        - 'FD': Freedman–Diaconis' choice method. For more information see
-        `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`_.
-        - 'SC': Scotts' choice method. For more information see
-        `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`_.
+        - 'KN': Knuth's choice method. For more information see `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`__.
+        - 'FD': Freedman–Diaconis' choice method. For more information see `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`__.
+        - 'SC': Scotts' choice method. For more information see `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`__.
         - 'HGR': Hacine-Gharbi and Ravier' choice method.
 
     alpha_tail: float, optional
@@ -299,35 +292,32 @@ portfolio.po.hrp(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str, optional
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     codependence: str, optional
         The codependence or similarity matrix used to build the distance
         metric and clusters. The default is 'pearson'. Possible values are:
 
         - 'pearson': pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \sqrt{0.5(1-\rho^{pearson}_{i,j})}`.
+            .. math:: D_{i,j} = \sqrt{0.5(1-\rho^{pearson}_{i,j})}.
         - 'spearman': spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \sqrt{0.5(1-\rho^{spearman}_{i,j})}`.
+            .. math:: D_{i,j} = \sqrt{0.5(1-\rho^{spearman}_{i,j})}.
         - 'abs_pearson': absolute value pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \sqrt{(1-|\rho^{pearson}_{i,j}|)}`.
+            .. math:: D_{i,j} = \sqrt{(1-|\rho^{pearson}_{i,j}|)}.
         - 'abs_spearman': absolute value spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \sqrt{(1-|\rho^{spearman}_{i,j}|)}`.
+            .. math:: D_{i,j} = \sqrt{(1-|\rho^{spearman}_{i,j}|)}.
         - 'distance': distance correlation matrix. Distance formula:
-            :math:`D_{i,j} = \sqrt{(1-\rho^{distance}_{i,j})}`.
+            .. math:: D_{i,j} = \sqrt{(1-\rho^{distance}_{i,j})}.
         - 'mutual_info': mutual information matrix. Distance used is variation information matrix.
         - 'tail': lower tail dependence index matrix. Dissimilarity formula:
-            :math:`D_{i,j} = -\log{\lambda_{i,j}}`.
+            .. math:: D_{i,j} = -\log{\lambda_{i,j}}.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
@@ -386,8 +376,7 @@ portfolio.po.hrp(
         Number of CVaRs used to approximate Tail Gini of gains. If None it duplicates a_sim value.
         The default is None.
     linkage: str, optional
-        Linkage method of hierarchical clustering. For more information see
-        `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html>`_.
+        Linkage method of hierarchical clustering. For more information see `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html>`__.
         The default is 'single'. Possible values are:
 
         - 'single'.
@@ -410,12 +399,9 @@ portfolio.po.hrp(
         Number of bins used to calculate variation of information. The default
         value is 'KN'. Possible values are:
 
-        - 'KN': Knuth's choice method. For more information see
-        `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`_.
-        - 'FD': Freedman–Diaconis' choice method. For more information see
-        `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`_.
-        - 'SC': Scotts' choice method. For more information see
-        `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`_.
+        - 'KN': Knuth's choice method. For more information see `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`__.
+        - 'FD': Freedman–Diaconis' choice method. For more information see `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`__.
+        - 'SC': Scotts' choice method. For more information see `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`__.
         - 'HGR': Hacine-Gharbi and Ravier' choice method.
 
     alpha_tail: float, optional

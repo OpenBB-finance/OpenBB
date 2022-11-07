@@ -60,8 +60,7 @@ portfolio.po.equal(
     threshold: float
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     value : float, optional
         Amount to allocate.  Returns percentages if set to 1.
 

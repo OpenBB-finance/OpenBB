@@ -70,8 +70,7 @@ portfolio.po.riskparity(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str, optional
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     risk_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
@@ -102,20 +101,16 @@ portfolio.po.riskparity(
         The default value is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
@@ -198,7 +193,7 @@ portfolio.po.riskparity(
         - 'D' for daily returns.
         - 'W' for weekly returns.
         - 'M' for monthly returns.
-            - X (integer days) for returns calculated every X days.
+        - X (integer days) for returns calculated every X days.
 
     maxnan: float
         Max percentage of nan values accepted per asset to be included in
@@ -206,8 +201,7 @@ portfolio.po.riskparity(
     threshold: float
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     risk_measure: str
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
@@ -238,20 +232,16 @@ portfolio.po.riskparity(
         The default value is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.

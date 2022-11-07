@@ -79,8 +79,7 @@ portfolio.po.blacklitterman(
     threshold: float
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     objective: str
         Objective function of the optimization model.
         The default is 'Sharpe'. Possible values are:
@@ -191,8 +190,7 @@ portfolio.po.blacklitterman(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     benchmark : Dict
         Dict of portfolio weights
     objective: str

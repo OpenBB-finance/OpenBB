@@ -661,8 +661,7 @@ def display_equal_weight(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     risk_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
@@ -774,8 +773,7 @@ def display_property_weighting(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     s_property : str
         Property to get weighted portfolio of
     risk_measure: str, optional
@@ -897,8 +895,7 @@ def display_mean_risk(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     risk_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
@@ -943,20 +940,16 @@ def display_mean_risk(
         The default value is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
@@ -1088,8 +1081,7 @@ def display_max_sharpe(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     risk_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
@@ -1125,20 +1117,16 @@ def display_max_sharpe(
         The default value is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
@@ -1266,8 +1254,7 @@ def display_min_risk(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     risk_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
@@ -1303,20 +1290,16 @@ def display_min_risk(
         The default value is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
@@ -1440,8 +1423,7 @@ def display_max_util(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     risk_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
@@ -1477,20 +1459,16 @@ def display_max_util(
         The default value is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
@@ -1614,8 +1592,7 @@ def display_max_ret(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     risk_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
@@ -1651,20 +1628,16 @@ def display_max_ret(
         The default value is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
@@ -1781,17 +1754,14 @@ def display_max_div(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
@@ -1899,17 +1869,14 @@ def display_max_decorr(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
@@ -2030,8 +1997,7 @@ def display_black_litterman(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     benchmark : Dict
         Dict of portfolio weights
     objective: str
@@ -2165,8 +2131,7 @@ def display_ef(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     risk_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
@@ -2377,7 +2342,7 @@ def display_risk_parity(
         - 'D' for daily returns.
         - 'W' for weekly returns.
         - 'M' for monthly returns.
-            - X (integer days) for returns calculated every X days.
+        - X (integer days) for returns calculated every X days.
 
     maxnan: float
         Max percentage of nan values accepted per asset to be included in
@@ -2385,8 +2350,7 @@ def display_risk_parity(
     threshold: float
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     risk_measure: str
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
@@ -2417,20 +2381,16 @@ def display_risk_parity(
         The default value is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
@@ -2535,7 +2495,7 @@ def display_rel_risk_parity(
         - 'D' for daily returns.
         - 'W' for weekly returns.
         - 'M' for monthly returns.
-            - X (integer days) for returns calculated every X days.
+        - X (integer days) for returns calculated every X days.
 
     maxnan: float, optional
         Max percentage of nan values accepted per asset to be included in
@@ -2543,8 +2503,7 @@ def display_rel_risk_parity(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str, optional
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     version : str, optional
         Relaxed risk parity model version. The default is 'A'.
         Possible values are:
@@ -2566,20 +2525,16 @@ def display_rel_risk_parity(
         The default value is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
@@ -2699,8 +2654,7 @@ def display_hcp(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str, optional
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     model: str, optional
         The hierarchical cluster portfolio model used for optimize the
         portfolio. The default is 'HRP'. Possible values are:
@@ -2714,28 +2668,26 @@ def display_hcp(
         metric and clusters. The default is 'pearson'. Possible values are:
 
         - 'pearson': pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\\rho^{pearson}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{pearson}_{i,j})}.
         - 'spearman': spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\\rho^{spearman}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{spearman}_{i,j})}.
         - 'abs_pearson': absolute value pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\\rho^{pearson}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{pearson}_{i,j}|)}.
         - 'abs_spearman': absolute value spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\\rho^{spearman}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{spearman}_{i,j}|)}.
         - 'distance': distance correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-\\rho^{distance}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{(1-\\rho^{distance}_{i,j})}.
         - 'mutual_info': mutual information matrix. Distance used is variation information matrix.
         - 'tail': lower tail dependence index matrix. Dissimilarity formula:
-            :math:`D_{i,j} = -\\log{\\lambda_{i,j}}`.
+            .. math:: D_{i,j} = -\\log{\\lambda_{i,j}}.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
@@ -2803,8 +2755,7 @@ def display_hcp(
         Number of CVaRs used to approximate Tail Gini of gains. If None it duplicates a_sim value.
         The default is None.
     linkage: str, optional
-        Linkage method of hierarchical clustering. For more information see
-        `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html>`_.
+        Linkage method of hierarchical clustering. For more information see `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html>`__.
         The default is 'single'. Possible values are:
 
         - 'single'.
@@ -2827,12 +2778,9 @@ def display_hcp(
         Number of bins used to calculate variation of information. The default
         value is 'KN'. Possible values are:
 
-        - 'KN': Knuth's choice method. For more information see
-        `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`_.
-        - 'FD': Freedman–Diaconis' choice method. For more information see
-        `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`_.
-        - 'SC': Scotts' choice method. For more information see
-        `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`_.
+        - 'KN': Knuth's choice method. For more information see `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`__.
+        - 'FD': Freedman–Diaconis' choice method. For more information see `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`__.
+        - 'SC': Scotts' choice method. For more information see `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`__.
         - 'HGR': Hacine-Gharbi and Ravier' choice method.
 
     alpha_tail: float, optional
@@ -2975,35 +2923,32 @@ def display_hrp(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str, optional
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     codependence: str, optional
         The codependence or similarity matrix used to build the distance
         metric and clusters. The default is 'pearson'. Possible values are:
 
         - 'pearson': pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\\rho^{pearson}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{pearson}_{i,j})}.
         - 'spearman': spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\\rho^{spearman}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{spearman}_{i,j})}.
         - 'abs_pearson': absolute value pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\\rho^{pearson}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{pearson}_{i,j}|)}.
         - 'abs_spearman': absolute value spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\\rho^{spearman}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{spearman}_{i,j}|)}.
         - 'distance': distance correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-\\rho^{distance}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{(1-\\rho^{distance}_{i,j})}.
         - 'mutual_info': mutual information matrix. Distance used is variation information matrix.
         - 'tail': lower tail dependence index matrix. Dissimilarity formula:
-            :math:`D_{i,j} = -\\log{\\lambda_{i,j}}`.
+            .. math:: D_{i,j} = -\\log{\\lambda_{i,j}}.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
@@ -3062,8 +3007,7 @@ def display_hrp(
         Number of CVaRs used to approximate Tail Gini of gains. If None it duplicates a_sim value.
         The default is None.
     linkage: str, optional
-        Linkage method of hierarchical clustering. For more information see
-        `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html>`_.
+        Linkage method of hierarchical clustering. For more information see `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html>`__.
         The default is 'single'. Possible values are:
 
         - 'single'.
@@ -3086,12 +3030,9 @@ def display_hrp(
         Number of bins used to calculate variation of information. The default
         value is 'KN'. Possible values are:
 
-        - 'KN': Knuth's choice method. For more information see
-        `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`_.
-        - 'FD': Freedman–Diaconis' choice method. For more information see
-        `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`_.
-        - 'SC': Scotts' choice method. For more information see
-        `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`_.
+        - 'KN': Knuth's choice method. For more information see `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`__.
+        - 'FD': Freedman–Diaconis' choice method. For more information see `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`__.
+        - 'SC': Scotts' choice method. For more information see `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`__.
         - 'HGR': Hacine-Gharbi and Ravier' choice method.
 
     alpha_tail: float, optional
@@ -3227,8 +3168,7 @@ def display_herc(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str, optional
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     model: str, optional
         The hierarchical cluster portfolio model used for optimize the
         portfolio. The default is 'HRP'. Possible values are:
@@ -3242,28 +3182,26 @@ def display_herc(
         metric and clusters. The default is 'pearson'. Possible values are:
 
         - 'pearson': pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\\rho^{pearson}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{pearson}_{i,j})}.
         - 'spearman': spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\\rho^{spearman}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{spearman}_{i,j})}.
         - 'abs_pearson': absolute value pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\\rho^{pearson}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{pearson}_{i,j}|)}.
         - 'abs_spearman': absolute value spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\\rho^{spearman}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{spearman}_{i,j}|)}.
         - 'distance': distance correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-\\rho^{distance}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{(1-\\rho^{distance}_{i,j})}.
         - 'mutual_info': mutual information matrix. Distance used is variation information matrix.
         - 'tail': lower tail dependence index matrix. Dissimilarity formula:
-            :math:`D_{i,j} = -\\log{\\lambda_{i,j}}`.
+            .. math:: D_{i,j} = -\\log{\\lambda_{i,j}}.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
@@ -3322,8 +3260,7 @@ def display_herc(
         Number of CVaRs used to approximate Tail Gini of gains. If None it duplicates a_sim value.
         The default is None.
     linkage: str, optional
-        Linkage method of hierarchical clustering. For more information see
-        `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html>`_.
+        Linkage method of hierarchical clustering. For more information see `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html>`__.
         The default is 'single'. Possible values are:
 
         - 'single'.
@@ -3346,12 +3283,9 @@ def display_herc(
         Number of bins used to calculate variation of information. The default
         value is 'KN'. Possible values are:
 
-        - 'KN': Knuth's choice method. For more information see
-        `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`_.
-        - 'FD': Freedman–Diaconis' choice method. For more information see
-        `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`_.
-        - 'SC': Scotts' choice method. For more information see
-        `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`_.
+        - 'KN': Knuth's choice method. For more information see `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`__.
+        - 'FD': Freedman–Diaconis' choice method. For more information see `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`__.
+        - 'SC': Scotts' choice method. For more information see `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`__.
         - 'HGR': Hacine-Gharbi and Ravier' choice method.
 
     alpha_tail: float, optional
@@ -3488,8 +3422,7 @@ def display_nco(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str, optional
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     model: str, optional
         The hierarchical cluster portfolio model used for optimize the
         portfolio. The default is 'HRP'. Possible values are:
@@ -3503,28 +3436,26 @@ def display_nco(
         metric and clusters. The default is 'pearson'. Possible values are:
 
         - 'pearson': pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\\rho^{pearson}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{pearson}_{i,j})}.
         - 'spearman': spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\\rho^{spearman}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{spearman}_{i,j})}.
         - 'abs_pearson': absolute value pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\\rho^{pearson}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{pearson}_{i,j}|)}.
         - 'abs_spearman': absolute value spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\\rho^{spearman}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{spearman}_{i,j}|)}.
         - 'distance': distance correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-\\rho^{distance}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{(1-\\rho^{distance}_{i,j})}.
         - 'mutual_info': mutual information matrix. Distance used is variation information matrix.
         - 'tail': lower tail dependence index matrix. Dissimilarity formula:
-            :math:`D_{i,j} = -\\log{\\lambda_{i,j}}`.
+            .. math:: D_{i,j} = -\\log{\\lambda_{i,j}}.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
         - 'hist': use historical estimates.
-        - 'ewma1': use ewma with adjust=True. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ewma2': use ewma with adjust=False. For more information see
-        `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
+        - 'ewma1': use ewma with adjust=True. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
+        - 'ewma2': use ewma with adjust=False. For more information see `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`__.
         - 'ledoit': use the Ledoit and Wolf Shrinkage method.
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
@@ -3592,8 +3523,7 @@ def display_nco(
         Number of CVaRs used to approximate Tail Gini of gains. If None it duplicates a_sim value.
         The default is None.
     linkage: str, optional
-        Linkage method of hierarchical clustering. For more information see
-        `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html>`_.
+        Linkage method of hierarchical clustering. For more information see `linkage <https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.linkage.html>`__.
         The default is 'single'. Possible values are:
 
         - 'single'.
@@ -3616,12 +3546,9 @@ def display_nco(
         Number of bins used to calculate variation of information. The default
         value is 'KN'. Possible values are:
 
-        - 'KN': Knuth's choice method. For more information see
-        `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`_.
-        - 'FD': Freedman–Diaconis' choice method. For more information see
-        `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`_.
-        - 'SC': Scotts' choice method. For more information see
-        `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`_.
+        - 'KN': Knuth's choice method. For more information see `knuth_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.knuth_bin_width.html>`__.
+        - 'FD': Freedman–Diaconis' choice method. For more information see `freedman_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.freedman_bin_width.html>`__.
+        - 'SC': Scotts' choice method. For more information see `scott_bin_width <https://docs.astropy.org/en/stable/api/astropy.stats.scott_bin_width.html>`__.
         - 'HGR': Hacine-Gharbi and Ravier' choice method.
 
     alpha_tail: float, optional

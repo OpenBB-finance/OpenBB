@@ -68,8 +68,7 @@ portfolio.po.ef(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     risk_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
@@ -177,8 +176,7 @@ portfolio.po.ef(
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
     method: str
-        Method used to fill nan values. Default value is 'time'. For more information see
-        `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
     risk_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
