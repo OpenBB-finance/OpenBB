@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 # pylint: disable=R0913, C0302, E1101
+# flake8: noqa: E501
 
 import logging
 from typing import Dict, List, Tuple

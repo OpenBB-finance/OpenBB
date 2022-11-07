@@ -2,6 +2,7 @@
 __docformat__ = "numpy"
 
 # pylint: disable=R0913, R0914, C0302, too-many-branches, too-many-statements
+# flake8: noqa: E501
 
 import logging
 import math
