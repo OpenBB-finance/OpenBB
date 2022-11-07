@@ -2,7 +2,7 @@ from typing import Any, Optional, List, Union
 
 from openbb_terminal.core.library.metadata import Metadata
 from openbb_terminal.core.library.trail_map import TrailMap
-from openbb_terminal.core.library.operation import OperationBuilder, Operation
+from openbb_terminal.core.library.operation import Operation
 
 
 class MetadataBuilder:
@@ -58,7 +58,6 @@ class Breadcrumb:
     def __init__(
         self,
         metadata: Optional[Metadata] = None,
-        operation_builder: Optional[OperationBuilder] = None,
         trail: str = "",
         trail_map: Optional[TrailMap] = None,
     ) -> None:
@@ -76,11 +75,9 @@ class Breadcrumb:
             trail_map (Optional[TrailMap], optional): _description_. Defaults to None.
         """
         trail_map = trail_map or TrailMap()
-        operation_builder = operation_builder or OperationBuilder(trail_map=trail_map)
         metadata = metadata or MetadataBuilder.build(trail=trail, trail_map=trail_map)
 
         self.__metadata = metadata
-        self.__operation_builder = operation_builder
         self.__trail_map = trail_map
         self.__trail = trail
 
@@ -101,18 +98,20 @@ class Breadcrumb:
         else:
             trail_next = f"{trail}.{name}"
 
-        method = operation_builder.build(trail=trail_next)
+        opeartio = operation_builder.build(trail=trail_next)
 
-        if method:
-            attr: Union[Breadcrumb, Operation] = method
+        if Operation.is_valid(trail=trail, trail_map=trail_map):
+            next_crumb: Union[Breadcrumb, Operation] = Operation(
+                trail=trail,
+                trail_map=trail_map,
+            )
         elif name in self.__metadata.dir_list:
-            attr = Breadcrumb(
+            next_crumb = Breadcrumb(
                 metadata=MetadataBuilder.build(trail=trail_next, trail_map=trail_map),
-                operation_builder=operation_builder,
                 trail=trail_next,
                 trail_map=trail_map,
             )
         else:
             raise AttributeError(f"Module/Method '{trail}' has no attribute '{name}'")
 
-        return attr
+        return next_crumb
