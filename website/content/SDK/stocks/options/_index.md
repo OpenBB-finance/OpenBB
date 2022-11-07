@@ -1,5 +1,5 @@
 ---
-title: Introductions to Options
+title: Introduction to Options
 keywords: "stocks, options, calls, puts, gamma, delta, iv, theta, rho, greeks, charm, vanna, vomma, derivatives, contracts, ^SPX, ^VIX, ^NDX, chains, oi, vol, volume, open, interest, expiration, dte, volatility, underlying"
 excerpt: "This guide introduces the Stock Options module, within the context of the OpenBB SDK"
 geekdocCollapseSection: true
