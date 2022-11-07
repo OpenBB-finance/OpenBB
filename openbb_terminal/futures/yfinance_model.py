@@ -12,12 +12,13 @@ import pandas as pd
 from dateutil.relativedelta import relativedelta
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 
 # pylint: disable=attribute-defined-outside-init
 
 logger = logging.getLogger(__name__)
 
-FUTURES_DATA = pd.read_csv(os.path.join("openbb_terminal", "futures", "futures.csv"))
+FUTURES_DATA = pd.read_csv(MISCELLANEOUS_DIRECTORY / "futures" / "futures.csv")
 
 MONTHS = {
     1: "F",
@@ -147,5 +148,7 @@ def get_curve_futures(
 
     if not futures_index:
         return pd.DataFrame()
+
+    futures_index = pd.to_datetime(futures_index)
 
     return pd.DataFrame(index=futures_index, data=futures_curve, columns=["Futures"])

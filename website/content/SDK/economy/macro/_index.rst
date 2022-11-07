@@ -2,7 +2,12 @@
     :language: python
     :class: highlight
 
+<<<<<<< HEAD:website/content/SDK/economy/macro/_index.rst
 |
+=======
+## Get underlying data 
+### economy.macro(parameters: list = None, countries: list = None, transform: str = '', start_date: str = '1900-01-01', end_date=datetime.date(2022, 11, 3), symbol: str = '') -> Tuple[Any, Dict[Any, Dict[Any, Any]], str]
+>>>>>>> main:website/content/SDK/economy/macro/_index.md
 
 To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
@@ -58,7 +63,12 @@ economy.macro(
     str
         Denomination which can be Trillions, Billions, Millions, Thousands
 
+<<<<<<< HEAD:website/content/SDK/economy/macro/_index.rst
 |
+=======
+## Getting charts 
+### economy.macro(parameters: list = None, countries: list = None, transform: str = '', start_date: str = '1900-01-01', end_date: str = '2022-11-03', symbol: str = '', raw: bool = False, external_axes: Optional[List[axes]] = None, export: str = '', chart=True)
+>>>>>>> main:website/content/SDK/economy/macro/_index.md
 
 .. raw:: html
 

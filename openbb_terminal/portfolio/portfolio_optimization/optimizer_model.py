@@ -464,6 +464,11 @@ def get_mean_risk_portfolio(
         threshold=threshold,
         method=method,
     )
+    if stock_returns.empty:
+        console.print(
+            "[red]Not enough data points in range to run calculations.[/red]\n"
+        )
+        return {}, pd.DataFrame()
 
     risk_free_rate = risk_free_rate / time_factor[freq.upper()]
 

@@ -2,7 +2,12 @@
     :language: python
     :class: highlight
 
+<<<<<<< HEAD:website/content/SDK/stocks/ca/hcorr/_index.rst
 |
+=======
+## Get underlying data 
+### stocks.ca.hcorr(similar: List[str], start_date: str = '2021-11-02', candle_type: str = 'a')
+>>>>>>> main:website/content/SDK/stocks/ca/hcorr/_index.md
 
 To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
@@ -41,7 +46,12 @@ stocks.ca.hcorr(
        Flag to display chart
 
 
+<<<<<<< HEAD:website/content/SDK/stocks/ca/hcorr/_index.rst
 |
+=======
+## Getting charts 
+### stocks.ca.hcorr(similar: List[str], start_date: str = '2021-11-02', candle_type: str = 'a', display_full_matrix: bool = False, raw: bool = False, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, export: str = '', chart=True)
+>>>>>>> main:website/content/SDK/stocks/ca/hcorr/_index.md
 
 .. raw:: html
 

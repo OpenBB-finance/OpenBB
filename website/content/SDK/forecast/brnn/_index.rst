@@ -2,7 +2,12 @@
     :language: python
     :class: highlight
 
+<<<<<<< HEAD:website/content/SDK/forecast/brnn/_index.rst
 |
+=======
+## Get underlying data 
+### forecast.brnn(data: Union[pandas.core.series.Series, pandas.core.frame.DataFrame], target_column: str = 'close', n_predict: int = 5, train_split: float = 0.85, past_covariates: str = None, forecast_horizon: int = 5, input_chunk_length: int = 14, output_chunk_length: int = 5, model_type: str = 'LSTM', n_rnn_layers: int = 1, dropout: float = 0.0, batch_size: int = 32, n_epochs: int = 100, learning_rate: float = 0.001, model_save_name: str = 'brnn_model', force_reset: bool = True, save_checkpoints: bool = True) -> Tuple[List[darts.timeseries.TimeSeries], List[darts.timeseries.TimeSeries], List[darts.timeseries.TimeSeries], Optional[float], Any]
+>>>>>>> main:website/content/SDK/forecast/brnn/_index.md
 
 To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 

@@ -2,7 +2,12 @@
     :language: python
     :class: highlight
 
+<<<<<<< HEAD:website/content/SDK/forecast/theta/_index.rst
 |
+=======
+## Get underlying data 
+### forecast.theta(data: Union[pandas.core.series.Series, pandas.core.frame.DataFrame], target_column: str = 'close', seasonal: str = 'M', seasonal_periods: int = 7, n_predict: int = 5, start_window: float = 0.85, forecast_horizon: int = 5) -> Tuple[List[darts.timeseries.TimeSeries], List[darts.timeseries.TimeSeries], List[darts.timeseries.TimeSeries], float, float, Any]
+>>>>>>> main:website/content/SDK/forecast/theta/_index.md
 
 To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
@@ -71,6 +76,7 @@ forecast.theta(
     Any
         Theta Model
 
+<<<<<<< HEAD:website/content/SDK/forecast/theta/_index.rst
 |
 
 .. raw:: html
@@ -100,6 +106,10 @@ forecast.theta(
     chart: bool = False,
 )
 {{< /highlight >}}
+=======
+## Getting charts 
+### forecast.theta(data: Union[pandas.core.frame.DataFrame, pandas.core.series.Series], target_column: str = 'close', dataset_name: str = '', seasonal: str = 'M', seasonal_periods: int = 7, n_predict: int = 5, start_window: float = 0.85, forecast_horizon: int = 5, export: str = '', residuals: bool = False, forecast_only: bool = False, start_date: Optional[datetime.datetime] = None, end_date: Optional[datetime.datetime] = None, naive: bool = False, export_pred_raw: bool = False, external_axes: Optional[List[axes]] = None, chart=True)
+>>>>>>> main:website/content/SDK/forecast/theta/_index.md
 
 .. raw:: html
 

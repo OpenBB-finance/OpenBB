@@ -1,18 +1,23 @@
 ```
-usage: atr [-d {}] [-c TARGET_COLUMN] [-h]
+usage: atr [--close-col CLOSE_COL] [--high-col HIGH_COL] [--low-col LOW_COL]
+[-d {}] [-c TARGET_COLUMN] [-h]
 ```
 
 Add Average True Range to dataset of specific stock ticker.
 
 ```
 optional arguments:
+  --close-col CLOSE_COL
+                        Close column name to use for Average True Range. (default: close)
+  --high-col HIGH_COL   High column name to use for Average True Range. (default: high)
+  --low-col LOW_COL     Low column name to use for Average True Range. (default: low)
   -d {}, --target-dataset {}
                         The name of the dataset you want to select (default: None)
   -c TARGET_COLUMN, --target-column TARGET_COLUMN
                         The name of the specific column you want to use (default: close)
   -h, --help            show this help message (default: False)
 
-For more information and examples, use 'about rsi' to access the related guide.
+For more information and examples, use 'about atr' to access the related guide.
 ```
 
 Example:
@@ -23,7 +28,7 @@ Example:
 Successfully added 'Average True Range' to 'aapl_20220628_113243' dataset
 
 (🦋) /forecast/ $ show aapl_20220628_113243
-aapl_20220628_113243 has following shape (rowxcolumn): (759, 9)
+aapl_20220628_113243 dataset has shape (row, column): (759, 9)
 
                        Dataset aapl_20220628_113243 | Showing 10 of 759 rows
 ┏━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┓

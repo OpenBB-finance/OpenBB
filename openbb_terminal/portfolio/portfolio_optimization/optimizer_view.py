@@ -1186,6 +1186,9 @@ def display_max_sharpe(
         value_short=value_short,
     )
 
+    if stock_returns is None or stock_returns.empty:
+        return {}
+
     if weights is None:
         console.print("\n", "There is no solution with these parameters")
         return {}

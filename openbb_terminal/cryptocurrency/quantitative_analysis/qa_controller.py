@@ -110,8 +110,6 @@ class QaController(CryptoBaseController):
             }
             choices["line"] = {
                 "--log": {},
-                "--draw": {},
-                "-d": "--draw",
                 "--ml": None,
                 "--ms": None,
             }
@@ -152,7 +150,13 @@ class QaController(CryptoBaseController):
             choices["raw"] = {
                 "--limit": {str(c): {} for c in range(1, 100)},
                 "-l": "--limit",
+                "--sortby": {
+                    c: {}
+                    for c in [x.lower().replace(" ", "") for x in self.data.columns]
+                },
+                "-s": "--sortby",
                 "--descend": {},
+                "--export": {c: {} for c in ["csv", "json", "xlsx"]},
             }
             choices["decompose"] = {
                 "--multiplicative": None,
@@ -260,16 +264,24 @@ class QaController(CryptoBaseController):
             dest="descend",
             help="Sort in descending order",
         )
+        parser.add_argument(
+            "-s",
+            "--sortby",
+            help="The column to sort by",
+            choices=[x.lower().replace(" ", "") for x in self.data.columns],
+            type=str.lower,
+            dest="sortby",
+        )
 
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
             qa_view.display_raw(
-                data=self.data[self.target],
+                data=self.data,
                 limit=ns_parser.limit,
-                sortby="",
-                descend=ns_parser.descend,
+                sortby=ns_parser.sortby,
+                ascend=not ns_parser.descend,
                 export=ns_parser.export,
             )
 
@@ -297,7 +309,7 @@ class QaController(CryptoBaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             add_help=False,
             prog="line",
-            description="Show line plot of selected data and allow to draw lines or highlight specific datetimes.",
+            description="Show line plot of selected data or highlight specific datetimes.",
         )
         parser.add_argument(
             "--log",
@@ -307,23 +319,15 @@ class QaController(CryptoBaseController):
             default=False,
         )
         parser.add_argument(
-            "-d",
-            "--draw",
-            help="Draw lines and annotate on the plot",
-            dest="draw",
-            action="store_true",
-            default=False,
-        )
-        parser.add_argument(
             "--ml",
-            help="Draw vertical line markers to highlight certain events",
+            help="Draw vertical line markers to highlight certain events (comma separated dates, e.g. 2020-01-01,2020-02-01)",  # noqa: E501
             dest="ml",
             type=check_list_dates,
             default="",
         )
         parser.add_argument(
             "--ms",
-            help="Draw scatter markers to highlight certain events",
+            help="Draw scatter markers to highlight certain events (comma separated dates, e.g. 2021-01-01,2021-02-01)",
             dest="ms",
             type=check_list_dates,
             default="",
@@ -337,7 +341,6 @@ class QaController(CryptoBaseController):
                 self.data[self.target],
                 title=f"{self.symbol} {self.target}",
                 log_y=ns_parser.log,
-                draw=ns_parser.draw,
                 markers_lines=ns_parser.ml,
                 markers_scatter=ns_parser.ms,
             )
