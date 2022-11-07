@@ -172,7 +172,7 @@ def get_news(
         number of news to fetch
     post_kind: str
         Filter by category of news. Available values: news or media.
-    filter\_: Optional[str]
+    filter_: Optional[str]
         Filter by kind of news. One from list: rising|hot|bullish|bearish|important|saved|lol
     region: str
         Filter news by regions. Available regions are: en (English), de (Deutsch), nl (Dutch),

@@ -79,7 +79,7 @@ crypto.onchain.th(
         Key to sort by.
     ascend: *str*
         Sort in descending order.
-    hash_: bool,
+    hash\_: bool,
         Flag to show transaction hash.
     export : *str*
         Export dataframe data to csv,json,xlsx file

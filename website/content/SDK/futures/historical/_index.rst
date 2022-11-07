@@ -53,7 +53,7 @@ futures.historical(
 futures.historical(
     tickers: List[str],
     expiry: str = '',
-    start_date: str = '2019-11-07',
+    start_date: str = '2019-11-08',
     raw: bool = False,
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,

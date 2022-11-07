@@ -249,7 +249,7 @@ def write_docstring(name: str, func, file, chart: bool):
 
         write_summary(
             bottom=bottom,
-            docstring=formatted_docstring,
+            docstring=formatted_docstring.replace("_:", r"\_:"),
             file=file,
         )
 
@@ -259,7 +259,7 @@ def write_docstring(name: str, func, file, chart: bool):
                 title="Parameters",
                 start=parameters_title_end,
                 end=returns_title_start,
-                docstring=formatted_docstring,
+                docstring=formatted_docstring.replace("_:", r"\_:"),
                 file=file,
             )
             if chart:
@@ -274,7 +274,7 @@ def write_docstring(name: str, func, file, chart: bool):
                 title="Returns",
                 start=returns_title_end,
                 end=examples_title_start,
-                docstring=formatted_docstring,
+                docstring=formatted_docstring.replace("_:", r"\_:"),
                 file=file,
             )
             file.write("\n")

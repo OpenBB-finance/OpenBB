@@ -12,8 +12,8 @@
 
 {{< highlight python >}}
 stocks.disc.ipo(
-    start_date: str = '2022-11-01',
-    end_date: str = '2022-11-06',
+    start_date: str = '2022-11-02',
+    end_date: str = '2022-11-07',
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

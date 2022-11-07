@@ -20,10 +20,10 @@ stocks.candle(
     ma: Optional[Iterable[int]] = None,
     asset_type: str = '',
     start_date: datetime.datetime = datetime.datetime(
-    2019, 11, 2, 12, 58, 43, 325531, chart: bool = False,
+    2019, 11, 3, 0, 48, 50, 701519, chart: bool = False,
 ), interval: int = 1440,
     end_date: datetime.datetime = datetime.datetime(
-    2022, 11, 6, 12, 58, 43, 325543, chart: bool = False,
+    2022, 11, 7, 0, 48, 50, 701529, chart: bool = False,
 ), prepost: bool = False,
     source: str = 'YahooFinance',
     iexrange: str = 'ytd',
@@ -56,11 +56,11 @@ stocks.candle(
         Flag to add high and low trends to chart
     ma: Tuple[int]
         Moving averages to add to the candle
-    asset_type_: *str*
+    asset_type\_: *str*
         String to include in title
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
-    asset_type_: *str*
+    asset_type\_: *str*
         String to include in title
     start_date: *datetime*
         Start date to get data from with

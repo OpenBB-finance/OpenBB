@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 {{< highlight python >}}
 stocks.ca.hist(
     similar: List[str],
-    start_date: str = '2021-11-05',
+    start_date: str = '2021-11-06',
     candle_type: str = 'a',
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
@@ -57,7 +57,7 @@ stocks.ca.hist(
 {{< highlight python >}}
 stocks.ca.hist(
     similar: List[str],
-    start_date: str = '2021-11-05',
+    start_date: str = '2021-11-06',
     candle_type: str = 'a',
     normalize: bool = True,
     export: str = '',
