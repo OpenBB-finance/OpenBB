@@ -4,7 +4,8 @@ usage: expo [--trend {N,A,M}] [--dampen DAMPEN] [--naive] [-d {AAPL}] [-c TARGET
             [--export EXPORT]
 ```
 
-Perform Probabilistic Exponential Smoothing forecast Trend: N: None, A: Additive, M: Multiplicative Seasonality: N: None, A: Additive, M: Multiplicative Dampen: T: True, F: False
+Perform Probabilistic Exponential Smoothing forecast:
+https://unit8co.github.io/darts/generated_api/darts.models.forecasting.exponential_smoothing.html
 
 ```
 optional arguments:

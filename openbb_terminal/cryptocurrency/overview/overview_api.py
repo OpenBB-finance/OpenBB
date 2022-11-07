@@ -30,7 +30,7 @@ from .coinpaprika_view import display_contracts as cpcontracts
 from .coinbase_view import display_trading_pairs as cbpairs
 from .cryptopanic_view import display_news as news
 from .tokenterminal_view import display_fundamental_metrics as fun
-
+from .glassnode_view import display_btc_rainbow as btcrb
 
 # Models
 models = _models(os.path.abspath(os.path.dirname(__file__)))
