@@ -1755,7 +1755,8 @@ class ForecastController(BaseController):
             add_help=False,
             prog="autoets",
             description="""
-                Perform Automatic ETS (Error, Trend, Seasonality) forecast
+                Perform Automatic ETS (Error, Trend, Seasonality) forecast:
+                https://nixtla.github.io/statsforecast/examples/getting_started_with_auto_arima_and_ets.html
             """,
         )
         if other_args and "-" not in other_args[0][0]:
@@ -1809,10 +1810,8 @@ class ForecastController(BaseController):
             add_help=False,
             prog="expo",
             description="""
-                Perform Probabilistic Exponential Smoothing forecast
-                Trend: N: None, A: Additive, M: Multiplicative
-                Seasonality: N: None, A: Additive, M: Multiplicative
-                Dampen: T: True, F: False
+                Perform Probabilistic Exponential Smoothing forecast:
+                https://unit8co.github.io/darts/generated_api/darts.models.forecasting.exponential_smoothing.html
             """,
         )
         parser.add_argument(
@@ -1883,7 +1882,8 @@ class ForecastController(BaseController):
             add_help=False,
             prog="theta",
             description="""
-                Perform Theta forecast
+                Perform Theta forecast:
+                https://unit8co.github.io/darts/generated_api/darts.models.forecasting.theta.html
             """,
         )
         # if user does not put in --target-dataset
@@ -1938,7 +1938,8 @@ class ForecastController(BaseController):
             add_help=False,
             prog="rnn",
             description="""
-                Perform RNN forecast (Vanilla RNN, LSTM, GRU)
+                Perform RNN forecast (Vanilla RNN, LSTM, GRU):
+                https://unit8co.github.io/darts/generated_api/darts.models.forecasting.rnn_model.html
             """,
         )
         # RNN Hyperparameters
@@ -2029,7 +2030,8 @@ class ForecastController(BaseController):
             add_help=False,
             prog="nbeats",
             description="""
-                Perform NBEATS forecast (Neural Bayesian Estimation of Time Series).
+                Perform NBEATS forecast (Neural Bayesian Estimation of Time Series):
+                https://unit8co.github.io/darts/generated_api/darts.models.forecasting.nbeats.html
             """,
         )
         # NBEATS Hyperparameters
@@ -2143,7 +2145,8 @@ class ForecastController(BaseController):
             add_help=False,
             prog="tcn",
             description="""
-                Perform TCN forecast.
+                Perform TCN forecast:
+                https://unit8co.github.io/darts/generated_api/darts.models.forecasting.tcn_model.html
             """,
         )
         # TCN Hyperparameters
@@ -2249,7 +2252,8 @@ class ForecastController(BaseController):
             add_help=False,
             prog="regr",
             description="""
-                Perform a regression forecast
+                Perform a regression forecast:
+                https://unit8co.github.io/darts/generated_api/darts.models.forecasting.regression_model.html
             """,
         )
 
@@ -2315,7 +2319,8 @@ class ForecastController(BaseController):
             add_help=False,
             prog="linregr",
             description="""
-                Perform a linear regression forecast
+                Perform a linear regression forecast:
+                https://unit8co.github.io/darts/generated_api/darts.models.forecasting.linear_regression_model.html
             """,
         )
         # if user does not put in --target-dataset
@@ -2379,7 +2384,8 @@ class ForecastController(BaseController):
             add_help=False,
             prog="brnn",
             description="""
-                Perform BRNN forecast (Vanilla RNN, LSTM, GRU)
+                Perform BRNN forecast (Vanilla RNN, LSTM, GRU):
+                https://unit8co.github.io/darts/generated_api/darts.models.forecasting.block_rnn_model.html
             """,
         )
         # BRNN Hyperparameters
@@ -2466,7 +2472,8 @@ class ForecastController(BaseController):
             add_help=False,
             prog="trans",
             description="""
-                Perform Transformer Forecast.
+                Perform Transformer Forecast:
+                https://unit8co.github.io/darts/generated_api/darts.models.forecasting.transformer_model.html
             """,
         )
         parser.add_argument(
@@ -2593,7 +2600,8 @@ class ForecastController(BaseController):
             add_help=False,
             prog="tft",
             description="""
-                Perform TFT forecast (Temporal Fusion Transformer).
+                Perform TFT forecast (Temporal Fusion Transformer):
+                https://unit8co.github.io/darts/generated_api/darts.models.forecasting.tft_model.html
             """,
         )
         parser.add_argument(
@@ -2704,7 +2712,10 @@ class ForecastController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             add_help=False,
             prog="nhits",
-            description="Perform nhits forecast",
+            description="""
+                Perform nhits forecast:
+                https://unit8co.github.io/darts/generated_api/darts.models.forecasting.tft_model.html
+            """,
         )
         parser.add_argument(
             "--num-stacks",

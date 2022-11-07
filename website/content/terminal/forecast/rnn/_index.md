@@ -4,7 +4,8 @@ usage: rnn [--hidden-dim HIDDEN_DIM] [--training_length TRAINING_LENGTH] [--naiv
            [--batch-size BATCH_SIZE] [--end S_END_DATE] [--start S_START_DATE] [--learning-rate LEARNING_RATE] [--residuals] [--forecast-only] [--export-pred-raw] [-h] [--export EXPORT]
 ```
 
-Perform RNN forecast (Vanilla RNN, LSTM, GRU)
+Perform RNN forecast (Vanilla RNN, LSTM, GRU):
+https://unit8co.github.io/darts/generated_api/darts.models.forecasting.rnn_model.html
 
 ```
 optional arguments:
