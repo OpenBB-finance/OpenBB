@@ -89,7 +89,7 @@ def check_datetime(
             return datetime.strptime(ck_date, "%Y-%m-%d")
     except Exception:
         console.print(
-            f"Invalid data format (YYYY-MM-DD), "
+            f"Invalid date format (YYYY-MM-DD), "
             f"Using {error_catch.strftime('%Y-%m-%d')} for {ck_date}"
         )
     return error_catch
