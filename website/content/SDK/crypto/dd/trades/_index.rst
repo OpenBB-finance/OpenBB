@@ -14,9 +14,9 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 crypto.dd.trades(
+    exchange_id: str,
     symbol: str,
-    limit: int = 1000,
-    side: Optional[Any] = None,
+    to_symbol: str,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -24,17 +24,18 @@ crypto.dd.trades(
 .. raw:: html
 
     <p>
-    Get last N trades for chosen trading pair. [Source: Coinbase]
+    Returns trades for a coin in a given exchange
+    [Source: https://docs.ccxt.com/en/latest/manual.html]
     </p>
 
 * **Parameters**
 
-    symbol: *str*
-        Trading pair of coins on Coinbase e.g ETH-USDT or UNI-ETH
-    limit: *int*
-        Last <limit> of trades. Maximum is 1000.
-    side: *str*
-        You can chose either sell or buy side. If side is not set then all trades will be displayed.
+    exchange_id : *str*
+        exchange id
+    symbol : *str*
+        coin symbol
+    to_symbol : *str*
+        currency to compare coin against
     chart: *bool*
        Flag to display chart
 
@@ -42,7 +43,7 @@ crypto.dd.trades(
 * **Returns**
 
     pd.DataFrame
-        Last N trades for chosen trading pairs.
+        trades for a coin in a given exchange
 
 |
 
@@ -54,28 +55,32 @@ crypto.dd.trades(
 
 {{< highlight python >}}
 crypto.dd.trades(
+    exchange: str,
     symbol: str,
-    limit: int = 20,
-    side: Optional[str] = None,
+    to_symbol: str,
+    limit: int = 10,
     export: str = '',
     chart: bool = False,
-) -> None
+)
 {{< /highlight >}}
 
 .. raw:: html
 
     <p>
-    Display last N trades for chosen trading pair. [Source: Coinbase]
+    Displays trades for a coin in a given exchange
+    [Source: https://docs.ccxt.com/en/latest/manual.html]
     </p>
 
 * **Parameters**
 
-    symbol: *str*
-        Trading pair of coins on Coinbase e.g ETH-USDT or UNI-ETH
-    limit: *int*
-        Last <limit> of trades. Maximum is 1000.
-    side: Optional[str]
-        You can chose either sell or buy side. If side is not set then all trades will be displayed.
+    exchange : *str*
+        exchange id
+    symbol : *str*
+        coin symbol
+    to_symbol : *str*
+        currency to compare coin against
+    limit : *int*
+        number of trades to display
     export : *str*
         Export dataframe data to csv,json,xlsx file
     chart: *bool*

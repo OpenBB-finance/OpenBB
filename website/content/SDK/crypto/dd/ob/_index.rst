@@ -13,33 +13,36 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
     </h3>
 
 {{< highlight python >}}
-common.ta.fisher(
-    data: pandas.core.frame.DataFrame,
-    window: int = 14,
+crypto.dd.ob(
+    exchange_id: str,
+    symbol: str,
+    to_symbol: str,
     chart: bool = False,
-) -> pandas.core.frame.DataFrame
+) -> Dict
 {{< /highlight >}}
 
 .. raw:: html
 
     <p>
-    Fisher Transform
+    Returns orderbook for a coin in a given exchange
+    [Source: https://docs.ccxt.com/en/latest/manual.html]
     </p>
 
 * **Parameters**
 
-    data : *pd.DataFrame*
-        Dataframe of OHLC prices
-    window: *int*
-        Length for indicator window
+    exchange_id : *str*
+        exchange id
+    symbol : *str*
+        coin symbol
+    to_symbol : *str*
+        currency to compare coin against
     chart: *bool*
        Flag to display chart
 
 
 * **Returns**
 
-    df_ta: *pd.DataFrame*
-        Dataframe of technical indicator
+    Dict with bids and asks
 
 |
 
@@ -50,10 +53,10 @@ common.ta.fisher(
     </h3>
 
 {{< highlight python >}}
-common.ta.fisher(
-    data: pandas.core.frame.DataFrame,
-    window: int = 14,
-    symbol: str = '',
+crypto.dd.ob(
+    exchange: str,
+    symbol: str,
+    to_symbol: str,
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
     chart: bool = False,
@@ -63,21 +66,20 @@ common.ta.fisher(
 .. raw:: html
 
     <p>
-    Display Fisher Indicator
+    Displays order book for a coin in a given exchange
+    [Source: https://docs.ccxt.com/en/latest/manual.html]
     </p>
 
 * **Parameters**
 
-    data : *pd.DataFrame*
-        Dataframe of OHLC prices
-    window : *int*
-        Length of window
+    exchange : *str*
+        exchange id
     symbol : *str*
-        Ticker string
+        coin symbol
+    vs : *str*
+        currency to compare coin against
     export : *str*
-        Format to export data
-    external_axes : Optional[List[plt.Axes]], optional
-        External axes (3 axes are expected in the list), by default None
+        Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart
 

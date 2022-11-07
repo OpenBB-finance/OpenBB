@@ -12,35 +12,29 @@
 
 {{< highlight python >}}
 economy.events(
-    country: str = 'all',
-    importance: str = '',
-    category: str = '',
-    start_date: str = '',
-    end_date: str = '', limit=100,
+    countries: Union[List[str], str] = '',
+    start_date: str = '2022-11-07',
+    end_date: str = '2022-11-07',
     chart: bool = False,
-) -> Tuple[pandas.core.frame.DataFrame, str]
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 .. raw:: html
 
     <p>
-    Get economic calendar [Source: Investing.com]
+    Get economic calendar for countries between specified dates
     </p>
 
 * **Parameters**
 
-    country: *str*
-        Country selected. List of available countries is accessible through get_events_countries().
-    importance: *str*
-        Importance selected from high, medium, low or all
-    category: *str*
-        Event category. List of available categories is accessible through get_events_categories().
-    start_date: *datetime.date*
-        First date to get events.
-    end_date: *datetime.date*
-        Last date to get events.
+    countries : [List[str],str]
+        List of countries to include in calendar.  Empty returns all
+    start_date : *str*
+        Start date for calendar
+    end_date : *str*
+        End date for calendar
 
 * **Returns**
 
-    Tuple[pd.DataFrame, str]
-        Economic calendar Dataframe and detail string about country/time zone.
+    pd.DataFrame
+        Economic calendar

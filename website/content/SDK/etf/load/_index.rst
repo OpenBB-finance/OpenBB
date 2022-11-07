@@ -1,4 +1,3 @@
-<<<<<<< HEAD:website/content/SDK/etf/load/_index.rst
 .. role:: python(code)
     :language: python
     :class: highlight
@@ -22,6 +21,7 @@ etf.load(
     iexrange: str = 'ytd',
     weekly: bool = False,
     monthly: bool = False,
+    verbose: bool = True,
     chart: bool = False,
 )
 {{< /highlight >}}
@@ -30,12 +30,6 @@ etf.load(
 
     <p>
     Load a symbol to perform analysis using the string above as a template.
-=======
-## Get underlying data 
-### stocks.load(symbol: str, start_date: datetime.datetime = None, interval: int = 1440, end_date: datetime.datetime = None, prepost: bool = False, source: str = 'YahooFinance', iexrange: str = 'ytd', weekly: bool = False, monthly: bool = False, verbose: bool = True)
-
-Load a symbol to perform analysis using the string above as a template.
->>>>>>> main:website/content/SDK/stocks/load/_index.md
 
     Optional arguments and their descriptions are listed above.
 
@@ -86,7 +80,7 @@ Load a symbol to perform analysis using the string above as a template.
         Flag to get weekly data
     monthly: *bool*
         Flag to get monthly data
-    verbose: bool
+    verbose: *bool*
         Display verbose information on what was the symbol that was loaded
 
 * **Returns**

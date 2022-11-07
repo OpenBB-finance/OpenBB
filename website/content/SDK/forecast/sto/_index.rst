@@ -13,6 +13,9 @@
 {{< highlight python >}}
 forecast.sto(
     dataset: pandas.core.frame.DataFrame,
+    close_column: str = 'close',
+    high_column: str = 'high',
+    low_column: str = 'low',
     period: int = 10,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame

@@ -14,8 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 common.ta.donchian(
-    high_prices: pandas.core.series.Series,
-    low_prices: pandas.core.series.Series,
+    data: pandas.core.frame.DataFrame,
     upper_length: int = 20,
     lower_length: int = 20,
     chart: bool = False,
@@ -30,10 +29,8 @@ common.ta.donchian(
 
 * **Parameters**
 
-    high_prices : *pd.DataFrame*
-        High prices
-    low_prices : *pd.DataFrame*
-        Low prices
+    data : *pd.DataFrame*
+        Dataframe of ohlc prices
     upper_length : *int*
         Length of window to calculate upper channel
     lower_length : *int*

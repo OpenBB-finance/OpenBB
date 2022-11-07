@@ -2,12 +2,7 @@
     :language: python
     :class: highlight
 
-<<<<<<< HEAD:website/content/SDK/forecast/nhits/_index.rst
 |
-=======
-## Get underlying data 
-### forecast.nhits(data: Union[pandas.core.series.Series, pandas.core.frame.DataFrame], target_column: str = 'close', n_predict: int = 5, train_split: float = 0.85, past_covariates: str = None, forecast_horizon: int = 5, input_chunk_length: int = 14, output_chunk_length: int = 5, num_stacks: int = 3, num_blocks: int = 1, num_layers: int = 2, layer_widths: int = 512, pooling_kernel_sizes: Optional[Tuple[Tuple[int]]] = None, n_freq_downsample: Optional[Tuple[Tuple[int]]] = None, dropout: float = 0.1, activation: str = 'ReLU', max_pool_1d: bool = True, batch_size: int = 32, n_epochs: int = 100, learning_rate: float = 0.001, model_save_name: str = 'brnn_model', force_reset: bool = True, save_checkpoints: bool = True) -> Tuple[List[darts.timeseries.TimeSeries], List[darts.timeseries.TimeSeries], List[darts.timeseries.TimeSeries], Optional[float], Any]
->>>>>>> main:website/content/SDK/forecast/nhits/_index.md
 
 To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 

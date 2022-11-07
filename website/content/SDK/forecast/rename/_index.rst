@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 forecast.rename(
-    df: pandas.core.frame.DataFrame,
+    data: pandas.core.frame.DataFrame,
     old_column: str,
     new_column: str,
     chart: bool = False,
@@ -27,7 +27,7 @@ forecast.rename(
 
 * **Parameters**
 
-    df: *pd.DataFrame*
+    data: *pd.DataFrame*
         The dataframe to have a column renamed
     old_column: *str*
         The column that will have its name changed

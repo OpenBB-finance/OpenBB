@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 forecast.desc(
-    df: pandas.core.frame.DataFrame,
+    data: pandas.core.frame.DataFrame,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -27,7 +27,7 @@ forecast.desc(
 
 * **Parameters**
 
-    df: *pd.DataFrame*
+    data: *pd.DataFrame*
         The df to produce statistics for
     chart: *bool*
        Flag to display chart

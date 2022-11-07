@@ -20,7 +20,7 @@ stocks.process_candle(
 .. raw:: html
 
     <p>
-    Process DataFrame into candle style plot
+    Process DataFrame into candle style plot.
     </p>
 
 * **Parameters**

@@ -2383,6 +2383,15 @@ main:
                 ref: /SDK/forex/oanda/summary
           - name: quote
             ref: /SDK/forex/quote
+      - name: funds
+        ref: /SDK/funds
+        sub:
+          - name: info
+            ref: /SDK/funds/info
+          - name: overview
+            ref: /SDK/funds/overview
+          - name: search
+            ref: /SDK/funds/search
       - name: futures
         ref: /SDK/futures
         sub:

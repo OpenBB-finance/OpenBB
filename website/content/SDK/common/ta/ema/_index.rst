@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 common.ta.ema(
-    data: pandas.core.frame.DataFrame,
+    data: pandas.core.series.Series,
     length: int = 50,
     offset: int = 0,
     chart: bool = False,
@@ -27,7 +27,7 @@ common.ta.ema(
 
 * **Parameters**
 
-    data: *pd.DataFrame*
+    data: *pd.Series*
         Dataframe of dates and prices
     length: *int*
         Length of EMA window

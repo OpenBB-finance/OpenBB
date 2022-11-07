@@ -14,8 +14,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 crypto.ov.exchanges(
-    sortby: str = 'name',
-    ascend: bool = False,
+    sortby: str = 'Rank',
+    ascend: bool = True,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -51,7 +51,7 @@ crypto.ov.exchanges(
 
 {{< highlight python >}}
 crypto.ov.exchanges(
-    sortby: str = 'name',
+    sortby: str = 'Rank',
     ascend: bool = False,
     limit: int = 15,
     links: bool = False,

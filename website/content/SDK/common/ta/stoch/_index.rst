@@ -14,9 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 common.ta.stoch(
-    high_vals: pandas.core.series.Series,
-    low_vals: pandas.core.series.Series,
-    close_vals: pandas.core.series.Series,
+    data: pandas.core.frame.DataFrame,
     fastkperiod: int = 14,
     slowdperiod: int = 3,
     slowkperiod: int = 3,
@@ -32,12 +30,8 @@ common.ta.stoch(
 
 * **Parameters**
 
-    high_vals: *pd.Series*
-        High values
-    low_vals: *pd.Series*
-        Low values
-    close-vals: *pd.Series*
-        Close values
+    data : *pd.DataFrame*
+        Dataframe of OHLC prices
     fastkperiod : *int*
         Fast k period
     slowdperiod : *int*

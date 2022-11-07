@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 common.ta.bbands(
-    close_values: pandas.core.series.Series,
+    data: pandas.core.frame.DataFrame,
     window: int = 15,
     n_std: float = 2,
     mamode: str = 'ema',
@@ -30,8 +30,8 @@ common.ta.bbands(
 
 * **Parameters**
 
-    close_values : *pd.DataFrame*
-        DataFrame of sclose prices
+    data : *pd.DataFrame*
+        Dataframe of ohlc prices
     window : *int*
         Length of window to calculate BB
     n_std : *float*

@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 forex.oanda.calendar(
-    days: int,
+    days: int = 14,
     instrument: Optional[str] = None,
     chart: bool = False,
 ) -> Union[pandas.core.frame.DataFrame, bool]

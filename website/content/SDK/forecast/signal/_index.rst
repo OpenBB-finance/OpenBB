@@ -13,6 +13,7 @@
 {{< highlight python >}}
 forecast.signal(
     dataset: pandas.core.frame.DataFrame,
+    target_column: str = 'close',
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

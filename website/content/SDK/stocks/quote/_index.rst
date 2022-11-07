@@ -20,7 +20,7 @@ stocks.quote(
 .. raw:: html
 
     <p>
-    Ticker quote
+    Ticker quote.  [Source: YahooFinance]
     </p>
 
 * **Parameters**

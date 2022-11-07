@@ -16,7 +16,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 stocks.options.grhist(
     symbol: str,
     expiry: str,
-    strike: float,
+    strike: Union[str, float],
     chain_id: str = '',
     put: bool = False,
     chart: bool = False,
@@ -35,7 +35,7 @@ stocks.options.grhist(
         Stock ticker symbol
     expiry: *str*
         Option expiration date
-    strike: *float*
+    strike: Union[str, float]
         Strike price to look for
     chain_id: *str*
         OCC option symbol.  Overwrites other inputs
@@ -62,12 +62,12 @@ stocks.options.grhist(
 stocks.options.grhist(
     symbol: str,
     expiry: str,
-    strike: float,
+    strike: Union[float, str],
     greek: str = 'Delta',
     chain_id: str = '',
     put: bool = False,
     raw: bool = False,
-    limit: int = 20,
+    limit: Union[int, str] = 20,
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
     chart: bool = False,
@@ -86,7 +86,7 @@ stocks.options.grhist(
         Stock ticker
     expiry: *str*
         Expiration date
-    strike: *float*
+    strike: Union[str, float]
         Strike price to consider
     greek: *str*
         Greek variable to plot

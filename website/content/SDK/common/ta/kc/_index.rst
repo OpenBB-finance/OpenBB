@@ -14,9 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 common.ta.kc(
-    high_prices: pandas.core.series.Series,
-    low_prices: pandas.core.series.Series,
-    close_prices: pandas.core.series.Series,
+    data: pandas.core.frame.DataFrame,
     window: int = 20,
     scalar: float = 2,
     mamode: str = 'ema',
@@ -33,12 +31,8 @@ common.ta.kc(
 
 * **Parameters**
 
-    high_prices : *pd.DataFrame*
-        High prices
-    low_prices : *pd.DataFrame*
-        Low prices
-    close_prices : *pd.DataFrame*
-        Close prices
+    data: *pd.DataFrame*
+        Dataframe of ohlc prices
     window : *int*
         Length of window
     scalar: *float*

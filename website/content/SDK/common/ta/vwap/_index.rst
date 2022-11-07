@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 common.ta.vwap(
-    data: pandas.core.frame.DataFrame,
+    data: pandas.core.series.Series,
     offset: int = 0,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame

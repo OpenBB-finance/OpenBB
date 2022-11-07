@@ -2,12 +2,7 @@
     :language: python
     :class: highlight
 
-<<<<<<< HEAD:website/content/SDK/stocks/ca/hist/_index.rst
 |
-=======
-## Get underlying data 
-### stocks.ca.hist(similar: List[str], start_date: str = '2021-11-02', candle_type: str = 'a') -> pandas.core.frame.DataFrame
->>>>>>> main:website/content/SDK/stocks/ca/hist/_index.md
 
 To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
@@ -51,7 +46,6 @@ stocks.ca.hist(
     pd.DataFrame
         Dataframe containing candle type variable for each ticker
 
-<<<<<<< HEAD:website/content/SDK/stocks/ca/hist/_index.rst
 |
 
 .. raw:: html
@@ -77,10 +71,6 @@ stocks.ca.hist(
     <p>
     Display historical stock prices. [Source: Yahoo Finance]
     </p>
-=======
-## Getting charts 
-### stocks.ca.hist(similar: List[str], start_date: str = '2021-11-02', candle_type: str = 'a', normalize: bool = True, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
->>>>>>> main:website/content/SDK/stocks/ca/hist/_index.md
 
 * **Parameters**
 

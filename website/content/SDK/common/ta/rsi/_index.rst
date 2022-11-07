@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 common.ta.rsi(
-    values: pandas.core.series.Series,
+    data: pandas.core.series.Series,
     window: int = 14,
     scalar: float = 100,
     drift: int = 1,
@@ -30,7 +30,7 @@ common.ta.rsi(
 
 * **Parameters**
 
-    values: *pd.Series*
+    data: *pd.Series*
         Dataframe of prices
     window: *int*
         Length of window
