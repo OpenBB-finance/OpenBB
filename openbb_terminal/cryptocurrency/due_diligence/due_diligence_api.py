@@ -10,7 +10,6 @@ from .glassnode_view import display_non_zero_addresses as nonzero
 from .glassnode_view import display_active_addresses as active
 from .glassnode_view import display_exchange_net_position_change as change
 from .glassnode_view import display_exchange_balances as eb
-from .glassnode_view import display_btc_rainbow as btcrb
 from .glassnode_view import display_hashrate as hr
 from .coinglass_view import display_open_interest as oi
 from .pycoingecko_view import display_info as info
