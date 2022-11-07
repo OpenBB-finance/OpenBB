@@ -1,11 +1,11 @@
 ## Get underlying data 
-### common.ta.ema(data: pandas.core.frame.DataFrame, length: int = 50, offset: int = 0) -> pandas.core.frame.DataFrame
+### common.ta.ema(data: pandas.core.series.Series, length: int = 50, offset: int = 0) -> pandas.core.frame.DataFrame
 
 Gets exponential moving average (EMA) for stock
 
     Parameters
     ----------
-    data: pd.DataFrame
+    data: pd.Series
         Dataframe of dates and prices
     length: int
         Length of EMA window

@@ -75,7 +75,15 @@ class FuturesController(BaseController):
             self.choices["about"] = self.ABOUT_CHOICES
 
             self.choices["historical"] = {c: None for c in self.all_tickers}
+            self.choices["historical"]["--ticker"] = {c: None for c in self.all_tickers}
+            self.choices["historical"]["-t"] = "--ticker"
+            self.choices["historical"]["--start"] = {}
+            self.choices["historical"]["-s"] = "--start"
+            self.choices["historical"]["--expiry"] = {}
+            self.choices["historical"]["-e"] = "--expiry"
             self.choices["curve"] = {c: None for c in self.all_tickers}
+            self.choices["curve"]["--ticker"] = {c: None for c in self.all_tickers}
+            self.choices["curve"]["-t"] = "--ticker"
 
             self.completer = NestedCompleter.from_nested_dict(self.choices)  # type: ignore
 
@@ -217,7 +225,7 @@ class FuturesController(BaseController):
             "--ticker",
             dest="ticker",
             type=str,
-            choices=self.all_tickers,
+            default="",
             help="Future curve to be selected",
             metavar="Futures symbol",
             required="-h" not in other_args,
@@ -230,9 +238,10 @@ class FuturesController(BaseController):
             export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
             raw=True,
         )
+
         if ns_parser:
             yfinance_view.display_curve(
-                ticker=ns_parser.ticker,
+                ticker=ns_parser.ticker.upper(),
                 raw=ns_parser.raw,
                 export=ns_parser.export,
             )
