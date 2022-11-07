@@ -1,5 +1,5 @@
 ---
-title: Introduction Technical Analysis
+title: Introduction to Technical Analysis
 keywords: "ta, technical, analysis, ad, adosc, adx, aroon, bbands, cci, cg, donchian, ema, fib, fisher, hma, kc, ma, macd, obv, rsi, sma, stoch, vwap, wma, zlma"
 excerpt: "This guide introduces the common Technical Analysis functions, between all asset classes, available through the OpenBB SDK"
 geekdocCollapseSection: true
