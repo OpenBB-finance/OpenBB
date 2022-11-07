@@ -841,34 +841,28 @@ class EconomyController(BaseController):
                 if not series_dict:
                     return self.queue
 
-                df, detail = fred_model.get_aggregated_series_data(
+                df, detail = fred_view.display_fred_series(
                     series_ids=parameters,
                     start_date=ns_parser.start_date,
                     end_date=ns_parser.end_date,
+                    limit=ns_parser.limit,
+                    raw=ns_parser.raw,
+                    export=ns_parser.export,
+                    get_data=True,
                 )
 
-                for series_id, data in detail.items():
-                    self.FRED_TITLES[series_id] = f"{data['title']} ({data['units']})"
-
                 if not df.empty:
-                    self.DATASETS["fred"] = pd.concat(
-                        [
-                            self.DATASETS["fred"],
-                            df,
-                        ]
-                    )
+
+                    for series_id, data in detail.items():
+                        self.FRED_TITLES[
+                            series_id
+                        ] = f"{data['title']} ({data['units']})"
+
+                        # Making data available at the class level
+                        self.DATASETS["fred"][series_id] = df[series_id]
 
                     self.stored_datasets = (
                         economy_helpers.update_stored_datasets_string(self.DATASETS)
-                    )
-
-                    fred_view.display_fred_series(
-                        series_ids=parameters,
-                        start_date=ns_parser.start_date,
-                        end_date=ns_parser.end_date,
-                        limit=ns_parser.limit,
-                        raw=ns_parser.raw,
-                        export=ns_parser.export,
                     )
 
                     self.update_runtime_choices()

@@ -79,10 +79,11 @@ def display_fred_series(
     start_date: str = None,
     end_date: str = None,
     limit: int = 10,
+    get_data: bool = False,
     raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
-):
+) -> Tuple[pd.DataFrame, dict]:
     """Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]
 
     Parameters
@@ -118,7 +119,7 @@ def display_fred_series(
         elif is_valid_axes_count(external_axes, 1):
             (ax,) = external_axes
         else:
-            return
+            return pd.DataFrame(), {}
 
         for s_id, sub_dict in detail.items():
 
@@ -161,6 +162,9 @@ def display_fred_series(
             "fred",
             data,
         )
+
+    if get_data:
+        return data, detail
 
 
 def format_data_to_plot(data: pd.DataFrame, detail: dict) -> Tuple[pd.DataFrame, str]:
