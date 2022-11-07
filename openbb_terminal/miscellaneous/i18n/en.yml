@@ -1042,6 +1042,7 @@ en:
   forecast/signal: Add Price Signal (short vs. long term)
   forecast/_tsforecasting_: TimeSeries Forecasting
   forecast/autoets: Automatic ETS (Error, Trend, Seasonality) Model
+  forecast/mstl: Multiple Seasonalities and Trend using Loess (MSTL) Model
   forecast/arima: Arima (Non-darts)
   forecast/expo: Probabilistic Exponential Smoothing
   forecast/theta: Theta Method

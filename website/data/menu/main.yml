@@ -773,6 +773,8 @@ main:
             ref: terminal/forecast/load
           - name: mom
             ref: terminal/forecast/mom
+          - name: mstl
+            ref: terminal/forecast/mstl
           - name: nbeats
             ref: terminal/forecast/nbeats
           - name: nhits
