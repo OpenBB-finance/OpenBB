@@ -570,25 +570,3 @@ def get_exchange_net_position_change(
         console.print(r.text)
 
     return df
-
-
-@log_start_end(log=logger)
-def get_btc_rainbow(
-    start_date: str = "2010-01-01",
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
-):
-    """Get bitcoin price data
-    [Price data from source: https://glassnode.com]
-    [Inspired by: https://blockchaincenter.net]
-
-    Parameters
-    ----------
-    start_date : str
-        Initial date, format YYYY-MM-DD
-    end_date : str
-        Final date, format YYYY-MM-DD
-    """
-
-    df_data = get_close_price("BTC", start_date, end_date)
-
-    return df_data
