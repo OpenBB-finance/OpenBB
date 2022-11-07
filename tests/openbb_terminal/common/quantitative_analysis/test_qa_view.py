@@ -97,7 +97,6 @@ def test_display_line(y, external):
         markers_scatter=dates,
         external_axes=external,
         title=True,
-        draw=False,
     )
 
 

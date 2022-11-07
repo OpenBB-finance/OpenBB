@@ -1,7 +1,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### forecast.expo(data: Union[pandas.core.series.Series, pandas.core.frame.DataFrame], target_column: str = 'close', trend: str = 'A', seasonal: str = 'A', seasonal_periods: int = 7, dampen: str = 'F', n_predict: int = 30, start_window: float = 0.85, forecast_horizon: int = 5) -> Tuple[list[darts.timeseries.TimeSeries], List[darts.timeseries.TimeSeries], List[darts.timeseries.TimeSeries], Optional[float], Any]
+### forecast.expo(data: Union[pandas.core.series.Series, pandas.core.frame.DataFrame], target_column: str = 'close', trend: str = 'A', seasonal: str = 'A', seasonal_periods: int = 7, dampen: str = 'F', n_predict: int = 5, start_window: float = 0.85, forecast_horizon: int = 5) -> Tuple[List[darts.timeseries.TimeSeries], List[darts.timeseries.TimeSeries], List[darts.timeseries.TimeSeries], Optional[float], Any]
 
 Performs Probabilistic Exponential Smoothing forecasting
     This is a wrapper around statsmodels Holt-Winters' Exponential Smoothing;
@@ -47,7 +47,7 @@ Performs Probabilistic Exponential Smoothing forecasting
         Fit Prob. Expo model object.
 
 ## Getting charts 
-### forecast.expo(data: Union[pandas.core.frame.DataFrame, pandas.core.series.Series], target_column: str = 'close', dataset_name: str = '', trend: str = 'A', seasonal: str = 'A', seasonal_periods: int = 7, dampen: str = 'F', n_predict: int = 30, start_window: float = 0.85, forecast_horizon: int = 5, export: str = '', residuals: bool = False, forecast_only: bool = False, start_date: Optional[datetime.datetime] = None, end_date: Optional[datetime.datetime] = None, naive: bool = False, export_pred_raw: bool = False, external_axes: Optional[List[axes]] = None, chart=True)
+### forecast.expo(data: Union[pandas.core.frame.DataFrame, pandas.core.series.Series], target_column: str = 'close', dataset_name: str = '', trend: str = 'A', seasonal: str = 'A', seasonal_periods: int = 7, dampen: str = 'F', n_predict: int = 5, start_window: float = 0.85, forecast_horizon: int = 5, export: str = '', residuals: bool = False, forecast_only: bool = False, start_date: Optional[datetime.datetime] = None, end_date: Optional[datetime.datetime] = None, naive: bool = False, export_pred_raw: bool = False, external_axes: Optional[List[axes]] = None, chart=True)
 
 Display Probabilistic Exponential Smoothing forecast
 

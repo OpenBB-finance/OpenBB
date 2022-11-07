@@ -194,7 +194,7 @@ def get_coin_potential_returns(
                         main_coin,
                         main_coin_data["usd"],
                         main_coin_data["usd_market_cap"],
-                        "",
+                        main_coin,
                         future_price,
                         final_market_cap,
                         market_cap_difference_percentage,

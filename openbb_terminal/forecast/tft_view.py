@@ -21,7 +21,7 @@ def display_tft_forecast(
     data: Union[pd.Series, pd.DataFrame],
     target_column: str = "close",
     dataset_name: str = "",
-    n_predict: int = 30,
+    n_predict: int = 5,
     past_covariates: str = None,
     train_split: float = 0.85,
     forecast_horizon: int = 5,

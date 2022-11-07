@@ -1,11 +1,11 @@
 ## Get underlying data 
-### common.ta.hma(data: pandas.core.frame.DataFrame, length: int = 50, offset: int = 0) -> pandas.core.frame.DataFrame
+### common.ta.hma(data: pandas.core.series.Series, length: int = 50, offset: int = 0) -> pandas.core.frame.DataFrame
 
 Gets hull moving average (HMA) for stock
 
     Parameters
     ----------
-    data: pd.DataFrame
+    data: pd.Series
         Dataframe of dates and prices
     length: int
         Length of SMA window
