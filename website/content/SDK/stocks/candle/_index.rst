@@ -20,10 +20,10 @@ stocks.candle(
     ma: Optional[Iterable[int]] = None,
     asset_type: str = '',
     start_date: datetime.datetime = datetime.datetime(
-    2019, 11, 3, 11, 31, 26, 354360, chart: bool = False,
+    2019, 11, 3, 12, 36, 14, 302333, chart: bool = False,
 ), interval: int = 1440,
     end_date: datetime.datetime = datetime.datetime(
-    2022, 11, 7, 11, 31, 26, 354371, chart: bool = False,
+    2022, 11, 7, 12, 36, 14, 302345, chart: bool = False,
 ), prepost: bool = False,
     source: str = 'YahooFinance',
     iexrange: str = 'ytd',

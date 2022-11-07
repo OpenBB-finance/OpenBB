@@ -29,7 +29,7 @@ etf.disc.mover(
 * **Parameters**
 
     sort_type: *str*
-        Data to get.  Can be "gainers", "decliners" or "active"
+        Data to get. Can be "gainers", "decliners" or "active"
     chart: *bool*
        Flag to display chart
 
@@ -64,11 +64,11 @@ etf.disc.mover(
 * **Parameters**
 
     sort_type: *str*
-         What to show.  Either Gainers, Decliners or Activity
+        What to show. Either Gainers, Decliners or Activity
     limit: *int*
-         Number of etfs to show
-     export: *str*
-         Format to export data
+        Number of etfs to show
+    export: *str*
+        Format to export data
     chart: *bool*
        Flag to display chart
 
