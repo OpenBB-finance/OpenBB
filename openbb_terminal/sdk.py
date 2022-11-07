@@ -1993,6 +1993,10 @@ forecast_extras = {
         "model": "openbb_terminal.forecast.autoets_model.get_autoets_data",
         "view": "openbb_terminal.forecast.autoets_view.display_autoets_forecast",
     },
+    "forecast.rwd": {
+        "model": "openbb_terminal.forecast.rwd_model.get_rwd_data",
+        "view": "openbb_terminal.forecast.rwd_view.display_rwd_forecast",
+    },
     "forecast.expo": {
         "model": "openbb_terminal.forecast.expo_model.get_expo_data",
         "view": "openbb_terminal.forecast.expo_view.display_expo_forecast",
