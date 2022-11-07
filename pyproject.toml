@@ -1,12 +1,16 @@
 [tool.poetry]
 name = "OpenBBTerminal"
 version = "1.9.1"
-description = ""
+description = "Investment Research for Everyone, Anywhere."
+license = "MIT"
 authors = ["Didier Rodrigues Lopes"]
 packages = [
     { include = "openbb_terminal" },
 ]
-readme = "README.md"
+readme = "openbb_terminal/SDK_README.md"
+homepage = "https://openbb.co/"
+repository = "https://github.com/OpenBB-finance/OpenBBTerminal"
+documentation = "https://openbb-finance.github.io/OpenBBTerminal/"
 
 [tool.poetry.scripts]
 openbb = 'openbb_terminal.terminal_controller:parse_args_and_run'
@@ -83,7 +87,12 @@ Riskfolio-Lib = "^3.1.1"
 ccxt = "^1.91.60"
 html5lib = "^1.1"
 feedparser = "^6.0.10"
+pyinstaller = {version = "^4.10", optional = true}
+jupyterlab-code-formatter = {version = "^1.4.10", optional = true}
+jupyterlab-lsp = {version = "^3.10.1", optional = true}
+jedi-language-server = {version = "^0.35.1", optional = true}
 tokenterminal = "^1.0.1"
+torch = {version = "1.11.0", optional = true}
 streamlit = "^1.12.2"
 charset-normalizer = "2.1.0"
 watchdog = "^2.1.9"
@@ -92,9 +101,9 @@ ipyflex = "^0.2.4"
 "ruamel.yaml" = "^0.17.21"
 setuptools = "^65.4.1"
 investiny = "^0.5.0"
-numpy = "1.21.6"
-stocksera = "^0.1.21"
+numpy = "1.23.4"
 papermill = "^2.4.0"
+stocksera = "^0.1.21"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
