@@ -402,6 +402,7 @@ def display_fundamentals(
         - balance-sheet
 
     limit: int
+        Number of periods to show
     ratios: bool
         Shows percentage change
     plot: list

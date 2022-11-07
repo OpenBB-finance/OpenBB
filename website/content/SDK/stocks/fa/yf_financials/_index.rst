@@ -32,7 +32,7 @@ stocks.fa.yf_financials(
     symbol : str
         Stock ticker symbol
     statement: str
-        Possible values are:
+        can be:
 
         - cash-flow
         - financials for Income
@@ -87,6 +87,7 @@ stocks.fa.yf_financials(
         - balance-sheet
 
     limit: int
+        Number of periods to show
     ratios: bool
         Shows percentage change
     plot: list
@@ -95,3 +96,4 @@ stocks.fa.yf_financials(
         Format to export data
     chart: *bool*
        Flag to display chart
+
