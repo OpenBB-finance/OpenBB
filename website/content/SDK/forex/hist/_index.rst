@@ -29,9 +29,9 @@ forex.hist(
 
 * **Parameters**
 
-    to_symbol : *str*
+    to_symbol : str
         To forex symbol
-    from_symbol : *str*
+    from_symbol : str
         From forex symbol
     resolution : str, optional
         Resolution of data.  Can be "i", "d", "w", "m" for intraday, daily, weekly or monthly

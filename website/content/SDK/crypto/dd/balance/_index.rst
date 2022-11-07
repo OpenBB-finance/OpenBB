@@ -28,9 +28,9 @@ crypto.dd.balance(
 
 * **Parameters**
 
-    from_symbol: *str*
+    from_symbol: str
         Cryptocurrency
-    to_symbol: *str*
+    to_symbol: str
         Cryptocurrency
     chart: *bool*
        Flag to display chart
@@ -66,11 +66,11 @@ crypto.dd.balance(
 
 * **Parameters**
 
-    from_symbol: *str*
+    from_symbol: str
         Cryptocurrency
-    to_symbol: *str*
+    to_symbol: str
         Cryptocurrency
-    export: *str*
+    export: str
         Export dataframe data to csv,json,xlsx
     chart: *bool*
        Flag to display chart

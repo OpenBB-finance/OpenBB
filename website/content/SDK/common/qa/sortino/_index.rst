@@ -30,13 +30,13 @@ common.qa.sortino(
 
 * **Parameters**
 
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         selected dataframe
-    target_return: *float*
+    target_return: float
         target return of the asset
-    window: *float*
+    window: float
         length of the rolling window
-    adjusted: *bool*
+    adjusted: bool
         adjust the sortino ratio
     chart: *bool*
        Flag to display chart
@@ -44,7 +44,7 @@ common.qa.sortino(
 
 * **Returns**
 
-    sortino: *pd.DataFrame*
+    sortino: pd.DataFrame
         sortino ratio
 
 |
@@ -73,13 +73,13 @@ common.qa.sortino(
 
 * **Parameters**
 
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         selected dataframe
-    target_return: *float*
+    target_return: float
         target return of the asset
-    window: *float*
+    window: float
         length of the rolling window
-    adjusted: *bool*
+    adjusted: bool
         adjust the sortino ratio
     chart: *bool*
        Flag to display chart

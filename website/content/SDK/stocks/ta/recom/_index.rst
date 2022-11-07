@@ -30,13 +30,13 @@ stocks.ta.recom(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Ticker symbol to get the recommendation from tradingview based on technical indicators
-    screener : *str*
+    screener : str
         Screener based on tradingview docs https://python-tradingview-ta.readthedocs.io/en/latest/usage.html
-    exchange: *str*
+    exchange: str
         Exchange based on tradingview docs https://python-tradingview-ta.readthedocs.io/en/latest/usage.html
-    interval: *str*
+    interval: str
         Interval time to check technical indicators and correspondent recommendation
     chart: *bool*
        Flag to display chart
@@ -44,7 +44,7 @@ stocks.ta.recom(
 
 * **Returns**
 
-    df_recommendation: *pd.DataFrame*
+    df_recommendation: pd.DataFrame
         Dataframe of tradingview recommendations based on technical indicators
 
 |
@@ -74,15 +74,15 @@ stocks.ta.recom(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Ticker symbol to get tradingview recommendation based on technical indicators
-    screener : *str*
+    screener : str
         Screener based on tradingview docs https://python-tradingview-ta.readthedocs.io/en/latest/usage.html
-    exchange: *str*
+    exchange: str
         Exchange based on tradingview docs https://python-tradingview-ta.readthedocs.io/en/latest/usage.html
-    interval: *str*
+    interval: str
         Interval time to check technical indicators and correspondent recommendation
-    export: *str*
+    export: str
         Format of export file
     chart: *bool*
        Flag to display chart

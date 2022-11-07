@@ -26,7 +26,7 @@ stocks.ca.finviz_peers(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Ticker to find comparisons for
     compare_list : List[str]
         List of fields to compare, ["Sector", "Industry", "Country"]

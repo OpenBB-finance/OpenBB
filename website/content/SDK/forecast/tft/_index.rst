@@ -202,15 +202,15 @@ forecast.tft(
     save_checkpoints (bool, optional):
         Whether or not to automatically save the untrained model and checkpoints from training.
         Defaults to True.
-    residuals: *bool*
+    residuals: bool
         Whether to show residuals for the model. Defaults to False.
-    forecast_only: *bool*
+    forecast_only: bool
         Whether to only show dates in the forecasting range. Defaults to False.
     start_date: Optional[datetime]
         The starting date to perform analysis, data before this is trimmed. Defaults to None.
     end_date: Optional[datetime]
         The ending date to perform analysis, data after this is trimmed. Defaults to None.
-    naive: *bool*
+    naive: bool
         Whether to show the naive baseline. This just assumes the closing price will be the same
         as the previous day's closing price. Defaults to False.
     external_axes:Optional[List[plt.axes]]

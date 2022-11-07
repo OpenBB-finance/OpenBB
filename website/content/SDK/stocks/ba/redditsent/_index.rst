@@ -32,19 +32,19 @@ stocks.ba.redditsent(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Ticker symbol to search for
-    limit: *int*
+    limit: int
         Number of posts to get per subreddit
-    sortby: *str*
+    sortby: str
         Search type
         Possibilities: "relevance", "hot", "top", "new", or "comments"
-    time_frame: *str*
+    time_frame: str
         Relative time of post
         Possibilities: "hour", "day", "week", "month", "year", "all"
-    full_search: *bool*
+    full_search: bool
         Enable comprehensive search for ticker
-    subreddits: *str*
+    subreddits: str
         Comma-separated list of subreddits
     chart: *bool*
        Flag to display chart
@@ -89,23 +89,23 @@ stocks.ba.redditsent(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         The ticker symbol being search for in Reddit
-    sortby: *str*
+    sortby: str
         Type of search
-    limit: *str*
+    limit: str
         Number of posts to get at most
-    graphic: *bool*
+    graphic: bool
         Displays box and whisker plot
-    time_frame: *str*
+    time_frame: str
         Time frame for search
-    full_search: *bool*
+    full_search: bool
         Enable comprehensive search for ticker
-    subreddits: *str*
+    subreddits: str
         Comma-separated list of subreddits
-    display: *bool*
+    display: bool
         Enable printing of raw sentiment values for each post
-    export: *str*
+    export: str
         Format to export data
     external_axes: Optional[List[plt.Axes]]
         If supplied, expect 1 external axis

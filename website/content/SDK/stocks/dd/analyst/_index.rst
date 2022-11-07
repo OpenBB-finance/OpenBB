@@ -25,10 +25,10 @@ stocks.dd.analyst(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Stock ticker symbol
 
 * **Returns**
 
-    df_fa: *DataFrame*
+    df_fa: DataFrame
         Analyst price targets

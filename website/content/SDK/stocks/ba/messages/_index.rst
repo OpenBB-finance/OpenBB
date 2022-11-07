@@ -28,9 +28,9 @@ stocks.ba.messages(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Stock ticker symbol
-    limit : *int*
+    limit : int
         Number of messages to get
     chart: *bool*
        Flag to display chart
@@ -65,9 +65,9 @@ stocks.ba.messages(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Stock ticker symbol
-    limit: *int*
+    limit: int
         Number of messages to get
     chart: *bool*
        Flag to display chart

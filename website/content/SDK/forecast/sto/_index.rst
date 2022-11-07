@@ -24,18 +24,18 @@ forecast.sto(
 .. raw:: html
 
     <p>
-    Stochastic Oscillator %K and %D : *A stochastic oscillator is a momentum indicator comparing a particular closing*
+    Stochastic Oscillator %K and %D : A stochastic oscillator is a momentum indicator comparing a particular closing
     price of a security to a range of its prices over a certain period of time. %K and %D are slow and fast indicators.
 
     Requires Low/High/Close columns.
-    Note: *This will drop first rows equal to period due to how this metric is calculated.*
+    Note: This will drop first rows equal to period due to how this metric is calculated.
     </p>
 
 * **Parameters**
 
-    dataset : *pd.DataFrame*
+    dataset : pd.DataFrame
         The dataset you wish to calculate for
-    period : *int*
+    period : int
         Span
 
 * **Returns**

@@ -27,7 +27,7 @@ stocks.ins.act(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Ticker symbol to get insider activity data from
     chart: *bool*
        Flag to display chart
@@ -35,7 +35,7 @@ stocks.ins.act(
 
 * **Returns**
 
-    df_insider : *pd.DataFrame*
+    df_insider : pd.DataFrame
         Get insider activity data
 
 |
@@ -68,19 +68,19 @@ stocks.ins.act(
 
 * **Parameters**
 
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         Stock dataframe
-    symbol: *str*
+    symbol: str
         Due diligence ticker symbol
-    start_date: *str*
+    start_date: str
         Start date of the stock data
-    interval: *str*
+    interval: str
         Stock data interval
-    limit: *int*
+    limit: int
         Number of latest days of inside activity
-    raw: *bool*
+    raw: bool
         Print to console
-    export: *str*
+    export: str
         Export dataframe data to csv,json,xlsx file
     external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

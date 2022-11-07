@@ -28,7 +28,7 @@ crypto.dd.pi(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Crypto symbol to check product info
     chart: *bool*
        Flag to display chart
@@ -70,9 +70,9 @@ crypto.dd.pi(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Crypto symbol to check project info
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

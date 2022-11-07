@@ -62,9 +62,9 @@ crypto.defi.dtvl(
 
 * **Parameters**
 
-    dapps: *str*
+    dapps: str
         dApps to search historical TVL. Should be split by , e.g.: anchor,sushiswap,pancakeswap
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

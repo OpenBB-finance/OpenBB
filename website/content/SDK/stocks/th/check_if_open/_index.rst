@@ -26,9 +26,9 @@ stocks.th.check_if_open(
 
 * **Parameters**
 
-    bursa : *pd.DataFrame*
+    bursa : pd.DataFrame
         pd.DataFrame of all exchanges
-    exchange : *str*
+    exchange : str
         bursa pd.DataFrame index value for exchange
 
 * **Returns**

@@ -31,9 +31,9 @@ forex.load(
 
 * **Parameters**
 
-    to_symbol : *str*
+    to_symbol : str
         The from currency symbol. Ex: USD, EUR, GBP, YEN
-    from_symbol : *str*
+    from_symbol : str
         The from currency symbol. Ex: USD, EUR, GBP, YEN
     resolution : str, optional
         The resolution for the data, by default "d"

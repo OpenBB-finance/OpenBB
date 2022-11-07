@@ -29,15 +29,15 @@ crypto.candles(
 
 * **Parameters**
 
-    candles_df: *pd.DataFrame*
+    candles_df: pd.DataFrame
         Dataframe containing time and OHLCV
-    volume: *bool*
+    volume: bool
         If volume data shall be plotted, by default True
-    ylabel: *str*
+    ylabel: str
         Y-label of the graph, by default ""
-    title: *str*
+    title: str
         Title of graph, by default ""
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    yscale : *str*
+    yscale : str
         Scaling for y axis.  Either linear or log

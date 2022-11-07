@@ -30,7 +30,7 @@ forex.oanda.calendar(
 
     instrument : Union[str, None]
         The loaded currency pair, by default None
-    days : *int*
+    days : int
         Number of days in advance
     chart: *bool*
        Flag to display chart
@@ -65,9 +65,9 @@ forex.oanda.calendar(
 
 * **Parameters**
 
-    instrument : *str*
+    instrument : str
         The loaded currency pair
-    days : *int*
+    days : int
         Number of days in advance
     chart: *bool*
        Flag to display chart

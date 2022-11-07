@@ -26,9 +26,9 @@ crypto.onchain.query_graph(
 
 * **Parameters**
 
-    url: *str*
+    url: str
         Endpoint url
-    query: *str*
+    query: str
         Graphql query
 
 * **Returns**

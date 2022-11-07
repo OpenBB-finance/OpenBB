@@ -28,9 +28,9 @@ common.ta.fisher(
 
 * **Parameters**
 
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         Dataframe of OHLC prices
-    window: *int*
+    window: int
         Length for indicator window
     chart: *bool*
        Flag to display chart
@@ -38,7 +38,7 @@ common.ta.fisher(
 
 * **Returns**
 
-    df_ta: *pd.DataFrame*
+    df_ta: pd.DataFrame
         Dataframe of technical indicator
 
 |
@@ -68,13 +68,13 @@ common.ta.fisher(
 
 * **Parameters**
 
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         Dataframe of OHLC prices
-    window : *int*
+    window : int
         Length of window
-    symbol : *str*
+    symbol : str
         Ticker string
-    export : *str*
+    export : str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (3 axes are expected in the list), by default None

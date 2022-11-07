@@ -29,12 +29,12 @@ crypto.dd.ex(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Identifier of Coin from CoinPaprika
-    sortby: *str*
+    sortby: str
         Key by which to sort data. Every column name is valid (see for possible values:
         https://api.coinpaprika.com/v1).
-    ascend: *bool*
+    ascend: bool
         Flag to sort data ascending
     chart: *bool*
        Flag to display chart
@@ -73,16 +73,16 @@ crypto.dd.ex(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Cryptocurrency symbol (e.g. BTC)
-    limit: *int*
+    limit: int
         Number of records to display
-    sortby: *str*
+    sortby: str
         Key by which to sort data. Every column name is valid (see for possible values:
         https://api.coinpaprika.com/v1).
-    ascend: *bool*
+    ascend: bool
         Flag to sort data ascending
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

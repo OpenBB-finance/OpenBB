@@ -25,7 +25,7 @@ stocks.fa.score(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Stock ticker symbol
 
 * **Returns**

@@ -32,17 +32,17 @@ common.qa.var(
 
 * **Parameters**
 
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         Data dataframe
-    use_mean: *bool*
+    use_mean: bool
         If one should use the data mean for calculation
-    adjusted_var: *bool*
+    adjusted_var: bool
         If one should return VaR adjusted for skew and kurtosis
-    student_t: *bool*
+    student_t: bool
         If one should use the student-t distribution
     percentile: Union[int,float]
         VaR percentile
-    portfolio: *bool*
+    portfolio: bool
         If the data is a portfolio
     chart: *bool*
        Flag to display chart
@@ -85,21 +85,21 @@ common.qa.var(
 
 * **Parameters**
 
-    data: *pd.Dataframe*
+    data: pd.Dataframe
         Data dataframe
-    use_mean: *bool*
+    use_mean: bool
         if one should use the data mean return
-    symbol: *str*
+    symbol: str
         name of the data
-    adjusted_var: *bool*
+    adjusted_var: bool
         if one should have VaR adjusted for skew and kurtosis (Cornish-Fisher-Expansion)
-    student_t: *bool*
+    student_t: bool
         If one should use the student-t distribution
-    percentile: *int*
+    percentile: int
         var percentile
-    data_range: *int*
+    data_range: int
         Number of rows you want to use VaR over
-    portfolio: *bool*
+    portfolio: bool
         If the data is a portfolio
     chart: *bool*
        Flag to display chart

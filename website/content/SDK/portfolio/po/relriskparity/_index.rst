@@ -75,9 +75,9 @@ portfolio.po.relriskparity(
         Relaxed risk parity model version. The default is 'A'.
         Possible values are:
 
-        - 'A': *without regularization and penalization constraints.*
-        - 'B': *with regularization constraint but without penalization constraint.*
-        - 'C': *with regularization and penalization constraints.*
+        - 'A': without regularization and penalization constraints.
+        - 'B': with regularization constraint but without penalization constraint.
+        - 'C': with regularization and penalization constraints.
 
     risk_cont: List[str], optional
         The vector of risk contribution per asset. If empty, the default is
@@ -91,7 +91,7 @@ portfolio.po.relriskparity(
         The method used to estimate the expected returns.
         The default value is 'hist'. Possible values are:
 
-        - 'hist': *use historical estimates.*
+        - 'hist': use historical estimates.
         - 'ewma1': use ewma with adjust=True. For more information see
         `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
         - 'ewma2': use ewma with adjust=False. For more information see
@@ -101,15 +101,15 @@ portfolio.po.relriskparity(
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
-        - 'hist': *use historical estimates.*
+        - 'hist': use historical estimates.
         - 'ewma1': use ewma with adjust=True. For more information see
         `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
         - 'ewma2': use ewma with adjust=False. For more information see
         `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ledoit': *use the Ledoit and Wolf Shrinkage method.*
-        - 'oas': *use the Oracle Approximation Shrinkage method.*
-        - 'shrunk': *use the basic Shrunk Covariance method.*
-        - 'gl': *use the basic Graphical Lasso Covariance method.*
+        - 'ledoit': use the Ledoit and Wolf Shrinkage method.
+        - 'oas': use the Oracle Approximation Shrinkage method.
+        - 'shrunk': use the basic Shrunk Covariance method.
+        - 'gl': use the basic Graphical Lasso Covariance method.
         - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
         - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
         - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
@@ -201,9 +201,9 @@ portfolio.po.relriskparity(
         Relaxed risk parity model version. The default is 'A'.
         Possible values are:
 
-        - 'A': *without regularization and penalization constraints.*
-        - 'B': *with regularization constraint but without penalization constraint.*
-        - 'C': *with regularization and penalization constraints.*
+        - 'A': without regularization and penalization constraints.
+        - 'B': with regularization constraint but without penalization constraint.
+        - 'C': with regularization and penalization constraints.
 
     risk_cont: List[str], optional
         The vector of risk contribution per asset. If empty, the default is
@@ -217,7 +217,7 @@ portfolio.po.relriskparity(
         The method used to estimate the expected returns.
         The default value is 'hist'. Possible values are:
 
-        - 'hist': *use historical estimates.*
+        - 'hist': use historical estimates.
         - 'ewma1': use ewma with adjust=True. For more information see
         `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
         - 'ewma2': use ewma with adjust=False. For more information see
@@ -227,15 +227,15 @@ portfolio.po.relriskparity(
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
-        - 'hist': *use historical estimates.*
+        - 'hist': use historical estimates.
         - 'ewma1': use ewma with adjust=True. For more information see
         `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
         - 'ewma2': use ewma with adjust=False. For more information see
         `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ledoit': *use the Ledoit and Wolf Shrinkage method.*
-        - 'oas': *use the Oracle Approximation Shrinkage method.*
-        - 'shrunk': *use the basic Shrunk Covariance method.*
-        - 'gl': *use the basic Graphical Lasso Covariance method.*
+        - 'ledoit': use the Ledoit and Wolf Shrinkage method.
+        - 'oas': use the Oracle Approximation Shrinkage method.
+        - 'shrunk': use the basic Shrunk Covariance method.
+        - 'gl': use the basic Graphical Lasso Covariance method.
         - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
         - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
         - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.

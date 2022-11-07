@@ -29,11 +29,11 @@ stocks.ba.sentiment(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Stock ticker symbol to get sentiment for
-    n_tweets: *int*
+    n_tweets: int
         Number of tweets to get per hour
-    n_days_past: *int*
+    n_days_past: int
         Number of days to extract tweets for
     chart: *bool*
        Flag to display chart
@@ -67,15 +67,15 @@ stocks.ba.sentiment(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Stock ticker symbol to get sentiment for
-    n_tweets: *int*
+    n_tweets: int
         Number of tweets to get per hour
-    n_days_past: *int*
+    n_days_past: int
         Number of days to extract tweets for
-    compare: *bool*
+    compare: bool
         Show corresponding change in stock price
-    export: *str*
+    export: str
         Format to export tweet dataframe
     external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

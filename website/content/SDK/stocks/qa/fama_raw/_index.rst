@@ -22,5 +22,5 @@ stocks.qa.fama_raw() -> pandas.core.frame.DataFrame
 
 * **Returns**
 
-    fama : *pd.DataFrame*
+    fama : pd.DataFrame
         A data with fama french model information

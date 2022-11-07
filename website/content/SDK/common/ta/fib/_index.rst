@@ -30,13 +30,13 @@ common.ta.fib(
 
 * **Parameters**
 
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         Dataframe of prices
-    limit : *int*
+    limit : int
         Days to look back for retracement
-    start_date : *Any*
+    start_date : Any
         Custom start date for retracement
-    end_date : *Any*
+    end_date : Any
         Custom end date for retracement
     chart: *bool*
        Flag to display chart
@@ -44,15 +44,15 @@ common.ta.fib(
 
 * **Returns**
 
-    df : *pd.DataFrame*
+    df : pd.DataFrame
         Dataframe of fib levels
-    min_date: *pd.Timestamp*
+    min_date: pd.Timestamp
         Date of min point
     max_date: pd.Timestamp:
         Date of max point
-    min_pr: *float*
+    min_pr: float
         Price at min point
-    max_pr: *float*
+    max_pr: float
         Price at max point
 
 |
@@ -84,17 +84,17 @@ common.ta.fib(
 
 * **Parameters**
 
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         OHLC data
-    limit: *int*
+    limit: int
         Days to lookback
     start_date: Optional[str, None]
         User picked date for starting retracement
     end_date: Optional[str, None]
         User picked date for ending retracement
-    symbol: *str*
+    symbol: str
         Ticker symbol
-    export: *str*
+    export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None

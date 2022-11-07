@@ -27,7 +27,7 @@ stocks.gov.histcont(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Ticker symbol to get congress trading data from
     chart: *bool*
        Flag to display chart
@@ -64,11 +64,11 @@ stocks.gov.histcont(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Ticker symbol to get congress trading data from
-    raw: *bool*
+    raw: bool
         Flag to display raw data
-    export: *str*
+    export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

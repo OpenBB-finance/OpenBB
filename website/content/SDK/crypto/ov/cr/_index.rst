@@ -28,15 +28,15 @@ crypto.ov.cr(
 
 * **Parameters**
 
-    rate_type : *str*
-        Interest rate type: {borrow, supply}. Default: *supply*
+    rate_type : str
+        Interest rate type: {borrow, supply}. Default: supply
     chart: *bool*
        Flag to display chart
 
 
 * **Returns**
 
-    pandas.DataFrame: *crypto interest rates per platform*
+    pandas.DataFrame: crypto interest rates per platform
 
 |
 
@@ -67,15 +67,15 @@ crypto.ov.cr(
 
 * **Parameters**
 
-    rate_type: *str*
-        Interest rate type: {borrow, supply}. Default: *supply*
-    symbols: *str*
+    rate_type: str
+        Interest rate type: {borrow, supply}. Default: supply
+    symbols: str
         Crypto separated by commas. Default: BTC,ETH,USDT,USDC
-    platforms: *str*
+    platforms: str
         Platforms separated by commas. Default: BlockFi,Ledn,SwissBorg,Youhodler
-    limit: *int*
+    limit: int
         Number of records to show
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

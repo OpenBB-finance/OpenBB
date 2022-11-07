@@ -25,9 +25,9 @@ econometrics.comparison(
 
 * **Parameters**
 
-    regressions : *Dict*
+    regressions : Dict
         Dictionary with regression results.
-    export : *str*
+    export : str
         Format to export data
 
 * **Returns**

@@ -25,7 +25,7 @@ stocks.fa.divs(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Ticker symbol to get dividend for
 
 * **Returns**

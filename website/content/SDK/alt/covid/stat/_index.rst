@@ -28,11 +28,11 @@ alt.covid.stat(
 
 * **Parameters**
 
-    country: *str*
+    country: str
         Country to get data for
-    stat: *str*
+    stat: str
         Statistic to get.  Either "cases", "deaths" or "rates"
-    limit: *int*
+    limit: int
         Number of raw data to show
     chart: *bool*
        Flag to display chart
@@ -65,17 +65,17 @@ alt.covid.stat(
 
 * **Parameters**
 
-    country: *str*
+    country: str
         Country to get data for
-    stat: *str*
+    stat: str
         Statistic to get.  Either "cases", "deaths" or "rates"
-    raw: *bool*
+    raw: bool
         Flag to display raw data
-    limit: *int*
+    limit: int
         Number of raw data to show
-    export: *str*
+    export: str
         Format to export data
-    plot : *bool*
+    plot : bool
         Flag to plot data
     chart: *bool*
        Flag to display chart

@@ -31,13 +31,13 @@ common.qa.bw(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Name of dataset
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         Dataframe to look at
-    target : *str*
+    target : str
         Data column to look at
-    yearly : *bool*
+    yearly : bool
         Flag to indicate yearly accumulation
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
@@ -72,13 +72,13 @@ common.qa.bw(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Name of dataset
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         Dataframe to look at
-    target : *str*
+    target : str
         Data column to look at
-    yearly : *bool*
+    yearly : bool
         Flag to indicate yearly accumulation
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

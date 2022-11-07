@@ -30,13 +30,13 @@ common.ta.macd(
 
 * **Parameters**
 
-    data: *pd.Series*
+    data: pd.Series
         Values for calculation
-    n_fast : *int*
+    n_fast : int
         Fast period
-    n_slow : *int*
+    n_slow : int
         Slow period
-    n_signal : *int*
+    n_signal : int
         Signal period
     chart: *bool*
        Flag to display chart
@@ -76,17 +76,17 @@ common.ta.macd(
 
 * **Parameters**
 
-    data : *pd.Series*
+    data : pd.Series
         Values to input
-    n_fast : *int*
+    n_fast : int
         Fast period
-    n_slow : *int*
+    n_slow : int
         Slow period
-    n_signal : *int*
+    n_signal : int
         Signal period
-    symbol : *str*
+    symbol : str
         Stock ticker
-    export : *str*
+    export : str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None

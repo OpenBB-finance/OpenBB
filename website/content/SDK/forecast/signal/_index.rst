@@ -29,7 +29,7 @@ forecast.signal(
 
 * **Parameters**
 
-    dataset : *pd.DataFrame*
+    dataset : pd.DataFrame
         The dataset you wish to calculate with
 
 * **Returns**

@@ -28,13 +28,13 @@ portfolio.es(
 
 * **Parameters**
 
-    portfolio: *Portfolio*
+    portfolio: Portfolio
         Portfolio object with trades loaded
     use_mean:
         if one should use the data mean return
-    distribution: *str*
+    distribution: str
         choose distribution to use: logistic, laplace, normal
-    percentile: *float*
+    percentile: float
         es percentile (%)
 
 * **Returns**

@@ -25,14 +25,14 @@ stocks.dd.est(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Ticker to get analysts' estimates
 
 * **Returns**
 
-    df_year_estimates : *pd.DataFrame*
+    df_year_estimates : pd.DataFrame
         Year estimates
-    df_quarter_earnings : *pd.DataFrame*
+    df_quarter_earnings : pd.DataFrame
         Quarter earnings estimates
-    df_quarter_revenues : *pd.DataFrame*
+    df_quarter_revenues : pd.DataFrame
         Quarter revenues estimates

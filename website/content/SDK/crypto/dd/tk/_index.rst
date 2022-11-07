@@ -29,9 +29,9 @@ crypto.dd.tk(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Crypto symbol to check tokenomics
-    coingecko_id : *str*
+    coingecko_id : str
         ID from coingecko
     chart: *bool*
        Flag to display chart
@@ -70,9 +70,9 @@ crypto.dd.tk(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Crypto symbol to check tokenomics
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None

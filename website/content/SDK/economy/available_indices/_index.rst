@@ -20,5 +20,5 @@ economy.available_indices() -> dict
     Get available indices
 
     Returns:
-        dict: *dictionary with available indices and respective detail*
+        dict: dictionary with available indices and respective detail
     </p>

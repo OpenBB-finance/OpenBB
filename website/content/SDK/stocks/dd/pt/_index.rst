@@ -27,7 +27,7 @@ stocks.dd.pt(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Ticker symbol
     chart: *bool*
        Flag to display chart
@@ -67,17 +67,17 @@ stocks.dd.pt(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Due diligence ticker symbol
-    data: *DataFrame*
+    data: DataFrame
         Due diligence stock dataframe
-    start_date : *str*
+    start_date : str
         Start date of the stock data
-    limit : *int*
+    limit : int
         Number of latest price targets from analysts to print
-    raw: *bool*
+    raw: bool
         Display raw data only
-    export: *str*
+    export: str
         Export dataframe data to csv,json,xlsx file
     external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

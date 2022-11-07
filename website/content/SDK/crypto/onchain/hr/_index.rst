@@ -16,8 +16,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 crypto.onchain.hr(
     symbol: str,
     interval: str = '24h',
-    start_date: int = 1289393384,
-    end_date: int = 1667825384,
+    start_date: int = 1289397111,
+    end_date: int = 1667829111,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -31,13 +31,13 @@ crypto.onchain.hr(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Blockchain to check hashrate (BTC or ETH)
-    start_date : *int*
+    start_date : int
         Initial date timestamp (e.g., 1_614_556_800)
-    end_date : *int*
+    end_date : int
         End date timestamp (e.g., 1_614_556_800)
-    interval : *str*
+    interval : str
         Interval frequency (e.g., 24h)
     chart: *bool*
        Flag to display chart
@@ -59,8 +59,8 @@ crypto.onchain.hr(
 {{< highlight python >}}
 crypto.onchain.hr(
     symbol: str,
-    start_date: int = 1636289384,
-    end_date: int = 1667825384,
+    start_date: int = 1636293111,
+    end_date: int = 1667829111,
     interval: str = '24h',
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
@@ -77,15 +77,15 @@ crypto.onchain.hr(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Blockchain to check mean hashrate (BTC or ETH)
-    start_date : *int*
+    start_date : int
         Initial date timestamp (e.g., 1_614_556_800)
-    end_date : *int*
+    end_date : int
         End date timestamp (e.g., 1_614_556_800)
-    interval : *str*
+    interval : str
         Interval frequency (possible values are: 24, 1w, 1month)
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None

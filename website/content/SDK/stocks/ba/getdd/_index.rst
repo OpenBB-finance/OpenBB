@@ -28,13 +28,13 @@ stocks.ba.getdd(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Stock ticker
-    limit: *int*
+    limit: int
         Number of posts to get
-    n_days: *int*
+    n_days: int
         Number of days back to get posts
-    show_all_flairs: *bool*
+    show_all_flairs: bool
         Search through all flairs (apart from Yolo and Meme)
 
 * **Returns**

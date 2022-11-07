@@ -29,13 +29,13 @@ crypto.dd.twitter(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         id of coin from coinpaprika e.g. Ethereum - > 'eth-ethereum'
-    sortby: *str*
+    sortby: str
         Key by which to sort data. Every column name is valid
         (see for possible values:
         https://api.coinpaprika.com/docs#tag/Coins/paths/~1coins~1%7Bcoin_id%7D~1twitter/get).
-    ascend: *bool*
+    ascend: bool
         Flag to sort data descending
     chart: *bool*
        Flag to display chart
@@ -74,17 +74,17 @@ crypto.dd.twitter(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Cryptocurrency symbol (e.g. BTC)
-    limit: *int*
+    limit: int
         Number of records to display
-    sortby: *str*
+    sortby: str
         Key by which to sort data. Every column name is valid
         (see for possible values:
         https://api.coinpaprika.com/docs#tag/Coins/paths/~1coins~1%7Bcoin_id%7D~1twitter/get).
-    ascend: *bool*
+    ascend: bool
         Flag to sort data ascending
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

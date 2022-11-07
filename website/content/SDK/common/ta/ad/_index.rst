@@ -28,9 +28,9 @@ common.ta.ad(
 
 * **Parameters**
 
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         Dataframe of prices with OHLC and Volume
-    use_open : *bool*
+    use_open : bool
         Whether to use open prices
     chart: *bool*
        Flag to display chart
@@ -68,13 +68,13 @@ common.ta.ad(
 
 * **Parameters**
 
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         Dataframe of ohlc prices
-    use_open : *bool*
+    use_open : bool
         Whether to use open prices in calculation
-    symbol : *str*
+    symbol : str
         Ticker symbol
-    export: *str*
+    export: str
         Format to export data as
     external_axes : Optional[List[plt.Axes]], optional
         External axes (3 axes are expected in the list), by default None

@@ -28,7 +28,7 @@ crypto.dd.get_mt(
 
 * **Parameters**
 
-    only_free : *bool*
+    only_free : bool
         Display only timeseries available for free
     chart: *bool*
        Flag to display chart
@@ -66,13 +66,13 @@ crypto.dd.get_mt(
 
 * **Parameters**
 
-    limit : *int*
+    limit : int
         number to show
-    query : *str*
+    query : str
         Query to search across all messari timeseries
-    only_free : *bool*
+    only_free : bool
         Display only timeseries available for free
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

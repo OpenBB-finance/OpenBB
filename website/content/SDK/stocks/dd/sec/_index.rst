@@ -27,7 +27,7 @@ stocks.dd.sec(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Stock ticker symbol
     chart: *bool*
        Flag to display chart
@@ -35,7 +35,7 @@ stocks.dd.sec(
 
 * **Returns**
 
-    df_financials : *pd.DataFrame*
+    df_financials : pd.DataFrame
         SEC filings data
 
 |
@@ -63,11 +63,11 @@ stocks.dd.sec(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Stock ticker symbol
-    limit: *int*
+    limit: int
         Number of ratings to display
-    export: *str*
+    export: str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

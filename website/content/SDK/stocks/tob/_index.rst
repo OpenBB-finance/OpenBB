@@ -26,9 +26,9 @@ stocks.tob(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Ticker to get
-    exchange: *str*
+    exchange: str
         Exchange to look at.  Can be `BZX`,`EDGX`, `BYX`, `EDGA`
 
 * **Returns**

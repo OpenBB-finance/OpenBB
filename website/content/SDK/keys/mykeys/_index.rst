@@ -25,7 +25,7 @@ keys.mykeys(
 
 * **Parameters**
 
-    show: *bool*
+    show: bool
         Flag to choose whether to show actual keys or not.
         By default, False.
 

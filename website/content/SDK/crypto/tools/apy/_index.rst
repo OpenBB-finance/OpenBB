@@ -28,9 +28,9 @@ crypto.tools.apy(
 
 * **Parameters**
 
-    apr: *float*
+    apr: float
         value in percentage
-    compounding_times: *int*
+    compounding_times: int
         number of compounded periods in a year
     chart: *bool*
        Flag to display chart
@@ -39,8 +39,8 @@ crypto.tools.apy(
 * **Returns**
 
     Tuple:
-        - pd.DataFrame: *dataframe with results*
-        - str: *narrative version of results*
+        - pd.DataFrame: dataframe with results
+        - str: narrative version of results
 
 |
 
@@ -68,13 +68,13 @@ crypto.tools.apy(
 
 * **Parameters**
 
-    apr: *float*
+    apr: float
         value in percentage
-    compounding_times: *int*
+    compounding_times: int
         number of compounded periods in a year
-    narrative: *str*
+    narrative: str
         display narrative version instead of dataframe
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

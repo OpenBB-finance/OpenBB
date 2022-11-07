@@ -29,11 +29,11 @@ econometrics.root(
 
 * **Parameters**
 
-    data : *pd.Series*
+    data : pd.Series
         Series or column of DataFrame of target variable
-    fuller_reg : *str*
+    fuller_reg : str
         Type of regression of ADF test
-    kpss_reg : *str*
+    kpss_reg : str
         Type of regression for KPSS test
     chart: *bool*
        Flag to display chart
@@ -72,17 +72,17 @@ econometrics.root(
 
 * **Parameters**
 
-    data : *pd.Series*
+    data : pd.Series
         Series of target variable
-    dataset: *str*
+    dataset: str
         Name of the dataset
-    column: *str*
+    column: str
         Name of the column
-    fuller_reg : *str*
+    fuller_reg : str
         Type of regression of ADF test. Choose c, ct, ctt, or nc
-    kpss_reg : *str*
+    kpss_reg : str
         Type of regression for KPSS test. Choose c or ct
-    export: *str*
+    export: str
         Format to export data.
     chart: *bool*
        Flag to display chart

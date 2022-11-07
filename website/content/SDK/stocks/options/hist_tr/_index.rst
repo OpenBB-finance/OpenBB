@@ -32,13 +32,13 @@ stocks.options.hist_tr(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Stock ticker symbol
-    expiry: *str*
+    expiry: str
         Option expiration date
-    strike: *int*
+    strike: int
         Option strike price
-    put: *bool*
+    put: bool
         Is this a put option?
     chain_id: Optional[str]
         OCC chain ID
@@ -48,7 +48,7 @@ stocks.options.hist_tr(
 
 * **Returns**
 
-    df_hist: *pd.DataFrame*
+    df_hist: pd.DataFrame
         Dataframe of historical option prices
 
 |
@@ -81,19 +81,19 @@ stocks.options.hist_tr(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Stock ticker symbol
-    expiry: *str*
+    expiry: str
         Expiry date of option
-    strike: *float*
+    strike: float
         Option strike price
-    put: *bool*
+    put: bool
         Is this a put option?
-    raw: *bool*
+    raw: bool
         Print raw data
-    chain_id: *str*
+    chain_id: str
         OCC option symbol
-    export: *str*
+    export: str
         Format of export file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

@@ -25,10 +25,10 @@ stocks.options.screen.check_presets(
 
 * **Parameters**
 
-    preset_dict: *dict*
+    preset_dict: dict
         Defined presets from configparser
 
 * **Returns**
 
-    error: *str*
+    error: str
         String of all errors accumulated

@@ -28,9 +28,9 @@ common.qa.spread(
 
 * **Parameters**
 
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         DataFrame of targeted data
-    window: *int*
+    window: int
         Length of window
     chart: *bool*
        Flag to display chart
@@ -38,9 +38,9 @@ common.qa.spread(
 
 * **Returns**
 
-    df_sd: *pd.DataFrame*
+    df_sd: pd.DataFrame
         Dataframe of rolling standard deviation
-    df_var: *pd.DataFrame*
+    df_var: pd.DataFrame
         Dataframe of rolling standard deviation
 
 |
@@ -71,17 +71,17 @@ common.qa.spread(
 
 * **Parameters**
 
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         Dataframe
-    target: *str*
+    target: str
         Column in data to look at
-    target: *str*
+    target: str
         Column in data to look at
-    symbol : *str*
+    symbol : str
         Stock ticker
-    window : *int*
+    window : int
         Length of window
-    export: *str*
+    export: str
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional
         External axes (3 axes are expected in the list), by default None

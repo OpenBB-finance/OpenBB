@@ -29,7 +29,7 @@ crypto.ov.crypto_hacks(
 
 * **Parameters**
 
-    sortby: *str*
+    sortby: str
         Key by which to sort data {Platform,Date,Amount [$],Audit,Slug,URL}
     ascend
         Flag to sort data ascending
@@ -71,15 +71,15 @@ crypto.ov.crypto_hacks(
 
 * **Parameters**
 
-    slug: *str*
+    slug: str
         Crypto hack slug to check (e.g., polynetwork-rekt)
-    limit: *int*
+    limit: int
         Number of hacks to search
-    sortby: *str*
+    sortby: str
         Key by which to sort data {Platform,Date,Amount [$],Audit,Slug,URL}
-    ascend: *bool*
+    ascend: bool
         Flag to sort data ascending
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

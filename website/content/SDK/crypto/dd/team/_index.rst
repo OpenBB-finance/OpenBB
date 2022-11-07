@@ -28,7 +28,7 @@ crypto.dd.team(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Crypto symbol to check team
     chart: *bool*
        Flag to display chart
@@ -66,9 +66,9 @@ crypto.dd.team(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Crypto symbol to check coin team
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

@@ -27,7 +27,7 @@ forecast.corr(
 
 * **Parameters**
 
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         The df to produce statistics for
     chart: *bool*
        Flag to display chart
@@ -35,7 +35,7 @@ forecast.corr(
 
 * **Returns**
 
-    df: *pd.DataFrame*
+    df: pd.DataFrame
         The df with the new data
 
 |
@@ -63,9 +63,9 @@ forecast.corr(
 
 * **Parameters**
 
-    dataset : *pd.DataFrame*
+    dataset : pd.DataFrame
         The dataset fore calculating correlation coefficients
-    export: *str*
+    export: str
         Format to export image
     external_axes:Optional[List[plt.axes]]
         External axes to plot on

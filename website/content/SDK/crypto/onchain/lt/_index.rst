@@ -30,14 +30,14 @@ crypto.onchain.lt(
 
 * **Parameters**
 
-    trade_amount_currency: *str*
-        Currency of displayed trade amount. Default: *USD*
-    limit: * int*
+    trade_amount_currency: str
+        Currency of displayed trade amount. Default: USD
+    limit:  int
         Last n days to query data. Maximum 365 (bigger numbers can cause timeouts
         on server side)
-    sortby: *str*
+    sortby: str
         Key by which to sort data
-    ascend: *bool*
+    ascend: bool
         Flag to sort data ascending
     chart: *bool*
        Flag to display chart
@@ -78,20 +78,20 @@ crypto.onchain.lt(
 
 * **Parameters**
 
-    kind: *str*
+    kind: str
         Aggregate trades by dex or time
-    trade_amount_currency: *str*
-        Currency of displayed trade amount. Default: *USD*
-    limit: *int*
+    trade_amount_currency: str
+        Currency of displayed trade amount. Default: USD
+    limit: int
         Number of records to display
-    sortby: *str*
+    sortby: str
         Key by which to sort data
-    ascend: *bool*
+    ascend: bool
         Flag to sort data ascending
-    days: * int*
+    days:  int
         Last n days to query data. Maximum 365 (bigger numbers can cause timeouts
         on server side)
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

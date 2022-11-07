@@ -31,15 +31,15 @@ common.qa.es(
 
 * **Parameters**
 
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         Data dataframe
-    use_mean: *bool*
+    use_mean: bool
         If one should use the data mean for calculation
-    distribution: *str*
+    distribution: str
         Type of distribution, options: laplace, student_t, normal
     percentile: Union[float,int]
         VaR percentile
-    portfolio: *bool*
+    portfolio: bool
         If the data is a portfolio
     chart: *bool*
        Flag to display chart
@@ -80,17 +80,17 @@ common.qa.es(
 
 * **Parameters**
 
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         Data dataframe
     use_mean:
         if one should use the data mean return
-    symbol: *str*
+    symbol: str
         name of the data
-    distribution: *str*
+    distribution: str
         choose distribution to use: logistic, laplace, normal
-    percentile: *int*
+    percentile: int
         es percentile
-    portfolio: *bool*
+    portfolio: bool
         If the data is a portfolio
     chart: *bool*
        Flag to display chart

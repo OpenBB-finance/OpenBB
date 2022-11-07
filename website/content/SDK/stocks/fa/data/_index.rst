@@ -25,7 +25,7 @@ stocks.fa.data(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Stock ticker symbol
 
 * **Returns**

@@ -27,11 +27,11 @@ econometrics.load(
 
 * **Parameters**
 
-    file: *str*
+    file: str
         Path to file
-    data_files: *dict*
+    data_files: dict
         Contains all available data files within the Export folder
-    data_examples: *dict*
+    data_examples: dict
         Contains all available examples from Statsmodels
 
 * **Returns**

@@ -29,11 +29,11 @@ economy.tyld(
 
 * **Parameters**
 
-    interval : *str*
+    interval : str
         Interval for data.  Can be "d","w","m" for daily, weekly or monthly, by default "m"
-    start_date: *str*
+    start_date: str
         Start date for data.  Should be in YYYY-MM-DD format, by default "2010-01-01"
-    maturity : *str*
+    maturity : str
         Maturity timeline.  Can be "3mo","5y","10y" or "30y", by default "10y"
     chart: *bool*
        Flag to display chart
@@ -72,11 +72,11 @@ economy.tyld(
 
 * **Parameters**
 
-    interval : *str*
+    interval : str
         Interval for data.  Can be "d","w","m" for daily, weekly or monthly, by default "m"
-    maturity : *str*
+    maturity : str
         Maturity timeline.  Can be "3mo","5y","10y" or "30y", by default "10y"
-    start_date: *str*
+    start_date: str
         Start date for data.  Should be in YYYY-MM-DD format, by default "2010-01-01"
     raw : bool, optional
         Flag to display raw data, by default False

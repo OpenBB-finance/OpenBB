@@ -31,23 +31,23 @@ keys.reddit(
 
 * **Parameters**
 
-    client_id: *str*
+    client_id: str
         Client ID
-    client_secret: *str*
+    client_secret: str
         Client secret
-    password: *str*
+    password: str
         User assword
-    username: *str*
+    username: str
         User username
-    useragent: *str*
+    useragent: str
         User useragent
-    persist: *bool*
+    persist: bool
         If False, api key change will be contained to where it was changed. For example, Jupyter notebook.
         If True, api key change will be global, i.e. it will affect terminal environment variables.
         By default, False.
-    show_output: *bool*
+    show_output: bool
         Display status string or not. By default, False.
 
 * **Returns**
 
-    status: *str*
+    status: str

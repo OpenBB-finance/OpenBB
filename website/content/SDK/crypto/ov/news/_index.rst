@@ -34,18 +34,18 @@ crypto.ov.news(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         number of news to fetch
-    post_kind: *str*
-        Filter by category of news. Available values: *news or media.*
+    post_kind: str
+        Filter by category of news. Available values: news or media.
     filter\_: Optional[str]
         Filter by kind of news. One from list: rising|hot|bullish|bearish|important|saved|lol
-    region: *str*
+    region: str
         Filter news by regions. Available regions are: en (English), de (Deutsch), nl (Dutch),
         es (Español), fr (Français), it (Italiano), pt (Português), ru (Русский)
-    sortby: *str*
+    sortby: str
         Key to sort by.
-    ascend: *bool*
+    ascend: bool
         Sort in ascend order.
     chart: *bool*
        Flag to display chart
@@ -87,22 +87,22 @@ crypto.ov.news(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         number of news to display
-    post_kind: *str*
-        Filter by category of news. Available values: *news or media.*
+    post_kind: str
+        Filter by category of news. Available values: news or media.
     filter\_: Optional[str]
         Filter by kind of news. One from list: rising|hot|bullish|bearish|important|saved|lol
-    region: *str*
+    region: str
         Filter news by regions. Available regions are: en (English), de (Deutsch), nl (Dutch),
         es (Español), fr (Français), it (Italiano), pt (Português), ru (Русский)
-    sortby: *str*
+    sortby: str
         Key to sort by.
-    ascend: *bool*
+    ascend: bool
         Sort in ascending order.
-    links: *bool*
+    links: bool
         Show urls for news
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

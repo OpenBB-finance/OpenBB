@@ -28,7 +28,7 @@ forex.oanda.cancel(
 
 * **Parameters**
 
-    orderID : *str*
+    orderID : str
         The pending order ID to cancel.
     accountID : str, optional
         Oanda account ID, by default cfg.OANDA_ACCOUNT
@@ -60,9 +60,9 @@ forex.oanda.cancel(
 
 * **Parameters**
 
-    accountID : *str*
+    accountID : str
         Oanda user account ID
-    orderID : *str*
+    orderID : str
         The pending order ID to cancel.
     chart: *bool*
        Flag to display chart

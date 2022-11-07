@@ -26,7 +26,7 @@ crypto.onchain.info(
 
 * **Parameters**
 
-    address: *str*
+    address: str
         Token balance e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
     chart: *bool*
        Flag to display chart
@@ -62,11 +62,11 @@ crypto.onchain.info(
 
 * **Parameters**
 
-    address: *str*
+    address: str
         Token balance e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
-    social: *bool*
+    social: bool
         Flag to display social media links
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

@@ -17,7 +17,7 @@ crypto.dd.change(
     symbol: str,
     exchange: str = 'binance',
     start_date: int = 1262304000,
-    end_date: int = 1667825384,
+    end_date: int = 1667829111,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -31,13 +31,13 @@ crypto.dd.change(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Asset symbol to search supply (e.g., BTC)
-    exchange : *str*
+    exchange : str
         Exchange to check net position change (e.g., binance)
-    start_date : *int*
+    start_date : int
         Initial date timestamp (e.g., 1_614_556_800)
-    end_date : *int*
+    end_date : int
         End date timestamp (e.g., 1_614_556_800)
     chart: *bool*
        Flag to display chart
@@ -77,17 +77,17 @@ crypto.dd.change(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Asset to search active addresses (e.g., BTC)
-    exchange : *str*
+    exchange : str
         Exchange to check net position change (possible values are: aggregated, binance,
         bittrex, coinex, gate.io, gemini, huobi, kucoin, poloniex, bibox, bigone, bitfinex,
         hitbtc, kraken, okex, bithumb, zb.com, cobinhood, bitmex, bitstamp, coinbase, coincheck, luno)
-    start_date : *int*
+    start_date : int
         Initial date timestamp (e.g., 1_614_556_800)
-    end_date : *int*
+    end_date : int
         End date timestamp (e.g., 1_614_556_800)
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

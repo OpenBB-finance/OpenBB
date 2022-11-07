@@ -30,13 +30,13 @@ common.ta.atr(
 
 * **Parameters**
 
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         Dataframe of ohlc prices
-    window : *int*
+    window : int
         Length of window
-    mamode: *str*
+    mamode: str
         Type of filter
-    offset : *int*
+    offset : int
         Offset value
     chart: *bool*
        Flag to display chart
@@ -76,13 +76,13 @@ common.ta.atr(
 
 * **Parameters**
 
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         Dataframe of ohlc prices
-    symbol : *str*
+    symbol : str
         Ticker symbol
-    window : *int*
+    window : int
         Length of window to calculate upper channel
-    export : *str*
+    export : str
         Format of export file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

@@ -28,7 +28,7 @@ etf.disc.mover(
 
 * **Parameters**
 
-    sort_type: *str*
+    sort_type: str
         Data to get. Can be "gainers", "decliners" or "active"
     chart: *bool*
        Flag to display chart
@@ -36,7 +36,7 @@ etf.disc.mover(
 
 * **Returns**
 
-    etfmovers: *pd.DataFrame*
+    etfmovers: pd.DataFrame
         Datafame containing the name, price, change and the volume of the etf
 
 |
@@ -63,11 +63,11 @@ etf.disc.mover(
 
 * **Parameters**
 
-    sort_type: *str*
+    sort_type: str
         What to show. Either Gainers, Decliners or Activity
-    limit: *int*
+    limit: int
         Number of etfs to show
-    export: *str*
+    export: str
         Format to export data
     chart: *bool*
        Flag to display chart

@@ -28,9 +28,9 @@ econometrics.options(
 
 * **Parameters**
 
-    datasets: *dict*
+    datasets: dict
         The available datasets.
-    dataset_name: *str*
+    dataset_name: str
         The dataset you wish to show the options for.
     chart: *bool*
        Flag to display chart
@@ -38,7 +38,7 @@ econometrics.options(
 
 * **Returns**
 
-    option_tables: *dict*
+    option_tables: dict
         A dictionary with a DataFrame for each option. With dataset_name set, only shows one
         options table.
 
@@ -67,11 +67,11 @@ econometrics.options(
 
 * **Parameters**
 
-    datasets: *dict*
+    datasets: dict
         The loaded in datasets
-    dataset_name: *str*
+    dataset_name: str
         The name of the dataset you wish to show options for
-    export: *str*
+    export: str
         Format to export image
     chart: *bool*
        Flag to display chart

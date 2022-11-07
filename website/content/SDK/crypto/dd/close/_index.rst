@@ -29,14 +29,14 @@ crypto.dd.close(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Crypto to check close price (BTC or ETH)
-    start_date : *str*
+    start_date : str
         Initial date, format YYYY-MM-DD
-    end_date : *str*
+    end_date : str
         Final date, format YYYY-MM-DD
-    print_errors: *bool*
-        Flag to print errors. Default: *True*
+    print_errors: bool
+        Flag to print errors. Default: True
 
 * **Returns**
 

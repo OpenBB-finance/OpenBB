@@ -30,7 +30,7 @@ crypto.dd.pr(
 
 * **Parameters**
 
-    main_coin   : *str*
+    main_coin   : str
         Coin loaded to check potential returns for (e.g., algorand)
     to_symbol          : str | None
         Coin to compare main_coin with (e.g., bitcoin)
@@ -75,7 +75,7 @@ crypto.dd.pr(
 
 * **Parameters**
 
-    to_symbol   : *str*
+    to_symbol   : str
         Coin loaded to check potential returns for (e.g., algorand)
     from_symbol          : str | None
         Coin to compare main_coin with (e.g., bitcoin)
@@ -83,7 +83,7 @@ crypto.dd.pr(
         Number of coins with highest market cap to compare main_coin with (e.g., 5)
     price
         Target price of main_coin to check potential returns (e.g., 5)
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

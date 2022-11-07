@@ -27,7 +27,7 @@ common.qa.summary(
 
 * **Parameters**
 
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         Dataframe to get summary statistics for
     chart: *bool*
        Flag to display chart
@@ -35,7 +35,7 @@ common.qa.summary(
 
 * **Returns**
 
-    summary : *pd.DataFrame*
+    summary : pd.DataFrame
         Summary statistics
 
 |
@@ -62,9 +62,9 @@ common.qa.summary(
 
 * **Parameters**
 
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         DataFrame to get statistics of
-    export : *str*
+    export : str
         Format to export data
     chart: *bool*
        Flag to display chart

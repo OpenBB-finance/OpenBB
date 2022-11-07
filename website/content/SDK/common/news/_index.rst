@@ -27,14 +27,14 @@ common.news(
 
 * **Parameters**
 
-    term : *str*
+    term : str
         term to search on the news articles
-    sources: *str*
+    sources: str
         sources to exclusively show news from (separated by commas)
-    sort: *str*
+    sort: str
         the column to sort by
 
 * **Returns**
 
-    articles : *dict*
+    articles : dict
         term to search on the news articles

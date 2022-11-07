@@ -27,7 +27,7 @@ crypto.defi.sreturn(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         The number of returns to show
     chart: *bool*
        Flag to display chart
@@ -63,9 +63,9 @@ crypto.defi.sreturn(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         Number of records to display
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

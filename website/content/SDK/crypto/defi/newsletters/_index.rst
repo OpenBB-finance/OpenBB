@@ -53,9 +53,9 @@ crypto.defi.newsletters(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         Number of records to display
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

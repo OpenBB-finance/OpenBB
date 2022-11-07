@@ -25,7 +25,7 @@ stocks.process_candle(
 
 * **Parameters**
 
-    data : *DataFrame*
+    data : DataFrame
         Stock dataframe.
 
 * **Returns**

@@ -27,11 +27,11 @@ economy.future(
 
 * **Parameters**
 
-    future_type : *str*
+    future_type : str
         From the following: Indices, Energy, Metals, Meats, Grains, Softs, Bonds, Currencies
-    sortby : *str*
+    sortby : str
         Column to sort by
-    ascend : *bool*
+    ascend : bool
         Flag to sort in ascending order
 
 * **Returns**

@@ -30,13 +30,13 @@ alt.covid.slopes(
 
 * **Parameters**
 
-    days_back: *int*
+    days_back: int
         Number of historical days to consider
-    limit: *int*
+    limit: int
         Number of rows to show
-    threshold: *int*
+    threshold: int
         Threshold for total number of cases
-    ascend: *bool*
+    ascend: bool
         Flag to sort in ascending order
     chart: *bool*
        Flag to display chart
@@ -85,15 +85,15 @@ alt.covid.slopes(
 
 * **Parameters**
 
-    days_back: *int*
+    days_back: int
         Number of historical days to get slope for
-    limit: *int*
+    limit: int
         Number to show in table
-    ascend: *bool*
+    ascend: bool
         Flag to sort in ascending order
-    threshold: *int*
+    threshold: int
         Threshold for total cases over period
-    export : *str*
+    export : str
         Format to export data
     chart: *bool*
        Flag to display chart

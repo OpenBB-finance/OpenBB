@@ -29,11 +29,11 @@ common.qa.omega(
 
 * **Parameters**
 
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         stock dataframe
-    threshold_start: *float*
+    threshold_start: float
         annualized target return threshold start of plotted threshold range
-    threshold_end: *float*
+    threshold_end: float
         annualized target return threshold end of plotted threshold range
     chart: *bool*
        Flag to display chart
@@ -64,11 +64,11 @@ common.qa.omega(
 
 * **Parameters**
 
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         stock dataframe
-    threshold_start: *float*
+    threshold_start: float
         annualized target return threshold start of plotted threshold range
-    threshold_end: *float*
+    threshold_end: float
         annualized target return threshold end of plotted threshold range
     chart: *bool*
        Flag to display chart

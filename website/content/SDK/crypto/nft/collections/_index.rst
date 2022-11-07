@@ -63,11 +63,11 @@ crypto.nft.collections(
 
 * **Parameters**
 
-    show_fp : *bool*
+    show_fp : bool
         Show NFT Price Floor for top collections
-    limit: *int*
+    limit: int
         Number of NFT collections to display
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

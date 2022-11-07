@@ -27,7 +27,7 @@ crypto.dd.basic(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Coin id
     chart: *bool*
        Flag to display chart
@@ -64,9 +64,9 @@ crypto.dd.basic(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Cryptocurrency symbol (e.g. BTC)
-    export: *str*
+    export: str
         Export dataframe data to csv,json,xlsx
     chart: *bool*
        Flag to display chart

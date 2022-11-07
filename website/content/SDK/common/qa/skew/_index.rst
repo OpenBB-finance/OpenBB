@@ -28,9 +28,9 @@ common.qa.skew(
 
 * **Parameters**
 
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         Dataframe of targeted data
-    window : *int*
+    window : int
         Length of window
     chart: *bool*
        Flag to display chart
@@ -38,7 +38,7 @@ common.qa.skew(
 
 * **Returns**
 
-    data_skew : *pd.DataFrame*
+    data_skew : pd.DataFrame
         Dataframe of rolling skew
 
 |
@@ -69,15 +69,15 @@ common.qa.skew(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Stock ticker
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         Dataframe
-    target: *str*
+    target: str
         Column in data to look at
-    window: *int*
+    window: int
         Length of window
-    export: *str*
+    export: str
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None

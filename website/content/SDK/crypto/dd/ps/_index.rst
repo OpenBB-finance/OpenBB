@@ -25,7 +25,7 @@ crypto.dd.ps(
     <p>
     Get all most important ticker related information for given coin id [Source: CoinPaprika]
 
-    .. code-block:: *json*
+    .. code-block:: json
 
         {
             "id": "btc-bitcoin",
@@ -64,9 +64,9 @@ crypto.dd.ps(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Id of coin from CoinPaprika
-    quotes: *str*
+    quotes: str
         Comma separated quotes to return e.g quotes = USD, BTC
     chart: *bool*
        Flag to display chart
@@ -103,11 +103,11 @@ crypto.dd.ps(
 
 * **Parameters**
 
-    from_symbol: *str*
+    from_symbol: str
         Cryptocurrency symbol (e.g. BTC)
-    to_symbol: *str*
+    to_symbol: str
         Quoted currency
-    export: *str*
+    export: str
         Export dataframe data to csv,json,xlsx
     chart: *bool*
        Flag to display chart

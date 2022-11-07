@@ -31,15 +31,15 @@ stocks.options.grhist(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Stock ticker symbol
-    expiry: *str*
+    expiry: str
         Option expiration date
     strike: Union[str, float]
         Strike price to look for
-    chain_id: *str*
+    chain_id: str
         OCC option symbol.  Overwrites other inputs
-    put: *bool*
+    put: bool
         Is this a put option?
     chart: *bool*
        Flag to display chart
@@ -47,7 +47,7 @@ stocks.options.grhist(
 
 * **Returns**
 
-    df: *pd.DataFrame*
+    df: pd.DataFrame
         Dataframe containing historical greeks
 
 |
@@ -82,23 +82,23 @@ stocks.options.grhist(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Stock ticker
-    expiry: *str*
+    expiry: str
         Expiration date
     strike: Union[str, float]
         Strike price to consider
-    greek: *str*
+    greek: str
         Greek variable to plot
-    chain_id: *str*
+    chain_id: str
         OCC option chain.  Overwrites other variables
-    put: *bool*
+    put: bool
         Is this a put option?
-    raw: *bool*
+    raw: bool
         Print to console
-    limit: *int*
+    limit: int
         Number of rows to show in raw
-    export: *str*
+    export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

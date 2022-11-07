@@ -30,14 +30,14 @@ stocks.options.hedge.calc_hedge(
 
 * **Parameters**
 
-    portfolio_option_amount: *float*
+    portfolio_option_amount: float
         Number to show
-    side: *str*
+    side: str
         Whether you have a Call or Put instrument
-    greeks: *dict*
+    greeks: dict
         Dictionary containing delta, gamma and vega values for the portfolio and option A and B. Structure is
         as follows: {'Portfolio': {'Delta': VALUE, 'Gamma': VALUE, 'Vega': VALUE}} etc
-    sign: *int*
+    sign: int
         Whether you have a long (1) or short (-1) position
     chart: *bool*
        Flag to display chart
@@ -45,10 +45,10 @@ stocks.options.hedge.calc_hedge(
 
 * **Returns**
 
-    option A weight: *float*
-    option B weight: *float*
-    portfolio weight: *float*
-    is_singular: *boolean*
+    option A weight: float
+    option B weight: float
+    portfolio weight: float
+    is_singular: boolean
 
 |
 
@@ -76,14 +76,14 @@ stocks.options.hedge.calc_hedge(
 
 * **Parameters**
 
-    portfolio_option_amount: *float*
+    portfolio_option_amount: float
         Number to show
-    side: *str*
+    side: str
         Whether you have a Call or Put instrument
-    greeks: *dict*
+    greeks: dict
         Dictionary containing delta, gamma and vega values for the portfolio and option A and B. Structure is
         as follows: {'Portfolio': {'Delta': VALUE, 'Gamma': VALUE, 'Vega': VALUE}} etc
-    sign: *int*
+    sign: int
         Whether you have a long (1) or short (-1) position
     chart: *bool*
        Flag to display chart

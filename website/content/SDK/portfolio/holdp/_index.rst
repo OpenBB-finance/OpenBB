@@ -27,7 +27,7 @@ portfolio.holdp(
 
 * **Parameters**
 
-    portfolio: *Portfolio*
+    portfolio: Portfolio
         Portfolio object with trades loaded
     chart: *bool*
        Flag to display chart
@@ -61,17 +61,17 @@ portfolio.holdp(
 
 * **Parameters**
 
-    portfolio: *Portfolio*
+    portfolio: Portfolio
         Portfolio object with trades loaded
-    sum_assets: *bool*
+    sum_assets: bool
         Sum assets over time
-    raw : *bool*
+    raw : bool
         To display raw data
-    limit : *int*
+    limit : int
         Number of past market days to display holdings
-    export: *str*
+    export: str
         Format to export plot
-    external_axes: *plt.Axes*
+    external_axes: plt.Axes
         Optional axes to display plot on
     chart: *bool*
        Flag to display chart

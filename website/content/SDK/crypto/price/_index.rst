@@ -25,7 +25,7 @@ crypto.price(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Symbol of the asset to get price and confidence interval from
 
 * **Returns**

@@ -67,40 +67,40 @@ portfolio.po.meanrisk(
         - 'W' for weekly returns.
         - 'M' for monthly returns.
 
-    maxnan: *float*
+    maxnan: float
         Max percentage of nan values accepted per asset to be included in
         returns.
-    threshold: *float*
+    threshold: float
         Value used to replace outliers that are higher to threshold.
-    method: *str*
+    method: str
         Method used to fill nan values. Default value is 'time'. For more information see
         `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
-    objective: *str*
+    objective: str
         Objective function of the optimization model.
         The default is 'Sharpe'. Possible values are:
 
-        - 'MinRisk': *Minimize the selected risk measure.*
-        - 'Utility': *Maximize the risk averse utility function.*
-        - 'Sharpe': *Maximize the risk adjusted return ratio based on the selected risk measure.*
-        - 'MaxRet': *Maximize the expected return of the portfolio.*
+        - 'MinRisk': Minimize the selected risk measure.
+        - 'Utility': Maximize the risk averse utility function.
+        - 'Sharpe': Maximize the risk adjusted return ratio based on the selected risk measure.
+        - 'MaxRet': Maximize the expected return of the portfolio.
 
     risk_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
 
-        - 'MV': *Standard Deviation.*
-        - 'MAD': *Mean Absolute Deviation.*
-        - 'MSV': *Semi Standard Deviation.*
+        - 'MV': Standard Deviation.
+        - 'MAD': Mean Absolute Deviation.
+        - 'MSV': Semi Standard Deviation.
         - 'FLPM': First Lower Partial Moment (Omega Ratio).
         - 'SLPM': Second Lower Partial Moment (Sortino Ratio).
-        - 'CVaR': *Conditional Value at Risk.*
-        - 'EVaR': *Entropic Value at Risk.*
-        - 'WR': *Worst Realization.*
-        - 'ADD': *Average Drawdown of uncompounded cumulative returns.*
-        - 'UCI': *Ulcer Index of uncompounded cumulative returns.*
-        - 'CDaR': *Conditional Drawdown at Risk of uncompounded cumulative returns.*
-        - 'EDaR': *Entropic Drawdown at Risk of uncompounded cumulative returns.*
-        - 'MDD': *Maximum Drawdown of uncompounded cumulative returns.*
+        - 'CVaR': Conditional Value at Risk.
+        - 'EVaR': Entropic Value at Risk.
+        - 'WR': Worst Realization.
+        - 'ADD': Average Drawdown of uncompounded cumulative returns.
+        - 'UCI': Ulcer Index of uncompounded cumulative returns.
+        - 'CDaR': Conditional Drawdown at Risk of uncompounded cumulative returns.
+        - 'EDaR': Entropic Drawdown at Risk of uncompounded cumulative returns.
+        - 'MDD': Maximum Drawdown of uncompounded cumulative returns.
 
     risk_free_rate: float, optional
         Risk free rate, must be in annual frequency. Used for
@@ -118,7 +118,7 @@ portfolio.po.meanrisk(
         The method used to estimate the expected returns.
         The default value is 'hist'. Possible values are:
 
-        - 'hist': *use historical estimates.*
+        - 'hist': use historical estimates.
         - 'ewma1': use ewma with adjust=True. For more information see
         `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
         - 'ewma2': use ewma with adjust=False. For more information see
@@ -128,15 +128,15 @@ portfolio.po.meanrisk(
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
-        - 'hist': *use historical estimates.*
+        - 'hist': use historical estimates.
         - 'ewma1': use ewma with adjust=True. For more information see
         `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
         - 'ewma2': use ewma with adjust=False. For more information see
         `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ledoit': *use the Ledoit and Wolf Shrinkage method.*
-        - 'oas': *use the Oracle Approximation Shrinkage method.*
-        - 'shrunk': *use the basic Shrunk Covariance method.*
-        - 'gl': *use the basic Graphical Lasso Covariance method.*
+        - 'ledoit': use the Ledoit and Wolf Shrinkage method.
+        - 'oas': use the Oracle Approximation Shrinkage method.
+        - 'shrunk': use the basic Shrunk Covariance method.
+        - 'gl': use the basic Graphical Lasso Covariance method.
         - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
         - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
         - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
@@ -226,35 +226,35 @@ portfolio.po.meanrisk(
         returns.
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
-    method: *str*
+    method: str
         Method used to fill nan values. Default value is 'time'. For more information see
         `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
     risk_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
 
-        - 'MV': *Standard Deviation.*
-        - 'MAD': *Mean Absolute Deviation.*
-        - 'MSV': *Semi Standard Deviation.*
+        - 'MV': Standard Deviation.
+        - 'MAD': Mean Absolute Deviation.
+        - 'MSV': Semi Standard Deviation.
         - 'FLPM': First Lower Partial Moment (Omega Ratio).
         - 'SLPM': Second Lower Partial Moment (Sortino Ratio).
-        - 'CVaR': *Conditional Value at Risk.*
-        - 'EVaR': *Entropic Value at Risk.*
-        - 'WR': *Worst Realization.*
-        - 'ADD': *Average Drawdown of uncompounded cumulative returns.*
-        - 'UCI': *Ulcer Index of uncompounded cumulative returns.*
-        - 'CDaR': *Conditional Drawdown at Risk of uncompounded cumulative returns.*
-        - 'EDaR': *Entropic Drawdown at Risk of uncompounded cumulative returns.*
-        - 'MDD': *Maximum Drawdown of uncompounded cumulative returns.*
+        - 'CVaR': Conditional Value at Risk.
+        - 'EVaR': Entropic Value at Risk.
+        - 'WR': Worst Realization.
+        - 'ADD': Average Drawdown of uncompounded cumulative returns.
+        - 'UCI': Ulcer Index of uncompounded cumulative returns.
+        - 'CDaR': Conditional Drawdown at Risk of uncompounded cumulative returns.
+        - 'EDaR': Entropic Drawdown at Risk of uncompounded cumulative returns.
+        - 'MDD': Maximum Drawdown of uncompounded cumulative returns.
 
-    objective: *str*
+    objective: str
         Objective function of the optimization model.
         The default is 'Sharpe'. Possible values are:
 
-        - 'MinRisk': *Minimize the selected risk measure.*
-        - 'Utility': *Maximize the risk averse utility function.*
-        - 'Sharpe': *Maximize the risk adjusted return ratio based on the selected risk measure.*
-        - 'MaxRet': *Maximize the expected return of the portfolio.*
+        - 'MinRisk': Minimize the selected risk measure.
+        - 'Utility': Maximize the risk averse utility function.
+        - 'Sharpe': Maximize the risk adjusted return ratio based on the selected risk measure.
+        - 'MaxRet': Maximize the expected return of the portfolio.
 
     risk_free_rate: float, optional
         Risk free rate, must be in the same interval of assets returns. Used for
@@ -272,7 +272,7 @@ portfolio.po.meanrisk(
         The method used to estimate the expected returns.
         The default value is 'hist'. Possible values are:
 
-        - 'hist': *use historical estimates.*
+        - 'hist': use historical estimates.
         - 'ewma1': use ewma with adjust=True. For more information see
         `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
         - 'ewma2': use ewma with adjust=False. For more information see
@@ -282,15 +282,15 @@ portfolio.po.meanrisk(
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
-        - 'hist': *use historical estimates.*
+        - 'hist': use historical estimates.
         - 'ewma1': use ewma with adjust=True. For more information see
         `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
         - 'ewma2': use ewma with adjust=False. For more information see
         `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ledoit': *use the Ledoit and Wolf Shrinkage method.*
-        - 'oas': *use the Oracle Approximation Shrinkage method.*
-        - 'shrunk': *use the basic Shrunk Covariance method.*
-        - 'gl': *use the basic Graphical Lasso Covariance method.*
+        - 'ledoit': use the Ledoit and Wolf Shrinkage method.
+        - 'oas': use the Oracle Approximation Shrinkage method.
+        - 'shrunk': use the basic Shrunk Covariance method.
+        - 'gl': use the basic Graphical Lasso Covariance method.
         - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
         - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
         - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.

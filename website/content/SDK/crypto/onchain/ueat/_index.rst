@@ -30,14 +30,14 @@ crypto.onchain.ueat(
 
 * **Parameters**
 
-    interval: *str*
+    interval: str
         Time interval in which count unique ethereum addresses which made transaction. day,
         month or week.
-    limit: *int*
+    limit: int
         Number of records for data query.
-    sortby: *str*
+    sortby: str
         Key by which to sort data
-    ascend: *bool*
+    ascend: bool
         Flag to sort data ascending
     chart: *bool*
        Flag to display chart
@@ -76,18 +76,18 @@ crypto.onchain.ueat(
 
 * **Parameters**
 
-    interval: *str*
+    interval: str
         Time interval in which ethereum address made transaction. month, week or day
-    limit: *int*
+    limit: int
         Number of records to display. It's calculated base on provided interval.
         If interval is month then calculation is made in the way: limit * 30 = time period,
         in case if interval is set to week, then time period is calculated as limit * 7.
         For better user experience maximum time period in days is equal to 90.
-    sortby: *str*
+    sortby: str
         Key by which to sort data
-    ascend: *bool*
+    ascend: bool
         Flag to sort data ascending
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

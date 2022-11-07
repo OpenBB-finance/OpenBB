@@ -26,9 +26,9 @@ stocks.sia.industries(
 
 * **Parameters**
 
-    country : *str*
+    country : str
         Filter retrieved industries by country
-    sector : *str*
+    sector : str
         Filter retrieved industries by sector
 
 * **Returns**

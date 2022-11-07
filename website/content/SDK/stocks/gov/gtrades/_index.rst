@@ -29,11 +29,11 @@ stocks.gov.gtrades(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Ticker symbol to get congress trading data from
-    gov_type: *str*
+    gov_type: str
         Type of government data between: congress, senate and house
-    past_transactions_months: *int*
+    past_transactions_months: int
         Number of months to get transactions for
     chart: *bool*
        Flag to display chart
@@ -72,15 +72,15 @@ stocks.gov.gtrades(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Ticker symbol to get congress trading data from
-    gov_type: *str*
+    gov_type: str
         Type of government data between: congress, senate and house
-    past_transactions_months: *int*
+    past_transactions_months: int
         Number of months to get transactions for
-    raw: *bool*
+    raw: bool
         Show raw output of trades
-    export: *str*
+    export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

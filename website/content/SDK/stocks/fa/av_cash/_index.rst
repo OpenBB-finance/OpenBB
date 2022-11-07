@@ -31,15 +31,15 @@ stocks.fa.av_cash(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Stock ticker symbol
-    limit : *int*
+    limit : int
         Number of past to get
     quarterly : bool, optional
         Flag to get quarterly instead of annual, by default False
-    ratios: *bool*
+    ratios: bool
         Shows percentage change, by default False
-    plot: *bool*
+    plot: bool
         If the data shall be formatted ready to plot
     chart: *bool*
        Flag to display chart
@@ -78,17 +78,17 @@ stocks.fa.av_cash(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Fundamental analysis ticker symbol
-    limit: *int*
+    limit: int
         Number of past statements, by default 5
-    quarterly: *bool*
+    quarterly: bool
         Flag to get quarterly instead of annual, by default False
-    ratios: *bool*
+    ratios: bool
         Shows percentage change, by default False
-    plot: *list*
+    plot: list
         List of row labels to plot
-    export: *str*
+    export: str
         Format to export data
     chart: *bool*
        Flag to display chart

@@ -30,14 +30,14 @@ econometrics.fe(
 
 * **Parameters**
 
-    regression_variables : *list*
+    regression_variables : list
         The regressions variables entered where the first variable is
         the dependent variable.
-    data : *dict*
+    data : dict
         A dictionary containing the datasets.
-    entity_effects : *bool*
+    entity_effects : bool
         Whether to include entity effects
-    time_effects : *bool*
+    time_effects : bool
         Whether to include time effects
 
 * **Returns**

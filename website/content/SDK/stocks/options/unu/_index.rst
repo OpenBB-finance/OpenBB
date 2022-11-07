@@ -27,7 +27,7 @@ stocks.options.unu(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         Number to show
     chart: *bool*
        Flag to display chart
@@ -35,9 +35,9 @@ stocks.options.unu(
 
 * **Returns**
 
-    df: *pd.DataFrame*
+    df: pd.DataFrame
         Dataframe containing options information
-    last_updated: *pd.Timestamp*
+    last_updated: pd.Timestamp
         Timestamp indicated when data was updated from website
 
 |
@@ -67,17 +67,17 @@ stocks.options.unu(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         Number of rows to show
-    sortby: *str*
+    sortby: str
         Data column to sort on
-    ascend: *bool*
+    ascend: bool
         Whether to sort in ascend order
-    calls_only : *bool*
+    calls_only : bool
         Flag to only show calls
-    puts_only : *bool*
+    puts_only : bool
         Flag to show puts only
-    export: *str*
+    export: str
         File type to export
     chart: *bool*
        Flag to display chart

@@ -54,12 +54,12 @@ portfolio.po.equal(
         - 'W' for weekly returns.
         - 'M' for m' for monthly returns.
 
-    maxnan: *float*
+    maxnan: float
         Max percentage of nan values accepted per asset to be included in
         returns.
-    threshold: *float*
+    threshold: float
         Value used to replace outliers that are higher to threshold.
-    method: *str*
+    method: str
         Method used to fill nan values. Default value is 'time'. For more information see
         `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
     value : float, optional

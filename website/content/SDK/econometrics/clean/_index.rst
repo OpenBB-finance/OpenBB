@@ -28,15 +28,15 @@ econometrics.clean(
 
 * **Parameters**
 
-    dataset : *pd.DataFrame*
+    dataset : pd.DataFrame
         The dataset you wish to clean
-    fill : *str*
+    fill : str
         The method of filling NaNs. Choose from:
         rfill, cfill, rbfill, cbfill, rffill, cffill
-    drop : *str*
+    drop : str
         The method of dropping NaNs. Choose from:
         rdrop, cdrop
-    limit : *int*
+    limit : int
         The maximum limit you wish to apply that can be forward or backward filled
 
 * **Returns**

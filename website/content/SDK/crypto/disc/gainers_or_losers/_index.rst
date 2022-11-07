@@ -29,14 +29,14 @@ crypto.disc.gainers_or_losers(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         Num of coins to get
-    sortby: *str*
+    sortby: str
         Key to sort data. The table can be sorted by every of its columns. Refer to
         API documentation (see /coins/markets in https://www.coingecko.com/en/api/documentation)
-    interval: *str*
+    interval: str
         One from {14d,1h,1y,200d,24h,30d,7d}
-    typ: *str*
+    typ: str
         Either "gainers" or "losers"
 
 * **Returns**

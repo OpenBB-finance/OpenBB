@@ -17,8 +17,8 @@ crypto.dd.gh(
     symbol: str,
     dev_activity: bool = False,
     interval: str = '1d',
-    start_date: str = '2021-11-07T12:49:44Z',
-    end_date: str = '2022-11-07T12:49:44Z',
+    start_date: str = '2021-11-07T13:51:51Z',
+    end_date: str = '2022-11-07T13:51:51Z',
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -33,15 +33,15 @@ crypto.dd.gh(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Crypto symbol to check github activity
-    dev_activity: *bool*
+    dev_activity: bool
         Whether to filter only for development activity
-    start_date : *int*
+    start_date : int
         Initial date like string (e.g., 2021-10-01)
-    end_date : *int*
+    end_date : int
         End date like string (e.g., 2021-10-01)
-    interval : *str*
+    interval : str
         Interval frequency (e.g., 1d)
     chart: *bool*
        Flag to display chart
@@ -63,9 +63,9 @@ crypto.dd.gh(
 {{< highlight python >}}
 crypto.dd.gh(
     symbol: str,
-    start_date: str = '2021-11-07T12:49:44Z',
+    start_date: str = '2021-11-07T13:51:51Z',
     dev_activity: bool = False,
-    end_date: str = '2022-11-07T12:49:44Z',
+    end_date: str = '2022-11-07T13:51:51Z',
     interval: str = '1d',
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
@@ -83,17 +83,17 @@ crypto.dd.gh(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Crypto symbol to check github activity
-    dev_activity: *bool*
+    dev_activity: bool
         Whether to filter only for development activity
-    start_date : *int*
+    start_date : int
         Initial date like string (e.g., 2021-10-01)
-    end_date : *int*
+    end_date : int
         End date like string (e.g., 2021-10-01)
-    interval : *str*
+    interval : str
         Interval frequency (some possible values are: 1h, 1d, 1w)
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

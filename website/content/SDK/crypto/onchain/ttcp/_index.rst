@@ -32,15 +32,15 @@ crypto.onchain.ttcp(
 
 * **Parameters**
 
-    network: *str*
+    network: str
         EVM network. One from list: bsc (binance smart chain), ethereum or matic
     exchange:
         Decentralized exchange name
     limit:
         Number of days taken into calculation account.
-    sortby: *str*
+    sortby: str
         Key by which to sort data
-    ascend: *bool*
+    ascend: bool
         Flag to sort data ascending
     chart: *bool*
        Flag to display chart
@@ -82,11 +82,11 @@ crypto.onchain.ttcp(
         Decentralized exchange name
     days:
         Number of days taken into calculation account.
-    sortby: *str*
+    sortby: str
         Key by which to sort data
-    ascend: *bool*
+    ascend: bool
         Flag to sort data ascending
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

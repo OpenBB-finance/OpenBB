@@ -28,9 +28,9 @@ common.qa.rolling(
 
 * **Parameters**
 
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         Dataframe of target data
-    window: *int*
+    window: int
         Length of rolling window
     chart: *bool*
        Flag to display chart
@@ -71,15 +71,15 @@ common.qa.rolling(
 
 * **Parameters**
 
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         Dataframe
-    target: *str*
+    target: str
         Column in data to look at
-    symbol : *str*
+    symbol : str
         Stock ticker
-    window : *int*
+    window : int
         Length of window
-    export: *str*
+    export: str
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None

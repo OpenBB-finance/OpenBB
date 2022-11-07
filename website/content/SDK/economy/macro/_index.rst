@@ -33,17 +33,17 @@ economy.macro(
 
 * **Parameters**
 
-    parameters: *list*
+    parameters: list
         The type of data you wish to download. Available parameters can be accessed through economy.macro_parameters().
-    countries : *list*
+    countries : list
         The selected country or countries. Available countries can be accessed through economy.macro_countries().
-    transform : *str*
+    transform : str
         The selected transform. Available transforms can be accessed through get_macro_transform().
-    start_date : *str*
+    start_date : str
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
-    end_date : *str*
+    end_date : str
         The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
-    symbol : *str*
+    symbol : str
         In what currency you wish to convert all values.
     chart: *bool*
        Flag to display chart
@@ -89,11 +89,11 @@ economy.macro(
 
 * **Parameters**
 
-    parameters: *list*
+    parameters: list
         The type of data you wish to display. Available parameters can be accessed through get_macro_parameters().
-    countries : *list*
+    countries : list
         The selected country or countries. Available countries can be accessed through get_macro_countries().
-    transform : *str*
+    transform : str
         select data transformation from:
             '' - no transformation
             'TPOP' - total percentage change on period,
@@ -101,17 +101,17 @@ economy.macro(
             'TUSD' - level USD,
             'TPGP' - Percentage of GDP,
             'TNOR' - Start = 100
-    start_date : *str*
+    start_date : str
         The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
-    end_date : *str*
+    end_date : str
         The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
-    symbol : *str*
+    symbol : str
         In what currency you wish to convert all values.
-    raw : *bool*
+    raw : bool
         Whether to display the raw output.
     external_axes: Optional[List[plt.axes]]
         External axes to plot on
-    export : *str*
+    export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
     chart: *bool*
        Flag to display chart

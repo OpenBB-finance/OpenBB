@@ -29,9 +29,9 @@ crypto.defi.aterra(
 
 * **Parameters**
 
-    asset : *str*
+    asset : str
         Terra asset {ust,luna,sdt}
-    address : *str*
+    address : str
         Terra address. Valid terra addresses start with 'terra'
     chart: *bool*
        Flag to display chart
@@ -69,11 +69,11 @@ crypto.defi.aterra(
 
 * **Parameters**
 
-    asset : *str*
+    asset : str
         Terra asset {ust,luna,sdt}
-    address : *str*
+    address : str
         Terra address. Valid terra addresses start with 'terra'
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

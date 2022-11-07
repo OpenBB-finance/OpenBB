@@ -25,7 +25,7 @@ stocks.disc.trending(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         Number of articles
 
 * **Returns**

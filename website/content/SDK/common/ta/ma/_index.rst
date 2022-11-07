@@ -33,17 +33,17 @@ common.ta.ma(
 
 * **Parameters**
 
-    data: *pd.Series*
+    data: pd.Series
         Series of prices
     window: List[int]
         Length of EMA window
-    offset: *int*
+    offset: int
         Offset variable
-    ma_type: *str*
+    ma_type: str
         Type of moving average.  Either "EMA" "ZLMA" or "SMA"
-    symbol: *str*
+    symbol: str
         Ticker
-    export: *str*
+    export: str
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
@@ -80,17 +80,17 @@ common.ta.ma(
 
 * **Parameters**
 
-    data: *pd.Series*
+    data: pd.Series
         Series of prices
     window: List[int]
         Length of EMA window
-    offset: *int*
+    offset: int
         Offset variable
-    ma_type: *str*
+    ma_type: str
         Type of moving average.  Either "EMA" "ZLMA" or "SMA"
-    symbol: *str*
+    symbol: str
         Ticker
-    export: *str*
+    export: str
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

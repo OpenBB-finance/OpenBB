@@ -31,15 +31,15 @@ crypto.onchain.dvcp(
 
 * **Parameters**
 
-    limit: * int*
+    limit:  int
         Last n days to query data
-    symbol: *str*
+    symbol: str
         ERC20 token symbol
-    to_symbol: *str*
+    to_symbol: str
         Quote currency.
-    sortby: *str*
+    sortby: str
         Key by which to sort data
-    ascend: *bool*
+    ascend: bool
         Flag to sort data ascending
     chart: *bool*
        Flag to display chart
@@ -79,17 +79,17 @@ crypto.onchain.dvcp(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         ERC20 token symbol or address
-    to_symbol: *str*
+    to_symbol: str
         Quote currency.
-    limit: *int*
+    limit: int
         Number of records to display
-    sortby: *str*
+    sortby: str
         Key by which to sort data
-    ascend: *bool*
+    ascend: bool
         Flag to sort data ascending
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

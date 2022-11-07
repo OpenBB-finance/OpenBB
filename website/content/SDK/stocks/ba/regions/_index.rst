@@ -27,7 +27,7 @@ stocks.ba.regions(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Ticker symbol to look at
     chart: *bool*
        Flag to display chart
@@ -64,11 +64,11 @@ stocks.ba.regions(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Ticker symbol
-    limit: *int*
+    limit: int
         Number of regions to show
-    export: *str*
+    export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

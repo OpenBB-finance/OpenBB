@@ -30,11 +30,11 @@ crypto.onchain.balance(
 
 * **Parameters**
 
-    address: *str*
+    address: str
         Blockchain balance e.g. 0x3cD751E6b0078Be393132286c442345e5DC49699
-    sortby: *str*
+    sortby: str
         Key to sort by.
-    ascend: *str*
+    ascend: str
         Sort in descending order.
     chart: *bool*
        Flag to display chart
@@ -73,15 +73,15 @@ crypto.onchain.balance(
 
 * **Parameters**
 
-    address: *str*
+    address: str
         Ethereum balance.
-    limit: *int*
+    limit: int
         Limit of transactions. Maximum 100
-    sortby: *str*
+    sortby: str
         Key to sort by.
-    ascend: *str*
+    ascend: str
         Sort in descending order.
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

@@ -63,13 +63,13 @@ crypto.ov.cgcategories(
 
 * **Parameters**
 
-    sortby: *str*
+    sortby: str
         Key by which to sort data
-    limit: *int*
+    limit: int
         Number of records to display
-    export: *str*
+    export: str
         Export dataframe data to csv,json,xlsx file
-    pie: *bool*
+    pie: bool
         Whether to show the pie chart
     chart: *bool*
        Flag to display chart

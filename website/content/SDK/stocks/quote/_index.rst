@@ -25,5 +25,5 @@ stocks.quote(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Ticker

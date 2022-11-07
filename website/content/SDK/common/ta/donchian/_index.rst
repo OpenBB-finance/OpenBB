@@ -29,11 +29,11 @@ common.ta.donchian(
 
 * **Parameters**
 
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         Dataframe of ohlc prices
-    upper_length : *int*
+    upper_length : int
         Length of window to calculate upper channel
-    lower_length : *int*
+    lower_length : int
         Length of window to calculate lower channel
     chart: *bool*
        Flag to display chart
@@ -72,15 +72,15 @@ common.ta.donchian(
 
 * **Parameters**
 
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         Dataframe of ohlc prices
-    symbol : *str*
+    symbol : str
         Ticker symbol
-    upper_length : *int*
+    upper_length : int
         Length of window to calculate upper channel
-    lower_length : *int*
+    lower_length : int
         Length of window to calculate lower channel
-    export : *str*
+    export : str
         Format of export file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

@@ -102,12 +102,12 @@ def format_docstring(docstring: str):
     """
 
     # Wrap argument types around asterisks to .rst interpret them as italic
-    docstring = re.sub(r"(: )([a-zA-Z0-9. _]+)(\n)(\d*)", r": *\2*\n", docstring)
+    # docstring = re.sub(r"(: )([a-zA-Z0-9. _]+)(\n)", r": *\2*\n", docstring)
 
     # Reformat dashes in case there is a size mismatch between title and number of dashes
-    docstring = re.sub(r"(Parameters\n)(.*)(\n)(\d*)", r"\1    ----------\n", docstring)
-    docstring = re.sub(r"(Returns\n)(.*)(\n)(\d*)", r"\1    -------\n", docstring)
-    docstring = re.sub(r"(Examples\n)(.*)(\n)(\d*)", r"\1    --------\n", docstring)
+    docstring = re.sub(r"(Parameters\n)(.*)(\n)", r"\1    ----------\n", docstring)
+    docstring = re.sub(r"(Returns\n)(.*)(\n)", r"\1    -------\n", docstring)
+    docstring = re.sub(r"(Examples\n)(.*)(\n)", r"\1    --------\n", docstring)
 
     return docstring
 

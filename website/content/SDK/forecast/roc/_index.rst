@@ -28,11 +28,11 @@ forecast.roc(
 
 * **Parameters**
 
-    dataset : *pd.DataFrame*
+    dataset : pd.DataFrame
         The dataset you wish to calculate with
-    target_column : *str*
+    target_column : str
         The column you wish to add the ROC to
-    period : *int*
+    period : int
         Time Span
 
 * **Returns**

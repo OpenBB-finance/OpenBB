@@ -27,7 +27,7 @@ futures.curve(
 
 * **Parameters**
 
-    ticker: *str*
+    ticker: str
         Ticker to get forward curve
     chart: *bool*
        Flag to display chart
@@ -59,11 +59,11 @@ futures.curve(
 
 * **Parameters**
 
-    ticker: *str*
+    ticker: str
         Curve future ticker to display
-    raw: *bool*
+    raw: bool
         Display futures timeseries in raw format
-    export: *str*
+    export: str
         Type of format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

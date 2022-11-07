@@ -28,9 +28,9 @@ common.ta.vwap(
 
 * **Parameters**
 
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         Dataframe of dates and prices
-    offset: *int*
+    offset: int
         Length of offset
     chart: *bool*
        Flag to display chart
@@ -38,7 +38,7 @@ common.ta.vwap(
 
 * **Returns**
 
-    df_vwap: *pd.DataFrame*
+    df_vwap: pd.DataFrame
         Dataframe with VWAP data
 
 |
@@ -71,19 +71,19 @@ common.ta.vwap(
 
 * **Parameters**
 
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         Dataframe of OHLC prices
-    symbol : *str*
+    symbol : str
         Ticker
-    offset : *int*
+    offset : int
         Offset variable
-    start_date: *datetime*
+    start_date: datetime
         Start date to get data from with
-    end_date: *datetime*
+    end_date: datetime
         End date to get data from with
-    interval : *str*
+    interval : str
         Interval of data
-    export : *str*
+    export : str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (3 axes are expected in the list), by default None

@@ -27,7 +27,7 @@ common.ta.obv(
 
 * **Parameters**
 
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         Dataframe of OHLC prices
     chart: *bool*
        Flag to display chart
@@ -64,11 +64,11 @@ common.ta.obv(
 
 * **Parameters**
 
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         Dataframe of ohlc prices
-    symbol : *str*
+    symbol : str
         Ticker
-    export: *str*
+    export: str
         Format to export data as
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

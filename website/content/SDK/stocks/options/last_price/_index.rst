@@ -25,7 +25,7 @@ stocks.options.last_price(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Ticker symbol
 
 * **Returns**

@@ -29,15 +29,15 @@ stocks.fa.av_income(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Stock ticker symbol
-    limit : *int*
+    limit : int
         Number of past to get
     quarterly : bool, optional
         Flag to get quarterly instead of annual, by default False
-    ratios: *bool*
+    ratios: bool
         Shows percentage change, by default False
-    plot: *bool*
+    plot: bool
         If the data shall be formatted ready to plot
 
 * **Returns**

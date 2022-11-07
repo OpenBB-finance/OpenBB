@@ -30,13 +30,13 @@ common.ta.adx(
 
 * **Parameters**
 
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         Dataframe with OHLC price data
-    window: *int*
+    window: int
         Length of window
-    scalar: *int*
+    scalar: int
         Scalar variable
-    drift: *int*
+    drift: int
         Drift variable
     chart: *bool*
        Flag to display chart
@@ -76,17 +76,17 @@ common.ta.adx(
 
 * **Parameters**
 
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         Dataframe with OHLC price data
-    window : *int*
+    window : int
         Length of window
-    scalar : *int*
+    scalar : int
         Scalar variable
-    drift : *int*
+    drift : int
         Drift variable
-    symbol : *str*
+    symbol : str
         Ticker
-    export : *str*
+    export : str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None

@@ -27,7 +27,7 @@ etf.summary(
 
 * **Parameters**
 
-    name: *str*
+    name: str
         ETF name
     chart: *bool*
        Flag to display chart
@@ -61,7 +61,7 @@ etf.summary(
 
 * **Parameters**
 
-    name: *str*
+    name: str
         ETF name
     chart: *bool*
        Flag to display chart

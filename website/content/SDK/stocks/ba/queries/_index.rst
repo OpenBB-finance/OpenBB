@@ -26,9 +26,9 @@ stocks.ba.queries(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Stock ticker symbol to compare
-    limit: *int*
+    limit: int
         Number of queries to show
 
 * **Returns**

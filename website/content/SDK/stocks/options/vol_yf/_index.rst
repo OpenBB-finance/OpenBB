@@ -28,9 +28,9 @@ stocks.options.vol_yf(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Ticker symbol
-    expiry: *str*
+    expiry: str
         expiration date for options
     chart: *bool*
        Flag to display chart
@@ -66,19 +66,19 @@ stocks.options.vol_yf(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Ticker symbol
-    expiry: *str*
+    expiry: str
         expiration date for options
-    min_sp: *float*
+    min_sp: float
         Min strike to consider
-    max_sp: *float*
+    max_sp: float
         Max strike to consider
-    calls_only: *bool*
+    calls_only: bool
         Show calls only
-    puts_only: *bool*
+    puts_only: bool
         Show puts only
-    export: *str*
+    export: str
         Format to export file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

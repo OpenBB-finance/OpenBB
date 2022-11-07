@@ -22,5 +22,5 @@ economy.glbonds() -> pandas.core.frame.DataFrame
 
 * **Returns**
 
-    bonds: *pd.DataFrame*
+    bonds: pd.DataFrame
         Dataframe containing name, coupon rate, yield and change in yield

@@ -31,7 +31,7 @@ crypto.disc.cpsearch(
 
 * **Parameters**
 
-    query: * str*
+    query:  str
         phrase for search
     category:  Optional[Any]
         one or more categories (comma separated) to search.
@@ -40,10 +40,10 @@ crypto.disc.cpsearch(
     modifier: Optional[Any]
         set modifier for search results. Available options: symbol_search -
         search only by symbol (works for currencies only)
-    sortby: *str*
+    sortby: str
         Key to sort data. The table can be sorted by every of its columns. Refer to
         API documentation (see https://api.coinpaprika.com/docs#tag/Tools/paths/~1search/get)
-    ascend: *bool*
+    ascend: bool
         Flag to sort data descending
     chart: *bool*
        Flag to display chart
@@ -83,18 +83,18 @@ crypto.disc.cpsearch(
 
 * **Parameters**
 
-    query: *str*
+    query: str
         Search query
-    category: *str*
-        Categories to search: currencies|exchanges|icos|people|tags|all. Default: *all*
-    limit: *int*
+    category: str
+        Categories to search: currencies|exchanges|icos|people|tags|all. Default: all
+    limit: int
         Number of records to display
-    sortby: *str*
+    sortby: str
         Key to sort data. The table can be sorted by every of its columns. Refer to
         API documentation (see https://api.coinpaprika.com/docs#tag/Tools/paths/~1search/get)
-    ascend: *bool*
+    ascend: bool
         Flag to sort data descending
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

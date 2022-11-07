@@ -26,7 +26,7 @@ economy.perfmap(
 
 * **Parameters**
 
-    period : *str*
+    period : str
         Performance period. Available periods are 1d, 1w, 1m, 3m, 6m, 1y.
-    scope : *str*
+    scope : str
         Map filter. Available map filters are sp500, world, full, etf.

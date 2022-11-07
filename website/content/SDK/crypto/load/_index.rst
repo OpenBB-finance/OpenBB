@@ -14,12 +14,12 @@
 crypto.load(
     symbol: 'str',
     start_date: 'datetime' = datetime.datetime(
-    2019, 11, 3, 12, 49, 44, 441839, chart: bool = False,
+    2019, 11, 3, 13, 51, 50, 680263, chart: bool = False,
 ), interval: 'str' = '1440',
     exchange: 'str' = 'binance',
     vs_currency: 'str' = 'usdt',
     end_date: 'datetime' = datetime.datetime(
-    2022, 11, 7, 12, 49, 44, 441840, chart: bool = False,
+    2022, 11, 7, 13, 51, 50, 680264, chart: bool = False,
 ), source: 'str' = 'CCXT',
     chart: bool = False,
 ) -> 'pd.DataFrame'
@@ -33,20 +33,20 @@ crypto.load(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Coin to get
-    start_date: *datetime*
+    start_date: datetime
         The datetime to start at
-    interval: *str*
+    interval: str
         The interval between data points in minutes.
         Choose from: 1, 15, 30, 60, 240, 1440, 10080, 43200
     exchange: str:
         The exchange to get data from.
-    vs_currency: *str*
+    vs_currency: str
         Quote Currency (Defaults to usdt)
-    end_date: *datetime*
+    end_date: datetime
        The datetime to end at
-    source: *str*
+    source: str
         The source of the data
         Choose from: CCXT, CoinGecko, YahooFinance
 

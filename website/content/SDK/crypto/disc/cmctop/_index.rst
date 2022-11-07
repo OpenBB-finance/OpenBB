@@ -28,11 +28,11 @@ crypto.disc.cmctop(
 
 * **Parameters**
 
-    sortby: *str*
+    sortby: str
         Key to sort data. The table can be sorted by every of its columns. Refer to
         Coin Market Cap:s API documentation, see:
         https://coinmarketcap.com/api/documentation/v1/#operation/getV1CryptocurrencyListingsLatest
-    ascend: *bool*
+    ascend: bool
         Whether to sort ascending or descending
     chart: *bool*
        Flag to display chart
@@ -69,15 +69,15 @@ crypto.disc.cmctop(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         Number of records to display
-    sortby: *str*
+    sortby: str
         Key to sort data. The table can be sorted by every of its columns. Refer to
         Coin Market Cap:s API documentation, see:
         https://coinmarketcap.com/api/documentation/v1/#operation/getV1CryptocurrencyListingsLatest
-    ascend: *bool*
+    ascend: bool
         Flag to sort data ascending
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

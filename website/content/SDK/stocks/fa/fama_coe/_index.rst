@@ -25,10 +25,10 @@ stocks.fa.fama_coe(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         The ticker symbol to be analyzed
 
 * **Returns**
 
-    coef : *float*
+    coef : float
         The stock's Fama French coefficient

@@ -27,7 +27,7 @@ stocks.fa.splits(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Ticker to get forward and reverse splits
     chart: *bool*
        Flag to display chart
@@ -63,9 +63,9 @@ stocks.fa.splits(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Stock ticker symbol
-    export: *str*
+    export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

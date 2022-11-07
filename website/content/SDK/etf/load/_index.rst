@@ -62,28 +62,28 @@ etf.load(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Ticker to get data
-    start_date: *datetime*
+    start_date: datetime
         Start date to get data from with
-    interval: *int*
+    interval: int
         Interval (in minutes) to get data 1, 5, 15, 30, 60 or 1440
-    end_date: *datetime*
+    end_date: datetime
         End date to get data from with
-    prepost: *bool*
+    prepost: bool
         Pre and After hours data
-    source: *str*
+    source: str
         Source of data extracted
-    iexrange: *str*
+    iexrange: str
         Timeframe to get IEX data.
-    weekly: *bool*
+    weekly: bool
         Flag to get weekly data
-    monthly: *bool*
+    monthly: bool
         Flag to get monthly data
-    verbose: *bool*
+    verbose: bool
         Display verbose information on what was the symbol that was loaded
 
 * **Returns**
 
-    df_stock_candidate: *pd.DataFrame*
+    df_stock_candidate: pd.DataFrame
         Dataframe of data

@@ -28,7 +28,7 @@ stocks.gov.qtrcontracts(
 
 * **Parameters**
 
-    analysis : *str*
+    analysis : str
         How to analyze.  Either gives total amount or sorts by high/low momentum.
     limit : int, optional
         Number to return, by default 5
@@ -68,13 +68,13 @@ stocks.gov.qtrcontracts(
 
 * **Parameters**
 
-    analysis: *str*
+    analysis: str
         Analysis to perform.  Either 'total', 'upmom' 'downmom'
-    limit: *int*
+    limit: int
         Number to show
-    raw: *bool*
+    raw: bool
         Flag to display raw data
-    export: *str*
+    export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

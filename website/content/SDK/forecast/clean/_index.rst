@@ -28,7 +28,7 @@ forecast.clean(
 
 * **Parameters**
 
-    dataset : *pd.DataFrame*
+    dataset : pd.DataFrame
         The dataset you wish to clean
     fill : Optional[str]
         The method of filling NaNs

@@ -30,15 +30,15 @@ stocks.sia.filter_stocks(
 
 * **Parameters**
 
-    country: *str*
+    country: str
         Search by country to find stocks matching the criteria.
-    sector: *str*
+    sector: str
         Search by sector to find stocks matching the criteria.
-    industry: *str*
+    industry: str
         Search by industry to find stocks matching the criteria.
-    marketcap: *str*
+    marketcap: str
         Select stocks based on the market cap.
-    exclude_exchanges: *bool*
+    exclude_exchanges: bool
         When you wish to include different exchanges use this boolean.
 
 * **Returns**

@@ -29,12 +29,12 @@ portfolio.rsortino(
 
 * **Parameters**
 
-    portfolio : *PortfolioModel*
+    portfolio : PortfolioModel
         Portfolio object
-    window: *str*
+    window: str
         interval for window to consider
         Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y
-    risk_free_rate: *float*
+    risk_free_rate: float
         Value to use for risk free rate in sharpe/other calculations
     chart: *bool*
        Flag to display chart
@@ -72,13 +72,13 @@ portfolio.rsortino(
 
 * **Parameters**
 
-    portfolio : *PortfolioModel*
+    portfolio : PortfolioModel
         Portfolio object
-    risk_free_rate: *float*
+    risk_free_rate: float
         Value to use for risk free rate in sharpe/other calculations
-    window: *str*
+    window: str
         interval for window to consider
-    export: *str*
+    export: str
         Export to file
     external_axes: Optional[List[plt.Axes]]
         Optional axes to display plot on

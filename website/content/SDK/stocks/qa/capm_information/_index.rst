@@ -25,12 +25,12 @@ stocks.qa.capm_information(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         A ticker symbol in string form
 
 * **Returns**
 
-    beta : *float*
+    beta : float
         The beta for a stock
-    sys : *float*
+    sys : float
         The systematic risk for a stock

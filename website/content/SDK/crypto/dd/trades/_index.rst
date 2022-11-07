@@ -30,11 +30,11 @@ crypto.dd.trades(
 
 * **Parameters**
 
-    exchange_id : *str*
+    exchange_id : str
         exchange id
-    symbol : *str*
+    symbol : str
         coin symbol
-    to_symbol : *str*
+    to_symbol : str
         currency to compare coin against
     chart: *bool*
        Flag to display chart
@@ -73,15 +73,15 @@ crypto.dd.trades(
 
 * **Parameters**
 
-    exchange : *str*
+    exchange : str
         exchange id
-    symbol : *str*
+    symbol : str
         coin symbol
-    to_symbol : *str*
+    to_symbol : str
         currency to compare coin against
-    limit : *int*
+    limit : int
         number of trades to display
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

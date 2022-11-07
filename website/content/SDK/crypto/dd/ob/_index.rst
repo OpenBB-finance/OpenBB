@@ -30,11 +30,11 @@ crypto.dd.ob(
 
 * **Parameters**
 
-    exchange_id : *str*
+    exchange_id : str
         exchange id
-    symbol : *str*
+    symbol : str
         coin symbol
-    to_symbol : *str*
+    to_symbol : str
         currency to compare coin against
     chart: *bool*
        Flag to display chart
@@ -72,13 +72,13 @@ crypto.dd.ob(
 
 * **Parameters**
 
-    exchange : *str*
+    exchange : str
         exchange id
-    symbol : *str*
+    symbol : str
         coin symbol
-    vs : *str*
+    vs : str
         currency to compare coin against
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

@@ -26,9 +26,9 @@ stocks.gov.lobbying(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Ticker symbol to get corporate lobbying data from
-    limit: *int*
+    limit: int
         Number of events to show
 
 * **Returns**

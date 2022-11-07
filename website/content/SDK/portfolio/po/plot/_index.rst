@@ -42,11 +42,11 @@ portfolio.po.plot(
 
 * **Parameters**
 
-    weights: *Dict*
+    weights: Dict
         Dict of portfolio weights
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         DataFrame of stock returns
-    title_opt: *str*
+    title_opt: str
         Title to be used on the pie chart
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
@@ -60,31 +60,31 @@ portfolio.po.plot(
         the risk measures available depends on the objective function.
         The default is 'MV'. Possible values are:
 
-        - 'MV': *Variance.*
-        - 'MAD': *Mean Absolute Deviation.*
-        - 'MSV': *Semi Standard Deviation.*
+        - 'MV': Variance.
+        - 'MAD': Mean Absolute Deviation.
+        - 'MSV': Semi Standard Deviation.
         - 'FLPM': First Lower Partial Moment (Omega Ratio).
         - 'SLPM': Second Lower Partial Moment (Sortino Ratio).
-        - 'VaR': *Value at Risk.*
-        - 'CVaR': *Conditional Value at Risk.*
-        - 'TG': *Tail Gini.*
-        - 'EVaR': *Entropic Value at Risk.*
+        - 'VaR': Value at Risk.
+        - 'CVaR': Conditional Value at Risk.
+        - 'TG': Tail Gini.
+        - 'EVaR': Entropic Value at Risk.
         - 'WR': Worst Realization (Minimax).
-        - 'RG': *Range of returns.*
-        - 'CVRG': *CVaR range of returns.*
-        - 'TGRG': *Tail Gini range of returns.*
+        - 'RG': Range of returns.
+        - 'CVRG': CVaR range of returns.
+        - 'TGRG': Tail Gini range of returns.
         - 'MDD': Maximum Drawdown of uncompounded cumulative returns (Calmar Ratio).
-        - 'ADD': *Average Drawdown of uncompounded cumulative returns.*
-        - 'DaR': *Drawdown at Risk of uncompounded cumulative returns.*
-        - 'CDaR': *Conditional Drawdown at Risk of uncompounded cumulative returns.*
-        - 'EDaR': *Entropic Drawdown at Risk of uncompounded cumulative returns.*
-        - 'UCI': *Ulcer Index of uncompounded cumulative returns.*
+        - 'ADD': Average Drawdown of uncompounded cumulative returns.
+        - 'DaR': Drawdown at Risk of uncompounded cumulative returns.
+        - 'CDaR': Conditional Drawdown at Risk of uncompounded cumulative returns.
+        - 'EDaR': Entropic Drawdown at Risk of uncompounded cumulative returns.
+        - 'UCI': Ulcer Index of uncompounded cumulative returns.
         - 'MDD_Rel': Maximum Drawdown of compounded cumulative returns (Calmar Ratio).
-        - 'ADD_Rel': *Average Drawdown of compounded cumulative returns.*
-        - 'DaR_Rel': *Drawdown at Risk of compounded cumulative returns.*
-        - 'CDaR_Rel': *Conditional Drawdown at Risk of compounded cumulative returns.*
-        - 'EDaR_Rel': *Entropic Drawdown at Risk of compounded cumulative returns.*
-        - 'UCI_Rel': *Ulcer Index of compounded cumulative returns.*
+        - 'ADD_Rel': Average Drawdown of compounded cumulative returns.
+        - 'DaR_Rel': Drawdown at Risk of compounded cumulative returns.
+        - 'CDaR_Rel': Conditional Drawdown at Risk of compounded cumulative returns.
+        - 'EDaR_Rel': Entropic Drawdown at Risk of compounded cumulative returns.
+        - 'UCI_Rel': Ulcer Index of compounded cumulative returns.
 
     risk_free_rate: float, optional
         Risk free rate, must be in the same interval of assets returns.
@@ -154,11 +154,11 @@ portfolio.po.plot(
 
 * **Parameters**
 
-    weights: *Dict*
+    weights: Dict
         Dict of portfolio weights
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         DataFrame of stock returns
-    title_opt: *str*
+    title_opt: str
         Title to be used on the pie chart
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
@@ -172,31 +172,31 @@ portfolio.po.plot(
         the risk measures available depends on the objective function.
         The default is 'MV'. Possible values are:
 
-        - 'MV': *Variance.*
-        - 'MAD': *Mean Absolute Deviation.*
-        - 'MSV': *Semi Standard Deviation.*
+        - 'MV': Variance.
+        - 'MAD': Mean Absolute Deviation.
+        - 'MSV': Semi Standard Deviation.
         - 'FLPM': First Lower Partial Moment (Omega Ratio).
         - 'SLPM': Second Lower Partial Moment (Sortino Ratio).
-        - 'VaR': *Value at Risk.*
-        - 'CVaR': *Conditional Value at Risk.*
-        - 'TG': *Tail Gini.*
-        - 'EVaR': *Entropic Value at Risk.*
+        - 'VaR': Value at Risk.
+        - 'CVaR': Conditional Value at Risk.
+        - 'TG': Tail Gini.
+        - 'EVaR': Entropic Value at Risk.
         - 'WR': Worst Realization (Minimax).
-        - 'RG': *Range of returns.*
-        - 'CVRG': *CVaR range of returns.*
-        - 'TGRG': *Tail Gini range of returns.*
+        - 'RG': Range of returns.
+        - 'CVRG': CVaR range of returns.
+        - 'TGRG': Tail Gini range of returns.
         - 'MDD': Maximum Drawdown of uncompounded cumulative returns (Calmar Ratio).
-        - 'ADD': *Average Drawdown of uncompounded cumulative returns.*
-        - 'DaR': *Drawdown at Risk of uncompounded cumulative returns.*
-        - 'CDaR': *Conditional Drawdown at Risk of uncompounded cumulative returns.*
-        - 'EDaR': *Entropic Drawdown at Risk of uncompounded cumulative returns.*
-        - 'UCI': *Ulcer Index of uncompounded cumulative returns.*
+        - 'ADD': Average Drawdown of uncompounded cumulative returns.
+        - 'DaR': Drawdown at Risk of uncompounded cumulative returns.
+        - 'CDaR': Conditional Drawdown at Risk of uncompounded cumulative returns.
+        - 'EDaR': Entropic Drawdown at Risk of uncompounded cumulative returns.
+        - 'UCI': Ulcer Index of uncompounded cumulative returns.
         - 'MDD_Rel': Maximum Drawdown of compounded cumulative returns (Calmar Ratio).
-        - 'ADD_Rel': *Average Drawdown of compounded cumulative returns.*
-        - 'DaR_Rel': *Drawdown at Risk of compounded cumulative returns.*
-        - 'CDaR_Rel': *Conditional Drawdown at Risk of compounded cumulative returns.*
-        - 'EDaR_Rel': *Entropic Drawdown at Risk of compounded cumulative returns.*
-        - 'UCI_Rel': *Ulcer Index of compounded cumulative returns.*
+        - 'ADD_Rel': Average Drawdown of compounded cumulative returns.
+        - 'DaR_Rel': Drawdown at Risk of compounded cumulative returns.
+        - 'CDaR_Rel': Conditional Drawdown at Risk of compounded cumulative returns.
+        - 'EDaR_Rel': Entropic Drawdown at Risk of compounded cumulative returns.
+        - 'UCI_Rel': Ulcer Index of compounded cumulative returns.
 
     risk_free_rate: float, optional
         Risk free rate, must be in the same interval of assets returns.

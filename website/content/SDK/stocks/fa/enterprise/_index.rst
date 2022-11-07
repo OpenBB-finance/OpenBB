@@ -27,11 +27,11 @@ stocks.fa.enterprise(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Fundamental analysis ticker symbol
-    limit: *int*
+    limit: int
         Number to get
-    quarterly: *bool*
+    quarterly: bool
         Flag to get quarterly data
 
 * **Returns**

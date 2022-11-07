@@ -29,11 +29,11 @@ crypto.ov.cpexchanges(
 
 * **Parameters**
 
-    symbols: *str*
+    symbols: str
         Comma separated quotes to return e.g quotes=USD,BTC
-    sortby: *str*
+    sortby: str
         Key by which to sort data
-    ascend: *bool*
+    ascend: bool
         Flag to sort data ascend
     chart: *bool*
        Flag to display chart
@@ -72,17 +72,17 @@ crypto.ov.cpexchanges(
 
 * **Parameters**
 
-    currency: *str*
+    currency: str
         Quoted currency
-    limit: *int*
+    limit: int
         Number of records to display
-    sortby: *str*
+    sortby: str
         Key by which to sort data
-    ascend: *bool*
+    ascend: bool
         Flag to sort data ascending
-    links: *bool*
+    links: bool
         Flag to display urls
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

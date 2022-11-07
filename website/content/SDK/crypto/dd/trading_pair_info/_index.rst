@@ -25,7 +25,7 @@ crypto.dd.trading_pair_info(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Trading pair of coins on Coinbase e.g ETH-USDT or UNI-ETH
 
 * **Returns**

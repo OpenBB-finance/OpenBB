@@ -54,9 +54,9 @@ crypto.defi.stvl(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         Number of records to display, by default 5
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

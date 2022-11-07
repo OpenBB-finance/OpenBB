@@ -30,13 +30,13 @@ stocks.dps.ftd(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Stock ticker
-    start_date : *str*
+    start_date : str
         Start of data, in YYYY-MM-DD format
-    end_date : *str*
+    end_date : str
         End of data, in YYYY-MM-DD format
-    limit : *int*
+    limit : int
         Number of latest fails-to-deliver being printed
     chart: *bool*
        Flag to display chart
@@ -77,19 +77,19 @@ stocks.dps.ftd(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Stock ticker
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         Stock data
-    start_date: *str*
+    start_date: str
         Start of data, in YYYY-MM-DD format
-    end_date: *str*
+    end_date: str
         End of data, in YYYY-MM-DD format
-    limit : *int*
+    limit : int
         Number of latest fails-to-deliver being printed
-    raw: *bool*
+    raw: bool
         Print raw data
-    export: *str*
+    export: str
         Export dataframe data to csv,json,xlsx file
     external_axes: Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None

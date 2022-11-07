@@ -25,7 +25,7 @@ stocks.ca.finnhub_peers(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Ticker to find comparisons for
 
 * **Returns**

@@ -29,15 +29,15 @@ portfolio.var(
 
 * **Parameters**
 
-    portfolio: *Portfolio*
+    portfolio: Portfolio
         Portfolio object with trades loaded
-    use_mean: *bool*
+    use_mean: bool
         if one should use the data mean return
-    adjusted_var: *bool*
+    adjusted_var: bool
         if one should have VaR adjusted for skew and kurtosis (Cornish-Fisher-Expansion)
-    student_t: *bool*
+    student_t: bool
         If one should use the student-t distribution
-    percentile: *float*
+    percentile: float
         var percentile (%)
 
 * **Returns**

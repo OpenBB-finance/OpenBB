@@ -28,7 +28,7 @@ etf.ld(
 
 * **Parameters**
 
-    description: *str*
+    description: str
         Search by description to find ETFs matching the criteria.
     chart: *bool*
        Flag to display chart
@@ -36,7 +36,7 @@ etf.ld(
 
 * **Returns**
 
-    data : *Dict*
+    data : Dict
         Dictionary with ETFs that match a certain description
 
 |
@@ -65,11 +65,11 @@ etf.ld(
 
 * **Parameters**
 
-    description: *str*
+    description: str
         Search by description to find ETFs matching the criteria.
-    limit: *int*
+    limit: int
         Limit of ETFs to display
-    export: *str*
+    export: str
         Type of format to export data
     chart: *bool*
        Flag to display chart

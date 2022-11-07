@@ -29,9 +29,9 @@ economy.events(
 
     countries : [List[str],str]
         List of countries to include in calendar.  Empty returns all
-    start_date : *str*
+    start_date : str
         Start date for calendar
-    end_date : *str*
+    end_date : str
         End date for calendar
 
 * **Returns**

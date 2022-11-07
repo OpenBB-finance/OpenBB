@@ -28,11 +28,11 @@ crypto.onchain.holders(
 
 * **Parameters**
 
-    address: *str*
+    address: str
         Token balance e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
-    sortby: *str*
+    sortby: str
         Key to sort by.
-    ascend: *str*
+    ascend: str
         Sort in descending order.
     chart: *bool*
        Flag to display chart
@@ -70,15 +70,15 @@ crypto.onchain.holders(
 
 * **Parameters**
 
-    address: *str*
+    address: str
         Token balance e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
-    limit: *int*
+    limit: int
         Limit of transactions. Maximum 100
-    sortby: *str*
+    sortby: str
         Key to sort by.
-    ascend: *str*
+    ascend: str
         Sort in descending order.
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

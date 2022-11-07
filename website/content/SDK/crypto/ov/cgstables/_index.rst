@@ -29,11 +29,11 @@ crypto.ov.cgstables(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         How many rows to show
-    sortby: *str*
+    sortby: str
         Key by which to sort data
-    ascend: *bool*
+    ascend: bool
         Flag to sort data ascending
     chart: *bool*
        Flag to display chart
@@ -71,15 +71,15 @@ crypto.ov.cgstables(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         Number of records to display
-    sortby: *str*
+    sortby: str
         Key by which to sort data
-    ascend: *bool*
+    ascend: bool
         Flag to sort data ascending
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
-    pie : *bool*
+    pie : bool
         Whether to show a pie chart
     chart: *bool*
        Flag to display chart

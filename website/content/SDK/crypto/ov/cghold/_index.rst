@@ -27,7 +27,7 @@ crypto.ov.cghold(
 
 * **Parameters**
 
-    endpoint : *str*
+    endpoint : str
         "bitcoin" or "ethereum"
     chart: *bool*
        Flag to display chart
@@ -36,8 +36,8 @@ crypto.ov.cghold(
 * **Returns**
 
     List:
-        - str: *             Overall statistics*
-        - pandas.DataFrame: *Companies holding crypto*
+        - str:              Overall statistics
+        - pandas.DataFrame: Companies holding crypto
 
 |
 
@@ -65,13 +65,13 @@ crypto.ov.cghold(
 
 * **Parameters**
 
-    symbol: *str*
-        Cryptocurrency: *ethereum or bitcoin*
-    show_bar : *bool*
+    symbol: str
+        Cryptocurrency: ethereum or bitcoin
+    show_bar : bool
         Whether to show a bar graph for the data
-    export: *str*
+    export: str
         Export dataframe data to csv,json,xlsx
-    limit: *int*
+    limit: int
         The number of rows to show
     chart: *bool*
        Flag to display chart

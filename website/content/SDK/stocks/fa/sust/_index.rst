@@ -25,7 +25,7 @@ stocks.fa.sust(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Stock ticker symbol
 
 * **Returns**

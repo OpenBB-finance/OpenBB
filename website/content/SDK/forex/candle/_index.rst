@@ -29,11 +29,11 @@ forex.candle(
 
 * **Parameters**
 
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         Loaded fx historical data
-    to_symbol : *str*
+    to_symbol : str
         To forex symbol
-    from_symbol : *str*
+    from_symbol : str
         From forex symbol
     ma : Optional[Iterable[int]]
         Moving averages

@@ -31,13 +31,13 @@ crypto.onchain.whales(
 
 * **Parameters**
 
-    min_value: *int*
+    min_value: int
         Minimum value of trade to track.
-    limit: *int*
+    limit: int
         Limit of transactions. Max 100
-    sortby: *str*
+    sortby: str
         Key to sort by.
-    ascend: *str*
+    ascend: str
         Sort in ascending order.
     chart: *bool*
        Flag to display chart
@@ -76,17 +76,17 @@ crypto.onchain.whales(
 
 * **Parameters**
 
-    min_value: *int*
+    min_value: int
         Minimum value of trade to track.
-    limit: *int*
+    limit: int
         Limit of transactions. Maximum 100
-    sortby: *str*
+    sortby: str
         Key to sort by.
-    ascend: *str*
+    ascend: str
         Sort in ascending order.
-    show_address: *bool*
+    show_address: bool
         Flag to show addresses of transactions.
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

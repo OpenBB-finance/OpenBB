@@ -27,7 +27,7 @@ alt.oss.history(
 
 * **Parameters**
 
-    repo : *str*
+    repo : str
             Repo to search for Format: org/repo, e.g., openbb-finance/openbbterminal
     chart: *bool*
        Flag to display chart
@@ -62,9 +62,9 @@ alt.oss.history(
 
 * **Parameters**
 
-    repo : *str*
+    repo : str
             Repository to display star history. Format: org/repo, e.g., openbb-finance/openbbterminal
-    export : *str*
+    export : str
             Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
             External axes (1 axis is expected in the list), by default None

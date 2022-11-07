@@ -31,13 +31,13 @@ etf.news(
 
 * **Parameters**
 
-    query : *str*
+    query : str
         term to search on the news articles
-    start_date: *str*
+    start_date: str
         date to start searching articles from formatted YYYY-MM-DD
-    show_newest: *bool*
+    show_newest: bool
         flag to show newest articles first
-    sources: *str*
+    sources: str
         sources to exclusively show news from (comma separated)
     chart: *bool*
        Flag to display chart
@@ -76,17 +76,17 @@ etf.news(
 
 * **Parameters**
 
-    query : *str*
+    query : str
         term to search on the news articles
-    start_date: *str*
+    start_date: str
         date to start searching articles from formatted YYYY-MM-DD
-    limit : *int*
+    limit : int
         number of articles to display
-    show_newest: *bool*
+    show_newest: bool
         flag to show newest articles first
-    sources: *str*
+    sources: str
         sources to exclusively show news from
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

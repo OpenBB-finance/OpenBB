@@ -26,7 +26,7 @@ stocks.ba.stalker(
 
 * **Parameters**
 
-    user : *str*
+    user : str
         User to get posts for
     limit : int, optional
         Number of posts to get, by default 30

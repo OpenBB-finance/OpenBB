@@ -27,9 +27,9 @@ stocks.fa.growth(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Stock ticker symbol
-    limit : *int*
+    limit : int
         Number to get
     quarterly : bool, optional
         Flag to get quarterly data, by default False

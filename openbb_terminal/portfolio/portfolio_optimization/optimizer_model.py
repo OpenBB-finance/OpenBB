@@ -2102,18 +2102,18 @@ def get_hcp_portfolio(
         metric and clusters. The default is 'pearson'. Possible values are:
 
         - 'pearson': pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\rho^{pearson}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{pearson}_{i,j})}
         - 'spearman': spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\rho^{spearman}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{spearman}_{i,j})}
         - 'abs_pearson': absolute value pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\rho^{pearson}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{pearson}_{i,j}|)}
         - 'abs_spearman': absolute value spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\rho^{spearman}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{spearman}_{i,j}|)}
         - 'distance': distance correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-\rho^{distance}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{(1-\\rho^{distance}_{i,j})}
         - 'mutual_info': mutual information matrix. Distance used is variation information matrix.
         - 'tail': lower tail dependence index matrix. Dissimilarity formula:
-            :math:`D_{i,j} = -\\log{\\lambda_{i,j}}`.
+            .. math:: D_{i,j} = -\\log{\\lambda_{i,j}}`.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
@@ -2359,18 +2359,18 @@ def get_hrp(
         metric and clusters. The default is 'pearson'. Possible values are:
 
         - 'pearson': pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\rho^{pearson}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{pearson}_{i,j})}
         - 'spearman': spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\rho^{spearman}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{spearman}_{i,j})}
         - 'abs_pearson': absolute value pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\rho^{pearson}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{pearson}_{i,j}|)}
         - 'abs_spearman': absolute value spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\rho^{spearman}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{spearman}_{i,j}|)}
         - 'distance': distance correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-\rho^{distance}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{(1-\\rho^{distance}_{i,j})}
         - 'mutual_info': mutual information matrix. Distance used is variation information matrix.
         - 'tail': lower tail dependence index matrix. Dissimilarity formula:
-            :math:`D_{i,j} = -\\log{\\lambda_{i,j}}`.
+            .. math:: D_{i,j} = -\\log{\\lambda_{i,j}}`.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
@@ -2596,18 +2596,18 @@ def get_herc(
         metric and clusters. The default is 'pearson'. Possible values are:
 
         - 'pearson': pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\rho^{pearson}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{pearson}_{i,j})}
         - 'spearman': spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\rho^{spearman}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{spearman}_{i,j})}
         - 'abs_pearson': absolute value pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\rho^{pearson}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{pearson}_{i,j}|)}
         - 'abs_spearman': absolute value spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\rho^{spearman}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{spearman}_{i,j}|)}
         - 'distance': distance correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-\rho^{distance}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{(1-\\rho^{distance}_{i,j})}
         - 'mutual_info': mutual information matrix. Distance used is variation information matrix.
         - 'tail': lower tail dependence index matrix. Dissimilarity formula:
-            :math:`D_{i,j} = -\\log{\\lambda_{i,j}}`.
+            .. math:: D_{i,j} = -\\log{\\lambda_{i,j}}`.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
@@ -2833,18 +2833,18 @@ def get_nco(
         metric and clusters. The default is 'pearson'. Possible values are:
 
         - 'pearson': pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\rho^{pearson}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{pearson}_{i,j})}
         - 'spearman': spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{0.5(1-\rho^{spearman}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{0.5(1-\\rho^{spearman}_{i,j})}
         - 'abs_pearson': absolute value pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\rho^{pearson}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{pearson}_{i,j}|)}
         - 'abs_spearman': absolute value spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-|\rho^{spearman}_{i,j}|)}`.
+            .. math:: D_{i,j} = \\sqrt{(1-|\\rho^{spearman}_{i,j}|)}
         - 'distance': distance correlation matrix. Distance formula:
-            :math:`D_{i,j} = \\sqrt{(1-\rho^{distance}_{i,j})}`.
+            .. math:: D_{i,j} = \\sqrt{(1-\\rho^{distance}_{i,j})}
         - 'mutual_info': mutual information matrix. Distance used is variation information matrix.
         - 'tail': lower tail dependence index matrix. Dissimilarity formula:
-            :math:`D_{i,j} = -\\log{\\lambda_{i,j}}`.
+            .. math:: D_{i,j} = -\\log{\\lambda_{i,j}}`.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:

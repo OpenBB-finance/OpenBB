@@ -30,9 +30,9 @@ stocks.ba.infer(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Ticker symbol to search twitter for
-    limit: *int*
+    limit: int
         Number of tweets to analyze
     start_date: Optional[str]
         If given, the start time to get tweets from
@@ -44,7 +44,7 @@ stocks.ba.infer(
 
 * **Returns**
 
-    df_tweet: *pd.DataFrame*
+    df_tweet: pd.DataFrame
         Dataframe of tweets and sentiment
 
 |
@@ -72,11 +72,11 @@ stocks.ba.infer(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Stock ticker symbol
-    limit: *int*
+    limit: int
         Number of tweets to analyze
-    export: *str*
+    export: str
         Format to export tweet dataframe
     chart: *bool*
        Flag to display chart

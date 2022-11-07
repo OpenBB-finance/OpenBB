@@ -30,13 +30,13 @@ crypto.onchain.tv(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         ERC20 token symbol.
-    trade_amount_currency: *str*
+    trade_amount_currency: str
         Currency to display trade amount in.
-    sortby: *str*
+    sortby: str
         Key by which to sort data
-    ascend: *bool*
+    ascend: bool
         Flag to sort data ascending
     chart: *bool*
        Flag to display chart
@@ -76,17 +76,17 @@ crypto.onchain.tv(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         ERC20 token symbol or address
-    trade_amount_currency: *str*
-        Currency of displayed trade amount. Default: *USD*
-    limit: *int*
+    trade_amount_currency: str
+        Currency of displayed trade amount. Default: USD
+    limit: int
         Number of records to display
-    sortby: *str*
+    sortby: str
         Key by which to sort data
-    ascend: *bool*
+    ascend: bool
         Flag to sort data ascending
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

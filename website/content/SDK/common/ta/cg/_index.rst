@@ -28,9 +28,9 @@ common.ta.cg(
 
 * **Parameters**
 
-    values: *pd.DataFrame*
+    values: pd.DataFrame
         Data to use with close being titled values
-    window: *int*
+    window: int
         Length for indicator window
     chart: *bool*
        Flag to display chart
@@ -68,13 +68,13 @@ common.ta.cg(
 
 * **Parameters**
 
-    data : *pd.Series*
+    data : pd.Series
         Series of values
-    window : *int*
+    window : int
         Length of window
-    symbol : *str*
+    symbol : str
         Stock ticker
-    export : *str*
+    export : str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None

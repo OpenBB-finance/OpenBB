@@ -29,11 +29,11 @@ crypto.disc.losers(
 
 * **Parameters**
 
-    interval: *str*
+    interval: str
         Time interval by which data is displayed. One from [1h, 24h, 7d, 14d, 30d, 60d, 1y]
-    limit: *int*
+    limit: int
         Number of records to display
-    sortby: *str*
+    sortby: str
         Key to sort data. The table can be sorted by every of its columns. Refer to
         API documentation (see /coins/markets in https://www.coingecko.com/en/api/documentation)
     chart: *bool*
@@ -72,14 +72,14 @@ crypto.disc.losers(
 
 * **Parameters**
 
-    interval: *str*
+    interval: str
         Time period by which data is displayed. One from [1h, 24h, 7d, 14d, 30d, 60d, 1y]
-    limit: *int*
+    limit: int
         Number of records to display
-    sortby: *str*
+    sortby: str
         Key to sort data. The table can be sorted by every of its columns. Refer to
         API documentation (see /coins/markets in https://www.coingecko.com/en/api/documentation)
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

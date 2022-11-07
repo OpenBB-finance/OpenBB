@@ -27,7 +27,7 @@ stocks.ba.watchlist(
 
 * **Parameters**
 
-    limit : *int*
+    limit : int
         Number of posts to look through
     chart: *bool*
        Flag to display chart
@@ -65,7 +65,7 @@ stocks.ba.watchlist(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         Maximum number of submissions to look at
     chart: *bool*
        Flag to display chart

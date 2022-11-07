@@ -27,11 +27,11 @@ common.ta.ema(
 
 * **Parameters**
 
-    data: *pd.Series*
+    data: pd.Series
         Dataframe of dates and prices
-    length: *int*
+    length: int
         Length of EMA window
-    offset: *int*
+    offset: int
         Length of offset
 
 * **Returns**

@@ -33,7 +33,7 @@ stocks.ca.income(
         List of tickers to compare.
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
-    timeframe : *str*
+    timeframe : str
         Column header to compare
     quarter : bool, optional
         Whether to use quarterly statements, by default False
@@ -74,7 +74,7 @@ stocks.ca.income(
         ["TSLA", "AAPL", "NFLX", "BBY"]
         You can also get a list of comparable peers with
         finnhub_peers(), finviz_peers(), polygon_peers().
-    timeframe : *str*
+    timeframe : str
         What year to look at
     quarter : bool, optional
         Whether to use quarterly statements, by default False

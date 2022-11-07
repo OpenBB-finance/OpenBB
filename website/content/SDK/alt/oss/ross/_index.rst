@@ -56,19 +56,19 @@ alt.oss.ross(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         Number of startups to search
-    sortby: *str*
+    sortby: str
         Key by which to sort data. Default: Stars AGR [%]
-    ascend: *bool*
+    ascend: bool
         Flag to sort data descending
-    show_chart: *bool*
+    show_chart: bool
         Flag to show chart with startups
-    show_growth: *bool*
+    show_growth: bool
         Flag to show growth line chart
-    chart_type: *str*
+    chart_type: str
         Chart type {stars,forks}
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

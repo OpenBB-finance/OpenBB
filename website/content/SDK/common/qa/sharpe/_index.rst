@@ -29,11 +29,11 @@ common.qa.sharpe(
 
 * **Parameters**
 
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         selected dataframe column
-    rfr: *float*
+    rfr: float
         risk free rate
-    window: *float*
+    window: float
         length of the rolling window
     chart: *bool*
        Flag to display chart
@@ -41,7 +41,7 @@ common.qa.sharpe(
 
 * **Returns**
 
-    sharpe: *pd.DataFrame*
+    sharpe: pd.DataFrame
         sharpe ratio
 
 |
@@ -69,11 +69,11 @@ common.qa.sharpe(
 
 * **Parameters**
 
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         selected dataframe column
-    rfr: *float*
+    rfr: float
         risk free rate
-    window: *float*
+    window: float
         length of the rolling window
     chart: *bool*
        Flag to display chart

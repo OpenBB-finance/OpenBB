@@ -25,12 +25,12 @@ portfolio.po.load(
 
 * **Parameters**
 
-    excel_file: *str*
+    excel_file: str
         The location of the Excel file that needs to be loaded.
 
 * **Returns**
 
-    tickers: *list*
+    tickers: list
         Returns a list with ticker symbols
-    categories: *dictionary*
+    categories: dictionary
         Returns a dictionary that specifies each category

@@ -28,16 +28,16 @@ forecast.combine(
 
 * **Parameters**
 
-    df1: *pd.DataFrame*
+    df1: pd.DataFrame
         The dataframe to add a column to
-    df2: *pd.DataFrame*
+    df2: pd.DataFrame
         The dataframe to lose a column
-    column: *str*
+    column: str
         The column to transfer
-    dataset: *str*
+    dataset: str
         A name for df2 (shows in name of new column)
 
 * **Returns**
 
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         The new dataframe

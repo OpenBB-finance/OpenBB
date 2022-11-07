@@ -30,13 +30,13 @@ common.ta.adosc(
 
 * **Parameters**
 
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         Dataframe of OHLC prices
-    use_open : *bool*
+    use_open : bool
         Whether to use open prices
-    fast: *int*
+    fast: int
         Fast value
-    slow: *int*
+    slow: int
         Slow value
     chart: *bool*
        Flag to display chart
@@ -76,17 +76,17 @@ common.ta.adosc(
 
 * **Parameters**
 
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         Dataframe of ohlc prices
-    use_open : *bool*
+    use_open : bool
         Whether to use open prices in calculation
-    fast: *int*
+    fast: int
          Length of fast window
-    slow : *int*
+    slow : int
         Length of slow window
-    symbol : *str*
+    symbol : str
         Stock ticker
-    export : *str*
+    export : str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (3 axes are expected in the list), by default None

@@ -25,7 +25,7 @@ alt.covid.global_cases(
 
 * **Parameters**
 
-    country: *str*
+    country: str
         Country to search for
 
 * **Returns**

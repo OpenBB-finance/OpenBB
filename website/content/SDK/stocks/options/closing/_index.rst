@@ -25,7 +25,7 @@ stocks.options.closing(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         The ticker symbol to get the price for
 
 * **Returns**

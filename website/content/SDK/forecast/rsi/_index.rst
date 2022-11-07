@@ -28,11 +28,11 @@ forecast.rsi(
 
 * **Parameters**
 
-    dataset : *pd.DataFrame*
+    dataset : pd.DataFrame
         The dataset you wish to calculate for
-    target_column : *str*
+    target_column : str
         The column you wish to add the RSI to
-    period : *int*
+    period : int
         Time Span
 
 * **Returns**

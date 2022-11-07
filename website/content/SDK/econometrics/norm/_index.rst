@@ -29,7 +29,7 @@ econometrics.norm(
 
 * **Parameters**
 
-    data : *pd.Series*
+    data : pd.Series
         A series or column of a DataFrame to test normality for
     chart: *bool*
        Flag to display chart
@@ -68,15 +68,15 @@ econometrics.norm(
 
 * **Parameters**
 
-    data: *pd.Series*
+    data: pd.Series
         Series of custom data
-    dataset: *str*
+    dataset: str
         Dataset name
-    column: *str*
+    column: str
         Column for y data
-    plot : *bool*
+    plot : bool
         Whether you wish to plot a histogram
-    export: *str*
+    export: str
         Format to export data.
     external_axes: Optional[List[plt.axes]]
         External axes to plot on

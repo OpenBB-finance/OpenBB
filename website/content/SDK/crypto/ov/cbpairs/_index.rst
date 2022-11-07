@@ -34,11 +34,11 @@ crypto.ov.cbpairs(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         Top n of pairs
-    sortby: *str*
+    sortby: str
         Key to sortby data
-    ascend: *bool*
+    ascend: bool
         Sort descending flag
     chart: *bool*
        Flag to display chart
@@ -75,13 +75,13 @@ crypto.ov.cbpairs(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         Top n of pairs
-    sortby: *str*
+    sortby: str
         Key to sortby data
-    ascend: *bool*
+    ascend: bool
         Sort ascending flag
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

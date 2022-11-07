@@ -22,5 +22,5 @@ economy.futures() -> pandas.core.frame.DataFrame
 
 * **Returns**
 
-    commodities: *pd.DataFrame*
+    commodities: pd.DataFrame
         Dataframe containing name, price, net change and percent change

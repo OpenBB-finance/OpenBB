@@ -26,7 +26,7 @@ crypto.onchain.tx(
 
 * **Parameters**
 
-    tx_hash: *str*
+    tx_hash: str
         Transaction hash e.g. 0x9dc7b43ad4288c624fdd236b2ecb9f2b81c93e706b2ffd1d19b112c1df7849e6
     chart: *bool*
        Flag to display chart
@@ -61,9 +61,9 @@ crypto.onchain.tx(
 
 * **Parameters**
 
-    tx_hash: *str*
+    tx_hash: str
         Transaction hash e.g. 0x9dc7b43ad4288c624fdd236b2ecb9f2b81c93e706b2ffd1d19b112c1df7849e6
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

@@ -28,9 +28,9 @@ portfolio.dret(
 
 * **Parameters**
 
-    portfolio: *Portfolio*
+    portfolio: Portfolio
         Portfolio object with trades loaded
-    window : *str*
+    window : str
         interval to compare cumulative returns and benchmark
     chart: *bool*
        Flag to display chart
@@ -68,17 +68,17 @@ portfolio.dret(
 
 * **Parameters**
 
-    portfolio: *Portfolio*
+    portfolio: Portfolio
         Portfolio object with trades loaded
-    window : *str*
+    window : str
         interval to compare cumulative returns and benchmark
-    raw : *False*
+    raw : False
         Display raw data from cumulative return
-    limit : *int*
+    limit : int
         Last daily returns to display
-    export : *str*
+    export : str
         Export certain type of data
-    external_axes: *plt.Axes*
+    external_axes: plt.Axes
         Optional axes to display plot on
     chart: *bool*
        Flag to display chart

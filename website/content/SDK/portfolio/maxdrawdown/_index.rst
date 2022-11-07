@@ -25,7 +25,7 @@ portfolio.maxdrawdown(
 
 * **Parameters**
 
-    portfolio: *Portfolio*
+    portfolio: Portfolio
         Portfolio object with trades loaded
 
 * **Returns**

@@ -32,15 +32,15 @@ crypto.defi.ldapps(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         The number of dApps to display
-    sortby: *str*
+    sortby: str
         Key by which to sort data
-    ascend: *bool*
+    ascend: bool
         Flag to sort data descending
-    description: *bool*
+    description: bool
         Flag to display description of protocol
-    drop_chain: *bool*
+    drop_chain: bool
         Whether to drop the chain column
     chart: *bool*
        Flag to display chart
@@ -79,15 +79,15 @@ crypto.defi.ldapps(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         Number of records to display
-    sortby: *str*
+    sortby: str
         Key by which to sort data
-    ascend: *bool*
+    ascend: bool
         Flag to sort data descending
-    description: *bool*
+    description: bool
         Flag to display description of protocol
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

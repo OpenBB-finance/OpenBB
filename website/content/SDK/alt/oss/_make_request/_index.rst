@@ -25,7 +25,7 @@ alt.oss._make_request(
 
 * **Parameters**
 
-    url : *str*
+    url : str
         url to scrape
 
 * **Returns**

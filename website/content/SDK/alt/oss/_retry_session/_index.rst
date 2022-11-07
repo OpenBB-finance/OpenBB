@@ -27,11 +27,11 @@ alt.oss._retry_session(
 
 * **Parameters**
 
-    url: *str*
+    url: str
         Url to mount a session
-    retries: *int*
+    retries: int
         How many retries
-    backoff_factor: *float*
+    backoff_factor: float
         Backoff schema - time periods between retry
 
 * **Returns**

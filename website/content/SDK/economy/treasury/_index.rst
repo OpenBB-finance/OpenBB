@@ -31,16 +31,16 @@ economy.treasury(
 
 * **Parameters**
 
-    instruments: *list*
+    instruments: list
         Type(s) of treasuries, nominal, inflation-adjusted (long term average) or secondary market.
         Available options can be accessed through economy.treasury_maturities().
-    maturities : *list*
+    maturities : list
         Treasury maturities to get. Available options can be accessed through economy.treasury_maturities().
-    frequency : *str*
+    frequency : str
         Frequency of the data, this can be annually, monthly, weekly or daily.
-    start_date : *str*
+    start_date : str
         Starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
-    end_date : *str*
+    end_date : str
         End date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
     chart: *bool*
        Flag to display chart
@@ -48,7 +48,7 @@ economy.treasury(
 
 * **Returns**
 
-    treasury_data: *pd.Dataframe*
+    treasury_data: pd.Dataframe
         Holds data of the selected types and maturities
 
 |
@@ -81,22 +81,22 @@ economy.treasury(
 
 * **Parameters**
 
-    instruments: *list*
+    instruments: list
         Type(s) of treasuries, nominal, inflation-adjusted or secondary market.
         Available options can be accessed through economy.treasury_maturities().
-    maturities : *list*
+    maturities : list
         Treasury maturities to display. Available options can be accessed through economy.treasury_maturities().
-    frequency : *str*
+    frequency : str
         Frequency of the data, this can be daily, weekly, monthly or annually
-    start_date : *str*
+    start_date : str
         Starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
-    end_date : *str*
+    end_date : str
         End date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
-    raw : *bool*
+    raw : bool
         Whether to display the raw output.
     external_axes: Optional[List[plt.axes]]
         External axes to plot on
-    export : *str*
+    export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
     chart: *bool*
        Flag to display chart

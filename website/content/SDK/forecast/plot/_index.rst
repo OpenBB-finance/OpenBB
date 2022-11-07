@@ -30,11 +30,11 @@ forecast.plot(
 
 * **Parameters**
 
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         The dataframe to plot
     columns: List[str]
         The columns to show
-    export: *str*
+    export: str
         Format to export image
     external_axes:Optional[List[plt.axes]]
         External axes to plot on
@@ -68,11 +68,11 @@ forecast.plot(
 
 * **Parameters**
 
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         The dataframe to plot
     columns: List[str]
         The columns to show
-    export: *str*
+    export: str
         Format to export image
     external_axes:Optional[List[plt.axes]]
         External axes to plot on

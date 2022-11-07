@@ -26,9 +26,9 @@ economy.fred_notes(
 
 * **Parameters**
 
-    search_query : *str*
+    search_query : str
         Text query to search on fred series notes database
-    limit : *int*
+    limit : int
         Maximum number of series notes to display
 
 * **Returns**

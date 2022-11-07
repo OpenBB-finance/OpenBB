@@ -26,7 +26,7 @@ crypto.ov.crypto_hack(
 
 * **Parameters**
 
-    slug: *str*
+    slug: str
         slug of crypto hack
 
 * **Returns**

@@ -25,10 +25,10 @@ stocks.options.process_chains(
 
 * **Parameters**
 
-    response: *requests.models.Response*
+    response: requests.models.Response
         This is the response from tradier api.
 
 * **Returns**
 
-    opt_chain: *pd.DataFrame*
+    opt_chain: pd.DataFrame
         Dataframe with all available options

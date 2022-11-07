@@ -25,10 +25,10 @@ stocks.options.dividend(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Ticker symbol to get options for
 
 * **Returns**
 
-    chains: *yf.ticker.Dividends*
+    chains: yf.ticker.Dividends
         Dividends

@@ -43,22 +43,22 @@ forecast.expo(
         Input data.
     target_column (str, optional):
         Target column to forecast. Defaults to "close".
-    trend: *str*
+    trend: str
         Trend component.  One of [N, A, M]
         Defaults to ADDITIVE.
-    seasonal: *str*
+    seasonal: str
         Seasonal component.  One of [N, A, M]
         Defaults to ADDITIVE.
-    seasonal_periods: *int*
+    seasonal_periods: int
         Number of seasonal periods in a year (7 for daily data)
         If not set, inferred from frequency of the series.
-    dampen: *str*
+    dampen: str
         Dampen the function
-    n_predict: *int*
+    n_predict: int
         Number of days to forecast
-    start_window: *float*
+    start_window: float
         Size of sliding window from start of timeseries and onwards
-    forecast_horizon: *int*
+    forecast_horizon: int
         Number of days to forecast when backtesting and retraining historical
     chart: *bool*
        Flag to display chart
@@ -123,34 +123,34 @@ forecast.expo(
         The name of the ticker to be predicted
     target_column (str, optional):
         Target column to forecast. Defaults to "close".
-    trend: *str*
+    trend: str
         Trend component.  One of [N, A, M]
         Defaults to ADDITIVE.
-    seasonal: *str*
+    seasonal: str
         Seasonal component.  One of [N, A, M]
         Defaults to ADDITIVE.
-    seasonal_periods: *int*
+    seasonal_periods: int
         Number of seasonal periods in a year
         If not set, inferred from frequency of the series.
-    dampen: *str*
+    dampen: str
         Dampen the function
-    n_predict: *int*
+    n_predict: int
         Number of days to forecast
-    start_window: *float*
+    start_window: float
         Size of sliding window from start of timeseries and onwards
-    forecast_horizon: *int*
+    forecast_horizon: int
         Number of days to forecast when backtesting and retraining historical
-    export: *str*
+    export: str
         Format to export data
-    residuals: *bool*
+    residuals: bool
         Whether to show residuals for the model. Defaults to False.
-    forecast_only: *bool*
+    forecast_only: bool
         Whether to only show dates in the forecasting range. Defaults to False.
     start_date: Optional[datetime]
         The starting date to perform analysis, data before this is trimmed. Defaults to None.
     end_date: Optional[datetime]
         The ending date to perform analysis, data after this is trimmed. Defaults to None.
-    naive: *bool*
+    naive: bool
         Whether to show the naive baseline. This just assumes the closing price will be the same
         as the previous day's closing price. Defaults to False.
     external_axes:Optional[List[plt.axes]]

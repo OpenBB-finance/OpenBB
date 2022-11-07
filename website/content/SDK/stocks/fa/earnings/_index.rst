@@ -26,7 +26,7 @@ stocks.fa.earnings(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Stock ticker symbol
     quarterly : bool, optional
         Flag to get quarterly and not annual, by default False

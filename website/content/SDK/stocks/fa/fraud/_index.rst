@@ -26,12 +26,12 @@ stocks.fa.fraud(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Stock ticker symbol
-    detail : *bool*
+    detail : bool
         Whether to provide extra m-score details
 
 * **Returns**
 
-    metrics : *pd.DataFrame*
+    metrics : pd.DataFrame
         The fraud ratios

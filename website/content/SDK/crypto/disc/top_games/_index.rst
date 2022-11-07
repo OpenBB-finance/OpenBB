@@ -28,9 +28,9 @@ crypto.disc.top_games(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         Number of records to display
-    sortby: *str*
+    sortby: str
         Key by which to sort data
     chart: *bool*
        Flag to display chart
@@ -66,11 +66,11 @@ crypto.disc.top_games(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         Number of records to display
-    sortby: *str*
+    sortby: str
         Key by which to sort data
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

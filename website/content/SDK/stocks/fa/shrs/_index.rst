@@ -26,9 +26,9 @@ stocks.fa.shrs(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Stock ticker symbol
-    holder : *str*
+    holder : str
         Which holder to get table for
 
 * **Returns**

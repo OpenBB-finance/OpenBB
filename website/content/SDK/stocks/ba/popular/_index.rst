@@ -29,9 +29,9 @@ stocks.ba.popular(
 
 * **Parameters**
 
-    limit : *int*
+    limit : int
         Number of top tickers to get
-    post_limit : *int*
+    post_limit : int
         How many posts to analyze in each subreddit
     subreddits : str, optional
         String of comma separated subreddits.
@@ -70,13 +70,13 @@ stocks.ba.popular(
 
 * **Parameters**
 
-    limit : *int*
+    limit : int
         Number of top tickers to get
-    post_limit : *int*
+    post_limit : int
         How many posts to analyze in each subreddit
     subreddits : str, optional
         String of comma separated subreddits.
-    export : *str*
+    export : str
         Format to export dataframe
     chart: *bool*
        Flag to display chart

@@ -25,10 +25,10 @@ stocks.fa.historical_5(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         The ticker symbol to be analyzed
 
 * **Returns**
 
-    df: *pd.DataFrame*
+    df: pd.DataFrame
         Historical data

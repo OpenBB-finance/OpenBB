@@ -28,9 +28,9 @@ forex.oanda.fwd(
 
 * **Parameters**
 
-    to_symbol: *str*
+    to_symbol: str
         To currency
-    from_symbol: *str*
+    from_symbol: str
         From currency
     chart: *bool*
        Flag to display chart
@@ -38,7 +38,7 @@ forex.oanda.fwd(
 
 * **Returns**
 
-    df: *pd.DataFrame*
+    df: pd.DataFrame
 
 |
 
@@ -65,11 +65,11 @@ forex.oanda.fwd(
 
 * **Parameters**
 
-    to_symbol: *str*
+    to_symbol: str
         To currency
-    from_symbol: *str*
+    from_symbol: str
         From currency
-    export: *str*
+    export: str
         Format to export data
     chart: *bool*
        Flag to display chart

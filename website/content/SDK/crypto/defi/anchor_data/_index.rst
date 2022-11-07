@@ -28,7 +28,7 @@ crypto.defi.anchor_data(
 
 * **Parameters**
 
-    address : *str*
+    address : str
         Terra address. Valid terra addresses start with 'terra'
     chart: *bool*
        Flag to display chart
@@ -37,9 +37,9 @@ crypto.defi.anchor_data(
 * **Returns**
 
     Tuple:
-        - pandas.DataFrame: *Earnings over time in UST*
-        - pandas.DataFrame: *History of transactions*
-        - str: *             Overall statistics*
+        - pandas.DataFrame: Earnings over time in UST
+        - pandas.DataFrame: History of transactions
+        - str:              Overall statistics
 
 |
 
@@ -68,13 +68,13 @@ crypto.defi.anchor_data(
 
 * **Parameters**
 
-    asset : *str*
+    asset : str
         Terra asset {ust,luna,sdt}
-    address : *str*
+    address : str
         Terra address. Valid terra addresses start with 'terra'
-    show_transactions : *bool*
+    show_transactions : bool
         Flag to show history of transactions in Anchor protocol for address. Default False
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

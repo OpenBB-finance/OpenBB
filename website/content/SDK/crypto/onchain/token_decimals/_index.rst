@@ -25,7 +25,7 @@ crypto.onchain.token_decimals(
 
 * **Parameters**
 
-    address: *str*
+    address: str
         Blockchain balance e.g. 0x1f9840a85d5af5bf1d1762f925bdaddc4201f984
 
 * **Returns**

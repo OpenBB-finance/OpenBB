@@ -28,9 +28,9 @@ crypto.dd.coin_market_chart(
 
 * **Parameters**
 
-    vs_currency: *str*
+    vs_currency: str
         currency vs which display data
-    days: *int*
+    days: int
         number of days to display the data
     kwargs
         unspecified keyword arguments

@@ -31,9 +31,9 @@ portfolio.maxdd(
 
 * **Parameters**
 
-    data: *pd.Series*
+    data: pd.Series
         Series of input values
-    is_returns: *bool*
+    is_returns: bool
         Flag to indicate inputs are returns
     chart: *bool*
        Flag to display chart
@@ -71,11 +71,11 @@ portfolio.maxdd(
 
 * **Parameters**
 
-    portfolio : *PortfolioModel*
+    portfolio : PortfolioModel
         Portfolio object
-    export: *str*
+    export: str
         Format to export data
-    external_axes: *plt.Axes*
+    external_axes: plt.Axes
         Optional axes to display plot on
     chart: *bool*
        Flag to display chart

@@ -66,9 +66,9 @@ forex.oanda.positionbook(
 
 * **Parameters**
 
-    accountID : *str*
+    accountID : str
         Oanda user account ID
-    instrument : *str*
+    instrument : str
         The loaded currency pair
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

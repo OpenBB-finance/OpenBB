@@ -27,14 +27,14 @@ common.ta.hma(
 
 * **Parameters**
 
-    data: *pd.Series*
+    data: pd.Series
         Dataframe of dates and prices
-    length: *int*
+    length: int
         Length of SMA window
-    offset: *int*
+    offset: int
         Length of offset
 
 * **Returns**
 
-    df_ta: *pd.DataFrame*
+    df_ta: pd.DataFrame
         Dataframe containing prices and HMA

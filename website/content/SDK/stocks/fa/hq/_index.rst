@@ -25,7 +25,7 @@ stocks.fa.hq(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Stock ticker symbol
 
 * **Returns**

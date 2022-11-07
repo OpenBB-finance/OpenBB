@@ -28,7 +28,7 @@ crypto.dd.gov(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Crypto symbol to check governance
     chart: *bool*
        Flag to display chart
@@ -66,9 +66,9 @@ crypto.dd.gov(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Crypto symbol to check coin governance
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

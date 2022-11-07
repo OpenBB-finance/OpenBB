@@ -25,7 +25,7 @@ stocks.dd.arktrades(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Ticker to get trades for
 
 * **Returns**

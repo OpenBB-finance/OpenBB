@@ -26,12 +26,12 @@ stocks.options.option_chain(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Ticker symbol to get options for
-    expiry: *str*
+    expiry: str
         Date to get options for. YYYY-MM-DD
 
 * **Returns**
 
-    chains: *yf.ticker.Options*
+    chains: yf.ticker.Options
         Options chain

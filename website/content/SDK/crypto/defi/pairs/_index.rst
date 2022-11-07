@@ -36,13 +36,13 @@ crypto.defi.pairs(
 
 * **Parameters**
 
-    last_days: *int*
+    last_days: int
         How many days back to look for added pairs.
-    min_volume: *int*
+    min_volume: int
         Minimum volume
-    min_liquidity: *int*
+    min_liquidity: int
         Minimum liquidity
-    min_tx: *int*
+    min_tx: int
         Minimum number of transactions done in given pool.
     chart: *bool*
        Flag to display chart
@@ -84,21 +84,21 @@ crypto.defi.pairs(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         Number of records to display
-    days: *int*
+    days: int
         Number of days the pair has been active,
-    min_volume: *int*
+    min_volume: int
         Minimum trading volume,
-    min_liquidity: *int*
+    min_liquidity: int
         Minimum liquidity
-    min_tx: *int*
+    min_tx: int
         Minimum number of transactions
-    sortby: *str*
+    sortby: str
         Key by which to sort data
-    ascend: *bool*
+    ascend: bool
         Flag to sort data descending
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

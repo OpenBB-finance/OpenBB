@@ -28,9 +28,9 @@ stocks.ins.print_insider_data(
 
 * **Parameters**
 
-    type_insider: *str*
+    type_insider: str
         Insider type of data. Available types can be accessed through get_insider_types().
-    limit: *int*
+    limit: int
         Limit of data rows to display
     chart: *bool*
        Flag to display chart
@@ -61,11 +61,11 @@ stocks.ins.print_insider_data(
 
 * **Parameters**
 
-    type_insider: *str*
+    type_insider: str
         Insider type of data. Available types can be accessed through get_insider_types().
-    limit: *int*
+    limit: int
         Limit of data rows to display
-    export: *str*
+    export: str
         Export data format
     chart: *bool*
        Flag to display chart

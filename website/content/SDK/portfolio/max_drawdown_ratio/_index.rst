@@ -31,9 +31,9 @@ portfolio.max_drawdown_ratio(
 
 * **Parameters**
 
-    data: *pd.Series*
+    data: pd.Series
         Series of input values
-    is_returns: *bool*
+    is_returns: bool
         Flag to indicate inputs are returns
     chart: *bool*
        Flag to display chart
@@ -70,9 +70,9 @@ portfolio.max_drawdown_ratio(
 
 * **Parameters**
 
-    portfolio: *Portfolio*
+    portfolio: Portfolio
         Portfolio object with trades loaded
-    export : *str*
+    export : str
         Export data format
     chart: *bool*
        Flag to display chart

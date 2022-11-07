@@ -28,9 +28,9 @@ stocks.dps.prom(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         Number of tickers to filter from entire ATS data based on the sum of the total weekly shares quantity
-    tier_ats : *int*
+    tier_ats : int
         Tier to process data from: T1, T2 or OTCE
     chart: *bool*
        Flag to display chart
@@ -70,15 +70,15 @@ stocks.dps.prom(
 
 * **Parameters**
 
-    input_limit : *int*
+    input_limit : int
         Number of tickers to filter from entire ATS data based on
         the sum of the total weekly shares quantity
-    limit : *int*
+    limit : int
         Number of tickers to display from most promising with
         better linear regression slope
-    tier : *str*
+    tier : str
         Tier to process data from: T1, T2 or OTCE
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

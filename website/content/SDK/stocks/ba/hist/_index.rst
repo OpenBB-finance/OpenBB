@@ -32,13 +32,13 @@ stocks.ba.hist(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Ticker to view sentiment data
-    start_date: *str*
+    start_date: str
         Initial date like string or unix timestamp (e.g. 12-21-2021)
-    end_date: *str*
+    end_date: str
         End date like string or unix timestamp (e.g. 12-21-2021)
-    number : *int*
+    number : int
         Number of results returned by API call
         Maximum 250 per api call
     chart: *bool*
@@ -81,21 +81,21 @@ stocks.ba.hist(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Ticker symbol to view sentiment data
-    start_date: *str*
+    start_date: str
         Initial date like string or unix timestamp (e.g. 2021-12-21)
-    end_date: *str*
+    end_date: str
         End date like string or unix timestamp (e.g. 2022-01-15)
-    number: *int*
+    number: int
         Number of results returned by API call
         Maximum 250 per api call
-    raw: *boolean*
+    raw: boolean
         Whether to display raw data, by default False
-    limit: *int*
+    limit: int
         Number of results display on the terminal
-        Default: *10*
-    export: *str*
+        Default: 10
+    export: str
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None

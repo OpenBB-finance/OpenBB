@@ -32,13 +32,13 @@ stocks.options.chains_yf(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Stock ticker symbol
-    expiry: *str*
+    expiry: str
         Expiration date for chain in format YYY-mm-dd
-    calls: *bool*
+    calls: bool
         Flag to get calls
-    puts: *bool*
+    puts: bool
         Flag to get puts
     chart: *bool*
        Flag to display chart
@@ -78,19 +78,19 @@ stocks.options.chains_yf(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Stock ticker symbol
-    expiry: *str*
+    expiry: str
         Expiration for option chain
-    min_sp: *float*
+    min_sp: float
         Min strike
-    max_sp: *float*
+    max_sp: float
         Max strike
-    calls_only: *bool*
+    calls_only: bool
         Flag to get calls only
-    puts_only: *bool*
+    puts_only: bool
         Flag to get puts only
-    export: *str*
+    export: str
         Format to export data
     chart: *bool*
        Flag to display chart

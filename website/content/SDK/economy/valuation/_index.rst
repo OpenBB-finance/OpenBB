@@ -27,11 +27,11 @@ economy.valuation(
 
 * **Parameters**
 
-    group : *str*
+    group : str
        Group by category. Available groups can be accessed through get_groups().
-    sortby : *str*
+    sortby : str
         Column to sort by
-    ascend : *bool*
+    ascend : bool
         Flag to sort in ascending order
 
 * **Returns**

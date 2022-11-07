@@ -27,7 +27,7 @@ etf.etf_by_name(
 
 * **Parameters**
 
-    name_to_search: *str*
+    name_to_search: str
         ETF name to match
     chart: *bool*
        Flag to display chart
@@ -35,7 +35,7 @@ etf.etf_by_name(
 
 * **Returns**
 
-    df: *pd.Dataframe*
+    df: pd.Dataframe
         Dataframe with symbols and names
 
 |
@@ -63,11 +63,11 @@ etf.etf_by_name(
 
 * **Parameters**
 
-    name: *str*
+    name: str
         String being matched
-    limit: *int*
+    limit: int
         Limit of ETFs to display
-    export: *str*
+    export: str
         Export to given file type
     chart: *bool*
        Flag to display chart

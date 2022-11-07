@@ -27,11 +27,11 @@ portfolio.jensens(
 
 * **Parameters**
 
-    portfolio: *Portfolio*
+    portfolio: Portfolio
         Portfolio object with trades loaded
-    window: *str*
+    window: str
         Interval used for rolling values
-    risk_free_rate: *float*
+    risk_free_rate: float
         Risk free rate
 
 * **Returns**

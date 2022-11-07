@@ -31,7 +31,7 @@ stocks.ca.balance(
         List of tickers to compare.
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
-    timeframe : *str*
+    timeframe : str
         Column header to compare
     quarter : bool, optional
         Whether to use quarterly statements, by default False

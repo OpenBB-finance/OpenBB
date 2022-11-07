@@ -28,9 +28,9 @@ econometrics.bgod(
 
 * **Parameters**
 
-    model : *OLS Model*
+    model : OLS Model
         Model containing residual values.
-    lags : *int*
+    lags : int
         The amount of lags.
     chart: *bool*
        Flag to display chart
@@ -65,11 +65,11 @@ econometrics.bgod(
 
 * **Parameters**
 
-    model : *OLS Model*
+    model : OLS Model
         Model containing residual values.
-    lags : *int*
+    lags : int
         The amount of lags included.
-    export : *str*
+    export : str
         Format to export data
     chart: *bool*
        Flag to display chart

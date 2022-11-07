@@ -28,9 +28,9 @@ stocks.options.chains(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Ticker to get options for
-    expiry : *str*
+    expiry : str
         Expiration date in the form of "YYYY-MM-DD"
     chart: *bool*
        Flag to display chart
@@ -38,7 +38,7 @@ stocks.options.chains(
 
 * **Returns**
 
-    chains: *pd.DataFrame*
+    chains: pd.DataFrame
         Dataframe with options for the given Symbol and Expiration date
 
 |
@@ -71,21 +71,21 @@ stocks.options.chains(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Stock ticker symbol
-    expiry: *str*
+    expiry: str
         Expiration date of option
     to_display: List[str]
         List of columns to display
-    min_sp: *float*
+    min_sp: float
         Min strike price to display
-    max_sp: *float*
+    max_sp: float
         Max strike price to display
-    calls_only: *bool*
+    calls_only: bool
         Only display calls
-    puts_only: *bool*
+    puts_only: bool
         Only display puts
-    export: *str*
+    export: str
         Format to  export file
     chart: *bool*
        Flag to display chart

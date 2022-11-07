@@ -28,9 +28,9 @@ stocks.gov.topbuys(
 
 * **Parameters**
 
-    gov_type: *str*
+    gov_type: str
         Type of government data between: congress, senate and house
-    past_transactions_months: *int*
+    past_transactions_months: int
         Number of months to get trading for
     chart: *bool*
        Flag to display chart
@@ -69,15 +69,15 @@ stocks.gov.topbuys(
 
 * **Parameters**
 
-    gov_type: *str*
+    gov_type: str
         Type of government data between: congress, senate and house
-    past_transactions_months: *int*
+    past_transactions_months: int
         Number of months to get trading for
-    limit: *int*
+    limit: int
         Number of tickers to show
-    raw: *bool*
+    raw: bool
         Display raw data
-    export: *str*
+    export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

@@ -30,13 +30,13 @@ common.ta.stoch(
 
 * **Parameters**
 
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         Dataframe of OHLC prices
-    fastkperiod : *int*
+    fastkperiod : int
         Fast k period
-    slowdperiod : *int*
+    slowdperiod : int
         Slow d period
-    slowkperiod : *int*
+    slowkperiod : int
         Slow k period
     chart: *bool*
        Flag to display chart
@@ -76,17 +76,17 @@ common.ta.stoch(
 
 * **Parameters**
 
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         Dataframe of OHLC prices
-    fastkperiod : *int*
+    fastkperiod : int
         Fast k period
-    slowdperiod : *int*
+    slowdperiod : int
         Slow d period
-    slowkperiod : *int*
+    slowkperiod : int
         Slow k period
-    symbol : *str*
+    symbol : str
         Stock ticker symbol
-    export : *str*
+    export : str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (3 axes are expected in the list), by default None

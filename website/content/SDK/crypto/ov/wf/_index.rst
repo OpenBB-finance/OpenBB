@@ -28,7 +28,7 @@ crypto.ov.wf(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         Number of coins to search, by default n=100, one page has 100 coins, so 1 page is scraped.
     chart: *bool*
        Flag to display chart
@@ -64,9 +64,9 @@ crypto.ov.wf(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         Number of coins to search
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

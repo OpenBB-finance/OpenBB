@@ -28,9 +28,9 @@ stocks.options.voi_yf(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Stock ticker symbol
-    expiry: *str*
+    expiry: str
         Option expiration
     chart: *bool*
        Flag to display chart
@@ -65,17 +65,17 @@ stocks.options.voi_yf(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Stock ticker symbol
-    expiry: *str*
+    expiry: str
         Option expiration
-    min_sp: *float*
+    min_sp: float
         Min strike price
-    max_sp: *float*
+    max_sp: float
         Max strike price
-    min_vol: *float*
+    min_vol: float
         Min volume to consider
-    export: *str*
+    export: str
         Format for exporting data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

@@ -22,7 +22,7 @@ portfolio.skew(
     <p>
     Class method that retrieves skewness for portfolio and benchmark selected
 
-    portfolio: *Portfolio*
+    portfolio: Portfolio
         Portfolio object with trades loaded
 
     Returns

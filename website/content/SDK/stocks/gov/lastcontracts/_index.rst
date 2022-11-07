@@ -27,7 +27,7 @@ stocks.gov.lastcontracts(
 
 * **Parameters**
 
-    past_transaction_days: *int*
+    past_transaction_days: int
         Number of days to look back
     chart: *bool*
        Flag to display chart
@@ -65,13 +65,13 @@ stocks.gov.lastcontracts(
 
 * **Parameters**
 
-    past_transaction_days: *int*
+    past_transaction_days: int
         Number of days to look back
-    limit: *int*
+    limit: int
         Number of contracts to show
-    sum_contracts: *bool*
+    sum_contracts: bool
         Flag to show total amount of contracts given out.
-    export: *str*
+    export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

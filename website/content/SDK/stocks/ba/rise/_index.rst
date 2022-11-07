@@ -26,9 +26,9 @@ stocks.ba.rise(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Stock ticker symbol
-    limit: *int*
+    limit: int
         Number of queries to show
 
 * **Returns**

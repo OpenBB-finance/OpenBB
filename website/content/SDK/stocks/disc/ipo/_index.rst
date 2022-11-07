@@ -26,9 +26,9 @@ stocks.disc.ipo(
 
 * **Parameters**
 
-    start_date : *str*
+    start_date : str
         start date (%Y-%m-%d) to get IPO calendar
-    end_date : *str*
+    end_date : str
         end date (%Y-%m-%d) to get IPO calendar
 
 * **Returns**

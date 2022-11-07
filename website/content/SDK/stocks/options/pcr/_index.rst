@@ -29,7 +29,7 @@ stocks.options.pcr(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Ticker symbol to look for
     window: int, optional
         Window to consider, by default 30
@@ -66,7 +66,7 @@ stocks.options.pcr(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Stock ticker symbol
     window : int, optional
         Window length to look at, by default 30

@@ -28,13 +28,13 @@ stocks.fa.similar_dfs(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         The ticker symbol to create a dataframe for
     into : Dict[str,Any]
         The dictionary produced from the yfinance.info function
-    n : *int*
+    n : int
         The number of similar companies to produce
-    no_filter : *bool*
+    no_filter : bool
         True means that we do not filter based on market cap
 
 * **Returns**

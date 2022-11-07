@@ -30,13 +30,13 @@ crypto.defi.tokens(
 
 * **Parameters**
 
-    skip: *int*
+    skip: int
         Skip n number of records.
-    limit: *int*
+    limit: int
         Show n number of records.
-    sortby: *str*
+    sortby: str
         The column to sort by
-    ascend: *bool*
+    ascend: bool
         Whether to sort in ascending order
     chart: *bool*
        Flag to display chart
@@ -75,15 +75,15 @@ crypto.defi.tokens(
 
 * **Parameters**
 
-    skip: *int*
+    skip: int
         Number of records to skip
-    limit: *int*
+    limit: int
         Number of records to display
-    sortby: *str*
+    sortby: str
         Key by which to sort data
-    ascend: *bool*
+    ascend: bool
         Flag to sort data descending
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

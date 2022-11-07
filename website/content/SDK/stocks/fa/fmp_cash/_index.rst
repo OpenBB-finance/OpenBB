@@ -29,15 +29,15 @@ stocks.fa.fmp_cash(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Stock ticker symbol
-    limit : *int*
+    limit : int
         Number to get
     quarterly : bool, optional
         Flag to get quarterly data, by default False
-    ratios: *bool*
+    ratios: bool
         Shows percentage change, by default False
-    plot: *bool*
+    plot: bool
         If the data shall be formatted ready to plot
 
 * **Returns**

@@ -26,9 +26,9 @@ stocks.ba.spacc(
 
 * **Parameters**
 
-    limit : *int*
+    limit : int
         Number of posts to look at
-    popular : *bool*
+    popular : bool
         Search by hot instead of new
 
 * **Returns**

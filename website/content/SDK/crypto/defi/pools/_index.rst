@@ -54,14 +54,14 @@ crypto.defi.pools(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         Number of records to display
-    sortby: *str*
+    sortby: str
         Key by which to sort data. The table can be sorted by every of its columns
         (see https://bit.ly/3ORagr1 then press ctrl-enter or execute the query).
-    ascend: *bool*
+    ascend: bool
         Flag to sort data descending
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

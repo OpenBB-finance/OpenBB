@@ -33,13 +33,13 @@ crypto.chart(
 
 * **Parameters**
 
-    prices_df: *pd.DataFrame*
+    prices_df: pd.DataFrame
         Cryptocurrency
-    to_symbol: *str*
+    to_symbol: str
         Coin (only used for chart title), by default ""
-    from_symbol: *str*
+    from_symbol: str
         Currency (only used for chart title), by default ""
-    yscale: *str*
+    yscale: str
         Scale for y axis of plot Either linear or log
     chart: *bool*
        Flag to display chart
@@ -74,13 +74,13 @@ crypto.chart(
 
 * **Parameters**
 
-    prices_df: *pd.DataFrame*
+    prices_df: pd.DataFrame
         Cryptocurrency
-    to_symbol: *str*
+    to_symbol: str
         Coin (only used for chart title), by default ""
-    from_symbol: *str*
+    from_symbol: str
         Currency (only used for chart title), by default ""
-    yscale: *str*
+    yscale: str
         Scale for y axis of plot Either linear or log
     chart: *bool*
        Flag to display chart

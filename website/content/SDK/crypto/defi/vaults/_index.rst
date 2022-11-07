@@ -32,20 +32,20 @@ crypto.defi.vaults(
 
 * **Parameters**
 
-    chain: *str*
+    chain: str
         Blockchain - one from list [
         'ethereum', 'polygon', 'avalanche', 'bsc', 'terra', 'fantom',
         'moonriver', 'celo', 'heco', 'okex', 'cronos', 'arbitrum', 'eth',
         'harmony', 'fuse', 'defichain', 'solana', 'optimism'
         ]
-    protocol: *str*
+    protocol: str
         DeFi protocol - one from list: [
         'aave', 'acryptos', 'alpaca', 'anchor', 'autofarm', 'balancer', 'bancor',
         'beefy', 'belt', 'compound', 'convex', 'cream', 'curve', 'defichain', 'geist',
         'lido', 'liquity', 'mirror', 'pancakeswap', 'raydium', 'sushi', 'tarot', 'traderjoe',
         'tulip', 'ubeswap', 'uniswap', 'venus', 'yearn'
         ]
-    kind: *str*
+    kind: str
         Kind/type of vault - one from list: ['lp','single','noimploss','stable']
     chart: *bool*
        Flag to display chart
@@ -87,30 +87,30 @@ crypto.defi.vaults(
 
 * **Parameters**
 
-    chain: *str*
+    chain: str
         Blockchain - one from list [
         'ethereum', 'polygon', 'avalanche', 'bsc', 'terra', 'fantom',
         'moonriver', 'celo', 'heco', 'okex', 'cronos', 'arbitrum', 'eth',
         'harmony', 'fuse', 'defichain', 'solana', 'optimism'
         ]
-    protocol: *str*
+    protocol: str
         DeFi protocol - one from list: [
         'aave', 'acryptos', 'alpaca', 'anchor', 'autofarm', 'balancer', 'bancor',
         'beefy', 'belt', 'compound', 'convex', 'cream', 'curve', 'defichain', 'geist',
         'lido', 'liquity', 'mirror', 'pancakeswap', 'raydium', 'sushi', 'tarot', 'traderjoe',
         'tulip', 'ubeswap', 'uniswap', 'venus', 'yearn'
         ]
-    kind: *str*
+    kind: str
         Kind/type of vault - one from list: ['lp','single','noimploss','stable']
-    limit: *int*
+    limit: int
         Number of records to display
-    sortby: *str*
+    sortby: str
         Key by which to sort data
-    ascend: *bool*
+    ascend: bool
         Flag to sort data descending
-    link: *bool*
+    link: bool
         Flag to show links
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

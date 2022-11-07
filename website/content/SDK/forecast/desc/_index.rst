@@ -27,7 +27,7 @@ forecast.desc(
 
 * **Parameters**
 
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         The df to produce statistics for
     chart: *bool*
        Flag to display chart
@@ -35,7 +35,7 @@ forecast.desc(
 
 * **Returns**
 
-    df: *pd.DataFrame*
+    df: pd.DataFrame
         The df with the new data
 
 |

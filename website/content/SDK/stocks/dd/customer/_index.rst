@@ -26,9 +26,9 @@ stocks.dd.customer(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Ticker to select customers from
-    limit: *int*
+    limit: int
         The maximum number of rows to show
 
 * **Returns**

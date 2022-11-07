@@ -28,11 +28,11 @@ forecast.ema(
 
 * **Parameters**
 
-    dataset : *pd.DataFrame*
+    dataset : pd.DataFrame
         The dataset you wish to clean
-    target_column : *str*
+    target_column : str
         The column you wish to add the EMA to
-    period : *int*
+    period : int
         Time Span
 
 * **Returns**

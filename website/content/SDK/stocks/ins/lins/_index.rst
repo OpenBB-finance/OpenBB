@@ -27,7 +27,7 @@ stocks.ins.lins(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Stock ticker symbol
 
     pd.DataFrame
@@ -61,11 +61,11 @@ stocks.ins.lins(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Stock ticker symbol
-    limit : *int*
+    limit : int
         Number of latest insider activity to display
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

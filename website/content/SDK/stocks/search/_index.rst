@@ -31,17 +31,17 @@ stocks.search(
 
 * **Parameters**
 
-    query : *str*
+    query : str
         The search term used to find company tickers
-    country: *str*
+    country: str
         Search by country to find stocks matching the criteria
-    sector : *str*
+    sector : str
         Search by sector to find stocks matching the criteria
-    industry : *str*
+    industry : str
         Search by industry to find stocks matching the criteria
-    exchange_country: *str*
+    exchange_country: str
         Search by exchange country to find stock matching
-    limit : *int*
+    limit : int
         The limit of companies shown.
-    export : *str*
+    export : str
         Export data

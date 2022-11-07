@@ -27,7 +27,7 @@ etf.weights(
 
 * **Parameters**
 
-    name: *str*
+    name: str
         ETF name
     chart: *bool*
        Flag to display chart
@@ -65,13 +65,13 @@ etf.weights(
 
 * **Parameters**
 
-    name: *str*
+    name: str
         ETF name
-    raw: *bool*
+    raw: bool
         Display sector weighting allocation
-    min_pct_to_display: *float*
+    min_pct_to_display: float
         Minimum percentage to display sector
-    export: *str*
+    export: str
         Type of format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

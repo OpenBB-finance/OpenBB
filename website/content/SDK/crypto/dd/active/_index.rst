@@ -17,7 +17,7 @@ crypto.dd.active(
     symbol: str,
     interval: str = '24h',
     start_date: int = 1262304000,
-    end_date: int = 1667825384,
+    end_date: int = 1667829111,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -31,13 +31,13 @@ crypto.dd.active(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Asset to search active addresses (e.g., BTC)
-    start_date : *int*
+    start_date : int
         Initial date timestamp (e.g., 1_614_556_800)
-    end_date : *int*
+    end_date : int
         End date timestamp (e.g., 1_614_556_800)
-    interval : *str*
+    interval : str
         Interval frequency (e.g., 24h)
     chart: *bool*
        Flag to display chart
@@ -77,15 +77,15 @@ crypto.dd.active(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Asset to search active addresses (e.g., BTC)
-    start_date : *int*
+    start_date : int
         Initial date timestamp (e.g., 1_614_556_800)
-    end_date : *int*
+    end_date : int
         End date timestamp (e.g., 1_614_556_800)
-    interval : *str*
+    interval : str
         Interval frequency (possible values are: 24h, 1w, 1month)
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

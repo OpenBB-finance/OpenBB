@@ -48,24 +48,24 @@ portfolio.po.blacklitterman(
 
     symbols : List[str]
         List of portfolio stocks
-    benchmark : *Dict*
+    benchmark : Dict
         Dict of portfolio weights
-    p_views: *List*
+    p_views: List
         Matrix P of views that shows relationships among assets and returns.
         Default value to None.
-    q_views: *List*
+    q_views: List
         Matrix Q of expected returns of views. Default value is None.
     interval : str, optional
         interval to get stock data, by default "3mo"
-    start_date: *str*
+    start_date: str
         If not using interval, start date string (YYYY-MM-DD)
-    end_date: *str*
+    end_date: str
         If not using interval, end date string (YYYY-MM-DD). If empty use last
         weekday.
-    log_returns: *bool*
+    log_returns: bool
         If True calculate log returns, else arithmetic returns. Default value
         is False
-    freq: *str*
+    freq: str
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
 
@@ -73,22 +73,22 @@ portfolio.po.blacklitterman(
         - 'W' for weekly returns.
         - 'M' for monthly returns.
 
-    maxnan: *float*
+    maxnan: float
         Max percentage of nan values accepted per asset to be included in
         returns.
-    threshold: *float*
+    threshold: float
         Value used to replace outliers that are higher to threshold.
-    method: *str*
+    method: str
         Method used to fill nan values. Default value is 'time'. For more information see
         `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
-    objective: *str*
+    objective: str
         Objective function of the optimization model.
         The default is 'Sharpe'. Possible values are:
 
-        - 'MinRisk': *Minimize the selected risk measure.*
-        - 'Utility': *Maximize the risk averse utility function.*
-        - 'Sharpe': *Maximize the risk adjusted return ratio based on the selected risk measure.*
-        - 'MaxRet': *Maximize the expected return of the portfolio.*
+        - 'MinRisk': Minimize the selected risk measure.
+        - 'Utility': Maximize the risk averse utility function.
+        - 'Sharpe': Maximize the risk adjusted return ratio based on the selected risk measure.
+        - 'MaxRet': Maximize the expected return of the portfolio.
 
     risk_free_rate: float, optional
         Risk free rate, must be in annual frequency. The default is 0.
@@ -163,10 +163,10 @@ portfolio.po.blacklitterman(
 
     symbols : List[str]
         List of portfolio tickers
-    p_views: *List*
+    p_views: List
         Matrix P of views that shows relationships among assets and returns.
         Default value to None.
-    q_views: *List*
+    q_views: List
         Matrix Q of expected returns of views. Default value is None.
     interval : str, optional
         interval to look at returns from
@@ -190,19 +190,19 @@ portfolio.po.blacklitterman(
         returns.
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
-    method: *str*
+    method: str
         Method used to fill nan values. Default value is 'time'. For more information see
         `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
-    benchmark : *Dict*
+    benchmark : Dict
         Dict of portfolio weights
-    objective: *str*
+    objective: str
         Objective function of the optimization model.
         The default is 'Sharpe'. Possible values are:
 
-        - 'MinRisk': *Minimize the selected risk measure.*
-        - 'Utility': *Maximize the risk averse utility function.*
-        - 'Sharpe': *Maximize the risk adjusted return ratio based on the selected risk measure.*
-        - 'MaxRet': *Maximize the expected return of the portfolio.*
+        - 'MinRisk': Minimize the selected risk measure.
+        - 'Utility': Maximize the risk averse utility function.
+        - 'Sharpe': Maximize the risk adjusted return ratio based on the selected risk measure.
+        - 'MaxRet': Maximize the expected return of the portfolio.
 
     risk_free_rate: float, optional
         Risk free rate, must be in annual frequency. The default is 0.

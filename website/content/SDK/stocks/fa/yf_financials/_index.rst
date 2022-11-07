@@ -29,14 +29,14 @@ stocks.fa.yf_financials(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Stock ticker symbol
-    statement: *str*
+    statement: str
         can be:
             cash-flow
             financials for Income
             balance-sheet
-    ratios: *bool*
+    ratios: bool
         Shows percentage change
     chart: *bool*
        Flag to display chart
@@ -75,19 +75,19 @@ stocks.fa.yf_financials(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Stock ticker symbol
-    statement: *str*
+    statement: str
         can be:
             cash-flow
             financials for Income
             balance-sheet
-    limit: *int*
-    ratios: *bool*
+    limit: int
+    ratios: bool
         Shows percentage change
-    plot: *list*
+    plot: list
         List of row labels to plot
-    export: *str*
+    export: str
         Format to export data
     chart: *bool*
        Flag to display chart

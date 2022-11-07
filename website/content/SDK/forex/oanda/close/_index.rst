@@ -29,7 +29,7 @@ forex.oanda.close(
 
 * **Parameters**
 
-    orderID : *str*
+    orderID : str
         ID of the order to close
     units : Union[int, None]
         Number of units to close. If empty default to all.
@@ -69,9 +69,9 @@ forex.oanda.close(
 
 * **Parameters**
 
-    accountID : *str*
+    accountID : str
         Oanda user account ID
-    orderID : *str*
+    orderID : str
         ID of the order to close
     units : Union[int, None]
         Number of units to close. If empty default to all.

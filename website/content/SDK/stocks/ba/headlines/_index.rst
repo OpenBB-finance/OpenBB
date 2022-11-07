@@ -27,7 +27,7 @@ stocks.ba.headlines(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Ticker symbol to get the sentiment analysis from
     chart: *bool*
        Flag to display chart
@@ -64,11 +64,11 @@ stocks.ba.headlines(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Ticker symbol to get the sentiment analysis from
-    raw: *False*
+    raw: False
         Display raw table data
-    export: *str*
+    export: str
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

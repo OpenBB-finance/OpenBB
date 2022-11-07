@@ -30,13 +30,13 @@ common.ta.rsi(
 
 * **Parameters**
 
-    data: *pd.Series*
+    data: pd.Series
         Dataframe of prices
-    window: *int*
+    window: int
         Length of window
-    scalar: *float*
+    scalar: float
         Scalar variable
-    drift: *int*
+    drift: int
         Drift variable
     chart: *bool*
        Flag to display chart
@@ -76,17 +76,17 @@ common.ta.rsi(
 
 * **Parameters**
 
-    data : *pd.Series*
+    data : pd.Series
         Values to input
-    window : *int*
+    window : int
         Length of window
-    scalar : *float*
+    scalar : float
         Scalar variable
-    drift : *int*
+    drift : int
         Drift variable
-    symbol : *str*
+    symbol : str
         Stock ticker
-    export : *str*
+    export : str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None

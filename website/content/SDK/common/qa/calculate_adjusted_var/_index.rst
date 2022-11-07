@@ -29,15 +29,15 @@ common.qa.calculate_adjusted_var(
 
 * **Parameters**
 
-    kurtosis: *float*
+    kurtosis: float
         kurtosis of data
-    skew: *float*
+    skew: float
         skew of data
-    ndp: *float*
+    ndp: float
         normal distribution percentage number (99% -> -2.326)
-    std: *float*
+    std: float
         standard deviation of data
-    mean: *float*
+    mean: float
         mean of data
 
 * **Returns**

@@ -27,7 +27,7 @@ econometrics.dwat(
 
 * **Parameters**
 
-    residual : *OLS Model*
+    residual : OLS Model
         Model containing residual values.
     chart: *bool*
        Flag to display chart
@@ -64,13 +64,13 @@ econometrics.dwat(
 
 * **Parameters**
 
-    dependent_variable : *pd.Series*
+    dependent_variable : pd.Series
         The dependent variable.
-    residual : *OLS Model*
+    residual : OLS Model
         The residual of an OLS model.
-    plot : *bool*
+    plot : bool
         Whether to plot the residuals
-    export : *str*
+    export : str
         Format to export data
     external_axes: Optional[List[plt.axes]]
         External axes to plot on

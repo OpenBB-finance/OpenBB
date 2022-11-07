@@ -28,9 +28,9 @@ portfolio.rbeta(
 
 * **Parameters**
 
-    portfolio : *PortfolioModel*
+    portfolio : PortfolioModel
         Portfolio object
-    window: *string*
+    window: string
         Interval used for rolling values.
         Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y.
     chart: *bool*
@@ -68,12 +68,12 @@ portfolio.rbeta(
 
 * **Parameters**
 
-    portfolio : *PortfolioModel*
+    portfolio : PortfolioModel
         Portfolio object
-    window: *str*
+    window: str
         interval for window to consider
         Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y.
-    export: *str*
+    export: str
         Export to file
     external_axes: Optional[List[plt.Axes]]
         Optional axes to display plot on

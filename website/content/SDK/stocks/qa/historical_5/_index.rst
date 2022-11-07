@@ -25,10 +25,10 @@ stocks.qa.historical_5(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         A ticker symbol in string form
 
 * **Returns**
 
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         A dataframe with historical information

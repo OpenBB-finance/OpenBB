@@ -29,11 +29,11 @@ crypto.dd.ohlc_historical(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Paprika coin identifier e.g. eth-ethereum
-    quotes: *str*
+    quotes: str
         returned data quote (available values: usd btc)
-    days: *int*
+    days: int
         time range for chart in days. Maximum 365
 
 * **Returns**

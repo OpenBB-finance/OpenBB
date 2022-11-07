@@ -53,9 +53,9 @@ stocks.gov.toplobbying(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         Number of tickers to show
-    raw: *bool*
+    raw: bool
         Show raw data
     export:
         Format to export data

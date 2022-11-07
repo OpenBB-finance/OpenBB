@@ -27,7 +27,7 @@ crypto.defi.gacc(
 
 * **Parameters**
 
-    cumulative: *bool*
+    cumulative: bool
         distinguish between periodical and cumulative account growth data
     chart: *bool*
        Flag to display chart
@@ -65,13 +65,13 @@ crypto.defi.gacc(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         Number of records to display
-    kind: *str*
+    kind: str
         display total account count or active account count. One from list [active, total]
-    cumulative: *bool*
+    cumulative: bool
         Flag to show cumulative or discrete values. For active accounts only discrete value are available.
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

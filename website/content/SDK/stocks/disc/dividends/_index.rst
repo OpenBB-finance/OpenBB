@@ -25,7 +25,7 @@ stocks.disc.dividends(
 
 * **Parameters**
 
-    date: *datetime*
+    date: datetime
         Date to get for in format YYYY-MM-DD
 
 * **Returns**

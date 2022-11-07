@@ -28,7 +28,7 @@ crypto.dd.events(
 
     Example of response from API:
 
-    .. code-block:: *json*
+    .. code-block:: json
 
     {
         "id": "17398-cme-april-first-trade",
@@ -44,13 +44,13 @@ crypto.dd.events(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         id of coin from coinpaprika e.g. Ethereum - > 'eth-ethereum'
-    sortby: *str*
+    sortby: str
         Key by which to sort data. Every column name is valid
         (see for possible values:
         https://api.coinpaprika.com/docs#tag/Coins/paths/~1coins~1%7Bcoin_id%7D~1events/get).
-    ascend: *bool*
+    ascend: bool
         Flag to sort data ascending
     chart: *bool*
        Flag to display chart
@@ -90,19 +90,19 @@ crypto.dd.events(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Cryptocurrency symbol (e.g. BTC)
-    limit: *int*
+    limit: int
         Number of records to display
-    sortby: *str*
+    sortby: str
         Key by which to sort data. Every column name is valid
         (see for possible values:
         https://api.coinpaprika.com/docs#tag/Coins/paths/~1coins~1%7Bcoin_id%7D~1events/get).
-    ascend: *bool*
+    ascend: bool
         Flag to sort data ascending
-    links: *bool*
+    links: bool
         Flag to display urls
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

@@ -30,13 +30,13 @@ crypto.ov.cpexmarkets(
 
 * **Parameters**
 
-    exchange_id: *str*
+    exchange_id: str
         identifier of exchange e.g for Binance Exchange -> binance
-    symbols: *str*
+    symbols: str
         Comma separated quotes to return e.g quotes=USD,BTC
-    sortby: *str*
+    sortby: str
         Key by which to sort data
-    ascend: *bool*
+    ascend: bool
         Flag to sort data ascending
     chart: *bool*
        Flag to display chart
@@ -76,17 +76,17 @@ crypto.ov.cpexmarkets(
 
 * **Parameters**
 
-    exchange: *str*
+    exchange: str
         Exchange identifier e.g Binance
-    limit: *int*
+    limit: int
         Number of records to display
-    sortby: *str*
+    sortby: str
         Key by which to sort data
-    ascend: *bool*
+    ascend: bool
         Flag to sort data descending
-    links: *bool*
+    links: bool
         Flag to display urls
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

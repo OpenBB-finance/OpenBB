@@ -27,7 +27,7 @@ stocks.ba.mentions(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Stock ticker symbol
     chart: *bool*
        Flag to display chart
@@ -64,11 +64,11 @@ stocks.ba.mentions(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Ticker symbol
-    start_date : *str*
+    start_date : str
         Start date as YYYY-MM-DD string
-    export: *str*
+    export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

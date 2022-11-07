@@ -31,15 +31,15 @@ stocks.options.hedge.add_hedge_option(
 
 * **Parameters**
 
-    price: *float*
+    price: float
         The price.
-    implied_volatility: *float*
+    implied_volatility: float
         The implied volatility.
-    strike: *float*
+    strike: float
         The strike price.
-    days: *float*
+    days: float
         The amount of days until expiration. Use annual notation thus a month would be 30 / 360.
-    sign: *int*
+    sign: int
         Whether you have a long (1) or short (-1) position
     chart: *bool*
        Flag to display chart
@@ -47,9 +47,9 @@ stocks.options.hedge.add_hedge_option(
 
 * **Returns**
 
-    delta: *float*
-    gamma: *float*
-    portfolio: *float*
+    delta: float
+    gamma: float
+    portfolio: float
 
 |
 
@@ -78,15 +78,15 @@ stocks.options.hedge.add_hedge_option(
 
 * **Parameters**
 
-    price: *float*
+    price: float
         The price.
-    implied_volatility: *float*
+    implied_volatility: float
         The implied volatility.
-    strike: *float*
+    strike: float
         The strike price.
-    days: *float*
+    days: float
         The amount of days until expiration. Use annual notation thus a month would be 30 / 360.
-    sign: *int*
+    sign: int
         Whether you have a long (1) or short (-1) position
     chart: *bool*
        Flag to display chart
@@ -94,6 +94,6 @@ stocks.options.hedge.add_hedge_option(
 
 * **Returns**
 
-    delta: *float*
-    gamma: *float*
-    vega: *float*
+    delta: float
+    gamma: float
+    vega: float

@@ -31,17 +31,17 @@ forecast.season(
 
 * **Parameters**
 
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         The dataframe to plot
-    column: *str*
+    column: str
         The column of the dataframe to analyze
-    export: *str*
+    export: str
         Format to export image
     m: Optional[int]
         Optionally, a time lag to highlight on the plot. Default is none.
-    max_lag: *int*
+    max_lag: int
         The maximal lag order to consider. Default is 24.
-    alpha: *float*
+    alpha: float
         The confidence interval to display. Default is 0.05.
     external_axes:Optional[List[plt.axes]]
         External axes to plot on

@@ -25,7 +25,7 @@ stocks.disc.upcoming(
 
 * **Parameters**
 
-    limit : *int*
+    limit : int
         Number of pages
 
 * **Returns**

@@ -26,9 +26,9 @@ economy.search_index(
 
 * **Parameters**
 
-    keyword: *list*
+    keyword: list
         The keyword you wish to search for. This can include spaces.
-    limit: *int*
+    limit: int
         The amount of views you want to show, by default this is set to 10.
 
 * **Returns**

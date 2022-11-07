@@ -27,7 +27,7 @@ stocks.dps.volexch(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Ticker to get data for
     chart: *bool*
        Flag to display chart
@@ -67,15 +67,15 @@ stocks.dps.volexch(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Stock ticker
-    raw : *bool*
+    raw : bool
         Flag to display raw data
-    sortby: *str*
+    sortby: str
         Column to sort by
-    ascend: *bool*
+    ascend: bool
         Sort in ascending order
-    mpl: *bool*
+    mpl: bool
         Display using matplotlib
     export : str, optional
         Format  of export data

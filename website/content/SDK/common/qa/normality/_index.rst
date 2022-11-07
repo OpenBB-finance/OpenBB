@@ -29,7 +29,7 @@ common.qa.normality(
 
 * **Parameters**
 
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         Dataframe of targeted data
     chart: *bool*
        Flag to display chart
@@ -65,11 +65,11 @@ common.qa.normality(
 
 * **Parameters**
 
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         DataFrame
-    target : *str*
+    target : str
         Column in data to look at
-    export : *str*
+    export : str
         Format to export data
     chart: *bool*
        Flag to display chart

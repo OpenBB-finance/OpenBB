@@ -27,10 +27,10 @@ econometrics.pols(
 
 * **Parameters**
 
-    regression_variables : *list*
+    regression_variables : list
         The regressions variables entered where the first variable is
         the dependent variable.
-    data : *dict*
+    data : dict
         A dictionary containing the datasets.
 
 * **Returns**

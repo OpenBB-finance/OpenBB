@@ -26,16 +26,16 @@ common.qa.decompose(
 
 * **Parameters**
 
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         Dataframe of targeted data
-    multiplicative : *bool*
+    multiplicative : bool
         Boolean to indicate multiplication instead of addition
 
 * **Returns**
 
-    result: *Any*
+    result: Any
         Result of statsmodels seasonal_decompose
-    cycle: *pd.DataFrame*
+    cycle: pd.DataFrame
         Filtered cycle
-    trend: *pd.DataFrame*
+    trend: pd.DataFrame
         Filtered Trend

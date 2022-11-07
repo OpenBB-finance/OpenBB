@@ -65,7 +65,7 @@ forex.oanda.price(
 
 * **Parameters**
 
-    accountID : *str*
+    accountID : str
         Oanda account ID
     instrument : Union[str, None]
         Instrument code or None

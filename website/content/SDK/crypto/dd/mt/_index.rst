@@ -32,15 +32,15 @@ crypto.dd.mt(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Crypto symbol to check messari timeseries
-    timeseries_id : *str*
+    timeseries_id : str
         Messari timeserie id
-    interval : *str*
+    interval : str
         Interval frequency (possible values are: 5m, 15m, 30m, 1h, 1d, 1w)
-    start : *int*
+    start : int
         Initial date like string (e.g., 2021-10-01)
-    end : *int*
+    end : int
         End date like string (e.g., 2021-10-01)
     chart: *bool*
        Flag to display chart
@@ -83,17 +83,17 @@ crypto.dd.mt(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Crypto symbol to check market cap dominance
-    timeseries_id: *str*
+    timeseries_id: str
         Obtained by api.crypto.dd.get_mt command
-    start_date : *int*
+    start_date : int
         Initial date like string (e.g., 2021-10-01)
-    end_date : *int*
+    end_date : int
         End date like string (e.g., 2021-10-01)
-    interval : *str*
+    interval : str
         Interval frequency (possible values are: 5m, 15m, 30m, 1h, 1d, 1w)
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

@@ -26,9 +26,9 @@ portfolio.trackerr(
 
 * **Parameters**
 
-    portfolio: *Portfolio*
+    portfolio: Portfolio
         Portfolio object with trades loaded
-    window: *int*
+    window: int
         Interval used for rolling values
 
 * **Returns**

@@ -86,41 +86,41 @@ portfolio.po.hcp(
         The hierarchical cluster portfolio model used for optimize the
         portfolio. The default is 'HRP'. Possible values are:
 
-        - 'HRP': *Hierarchical Risk Parity.*
-        - 'HERC': *Hierarchical Equal Risk Contribution.*
-        - 'NCO': *Nested Clustered Optimization.*
+        - 'HRP': Hierarchical Risk Parity.
+        - 'HERC': Hierarchical Equal Risk Contribution.
+        - 'NCO': Nested Clustered Optimization.
 
     codependence: str, optional
         The codependence or similarity matrix used to build the distance
         metric and clusters. The default is 'pearson'. Possible values are:
 
         - 'pearson': pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \sqrt{0.5(1-ho^{pearson}_{i,j})}`.
+            .. math:: D_{i,j} = \sqrt{0.5(1-\rho^{pearson}_{i,j})}
         - 'spearman': spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \sqrt{0.5(1-ho^{spearman}_{i,j})}`.
+            .. math:: D_{i,j} = \sqrt{0.5(1-\rho^{spearman}_{i,j})}
         - 'abs_pearson': absolute value pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \sqrt{(1-|ho^{pearson}_{i,j}|)}`.
+            .. math:: D_{i,j} = \sqrt{(1-|\rho^{pearson}_{i,j}|)}
         - 'abs_spearman': absolute value spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \sqrt{(1-|ho^{spearman}_{i,j}|)}`.
+            .. math:: D_{i,j} = \sqrt{(1-|\rho^{spearman}_{i,j}|)}
         - 'distance': distance correlation matrix. Distance formula:
-            :math:`D_{i,j} = \sqrt{(1-ho^{distance}_{i,j})}`.
-        - 'mutual_info': *mutual information matrix. Distance used is variation information matrix.*
+            .. math:: D_{i,j} = \sqrt{(1-\rho^{distance}_{i,j})}
+        - 'mutual_info': mutual information matrix. Distance used is variation information matrix.
         - 'tail': lower tail dependence index matrix. Dissimilarity formula:
-            :math:`D_{i,j} = -\log{\lambda_{i,j}}`.
+            .. math:: D_{i,j} = -\log{\lambda_{i,j}}`.
 
     covariance: str, optional
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
-        - 'hist': *use historical estimates.*
+        - 'hist': use historical estimates.
         - 'ewma1': use ewma with adjust=True. For more information see
         `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
         - 'ewma2': use ewma with adjust=False. For more information see
         `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ledoit': *use the Ledoit and Wolf Shrinkage method.*
-        - 'oas': *use the Oracle Approximation Shrinkage method.*
-        - 'shrunk': *use the basic Shrunk Covariance method.*
-        - 'gl': *use the basic Graphical Lasso Covariance method.*
+        - 'ledoit': use the Ledoit and Wolf Shrinkage method.
+        - 'oas': use the Oracle Approximation Shrinkage method.
+        - 'shrunk': use the basic Shrunk Covariance method.
+        - 'gl': use the basic Graphical Lasso Covariance method.
         - 'jlogo': use the j-LoGo Covariance method. For more information see: `c-jLogo`.
         - 'fixed': denoise using fixed method. For more information see chapter 2 of `c-MLforAM`.
         - 'spectral': denoise using spectral method. For more information see chapter 2 of `c-MLforAM`.
@@ -130,41 +130,41 @@ portfolio.po.hcp(
         Objective function used by the NCO model.
         The default is 'MinRisk'. Possible values are:
 
-        - 'MinRisk': *Minimize the selected risk measure.*
-        - 'Utility': *Maximize the risk averse utility function.*
-        - 'Sharpe': *Maximize the risk adjusted return ratio based on the selected risk measure.*
-        - 'ERC': *Equally risk contribution portfolio of the selected risk measure.*
+        - 'MinRisk': Minimize the selected risk measure.
+        - 'Utility': Maximize the risk averse utility function.
+        - 'Sharpe': Maximize the risk adjusted return ratio based on the selected risk measure.
+        - 'ERC': Equally risk contribution portfolio of the selected risk measure.
 
     risk_measure: str, optional
         The risk measure used to optimize the portfolio. If model is 'NCO',
         the risk measures available depends on the objective function.
         The default is 'MV'. Possible values are:
 
-        - 'MV': *Variance.*
-        - 'MAD': *Mean Absolute Deviation.*
-        - 'MSV': *Semi Standard Deviation.*
+        - 'MV': Variance.
+        - 'MAD': Mean Absolute Deviation.
+        - 'MSV': Semi Standard Deviation.
         - 'FLPM': First Lower Partial Moment (Omega Ratio).
         - 'SLPM': Second Lower Partial Moment (Sortino Ratio).
-        - 'VaR': *Value at Risk.*
-        - 'CVaR': *Conditional Value at Risk.*
-        - 'TG': *Tail Gini.*
-        - 'EVaR': *Entropic Value at Risk.*
+        - 'VaR': Value at Risk.
+        - 'CVaR': Conditional Value at Risk.
+        - 'TG': Tail Gini.
+        - 'EVaR': Entropic Value at Risk.
         - 'WR': Worst Realization (Minimax).
-        - 'RG': *Range of returns.*
-        - 'CVRG': *CVaR range of returns.*
-        - 'TGRG': *Tail Gini range of returns.*
+        - 'RG': Range of returns.
+        - 'CVRG': CVaR range of returns.
+        - 'TGRG': Tail Gini range of returns.
         - 'MDD': Maximum Drawdown of uncompounded cumulative returns (Calmar Ratio).
-        - 'ADD': *Average Drawdown of uncompounded cumulative returns.*
-        - 'DaR': *Drawdown at Risk of uncompounded cumulative returns.*
-        - 'CDaR': *Conditional Drawdown at Risk of uncompounded cumulative returns.*
-        - 'EDaR': *Entropic Drawdown at Risk of uncompounded cumulative returns.*
-        - 'UCI': *Ulcer Index of uncompounded cumulative returns.*
+        - 'ADD': Average Drawdown of uncompounded cumulative returns.
+        - 'DaR': Drawdown at Risk of uncompounded cumulative returns.
+        - 'CDaR': Conditional Drawdown at Risk of uncompounded cumulative returns.
+        - 'EDaR': Entropic Drawdown at Risk of uncompounded cumulative returns.
+        - 'UCI': Ulcer Index of uncompounded cumulative returns.
         - 'MDD_Rel': Maximum Drawdown of compounded cumulative returns (Calmar Ratio).
-        - 'ADD_Rel': *Average Drawdown of compounded cumulative returns.*
-        - 'DaR_Rel': *Drawdown at Risk of compounded cumulative returns.*
-        - 'CDaR_Rel': *Conditional Drawdown at Risk of compounded cumulative returns.*
-        - 'EDaR_Rel': *Entropic Drawdown at Risk of compounded cumulative returns.*
-        - 'UCI_Rel': *Ulcer Index of compounded cumulative returns.*
+        - 'ADD_Rel': Average Drawdown of compounded cumulative returns.
+        - 'DaR_Rel': Drawdown at Risk of compounded cumulative returns.
+        - 'CDaR_Rel': Conditional Drawdown at Risk of compounded cumulative returns.
+        - 'EDaR_Rel': Entropic Drawdown at Risk of compounded cumulative returns.
+        - 'UCI_Rel': Ulcer Index of compounded cumulative returns.
 
     risk_free_rate: float, optional
         Risk free rate, must be in annual frequency.
@@ -196,7 +196,7 @@ portfolio.po.hcp(
         - 'centroid'.
         - 'median'.
         - 'ward'.
-        - 'dbht': *Direct Bubble Hierarchical Tree.*
+        - 'dbht': Direct Bubble Hierarchical Tree.
 
     k: int, optional
         Number of clusters. This value is took instead of the optimal number
@@ -289,7 +289,7 @@ portfolio.po.hcp(
 
     symbols : List[str]
         List of portfolio tickers
-    interval : *str*
+    interval : str
         interval to look at returns from
     start_date: str, optional
         If not using interval, start date string (YYYY-MM-DD)
@@ -318,25 +318,25 @@ portfolio.po.hcp(
         The hierarchical cluster portfolio model used for optimize the
         portfolio. The default is 'HRP'. Possible values are:
 
-        - 'HRP': *Hierarchical Risk Parity.*
-        - 'HERC': *Hierarchical Equal Risk Contribution.*
-        - 'NCO': *Nested Clustered Optimization.*
+        - 'HRP': Hierarchical Risk Parity.
+        - 'HERC': Hierarchical Equal Risk Contribution.
+        - 'NCO': Nested Clustered Optimization.
 
     codependence: str, optional
         The codependence or similarity matrix used to build the distance
         metric and clusters. The default is 'pearson'. Possible values are:
 
         - 'pearson': pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \sqrt{0.5(1-ho^{pearson}_{i,j})}`.
+            :math:`D_{i,j} = \sqrt{0.5(1-\rho^{pearson}_{i,j})}`.
         - 'spearman': spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \sqrt{0.5(1-ho^{spearman}_{i,j})}`.
+            :math:`D_{i,j} = \sqrt{0.5(1-\rho^{spearman}_{i,j})}`.
         - 'abs_pearson': absolute value pearson correlation matrix. Distance formula:
-            :math:`D_{i,j} = \sqrt{(1-|ho^{pearson}_{i,j}|)}`.
+            :math:`D_{i,j} = \sqrt{(1-|\rho^{pearson}_{i,j}|)}`.
         - 'abs_spearman': absolute value spearman correlation matrix. Distance formula:
-            :math:`D_{i,j} = \sqrt{(1-|ho^{spearman}_{i,j}|)}`.
+            :math:`D_{i,j} = \sqrt{(1-|\rho^{spearman}_{i,j}|)}`.
         - 'distance': distance correlation matrix. Distance formula:
-            :math:`D_{i,j} = \sqrt{(1-ho^{distance}_{i,j})}`.
-        - 'mutual_info': *mutual information matrix. Distance used is variation information matrix.*
+            :math:`D_{i,j} = \sqrt{(1-\rho^{distance}_{i,j})}`.
+        - 'mutual_info': mutual information matrix. Distance used is variation information matrix.
         - 'tail': lower tail dependence index matrix. Dissimilarity formula:
             :math:`D_{i,j} = -\log{\lambda_{i,j}}`.
 
@@ -344,15 +344,15 @@ portfolio.po.hcp(
         The method used to estimate the covariance matrix:
         The default is 'hist'. Possible values are:
 
-        - 'hist': *use historical estimates.*
+        - 'hist': use historical estimates.
         - 'ewma1': use ewma with adjust=True. For more information see
         `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
         - 'ewma2': use ewma with adjust=False. For more information see
         `EWM <https://pandas.pydata.org/pandas-docs/stable/user_guide/window.html#exponentially-weighted-window>`_.
-        - 'ledoit': *use the Ledoit and Wolf Shrinkage method.*
-        - 'oas': *use the Oracle Approximation Shrinkage method.*
-        - 'shrunk': *use the basic Shrunk Covariance method.*
-        - 'gl': *use the basic Graphical Lasso Covariance method.*
+        - 'ledoit': use the Ledoit and Wolf Shrinkage method.
+        - 'oas': use the Oracle Approximation Shrinkage method.
+        - 'shrunk': use the basic Shrunk Covariance method.
+        - 'gl': use the basic Graphical Lasso Covariance method.
         - 'jlogo': use the j-LoGo Covariance method. For more information see: `c-jLogo`.
         - 'fixed': denoise using fixed method. For more information see chapter 2 of `c-MLforAM`.
         - 'spectral': denoise using spectral method. For more information see chapter 2 of `c-MLforAM`.
@@ -362,41 +362,41 @@ portfolio.po.hcp(
         Objective function used by the NCO model.
         The default is 'MinRisk'. Possible values are:
 
-        - 'MinRisk': *Minimize the selected risk measure.*
-        - 'Utility': *Maximize the risk averse utility function.*
-        - 'Sharpe': *Maximize the risk adjusted return ratio based on the selected risk measure.*
-        - 'ERC': *Equally risk contribution portfolio of the selected risk measure.*
+        - 'MinRisk': Minimize the selected risk measure.
+        - 'Utility': Maximize the risk averse utility function.
+        - 'Sharpe': Maximize the risk adjusted return ratio based on the selected risk measure.
+        - 'ERC': Equally risk contribution portfolio of the selected risk measure.
 
     risk_measure: str, optional
         The risk measure used to optimize the portfolio. If model is 'NCO',
         the risk measures available depends on the objective function.
         The default is 'MV'. Possible values are:
 
-        - 'MV': *Variance.*
-        - 'MAD': *Mean Absolute Deviation.*
-        - 'MSV': *Semi Standard Deviation.*
+        - 'MV': Variance.
+        - 'MAD': Mean Absolute Deviation.
+        - 'MSV': Semi Standard Deviation.
         - 'FLPM': First Lower Partial Moment (Omega Ratio).
         - 'SLPM': Second Lower Partial Moment (Sortino Ratio).
-        - 'VaR': *Value at Risk.*
-        - 'CVaR': *Conditional Value at Risk.*
-        - 'TG': *Tail Gini.*
-        - 'EVaR': *Entropic Value at Risk.*
+        - 'VaR': Value at Risk.
+        - 'CVaR': Conditional Value at Risk.
+        - 'TG': Tail Gini.
+        - 'EVaR': Entropic Value at Risk.
         - 'WR': Worst Realization (Minimax).
-        - 'RG': *Range of returns.*
-        - 'CVRG': *CVaR range of returns.*
-        - 'TGRG': *Tail Gini range of returns.*
+        - 'RG': Range of returns.
+        - 'CVRG': CVaR range of returns.
+        - 'TGRG': Tail Gini range of returns.
         - 'MDD': Maximum Drawdown of uncompounded cumulative returns (Calmar Ratio).
-        - 'ADD': *Average Drawdown of uncompounded cumulative returns.*
-        - 'DaR': *Drawdown at Risk of uncompounded cumulative returns.*
-        - 'CDaR': *Conditional Drawdown at Risk of uncompounded cumulative returns.*
-        - 'EDaR': *Entropic Drawdown at Risk of uncompounded cumulative returns.*
-        - 'UCI': *Ulcer Index of uncompounded cumulative returns.*
+        - 'ADD': Average Drawdown of uncompounded cumulative returns.
+        - 'DaR': Drawdown at Risk of uncompounded cumulative returns.
+        - 'CDaR': Conditional Drawdown at Risk of uncompounded cumulative returns.
+        - 'EDaR': Entropic Drawdown at Risk of uncompounded cumulative returns.
+        - 'UCI': Ulcer Index of uncompounded cumulative returns.
         - 'MDD_Rel': Maximum Drawdown of compounded cumulative returns (Calmar Ratio).
-        - 'ADD_Rel': *Average Drawdown of compounded cumulative returns.*
-        - 'DaR_Rel': *Drawdown at Risk of compounded cumulative returns.*
-        - 'CDaR_Rel': *Conditional Drawdown at Risk of compounded cumulative returns.*
-        - 'EDaR_Rel': *Entropic Drawdown at Risk of compounded cumulative returns.*
-        - 'UCI_Rel': *Ulcer Index of compounded cumulative returns.*
+        - 'ADD_Rel': Average Drawdown of compounded cumulative returns.
+        - 'DaR_Rel': Drawdown at Risk of compounded cumulative returns.
+        - 'CDaR_Rel': Conditional Drawdown at Risk of compounded cumulative returns.
+        - 'EDaR_Rel': Entropic Drawdown at Risk of compounded cumulative returns.
+        - 'UCI_Rel': Ulcer Index of compounded cumulative returns.
 
     risk_free_rate: float, optional
         Risk free rate, must be in the same interval of assets returns.
@@ -427,7 +427,7 @@ portfolio.po.hcp(
         - 'centroid'.
         - 'median'.
         - 'ward'.
-        - 'dbht': *Direct Bubble Hierarchical Tree.*
+        - 'dbht': Direct Bubble Hierarchical Tree.
 
     k: int, optional
         Number of clusters. This value is took instead of the optimal number

@@ -27,7 +27,7 @@ economy.spectrum(
 
 * **Parameters**
 
-    group : *str*
+    group : str
        Group by category. Available groups can be accessed through get_groups().
     chart: *bool*
        Flag to display chart
@@ -57,9 +57,9 @@ economy.spectrum(
 
 * **Parameters**
 
-    group: *str*
+    group: str
         Group by category. Available groups can be accessed through get_groups().
-    export: *str*
+    export: str
         Format to export data
     chart: *bool*
        Flag to display chart

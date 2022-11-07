@@ -30,13 +30,13 @@ stocks.screener.screener_data(
 
 * **Parameters**
 
-    preset_loaded : *str*
+    preset_loaded : str
         Loaded preset filter
-    data_type : *str*
+    data_type : str
         Data type between: overview, valuation, financial, ownership, performance, technical
-    limit : *int*
+    limit : int
         Limit of stocks filtered with presets to print
-    ascend : *bool*
+    ascend : bool
         Ascended order of stocks filtered to print
     chart: *bool*
        Flag to display chart
@@ -75,17 +75,17 @@ stocks.screener.screener_data(
 
 * **Parameters**
 
-    loaded_preset: *str*
+    loaded_preset: str
         Preset loaded to filter for tickers
-    data_type : *str*
+    data_type : str
         Data type string between: overview, valuation, financial, ownership, performance, technical
-    limit : *int*
+    limit : int
         Limit of stocks to display
-    ascend : *bool*
+    ascend : bool
         Order of table to ascend or descend
-    sortby: *str*
+    sortby: str
         Column to sort table by
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

@@ -30,13 +30,13 @@ stocks.options.hist_ce(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Ticker symbol to get historical data from
-    date : *str*
+    date : str
         Date as a string YYYYMMDD
-    call : *bool*
+    call : bool
         Whether to show a call or a put
-    price : *str*
+    price : str
         Strike price for a specific option
     chart: *bool*
        Flag to display chart
@@ -44,7 +44,7 @@ stocks.options.hist_ce(
 
 * **Returns**
 
-    historical : *pd.Dataframe*
+    historical : pd.Dataframe
         Historic information for an option
 
 |
@@ -76,17 +76,17 @@ stocks.options.hist_ce(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Ticker symbol for the given option
-    expiry : *str*
+    expiry : str
         The expiry of expiration, format "YYYY-MM-DD", i.e. 2010-12-31.
-    call : *bool*
+    call : bool
         Whether the underlying asset should be a call or a put
-    price : *float*
+    price : float
         The strike of the expiration
-    limit : *int*
+    limit : int
         Number of rows to show
-    export : *str*
+    export : str
         Export data as CSV, JSON, XLSX
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list), by default None

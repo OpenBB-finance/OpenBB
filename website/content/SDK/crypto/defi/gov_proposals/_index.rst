@@ -30,13 +30,13 @@ crypto.defi.gov_proposals(
 
 * **Parameters**
 
-    status: *str*
+    status: str
         status of proposal, one from list: ['Voting','Deposit','Passed','Rejected']
-    sortby: *str*
+    sortby: str
         Key by which to sort data
-    ascend: *bool*
+    ascend: bool
         Flag to sort data ascending
-    limit: *int*
+    limit: int
         Number of records to display
     chart: *bool*
        Flag to display chart
@@ -74,15 +74,15 @@ crypto.defi.gov_proposals(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         Number of records to display
-    status: *str*
+    status: str
         status of proposal, one from list: ['Voting','Deposit','Passed','Rejected']
-    sortby: *str*
+    sortby: str
         Key by which to sort data
-    ascend: *bool*
+    ascend: bool
         Flag to sort data ascend
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

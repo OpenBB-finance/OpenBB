@@ -28,9 +28,9 @@ stocks.fa.mktcap(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Ticker to get market cap over time
-    start_date: *str*
+    start_date: str
         Start date to display market cap
     chart: *bool*
        Flag to display chart
@@ -69,11 +69,11 @@ stocks.fa.mktcap(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Stock ticker symbol
-    start_date: *str*
+    start_date: str
         Start date to display market cap
-    export: *str*
+    export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

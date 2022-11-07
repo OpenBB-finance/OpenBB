@@ -38,13 +38,13 @@ crypto.find(
 
 * **Parameters**
 
-    query: *str*
+    query: str
         Cryptocurrency
-    source: *str*
+    source: str
         Data source of coins.  CoinGecko (cg) or CoinPaprika (cp) or Binance (bin), Coinbase (cb)
-    key: *str*
+    key: str
         Searching key (symbol, id, name)
-    limit: *int*
+    limit: int
         Number of records to display
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file

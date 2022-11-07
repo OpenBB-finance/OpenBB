@@ -20,10 +20,10 @@ etf.candle(
     ma: Optional[Iterable[int]] = None,
     asset_type: str = '',
     start_date: datetime.datetime = datetime.datetime(
-    2019, 11, 3, 12, 49, 43, 983817, chart: bool = False,
+    2019, 11, 3, 13, 51, 50, 242183, chart: bool = False,
 ), interval: int = 1440,
     end_date: datetime.datetime = datetime.datetime(
-    2022, 11, 7, 12, 49, 43, 983830, chart: bool = False,
+    2022, 11, 7, 13, 51, 50, 242194, chart: bool = False,
 ), prepost: bool = False,
     source: str = 'YahooFinance',
     iexrange: str = 'ytd',
@@ -46,41 +46,41 @@ etf.candle(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Ticker name
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         Stock dataframe
-    use_matplotlib: *bool*
+    use_matplotlib: bool
         Flag to use matplotlib instead of interactive plotly chart
-    intraday: *bool*
+    intraday: bool
         Flag for intraday data for plotly range breaks
-    add_trend: *bool*
+    add_trend: bool
         Flag to add high and low trends to chart
     ma: Tuple[int]
         Moving averages to add to the candle
-    asset_type\_: *str*
+    asset_type\_: str
         String to include in title
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
-    asset_type\_: *str*
+    asset_type\_: str
         String to include in title
-    start_date: *datetime*
+    start_date: datetime
         Start date to get data from with
-    interval: *int*
+    interval: int
         Interval (in minutes) to get data 1, 5, 15, 30, 60 or 1440
-    end_date: *datetime*
+    end_date: datetime
         End date to get data from with
-    prepost: *bool*
+    prepost: bool
         Pre and After hours data
-    source: *str*
+    source: str
         Source of data extracted
-    iexrange: *str*
+    iexrange: str
         Timeframe to get IEX data.
-    weekly: *bool*
+    weekly: bool
         Flag to get weekly data
-    monthly: *bool*
+    monthly: bool
         Flag to get monthly data
     raw : bool, optional
         Flag to display raw data, by default False
-    yscale: *str*
+    yscale: str
         Linear or log for yscale

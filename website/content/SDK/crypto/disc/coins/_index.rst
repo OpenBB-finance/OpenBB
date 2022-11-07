@@ -30,13 +30,13 @@ crypto.disc.coins(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         Number of top coins to grab from CoinGecko
-    category: *str*
+    category: str
         Category of the coins we want to retrieve
-    sortby: *str*
+    sortby: str
         Key to sort data
-    ascend: *bool*
+    ascend: bool
         Sort data in ascending order
     chart: *bool*
        Flag to display chart
@@ -74,15 +74,15 @@ crypto.disc.coins(
 
 * **Parameters**
 
-    category: *str*
+    category: str
         If no category is passed it will search for all coins. (E.g., smart-contract-platform)
-    limit: *int*
+    limit: int
         Number of records to display
-    sortby: *str*
+    sortby: str
         Key to sort data
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
-    ascend: *bool*
+    ascend: bool
         Sort data in ascending order
     chart: *bool*
        Flag to display chart

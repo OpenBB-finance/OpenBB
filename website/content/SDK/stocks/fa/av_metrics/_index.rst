@@ -25,7 +25,7 @@ stocks.fa.av_metrics(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Stock ticker symbol
 
 * **Returns**

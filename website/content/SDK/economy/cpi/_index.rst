@@ -28,7 +28,7 @@ economy.cpi(
 
 * **Parameters**
 
-    interval : *str*
+    interval : str
         Interval for data.  Either "m" or "s" for monthly or semiannual
     start_year : int, optional
         Start year for plot, by default 2010
@@ -68,7 +68,7 @@ economy.cpi(
 
 * **Parameters**
 
-    interval : *str*
+    interval : str
         Interval for GDP.  Either "m" or "s"
     start_year : int, optional
         Start year for plot, by default 2010

@@ -27,11 +27,11 @@ stocks.disc.arkord(
 
 * **Parameters**
 
-    buys_only: *bool*
+    buys_only: bool
         Flag to filter on buys only
-    sells_only: *bool*
+    sells_only: bool
         Flag to sort on sells only
-    fund: *str*
+    fund: str
         Optional filter by fund
 
 * **Returns**

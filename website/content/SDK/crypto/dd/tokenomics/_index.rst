@@ -25,7 +25,7 @@ crypto.dd.tokenomics(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         coin symbol to check tokenomics
 
 * **Returns**

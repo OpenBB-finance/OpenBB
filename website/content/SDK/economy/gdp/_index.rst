@@ -68,7 +68,7 @@ economy.gdp(
 
 * **Parameters**
 
-    interval : *str*
+    interval : str
         Interval for GDP.  Either "a" or "q", by default "q"
     start_year : int, optional
         Start year for plot, by default 2010

@@ -57,15 +57,15 @@ portfolio.po.property(
         - 'W' for weekly returns.
         - 'M' for monthly returns.
 
-    maxnan: *float*
+    maxnan: float
         Max percentage of nan values accepted per asset to be included in
         returns.
-    threshold: *float*
+    threshold: float
         Value used to replace outliers that are higher to threshold.
-    method: *str*
+    method: str
         Method used to fill nan values. Default value is 'time'. For more information see
         `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
-    s_property : *str*
+    s_property : str
         Property to weight portfolio by
     value : float, optional
         Amount of money to allocate
@@ -137,28 +137,28 @@ portfolio.po.property(
         returns.
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
-    method: *str*
+    method: str
         Method used to fill nan values. Default value is 'time'. For more information see
         `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
-    s_property : *str*
+    s_property : str
         Property to get weighted portfolio of
     risk_measure: str, optional
         The risk measure used to compute indicators.
         The default is 'MV'. Possible values are:
 
-        - 'MV': *Standard Deviation.*
-        - 'MAD': *Mean Absolute Deviation.*
-        - 'MSV': *Semi Standard Deviation.*
+        - 'MV': Standard Deviation.
+        - 'MAD': Mean Absolute Deviation.
+        - 'MSV': Semi Standard Deviation.
         - 'FLPM': First Lower Partial Moment (Omega Ratio).
         - 'SLPM': Second Lower Partial Moment (Sortino Ratio).
-        - 'CVaR': *Conditional Value at Risk.*
-        - 'EVaR': *Entropic Value at Risk.*
-        - 'WR': *Worst Realization.*
-        - 'ADD': *Average Drawdown of uncompounded cumulative returns.*
-        - 'UCI': *Ulcer Index of uncompounded cumulative returns.*
-        - 'CDaR': *Conditional Drawdown at Risk of uncompounded cumulative returns.*
-        - 'EDaR': *Entropic Drawdown at Risk of uncompounded cumulative returns.*
-        - 'MDD': *Maximum Drawdown of uncompounded cumulative returns.*
+        - 'CVaR': Conditional Value at Risk.
+        - 'EVaR': Entropic Value at Risk.
+        - 'WR': Worst Realization.
+        - 'ADD': Average Drawdown of uncompounded cumulative returns.
+        - 'UCI': Ulcer Index of uncompounded cumulative returns.
+        - 'CDaR': Conditional Drawdown at Risk of uncompounded cumulative returns.
+        - 'EDaR': Entropic Drawdown at Risk of uncompounded cumulative returns.
+        - 'MDD': Maximum Drawdown of uncompounded cumulative returns.
 
     risk_free_rate: float, optional
         Risk free rate, must be in the same interval of assets returns. Used for

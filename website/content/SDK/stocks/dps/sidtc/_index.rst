@@ -25,9 +25,9 @@ stocks.dps.sidtc(
 
 * **Parameters**
 
-    sortby : *str*
+    sortby : str
         Field for which to sort by, where 'float': Float Short %%,
-        'dtc': Days to Cover, 'si': *Short Interest*
+        'dtc': Days to Cover, 'si': Short Interest
 
 * **Returns**
 

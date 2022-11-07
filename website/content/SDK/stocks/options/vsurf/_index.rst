@@ -27,7 +27,7 @@ stocks.options.vsurf(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Stock ticker symbol to get
     chart: *bool*
        Flag to display chart
@@ -64,11 +64,11 @@ stocks.options.vsurf(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Ticker symbol to get surface for
-    export : *str*
+    export : str
         Format to export data
-    z : *str*
+    z : str
         The variable for the Z axis
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list), by default None

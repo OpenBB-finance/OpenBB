@@ -26,7 +26,7 @@ crypto.nft.fp(
 
 * **Parameters**
 
-    slug: *str*
+    slug: str
         nft collection slug
     chart: *bool*
        Flag to display chart
@@ -64,13 +64,13 @@ crypto.nft.fp(
 
 * **Parameters**
 
-    slug: *str*
+    slug: str
         NFT collection slug
-    raw: *bool*
+    raw: bool
         Flag to display raw data
-    limit: *int*
+    limit: int
         Number of raw data to show
-    export: *str*
+    export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None

@@ -30,13 +30,13 @@ crypto.tools.il(
 
 * **Parameters**
 
-    price_changeA: *float*
+    price_changeA: float
         price change of crypto A in percentage
-    price_changeB: *float*
+    price_changeB: float
         price change of crypto B in percentage
-    proportion: *float*
+    proportion: float
         percentage of first token in pool
-    initial_pool_value: *float*
+    initial_pool_value: float
         initial value that pool contains
     chart: *bool*
        Flag to display chart
@@ -45,8 +45,8 @@ crypto.tools.il(
 * **Returns**
 
     Tuple:
-        - pd.DataFrame: *dataframe with results*
-        - str: *narrative version of results*
+        - pd.DataFrame: dataframe with results
+        - str: narrative version of results
 
 |
 
@@ -76,17 +76,17 @@ crypto.tools.il(
 
 * **Parameters**
 
-    price_changeA: *float*
+    price_changeA: float
         price change of crypto A in percentage
-    price_changeB: *float*
+    price_changeB: float
         price change of crypto B in percentage
-    proportion: *float*
+    proportion: float
         percentage of first token in pool
-    initial_pool_value: *float*
+    initial_pool_value: float
         initial value that pool contains
-    narrative: *str*
+    narrative: str
         display narrative version instead of dataframe
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

@@ -24,7 +24,7 @@ economy.rtps() -> pandas.core.frame.DataFrame
 
 * **Returns**
 
-    df_sectors : *pd.Dataframe*
+    df_sectors : pd.Dataframe
         Real-time performance data
 
 |
@@ -52,9 +52,9 @@ economy.rtps(
 
 * **Parameters**
 
-    raw : *bool*
+    raw : bool
         Output only raw data
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

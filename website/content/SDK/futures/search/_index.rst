@@ -29,11 +29,11 @@ futures.search(
 
 * **Parameters**
 
-    category: *str*
+    category: str
         Select the category where the future exists
-    exchange: *str*
+    exchange: str
         Select the exchange where the future exists
-    description: *str*
+    description: str
         Select the description where the future exists
     chart: *bool*
        Flag to display chart
@@ -65,13 +65,13 @@ futures.search(
 
 * **Parameters**
 
-    category: *str*
+    category: str
         Select the category where the future exists
-    exchange: *str*
+    exchange: str
         Select the exchange where the future exists
-    description: *str*
+    description: str
         Select the description of the future
-    export: *str*
+    export: str
         Type of format to export data
     chart: *bool*
        Flag to display chart

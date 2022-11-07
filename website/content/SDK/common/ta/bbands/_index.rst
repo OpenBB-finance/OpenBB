@@ -30,13 +30,13 @@ common.ta.bbands(
 
 * **Parameters**
 
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         Dataframe of ohlc prices
-    window : *int*
+    window : int
         Length of window to calculate BB
-    n_std : *float*
+    n_std : float
         Number of standard deviations to show
-    mamode : *str*
+    mamode : str
         Method of calculating average
     chart: *bool*
        Flag to display chart
@@ -44,7 +44,7 @@ common.ta.bbands(
 
 * **Returns**
 
-    df_ta: *pd.DataFrame*
+    df_ta: pd.DataFrame
         Dataframe of bollinger band data
 
 |
@@ -76,17 +76,17 @@ common.ta.bbands(
 
 * **Parameters**
 
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         Dataframe of ohlc prices
-    symbol : *str*
+    symbol : str
         Ticker symbol
-    window : *int*
+    window : int
         Length of window to calculate BB
-    n_std : *float*
+    n_std : float
         Number of standard deviations to show
-    mamode : *str*
+    mamode : str
         Method of calculating average
-    export : *str*
+    export : str
         Format of export file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

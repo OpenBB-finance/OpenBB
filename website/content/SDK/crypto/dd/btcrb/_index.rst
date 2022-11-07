@@ -30,9 +30,9 @@ crypto.dd.btcrb(
 
 * **Parameters**
 
-    start_date : *str*
+    start_date : str
         Initial date, format YYYY-MM-DD
-    end_date : *str*
+    end_date : str
         Final date, format YYYY-MM-DD
     chart: *bool*
        Flag to display chart
@@ -66,11 +66,11 @@ crypto.dd.btcrb(
 
 * **Parameters**
 
-    start_date : *int*
+    start_date : int
         Initial date, format YYYY-MM-DD
-    end_date : *int*
+    end_date : int
         Final date, format YYYY-MM-DD
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

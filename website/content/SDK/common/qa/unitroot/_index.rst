@@ -29,11 +29,11 @@ common.qa.unitroot(
 
 * **Parameters**
 
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         DataFrame of target variable
-    fuller_reg : *str*
+    fuller_reg : str
         Type of regression of ADF test. Can be ‘c’,’ct’,’ctt’,’nc’ 'c' - Constant and t - trend order
-    kpss_reg : *str*
+    kpss_reg : str
         Type of regression for KPSS test.  Can be ‘c’,’ct'
     chart: *bool*
        Flag to display chart
@@ -71,15 +71,15 @@ common.qa.unitroot(
 
 * **Parameters**
 
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         DataFrame
-    target : *str*
+    target : str
         Column of data to look at
-    fuller_reg : *str*
+    fuller_reg : str
         Type of regression of ADF test. Can be ‘c’,’ct’,’ctt’,’nc’ 'c' - Constant and t - trend order
-    kpss_reg : *str*
+    kpss_reg : str
         Type of regression for KPSS test. Can be ‘c’,’ct'
-    export : *str*
+    export : str
         Format for exporting data
     chart: *bool*
        Flag to display chart

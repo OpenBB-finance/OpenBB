@@ -25,10 +25,10 @@ stocks.options.price(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         The ticker symbol to get the price for
 
 * **Returns**
 
-    price : *float*
+    price : float
         The price of the ticker

@@ -25,7 +25,7 @@ stocks.options.option_expirations(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Ticker symbol to get expirations for
 
 * **Returns**

@@ -31,15 +31,15 @@ stocks.screener.historical(
 
 * **Parameters**
 
-    preset_loaded: *str*
+    preset_loaded: str
         Preset loaded to filter for tickers
-    limit: *int*
+    limit: int
         Number of stocks to display
-    start_date: *str*
+    start_date: str
         Start date to display historical data, in YYYY-MM-DD format
-    type_candle: *str*
+    type_candle: str
         Type of candle to display
-    normalize : *bool*
+    normalize : bool
         Boolean to normalize all stock prices using MinMax
     chart: *bool*
        Flag to display chart
@@ -83,17 +83,17 @@ stocks.screener.historical(
 
 * **Parameters**
 
-    preset_loaded: *str*
+    preset_loaded: str
         Preset loaded to filter for tickers
-    limit: *int*
+    limit: int
         Number of stocks to display
-    start_date: *str*
+    start_date: str
         Start date to display historical data, in YYYY-MM-DD format
-    type_candle: *str*
+    type_candle: str
         Type of candle to display
-    normalize : *bool*
+    normalize : bool
         Boolean to normalize all stock prices using MinMax
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

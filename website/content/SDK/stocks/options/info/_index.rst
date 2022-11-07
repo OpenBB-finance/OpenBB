@@ -27,7 +27,7 @@ stocks.options.info(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         The ticker symbol to get the price for
     chart: *bool*
        Flag to display chart
@@ -35,7 +35,7 @@ stocks.options.info(
 
 * **Returns**
 
-    price : *float*
+    price : float
         The info for a given ticker
 
 |
@@ -62,9 +62,9 @@ stocks.options.info(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Ticker symbol to get options info for
-    export: *str*
+    export: str
         Format of export file
     chart: *bool*
        Flag to display chart

@@ -28,7 +28,7 @@ etf.scr.screen(
 
 * **Parameters**
 
-    preset: *str*
+    preset: str
         Screener to use from presets
     chart: *bool*
        Flag to display chart
@@ -36,7 +36,7 @@ etf.scr.screen(
 
 * **Returns**
 
-    df : *pd.DataFrame*
+    df : pd.DataFrame
         Screened dataframe
 
 |
@@ -66,15 +66,15 @@ etf.scr.screen(
 
 * **Parameters**
 
-    preset: *str*
+    preset: str
         Preset to use
-    num_to_show: *int*
+    num_to_show: int
         Number of etfs to show
-    sortby: *str*
+    sortby: str
         Column to sort by
-    ascend: *bool*
+    ascend: bool
         Ascend when sorted
-    export: *str*
+    export: str
         Output format of export
     chart: *bool*
        Flag to display chart

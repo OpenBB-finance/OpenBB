@@ -31,13 +31,13 @@ crypto.dd.mcapdom(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Crypto symbol to check market cap dominance
-    interval : *str*
+    interval : str
         Interval frequency (possible values are: 5m, 15m, 30m, 1h, 1d, 1w)
-    start_date : *int*
+    start_date : int
         Initial date like string (e.g., 2021-10-01)
-    end_date : *int*
+    end_date : int
         End date like string (e.g., 2021-10-01)
     chart: *bool*
        Flag to display chart
@@ -77,15 +77,15 @@ crypto.dd.mcapdom(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Crypto symbol to check market cap dominance
-    start_date : *int*
+    start_date : int
         Initial date like string (e.g., 2021-10-01)
-    end_date : *int*
+    end_date : int
         End date like string (e.g., 2021-10-01)
-    interval : *str*
+    interval : str
         Interval frequency (possible values are: 5m, 15m, 30m, 1h, 1d, 1w)
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

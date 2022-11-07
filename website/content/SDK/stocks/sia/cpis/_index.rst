@@ -30,11 +30,11 @@ stocks.sia.cpis(
 
 * **Parameters**
 
-    sector: *str*
+    sector: str
         Select sector to get number of companies by each industry
-    mktcap: *str*
+    mktcap: str
         Select market cap of companies to consider from Small, Mid and Large
-    exclude_exchanges : *bool*
+    exclude_exchanges : bool
         Exclude international exchanges
     chart: *bool*
        Flag to display chart
@@ -75,19 +75,19 @@ stocks.sia.cpis(
 
 * **Parameters**
 
-    sector: *str*
+    sector: str
         Select sector to get number of companies by each industry
-    mktcap: *str*
+    mktcap: str
         Select market cap of companies to consider from Small, Mid and Large
-    exclude_exchanges : *bool*
+    exclude_exchanges : bool
         Exclude international exchanges
-    export: *str*
+    export: str
         Format to export data as
-    raw: *bool*
+    raw: bool
         Output all raw data
-    max_industries_to_display: *int*
+    max_industries_to_display: int
         Maximum number of industries to display
-    min_pct_to_display_industry: *float*
+    min_pct_to_display_industry: float
         Minimum percentage to display industry
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

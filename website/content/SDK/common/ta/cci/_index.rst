@@ -29,15 +29,15 @@ common.ta.cci(
 
 * **Parameters**
 
-    high_vals: *pd.Series*
+    high_vals: pd.Series
         High values
-    low_values: *pd.Series*
+    low_values: pd.Series
         Low values
-    close-values: *pd.Series*
+    close-values: pd.Series
         Close values
-    window: *int*
+    window: int
         Length of window
-    scalar: *float*
+    scalar: float
         Scalar variable
     chart: *bool*
        Flag to display chart
@@ -76,15 +76,15 @@ common.ta.cci(
 
 * **Parameters**
 
-    data : *pd.DataFrame*
+    data : pd.DataFrame
         Dataframe of OHLC
-    window : *int*
+    window : int
         Length of window
-    scalar : *float*
+    scalar : float
         Scalar variable
-    symbol : *str*
+    symbol : str
         Stock ticker
-    export : *str*
+    export : str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None

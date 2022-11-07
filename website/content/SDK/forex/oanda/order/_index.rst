@@ -32,9 +32,9 @@ forex.oanda.order(
 
     instrument : Union[str, None]
         The loaded currency pair, by default None
-    price : *int*
+    price : int
         The price to set for the limit order.
-    units : *int*
+    units : int
         The number of units to place in the order request.
     accountID : str, optional
         Oanda account ID, by default cfg.OANDA_ACCOUNT
@@ -73,13 +73,13 @@ forex.oanda.order(
 
 * **Parameters**
 
-    accountID : *str*
+    accountID : str
         Oanda user account ID
-    instrument : *str*
+    instrument : str
         The loaded currency pair
-    price : *int*
+    price : int
         The price to set for the limit order.
-    units : *int*
+    units : int
         The number of units to place in the order request.
     chart: *bool*
        Flag to display chart

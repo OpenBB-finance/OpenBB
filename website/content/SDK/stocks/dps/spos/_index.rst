@@ -27,7 +27,7 @@ stocks.dps.spos(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Stock to get data from
     chart: *bool*
        Flag to display chart
@@ -65,13 +65,13 @@ stocks.dps.spos(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Stock to plot for
-    limit : *int*
+    limit : int
         Number of last open market days to show
-    raw : *bool*
+    raw : bool
         Flag to print raw data instead
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None

@@ -29,7 +29,7 @@ forex.oanda.candles(
 
 * **Parameters**
 
-    instrument : *str*
+    instrument : str
         Loaded currency pair code
     granularity : str, optional
         Data granularity, by default "D"
@@ -73,7 +73,7 @@ forex.oanda.candles(
 
 * **Parameters**
 
-    instrument : *str*
+    instrument : str
         The loaded currency pair
     granularity : str, optional
         The timeframe to get for the candle chart. Seconds: S5, S10, S15, S30

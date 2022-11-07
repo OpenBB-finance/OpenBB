@@ -25,7 +25,7 @@ stocks.fa.mgmt(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Stock ticker symbol
 
 * **Returns**

@@ -34,20 +34,20 @@ stocks.options.hedge.calc_delta(
 
 * **Parameters**
 
-    asset_price: *int*
+    asset_price: int
         The price.
-    asset_volatility: *float*
+    asset_volatility: float
         The implied volatility.
-    strike_price: *float*
+    strike_price: float
         The strike price.
-    time_to_expiration: *float*
+    time_to_expiration: float
         The amount of days until expiration. Use annual notation thus a month would be 30 / 360.
-    risk_free_rate: *float*
+    risk_free_rate: float
         The risk free rate.
-    sign: *int*
+    sign: int
         Whether you have a long (1) or short (-1) position
 
 * **Returns**
 
-    delta: *float*
+    delta: float
         Returns the value for the delta.

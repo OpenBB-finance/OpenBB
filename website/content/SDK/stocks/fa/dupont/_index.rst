@@ -25,10 +25,10 @@ stocks.fa.dupont(
 
 * **Parameters**
 
-    symbol : *str*
+    symbol : str
         Stock ticker symbol
 
 * **Returns**
 
-    dupont : *pd.DataFrame*
+    dupont : pd.DataFrame
         The dupont ratio breakdown

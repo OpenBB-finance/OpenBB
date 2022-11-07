@@ -27,7 +27,7 @@ etf.holdings(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Symbol to get holdings for
     chart: *bool*
        Flag to display chart
@@ -35,7 +35,7 @@ etf.holdings(
 
 * **Returns**
 
-    df: *pd.DataFrame*
+    df: pd.DataFrame
         Dataframe of holdings
 
 |
@@ -63,11 +63,11 @@ etf.holdings(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         ETF symbol to show holdings for
-    limit: *int*
+    limit: int
         Number of holdings to show
-    export: *str*
+    export: str
         Format to export data
     chart: *bool*
        Flag to display chart

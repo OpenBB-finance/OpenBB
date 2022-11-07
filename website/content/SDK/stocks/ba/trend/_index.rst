@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 {{< highlight python >}}
 stocks.ba.trend(
     start_date: datetime.datetime = datetime.datetime(
-    2022, 11, 7, 12, 49, 44, 780997, chart: bool = False,
+    2022, 11, 7, 13, 51, 50, 987410, chart: bool = False,
 ), hour: int = 0,
     number: int = 10,
     chart: bool = False,
@@ -33,11 +33,11 @@ stocks.ba.trend(
 
 * **Parameters**
 
-    start_date: *datetime*
+    start_date: datetime
         Datetime object (e.g. datetime(2021, 12, 21)
-    hour: *int*
+    hour: int
         Hour of the day in 24-hour notation (e.g. 14)
-    number : *int*
+    number : int
         Number of results returned by API call
         Maximum 250 per api call
     chart: *bool*
@@ -60,7 +60,7 @@ stocks.ba.trend(
 {{< highlight python >}}
 stocks.ba.trend(
     start_date: datetime.datetime = datetime.datetime(
-    2022, 11, 7, 12, 49, 44, 781267, chart: bool = False,
+    2022, 11, 7, 13, 51, 50, 987658, chart: bool = False,
 ), hour: int = 0,
     number: int = 10,
     limit: int = 10,
@@ -78,17 +78,17 @@ stocks.ba.trend(
 
 * **Parameters**
 
-    start_date: *datetime*
+    start_date: datetime
         Datetime object (e.g. datetime(2021, 12, 21)
-    hour: *int*
+    hour: int
         Hour of the day in 24-hour notation (e.g. 14)
-    number : *int*
+    number : int
         Number of results returned by API call
         Maximum 250 per api call
-    limit: *int*
+    limit: int
         Number of results display on the terminal
-        Default: *10*
-    export: *str*
+        Default: 10
+    export: str
         Format to export data
     chart: *bool*
        Flag to display chart

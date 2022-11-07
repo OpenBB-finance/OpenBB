@@ -29,11 +29,11 @@ common.qa.quantile(
 
 * **Parameters**
 
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         Dataframe of targeted data
-    window : *int*
+    window : int
         Length of window
-    quantile_pct: *float*
+    quantile_pct: float
         Quantile to display
     chart: *bool*
        Flag to display chart
@@ -41,9 +41,9 @@ common.qa.quantile(
 
 * **Returns**
 
-    df_med : *pd.DataFrame*
+    df_med : pd.DataFrame
         Dataframe of median prices over window
-    df_quantile : *pd.DataFrame*
+    df_quantile : pd.DataFrame
         Dataframe of gievn quantile prices over window
 
 |
@@ -75,17 +75,17 @@ common.qa.quantile(
 
 * **Parameters**
 
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         Dataframe
-    target: *str*
+    target: str
         Column in data to look at
-    symbol : *str*
+    symbol : str
         Stock ticker
-    window : *int*
+    window : int
         Length of window
-    quantile: *float*
+    quantile: float
         Quantile to get
-    export: *str*
+    export: str
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None

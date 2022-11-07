@@ -29,12 +29,12 @@ crypto.defi.swaps(
 
 * **Parameters**
 
-    limit: *int*
-        Number of swaps to return. Maximum possible number: *1000.*
-    sortby: *str*
+    limit: int
+        Number of swaps to return. Maximum possible number: 1000.
+    sortby: str
         Key by which to sort data. The table can be sorted by every of its columns
         (see https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2).
-    ascend: *bool*
+    ascend: bool
         Flag to sort data descending
     chart: *bool*
        Flag to display chart
@@ -72,14 +72,14 @@ crypto.defi.swaps(
 
 * **Parameters**
 
-    limit: *int*
+    limit: int
         Number of records to display
-    sortby: *str*
+    sortby: str
         Key by which to sort data. The table can be sorted by every of its columns
         (see https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2).
-    ascend: *bool*
+    ascend: bool
         Flag to sort data descending
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

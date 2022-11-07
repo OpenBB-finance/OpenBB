@@ -61,7 +61,7 @@ forex.oanda.summary(
 
 * **Parameters**
 
-    accountID : *str*
+    accountID : str
         Oanda user account ID
     chart: *bool*
        Flag to display chart

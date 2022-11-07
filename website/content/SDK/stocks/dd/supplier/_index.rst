@@ -26,9 +26,9 @@ stocks.dd.supplier(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Ticker to select suppliers from
-    limit: *int*
+    limit: int
         The maximum number of rows to show
 
 * **Returns**

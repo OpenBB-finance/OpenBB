@@ -67,26 +67,26 @@ portfolio.po.ef(
         returns.
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
-    method: *str*
+    method: str
         Method used to fill nan values. Default value is 'time'. For more information see
         `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
     risk_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
 
-        - 'MV': *Standard Deviation.*
-        - 'MAD': *Mean Absolute Deviation.*
-        - 'MSV': *Semi Standard Deviation.*
+        - 'MV': Standard Deviation.
+        - 'MAD': Mean Absolute Deviation.
+        - 'MSV': Semi Standard Deviation.
         - 'FLPM': First Lower Partial Moment (Omega Ratio).
         - 'SLPM': Second Lower Partial Moment (Sortino Ratio).
-        - 'CVaR': *Conditional Value at Risk.*
-        - 'EVaR': *Entropic Value at Risk.*
-        - 'WR': *Worst Realization.*
-        - 'ADD': *Average Drawdown of uncompounded cumulative returns.*
-        - 'UCI': *Ulcer Index of uncompounded cumulative returns.*
-        - 'CDaR': *Conditional Drawdown at Risk of uncompounded cumulative returns.*
-        - 'EDaR': *Entropic Drawdown at Risk of uncompounded cumulative returns.*
-        - 'MDD': *Maximum Drawdown of uncompounded cumulative returns.*
+        - 'CVaR': Conditional Value at Risk.
+        - 'EVaR': Entropic Value at Risk.
+        - 'WR': Worst Realization.
+        - 'ADD': Average Drawdown of uncompounded cumulative returns.
+        - 'UCI': Ulcer Index of uncompounded cumulative returns.
+        - 'CDaR': Conditional Drawdown at Risk of uncompounded cumulative returns.
+        - 'EDaR': Entropic Drawdown at Risk of uncompounded cumulative returns.
+        - 'MDD': Maximum Drawdown of uncompounded cumulative returns.
 
     risk_free_rate: float, optional
         Risk free rate, must be in the same interval of assets returns. Used for
@@ -176,26 +176,26 @@ portfolio.po.ef(
         returns.
     threshold: float, optional
         Value used to replace outliers that are higher to threshold.
-    method: *str*
+    method: str
         Method used to fill nan values. Default value is 'time'. For more information see
         `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`_.
     risk_measure: str, optional
         The risk measure used to optimize the portfolio.
         The default is 'MV'. Possible values are:
 
-        - 'MV': *Standard Deviation.*
-        - 'MAD': *Mean Absolute Deviation.*
-        - 'MSV': *Semi Standard Deviation.*
+        - 'MV': Standard Deviation.
+        - 'MAD': Mean Absolute Deviation.
+        - 'MSV': Semi Standard Deviation.
         - 'FLPM': First Lower Partial Moment (Omega Ratio).
         - 'SLPM': Second Lower Partial Moment (Sortino Ratio).
-        - 'CVaR': *Conditional Value at Risk.*
-        - 'EVaR': *Entropic Value at Risk.*
-        - 'WR': *Worst Realization.*
-        - 'ADD': *Average Drawdown of uncompounded cumulative returns.*
-        - 'UCI': *Ulcer Index of uncompounded cumulative returns.*
-        - 'CDaR': *Conditional Drawdown at Risk of uncompounded cumulative returns.*
-        - 'EDaR': *Entropic Drawdown at Risk of uncompounded cumulative returns.*
-        - 'MDD': *Maximum Drawdown of uncompounded cumulative returns.*
+        - 'CVaR': Conditional Value at Risk.
+        - 'EVaR': Entropic Value at Risk.
+        - 'WR': Worst Realization.
+        - 'ADD': Average Drawdown of uncompounded cumulative returns.
+        - 'UCI': Ulcer Index of uncompounded cumulative returns.
+        - 'CDaR': Conditional Drawdown at Risk of uncompounded cumulative returns.
+        - 'EDaR': Entropic Drawdown at Risk of uncompounded cumulative returns.
+        - 'MDD': Maximum Drawdown of uncompounded cumulative returns.
 
     risk_free_rate: float, optional
         Risk free rate, must be in the same interval of assets returns. Used for
@@ -215,7 +215,7 @@ portfolio.po.ef(
         Adds the optimal line with the risk-free asset.
     external_axes: Optional[List[plt.Axes]]
         Optional axes to plot data on
-    plot_tickers: *bool*
+    plot_tickers: bool
         Whether to plot the tickers for the assets
     chart: *bool*
        Flag to display chart

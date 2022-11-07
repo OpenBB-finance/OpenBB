@@ -59,7 +59,7 @@ crypto.defi.stats(
 
 * **Parameters**
 
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart

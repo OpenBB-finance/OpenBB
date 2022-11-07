@@ -28,9 +28,9 @@ common.qa.kurtosis(
 
 * **Parameters**
 
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         Dataframe of targeted data
-    window: *int*
+    window: int
         Length of window
     chart: *bool*
        Flag to display chart
@@ -38,7 +38,7 @@ common.qa.kurtosis(
 
 * **Returns**
 
-    df_kurt : *pd.DataFrame*
+    df_kurt : pd.DataFrame
         Dataframe of rolling kurtosis
 
 |
@@ -69,15 +69,15 @@ common.qa.kurtosis(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Ticker
-    data: *pd.DataFrame*
+    data: pd.DataFrame
         Dataframe of stock prices
-    target: *str*
+    target: str
         Column in data to look at
-    window: *int*
+    window: int
         Length of window
-    export: *str*
+    export: str
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None

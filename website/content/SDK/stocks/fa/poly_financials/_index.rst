@@ -30,13 +30,13 @@ stocks.fa.poly_financials(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Stock ticker symbol
-    statement: *str*
+    statement: str
         Financial statement data to retrieve, can be balance, income or cash
     quarterly:bool
         Flag to get quarterly reports, by default False
-    ratios: *bool*
+    ratios: bool
         Shows percentage change, by default False
     chart: *bool*
        Flag to display chart
@@ -76,19 +76,19 @@ stocks.fa.poly_financials(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Stock ticker symbol
     statement:str
         Either balance or income
-    limit: *int*
+    limit: int
         Number of results to show, by default 10
-    quarterly: *bool*
+    quarterly: bool
         Flag to get quarterly reports, by default False
-    ratios: *bool*
+    ratios: bool
         Shows percentage change, by default False
-    plot: *list*
+    plot: list
         List of row labels to plot
-    export: *str*
+    export: str
         Format to export data
     chart: *bool*
        Flag to display chart

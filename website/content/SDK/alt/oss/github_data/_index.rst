@@ -25,9 +25,9 @@ alt.oss.github_data(
 
 * **Parameters**
 
-    url: *str*
+    url: str
         github api endpoint
-    params: *dict*
+    params: dict
         params to pass to api endpoint
 
 * **Returns**

@@ -30,19 +30,19 @@ crypto.dd.mkt(
 
 * **Parameters**
 
-    symbol: *str*
+    symbol: str
         Coin Parpika identifier of coin e.g. eth-ethereum
-    quotes: *str*
+    quotes: str
         Comma separated list of quotes to return.
         Example: quotes=USD,BTC
         Allowed values:
         BTC, ETH, USD, EUR, PLN, KRW, GBP, CAD, JPY, RUB, TRY, NZD, AUD, CHF, UAH, HKD, SGD, NGN,
         PHP, MXN, BRL, THB, CLP, CNY, CZK, DKK, HUF, IDR, ILS, INR, MYR, NOK, PKR, SEK, TWD, ZAR,
         VND, BOB, COP, PEN, ARS, ISK
-    sortby: *str*
+    sortby: str
         Key by which to sort data. Every column name is valid (see for possible values:
         https://api.coinpaprika.com/v1).
-    ascend: *bool*
+    ascend: bool
         Flag to sort data ascending
     chart: *bool*
        Flag to display chart
@@ -82,20 +82,20 @@ crypto.dd.mkt(
 
 * **Parameters**
 
-    from_symbol: *str*
+    from_symbol: str
         Cryptocurrency symbol (e.g. BTC)
-    to_symbol: *str*
+    to_symbol: str
         Quoted currency
-    limit: *int*
+    limit: int
         Number of records to display
-    sortby: *str*
+    sortby: str
         Key by which to sort data. Every column name is valid (see for possible values:
         https://api.coinpaprika.com/v1).
-    ascend: *bool*
+    ascend: bool
         Flag to sort data ascending
-    links: *bool*
+    links: bool
         Flag to display urls
-    export : *str*
+    export : str
         Export dataframe data to csv,json,xlsx file
     chart: *bool*
        Flag to display chart
