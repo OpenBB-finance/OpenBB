@@ -51,9 +51,9 @@ portfolio.po.plot(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     risk_measure: str, optional
         The risk measure used to optimize the portfolio. If model is 'NCO',
@@ -163,9 +163,9 @@ portfolio.po.plot(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
 
     risk_measure: str, optional
         The risk measure used to optimize the portfolio. If model is 'NCO',

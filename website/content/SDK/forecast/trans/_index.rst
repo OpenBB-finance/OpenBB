@@ -190,8 +190,8 @@ forecast.trans(
     activation: *str*
         The activation function of encoder/decoder intermediate layer, ‘relu’ or ‘gelu’. Defaults to 'relu'.
     dropout: *float*
-        Fraction of neurons afected by Dropout. Defaults to 0.1.
-    batch_size_ int
+        Fraction of neurons affected by Dropout. Defaults to 0.1.
+    batch_size\_: *int*
         Number of time series (input and output sequences) used in each training pass. Defaults to 32.
     n_epochs: *int*
         Number of epochs over which to train the model. Defaults to 100.

@@ -61,7 +61,7 @@ forecast.tcn(
     output_chunk_length: *int*
         The length of the forecast of the model. Defaults to 5.
     dropout: *float*
-        Fraction of neurons afected by Dropout. Defaults to 0.1.
+        Fraction of neurons affected by Dropout. Defaults to 0.1.
     num_filters: *int*
         The number of filters in a convolutional layer of the TCN. Defaults to 6.
     weight_norm: *bool*
@@ -167,7 +167,7 @@ forecast.tcn(
     output_chunk_length: *int*
         The length of the forecast of the model. Defaults to 5.
     dropout: *float*
-        Fraction of neurons afected by Dropout. Defaults to 0.1.
+        Fraction of neurons affected by Dropout. Defaults to 0.1.
     num_filters: *int*
         The number of filters in a convolutional layer of the TCN. Defaults to 6.
     weight_norm: *bool*

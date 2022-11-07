@@ -195,9 +195,9 @@ portfolio.po.riskparity(
     freq: *str*
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-            - 'D' for daily returns.
-            - 'W' for weekly returns.
-            - 'M' for monthly returns.
+        - 'D' for daily returns.
+        - 'W' for weekly returns.
+        - 'M' for monthly returns.
             - X (integer days) for returns calculated every X days.
 
     maxnan: *float*

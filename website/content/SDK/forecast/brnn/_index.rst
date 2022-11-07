@@ -64,7 +64,7 @@ forecast.brnn(
     n_rnn_layers: *int*
             Number of layers in the RNN module. Defaults to 1.
     dropout: *float*
-        Fraction of neurons afected by Dropout. Defaults to 0.0.
+        Fraction of neurons affected by Dropout. Defaults to 0.0.
     batch_size: *int*
         Number of time series (input and output sequences) used in each training pass. Defaults to 32.
     n_epochs: *int*
@@ -166,7 +166,7 @@ forecast.brnn(
     n_rnn_layers: *int*
             Number of layers in the RNN module. Defaults to 1.
     dropout: *float*
-        Fraction of neurons afected by Dropout. Defaults to 0.0.
+        Fraction of neurons affected by Dropout. Defaults to 0.0.
     batch_size: *int*
         Number of time series (input and output sequences) used in each training pass. Defaults to 32.
     n_epochs: *int*
