@@ -332,10 +332,10 @@ portfolio.po.hrp(
         - 'oas': *use the Oracle Approximation Shrinkage method.*
         - 'shrunk': *use the basic Shrunk Covariance method.*
         - 'gl': *use the basic Graphical Lasso Covariance method.*
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`c-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`c-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`c-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`c-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `c-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `c-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `c-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `c-MLforAM`.
 
     risk_measure: str, optional
         The risk measure used to optimize the portfolio. If model is 'NCO',

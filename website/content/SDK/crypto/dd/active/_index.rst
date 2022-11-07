@@ -17,7 +17,7 @@ crypto.dd.active(
     symbol: str,
     interval: str = '24h',
     start_date: int = 1262304000,
-    end_date: int = 1667782131,
+    end_date: int = 1667785405,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

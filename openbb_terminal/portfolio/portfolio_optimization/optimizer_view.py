@@ -961,10 +961,10 @@ def display_mean_risk(
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `a-MLforAM`.
 
     d_ewma: float, optional
         The smoothing factor of ewma methods.
@@ -1143,10 +1143,10 @@ def display_max_sharpe(
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `a-MLforAM`.
 
     d_ewma: float, optional
         The smoothing factor of ewma methods.
@@ -1318,10 +1318,10 @@ def display_min_risk(
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `a-MLforAM`.
 
     d_ewma: float, optional
         The smoothing factor of ewma methods.
@@ -1492,10 +1492,10 @@ def display_max_util(
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `a-MLforAM`.
 
     d_ewma: float, optional
         The smoothing factor of ewma methods.
@@ -1666,10 +1666,10 @@ def display_max_ret(
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `a-MLforAM`.
 
     d_ewma: float, optional
         The smoothing factor of ewma methods.
@@ -1793,10 +1793,10 @@ def display_max_div(
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `a-MLforAM`.
 
     d_ewma: float, optional
         The smoothing factor of ewma methods.
@@ -1911,10 +1911,10 @@ def display_max_decorr(
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `a-MLforAM`.
 
     d_ewma: float, optional
         The smoothing factor of ewma methods.
@@ -2432,10 +2432,10 @@ def display_risk_parity(
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `a-MLforAM`.
 
     d_ewma: float, optional
         The smoothing factor of ewma methods.
@@ -2581,10 +2581,10 @@ def display_rel_risk_parity(
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`a-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`a-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`a-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `a-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `a-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `a-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `a-MLforAM`.
 
     d_ewma: float, optional
         The smoothing factor of ewma methods.
@@ -2737,10 +2737,10 @@ def display_hcp(
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`c-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`c-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`c-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`c-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `c-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `c-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `c-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `c-MLforAM`.
 
     objective: str, optional
         Objective function used by the NCO model.
@@ -3005,10 +3005,10 @@ def display_hrp(
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`c-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`c-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`c-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`c-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `c-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `c-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `c-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `c-MLforAM`.
 
     risk_measure: str, optional
         The risk measure used to optimize the portfolio. If model is 'NCO',
@@ -3265,10 +3265,10 @@ def display_herc(
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`c-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`c-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`c-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`c-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `c-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `c-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `c-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `c-MLforAM`.
 
     risk_measure: str, optional
         The risk measure used to optimize the portfolio. If model is 'NCO',
@@ -3526,10 +3526,10 @@ def display_nco(
         - 'oas': use the Oracle Approximation Shrinkage method.
         - 'shrunk': use the basic Shrunk Covariance method.
         - 'gl': use the basic Graphical Lasso Covariance method.
-        - 'jlogo': use the j-LoGo Covariance method. For more information see: :cite:`c-jLogo`.
-        - 'fixed': denoise using fixed method. For more information see chapter 2 of :cite:`c-MLforAM`.
-        - 'spectral': denoise using spectral method. For more information see chapter 2 of :cite:`c-MLforAM`.
-        - 'shrink': denoise using shrink method. For more information see chapter 2 of :cite:`c-MLforAM`.
+        - 'jlogo': use the j-LoGo Covariance method. For more information see: `c-jLogo`.
+        - 'fixed': denoise using fixed method. For more information see chapter 2 of `c-MLforAM`.
+        - 'spectral': denoise using spectral method. For more information see chapter 2 of `c-MLforAM`.
+        - 'shrink': denoise using shrink method. For more information see chapter 2 of `c-MLforAM`.
 
     objective: str, optional
         Objective function used by the NCO model.
