@@ -134,6 +134,7 @@ class Operation:
             raise Exception("Unknown method")
 
         OperationLogger.log_before_call(
+            operation=self,
             method_chosen=method_chosen,
         )
 
@@ -142,7 +143,9 @@ class Operation:
         method_result = method_chosen(*args, **kwargs)
 
         OperationLogger.log_after_call(
+            operation=self,
             method_chosen=method_chosen,
+            method_result=method_result,
         )
 
         return method_result
@@ -166,14 +169,20 @@ class OperationLogger:
         )
 
     @classmethod
-    def log_before_call(cls, method_chosen: Callable):
+    def log_before_call(
+        cls,
+        operation: Operation,
+        method_chosen: Callable,
+    ):
         logger = cls.__logger
         cls.log_start(logger, method_chosen=method_chosen)
 
     @classmethod
     def log_after_call(
         cls,
+        operation: Operation,
         method_chosen: Callable,
+        method_result: Any,
     ):
         logger = cls.__logger
         cls.log_end(logger, method_chosen=method_chosen)
