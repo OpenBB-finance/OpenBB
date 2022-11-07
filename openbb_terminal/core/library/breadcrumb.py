@@ -100,9 +100,9 @@ class Breadcrumb:
         else:
             trail_next = f"{trail}.{name}"
 
-        if Operation.is_valid(trail=trail, trail_map=trail_map):
-            next_crumb: Union[Breadcrumb, Operation] = Operation(
-                trail=trail,
+        if Operation.is_valid(trail=trail_next, trail_map=trail_map):
+            next_crumb: Any = Operation(
+                trail=trail_next,
                 trail_map=trail_map,
             )
         elif name in self.__metadata.dir_list:
@@ -112,6 +112,8 @@ class Breadcrumb:
                 trail_map=trail_map,
             )
         else:
-            raise AttributeError(f"Module/Method '{trail}' has no attribute '{name}'")
+            raise AttributeError(
+                f"Module or method '{trail}' has no attribute '{name}'."
+            )
 
         return next_crumb
