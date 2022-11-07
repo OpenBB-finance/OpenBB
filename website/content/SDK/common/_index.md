@@ -1,7 +1,7 @@
 ---
-title: Introduction to QA (Quantitative Analysis)
+title: Introduction to Quantitative Analysis
 keywords: "qa, quant, quantitative, bw, var, es, kurtosis, normality, omega, quantile, rolling, sharpe, skew, spread, summary, unitroot, var, math"
-excerpt: "This guide introduces the QA module of the OpenBB SDK and provides some examples."
+excerpt: "This guide introduces the Quantitative Analysis module, and provides some examples."
 geekdocCollapseSection: true
 ---
 The `qa` module replicates the features of the Quantitative Analysis menu, within the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/qa/" target="_blank">OpenBB Terminal</a>, for the SDK environment. It provides users with more ways to interact with the library of functions, and provides cross-disciplinary utility. To activate the code completion for the menu, enter `.` after, `openbb.common.qa`.
