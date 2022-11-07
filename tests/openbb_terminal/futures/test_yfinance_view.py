@@ -2,6 +2,7 @@
 
 # IMPORTATION THIRDPARTY
 import pytest
+import yfinance
 
 # IMPORTATION INTERNAL
 from openbb_terminal.futures import yfinance_view
@@ -11,6 +12,10 @@ from openbb_terminal.futures import yfinance_view
 def vcr_config():
     return {
         "filter_headers": [("User-Agent", None)],
+        "filter_query_parameters": [
+            ("period1", "MOCK_PERIOD_1"),
+            ("period2", "MOCK_PERIOD_2"),
+        ],
     }
 
 
@@ -26,13 +31,24 @@ def test_display_search(category):
     )
 
 
-@pytest.mark.vcr()
+@pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "tickers",
-    [["BLK"]],
+    [
+        ["BLK", "SB"],
+        ["ES", "SF"],
+    ],
 )
-def test_display_historical(tickers):
+def test_display_historical(mocker, tickers):
+    yf_download = yfinance.download
+
+    def mock_yf_download(*args, **kwargs):
+        kwargs["threads"] = False
+        return yf_download(*args, **kwargs)
+
+    mocker.patch("yfinance.download", side_effect=mock_yf_download)
+
     yfinance_view.display_historical(
         tickers=tickers,
         start_date="2022-10-10",
@@ -40,13 +56,21 @@ def test_display_historical(tickers):
     )
 
 
-@pytest.mark.vcr()
+@pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
     "ticker",
-    ["ES"],
+    ["ES", "YI"],
 )
-def test_display_curve(ticker):
+def test_display_curve(mocker, ticker):
+    yf_download = yfinance.download
+
+    def mock_yf_download(*args, **kwargs):
+        kwargs["threads"] = False
+        return yf_download(*args, **kwargs)
+
+    mocker.patch("yfinance.download", side_effect=mock_yf_download)
+
     yfinance_view.display_curve(
         ticker=ticker,
         raw=True,

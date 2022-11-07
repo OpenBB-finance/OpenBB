@@ -340,10 +340,6 @@ functions = {
         "model": "openbb_terminal.cryptocurrency.defi.cryptosaurio_model.get_anchor_data",
         "view": "openbb_terminal.cryptocurrency.defi.cryptosaurio_view.display_anchor_data",
     },
-    "crypto.defi.dpi": {
-        "model": "openbb_terminal.cryptocurrency.defi.defipulse_model.get_defipulse_index",
-        "view": "openbb_terminal.cryptocurrency.defi.defipulse_view.display_defipulse",
-    },
     "crypto.defi.swaps": {
         "model": "openbb_terminal.cryptocurrency.defi.graph_model.get_last_uni_swaps",
         "view": "openbb_terminal.cryptocurrency.defi.graph_view.display_last_uni_swaps",
@@ -488,9 +484,9 @@ functions = {
         "model": "openbb_terminal.cryptocurrency.due_diligence.binance_view.get_balance",
         "view": "openbb_terminal.cryptocurrency.due_diligence.binance_view.display_balance",
     },
-    "crypto.dd.book": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.binance_view.get_order_book",
-        "view": "openbb_terminal.cryptocurrency.due_diligence.binance_view.display_order_book",
+    "crypto.dd.ob": {
+        "model": "openbb_terminal.cryptocurrency.due_diligence.ccxt_model.get_orderbook",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.ccxt_view.display_order_book",
     },
     "crypto.dd.show_available_pairs_for_given_symbol": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.coinbase_model.show_available_pairs_for_given_symbol"
@@ -502,17 +498,13 @@ functions = {
         "model": "openbb_terminal.cryptocurrency.due_diligence.coinbase_model.get_candles",
         "view": "openbb_terminal.cryptocurrency.due_diligence.coinbase_view.display_candles",
     },
-    "crypto.dd.cbbook": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.coinbase_model.get_order_book",
-        "view": "openbb_terminal.cryptocurrency.due_diligence.coinbase_view.display_order_book",
-    },
     "crypto.dd.stats": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.coinbase_model.get_product_stats",
         "view": "openbb_terminal.cryptocurrency.due_diligence.coinbase_view.display_stats",
     },
     "crypto.dd.trades": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.coinbase_model.get_trades",
-        "view": "openbb_terminal.cryptocurrency.due_diligence.coinbase_view.display_trades",
+        "model": "openbb_terminal.cryptocurrency.due_diligence.ccxt_model.get_trades",
+        "view": "openbb_terminal.cryptocurrency.due_diligence.ccxt_view.display_trades",
     },
     "crypto.dd.trading_pair_info": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.coinbase_model.get_trading_pair_info"
@@ -565,10 +557,6 @@ functions = {
     },
     "crypto.dd.close": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_close_price",
-    },
-    "crypto.dd.btcrb": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_btc_rainbow",
-        "view": "openbb_terminal.cryptocurrency.due_diligence.glassnode_view.display_btc_rainbow",
     },
     "crypto.dd.eb": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_exchange_balances",
@@ -647,6 +635,14 @@ functions = {
     "crypto.nft.stats": {
         "model": "openbb_terminal.cryptocurrency.nft.opensea_model.get_collection_stats",
         "view": "openbb_terminal.cryptocurrency.nft.opensea_view.display_collection_stats",
+    },
+    "crypto.nft.fp": {
+        "model": "openbb_terminal.cryptocurrency.nft.nftpricefloor_model.get_floor_price",
+        "view": "openbb_terminal.cryptocurrency.nft.nftpricefloor_view.display_floor_price",
+    },
+    "crypto.nft.collections": {
+        "model": "openbb_terminal.cryptocurrency.nft.nftpricefloor_model.get_collections",
+        "view": "openbb_terminal.cryptocurrency.nft.nftpricefloor_view.display_collections",
     },
     "crypto.onchain.dvcp": {
         "model": "openbb_terminal.cryptocurrency.onchain.bitquery_model.get_daily_dex_volume_for_given_pair",
@@ -735,6 +731,10 @@ functions = {
     "crypto.ov.altindex": {
         "model": "openbb_terminal.cryptocurrency.overview.blockchaincenter_model.get_altcoin_index",
         "view": "openbb_terminal.cryptocurrency.overview.blockchaincenter_view.display_altcoin_index",
+    },
+    "crypto.ov.btcrb": {
+        "model": "openbb_terminal.cryptocurrency.overview.glassnode_model.get_btc_rainbow",
+        "view": "openbb_terminal.cryptocurrency.overview.glassnode_view.display_btc_rainbow",
     },
     "crypto.ov.cbpairs": {
         "model": "openbb_terminal.cryptocurrency.overview.coinbase_model.get_trading_pairs",
@@ -883,9 +883,7 @@ functions = {
         "model": "openbb_terminal.econometrics.econometrics_model.get_root",
         "view": "openbb_terminal.econometrics.econometrics_view.display_root",
     },
-    "econometrics.load": {
-        "model": "openbb_terminal.econometrics.econometrics_model.load"
-    },
+    "econometrics.load": {"model": "openbb_terminal.common.common_model.load"},
     "econometrics.bgod": {
         "model": "openbb_terminal.econometrics.regression_model.get_bgod",
         "view": "openbb_terminal.econometrics.regression_view.display_bgod",
@@ -1001,14 +999,14 @@ functions = {
         "model": "openbb_terminal.economy.investingcom_model.get_events_countries"
     },
     "economy.events": {
-        "model": "openbb_terminal.economy.investingcom_model.get_economic_calendar"
+        "model": "openbb_terminal.economy.nasdaq_model.get_economic_calendar"
     },
     "economy.get_ycrv_countries": {
         "model": "openbb_terminal.economy.investingcom_model.get_ycrv_countries"
     },
     "economy.ycrv": {
-        "model": "openbb_terminal.economy.investingcom_model.get_yieldcurve",
-        "view": "openbb_terminal.economy.investingcom_view.display_yieldcurve",
+        "model": "openbb_terminal.economy.fred_model.get_yield_curve",
+        "view": "openbb_terminal.economy.fred_view.display_yield_curve",
     },
     "economy.country_codes": {
         "model": "openbb_terminal.economy.nasdaq_model.get_country_codes"
@@ -1143,18 +1141,6 @@ functions = {
     "forex.oanda.positionbook": {
         "model": "openbb_terminal.forex.oanda.oanda_model.positionbook_plot_data_request",
         "view": "openbb_terminal.forex.oanda.oanda_view.get_position_book",
-    },
-    "funds.info": {
-        "model": "openbb_terminal.mutual_funds.investpy_model.get_fund_info",
-        "view": "openbb_terminal.mutual_funds.investpy_view.display_fund_info",
-    },
-    "funds.overview": {
-        "model": "openbb_terminal.mutual_funds.investpy_model.get_overview",
-        "view": "openbb_terminal.mutual_funds.investpy_view.display_overview",
-    },
-    "funds.search": {
-        "model": "openbb_terminal.mutual_funds.investpy_model.search_funds",
-        "view": "openbb_terminal.mutual_funds.investpy_view.display_search",
     },
     "portfolio.holdv": {
         "model": "openbb_terminal.portfolio.portfolio_model.get_holdings_value",
@@ -1908,12 +1894,13 @@ functions = {
         "model": "openbb_terminal.stocks.stocks_helper.process_candle"
     },
     "stocks.search": {"model": "openbb_terminal.stocks.stocks_helper.search"},
-    "stocks.quote": {"model": "openbb_terminal.stocks.stocks_helper.quote"},
+    "stocks.quote": {"model": "openbb_terminal.stocks.stocks_models.load_quote"},
     "stocks.tob": {"model": "openbb_terminal.stocks.cboe_model.get_top_of_book"},
     "stocks.candle": {"model": "openbb_terminal.stocks.stocks_helper.display_candle"},
     "crypto.load": {
         "model": "openbb_terminal.cryptocurrency.cryptocurrency_helpers.load"
     },
+    "crypto.price": {"model": "openbb_terminal.cryptocurrency.pyth_model.get_price"},
     "crypto.find": {
         "model": "openbb_terminal.cryptocurrency.cryptocurrency_helpers.find"
     },
@@ -1963,7 +1950,7 @@ functions = {
     "keys.shroom": {"model": "openbb_terminal.keys_model.set_shroom_key"},
 }
 forecast_extras = {
-    "forecast.load": {"model": "openbb_terminal.forecast.forecast_model.load"},
+    "forecast.load": {"model": "openbb_terminal.common.common_model.load"},
     "forecast.show": {
         "model": "openbb_terminal.forecast.forecast_view.show_df",
         "view": "openbb_terminal.forecast.forecast_view.show_df",

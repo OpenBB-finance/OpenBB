@@ -108,7 +108,7 @@ class OnchainController(BaseController):
                 "--limit": {str(c): {} for c in range(1, 100)},
                 "-l": "--limit",
                 "--descend": {},
-                "--adress": {},
+                "--address": {},
                 "-a": {},
             }
             choices["hr"] = {c: {} for c in GLASSNODE_SUPPORTED_HASHRATE_ASSETS}
@@ -135,7 +135,6 @@ class OnchainController(BaseController):
                 "--since": None,
                 "-s": "--since",
             }
-            choices["ttcp"] = {c: {} for c in bitquery_model.DECENTRALIZED_EXCHANGES}
             choices["baas"]["-c"] = {c: {} for c in bitquery_model.POSSIBLE_CRYPTOS}
             choices["baas"]["--coin"] = {c: {} for c in bitquery_model.POSSIBLE_CRYPTOS}
             choices["balance"] = {
@@ -226,7 +225,10 @@ class OnchainController(BaseController):
                 "-s": "--sort",
                 "--descend": {},
             }
-            choices["ttcp"] = {c: {} for c in bitquery_model.DECENTRALIZED_EXCHANGES}
+            choices["ttcp"]["--exchanges"] = {
+                c: {} for c in bitquery_model.DECENTRALIZED_EXCHANGES
+            }
+            choices["ttcp"]["-e"] = "--exchanges"
             choices["ttcp"]["--sort"] = {c: None for c in bitquery_model.TTCP_FILTERS}
             choices["ttcp"]["-s"] = "--sort"
             choices["ttcp"]["--days"] = {str(c): {} for c in range(1, 100)}
@@ -235,7 +237,7 @@ class OnchainController(BaseController):
             choices["ttcp"]["-l"] = "--limit"
             choices["ttcp"]["--descend"] = {}
             choices["baas"] = {
-                "--coin": None,
+                "--coin": {c: {} for c in bitquery_model.POSSIBLE_CRYPTOS},
                 "-c": "--coin",
                 "--vs": {c: {} for c in bitquery_model.CURRENCIES},
                 "-vs": "--vs",
@@ -1234,15 +1236,6 @@ class OnchainController(BaseController):
         )
 
         parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            type=check_positive,
-            help="display N number records",
-            default=10,
-        )
-
-        parser.add_argument(
             "-vs", "--vs", dest="vs", type=str, help="Quote currency", default="USDT"
         )
 
@@ -1267,7 +1260,7 @@ class OnchainController(BaseController):
 
         parser.add_argument(
             "--descend",
-            action="store_false",
+            action="store_true",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
             default=False,
@@ -1413,7 +1406,7 @@ class OnchainController(BaseController):
 
         parser.add_argument(
             "--descend",
-            action="store_false",
+            action="store_true",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
             default=False,
@@ -1483,7 +1476,7 @@ class OnchainController(BaseController):
 
         parser.add_argument(
             "--descend",
-            action="store_false",
+            action="store_true",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
             default=False,
@@ -1598,7 +1591,6 @@ class OnchainController(BaseController):
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
-
         if ns_parser:
             if ns_parser.coin:
                 if ns_parser.coin in bitquery_model.POSSIBLE_CRYPTOS:
@@ -1622,26 +1614,27 @@ class OnchainController(BaseController):
                             n=1,
                             cutoff=0.75,
                         )
-                        token = similar_cmd[0]
-                    if similar_cmd[0]:
-                        console.print(f"Replacing with '{token}'")
-                        bitquery_view.display_spread_for_crypto_pair(
-                            token=token,
-                            to_symbol=ns_parser.vs,
-                            days=ns_parser.days,
-                            sortby=ns_parser.sortby,
-                            ascend=not ns_parser.descend,
-                            export=ns_parser.export,
-                        )
-                    else:
-                        similar_cmd = difflib.get_close_matches(
-                            ns_parser.coin,
-                            bitquery_model.POSSIBLE_CRYPTOS,
-                            n=1,
-                            cutoff=0.5,
-                        )
-                        if similar_cmd:
-                            console.print(f"Did you mean '{similar_cmd[0]}'?")
+                        try:
+                            token = similar_cmd[0]
+                            if similar_cmd[0]:
+                                console.print(f"Replacing with '{token}'")
+                                bitquery_view.display_spread_for_crypto_pair(
+                                    token=token,
+                                    to_symbol=ns_parser.vs,
+                                    days=ns_parser.days,
+                                    sortby=ns_parser.sortby,
+                                    ascend=not ns_parser.descend,
+                                    export=ns_parser.export,
+                                )
+                        except Exception:
+                            similar_cmd = difflib.get_close_matches(
+                                ns_parser.coin,
+                                bitquery_model.POSSIBLE_CRYPTOS,
+                                n=1,
+                                cutoff=0.5,
+                            )
+                            if similar_cmd:
+                                console.print(f"Did you mean '{similar_cmd[0]}'?")
 
             else:
                 console.print("You didn't provide coin symbol.\n")

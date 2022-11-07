@@ -39,6 +39,8 @@ def get_economic_calendar(
     pd.DataFrame
         Economic calendar
     """
+    if countries == "":
+        countries = []
     if isinstance(countries, str):
         countries = [countries]
     if start_date == end_date:

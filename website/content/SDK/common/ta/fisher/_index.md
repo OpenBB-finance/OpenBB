@@ -1,16 +1,14 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### common.ta.fisher(high_vals: pandas.core.series.Series, low_vals: pandas.core.series.Series, window: int = 14) -> pandas.core.frame.DataFrame
+### common.ta.fisher(data: pandas.core.frame.DataFrame, window: int = 14) -> pandas.core.frame.DataFrame
 
 Fisher Transform
 
     Parameters
     ----------
-    high_vals: pd.Series
-        High values
-    low_vals: pd.Series
-        Low values
+    data : pd.DataFrame
+        Dataframe of OHLC prices
     window: int
         Length for indicator window
     Returns
