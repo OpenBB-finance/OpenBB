@@ -1,6 +1,6 @@
 import pytest
 
-from openbb_terminal.cryptocurrency.due_diligence import glassnode_view
+from openbb_terminal.cryptocurrency.overview import glassnode_view
 
 
 @pytest.fixture(scope="module")
