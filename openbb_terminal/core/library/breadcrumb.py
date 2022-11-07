@@ -76,7 +76,7 @@ class Breadcrumb:
                 Current trail of the Breadcrumb.
                 Defaults to "".
             trail_map (Optional[TrailMap], optional):
-                Mapping with all the trails available and macthing models and views.
+                Mapping with all the trails available and matching models and views.
                 Defaults to None.
         """
         trail_map = trail_map or TrailMap()
