@@ -135,7 +135,16 @@ class OverviewController(BaseController):
                 "--bar": {},
             }
             choices["categories"] = {
-                "--sortby": {c: {} for c in pycoingecko_model.CATEGORIES_FILTERS},
+                "--sortby": {
+                    c: {}
+                    for c in [
+                        "Name",
+                        "Market_Cap",
+                        "Market_Cap_Change_24H",
+                        "Top_3_Coins",
+                        "Volume_24H",
+                    ]
+                },
                 "-s": "--sortby",
                 "--limit": {str(c): {} for c in range(1, 100)},
                 "-l": "--limit",
@@ -765,8 +774,14 @@ class OverviewController(BaseController):
             dest="sortby",
             type=str,
             help="Sort by given column. Default: market_cap_desc",
-            default=pycoingecko_model.SORT_VALUES[0],
-            choices=pycoingecko_model.SORT_VALUES,
+            default="Market_Cap",
+            choices=[
+                "Name",
+                "Market_Cap",
+                "Market_Cap_Change_24H",
+                "Top_3_Coins",
+                "Volume_24H",
+            ],
         )
 
         parser.add_argument(
