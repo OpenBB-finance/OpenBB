@@ -1,12 +1,11 @@
 import re
-import sys
 from typing import Callable, Any, Optional, List, Tuple, Dict
 from inspect import signature
 import importlib
 import os
 from ruamel.yaml import YAML
 
-from openbb_terminal.sdk import functions, forecast_extras
+from openbb_terminal.sdk import functions
 
 # NOTE: The main.yml and documentation _index.md files are automaticallty overridden
 # every time this is ran. Folder level _index.md files are NOT overridden after creation
