@@ -1989,6 +1989,10 @@ forecast_extras = {
     "forecast.roc": {"model": "openbb_terminal.forecast.forecast_model.add_roc"},
     "forecast.mom": {"model": "openbb_terminal.forecast.forecast_model.add_momentum"},
     "forecast.delta": {"model": "openbb_terminal.forecast.forecast_model.add_delta"},
+    "forecast.autoarima": {
+        "model": "openbb_terminal.forecast.autoarima_model.get_autoarima_data",
+        "view": "openbb_terminal.forecast.autoarima_view.display_autoarima_forecast",
+    },
     "forecast.autoets": {
         "model": "openbb_terminal.forecast.autoets_model.get_autoets_data",
         "view": "openbb_terminal.forecast.autoets_view.display_autoets_forecast",
