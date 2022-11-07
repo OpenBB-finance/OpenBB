@@ -8,16 +8,6 @@ from typing import Any, Union, Optional, List, Tuple
 import warnings
 import numpy as np
 import pandas as pd
-from statsforecast.models import (
-    AutoARIMA,
-    ETS,
-    AutoCES,
-    MSTL,
-    Naive,
-    SeasonalNaive,
-    SeasonalWindowAverage,
-    RandomWalkWithDrift,
-)
 from statsforecast.core import StatsForecast
 
 from openbb_terminal.decorators import log_start_end
@@ -96,6 +86,28 @@ def get_beststatsmodel_data(
     ticker_series = ticker_series.pd_dataframe().reset_index()
     ticker_series.columns = ["ds", "y"]
     ticker_series.insert(0, "unique_id", target_column)
+
+    # check statsforecast dependency
+    try:
+        from statsforecast.models import (
+            AutoARIMA,
+            ETS,
+            AutoCES,
+            MSTL,
+            Naive,
+            SeasonalNaive,
+            SeasonalWindowAverage,
+            RandomWalkWithDrift,
+        )
+    except Exception as e:
+        error = str(e)
+        if "cannot import name" in error:
+            console.print(
+                "[red]Please update statsforecast to version 1.2.0 or higher.[/red]"
+            )
+        else:
+            console.print(f"[red]{error}[/red]")
+        return [], [], [], None, None, None
 
     try:
         # Model Init
