@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content="usage: nhits [--num-stacks NUM_STACKS] [--num-blocks NUM_BLOCKS] [--num-layers NUM_LAYERS] [--layer_widths LAYER_WIDTHS] [--activation {ReLU,RReLU,PReLU,Softplus,Tanh,SELU,LeakyReLU,Sigmoid}] [--max_pool_1d] [--past-covariates PAST_COVARIATES] [--all-past-covariates] [--naive] [-d {AAPL}] [-c TARGET_COLUMN] [-n N_DAYS] [-t TRAIN_SPLIT] [-i INPUT_CHUNK_LENGTH] [-o OUTPUT_CHUNK_LENGTH] [--force-reset FORCE_RESET] [--save-checkpoints SAVE_CHECKPOINTS] [--model-save-name MODEL_SAVE_NAME] [--n-epochs N_EPOCHS] [--dropout DROPOUT] [--batch-size BATCH_SIZE] [--end S_END_DATE] [--start S_START_DATE] [--residuals] [--forecast-only] [--export-pred-raw] [-h] [--export EXPORT] Perform NHits forecast (Neural Hierarchical Interpolation for Time Series Forecasting).
+    <meta name="description" content="usage: nhits [--num-stacks NUM_STACKS] [--num-blocks NUM_BLOCKS] [--num-layers NUM_LAYERS] [--layer_widths LAYER_WIDTHS] [--activation {ReLU,RReLU,PReLU,Softplus,Tanh,SELU,LeakyReLU,Sigmoid}] [--max_pool_1d] [--past-covariates PAST_COVARIATES] [--all-past-covariates] [--naive] [-d {AAPL}] [-c TARGET_COLUMN] [-n N_DAYS] [-t TRAIN_SPLIT] [-i INPUT_CHUNK_LENGTH] [-o OUTPUT_CHUNK_LENGTH] [--force-reset FORCE_RESET] [--save-checkpoints SAVE_CHECKPOINTS] [--model-save-name MODEL_SAVE_NAME] [--n-epochs N_EPOCHS] [--dropout DROPOUT] [--batch-size BATCH_SIZE] [--end S_END_DATE] [--start S_START_DATE] [--residuals] [--forecast-only] [--export-pred-raw] [-h] [--export EXPORT] Perform nhits forecast: https://unit8co.github.io/darts/generated_api/darts.models.forecasting.tft_model.html
 optional arguments: --num-stacks NUM_STACKS The number of stacks that make up the model (default: 3) --num-blocks NUM_BLOCKS The number of blocks making up every stack (default: 1) --num-layers NUM_LAYERS The number of fully connected layers (default: 2) --layer_widths LAYER_WIDTHS The number of neurons in each layer (default: 3) --activation {ReLU,RReLU,PReLU,Softplus,Tanh,SELU,LeakyReLU,Sigmoid} The desired activation (default: ReLU) --max_pool_1d Whether to use max_pool_1d or AvgPool1d (default: False) --past-covariates PAST_COVARIATES Past covariates(columns/features) in same dataset.">
 
 
@@ -47217,7 +47217,7 @@ code, img {
              [-c TARGET_COLUMN] [-n N_DAYS] [-t TRAIN_SPLIT] [-i INPUT_CHUNK_LENGTH] [-o OUTPUT_CHUNK_LENGTH] [--force-reset FORCE_RESET] [--save-checkpoints SAVE_CHECKPOINTS]
              [--model-save-name MODEL_SAVE_NAME] [--n-epochs N_EPOCHS] [--dropout DROPOUT] [--batch-size BATCH_SIZE] [--end S_END_DATE] [--start S_START_DATE] [--residuals]
              [--forecast-only] [--export-pred-raw] [-h] [--export EXPORT]
-</code></pre><p>Perform NHits forecast (Neural Hierarchical Interpolation for Time Series Forecasting).</p>
+</code></pre><p>Perform nhits forecast: <a class="gdoc-markdown__link" href="https://unit8co.github.io/darts/generated_api/darts.models.forecasting.tft_model.html">https://unit8co.github.io/darts/generated_api/darts.models.forecasting.tft_model.html</a></p>
 <pre><code>optional arguments:
   --num-stacks NUM_STACKS
                         The number of stacks that make up the model (default: 3)
