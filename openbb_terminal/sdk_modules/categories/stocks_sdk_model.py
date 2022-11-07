@@ -19,7 +19,7 @@ def get_chains(ticker: str, expiry: str, source: str = "yf") -> pd.DataFrame:
     expiry: str
         Date to get options for. YYYY-MM-DD
     source: str
-        Source to get options from. Default: tradier
+        Source to get options from. Default: 'yf' - Yahoo Finance
         Choices: tradier, tr, yf, yahoofinance, nasdaq, nas
 
     Returns
@@ -433,3 +433,43 @@ class StocksFundamentalAnalysis(Category):
         self.splits_view = lib.stocks_fa_yahoo_finance_view.display_splits
         self.sust = lib.stocks_fa_yahoo_finance_model.get_sustainability
         self.website = lib.stocks_fa_yahoo_finance_model.get_website
+
+
+class StocksBehavioralAnalysis(Category):
+    def __init__(self, *args, **kwargs):
+        """Initialize the class"""
+        super().__init__(*args, **kwargs)
+        self.headlines = lib.ba_finbrain_model.get_sentiment
+        self.headlines_view = lib.ba_finbrain_view.display_sentiment_analysis
+        self.mentions = lib.ba_google_model.get_mentions
+        self.mentions_view = lib.ba_google_view.display_mentions
+        self.queries = lib.ba_google_model.get_queries
+        self.regions = lib.ba_google_model.get_regions
+        self.regions_view = lib.ba_google_view.display_regions
+        self.rise = lib.ba_google_model.get_rise
+        self.rise_view = lib.ba_google_view.display_rise
+        self.getdd = lib.ba_reddit_model.get_due_dilligence
+        self.popular = lib.ba_reddit_model.get_popular_tickers
+        self.popular_view = lib.ba_reddit_view.display_popular_tickers
+        self.redditsent = lib.ba_reddit_model.get_posts_about
+        self.redditsent_view = lib.ba_reddit_view.display_redditsent
+        self.text_sent = lib.ba_reddit_model.get_sentiment
+        self.spac = lib.ba_reddit_model.get_spac
+        self.spacc = lib.ba_reddit_model.get_spac_community
+        self.watchlist = lib.ba_reddit_model.get_watchlists
+        self.watchlist_view = lib.ba_reddit_view.display_watchlist
+        self.wsb = lib.ba_reddit_model.get_wsb_community
+        self.hist = lib.ba_sentimentinvestor_model.get_historical
+        self.hist_view = lib.ba_sentimentinvestor_view.display_historical
+        self.trend = lib.ba_sentimentinvestor_model.get_trending
+        self.trend_view = lib.ba_sentimentinvestor_view.display_trending
+        self.bullbear = lib.ba_stocktwits_model.get_bullbear
+        self.bullbear_view = lib.ba_stocktwits_view.display_bullbear
+        self.messages = lib.ba_stocktwits_model.get_messages
+        self.messages_view = lib.ba_stocktwits_view.display_messages
+        self.stalker = lib.ba_stocktwits_model.get_stalker
+        self.trending = lib.ba_stocktwits_model.get_trending
+        self.infer = lib.ba_twitter_model.load_analyze_tweets
+        self.infer_view = lib.ba_twitter_view.display_inference
+        self.sentiment = lib.ba_twitter_model.get_sentiment
+        self.sentiment_view = lib.ba_twitter_view.display_sentiment

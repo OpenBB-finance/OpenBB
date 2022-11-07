@@ -8,6 +8,31 @@ from openbb_terminal.sdk_modules.sdk_helpers import Category
 logger = logging.getLogger(__name__)
 
 
+def forex_quote(to_symbol: str = "USD", from_symbol: str = "EUR", source: str = "yf"):
+    """Get the current quote for a given currency pair.
+
+    Args:
+        to_symbol (str, optional): The currency to convert to. Defaults to "USD".
+        from_symbol (str, optional): The currency to convert from. Defaults to "EUR".
+        source (str, optional): The source to get the quote from. Defaults to "yf".
+
+    Returns:
+        dict: A dictionary containing the quote information.
+    """
+    if source == "yf":
+        return lib.forex_helpers.load(
+            to_symbol,
+            from_symbol,
+            resolution="i",
+            interval="1min",
+            start_date=(datetime.now() - timedelta(days=5)).strftime("%Y-%m-%d"),
+        )
+    elif source == "oanda":
+        return lib.forex_av_model.get_quote(to_symbol, from_symbol)
+    else:
+        raise ValueError("Source not supported. Please use 'yf' or 'oanda'.")
+
+
 ##################################################################
 #                             Funds                              #
 ##################################################################
@@ -62,28 +87,3 @@ class ForexOanda(Category):
         self.pending_view = lib.forex_oanda_view.get_pending_orders
         self.positionbook = lib.forex_oanda_model.positionbook_plot_data_request
         self.positionbook_view = lib.forex_oanda_view.get_position_book
-
-
-def forex_quote(to_symbol: str = "USD", from_symbol: str = "EUR", source: str = "yf"):
-    """Get the current quote for a given currency pair.
-
-    Args:
-        to_symbol (str, optional): The currency to convert to. Defaults to "USD".
-        from_symbol (str, optional): The currency to convert from. Defaults to "EUR".
-        source (str, optional): The source to get the quote from. Defaults to "yf".
-
-    Returns:
-        dict: A dictionary containing the quote information.
-    """
-    if source == "yf":
-        return lib.forex_helpers.load(
-            to_symbol,
-            from_symbol,
-            resolution="i",
-            interval="1min",
-            start_date=(datetime.now() - timedelta(days=5)).strftime("%Y-%m-%d"),
-        )
-    elif source == "oanda":
-        return lib.forex_av_model.get_quote(to_symbol, from_symbol)
-    else:
-        raise ValueError("Source not supported. Please use 'yf' or 'oanda'.")

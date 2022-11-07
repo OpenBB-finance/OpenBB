@@ -377,6 +377,7 @@ from openbb_terminal.stocks.options.screen import (
 
 # Stocks - Quantitative Analysis
 import openbb_terminal.stocks.quantitative_analysis.factors_model as stocks_qa_factors_model
+import openbb_terminal.stocks.quantitative_analysis.factors_view as stocks_qa_factors_view
 
 
 # Stocks - Screener
@@ -425,6 +426,7 @@ from openbb_terminal.futures import (
 # Stocks Helpers
 from openbb_terminal.stocks import (
     stocks_helper,
+    stocks_views,
     cboe_model as stocks_cboe_model,
     cboe_view as stocks_cboe_view,
 )

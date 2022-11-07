@@ -1486,7 +1486,7 @@ class Stocks:
         self.load = lib.stocks_helper.load
         self.candle = lib.stocks_helper.display_candle
         self.process_candle = lib.stocks_helper.process_candle
-        self.quote = lib.stocks_helper.quote
+        self.quote = lib.stocks_views.display_quote
         self.tob = lib.stocks_cboe_model.get_top_of_book
         self.search = lib.stocks_helper.search
 
@@ -1836,7 +1836,6 @@ class Common:
     Attributes:
         `news`: Get news for a given term and source. [Source: Feedparser]
         `news_view`: Display news for a given term and source. [Source: Feedparser]
-
     """
 
     def __init__(self):

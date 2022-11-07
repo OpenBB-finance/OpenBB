@@ -17,6 +17,8 @@ from matplotlib.ticker import LogLocator, ScalarFormatter
 import mplfinance as mpf
 import numpy as np
 import pandas as pd
+from pandas.tseries.holiday import USFederalHolidayCalendar
+
 import plotly.graph_objects as go
 import pytz
 import requests
@@ -89,7 +91,7 @@ def check_datetime(
             return datetime.strptime(ck_date, "%Y-%m-%d")
     except Exception:
         console.print(
-            f"Invalid data format (YYYY-MM-DD), "
+            f"Invalid date format (YYYY-MM-DD), "
             f"Using {error_catch.strftime('%Y-%m-%d')} for {ck_date}"
         )
     return error_catch
@@ -619,6 +621,14 @@ def display_candle(
                     low=data.Low,
                     close=data.Close,
                     name="OHLC",
+                    increasing=dict(
+                        line_color="#00ACFF",
+                        fillcolor="#00ACFF",
+                    ),
+                    decreasing=dict(
+                        line_color="#e4003a",
+                        fillcolor="#e4003a",
+                    ),
                 ),
                 row=1,
                 col=1,
@@ -659,7 +669,7 @@ def display_candle(
                             y=data["OC_High_trend"],
                             name="High Trend",
                             mode="lines",
-                            line=go.scatter.Line(color="green"),
+                            line=go.scatter.Line(color="#00ACFF"),
                         ),
                         row=1,
                         col=1,
@@ -671,14 +681,14 @@ def display_candle(
                             y=data["OC_Low_trend"],
                             name="Low Trend",
                             mode="lines",
-                            line=go.scatter.Line(color="red"),
+                            line=go.scatter.Line(color="#e4003a"),
                         ),
                         row=1,
                         col=1,
                     )
 
             colors = [
-                "red" if row.Open < row["Adj Close"] else "green"
+                "#e4003a" if row.Open < row["Close"] else "#00ACFF"
                 for _, row in data.iterrows()
             ]
             fig.add_trace(
@@ -692,9 +702,14 @@ def display_candle(
                 col=1,
             )
             fig.update_layout(
+                margin=dict(l=10, r=10, t=40, b=20),
+                template="plotly_dark",
                 yaxis_title="Stock Price ($)",
                 xaxis=dict(
                     rangeselector=dict(
+                        bgcolor="#111111",
+                        bordercolor="gold",
+                        font=dict(color="white"),
                         buttons=list(
                             [
                                 dict(
@@ -720,16 +735,27 @@ def display_candle(
                                 ),
                                 dict(step="all"),
                             ]
-                        )
+                        ),
                     ),
                     rangeslider=dict(visible=False),
                     type="date",
+                ),
+                legend=dict(
+                    yanchor="top",
+                    y=0.99,
+                    xanchor="left",
+                    font_size=8,
+                    bgcolor="rgba(0, 0, 0, 0)",
+                    x=0.01,
                 ),
             )
 
             fig.update_layout(
                 updatemenus=[
                     dict(
+                        bgcolor="#111111",
+                        bordercolor="gold",
+                        font=dict(color="white"),
                         buttons=[
                             dict(
                                 label="linear",
@@ -741,7 +767,7 @@ def display_candle(
                                 method="relayout",
                                 args=[{"yaxis.type": "log"}],
                             ),
-                        ]
+                        ],
                     )
                 ]
             )
@@ -753,7 +779,24 @@ def display_candle(
                         dict(bounds=[20, 9], pattern="hour"),
                     ]
                 )
-
+            else:
+                dt_unique_days = pd.bdate_range(
+                    start=data.index[0],
+                    end=data.index[-1],
+                    normalize=True,
+                )
+                dt_unique = [d.strftime("%Y-%m-%d") for d in data.index]
+                mkt_holidays = [
+                    d
+                    for d in dt_unique_days.strftime("%Y-%m-%d").tolist()
+                    if d not in dt_unique
+                ]
+                fig.update_xaxes(
+                    rangebreaks=[
+                        dict(bounds=["sat", "mon"]),
+                        dict(values=mkt_holidays),
+                    ]
+                )
             fig.show(config=dict({"scrollZoom": True}))
     else:
         return data

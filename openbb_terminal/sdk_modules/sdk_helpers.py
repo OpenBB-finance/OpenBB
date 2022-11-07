@@ -1,4 +1,4 @@
-"""OpenBB Terminal SDK."""
+"""OpenBB Terminal SDK Helpers."""
 import types
 import functools
 from typing import (

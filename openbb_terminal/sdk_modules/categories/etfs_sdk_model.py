@@ -1,4 +1,4 @@
-"""OpenBB Terminal SDK Crypto Module."""
+"""OpenBB Terminal SDK ETF Module."""
 import logging
 
 import openbb_terminal.sdk_init as lib
