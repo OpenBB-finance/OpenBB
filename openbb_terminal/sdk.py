@@ -558,10 +558,6 @@ functions = {
     "crypto.dd.close": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_close_price",
     },
-    "crypto.dd.btcrb": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_btc_rainbow",
-        "view": "openbb_terminal.cryptocurrency.due_diligence.glassnode_view.display_btc_rainbow",
-    },
     "crypto.dd.eb": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_exchange_balances",
         "view": "openbb_terminal.cryptocurrency.due_diligence.glassnode_view.display_exchange_balances",
@@ -735,6 +731,10 @@ functions = {
     "crypto.ov.altindex": {
         "model": "openbb_terminal.cryptocurrency.overview.blockchaincenter_model.get_altcoin_index",
         "view": "openbb_terminal.cryptocurrency.overview.blockchaincenter_view.display_altcoin_index",
+    },
+    "crypto.ov.btcrb": {
+        "model": "openbb_terminal.cryptocurrency.overview.glassnode_model.get_btc_rainbow",
+        "view": "openbb_terminal.cryptocurrency.overview.glassnode_view.display_btc_rainbow",
     },
     "crypto.ov.cbpairs": {
         "model": "openbb_terminal.cryptocurrency.overview.coinbase_model.get_trading_pairs",
@@ -1894,7 +1894,7 @@ functions = {
         "model": "openbb_terminal.stocks.stocks_helper.process_candle"
     },
     "stocks.search": {"model": "openbb_terminal.stocks.stocks_helper.search"},
-    "stocks.quote": {"model": "openbb_terminal.stocks.stocks_helper.quote"},
+    "stocks.quote": {"model": "openbb_terminal.stocks.stocks_models.load_quote"},
     "stocks.tob": {"model": "openbb_terminal.stocks.cboe_model.get_top_of_book"},
     "stocks.candle": {"model": "openbb_terminal.stocks.stocks_helper.display_candle"},
     "crypto.load": {
