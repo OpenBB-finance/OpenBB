@@ -1,11 +1,10 @@
 ```
-usage: autoets [--naive] [-d {AAPL}] [-c TARGET_COLUMN] [-n N_DAYS] [-s {N,A,M}] [-p SEASONAL_PERIODS] [-w START_WINDOW] [--end S_END_DATE] [--start S_START_DATE] [--residuals] [--forecast-only]
-               [--export-pred-raw] [-h] [--export EXPORT]
+usage: rwd [--naive] [-d {AAPL}] [-c TARGET_COLUMN] [-n N_DAYS] [-s {N,A,M}] [-p SEASONAL_PERIODS] [-w START_WINDOW] [--end S_END_DATE] [--start S_START_DATE] [--residuals] [--forecast-only]
+           [--export-pred-raw] [-h] [--export EXPORT]
 
 ```
 
-Perform Automatic ETS (Error, Trend, Seasonality) forecast:
-https://nixtla.github.io/statsforecast/examples/getting_started_with_auto_arima_and_ets.html
+Perform Random Walk with Drift forecast: https://nixtla.github.io/statsforecast/models.html#randomwalkwithdrift
 
 ```
 optional arguments:
@@ -30,30 +29,36 @@ optional arguments:
   -h, --help            show this help message (default: False)
   --export EXPORT       Export figure into png, jpg, pdf, svg (default: )
 
-For more information and examples, use 'about autoets' to access the related guide.
+For more information and examples, use 'about rwd' to access the related guide.
 ```
 
 Example:
 ```
-2022 Oct 21, 18:20 (🦋) /forecast/ $ load AAPL
+2022 Nov 07, 18:43 (🦋) /stocks/ $ load AAPL
 
-2022 Oct 21, 18:21 (🦋) /forecast/ $ autoets AAPL
+2022 Nov 07, 18:43 (🦋) /stocks/ $ forecast
+
+2022 Nov 07, 18:43 (🦋) /forecast/ $ rwd AAPL
+
+Cross Validation Time Series 1: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 115/115 [00:02<00:00, 49.97it/s]
+Forecast: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00, 15887.52it/s]
+RWD obtains MAPE: 2.98% 
 
 
-
-   Actual price: 143.39
+   Actual price: 138.38    
 ┏━━━━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃ Datetime   ┃ Prediction ┃
 ┡━━━━━━━━━━━━╇━━━━━━━━━━━━┩
-│ 2022-10-21 │ 143.42     │
+│ 2022-11-07 │ 138.47     │
 ├────────────┼────────────┤
-│ 2022-10-24 │ 143.42     │
+│ 2022-11-08 │ 138.57     │
 ├────────────┼────────────┤
-│ 2022-10-25 │ 143.42     │
+│ 2022-11-09 │ 138.66     │
 ├────────────┼────────────┤
-│ 2022-10-26 │ 143.42     │
+│ 2022-11-10 │ 138.76     │
 ├────────────┼────────────┤
-│ 2022-10-27 │ 143.42     │
+│ 2022-11-11 │ 138.85     │
 └────────────┴────────────┘
 ```
-![autoets](https://user-images.githubusercontent.com/10517170/197297075-d141d735-0b35-43cc-bf4f-e746b6b1001e.png)
+
+<img width="1367" alt="image" src="https://user-images.githubusercontent.com/10517170/200439289-414a9a74-14df-4dc5-af32-de5912e9e609.png">
