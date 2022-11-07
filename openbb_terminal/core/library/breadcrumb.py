@@ -62,17 +62,22 @@ class Breadcrumb:
         trail_map: Optional[TrailMap] = None,
     ) -> None:
         """
-        Generate a 'trail' that allows accessing OpenBB Terminal SDK methods.
+        Generates a 'trail' that allows accessing OpenBB Terminal SDK methods.
 
         Example:
             openbb.forex.get_currency_list()
             Breadcrumb(trail="").Breadcrumb(trail="forex").Operation(trail="forex.get_currency_list")()
 
         Args:
-            metadata (Optional[Metadata], optional): _description_. Defaults to None.
-            operation_builder (Optional[OperationBuilder], optional): _description_. Defaults to None.
-            trail (str, optional): _description_. Defaults to "".
-            trail_map (Optional[TrailMap], optional): _description_. Defaults to None.
+            metadata (Optional[Metadata], optional):
+                Object to generate Breadcrumb's metadata (__dir__, __doc__).
+                Defaults to None.
+            trail (str, optional):
+                Current trail of the Breadcrumb.
+                Defaults to "".
+            trail_map (Optional[TrailMap], optional):
+                Mapping with all the trails available and macthing models and views.
+                Defaults to None.
         """
         trail_map = trail_map or TrailMap()
         metadata = metadata or MetadataBuilder.build(trail=trail, trail_map=trail_map)
@@ -87,9 +92,6 @@ class Breadcrumb:
         return self.__metadata.dir_list
 
     def __getattr__(self, name: str) -> Any:
-        # print("__getattr__", self.__trail, ":", name)
-
-        operation_builder = self.__operation_builder
         trail = self.__trail
         trail_map = self.__trail_map
 
@@ -97,8 +99,6 @@ class Breadcrumb:
             trail_next = name
         else:
             trail_next = f"{trail}.{name}"
-
-        opeartio = operation_builder.build(trail=trail_next)
 
         if Operation.is_valid(trail=trail, trail_map=trail_map):
             next_crumb: Union[Breadcrumb, Operation] = Operation(
