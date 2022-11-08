@@ -268,7 +268,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         (
             "call_quote",
             [],
-            "stocks_helper.quote",
+            "stocks_views.display_quote",
             [],
             dict(),
         ),
