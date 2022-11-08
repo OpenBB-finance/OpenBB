@@ -1,17 +1,19 @@
 import os
 import logging
 import argparse
-import webbrowser
 from typing import List, Dict
-import requests
+from pathlib import Path
+
+from prompt_toolkit.completion import NestedCompleter
 
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.account import account_helpers as ah
-from openbb_terminal.account import account_statics
 from openbb_terminal.helper_funcs import parse_simple_args
-from openbb_terminal import keys_model
+from openbb_terminal.core.config.paths import USER_ROUTINES_DIRECTORY
+from openbb_terminal import feature_flags as obbff
+from openbb_terminal.menu import session
+from openbb_terminal.account import account_model
 
 logger = logging.getLogger(__name__)
 
@@ -24,6 +26,8 @@ class AccountController(BaseController):
         "register",
         "upload",
         "download",
+        "send",
+        "get",
     ]
 
     PATH = "/account/"
@@ -33,6 +37,22 @@ class AccountController(BaseController):
         dev = os.environ.get("DEBUG_MODE", "false") == "true"
         self.base_url = f"https://payments.openbb.{'dev' if dev else 'co'}"
         self.token: Dict[str, str] = {}
+        self.ROUTINE_FILES: Dict[str, Path] = {}
+        self.ROUTINE_CHOICES: Dict[str, None] = {}
+        self.update_runtime_choices()
+
+    def update_runtime_choices(self):
+        """Update runtime choices"""
+        self.ROUTINE_FILES = {
+            filepath.name: filepath
+            for filepath in USER_ROUTINES_DIRECTORY.rglob("*.openbb")
+        }
+        self.ROUTINE_CHOICES = {filename: None for filename in self.ROUTINE_FILES}
+        if session and obbff.USE_PROMPT_TOOLKIT:
+            choices: dict = {c: {} for c in self.controller_choices}
+            choices["send"] = self.ROUTINE_CHOICES
+
+            self.completer = NestedCompleter.from_nested_dict(choices)
 
     def get_token(self):
         """Get token"""
@@ -49,9 +69,13 @@ class AccountController(BaseController):
         mt.add_cmd("login")
         mt.add_cmd("register")
         mt.add_raw("\n")
-        mt.add_info("_save_")
+        mt.add_info("_settings_")
         mt.add_cmd("upload")
         mt.add_cmd("download")
+        mt.add_raw("\n")
+        mt.add_info("_scripts_")
+        mt.add_cmd("send")
+        mt.add_cmd("get")
         console.print(text=mt.menu_text, menu="Account")
 
     @log_start_end(log=logger)
@@ -82,77 +106,48 @@ class AccountController(BaseController):
 
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
-            data = {
-                "email": ns_parser.email,
-                "password": ns_parser.password,
-                "remember": True,
-            }
-            response = requests.post(self.base_url + "/terminal/login", json=data)
-            code = response.status_code
-            if code == 200:
-                console.print("Login successful\n")
-                self.token = response.json()
-            elif code == 401:
-                console.print(f"[red]{response.json()['detail']}[/red]\n")
-            elif code == 403:
-                console.print(f"[red]{response.json()['message']}[/red]\n")
-            else:
-                console.print("[red]Unknown error[/red]\n")
+            self.token = account_model.get_login(
+                ns_parser.email, ns_parser.password, self.base_url
+            )
 
     @log_start_end(log=logger)
     def call_register(self, _):
         """Register"""
-        webbrowser.open("https://my.openbb.dev/register")
+        account_model.get_register()
 
     @log_start_end(log=logger)
     def call_upload(self, _):
-        # TODO: add colors
-        if self.token == {}:
-            console.print("You need to login first\n")
-            return
-
-        settings = account_statics.features_settings
-        keys = account_statics.features_keys
-        features_settings = ah.clean_keys_dict(settings)
-        features_keys = ah.clean_keys_dict(keys)
-        data = {
-            "features_settings": features_settings,
-            "features_keys": features_keys,
-        }
-        response = requests.put(
-            self.base_url + "/terminal/user",
-            json=data,
-            headers={"Authorization": self.get_token()},
-        )
-        if response.status_code == 200:
-            console.print("Successfully uploaded your settings and keys.")
-        else:
-            console.print("[red]Error uploading your settings and keys.[/red]")
+        account_model.get_upload(self.get_token(), self.base_url)
 
     @log_start_end(log=logger)
     def call_download(self, _):
-        if self.token == {}:
-            console.print("You need to login first\n")
-            return
+        account_model.get_download(self.get_token(), self.base_url)
 
-        response = requests.get(
-            self.base_url + "/terminal/user",
-            headers={"Authorization": self.get_token()},
+    @log_start_end(log=logger)
+    def call_send(self, other_args: List[str]):
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="load",
+            description="Load custom dataset (from previous export, custom imports).",
         )
-        if response.status_code != 200:
-            console.print("[red]Error downloading your settings and keys.[/red]")
-            return
-
-        info = response.json()
-        settings = info["features_settings"]
-        keys = info["features_keys"]
-        for key, value in settings.items():
-            if key in account_statics.features_settings_objects and value:
-                obj = account_statics.features_settings_objects[key]
-                setattr(obj, key.replace("OPENBB_", ""), value)
-                keys_model.set_key(key, value, True)
-        for key, value in keys.items():
-            if value:
-                keys_model.set_key(key, value, True)
-
-        console.print("Successfully downloaded your settings and keys.")
+        parser.add_argument(
+            "-n",
+            "--name",
+            help="Name for the script.",
+            default="",
+            type=str,
+        )
+        parser.add_argument(
+            "-f",
+            "--file",
+            help="Script to submit.",
+            choices=self.ROUTINE_FILES.keys(),
+            required="-h" not in other_args,
+            type=str,
+        )
+        ns_parser = parse_simple_args(parser, other_args)
+        if ns_parser:
+            account_model.get_send(
+                self.get_token(), ns_parser.file, ns_parser.name, self.base_url
+            )
