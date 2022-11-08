@@ -6,7 +6,7 @@ usage: nhits [--num-stacks NUM_STACKS] [--num-blocks NUM_BLOCKS] [--num-layers N
              [--forecast-only] [--export-pred-raw] [-h] [--export EXPORT]
 ```
 
-Perform NHits forecast (Neural Hierarchical Interpolation for Time Series Forecasting).
+Perform nhits forecast: https://unit8co.github.io/darts/generated_api/darts.models.forecasting.tft_model.html
 
 ```
 optional arguments:
