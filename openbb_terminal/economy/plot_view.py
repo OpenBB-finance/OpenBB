@@ -55,6 +55,15 @@ def show_plot(
         )
         ax_1_coloring += 1
 
+    ax1.legend(
+        [fill(column, 45) for column in dataset_yaxis_1.columns],
+        bbox_to_anchor=(0, 0.40, 1, -0.52),
+        loc="upper right",
+        mode="expand",
+        borderaxespad=0,
+        prop={"size": 9},
+    )
+
     theme.style_primary_axis(ax1)
 
     if not dataset_yaxis_2.empty:
@@ -78,15 +87,6 @@ def show_plot(
             borderaxespad=0,
             prop={"size": 9},
         )
-
-    ax1.legend(
-        [fill(column, 45) for column in dataset_yaxis_1.columns],
-        bbox_to_anchor=(0, 0.40, 1, -0.52),
-        loc="upper right",
-        mode="expand",
-        borderaxespad=0,
-        prop={"size": 9},
-    )
 
     if external_axes is None:
         theme.visualize_output()
