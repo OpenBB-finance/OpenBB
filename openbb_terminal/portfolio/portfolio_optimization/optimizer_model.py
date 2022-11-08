@@ -1,7 +1,7 @@
 """Optimization Model"""
 __docformat__ = "numpy"
 
-# pylint: disable=R0913, C0302, E1101
+# pylint: disable=R0913, C0302, E1101, line-too-long
 # flake8: noqa: E501
 
 import logging
