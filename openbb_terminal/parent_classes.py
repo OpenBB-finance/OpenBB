@@ -134,9 +134,10 @@ class BaseController(metaclass=ABCMeta):
         self.completer: Union[None, NestedCompleter] = None
 
         self.parser = argparse.ArgumentParser(
-            add_help=False, prog=self.path[-1] if self.PATH != "/" else "terminal"
+            add_help=False,
+            prog=self.path[-1] if self.PATH != "/" else "terminal",
         )
-
+        self.parser.exit_on_error = False  # type: ignore
         self.parser.add_argument("cmd", choices=self.controller_choices)
 
         theme.applyMPLstyle()
@@ -325,7 +326,12 @@ class BaseController(metaclass=ABCMeta):
 
         # Single command fed, process
         else:
-            (known_args, other_args) = self.parser.parse_known_args(an_input.split())
+            try:
+                (known_args, other_args) = self.parser.parse_known_args(
+                    an_input.split()
+                )
+            except Exception as exc:
+                raise SystemExit from exc
 
             if RECORD_SESSION:
                 SESSION_RECORDED.append(an_input)
@@ -344,7 +350,6 @@ class BaseController(metaclass=ABCMeta):
             set_command_location(f"{self.PATH}{known_args.cmd}")
             self.log_cmd_and_queue(known_args.cmd, ";".join(other_args), an_input)
 
-            # This is what mutes portfolio issue
             getattr(
                 self,
                 "call_" + known_args.cmd,
@@ -770,6 +775,7 @@ class BaseController(metaclass=ABCMeta):
             console.print(
                 f"The following args couldn't be interpreted: {l_unknown_args}"
             )
+            console.print("")
 
         return ns_parser
 
@@ -871,8 +877,7 @@ class BaseController(metaclass=ABCMeta):
                         self.PATH,
                     )
                 console.print(
-                    f"\nThe command '{an_input}' doesn't exist on the {self.PATH} menu.\n",
-                    end="",
+                    f"[red]The command '{an_input}' doesn't exist on the {self.PATH} menu.[/red]",
                 )
                 similar_cmd = difflib.get_close_matches(
                     an_input.split(" ")[0] if " " in an_input else an_input,
@@ -890,18 +895,18 @@ class BaseController(metaclass=ABCMeta):
                             self.queue = []
                             console.print("\n")
                             continue
+
                         an_input = candidate_input
                     else:
                         an_input = similar_cmd[0]
                     if not self.contains_keys(an_input):
                         logger.warning("Replacing by %s", an_input)
-                    console.print(f" Replacing by '{an_input}'.")
+                    console.print(f"\n[green]Replacing by '{an_input}'.[/green]\n")
                     self.queue.insert(0, an_input)
                 else:
                     if self.TRY_RELOAD and obbff.RETRY_WITH_LOAD:
-                        console.print(f"Trying `load {an_input}`")
+                        console.print(f"\nTrying `load {an_input}`\n")
                         self.queue.insert(0, "load " + an_input)
-                    console.print("")
 
 
 class StockBaseController(BaseController, metaclass=ABCMeta):

@@ -17,6 +17,7 @@ find eth --source Coinbase
 
 # Price
 # price eth
+price eth
 
 # Headlines
 headlines

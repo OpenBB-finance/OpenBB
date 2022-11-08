@@ -1,7 +1,7 @@
     load               load a specific cryptocurrency for analysis                                         [YahooFinance, CoinGecko, CCXT]
 
 Coin: None
-Source: cg
+Source: None
 
 Overview:
     info               information about loaded coin                                                       [CoinGecko]

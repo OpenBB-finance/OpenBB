@@ -491,10 +491,8 @@ en:
   crypto/disc/games: top blockchain games
   crypto/disc/dapps: top decentralized apps
   crypto/disc/dex: top decentralized exchanges
-  crypto/ov/global: global crypto market info
   crypto/ov/defi: global DeFi market info
   crypto/ov/stables: stablecoins
-  crypto/ov/exchanges: top crypto exchanges
   crypto/ov/exrates: coin exchange rates
   crypto/ov/indexes: crypto indexes
   crypto/ov/derivatives: crypto derivatives
@@ -851,7 +849,6 @@ en:
   forex/oanda/positionbook: print positionbook
   funds/country: set a country for filtering
   funds/_country: Current Country
-  funds/overview: overview of top funds by country
   funds/search: search for Mutual Funds
   funds/load: load historical fund data
   funds/_fund: Current Fund
@@ -969,7 +966,7 @@ en:
   portfolio/po/_loaded: Portfolio loaded
   portfolio/po/_tickers: Tickers
   portfolio/po/_categories: Categories
-  portfolio/po/file: select portfolio parameter file
+  portfolio/po/params/load: select portfolio parameter file
   portfolio/po/params: specify and show portfolio risk parameters
   portfolio/po/_parameter: Parameter file
   portfolio/po/_mean_risk_optimization_: Mean Risk Optimization
@@ -1044,6 +1041,7 @@ en:
   forecast/atr: Add Average True Range
   forecast/signal: Add Price Signal (short vs. long term)
   forecast/_tsforecasting_: TimeSeries Forecasting
+  forecast/autoces: Automatic Complex Exponential Smoothing Model
   forecast/autoets: Automatic ETS (Error, Trend, Seasonality) Model
   forecast/arima: Arima (Non-darts)
   forecast/expo: Probabilistic Exponential Smoothing
@@ -1053,6 +1051,7 @@ en:
   forecast/rnn: Probabilistic Recurrent Neural Network (RNN, LSTM, GRU)
   forecast/brnn: Block Recurrent Neural Network (RNN, LSTM, GRU) (feat. Past covariates)
   forecast/nbeats: Neural Bayesian Estimation (feat. Past covariates)
+  forecast/seasonalnaive: Seasonal Naive Model 
   forecast/tcn: Temporal Convolutional Neural Network (feat. Past covariates)
   forecast/trans: Transformer Network (feat. Past covariates)
   forecast/tft: Temporal Fusion Transformer Network(feat. Past covariates)

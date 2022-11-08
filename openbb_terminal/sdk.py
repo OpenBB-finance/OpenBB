@@ -340,10 +340,6 @@ functions = {
         "model": "openbb_terminal.cryptocurrency.defi.cryptosaurio_model.get_anchor_data",
         "view": "openbb_terminal.cryptocurrency.defi.cryptosaurio_view.display_anchor_data",
     },
-    "crypto.defi.dpi": {
-        "model": "openbb_terminal.cryptocurrency.defi.defipulse_model.get_defipulse_index",
-        "view": "openbb_terminal.cryptocurrency.defi.defipulse_view.display_defipulse",
-    },
     "crypto.defi.swaps": {
         "model": "openbb_terminal.cryptocurrency.defi.graph_model.get_last_uni_swaps",
         "view": "openbb_terminal.cryptocurrency.defi.graph_view.display_last_uni_swaps",
@@ -562,10 +558,6 @@ functions = {
     "crypto.dd.close": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_close_price",
     },
-    "crypto.dd.btcrb": {
-        "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_btc_rainbow",
-        "view": "openbb_terminal.cryptocurrency.due_diligence.glassnode_view.display_btc_rainbow",
-    },
     "crypto.dd.eb": {
         "model": "openbb_terminal.cryptocurrency.due_diligence.glassnode_model.get_exchange_balances",
         "view": "openbb_terminal.cryptocurrency.due_diligence.glassnode_view.display_exchange_balances",
@@ -740,6 +732,10 @@ functions = {
         "model": "openbb_terminal.cryptocurrency.overview.blockchaincenter_model.get_altcoin_index",
         "view": "openbb_terminal.cryptocurrency.overview.blockchaincenter_view.display_altcoin_index",
     },
+    "crypto.ov.btcrb": {
+        "model": "openbb_terminal.cryptocurrency.overview.glassnode_model.get_btc_rainbow",
+        "view": "openbb_terminal.cryptocurrency.overview.glassnode_view.display_btc_rainbow",
+    },
     "crypto.ov.cbpairs": {
         "model": "openbb_terminal.cryptocurrency.overview.coinbase_model.get_trading_pairs",
         "view": "openbb_terminal.cryptocurrency.overview.coinbase_view.display_trading_pairs",
@@ -887,9 +883,7 @@ functions = {
         "model": "openbb_terminal.econometrics.econometrics_model.get_root",
         "view": "openbb_terminal.econometrics.econometrics_view.display_root",
     },
-    "econometrics.load": {
-        "model": "openbb_terminal.econometrics.econometrics_model.load"
-    },
+    "econometrics.load": {"model": "openbb_terminal.common.common_model.load"},
     "econometrics.bgod": {
         "model": "openbb_terminal.econometrics.regression_model.get_bgod",
         "view": "openbb_terminal.econometrics.regression_view.display_bgod",
@@ -1011,8 +1005,8 @@ functions = {
         "model": "openbb_terminal.economy.investingcom_model.get_ycrv_countries"
     },
     "economy.ycrv": {
-        "model": "openbb_terminal.economy.investingcom_model.get_yieldcurve",
-        "view": "openbb_terminal.economy.investingcom_view.display_yieldcurve",
+        "model": "openbb_terminal.economy.fred_model.get_yield_curve",
+        "view": "openbb_terminal.economy.fred_view.display_yield_curve",
     },
     "economy.country_codes": {
         "model": "openbb_terminal.economy.nasdaq_model.get_country_codes"
@@ -1147,18 +1141,6 @@ functions = {
     "forex.oanda.positionbook": {
         "model": "openbb_terminal.forex.oanda.oanda_model.positionbook_plot_data_request",
         "view": "openbb_terminal.forex.oanda.oanda_view.get_position_book",
-    },
-    "funds.info": {
-        "model": "openbb_terminal.mutual_funds.investpy_model.get_fund_info",
-        "view": "openbb_terminal.mutual_funds.investpy_view.display_fund_info",
-    },
-    "funds.overview": {
-        "model": "openbb_terminal.mutual_funds.investpy_model.get_overview",
-        "view": "openbb_terminal.mutual_funds.investpy_view.display_overview",
-    },
-    "funds.search": {
-        "model": "openbb_terminal.mutual_funds.investpy_model.search_funds",
-        "view": "openbb_terminal.mutual_funds.investpy_view.display_search",
     },
     "portfolio.holdv": {
         "model": "openbb_terminal.portfolio.portfolio_model.get_holdings_value",
@@ -1912,7 +1894,7 @@ functions = {
         "model": "openbb_terminal.stocks.stocks_helper.process_candle"
     },
     "stocks.search": {"model": "openbb_terminal.stocks.stocks_helper.search"},
-    "stocks.quote": {"model": "openbb_terminal.stocks.stocks_helper.quote"},
+    "stocks.quote": {"model": "openbb_terminal.stocks.stocks_models.load_quote"},
     "stocks.tob": {"model": "openbb_terminal.stocks.cboe_model.get_top_of_book"},
     "stocks.candle": {"model": "openbb_terminal.stocks.stocks_helper.display_candle"},
     "crypto.load": {
@@ -1968,7 +1950,7 @@ functions = {
     "keys.shroom": {"model": "openbb_terminal.keys_model.set_shroom_key"},
 }
 forecast_extras = {
-    "forecast.load": {"model": "openbb_terminal.forecast.forecast_model.load"},
+    "forecast.load": {"model": "openbb_terminal.common.common_model.load"},
     "forecast.show": {
         "model": "openbb_terminal.forecast.forecast_view.show_df",
         "view": "openbb_terminal.forecast.forecast_view.show_df",
@@ -2007,9 +1989,17 @@ forecast_extras = {
     "forecast.roc": {"model": "openbb_terminal.forecast.forecast_model.add_roc"},
     "forecast.mom": {"model": "openbb_terminal.forecast.forecast_model.add_momentum"},
     "forecast.delta": {"model": "openbb_terminal.forecast.forecast_model.add_delta"},
+    "forecast.autoces": {
+        "model": "openbb_terminal.forecast.autoces_model.get_autoces_data",
+        "view": "openbb_terminal.forecast.autoces_view.display_autoces_forecast",
+    },
     "forecast.autoets": {
         "model": "openbb_terminal.forecast.autoets_model.get_autoets_data",
         "view": "openbb_terminal.forecast.autoets_view.display_autoets_forecast",
+    },
+    "forecast.seasonalnaive": {
+        "model": "openbb_terminal.forecast.seasonalnaive_model.get_seasonalnaive_data",
+        "view": "openbb_terminal.forecast.seasonalnaive_view.display_seasonalnaive_forecast",
     },
     "forecast.expo": {
         "model": "openbb_terminal.forecast.expo_model.get_expo_data",
