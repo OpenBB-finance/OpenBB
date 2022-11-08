@@ -1,4 +1,5 @@
 import os
+import json
 import logging
 import argparse
 from typing import List, Dict
@@ -10,7 +11,10 @@ from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import parse_simple_args
-from openbb_terminal.core.config.paths import USER_ROUTINES_DIRECTORY
+from openbb_terminal.core.config.paths import (
+    USER_ROUTINES_DIRECTORY,
+    SETTINGS_DIRECTORY,
+)
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.menu import session
 from openbb_terminal.account import account_model
@@ -40,6 +44,10 @@ class AccountController(BaseController):
         self.ROUTINE_FILES: Dict[str, Path] = {}
         self.ROUTINE_CHOICES: Dict[str, None] = {}
         self.update_runtime_choices()
+        login_file = SETTINGS_DIRECTORY / "login.json"
+        if login_file.exists():
+            with open(login_file, "r") as file:
+                self.token = json.load(file)
 
     def update_runtime_choices(self):
         """Update runtime choices"""
@@ -84,7 +92,7 @@ class AccountController(BaseController):
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="reddit",
+            prog="login",
             description="Login to your openbb account",
         )
         parser.add_argument(
@@ -128,7 +136,7 @@ class AccountController(BaseController):
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="load",
+            prog="send",
             description="Load custom dataset (from previous export, custom imports).",
         )
         parser.add_argument(
@@ -146,8 +154,31 @@ class AccountController(BaseController):
             required="-h" not in other_args,
             type=str,
         )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-f")
         ns_parser = parse_simple_args(parser, other_args)
         if ns_parser:
             account_model.get_send(
                 self.get_token(), ns_parser.file, ns_parser.name, self.base_url
             )
+
+    @log_start_end(log=logger)
+    def call_get(self, other_args: List[str]):
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="send",
+            description="Load custom dataset (from previous export, custom imports).",
+        )
+        parser.add_argument(
+            "-n",
+            "--name",
+            help="Name for the script.",
+            default="",
+            type=str,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-f")
+        ns_parser = parse_simple_args(parser, other_args)
+        if ns_parser:
+            account_model.get_get(self.get_token(), ns_parser.name, self.base_url)
