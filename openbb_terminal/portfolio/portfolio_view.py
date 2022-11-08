@@ -138,10 +138,9 @@ def display_assets_allocation(
         floatfmt=["", ".2%", ".2%", ".2%"],
         show_index=False,
     )
-    console.print("\n")
 
     if include_separate_tables:
-
+        console.print("")
         print_rich_table(
             portfolio_allocation,
             headers=list(portfolio_allocation.columns),
@@ -150,8 +149,7 @@ def display_assets_allocation(
             floatfmt=[".2%", ".2%"],
             show_index=False,
         )
-        console.print("\n")
-
+        console.print("")
         print_rich_table(
             benchmark_allocation,
             headers=list(benchmark_allocation.columns),
@@ -160,7 +158,6 @@ def display_assets_allocation(
             floatfmt=[".2%", ".2%"],
             show_index=False,
         )
-        console.print("\n")
 
 
 @log_start_end(log=logger)
@@ -229,7 +226,6 @@ def display_category_allocation(
         floatfmt=[".2f", ".2%", ".2%", ".2%"],
         show_index=False,
     )
-    console.print("\n")
 
     if include_separate_tables:
 
@@ -241,7 +237,6 @@ def display_category_allocation(
             floatfmt=[".2%"],
             show_index=True,
         )
-        console.print("\n")
 
         print_rich_table(
             pd.DataFrame(benchmark_allocation),
