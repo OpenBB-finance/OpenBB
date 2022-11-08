@@ -9,12 +9,14 @@
 
 
 
-    <meta name="description" content="OpenBB Terminal Documentation">
+    <meta name="description" content="The Technical Analysis module, of the OpenBB SDK, provides programmatic access to the same functions available within the OpenBB Terminal. This allows the user to feed alternative data and sources to the inputs of functions, to customize the workflow, and to create custom processes with unique analysis. Import the OpenBB SDK in a new Jupyter Notebook file, or Python script, to begin exploring this module. Entering the . after openbb.common.ta will activate the code completion, which is scrollable with up and down arrow keys.">
 
+
+    <meta name="keywords" content="ta,,technical,,analysis,,ad,,adosc,,adx,,aroon,,bbands,,cci,,cg,,donchian,,ema,,fib,,fisher,,hma,,kc,,ma,,macd,,obv,,rsi,,sma,,stoch,,vwap,,wma,,zlma">
 
 
     <title>
-      ta | OpenBB Terminal Documentation
+      Introduction to Technical Analysis | OpenBB Terminal Documentation
     </title>
 
     <link rel="icon" href="/OpenBBTerminal/favicon/favicon-32x32.png" type="image/x-icon">
@@ -47185,7 +47187,7 @@ code, img {
         
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>OpenBB Terminal Documentation</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/SDK/' href='/OpenBBTerminal/SDK/'><span itemprop='name'>OpenBB Python SDK</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/SDK/common/' href='/OpenBBTerminal/SDK/common/'><span itemprop='name'>common</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>ta</span><meta itemprop='position' content='5' /></li>
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>OpenBB Terminal Documentation</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/SDK/' href='/OpenBBTerminal/SDK/'><span itemprop='name'>OpenBB Python SDK</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/SDK/common/' href='/OpenBBTerminal/SDK/common/'><span itemprop='name'>common</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Introduction to Technical Analysis</span><meta itemprop='position' content='5' /></li>
     
 
     
@@ -47210,8 +47212,75 @@ code, img {
 </div>
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
-        <h1>ta</h1>
-        
+        <h1>Introduction to Technical Analysis</h1>
+        <p>The <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/ta/" target="_blank">Technical Analysis</a> module, of the OpenBB SDK, provides programmatic access to the same functions available within the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/" target="_blank">OpenBB Terminal</a>. This allows the user to feed alternative data and sources to the inputs of functions, to customize the workflow, and to create custom processes with unique analysis. Import the OpenBB SDK in a new Jupyter Notebook file, or Python script, to begin exploring this module. Entering the <code>.</code> after <code>openbb.common.ta</code> will activate the code completion, which is scrollable with up and down arrow keys.</p>
+<p><img src="https://user-images.githubusercontent.com/85772166/200148349-9d538b3d-28a1-4aaf-8991-ba2cf7b2c35b.png" alt="openbb.common.ta"  title="openbb.common.ta" /></p>
+<p>Where charts are the output of the OpenBB Terminal, add <code>%matplotlib widget</code> to the first cell, and then append the function&rsquo;s syntax with <code>chart=True</code>. Importing the Pandas module will allows users to easily work with raw data outputs from the OpenBB SDK. Now, with all three dependencies, the first cell looks like this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">openbb_terminal.sdk</span> <span class="kn">import</span> <span class="n">openbb</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">widget</span>
+</code></pre></div><div class="gdoc-page__anchorwrap">
+    <h2 id="how-to-use">
+        How to Use
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/common/ta/#how-to-use" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor How to Use" href="#how-to-use">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h2>
+</div><p>The first step is to load some data as a DataFrame. This can be accomplished through a number of methods, such as:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;file_to_load.csv&#39;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">symbol</span> <span class="o">=</span> <span class="s1">&#39;ticker&#39;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">crypto</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">symbol</span> <span class="o">=</span> <span class="s1">&#39;ticker&#39;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">forex</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">from_symbol</span> <span class="o">=</span> <span class="s1">&#39;currency 1&#39;</span><span class="p">,</span> <span class="n">to_symbol</span> <span class="o">=</span> <span class="s1">&#39;currency 2&#39;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">etf</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">symbol</span> <span class="o">=</span> <span class="s1">&#39;ticker&#39;</span><span class="p">)</span>
+</code></pre></div><p>Here is an example, using weekly Microsoft OHLC+V data from 1986:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">msft_ohlc</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;MSFT&#39;</span><span class="p">,</span> <span class="n">start_date</span> <span class="o">=</span> <span class="s1">&#39;1986-06-30&#39;</span><span class="p">,</span> <span class="n">weekly</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</code></pre></div><p>Some Technical Analysis functions will require OHLC data, while others will use only one column from the OHLC+V DataFrame. In the case of the latter, a target column must be defined by the user. For example, <code>openbb.common.ta.ma</code>, is a function requiring only one column:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">openbb</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">ta</span><span class="o">.</span><span class="n">ma</span><span class="p">(</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">msft_ohlc</span><span class="p">[</span><span class="s1">&#39;Adj Close&#39;</span><span class="p">],</span>
+    <span class="n">window</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">27</span><span class="p">,</span><span class="mi">52</span><span class="p">],</span>
+    <span class="n">ma_type</span> <span class="o">=</span> <span class="s1">&#39;EMA&#39;</span><span class="p">,</span>
+    <span class="n">symbol</span> <span class="o">=</span> <span class="s1">&#39;Microsoft - Weekly&#39;</span><span class="p">,</span>
+    <span class="n">chart</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div><p><img src="https://user-images.githubusercontent.com/85772166/200148379-474c8179-4197-4814-97fa-1c544d1124fb.png" alt="openbb.common.ta.ma"  title="openbb.common.ta.ma" /></p>
+<p>The <code>rsi</code> function has different variable input parameters:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">openbb</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">ta</span><span class="o">.</span><span class="n">rsi</span><span class="p">(</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">msft_ohlc</span><span class="p">[</span><span class="s1">&#39;Adj Close&#39;</span><span class="p">],</span>
+    <span class="n">window</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="n">symbol</span> <span class="o">=</span> <span class="s1">&#39;Microsoft - Weekly&#39;</span><span class="p">,</span>
+    <span class="n">chart</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div><p><img src="https://user-images.githubusercontent.com/85772166/200148387-72cbcd71-e38d-4611-8512-94e8031e74c2.png" alt="openbb.common.ta.rsi"  title="openbb.common.ta.rsi" /></p>
+<p>To return the values as a DataFrame, remove <code>chart = True</code> and the <code>symbol</code> argument:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">msft_rsi</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">ta</span><span class="o">.</span><span class="n">rsi</span><span class="p">(</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">msft_ohlc</span><span class="p">[</span><span class="s1">&#39;Adj Close&#39;</span><span class="p">],</span>
+    <span class="n">window</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="n">msft_ohlc</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">msft_rsi</span><span class="p">)</span>
+</code></pre></div><p><img src="https://user-images.githubusercontent.com/85772166/200148404-b9d7907d-a489-4a4f-8236-f2dca176da7d.png" alt="RSI as Raw Data"  title="RSI as Raw Data" /></p>
+<p>Other functions, like <code>obv</code>, require OHLC data. The code block below adds a new column to the OHLC DataFrame, on-balance volume:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">msft_obv</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">ta</span><span class="o">.</span><span class="n">obv</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">msft_ohlc</span><span class="p">)</span><span class="o">.</span><span class="n">convert_dtypes</span><span class="p">()</span>
+<span class="n">msft_ohlc</span> <span class="o">=</span> <span class="n">msft_ohlc</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">msft_obv</span><span class="p">)</span>
+</code></pre></div><p><img src="https://user-images.githubusercontent.com/85772166/200148418-4215776d-cb40-4b47-a107-42bbaa3d9136.png" alt="openbb.common.ta.obv"  /></p>
+<p>The average true range (ATR) is a measurement of volatility. By adjusting the value for <code>window</code>, to 2, the specified period for measuring the volatility is now set for two-weeks.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">msft_atr</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">ta</span><span class="o">.</span><span class="n">atr</span><span class="p">(</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">msft_ohlc</span><span class="p">,</span>
+    <span class="n">window</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">mamode</span> <span class="o">=</span> <span class="s1">&#39;ema&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="n">msft_ohlc</span> <span class="o">=</span> <span class="n">msft_ohlc</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">msft_atr</span><span class="p">)</span>
+</code></pre></div><p><img src="https://user-images.githubusercontent.com/85772166/200148441-d95b60c0-92a5-41d1-9ca2-aa8724a95366.png" alt="openbb.common.ta.atr"  title="openbb.common.ta.atr" /></p>
+<p>Adding Ketler Channels to the DataFrame, or any other function&rsquo;s output, follows a similar syntax:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">msft_kc</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">ta</span><span class="o">.</span><span class="n">kc</span><span class="p">(</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">msft_ohlc</span><span class="p">,</span>
+    <span class="n">window</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+    <span class="n">scalar</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">mamode</span> <span class="o">=</span> <span class="s1">&#39;ema&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="n">msft_ohlc</span> <span class="o">=</span> <span class="n">msft_ohlc</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">msft_kc</span><span class="p">)</span>
+</code></pre></div><p><img src="https://user-images.githubusercontent.com/85772166/200148474-a3b6868c-7525-45bc-9ee4-1a86df933f71.png" alt="openbb.common.ta.kc"  title="openbb.common.ta.kc" /></p>
+<p>Compiling a DataFrame in this manner is useful for creating technical analysis overlays of price charts.</p>
+
     </article>
  
 
