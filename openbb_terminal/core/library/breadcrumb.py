@@ -1,3 +1,5 @@
+import openbb_terminal.config_terminal as cfg
+
 from typing import Any, Optional, List
 
 from openbb_terminal.core.library.metadata import Metadata
@@ -60,7 +62,6 @@ class Breadcrumb:
         metadata: Optional[Metadata] = None,
         trail: str = "",
         trail_map: Optional[TrailMap] = None,
-        suppress_logging: bool = False,
     ) -> None:
         """
         Generates a 'trail' that allows accessing OpenBB Terminal SDK methods.
@@ -90,7 +91,7 @@ class Breadcrumb:
         self.__doc__ = metadata.doc_string
 
         if trail == "":
-            BreadcrumbLogger(suppress_logging=suppress_logging)
+            BreadcrumbLogger()
 
     def __dir__(self):
         return self.__metadata.dir_list
@@ -124,12 +125,11 @@ class Breadcrumb:
 
 
 class BreadcrumbLogger:
-    def __init__(self, suppress_logging: bool = False) -> None:
-        self.__suppress_logging = suppress_logging
+    def __init__(self) -> None:
         self.__check_initialize_logging()
 
     def __check_initialize_logging(self):
-        if not self.__suppress_logging:
+        if not cfg.LOGGING_SUPPRESS:
             self.__initialize_logging()
 
     @staticmethod
@@ -138,7 +138,6 @@ class BreadcrumbLogger:
         from openbb_terminal.core.log.generation.settings_logger import (  # pylint: disable=C0415
             log_all_settings,
         )
-        import openbb_terminal.config_terminal as cfg  # pylint: disable=C0415
 
         cfg.LOGGING_SUB_APP = "sdk"
         setup_logging()

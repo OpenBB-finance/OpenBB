@@ -68,6 +68,7 @@ LOGGING_ROLLING_CLOCK = base_helpers.load_env_vars(
 LOGGING_VERBOSITY = base_helpers.load_env_vars("OPENBB_LOGGING_VERBOSITY", int, 20)
 # LOGGING SUB APP
 LOGGING_SUB_APP = os.getenv("OPENBB_LOGGING_SUB_APP") or "terminal"
+LOGGING_SUPPRESS = False
 
 # API Keys section
 

@@ -2,6 +2,9 @@ import json
 from importlib import import_module
 from logging import getLogger, Logger
 from typing import Any, Callable, List, Optional
+
+import openbb_terminal.config_terminal as cfg
+
 from openbb_terminal.core.library.metadata import Metadata
 from openbb_terminal.core.library.trail_map import TrailMap
 
@@ -146,7 +149,7 @@ class Operation:
             kwargs.pop("chart")
         method_result = method_chosen(*args, **kwargs)
 
-        operation_logger.log_after_call(method_result=method_result)
+        operation_logger.log_after_call()
 
         return method_result
 
@@ -169,15 +172,16 @@ class OperationLogger:
     def log_before_call(
         self,
     ):
-        logger = self.__logger
-        self.__log_start(logger=logger, method_chosen=self.__method_chosen)
-        self.__log_method_info(
-            logger=logger,
-            trail=self.__trail,
-            method_chosen=self.__method_chosen,
-            args=self.__args,
-            kwargs=self.__kwargs,
-        )
+        if not cfg.LOGGING_SUPPRESS:
+            logger = self.__logger
+            self.__log_start(logger=logger, method_chosen=self.__method_chosen)
+            self.__log_method_info(
+                logger=logger,
+                trail=self.__trail,
+                method_chosen=self.__method_chosen,
+                args=self.__args,
+                kwargs=self.__kwargs,
+            )
 
     @staticmethod
     def __log_start(logger: Logger, method_chosen: Callable):
@@ -186,16 +190,17 @@ class OperationLogger:
             extra={"func_name_override": method_chosen.__name__},
         )
 
+    @classmethod
     def __log_method_info(
-        self,
+        cls,
         logger: Logger,
         trail: str,
         method_chosen: Callable,
         args: Any,
         kwargs: Any,
     ):
-        merged_args = self.__merge_function_args(method_chosen, args, kwargs)
-        merged_args = self.__remove_key_and_log_state(
+        merged_args = cls.__merge_function_args(method_chosen, args, kwargs)
+        merged_args = cls.__remove_key_and_log_state(
             method_chosen.__module__, merged_args
         )
 
@@ -274,31 +279,13 @@ class OperationLogger:
 
     def log_after_call(
         self,
-        method_result: Any,
     ):
-        logger = self.__logger
-        # self.__log_method_result(
-        #     logger=logger,
-        #     method_chosen=self.__method_chosen,
-        #     method_result=method_result,
-        # )
-        self.__log_end(
-            logger=logger,
-            method_chosen=self.__method_chosen,
-        )
-
-    # @staticmethod
-    # def __log_method_result(
-    #     logger: Logger,
-    #     method_chosen: Callable,
-    #     method_result: Any,
-    # ):
-    #     logging_info = {}
-    #     logging_info["OUTPUT"] = str(method_result)
-    #     logger.info(
-    #         f"{json.dumps(logging_info)}",
-    #         extra={"func_name_override": method_chosen.__name__},
-    #     )
+        if not cfg.LOGGING_SUPPRESS:
+            logger = self.__logger
+            self.__log_end(
+                logger=logger,
+                method_chosen=self.__method_chosen,
+            )
 
     @staticmethod
     def __log_end(logger: Logger, method_chosen: Callable):
