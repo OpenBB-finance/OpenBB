@@ -46,7 +46,7 @@ class AccountController(BaseController):
         self.update_runtime_choices()
         login_file = SETTINGS_DIRECTORY / "login.json"
         if login_file.exists():
-            with open(login_file, "r") as file:
+            with open(login_file) as file:
                 self.token = json.load(file)
 
     def update_runtime_choices(self):
