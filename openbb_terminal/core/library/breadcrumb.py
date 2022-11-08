@@ -60,6 +60,7 @@ class Breadcrumb:
         metadata: Optional[Metadata] = None,
         trail: str = "",
         trail_map: Optional[TrailMap] = None,
+        suppress_logging: bool = False,
     ) -> None:
         """
         Generates a 'trail' that allows accessing OpenBB Terminal SDK methods.
@@ -89,7 +90,7 @@ class Breadcrumb:
         self.__doc__ = metadata.doc_string
 
         if trail == "":
-            BreadcrumbLogger()
+            BreadcrumbLogger(suppress_logging=suppress_logging)
 
     def __dir__(self):
         return self.__metadata.dir_list
