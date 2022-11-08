@@ -9,7 +9,7 @@ The Forex module provides a way for users to get currency pair data, from a numb
 For the purpose of demonstration, additional modules will be imported to begin the Python script or Notebook file.
 
 ```python
-from openbb_terminal.sdk import openbb
+from openbb_terminal.core.library.sdk import openbb
 
 import pandas as pd
 
@@ -25,7 +25,7 @@ To load historical data for a desired currency pair, copy and paste the code bel
 ```python
 currency_pair = openbb.forex.load(
     from_symbol='USD',
-    to_symbol='EUR', 
+    to_symbol='EUR',
     source = 'Polygon',
     start_date = '2000-01-01',
     resolution = 'd',
@@ -61,7 +61,7 @@ openbb.forex.oanda.fwd(from_symbol = 'EUR', to_symbol = 'USD')
 This code snippet returns a Pandas DataFrame containing forward points for two currency pairs, JPY/USD & USD/EUR:
 
 ```python
-from openbb_terminal.sdk import openbb
+from openbb_terminal.core.library.sdk import openbb
 
 import pandas as pd
 

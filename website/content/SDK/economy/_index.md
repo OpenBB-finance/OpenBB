@@ -6,7 +6,7 @@ geekdocCollapseSection: true
 ---
 The Economy module wraps the functions of the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/economy/" target="_blank">Economy menu</a>, within the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/" target="_blank">OpenBB Terminal</a>, and provides the user with more control over their workflow. In a Jupyter Notebook environment, it is quick and easy to get going. Start a new `.ipynb` Notebook file, or a `.py` Python script by importing the necessary modules for the tasks at hand. For the purpose of these examples, two additional modules will be imported:
 ````
-from openbb_terminal.sdk import openbb
+from openbb_terminal.core.library.sdk import openbb
 import pandas as pd
 %matplotlib inline
 ````
@@ -40,14 +40,14 @@ pd.DataFrame.from_dict(openbb.economy.available_indices()).transpose()
 
 ![openbb.economy.available_indices()](https://user-images.githubusercontent.com/85772166/198433551-921ec05d-6a96-44ff-b164-c7af18602d82.png)
 
-To display a chart inside the Notebook, instead of a DataFrame, add `chart = True` to the command syntax. For example: 
+To display a chart inside the Notebook, instead of a DataFrame, add `chart = True` to the command syntax. For example:
 ````
 openbb.economy.index(indices = ['sp500', 'sp500tr'], chart = True)
 ````
 
 ![S&P 500 vs. S&P 500 Total Return Index](https://user-images.githubusercontent.com/85772166/198433750-c62794ee-a26e-4da8-85b7-0782196efd11.png)
 
-It is also possible to make a DataFrame of a stock and an index. The list of symbols fed to the `index` function can be the dictionary name from, `openbb.economy.available_indices()`, or it can be a ticker symbol that is recognized by `yFinance`. As an example: 
+It is also possible to make a DataFrame of a stock and an index. The list of symbols fed to the `index` function can be the dictionary name from, `openbb.economy.available_indices()`, or it can be a ticker symbol that is recognized by `yFinance`. As an example:
 ````
 openbb.economy.index(indices = ['move', 'aapl'], chart = True, start_date = '2016-01-01')
 ````
@@ -66,7 +66,7 @@ data, date = openbb.economy.fred_yield_curve()
 
 ![FRED Yield Curve Raw Data](https://user-images.githubusercontent.com/85772166/198434188-0eacedab-ff27-40dc-917d-c7bf5929d9ad.png)
 
-The FRED library can be searched, by key words and phrases, in two ways: 
+The FRED library can be searched, by key words and phrases, in two ways:
 
   -  `openbb.economy.fred_notes('search term')`
   -  `openbb.economy.fred_ids('search term')`

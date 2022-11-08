@@ -11,7 +11,7 @@ The <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/ta/
 Where charts are the output of the OpenBB Terminal, add `%matplotlib widget` to the first cell, and then append the function's syntax with `chart=True`. Importing the Pandas module will allows users to easily work with raw data outputs from the OpenBB SDK. Now, with all three dependencies, the first cell looks like this:
 
 ```python
-from openbb_terminal.sdk import openbb
+from openbb_terminal.core.library.sdk import openbb
 import pandas as pd
 %matplotlib widget
 ```

@@ -62,7 +62,7 @@ you are using conda.
 First off, import OpenBB SDK into your python script or Jupyter Notebook with:
 
 ```python
-from openbb_terminal.sdk import openbb
+from openbb_terminal.core.library.sdk import openbb
 ```
 
 This imports all Terminal commands at once. To see all the available commands, you can press `tab` in jupyter notebook.
@@ -351,7 +351,7 @@ To display matplotlib charts inside the Jupyter notebook output cells, you can u
 ```python
 import matplotlib.pyplot as plt
 import matplotlib_inline.backend_inline
-from openbb_terminal.sdk import openbb
+from openbb_terminal.core.library.sdk import openbb
 %matplotlib inline
 matplotlib_inline.backend_inline.set_matplotlib_formats("svg")
 ```
@@ -362,7 +362,7 @@ The code below utilizes the `external_axes` parameter to get two axis in one cha
 
 ```python
 import matplotlib.pyplot as plt
-from openbb_terminal.sdk import openbb
+from openbb_terminal.core.library.sdk import openbb
 fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(11, 5), dpi=150)
 openbb.stocks.dps.dpotc(
     "aapl",

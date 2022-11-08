@@ -4,13 +4,13 @@ keywords: "stocks, stock, options, option, call, put, earnings, calendar, how-to
 excerpt: "This guide introduces the Stocks menu in the context of the OpenBB SDK."
 geekdocCollapseSection: true
 ---
-The capabilities of the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/" target="_blank">Stocks menu</a> from the OpenBB Terminal are wrapped into a powerful SDK, enabling users to work with the data in a flexible environment that can be fully customized to meet the needs of any user. Code completion and contextual help makes it easy to use. Navigating is very similar to operating the CLI Terminal Application. 
+The capabilities of the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/" target="_blank">Stocks menu</a> from the OpenBB Terminal are wrapped into a powerful SDK, enabling users to work with the data in a flexible environment that can be fully customized to meet the needs of any user. Code completion and contextual help makes it easy to use. Navigating is very similar to operating the CLI Terminal Application.
 
 ## How to use
 
 Start a Python script or Notebook file by importing the module:
 
-`from openbb_terminal.sdk import openbb`
+`from openbb_terminal.core.library.sdk import openbb`
 
 In the next cell, code completion will activate after the `.` is entered, showing the submenus and functions at the root level of the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/" target="_blank">Stocks menu</a>.
 
