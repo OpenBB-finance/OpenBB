@@ -1,3 +1,4 @@
+import json
 from importlib import import_module
 from logging import getLogger, Logger
 from typing import Any, Callable, List, Optional
@@ -132,22 +133,20 @@ class Operation:
         else:
             raise Exception("Unknown method")
 
-        operation_logger = OperationLogger(method_chosen=method_chosen)
-
-        operation_logger.log_before_call(
-            # operation=self,
+        operation_logger = OperationLogger(
+            trail=self.__trail,
             method_chosen=method_chosen,
+            args=args,
+            kwargs=kwargs,
         )
+
+        operation_logger.log_before_call()
 
         if "chart" in kwargs:
             kwargs.pop("chart")
         method_result = method_chosen(*args, **kwargs)
 
-        operation_logger.log_after_call(
-            # operation=self,
-            method_chosen=method_chosen,
-            # method_result=method_result,
-        )
+        operation_logger.log_after_call(method_result=method_result)
 
         return method_result
 
@@ -155,38 +154,154 @@ class Operation:
 class OperationLogger:
     def __init__(
         self,
+        trail: str,
         method_chosen: Callable,
+        args: Any,
+        kwargs: Any,
         logger: Optional[Logger] = None,
     ) -> None:
+        self.__trail = trail
         self.__method_chosen = method_chosen
         self.__logger = logger or getLogger(self.__method_chosen.__module__)
+        self.__args = args
+        self.__kwargs = kwargs
 
     def log_before_call(
         self,
-        # operation: Operation,
-        method_chosen: Callable,
     ):
         logger = self.__logger
-        self.log_start(logger, method_chosen=method_chosen)
+        self.__log_start(logger=logger, method_chosen=self.__method_chosen)
+        self.__log_method_info(
+            logger=logger,
+            trail=self.__trail,
+            method_chosen=self.__method_chosen,
+            args=self.__args,
+            kwargs=self.__kwargs,
+        )
 
     @staticmethod
-    def log_start(logger: Logger, method_chosen: Callable):
+    def __log_start(logger: Logger, method_chosen: Callable):
         logger.info(
             "START",
             extra={"func_name_override": method_chosen.__name__},
         )
 
-    def log_after_call(
+    def __log_method_info(
         self,
-        # operation: Operation,
+        logger: Logger,
+        trail: str,
         method_chosen: Callable,
-        # method_result: Any,
+        args: Any,
+        kwargs: Any,
     ):
-        logger = self.__logger
-        self.log_end(logger, method_chosen=method_chosen)
+        merged_args = self.__merge_function_args(method_chosen, args, kwargs)
+        merged_args = self.__remove_key_and_log_state(
+            method_chosen.__module__, merged_args
+        )
+
+        logging_info = {}
+        logging_info["INPUT"] = {key: str(value) for key, value in merged_args.items()}
+        logging_info["VIRTUAL_PATH"] = trail
+        logging_info["CHART"] = "chart" in kwargs and kwargs["chart"] is True
+
+        logger.info(
+            f"{json.dumps(logging_info)}",
+            extra={"func_name_override": method_chosen.__name__},
+        )
 
     @staticmethod
-    def log_end(logger: Logger, method_chosen: Callable):
+    def __merge_function_args(func: Callable, args: tuple, kwargs: dict) -> dict:
+        """
+        Merge user input args and kwargs with signature defaults into a dictionary.
+
+        Parameters
+        ----------
+
+        func : Callable
+            Function to get the args from
+        args : tuple
+            Positional args
+        kwargs : dict
+            Keyword args
+
+        Returns
+        -------
+        dict
+            Merged user args and signature defaults
+        """
+        import inspect  # pylint: disable=C0415
+
+        sig = inspect.signature(func)
+        sig_args = {
+            param.name: param.default
+            for param in sig.parameters.values()
+            if param.default is not inspect.Parameter.empty
+        }
+        # merge args with sig_args
+        sig_args.update(dict(zip(sig.parameters, args)))
+        # add kwargs elements to sig_args
+        sig_args.update(kwargs)
+        return sig_args
+
+    @staticmethod
+    def __remove_key_and_log_state(func_module: str, function_args: dict) -> dict:
+        """
+        Remove API key from the function args and log state of keys.
+
+        Parameters
+        ----------
+        func_module : str
+            Module of the function
+        function_args : dict
+            Function args
+
+        Returns
+        -------
+        dict
+            Function args with API key removed
+        """
+
+        if func_module == "openbb_terminal.keys_model":
+
+            from openbb_terminal.core.log.generation.settings_logger import (  # pylint: disable=C0415
+                log_keys,
+            )
+
+            # remove key if defined
+            function_args.pop("key", None)
+            log_keys()
+        return function_args
+
+    def log_after_call(
+        self,
+        method_result: Any,
+    ):
+        logger = self.__logger
+        # self.__log_method_result(
+        #     logger=logger,
+        #     method_chosen=self.__method_chosen,
+        #     method_result=method_result,
+        # )
+        self.__log_end(
+            logger=logger,
+            method_chosen=self.__method_chosen,
+        )
+
+    # @staticmethod
+    # def __log_method_result(
+    #     logger: Logger,
+    #     method_chosen: Callable,
+    #     method_result: Any,
+    # ):
+    #     logging_info = {}
+    #     logging_info["OUTPUT"] = str(method_result)
+    #     logger.info(
+    #         f"{json.dumps(logging_info)}",
+    #         extra={"func_name_override": method_chosen.__name__},
+    #     )
+
+    @staticmethod
+    def __log_end(logger: Logger, method_chosen: Callable):
         logger.info(
             "END",
             extra={"func_name_override": method_chosen.__name__},
