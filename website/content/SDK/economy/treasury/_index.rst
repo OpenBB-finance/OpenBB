@@ -18,7 +18,7 @@ economy.treasury(
     maturities: list = None,
     frequency: str = 'monthly',
     start_date: str = '1900-01-01',
-    end_date: str = '2022-11-07',
+    end_date: str = '2022-11-08',
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -65,7 +65,7 @@ economy.treasury(
     maturities: list = None,
     frequency: str = 'monthly',
     start_date: str = '1900-01-01',
-    end_date: str = '2022-11-07',
+    end_date: str = '2022-11-08',
     raw: bool = False,
     external_axes: Optional[List[axes]] = None,
     export: str = '',

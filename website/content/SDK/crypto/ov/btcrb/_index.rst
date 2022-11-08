@@ -13,37 +13,30 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
     </h3>
 
 {{< highlight python >}}
-crypto.dd.nonzero(
-    symbol: str,
-    start_date: int = 1262304000,
-    end_date: int = 1667908975,
+crypto.ov.btcrb(
+    start_date: str = '2010-01-01',
+    end_date: str = '2022-11-08',
     chart: bool = False,
-) -> pandas.core.frame.DataFrame
+)
 {{< /highlight >}}
 
 .. raw:: html
 
     <p>
-    Returns addresses with non-zero balance of a certain symbol
-    [Source: https://glassnode.com]
+    Get bitcoin price data
+    [Price data from source: https://glassnode.com]
+    [Inspired by: https://blockchaincenter.net]
     </p>
 
 * **Parameters**
 
-    symbol : str
-        Asset to search (e.g., BTC)
-    start_date : int
-        Initial date timestamp (e.g., 1_577_836_800)
-    end_date : int
-        End date timestamp (e.g., 1_609_459_200)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
     chart: *bool*
        Flag to display chart
 
-
-* **Returns**
-
-    pd.DataFrame
-        addresses with non-zero balances
 
 |
 
@@ -54,31 +47,29 @@ crypto.dd.nonzero(
     </h3>
 
 {{< highlight python >}}
-crypto.dd.nonzero(
-    symbol: str,
-    start_date: int = 1577836800,
-    end_date: int = 1609459200,
+crypto.ov.btcrb(
+    start_date: str = '2010-01-01',
+    end_date: str = '2022-11-08',
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
     chart: bool = False,
-) -> None
+)
 {{< /highlight >}}
 
 .. raw:: html
 
     <p>
-    Display addresses with non-zero balance of a certain symbol
-    [Source: https://glassnode.org]
+    Displays bitcoin rainbow chart
+    [Price data from source: https://glassnode.com]
+    [Inspired by: https://blockchaincenter.net]
     </p>
 
 * **Parameters**
 
-    symbol : str
-        Asset to search (e.g., BTC)
     start_date : int
-        Initial date timestamp (e.g., 1_577_836_800)
+        Initial date, format YYYY-MM-DD
     end_date : int
-        End date timestamp (e.g., 1_609_459_200)
+        Final date, format YYYY-MM-DD
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional

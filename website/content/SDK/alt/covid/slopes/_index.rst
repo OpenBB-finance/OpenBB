@@ -47,17 +47,6 @@ alt.covid.slopes(
     pd.DataFrame
         Dataframe containing slopes
 
-* **Examples**
-
-    {{< highlight python >}}
-    >>> from openbb_terminal.sdk import openbb
-
-    ### Get the data
-    df = openbb.alt.covid.slopes(chart = False)
-
-    ### Get the chart
-    openbb.alt.covid.slopes(chart = True){{< /highlight >}}
-
 |
 
 .. raw:: html

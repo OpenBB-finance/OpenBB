@@ -16,7 +16,7 @@ forex.load(
     from_symbol: str,
     resolution: str = 'd',
     interval: str = '1day',
-    start_date: str = '2021-11-07',
+    start_date: str = '2021-11-08',
     source: str = 'YahooFinance',
     verbose: bool = True,
     chart: bool = False,

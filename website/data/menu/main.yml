@@ -2050,6 +2050,8 @@ main:
             sub:
               - name: altindex
                 ref: /SDK/crypto/ov/altindex
+              - name: btcrb
+                ref: /SDK/crypto/ov/btcrb
               - name: cbpairs
                 ref: /SDK/crypto/ov/cbpairs
               - name: cgcategories
