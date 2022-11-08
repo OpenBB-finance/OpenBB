@@ -210,22 +210,24 @@ class EconomyController(BaseController):
                 "-d": "--date",
                 "--raw": {},
                 "--source": {
-                    "investpy": {},
                     "FRED": {},
                 },
             }
-            self.choices["spread"] = {
-                "--group": {c: None for c in investingcom_model.MATRIX_CHOICES},
-                "-g": "--group",
-                "--countries": {c: None for c in investingcom_model.BOND_COUNTRIES},
-                "-c": "--countries",
-                "--maturity": None,
-                "-m": "--maturity",
-                "--change": None,
-                "--color": {c: None for c in investingcom_view.COLORS},
-            }
+            # self.choices["spread"] = {
+            #     "--group": {c: None for c in investingcom_model.MATRIX_CHOICES},
+            #     "-g": "--group",
+            #     "--countries": {c: None for c in investingcom_model.BOND_COUNTRIES},
+            #     "-c": "--countries",
+            #     "--maturity": None,
+            #     "-m": "--maturity",
+            #     "--change": None,
+            #     "--color": {c: None for c in investingcom_view.COLORS},
+            # }
             self.choices["events"] = {
-                "--country": {c: {} for c in investingcom_model.CALENDAR_COUNTRIES},
+                "--country": {
+                    c.replace(" ", "_"): {}
+                    for c in investingcom_model.CALENDAR_COUNTRIES
+                },
                 "-c": "--country",
                 "--importance": {c: {} for c in investingcom_model.IMPORTANCES},
                 "-i": "--importance",
@@ -286,7 +288,7 @@ class EconomyController(BaseController):
                 "--freq": {c: {} for c in econdb_model.TREASURIES["frequencies"]},
                 "--type": {c: {} for c in econdb_model.TREASURIES["instruments"]},
                 "-t": "--type",
-                "--show": {c: {} for c in self.macro_show},
+                "--show": {},
                 "--start": None,
                 "-s": "--start",
                 "--end": None,
@@ -368,9 +370,9 @@ class EconomyController(BaseController):
                 economicdata = list()
                 for L in [1, 2]:
                     for subset in itertools.combinations(options, L):
-                        economicdata.append(" ".join(subset))
+                        economicdata.append(",".join(subset))
                         if len(subset) > 1:
-                            economicdata.append(" ".join(subset[::-1]))
+                            economicdata.append(",".join(subset[::-1]))
 
                 for argument in [
                     "--y1",
@@ -1153,30 +1155,16 @@ class EconomyController(BaseController):
         if ns_parser:
             country = ns_parser.country.lower().replace("_", " ")
 
-            if ns_parser.source == "FRED":
-
-                if country == "united states":
-                    fred_view.display_yield_curve(
-                        ns_parser.date,
-                        raw=ns_parser.raw,
-                        export=ns_parser.export,
-                    )
-                else:
-                    console.print("Source FRED is only available for united states.\n")
-
-            elif ns_parser.source == "Investing":
-
-                if ns_parser.date:
-                    console.print(
-                        "Date ignored: historical data is only available for source 'FRED'"
-                        " and country 'united states'.\n"
-                    )
-
-                investingcom_view.display_yieldcurve(
-                    country=country,
+            if country == "united states":
+                fred_view.display_yield_curve(
+                    ns_parser.date,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
                 )
+            else:
+                console.print("Source FRED is only available for united states.\n")
+
+            # TODO: Add `Investing` to sources again when `investpy` is fixed
 
     @log_start_end(log=logger)
     def call_spread(self, other_args: List[str]):
@@ -1329,9 +1317,6 @@ class EconomyController(BaseController):
         )
 
         if ns_parser:
-            if isinstance(ns_parser.country, list):
-                if ns_parser.source == "Investing":
-                    ns_parser.country = " ".join(ns_parser.country)
 
             if ns_parser.start_date:
                 start_date = ns_parser.start_date.strftime("%Y-%m-%d")
@@ -1343,36 +1328,27 @@ class EconomyController(BaseController):
             else:
                 end_date = None
 
-            if ns_parser.source == "Investing":
-                investingcom_view.display_economic_calendar(
-                    country=ns_parser.country,
-                    importance=ns_parser.importance,
-                    category=ns_parser.category,
-                    start_date=start_date,
-                    end_date=end_date,
-                    limit=ns_parser.limit,
-                    export=ns_parser.export,
-                )
-            elif ns_parser.source == "Nasdaq":
-                countries = (
-                    ns_parser.country.replace("_", " ").title().split(",")
-                    if ns_parser.country
-                    else []
-                )
+            # TODO: Add `Investing` to sources again when `investpy` is fixed
 
-                if ns_parser.spec_date:
-                    start_date = ns_parser.spec_date.strftime("%Y-%m-%d")
-                    end_date = ns_parser.spec_date.strftime("%Y-%m-%d")
+            countries = (
+                ns_parser.country.replace("_", " ").title().split(",")
+                if ns_parser.country
+                else []
+            )
 
-                else:
-                    start_date, end_date = sorted([start_date, end_date])
-                nasdaq_view.display_economic_calendar(
-                    country=countries,
-                    start_date=start_date,
-                    end_date=end_date,
-                    limit=ns_parser.limit,
-                    export=ns_parser.export,
-                )
+            if ns_parser.spec_date:
+                start_date = ns_parser.spec_date.strftime("%Y-%m-%d")
+                end_date = ns_parser.spec_date.strftime("%Y-%m-%d")
+
+            else:
+                start_date, end_date = sorted([start_date, end_date])
+            nasdaq_view.display_economic_calendar(
+                country=countries,
+                start_date=start_date,
+                end_date=end_date,
+                limit=ns_parser.limit,
+                export=ns_parser.export,
+            )
 
     @log_start_end(log=logger)
     def call_plot(self, other_args: List[str]):
@@ -1754,8 +1730,9 @@ class EconomyController(BaseController):
             description="""Create custom data column from loaded datasets.  Can be mathematical expressions supported
             by pandas.eval() function.
 
-            Example.  If I have loaded `fred dgs2 dgs5` and I want to create a new column that is the difference
-            between these two, I can create a new column by doing `eval spread = dgs2 - dgs5`
+            Example.  If I have loaded `fred DGS2,DGS5` and I want to create a new column that is the difference
+            between these two, I can create a new column by doing `eval spread = DGS2 - DGS5`.
+            Notice that the command is case sensitive, i.e., `DGS2` is not the same as `dgs2`.
             """,
         )
         parser.add_argument(
@@ -1785,7 +1762,7 @@ class EconomyController(BaseController):
     @log_start_end(log=logger)
     def call_qa(self, _):
         """Process qa command"""
-        if not self.DATASETS:
+        if not any(True for x in self.DATASETS.values() if not x.empty):
             console.print(
                 "There is no data stored. Please use either the 'macro', 'fred', 'index' and/or "
                 "'treasury' command in combination with the -st argument to plot data.\n"

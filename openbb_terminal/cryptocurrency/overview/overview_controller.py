@@ -11,7 +11,7 @@ from typing import List
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.cryptocurrency.due_diligence.glassnode_view import (
+from openbb_terminal.cryptocurrency.overview.glassnode_view import (
     display_btc_rainbow,
 )
 from openbb_terminal.cryptocurrency.overview import (

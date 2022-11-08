@@ -4,7 +4,8 @@ usage: autoets [--naive] [-d {AAPL}] [-c TARGET_COLUMN] [-n N_DAYS] [-s {N,A,M}]
 
 ```
 
-Perform Automatic ETS (Error, Trend, Seasonality) forecast
+Perform Automatic ETS (Error, Trend, Seasonality) forecast:
+https://nixtla.github.io/statsforecast/examples/getting_started_with_auto_arima_and_ets.html
 
 ```
 optional arguments:
@@ -40,7 +41,7 @@ Example:
 
 
 
-   Actual price: 143.39    
+   Actual price: 143.39
 ┏━━━━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃ Datetime   ┃ Prediction ┃
 ┡━━━━━━━━━━━━╇━━━━━━━━━━━━┩
