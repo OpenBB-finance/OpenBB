@@ -62,25 +62,24 @@ class Operation:
     @classmethod
     def __get_model(cls, trail: str, trail_map: TrailMap) -> Optional[Callable]:
         map_list = trail_map.map_list
+        model = None
 
         if trail in map_list:
             if "model" in map_list[trail] and map_list[trail]["model"]:
                 model_path = map_list[trail]["model"]
                 model = cls.__get_method(method_path=model_path)
-            else:
-                model = None
+
         return model
 
     @classmethod
     def __get_view(cls, trail: str, trail_map: TrailMap) -> Optional[Callable]:
         map_list = trail_map.map_list
+        view = None
 
         if trail in map_list:
             if "view" in map_list[trail] and map_list[trail]["view"]:
                 view_path = map_list[trail]["view"]
                 view = cls.__get_method(method_path=view_path)
-            else:
-                view = None
 
         return view
 
@@ -133,7 +132,9 @@ class Operation:
         else:
             raise Exception("Unknown method")
 
-        OperationLogger.log_before_call(
+        operation_logger = OperationLogger(method_chosen=method_chosen)
+
+        operation_logger.log_before_call(
             # operation=self,
             method_chosen=method_chosen,
         )
@@ -142,7 +143,7 @@ class Operation:
             kwargs.pop("chart")
         method_result = method_chosen(*args, **kwargs)
 
-        OperationLogger.log_after_call(
+        operation_logger.log_after_call(
             # operation=self,
             method_chosen=method_chosen,
             # method_result=method_result,
@@ -152,7 +153,21 @@ class Operation:
 
 
 class OperationLogger:
-    __logger = getLogger(__name__)
+    def __init__(
+        self,
+        method_chosen: Callable,
+        logger: Optional[Logger] = None,
+    ) -> None:
+        self.__method_chosen = method_chosen
+        self.__logger = logger or getLogger(self.__method_chosen.__module__)
+
+    def log_before_call(
+        self,
+        # operation: Operation,
+        method_chosen: Callable,
+    ):
+        logger = self.__logger
+        self.log_start(logger, method_chosen=method_chosen)
 
     @staticmethod
     def log_start(logger: Logger, method_chosen: Callable):
@@ -161,28 +176,18 @@ class OperationLogger:
             extra={"func_name_override": method_chosen.__name__},
         )
 
+    def log_after_call(
+        self,
+        # operation: Operation,
+        method_chosen: Callable,
+        # method_result: Any,
+    ):
+        logger = self.__logger
+        self.log_end(logger, method_chosen=method_chosen)
+
     @staticmethod
     def log_end(logger: Logger, method_chosen: Callable):
         logger.info(
             "END",
             extra={"func_name_override": method_chosen.__name__},
         )
-
-    @classmethod
-    def log_before_call(
-        cls,
-        # operation: Operation,
-        method_chosen: Callable,
-    ):
-        logger = cls.__logger
-        cls.log_start(logger, method_chosen=method_chosen)
-
-    @classmethod
-    def log_after_call(
-        cls,
-        # operation: Operation,
-        method_chosen: Callable,
-        # method_result: Any,
-    ):
-        logger = cls.__logger
-        cls.log_end(logger, method_chosen=method_chosen)

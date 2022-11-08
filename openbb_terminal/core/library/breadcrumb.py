@@ -88,6 +88,9 @@ class Breadcrumb:
 
         self.__doc__ = metadata.doc_string
 
+        if trail == "":
+            BreadcrumbLogger()
+
     def __dir__(self):
         return self.__metadata.dir_list
 
@@ -117,3 +120,25 @@ class Breadcrumb:
             )
 
         return next_crumb
+
+
+class BreadcrumbLogger:
+    def __init__(self, suppress_logging: bool = False) -> None:
+        self.__suppress_logging = suppress_logging
+        self.__check_initialize_logging()
+
+    def __check_initialize_logging(self):
+        if not self.__suppress_logging:
+            self.__initialize_logging()
+
+    @staticmethod
+    def __initialize_logging() -> None:
+        from openbb_terminal.loggers import setup_logging  # pylint: disable=C0415
+        from openbb_terminal.core.log.generation.settings_logger import (  # pylint: disable=C0415
+            log_all_settings,
+        )
+        import openbb_terminal.config_terminal as cfg  # pylint: disable=C0415
+
+        cfg.LOGGING_SUB_APP = "sdk"
+        setup_logging()
+        log_all_settings()
