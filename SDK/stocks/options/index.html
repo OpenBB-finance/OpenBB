@@ -9,12 +9,15 @@
 
 
 
-    <meta name="description" content="OpenBB Terminal Documentation">
+    <meta name="description" content="The Stock Options module of the OpenBB SDK wraps the functions of the Options sub-menu within the OpenBB Terminal. This allows the user greater flexibility when researching and anlayzing options data. Start a Python script of Notebook file by importing the dependencies:
+from openbb_terminal.sdk import openbb import pandas as pd import numpy as np import matplotlib.pyplot as plt %matplotlib widget How to Use    All functions within the Options module are printed with: openbb.">
 
+
+    <meta name="keywords" content="stocks,,options,,calls,,puts,,gamma,,delta,,iv,,theta,,rho,,greeks,,charm,,vanna,,vomma,,derivatives,,contracts,,^SPX,,^VIX,,^NDX,,chains,,oi,,vol,,volume,,open,,interest,,expiration,,dte,,volatility,,underlying">
 
 
     <title>
-      options | OpenBB Terminal Documentation
+      Introduction to Options | OpenBB Terminal Documentation
     </title>
 
     <link rel="icon" href="/OpenBBTerminal/favicon/favicon-32x32.png" type="image/x-icon">
@@ -47185,7 +47188,7 @@ code, img {
         
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>OpenBB Terminal Documentation</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/SDK/' href='/OpenBBTerminal/SDK/'><span itemprop='name'>OpenBB Python SDK</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/SDK/stocks/' href='/OpenBBTerminal/SDK/stocks/'><span itemprop='name'>Introduction to the Stocks Menu</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>options</span><meta itemprop='position' content='5' /></li>
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>OpenBB Terminal Documentation</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/SDK/' href='/OpenBBTerminal/SDK/'><span itemprop='name'>OpenBB Python SDK</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/SDK/stocks/' href='/OpenBBTerminal/SDK/stocks/'><span itemprop='name'>Introduction to the Stocks Menu</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Introduction to Options</span><meta itemprop='position' content='5' /></li>
     
 
     
@@ -47210,8 +47213,59 @@ code, img {
 </div>
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
-        <h1>options</h1>
-        
+        <h1>Introduction to Options</h1>
+        <p>The Stock Options module of the OpenBB SDK wraps the functions of the Options <a class="gdoc-markdown__link" href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/">sub-menu</a> within the <a class="gdoc-markdown__link" href="https://openbb-finance.github.io/OpenBBTerminal/terminal/">OpenBB Terminal</a>. This allows the user greater flexibility when researching and anlayzing options data. Start a Python script of Notebook file by importing the dependencies:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">openbb_terminal.sdk</span> <span class="kn">import</span> <span class="n">openbb</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">widget</span>
+</code></pre></div><div class="gdoc-page__anchorwrap">
+    <h2 id="how-to-use">
+        How to Use
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/stocks/options/#how-to-use" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor How to Use" href="#how-to-use">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h2>
+</div><p>All functions within the Options module are printed with: <code>openbb.stocks.options</code></p>
+<p><img src="https://user-images.githubusercontent.com/85772166/199891549-1331a65c-6251-4206-b77c-c64dfabe70f4.png" alt="Options Module Functions"  title="Options Module Functions" /></p>
+<p>The <a class="gdoc-markdown__link" href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/options/unu/">Unusual Options function</a> returns a Tuple containing the DataFrame and a timestamp from when the list was last updated.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">unusual_options</span><span class="p">,</span><span class="n">timestamp</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">unu</span><span class="p">()</span>
+<span class="n">unusual_options</span>
+</code></pre></div><p><img src="https://user-images.githubusercontent.com/85772166/199891691-da3af87e-99c3-4d01-881f-62b6b0d3ae34.png" alt="Unusual Options"  title="Unusual Options" /></p>
+<p>Get up to ten years of historical put/call ratios (US equity options only), with the <code>PCR</code> function:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">pcr_spy</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">pcr</span><span class="p">(</span><span class="n">symbol</span> <span class="o">=</span> <span class="s1">&#39;SPY&#39;</span><span class="p">,</span> <span class="n">start_date</span> <span class="o">=</span> <span class="s1">&#39;2012-11-03&#39;</span><span class="p">)</span>
+<span class="n">pcr_spy</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;PCR&#39;</span><span class="p">:</span> <span class="s1">&#39;Put/Call Ratio&#39;</span><span class="p">})</span>
+</code></pre></div><p><img src="https://user-images.githubusercontent.com/85772166/199892365-f0ece3fa-307f-41cd-9326-d515f1d8b716.png" alt="openbb.stocks.options.pcr"  title="openbb.stocks.options.pcr" /></p>
+<p>The list of expiration dates is generated with:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">option_expirations</span><span class="p">(</span><span class="s1">&#39;SPY&#39;</span><span class="p">)</span>
+</code></pre></div><p>Get the raw DataFrame for an options chain from yFinance by using:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">SPY221111</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">chains_yf</span><span class="p">(</span><span class="n">symbol</span> <span class="o">=</span> <span class="s1">&#39;SPY&#39;</span><span class="p">,</span> <span class="n">expiry</span> <span class="o">=</span> <span class="s1">&#39;2022-11-11&#39;</span><span class="p">)</span>
+
+<span class="n">SPY221111</span>
+</code></pre></div><p><img src="https://user-images.githubusercontent.com/85772166/199900266-668af99d-ae72-4bca-9b40-14228b25279b.png" alt="openbb.stocks.options.chains_yf"  title="openbb.stocks.options.chains_yf" /></p>
+<p>Getting all option chains for the underlying symbol as a single Pandas DataFrame requires a little bit of scripting prior to analysis. This will query Tradier as the data source:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">openbb_terminal.sdk</span> <span class="kn">import</span> <span class="n">openbb</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">expirations</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">option_expirations</span><span class="p">(</span><span class="n">symbol</span> <span class="o">=</span> <span class="s1">&#39;SPY&#39;</span><span class="p">)</span>
+<span class="n">options_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">expirations</span> <span class="ow">in</span> <span class="n">expirations</span><span class="p">:</span>
+    <span class="n">options_df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">chains</span><span class="p">(</span><span class="n">symbol</span> <span class="o">=</span> <span class="s1">&#39;SPY&#39;</span><span class="p">,</span> <span class="n">expiry</span> <span class="o">=</span> <span class="n">expirations</span><span class="p">))</span>
+  
+<span class="n">options_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">options_df</span><span class="p">)</span>
+
+<span class="n">options_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">keys</span> <span class="o">=</span> <span class="s1">&#39;symbol&#39;</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="n">options_df</span>
+</code></pre></div><p>Depending on the depth of options available, compiling the data may take upwards of thirty seconds.</p>
+<p><img src="https://user-images.githubusercontent.com/85772166/199893166-35ef062d-c16e-464d-a392-378ef4c6a1ee.png" alt="DataFrame With all Expirations"  title="DataFrame With all Expirations" /></p>
+
     </article>
  
 
