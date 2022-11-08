@@ -793,6 +793,8 @@ main:
             ref: terminal/forecast/rsi
           - name: season
             ref: terminal/forecast/season
+          - name: seasonalnaive
+            ref: terminal/forecast/seasonalnaive
           - name: show
             ref: terminal/forecast/show
           - name: signal

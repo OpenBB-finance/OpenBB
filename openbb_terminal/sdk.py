@@ -1997,6 +1997,10 @@ forecast_extras = {
         "model": "openbb_terminal.forecast.autoets_model.get_autoets_data",
         "view": "openbb_terminal.forecast.autoets_view.display_autoets_forecast",
     },
+    "forecast.seasonalnaive": {
+        "model": "openbb_terminal.forecast.seasonalnaive_model.get_seasonalnaive_data",
+        "view": "openbb_terminal.forecast.seasonalnaive_view.display_seasonalnaive_forecast",
+    },
     "forecast.expo": {
         "model": "openbb_terminal.forecast.expo_model.get_expo_data",
         "view": "openbb_terminal.forecast.expo_view.display_expo_forecast",
