@@ -239,8 +239,6 @@ class PortfolioController(BaseController):
         choices["metric"]["--rfr"] = zero_to_hundred_detailed
         choices["metric"]["-r"] = "--rfr"
         choices["perf"] = {
-            "--period": {c: {} for c in portfolio_helper.PERIODS},
-            "-p": "--period",
             "--show_trades": {},
             "-t": "--show_trades",
         }
@@ -657,17 +655,6 @@ class PortfolioController(BaseController):
             dest="show_trades",
             help="Whether to show performance on all trades in comparison to the benchmark.",
         )
-        parser.add_argument(
-            "-p",
-            "--period",
-            type=str,
-            choices=portfolio_helper.PERIODS,
-            dest="period",
-            default="all",
-            help="The file to be loaded",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-p")
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
@@ -678,7 +665,6 @@ class PortfolioController(BaseController):
 
                 portfolio_view.display_performance_vs_benchmark(
                     self.portfolio,
-                    ns_parser.period,
                     ns_parser.show_trades,
                 )
 
