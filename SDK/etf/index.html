@@ -9,12 +9,15 @@
 
 
 
-    <meta name="description" content="OpenBB Terminal Documentation">
+    <meta name="description" content="The ETF module wraps the functions from the ETF menu, within the OpenBB Terminal, allowing programmatic access to the commands. Import the OpenBB SDK module, and then find the ETF functions similarly to how the Terminal menus are navigated. The code completion will be activated after entering the . in: openbb.etf
+from openbb_terminal.sdk import openbb import pandas as pd %matplotlib widget How to Use    ETFs are categorized into different buckets, use.">
 
+
+    <meta name="keywords" content="etf,,etfs,,etn,,fund,,funds,,blackrock,,vanguard,,fidelity,,statestreet,,spdr,,exchange-traded,,SPY,,QQQ,,TQQQ,,SQQQ">
 
 
     <title>
-      etf | OpenBB Terminal Documentation
+      Introduction to ETF | OpenBB Terminal Documentation
     </title>
 
     <link rel="icon" href="/OpenBBTerminal/favicon/favicon-32x32.png" type="image/x-icon">
@@ -47179,7 +47182,7 @@ code, img {
         
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>OpenBB Terminal Documentation</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/SDK/' href='/OpenBBTerminal/SDK/'><span itemprop='name'>OpenBB Python SDK</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>etf</span><meta itemprop='position' content='4' /></li>
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>OpenBB Terminal Documentation</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/SDK/' href='/OpenBBTerminal/SDK/'><span itemprop='name'>OpenBB Python SDK</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Introduction to ETF</span><meta itemprop='position' content='4' /></li>
     
 
     
@@ -47202,8 +47205,51 @@ code, img {
 </div>
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
-        <h1>etf</h1>
-        
+        <h1>Introduction to ETF</h1>
+        <p>The ETF module wraps the functions from the ETF menu, within the OpenBB Terminal, allowing programmatic access to the commands. Import the OpenBB SDK module, and then find the ETF functions similarly to how the Terminal menus are navigated. The code completion will be activated after entering the <code>.</code> in: <code>openbb.etf</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">openbb_terminal.sdk</span> <span class="kn">import</span> <span class="n">openbb</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">widget</span>
+</code></pre></div><p><img src="https://user-images.githubusercontent.com/85772166/200064234-7de67c2a-a20e-42fe-adac-ba589c08d8ac.png" alt="ETF Module"  title="The ETF Module" /></p>
+<div class="gdoc-page__anchorwrap">
+    <h2 id="how-to-use">
+        How to Use
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/etf/#how-to-use" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor How to Use" href="#how-to-use">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h2>
+</div><p>ETFs are categorized into different buckets, use. the code block below as a way to generate the list of all categories:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">etf_list</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">openbb</span><span class="o">.</span><span class="n">etf</span><span class="o">.</span><span class="n">etf_by_category</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+<span class="n">etf_list</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">,</span> <span class="s1">&#39;family&#39;</span><span class="p">])</span>
+<span class="n">etf_list</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;total_assets&#39;</span><span class="p">],</span> <span class="n">ascending</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+
+<span class="n">categories</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">etf_list</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">())</span>
+</code></pre></div><p><img src="https://user-images.githubusercontent.com/85772166/200064425-e333220c-cf5f-4d9c-a544-eba508dc9afe.png" alt="ETF Categories"  title="ETF Categories" /></p>
+<p>After determining the category to research, the same code block can be repeated, replacing the empty category in the syntax:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">etf_category</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">openbb</span><span class="o">.</span><span class="n">etf</span><span class="o">.</span><span class="n">etf_by_category</span><span class="p">(</span><span class="s1">&#39;Trading--Leveraged Equity&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+<span class="n">etf_category</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;total_assets&#39;</span><span class="p">],</span> <span class="n">ascending</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+</code></pre></div><p><img src="https://user-images.githubusercontent.com/85772166/200064491-378f5ad1-bf28-426a-ace9-a0891329b7e5.png" alt="Leveraged ETFs"  title="Leveraged ETFs" /></p>
+<p>A list of all tickers in the category can be generated from the index of the DataFrame:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">tickers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">etf_category</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+</code></pre></div><p>This list of tickers can then be used for comparison analysis, or portfolio optimization. For example, comparing the performance metrics of all Technology ETFs available:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">performance</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">stocks</span><span class="o">.</span><span class="n">ca</span><span class="o">.</span><span class="n">screener</span><span class="p">(</span><span class="n">similar</span> <span class="o">=</span> <span class="n">tickers</span><span class="p">,</span> <span class="n">data_type</span> <span class="o">=</span> <span class="s1">&#39;performance&#39;</span><span class="p">)</span>
+<span class="n">performance</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Perf Quart&#39;</span><span class="p">])</span>
+</code></pre></div><p><img src="https://user-images.githubusercontent.com/85772166/200064802-d91b4552-e912-4c99-8c04-883f2fef18dc.png" alt="Comparing Performance Metrics of Technology ETFs"  title="Comparing Performance Metrics of Technology ETFs" /></p>
+<p>To peer into the holdings of a specific ETF:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">openbb</span><span class="o">.</span><span class="n">etf</span><span class="o">.</span><span class="n">holdings</span><span class="p">(</span><span class="s1">&#39;NXTG&#39;</span><span class="p">)</span>
+</code></pre></div><p><img src="https://user-images.githubusercontent.com/85772166/200064952-f3bd2d60-10b1-4b1a-816c-f5b8ac3a8781.png" alt="openbb.etf.holdings"  title="openbb.etf.holdings" /></p>
+<p>The ETF screener is accessible through the SDK. Values for the screener are set in the file: <code>~/OpenBBTerminal/openbb_terminal/etf/screener/presets/etf_config.ini</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">openbb</span><span class="o">.</span><span class="n">etf</span><span class="o">.</span><span class="n">scr</span><span class="o">.</span><span class="n">screen</span><span class="p">(</span><span class="n">preset</span><span class="o">=</span><span class="s1">&#39;etf_config.ini&#39;</span><span class="p">)</span>
+</code></pre></div><p>In this example, the configuration file is set to return results with a maximum Beta value of -2.</p>
+<p><img src="https://user-images.githubusercontent.com/85772166/200065448-b3348e25-b0e0-4555-9711-3baf7169d44d.png" alt="ETF Screener"  title="ETF Screener" /></p>
+<p>The current top gainers, losers, and volume for ETFs is returned with:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">openbb</span><span class="o">.</span><span class="n">etf</span><span class="o">.</span><span class="n">disc</span><span class="o">.</span><span class="n">mover</span><span class="p">(</span><span class="n">sort_type</span> <span class="o">=</span> <span class="s1">&#39;decliners&#39;</span><span class="p">)</span>
+
+<span class="n">openbb</span><span class="o">.</span><span class="n">etf</span><span class="o">.</span><span class="n">disc</span><span class="o">.</span><span class="n">mover</span><span class="p">(</span><span class="n">sort_type</span> <span class="o">=</span> <span class="s1">&#39;gainers&#39;</span><span class="p">)</span>
+
+<span class="n">openbb</span><span class="o">.</span><span class="n">etf</span><span class="o">.</span><span class="n">disc</span><span class="o">.</span><span class="n">mover</span><span class="p">(</span><span class="n">sort_type</span> <span class="o">=</span> <span class="s1">&#39;active&#39;</span><span class="p">)</span>
+</code></pre></div><p><img src="https://user-images.githubusercontent.com/85772166/200065107-e85c93a7-9cab-4298-b701-0230a171eb6a.png" alt="openbb.etf.disc.mover()"  title="openbb.etf.disc.mover()" /></p>
+
     </article>
  
 
