@@ -1989,9 +1989,17 @@ forecast_extras = {
     "forecast.roc": {"model": "openbb_terminal.forecast.forecast_model.add_roc"},
     "forecast.mom": {"model": "openbb_terminal.forecast.forecast_model.add_momentum"},
     "forecast.delta": {"model": "openbb_terminal.forecast.forecast_model.add_delta"},
+    "forecast.autoces": {
+        "model": "openbb_terminal.forecast.autoces_model.get_autoces_data",
+        "view": "openbb_terminal.forecast.autoces_view.display_autoces_forecast",
+    },
     "forecast.autoets": {
         "model": "openbb_terminal.forecast.autoets_model.get_autoets_data",
         "view": "openbb_terminal.forecast.autoets_view.display_autoets_forecast",
+    },
+    "forecast.seasonalnaive": {
+        "model": "openbb_terminal.forecast.seasonalnaive_model.get_seasonalnaive_data",
+        "view": "openbb_terminal.forecast.seasonalnaive_view.display_seasonalnaive_forecast",
     },
     "forecast.expo": {
         "model": "openbb_terminal.forecast.expo_model.get_expo_data",
