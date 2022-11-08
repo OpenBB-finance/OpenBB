@@ -5,7 +5,8 @@ usage: linregr [--past-covariates PAST_COVARIATES] [--all-past-covariates] [--na
                 [--export EXPORT]
 ```
 
-Perform a linear regression forecast.
+Perform a linear regression forecast:
+https://unit8co.github.io/darts/generated_api/darts.models.forecasting.linear_regression_model.html
 
 ```
 optional arguments:
