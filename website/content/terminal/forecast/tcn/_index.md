@@ -5,7 +5,7 @@ usage: tcn [--num-filters NUM_FILTERS] [--weight-norm WEIGHT_NORM] [--dilation-b
            [--residuals] [--forecast-only] [--export-pred-raw] [-h] [--export EXPORT]
 ```
 
-Perform TCN forecast.
+Perform TCN forecast: https://unit8co.github.io/darts/generated_api/darts.models.forecasting.tcn_model.html
 
 ```
 optional arguments:

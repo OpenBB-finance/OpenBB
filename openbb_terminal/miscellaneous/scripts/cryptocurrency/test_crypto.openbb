@@ -1,0 +1,37 @@
+crypto
+load eth
+
+# Find
+find eth
+find eth --key symbol
+find eth --key id
+find ethereum --key name
+find eth --limit 5
+find eth --skip 3 # Bug that only skips second similar coins but not first
+find eth --source CoinGecko
+find eth --source CoinPaprika
+find eth --source Binance
+find eth --source Coinbase
+# Bug with this source
+# find eth --source Yahoofinance
+
+# Price
+# price eth
+price eth
+
+# Headlines
+headlines
+headlines ETH
+
+# Candle
+candle
+candle --log
+
+# PRT
+prt --vs btc
+# Bug where we need --vs when we don't actually need it
+# prt --top 3
+# Bug where --price doesn't seem to do anything
+# prt --vs btc --price 1000
+
+exit

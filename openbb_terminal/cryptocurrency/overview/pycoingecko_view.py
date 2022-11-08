@@ -88,12 +88,17 @@ def display_crypto_heatmap(
             axis=1,
         )
 
+        # index needs to get sorted - was matching with different values
+        df.sort_index(inplace=True)
+        df_copy.sort_index(inplace=True)
         squarify.plot(
             df["market_cap"],
-            alpha=0.8,
+            alpha=0.5,
             color=colors,
         )
+
         text_sizes = squarify.normalize_sizes(df["market_cap"], 100, 100)
+
         rects = squarify.squarify(text_sizes, 0, 0, 100, 100)
         for la, r in zip(df_copy["symbol"], rects):
             x, y, dx, dy = r["x"], r["y"], r["dx"], r["dy"]
@@ -158,8 +163,10 @@ def display_holdings_overview(
 
             for _, row in df.iterrows():
                 ax.bar(x=row["Symbol"], height=row["Total Holdings"])
-
-            ax.set_ylabel("BTC Number")
+            if symbol == "bitcoin":
+                ax.set_ylabel("BTC Number")
+            else:
+                ax.set_ylabel("ETH Number")
             ax.get_yaxis().set_major_formatter(
                 ticker.FuncFormatter(
                     lambda x, _: lambda_long_number_format_with_type_check(x)
@@ -167,7 +174,10 @@ def display_holdings_overview(
             )
             ax.set_xlabel("Company Symbol")
             fig.tight_layout(pad=8)
-            ax.set_title("Total BTC Holdings per company")
+            if symbol == "bitcoin":
+                ax.set_title("Total BTC Holdings per company")
+            else:
+                ax.set_title("Total ETH Holdings per company")
             ax.tick_params(axis="x", labelrotation=90)
         console.print(f"\n{stats_string}\n")
         df = df.applymap(lambda x: lambda_long_number_format_with_type_check(x))
@@ -483,7 +493,7 @@ def display_categories(
 
 @log_start_end(log=logger)
 def display_exchanges(
-    sortby: str = "name",
+    sortby: str = "Rank",
     ascend: bool = False,
     limit: int = 15,
     links: bool = False,

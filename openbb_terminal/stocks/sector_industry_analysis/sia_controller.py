@@ -189,6 +189,8 @@ class SectorIndustryAnalysisController(BaseController):
             choices["mktcap"] = {c: {} for c in self.mktcap_choices}
             choices["period"] = {c: {} for c in self.period_choices}
             choices["clear"] = {c: {} for c in self.clear_choices}
+            choices["clear"]["--param"] = {c: {} for c in self.clear_choices}
+            choices["clear"]["-p"] = "--param"
             standard_cp = {
                 "--raw": {},
                 "-r": "--raw",
@@ -203,7 +205,6 @@ class SectorIndustryAnalysisController(BaseController):
                 "-m": "--metric",
                 "--raw": {},
                 "-r": "--raw",
-                "--show-all": {},
             }
             choices["vis"] = {
                 "--metric": {c: {} for c in self.vis_choices},
@@ -211,7 +212,6 @@ class SectorIndustryAnalysisController(BaseController):
                 "--currency": None,
                 "-c": "--currency",
                 "--raw": {},
-                "--show-all": {},
             }
 
             choices["support"] = self.SUPPORT_CHOICES
@@ -719,7 +719,7 @@ class SectorIndustryAnalysisController(BaseController):
             "-m",
             "--metric",
             dest="metric",
-            required="-h" not in other_args and "--show-all" not in other_args,
+            required="-h" not in other_args,
             help="Metric to visualize",
             choices=self.metric_choices,
         )
@@ -830,7 +830,7 @@ class SectorIndustryAnalysisController(BaseController):
             "-m",
             "--metric",
             dest="metric",
-            required="-h" not in other_args and "--show-all" not in other_args,
+            required="-h" not in other_args,
             help="Metric to visualize",
             choices=self.vis_choices,
         )

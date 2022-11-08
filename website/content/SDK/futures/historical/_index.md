@@ -18,7 +18,7 @@ Get historical futures [Source: Yahoo Finance]
         Dictionary with sector weightings allocation
 
 ## Getting charts 
-### futures.historical(tickers: List[str], expiry: str = '', start_date: str = '2019-10-25', raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
+### futures.historical(tickers: List[str], expiry: str = '', start_date: str = '2019-11-04', raw: bool = False, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True)
 
 Display historical futures [Source: Yahoo Finance]
 

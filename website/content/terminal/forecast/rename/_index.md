@@ -17,7 +17,7 @@ optional arguments:
 Example:
 ```
 2022 Jul 23, 10:16 (🦋) /forecast/ $ show AAPL
-AAPL has following shape (rowxcolumn): (759, 7)
+AAPL dataset has shape (row, column): (759, 7)
 
                   Dataset AAPL | Showing 10 of 759 rows
 ┏━━━┳━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┓
@@ -47,7 +47,7 @@ AAPL has following shape (rowxcolumn): (759, 7)
 2022 Jul 23, 10:16 (🦋) /forecast/ $ rename AAPL -o close -n new_name
 
 2022 Jul 23, 10:16 (🦋) /forecast/ $ show AAPL
-AAPL has following shape (rowxcolumn): (759, 7)
+AAPL dataset has shape (row, column): (759, 7)
 
                    Dataset AAPL | Showing 10 of 759 rows
 ┏━━━┳━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┓

@@ -1,7 +1,7 @@
 To obtain charts, make sure to add `chart=True` as the last parameter
 
 ## Get underlying data 
-### economy.macro(parameters: list = None, countries: list = None, transform: str = '', start_date: str = '1900-01-01', end_date=datetime.date(2022, 10, 24), symbol: str = '') -> Tuple[Any, Dict[Any, Dict[Any, Any]], str]
+### economy.macro(parameters: list = None, countries: list = None, transform: str = '', start_date: str = '1900-01-01', end_date=datetime.date(2022, 11, 3), symbol: str = '') -> Tuple[Any, Dict[Any, Dict[Any, Any]], str]
 
 This functions groups the data queried from the EconDB database [Source: EconDB]
 
@@ -30,7 +30,7 @@ This functions groups the data queried from the EconDB database [Source: EconDB]
         Denomination which can be Trillions, Billions, Millions, Thousands
 
 ## Getting charts 
-### economy.macro(parameters: list = None, countries: list = None, transform: str = '', start_date: str = '1900-01-01', end_date: str = '2022-10-24', symbol: str = '', raw: bool = False, external_axes: Optional[List[axes]] = None, export: str = '', chart=True)
+### economy.macro(parameters: list = None, countries: list = None, transform: str = '', start_date: str = '1900-01-01', end_date: str = '2022-11-03', symbol: str = '', raw: bool = False, external_axes: Optional[List[axes]] = None, export: str = '', chart=True)
 
 Show the received macro data about a company [Source: EconDB]
 

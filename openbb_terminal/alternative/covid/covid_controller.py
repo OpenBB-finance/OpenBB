@@ -37,13 +37,16 @@ class CovidController(BaseController):
         super().__init__(queue)
 
         self.country = "US"
-        self.COUNTRY_LIST = pd.read_csv(country_file, sep="|", index_col=None)[
-            "Countries"
-        ].to_list()
+        countries_df = pd.read_csv(country_file, sep="|", index_col=None)
+        countries_list = countries_df["Countries"].to_list()
+        self.COUNTRY_LIST = [x.lower().replace(" ", "_") for x in countries_list]
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-            choices["country"] = {c: None for c in self.COUNTRY_LIST}
+            choices["country"] = {
+                "--country": {c: None for c in self.COUNTRY_LIST},
+                "-c": "--country",
+            }
             choices["ov"] = {
                 "--raw": {},
                 "--limit": {str(c): {} for c in range(1, 1000)},
@@ -96,7 +99,9 @@ class CovidController(BaseController):
         parser.add_argument(
             "-c",
             "--country",
-            type=str,
+            type=str.lower,
+            choices=self.COUNTRY_LIST,
+            metavar="country_name",
             dest="country",
             help="Country to get data for.",
         )
@@ -105,13 +110,13 @@ class CovidController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if ns_parser.country:
-                country = ns_parser.country.title().replace("_", " ")
-                if country not in self.COUNTRY_LIST:
-                    logger.error("%s not a valid selection", country)
+                if ns_parser.country not in self.COUNTRY_LIST:
+                    logger.error("%s not a valid selection", ns_parser.country)
                     console.print(
                         f"[red]{ns_parser.country} not a valid selection.[/red]\n"
                     )
                     return
+                country = ns_parser.country.title().replace("_", " ")
                 self.country = country
                 console.print(f"[cyan]{country}[/cyan] loaded\n")
             else:
@@ -253,6 +258,9 @@ class CovidController(BaseController):
             parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
         )
         if ns_parser:
+            if ns_parser.days < 2:
+                console.print("[red]Days must be greater than 1[/red]")
+                return
             covid_view.display_case_slopes(
                 days_back=ns_parser.days,
                 limit=ns_parser.limit,

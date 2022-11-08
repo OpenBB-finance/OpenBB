@@ -272,7 +272,10 @@ def get_coins_market_info(
         "pct_from_ath",
     ]
     df = _get_coins_info_helper(symbols=symbols)[cols].sort_values(by="rank")
-    df.sort_values(by=sortby, ascending=ascend)
+    if sortby == "rank":
+        df = df.sort_values(by=sortby, ascending=not ascend)
+    else:
+        df = df.sort_values(by=sortby, ascending=ascend)
     return df
 
 
@@ -329,11 +332,14 @@ def get_list_of_exchanges(
         lambda x: "\n".join(textwrap.wrap(x, width=28)) if isinstance(x, str) else x
     )
     df.rename(
-        columns={"adjusted_rank": "rank", "confidence_score": "confidence"},
+        columns={"adjusted_rank": "Rank", "confidence_score": "confidence"},
         inplace=True,
     )
     df.columns = [x.replace("reported_", "") for x in df.columns]
-    df = df.sort_values(by=sortby, ascending=ascend)
+    if sortby == "Rank":
+        df = df.sort_values(by=sortby, ascending=not ascend)
+    else:
+        df = df.sort_values(by=sortby, ascending=ascend)
     return df
 
 

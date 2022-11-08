@@ -70,14 +70,14 @@ class ETFController(BaseController):
         "disc",
     ]
     CANDLE_COLUMNS = [
-        "AdjClose",
-        "Open",
-        "Close",
-        "High",
-        "Low",
-        "Volume",
-        "Returns",
-        "LogRet",
+        "adjclose",
+        "open",
+        "close",
+        "high",
+        "low",
+        "volume",
+        "returns",
+        "logret",
     ]
 
     PATH = "/etf/"
@@ -315,27 +315,26 @@ class ETFController(BaseController):
             if holdings.empty:
                 console.print("No company holdings found!\n")
             else:
-                self.etf_holdings = holdings.index[: ns_parser.limit].tolist()
+                console.print("Top holdings found:")
+                for val in holdings["Name"].values[: ns_parser.limit].tolist():
+                    console.print(f"   {val}")
 
-                if "N/A" in self.etf_holdings:
-                    na_tix_idx = [
-                        str(idx)
-                        for idx, item in enumerate(self.etf_holdings)
-                        if item == "N/A"
-                    ]
+                for tick, name in zip(
+                    holdings.index[: ns_parser.limit].tolist(),
+                    holdings["Name"].values[: ns_parser.limit].tolist(),
+                ):
+                    if tick != "N/A" and " " not in tick:
+                        if (
+                            "ETF" not in name
+                            and "Future" not in name
+                            and "Bill" not in name
+                            and "Portfolio" not in name
+                            and "%" not in name
+                        ):
+                            self.etf_holdings.append(tick)
 
-                    console.print(
-                        f"N/A tickers found at position {','.join(na_tix_idx)}. "
-                        "Dropping these from holdings.\n"
-                    )
-
-                self.etf_holdings = list(
-                    filter(lambda x: x != "N/A", self.etf_holdings)
-                )
-
-                console.print(
-                    f"Top company holdings found: {', '.join(self.etf_holdings)}"
-                )
+                if not self.etf_holdings:
+                    console.print("\n[red]No valid stock ticker was found![/red]")
 
         console.print()
 
@@ -480,18 +479,19 @@ class ETFController(BaseController):
         )
         parser.add_argument(
             "--sort",
+            "-s",
             choices=self.CANDLE_COLUMNS,
             default="",
-            type=str,
+            type=str.lower,
             dest="sort",
             help="Choose a column to sort by",
         )
         parser.add_argument(
             "-d",
             "--descending",
-            action="store_false",
+            action="store_true",
             dest="descending",
-            default=True,
+            default=False,
             help="Sort selected column descending",
         )
         parser.add_argument(
@@ -529,59 +529,57 @@ class ETFController(BaseController):
         )
 
         ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
+            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            if self.etf_name:
-                export_data(
-                    ns_parser.export,
-                    os.path.join(
-                        os.path.dirname(os.path.abspath(__file__)), "raw_data"
-                    ),
-                    f"{self.etf_name}",
-                    self.etf_data,
+            if not self.etf_name:
+                console.print("No ticker loaded. First use `load {ticker}`\n")
+                return
+            if ns_parser.raw:
+                qa_view.display_raw(
+                    data=self.etf_data,
+                    sortby=ns_parser.sort,
+                    ascend=not ns_parser.descending,
+                    limit=ns_parser.num,
                 )
 
-                if ns_parser.raw:
-                    qa_view.display_raw(
-                        data=self.etf_data,
-                        sortby=ns_parser.sort,
-                        descend=ns_parser.descending,
-                        limit=ns_parser.num,
-                    )
-
-                else:
-
-                    data = stocks_helper.process_candle(self.etf_data)
-                    mov_avgs = []
-
-                    if ns_parser.mov_avg:
-                        mov_list = (num for num in ns_parser.mov_avg.split(","))
-
-                        for num in mov_list:
-                            try:
-                                num = int(num)
-
-                                if num <= 1:
-                                    raise ValueError
-
-                                mov_avgs.append(num)
-                            except ValueError:
-                                console.print(
-                                    f"[red]{num} is not a valid moving average, must be an integer greater than 1."
-                                )
-
-                    stocks_helper.display_candle(
-                        symbol=self.etf_name,
-                        data=data,
-                        use_matplotlib=ns_parser.plotly,
-                        intraday=False,
-                        add_trend=ns_parser.trendlines,
-                        ma=mov_avgs,
-                        asset_type="ETF",
-                    )
             else:
-                console.print("No ticker loaded. First use `load {ticker}`\n")
+                data = stocks_helper.process_candle(self.etf_data)
+                mov_avgs = []
+
+                if ns_parser.mov_avg:
+                    mov_list = (num for num in ns_parser.mov_avg.split(","))
+
+                    for num in mov_list:
+                        try:
+                            num = int(num)
+
+                            if num <= 1:
+                                raise ValueError
+
+                            mov_avgs.append(num)
+                        except ValueError:
+                            console.print(
+                                f"[red]{num} is not a valid moving average, must be an integer "
+                                "greater than 1.[/red]\n"
+                            )
+
+                stocks_helper.display_candle(
+                    symbol=self.etf_name,
+                    data=data,
+                    use_matplotlib=ns_parser.plotly,
+                    intraday=False,
+                    add_trend=ns_parser.trendlines,
+                    ma=mov_avgs,
+                    asset_type="ETF",
+                )
+
+            export_data(
+                ns_parser.export,
+                os.path.dirname(os.path.abspath(__file__)),
+                f"{self.etf_name}",
+                self.etf_data,
+            )
 
     @log_start_end(log=logger)
     def call_pir(self, other_args):

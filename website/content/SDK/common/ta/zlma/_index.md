@@ -1,11 +1,11 @@
 ## Get underlying data 
-### common.ta.zlma(data: pandas.core.frame.DataFrame, length: int = 50, offset: int = 0) -> pandas.core.frame.DataFrame
+### common.ta.zlma(data: pandas.core.series.Series, length: int = 50, offset: int = 0) -> pandas.core.frame.DataFrame
 
 Gets zero-lagged exponential moving average (ZLEMA) for stock
 
     Parameters
     ----------
-    data: pd.DataFrame
+    data: pd.Series
         Dataframe of dates and prices
     length: int
         Length of EMA window
