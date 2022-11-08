@@ -34,10 +34,11 @@ def check_suppress_logging(suppress_dict: dict) -> bool:
     bool
         True if logging shall be suppressed, False otherwise
     """
-    for _, value in suppress_dict.items():
-        for ele in format_stack():
+    for ele in format_stack():
+        for _, value in suppress_dict.items():
             if value in ele:
                 return True
+
     return False
 
 
