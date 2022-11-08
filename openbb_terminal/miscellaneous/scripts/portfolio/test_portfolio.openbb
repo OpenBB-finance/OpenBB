@@ -32,16 +32,8 @@ metric calmar
 metric kelly
 metric payoff
 metric profitfactor
+perf
 perf -t
-perf -p mtd
-perf -p qtd
-perf -p ytd
-perf -p 3m
-perf -p 6m
-perf -p 1y
-perf -p 5y
-perf -p 10y
-perf -p all
 holdv
 holdv --unstack --raw -l 4
 holdp
