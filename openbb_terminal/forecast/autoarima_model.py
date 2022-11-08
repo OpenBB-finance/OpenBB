@@ -82,12 +82,8 @@ def get_autoarima_data(
 
     try:
         # Model Init
-        model = AutoARIMA(
-            season_length=int(seasonal_periods),
-        )
-        fcst = StatsForecast(
-            df=ticker_series, models=[model], freq=freq, verbose=True
-        )
+        model = AutoARIMA(season_length=int(seasonal_periods))
+        fcst = StatsForecast(df=ticker_series, models=[model], freq=freq, verbose=True)
     except Exception as e:  # noqa
         error = str(e)
         if "got an unexpected keyword argument" in error:

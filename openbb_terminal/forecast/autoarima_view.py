@@ -34,7 +34,7 @@ def display_autoarima_forecast(
     export_pred_raw: bool = False,
     external_axes: Optional[List[plt.axes]] = None,
 ):
-    """Display Automatic ARIMA model. 
+    """Display Automatic ARIMA model.
 
     Parameters
     ----------
