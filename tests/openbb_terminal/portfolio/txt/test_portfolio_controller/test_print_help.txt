@@ -10,12 +10,6 @@ Loaded transactions file:
 Risk Free Rate:   0.00%
 Benchmark: 
 
-Metrics:[unvl]
-    summary          all portfolio vs benchmark metrics for a certain period of choice
-    alloc            allocation on an asset, sector, countries or regions basis
-    metric           portfolio vs benchmark metric for all different periods
-    perf             performance of the portfolio versus benchmark[/unvl]
-
 Graphs:[unvl]
     holdv            holdings of assets (absolute value)
     holdp            portfolio holdings of assets (in percentage)
@@ -29,6 +23,12 @@ Graphs:[unvl]
     rsort            rolling sortino
     rbeta            rolling beta
 [/unvl]
+Metrics:[unvl]
+    summary          all portfolio vs benchmark metrics for a certain period of choice
+    alloc            allocation on an asset, sector, countries or regions basis
+    metric           portfolio vs benchmark metric for all different periods
+    perf             performance of the portfolio versus benchmark[/unvl]
+
 Risk Metrics:[unvl]
     var              display value at risk
     es               display expected shortfall
