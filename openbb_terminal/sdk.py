@@ -2002,9 +2002,9 @@ forecast_extras = {
     "forecast.roc": {"model": "openbb_terminal.forecast.forecast_model.add_roc"},
     "forecast.mom": {"model": "openbb_terminal.forecast.forecast_model.add_momentum"},
     "forecast.delta": {"model": "openbb_terminal.forecast.forecast_model.add_delta"},
-    "forecast.beststatsmodel": {
-        "model": "openbb_terminal.forecast.beststatsmodel_model.get_beststatsmodel_data",
-        "view": "openbb_terminal.forecast.beststatsmodel_view.display_beststatsmodel_forecast",
+    "forecast.autoselect": {
+        "model": "openbb_terminal.forecast.autoselect_model.get_autoselect_data",
+        "view": "openbb_terminal.forecast.autoselect_view.display_autoselect_forecast",
     "forecast.autoces": {
         "model": "openbb_terminal.forecast.autoces_model.get_autoces_data",
         "view": "openbb_terminal.forecast.autoces_view.display_autoces_forecast",

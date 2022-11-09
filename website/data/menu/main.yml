@@ -749,8 +749,8 @@ main:
             ref: terminal/forecast/autoces
           - name: autoets
             ref: terminal/forecast/autoets
-          - name: beststatsmodel
-            ref: terminal/forecast/beststatsmodel
+          - name: autoselect 
+            ref: terminal/forecast/autoselect
           - name: brnn
             ref: terminal/forecast/brnn
           - name: clean

@@ -1041,7 +1041,7 @@ en:
   forecast/atr: Add Average True Range
   forecast/signal: Add Price Signal (short vs. long term)
   forecast/_tsforecasting_: TimeSeries Forecasting
-  forecast/beststatsmodel: Select best statistical model from AutoARIMA, AutoETS, AutoCES, MSTL, etc.
+  forecast/autoselect: Select best statistical model from AutoARIMA, AutoETS, AutoCES, MSTL, etc.
   forecast/autoces: Automatic Complex Exponential Smoothing Model
   forecast/autoets: Automatic ETS (Error, Trend, Seasonality) Model
   forecast/arima: Arima (Non-darts)
