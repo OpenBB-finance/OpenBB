@@ -11,7 +11,7 @@ class MetadataBuilder:
     @staticmethod
     def build_dir_list(trail: str, trail_map: TrailMap) -> List[str]:
         option_list = []
-        for key in trail_map.map_list:
+        for key in trail_map.map_dict:
             if trail == "":
                 option = key.split(".")[0]
             elif key.startswith(trail):

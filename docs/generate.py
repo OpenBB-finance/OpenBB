@@ -4,7 +4,7 @@ import importlib
 import os
 from ruamel.yaml import YAML
 
-from openbb_terminal.sdk import functions
+from openbb_terminal.core.library.trail_map import TrailMap
 
 # NOTE: The main.yml and documentation _index.md files are automaticallty overridden
 # every time this is ran. Folder level _index.md files are NOT overridden after creation
@@ -12,6 +12,7 @@ from openbb_terminal.sdk import functions
 yaml = YAML()
 yaml.indent(mapping=2, sequence=4, offset=2)
 
+functions = TrailMap().map_dict
 
 def all_functions() -> List[Tuple[str, str, Callable[..., Any]]]:
     """Uses the base SDK functions dictionary to get a list of all functions we have linked

@@ -65,31 +65,31 @@ class Operation:
 
     @classmethod
     def __get_model(cls, trail: str, trail_map: TrailMap) -> Optional[Callable]:
-        map_list = trail_map.map_list
+        map_dict = trail_map.map_dict
         model = None
 
-        if trail in map_list:
-            if "model" in map_list[trail] and map_list[trail]["model"]:
-                model_path = map_list[trail]["model"]
+        if trail in map_dict:
+            if "model" in map_dict[trail] and map_dict[trail]["model"]:
+                model_path = map_dict[trail]["model"]
                 model = cls.__get_method(method_path=model_path)
 
         return model
 
     @classmethod
     def __get_view(cls, trail: str, trail_map: TrailMap) -> Optional[Callable]:
-        map_list = trail_map.map_list
+        map_dict = trail_map.map_dict
         view = None
 
-        if trail in map_list:
-            if "view" in map_list[trail] and map_list[trail]["view"]:
-                view_path = map_list[trail]["view"]
+        if trail in map_dict:
+            if "view" in map_dict[trail] and map_dict[trail]["view"]:
+                view_path = map_dict[trail]["view"]
                 view = cls.__get_method(method_path=view_path)
 
         return view
 
     @staticmethod
     def is_valid(trail: str, trail_map: TrailMap) -> bool:
-        return trail in trail_map.map_list
+        return trail in trail_map.map_dict
 
     @property
     def trail(self) -> str:

@@ -1,6 +1,6 @@
 from importlib import import_module
 from typing import Callable
-from openbb_terminal.core.library.sdk import trail_map
+from openbb_terminal.sdk import trail_map
 
 
 def __get_method(method_path: str) -> Callable:
@@ -12,18 +12,18 @@ def __get_method(method_path: str) -> Callable:
 
 
 def test_load_models():
-    map_list = trail_map.map_list
+    map_dict = trail_map.map_dict
 
-    for trail in map_list:
-        if "model" in map_list[trail]:
-            method_path = map_list[trail]["model"]
+    for trail in map_dict:
+        if "model" in map_dict[trail]:
+            method_path = map_dict[trail]["model"]
             __get_method(method_path=method_path)
 
 
 def test_load_views():
-    map_list = trail_map.map_list
+    map_dict = trail_map.map_dict
 
-    for trail in map_list:
-        if "view" in map_list[trail]:
-            method_path = map_list[trail]["model"]
+    for trail in map_dict:
+        if "view" in map_dict[trail]:
+            method_path = map_dict[trail]["model"]
             __get_method(method_path=method_path)
