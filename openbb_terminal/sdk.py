@@ -51,6 +51,7 @@ TerminalStyle().applyMPLstyle()
 SUPPRESS_LOGGING_CLASSES = {
     ReportController: "ReportController",
     DashboardsController: "DashboardsController",
+    "test_load_sdk": "test_load_sdk",
 }
 
 
@@ -1948,6 +1949,18 @@ functions = {
     "keys.santiment": {"model": "openbb_terminal.keys_model.set_santiment_key"},
     "keys.tokenterminal": {"model": "openbb_terminal.keys_model.set_tokenterminal_key"},
     "keys.shroom": {"model": "openbb_terminal.keys_model.set_shroom_key"},
+    "futures.search": {
+        "model": "openbb_terminal.futures.yfinance_model.get_search_futures",
+        "view": "openbb_terminal.futures.yfinance_view.display_search",
+    },
+    "futures.historical": {
+        "model": "openbb_terminal.futures.yfinance_model.get_historical_futures",
+        "view": "openbb_terminal.futures.yfinance_view.display_historical",
+    },
+    "futures.curve": {
+        "model": "openbb_terminal.futures.yfinance_model.get_curve_futures",
+        "view": "openbb_terminal.futures.yfinance_view.display_curve",
+    },
 }
 forecast_extras = {
     "forecast.load": {"model": "openbb_terminal.common.common_model.load"},
@@ -2044,18 +2057,6 @@ forecast_extras = {
     "forecast.nhits": {
         "model": "openbb_terminal.forecast.nhits_model.get_nhits_data",
         "view": "openbb_terminal.forecast.nhits_view.display_nhits_forecast",
-    },
-    "futures.search": {
-        "model": "openbb_terminal.futures.yfinance_model.get_search_futures",
-        "view": "openbb_terminal.futures.yfinance_view.display_search",
-    },
-    "futures.historical": {
-        "model": "openbb_terminal.futures.yfinance_model.get_historical_futures",
-        "view": "openbb_terminal.futures.yfinance_view.display_historical",
-    },
-    "futures.curve": {
-        "model": "openbb_terminal.futures.yfinance_model.get_curve_futures",
-        "view": "openbb_terminal.futures.yfinance_view.display_curve",
     },
 }
 
