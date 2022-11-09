@@ -675,7 +675,7 @@ With:
     The function can be loaded in SDK factory as an endpoint and user can get result by passing the class instance.
 
     ```python
-    from openbb_terminal.core.library.sdk import openbb
+    from openbb_terminal.sdk import openbb
     from openbb_terminal.sdk import Portfolio
 
     transactions = Portfolio.read_orderbook("../../portfolio/holdings/example.csv")
