@@ -149,7 +149,7 @@ class Operation:
             kwargs.pop("chart")
         method_result = method_chosen(*args, **kwargs)
 
-        operation_logger.log_after_call()
+        operation_logger.log_after_call(method_result=method_result)
 
         return method_result
 
@@ -281,12 +281,30 @@ class OperationLogger:
 
     def log_after_call(
         self,
+        method_result: Any,
     ):
         if not cfg.LOGGING_SUPPRESS:
             logger = self.__logger
+            self.__log_exception_if_any(
+                logger=logger,
+                method_result=method_result,
+                method_chosen=self.__method_chosen,
+            )
             self.__log_end(
                 logger=logger,
                 method_chosen=self.__method_chosen,
+            )
+
+    @staticmethod
+    def __log_exception_if_any(
+        logger: Logger,
+        method_chosen: Callable,
+        method_result: Any,
+    ):
+        if isinstance(method_result, Exception):
+            logger.exception(
+                f"Exception: {method_result}",
+                extra={"func_name_override": method_chosen.__name__},
             )
 
     @staticmethod
