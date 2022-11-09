@@ -5,7 +5,7 @@ from inspect import signature
 import streamlit as st
 import pandas as pd
 import yfinance as yf
-from openbb_terminal.core.library.sdk import openbb
+from openbb_terminal.sdk import openbb
 from openbb_terminal.forecast import helpers
 from openbb_terminal.rich_config import console
 
