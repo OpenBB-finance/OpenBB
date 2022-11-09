@@ -2,7 +2,12 @@
     :language: python
     :class: highlight
 
+<<<<<<< HEAD:website/content/SDK/crypto/dd/eb/_index.md
+## Get underlying data 
+### crypto.dd.eb(symbol: str, exchange: str = 'binance', start_date: int = 1262322000, end_date: int = 1667592183) -> pandas.core.frame.DataFrame
+=======
 |
+>>>>>>> main:website/content/SDK/crypto/dd/eb/_index.rst
 
 To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
