@@ -708,14 +708,14 @@ def plot_plot(
         else:
             x = "strike"
             console.print(
-                f"[red]'{x}' is not a valid options. Defaulting to `strike`[/red]\n"
+                f"[red]'{x}' is not a valid option. Defaulting to `strike`.[/red]\n"
             )
         if y in convert:
             y = convert[y]
         else:
             y = "impliedVolatility"
             console.print(
-                f"[red]'{y}' is not a valid options. Defaulting to `impliedVolatility`[/red]\n"
+                f"[red]'{y}' is not a valid option. Defaulting to `impliedVolatility`.[/red]\n"
             )
 
     varis = op_helpers.opt_chain_cols
