@@ -1,5 +1,5 @@
 stocks
-load ${TICKER}
+load aapl
 qa
 summary
 normality
