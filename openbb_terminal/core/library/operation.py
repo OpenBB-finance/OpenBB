@@ -204,7 +204,7 @@ class OperationLogger:
             method_chosen.__module__, merged_args
         )
 
-        logging_info:Dict[str, Any] = {}
+        logging_info: Dict[str, Any] = {}
         logging_info["INPUT"] = {key: str(value) for key, value in merged_args.items()}
         logging_info["VIRTUAL_PATH"] = trail
         logging_info["CHART"] = "chart" in kwargs and kwargs["chart"] is True
