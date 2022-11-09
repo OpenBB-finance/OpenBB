@@ -435,13 +435,14 @@ def test_call_func_expect_queue(expected_queue, func, queue):
                 map_filter="world",
             ),
         ),
-        (
-            "call_ycrv",
-            ["--country=portugal", "--export=csv", "--source=Investing"],
-            "investingcom_view.display_yieldcurve",
-            [],
-            dict(country="portugal", export="csv", raw=False),
-        ),
+        # TODO: Add `Investing` to sources again when `investpy` is fixed
+        # (
+        #     "call_ycrv",
+        #     ["--country=portugal", "--export=csv", "--source=Investing"],
+        #     "investingcom_view.display_yieldcurve",
+        #     [],
+        #     dict(country="portugal", export="csv", raw=False),
+        # ),
         (
             "call_spread",
             [

@@ -37,6 +37,7 @@ logger = logging.getLogger(__name__)
 SUPPRESS_LOGGING_CLASSES = {
     ReportController: "ReportController",
     DashboardsController: "DashboardsController",
+    "test_load_sdk": "test_load_sdk",
 }
 
 
