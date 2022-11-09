@@ -55,9 +55,8 @@ class Trailmap:
     def get_docstrings(self) -> None:
         """Gets the function docstrings. We get the short and long docstrings."""
 
-        for func in [self.model, self.view]:
+        for key, func in zip(["model", "view"], [self.model, self.view]):
             if func:
-                key = "model" if func == self.model else "view"
                 attr = getattr(
                     importlib.import_module("openbb_terminal.sdk_core.sdk_init"),
                     func.split(".")[0],
@@ -219,7 +218,7 @@ class BuildCategoryModelClasses:
                 category = f"{category.title().replace(' ', '')}Root"
 
             f.write(
-                f"# flake8: noqa\r{import_cat_class}import openbb_terminal.sdk_init as lib\r\r\r"
+                f"# flake8: noqa\r{import_cat_class}import openbb_terminal.sdk_core.sdk_init as lib\r\r\r"
             )
 
             self.write_category(category, d, f)
@@ -259,3 +258,7 @@ def generate():
             trailmaps.append(trail_map)
 
     BuildCategoryModelClasses(trailmaps, "sdk_modules").build()
+
+
+if __name__ == "__main__":
+    generate()
