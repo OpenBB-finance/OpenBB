@@ -435,8 +435,8 @@ def get_hashrate(
 def get_exchange_balances(
     symbol: str,
     exchange: str = "binance",
-    start_date: int = int(datetime(2010, 1, 1).timestamp()),
-    end_date: int = int(datetime.now().timestamp()),
+    start_date: str = "2010-01-01",
+    end_date: str = datetime.now().strftime("%Y-%m-%d"),
 ) -> pd.DataFrame:
     """Returns the total amount of coins held on exchange addresses in units and percentage.
     [Source: https://glassnode.com]
@@ -447,16 +447,18 @@ def get_exchange_balances(
         Asset to search active addresses (e.g., BTC)
     exchange : str
         Exchange to check net position change (e.g., binance)
-    start_date : int
-        Initial date timestamp (e.g., 1_614_556_800)
-    end_date : int
-        End date timestamp (e.g., 1_614_556_800)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
 
     Returns
     -------
     pd.DataFrame
         total amount of coins in units/percentage and symbol price over time
     """
+    dt_start_date = str_date_to_timestamp(start_date)
+    dt_end_date = str_date_to_timestamp(end_date)
 
     url = api_url + "distribution/balance_exchanges"
     url2 = api_url + "distribution/balance_exchanges_relative"
@@ -467,8 +469,8 @@ def get_exchange_balances(
         "a": symbol,
         "i": "24h",
         "e": exchange,
-        "s": str(start_date),
-        "u": str(end_date),
+        "s": str(dt_start_date),
+        "u": str(dt_end_date),
     }
     df = pd.DataFrame()
 
