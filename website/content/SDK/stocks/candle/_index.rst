@@ -1,11 +1,6 @@
-<<<<<<< HEAD:website/content/SDK/stocks/candle/_index.md
-## Get underlying data 
-### stocks.candle(symbol: str, data: pandas.core.frame.DataFrame = None, use_matplotlib: bool = True, intraday: bool = False, add_trend: bool = False, ma: Optional[Iterable[int]] = None, asset_type: str = '', start_date: datetime.datetime = datetime.datetime(2019, 10, 31, 16, 3, 2, 269455), interval: int = 1440, end_date: datetime.datetime = datetime.datetime(2022, 11, 4, 16, 3, 2, 269462), prepost: bool = False, source: str = 'YahooFinance', iexrange: str = 'ytd', weekly: bool = False, monthly: bool = False, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, raw: bool = False, yscale: str = 'linear')
-=======
 .. role:: python(code)
     :language: python
     :class: highlight
->>>>>>> main:website/content/SDK/stocks/candle/_index.rst
 
 |
 

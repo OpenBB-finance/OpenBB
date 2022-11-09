@@ -1,11 +1,6 @@
-<<<<<<< HEAD:website/content/SDK/forex/load/_index.md
-## Get underlying data 
-### forex.load(to_symbol: str, from_symbol: str, resolution: str = 'd', interval: str = '1day', start_date: str = '2021-11-04', source: str = 'YahooFinance', verbose: bool = True) -> pandas.core.frame.DataFrame
-=======
 .. role:: python(code)
     :language: python
     :class: highlight
->>>>>>> main:website/content/SDK/forex/load/_index.rst
 
 |
 
