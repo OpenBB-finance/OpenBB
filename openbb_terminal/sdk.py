@@ -27,9 +27,18 @@ trail = ""
 trail_map = TrailMap()
 metadata = MetadataBuilder.build(trail=trail, trail_map=trail_map)
 
-
 openbb = Breadcrumb(
     metadata=metadata,
     trail=trail,
     trail_map=trail_map,
+)
+
+__all__ = (
+    theme,
+    TerminalStyle,
+    helper,
+    widgets,
+    Portfolio,
+    Coin,
+    openbb,
 )

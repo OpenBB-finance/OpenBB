@@ -52,10 +52,6 @@ class MetadataBuilder:
 
 
 class Breadcrumb:
-    @property
-    def trail(self):
-        return self.__trail
-
     def __init__(
         self,
         metadata: Optional[Metadata] = None,
@@ -83,9 +79,9 @@ class Breadcrumb:
         trail_map = trail_map or TrailMap()
         metadata = metadata or MetadataBuilder.build(trail=trail, trail_map=trail_map)
 
-        self.__metadata = metadata
-        self.__trail_map = trail_map
-        self.__trail = trail
+        self._metadata = metadata
+        self._trail_map = trail_map
+        self._trail = trail
 
         self.__doc__ = metadata.doc_string
 
@@ -93,11 +89,11 @@ class Breadcrumb:
             BreadcrumbLogger()
 
     def __dir__(self):
-        return self.__metadata.dir_list
+        return self._metadata.dir_list
 
     def __getattr__(self, name: str) -> Any:
-        trail = self.__trail
-        trail_map = self.__trail_map
+        trail = self._trail
+        trail_map = self._trail_map
 
         if trail == "":
             trail_next = name
@@ -109,7 +105,7 @@ class Breadcrumb:
                 trail=trail_next,
                 trail_map=trail_map,
             )
-        elif name in self.__metadata.dir_list:
+        elif name in self._metadata.dir_list:
             next_crumb = Breadcrumb(
                 metadata=MetadataBuilder.build(trail=trail_next, trail_map=trail_map),
                 trail=trail_next,

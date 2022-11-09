@@ -3,6 +3,9 @@ from importlib import import_module
 from logging import getLogger, Logger
 from typing import Any, Callable, Dict, List, Optional
 
+from inspect import signature
+from functools import update_wrapper
+
 import openbb_terminal.config_terminal as cfg
 
 from openbb_terminal.core.library.metadata import Metadata
@@ -124,6 +127,9 @@ class Operation:
         self.__view = view
 
         self.__doc__ = metadata.doc_string
+
+        if model:
+            self.__signature__ = signature(model)
 
     def __call__(self, *args: Any, **kwargs: Any) -> Any:
         model = self.__model
