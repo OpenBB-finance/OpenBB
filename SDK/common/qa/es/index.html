@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  common.qa.es( data: pandas.core.frame.DataFrame, use_mean: bool = False, distribution: str = &#39;normal&#39;, percentile: Union[float, int] = 99.9, portfolio: bool = False, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Gets Expected Shortfall for specified stock dataframe * **Parameters** data: pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  common.qa.es( data: pandas.core.frame.DataFrame, use_mean: bool = False, distribution: str = &#39;normal&#39;, percentile: Union[float, int] = 99.9, portfolio: bool = False, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Gets Expected Shortfall for specified stock dataframe. * **Parameters** data: pd.">
 
 
 
@@ -47526,7 +47526,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 .. raw:: html
 
     <p>
-    Gets Expected Shortfall for specified stock dataframe
+    Gets Expected Shortfall for specified stock dataframe.
     </p>
 
 * **Parameters**
@@ -47547,10 +47547,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 * **Returns**
 
-    list
-        list of ES
-    list
-        list of historical ES
+    pd.DataFrame
+        DataFrame with Expected Shortfall per percentile
 
 |
 
@@ -47573,7 +47571,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 .. raw:: html
 
     <p>
-    Displays expected shortfall
+    Displays expected shortfall.
     </p>
 
 * **Parameters**

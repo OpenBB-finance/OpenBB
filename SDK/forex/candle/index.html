@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | .. raw:: html   Getting data  forex.candle( data: pandas.core.frame.DataFrame, to_symbol: str = &#39;&#39;, from_symbol: str = &#39;&#39;, ma: Optional[Iterable[int]] = None, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart: bool = False, ) .. raw:: html  Show candle plot for fx data. * **Parameters** data : pd.DataFrame Loaded fx historical data to_symbol : str To forex symbol from_symbol : str From forex symbol ma : Optional[Iterable[int]] Moving averages external_axes: Optional[List[plt.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | .. raw:: html   Getting data  forex.candle( data: pandas.core.frame.DataFrame, to_symbol: str = &#39;&#39;, from_symbol: str = &#39;&#39;, ma: Optional[Iterable[int]] = None, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, use_matplotlib: bool = True, add_trend: bool = False, yscale: str = &#39;linear&#39;, chart: bool = False, ) .. raw:: html  Show candle plot for fx data. * **Parameters** data : pd.DataFrame Loaded fx historical data to_symbol : str To forex symbol from_symbol : str From forex symbol ma : Optional[Iterable[int]] Moving averages external_axes: Optional[List[plt.">
 
 
 
@@ -47510,6 +47510,9 @@ code, img {
     <span class="n">from_symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
     <span class="n">ma</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">external_axes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">use_matplotlib</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">add_trend</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">yscale</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;linear&#39;</span><span class="p">,</span>
     <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span></code></pre></div>
 

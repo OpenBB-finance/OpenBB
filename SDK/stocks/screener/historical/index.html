@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  stocks.screener.historical( preset_loaded: str = &#39;top_gainers&#39;, limit: int = 10, start_date: str = &#39;2022-05-12&#39;, type_candle: str = &#39;a&#39;, normalize: bool = True, chart: bool = False, ) .. raw:: html  View historical price of stocks that meet preset * **Parameters** preset_loaded: str Preset loaded to filter for tickers limit: int Number of stocks to display start_date: str Start date to display historical data, in YYYY-MM-DD format type_candle: str Type of candle to display normalize : bool Boolean to normalize all stock prices using MinMax chart: *bool* Flag to display chart * **Returns** pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  stocks.screener.historical( preset_loaded: str = &#39;top_gainers&#39;, limit: int = 10, start_date: str = &#39;2022-05-13&#39;, type_candle: str = &#39;a&#39;, normalize: bool = True, chart: bool = False, ) -&gt; Tuple[pandas.core.frame.DataFrame, List[str], bool] .. raw:: html  View historical price of stocks that meet preset * **Parameters** preset_loaded: str Preset loaded to filter for tickers limit: int Number of stocks to display start_date: str Start date to display historical data, in YYYY-MM-DD format type_candle: str Type of candle to display normalize : bool Boolean to normalize all stock prices using MinMax chart: *bool* Flag to display chart * **Returns** pd.">
 
 
 
@@ -47517,11 +47517,11 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">stocks</span><span class="o">.</span><span class="n">screener</span><span class="o">.</span><span class="n">historical</span><span class="p">(</span>
     <span class="n">preset_loaded</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;top_gainers&#39;</span><span class="p">,</span>
     <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
-    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2022-05-12&#39;</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2022-05-13&#39;</span><span class="p">,</span>
     <span class="n">type_candle</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span>
     <span class="n">normalize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-<span class="p">)</span></code></pre></div>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span></code></pre></div>
 
 .. raw:: html
 
@@ -47565,7 +47565,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">stocks</span><span class="o">.</span><span class="n">screener</span><span class="o">.</span><span class="n">historical</span><span class="p">(</span>
     <span class="n">preset_loaded</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;top_gainers&#39;</span><span class="p">,</span>
     <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
-    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2022-05-12&#39;</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2022-05-13&#39;</span><span class="p">,</span>
     <span class="n">type_candle</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span>
     <span class="n">normalize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">export</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>

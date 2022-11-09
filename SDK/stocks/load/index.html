@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | .. raw:: html   Getting data  stocks.load( symbol: str, start_date: datetime.datetime = None, interval: int = 1440, end_date: datetime.datetime = None, prepost: bool = False, source: str = &#39;YahooFinance&#39;, iexrange: str = &#39;ytd&#39;, weekly: bool = False, monthly: bool = False, verbose: bool = True, chart: bool = False, ) .. raw:: html  Load a symbol to perform analysis using the string above as a template.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | .. raw:: html   Getting data  stocks.load( symbol: str, start_date: Union[datetime.datetime, str, NoneType] = datetime.datetime( 2019, 11, 5, 17, 41, 30, 338385, chart: bool = False, ), interval: int = 1440, end_date: Union[datetime.datetime, str, NoneType] = datetime.datetime( 2022, 11, 9, 17, 41, 30, 338397, chart: bool = False, ), prepost: bool = False, source: str = &#39;YahooFinance&#39;, iexrange: str = &#39;ytd&#39;, weekly: bool = False, monthly: bool = False, verbose: bool = True, chart: bool = False, ) .">
 
 
 
@@ -47506,10 +47506,14 @@ code, img {
 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">stocks</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
     <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">start_date</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1440</span><span class="p">,</span>
-    <span class="n">end_date</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">prepost</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">NoneType</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span>
+    <span class="mi">2019</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">338385</span><span class="p">,</span> <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">),</span> <span class="n">interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1440</span><span class="p">,</span>
+    <span class="n">end_date</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">NoneType</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span>
+    <span class="mi">2022</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">338397</span><span class="p">,</span> <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">),</span> <span class="n">prepost</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">source</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;YahooFinance&#39;</span><span class="p">,</span>
     <span class="n">iexrange</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;ytd&#39;</span><span class="p">,</span>
     <span class="n">weekly</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -47556,12 +47560,12 @@ code, img {
 
     symbol: str
         Ticker to get data
-    start_date: datetime
-        Start date to get data from with
+    start_date: str or datetime, optional
+        Start date to get data from with. - datetime or string format (YYYY-MM-DD)
     interval: int
         Interval (in minutes) to get data 1, 5, 15, 30, 60 or 1440
-    end_date: datetime
-        End date to get data from with
+    end_date: str or datetime, optional
+        End date to get data from with. - datetime or string format (YYYY-MM-DD)
     prepost: bool
         Pre and After hours data
     source: str

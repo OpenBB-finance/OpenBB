@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  futures.historical( tickers: List[str], expiry: str = &#39;&#39;, chart: bool = False, ) -&gt; Dict .. raw:: html  Get historical futures [Source: Yahoo Finance] * **Parameters** tickers: List[str] List of future timeseries tickers to display expiry: str Future expiry date with format YYYY-MM chart: *bool* Flag to display chart * **Returns** Dict Dictionary with sector weightings allocation | .">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  futures.historical( symbols: List[str], expiry: str = &#39;&#39;, chart: bool = False, ) -&gt; Dict .. raw:: html  Get historical futures [Source: Yahoo Finance] * **Parameters** symbols: List[str] List of future timeseries symbols to display expiry: str Future expiry date with format YYYY-MM chart: *bool* Flag to display chart * **Returns** Dict Dictionary with sector weightings allocation | .">
 
 
 
@@ -47507,7 +47507,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
     </h3>
 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">futures</span><span class="o">.</span><span class="n">historical</span><span class="p">(</span>
-    <span class="n">tickers</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">symbols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">expiry</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
     <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span></code></pre></div>
@@ -47520,8 +47520,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 * **Parameters**
 
-    tickers: List[str]
-        List of future timeseries tickers to display
+    symbols: List[str]
+        List of future timeseries symbols to display
     expiry: str
         Future expiry date with format YYYY-MM
     chart: *bool*
@@ -47542,9 +47542,9 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
     </h3>
 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">futures</span><span class="o">.</span><span class="n">historical</span><span class="p">(</span>
-    <span class="n">tickers</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">symbols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
     <span class="n">expiry</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2019-11-09&#39;</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2019-11-10&#39;</span><span class="p">,</span>
     <span class="n">raw</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">export</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
     <span class="n">external_axes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -47559,8 +47559,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 * **Parameters**
 
-    tickers: List[str]
-        List of future timeseries tickers to display
+    symbols: List[str]
+        List of future timeseries symbols to display
     expiry: str
         Future expiry date with format YYYY-MM
     start_date : str

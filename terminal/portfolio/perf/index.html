@@ -9,9 +9,9 @@
 
 
 
-    <meta name="description" content="usage: performance [-s] [-t] [-h] Shows performance of each trade and total performance of the portfolio versus the benchmark.
-optional arguments: -s, --full_shares Whether to only make a trade with the benchmark when a full share can be bought (no partial shares). (default: False) -t, --show_trades Whether to show performance on all trades in comparison to the benchmark. (default: False) -h, --help show this help message (default: False) Example:
-2022 May 12, 06:22 (🦋) /portfolio/ $ perf -t Portfolio vs.">
+    <meta name="description" content="usage: performance [-t] [-h] Shows performance of each trade and total performance of the portfolio versus the benchmark.
+optional arguments: -t, --show_trades Whether to show performance on all trades in comparison to the benchmark. (default: False) -h, --help show this help message (default: False) Example:
+2022 May 12, 06:22 (🦋) /portfolio/ $ perf -t Portfolio vs. Benchmark - Totals ┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┓ ┃ ┃ Portfolio ┃ Benchmark ┃ Difference ┃ ┡━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━┩ │ Total Investment │ 61331.">
 
 
 
@@ -47494,15 +47494,15 @@ code, img {
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Perf</h1>
-        <pre><code>usage: performance [-s] [-t] [-h]
+        <pre><code>usage: performance [-t] [-h]
 </code></pre><p>Shows performance of each trade and total performance of the portfolio versus the benchmark.</p>
 <pre><code>optional arguments:
-  -s, --full_shares  Whether to only make a trade with the benchmark when a full share can be bought (no partial shares). (default: False)
-  -t, --show_trades  Whether to show performance on all trades in comparison to the benchmark. (default: False)
+  -t, --show_trades  Whether to show performance on all trades in comparison to the
+                     benchmark. (default: False)
   -h, --help         show this help message (default: False)
 </code></pre><p>Example:</p>
 <pre><code>2022 May 12, 06:22 (🦋) /portfolio/ $ perf -t
-            Portfolio vs. Benchmark - Totals             
+            Portfolio vs. Benchmark - Totals
 ┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃                  ┃ Portfolio ┃ Benchmark ┃ Difference ┃
 ┡━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━┩
@@ -47515,7 +47515,7 @@ code, img {
 │ Total Abs Return │ 34637.53  │ 20608.20  │ 14029.33   │
 └──────────────────┴───────────┴───────────┴────────────┘
 
-                                      Portfolio vs. Benchmark - Individual Trades                                       
+                                      Portfolio vs. Benchmark - Individual Trades
 ┏━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┓
 ┃ Date                ┃ Name  ┃ Portfolio Value ┃ % Portfolio Return ┃ Benchmark Value ┃ % Benchmark Return ┃ Alpha    ┃
 ┡━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━┩

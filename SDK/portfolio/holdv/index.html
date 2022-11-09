@@ -47540,7 +47540,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">portfolio</span><span class="o">.</span><span class="n">holdv</span><span class="p">(</span>
     <span class="n">portfolio</span><span class="p">:</span> <span class="n">openbb_terminal</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">portfolio_model</span><span class="o">.</span><span class="n">PortfolioModel</span><span class="p">,</span>
-    <span class="n">sum_assets</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">unstack</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">raw</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
     <span class="n">export</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
@@ -47558,8 +47558,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
     portfolio: Portfolio
         Portfolio object with trades loaded
-    sum_assets: bool
-        Sum assets over time
+    unstack: bool
+        Individual assets over time
     raw : bool
         To display raw data
     limit : int
