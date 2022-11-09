@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content="Get underlying data    stocks.options.hedge.calc_gamma(asset_price: float = 100, asset_volatility: float = 20, strike_price: float = 120, time_to_expiration: float = 30, risk_free_rate: float = 0)    The second-order partial-derivative with respect to the underlying asset of the Black-Scholes equation is known as gamma. Gamma refers to how the option’s delta changes when there is a change in the underlying asset price. Multiplying gamma by a &#43;-$1 change in the underlying asset, holding all other parameters constant, will give you the new value of the option’s delta.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | .. raw:: html   Getting data  stocks.options.hedge.calc_gamma( asset_price: float = 100, asset_volatility: float = 20, strike_price: float = 120, time_to_expiration: float = 30, risk_free_rate: float = 0, chart: bool = False, ) .. raw:: html  The second-order partial-derivative with respect to the underlying asset of the Black-Scholes equation is known as gamma. Gamma refers to how the option’s delta changes when there is a change in the underlying asset price.">
 
 
 
@@ -44,13 +44,55 @@ margin-bottom: 35px;
 }
 
 h1, h2, h3, h4, h5, h6 {
+  margin-top: 5px !important;
+  margin-bottom: 10px !important;
+}
+
+p.first {
   margin-top: 10px !important;
-  margin-bottom: 20px !important;
+  margin-bottom: 0px !important;
+}
+
+p.first.last {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+
+ul {
+  margin-top: 0px !important;
+}
+
+blockquote {
+  border-left: 3px solid #ffffff  !important;
+  background-color: #2b2a2a !important;
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+  font-size: 13px;
+}
+
+dl {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+dt {
+  margin-top: -5px !important;
+  margin-bottom: -5px !important;
+}
+dd {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
 }
 
 code {
 margin-top: 40px;
 margin-bottom: 40px;
+}
+
+code.language-python {
+margin-top: 10px;
+margin-bottom: 10px;
+background-color: #404040 !important;
+font-size: 13px !important;
 }
 
 body {
@@ -82,6 +124,10 @@ a:active {
 
 .gdoc-nav__list {
   margin-left: 8px;
+}
+
+ul.gdoc-nav__list ul.gdoc-nav__list > li{
+  text-transform: lowercase !important;
 }
 
 .gdoc-toc a, .gdoc-toc a:visited {
@@ -194,7 +240,7 @@ h1 {
   text-transform: uppercase;
   font-weight: 700;
   letter-spacing: 0.1em;
-  font-size:20px;
+  font-size:30px;
 }
 
 h2 {
@@ -202,10 +248,11 @@ h2 {
 }
 
 h3 {
-  font-size: 16px;
+  font-size: 16px !important;
 }
 
 p {
+  font-size: 14px;
   color: #EAEAEA !important;
 }
 
@@ -219,7 +266,7 @@ code, img {
   background-color: #404040 !important;
   color: white !important;
   border-radius: .375rem !important;
-  border: 1px solid #5a5a5a !important;
+  border: 0px solid #5a5a5a !important;
 }
 .header {
     padding-left: 1rem;
@@ -240,7 +287,8 @@ code, img {
 <link rel="alternate" type="application/rss+xml" href="https://openbb-finance.github.io/OpenBBTerminal/SDK/stocks/options/hedge/calc_gamma/index.xml" title="OpenBB Terminal Documentation" />
 
 
-<!-- Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc --> 
+<!-- Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc -->
+ 
 
   </head>
 
@@ -32179,6 +32227,37 @@ code, img {
             
             <span class="flex">
                 
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/crypto/ov/btcrb/"
+                    class="gdoc-nav__entry ">
+                    btcrb
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
                 <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/crypto/ov/cbpairs/"
                     class="gdoc-nav__entry ">
                     cbpairs
@@ -36234,7 +36313,7 @@ code, img {
             
             <span class="flex">
                 
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/sdk/forecast/plot/"
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/forecast/plot/"
                     class="gdoc-nav__entry ">
                     plot
                 </a>
@@ -37323,6 +37402,146 @@ code, img {
                 <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/forex/quote/"
                     class="gdoc-nav__entry ">
                     quote
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+</ul>
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <input type="checkbox" id="navtree-3c0cb2fa" class="gdoc-nav__toggle" >
+            <label for="navtree-3c0cb2fa" class="flex justify-between">
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/"
+                    class="gdoc-nav__entry ">
+                    funds
+                </a>
+            </span>
+            
+            <svg class="icon gdoc_keyborad_arrow_left"><use xlink:href="#gdoc_keyborad_arrow_left"></use></svg>
+            <svg class="icon gdoc_keyborad_arrow_down hidden"><use xlink:href="#gdoc_keyborad_arrow_down"></use></svg>
+            </label>
+            
+        
+
+        
+            
+
+
+
+<ul class="gdoc-nav__list">
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/info/"
+                    class="gdoc-nav__entry ">
+                    info
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/overview/"
+                    class="gdoc-nav__entry ">
+                    overview
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/search/"
+                    class="gdoc-nav__entry ">
+                    search
                 </a>
             </span>
             
@@ -47279,7 +47498,7 @@ code, img {
     <div>
         <span class="editpage">
             <svg class="icon gdoc_code" style="color: #C7C7C7;"><use xlink:href="#gdoc_code"></use></svg>
-            <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/website//content/SDK/stocks/options/hedge/calc_gamma/_index.md" style="color: #C7C7C7;">
+            <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/website//content/SDK/stocks/options/hedge/calc_gamma/_index.rst" style="color: #C7C7C7;">
                 Edit this page
             </a>
         </span>
@@ -47289,44 +47508,55 @@ code, img {
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Calc Gamma</h1>
-        <div class="gdoc-page__anchorwrap">
-    <h2 id="get-underlying-data">
-        Get underlying data
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/stocks/options/hedge/calc_gamma/#get-underlying-data" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Get underlying data" href="#get-underlying-data">
-            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
-        </a>
-    </h2>
-</div><div class="gdoc-page__anchorwrap">
-    <h3 id="stocksoptionshedgecalc_gammaasset_price-float--100-asset_volatility-float--20-strike_price-float--120-time_to_expiration-float--30-risk_free_rate-float--0">
-        stocks.options.hedge.calc_gamma(asset_price: float = 100, asset_volatility: float = 20, strike_price: float = 120, time_to_expiration: float = 30, risk_free_rate: float = 0)
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/stocks/options/hedge/calc_gamma/#stocksoptionshedgecalc_gammaasset_price-float--100-asset_volatility-float--20-strike_price-float--120-time_to_expiration-float--30-risk_free_rate-float--0" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor stocks.options.hedge.calc_gamma(asset_price: float = 100, asset_volatility: float = 20, strike_price: float = 120, time_to_expiration: float = 30, risk_free_rate: float = 0)" href="#stocksoptionshedgecalc_gammaasset_price-float--100-asset_volatility-float--20-strike_price-float--120-time_to_expiration-float--30-risk_free_rate-float--0">
-            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
-        </a>
-    </h3>
-</div><p>The second-order partial-derivative with respect to the underlying asset of the Black-Scholes equation
-is known as gamma. Gamma refers to how the option’s delta changes when there is a change in the underlying
-asset price. Multiplying gamma by a +-$1 change in the underlying asset, holding all other parameters constant,
-will give you the new value of the option’s delta. Essentially, gamma is telling us the rate of change of delta
-given a +-1 change in the underlying asset price. Gamma is always positive for long positions and
-negative for short positions.</p>
-<pre><code>Parameters
-----------
-asset_price: int
-    The price.
-asset_volatility: float
-    The implied volatility.
-strike_price: float
-    The strike price.
-time_to_expiration: float
-    The amount of days until expiration. Use annual notation thus a month would be 30 / 360.
-risk_free_rate: float
-    The risk free rate.
+        .. role:: python(code)
+    :language: python
+    :class: highlight
 
-Returns
--------
-gamma: float
-    Returns the value for the gamma.
-</code></pre>
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting data
+    </h3>
+
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">stocks</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">hedge</span><span class="o">.</span><span class="n">calc_gamma</span><span class="p">(</span>
+    <span class="n">asset_price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="n">asset_volatility</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="n">strike_price</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">120</span><span class="p">,</span>
+    <span class="n">time_to_expiration</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="n">risk_free_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span></code></pre></div>
+
+.. raw:: html
+
+    <p>
+    The second-order partial-derivative with respect to the underlying asset of the Black-Scholes equation
+    is known as gamma. Gamma refers to how the option’s delta changes when there is a change in the underlying
+    asset price. Multiplying gamma by a +-$1 change in the underlying asset, holding all other parameters constant,
+    will give you the new value of the option’s delta. Essentially, gamma is telling us the rate of change of delta
+    given a +-1 change in the underlying asset price. Gamma is always positive for long positions and
+    negative for short positions.
+    </p>
+
+* **Parameters**
+
+    asset_price: int
+        The price.
+    asset_volatility: float
+        The implied volatility.
+    strike_price: float
+        The strike price.
+    time_to_expiration: float
+        The amount of days until expiration. Use annual notation thus a month would be 30 / 360.
+    risk_free_rate: float
+        The risk free rate.
+
+* **Returns**
+
+    gamma: float
+        Returns the value for the gamma.
 
     </article>
  
@@ -67205,7 +67435,26 @@ gamma: float
         
         
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
 
+            
+        
+
+        
+        
+    
+
         
     
         
@@ -69475,21 +69724,78 @@ gamma: float
         
             
             
+            
+
             
 
             
 
             
+        
 
+        
+        
             
+    
+    
+
+    
         
+        
 
         
         
+            
+            
             
+
+            
+
+            
+
+            
+        
+
+        
+        
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
 
+            
+
+            
+        
+
+        
+        
     
         
         
@@ -69700,6 +70006,9 @@ gamma: float
         
         
     
+
+        
+    
         
         
 
@@ -69717,6 +70026,9 @@ gamma: float
         
 
         
+        
+    
+
         
     
         
@@ -69737,6 +70049,10 @@ gamma: float
 
         
         
+            
+    
+    
+
     
         
         
@@ -69757,7 +70073,23 @@ gamma: float
         
         
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
 
+            
+        
+
+        
         
     
         

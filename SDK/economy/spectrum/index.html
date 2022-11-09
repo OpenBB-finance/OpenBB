@@ -9,9 +9,7 @@
 
 
 
-    <meta name="description" content="To obtain charts, make sure to add chart=True as the last parameter
-Get underlying data    economy.spectrum(group: str = &lsquo;sector&rsquo;)    Get group (sectors, industry or country) valuation/performance data. [Source: Finviz]
-Parameters ---------- group : str Group by category. Available groups can be accessed through get_groups().  Getting charts    economy.spectrum(group: str = &lsquo;sector&rsquo;, export: str = &lsquo;&rsquo;, chart=True)    Display finviz spectrum in system viewer [Source: Finviz]">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  economy.spectrum( group: str = &#39;sector&#39;, chart: bool = False, ) .. raw:: html  Get group (sectors, industry or country) valuation/performance data. [Source: Finviz] * **Parameters** group : str Group by category. Available groups can be accessed through get_groups(). chart: *bool* Flag to display chart | .">
 
 
 
@@ -46,13 +44,55 @@ margin-bottom: 35px;
 }
 
 h1, h2, h3, h4, h5, h6 {
+  margin-top: 5px !important;
+  margin-bottom: 10px !important;
+}
+
+p.first {
   margin-top: 10px !important;
-  margin-bottom: 20px !important;
+  margin-bottom: 0px !important;
+}
+
+p.first.last {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+
+ul {
+  margin-top: 0px !important;
+}
+
+blockquote {
+  border-left: 3px solid #ffffff  !important;
+  background-color: #2b2a2a !important;
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+  font-size: 13px;
+}
+
+dl {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+dt {
+  margin-top: -5px !important;
+  margin-bottom: -5px !important;
+}
+dd {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
 }
 
 code {
 margin-top: 40px;
 margin-bottom: 40px;
+}
+
+code.language-python {
+margin-top: 10px;
+margin-bottom: 10px;
+background-color: #404040 !important;
+font-size: 13px !important;
 }
 
 body {
@@ -84,6 +124,10 @@ a:active {
 
 .gdoc-nav__list {
   margin-left: 8px;
+}
+
+ul.gdoc-nav__list ul.gdoc-nav__list > li{
+  text-transform: lowercase !important;
 }
 
 .gdoc-toc a, .gdoc-toc a:visited {
@@ -196,7 +240,7 @@ h1 {
   text-transform: uppercase;
   font-weight: 700;
   letter-spacing: 0.1em;
-  font-size:20px;
+  font-size:30px;
 }
 
 h2 {
@@ -204,10 +248,11 @@ h2 {
 }
 
 h3 {
-  font-size: 16px;
+  font-size: 16px !important;
 }
 
 p {
+  font-size: 14px;
   color: #EAEAEA !important;
 }
 
@@ -221,7 +266,7 @@ code, img {
   background-color: #404040 !important;
   color: white !important;
   border-radius: .375rem !important;
-  border: 1px solid #5a5a5a !important;
+  border: 0px solid #5a5a5a !important;
 }
 .header {
     padding-left: 1rem;
@@ -242,7 +287,8 @@ code, img {
 <link rel="alternate" type="application/rss+xml" href="https://openbb-finance.github.io/OpenBBTerminal/SDK/economy/spectrum/index.xml" title="OpenBB Terminal Documentation" />
 
 
-<!-- Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc --> 
+<!-- Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc -->
+ 
 
   </head>
 
@@ -32181,6 +32227,37 @@ code, img {
             
             <span class="flex">
                 
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/crypto/ov/btcrb/"
+                    class="gdoc-nav__entry ">
+                    btcrb
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
                 <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/crypto/ov/cbpairs/"
                     class="gdoc-nav__entry ">
                     cbpairs
@@ -36236,7 +36313,7 @@ code, img {
             
             <span class="flex">
                 
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/sdk/forecast/plot/"
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/forecast/plot/"
                     class="gdoc-nav__entry ">
                     plot
                 </a>
@@ -37325,6 +37402,146 @@ code, img {
                 <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/forex/quote/"
                     class="gdoc-nav__entry ">
                     quote
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+</ul>
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <input type="checkbox" id="navtree-3c0cb2fa" class="gdoc-nav__toggle" >
+            <label for="navtree-3c0cb2fa" class="flex justify-between">
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/"
+                    class="gdoc-nav__entry ">
+                    funds
+                </a>
+            </span>
+            
+            <svg class="icon gdoc_keyborad_arrow_left"><use xlink:href="#gdoc_keyborad_arrow_left"></use></svg>
+            <svg class="icon gdoc_keyborad_arrow_down hidden"><use xlink:href="#gdoc_keyborad_arrow_down"></use></svg>
+            </label>
+            
+        
+
+        
+            
+
+
+
+<ul class="gdoc-nav__list">
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/info/"
+                    class="gdoc-nav__entry ">
+                    info
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/overview/"
+                    class="gdoc-nav__entry ">
+                    overview
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/search/"
+                    class="gdoc-nav__entry ">
+                    search
                 </a>
             </span>
             
@@ -47265,7 +47482,7 @@ code, img {
     <div>
         <span class="editpage">
             <svg class="icon gdoc_code" style="color: #C7C7C7;"><use xlink:href="#gdoc_code"></use></svg>
-            <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/website//content/SDK/economy/spectrum/_index.md" style="color: #C7C7C7;">
+            <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/website//content/SDK/economy/spectrum/_index.rst" style="color: #C7C7C7;">
                 Edit this page
             </a>
         </span>
@@ -47275,49 +47492,68 @@ code, img {
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Spectrum</h1>
-        <p>To obtain charts, make sure to add <code>chart=True</code> as the last parameter</p>
-<div class="gdoc-page__anchorwrap">
-    <h2 id="get-underlying-data">
-        Get underlying data
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/economy/spectrum/#get-underlying-data" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Get underlying data" href="#get-underlying-data">
-            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
-        </a>
-    </h2>
-</div><div class="gdoc-page__anchorwrap">
-    <h3 id="economyspectrumgroup-str--sector">
-        economy.spectrum(group: str = &lsquo;sector&rsquo;)
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/economy/spectrum/#economyspectrumgroup-str--sector" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor economy.spectrum(group: str = &lsquo;sector&rsquo;)" href="#economyspectrumgroup-str--sector">
-            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
-        </a>
+        .. role:: python(code)
+    :language: python
+    :class: highlight
+
+|
+
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
+.. raw:: html
+
+    <h3>
+    > Getting data
     </h3>
-</div><p>Get group (sectors, industry or country) valuation/performance data. [Source: Finviz]</p>
-<pre><code>Parameters
-----------
-group : str
-   Group by category. Available groups can be accessed through get_groups().
-</code></pre>
-<div class="gdoc-page__anchorwrap">
-    <h2 id="getting-charts">
-        Getting charts
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/economy/spectrum/#getting-charts" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Getting charts" href="#getting-charts">
-            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
-        </a>
-    </h2>
-</div><div class="gdoc-page__anchorwrap">
-    <h3 id="economyspectrumgroup-str--sector-export-str---charttrue">
-        economy.spectrum(group: str = &lsquo;sector&rsquo;, export: str = &lsquo;&rsquo;, chart=True)
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/economy/spectrum/#economyspectrumgroup-str--sector-export-str---charttrue" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor economy.spectrum(group: str = &lsquo;sector&rsquo;, export: str = &lsquo;&rsquo;, chart=True)" href="#economyspectrumgroup-str--sector-export-str---charttrue">
-            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
-        </a>
+
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">economy</span><span class="o">.</span><span class="n">spectrum</span><span class="p">(</span>
+    <span class="n">group</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;sector&#39;</span><span class="p">,</span>
+    <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span></code></pre></div>
+
+.. raw:: html
+
+    <p>
+    Get group (sectors, industry or country) valuation/performance data. [Source: Finviz]
+    </p>
+
+* **Parameters**
+
+    group : str
+       Group by category. Available groups can be accessed through get_groups().
+    chart: *bool*
+       Flag to display chart
+
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
     </h3>
-</div><p>Display finviz spectrum in system viewer [Source: Finviz]</p>
-<pre><code>Parameters
-----------
-group: str
-    Group by category. Available groups can be accessed through get_groups().
-export: str
-    Format to export data
-</code></pre>
+
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">economy</span><span class="o">.</span><span class="n">spectrum</span><span class="p">(</span>
+    <span class="n">group</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;sector&#39;</span><span class="p">,</span>
+    <span class="n">export</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span></code></pre></div>
+
+.. raw:: html
+
+    <p>
+    Display finviz spectrum in system viewer [Source: Finviz]
+    </p>
+
+* **Parameters**
+
+    group: str
+        Group by category. Available groups can be accessed through get_groups().
+    export: str
+        Format to export data
+    chart: *bool*
+       Flag to display chart
+
 
     </article>
  
@@ -67196,6 +67432,25 @@ export: str
         
         
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
 
         
     
@@ -69755,6 +70010,89 @@ export: str
         
     
 
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+            
+    
+    
+
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
         
     
         

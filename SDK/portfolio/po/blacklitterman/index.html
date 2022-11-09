@@ -9,8 +9,7 @@
 
 
 
-    <meta name="description" content="To obtain charts, make sure to add chart=True as the last parameter
-Get underlying data    portfolio.po.blacklitterman(symbols: List[str], benchmark: Dict, p_views: List, q_views: List, interval: str = &lsquo;3y&rsquo;, start_date: str = &lsquo;&rsquo;, end_date: str = &lsquo;&rsquo;, log_returns: bool = False, freq: str = &lsquo;D&rsquo;, maxnan: float = 0.05, threshold: float = 0, method: str = &lsquo;time&rsquo;, objective: str = &lsquo;Sharpe&rsquo;, risk_free_rate: float = 0, risk_aversion: float = 1, delta: float = None, equilibrium: bool = True, optimize: bool = True, value: float = 1.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  portfolio.po.blacklitterman( symbols: List[str], benchmark: Dict, p_views: List, q_views: List, interval: str = &#39;3y&#39;, start_date: str = &#39;&#39;, end_date: str = &#39;&#39;, log_returns: bool = False, freq: str = &#39;D&#39;, maxnan: float = 0.05, threshold: float = 0, method: str = &#39;time&#39;, objective: str = &#39;Sharpe&#39;, risk_free_rate: float = 0, risk_aversion: float = 1, delta: float = None, equilibrium: bool = True, optimize: bool = True, value: float = 1.">
 
 
 
@@ -45,13 +44,55 @@ margin-bottom: 35px;
 }
 
 h1, h2, h3, h4, h5, h6 {
+  margin-top: 5px !important;
+  margin-bottom: 10px !important;
+}
+
+p.first {
   margin-top: 10px !important;
-  margin-bottom: 20px !important;
+  margin-bottom: 0px !important;
+}
+
+p.first.last {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+
+ul {
+  margin-top: 0px !important;
+}
+
+blockquote {
+  border-left: 3px solid #ffffff  !important;
+  background-color: #2b2a2a !important;
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+  font-size: 13px;
+}
+
+dl {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+dt {
+  margin-top: -5px !important;
+  margin-bottom: -5px !important;
+}
+dd {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
 }
 
 code {
 margin-top: 40px;
 margin-bottom: 40px;
+}
+
+code.language-python {
+margin-top: 10px;
+margin-bottom: 10px;
+background-color: #404040 !important;
+font-size: 13px !important;
 }
 
 body {
@@ -83,6 +124,10 @@ a:active {
 
 .gdoc-nav__list {
   margin-left: 8px;
+}
+
+ul.gdoc-nav__list ul.gdoc-nav__list > li{
+  text-transform: lowercase !important;
 }
 
 .gdoc-toc a, .gdoc-toc a:visited {
@@ -195,7 +240,7 @@ h1 {
   text-transform: uppercase;
   font-weight: 700;
   letter-spacing: 0.1em;
-  font-size:20px;
+  font-size:30px;
 }
 
 h2 {
@@ -203,10 +248,11 @@ h2 {
 }
 
 h3 {
-  font-size: 16px;
+  font-size: 16px !important;
 }
 
 p {
+  font-size: 14px;
   color: #EAEAEA !important;
 }
 
@@ -220,7 +266,7 @@ code, img {
   background-color: #404040 !important;
   color: white !important;
   border-radius: .375rem !important;
-  border: 1px solid #5a5a5a !important;
+  border: 0px solid #5a5a5a !important;
 }
 .header {
     padding-left: 1rem;
@@ -241,7 +287,8 @@ code, img {
 <link rel="alternate" type="application/rss+xml" href="https://openbb-finance.github.io/OpenBBTerminal/SDK/portfolio/po/blacklitterman/index.xml" title="OpenBB Terminal Documentation" />
 
 
-<!-- Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc --> 
+<!-- Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc -->
+ 
 
   </head>
 
@@ -32180,6 +32227,37 @@ code, img {
             
             <span class="flex">
                 
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/crypto/ov/btcrb/"
+                    class="gdoc-nav__entry ">
+                    btcrb
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
                 <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/crypto/ov/cbpairs/"
                     class="gdoc-nav__entry ">
                     cbpairs
@@ -36235,7 +36313,7 @@ code, img {
             
             <span class="flex">
                 
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/sdk/forecast/plot/"
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/forecast/plot/"
                     class="gdoc-nav__entry ">
                     plot
                 </a>
@@ -37324,6 +37402,146 @@ code, img {
                 <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/forex/quote/"
                     class="gdoc-nav__entry ">
                     quote
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+</ul>
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <input type="checkbox" id="navtree-3c0cb2fa" class="gdoc-nav__toggle" >
+            <label for="navtree-3c0cb2fa" class="flex justify-between">
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/"
+                    class="gdoc-nav__entry ">
+                    funds
+                </a>
+            </span>
+            
+            <svg class="icon gdoc_keyborad_arrow_left"><use xlink:href="#gdoc_keyborad_arrow_left"></use></svg>
+            <svg class="icon gdoc_keyborad_arrow_down hidden"><use xlink:href="#gdoc_keyborad_arrow_down"></use></svg>
+            </label>
+            
+        
+
+        
+            
+
+
+
+<ul class="gdoc-nav__list">
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/info/"
+                    class="gdoc-nav__entry ">
+                    info
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/overview/"
+                    class="gdoc-nav__entry ">
+                    overview
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/search/"
+                    class="gdoc-nav__entry ">
+                    search
                 </a>
             </span>
             
@@ -47272,7 +47490,7 @@ code, img {
     <div>
         <span class="editpage">
             <svg class="icon gdoc_code" style="color: #C7C7C7;"><use xlink:href="#gdoc_code"></use></svg>
-            <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/website//content/SDK/portfolio/po/blacklitterman/_index.md" style="color: #C7C7C7;">
+            <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/website//content/SDK/portfolio/po/blacklitterman/_index.rst" style="color: #C7C7C7;">
                 Edit this page
             </a>
         </span>
@@ -47282,175 +47500,230 @@ code, img {
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Blacklitterman</h1>
-        <p>To obtain charts, make sure to add <code>chart=True</code> as the last parameter</p>
-<div class="gdoc-page__anchorwrap">
-    <h2 id="get-underlying-data">
-        Get underlying data
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/portfolio/po/blacklitterman/#get-underlying-data" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Get underlying data" href="#get-underlying-data">
-            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
-        </a>
-    </h2>
-</div><div class="gdoc-page__anchorwrap">
-    <h3 id="portfoliopoblacklittermansymbols-liststr-benchmark-dict-p_views-list-q_views-list-interval-str--3y-start_date-str---end_date-str---log_returns-bool--false-freq-str--d-maxnan-float--005-threshold-float--0-method-str--time-objective-str--sharpe-risk_free_rate-float--0-risk_aversion-float--1-delta-float--none-equilibrium-bool--true-optimize-bool--true-value-float--10-value_short-float--0---tuple">
-        portfolio.po.blacklitterman(symbols: List[str], benchmark: Dict, p_views: List, q_views: List, interval: str = &lsquo;3y&rsquo;, start_date: str = &lsquo;&rsquo;, end_date: str = &lsquo;&rsquo;, log_returns: bool = False, freq: str = &lsquo;D&rsquo;, maxnan: float = 0.05, threshold: float = 0, method: str = &lsquo;time&rsquo;, objective: str = &lsquo;Sharpe&rsquo;, risk_free_rate: float = 0, risk_aversion: float = 1, delta: float = None, equilibrium: bool = True, optimize: bool = True, value: float = 1.0, value_short: float = 0) -&gt; Tuple
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/portfolio/po/blacklitterman/#portfoliopoblacklittermansymbols-liststr-benchmark-dict-p_views-list-q_views-list-interval-str--3y-start_date-str---end_date-str---log_returns-bool--false-freq-str--d-maxnan-float--005-threshold-float--0-method-str--time-objective-str--sharpe-risk_free_rate-float--0-risk_aversion-float--1-delta-float--none-equilibrium-bool--true-optimize-bool--true-value-float--10-value_short-float--0---tuple" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor portfolio.po.blacklitterman(symbols: List[str], benchmark: Dict, p_views: List, q_views: List, interval: str = &lsquo;3y&rsquo;, start_date: str = &lsquo;&rsquo;, end_date: str = &lsquo;&rsquo;, log_returns: bool = False, freq: str = &lsquo;D&rsquo;, maxnan: float = 0.05, threshold: float = 0, method: str = &lsquo;time&rsquo;, objective: str = &lsquo;Sharpe&rsquo;, risk_free_rate: float = 0, risk_aversion: float = 1, delta: float = None, equilibrium: bool = True, optimize: bool = True, value: float = 1.0, value_short: float = 0) -&gt; Tuple" href="#portfoliopoblacklittermansymbols-liststr-benchmark-dict-p_views-list-q_views-list-interval-str--3y-start_date-str---end_date-str---log_returns-bool--false-freq-str--d-maxnan-float--005-threshold-float--0-method-str--time-objective-str--sharpe-risk_free_rate-float--0-risk_aversion-float--1-delta-float--none-equilibrium-bool--true-optimize-bool--true-value-float--10-value_short-float--0---tuple">
-            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
-        </a>
+        .. role:: python(code)
+    :language: python
+    :class: highlight
+
+|
+
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
+.. raw:: html
+
+    <h3>
+    > Getting data
     </h3>
-</div><p>Builds a maximal diversification portfolio</p>
-<pre><code>Parameters
-----------
-symbols : List[str]
-    List of portfolio stocks
-benchmark : Dict
-    Dict of portfolio weights
-p_views: List
-    Matrix P of views that shows relationships among assets and returns.
-    Default value to None.
-q_views: List
-    Matrix Q of expected returns of views. Default value is None.
-interval : str, optional
-    interval to get stock data, by default &quot;3mo&quot;
-start_date: str
-    If not using interval, start date string (YYYY-MM-DD)
-end_date: str
-    If not using interval, end date string (YYYY-MM-DD). If empty use last
-    weekday.
-log_returns: bool
-    If True calculate log returns, else arithmetic returns. Default value
-    is False
-freq: str
-    The frequency used to calculate returns. Default value is 'D'. Possible
-    values are:
+
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">portfolio</span><span class="o">.</span><span class="n">po</span><span class="o">.</span><span class="n">blacklitterman</span><span class="p">(</span>
+    <span class="n">symbols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">benchmark</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span>
+    <span class="n">p_views</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
+    <span class="n">q_views</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
+    <span class="n">interval</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;3y&#39;</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="n">end_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="n">log_returns</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">freq</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span>
+    <span class="n">maxnan</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span>
+    <span class="n">objective</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Sharpe&#39;</span><span class="p">,</span>
+    <span class="n">risk_free_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">risk_aversion</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">delta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">equilibrium</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">optimize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">value</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">value_short</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span></code></pre></div>
+
+.. raw:: html
+
+    <p>
+    Builds a maximal diversification portfolio
+    </p>
+
+* **Parameters**
+
+    symbols : List[str]
+        List of portfolio stocks
+    benchmark : Dict
+        Dict of portfolio weights
+    p_views: List
+        Matrix P of views that shows relationships among assets and returns.
+        Default value to None.
+    q_views: List
+        Matrix Q of expected returns of views. Default value is None.
+    interval : str, optional
+        interval to get stock data, by default "3mo"
+    start_date: str
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
+        weekday.
+    log_returns: bool
+        If True calculate log returns, else arithmetic returns. Default value
+        is False
+    freq: str
+        The frequency used to calculate returns. Default value is 'D'. Possible
+        values are:
+
         - 'D' for daily returns.
         - 'W' for weekly returns.
         - 'M' for monthly returns.
 
-maxnan: float
-    Max percentage of nan values accepted per asset to be included in
-    returns.
-threshold: float
-    Value used to replace outliers that are higher to threshold.
-method: str
-    Method used to fill nan values. Default value is 'time'. For more information see
-    `interpolate &lt;https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html&gt;`_.
-objective: str
-    Objective function of the optimization model.
-    The default is 'Sharpe'. Possible values are:
+    maxnan: float
+        Max percentage of nan values accepted per asset to be included in
+        returns.
+    threshold: float
+        Value used to replace outliers that are higher to threshold.
+    method: str
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
+    objective: str
+        Objective function of the optimization model.
+        The default is 'Sharpe'. Possible values are:
 
-    - 'MinRisk': Minimize the selected risk measure.
-    - 'Utility': Maximize the risk averse utility function.
-    - 'Sharpe': Maximize the risk adjusted return ratio based on the selected risk measure.
-    - 'MaxRet': Maximize the expected return of the portfolio.
+        - 'MinRisk': Minimize the selected risk measure.
+        - 'Utility': Maximize the risk averse utility function.
+        - 'Sharpe': Maximize the risk adjusted return ratio based on the selected risk measure.
+        - 'MaxRet': Maximize the expected return of the portfolio.
 
-risk_free_rate: float, optional
-    Risk free rate, must be in annual frequency. The default is 0.
-risk_aversion: float, optional
-    Risk aversion factor of the 'Utility' objective function.
-    The default is 1.
-delta: float, optional
-    Risk aversion factor of Black Litterman model. Default value is None.
-equilibrium: bool, optional
-    If True excess returns are based on equilibrium market portfolio, if False
-    excess returns are calculated as historical returns minus risk free rate.
-    Default value is True.
-optimize: bool, optional
-    If True Black Litterman estimates are used as inputs of mean variance model,
-    if False returns equilibrium weights from Black Litterman model
-    Default value is True.
-value : float, optional
-    Amount of money to allocate. The default is 1.
-value_short : float, optional
-    Amount to allocate to portfolio in short positions. The default is 0.
+    risk_free_rate: float, optional
+        Risk free rate, must be in annual frequency. The default is 0.
+    risk_aversion: float, optional
+        Risk aversion factor of the 'Utility' objective function.
+        The default is 1.
+    delta: float, optional
+        Risk aversion factor of Black Litterman model. Default value is None.
+    equilibrium: bool, optional
+        If True excess returns are based on equilibrium market portfolio, if False
+        excess returns are calculated as historical returns minus risk free rate.
+        Default value is True.
+    optimize: bool, optional
+        If True Black Litterman estimates are used as inputs of mean variance model,
+        if False returns equilibrium weights from Black Litterman model
+        Default value is True.
+    value : float, optional
+        Amount of money to allocate. The default is 1.
+    value_short : float, optional
+        Amount to allocate to portfolio in short positions. The default is 0.
+    chart: *bool*
+       Flag to display chart
 
-Returns
--------
-Tuple
-    Dictionary of portfolio weights and DataFrame of stock returns
-</code></pre>
-<div class="gdoc-page__anchorwrap">
-    <h2 id="getting-charts">
-        Getting charts
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/portfolio/po/blacklitterman/#getting-charts" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Getting charts" href="#getting-charts">
-            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
-        </a>
-    </h2>
-</div><div class="gdoc-page__anchorwrap">
-    <h3 id="portfoliopoblacklittermansymbols-liststr-p_views-list-q_views-list-interval-str--3y-start_date-str---end_date-str---log_returns-bool--false-freq-str--d-maxnan-float--005-threshold-float--0-method-str--time-benchmark-dict--none-objective-str--sharpe-risk_free_rate-float--0-risk_aversion-float--1-delta-float--none-equilibrium-bool--true-optimize-bool--true-value-float--10-value_short-float--0-table-bool--false-charttrue---dict">
-        portfolio.po.blacklitterman(symbols: List[str], p_views: List, q_views: List, interval: str = &lsquo;3y&rsquo;, start_date: str = &lsquo;&rsquo;, end_date: str = &lsquo;&rsquo;, log_returns: bool = False, freq: str = &lsquo;D&rsquo;, maxnan: float = 0.05, threshold: float = 0, method: str = &lsquo;time&rsquo;, benchmark: Dict = None, objective: str = &lsquo;Sharpe&rsquo;, risk_free_rate: float = 0, risk_aversion: float = 1, delta: float = None, equilibrium: bool = True, optimize: bool = True, value: float = 1.0, value_short: float = 0, table: bool = False, chart=True) -&gt; Dict
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/portfolio/po/blacklitterman/#portfoliopoblacklittermansymbols-liststr-p_views-list-q_views-list-interval-str--3y-start_date-str---end_date-str---log_returns-bool--false-freq-str--d-maxnan-float--005-threshold-float--0-method-str--time-benchmark-dict--none-objective-str--sharpe-risk_free_rate-float--0-risk_aversion-float--1-delta-float--none-equilibrium-bool--true-optimize-bool--true-value-float--10-value_short-float--0-table-bool--false-charttrue---dict" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor portfolio.po.blacklitterman(symbols: List[str], p_views: List, q_views: List, interval: str = &lsquo;3y&rsquo;, start_date: str = &lsquo;&rsquo;, end_date: str = &lsquo;&rsquo;, log_returns: bool = False, freq: str = &lsquo;D&rsquo;, maxnan: float = 0.05, threshold: float = 0, method: str = &lsquo;time&rsquo;, benchmark: Dict = None, objective: str = &lsquo;Sharpe&rsquo;, risk_free_rate: float = 0, risk_aversion: float = 1, delta: float = None, equilibrium: bool = True, optimize: bool = True, value: float = 1.0, value_short: float = 0, table: bool = False, chart=True) -&gt; Dict" href="#portfoliopoblacklittermansymbols-liststr-p_views-list-q_views-list-interval-str--3y-start_date-str---end_date-str---log_returns-bool--false-freq-str--d-maxnan-float--005-threshold-float--0-method-str--time-benchmark-dict--none-objective-str--sharpe-risk_free_rate-float--0-risk_aversion-float--1-delta-float--none-equilibrium-bool--true-optimize-bool--true-value-float--10-value_short-float--0-table-bool--false-charttrue---dict">
-            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
-        </a>
+
+* **Returns**
+
+    Tuple
+        Dictionary of portfolio weights and DataFrame of stock returns
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
     </h3>
-</div><pre><code>Builds a black litterman portfolio
 
-Parameters
-----------
-symbols : List[str]
-    List of portfolio tickers
-p_views: List
-    Matrix P of views that shows relationships among assets and returns.
-    Default value to None.
-q_views: List
-    Matrix Q of expected returns of views. Default value is None.
-interval : str, optional
-    interval to look at returns from
-start_date: str, optional
-    If not using interval, start date string (YYYY-MM-DD)
-end_date: str, optional
-    If not using interval, end date string (YYYY-MM-DD). If empty use last
-    weekday.
-log_returns: bool, optional
-    If True calculate log returns, else arithmetic returns. Default value
-    is False
-freq: str, optional
-    The frequency used to calculate returns. Default value is 'D'. Possible
-    values are:
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">portfolio</span><span class="o">.</span><span class="n">po</span><span class="o">.</span><span class="n">blacklitterman</span><span class="p">(</span>
+    <span class="n">symbols</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">p_views</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
+    <span class="n">q_views</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
+    <span class="n">interval</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;3y&#39;</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="n">end_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="n">log_returns</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">freq</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span>
+    <span class="n">maxnan</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span>
+    <span class="n">benchmark</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">objective</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Sharpe&#39;</span><span class="p">,</span>
+    <span class="n">risk_free_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">risk_aversion</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">delta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">equilibrium</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">optimize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">value</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">value_short</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">table</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span></code></pre></div>
+
+.. raw:: html
+
+    <p>
+    Builds a black litterman portfolio
+    </p>
+
+* **Parameters**
+
+    symbols : List[str]
+        List of portfolio tickers
+    p_views: List
+        Matrix P of views that shows relationships among assets and returns.
+        Default value to None.
+    q_views: List
+        Matrix Q of expected returns of views. Default value is None.
+    interval : str, optional
+        interval to look at returns from
+    start_date: str, optional
+        If not using interval, start date string (YYYY-MM-DD)
+    end_date: str, optional
+        If not using interval, end date string (YYYY-MM-DD). If empty use last
+        weekday.
+    log_returns: bool, optional
+        If True calculate log returns, else arithmetic returns. Default value
+        is False
+    freq: str, optional
+        The frequency used to calculate returns. Default value is 'D'. Possible
+        values are:
         - 'D' for daily returns.
         - 'W' for weekly returns.
         - 'M' for monthly returns.
 
-maxnan: float, optional
-    Max percentage of nan values accepted per asset to be included in
-    returns.
-threshold: float, optional
-    Value used to replace outliers that are higher to threshold.
-method: str
-    Method used to fill nan values. Default value is 'time'. For more information see
-    `interpolate &lt;https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html&gt;`_.
-benchmark : Dict
-    Dict of portfolio weights
-objective: str
-    Objective function of the optimization model.
-    The default is 'Sharpe'. Possible values are:
+    maxnan: float, optional
+        Max percentage of nan values accepted per asset to be included in
+        returns.
+    threshold: float, optional
+        Value used to replace outliers that are higher to threshold.
+    method: str
+        Method used to fill nan values. Default value is 'time'. For more information see `interpolate <https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html>`__.
+    benchmark : Dict
+        Dict of portfolio weights
+    objective: str
+        Objective function of the optimization model.
+        The default is 'Sharpe'. Possible values are:
 
-    - 'MinRisk': Minimize the selected risk measure.
-    - 'Utility': Maximize the risk averse utility function.
-    - 'Sharpe': Maximize the risk adjusted return ratio based on the selected risk measure.
-    - 'MaxRet': Maximize the expected return of the portfolio.
+        - 'MinRisk': Minimize the selected risk measure.
+        - 'Utility': Maximize the risk averse utility function.
+        - 'Sharpe': Maximize the risk adjusted return ratio based on the selected risk measure.
+        - 'MaxRet': Maximize the expected return of the portfolio.
 
-risk_free_rate: float, optional
-    Risk free rate, must be in annual frequency. The default is 0.
-risk_aversion: float, optional
-    Risk aversion factor of the 'Utility' objective function.
-    The default is 1.
-delta: float, optional
-    Risk aversion factor of Black Litterman model. Default value is None.
-equilibrium: bool, optional
-    If True excess returns are based on equilibrium market portfolio, if False
-    excess returns are calculated as historical returns minus risk free rate.
-    Default value is True.
-optimize: bool, optional
-    If True Black Litterman estimates are used as inputs of mean variance model,
-    if False returns equilibrium weights from Black Litterman model
-    Default value is True.
-value : float, optional
-    Amount of money to allocate. The default is 1.
-value_short : float, optional
-    Amount to allocate to portfolio in short positions. The default is 0.
-table: bool, optional
-    True if plot table weights, by default False
-</code></pre>
+    risk_free_rate: float, optional
+        Risk free rate, must be in annual frequency. The default is 0.
+    risk_aversion: float, optional
+        Risk aversion factor of the 'Utility' objective function.
+        The default is 1.
+    delta: float, optional
+        Risk aversion factor of Black Litterman model. Default value is None.
+    equilibrium: bool, optional
+        If True excess returns are based on equilibrium market portfolio, if False
+        excess returns are calculated as historical returns minus risk free rate.
+        Default value is True.
+    optimize: bool, optional
+        If True Black Litterman estimates are used as inputs of mean variance model,
+        if False returns equilibrium weights from Black Litterman model
+        Default value is True.
+    value : float, optional
+        Amount of money to allocate. The default is 1.
+    value_short : float, optional
+        Amount to allocate to portfolio in short positions. The default is 0.
+    table: bool, optional
+        True if plot table weights, by default False
+    chart: *bool*
+       Flag to display chart
+
 
     </article>
  
@@ -67329,7 +67602,26 @@ table: bool, optional
         
         
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
 
+            
+        
+
+        
+        
+    
+
         
     
         
@@ -69599,21 +69891,78 @@ table: bool, optional
         
             
             
+            
+
             
 
             
 
             
+        
 
+        
+        
             
+    
+    
+
+    
         
+        
 
         
         
+            
+            
             
+
+            
+
+            
+
+            
+        
+
+        
+        
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
 
+            
+
+            
+        
+
+        
+        
     
         
         
@@ -69824,6 +70173,9 @@ table: bool, optional
         
         
     
+
+        
+    
         
         
 
@@ -69841,6 +70193,9 @@ table: bool, optional
         
 
         
+        
+    
+
         
     
         
@@ -69861,6 +70216,10 @@ table: bool, optional
 
         
         
+            
+    
+    
+
     
         
         
@@ -69881,7 +70240,23 @@ table: bool, optional
         
         
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
 
+            
+        
+
+        
         
     
         

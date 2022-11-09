@@ -9,9 +9,7 @@
 
 
 
-    <meta name="description" content="To obtain charts, make sure to add chart=True as the last parameter
-Get underlying data    crypto.dd.ps(symbol: str = &lsquo;btc-bitcoin&rsquo;, quotes: str = &lsquo;USD&rsquo;) -&gt; pandas.core.frame.DataFrame    Get all most important ticker related information for given coin id [Source: CoinPaprika]
-.. code-block:: json { &quot;id&quot;: &quot;btc-bitcoin&quot;, &quot;name&quot;: &quot;Bitcoin&quot;, &quot;symbol&quot;: &quot;BTC&quot;, &quot;rank&quot;: 1, &quot;circulating_supply&quot;: 17007062, &quot;total_supply&quot;: 17007062, &quot;max_supply&quot;: 21000000, &quot;beta_value&quot;: 0.735327, &quot;first_data_at&quot;: &quot;2010-11-14T07:20:41Z&quot;, &quot;last_updated&quot;: &quot;2018-11-14T07:20:41Z&quot;, &quot;quotes&quot;: { &quot;USD&quot;: { &quot;price&quot;: 5162.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  crypto.dd.ps( symbol: str = &#39;btc-bitcoin&#39;, quotes: str = &#39;USD&#39;, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get all most important ticker related information for given coin id [Source: CoinPaprika] .. code-block:: json { &#34;id&#34;: &#34;btc-bitcoin&#34;, &#34;name&#34;: &#34;">
 
 
 
@@ -46,13 +44,55 @@ margin-bottom: 35px;
 }
 
 h1, h2, h3, h4, h5, h6 {
+  margin-top: 5px !important;
+  margin-bottom: 10px !important;
+}
+
+p.first {
   margin-top: 10px !important;
-  margin-bottom: 20px !important;
+  margin-bottom: 0px !important;
+}
+
+p.first.last {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+
+ul {
+  margin-top: 0px !important;
+}
+
+blockquote {
+  border-left: 3px solid #ffffff  !important;
+  background-color: #2b2a2a !important;
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+  font-size: 13px;
+}
+
+dl {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+dt {
+  margin-top: -5px !important;
+  margin-bottom: -5px !important;
+}
+dd {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
 }
 
 code {
 margin-top: 40px;
 margin-bottom: 40px;
+}
+
+code.language-python {
+margin-top: 10px;
+margin-bottom: 10px;
+background-color: #404040 !important;
+font-size: 13px !important;
 }
 
 body {
@@ -84,6 +124,10 @@ a:active {
 
 .gdoc-nav__list {
   margin-left: 8px;
+}
+
+ul.gdoc-nav__list ul.gdoc-nav__list > li{
+  text-transform: lowercase !important;
 }
 
 .gdoc-toc a, .gdoc-toc a:visited {
@@ -196,7 +240,7 @@ h1 {
   text-transform: uppercase;
   font-weight: 700;
   letter-spacing: 0.1em;
-  font-size:20px;
+  font-size:30px;
 }
 
 h2 {
@@ -204,10 +248,11 @@ h2 {
 }
 
 h3 {
-  font-size: 16px;
+  font-size: 16px !important;
 }
 
 p {
+  font-size: 14px;
   color: #EAEAEA !important;
 }
 
@@ -221,7 +266,7 @@ code, img {
   background-color: #404040 !important;
   color: white !important;
   border-radius: .375rem !important;
-  border: 1px solid #5a5a5a !important;
+  border: 0px solid #5a5a5a !important;
 }
 .header {
     padding-left: 1rem;
@@ -242,7 +287,8 @@ code, img {
 <link rel="alternate" type="application/rss+xml" href="https://openbb-finance.github.io/OpenBBTerminal/SDK/crypto/dd/ps/index.xml" title="OpenBB Terminal Documentation" />
 
 
-<!-- Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc --> 
+<!-- Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc -->
+ 
 
   </head>
 
@@ -32181,6 +32227,37 @@ code, img {
             
             <span class="flex">
                 
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/crypto/ov/btcrb/"
+                    class="gdoc-nav__entry ">
+                    btcrb
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
                 <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/crypto/ov/cbpairs/"
                     class="gdoc-nav__entry ">
                     cbpairs
@@ -36236,7 +36313,7 @@ code, img {
             
             <span class="flex">
                 
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/sdk/forecast/plot/"
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/forecast/plot/"
                     class="gdoc-nav__entry ">
                     plot
                 </a>
@@ -37325,6 +37402,146 @@ code, img {
                 <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/forex/quote/"
                     class="gdoc-nav__entry ">
                     quote
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+</ul>
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <input type="checkbox" id="navtree-3c0cb2fa" class="gdoc-nav__toggle" >
+            <label for="navtree-3c0cb2fa" class="flex justify-between">
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/"
+                    class="gdoc-nav__entry ">
+                    funds
+                </a>
+            </span>
+            
+            <svg class="icon gdoc_keyborad_arrow_left"><use xlink:href="#gdoc_keyborad_arrow_left"></use></svg>
+            <svg class="icon gdoc_keyborad_arrow_down hidden"><use xlink:href="#gdoc_keyborad_arrow_down"></use></svg>
+            </label>
+            
+        
+
+        
+            
+
+
+
+<ul class="gdoc-nav__list">
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/info/"
+                    class="gdoc-nav__entry ">
+                    info
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/overview/"
+                    class="gdoc-nav__entry ">
+                    overview
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/search/"
+                    class="gdoc-nav__entry ">
+                    search
                 </a>
             </span>
             
@@ -47273,7 +47490,7 @@ code, img {
     <div>
         <span class="editpage">
             <svg class="icon gdoc_code" style="color: #C7C7C7;"><use xlink:href="#gdoc_code"></use></svg>
-            <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/website//content/SDK/crypto/dd/ps/_index.md" style="color: #C7C7C7;">
+            <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/website//content/SDK/crypto/dd/ps/_index.rst" style="color: #C7C7C7;">
                 Edit this page
             </a>
         </span>
@@ -47283,95 +47500,116 @@ code, img {
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Ps</h1>
-        <p>To obtain charts, make sure to add <code>chart=True</code> as the last parameter</p>
-<div class="gdoc-page__anchorwrap">
-    <h2 id="get-underlying-data">
-        Get underlying data
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/crypto/dd/ps/#get-underlying-data" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Get underlying data" href="#get-underlying-data">
-            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
-        </a>
-    </h2>
-</div><div class="gdoc-page__anchorwrap">
-    <h3 id="cryptoddpssymbol-str--btc-bitcoin-quotes-str--usd---pandascoreframedataframe">
-        crypto.dd.ps(symbol: str = &lsquo;btc-bitcoin&rsquo;, quotes: str = &lsquo;USD&rsquo;) -&gt; pandas.core.frame.DataFrame
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/crypto/dd/ps/#cryptoddpssymbol-str--btc-bitcoin-quotes-str--usd---pandascoreframedataframe" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor crypto.dd.ps(symbol: str = &lsquo;btc-bitcoin&rsquo;, quotes: str = &lsquo;USD&rsquo;) -&gt; pandas.core.frame.DataFrame" href="#cryptoddpssymbol-str--btc-bitcoin-quotes-str--usd---pandascoreframedataframe">
-            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
-        </a>
-    </h3>
-</div><p>Get all most important ticker related information for given coin id [Source: CoinPaprika]</p>
-<pre><code>.. code-block:: json
+        .. role:: python(code)
+    :language: python
+    :class: highlight
 
-    {
-        &quot;id&quot;: &quot;btc-bitcoin&quot;,
-        &quot;name&quot;: &quot;Bitcoin&quot;,
-        &quot;symbol&quot;: &quot;BTC&quot;,
-        &quot;rank&quot;: 1,
-        &quot;circulating_supply&quot;: 17007062,
-        &quot;total_supply&quot;: 17007062,
-        &quot;max_supply&quot;: 21000000,
-        &quot;beta_value&quot;: 0.735327,
-        &quot;first_data_at&quot;: &quot;2010-11-14T07:20:41Z&quot;,
-        &quot;last_updated&quot;: &quot;2018-11-14T07:20:41Z&quot;,
-        &quot;quotes&quot;: {
-            &quot;USD&quot;: {
-                &quot;price&quot;: 5162.15941296,
-                &quot;volume_24h&quot;: 7304207651.1585,
-                &quot;volume_24h_change_24h&quot;: -2.5,
-                &quot;market_cap&quot;: 91094433242,
-                &quot;market_cap_change_24h&quot;: 1.6,
-                &quot;percent_change_15m&quot;: 0,
-                &quot;percent_change_30m&quot;: 0,
-                &quot;percent_change_1h&quot;: 0,
-                &quot;percent_change_6h&quot;: 0,
-                &quot;percent_change_12h&quot;: -0.09,
-                &quot;percent_change_24h&quot;: 1.59,
-                &quot;percent_change_7d&quot;: 0.28,
-                &quot;percent_change_30d&quot;: 27.39,
-                &quot;percent_change_1y&quot;: -37.99,
-                &quot;ath_price&quot;: 20089,
-                &quot;ath_date&quot;: &quot;2017-12-17T12:19:00Z&quot;,
-                &quot;percent_from_price_ath&quot;: -74.3
+|
+
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
+.. raw:: html
+
+    <h3>
+    > Getting data
+    </h3>
+
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">crypto</span><span class="o">.</span><span class="n">dd</span><span class="o">.</span><span class="n">ps</span><span class="p">(</span>
+    <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;btc-bitcoin&#39;</span><span class="p">,</span>
+    <span class="n">quotes</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;USD&#39;</span><span class="p">,</span>
+    <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span></code></pre></div>
+
+.. raw:: html
+
+    <p>
+    Get all most important ticker related information for given coin id [Source: CoinPaprika]
+
+    .. code-block:: json
+
+        {
+            "id": "btc-bitcoin",
+            "name": "Bitcoin",
+            "symbol": "BTC",
+            "rank": 1,
+            "circulating_supply": 17007062,
+            "total_supply": 17007062,
+            "max_supply": 21000000,
+            "beta_value": 0.735327,
+            "first_data_at": "2010-11-14T07:20:41Z",
+            "last_updated": "2018-11-14T07:20:41Z",
+            "quotes": {
+                "USD": {
+                    "price": 5162.15941296,
+                    "volume_24h": 7304207651.1585,
+                    "volume_24h_change_24h": -2.5,
+                    "market_cap": 91094433242,
+                    "market_cap_change_24h": 1.6,
+                    "percent_change_15m": 0,
+                    "percent_change_30m": 0,
+                    "percent_change_1h": 0,
+                    "percent_change_6h": 0,
+                    "percent_change_12h": -0.09,
+                    "percent_change_24h": 1.59,
+                    "percent_change_7d": 0.28,
+                    "percent_change_30d": 27.39,
+                    "percent_change_1y": -37.99,
+                    "ath_price": 20089,
+                    "ath_date": "2017-12-17T12:19:00Z",
+                    "percent_from_price_ath": -74.3
+                }
             }
         }
-    }
+    </p>
 
-Parameters
-----------
-symbol: str
-    Id of coin from CoinPaprika
-quotes: str
-    Comma separated quotes to return e.g quotes = USD, BTC
+* **Parameters**
 
-Returns
--------
-pandas.DataFrame
-    Most important ticker related information
-    Columns: Metric, Value
-</code></pre>
-<div class="gdoc-page__anchorwrap">
-    <h2 id="getting-charts">
-        Getting charts
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/crypto/dd/ps/#getting-charts" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Getting charts" href="#getting-charts">
-            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
-        </a>
-    </h2>
-</div><div class="gdoc-page__anchorwrap">
-    <h3 id="cryptoddpsfrom_symbol-str--btc-to_symbol-str--usd-export-str---charttrue---none">
-        crypto.dd.ps(from_symbol: str = &lsquo;BTC&rsquo;, to_symbol: str = &lsquo;USD&rsquo;, export: str = &lsquo;&rsquo;, chart=True) -&gt; None
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/crypto/dd/ps/#cryptoddpsfrom_symbol-str--btc-to_symbol-str--usd-export-str---charttrue---none" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor crypto.dd.ps(from_symbol: str = &lsquo;BTC&rsquo;, to_symbol: str = &lsquo;USD&rsquo;, export: str = &lsquo;&rsquo;, chart=True) -&gt; None" href="#cryptoddpsfrom_symbol-str--btc-to_symbol-str--usd-export-str---charttrue---none">
-            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
-        </a>
+    symbol: str
+        Id of coin from CoinPaprika
+    quotes: str
+        Comma separated quotes to return e.g quotes = USD, BTC
+    chart: *bool*
+       Flag to display chart
+
+
+* **Returns**
+
+    pandas.DataFrame
+        Most important ticker related information
+        Columns: Metric, Value
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
     </h3>
-</div><p>Get ticker information for single coin [Source: CoinPaprika]</p>
-<pre><code>Parameters
-----------
-from_symbol: str
-    Cryptocurrency symbol (e.g. BTC)
-to_symbol: str
-    Quoted currency
-export: str
-    Export dataframe data to csv,json,xlsx
-</code></pre>
+
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">crypto</span><span class="o">.</span><span class="n">dd</span><span class="o">.</span><span class="n">ps</span><span class="p">(</span>
+    <span class="n">from_symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;BTC&#39;</span><span class="p">,</span>
+    <span class="n">to_symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;USD&#39;</span><span class="p">,</span>
+    <span class="n">export</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span></code></pre></div>
+
+.. raw:: html
+
+    <p>
+    Get ticker information for single coin [Source: CoinPaprika]
+    </p>
+
+* **Parameters**
+
+    from_symbol: str
+        Cryptocurrency symbol (e.g. BTC)
+    to_symbol: str
+        Quoted currency
+    export: str
+        Export dataframe data to csv,json,xlsx
+    chart: *bool*
+       Flag to display chart
+
 
     </article>
  
@@ -67256,7 +67494,26 @@ export: str
         
         
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
 
+            
+        
+
+        
+        
+    
+
         
     
         
@@ -69526,21 +69783,78 @@ export: str
         
             
             
+            
+
             
 
             
 
             
+        
 
+        
+        
             
+    
+    
+
+    
         
+        
 
         
         
+            
+            
             
+
+            
+
+            
+
+            
+        
+
+        
+        
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
 
+            
+
+            
+        
+
+        
+        
     
         
         
@@ -69751,6 +70065,9 @@ export: str
         
         
     
+
+        
+    
         
         
 
@@ -69768,6 +70085,9 @@ export: str
         
 
         
+        
+    
+
         
     
         
@@ -69788,6 +70108,10 @@ export: str
 
         
         
+            
+    
+    
+
     
         
         
@@ -69808,7 +70132,23 @@ export: str
         
         
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
 
+            
+        
+
+        
         
     
         

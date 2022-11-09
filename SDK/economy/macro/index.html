@@ -9,9 +9,7 @@
 
 
 
-    <meta name="description" content="To obtain charts, make sure to add chart=True as the last parameter
-Get underlying data    economy.macro(parameters: list = None, countries: list = None, transform: str = &lsquo;&rsquo;, start_date: str = &lsquo;1900-01-01&rsquo;, end_date=datetime.date(2022, 11, 3), symbol: str = &lsquo;&#39;) -&gt; Tuple[Any, Dict[Any, Dict[Any, Any]], str]    This functions groups the data queried from the EconDB database [Source: EconDB]
-Parameters ---------- parameters: list The type of data you wish to download.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  economy.macro( parameters: list = None, countries: list = None, transform: str = &#39;&#39;, start_date: str = &#39;1900-01-01&#39;, end_date=datetime.date( 2022, 11, 8, chart: bool = False, ), symbol: str = &#39;&#39;, chart: bool = False, ) -&gt; Tuple[Any, Dict[Any, Dict[Any, Any]], str] .">
 
 
 
@@ -46,13 +44,55 @@ margin-bottom: 35px;
 }
 
 h1, h2, h3, h4, h5, h6 {
+  margin-top: 5px !important;
+  margin-bottom: 10px !important;
+}
+
+p.first {
   margin-top: 10px !important;
-  margin-bottom: 20px !important;
+  margin-bottom: 0px !important;
+}
+
+p.first.last {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+
+ul {
+  margin-top: 0px !important;
+}
+
+blockquote {
+  border-left: 3px solid #ffffff  !important;
+  background-color: #2b2a2a !important;
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+  font-size: 13px;
+}
+
+dl {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+dt {
+  margin-top: -5px !important;
+  margin-bottom: -5px !important;
+}
+dd {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
 }
 
 code {
 margin-top: 40px;
 margin-bottom: 40px;
+}
+
+code.language-python {
+margin-top: 10px;
+margin-bottom: 10px;
+background-color: #404040 !important;
+font-size: 13px !important;
 }
 
 body {
@@ -84,6 +124,10 @@ a:active {
 
 .gdoc-nav__list {
   margin-left: 8px;
+}
+
+ul.gdoc-nav__list ul.gdoc-nav__list > li{
+  text-transform: lowercase !important;
 }
 
 .gdoc-toc a, .gdoc-toc a:visited {
@@ -196,7 +240,7 @@ h1 {
   text-transform: uppercase;
   font-weight: 700;
   letter-spacing: 0.1em;
-  font-size:20px;
+  font-size:30px;
 }
 
 h2 {
@@ -204,10 +248,11 @@ h2 {
 }
 
 h3 {
-  font-size: 16px;
+  font-size: 16px !important;
 }
 
 p {
+  font-size: 14px;
   color: #EAEAEA !important;
 }
 
@@ -221,7 +266,7 @@ code, img {
   background-color: #404040 !important;
   color: white !important;
   border-radius: .375rem !important;
-  border: 1px solid #5a5a5a !important;
+  border: 0px solid #5a5a5a !important;
 }
 .header {
     padding-left: 1rem;
@@ -242,7 +287,8 @@ code, img {
 <link rel="alternate" type="application/rss+xml" href="https://openbb-finance.github.io/OpenBBTerminal/SDK/economy/macro/index.xml" title="OpenBB Terminal Documentation" />
 
 
-<!-- Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc --> 
+<!-- Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc -->
+ 
 
   </head>
 
@@ -32181,6 +32227,37 @@ code, img {
             
             <span class="flex">
                 
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/crypto/ov/btcrb/"
+                    class="gdoc-nav__entry ">
+                    btcrb
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
                 <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/crypto/ov/cbpairs/"
                     class="gdoc-nav__entry ">
                     cbpairs
@@ -36236,7 +36313,7 @@ code, img {
             
             <span class="flex">
                 
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/sdk/forecast/plot/"
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/forecast/plot/"
                     class="gdoc-nav__entry ">
                     plot
                 </a>
@@ -37325,6 +37402,146 @@ code, img {
                 <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/forex/quote/"
                     class="gdoc-nav__entry ">
                     quote
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+</ul>
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <input type="checkbox" id="navtree-3c0cb2fa" class="gdoc-nav__toggle" >
+            <label for="navtree-3c0cb2fa" class="flex justify-between">
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/"
+                    class="gdoc-nav__entry ">
+                    funds
+                </a>
+            </span>
+            
+            <svg class="icon gdoc_keyborad_arrow_left"><use xlink:href="#gdoc_keyborad_arrow_left"></use></svg>
+            <svg class="icon gdoc_keyborad_arrow_down hidden"><use xlink:href="#gdoc_keyborad_arrow_down"></use></svg>
+            </label>
+            
+        
+
+        
+            
+
+
+
+<ul class="gdoc-nav__list">
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/info/"
+                    class="gdoc-nav__entry ">
+                    info
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/overview/"
+                    class="gdoc-nav__entry ">
+                    overview
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/search/"
+                    class="gdoc-nav__entry ">
+                    search
                 </a>
             </span>
             
@@ -47265,7 +47482,7 @@ code, img {
     <div>
         <span class="editpage">
             <svg class="icon gdoc_code" style="color: #C7C7C7;"><use xlink:href="#gdoc_code"></use></svg>
-            <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/website//content/SDK/economy/macro/_index.md" style="color: #C7C7C7;">
+            <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/website//content/SDK/economy/macro/_index.rst" style="color: #C7C7C7;">
                 Edit this page
             </a>
         </span>
@@ -47275,92 +47492,124 @@ code, img {
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Macro</h1>
-        <p>To obtain charts, make sure to add <code>chart=True</code> as the last parameter</p>
-<div class="gdoc-page__anchorwrap">
-    <h2 id="get-underlying-data">
-        Get underlying data
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/economy/macro/#get-underlying-data" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Get underlying data" href="#get-underlying-data">
-            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
-        </a>
-    </h2>
-</div><div class="gdoc-page__anchorwrap">
-    <h3 id="economymacroparameters-list--none-countries-list--none-transform-str---start_date-str--1900-01-01-end_datedatetimedate2022-11-3-symbol-str-----tupleany-dictany-dictany-any-str">
-        economy.macro(parameters: list = None, countries: list = None, transform: str = &lsquo;&rsquo;, start_date: str = &lsquo;1900-01-01&rsquo;, end_date=datetime.date(2022, 11, 3), symbol: str = &lsquo;') -&gt; Tuple[Any, Dict[Any, Dict[Any, Any]], str]
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/economy/macro/#economymacroparameters-list--none-countries-list--none-transform-str---start_date-str--1900-01-01-end_datedatetimedate2022-11-3-symbol-str-----tupleany-dictany-dictany-any-str" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor economy.macro(parameters: list = None, countries: list = None, transform: str = &lsquo;&rsquo;, start_date: str = &lsquo;1900-01-01&rsquo;, end_date=datetime.date(2022, 11, 3), symbol: str = &lsquo;&#39;) -&gt; Tuple[Any, Dict[Any, Dict[Any, Any]], str]" href="#economymacroparameters-list--none-countries-list--none-transform-str---start_date-str--1900-01-01-end_datedatetimedate2022-11-3-symbol-str-----tupleany-dictany-dictany-any-str">
-            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
-        </a>
-    </h3>
-</div><p>This functions groups the data queried from the EconDB database [Source: EconDB]</p>
-<pre><code>Parameters
-----------
-parameters: list
-    The type of data you wish to download. Available parameters can be accessed through economy.macro_parameters().
-countries : list
-    The selected country or countries. Available countries can be accessed through economy.macro_countries().
-transform : str
-    The selected transform. Available transforms can be accessed through get_macro_transform().
-start_date : str
-    The starting date, format &quot;YEAR-MONTH-DAY&quot;, i.e. 2010-12-31.
-end_date : str
-    The end date, format &quot;YEAR-MONTH-DAY&quot;, i.e. 2020-06-05.
-symbol : str
-    In what currency you wish to convert all values.
+        .. role:: python(code)
+    :language: python
+    :class: highlight
 
-Returns
-----------
-pd.DataFrame
-    A DataFrame with the requested macro data of all chosen countries
-Dictionary
-    A dictionary containing the units of each country's parameter (e.g. EUR)
-str
-    Denomination which can be Trillions, Billions, Millions, Thousands
-</code></pre>
-<div class="gdoc-page__anchorwrap">
-    <h2 id="getting-charts">
-        Getting charts
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/economy/macro/#getting-charts" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Getting charts" href="#getting-charts">
-            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
-        </a>
-    </h2>
-</div><div class="gdoc-page__anchorwrap">
-    <h3 id="economymacroparameters-list--none-countries-list--none-transform-str---start_date-str--1900-01-01-end_date-str--2022-11-03-symbol-str---raw-bool--false-external_axes-optionallistaxes--none-export-str---charttrue">
-        economy.macro(parameters: list = None, countries: list = None, transform: str = &lsquo;&rsquo;, start_date: str = &lsquo;1900-01-01&rsquo;, end_date: str = &lsquo;2022-11-03&rsquo;, symbol: str = &lsquo;&rsquo;, raw: bool = False, external_axes: Optional[List[axes]] = None, export: str = &lsquo;&rsquo;, chart=True)
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/economy/macro/#economymacroparameters-list--none-countries-list--none-transform-str---start_date-str--1900-01-01-end_date-str--2022-11-03-symbol-str---raw-bool--false-external_axes-optionallistaxes--none-export-str---charttrue" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor economy.macro(parameters: list = None, countries: list = None, transform: str = &lsquo;&rsquo;, start_date: str = &lsquo;1900-01-01&rsquo;, end_date: str = &lsquo;2022-11-03&rsquo;, symbol: str = &lsquo;&rsquo;, raw: bool = False, external_axes: Optional[List[axes]] = None, export: str = &lsquo;&rsquo;, chart=True)" href="#economymacroparameters-list--none-countries-list--none-transform-str---start_date-str--1900-01-01-end_date-str--2022-11-03-symbol-str---raw-bool--false-external_axes-optionallistaxes--none-export-str---charttrue">
-            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
-        </a>
-    </h3>
-</div><p>Show the received macro data about a company [Source: EconDB]</p>
-<pre><code>Parameters
-----------
-parameters: list
-    The type of data you wish to display. Available parameters can be accessed through get_macro_parameters().
-countries : list
-    The selected country or countries. Available countries can be accessed through get_macro_countries().
-transform : str
-    select data transformation from:
-        '' - no transformation
-        'TPOP' - total percentage change on period,
-        'TOYA' - total percentage since 1 year ago,
-        'TUSD' - level USD,
-        'TPGP' - Percentage of GDP,
-        'TNOR' - Start = 100
-start_date : str
-    The starting date, format &quot;YEAR-MONTH-DAY&quot;, i.e. 2010-12-31.
-end_date : str
-    The end date, format &quot;YEAR-MONTH-DAY&quot;, i.e. 2020-06-05.
-symbol : str
-    In what currency you wish to convert all values.
-raw : bool
-    Whether to display the raw output.
-external_axes: Optional[List[plt.axes]]
-    External axes to plot on
-export : str
-    Export data to csv,json,xlsx or png,jpg,pdf,svg file
+|
 
-Returns
-----------
-Plots the Series.
-</code></pre>
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
+.. raw:: html
+
+    <h3>
+    > Getting data
+    </h3>
+
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">economy</span><span class="o">.</span><span class="n">macro</span><span class="p">(</span>
+    <span class="n">parameters</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">countries</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">transform</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;1900-01-01&#39;</span><span class="p">,</span>
+    <span class="n">end_date</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span>
+    <span class="mi">2022</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">),</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="nb">str</span><span class="p">]</span></code></pre></div>
+
+.. raw:: html
+
+    <p>
+    This functions groups the data queried from the EconDB database [Source: EconDB]
+    </p>
+
+* **Parameters**
+
+    parameters: list
+        The type of data you wish to download. Available parameters can be accessed through economy.macro_parameters().
+    countries : list
+        The selected country or countries. Available countries can be accessed through economy.macro_countries().
+    transform : str
+        The selected transform. Available transforms can be accessed through get_macro_transform().
+    start_date : str
+        The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
+    end_date : str
+        The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
+    symbol : str
+        In what currency you wish to convert all values.
+    chart: *bool*
+       Flag to display chart
+
+
+* **Returns**
+
+    pd.DataFrame
+        A DataFrame with the requested macro data of all chosen countries
+    Dictionary
+        A dictionary containing the units of each country's parameter (e.g. EUR)
+    str
+        Denomination which can be Trillions, Billions, Millions, Thousands
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
+    </h3>
+
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">economy</span><span class="o">.</span><span class="n">macro</span><span class="p">(</span>
+    <span class="n">parameters</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">countries</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">transform</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;1900-01-01&#39;</span><span class="p">,</span>
+    <span class="n">end_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2022-11-08&#39;</span><span class="p">,</span>
+    <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="n">raw</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">external_axes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">axes</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">export</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span></code></pre></div>
+
+.. raw:: html
+
+    <p>
+    Show the received macro data about a company [Source: EconDB]
+    </p>
+
+* **Parameters**
+
+    parameters: list
+        The type of data you wish to display. Available parameters can be accessed through get_macro_parameters().
+    countries : list
+        The selected country or countries. Available countries can be accessed through get_macro_countries().
+    transform : str
+        select data transformation from:
+            '' - no transformation
+            'TPOP' - total percentage change on period,
+            'TOYA' - total percentage since 1 year ago,
+            'TUSD' - level USD,
+            'TPGP' - Percentage of GDP,
+            'TNOR' - Start = 100
+    start_date : str
+        The starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
+    end_date : str
+        The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
+    symbol : str
+        In what currency you wish to convert all values.
+    raw : bool
+        Whether to display the raw output.
+    external_axes: Optional[List[plt.axes]]
+        External axes to plot on
+    export : str
+        Export data to csv,json,xlsx or png,jpg,pdf,svg file
+    chart: *bool*
+       Flag to display chart
+
+
+* **Returns**
+
+    Plots the Series.
 
     </article>
  
@@ -67239,6 +67488,25 @@ Plots the Series.
         
         
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
 
         
     
@@ -69798,6 +70066,89 @@ Plots the Series.
         
     
 
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+            
+    
+    
+
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
         
     
         

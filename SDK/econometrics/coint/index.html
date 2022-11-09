@@ -9,9 +9,7 @@
 
 
 
-    <meta name="description" content="To obtain charts, make sure to add chart=True as the last parameter
-Get underlying data    econometrics.coint(dependent_series, independent_series)    Estimates long-run and short-run cointegration relationship for series y and x and apply the two-step Engle &amp; Granger test for cointegration.
-Uses a 2-step process to first estimate coefficients for the long-run relationship y_t = c &#43; gamma * x_t &#43; z_t and then the short-term relationship, y_t - y_(t-1) = alpha * z_(t-1) &#43; epsilon_t, with z the found residuals of the first equation.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  econometrics.coint( dependent_series, independent_series, chart: bool = False, ) .. raw:: html  Estimates long-run and short-run cointegration relationship for series y and x and apply the two-step Engle & Granger test for cointegration. Uses a 2-step process to first estimate coefficients for the long-run relationship y_t = c &#43; gamma * x_t &#43; z_t and then the short-term relationship, y_t - y_(t-1) = alpha * z_(t-1) &#43; epsilon_t, with z the found residuals of the first equation.">
 
 
 
@@ -46,13 +44,55 @@ margin-bottom: 35px;
 }
 
 h1, h2, h3, h4, h5, h6 {
+  margin-top: 5px !important;
+  margin-bottom: 10px !important;
+}
+
+p.first {
   margin-top: 10px !important;
-  margin-bottom: 20px !important;
+  margin-bottom: 0px !important;
+}
+
+p.first.last {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+
+ul {
+  margin-top: 0px !important;
+}
+
+blockquote {
+  border-left: 3px solid #ffffff  !important;
+  background-color: #2b2a2a !important;
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+  font-size: 13px;
+}
+
+dl {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+dt {
+  margin-top: -5px !important;
+  margin-bottom: -5px !important;
+}
+dd {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
 }
 
 code {
 margin-top: 40px;
 margin-bottom: 40px;
+}
+
+code.language-python {
+margin-top: 10px;
+margin-bottom: 10px;
+background-color: #404040 !important;
+font-size: 13px !important;
 }
 
 body {
@@ -84,6 +124,10 @@ a:active {
 
 .gdoc-nav__list {
   margin-left: 8px;
+}
+
+ul.gdoc-nav__list ul.gdoc-nav__list > li{
+  text-transform: lowercase !important;
 }
 
 .gdoc-toc a, .gdoc-toc a:visited {
@@ -196,7 +240,7 @@ h1 {
   text-transform: uppercase;
   font-weight: 700;
   letter-spacing: 0.1em;
-  font-size:20px;
+  font-size:30px;
 }
 
 h2 {
@@ -204,10 +248,11 @@ h2 {
 }
 
 h3 {
-  font-size: 16px;
+  font-size: 16px !important;
 }
 
 p {
+  font-size: 14px;
   color: #EAEAEA !important;
 }
 
@@ -221,7 +266,7 @@ code, img {
   background-color: #404040 !important;
   color: white !important;
   border-radius: .375rem !important;
-  border: 1px solid #5a5a5a !important;
+  border: 0px solid #5a5a5a !important;
 }
 .header {
     padding-left: 1rem;
@@ -242,7 +287,8 @@ code, img {
 <link rel="alternate" type="application/rss+xml" href="https://openbb-finance.github.io/OpenBBTerminal/SDK/econometrics/coint/index.xml" title="OpenBB Terminal Documentation" />
 
 
-<!-- Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc --> 
+<!-- Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc -->
+ 
 
   </head>
 
@@ -32181,6 +32227,37 @@ code, img {
             
             <span class="flex">
                 
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/crypto/ov/btcrb/"
+                    class="gdoc-nav__entry ">
+                    btcrb
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
                 <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/crypto/ov/cbpairs/"
                     class="gdoc-nav__entry ">
                     cbpairs
@@ -36236,7 +36313,7 @@ code, img {
             
             <span class="flex">
                 
-                <a style="text-decoration: none !important;" href="/OpenBBTerminal/sdk/forecast/plot/"
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/forecast/plot/"
                     class="gdoc-nav__entry ">
                     plot
                 </a>
@@ -37325,6 +37402,146 @@ code, img {
                 <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/forex/quote/"
                     class="gdoc-nav__entry ">
                     quote
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+</ul>
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <input type="checkbox" id="navtree-3c0cb2fa" class="gdoc-nav__toggle" >
+            <label for="navtree-3c0cb2fa" class="flex justify-between">
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/"
+                    class="gdoc-nav__entry ">
+                    funds
+                </a>
+            </span>
+            
+            <svg class="icon gdoc_keyborad_arrow_left"><use xlink:href="#gdoc_keyborad_arrow_left"></use></svg>
+            <svg class="icon gdoc_keyborad_arrow_down hidden"><use xlink:href="#gdoc_keyborad_arrow_down"></use></svg>
+            </label>
+            
+        
+
+        
+            
+
+
+
+<ul class="gdoc-nav__list">
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/info/"
+                    class="gdoc-nav__entry ">
+                    info
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/overview/"
+                    class="gdoc-nav__entry ">
+                    overview
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li style="margin-top: 15px; text-transform: capitalize;">
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                
+                <a style="text-decoration: none !important;" href="/OpenBBTerminal/SDK/funds/search/"
+                    class="gdoc-nav__entry ">
+                    search
                 </a>
             </span>
             
@@ -47265,7 +47482,7 @@ code, img {
     <div>
         <span class="editpage">
             <svg class="icon gdoc_code" style="color: #C7C7C7;"><use xlink:href="#gdoc_code"></use></svg>
-            <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/website//content/SDK/econometrics/coint/_index.md" style="color: #C7C7C7;">
+            <a href="https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/website//content/SDK/econometrics/coint/_index.rst" style="color: #C7C7C7;">
                 Edit this page
             </a>
         </span>
@@ -47275,114 +47492,135 @@ code, img {
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Coint</h1>
-        <p>To obtain charts, make sure to add <code>chart=True</code> as the last parameter</p>
-<div class="gdoc-page__anchorwrap">
-    <h2 id="get-underlying-data">
-        Get underlying data
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/econometrics/coint/#get-underlying-data" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Get underlying data" href="#get-underlying-data">
-            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
-        </a>
-    </h2>
-</div><div class="gdoc-page__anchorwrap">
-    <h3 id="econometricscointdependent_series-independent_series">
-        econometrics.coint(dependent_series, independent_series)
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/econometrics/coint/#econometricscointdependent_series-independent_series" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor econometrics.coint(dependent_series, independent_series)" href="#econometricscointdependent_series-independent_series">
-            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
-        </a>
+        .. role:: python(code)
+    :language: python
+    :class: highlight
+
+|
+
+To obtain charts, make sure to add :python:`chart = True` as the last parameter.
+
+.. raw:: html
+
+    <h3>
+    > Getting data
     </h3>
-</div><p>Estimates long-run and short-run cointegration relationship for series y and x and apply
-the two-step Engle &amp; Granger test for cointegration.</p>
-<pre><code>Uses a 2-step process to first estimate coefficients for the long-run relationship
-    y_t = c + gamma * x_t + z_t
 
-and then the short-term relationship,
-    y_t - y_(t-1) = alpha * z_(t-1) + epsilon_t,
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">econometrics</span><span class="o">.</span><span class="n">coint</span><span class="p">(</span>
+    <span class="n">dependent_series</span><span class="p">,</span> <span class="n">independent_series</span><span class="p">,</span> <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span></code></pre></div>
 
-with z the found residuals of the first equation.
+.. raw:: html
 
-Then tests cointegration by Dickey-Fuller phi=1 vs phi &lt; 1 in
-    z_t = phi * z_(t-1) + eta_t
+    <p>
+    Estimates long-run and short-run cointegration relationship for series y and x and apply
+    the two-step Engle & Granger test for cointegration.
 
-If this implies phi &lt; 1, the z series is stationary is concluded to be
-stationary, and thus the series y and x are concluded to be cointegrated.
+    Uses a 2-step process to first estimate coefficients for the long-run relationship
+        y_t = c + gamma * x_t + z_t
 
-Parameters
-----------
-dependent_series : pd.Series
-    The first time series of the pair to analyse.
+    and then the short-term relationship,
+        y_t - y_(t-1) = alpha * z_(t-1) + epsilon_t,
 
-independent_series : pd.Series
-    The second time series of the pair to analyse.
+    with z the found residuals of the first equation.
 
-Returns
--------
-c : float
-    The constant term in the long-run relationship y_t = c + gamma * x_t + z_t. This
-    describes the static shift of y with respect to gamma * x.
+    Then tests cointegration by Dickey-Fuller phi=1 vs phi < 1 in
+        z_t = phi * z_(t-1) + eta_t
 
-gamma : float
-    The gamma term in the long-run relationship y_t = c + gamma * x_t + z_t. This
-    describes the ratio between the const-shifted y and x.
+    If this implies phi < 1, the z series is stationary is concluded to be
+    stationary, and thus the series y and x are concluded to be cointegrated.
+    </p>
 
-alpha : float
-    The alpha term in the short-run relationship y_t - y_(t-1) = alpha * z_(t-1) + epsilon. This
-    gives an indication of the strength of the error correction toward the long-run mean.
+* **Parameters**
 
-z : pd.Series
-    Series of residuals z_t from the long-run relationship y_t = c + gamma * x_t + z_t, representing
-    the value of the error correction term.
+    dependent_series : pd.Series
+        The first time series of the pair to analyse.
 
-dfstat : float
-    The Dickey Fuller test-statistic for phi = 1 vs phi &lt; 1 in the second equation. A more
-    negative value implies the existence of stronger cointegration.
+    independent_series : pd.Series
+        The second time series of the pair to analyse.
+    chart: *bool*
+       Flag to display chart
 
-pvalue : float
-    The p-value corresponding to the Dickey Fuller test-statistic. A lower value implies
-    stronger rejection of no-cointegration, thus stronger evidence of cointegration.
-</code></pre>
-<div class="gdoc-page__anchorwrap">
-    <h2 id="getting-charts">
-        Getting charts
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/econometrics/coint/#getting-charts" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Getting charts" href="#getting-charts">
-            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
-        </a>
-    </h2>
-</div><div class="gdoc-page__anchorwrap">
-    <h3 id="econometricscointdatasets-unionpandascoreframedataframe-dictstr-pandascoreseriesseries-significant-bool--false-plot-bool--false-export-str---external_axes-optionallistaxes--none-charttrue">
-        econometrics.coint(datasets: Union[pandas.core.frame.DataFrame, Dict[str, pandas.core.series.Series]], significant: bool = False, plot: bool = False, export: str = &lsquo;&rsquo;, external_axes: Optional[List[axes]] = None, chart=True)
-        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/econometrics/coint/#econometricscointdatasets-unionpandascoreframedataframe-dictstr-pandascoreseriesseries-significant-bool--false-plot-bool--false-export-str---external_axes-optionallistaxes--none-charttrue" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor econometrics.coint(datasets: Union[pandas.core.frame.DataFrame, Dict[str, pandas.core.series.Series]], significant: bool = False, plot: bool = False, export: str = &lsquo;&rsquo;, external_axes: Optional[List[axes]] = None, chart=True)" href="#econometricscointdatasets-unionpandascoreframedataframe-dictstr-pandascoreseriesseries-significant-bool--false-plot-bool--false-export-str---external_axes-optionallistaxes--none-charttrue">
-            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
-        </a>
+
+* **Returns**
+
+    c : float
+        The constant term in the long-run relationship y_t = c + gamma * x_t + z_t. This
+        describes the static shift of y with respect to gamma * x.
+
+    gamma : float
+        The gamma term in the long-run relationship y_t = c + gamma * x_t + z_t. This
+        describes the ratio between the const-shifted y and x.
+
+    alpha : float
+        The alpha term in the short-run relationship y_t - y_(t-1) = alpha * z_(t-1) + epsilon. This
+        gives an indication of the strength of the error correction toward the long-run mean.
+
+    z : pd.Series
+        Series of residuals z_t from the long-run relationship y_t = c + gamma * x_t + z_t, representing
+        the value of the error correction term.
+
+    dfstat : float
+        The Dickey Fuller test-statistic for phi = 1 vs phi < 1 in the second equation. A more
+        negative value implies the existence of stronger cointegration.
+
+    pvalue : float
+        The p-value corresponding to the Dickey Fuller test-statistic. A lower value implies
+        stronger rejection of no-cointegration, thus stronger evidence of cointegration.
+
+|
+
+.. raw:: html
+
+    <h3>
+    > Getting charts
     </h3>
-</div><p>Estimates long-run and short-run cointegration relationship for series y and x and apply
-the two-step Engle &amp; Granger test for cointegration.</p>
-<pre><code>Uses a 2-step process to first estimate coefficients for the long-run relationship
-    y_t = c + gamma * x_t + z_t
 
-and then the short-term relationship,
-    y_t - y_(t-1) = alpha * z_(t-1) + epsilon_t,
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">econometrics</span><span class="o">.</span><span class="n">coint</span><span class="p">(</span>
+    <span class="n">datasets</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span><span class="p">]],</span>
+    <span class="n">significant</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">export</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="n">external_axes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">axes</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span></code></pre></div>
 
-with z the found residuals of the first equation.
+.. raw:: html
 
-Then tests co-integration with the Dickey-Fuller phi=1 vs phi &lt; 1 in
-    z_t = phi * z_(t-1) + eta_t
+    <p>
+    Estimates long-run and short-run cointegration relationship for series y and x and apply
+    the two-step Engle & Granger test for cointegration.
 
-If this implies phi &lt; 1, the z series is stationary is concluded to be
-stationary, and thus the series y and x are concluded to be cointegrated.
+    Uses a 2-step process to first estimate coefficients for the long-run relationship
+        y_t = c + gamma * x_t + z_t
 
-Parameters
-----------
-datasets: Union[pd.DataFrame, Dict[str, pd.Series]]
-    All time series to perform co-integration tests on.
-significant: float
-    Show only companies that have p-values lower than this percentage
-plot: bool
-    Whether you wish to plot the z-values of all pairs.
-export : str
-    Format to export data
-external_axes:Optional[List[plt.axes]]
-    External axes to plot on
-</code></pre>
+    and then the short-term relationship,
+        y_t - y_(t-1) = alpha * z_(t-1) + epsilon_t,
+
+    with z the found residuals of the first equation.
+
+    Then tests co-integration with the Dickey-Fuller phi=1 vs phi < 1 in
+        z_t = phi * z_(t-1) + eta_t
+
+    If this implies phi < 1, the z series is stationary is concluded to be
+    stationary, and thus the series y and x are concluded to be cointegrated.
+    </p>
+
+* **Parameters**
+
+    datasets: Union[pd.DataFrame, Dict[str, pd.Series]]
+        All time series to perform co-integration tests on.
+    significant: float
+        Show only companies that have p-values lower than this percentage
+    plot: bool
+        Whether you wish to plot the z-values of all pairs.
+    export : str
+        Format to export data
+    external_axes:Optional[List[plt.axes]]
+        External axes to plot on
+    chart: *bool*
+       Flag to display chart
+
 
     </article>
  
@@ -67261,6 +67499,25 @@ external_axes:Optional[List[plt.axes]]
         
         
     
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
 
         
     
@@ -69820,6 +70077,89 @@ external_axes:Optional[List[plt.axes]]
         
     
 
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+            
+    
+    
+
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
         
     
         
