@@ -27,7 +27,7 @@ As a functional code block, this looks like:
 
 ```python
 
-from openbb_terminal.core.library.sdk import openbb
+from openbb_terminal.sdk import openbb
 import openbb_terminal.config_terminal as cfg
 import pandas as pd
 import matplotlib.pyplot as plt

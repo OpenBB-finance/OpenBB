@@ -6,7 +6,7 @@ geekdocCollapseSection: true
 ---
 The Economy module wraps the functions of the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/economy/" target="_blank">Economy menu</a>, within the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/" target="_blank">OpenBB Terminal</a>, and provides the user with more control over their workflow. In a Jupyter Notebook environment, it is quick and easy to get going. Start a new `.ipynb` Notebook file, or a `.py` Python script by importing the necessary modules for the tasks at hand. For the purpose of these examples, two additional modules will be imported:
 ````
-from openbb_terminal.core.library.sdk import openbb
+from openbb_terminal.sdk import openbb
 import pandas as pd
 %matplotlib inline
 ````
