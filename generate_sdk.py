@@ -42,7 +42,7 @@ class Trailmap:
         tmap = trailmap.split(".")
         self.class_attr: str = tmap.pop(-1)
         self.category = tmap[0]
-        self.location_path = [c for c in tmap]
+        self.location_path = tmap
         self.model = model
         self.view = view if view else None
         self.model_func: Optional[str] = f"lib.{model}" if model else None
