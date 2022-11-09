@@ -149,6 +149,8 @@ from openbb_terminal.cryptocurrency.overview import (
     coinpaprika_view as crypto_ov_coinpaprika_view,
     cryptopanic_model as crypto_ov_cryptopanic_model,
     cryptopanic_view as crypto_ov_cryptopanic_view,
+    glassnode_model as crypto_ov_glassnode_model,
+    glassnode_view as crypto_ov_glassnode_view,
     loanscan_model as crypto_ov_loanscan_model,
     loanscan_view as crypto_ov_loanscan_view,
     pycoingecko_model as crypto_ov_pycoingecko_model,

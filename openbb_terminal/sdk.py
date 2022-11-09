@@ -29,7 +29,7 @@ from openbb_terminal.reports import widget_helpers as widgets  # noqa: F401
 
 from openbb_terminal.portfolio.portfolio_model import PortfolioModel as Portfolio
 from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin
-import openbb_terminal.sdk_init as lib
+import openbb_terminal.sdk_core.sdk_init as lib
 
 logger = logging.getLogger(__name__)
 
@@ -198,15 +198,13 @@ class CryptoDueDiligence(Category):
         self.ps_view = lib.crypto_dd_coinpaprika_view.display_price_supply
         self.news = lib.crypto_ov_cryptopanic_model.get_news
         self.news_view = lib.crypto_dd_cryptopanic_view.display_news
-        self.headlines = lib.ba_finbrain_model.get_sentiment
+        self.headlines = lib.stocks_ba_finbrain_model.get_sentiment
         self.headlines_view = (
             lib.crypto_dd_crypto_finbrain_view.display_crypto_sentiment_analysis
         )
         self.active = lib.crypto_dd_glassnode_model.get_active_addresses
         self.active_view = lib.crypto_dd_glassnode_view.display_active_addresses
         self.close = lib.crypto_dd_glassnode_model.get_close_price
-        self.btcrb = lib.crypto_dd_glassnode_model.get_btc_rainbow
-        self.btcrb_view = lib.crypto_dd_glassnode_view.display_btc_rainbow
         self.eb = lib.crypto_dd_glassnode_model.get_exchange_balances
         self.eb_view = lib.crypto_dd_glassnode_view.display_exchange_balances
         self.change = lib.crypto_dd_glassnode_model.get_exchange_net_position_change
@@ -407,6 +405,8 @@ class CryptoOverview(Category):
         super().__init__(*args, **kwargs)
         self.altindex = lib.crypto_ov_blockchaincenter_model.get_altcoin_index
         self.altindex_view = lib.crypto_ov_blockchaincenter_view.display_altcoin_index
+        self.btcrb = lib.crypto_ov_glassnode_model.get_btc_rainbow
+        self.btcrb_view = lib.crypto_ov_glassnode_view.display_btc_rainbow
         self.cbpairs = lib.crypto_ov_coinbase_model.get_trading_pairs
         self.cbpairs_view = lib.crypto_ov_coinbase_view.display_trading_pairs
         self.cpplatforms = lib.crypto_ov_coinpaprika_model.get_all_contract_platforms
@@ -568,40 +568,40 @@ class StocksBehavioralAnalysis(Category):
     def __init__(self, *args, **kwargs):
         """Initialize the class"""
         super().__init__(*args, **kwargs)
-        self.headlines = lib.ba_finbrain_model.get_sentiment
-        self.headlines_view = lib.ba_finbrain_view.display_sentiment_analysis
-        self.mentions = lib.ba_google_model.get_mentions
-        self.mentions_view = lib.ba_google_view.display_mentions
-        self.queries = lib.ba_google_model.get_queries
-        self.regions = lib.ba_google_model.get_regions
-        self.regions_view = lib.ba_google_view.display_regions
-        self.rise = lib.ba_google_model.get_rise
-        self.rise_view = lib.ba_google_view.display_rise
-        self.getdd = lib.ba_reddit_model.get_due_dilligence
-        self.popular = lib.ba_reddit_model.get_popular_tickers
-        self.popular_view = lib.ba_reddit_view.display_popular_tickers
-        self.redditsent = lib.ba_reddit_model.get_posts_about
-        self.redditsent_view = lib.ba_reddit_view.display_redditsent
-        self.text_sent = lib.ba_reddit_model.get_sentiment
-        self.spac = lib.ba_reddit_model.get_spac
-        self.spacc = lib.ba_reddit_model.get_spac_community
-        self.watchlist = lib.ba_reddit_model.get_watchlists
-        self.watchlist_view = lib.ba_reddit_view.display_watchlist
-        self.wsb = lib.ba_reddit_model.get_wsb_community
-        self.hist = lib.ba_sentimentinvestor_model.get_historical
-        self.hist_view = lib.ba_sentimentinvestor_view.display_historical
-        self.trend = lib.ba_sentimentinvestor_model.get_trending
-        self.trend_view = lib.ba_sentimentinvestor_view.display_trending
-        self.bullbear = lib.ba_stocktwits_model.get_bullbear
-        self.bullbear_view = lib.ba_stocktwits_view.display_bullbear
-        self.messages = lib.ba_stocktwits_model.get_messages
-        self.messages_view = lib.ba_stocktwits_view.display_messages
-        self.stalker = lib.ba_stocktwits_model.get_stalker
-        self.trending = lib.ba_stocktwits_model.get_trending
-        self.infer = lib.ba_twitter_model.load_analyze_tweets
-        self.infer_view = lib.ba_twitter_view.display_inference
-        self.sentiment = lib.ba_twitter_model.get_sentiment
-        self.sentiment_view = lib.ba_twitter_view.display_sentiment
+        self.headlines = lib.stocks_ba_finbrain_model.get_sentiment
+        self.headlines_view = lib.stocks_ba_finbrain_view.display_sentiment_analysis
+        self.mentions = lib.stocks_ba_google_model.get_mentions
+        self.mentions_view = lib.stocks_ba_google_view.display_mentions
+        self.queries = lib.stocks_ba_google_model.get_queries
+        self.regions = lib.stocks_ba_google_model.get_regions
+        self.regions_view = lib.stocks_ba_google_view.display_regions
+        self.rise = lib.stocks_ba_google_model.get_rise
+        self.rise_view = lib.stocks_ba_google_view.display_rise
+        self.getdd = lib.stocks_ba_reddit_model.get_due_dilligence
+        self.popular = lib.stocks_ba_reddit_model.get_popular_tickers
+        self.popular_view = lib.stocks_ba_reddit_view.display_popular_tickers
+        self.redditsent = lib.stocks_ba_reddit_model.get_posts_about
+        self.redditsent_view = lib.stocks_ba_reddit_view.display_redditsent
+        self.text_sent = lib.stocks_ba_reddit_model.get_sentiment
+        self.spac = lib.stocks_ba_reddit_model.get_spac
+        self.spacc = lib.stocks_ba_reddit_model.get_spac_community
+        self.watchlist = lib.stocks_ba_reddit_model.get_watchlists
+        self.watchlist_view = lib.stocks_ba_reddit_view.display_watchlist
+        self.wsb = lib.stocks_ba_reddit_model.get_wsb_community
+        self.hist = lib.stocks_ba_sentimentinvestor_model.get_historical
+        self.hist_view = lib.stocks_ba_sentimentinvestor_view.display_historical
+        self.trend = lib.stocks_ba_sentimentinvestor_model.get_trending
+        self.trend_view = lib.stocks_ba_sentimentinvestor_view.display_trending
+        self.bullbear = lib.stocks_ba_stocktwits_model.get_bullbear
+        self.bullbear_view = lib.stocks_ba_stocktwits_view.display_bullbear
+        self.messages = lib.stocks_ba_stocktwits_model.get_messages
+        self.messages_view = lib.stocks_ba_stocktwits_view.display_messages
+        self.stalker = lib.stocks_ba_stocktwits_model.get_stalker
+        self.trending = lib.stocks_ba_stocktwits_model.get_trending
+        self.infer = lib.stocks_ba_twitter_model.load_analyze_tweets
+        self.infer_view = lib.stocks_ba_twitter_view.display_inference
+        self.sentiment = lib.stocks_ba_twitter_model.get_sentiment
+        self.sentiment_view = lib.stocks_ba_twitter_view.display_sentiment
 
 
 ##################################################################
@@ -868,15 +868,13 @@ class StocksOptionsHedge(Category):
     def __init__(self, *args, **kwargs):
         """Initialize the class"""
         super().__init__(*args, **kwargs)
-        self.add_hedge_option = lib.stocks_options_hedge_hedge_model.add_hedge_option
-        self.add_hedge_option_view = (
-            lib.stocks_options_hedge_hedge_view.add_and_show_greeks
-        )
-        self.calc_delta = lib.stocks_options_hedge_hedge_model.calc_delta
-        self.calc_gamma = lib.stocks_options_hedge_hedge_model.calc_gamma
-        self.calc_hedge = lib.stocks_options_hedge_hedge_model.calc_hedge
-        self.calc_hedge_view = lib.stocks_options_hedge_hedge_view.show_calculated_hedge
-        self.calc_vega = lib.stocks_options_hedge_hedge_model.calc_vega
+        self.add_hedge_option = lib.stocks_options_hedge_model.add_hedge_option
+        self.add_hedge_option_view = lib.stocks_options_hedge_view.add_and_show_greeks
+        self.calc_delta = lib.stocks_options_hedge_model.calc_delta
+        self.calc_gamma = lib.stocks_options_hedge_model.calc_gamma
+        self.calc_hedge = lib.stocks_options_hedge_model.calc_hedge
+        self.calc_hedge_view = lib.stocks_options_hedge_view.show_calculated_hedge
+        self.calc_vega = lib.stocks_options_hedge_model.calc_vega
 
 
 class StocksOptions(Category):
@@ -1389,16 +1387,16 @@ class ETFDiscovery(Category):
     def __init__(self, *args, **kwargs):
         """Initialize the class"""
         super().__init__(*args, **kwargs)
-        self.mover = lib.etf_discovery_wsj_model.etf_movers
-        self.mover_view = lib.etf_discovery_wsj_view.show_top_mover
+        self.mover = lib.etf_disc_wsj_model.etf_movers
+        self.mover_view = lib.etf_disc_wsj_view.show_top_mover
 
 
 class ETFScreen(Category):
     def __init__(self, *args, **kwargs):
         """Initialize the class"""
         super().__init__(*args, **kwargs)
-        self.screen = lib.etf_screener_model.etf_screener
-        self.view = lib.etf_screener_view.view_screener
+        self.screen = lib.etf_scr_model.etf_screener
+        self.view = lib.etf_scr_view.view_screener
 
 
 class ETF:
