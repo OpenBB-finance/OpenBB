@@ -103,9 +103,6 @@ def _make_request(url: str) -> Union[BeautifulSoup, None]:
 def get_startups() -> pd.DataFrame:
     """Get startups from ROSS index [Source: https://runacap.com/]
 
-    Parameters
-    ----------
-
     Returns
     -------
     pandas.DataFrame:
