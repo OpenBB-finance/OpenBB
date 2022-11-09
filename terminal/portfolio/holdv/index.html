@@ -9,8 +9,8 @@
 
 
 
-    <meta name="description" content="usage: holdv [-s] [-h] [--export EXPORT] [--raw] [-l LIMIT] Display holdings of assets (absolute value)
-optional arguments: -s, --sum Sum all assets value over time (default: False) -h, --help show this help message (default: False) --export EXPORT Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: ) --raw Flag to display raw data (default: False) -l LIMIT, --limit LIMIT Number of entries to show in data.">
+    <meta name="description" content="usage: holdv [-u] [-h] [--export EXPORT] [--raw] [-l LIMIT] Display holdings of assets (absolute value)
+optional arguments: -u, --unstack Sum all assets value over time (default: False) -h, --help show this help message (default: False) --export EXPORT Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: ) --raw Flag to display raw data (default: False) -l LIMIT, --limit LIMIT Number of entries to show in data.">
 
 
 
@@ -47274,12 +47274,13 @@ code, img {
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Holdv</h1>
-        <pre><code>usage: holdv [-s] [-h] [--export EXPORT] [--raw] [-l LIMIT]
+        <pre><code>usage: holdv [-u] [-h] [--export EXPORT] [--raw] [-l LIMIT]
 </code></pre><p>Display holdings of assets (absolute value)</p>
 <pre><code>optional arguments:
-  -s, --sum             Sum all assets value over time (default: False)
+  -u, --unstack         Sum all assets value over time (default: False)
   -h, --help            show this help message (default: False)
-  --export EXPORT       Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg (default: )
+  --export EXPORT       Export raw data into csv, json, xlsx and figure into png, jpg, pdf, svg
+                        (default: )
   --raw                 Flag to display raw data (default: False)
   -l LIMIT, --limit LIMIT
                         Number of entries to show in data. (default: 10)
