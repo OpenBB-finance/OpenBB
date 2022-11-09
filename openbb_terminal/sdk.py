@@ -1,9 +1,21 @@
-from openbb_terminal.config_terminal import theme  # noqa # pylint: disable=unused-import
-from openbb_terminal.helper_classes import TerminalStyle  # noqa # pylint: disable=unused-import
-from openbb_terminal import helper_funcs as helper  # noqa # pylint: disable=unused-import
-from openbb_terminal.reports import widget_helpers as widgets  # noqa # pylint: disable=unused-import
-from openbb_terminal.portfolio.portfolio_model import PortfolioModel as Portfolio  # noqa # pylint: disable=unused-import
-from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import Coin  # noqa # pylint: disable=unused-import
+from openbb_terminal.config_terminal import (
+    theme,
+)  # noqa # pylint: disable=unused-import
+from openbb_terminal.helper_classes import (
+    TerminalStyle,
+)  # noqa # pylint: disable=unused-import
+from openbb_terminal import (
+    helper_funcs as helper,
+)  # noqa # pylint: disable=unused-import
+from openbb_terminal.reports import (
+    widget_helpers as widgets,
+)  # noqa # pylint: disable=unused-import
+from openbb_terminal.portfolio.portfolio_model import (
+    PortfolioModel as Portfolio,
+)  # noqa # pylint: disable=unused-import
+from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import (
+    Coin,
+)  # noqa # pylint: disable=unused-import
 
 
 from openbb_terminal.core.library.breadcrumb import Breadcrumb
