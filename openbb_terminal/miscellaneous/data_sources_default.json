@@ -287,6 +287,7 @@
     }
   },
   "crypto": {
+    "price": ["Pyth"],
     "load": ["YahooFinance", "CoinGecko", "CCXT"],
     "find": ["CoinGecko", "CoinPaprika", "Binance", "Coinbase", "YahooFinance"],
     "headlines": ["FinBrain"],
@@ -464,8 +465,8 @@
     "futures": ["WallStreetJournal", "Finviz"],
     "map": ["Finviz"],
     "bigmac": ["Nasdaq"],
-    "ycrv": ["FRED","Investing"],
-    "events": ["Nasdaq","Investing"],
+    "ycrv": ["FRED"],
+    "events": ["Nasdaq"],
     "edebt": ["Wikipedia"],
     "rtps": ["AlphaVantage"],
     "valuation": ["Finviz"],

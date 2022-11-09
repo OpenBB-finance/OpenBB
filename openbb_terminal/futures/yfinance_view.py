@@ -174,8 +174,9 @@ def display_historical(
                 theme.style_primary_axis(ax)
 
                 make_white(ax)
-                if external_axes is None:
-                    theme.visualize_output()
+
+            if external_axes is None:
+                theme.visualize_output()
         else:
             if len(historicals["Adj Close"]) == 1:
                 console.print(

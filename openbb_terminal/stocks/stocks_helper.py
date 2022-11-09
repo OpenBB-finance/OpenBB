@@ -23,7 +23,6 @@ import requests
 from requests.exceptions import ReadTimeout
 
 import yfinance as yf
-from numpy.core.fromnumeric import transpose
 from plotly.subplots import make_subplots
 from scipy import stats
 
@@ -60,6 +59,40 @@ exch_file_path = os.path.join(
 )
 exchange_df = pd.read_csv(exch_file_path, index_col=0, header=None)
 exchange_mappings = exchange_df.squeeze("columns").to_dict()
+
+
+def check_datetime(
+    ck_date: Optional[Union[datetime, str]] = None, start: bool = True
+) -> datetime:
+    """Checks if given argument is string and attempts to convert to datetime.
+
+    Parameters
+    ----------
+    ck_date : Optional[Union[datetime, str]], optional
+        Date to check, by default None
+    start : bool, optional
+        If True and string is invalid, will return 1100 days ago
+        If False and string is invalid, will return today, by default True
+
+    Returns
+    -------
+    datetime
+        Datetime object
+    """
+    error_catch = (datetime.now() - timedelta(days=1100)) if start else datetime.now()
+    try:
+        if ck_date is None:
+            return error_catch
+        if isinstance(ck_date, datetime):
+            return ck_date
+        if isinstance(ck_date, str):
+            return datetime.strptime(ck_date, "%Y-%m-%d")
+    except Exception:
+        console.print(
+            f"Invalid date format (YYYY-MM-DD), "
+            f"Using {error_catch.strftime('%Y-%m-%d')} for {ck_date}"
+        )
+    return error_catch
 
 
 def search(
@@ -184,9 +217,11 @@ def search(
 
 def load(
     symbol: str,
-    start_date: datetime = None,
+    start_date: Optional[Union[datetime, str]] = (
+        datetime.now() - timedelta(days=1100)
+    ),
     interval: int = 1440,
-    end_date: datetime = None,
+    end_date: Optional[Union[datetime, str]] = datetime.now(),
     prepost: bool = False,
     source: str = "YahooFinance",
     iexrange: str = "ytd",
@@ -228,12 +263,12 @@ def load(
     ----------
     symbol: str
         Ticker to get data
-    start_date: datetime
-        Start date to get data from with
+    start_date: str or datetime, optional
+        Start date to get data from with. - datetime or string format (YYYY-MM-DD)
     interval: int
         Interval (in minutes) to get data 1, 5, 15, 30, 60 or 1440
-    end_date: datetime
-        End date to get data from with
+    end_date: str or datetime, optional
+        End date to get data from with. - datetime or string format (YYYY-MM-DD)
     prepost: bool
         Pre and After hours data
     source: str
@@ -252,10 +287,8 @@ def load(
     df_stock_candidate: pd.DataFrame
         Dataframe of data
     """
-    if start_date is None:
-        start_date = datetime.now() - timedelta(days=1100)
-    if end_date is None:
-        end_date = datetime.now()
+    start_date = check_datetime(start_date)
+    end_date = check_datetime(end_date, start=False)
 
     # Daily
     if int(interval) == 1440:
@@ -405,9 +438,11 @@ def display_candle(
     add_trend: bool = False,
     ma: Optional[Iterable[int]] = None,
     asset_type: str = "",
-    start_date: datetime = (datetime.now() - timedelta(days=1100)),
+    start_date: Optional[Union[datetime, str]] = (
+        datetime.now() - timedelta(days=1100)
+    ),
     interval: int = 1440,
-    end_date: datetime = datetime.now(),
+    end_date: Optional[Union[datetime, str]] = datetime.now(),
     prepost: bool = False,
     source: str = "YahooFinance",
     iexrange: str = "ytd",
@@ -441,12 +476,12 @@ def display_candle(
         External axes (2 axes are expected in the list), by default None
     asset_type_: str
         String to include in title
-    start_date: datetime
-        Start date to get data from with
+    start_date: str or datetime, optional
+        Start date to get data from with. - datetime or string format (YYYY-MM-DD)
     interval: int
         Interval (in minutes) to get data 1, 5, 15, 30, 60 or 1440
-    end_date: datetime
-        End date to get data from with
+    end_date: str or datetime, optional
+        End date to get data from with. - datetime or string format (YYYY-MM-DD)
     prepost: bool
         Pre and After hours data
     source: str
@@ -462,6 +497,9 @@ def display_candle(
     yscale: str
         Linear or log for yscale
     """
+    start_date = check_datetime(start_date)
+    end_date = check_datetime(end_date, start=False)
+
     if data is None:
         data = load(
             symbol,
@@ -721,67 +759,10 @@ def display_candle(
         return data
 
 
-def quote(symbol: str) -> pd.DataFrame:
-    """Ticker quote.
-
-    Parameters
-    ----------
-    symbol : str
-        Ticker
-    """
-    ticker = yf.Ticker(symbol)
-
-    try:
-        quote_df = pd.DataFrame(
-            [
-                {
-                    "Symbol": ticker.info["symbol"],
-                    "Name": ticker.info["shortName"],
-                    "Price": ticker.info["regularMarketPrice"],
-                    "Open": ticker.info["regularMarketOpen"],
-                    "High": ticker.info["dayHigh"],
-                    "Low": ticker.info["dayLow"],
-                    "Previous Close": ticker.info["previousClose"],
-                    "Volume": ticker.info["volume"],
-                    "52 Week High": ticker.info["fiftyTwoWeekHigh"],
-                    "52 Week Low": ticker.info["fiftyTwoWeekLow"],
-                }
-            ]
-        )
-
-        quote_df["Change"] = quote_df["Price"] - quote_df["Previous Close"]
-        quote_df["Change %"] = quote_df.apply(
-            lambda x: f'{((x["Change"] / x["Previous Close"]) * 100):.2f}%',
-            axis="columns",
-        )
-        for c in [
-            "Price",
-            "Open",
-            "High",
-            "Low",
-            "Previous Close",
-            "52 Week High",
-            "52 Week Low",
-            "Change",
-        ]:
-            quote_df[c] = quote_df[c].apply(lambda x: f"{x:.2f}")
-        quote_df["Volume"] = quote_df["Volume"].apply(lambda x: f"{x:,}")
-
-        quote_df = quote_df.set_index("Symbol")
-
-        quote_data = transpose(quote_df)
-
-        print_rich_table(quote_data, title="Ticker Quote", show_index=True)
-        return quote_data
-
-    except KeyError:
-        logger.exception("Invalid stock ticker")
-        console.print(f"Invalid stock ticker: {symbol}")
-        return ""
-
-
 def load_ticker(
-    ticker: str, start_date: Union[str, datetime], end_date: Union[str, datetime] = ""
+    ticker: str,
+    start_date: Union[str, datetime],
+    end_date: Optional[Union[str, datetime]] = None,
 ) -> pd.DataFrame:
     """Load a ticker data from Yahoo Finance.
 
@@ -802,10 +783,7 @@ def load_ticker(
         A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume,
         date_id, OC-High, OC-Low.
     """
-    if end_date:
-        df_data = yf.download(ticker, start=start_date, end=end_date, progress=False)
-    else:
-        df_data = yf.download(ticker, start=start_date, progress=False)
+    df_data = yf.download(ticker, start=start_date, end=end_date, progress=False)
 
     df_data.index = pd.to_datetime(df_data.index)
     df_data["date_id"] = (df_data.index.date - df_data.index.date.min()).astype(

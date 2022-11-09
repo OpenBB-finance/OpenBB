@@ -3,10 +3,9 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import Any, Union, Optional, List, Tuple
+from typing import Any, Union, Tuple
 
 import warnings
-import numpy as np
 import pandas as pd
 from statsforecast.models import ETS
 from statsforecast.core import StatsForecast
@@ -31,7 +30,7 @@ def get_autoets_data(
     n_predict: int = 5,
     start_window: float = 0.85,
     forecast_horizon: int = 5,
-) -> Tuple[list[np.ndarray], List[np.ndarray], List[np.ndarray], Optional[float], Any]:
+) -> Tuple[Any, Any, Any, Any, Any]:
 
     """Performs Automatic ETS forecasting
     This is a wrapper around StatsForecast ETS;

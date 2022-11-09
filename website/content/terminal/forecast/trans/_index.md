@@ -5,7 +5,7 @@ usage: trans [--d-model D_MODEL] [--nhead NHEAD] [--num_encoder_layers NUM_ENCOD
              [--dropout DROPOUT] [--batch-size BATCH_SIZE] [--end S_END_DATE] [--start S_START_DATE] [--residuals] [--forecast-only] [--export-pred-raw] [-h] [--export EXPORT]
 ```
 
-Perform Transformer forecast.
+Perform Transformer Forecast: https://unit8co.github.io/darts/generated_api/darts.models.forecasting.transformer_model.html
 
 ```
 optional arguments:
