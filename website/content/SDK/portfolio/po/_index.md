@@ -195,3 +195,18 @@ This results in the following (the result is edited, as it would show 500 ticker
 | ZBRA  |                    0.00156 |
 | ZION  |                    0.0014  |
 | ZTS   |                    0.00225 |
+
+It is possible to delve further into these findings with the `plot` functionality for example done by looking at the portfolio's returns <a href="https://www.investopedia.com/terms/h/histogram.asp" target="_blank">histogram</a>
+which also includes a variety of risk measures as well as the portfolio's drawdowns.
+
+````
+openbb.portfolio.po.plot(data=data_returns_hrp, weights=weights_hrp, risk_measure='cVaR', hist=True)
+````
+
+<a target="_blank" href="https://user-images.githubusercontent.com/46355364/171145848-5a3f5333-6b7f-4d7a-a96e-0859adb1ce78.png"><img alt="Portfokio Returns Histogram" src="https://user-images.githubusercontent.com/46355364/171145848-5a3f5333-6b7f-4d7a-a96e-0859adb1ce78.png"></a>
+
+````
+openbb.portfolio.po.plot(data=data_returns_hrp, weights=weights_hrp, risk_measure='cVaR', dd=True)
+````
+
+<a target="_blank" href="https://user-images.githubusercontent.com/46355364/171145983-2d2c1c2e-67d2-4839-b43a-51bd22332de8.png"><img alt="Portfolio Drawdowns" src="https://user-images.githubusercontent.com/46355364/171145983-2d2c1c2e-67d2-4839-b43a-51bd22332de8.png"></a>
