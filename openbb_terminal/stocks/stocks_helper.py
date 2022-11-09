@@ -17,7 +17,6 @@ from matplotlib.ticker import LogLocator, ScalarFormatter
 import mplfinance as mpf
 import numpy as np
 import pandas as pd
-from pandas.tseries.holiday import USFederalHolidayCalendar
 
 import plotly.graph_objects as go
 import pytz
