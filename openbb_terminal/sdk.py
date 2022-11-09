@@ -1268,8 +1268,8 @@ def forex_quote(to_symbol: str = "USD", from_symbol: str = "EUR", source: str = 
         )
     elif source == "oanda":
         return lib.forex_av_model.get_quote(to_symbol, from_symbol)
-    else:
-        raise ValueError("Source not supported.")
+
+    raise ValueError("Source not supported.")
 
 
 ##################################################################
