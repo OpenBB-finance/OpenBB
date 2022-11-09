@@ -4,7 +4,6 @@ from logging import getLogger, Logger
 from typing import Any, Callable, Dict, List, Optional
 
 from inspect import signature
-from functools import update_wrapper
 
 import openbb_terminal.config_terminal as cfg
 
