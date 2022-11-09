@@ -64,6 +64,8 @@ def beta_model(
     rr = df["Ref Pct Ret"].tolist()
 
     # compute lin reg
+    if not rr or not sr:
+        return pd.Series(dtype="object"), pd.Series(dtype="object"), 0.0, 0.0
     model = stats.linregress(rr, sr)
     beta = model.slope
     alpha = model.intercept

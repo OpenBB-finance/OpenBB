@@ -55,6 +55,10 @@ jobs:
         run: poetry install -E installer
       - name: Install Prediction Modules
         run: poetry install -E prediction
+      - name: Install Specific Papermill
+        run: |
+          pip uninstall papermill -y
+          pip install git+https://github.com/nteract/papermill.git@main
       # Double Checking Version Number
       - name: Check OpenBB Version
         run: pip list | grep openbb

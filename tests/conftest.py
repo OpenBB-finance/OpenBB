@@ -3,9 +3,9 @@ import json
 import os
 import pathlib
 from typing import Any, Dict, List, Optional, Type
-from distutils.util import strtobool
 
 # IMPORTATION THIRDPARTY
+import matplotlib
 import pandas as pd
 import importlib_metadata
 import pytest
@@ -18,6 +18,7 @@ from _pytest.mark.structures import Mark
 # IMPORTATION INTERNAL
 from openbb_terminal import decorators, helper_funcs
 from openbb_terminal import feature_flags as obbff
+from openbb_terminal.base_helpers import strtobool
 
 # pylint: disable=redefined-outer-name
 
@@ -348,6 +349,11 @@ def disable_rich():
     helper_funcs.print_rich_table = effect
 
 
+def disable_matplotlib():
+    # We add this to avoid multiple figures being opened
+    matplotlib.use("Agg")
+
+
 def disable_check_api():
     decorators.disable_check_api()
 
@@ -363,6 +369,7 @@ def pytest_configure(config: Config) -> None:
     enable_debug()
     disable_rich()
     disable_check_api()
+    disable_matplotlib()
 
 
 @pytest.fixture(scope="session")  # type: ignore
