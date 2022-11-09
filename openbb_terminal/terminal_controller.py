@@ -6,12 +6,10 @@ import argparse
 import difflib
 import logging
 import os
-import csv
 from pathlib import Path
-from datetime import datetime
 import sys
 import webbrowser
-from typing import List
+from typing import List, Dict, Optional
 
 import dotenv
 from rich import panel
@@ -952,6 +950,7 @@ def run_scripts(
     test_mode: bool = False,
     verbose: bool = False,
     routines_args: List[str] = None,
+    special_arguments: Optional[Dict[str, str]] = None,
 ):
     """Run given .openbb scripts.
 
@@ -966,6 +965,8 @@ def run_scripts(
     routines_args : List[str]
         One or multiple inputs to be replaced in the routine and separated by commas.
         E.g. GME,AMC,BTC-USD
+    special_arguments: Optional[Dict[str, str]]
+        Replace `${key=default}` with `value` for every key in the dictionary
     """
     if path.exists():
         with path.open() as fp:
@@ -1014,79 +1015,6 @@ def run_scripts(
             terminal()
 
 
-def build_test_path_list(path_list: List[str], filtert: str) -> List[Path]:
-    """Build the paths to use in test mode."""
-    if path_list == "":
-        console.print("Please send a path when using test mode")
-        return []
-
-    test_files = []
-
-    for path in path_list:
-        user_script_path = USER_DATA_DIRECTORY / "scripts" / path
-        default_script_path = MISCELLANEOUS_DIRECTORY / path
-
-        if user_script_path.exists():
-            chosen_path = user_script_path
-        elif default_script_path.exists():
-            chosen_path = default_script_path
-        else:
-            console.print(f"\n[red]Can't find the file:{path}[/red]\n")
-            continue
-
-        if chosen_path.is_file() and str(chosen_path).endswith(".openbb"):
-            test_files.append(chosen_path)
-        elif chosen_path.is_dir():
-            script_directory = chosen_path
-            script_list = script_directory.glob("**/*.openbb")
-            script_list = [script for script in script_list if script.is_file()]
-            script_list = [script for script in script_list if filtert in str(script)]
-            test_files.extend(script_list)
-
-    return test_files
-
-
-def run_test_list(path_list: List[str], filtert: str, verbose: bool):
-    """Run commands in test mode."""
-    os.environ["DEBUG_MODE"] = "true"
-
-    test_files = build_test_path_list(path_list=path_list, filtert=filtert)
-    SUCCESSES = 0
-    FAILURES = 0
-    fails = {}
-    length = len(test_files)
-    i = 0
-    console.print("[green]OpenBB Terminal Integrated Tests:\n[/green]")
-    for file in test_files:
-        console.print(f"{((i/length)*100):.1f}%  {file}")
-        try:
-            run_scripts(file, test_mode=True, verbose=verbose)
-            SUCCESSES += 1
-        except Exception as e:
-            fails[file] = e
-            FAILURES += 1
-        i += 1
-    if fails:
-        console.print("\n[red]Failures:[/red]\n")
-        for file, exception in fails.items():
-            logger.error("%s: %s failed", file, exception)
-        # Write results to CSV
-        timestamp = datetime.now().timestamp()
-        output_path = f"{timestamp}_tests.csv"
-        with open(output_path, "w") as file:  # type: ignore
-            header = ["File", "Error"]
-            writer = csv.DictWriter(file, fieldnames=header)  # type: ignore
-            writer.writeheader()
-            for file, exception in fails.items():
-                writer.writerow({"File": file, "Error": exception})
-
-        console.print(f"CSV of errors saved to {output_path}")
-
-    console.print(
-        f"Summary: [green]Successes: {SUCCESSES}[/green] [red]Failures: {FAILURES}[/red]"
-    )
-
-
 def run_routine(file: str, routines_args=List[str]):
     """Execute command routine from .openbb file."""
     user_routine_path = USER_DATA_DIRECTORY / "routines" / file
@@ -1104,10 +1032,7 @@ def run_routine(file: str, routines_args=List[str]):
 
 def main(
     debug: bool,
-    test: bool,
-    filtert: str,
     path_list: List[str],
-    verbose: bool,
     routines_args: List[str] = None,
     **kwargs,
 ):
@@ -1131,10 +1056,6 @@ def main(
     """
     if kwargs["module"] == "ipykernel_launcher":
         ipykernel_launcher(kwargs["module_file"], kwargs["module_hist_file"])
-
-    if test:
-        run_test_list(path_list=path_list, filtert=filtert, verbose=verbose)
-        return
 
     if debug:
         os.environ["DEBUG_MODE"] = "true"
@@ -1171,29 +1092,6 @@ def parse_args_and_run():
         nargs="+",
         default="",
         type=str,
-    )
-    parser.add_argument(
-        "-t",
-        "--test",
-        dest="test",
-        action="store_true",
-        default=False,
-        help="Whether to run in test mode.",
-    )
-    parser.add_argument(
-        "--filter",
-        help="Send a keyword to filter in file name",
-        dest="filtert",
-        default="",
-        type=str,
-    )
-    parser.add_argument(
-        "-v",
-        "--verbose",
-        help="Enable verbose output for debugging",
-        dest="verbose",
-        action="store_true",
-        default=False,
     )
     parser.add_argument(
         "-i",
@@ -1243,10 +1141,7 @@ def parse_args_and_run():
 
     main(
         ns_parser.debug,
-        ns_parser.test,
-        ns_parser.filtert,
         ns_parser.path,
-        ns_parser.verbose,
         ns_parser.routine_args,
         module=ns_parser.module,
         module_file=ns_parser.module_file,
