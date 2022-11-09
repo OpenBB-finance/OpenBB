@@ -745,6 +745,8 @@ main:
         sub:
           - name: atr
             ref: terminal/forecast/atr
+          - name: autoces
+            ref: terminal/forecast/autoces
           - name: autoets
             ref: terminal/forecast/autoets
           - name: brnn
@@ -791,6 +793,8 @@ main:
             ref: terminal/forecast/rsi
           - name: season
             ref: terminal/forecast/season
+          - name: seasonalnaive
+            ref: terminal/forecast/seasonalnaive
           - name: show
             ref: terminal/forecast/show
           - name: signal
