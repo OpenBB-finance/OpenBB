@@ -1,6 +1,5 @@
-import openbb_terminal.config_terminal as cfg
-
 from typing import Any, Optional, List
+import openbb_terminal.config_terminal as cfg
 
 from openbb_terminal.core.library.metadata import Metadata
 from openbb_terminal.core.library.trail_map import TrailMap
@@ -124,6 +123,7 @@ class Breadcrumb:
         return next_crumb
 
 
+# pylint: disable=R0903
 class BreadcrumbLogger:
     def __init__(self) -> None:
         self.__check_initialize_logging()
