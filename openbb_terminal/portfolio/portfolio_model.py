@@ -582,7 +582,7 @@ class PortfolioModel:
                 "Portfolio Investment",
                 "Close",
                 "Portfolio Value",
-                "% Portfolio Return",
+                "Portfolio % Return",
                 "Abs Portfolio Return",
             ]
         ] = float(0)
@@ -593,7 +593,7 @@ class PortfolioModel:
             self.portfolio_trades["Portfolio Value"][index] = (
                 self.portfolio_trades["Close"][index] * trade["Quantity"]
             )
-            self.portfolio_trades["% Portfolio Return"][index] = (
+            self.portfolio_trades["Portfolio % Return"][index] = (
                 self.portfolio_trades["Portfolio Value"][index]
                 / self.portfolio_trades["Portfolio Investment"][index]
             ) - 1
@@ -1577,7 +1577,6 @@ def get_rolling_beta(
 @log_start_end(log=logger)
 def get_performance_vs_benchmark(
     portfolio: PortfolioModel,
-    interval: str = "all",
     show_all_trades: bool = False,
 ) -> pd.DataFrame:
 
@@ -1587,8 +1586,6 @@ def get_performance_vs_benchmark(
     ----------
     portfolio: Portfolio
         Portfolio object with trades loaded
-    interval : str
-        interval to consider performance. From: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all
     show_all_trades: bool
         Whether to also show all trades made and their performance (default is False)
     Returns
@@ -1601,17 +1598,14 @@ def get_performance_vs_benchmark(
     benchmark_trades = portfolio.benchmark_trades
 
     portfolio_trades.index = pd.to_datetime(portfolio_trades["Date"].values)
-    portfolio_trades = portfolio_helper.filter_df_by_period(portfolio_trades, interval)
-
     benchmark_trades.index = pd.to_datetime(benchmark_trades["Date"].values)
-    benchmark_trades = portfolio_helper.filter_df_by_period(benchmark_trades, interval)
 
     if show_all_trades:
         # Combine DataFrames
         combined = pd.concat(
             [
                 portfolio_trades[
-                    ["Date", "Ticker", "Portfolio Value", "% Portfolio Return"]
+                    ["Date", "Ticker", "Portfolio Value", "Portfolio % Return"]
                 ],
                 benchmark_trades[["Benchmark Value", "Benchmark % Return"]],
             ],
@@ -1620,7 +1614,7 @@ def get_performance_vs_benchmark(
 
         # Calculate alpha
         combined["Alpha"] = (
-            combined["% Portfolio Return"] - combined["Benchmark % Return"]
+            combined["Portfolio % Return"] - combined["Benchmark % Return"]
         )
 
         combined["Date"] = pd.to_datetime(combined["Date"]).dt.date

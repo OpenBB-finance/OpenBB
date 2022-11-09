@@ -2,7 +2,12 @@
     :language: python
     :class: highlight
 
+<<<<<<< HEAD:website/content/SDK/stocks/ca/hcorr/_index.md
+## Get underlying data 
+### stocks.ca.hcorr(similar: List[str], start_date: str = '2021-11-03', candle_type: str = 'a')
+=======
 |
+>>>>>>> main:website/content/SDK/stocks/ca/hcorr/_index.rst
 
 To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
@@ -37,8 +42,14 @@ stocks.ca.hcorr(
         Start date of comparison, by default 1 year ago
     candle_type : str, optional
         OHLCA column to use for candles or R for returns, by default "a" for Adjusted Close
+<<<<<<< HEAD:website/content/SDK/stocks/ca/hcorr/_index.md
+
+## Getting charts 
+### stocks.ca.hcorr(similar: List[str], start_date: str = '2021-11-03', candle_type: str = 'a', display_full_matrix: bool = False, raw: bool = False, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, export: str = '', chart=True)
+=======
     chart: *bool*
        Flag to display chart
+>>>>>>> main:website/content/SDK/stocks/ca/hcorr/_index.rst
 
 
 |
