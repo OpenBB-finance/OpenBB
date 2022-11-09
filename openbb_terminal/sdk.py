@@ -33,7 +33,7 @@ openbb = Breadcrumb(
     trail_map=trail_map,
 )
 
-__all__ = (
+__all__ = [
     theme,
     TerminalStyle,
     helper,
@@ -41,4 +41,4 @@ __all__ = (
     Portfolio,
     Coin,
     openbb,
-)
+]
