@@ -10,13 +10,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 import mplfinance as mpf
+import yfinance as yf
 
 from openbb_terminal.forex import av_model, polygon_model
 from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import plot_autoscale, is_valid_axes_count
 from openbb_terminal.config_terminal import theme
-from openbb_terminal.stocks import stocks_helper
 
 
 FOREX_SOURCES: Dict = {
@@ -136,11 +136,11 @@ def load(
         if source == "YahooFinance":
 
             # This works but its not pretty :(
-            interval = interval_map[interval] if interval != "1day" else "1440m"
-            return stocks_helper.load(
+            interval = interval_map[interval]
+            return yf.download(
                 f"{from_symbol}{to_symbol}=X",
-                start_date=datetime.strptime(start_date, "%Y-%m-%d"),
-                interval=int(interval.replace("m", "")),
+                start=datetime.strptime(start_date, "%Y-%m-%d"),
+                interval=interval,
                 verbose=verbose,
             )
 
