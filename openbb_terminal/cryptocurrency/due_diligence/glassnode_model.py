@@ -245,8 +245,8 @@ def get_close_price(
 @check_api_key(["API_GLASSNODE_KEY"])
 def get_non_zero_addresses(
     symbol: str,
-    start_date: int = int(datetime(2010, 1, 1).timestamp()),
-    end_date: int = int(datetime.now().timestamp()),
+    start_date: str = "2010-01-01",
+    end_date: str = datetime.now().strftime("%Y-%m-%d"),
 ) -> pd.DataFrame:
     """Returns addresses with non-zero balance of a certain symbol
     [Source: https://glassnode.com]
@@ -255,10 +255,10 @@ def get_non_zero_addresses(
     ----------
     symbol : str
         Asset to search (e.g., BTC)
-    start_date : int
-        Initial date timestamp (e.g., 1_577_836_800)
-    end_date : int
-        End date timestamp (e.g., 1_609_459_200)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
 
     Returns
     -------
@@ -266,14 +266,17 @@ def get_non_zero_addresses(
         addresses with non-zero balances
     """
 
+    dt_start_date = str_date_to_timestamp(start_date)
+    dt_end_date = str_date_to_timestamp(end_date)
+
     url = api_url + "addresses/non_zero_count"
 
     parameters = {
         "api_key": cfg.API_GLASSNODE_KEY,
         "a": symbol,
         "i": "24h",
-        "s": str(start_date),
-        "u": str(end_date),
+        "s": str(dt_start_date),
+        "u": str(dt_end_date),
     }
 
     r = requests.get(url, params=parameters)
