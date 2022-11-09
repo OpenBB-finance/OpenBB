@@ -3,6 +3,7 @@ from typing import Dict
 
 import pandas as pd
 import requests
+from tqdm import tqdm
 import yfinance as yf
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.rich_config import console
@@ -22,7 +23,7 @@ def get_assets_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFrame):
         Object containing trades made within the portfolio.
 
     Returns
-    ------
+    -------
     benchmark_assets_allocation: dict
         Dictionary with the top 10 of the benchmark's asset allocations.
     portfolio_assets_allocation: dict
@@ -61,14 +62,14 @@ def get_sector_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFrame):
         Object containing trades made within the portfolio.
 
     Returns
-    ------
+    -------
     regional_allocation: dict
         Dictionary with regional allocations.
     country_allocation: dict
         Dictionary with country allocations
     """
 
-    console.print(" Loading sector data: ", end="")
+    p_bar = tqdm(range(3), desc="Loading sector data")
 
     benchmark_sectors_allocation = (
         pd.DataFrame.from_dict(
@@ -98,6 +99,8 @@ def get_sector_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFrame):
         .groupby(by="Sector")
         .agg({"Portfolio Value": "sum"})
     )
+    p_bar.n += 1
+    p_bar.refresh()
 
     # Aggregate sector value for ETFs
     # Start by getting value by isin/ticker
@@ -144,8 +147,8 @@ def get_sector_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFrame):
 
         etf_global_sector_alloc = etf_global_sector_alloc.sum(axis=1)
 
-        console.print(".", end="")
-    console.print("\n")
+    p_bar.n += 1
+    p_bar.refresh()
 
     etf_global_sector_alloc = pd.DataFrame(
         etf_global_sector_alloc, columns=["Portfolio Value"]
@@ -180,6 +183,11 @@ def get_sector_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFrame):
 
     portfolio_sectors_allocation.fillna(0, inplace=True)
 
+    p_bar.n += 1
+    p_bar.refresh()
+    p_bar.disable = True
+    console.print("\n")
+
     return benchmark_sectors_allocation, portfolio_sectors_allocation
 
 
@@ -202,7 +210,7 @@ def get_region_country_allocation(
         which list on the Fidelity page is the correct one
 
     Returns
-    ------
+    -------
     region_allocation: dict
         Dictionary with regional allocations.
     country_allocation: dict
@@ -289,7 +297,7 @@ def get_portfolio_region_country_allocation(portfolio_trades: pd.DataFrame):
         Dictionary with country allocations
     """
 
-    console.print(" Loading country/region data: ", end="")
+    p_bar = tqdm(range(3), desc="Loading country/region data")
 
     # Define portfolio regional allocation
     if not portfolio_trades["Region"].isnull().any():
@@ -310,6 +318,9 @@ def get_portfolio_region_country_allocation(portfolio_trades: pd.DataFrame):
         )
     else:
         portfolio_country_allocation = pd.DataFrame()
+
+    p_bar.n += 1
+    p_bar.refresh()
 
     # Aggregate sector value for ETFs
     # Start by getting value by ticker
@@ -355,8 +366,8 @@ def get_portfolio_region_country_allocation(portfolio_trades: pd.DataFrame):
         etf_global_country_alloc.fillna(0, inplace=True)
         etf_global_country_alloc = etf_global_country_alloc.sum(axis=1)
 
-        console.print(".", end="")
-    console.print("\n")
+    p_bar.n += 1
+    p_bar.refresh()
 
     etf_global_region_alloc = pd.DataFrame(
         etf_global_region_alloc, columns=["Portfolio Value"]
@@ -404,5 +415,10 @@ def get_portfolio_region_country_allocation(portfolio_trades: pd.DataFrame):
 
     portfolio_region_allocation.fillna(0, inplace=True)
     portfolio_country_allocation.fillna(0, inplace=True)
+
+    p_bar.n += 1
+    p_bar.refresh()
+    p_bar.disable = True
+    console.print("\n")
 
     return portfolio_region_allocation, portfolio_country_allocation

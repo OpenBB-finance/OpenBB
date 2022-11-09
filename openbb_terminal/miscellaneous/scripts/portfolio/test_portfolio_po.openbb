@@ -1,0 +1,23 @@
+portfolio
+po
+load OpenBB_Portfolio_Template_v1.0.0.xlsx
+file --file OpenBB_Parameters_Template_v1.0.0.xlsx
+file -f defaults.ini
+params
+set maxsharpe
+arg log_returns True
+..
+maxsharpe
+minrisk
+maxutil
+maxret
+maxdiv
+maxdecorr
+ef
+riskparity
+relriskparity
+hrp
+herc
+nco
+equal
+exit
