@@ -463,7 +463,7 @@ def rename_column(data: pd.DataFrame, old_column: str, new_column: str) -> pd.Da
         The name to update to
 
     Returns
-    ----------
+    -------
     new_df: pd.DataFrame
         The dataframe with the renamed column
     """
@@ -486,7 +486,7 @@ def describe_df(data: pd.DataFrame) -> pd.DataFrame:
         The df to produce statistics for
 
     Returns
-    ----------
+    -------
     df: pd.DataFrame
         The df with the new data
     """
@@ -503,7 +503,7 @@ def corr_df(data: pd.DataFrame) -> pd.DataFrame:
         The df to produce statistics for
 
     Returns
-    ----------
+    -------
     df: pd.DataFrame
         The df with the new data
     """
