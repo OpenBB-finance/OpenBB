@@ -1263,7 +1263,7 @@ class OptionsController(BaseController):
             "--y_axis",
             type=str,
             dest="y",
-            default="y",
+            default="iv",
             choices=self.plot_vars_choices,
             help=(
                 "ltd- last trade date, s- strike, lp- last price, b- bid, a- ask,"

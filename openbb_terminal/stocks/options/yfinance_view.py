@@ -703,8 +703,21 @@ def plot_plot(
         if y is None:
             console.print("[red]Invalid option sent for y-axis[/red]\n")
             return
-        x = convert[x]
-        y = convert[y]
+        if x in convert:
+            x = convert[x]
+        else:
+            x = "strike"
+            console.print(
+                f"[red]'{x}' is not a valid options. Defaulting to `strike`[/red]\n"
+            )
+        if y in convert:
+            y = convert[y]
+        else:
+            y = "impliedVolatility"
+            console.print(
+                f"[red]'{y}' is not a valid options. Defaulting to `impliedVolatility`[/red]\n"
+            )
+
     varis = op_helpers.opt_chain_cols
     chain = yfinance_model.get_option_chain(symbol, expiry)
     values = chain.puts if put else chain.calls
