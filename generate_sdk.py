@@ -250,7 +250,7 @@ class BuildCategoryModelClasses:
 
 def generate():
     trailmaps = []
-    with open("openbb_terminal/sdk_core/trail_map.csv", "r") as f:
+    with open("openbb_terminal/sdk_core/trail_map.csv") as f:
         reader = csv.reader(f)
         next(reader)
         for row in reader:
