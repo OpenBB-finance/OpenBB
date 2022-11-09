@@ -1,0 +1,6 @@
+                                               Maturities
+Instrument                                               
+nominal     1m, 3m, 6m, 1y, 2y, 3y, 5y, 7y, 10y, 20y, 30y
+inflation                           5y, 7y, 10y, 20y, 30y
+average                               Defined by function
+secondary                                  4w, 3m, 6m, 1y

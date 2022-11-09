@@ -34,13 +34,13 @@ def test_display_search(category):
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "tickers",
+    "symbols",
     [
         ["BLK", "SB"],
         ["ES", "SF"],
     ],
 )
-def test_display_historical(mocker, tickers):
+def test_display_historical(mocker, symbols):
     yf_download = yfinance.download
 
     def mock_yf_download(*args, **kwargs):
@@ -50,7 +50,7 @@ def test_display_historical(mocker, tickers):
     mocker.patch("yfinance.download", side_effect=mock_yf_download)
 
     yfinance_view.display_historical(
-        tickers=tickers,
+        symbols=symbols,
         start_date="2022-10-10",
         raw=True,
     )
@@ -59,10 +59,10 @@ def test_display_historical(mocker, tickers):
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 @pytest.mark.parametrize(
-    "ticker",
+    "symbol",
     ["ES", "YI"],
 )
-def test_display_curve(mocker, ticker):
+def test_display_curve(mocker, symbol):
     yf_download = yfinance.download
 
     def mock_yf_download(*args, **kwargs):
@@ -72,6 +72,6 @@ def test_display_curve(mocker, ticker):
     mocker.patch("yfinance.download", side_effect=mock_yf_download)
 
     yfinance_view.display_curve(
-        ticker=ticker,
+        symbol=symbol,
         raw=True,
     )
