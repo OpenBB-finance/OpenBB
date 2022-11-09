@@ -7,7 +7,7 @@ OpenBB reports:
     etf         <symbol>
     forecast    <symbol>
     forex       <symbol>
-    portfolio   <orderbook>
+    portfolio   <transactions>
 
 Custom reports:
     run                Run a Jupyter notebook from OpenBBUserData/reports/custom reports
