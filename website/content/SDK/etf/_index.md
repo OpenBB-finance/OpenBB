@@ -8,7 +8,7 @@ geekdocCollapseSection: true
 The ETF module wraps the functions from the ETF menu, within the OpenBB Terminal, allowing programmatic access to the commands. Import the OpenBB SDK module, and then find the ETF functions similarly to how the Terminal menus are navigated. The code completion will be activated after entering the `.` in: `openbb.etf`
 
 ```python
-from openbb_terminal.core.library.sdk import openbb
+from openbb_terminal.sdk import openbb
 import pandas as pd
 %matplotlib widget
 ```

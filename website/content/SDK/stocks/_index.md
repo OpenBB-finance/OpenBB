@@ -10,7 +10,7 @@ The capabilities of the <a href="https://openbb-finance.github.io/OpenBBTerminal
 
 Start a Python script or Notebook file by importing the module:
 
-`from openbb_terminal.core.library.sdk import openbb`
+`from openbb_terminal.sdk import openbb`
 
 In the next cell, code completion will activate after the `.` is entered, showing the submenus and functions at the root level of the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/stocks/" target="_blank">Stocks menu</a>.
 
