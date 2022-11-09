@@ -10,6 +10,7 @@ import numpy as np
 import scipy
 import pandas as pd
 import yfinance as yf
+from tqdm import tqdm
 from sklearn.metrics import r2_score
 from pycoingecko import CoinGeckoAPI
 from openbb_terminal.common.quantitative_analysis import qa_model
@@ -18,7 +19,7 @@ from openbb_terminal.portfolio import portfolio_helper, allocation_model
 from openbb_terminal.rich_config import console
 
 # pylint: disable=E1136,W0201,R0902,C0302
-# pylint: disable=unsupported-assignment-operation,redefined-outer-name,too-many-public-methods
+# pylint: disable=unsupported-assignment-operation,redefined-outer-name,too-many-public-methods, consider-using-f-string
 
 logger = logging.getLogger(__name__)
 cg = CoinGeckoAPI()
@@ -33,17 +34,17 @@ class PortfolioModel:
 
     Methods
     -------
-    read_orderbook: Class method to read orderbook from file
+    read_transactions: Class method to read transactions from file
 
-    __set_orderbook:
-        preprocess_orderbook: Method to preprocess, format and compute auxiliary fields
+    __set_transactions:
+        preprocess_transactions: Method to preprocess, format and compute auxiliary fields
 
-    get_orderbook: Outputs the formatted transactions DataFrame
+    get_transactions: Outputs the formatted transactions DataFrame
 
     load_benchmark: Adds benchmark ticker, info, prices and returns
-        mimic_trades_for_benchmark: Mimic trades from the orderbook based on chosen benchmark assuming partial shares
+        mimic_trades_for_benchmark: Mimic trades from the transactions based on chosen benchmark assuming partial shares
 
-    generate_portfolio_data: Generates portfolio data from orderbook
+    generate_portfolio_data: Generates portfolio data from transactions
         load_portfolio_historical_prices: Loads historical adj close prices for tickers in list of trades
         populate_historical_trade_data: Create a new dataframe to store historical prices by ticker
         calculate_value: Calculate value end of day from historical data
@@ -56,7 +57,7 @@ class PortfolioModel:
 
     """
 
-    def __init__(self, orderbook: pd.DataFrame = pd.DataFrame()):
+    def __init__(self, transactions: pd.DataFrame = pd.DataFrame()):
         """Initialize PortfolioModel class"""
 
         # Portfolio
@@ -90,22 +91,22 @@ class PortfolioModel:
         self.benchmark_region_allocation = pd.DataFrame()
         self.benchmark_country_allocation = pd.DataFrame()
 
-        # Set and preprocess orderbook
-        if not orderbook.empty:
-            self.__set_orderbook(orderbook)
+        # Set and preprocess transactions
+        if not transactions.empty:
+            self.__set_transactions(transactions)
 
-    def __set_orderbook(self, orderbook):
-        self.__orderbook = orderbook
-        self.preprocess_orderbook()
+    def __set_transactions(self, transactions):
+        self.__transactions = transactions
+        self.preprocess_transactions()
         self.empty = False
 
-    def get_orderbook(self):
+    def get_transactions(self):
         """Get formatted transactions
 
         Returns:
             pd.DataFrame: formatted transactions
         """
-        df = self.__orderbook[
+        df = self.__transactions[
             [
                 "Date",
                 "Type",
@@ -128,30 +129,30 @@ class PortfolioModel:
         return df
 
     @staticmethod
-    def read_orderbook(path: str) -> pd.DataFrame:
-        """Static method to read orderbook from file
+    def read_transactions(path: str) -> pd.DataFrame:
+        """Static method to read transactions from file
 
         Parameters
         ----------
         path: str
-            path to orderbook file
+            path to transactions file
         """
-        # Load orderbook from file
+        # Load transactions from file
         if path.endswith(".xlsx"):
-            orderbook = pd.read_excel(path)
+            transactions = pd.read_excel(path)
         elif path.endswith(".csv"):
-            orderbook = pd.read_csv(path)
+            transactions = pd.read_csv(path)
 
-        return orderbook
+        return transactions
 
     @log_start_end(log=logger)
-    def preprocess_orderbook(self):
-        """Method to preprocess, format and compute auxiliary fields
+    def preprocess_transactions(self):
+        """Method to preprocess, format and compute auxiliary fields.
 
         Preprocessing steps:
-            0. If optional fields not in the orderbook add missing
+            0. If optional fields not in the transactions add missing
             1. Convert Date to datetime
-            2. Sort orderbook by date
+            2. Sort transactions by date
             3. Capitalize Ticker and Type [of instrument...]
             4. Translate side: ["deposit", "buy"] -> 1 and ["withdrawal", "sell"] -> -1
             5. Convert quantity to signed integer
@@ -161,14 +162,15 @@ class PortfolioModel:
             9. Remove unsupported ISINs that came out empty
             10. Create tickers dictionary with structure {'Type': [Ticker]}
             11. Create list with tickers except cash
-            12. Save orderbook inception date
+            12. Save transactions inception date
             13. Populate fields Sector, Industry and Country
         """
 
-        try:
-            console.print(" Preprocessing orderbook: ", end="")
+        p_bar = tqdm(range(14), desc="Preprocessing transactions")
 
-            # 0. If optional fields not in the orderbook add missing
+        try:
+
+            # 0. If optional fields not in the transactions add missing
             optional_fields = [
                 "Sector",
                 "Industry",
@@ -178,68 +180,89 @@ class PortfolioModel:
                 "Premium",
                 "ISIN",
             ]
-            if not set(optional_fields).issubset(set(self.__orderbook.columns)):
+            if not set(optional_fields).issubset(set(self.__transactions.columns)):
                 for field in optional_fields:
-                    if field not in self.__orderbook.columns:
-                        self.__orderbook[field] = np.nan
+                    if field not in self.__transactions.columns:
+                        self.__transactions[field] = np.nan
+
+            p_bar.n += 1
+            p_bar.refresh()
 
             # 1. Convert Date to datetime
-            self.__orderbook["Date"] = pd.to_datetime(self.__orderbook["Date"])
-            console.print(".", end="")
+            self.__transactions["Date"] = pd.to_datetime(self.__transactions["Date"])
 
-            # 2. Sort orderbook by date
-            self.__orderbook = self.__orderbook.sort_values(by="Date")
-            console.print(".", end="")
+            p_bar.n += 1
+            p_bar.refresh()
+
+            # 2. Sort transactions by date
+            self.__transactions = self.__transactions.sort_values(by="Date")
+
+            p_bar.n += 1
+            p_bar.refresh()
 
             # 3. Capitalize Ticker and Type [of instrument...]
-            self.__orderbook["Ticker"] = self.__orderbook["Ticker"].map(
+            self.__transactions["Ticker"] = self.__transactions["Ticker"].map(
                 lambda x: x.upper()
             )
-            self.__orderbook["Type"] = self.__orderbook["Type"].map(lambda x: x.upper())
-            console.print(".", end="")
+            self.__transactions["Type"] = self.__transactions["Type"].map(
+                lambda x: x.upper()
+            )
+
+            p_bar.n += 1
+            p_bar.refresh()
 
             # 4. Translate side: ["deposit", "buy"] -> 1 and ["withdrawal", "sell"] -> -1
-            self.__orderbook["Signal"] = self.__orderbook["Side"].map(
+            self.__transactions["Signal"] = self.__transactions["Side"].map(
                 lambda x: 1
                 if x.lower() in ["deposit", "buy"]
                 else (-1 if x.lower() in ["withdrawal", "sell"] else 0)
             )
-            console.print(".", end="")
+
+            p_bar.n += 1
+            p_bar.refresh()
 
             # 5. Convert quantity to signed integer
-            self.__orderbook["Quantity"] = (
-                abs(self.__orderbook["Quantity"]) * self.__orderbook["Signal"]
+            self.__transactions["Quantity"] = (
+                abs(self.__transactions["Quantity"]) * self.__transactions["Signal"]
             )
-            console.print(".", end="")
+
+            p_bar.n += 1
+            p_bar.refresh()
 
             # 6. Determining the investment/divestment value
-            self.__orderbook["Investment"] = (
-                self.__orderbook["Quantity"] * self.__orderbook["Price"]
-                + self.__orderbook["Fees"]
+            self.__transactions["Investment"] = (
+                self.__transactions["Quantity"] * self.__transactions["Price"]
+                + self.__transactions["Fees"]
             )
-            console.print(".", end="")
+
+            p_bar.n += 1
+            p_bar.refresh()
 
             # 7. Reformat crypto tickers to yfinance format (e.g. BTC -> BTC-USD)
-            crypto_trades = self.__orderbook[self.__orderbook.Type == "CRYPTO"]
-            self.__orderbook.loc[(self.__orderbook.Type == "CRYPTO"), "Ticker"] = [
+            crypto_trades = self.__transactions[self.__transactions.Type == "CRYPTO"]
+            self.__transactions.loc[
+                (self.__transactions.Type == "CRYPTO"), "Ticker"
+            ] = [
                 f"{crypto}-{currency}"
                 for crypto, currency in zip(
                     crypto_trades.Ticker, crypto_trades.Currency
                 )
             ]
-            console.print(".", end="")
+
+            p_bar.n += 1
+            p_bar.refresh()
 
             # 8. Reformat STOCK/ETF tickers to yfinance format if ISIN provided.
 
             # If isin not valid ticker is empty
-            self.__orderbook["yf_Ticker"] = self.__orderbook["ISIN"].apply(
+            self.__transactions["yf_Ticker"] = self.__transactions["ISIN"].apply(
                 lambda x: yf.utils.get_ticker_by_isin(x) if not pd.isna(x) else np.nan
             )
 
             empty_tickers = list(
-                self.__orderbook[
-                    (self.__orderbook["yf_Ticker"] == "")
-                    | (self.__orderbook["yf_Ticker"].isna())
+                self.__transactions[
+                    (self.__transactions["yf_Ticker"] == "")
+                    | (self.__transactions["yf_Ticker"].isna())
                 ]["Ticker"].unique()
             )
 
@@ -257,51 +280,61 @@ class PortfolioModel:
                     )
                     if valid_ticker:
                         # Invalid ISIN but valid ticker
-                        self.__orderbook.loc[
-                            self.__orderbook["Ticker"] == item, "yf_Ticker"
+                        self.__transactions.loc[
+                            self.__transactions["Ticker"] == item, "yf_Ticker"
                         ] = np.nan
                     else:
-                        self.__orderbook.loc[
-                            self.__orderbook["Ticker"] == item, "yf_Ticker"
+                        self.__transactions.loc[
+                            self.__transactions["Ticker"] == item, "yf_Ticker"
                         ] = ""
                         removed_tickers.append(item)
 
             # Merge reformated tickers into Ticker
-            self.__orderbook["Ticker"] = self.__orderbook["yf_Ticker"].fillna(
-                self.__orderbook["Ticker"]
+            self.__transactions["Ticker"] = self.__transactions["yf_Ticker"].fillna(
+                self.__transactions["Ticker"]
             )
 
-            console.print(".", end="")
+            p_bar.n += 1
+            p_bar.refresh()
 
             # 9. Remove unsupported ISINs that came out empty
-            self.__orderbook.drop(
-                self.__orderbook[self.__orderbook["Ticker"] == ""].index, inplace=True
+            self.__transactions.drop(
+                self.__transactions[self.__transactions["Ticker"] == ""].index,
+                inplace=True,
             )
-            console.print(".", end="")
+
+            p_bar.n += 1
+            p_bar.refresh()
 
             # 10. Create tickers dictionary with structure {'Type': [Ticker]}
-            for ticker_type in set(self.__orderbook["Type"]):
+            for ticker_type in set(self.__transactions["Type"]):
                 self.tickers[ticker_type] = list(
                     set(
-                        self.__orderbook[self.__orderbook["Type"].isin([ticker_type])][
-                            "Ticker"
-                        ]
+                        self.__transactions[
+                            self.__transactions["Type"].isin([ticker_type])
+                        ]["Ticker"]
                     )
                 )
-            console.print(".", end="")
+
+            p_bar.n += 1
+            p_bar.refresh()
 
             # 11. Create list with tickers except cash
-            self.tickers_list = list(set(self.__orderbook["Ticker"]))
-            console.print(".", end="")
+            self.tickers_list = list(set(self.__transactions["Ticker"]))
 
-            # 12. Save orderbook inception date
-            self.inception_date = self.__orderbook["Date"][0]
-            console.print(".", end="")
+            p_bar.n += 1
+            p_bar.refresh()
+
+            # 12. Save transactions inception date
+            self.inception_date = self.__transactions["Date"][0]
+
+            p_bar.n += 1
+            p_bar.refresh()
 
             # 13. Populate fields Sector, Industry and Country
             if (
-                self.__orderbook.loc[
-                    self.__orderbook["Type"] == "STOCK",
+                self.__transactions.loc[
+                    self.__transactions["Type"] == "STOCK",
                     optional_fields,
                 ]
                 .isnull()
@@ -309,7 +342,9 @@ class PortfolioModel:
             ):
                 # If any fields is empty for stocks (overwrites any info there)
                 self.load_company_data()
-            console.print(".", end="")
+
+            p_bar.n += 1
+            p_bar.refresh()
 
             # Warn user of removed ISINs
             if removed_tickers:
@@ -321,13 +356,11 @@ class PortfolioModel:
                     f"\nE.g. IWDA -> IWDA.AS[/red]"
                 )
         except Exception:
-            console.print("\nCould not preprocess orderbook.")
+            console.print("\nCould not preprocess transactions.")
 
     @log_start_end(log=logger)
     def load_company_data(self):
         """Method to populate company data for stocks such as sector, industry and country"""
-
-        console.print("\n    Loading company data: ", end="")
 
         for ticker_type, ticker_list in self.tickers.items():
             # yfinance only has sector, industry and country for stocks
@@ -337,8 +370,8 @@ class PortfolioModel:
                     # TODO: Should only get field missing for tickers with missing data
                     # now it's taking the 4 of them
                     if (
-                        self.__orderbook.loc[
-                            self.__orderbook["Ticker"] == ticker,
+                        self.__transactions.loc[
+                            self.__transactions["Ticker"] == ticker,
                             ["Sector", "Industry", "Country", "Region"],
                         ]
                         .isnull()
@@ -347,20 +380,17 @@ class PortfolioModel:
                         # Get ticker info in list ["Sector", "Industry", "Country", "Region"] from isin/ticker
                         info_list = portfolio_helper.get_info_from_ticker(ticker)
 
-                        # Replace fields in orderbook
-                        self.__orderbook.loc[
-                            self.__orderbook.Ticker == ticker,
+                        # Replace fields in transactions
+                        self.__transactions.loc[
+                            self.__transactions.Ticker == ticker,
                             ["Sector", "Industry", "Country", "Region"],
                         ] = info_list
-
-                        # Display progress
-                        console.print(".", end="")
 
             elif ticker_type == "CRYPTO":
                 for ticker in ticker_list:
                     if (
-                        self.__orderbook.loc[
-                            self.__orderbook["Ticker"] == ticker,
+                        self.__transactions.loc[
+                            self.__transactions["Ticker"] == ticker,
                             ["Sector", "Industry", "Country", "Region"],
                         ]
                         .isnull()
@@ -369,20 +399,17 @@ class PortfolioModel:
                         # Get ticker info in list ["Sector", "Industry", "Country", "Region"]
                         info_list = ["Crypto", "Crypto", "Crypto", "Crypto"]
 
-                        # Replace fields in orderbook
-                        self.__orderbook.loc[
-                            self.__orderbook.Ticker == ticker,
+                        # Replace fields in transactions
+                        self.__transactions.loc[
+                            self.__transactions.Ticker == ticker,
                             ["Sector", "Industry", "Country", "Region"],
                         ] = info_list
-
-                        # Display progress
-                        console.print(".", end="")
 
             else:
                 for ticker in ticker_list:
                     if (
-                        self.__orderbook.loc[
-                            self.__orderbook["Ticker"] == ticker,
+                        self.__transactions.loc[
+                            self.__transactions["Ticker"] == ticker,
                             ["Sector", "Industry", "Country", "Region"],
                         ]
                         .isnull()
@@ -391,14 +418,11 @@ class PortfolioModel:
                         # Get ticker info in list ["Sector", "Industry", "Country", "Region"]
                         info_list = ["-", "-", "-", "-"]
 
-                        # Replace fields in orderbook
-                        self.__orderbook.loc[
-                            self.__orderbook.Ticker == ticker,
+                        # Replace fields in transactions
+                        self.__transactions.loc[
+                            self.__transactions.Ticker == ticker,
                             ["Sector", "Industry", "Country", "Region"],
                         ] = info_list
-
-                        # Display progress
-                        console.print(".", end="")
 
     @log_start_end(log=logger)
     def load_benchmark(self, ticker: str = "SPY", full_shares: bool = False):
@@ -413,7 +437,7 @@ class PortfolioModel:
             quantity to the nearest number.
         """
 
-        console.print("\n       Loading benchmark: ", end="")
+        p_bar = tqdm(range(3), desc="         Loading benchmark")
 
         self.benchmark_ticker = ticker
 
@@ -423,6 +447,9 @@ class PortfolioModel:
             threads=False,
             progress=False,
         )["Adj Close"]
+
+        p_bar.n += 1
+        p_bar.refresh()
 
         self.mimic_trades_for_benchmark(full_shares)
 
@@ -436,15 +463,18 @@ class PortfolioModel:
         )["Adj Close"]
         self.benchmark_historical_prices.fillna(method="ffill", inplace=True)
 
+        p_bar.n += 1
+        p_bar.refresh()
+
         self.benchmark_returns = self.benchmark_historical_prices.pct_change().dropna()
         self.benchmark_info = yf.Ticker(ticker).info
 
-        # Display progress
-        console.print(".")
+        p_bar.n += 1
+        p_bar.refresh()
 
     @log_start_end(log=logger)
     def mimic_trades_for_benchmark(self, full_shares: bool = False):
-        """Mimic trades from the orderbook based on chosen benchmark assuming partial shares
+        """Mimic trades from the transactions based on chosen benchmark assuming partial shares
         Parameters
         ----------
         full_shares: bool
@@ -453,7 +483,9 @@ class PortfolioModel:
         """
 
         # Create dataframe to store benchmark trades
-        self.benchmark_trades = self.__orderbook[["Date", "Type", "Investment"]].copy()
+        self.benchmark_trades = self.__transactions[
+            ["Date", "Type", "Investment"]
+        ].copy()
 
         # Set current price of benchmark
         self.benchmark_trades["Last price"] = self.benchmark_historical_prices[-1]
@@ -514,7 +546,7 @@ class PortfolioModel:
 
     @log_start_end(log=logger)
     def generate_portfolio_data(self):
-        """Generates portfolio data from orderbook"""
+        """Generates portfolio data from transactions"""
 
         self.load_portfolio_historical_prices()
         self.populate_historical_trade_data()
@@ -544,7 +576,7 @@ class PortfolioModel:
         last_price = self.historical_trade_data["Close"].iloc[-1]
 
         # Save portfolio trades to compute allocations later
-        self.portfolio_trades = self.__orderbook.copy()
+        self.portfolio_trades = self.__transactions.copy()
         self.portfolio_trades[
             [
                 "Portfolio Investment",
@@ -555,7 +587,7 @@ class PortfolioModel:
             ]
         ] = float(0)
 
-        for index, trade in self.__orderbook.iterrows():
+        for index, trade in self.__transactions.iterrows():
             self.portfolio_trades["Close"][index] = last_price[trade["Ticker"]]
             self.portfolio_trades["Portfolio Investment"][index] = trade["Investment"]
             self.portfolio_trades["Portfolio Value"][index] = (
@@ -580,7 +612,7 @@ class PortfolioModel:
             whether to use close or adjusted close prices
         """
 
-        console.print("\n      Loading price data: ", end="")
+        p_bar = tqdm(range(len(self.tickers)), desc="        Loading price data")
 
         for ticker_type, data in self.tickers.items():
             if ticker_type in ["STOCK", "ETF", "CRYPTO"]:
@@ -601,7 +633,8 @@ class PortfolioModel:
             else:
                 console.print(f"Type {ticker_type} not supported.")
 
-            console.print(".", end="")
+            p_bar.n += 1
+            p_bar.refresh()
 
             # Fill missing values with last known price
             self.portfolio_historical_prices.fillna(method="ffill", inplace=True)
@@ -610,7 +643,7 @@ class PortfolioModel:
     def populate_historical_trade_data(self):
         """Create a new dataframe to store historical prices by ticker"""
 
-        trade_data = self.__orderbook.pivot_table(
+        trade_data = self.__transactions.pivot_table(
             index="Date",
             columns=["Ticker"],
             values=[
@@ -652,7 +685,7 @@ class PortfolioModel:
     def calculate_value(self):
         """Calculate end of day value from historical data"""
 
-        console.print("\n     Calculating returns: ", end="")
+        p_bar = tqdm(range(1), desc="       Calculating returns")
 
         trade_data = self.historical_trade_data
 
@@ -691,7 +724,8 @@ class PortfolioModel:
                 0
             ]["Investment"][t]
 
-        console.print(".", end="")
+        p_bar.n += 1
+        p_bar.refresh()
 
         self.historical_trade_data = trade_data
 
@@ -1785,7 +1819,7 @@ def get_summary(
             scipy.stats.kurtosis(portfolio_returns),
             scipy.stats.kurtosis(benchmark_returns),
         ],
-        "Maximum Drawdowwn": [
+        "Maximum Drawdown": [
             portfolio_helper.maximum_drawdown(portfolio_returns),
             portfolio_helper.maximum_drawdown(benchmark_returns),
         ],
@@ -1807,6 +1841,11 @@ def get_summary(
         metrics.values(), index=metrics.keys(), columns=["Portfolio", "Benchmark"]
     )
     summary["Difference"] = summary["Portfolio"] - summary["Benchmark"]
+    summary.loc["Volatility"] = summary.loc["Volatility"].apply("{:.2%}".format)
+    summary.loc["Maximum Drawdown"] = summary.loc["Maximum Drawdown"].apply(
+        "{:.2%}".format
+    )
+    summary.loc["R2 Score"] = summary.loc["R2 Score"].apply("{:.2%}".format)
 
     return summary
 
