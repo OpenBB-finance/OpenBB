@@ -6,11 +6,11 @@ import pandas as pd
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 
 try:
-    import darts  # noqa: F401
+    import darts  # pylint: disable=W0611 # noqa: F401
 
     # If you just import darts this will pass during pip install, this creates
     # Failures later on, also importing utils ensures that darts is installed correctly
-    from darts import utils  # noqa: F401
+    from darts import utils  # pylint: disable=W0611 # noqa: F401
 
     FORECASTING = True
 except ImportError:
