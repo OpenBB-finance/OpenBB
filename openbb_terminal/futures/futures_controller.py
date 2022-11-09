@@ -204,7 +204,7 @@ class FuturesController(BaseController):
         )
         if ns_parser:
             yfinance_view.display_historical(
-                tickers=ns_parser.ticker.upper().split(","),
+                symbols=ns_parser.ticker.upper().split(","),
                 expiry=ns_parser.expiry,
                 start_date=ns_parser.start.strftime("%Y-%m-%d"),
                 raw=ns_parser.raw,
@@ -241,7 +241,7 @@ class FuturesController(BaseController):
 
         if ns_parser:
             yfinance_view.display_curve(
-                ticker=ns_parser.ticker.upper(),
+                symbol=ns_parser.ticker.upper(),
                 raw=ns_parser.raw,
                 export=ns_parser.export,
             )

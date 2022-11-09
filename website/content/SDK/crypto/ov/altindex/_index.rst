@@ -2,7 +2,12 @@
     :language: python
     :class: highlight
 
+<<<<<<< HEAD:website/content/SDK/crypto/ov/altindex/_index.md
+## Get underlying data 
+### crypto.ov.altindex(period: int = 30, start_date: int = 1262322000, end_date: int = 1667592183) -> pandas.core.frame.DataFrame
+=======
 |
+>>>>>>> main:website/content/SDK/crypto/ov/altindex/_index.rst
 
 To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
@@ -47,7 +52,12 @@ crypto.ov.altindex(
     pandas.DataFrame:
         Date, Value (Altcoin Index)
 
+<<<<<<< HEAD:website/content/SDK/crypto/ov/altindex/_index.md
+## Getting charts 
+### crypto.ov.altindex(period: int = 365, start_date: int = 1262322000, end_date: int = 1667592183, export: str = '', external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, chart=True) -> None
+=======
 |
+>>>>>>> main:website/content/SDK/crypto/ov/altindex/_index.rst
 
 .. raw:: html
 
