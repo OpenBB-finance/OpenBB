@@ -1,7 +1,7 @@
 import json
 from importlib import import_module
 from logging import getLogger, Logger
-from typing import Any, Callable, List, Optional
+from typing import Any, Callable, Dict, List, Optional
 
 import openbb_terminal.config_terminal as cfg
 
@@ -204,7 +204,7 @@ class OperationLogger:
             method_chosen.__module__, merged_args
         )
 
-        logging_info = {}
+        logging_info:Dict[str, Any] = {}
         logging_info["INPUT"] = {key: str(value) for key, value in merged_args.items()}
         logging_info["VIRTUAL_PATH"] = trail
         logging_info["CHART"] = "chart" in kwargs and kwargs["chart"] is True

@@ -10,6 +10,7 @@ def __get_method(method_path: str) -> Callable:
 
     return method
 
+
 def test_load_models():
     map_list = trail_map.map_list
 
@@ -17,6 +18,7 @@ def test_load_models():
         if "model" in map_list[trail]:
             method_path = map_list[trail]["model"]
             __get_method(method_path=method_path)
+
 
 def test_load_views():
     map_list = trail_map.map_list
