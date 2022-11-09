@@ -2,6 +2,7 @@
     :language: python
     :class: highlight
 
+|
 
 To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
@@ -14,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 {{< highlight python >}}
 stocks.ca.hcorr(
     similar: List[str],
-    start_date: str = '2021-11-07',
+    start_date: str = '2021-11-08',
     candle_type: str = 'a',
     chart: bool = False,
 )
@@ -51,7 +52,7 @@ stocks.ca.hcorr(
 {{< highlight python >}}
 stocks.ca.hcorr(
     similar: List[str],
-    start_date: str = '2021-11-07',
+    start_date: str = '2021-11-08',
     candle_type: str = 'a',
     display_full_matrix: bool = False,
     raw: bool = False,
@@ -88,3 +89,4 @@ stocks.ca.hcorr(
         Format to export correlation prices, by default ""
     chart: *bool*
        Flag to display chart
+
