@@ -302,6 +302,8 @@ class OptionsController(BaseController):
                 c: {} for c in get_ordered_list_sources(f"{self.PATH}exp")
             }
 
+            if isinstance(self.chain, pd.DataFrame):
+                return
             if self.chain and self.source != "Nasdaq":
                 one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
                 self.choices["hist"] = {
