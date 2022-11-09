@@ -31,7 +31,7 @@ def ad(data: pd.DataFrame, use_open: bool = False) -> pd.DataFrame:
     """
     kwargs = {}
     if use_open:
-        kwargs["open"] = data["open"]
+        kwargs["Open"] = data["Open"]
     df_ta = ta.ad(
         high=data["High"],
         low=data["Low"],
