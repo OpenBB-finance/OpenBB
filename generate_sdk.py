@@ -191,12 +191,12 @@ class BuildCategoryModelClasses:
             f.write(f"class {category.title()}{subname.replace(' ', '')}(Category):\r")
             f.write(f'    """OpenBB SDK {category.title()} {subname} Module\r')
 
-            nested_cat = self.get_nested_dict(nested_dict)
-            if nested_cat:
+            nested_subcat = self.get_nested_dict(nested_dict)
+            if nested_subcat:
                 if not added_submodules:
                     f.write("\r    Submodules:\r")
                     added_submodules = True
-                for k in nested_cat:
+                for k in nested_subcat:
                     subcat_name = self.get_subcategory(k)
                     f.write(f"        `{k}`: {subcat_name} Module\r")
 
