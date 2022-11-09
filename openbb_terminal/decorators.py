@@ -3,16 +3,12 @@ __docformat__ = "numpy"
 import functools
 import logging
 import os
-import json
-import inspect
-from typing import Callable
 from ssl import SSLError
 import pandas as pd
 from requests.exceptions import RequestException
 
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.rich_config import console  # pragma: allowlist secret
-from openbb_terminal.core.log.generation.settings_logger import log_keys
 
 logger = logging.getLogger(__name__)
 
