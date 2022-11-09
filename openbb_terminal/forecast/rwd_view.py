@@ -21,7 +21,6 @@ def display_rwd_forecast(
     data: Union[pd.DataFrame, pd.Series],
     target_column: str = "close",
     dataset_name: str = "",
-    seasonal_periods: int = 7,
     n_predict: int = 5,
     start_window: float = 0.85,
     forecast_horizon: int = 5,
@@ -44,9 +43,6 @@ def display_rwd_forecast(
         The name of the ticker to be predicted
     target_column (str, optional):
         Target column to forecast. Defaults to "close".
-    seasonal_periods: int
-        Number of seasonal periods in a year
-        If not set, inferred from frequency of the series.
     n_predict: int
         Number of days to forecast
     start_window: float
@@ -82,7 +78,6 @@ def display_rwd_forecast(
     ) = rwd_model.get_rwd_data(
         data=data,
         target_column=target_column,
-        seasonal_periods=seasonal_periods,
         n_predict=n_predict,
         start_window=start_window,
         forecast_horizon=forecast_horizon,

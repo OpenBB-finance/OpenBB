@@ -27,7 +27,6 @@ logger = logging.getLogger(__name__)
 def get_rwd_data(
     data: Union[pd.Series, pd.DataFrame],
     target_column: str = "close",
-    seasonal_periods: int = 7,
     n_predict: int = 5,
     start_window: float = 0.85,
     forecast_horizon: int = 5,
@@ -46,9 +45,6 @@ def get_rwd_data(
         Input data.
     target_column (str, optional):
         Target column to forecast. Defaults to "close".
-    seasonal_periods: int
-        Number of seasonal periods in a year (7 for daily data)
-        If not set, inferred from frequency of the series.
     n_predict: int
         Number of days to forecast
     start_window: float

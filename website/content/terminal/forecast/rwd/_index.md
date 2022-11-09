@@ -1,7 +1,6 @@
 ```
-usage: rwd [--naive] [-d {AAPL}] [-c TARGET_COLUMN] [-n N_DAYS] [-s {N,A,M}] [-p SEASONAL_PERIODS] [-w START_WINDOW] [--end S_END_DATE] [--start S_START_DATE] [--residuals] [--forecast-only]
-           [--export-pred-raw] [-h] [--export EXPORT]
-
+usage: rwd [--naive] [-d {AAPL}] [-c TARGET_COLUMN] [-n N_DAYS] [-s {N,A,M}] [-w START_WINDOW] [--end S_END_DATE] [--start S_START_DATE] [--residuals] [--forecast-only] [--export-pred-raw] [-h]
+           [--export EXPORT]
 ```
 
 Perform Random Walk with Drift forecast: https://nixtla.github.io/statsforecast/models.html#randomwalkwithdrift
@@ -17,8 +16,6 @@ optional arguments:
                         prediction days. (default: 5)
   -s {N,A,M}, --seasonal {N,A,M}
                         Seasonality: N: None, A: Additive, M: Multiplicative. (default: A)
-  -p SEASONAL_PERIODS, --periods SEASONAL_PERIODS
-                        Seasonal periods: 4: Quarterly, 7: Daily (default: 7)
   -w START_WINDOW, --window START_WINDOW
                         Start point for rolling training and forecast window. 0.0-1.0 (default: 0.85)
   --end S_END_DATE      The end date (format YYYY-MM-DD) to select for testing (default: None)
