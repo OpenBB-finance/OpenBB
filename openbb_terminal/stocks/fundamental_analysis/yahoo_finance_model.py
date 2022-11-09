@@ -334,9 +334,11 @@ def get_financials(symbol: str, statement: str, ratios: bool = False) -> pd.Data
         Stock ticker symbol
     statement: str
         can be:
-            cash-flow
-            financials for Income
-            balance-sheet
+
+        - cash-flow
+        - financials for Income
+        - balance-sheet
+
     ratios: bool
         Shows percentage change
 
