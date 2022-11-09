@@ -153,11 +153,13 @@ def get_case_slopes(
         Threshold for total number of cases
     ascend: bool
         Flag to sort in ascending order
+
     Returns
     -------
     pd.DataFrame
         Dataframe containing slopes
     """
+
     # Ignore the pandas warning for setting a slace with a value
     warnings.filterwarnings("ignore")
     data = pd.read_csv(global_cases_time_series)
