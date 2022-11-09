@@ -2,8 +2,8 @@
     futures            display a futures and commodities overview                      [WallStreetJournal, Finviz]
     map                S&P500 index stocks map                                         [Finviz]
     bigmac             The Economist Big Mac index                                     [Nasdaq]
-    ycrv               show sovereign yield curves                                     [FRED, Investing]
-    events             show economic calendar                                          [Nasdaq, Investing]
+    ycrv               show sovereign yield curves                                     [FRED]
+    events             show economic calendar                                          [Nasdaq]
     edebt              show external debt statistics for various countries             [Wikipedia]
 
     rtps               real-time performance sectors                                   [AlphaVantage]

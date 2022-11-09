@@ -27,7 +27,6 @@ from openbb_terminal.config_terminal import theme
 from openbb_terminal.common.quantitative_analysis import qa_model
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_classes import LineAnnotateDrawer
 from openbb_terminal.helper_funcs import (
     export_data,
     plot_autoscale,
@@ -904,7 +903,6 @@ def display_line(
     data: pd.Series,
     title: str = "",
     log_y: bool = True,
-    draw: bool = False,
     markers_lines: Optional[List[datetime]] = None,
     markers_scatter: Optional[List[datetime]] = None,
     export: str = "",
@@ -920,8 +918,6 @@ def display_line(
         Title for plot
     log_y: bool
         Flag for showing y on log scale
-    draw: bool
-        Flag for drawing lines and annotating on the plot
     markers_lines: Optional[List[datetime]]
         List of dates to highlight using vertical lines
     markers_scatter: Optional[List[datetime]]
@@ -994,8 +990,6 @@ def display_line(
 
     if title:
         ax.set_title(title)
-    if draw:
-        LineAnnotateDrawer(ax).draw_lines_and_annotate()
 
     theme.style_primary_axis(ax)
 
@@ -1019,7 +1013,7 @@ def display_var(
     data_range: int = 0,
     portfolio: bool = False,
 ) -> None:
-    """Displays VaR of dataframe
+    """Displays VaR of dataframe.
 
     Parameters
     ----------
@@ -1065,7 +1059,7 @@ def display_var(
         show_index=True,
         headers=list(df.columns),
         title=f"[bold]{symbol}{str_title}Value at Risk[/bold]",
-        floatfmt=".4f",
+        floatfmt=".2f",
     )
 
 
@@ -1077,7 +1071,7 @@ def display_es(
     percentile: float = 99.9,
     portfolio: bool = False,
 ) -> None:
-    """Displays expected shortfall
+    """Displays expected shortfall.
 
     Parameters
     ----------
@@ -1113,7 +1107,7 @@ def display_es(
         show_index=True,
         headers=list(df.columns),
         title=f"[bold]{symbol}{str_title}Expected Shortfall[/bold]",
-        floatfmt=".4f",
+        floatfmt=".2f",
     )
 
 

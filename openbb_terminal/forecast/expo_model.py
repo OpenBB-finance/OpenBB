@@ -46,7 +46,7 @@ def get_expo_data(
     This is a wrapper around statsmodels Holt-Winters' Exponential Smoothing;
     we refer to this link for the original and more complete documentation of the parameters.
 
-    https://unit8co.github.io/darts/generated_api/darts.models.forecasting.exponential_smoothing.html?highlight=exponential
+    https://unit8co.github.io/darts/generated_api/darts.models.forecasting.exponential_smoothing.html
 
     Parameters
     ----------

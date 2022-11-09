@@ -6,10 +6,13 @@ import argparse
 import difflib
 import logging
 import os
+import csv
 from pathlib import Path
+from datetime import datetime
 import sys
 import webbrowser
 from typing import List
+
 import dotenv
 from rich import panel
 
@@ -1067,7 +1070,18 @@ def run_test_list(path_list: List[str], filtert: str, verbose: bool):
         console.print("\n[red]Failures:[/red]\n")
         for file, exception in fails.items():
             logger.error("%s: %s failed", file, exception)
-            console.print(f"{file}: {exception}\n")
+        # Write results to CSV
+        timestamp = datetime.now().timestamp()
+        output_path = f"{timestamp}_tests.csv"
+        with open(output_path, "w") as file:  # type: ignore
+            header = ["File", "Error"]
+            writer = csv.DictWriter(file, fieldnames=header)  # type: ignore
+            writer.writeheader()
+            for file, exception in fails.items():
+                writer.writerow({"File": file, "Error": exception})
+
+        console.print(f"CSV of errors saved to {output_path}")
+
     console.print(
         f"Summary: [green]Successes: {SUCCESSES}[/green] [red]Failures: {FAILURES}[/red]"
     )

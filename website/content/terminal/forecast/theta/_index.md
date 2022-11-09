@@ -3,7 +3,7 @@ usage: theta [--naive] [-d {AAPL}] [-c TARGET_COLUMN] [-n N_DAYS] [-s {N,A,M}] [
              [--forecast-only] [--export-pred-raw] [-h] [--export EXPORT]
 ```
 
-Perform Theta forecast.
+Perform Theta forecast: https://unit8co.github.io/darts/generated_api/darts.models.forecasting.theta.html
 
 ```
 optional arguments:

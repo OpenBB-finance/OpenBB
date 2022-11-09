@@ -232,13 +232,13 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         (
             "call_portfolio",
             [
-                "--orderbook=market.csv",
+                "--transactions=market.csv",
             ],
             "reports_model.render_report",
             [],
             dict(
                 input_path=str(reports_model.REPORTS_FOLDER / "portfolio"),
-                args_dict={"orderbook": "market.csv"},
+                args_dict={"transactions": "market.csv"},
             ),
         ),
         (

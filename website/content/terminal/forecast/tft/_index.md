@@ -5,7 +5,8 @@ usage: tft [--lstm-layers LSTM_LAYERS] [--num-attention-heads NUM_ATTENTION_HEAD
            [--batch-size BATCH_SIZE] [--end S_END_DATE] [--start S_START_DATE] [--residuals] [--forecast-only] [--export-pred-raw] [-h] [--export EXPORT]
 ```
 
-Perform TFT forecast (Temporal Fusion Transformer).
+Perform TFT forecast (Temporal Fusion Transformer):
+https://unit8co.github.io/darts/generated_api/darts.models.forecasting.tft_model.html
 
 ```
 optional arguments:

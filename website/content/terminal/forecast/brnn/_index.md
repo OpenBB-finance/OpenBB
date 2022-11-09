@@ -6,7 +6,8 @@ usage: brnn [--n-rnn-layers N_RNN_LAYERS] [--past-covariates PAST_COVARIATES] [-
             [--forecast-only] [--export-pred-raw] [-h] [--export EXPORT]
 ```
 
-Perform BRNN forecast (Vanilla RNN, LSTM, GRU)
+Perform BRNN forecast (Vanilla RNN, LSTM, GRU):
+https://unit8co.github.io/darts/generated_api/darts.models.forecasting.block_rnn_model.html
 
 ```
 optional arguments:
