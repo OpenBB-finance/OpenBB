@@ -55,8 +55,10 @@ from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.forecast import (
     forecast_model,
     forecast_view,
+    autoces_view,
     autoets_view,
     mstl_view,
+    seasonalnaive_view,
     expo_model,
     expo_view,
     linregr_view,
@@ -111,8 +113,10 @@ class ForecastController(BaseController):
         "delta",
         "atr",
         "signal",
+        "autoces",
         "autoets",
         "mstl",
+        "seasonalnaive",
         "expo",
         "theta",
         "rnn",
@@ -250,8 +254,10 @@ class ForecastController(BaseController):
                 "signal",
                 "combine",
                 "rename",
+                "autoces",
                 "autoets",
                 "mstl",
+                "seasonalnaive",
                 "expo",
                 "theta",
                 "rnn",
@@ -330,8 +336,10 @@ class ForecastController(BaseController):
         mt.add_cmd("signal", self.files)
         mt.add_raw("\n")
         mt.add_info("_tsforecasting_")
+        mt.add_cmd("autoces", self.files)
         mt.add_cmd("autoets", self.files)
         mt.add_cmd("mstl", self.files)
+        mt.add_cmd("seasonalnaive", self.files)
         mt.add_cmd("expo", self.files)
         mt.add_cmd("theta", self.files)
         mt.add_cmd("linregr", self.files)
@@ -1691,6 +1699,61 @@ class ForecastController(BaseController):
             ns_parser.target_dataset,
         )
 
+    # AutoCES Model
+    @log_start_end(log=logger)
+    def call_autoces(self, other_args: List[str]):
+        """Process autoces command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="autoces",
+            description="""
+                Perform Automatic Complex Exponential Smoothing forecast:
+                https://nixtla.github.io/statsforecast/models.html#autoces
+            """,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--target-dataset")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+            target_dataset=True,
+            target_column=True,
+            n_days=True,
+            seasonal="A",
+            periods=True,
+            window=True,
+            residuals=True,
+            forecast_only=True,
+            start=True,
+            end=True,
+            naive=True,
+            export_pred_raw=True,
+        )
+        # TODO Convert this to multi series
+        if ns_parser:
+            if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+
+            autoces_view.display_autoces_forecast(
+                data=self.datasets[ns_parser.target_dataset],
+                dataset_name=ns_parser.target_dataset,
+                n_predict=ns_parser.n_days,
+                target_column=ns_parser.target_column,
+                seasonal_periods=ns_parser.seasonal_periods,
+                start_window=ns_parser.start_window,
+                forecast_horizon=ns_parser.n_days,
+                export=ns_parser.export,
+                residuals=ns_parser.residuals,
+                forecast_only=ns_parser.forecast_only,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
+                naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
+            )
+
     # AutoETS Model
     @log_start_end(log=logger)
     def call_autoets(self, other_args: List[str]):
@@ -1800,6 +1863,61 @@ class ForecastController(BaseController):
                 naive=ns_parser.naive,
                 export_pred_raw=ns_parser.export_pred_raw,
             )
+            
+    # SeasonalNaive Model
+    @log_start_end(log=logger)
+    def call_seasonalnaive(self, other_args: List[str]):
+        """Process seasonalnaive command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="seasonalnaive",
+            description="""
+                Perform SeasonalNaive forecasting:
+                https://nixtla.github.io/statsforecast/models.html#seasonalnaive
+            """,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--target-dataset")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+            target_dataset=True,
+            target_column=True,
+            n_days=True,
+            seasonal="A",
+            periods=True,
+            window=True,
+            residuals=True,
+            forecast_only=True,
+            start=True,
+            end=True,
+            naive=True,
+            export_pred_raw=True,
+        )
+        # TODO Convert this to multi series
+        if ns_parser:
+            if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+
+            seasonalnaive_view.display_seasonalnaive_forecast(
+                data=self.datasets[ns_parser.target_dataset],
+                dataset_name=ns_parser.target_dataset,
+                n_predict=ns_parser.n_days,
+                target_column=ns_parser.target_column,
+                seasonal_periods=ns_parser.seasonal_periods,
+                start_window=ns_parser.start_window,
+                forecast_horizon=ns_parser.n_days,
+                export=ns_parser.export,
+                residuals=ns_parser.residuals,
+                forecast_only=ns_parser.forecast_only,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
+                naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
+            )         
 
     # EXPO Model
     @log_start_end(log=logger)

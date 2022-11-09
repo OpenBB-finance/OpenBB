@@ -745,6 +745,8 @@ main:
         sub:
           - name: atr
             ref: terminal/forecast/atr
+          - name: autoces
+            ref: terminal/forecast/autoces
           - name: autoets
             ref: terminal/forecast/autoets
           - name: brnn
@@ -793,6 +795,8 @@ main:
             ref: terminal/forecast/rsi
           - name: season
             ref: terminal/forecast/season
+          - name: seasonalnaive
+            ref: terminal/forecast/seasonalnaive
           - name: show
             ref: terminal/forecast/show
           - name: signal
@@ -2052,6 +2056,8 @@ main:
             sub:
               - name: altindex
                 ref: /SDK/crypto/ov/altindex
+              - name: btcrb
+                ref: /SDK/crypto/ov/btcrb
               - name: cbpairs
                 ref: /SDK/crypto/ov/cbpairs
               - name: cgcategories
@@ -2385,6 +2391,15 @@ main:
                 ref: /SDK/forex/oanda/summary
           - name: quote
             ref: /SDK/forex/quote
+      - name: funds
+        ref: /SDK/funds
+        sub:
+          - name: info
+            ref: /SDK/funds/info
+          - name: overview
+            ref: /SDK/funds/overview
+          - name: search
+            ref: /SDK/funds/search
       - name: futures
         ref: /SDK/futures
         sub:

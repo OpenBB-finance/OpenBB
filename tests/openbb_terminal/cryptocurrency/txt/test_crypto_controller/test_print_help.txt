@@ -1,6 +1,6 @@
     load               load a specific cryptocurrency for analysis                     [YahooFinance, CoinGecko, CCXT]
     find               find coins                                                      [CoinGecko, CoinPaprika, Binance, Coinbase, YahooFinance]
-    price              real-time price and interval of confidence
+    price              real-time price and interval of confidence                      [Pyth]
 
 Coin: 
 Source: 

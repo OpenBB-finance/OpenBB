@@ -72,7 +72,7 @@ REPORT_CHOICES = {
         "--symbol": {c: None for c in FX_TICKERS},
     },
     "portfolio": {
-        "--orderbook": {c: None for c in PORTFOLIO_HOLDINGS_FILES},
+        "--transactions": {c: None for c in PORTFOLIO_HOLDINGS_FILES},
     },
     "economy": None,
     "equity": {
