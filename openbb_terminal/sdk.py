@@ -1266,7 +1266,7 @@ def forex_quote(to_symbol: str = "USD", from_symbol: str = "EUR", source: str = 
             interval="1min",
             start_date=(datetime.now() - timedelta(days=5)).strftime("%Y-%m-%d"),
         )
-    elif source == "oanda":
+    if source == "oanda":
         return lib.forex_av_model.get_quote(to_symbol, from_symbol)
 
     raise ValueError("Source not supported.")
