@@ -515,8 +515,8 @@ def get_exchange_balances(
 def get_exchange_net_position_change(
     symbol: str,
     exchange: str = "binance",
-    start_date: int = int(datetime(2010, 1, 1).timestamp()),
-    end_date: int = int(datetime.now().timestamp()),
+    start_date: str = "2010-01-01",
+    end_date: str = datetime.now().strftime("%Y-%m-%d"),
 ) -> pd.DataFrame:
     """Returns 30d change of the supply held in exchange wallets of a certain symbol.
     [Source: https://glassnode.com]
@@ -527,16 +527,19 @@ def get_exchange_net_position_change(
         Asset symbol to search supply (e.g., BTC)
     exchange : str
         Exchange to check net position change (e.g., binance)
-    start_date : int
-        Initial date timestamp (e.g., 1_614_556_800)
-    end_date : int
-        End date timestamp (e.g., 1_614_556_800)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
 
     Returns
     -------
     pd.DataFrame
         supply change in exchange wallets of a certain symbol over time
     """
+
+    dt_start_date = str_date_to_timestamp(start_date)
+    dt_end_date = str_date_to_timestamp(end_date)
 
     url = api_url + "distribution/exchange_net_position_change"
 
@@ -545,8 +548,8 @@ def get_exchange_net_position_change(
         "a": symbol,
         "i": "24h",
         "e": exchange,
-        "s": str(start_date),
-        "u": str(end_date),
+        "s": str(dt_start_date),
+        "u": str(dt_end_date),
     }
 
     r = requests.get(url, params=parameters)
