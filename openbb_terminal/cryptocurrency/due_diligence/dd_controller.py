@@ -430,11 +430,15 @@ class DueDiligenceController(CryptoBaseController):
             )
 
             if ns_parser:
+
+                start_date = ns_parser.since.strftime("%Y-%m-%d")
+                end_date = ns_parser.until.strftime("%Y-%m-%d")
+
                 glassnode_view.display_active_addresses(
                     symbol=self.symbol.upper(),
                     interval=ns_parser.interval,
-                    start_date=int(datetime.timestamp(ns_parser.since)),
-                    end_date=int(datetime.timestamp(ns_parser.until)),
+                    start_date=start_date,
+                    end_date=end_date,
                     export=ns_parser.export,
                 )
 
