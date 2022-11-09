@@ -36,11 +36,10 @@ SOURCES_INTERVALS: Dict = {
         "90min",
         "1hour",
         "1day",
-        # These need to be cleaned up.
-        # "5day",
-        # "1week",
-        # "1month",
-        # "3month",
+        "5day",
+        "1week",
+        "1month",
+        "3month",
     ],
     "AlphaVantage": ["1min", "5min", "15min", "30min", "60min"],
 }
@@ -84,7 +83,7 @@ def load(
     interval: str = "1day",
     start_date: str = last_year.strftime("%Y-%m-%d"),
     source: str = "YahooFinance",
-    verbose: bool = True,
+    verbose: bool = False,
 ) -> pd.DataFrame:
     """Load forex for two given symbols.
 
@@ -122,6 +121,15 @@ def load(
                 )
             return pd.DataFrame()
 
+        # Check interval in multiple ways
+        if interval in interval_map:
+            clean_interval = interval_map[interval]
+        elif interval in interval_map.values():
+            clean_interval = interval
+        else:
+            console.print(f"[red]'{interval}' is an invalid interval[/red]\n")
+            return pd.DataFrame()
+
         if source == "AlphaVantage":
             if "min" in interval:
                 resolution = "i"
@@ -129,19 +137,16 @@ def load(
                 to_symbol=to_symbol,
                 from_symbol=from_symbol,
                 resolution=resolution,
-                interval=interval_map[interval],
+                interval=clean_interval,
                 start_date=start_date,
             )
 
         if source == "YahooFinance":
-
-            # This works but its not pretty :(
-            interval = interval_map[interval]
             return yf.download(
                 f"{from_symbol}{to_symbol}=X",
                 start=datetime.strptime(start_date, "%Y-%m-%d"),
-                interval=interval,
-                verbose=verbose,
+                interval=clean_interval,
+                progress=verbose,
             )
 
     if source == "Polygon":
