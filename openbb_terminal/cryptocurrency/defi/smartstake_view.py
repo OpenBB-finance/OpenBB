@@ -49,9 +49,6 @@ def display_luna_circ_supply_change(
         Default: 5
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    Returns
-        None
-    -------
     """
 
     df = smartstake_model.get_luna_supply_stats(supply_type, days)
