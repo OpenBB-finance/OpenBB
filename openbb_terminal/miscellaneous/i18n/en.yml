@@ -914,8 +914,8 @@ en:
   econometrics/coint: co-integration test on a multitude of columns
   portfolio/bro: brokers holdings,   supports robinhood, ally, degiro, coinbase
   portfolio/po: portfolio optimization,  optimize your portfolio weights efficiently
-  portfolio/load: load data into the portfolio
-  portfolio/_loaded: Loaded orderbook
+  portfolio/load: load transactions into the portfolio
+  portfolio/_loaded: Loaded transactions
   portfolio/_riskfreerate: Risk Free Rate
   portfolio/show: show existing transactions
   portfolio/bench: define the benchmark
@@ -1050,6 +1050,7 @@ en:
   forecast/atr: Add Average True Range
   forecast/signal: Add Price Signal (short vs. long term)
   forecast/_tsforecasting_: TimeSeries Forecasting
+  forecast/autoces: Automatic Complex Exponential Smoothing Model
   forecast/autoets: Automatic ETS (Error, Trend, Seasonality) Model
   forecast/arima: Arima (Non-darts)
   forecast/expo: Probabilistic Exponential Smoothing
@@ -1059,6 +1060,7 @@ en:
   forecast/rnn: Probabilistic Recurrent Neural Network (RNN, LSTM, GRU)
   forecast/brnn: Block Recurrent Neural Network (RNN, LSTM, GRU) (feat. Past covariates)
   forecast/nbeats: Neural Bayesian Estimation (feat. Past covariates)
+  forecast/seasonalnaive: Seasonal Naive Model 
   forecast/tcn: Temporal Convolutional Neural Network (feat. Past covariates)
   forecast/trans: Transformer Network (feat. Past covariates)
   forecast/tft: Temporal Fusion Transformer Network(feat. Past covariates)
