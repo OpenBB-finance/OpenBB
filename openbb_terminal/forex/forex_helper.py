@@ -16,10 +16,10 @@ import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
+from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.forex import av_model, polygon_model
 from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.config_terminal import theme
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal.helper_funcs import (
     is_valid_axes_count,
