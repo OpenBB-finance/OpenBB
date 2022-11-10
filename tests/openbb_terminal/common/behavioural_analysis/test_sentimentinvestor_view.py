@@ -74,6 +74,8 @@ def test_display_historical_empty_df(mocker):
     )
 
 
+# This api website seems to have stop working, but I have no key to check.
+@pytest.mark.skip
 @pytest.mark.vcr
 @pytest.mark.record_stdout
 def test_display_trending():
