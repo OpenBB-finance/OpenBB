@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 
 import logging
 import warnings
+from itertools import combinations
 from typing import Any, Dict, Optional, Union
 
 import pandas as pd
@@ -13,6 +14,7 @@ from scipy import stats
 from statsmodels.tsa.stattools import adfuller, grangercausalitytests, kpss
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -222,6 +224,69 @@ def get_granger_causality(dependent_series, independent_series, lags):
     granger = grangercausalitytests(granger_set, [lags], verbose=False)
 
     return granger
+
+
+# TODO: MAybe make a new function to return z instead of having this flag.
+def get_coint_df(
+    *datasets: pd.Series, return_z: bool = False
+) -> Union[pd.DataFrame, Dict]:
+    """Calculate cointegration tests between variable number of input series
+
+    Parameters
+    ----------
+    datasets : pd.Series
+        Input series to test cointegration for
+    return_z : bool
+        Flag to return the z data to plot
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe with results of cointegration tests
+    """
+    result: Dict[str, list] = {}
+    z_values: Dict[str, pd.Series] = {}
+
+    # The *datasets lets us pass in a variable number of arguments
+    # Here we are getting all possible combinations of unique inputs
+
+    pairs = list(combinations(datasets, 2))
+    for x, y in pairs:
+        if sum(y.isnull()) > 0:
+            console.print(
+                f"The Series {y} has nan-values. Please consider dropping or filling these "
+                f"values with 'clean'."
+            )
+        elif sum(x.isnull()) > 0:
+            console.print(
+                f"The Series {x.name} has nan-values. Please consider dropping or filling these "
+                f"values with 'clean'."
+            )
+        elif not y.index.equals(x.index):
+            console.print(
+                f"The Series {y.name} and {x.name} do not have the same index."
+            )
+        (
+            c,
+            gamma,
+            alpha,
+            z,
+            adfstat,
+            pvalue,
+        ) = get_engle_granger_two_step_cointegration_test(x, y)
+        result[f"{x.name}/{y.name}"] = [c, gamma, alpha, adfstat, pvalue]
+        z_values[f"{x.name}/{y.name}"] = z
+
+    if result and z_values:
+        if return_z:
+            return z_values
+        df = pd.DataFrame.from_dict(
+            result,
+            orient="index",
+            columns=["Constant", "Gamma", "Alpha", "Dickey-Fuller", "P Value"],
+        )
+        return df
+    return pd.DataFrame()
 
 
 def get_engle_granger_two_step_cointegration_test(dependent_series, independent_series):

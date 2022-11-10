@@ -1720,24 +1720,24 @@ class EconometricsController(BaseController):
         if ns_parser:
 
             if ns_parser.ts:
-
+                # We are going to pass through a variable number of series, so datasets will be a list of series
                 if len(ns_parser.ts) > 1:
-                    datasets = {}
-                    for stock in ns_parser.ts:
-                        if "." not in stock:
+                    datasets = []
+                    for series in ns_parser.ts:
+                        if "." not in series:
                             console.print(
                                 "[red]Invalid time series format. Should be dataset.column, "
                                 "e.g. historical.open[/red]\n"
                             )
                         else:
-                            dataset, column = stock.split(".")
-                            datasets[stock] = self.datasets[dataset][column]
+                            dataset, column = series.split(".")
+                            datasets.append(self.datasets[dataset][column])
 
                     econometrics_view.display_cointegration_test(
-                        datasets,
-                        ns_parser.significant,
-                        ns_parser.plot,
-                        ns_parser.export,
+                        *datasets,
+                        significant=ns_parser.significant,
+                        plot=ns_parser.plot,
+                        export=ns_parser.export,
                     )
 
                 else:
