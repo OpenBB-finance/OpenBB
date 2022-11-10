@@ -507,12 +507,12 @@ def load_from_yahoofinance(
 def load(
     symbol: str,
     start_date: Optional[Union[datetime, str]] = (
-        datetime.now() - timedelta(days=1100)
+        datetime.today() - timedelta(days=1100)
     ).strftime("%Y-%m-%d"),
     interval: str = "1440",
     exchange: str = "binance",
     vs_currency: str = "usdt",
-    end_date: Optional[Union[datetime, str]] = datetime.now().strftime("%Y-%m-%d"),
+    end_date: Optional[Union[datetime, str]] = datetime.today().strftime("%Y-%m-%d"),
     source: str = "CCXT",
 ) -> pd.DataFrame:
     """Load crypto currency to get data for
