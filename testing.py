@@ -16,6 +16,7 @@ from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal.terminal_controller import run_scripts
 
 logger = logging.getLogger(__name__)
+special_arguments = ["ticker", "crypto"]
 
 
 def build_test_path_list(path_list: List[str]) -> List[Path]:
@@ -123,7 +124,6 @@ if __name__ == "__main__":
         default=False,
     )
     # This is the list of special arguments a user can send
-    special_arguments = ["ticker", "crypto"]
     for arg in special_arguments:
         parser.add_argument(
             f"--{arg}",

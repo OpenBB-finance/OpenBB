@@ -6,6 +6,7 @@ import argparse
 import difflib
 import logging
 import os
+import re
 from pathlib import Path
 import sys
 import webbrowser
@@ -990,7 +991,12 @@ def run_scripts(
         elif special_arguments:
             lines = []
             for line in raw_lines:
-                print(line)
+                new_line = re.sub(
+                    r"\${[^{]+=[^{]+}",
+                    lambda x: replace_dynamic(x, special_arguments),
+                    line,
+                )
+                lines.append(new_line)
 
         else:
             lines = raw_lines
@@ -1019,6 +1025,30 @@ def run_scripts(
             else:
                 with suppress_stdout():
                     terminal(file_cmds, test_mode=True)
+
+
+def replace_dynamic(match: re.Match[str], special_arguments: Dict[str, str]) -> str:
+    """Replaces ${key=default} with value in special_arguments if it exists, else with default.
+
+    Parameters
+    ----------
+    match: re.Match[str]
+        The match object
+    special_arguments: Dict[str, str]
+        The key value pairs to replace in the scripts
+
+    Returns
+    ----------
+    str
+        The new string
+    """
+
+    cleaned = match[0].replace("{", "").replace("}", "").replace("$", "")
+    key, default = cleaned.split("=")
+    dict_value = special_arguments.get(key, default)
+    if dict_value:
+        return dict_value
+    return default
 
 
 def run_routine(file: str, routines_args=List[str]):
