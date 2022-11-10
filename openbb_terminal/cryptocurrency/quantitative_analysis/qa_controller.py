@@ -148,7 +148,7 @@ class QaController(CryptoBaseController):
                 "-w": "--window",
             }
             choices["raw"] = {
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--sortby": {
                     c: {}

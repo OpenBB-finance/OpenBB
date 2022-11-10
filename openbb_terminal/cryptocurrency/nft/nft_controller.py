@@ -47,7 +47,7 @@ class NFTController(BaseController):
             choices["fp"] = {c: {} for c in nft_price_floor_collections}
             choices["fp"]["--slug"] = {c: {} for c in nft_price_floor_collections}
             choices["fp"]["--raw"] = {}
-            choices["fp"]["--limit"] = {str(c): {} for c in range(1, 100)}
+            choices["fp"]["--limit"] = None
             choices["fp"]["-l"] = "--limit"
             choices["stats"] = {
                 "--slug": None,
@@ -56,7 +56,7 @@ class NFTController(BaseController):
             choices["collections"] = {
                 "--fp": {},
                 "--sales": {},
-                "--limit": {str(c): {} for c in range(1, 50)},
+                "--limit": None,
                 "-l": "--limit",
             }
 

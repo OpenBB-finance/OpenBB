@@ -133,7 +133,7 @@ class OverviewController(BaseController):
             choices["cr"]["-c"] = "--cryptocurrrencies"
             choices["cr"]["--platforms"] = {c: None for c in loanscan_model.PLATFORMS}
             choices["cr"]["-p"] = "--platforms"
-            choices["cr"]["--limit"] = {str(c): {} for c in range(1, 100)}
+            choices["cr"]["--limit"] = None
             choices["cr"]["-l"] = "--limit"
             choices["cr"]["--type"] = {c: {} for c in ["borrow", "supply"]}
             choices["cr"]["-t"] = "--type"
@@ -141,21 +141,21 @@ class OverviewController(BaseController):
                 "--sortby": {c: {} for c in rekt_model.HACKS_COLUMNS},
                 "--slug": {c: {} for c in crypto_hack_slugs},
                 "-s": "--slug",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
             choices["hold"] = {
                 "--coin": {c: {} for c in pycoingecko_model.HOLD_COINS},
                 "-c": "--coin",
-                "--limit": {str(c): {} for c in range(1, 50)},
+                "--limit": None,
                 "-l": "--limit",
                 "--bar": {},
             }
             choices["categories"] = {
                 "--sortby": {c: {} for c in self.CATEGORIES_CHOICES},
                 "-s": "--sortby",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--pie": {},
             }
@@ -163,7 +163,7 @@ class OverviewController(BaseController):
             choices["stables"] = {
                 "--sortby": {c: {} for c in self.STABLES_CHOICES},
                 "-s": "--sortby",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
                 "--pie": {},
@@ -171,7 +171,7 @@ class OverviewController(BaseController):
             choices["exchanges"] = {
                 "--sortby": {c: {} for c in self.combined_filters},
                 "-s": "--sortby",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
                 "--urls": {},
@@ -182,21 +182,21 @@ class OverviewController(BaseController):
             choices["exrates"] = {
                 "--sortby": {c: {} for c in pycoingecko_model.EXRATES_FILTERS},
                 "-s": "--sortby",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
             choices["indexes"] = {
                 "--sortby": {c: {} for c in pycoingecko_model.INDEXES_FILTERS},
                 "-s": "--sortby",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
             choices["derivatives"] = {
                 "--sortby": {c: {} for c in pycoingecko_model.DERIVATIVES_FILTERS},
                 "-s": "--sortby",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
@@ -204,7 +204,7 @@ class OverviewController(BaseController):
                 "--vs": {c: {} for c in CURRENCIES},
                 "--sortby": {c: {} for c in coinpaprika_model.MARKETS_FILTERS},
                 "-s": "--sortby",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
@@ -213,7 +213,7 @@ class OverviewController(BaseController):
                 "-e": "--exchange",
                 "--sortby": {c: {} for c in coinpaprika_model.EXMARKETS_FILTERS},
                 "-s": "--sortby",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
                 "--urls": {},
@@ -227,25 +227,25 @@ class OverviewController(BaseController):
                 c: None for c in coinpaprika_model.CONTRACTS_FILTERS
             }
             choices["contracts"]["-s"] = "--sortby"
-            choices["contracts"]["--limit"] = {str(c): {} for c in range(1, 100)}
+            choices["contracts"]["--limit"] = None
             choices["contracts"]["-l"] = "--limit"
             choices["contracts"]["--descend"] = {}
             choices["hm"]["--category"] = {c: {} for c in get_categories_keys()}
             choices["hm"]["-c"] = "--category"
-            choices["hm"]["--limit"] = {str(c): {} for c in range(1, 100)}
+            choices["hm"]["--limit"] = None
             choices["hm"]["-l"] = "--limit"
             choices["info"] = {
                 "--vs": {c: {} for c in CURRENCIES},
                 "--sortby": {c: {} for c in coinpaprika_model.INFO_FILTERS},
                 "-s": "--sortby",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
             choices["pairs"] = {
                 "--sortby": {c: {} for c in coinbase_model.PAIRS_FILTERS},
                 "-s": "--sortby",
-                "--limit": {str(c): {} for c in range(10, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
@@ -262,7 +262,7 @@ class OverviewController(BaseController):
                 "-u": "--urls",
             }
             choices["wf"] = {
-                "--limit": {str(c): {} for c in range(10, 100)},
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["wfpe"] = {c: {} for c in withdrawalfees_model.POSSIBLE_CRYPTOS}

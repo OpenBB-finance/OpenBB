@@ -105,7 +105,7 @@ class OnchainController(BaseController):
                 "-s": "--sort",
                 "--min": None,
                 "-m": "--min",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
                 "--address": {},
@@ -140,28 +140,28 @@ class OnchainController(BaseController):
             choices["balance"] = {
                 "--sort": {c: None for c in ethplorer_model.BALANCE_FILTERS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
             choices["holders"] = {
                 "--sort": {c: None for c in ethplorer_model.HOLDERS_FILTERS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
             choices["hist"] = {
                 "--sort": {c: None for c in ethplorer_model.HIST_FILTERS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
             choices["top"] = {
                 "--sort": {c: None for c in ethplorer_model.TOP_FILTERS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
@@ -169,7 +169,7 @@ class OnchainController(BaseController):
             choices["th"] = {
                 "--sort": {c: None for c in ethplorer_model.TH_FILTERS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
                 "--hash": {},
@@ -177,7 +177,7 @@ class OnchainController(BaseController):
             choices["prices"] = {
                 "--sort": {c: None for c in ethplorer_model.PRICES_FILTERS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
@@ -190,7 +190,7 @@ class OnchainController(BaseController):
                 "-s": "--sort",
                 "--days": {str(c): {} for c in range(1, 360)},
                 "-d": "--days",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
@@ -201,7 +201,7 @@ class OnchainController(BaseController):
                 "-vs": "--vs",
                 "--sort": {c: {} for c in bitquery_model.LT_FILTERS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
@@ -233,7 +233,7 @@ class OnchainController(BaseController):
             choices["ttcp"]["-s"] = "--sort"
             choices["ttcp"]["--days"] = {str(c): {} for c in range(1, 100)}
             choices["ttcp"]["-d"] = "--days"
-            choices["ttcp"]["--limit"] = {str(c): {} for c in range(1, 100)}
+            choices["ttcp"]["--limit"] = None
             choices["ttcp"]["-l"] = "--limit"
             choices["ttcp"]["--descend"] = {}
             choices["baas"] = {
