@@ -219,9 +219,9 @@ def load(
     symbol: str,
     start_date: Optional[Union[datetime, str]] = (
         datetime.now() - timedelta(days=1100)
-    ),
+    ).strftime("%Y-%m-%d"),
     interval: int = 1440,
-    end_date: Optional[Union[datetime, str]] = datetime.now(),
+    end_date: Optional[Union[datetime, str]] = datetime.now().strftime("%Y-%m-%d"),
     prepost: bool = False,
     source: str = "YahooFinance",
     iexrange: str = "ytd",

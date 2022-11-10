@@ -6,7 +6,7 @@ from __future__ import annotations
 import os
 import json
 from datetime import datetime, timedelta
-from typing import Any
+from typing import Any, Optional, Union
 import difflib
 import logging
 
@@ -121,6 +121,40 @@ YF_CURRENCY = [
     "AUD",
     "BTC",
 ]
+
+
+def check_datetime(
+    ck_date: Optional[Union[datetime, str]] = None, start: bool = True
+) -> datetime:
+    """Checks if given argument is string and attempts to convert to datetime.
+
+    Parameters
+    ----------
+    ck_date : Optional[Union[datetime, str]], optional
+        Date to check, by default None
+    start : bool, optional
+        If True and string is invalid, will return 1100 days ago
+        If False and string is invalid, will return today, by default True
+
+    Returns
+    -------
+    datetime
+        Datetime object
+    """
+    error_catch = (datetime.now() - timedelta(days=1100)) if start else datetime.now()
+    try:
+        if ck_date is None:
+            return error_catch
+        if isinstance(ck_date, datetime):
+            return ck_date
+        if isinstance(ck_date, str):
+            return datetime.strptime(ck_date, "%Y-%m-%d")
+    except Exception:
+        console.print(
+            f"Invalid date format (YYYY-MM-DD), "
+            f"Using {error_catch.strftime('%Y-%m-%d')} for {ck_date}"
+        )
+    return error_catch
 
 
 def _load_coin_map(file_name: str) -> pd.DataFrame:
@@ -472,11 +506,13 @@ def load_from_yahoofinance(
 
 def load(
     symbol: str,
-    start_date: str = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d"),
+    start_date: Optional[Union[datetime, str]] = (
+        datetime.now() - timedelta(days=1100)
+    ).strftime("%Y-%m-%d"),
     interval: str = "1440",
     exchange: str = "binance",
     vs_currency: str = "usdt",
-    end_date: str = datetime.now().strftime("%Y-%m-%d"),
+    end_date: Optional[Union[datetime, str]] = datetime.now().strftime("%Y-%m-%d"),
     source: str = "CCXT",
 ) -> pd.DataFrame:
     """Load crypto currency to get data for
@@ -485,8 +521,8 @@ def load(
     ----------
     symbol: str
         Coin to get
-    start_date : str
-        Initial date, format YYYY-MM-DD
+    start_date: str or datetime, optional
+        Start date to get data from with. - datetime or string format (YYYY-MM-DD)
     interval: str
         The interval between data points in minutes.
         Choose from: 1, 15, 30, 60, 240, 1440, 10080, 43200
@@ -494,8 +530,8 @@ def load(
         The exchange to get data from.
     vs_currency: str
         Quote Currency (Defaults to usdt)
-    end_date : str
-        Final date, format YYYY-MM-DD
+    end_date: str or datetime, optional
+        End date to get data from with. - datetime or string format (YYYY-MM-DD)
     source: str
         The source of the data
         Choose from: CCXT, CoinGecko, YahooFinance
@@ -506,16 +542,16 @@ def load(
         Dataframe consisting of price and volume data
     """
 
-    dt_start_date = datetime.strptime(start_date, "%Y-%m-%d")
-    dt_end_date = datetime.strptime(end_date, "%Y-%m-%d")
+    start_date = check_datetime(start_date)
+    end_date = check_datetime(end_date, start=False)
 
     if source == "CCXT":
-        return load_from_ccxt(symbol, dt_start_date, interval, exchange, vs_currency)
+        return load_from_ccxt(symbol, start_date, interval, exchange, vs_currency)
     if source == "CoinGecko":
-        return load_from_coingecko(symbol, dt_start_date, vs_currency)
+        return load_from_coingecko(symbol, start_date, vs_currency)
     if source == "YahooFinance":
         return load_from_yahoofinance(
-            symbol, dt_start_date, interval, vs_currency, dt_end_date
+            symbol, start_date, interval, vs_currency, end_date
         )
     console.print("[red]Invalid source sent[/red]\n")
     return pd.DataFrame()
