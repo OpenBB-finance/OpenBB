@@ -36,7 +36,7 @@ portfolio.rsortino(
         Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y
     risk_free_rate: float
         Value to use for risk free rate in sharpe/other calculations
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -82,6 +82,6 @@ portfolio.rsortino(
         Export to file
     external_axes: Optional[List[plt.Axes]]
         Optional axes to display plot on
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

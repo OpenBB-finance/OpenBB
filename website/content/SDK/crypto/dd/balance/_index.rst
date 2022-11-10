@@ -32,7 +32,7 @@ crypto.dd.balance(
         Cryptocurrency
     to_symbol: str
         Cryptocurrency
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -72,6 +72,6 @@ crypto.dd.balance(
         Cryptocurrency
     export: str
         Export dataframe data to csv,json,xlsx
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

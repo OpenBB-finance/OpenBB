@@ -32,7 +32,7 @@ futures.historical(
         List of future timeseries symbols to display
     expiry: str
         Future expiry date with format YYYY-MM
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -81,6 +81,6 @@ futures.historical(
         Type of format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

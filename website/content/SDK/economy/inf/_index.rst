@@ -29,7 +29,7 @@ economy.inf(
 
     start_year : int, optional
         Start year for plot, by default 2010
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -72,6 +72,6 @@ economy.inf(
         Format to export data, by default ""
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

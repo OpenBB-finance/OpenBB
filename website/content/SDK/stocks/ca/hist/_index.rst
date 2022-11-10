@@ -37,7 +37,7 @@ stocks.ca.hist(
         Start date of comparison. Defaults to 1 year previously
     candle_type: str, optional
         Candle variable to compare, by default "a" for Adjusted Close. Possible values are: o, h, l, c, a, v, r
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -88,6 +88,6 @@ stocks.ca.hist(
         Format to export historical prices, by default ""
     external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

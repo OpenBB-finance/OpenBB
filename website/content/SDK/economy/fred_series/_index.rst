@@ -35,7 +35,7 @@ economy.fred_series(
         Start date to get data from, format yyyy-mm-dd
     end_date : str
         End data to get from, format yyyy-mm-dd
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -87,6 +87,6 @@ economy.fred_series(
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

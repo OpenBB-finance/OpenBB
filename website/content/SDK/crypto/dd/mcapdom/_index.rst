@@ -39,7 +39,7 @@ crypto.dd.mcapdom(
         Initial date like string (e.g., 2021-10-01)
     end_date : int
         End date like string (e.g., 2021-10-01)
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -89,6 +89,6 @@ crypto.dd.mcapdom(
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

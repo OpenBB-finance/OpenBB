@@ -264,7 +264,7 @@ def write_docstring(name: str, func, file, chart: bool):
             )
             if chart:
                 file.write("\n")
-                file.write("    chart: *bool*\n")
+                file.write("    chart: bool\n")
                 file.write("       Flag to display chart\n")
             file.write("\n")
 

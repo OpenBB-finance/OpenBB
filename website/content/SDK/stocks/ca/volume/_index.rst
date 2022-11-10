@@ -34,7 +34,7 @@ stocks.ca.volume(
         finnhub_peers(), finviz_peers(), polygon_peers().
     start_date : str, optional
         Start date of comparison, by default 1 year ago
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -74,6 +74,6 @@ stocks.ca.volume(
         Format to export historical prices, by default ""
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

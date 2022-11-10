@@ -45,7 +45,7 @@ economy.macro(
         The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
     symbol : str
         In what currency you wish to convert all values.
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -113,7 +113,7 @@ economy.macro(
         External axes to plot on
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

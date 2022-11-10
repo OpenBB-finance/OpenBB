@@ -32,7 +32,7 @@ stocks.fa.mktcap(
         Ticker to get market cap over time
     start_date: str
         Start date to display market cap
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -77,6 +77,6 @@ stocks.fa.mktcap(
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

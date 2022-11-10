@@ -35,7 +35,7 @@ stocks.options.pcr(
         Window to consider, by default 30
     start_date: str, optional
         Start date to plot, by default last 366 days
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -76,6 +76,6 @@ stocks.options.pcr(
         Format to export data, by default ""
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

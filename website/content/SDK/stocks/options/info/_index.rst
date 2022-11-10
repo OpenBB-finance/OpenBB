@@ -29,7 +29,7 @@ stocks.options.info(
 
     symbol : str
         The ticker symbol to get the price for
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -66,6 +66,6 @@ stocks.options.info(
         Ticker symbol to get options info for
     export: str
         Format of export file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

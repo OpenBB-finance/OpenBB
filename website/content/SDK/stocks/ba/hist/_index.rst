@@ -41,7 +41,7 @@ stocks.ba.hist(
     number : int
         Number of results returned by API call
         Maximum 250 per api call
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -99,7 +99,7 @@ stocks.ba.hist(
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

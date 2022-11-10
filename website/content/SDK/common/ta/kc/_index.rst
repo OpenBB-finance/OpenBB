@@ -41,7 +41,7 @@ common.ta.kc(
         Type of filter
     offset : int
         Offset value
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -96,6 +96,6 @@ common.ta.kc(
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

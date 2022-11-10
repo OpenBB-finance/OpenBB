@@ -45,7 +45,7 @@ crypto.disc.cpsearch(
         API documentation (see https://api.coinpaprika.com/docs#tag/Tools/paths/~1search/get)
     ascend: bool
         Flag to sort data descending
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -96,6 +96,6 @@ crypto.disc.cpsearch(
         Flag to sort data descending
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

@@ -38,7 +38,7 @@ forex.oanda.order(
         The number of units to place in the order request.
     accountID : str, optional
         Oanda account ID, by default cfg.OANDA_ACCOUNT
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -81,6 +81,6 @@ forex.oanda.order(
         The price to set for the limit order.
     units : int
         The number of units to place in the order request.
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

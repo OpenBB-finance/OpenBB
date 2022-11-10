@@ -42,7 +42,7 @@ economy.treasury(
         Starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : str
         End date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -98,7 +98,7 @@ economy.treasury(
         External axes to plot on
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

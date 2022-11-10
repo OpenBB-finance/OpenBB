@@ -39,7 +39,7 @@ etf.news(
         flag to show newest articles first
     sources: str
         sources to exclusively show news from (comma separated)
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -88,6 +88,6 @@ etf.news(
         sources to exclusively show news from
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

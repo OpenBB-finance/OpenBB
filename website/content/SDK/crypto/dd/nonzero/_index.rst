@@ -16,7 +16,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 crypto.dd.nonzero(
     symbol: str,
     start_date: int = 1262304000,
-    end_date: int = 1668077079,
+    end_date: int = 1668077823,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -36,7 +36,7 @@ crypto.dd.nonzero(
         Initial date timestamp (e.g., 1_577_836_800)
     end_date : int
         End date timestamp (e.g., 1_609_459_200)
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -83,6 +83,6 @@ crypto.dd.nonzero(
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

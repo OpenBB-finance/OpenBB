@@ -41,7 +41,7 @@ stocks.screener.historical(
         Type of candle to display
     normalize : bool
         Boolean to normalize all stock prices using MinMax
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -97,7 +97,7 @@ stocks.screener.historical(
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

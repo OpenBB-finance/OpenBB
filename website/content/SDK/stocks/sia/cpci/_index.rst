@@ -35,7 +35,7 @@ stocks.sia.cpci(
         Select market cap of companies to consider from Small, Mid and Large
     exclude_exchanges : bool
         Exclude international exchanges
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -89,6 +89,6 @@ stocks.sia.cpci(
         Minimum percentage to display country
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

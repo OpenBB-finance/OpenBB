@@ -42,7 +42,7 @@ crypto.dd.mt(
         Initial date like string (e.g., 2021-10-01)
     end : int
         End date like string (e.g., 2021-10-01)
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -97,6 +97,6 @@ crypto.dd.mt(
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

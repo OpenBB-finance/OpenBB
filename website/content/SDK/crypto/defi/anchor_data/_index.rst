@@ -30,7 +30,7 @@ crypto.defi.anchor_data(
 
     address : str
         Terra address. Valid terra addresses start with 'terra'
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -78,6 +78,6 @@ crypto.defi.anchor_data(
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

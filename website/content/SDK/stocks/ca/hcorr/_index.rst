@@ -37,7 +37,7 @@ stocks.ca.hcorr(
         Start date of comparison, by default 1 year ago
     candle_type : str, optional
         OHLCA column to use for candles or R for returns, by default "a" for Adjusted Close
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -87,6 +87,6 @@ stocks.ca.hcorr(
         External axes (1 axis is expected in the list), by default None
     export : str, optional
         Format to export correlation prices, by default ""
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

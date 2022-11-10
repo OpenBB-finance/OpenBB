@@ -35,7 +35,7 @@ portfolio.maxdd(
         Series of input values
     is_returns: bool
         Flag to indicate inputs are returns
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -77,6 +77,6 @@ portfolio.maxdd(
         Format to export data
     external_axes: plt.Axes
         Optional axes to display plot on
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

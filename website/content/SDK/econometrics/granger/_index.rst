@@ -32,7 +32,7 @@ econometrics.granger(
         The series that you want to test whether it Granger-causes time_series_y
     lags : int
         The amount of lags for the Granger test. By default, this is set to 3.
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -73,6 +73,6 @@ econometrics.granger(
         The confidence level you wish to use. By default, this is set to 0.05.
     export : str
         Format to export data
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

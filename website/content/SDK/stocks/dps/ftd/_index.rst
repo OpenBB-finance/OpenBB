@@ -38,7 +38,7 @@ stocks.dps.ftd(
         End of data, in YYYY-MM-DD format
     limit : int
         Number of latest fails-to-deliver being printed
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -93,6 +93,6 @@ stocks.dps.ftd(
         Export dataframe data to csv,json,xlsx file
     external_axes: Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

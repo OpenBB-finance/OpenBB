@@ -38,7 +38,7 @@ crypto.onchain.btc_transac() -> pandas.core.frame.DataFrame
 {{< highlight python >}}
 crypto.onchain.btc_transac(
     start_date: int = 1262304000,
-    end_date: int = 1668077079,
+    end_date: int = 1668077823,
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
     chart: bool = False,
@@ -61,6 +61,6 @@ crypto.onchain.btc_transac(
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
