@@ -139,7 +139,9 @@ def get_chain_given_expiration(symbol: str, expiration: str) -> pd.DataFrame:
         ).json()
         if response_json["status"]["rCode"] == 200:
             df = (
-                pd.DataFrame(response_json["data"]["table"]["rows"])
+                pd.DataFrame(
+                    response_json.get("data", {}).get("table", {}).get("rows", {})
+                )
                 .drop(columns=["c_colour", "p_colour", "drillDownURL", "expirygroup"])
                 .fillna(np.nan)
                 .dropna(axis=0)

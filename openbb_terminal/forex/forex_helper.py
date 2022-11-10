@@ -9,15 +9,33 @@ import re
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
+from matplotlib.ticker import LogLocator, ScalarFormatter
 import mplfinance as mpf
 import yfinance as yf
+import numpy as np
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 from openbb_terminal.forex import av_model, polygon_model
 from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import plot_autoscale, is_valid_axes_count
 from openbb_terminal.config_terminal import theme
+import openbb_terminal.config_terminal as cfg
+from openbb_terminal.helper_funcs import (
+    is_valid_axes_count,
+    plot_autoscale,
+    lambda_long_number_format_y_axis,
+)
 
+CANDLE_SORT = [
+    "adjclose",
+    "open",
+    "close",
+    "high",
+    "low",
+    "volume",
+    "logret",
+]
 
 FOREX_SOURCES: Dict = {
     "YahooFinance": "YahooFinance",
@@ -212,6 +230,9 @@ def display_candle(
     from_symbol: str = "",
     ma: Optional[Iterable[int]] = None,
     external_axes: Optional[List[plt.Axes]] = None,
+    use_matplotlib: bool = True,
+    add_trend: bool = False,
+    yscale: str = "linear",
 ):
     """Show candle plot for fx data.
 
@@ -228,51 +249,245 @@ def display_candle(
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list), by default None
     """
-    candle_chart_kwargs = {
-        "type": "candle",
-        "style": theme.mpf_style,
-        "volume": False,
-        "xrotation": theme.xticks_rotation,
-        "scale_padding": {"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
-        "update_width_config": {
-            "candle_linewidth": 0.6,
-            "candle_width": 0.8,
-            "volume_linewidth": 0.8,
-            "volume_width": 0.8,
-        },
-        "warn_too_much_data": 20000,
-    }
-    if ma:
-        candle_chart_kwargs["mav"] = ma
-    # This plot has 1 axis
-    if not external_axes:
-        candle_chart_kwargs["returnfig"] = True
-        candle_chart_kwargs["figratio"] = (10, 7)
-        candle_chart_kwargs["figscale"] = 1.10
-        candle_chart_kwargs["figsize"] = plot_autoscale()
-        fig, ax = mpf.plot(data, **candle_chart_kwargs)
-        if from_symbol and to_symbol:
+    # We check if there's Volume data to avoid errors and empty subplots
+    has_volume = bool(data["Volume"].sum() > 0)
+
+    if add_trend:
+        if (data.index[1] - data.index[0]).total_seconds() >= 86400:
+            data = stocks_helper.find_trendline(data, "OC_High", "high")
+            data = stocks_helper.find_trendline(data, "OC_Low", "low")
+
+    if use_matplotlib:
+        ap0 = []
+        if add_trend:
+            if "OC_High_trend" in data.columns:
+                ap0.append(
+                    mpf.make_addplot(
+                        data["OC_High_trend"],
+                        color=cfg.theme.up_color,
+                        secondary_y=False,
+                    ),
+                )
+
+            if "OC_Low_trend" in data.columns:
+                ap0.append(
+                    mpf.make_addplot(
+                        data["OC_Low_trend"],
+                        color=cfg.theme.down_color,
+                        secondary_y=False,
+                    ),
+                )
+
+        candle_chart_kwargs = {
+            "type": "candle",
+            "style": cfg.theme.mpf_style,
+            "volume": has_volume,
+            "addplot": ap0,
+            "xrotation": cfg.theme.xticks_rotation,
+            "scale_padding": {"left": 0.3, "right": 1, "top": 0.8, "bottom": 0.8},
+            "update_width_config": {
+                "candle_linewidth": 0.6,
+                "candle_width": 0.8,
+                "volume_linewidth": 0.8,
+                "volume_width": 0.8,
+            },
+            "warn_too_much_data": 10000,
+            "yscale": yscale,
+        }
+
+        if ma:
+            candle_chart_kwargs["mav"] = ma
+
+        if external_axes is None:
+            candle_chart_kwargs["returnfig"] = True
+            candle_chart_kwargs["figratio"] = (10, 7)
+            candle_chart_kwargs["figscale"] = 1.10
+            candle_chart_kwargs["figsize"] = plot_autoscale()
+            candle_chart_kwargs["warn_too_much_data"] = 100_000
+
+            fig, ax = mpf.plot(data, **candle_chart_kwargs)
+
+            if has_volume:
+                lambda_long_number_format_y_axis(data, "Volume", ax)
+
             fig.suptitle(
                 f"{from_symbol}/{to_symbol}",
                 x=0.055,
                 y=0.965,
                 horizontalalignment="left",
             )
+
+            if ma:
+                # Manually construct the chart legend
+                colors = [cfg.theme.get_colors()[i] for i, _ in enumerate(ma)]
+                lines = [Line2D([0], [0], color=c) for c in colors]
+                labels = ["MA " + str(label) for label in ma]
+                ax[0].legend(lines, labels)
+
+            if yscale == "log":
+                ax[0].yaxis.set_major_formatter(ScalarFormatter())
+                ax[0].yaxis.set_major_locator(
+                    LogLocator(base=100, subs=[1.0, 2.0, 5.0, 10.0])
+                )
+                ax[0].ticklabel_format(style="plain", axis="y")
+
+            cfg.theme.visualize_output(force_tight_layout=False)
+        elif is_valid_axes_count(external_axes, 2):
+            ax1, ax2 = external_axes
+            candle_chart_kwargs["ax"] = ax1
+            if has_volume:
+                candle_chart_kwargs["volume"] = ax2
+            mpf.plot(data, **candle_chart_kwargs)
+
+    if not use_matplotlib:
+        fig = make_subplots(
+            rows=2 if has_volume else 1,
+            cols=1,
+            shared_xaxes=True,
+            vertical_spacing=0.06,
+            subplot_titles=(
+                f"{from_symbol}/{to_symbol}",
+                "Volume" if has_volume else None,
+            ),
+            row_width=[0.2, 0.7] if has_volume else [1],
+        )
+        fig.add_trace(
+            go.Candlestick(
+                x=data.index,
+                open=data.Open,
+                high=data.High,
+                low=data.Low,
+                close=data.Close,
+                name="OHLC",
+            ),
+            row=1,
+            col=1,
+        )
         if ma:
-            # Manually construct the chart legend
-            colors = [theme.get_colors()[i] for i, _ in enumerate(ma)]
+            plotly_colors = [
+                "black",
+                "teal",
+                "blue",
+                "purple",
+                "orange",
+                "gray",
+                "deepskyblue",
+            ]
+            for idx, ma_val in enumerate(ma):
+                temp = data["Adj Close"].copy()
+                temp[f"ma{ma_val}"] = data["Adj Close"].rolling(ma_val).mean()
+                temp = temp.dropna()
+                fig.add_trace(
+                    go.Scatter(
+                        x=temp.index,
+                        y=temp[f"ma{ma_val}"],
+                        name=f"MA{ma_val}",
+                        mode="lines",
+                        line=go.scatter.Line(
+                            color=plotly_colors[np.mod(idx, len(plotly_colors))]
+                        ),
+                    ),
+                    row=1,
+                    col=1,
+                )
 
-            lines = [Line2D([0], [0], color=c) for c in colors]
-            labels = ["MA " + str(label) for label in ma]
-            ax[0].legend(lines, labels)
-        theme.visualize_output(force_tight_layout=False)
+        if add_trend:
+            if "OC_High_trend" in data.columns:
+                fig.add_trace(
+                    go.Scatter(
+                        x=data.index,
+                        y=data["OC_High_trend"],
+                        name="High Trend",
+                        mode="lines",
+                        line=go.scatter.Line(color="green"),
+                    ),
+                    row=1,
+                    col=1,
+                )
+            if "OC_Low_trend" in data.columns:
+                fig.add_trace(
+                    go.Scatter(
+                        x=data.index,
+                        y=data["OC_Low_trend"],
+                        name="Low Trend",
+                        mode="lines",
+                        line=go.scatter.Line(color="red"),
+                    ),
+                    row=1,
+                    col=1,
+                )
 
-    elif is_valid_axes_count(external_axes, 1):
-        (ax1,) = external_axes
-        candle_chart_kwargs["ax"] = ax1
-        mpf.plot(data, **candle_chart_kwargs)
-    else:
-        return
+        if has_volume:
+            colors = [
+                "red" if row.Open < row["Adj Close"] else "green"
+                for _, row in data.iterrows()
+            ]
+            fig.add_trace(
+                go.Bar(
+                    x=data.index,
+                    y=data.Volume,
+                    name="Volume",
+                    marker_color=colors,
+                ),
+                row=2,
+                col=1,
+            )
+        fig.update_layout(
+            yaxis_title="Stock Price ($)",
+            xaxis=dict(
+                rangeselector=dict(
+                    buttons=list(
+                        [
+                            dict(
+                                count=1,
+                                label="1m",
+                                step="month",
+                                stepmode="backward",
+                            ),
+                            dict(
+                                count=3,
+                                label="3m",
+                                step="month",
+                                stepmode="backward",
+                            ),
+                            dict(count=1, label="YTD", step="year", stepmode="todate"),
+                            dict(
+                                count=1,
+                                label="1y",
+                                step="year",
+                                stepmode="backward",
+                            ),
+                            dict(step="all"),
+                        ]
+                    )
+                ),
+                rangeslider=dict(visible=False),
+                type="date",
+            ),
+        )
+
+        fig.update_layout(
+            updatemenus=[
+                dict(
+                    buttons=[
+                        dict(
+                            label="linear",
+                            method="relayout",
+                            args=[{"yaxis.type": "linear"}],
+                        ),
+                        dict(
+                            label="log",
+                            method="relayout",
+                            args=[{"yaxis.type": "log"}],
+                        ),
+                    ]
+                )
+            ]
+        )
+
+        fig.show(config=dict({"scrollZoom": True}))
+
+    return
 
 
 @log_start_end(log=logger)

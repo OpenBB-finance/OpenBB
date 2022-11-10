@@ -67,3 +67,21 @@ def load_env_vars(
         return handle_error(name, default, menu)
     except TypeError:
         return handle_error(name, default, menu)
+
+
+def strtobool(val):
+    """Convert a string representation of truth to true (1) or false (0).
+
+    True values are 'y', 'yes', 't', 'true', 'on', and '1'; false values
+    are 'n', 'no', 'f', 'false', 'off', and '0'.  Raises ValueError if
+    'val' is anything else.
+    """
+    val = str(val).lower()
+    if val in ("y", "yes", "t", "true", "on", "1"):
+        output = 1
+    elif val in ("n", "no", "f", "false", "off", "0"):
+        output = 0
+    else:
+        raise ValueError(f"invalid truth value {val}")
+
+    return output

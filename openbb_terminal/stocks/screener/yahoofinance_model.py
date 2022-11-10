@@ -4,6 +4,7 @@ import configparser
 import datetime
 import logging
 from pathlib import Path
+from typing import List, Tuple
 import random
 
 import numpy as np
@@ -57,7 +58,7 @@ def historical(
     ).strftime("%Y-%m-%d"),
     type_candle: str = "a",
     normalize: bool = True,
-):
+) -> Tuple[pd.DataFrame, List[str], bool]:
     """View historical price of stocks that meet preset
 
     Parameters
@@ -89,6 +90,8 @@ def historical(
     else:
         preset_filter = configparser.RawConfigParser()
         preset_filter.optionxform = str  # type: ignore
+        if preset_loaded not in preset_choices:
+            return pd.DataFrame, [], False
         preset_filter.read(preset_choices[preset_loaded])
 
         d_general = preset_filter["General"]

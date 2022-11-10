@@ -55,7 +55,7 @@ jobs:
         shell: bash -l {0}
         id: pip-cache
         run: |
-          echo "::set-output name=dir::$(pip cache dir)"
+          echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
 
       - name: pip cache
         uses: actions/cache@v2
