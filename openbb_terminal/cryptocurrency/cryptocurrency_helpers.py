@@ -44,6 +44,7 @@ from openbb_terminal.config_terminal import theme
 from openbb_terminal.cryptocurrency.due_diligence import coinbase_model
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal.rich_config import console
+from openbb_terminal.stocks.stocks_helper import check_datetime
 
 logger = logging.getLogger(__name__)
 
@@ -121,40 +122,6 @@ YF_CURRENCY = [
     "AUD",
     "BTC",
 ]
-
-
-def check_datetime(
-    ck_date: Optional[Union[datetime, str]] = None, start: bool = True
-) -> datetime:
-    """Checks if given argument is string and attempts to convert to datetime.
-
-    Parameters
-    ----------
-    ck_date : Optional[Union[datetime, str]], optional
-        Date to check, by default None
-    start : bool, optional
-        If True and string is invalid, will return 1100 days ago
-        If False and string is invalid, will return today, by default True
-
-    Returns
-    -------
-    datetime
-        Datetime object
-    """
-    error_catch = (datetime.now() - timedelta(days=1100)) if start else datetime.now()
-    try:
-        if ck_date is None:
-            return error_catch
-        if isinstance(ck_date, datetime):
-            return ck_date
-        if isinstance(ck_date, str):
-            return datetime.strptime(ck_date, "%Y-%m-%d")
-    except Exception:
-        console.print(
-            f"Invalid date format (YYYY-MM-DD), "
-            f"Using {error_catch.strftime('%Y-%m-%d')} for {ck_date}"
-        )
-    return error_catch
 
 
 def _load_coin_map(file_name: str) -> pd.DataFrame:
