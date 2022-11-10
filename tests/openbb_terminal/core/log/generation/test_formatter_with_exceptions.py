@@ -46,10 +46,6 @@ def test_filter_log_line(recorder):
     text_expected = FormatterWithExceptions.filter_log_line(text=text)
     recorder.capture(text_expected)
 
-    text = "\\n\nhello \this\\r \rgreetings"
-    text_expected = FormatterWithExceptions.filter_log_line(text=text)
-    recorder.capture(text_expected)
-
 
 def test_formatException_invalid():
     with pytest.raises(Exception):
