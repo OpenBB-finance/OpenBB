@@ -38,7 +38,7 @@ alt.covid.slopes(
         Threshold for total number of cases
     ascend: bool
         Flag to sort in ascending order
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -84,6 +84,6 @@ alt.covid.slopes(
         Threshold for total cases over period
     export : str
         Format to export data
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

@@ -41,7 +41,7 @@ stocks.fa.av_cash(
         Shows percentage change, by default False
     plot: bool
         If the data shall be formatted ready to plot
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -90,6 +90,6 @@ stocks.fa.av_cash(
         List of row labels to plot
     export: str
         Format to export data
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

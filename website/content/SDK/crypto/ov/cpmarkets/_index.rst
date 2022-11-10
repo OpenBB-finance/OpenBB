@@ -35,7 +35,7 @@ crypto.ov.cpmarkets(
         Key by which to sort data
     ascend: bool
         Flag to sort data ascend
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -84,6 +84,6 @@ crypto.ov.cpmarkets(
         Flag to display urls
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

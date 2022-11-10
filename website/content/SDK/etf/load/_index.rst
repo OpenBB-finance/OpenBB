@@ -13,10 +13,14 @@
 {{< highlight python >}}
 etf.load(
     symbol: str,
-    start_date: datetime.datetime = None,
-    interval: int = 1440,
-    end_date: datetime.datetime = None,
-    prepost: bool = False,
+    start_date: Union[datetime.datetime, str,
+    NoneType] = datetime.datetime(
+    2019, 11, 6, 10, 57, 3, 415198, chart: bool = False,
+), interval: int = 1440,
+    end_date: Union[datetime.datetime, str,
+    NoneType] = datetime.datetime(
+    2022, 11, 10, 10, 57, 3, 415206, chart: bool = False,
+), prepost: bool = False,
     source: str = 'YahooFinance',
     iexrange: str = 'ytd',
     weekly: bool = False,
@@ -64,12 +68,12 @@ etf.load(
 
     symbol: str
         Ticker to get data
-    start_date: datetime
-        Start date to get data from with
+    start_date: str or datetime, optional
+        Start date to get data from with. - datetime or string format (YYYY-MM-DD)
     interval: int
         Interval (in minutes) to get data 1, 5, 15, 30, 60 or 1440
-    end_date: datetime
-        End date to get data from with
+    end_date: str or datetime, optional
+        End date to get data from with. - datetime or string format (YYYY-MM-DD)
     prepost: bool
         Pre and After hours data
     source: str

@@ -32,7 +32,7 @@ econometrics.bgod(
         Model containing residual values.
     lags : int
         The amount of lags.
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -71,6 +71,6 @@ econometrics.bgod(
         The amount of lags included.
     export : str
         Format to export data
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

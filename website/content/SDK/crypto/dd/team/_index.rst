@@ -30,7 +30,7 @@ crypto.dd.team(
 
     symbol : str
         Crypto symbol to check team
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -70,6 +70,6 @@ crypto.dd.team(
         Crypto symbol to check coin team
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

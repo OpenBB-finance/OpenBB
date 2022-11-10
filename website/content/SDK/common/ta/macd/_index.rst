@@ -38,7 +38,7 @@ common.ta.macd(
         Slow period
     n_signal : int
         Signal period
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -90,6 +90,6 @@ common.ta.macd(
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

@@ -34,7 +34,7 @@ crypto.onchain.th(
         Key to sort by.
     ascend: str
         Sort in descending order.
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -83,6 +83,6 @@ crypto.onchain.th(
         Flag to show transaction hash.
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

@@ -36,7 +36,7 @@ crypto.dd.ob(
         coin symbol
     to_symbol : str
         currency to compare coin against
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -80,6 +80,6 @@ crypto.dd.ob(
         currency to compare coin against
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

@@ -29,7 +29,7 @@ econometrics.bpag(
 
     model : OLS Model
         Model containing residual values.
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -65,6 +65,6 @@ econometrics.bpag(
         Model containing residual values.
     export : str
         Format to export data
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
