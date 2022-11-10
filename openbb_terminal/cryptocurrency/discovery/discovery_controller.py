@@ -62,7 +62,7 @@ class DiscoveryController(BaseController):
                 "-i": "--interval",
                 "--sort": {c: {} for c in pycoingecko_model.GAINERS_LOSERS_COLUMNS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["losers"] = {
@@ -70,7 +70,7 @@ class DiscoveryController(BaseController):
                 "-i": "--interval",
                 "--sort": {c: {} for c in pycoingecko_model.GAINERS_LOSERS_COLUMNS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["top"] = {
@@ -81,7 +81,7 @@ class DiscoveryController(BaseController):
                 "-s": "--sort",
                 "--category": {c: {} for c in pycoingecko_model.get_categories_keys()},
                 "-c": "--category",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
                 "--source": {c: {} for c in self.ORDERED_LIST_SOURCES_TOP},
@@ -93,32 +93,32 @@ class DiscoveryController(BaseController):
                 "-s": "--sort",
                 "--cat": {c: {} for c in coinpaprika_model.CATEGORIES},
                 "-c": "--cat",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
             choices["nft"] = {
                 "--sort": {c: {} for c in dappradar_model.NFT_COLUMNS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["games"] = {
                 "--sort": {c: {} for c in dappradar_model.DEX_COLUMNS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["dex"] = {
                 "--sort": {c: {} for c in dappradar_model.DEX_COLUMNS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["dapps"] = {
                 "--sort": {c: {} for c in dappradar_model.DAPPS_COLUMNS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
             }
 
