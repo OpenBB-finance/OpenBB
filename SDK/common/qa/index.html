@@ -9,12 +9,15 @@
 
 
 
-    <meta name="description" content="OpenBB Terminal Documentation">
+    <meta name="description" content="The qa module replicates the features of the Quantitative Analysis menu, within the OpenBB Terminal, for the SDK environment. It provides users with more ways to interact with the library of functions, and provides cross-disciplinary utility. To activate the code completion for the menu, enter . after, openbb.common.qa.
+How to Use    With the modules imported, the next step would be to collect data for analysis. In this example, the Quandl API will be used.">
 
+
+    <meta name="keywords" content="qa,,quant,,quantitative,,bw,,var,,es,,kurtosis,,normality,,omega,,quantile,,rolling,,sharpe,,skew,,spread,,summary,,unitroot,,var,,math">
 
 
     <title>
-      qa | OpenBB Terminal Documentation
+      Introduction to Quantitative Analysis | OpenBB Terminal Documentation
     </title>
 
     <link rel="icon" href="/OpenBBTerminal/favicon/favicon-32x32.png" type="image/x-icon">
@@ -47466,7 +47469,7 @@ code, img {
         
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>OpenBB Terminal Documentation</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/SDK/' href='/OpenBBTerminal/SDK/'><span itemprop='name'>OpenBB Python SDK</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/SDK/common/' href='/OpenBBTerminal/SDK/common/'><span itemprop='name'>Introduction to Quantitative Analysis</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>qa</span><meta itemprop='position' content='5' /></li>
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>OpenBB Terminal Documentation</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/SDK/' href='/OpenBBTerminal/SDK/'><span itemprop='name'>OpenBB Python SDK</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/SDK/common/' href='/OpenBBTerminal/SDK/common/'><span itemprop='name'>Common Modules</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Introduction to Quantitative Analysis</span><meta itemprop='position' content='5' /></li>
     
 
     
@@ -47491,8 +47494,64 @@ code, img {
 </div>
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
-        <h1>qa</h1>
-        
+        <h1>Introduction to Quantitative Analysis</h1>
+        <p>The <code>qa</code> module replicates the features of the Quantitative Analysis menu, within the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/common/qa/" target="_blank">OpenBB Terminal</a>, for the SDK environment. It provides users with more ways to interact with the library of functions, and provides cross-disciplinary utility. To activate the code completion for the menu, enter <code>.</code> after, <code>openbb.common.qa</code>.</p>
+<p><img src="https://user-images.githubusercontent.com/85772166/200109595-dbfde965-72b4-40fc-88bf-95f34a30f5d9.png" alt="The QA Module"  title="The QA Module" /></p>
+<div class="gdoc-page__anchorwrap">
+    <h2 id="how-to-use">
+        How to Use
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/common/qa/#how-to-use" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor How to Use" href="#how-to-use">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h2>
+</div><p>With the modules imported, the next step would be to collect data for analysis. In this example, the Quandl API will be used. To pass the key to the URL string, import:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python">
+<span class="kn">import</span> <span class="nn">openbb_terminal.config_terminal</span> <span class="k">as</span> <span class="nn">cfg</span>
+
+</code></pre></div><p>The credentials can then be passed with:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">API_KEY_QUANDL</span><span class="si">}</span><span class="s2">&#34;</span>
+</code></pre></div><p>As a functional code block, this looks like:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python">
+<span class="kn">from</span> <span class="nn">openbb_terminal.sdk</span> <span class="kn">import</span> <span class="n">openbb</span>
+<span class="kn">import</span> <span class="nn">openbb_terminal.config_terminal</span> <span class="k">as</span> <span class="nn">cfg</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">widget</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">payload</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="s1">&#39;https://data.nasdaq.com/api/v3/datasets/MULTPL/SHILLER_PE_RATIO_MONTH.json?api_key=&#39;</span><span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">API_KEY_QUANDL</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+<span class="n">payload</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+<span class="n">shiller_pe</span> <span class="o">=</span> <span class="n">payload</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">dataset</span>
+</code></pre></div><p><img src="https://user-images.githubusercontent.com/85772166/200109605-4cdd01b2-2974-4222-bb6c-0bf14c593cb5.png" alt="Loading Data"  title="Loading Data" /></p>
+<p>Now, with the data loaded, the next block will utilize the <code>skew</code> function, to target the monthly Shiller P/E Ratio of the S&amp;P 500 from inception.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">shiller_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span> <span class="s1">&#39;Shiller P/E Ratio&#39;</span><span class="p">,</span> <span class="s1">&#39;Skew&#39;</span><span class="p">])</span>
+<span class="n">shiller_pe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">shiller_pe</span><span class="p">)</span>
+<span class="n">shiller_skew</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">qa</span><span class="o">.</span><span class="n">skew</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">shiller_pe</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">window</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="n">shiller_df</span><span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shiller_pe</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">shiller_df</span><span class="p">[</span><span class="s1">&#39;Shiller P/E Ratio&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shiller_pe</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">shiller_df</span><span class="p">[</span><span class="s1">&#39;Skew&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">shiller_skew</span>
+<span class="n">shiller_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Date&#39;</span><span class="p">],</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="n">shiller_df</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</code></pre></div><p><img src="https://user-images.githubusercontent.com/85772166/200109627-0e532041-dd6a-41ef-ad17-41acd1b58caf.png" alt="Skew of Monthly S&amp;amp;P 500 Shiller P/E Ratio"  title="Skew of Monthly S&amp;P 500 Shiller P/E Ratio" /></p>
+<p>Get a summary of the DataFrame:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">openbb</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">qa</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">shiller_df</span><span class="p">)</span>
+</code></pre></div><p><img src="https://user-images.githubusercontent.com/85772166/200109649-fdf9b1f8-6e7e-47df-8baa-b1e265872b12.png" alt="openbb.common.qa.summary"  title="openbb.common.qa.summary" /></p>
+<p>Insert the rolling mean and standard deviation of a target column with, <code>openbb.common.qa.rolling</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">mean</span><span class="p">,</span><span class="n">std</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">qa</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">shiller_df</span><span class="p">[</span><span class="s1">&#39;Shiller P/E Ratio&#39;</span><span class="p">])</span>
+<span class="n">mean</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Shiller P/E Ratio&#39;</span><span class="p">:</span> <span class="s1">&#39;Mean&#39;</span><span class="p">},</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">std</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Shiller P/E Ratio&#39;</span><span class="p">:</span> <span class="s1">&#39;Std&#39;</span><span class="p">},</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">rolling</span> <span class="o">=</span> <span class="n">mean</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">std</span><span class="p">)</span>
+<span class="n">shiller_df</span> <span class="o">=</span> <span class="n">shiller_df</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rolling</span><span class="p">)</span>
+
+<span class="n">shiller_df</span>
+</code></pre></div><p><img src="https://user-images.githubusercontent.com/85772166/200109671-ec0d62ac-fedc-4690-a972-b326a1f05da3.png" alt="openbb.common.qa.rolling"  title="openbb.common.qa.rolling" /></p>
+<p>Calculate and join the Sharpe Ratio of, for example, the rolling mean average of the Shiller P/E ratio:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">sharpe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">openbb</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">qa</span><span class="o">.</span><span class="n">sharpe</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">shiller_df</span><span class="p">[</span><span class="s1">&#39;Mean&#39;</span><span class="p">],</span> <span class="n">window</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span> <span class="n">rfr</span> <span class="o">=</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">sharpe</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Mean&#39;</span><span class="p">:</span> <span class="s1">&#39;Sharpe&#39;</span><span class="p">},</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">shiller_df</span> <span class="o">=</span> <span class="n">shiller_df</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sharpe</span><span class="p">)</span>
+</code></pre></div><p><img src="https://user-images.githubusercontent.com/85772166/200109727-85736e12-85c2-43d6-97e0-4a95cf40bd6f.png" alt="openbb.common.qa.sharpe"  title="openbb.common.qa.sharpe" /></p>
+
     </article>
  
 
