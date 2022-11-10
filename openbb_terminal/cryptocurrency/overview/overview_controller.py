@@ -91,6 +91,17 @@ class OverviewController(BaseController):
 
     ORDERED_LIST_SOURCES_EXCHANGES = get_ordered_list_sources(f"{PATH}exchanges")
 
+    STABLES_CHOICES = [
+        "Symbol",
+        "Name",
+        "Price_[$]",
+        "Market_Cap_[$]",
+        "Market_Cap_Rank",
+        "Change_7d_[%]",
+        "Change_24h_[%]",
+        "Volume_[$]",
+    ]
+
     def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__(queue)
@@ -143,19 +154,7 @@ class OverviewController(BaseController):
             }
 
             choices["stables"] = {
-                "--sortby": {
-                    c: {}
-                    for c in [
-                        "Symbol",
-                        "Name",
-                        "Price_[$]",
-                        "Market_Cap_[$]",
-                        "Market_Cap_Rank",
-                        "Change_7d_[%]",
-                        "Change_24h_[%]",
-                        "Volume_[$]",
-                    ]
-                },
+                "--sortby": {c: {} for c in self.STABLES_CHOICES},
                 "-s": "--sortby",
                 "--limit": {str(c): {} for c in range(1, 100)},
                 "-l": "--limit",
