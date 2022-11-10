@@ -204,8 +204,8 @@ def get_close_price(
         price over time
     """
 
-    dt_start_date = str_date_to_timestamp(start_date)
-    dt_end_date = str_date_to_timestamp(end_date)
+    ts_start_date = str_date_to_timestamp(start_date)
+    ts_end_date = str_date_to_timestamp(end_date)
 
     url = api_url + "market/price_usd_close"
 
@@ -213,8 +213,8 @@ def get_close_price(
         "api_key": cfg.API_GLASSNODE_KEY,
         "a": symbol,
         "i": "24h",
-        "s": str(dt_start_date),
-        "u": str(dt_end_date),
+        "s": str(ts_start_date),
+        "u": str(ts_end_date),
     }
 
     r = requests.get(url, params=parameters)
@@ -266,8 +266,8 @@ def get_non_zero_addresses(
         addresses with non-zero balances
     """
 
-    dt_start_date = str_date_to_timestamp(start_date)
-    dt_end_date = str_date_to_timestamp(end_date)
+    ts_start_date = str_date_to_timestamp(start_date)
+    ts_end_date = str_date_to_timestamp(end_date)
 
     url = api_url + "addresses/non_zero_count"
 
@@ -275,8 +275,8 @@ def get_non_zero_addresses(
         "api_key": cfg.API_GLASSNODE_KEY,
         "a": symbol,
         "i": "24h",
-        "s": str(dt_start_date),
-        "u": str(dt_end_date),
+        "s": str(ts_start_date),
+        "u": str(ts_end_date),
     }
 
     r = requests.get(url, params=parameters)
@@ -328,8 +328,8 @@ def get_active_addresses(
         active addresses over time
     """
 
-    dt_start_date = str_date_to_timestamp(start_date)
-    dt_end_date = str_date_to_timestamp(end_date)
+    ts_start_date = str_date_to_timestamp(start_date)
+    ts_end_date = str_date_to_timestamp(end_date)
 
     url = api_url + "addresses/active_count"
 
@@ -337,8 +337,8 @@ def get_active_addresses(
         "api_key": cfg.API_GLASSNODE_KEY,
         "a": symbol,
         "i": interval,
-        "s": str(dt_start_date),
-        "u": str(dt_end_date),
+        "s": str(ts_start_date),
+        "u": str(ts_end_date),
     }
 
     r = requests.get(url, params=parameters)
@@ -460,8 +460,8 @@ def get_exchange_balances(
     pd.DataFrame
         total amount of coins in units/percentage and symbol price over time
     """
-    dt_start_date = str_date_to_timestamp(start_date)
-    dt_end_date = str_date_to_timestamp(end_date)
+    ts_start_date = str_date_to_timestamp(start_date)
+    ts_end_date = str_date_to_timestamp(end_date)
 
     url = api_url + "distribution/balance_exchanges"
     url2 = api_url + "distribution/balance_exchanges_relative"
@@ -472,8 +472,8 @@ def get_exchange_balances(
         "a": symbol,
         "i": "24h",
         "e": exchange,
-        "s": str(dt_start_date),
-        "u": str(dt_end_date),
+        "s": str(ts_start_date),
+        "u": str(ts_end_date),
     }
     df = pd.DataFrame()
 
@@ -543,8 +543,8 @@ def get_exchange_net_position_change(
         supply change in exchange wallets of a certain symbol over time
     """
 
-    dt_start_date = str_date_to_timestamp(start_date)
-    dt_end_date = str_date_to_timestamp(end_date)
+    ts_start_date = str_date_to_timestamp(start_date)
+    ts_end_date = str_date_to_timestamp(end_date)
 
     url = api_url + "distribution/exchange_net_position_change"
 
@@ -553,8 +553,8 @@ def get_exchange_net_position_change(
         "a": symbol,
         "i": "24h",
         "e": exchange,
-        "s": str(dt_start_date),
-        "u": str(dt_end_date),
+        "s": str(ts_start_date),
+        "u": str(ts_end_date),
     }
 
     r = requests.get(url, params=parameters)
