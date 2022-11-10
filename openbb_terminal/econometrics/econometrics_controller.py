@@ -37,7 +37,11 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
-from openbb_terminal.econometrics import econometrics_model, econometrics_view
+from openbb_terminal.econometrics import (
+    econometrics_model,
+    econometrics_view,
+    regression_model,
+)
 from openbb_terminal.common import common_model
 
 logger = logging.getLogger(__name__)
@@ -355,7 +359,7 @@ class EconometricsController(BaseController):
 
                 if not file:
                     console.print(
-                        "[red]The file/dataset selected does not exist.[/red]\n"
+                        "[red]The file/dataset selected does not exist.[/red]"
                     )
                     return
             else:
@@ -372,7 +376,7 @@ class EconometricsController(BaseController):
             # check if this dataset has been added already
             if alias in self.files:
                 console.print(
-                    "[red]The file/dataset selected has already been loaded.[/red]\n"
+                    "[red]The file/dataset selected has already been loaded.[/red]"
                 )
                 return
 
@@ -387,8 +391,6 @@ class EconometricsController(BaseController):
                 self.update_runtime_choices()
 
                 self.update_loaded()
-
-                console.print()
 
     @log_start_end(log=logger)
     def call_export(self, other_args: List[str]):
@@ -1186,6 +1188,13 @@ class EconometricsController(BaseController):
             ),
             required="-h" not in other_args,
         )
+        parser.add_argument(
+            "--no-output",
+            action="store_true",
+            default=False,
+            help="Hide the output of the regression",
+            dest="no_output",
+        )
 
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-d")
@@ -1201,15 +1210,25 @@ class EconometricsController(BaseController):
                 )
             elif ns_parser.dependent in self.choices["regressions"]:
                 (
-                    self.regression["OLS"]["data"],
-                    self.regression["OLS"]["dependent"],
-                    self.regression["OLS"]["independent"],
-                    self.regression["OLS"]["model"],
-                ) = openbb_terminal.econometrics.regression_model.get_ols(
+                    regression_df,
+                    dependent_variable,
+                    independent_variables,
+                ) = regression_model.get_regression_data(
                     [ns_parser.dependent] + ns_parser.independent,
                     self.datasets,
-                    export=ns_parser.export,
+                    "OLS",
                 )
+                self.regression["OLS"]["data"] = regression_df
+                self.regression["OLS"]["dependent"] = dependent_variable
+                self.regression["OLS"]["independent"] = independent_variables
+                model = regression_model.get_ols(
+                    regression_df[dependent_variable],
+                    regression_df[independent_variables],
+                )
+                self.regression["OLS"]["model"] = model
+                if not ns_parser.no_output:
+                    console.print(model.summary())
+
             else:
                 console.print(
                     f"{ns_parser.dependent} not in {','.join(self.choices['regressions'])}\n"
@@ -1270,7 +1289,7 @@ class EconometricsController(BaseController):
             else:
                 return console.print(f"Can not find {dataset}. Did you load the data?")
 
-            return econometrics_view.display_norm(
+            econometrics_view.display_norm(
                 data, dataset, column, ns_parser.plot, ns_parser.export
             )
 

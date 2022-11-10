@@ -134,64 +134,34 @@ def get_regression_data(
 
 @log_start_end(log=logger)
 def get_ols(
-    regression_variables: List[Tuple],
-    data: Dict[str, pd.DataFrame],
-    show_regression: bool = True,
-    export: str = "",
+    Y: pd.DataFrame,
+    X: pd.DataFrame,
 ) -> Tuple[DataFrame, Any, List[Any], Any]:
     """Performs an OLS regression on timeseries data. [Source: Statsmodels]
 
     Parameters
     ----------
-    regression_variables : list
-        The regressions variables entered where the first variable is
-        the dependent variable.
-    data : dict
-        A dictionary containing the datasets.
-    show_regression: bool
-        Whether to show the regression results table.
-    export: str
-        Format to export data
+    Y: pd.DataFrame
+        Dependent variable series.
+    X: pd.DataFrame
+        Dataframe of independent variables series.
 
     Returns
     -------
-    The dataset used, the dependent variable, the independent variable and
-    the OLS model.
+    Statsmodels OLS model
     """
-    regression_df, dependent_variable, independent_variables = get_regression_data(
-        regression_variables, data, "OLS"
-    )
 
-    if regression_df.empty:
+    if X.empty or Y.empty:
         model = None
     else:
         with warnings.catch_warnings(record=True) as warning_messages:
-            model = sm.OLS(
-                regression_df[dependent_variable], regression_df[independent_variables]
-            ).fit()
-
-            if show_regression:
-                console.print(model.summary())
-                console.print("")
+            model = sm.OLS(Y, X).fit()
             if len(warning_messages) > 0:
                 console.print("Warnings:")
                 for warning in warning_messages:
                     console.print(f"[red]{warning.message}[/red]".replace("\n", ""))
 
-        if export:
-            results_as_html = model.summary().tables[1].as_html()
-            df = pd.read_html(results_as_html, header=0, index_col=0)[0]
-
-            export_data(
-                export,
-                os.path.dirname(os.path.abspath(__file__)),
-                f"{dependent_variable}_ols_regression",
-                df,
-            )
-        else:
-            console.print("")
-
-    return regression_df, dependent_variable, independent_variables, model
+    return model
 
 
 @log_start_end(log=logger)
