@@ -5,44 +5,42 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from itertools import chain
 import os
+from itertools import chain
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
 import numpy as np
 import pandas as pd
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
-import openbb_terminal.econometrics.regression_model
-import openbb_terminal.econometrics.regression_view
-from openbb_terminal.core.config.paths import USER_CUSTOM_IMPORTS_DIRECTORY
 from openbb_terminal import feature_flags as obbff
-from openbb_terminal.core.config.paths import USER_EXPORTS_DIRECTORY
+from openbb_terminal.common import common_model
+from openbb_terminal.core.config.paths import (
+    USER_CUSTOM_IMPORTS_DIRECTORY,
+    USER_EXPORTS_DIRECTORY,
+)
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import (
-    check_positive,
-    check_positive_float,
-    NO_EXPORT,
-    EXPORT_ONLY_FIGURES_ALLOWED,
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
-    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-    export_data,
-)
-from openbb_terminal.helper_funcs import (
-    print_rich_table,
-    check_list_values,
-)
-from openbb_terminal.menu import session
-from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.econometrics import (
     econometrics_model,
     econometrics_view,
     regression_model,
+    regression_view,
 )
-from openbb_terminal.common import common_model
+from openbb_terminal.helper_funcs import (
+    EXPORT_BOTH_RAW_DATA_AND_FIGURES,
+    EXPORT_ONLY_FIGURES_ALLOWED,
+    EXPORT_ONLY_RAW_DATA_ALLOWED,
+    NO_EXPORT,
+    check_list_values,
+    check_positive,
+    check_positive_float,
+    export_data,
+    print_rich_table,
+)
+from openbb_terminal.menu import session
+from openbb_terminal.parent_classes import BaseController
+from openbb_terminal.rich_config import MenuText, console
 
 logger = logging.getLogger(__name__)
 
@@ -1490,7 +1488,7 @@ class EconometricsController(BaseController):
                             self.regression[regression_name]["dependent"],
                             self.regression[regression_name]["independent"],
                             self.regression[regression_name]["model"],
-                        ) = openbb_terminal.econometrics.regression_view.display_panel(
+                        ) = regression_view.display_panel(
                             self.datasets,
                             regression_vars,
                             regression,
@@ -1517,9 +1515,7 @@ class EconometricsController(BaseController):
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
         if ns_parser:
-            openbb_terminal.econometrics.regression_model.get_comparison(
-                self.regression, ns_parser.export
-            )
+            regression_model.get_comparison(self.regression, ns_parser.export)
             console.print()
 
     @log_start_end(log=logger)
@@ -1554,7 +1550,7 @@ class EconometricsController(BaseController):
                 dependent_variable = self.regression["OLS"]["data"][
                     self.regression["OLS"]["dependent"]
                 ]
-                openbb_terminal.econometrics.regression_view.display_dwat(
+                regression_view.display_dwat(
                     dependent_variable,
                     self.regression["OLS"]["model"].resid,
                     ns_parser.plot,
@@ -1594,7 +1590,7 @@ class EconometricsController(BaseController):
                     "Perform an OLS regression before estimating the Breusch-Godfrey statistic.\n"
                 )
             else:
-                openbb_terminal.econometrics.regression_view.display_bgod(
+                regression_view.display_bgod(
                     self.regression["OLS"]["model"], ns_parser.lags, ns_parser.export
                 )
 
@@ -1621,7 +1617,7 @@ class EconometricsController(BaseController):
                     "Perform an OLS regression before estimating the Breusch-Pagan statistic.\n"
                 )
             else:
-                openbb_terminal.econometrics.regression_view.display_bpag(
+                regression_view.display_bpag(
                     self.regression["OLS"]["model"], ns_parser.export
                 )
 

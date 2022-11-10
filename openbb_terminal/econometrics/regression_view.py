@@ -1,21 +1,19 @@
 """Regression View"""
 __docformat__ = "numpy"
 
-from typing import Optional, List, Tuple, Dict
-import os
 import logging
+import os
+from typing import Dict, List, Optional, Tuple
+
 import pandas as pd
 from matplotlib import pyplot as plt
 
 from openbb_terminal.config_plot import PLOT_DPI
-from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import plot_autoscale, export_data
-from openbb_terminal.rich_config import console
-from openbb_terminal.econometrics import regression_model
-from openbb_terminal.helper_funcs import (
-    print_rich_table,
-)
 from openbb_terminal.config_terminal import theme
+from openbb_terminal.decorators import log_start_end
+from openbb_terminal.econometrics import regression_model
+from openbb_terminal.helper_funcs import export_data, plot_autoscale, print_rich_table
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 

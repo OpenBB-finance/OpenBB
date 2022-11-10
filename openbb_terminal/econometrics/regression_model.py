@@ -1,32 +1,32 @@
 """Regression Model"""
 __docformat__ = "numpy"
 
+import logging
 import os
 import warnings
-import logging
-from typing import List, Tuple, Dict, Any
+from typing import Any, Dict, List, Tuple
 
 import pandas as pd
+import statsmodels
+import statsmodels.api as sm
 from linearmodels import PooledOLS
 from linearmodels.panel import (
-    RandomEffects,
     BetweenOLS,
-    PanelOLS,
     FirstDifferenceOLS,
+    PanelOLS,
+    RandomEffects,
     compare,
 )
 from pandas import DataFrame
-import statsmodels
 from statsmodels.api import add_constant
-import statsmodels.api as sm
 from statsmodels.stats.api import het_breuschpagan
 from statsmodels.stats.diagnostic import acorr_breusch_godfrey
 from statsmodels.stats.stattools import durbin_watson
 
 from openbb_terminal.decorators import log_start_end
+from openbb_terminal.econometrics.econometrics_helpers import get_datasets
 from openbb_terminal.helper_funcs import export_data
 from openbb_terminal.rich_config import console
-from openbb_terminal.econometrics.econometrics_helpers import get_datasets
 
 logger = logging.getLogger(__name__)
 

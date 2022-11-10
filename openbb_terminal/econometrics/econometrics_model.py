@@ -5,12 +5,12 @@ __docformat__ = "numpy"
 
 import logging
 import warnings
-from typing import Dict, Union, Any, Optional
+from typing import Any, Dict, Optional, Union
 
 import pandas as pd
-from scipy import stats
 import statsmodels.api as sm
-from statsmodels.tsa.stattools import adfuller, kpss, grangercausalitytests
+from scipy import stats
+from statsmodels.tsa.stattools import adfuller, grangercausalitytests, kpss
 
 from openbb_terminal.decorators import log_start_end
 
