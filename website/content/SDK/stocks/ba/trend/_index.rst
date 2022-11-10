@@ -58,9 +58,8 @@ stocks.ba.trend(
 
 {{< highlight python >}}
 stocks.ba.trend(
-    start_date: datetime.datetime = datetime.datetime(
-    2022, 11, 10, 17, 4, 0, 785135, chart: bool = False,
-), hour: int = 0,
+    start_date: str = '2022-11-10',
+    hour: int = 0,
     number: int = 10,
     limit: int = 10,
     export: str = '',
@@ -77,8 +76,8 @@ stocks.ba.trend(
 
 * **Parameters**
 
-    start_date: datetime
-        Datetime object (e.g. datetime(2021, 12, 21)
+    start_date : str
+        Initial date, format YYYY-MM-DD
     hour: int
         Hour of the day in 24-hour notation (e.g. 14)
     number : int
