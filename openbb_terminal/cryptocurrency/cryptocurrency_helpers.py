@@ -6,7 +6,7 @@ from __future__ import annotations
 import os
 import json
 from datetime import datetime, timedelta
-from typing import Any, Optional, Union
+from typing import Any
 import difflib
 import logging
 
@@ -124,7 +124,7 @@ YF_CURRENCY = [
 
 
 def check_datetime(
-    ck_date: Optional[Union[datetime, str]] = None, start: bool = True
+    ck_date: datetime | str | None = None, start: bool = True
 ) -> datetime:
     """Checks if given argument is string and attempts to convert to datetime.
 
@@ -506,11 +506,11 @@ def load_from_yahoofinance(
 
 def load(
     symbol: str,
-    start_date: Optional[Union[datetime, str]] = None,
+    start_date: datetime | str | None = None,
     interval: str = "1440",
     exchange: str = "binance",
     vs_currency: str = "usdt",
-    end_date: Optional[Union[datetime, str]] = None,
+    end_date: datetime | str | None = None,
     source: str = "CCXT",
 ) -> pd.DataFrame:
     """Load crypto currency to get data for
