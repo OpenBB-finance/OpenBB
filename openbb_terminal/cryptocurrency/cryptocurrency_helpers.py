@@ -6,7 +6,7 @@ from __future__ import annotations
 import os
 import json
 from datetime import datetime, timedelta
-from typing import Any, Optional, Union
+from typing import Any
 import difflib
 import logging
 
@@ -44,7 +44,6 @@ from openbb_terminal.config_terminal import theme
 from openbb_terminal.cryptocurrency.due_diligence import coinbase_model
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal.rich_config import console
-from openbb_terminal.stocks.stocks_helper import check_datetime
 
 logger = logging.getLogger(__name__)
 
@@ -473,13 +472,11 @@ def load_from_yahoofinance(
 
 def load(
     symbol: str,
-    start_date: Optional[Union[datetime, str]] = (
-        datetime.today() - timedelta(days=1100)
-    ).strftime("%Y-%m-%d"),
+    start_date: datetime = (datetime.now() - timedelta(days=1100)),
     interval: str = "1440",
     exchange: str = "binance",
     vs_currency: str = "usdt",
-    end_date: Optional[Union[datetime, str]] = datetime.today().strftime("%Y-%m-%d"),
+    end_date: datetime = datetime.now(),
     source: str = "CCXT",
 ) -> pd.DataFrame:
     """Load crypto currency to get data for
@@ -488,8 +485,8 @@ def load(
     ----------
     symbol: str
         Coin to get
-    start_date: str or datetime, optional
-        Start date to get data from with. - datetime or string format (YYYY-MM-DD)
+    start_date: datetime
+        The datetime to start at
     interval: str
         The interval between data points in minutes.
         Choose from: 1, 15, 30, 60, 240, 1440, 10080, 43200
@@ -497,8 +494,8 @@ def load(
         The exchange to get data from.
     vs_currency: str
         Quote Currency (Defaults to usdt)
-    end_date: str or datetime, optional
-        End date to get data from with. - datetime or string format (YYYY-MM-DD)
+    end_date: datetime
+       The datetime to end at
     source: str
         The source of the data
         Choose from: CCXT, CoinGecko, YahooFinance
@@ -508,10 +505,6 @@ def load(
     pd.DataFrame
         Dataframe consisting of price and volume data
     """
-
-    start_date = check_datetime(start_date)
-    end_date = check_datetime(end_date, start=False)
-
     if source == "CCXT":
         return load_from_ccxt(symbol, start_date, interval, exchange, vs_currency)
     if source == "CoinGecko":
