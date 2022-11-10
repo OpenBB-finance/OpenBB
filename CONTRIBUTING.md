@@ -1126,7 +1126,7 @@ It is important to keep a coherent UI/UX throughout the terminal. These are the 
 - There is 1 single empty line between command output and the user input.
 - The menu help has 1 empty line above text and 1 empty line below. Both still within the rectangular panel.
 - From menu help rectangular panel there's no empty line below - this makes it more clear to the user that they are inside such menu.
-  
+
 ## External API Keys
 
 ### Creating API key
