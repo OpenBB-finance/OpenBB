@@ -29,7 +29,7 @@ futures.curve(
 
     symbol: str
         symbol to get forward curve
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -67,6 +67,6 @@ futures.curve(
         Type of format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

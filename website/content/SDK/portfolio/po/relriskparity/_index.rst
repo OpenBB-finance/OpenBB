@@ -115,7 +115,7 @@ portfolio.po.relriskparity(
         The default is 0.94.
     value : float, optional
         Amount of money to allocate. The default is 1.
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -238,6 +238,6 @@ portfolio.po.relriskparity(
         Amount to allocate to portfolio, by default 1.0
     table: bool, optional
         True if plot table weights, by default False
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

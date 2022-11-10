@@ -38,7 +38,7 @@ crypto.ov.cghm(
         Key to sort data
     ascend: bool
         Sort data in ascending order
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -81,6 +81,6 @@ crypto.ov.cghm(
         Export dataframe data to csv,json,xlsx
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

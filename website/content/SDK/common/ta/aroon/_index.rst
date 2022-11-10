@@ -35,7 +35,7 @@ common.ta.aroon(
         Length of window
     scalar : int
         Scalar variable
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -84,6 +84,6 @@ common.ta.aroon(
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional
         External axes (3 axes are expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

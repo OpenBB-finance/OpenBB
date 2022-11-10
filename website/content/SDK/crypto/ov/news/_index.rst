@@ -47,7 +47,7 @@ crypto.ov.news(
         Key to sort by.
     ascend: bool
         Sort in ascend order.
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -104,6 +104,6 @@ crypto.ov.news(
         Show urls for news
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

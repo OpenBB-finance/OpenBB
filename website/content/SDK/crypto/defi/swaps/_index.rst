@@ -36,7 +36,7 @@ crypto.defi.swaps(
         (see https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2).
     ascend: bool
         Flag to sort data descending
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -81,6 +81,6 @@ crypto.defi.swaps(
         Flag to sort data descending
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

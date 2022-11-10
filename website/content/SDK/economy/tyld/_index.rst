@@ -35,7 +35,7 @@ economy.tyld(
         Start date for data.  Should be in YYYY-MM-DD format, by default "2010-01-01"
     maturity : str
         Maturity timeline.  Can be "3mo","5y","10y" or "30y", by default "10y"
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -84,6 +84,6 @@ economy.tyld(
         Format to export data, by default ""
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

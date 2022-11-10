@@ -30,7 +30,7 @@ crypto.dd.pi(
 
     symbol : str
         Crypto symbol to check product info
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -74,6 +74,6 @@ crypto.dd.pi(
         Crypto symbol to check project info
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

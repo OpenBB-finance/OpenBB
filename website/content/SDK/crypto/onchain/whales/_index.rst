@@ -39,7 +39,7 @@ crypto.onchain.whales(
         Key to sort by.
     ascend: str
         Sort in ascending order.
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -88,6 +88,6 @@ crypto.onchain.whales(
         Flag to show addresses of transactions.
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

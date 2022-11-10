@@ -32,7 +32,7 @@ common.ta.vwap(
         Dataframe of dates and prices
     offset: int
         Length of offset
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -87,6 +87,6 @@ common.ta.vwap(
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (3 axes are expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

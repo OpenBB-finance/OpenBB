@@ -32,7 +32,7 @@ portfolio.distr(
         Portfolio object with trades loaded
     window : str
         interval to compare cumulative returns and benchmark
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -75,6 +75,6 @@ portfolio.distr(
         Export certain type of data
     external_axes: plt.Axes
         Optional axes to display plot on
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

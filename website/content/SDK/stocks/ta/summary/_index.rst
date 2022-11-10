@@ -29,7 +29,7 @@ stocks.ta.summary(
 
     symbol : str
         Ticker symbol to get the technical summary
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -63,6 +63,6 @@ stocks.ta.summary(
 
     symbol: str
         Ticker symbol to get the technical summary
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
