@@ -40,7 +40,7 @@ crypto.ov.cbpairs(
         Key to sortby data
     ascend: bool
         Sort descending flag
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -83,6 +83,6 @@ crypto.ov.cbpairs(
         Sort ascending flag
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

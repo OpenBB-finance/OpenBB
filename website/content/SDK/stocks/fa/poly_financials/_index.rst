@@ -38,7 +38,7 @@ stocks.fa.poly_financials(
         Flag to get quarterly reports, by default False
     ratios: bool
         Shows percentage change, by default False
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -90,6 +90,6 @@ stocks.fa.poly_financials(
         List of row labels to plot
     export: str
         Format to export data
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

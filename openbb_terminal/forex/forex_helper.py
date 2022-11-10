@@ -11,9 +11,12 @@ import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 from matplotlib.ticker import LogLocator, ScalarFormatter
 import mplfinance as mpf
+import yfinance as yf
 import numpy as np
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+
+from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.forex import av_model, polygon_model
 from openbb_terminal.rich_config import console
 from openbb_terminal.decorators import log_start_end
@@ -23,7 +26,6 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     lambda_long_number_format_y_axis,
 )
-from openbb_terminal.stocks import stocks_helper
 
 CANDLE_SORT = [
     "adjclose",
@@ -52,11 +54,10 @@ SOURCES_INTERVALS: Dict = {
         "90min",
         "1hour",
         "1day",
-        # These need to be cleaned up.
-        # "5day",
-        # "1week",
-        # "1month",
-        # "3month",
+        "5day",
+        "1week",
+        "1month",
+        "3month",
     ],
     "AlphaVantage": ["1min", "5min", "15min", "30min", "60min"],
 }
@@ -100,7 +101,7 @@ def load(
     interval: str = "1day",
     start_date: str = last_year.strftime("%Y-%m-%d"),
     source: str = "YahooFinance",
-    verbose: bool = True,
+    verbose: bool = False,
 ) -> pd.DataFrame:
     """Load forex for two given symbols.
 
@@ -138,6 +139,15 @@ def load(
                 )
             return pd.DataFrame()
 
+        # Check interval in multiple ways
+        if interval in interval_map:
+            clean_interval = interval_map[interval]
+        elif interval in interval_map.values():
+            clean_interval = interval
+        else:
+            console.print(f"[red]'{interval}' is an invalid interval[/red]\n")
+            return pd.DataFrame()
+
         if source == "AlphaVantage":
             if "min" in interval:
                 resolution = "i"
@@ -145,19 +155,16 @@ def load(
                 to_symbol=to_symbol,
                 from_symbol=from_symbol,
                 resolution=resolution,
-                interval=interval_map[interval],
+                interval=clean_interval,
                 start_date=start_date,
             )
 
         if source == "YahooFinance":
-
-            # This works but its not pretty :(
-            interval = interval_map[interval] if interval != "1day" else "1440m"
-            return stocks_helper.load(
+            return yf.download(
                 f"{from_symbol}{to_symbol}=X",
-                start_date=datetime.strptime(start_date, "%Y-%m-%d"),
-                interval=int(interval.replace("m", "")),
-                verbose=verbose,
+                start=datetime.strptime(start_date, "%Y-%m-%d"),
+                interval=clean_interval,
+                progress=verbose,
             )
 
     if source == "Polygon":

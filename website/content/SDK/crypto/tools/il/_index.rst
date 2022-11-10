@@ -38,7 +38,7 @@ crypto.tools.il(
         percentage of first token in pool
     initial_pool_value: float
         initial value that pool contains
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -88,7 +88,7 @@ crypto.tools.il(
         display narrative version instead of dataframe
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

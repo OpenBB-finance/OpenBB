@@ -63,6 +63,6 @@ crypto.defi.pools(
         Flag to sort data descending
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

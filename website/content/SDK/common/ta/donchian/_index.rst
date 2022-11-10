@@ -35,7 +35,7 @@ common.ta.donchian(
         Length of window to calculate upper channel
     lower_length : int
         Length of window to calculate lower channel
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -84,6 +84,6 @@ common.ta.donchian(
         Format of export file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

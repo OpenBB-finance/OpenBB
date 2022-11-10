@@ -32,7 +32,7 @@ common.qa.kurtosis(
         Dataframe of targeted data
     window: int
         Length of window
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -81,6 +81,6 @@ common.qa.kurtosis(
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

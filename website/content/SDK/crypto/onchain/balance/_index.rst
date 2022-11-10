@@ -36,7 +36,7 @@ crypto.onchain.balance(
         Key to sort by.
     ascend: str
         Sort in descending order.
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -83,6 +83,6 @@ crypto.onchain.balance(
         Sort in descending order.
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

@@ -32,7 +32,7 @@ stocks.dps.prom(
         Number of tickers to filter from entire ATS data based on the sum of the total weekly shares quantity
     tier_ats : int
         Tier to process data from: T1, T2 or OTCE
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -82,6 +82,6 @@ stocks.dps.prom(
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

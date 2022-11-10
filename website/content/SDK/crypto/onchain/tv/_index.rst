@@ -38,7 +38,7 @@ crypto.onchain.tv(
         Key by which to sort data
     ascend: bool
         Flag to sort data ascending
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -88,7 +88,7 @@ crypto.onchain.tv(
         Flag to sort data ascending
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

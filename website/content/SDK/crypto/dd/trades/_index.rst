@@ -36,7 +36,7 @@ crypto.dd.trades(
         coin symbol
     to_symbol : str
         currency to compare coin against
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -83,6 +83,6 @@ crypto.dd.trades(
         number of trades to display
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
