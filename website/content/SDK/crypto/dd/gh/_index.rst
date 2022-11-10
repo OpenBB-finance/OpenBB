@@ -17,8 +17,8 @@ crypto.dd.gh(
     symbol: str,
     dev_activity: bool = False,
     interval: str = '1d',
-    start_date: str = '2021-11-10T16:44:38Z',
-    end_date: str = '2022-11-10T16:44:38Z',
+    start_date: str = '2021-11-10T16:55:00Z',
+    end_date: str = '2022-11-10T16:55:00Z',
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -63,9 +63,9 @@ crypto.dd.gh(
 {{< highlight python >}}
 crypto.dd.gh(
     symbol: str,
-    start_date: str = '2021-11-10T16:44:38Z',
+    start_date: str = '2021-11-10T16:55:00Z',
     dev_activity: bool = False,
-    end_date: str = '2022-11-10T16:44:38Z',
+    end_date: str = '2022-11-10T16:55:00Z',
     interval: str = '1d',
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,

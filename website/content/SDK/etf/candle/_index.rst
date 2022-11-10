@@ -19,13 +19,13 @@ etf.candle(
     add_trend: bool = False,
     ma: Optional[Iterable[int]] = None,
     asset_type: str = '',
-    start_date: Union[datetime.datetime, str,
+    start_date: Union[str, datetime.datetime,
     NoneType] = datetime.datetime(
-    2019, 11, 6, 16, 44, 38, 861213, chart: bool = False,
+    2019, 11, 6, 16, 55, 0, 227601, chart: bool = False,
 ), interval: int = 1440,
-    end_date: Union[datetime.datetime, str,
+    end_date: Union[str, datetime.datetime,
     NoneType] = datetime.datetime(
-    2022, 11, 10, 16, 44, 38, 861215, chart: bool = False,
+    2022, 11, 10, 16, 55, 0, 227603, chart: bool = False,
 ), prepost: bool = False,
     source: str = 'YahooFinance',
     iexrange: str = 'ytd',
