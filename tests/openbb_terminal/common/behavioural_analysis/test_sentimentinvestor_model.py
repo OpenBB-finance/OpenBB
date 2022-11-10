@@ -1,6 +1,3 @@
-# IMPORTATION STANDARD
-from datetime import datetime
-
 # IMPORTATION THIRDPARTY
 import pandas as pd
 import pytest
