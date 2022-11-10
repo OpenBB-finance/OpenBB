@@ -16,7 +16,16 @@ from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal.terminal_controller import run_scripts
 
 logger = logging.getLogger(__name__)
-special_arguments = ["ticker", "crypto"]
+special_arguments_values = [
+    "ticker",
+    "currency",
+    "crypto",
+    "country",
+    "repo",
+    "crypto_vs",
+    "crypto_full",
+    "currency_vs",
+]
 
 
 def build_test_path_list(path_list: List[str]) -> List[Path]:
@@ -86,7 +95,8 @@ def run_test_list(
             logger.error("%s: %s failed", file, exception)
         # Write results to CSV
         timestamp = datetime.now().timestamp()
-        output_path = f"{timestamp}_tests.csv"
+        stamp_str = str(timestamp).replace(".", "")
+        output_path = f"{stamp_str}_tests.csv"
         with open(output_path, "w") as file:  # type: ignore
             header = ["File", "Error"]
             writer = csv.DictWriter(file, fieldnames=header)  # type: ignore
@@ -124,7 +134,7 @@ if __name__ == "__main__":
         default=False,
     )
     # This is the list of special arguments a user can send
-    for arg in special_arguments:
+    for arg in special_arguments_values:
         parser.add_argument(
             f"--{arg}",
             help=f"Change the default values for {arg}",
@@ -136,7 +146,7 @@ if __name__ == "__main__":
     if sys.argv[1:] and "-" not in sys.argv[1][0]:
         sys.argv.insert(1, "--file")
     ns_parser, _ = parser.parse_known_args()
-    special_args_dict = {x: getattr(ns_parser, x) for x in special_arguments}
+    special_args_dict = {x: getattr(ns_parser, x) for x in special_arguments_values}
     run_test_list(
         path_list=ns_parser.path,
         verbose=ns_parser.verbose,

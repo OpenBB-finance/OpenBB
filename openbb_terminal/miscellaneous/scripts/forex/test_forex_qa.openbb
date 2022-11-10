@@ -1,5 +1,5 @@
 forex
-load EURUSD --source YahooFinance
+load ${currency=EUR}${currency_vs=USD} --source YahooFinance
 qa
 summary
 normality
@@ -33,7 +33,7 @@ decompose
 decompose --multiplicative
 cusum
 cusum -t 0.01 -d 0.01
-load EURUSD --source YahooFinance
+load ${currency=EUR}${currency_vsUSD} --source YahooFinance
 qa
 summary
 normality

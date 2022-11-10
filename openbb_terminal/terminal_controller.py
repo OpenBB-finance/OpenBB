@@ -993,7 +993,7 @@ def run_scripts(
             for line in raw_lines:
                 new_line = re.sub(
                     r"\${[^{]+=[^{]+}",
-                    lambda x: replace_dynamic(x, special_arguments),
+                    lambda x: replace_dynamic(x, special_arguments),  # type: ignore
                     line,
                 )
                 lines.append(new_line)

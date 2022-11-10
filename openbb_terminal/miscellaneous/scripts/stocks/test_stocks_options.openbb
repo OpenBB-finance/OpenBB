@@ -9,7 +9,7 @@ q
 unu -l 2 -s Strike -a -c
 unu -l 2 -s Vol
 calc
-load aapl
+load ${ticker=aapl}
 exp 0
 pcr
 info
@@ -23,9 +23,8 @@ greeks
 plot -x ltd -y iv
 parity -p -m 150 -M 175
 binom -s 150
-load spy
 vsurf
-load NDX --source Nasdaq
+load ${ticker=NDX} --source Nasdaq
 exp 0 --source Nasdaq
 chains --source Nasdaq
 oi --source Nasdaq

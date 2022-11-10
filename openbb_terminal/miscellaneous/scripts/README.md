@@ -8,7 +8,7 @@ It aims to provide necessary information in order to:
 - Run `integration tests`
 - Identify errors noted from `integration tests`
 
-## 1.1. Why having integration tests ?
+## 1.1. Why have integration tests ?
 
 The purpose of integration tests is to provide standard usage examples that can be programmatically run
 to make sure that a specific functionality of the terminal and the process to utilize that functionality

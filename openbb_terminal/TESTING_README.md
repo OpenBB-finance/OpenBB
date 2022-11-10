@@ -13,6 +13,8 @@ To see a list of possible keys use `python testing.py -h`.
 Specific sets of tests can be run. You can do this by adding the paths to folders or tests you
 want to run. Note that the base path is `OpenBBTerminal/openbb_terminal/miscellaneous/scripts`.
 
+If there are any test failures a csv will be generated with detailed information on the failures.
+
 ## Creating Tests
 
 To create new tests add `.openbb` files to a directory in
