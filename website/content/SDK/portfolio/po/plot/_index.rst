@@ -112,7 +112,7 @@ portfolio.po.plot(
         Display a heatmap of correlation matrix with dendrogram, by default False
     external_axes: Optional[List[plt.Axes]]
         Optional axes to plot data on
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -224,6 +224,6 @@ portfolio.po.plot(
         Display a heatmap of correlation matrix with dendrogram, by default False
     external_axes: Optional[List[plt.Axes]]
         Optional axes to plot data on
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

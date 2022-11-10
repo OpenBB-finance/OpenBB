@@ -39,7 +39,7 @@ stocks.options.hedge.calc_hedge(
         as follows: {'Portfolio': {'Delta': VALUE, 'Gamma': VALUE, 'Vega': VALUE}} etc
     sign: int
         Whether you have a long (1) or short (-1) position
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -85,7 +85,7 @@ stocks.options.hedge.calc_hedge(
         as follows: {'Portfolio': {'Delta': VALUE, 'Gamma': VALUE, 'Vega': VALUE}} etc
     sign: int
         Whether you have a long (1) or short (-1) position
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

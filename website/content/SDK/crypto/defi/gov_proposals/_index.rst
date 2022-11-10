@@ -38,7 +38,7 @@ crypto.defi.gov_proposals(
         Flag to sort data ascending
     limit: int
         Number of records to display
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -84,6 +84,6 @@ crypto.defi.gov_proposals(
         Flag to sort data ascend
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

@@ -32,7 +32,7 @@ stocks.gov.contracts(
         Ticker to get congress trading data from
     past_transaction_days: int
         Number of days to get transactions for
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -78,6 +78,6 @@ stocks.gov.contracts(
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

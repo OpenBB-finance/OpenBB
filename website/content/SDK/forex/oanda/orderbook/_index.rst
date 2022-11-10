@@ -32,7 +32,7 @@ forex.oanda.orderbook(
         The loaded currency pair, by default None
     accountID : str, optional
         Oanda account ID, by default cfg.OANDA_ACCOUNT
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -72,6 +72,6 @@ forex.oanda.orderbook(
         The loaded currency pair
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

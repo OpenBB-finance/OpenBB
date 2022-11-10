@@ -35,7 +35,7 @@ stocks.ba.sentiment(
         Number of tweets to get per hour
     n_days_past: int
         Number of days to extract tweets for
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -79,6 +79,6 @@ stocks.ba.sentiment(
         Format to export tweet dataframe
     external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

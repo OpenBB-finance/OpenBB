@@ -41,7 +41,7 @@ common.qa.es(
         VaR percentile
     portfolio: bool
         If the data is a portfolio
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -90,6 +90,6 @@ common.qa.es(
         es percentile
     portfolio: bool
         If the data is a portfolio
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

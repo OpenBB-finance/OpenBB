@@ -29,7 +29,7 @@ etf.holdings(
 
     symbol: str
         Symbol to get holdings for
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -69,6 +69,6 @@ etf.holdings(
         Number of holdings to show
     export: str
         Format to export data
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

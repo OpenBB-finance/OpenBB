@@ -38,7 +38,7 @@ common.ta.fib(
         Custom start date for retracement
     end_date : Any
         Custom end date for retracement
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -98,6 +98,6 @@ common.ta.fib(
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

@@ -35,7 +35,7 @@ portfolio.max_drawdown_ratio(
         Series of input values
     is_returns: bool
         Flag to indicate inputs are returns
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -74,6 +74,6 @@ portfolio.max_drawdown_ratio(
         Portfolio object with trades loaded
     export : str
         Export data format
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
