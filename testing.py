@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 
 from datetime import datetime
 from pathlib import Path
-from typing import List
+from typing import List, Dict
 import argparse
 import logging
 import csv
@@ -49,7 +49,9 @@ def build_test_path_list(path_list: List[str]) -> List[Path]:
     return [Path(x) for x in test_files_unique]
 
 
-def run_test_list(path_list: List[str], verbose: bool):
+def run_test_list(
+    path_list: List[str], verbose: bool, special_arguments: Dict[str, str]
+):
     """Run commands in test mode."""
     os.environ["DEBUG_MODE"] = "true"
 
@@ -66,7 +68,12 @@ def run_test_list(path_list: List[str], verbose: bool):
     for file in test_files:
         console.print(f"{((i/length)*100):.1f}%  {file}")
         try:
-            run_scripts(file, test_mode=True, verbose=verbose)
+            run_scripts(
+                file,
+                test_mode=True,
+                verbose=verbose,
+                special_arguments=special_arguments,
+            )
             SUCCESSES += 1
         except Exception as e:
             fails[file] = e
@@ -115,7 +122,23 @@ if __name__ == "__main__":
         action="store_true",
         default=False,
     )
+    # This is the list of special arguments a user can send
+    special_arguments = ["ticker", "crypto"]
+    for arg in special_arguments:
+        parser.add_argument(
+            f"--{arg}",
+            help=f"Change the default values for {arg}",
+            dest=arg,
+            type=str,
+            default="",
+        )
+
     if sys.argv[1:] and "-" not in sys.argv[1][0]:
         sys.argv.insert(1, "--file")
     ns_parser, _ = parser.parse_known_args()
-    run_test_list(path_list=ns_parser.path, verbose=ns_parser.verbose)
+    special_args_dict = {x: getattr(ns_parser, x) for x in special_arguments}
+    run_test_list(
+        path_list=ns_parser.path,
+        verbose=ns_parser.verbose,
+        special_arguments=special_args_dict,
+    )

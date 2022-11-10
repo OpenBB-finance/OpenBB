@@ -968,51 +968,57 @@ def run_scripts(
     special_arguments: Optional[Dict[str, str]]
         Replace `${key=default}` with `value` for every key in the dictionary
     """
-    if path.exists():
-        with path.open() as fp:
-            raw_lines = [x for x in fp if (not is_reset(x)) and ("#" not in x) and x]
-            raw_lines = [
-                raw_line.strip("\n") for raw_line in raw_lines if raw_line.strip("\n")
-            ]
-
-            if routines_args:
-                lines = list()
-                for rawline in raw_lines:
-                    templine = rawline
-                    for i, arg in enumerate(routines_args):
-                        templine = templine.replace(f"$ARGV[{i}]", arg)
-                    lines.append(templine)
-            else:
-                lines = raw_lines
-
-            if test_mode and "exit" not in lines[-1]:
-                lines.append("exit")
-
-            export_folder = ""
-            if "export" in lines[0]:
-                export_folder = lines[0].split("export ")[1].rstrip()
-                lines = lines[1:]
-
-            simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
-            file_cmds = simulate_argv.replace("//", "/home/").split()
-            file_cmds = insert_start_slash(file_cmds) if file_cmds else file_cmds
-            if export_folder:
-                file_cmds = [f"export {export_folder}{' '.join(file_cmds)}"]
-            else:
-                file_cmds = [" ".join(file_cmds)]
-
-            if not test_mode:
-                terminal(file_cmds, test_mode=True)
-            else:
-                if verbose:
-                    terminal(file_cmds, test_mode=True)
-                else:
-                    with suppress_stdout():
-                        terminal(file_cmds, test_mode=True)
-    else:
+    if not path.exists():
         console.print(f"File '{path}' doesn't exist. Launching base terminal.\n")
         if not test_mode:
             terminal()
+
+    with path.open() as fp:
+        raw_lines = [x for x in fp if (not is_reset(x)) and ("#" not in x) and x]
+        raw_lines = [
+            raw_line.strip("\n") for raw_line in raw_lines if raw_line.strip("\n")
+        ]
+
+        if routines_args:
+            lines = []
+            for rawline in raw_lines:
+                templine = rawline
+                for i, arg in enumerate(routines_args):
+                    templine = templine.replace(f"$ARGV[{i}]", arg)
+                lines.append(templine)
+        # Handle new testing arguments:
+        elif special_arguments:
+            lines = []
+            for line in raw_lines:
+                print(line)
+
+        else:
+            lines = raw_lines
+
+        if test_mode and "exit" not in lines[-1]:
+            lines.append("exit")
+
+        export_folder = ""
+        if "export" in lines[0]:
+            export_folder = lines[0].split("export ")[1].rstrip()
+            lines = lines[1:]
+
+        simulate_argv = f"/{'/'.join([line.rstrip() for line in lines])}"
+        file_cmds = simulate_argv.replace("//", "/home/").split()
+        file_cmds = insert_start_slash(file_cmds) if file_cmds else file_cmds
+        if export_folder:
+            file_cmds = [f"export {export_folder}{' '.join(file_cmds)}"]
+        else:
+            file_cmds = [" ".join(file_cmds)]
+
+        if not test_mode:
+            terminal(file_cmds, test_mode=True)
+        else:
+            if verbose:
+                terminal(file_cmds, test_mode=True)
+            else:
+                with suppress_stdout():
+                    terminal(file_cmds, test_mode=True)
 
 
 def run_routine(file: str, routines_args=List[str]):
