@@ -11,6 +11,7 @@ import requests
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import log_start_end, check_api_key
 from openbb_terminal.rich_config import console
+from openbb_terminal.stocks.stocks_helper import check_datetime
 
 logger = logging.getLogger(__name__)
 
@@ -128,7 +129,9 @@ def check_supported_ticker(symbol: str) -> bool:
 
 @check_api_key(["API_SENTIMENTINVESTOR_TOKEN"])
 def get_trending(
-    start_date: datetime = datetime.today(), hour: int = 0, number: int = 10
+    start_date: str = datetime.today().strftime("%Y-%m-%d"),
+    hour: int = 0,
+    number: int = 10,
 ) -> pd.DataFrame:
     """Get sentiment data on the most talked about tickers
     within the last hour
@@ -137,8 +140,8 @@ def get_trending(
 
     Parameters
     ----------
-    start_date: datetime
-        Datetime object (e.g. datetime(2021, 12, 21)
+    start_date : str
+        Initial date, format YYYY-MM-DD
     hour: int
         Hour of the day in 24-hour notation (e.g. 14)
     number : int
@@ -150,6 +153,8 @@ def get_trending(
     pd.DataFrame
         Dataframe of trending data
     """
+
+    start_date = check_datetime(start_date)
 
     # type is datetime
     start_timestamp = start_date + timedelta(hours=hour)
