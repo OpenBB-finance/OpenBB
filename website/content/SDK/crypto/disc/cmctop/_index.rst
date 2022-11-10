@@ -34,7 +34,7 @@ crypto.disc.cmctop(
         https://coinmarketcap.com/api/documentation/v1/#operation/getV1CryptocurrencyListingsLatest
     ascend: bool
         Whether to sort ascending or descending
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -79,6 +79,6 @@ crypto.disc.cmctop(
         Flag to sort data ascending
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

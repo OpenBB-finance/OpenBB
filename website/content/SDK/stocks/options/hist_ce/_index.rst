@@ -38,7 +38,7 @@ stocks.options.hist_ce(
         Whether to show a call or a put
     price : str
         Strike price for a specific option
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -90,6 +90,6 @@ stocks.options.hist_ce(
         Export data as CSV, JSON, XLSX
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

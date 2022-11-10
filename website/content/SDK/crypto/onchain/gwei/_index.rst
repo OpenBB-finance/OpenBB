@@ -29,7 +29,7 @@ crypto.onchain.gwei() -> pandas.core.frame.DataFrame
 * **Parameters**
 
     
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -67,6 +67,6 @@ crypto.onchain.gwei(
 
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

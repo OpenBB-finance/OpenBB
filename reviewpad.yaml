@@ -1,0 +1,20 @@
+api-version: reviewpad.com/v3.x
+
+workflows:
+    - name: label-pull-request-with-size
+      if:
+          - rule: $size(["*.lock","*.csv","*.yaml","*.txt"]) <= 100
+            extra-actions:
+                - $addLabel("feat XS")
+          - rule: $size(["*.lock","*.csv","*.yaml","*.txt"]) > 100 && $size(["*.lock","*.csv","*.yaml","*.txt"]) <= 300
+            extra-actions:
+                - $addLabel("feat S")
+          - rule: $size(["*.lock","*.csv","*.yaml","*.txt"]) > 300 && $size(["*.lock","*.csv","*.yaml","*.txt"]) <= 900
+            extra-actions:
+                - $addLabel("feat M")
+          - rule: $size(["*.lock","*.csv","*.yaml","*.txt"]) > 900 && $size(["*.lock","*.csv","*.yaml","*.txt"]) <= 1800
+            extra-actions:
+                - $addLabel("feat L")
+          - rule: $size(["*.lock","*.csv","*.yaml","*.txt"]) > 1800
+            extra-actions:
+                - $addLabel("feat XL")

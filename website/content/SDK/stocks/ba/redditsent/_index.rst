@@ -46,7 +46,7 @@ stocks.ba.redditsent(
         Enable comprehensive search for ticker
     subreddits: str
         Comma-separated list of subreddits
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -109,6 +109,6 @@ stocks.ba.redditsent(
         Format to export data
     external_axes: Optional[List[plt.Axes]]
         If supplied, expect 1 external axis
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

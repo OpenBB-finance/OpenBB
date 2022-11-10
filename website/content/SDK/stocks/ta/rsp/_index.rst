@@ -30,7 +30,7 @@ stocks.ta.rsp(
 
     s_ticker : str
         Stock Ticker
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -76,6 +76,6 @@ stocks.ta.rsp(
         Format of export file
     tickers_show : bool
         Boolean to check if tickers in the same industry as the stock should be shown
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

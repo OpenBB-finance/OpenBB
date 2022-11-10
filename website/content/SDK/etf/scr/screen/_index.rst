@@ -30,7 +30,7 @@ etf.scr.screen(
 
     preset: str
         Screener to use from presets
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -76,6 +76,6 @@ etf.scr.screen(
         Ascend when sorted
     export: str
         Output format of export
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

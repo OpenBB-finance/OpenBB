@@ -5,7 +5,7 @@ alabaster==0.7.12; python_version >= "3.6"
 alpha-vantage==2.3.1
 altair==4.2.0; python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7" and python_version >= "3.7"
 anyio==3.6.2; python_full_version >= "3.6.2" and python_version >= "3.8" and python_version < "4.0"
-appnope==0.1.3; platform_system == "Darwin" and python_version >= "3.8" and python_full_version >= "3.7.0" and python_full_version < "4.0.0" and sys_platform == "darwin"
+appnope==0.1.3; sys_platform == "darwin" and python_version >= "3.8" and platform_system == "Darwin" and python_full_version >= "3.7.0" and python_full_version < "4.0.0"
 arch==5.3.1; python_version >= "3.7"
 argon2-cffi-bindings==21.2.0; python_version >= "3.7"
 argon2-cffi==21.3.0; python_version >= "3.7"
@@ -35,7 +35,7 @@ ccxt==1.95.43
 certifi==2022.9.24; python_version >= "3.8" and python_version < "4" and python_full_version >= "3.7.1" and python_full_version < "4.0.0" and (python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7")
 cffi==1.15.1; python_full_version >= "3.7.0" and python_full_version < "4.0.0" and python_version >= "3.7" and implementation_name == "pypy"
 cfgv==3.3.1; python_full_version >= "3.6.1" and python_version >= "3.7"
-charset-normalizer==2.1.0; python_full_version >= "3.6.0"
+charset-normalizer==2.1.1; python_full_version >= "3.6.0"
 click==8.1.3; python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7" and python_version >= "3.7"
 codespell==2.2.2; python_version >= "3.7"
 colorama==0.4.6; python_full_version >= "3.7.2" and python_version >= "3.8" and sys_platform == "win32" and (python_version >= "3.6" and python_full_version < "3.0.0" and sys_platform == "win32" or sys_platform == "win32" and python_version >= "3.6" and python_full_version >= "3.7.0") and (python_version >= "3.7" and python_full_version < "3.0.0" and platform_system == "Windows" or platform_system == "Windows" and python_version >= "3.7" and python_full_version >= "3.7.0") and (python_version >= "3.7" and python_full_version < "3.0.0" and platform_system == "Windows" and (python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7" and python_version >= "3.7") or platform_system == "Windows" and python_version >= "3.7" and (python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7" and python_version >= "3.7") and python_full_version >= "3.7.0") and python_full_version < "4.0.0"
@@ -103,7 +103,7 @@ ipyflex==0.2.4; python_version >= "3.6"
 ipykernel==6.16.1; python_full_version >= "3.7.0" and python_full_version < "4.0.0" and python_version >= "3.7"
 ipympl==0.8.8
 ipython-genutils==0.2.0; python_version >= "3.7"
-ipython==8.5.0; python_version >= "3.8" and python_full_version >= "3.7.0" and python_full_version < "4.0.0"
+ipython==8.5.0; python_version >= "3.8"
 ipywidgets==7.7.2
 iso8601==0.1.16
 isort==5.10.1; python_full_version >= "3.7.2" and python_version < "4.0"
@@ -152,7 +152,7 @@ networkx==2.8.7; python_version >= "3.8"
 nodeenv==1.7.0; python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.7.0" and python_version >= "3.7"
 notebook-shim==0.2.0; python_version >= "3.7"
 notebook==6.5.1; python_version >= "3.7"
-numpy==1.21.6; python_version >= "3.7" and python_version < "3.11"
+numpy==1.23.4; python_version >= "3.8"
 oandapyv20==0.6.3
 oauthlib==3.2.2; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.6"
 onetimepass==1.0.1; python_full_version >= "3.7.1" and python_full_version < "4.0.0"
@@ -184,7 +184,7 @@ property-cached==1.6.4; python_version >= "3.8"
 protobuf==3.20.3; python_full_version >= "3.7.1" and python_full_version < "4.0.0" and python_version >= "3.7" and (python_version >= "3.7" and python_full_version < "3.9.7" or python_full_version > "3.9.7" and python_version >= "3.7")
 psaw==0.0.12; python_version >= "3"
 psutil==5.9.3; python_full_version >= "3.7.0" and python_full_version < "4.0.0" and python_version >= "3.7"
-ptyprocess==0.7.0; os_name != "nt" and python_version >= "3.8" and sys_platform != "win32" and python_full_version >= "3.7.0" and python_full_version < "4.0.0"
+ptyprocess==0.7.0; sys_platform != "win32" and python_version >= "3.8" and python_full_version >= "3.7.0" and python_full_version < "4.0.0" and os_name != "nt"
 pure-eval==0.2.2; python_version >= "3.8" and python_full_version >= "3.7.0" and python_full_version < "4.0.0"
 py==1.11.0; python_full_version >= "3.7.0" and python_version >= "3.7" and python_full_version < "4.0.0" and implementation_name == "pypy"
 pyally==1.1.2

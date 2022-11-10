@@ -19,6 +19,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import console, MenuText
+import openbb_terminal.config_terminal as cfg
 
 logger = logging.getLogger(__name__)
 
@@ -197,12 +198,14 @@ class ReportController(BaseController):
             ns_parser = parse_simple_args(parser, other_args)
 
             if ns_parser:
+                cfg.LOGGING_SUPPRESS = True
                 parameters = vars(ns_parser)
                 parameters.pop("help")
                 reports_model.render_report(
                     input_path=str(reports_model.REPORTS_FOLDER / report_name),
                     args_dict=parameters,
                 )
+                cfg.LOGGING_SUPPRESS = False
 
         else:
             console.print("[red]Notebook not found![/red]\n")

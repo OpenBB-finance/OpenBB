@@ -29,7 +29,7 @@ stocks.th.exchange(
 
     symbol : str
         Exchange symbol
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -63,6 +63,6 @@ stocks.th.exchange(
 
     symbol : str
         Exchange symbol
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

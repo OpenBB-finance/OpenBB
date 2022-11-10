@@ -252,7 +252,6 @@ def display_category_allocation(
 @log_start_end(log=logger)
 def display_performance_vs_benchmark(
     portfolio: portfolio_model.PortfolioModel,
-    interval: str = "all",
     show_all_trades: bool = False,
 ):
     """Display portfolio performance vs the benchmark
@@ -263,20 +262,16 @@ def display_performance_vs_benchmark(
         Object containing trades made within the portfolio.
     benchmark_trades: pd.DataFrame
         Object containing trades made within the benchmark.
-    interval : str
-        interval to consider performance. From: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all
     show_all_trades: bool
         Whether to also show all trades made and their performance (default is False)
     """
 
-    df = portfolio_model.get_performance_vs_benchmark(
-        portfolio, interval, show_all_trades
-    )
+    df = portfolio_model.get_performance_vs_benchmark(portfolio, show_all_trades)
 
     if show_all_trades:
         print_rich_table(
             df,
-            title=f"Portfolio vs. Benchmark - Individual Trades in period: {interval}",
+            title="Portfolio vs. Benchmark - Individual Trades in period",
             headers=list(df.columns),
             show_index=False,
             floatfmt=[".2f", ".2f", ".2f", ".2%", ".2f", ".2%", ".2%"],
@@ -284,7 +279,7 @@ def display_performance_vs_benchmark(
     else:
         print_rich_table(
             df,
-            title=f"Portfolio vs. Benchmark - Totals in period: {interval}",
+            title="Portfolio vs. Benchmark",
             headers=list(df.columns),
             show_index=True,
         )

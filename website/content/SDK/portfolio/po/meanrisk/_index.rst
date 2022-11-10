@@ -144,7 +144,7 @@ portfolio.po.meanrisk(
         Amount of money to allocate. The default is 1.
     value_short : float, optional
         Amount to allocate to portfolio in short positions. The default is 0.
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -295,6 +295,6 @@ portfolio.po.meanrisk(
         Amount to allocate to portfolio in short positions, by default 0.0
     table: bool, optional
         True if plot table weights, by default False
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

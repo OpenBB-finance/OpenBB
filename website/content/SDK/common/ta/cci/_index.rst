@@ -39,7 +39,7 @@ common.ta.cci(
         Length of window
     scalar: float
         Scalar variable
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -88,6 +88,6 @@ common.ta.cci(
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

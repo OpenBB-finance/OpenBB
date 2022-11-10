@@ -84,7 +84,7 @@ class FundController(BaseController):
             one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
             choices["country"] = {c: {} for c in self.fund_countries}
             choices["overview"] = {
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["search"] = {
@@ -93,7 +93,7 @@ class FundController(BaseController):
                 "--fund": None,
                 "--sortby": {c: None for c in self.search_cols},
                 "-s": "--sortby",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--ascend": {},
                 "-a": "--ascend",
