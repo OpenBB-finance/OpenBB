@@ -137,7 +137,7 @@ def display_norm(
     data: pd.Series,
     dataset: str = "",
     column: str = "",
-    plot: bool = False,
+    plot: bool = True,
     export: str = "",
     external_axes: Optional[List[plt.axes]] = None,
 ):
