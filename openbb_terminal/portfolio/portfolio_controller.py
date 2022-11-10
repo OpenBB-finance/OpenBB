@@ -651,7 +651,7 @@ class PortfolioController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="attrib",
             description="""
-                Displays sector attribution of the portfolio compared to the S&P 500            
+                Displays sector attribution of the portfolio compared to the S&P 500
                 """,
         )
         parser.add_argument(
@@ -661,26 +661,25 @@ class PortfolioController(BaseController):
             choices=portfolio_helper.PERIODS,
             dest="period",
             default="all",
-            help="The file to be loaded",
+            help="Period in which to calculate attribution",
         )
         parser.add_argument(
             "-t",
             "--type",
             type=str,
-            choices=["relative","absolute"],
+            choices=["relative", "absolute"],
             dest="type",
             default="relative",
-            help="select between relative or absolute attribution values",
+            help="Select between relative or absolute attribution values",
         )
         parser.add_argument(
-            "-r",
             "--raw",
             type=bool,
             dest="raw",
             default=False,
             const=True,
             nargs="?",
-            help="view attribution in a graph visualisation format",
+            help="View raw attribution values in a table",
         )
 
         if other_args:
@@ -712,11 +711,9 @@ class PortfolioController(BaseController):
                 bench_result = attribution_model.get_spy_sector_contributions(
                     start_date, end_date
                 )
-                portfolio_result = (
-                    attribution_model.get_portfolio_sector_contributions(
-                        start_date, self.portfolio.get_orderbook()
-                    )
-                )                   
+                portfolio_result = attribution_model.get_portfolio_sector_contributions(
+                    start_date, self.portfolio.get_orderbook()
+                )
                 # relative results - the proportions of return attribution
                 if ns_parser.type == "relative":
                     categorisation_result = (
@@ -730,13 +727,13 @@ class PortfolioController(BaseController):
                         time_period=ns_parser.period,
                         attrib_type="Contributions as % of PF",
                         plot_fields=["S&P500 [%]", "Portfolio [%]"],
-                        show_table = ns_parser.raw,
+                        show_table=ns_parser.raw,
                     )
 
                 # absolute - the raw values of return attribution
                 if ns_parser.type == "absolute":
-                    categorisation_result = (
-                        attribution_model.raw_attrib_categorizer(bench_result, portfolio_result)
+                    categorisation_result = attribution_model.raw_attrib_categorizer(
+                        bench_result, portfolio_result
                     )
 
                     portfolio_view.display_attribution_categorisation(
@@ -744,7 +741,7 @@ class PortfolioController(BaseController):
                         time_period=ns_parser.period,
                         attrib_type="Raw contributions (Return x PF Weight)",
                         plot_fields=["S&P500", "Portfolio"],
-                        show_table = ns_parser.raw,
+                        show_table=ns_parser.raw,
                     )
 
             console.print()
