@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  alt.oss.history( repo: str, chart: bool = False, ) .. raw:: html  Get repository star history * **Parameters** repo : str Repo to search for Format: org/repo, e.g., openbb-finance/openbbterminal chart: *bool* Flag to display chart * **Returns** pd.DataFrame - Columns: Date, Stars | .">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  alt.oss.history( repo: str, chart: bool = False, ) .. raw:: html  Get repository star history * **Parameters** repo : str Repo to search for Format: org/repo, e.g., openbb-finance/openbbterminal chart: bool Flag to display chart * **Returns** pd.DataFrame - Columns: Date, Stars | .">
 
 
 
@@ -47529,7 +47529,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
     repo : str
             Repo to search for Format: org/repo, e.g., openbb-finance/openbbterminal
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47566,7 +47566,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
             Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
             External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

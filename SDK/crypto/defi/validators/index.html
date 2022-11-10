@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  crypto.defi.validators( sortby: str = &#39;votingPower&#39;, ascend: bool = True, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get information about terra validators [Source: https://fcd.terra.dev/swagger] * **Parameters** sortby: str Key by which to sort data. Choose from: validatorName, tokensAmount, votingPower, commissionRate, status, uptime ascend: bool Flag to sort data descending chart: *bool* Flag to display chart * **Returns** pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  crypto.defi.validators( sortby: str = &#39;votingPower&#39;, ascend: bool = True, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get information about terra validators [Source: https://fcd.terra.dev/swagger] * **Parameters** sortby: str Key by which to sort data. Choose from: validatorName, tokensAmount, votingPower, commissionRate, status, uptime ascend: bool Flag to sort data descending chart: bool Flag to display chart * **Returns** pd.">
 
 
 
@@ -47533,7 +47533,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         validatorName, tokensAmount, votingPower, commissionRate, status, uptime
     ascend: bool
         Flag to sort data descending
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47575,7 +47575,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Flag to sort data descending
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

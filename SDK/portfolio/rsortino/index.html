@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  portfolio.rsortino( portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, risk_free_rate: float = 0, window: str = &#39;1y&#39;, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get rolling sortino * **Parameters** portfolio : PortfolioModel Portfolio object window: str interval for window to consider Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y risk_free_rate: float Value to use for risk free rate in sharpe/other calculations chart: *bool* Flag to display chart * **Returns** pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  portfolio.rsortino( portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel, risk_free_rate: float = 0, window: str = &#39;1y&#39;, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get rolling sortino * **Parameters** portfolio : PortfolioModel Portfolio object window: str interval for window to consider Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y risk_free_rate: float Value to use for risk free rate in sharpe/other calculations chart: bool Flag to display chart * **Returns** pd.">
 
 
 
@@ -47528,7 +47528,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y
     risk_free_rate: float
         Value to use for risk free rate in sharpe/other calculations
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47572,7 +47572,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Export to file
     external_axes: Optional[List[plt.Axes]]
         Optional axes to display plot on
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

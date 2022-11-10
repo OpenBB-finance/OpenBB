@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  common.qa.rolling( data: pandas.core.frame.DataFrame, window: int = 14, chart: bool = False, ) -&gt; Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame] .. raw:: html  Return rolling mean and standard deviation * **Parameters** data: pd.DataFrame Dataframe of target data window: int Length of rolling window chart: *bool* Flag to display chart * **Returns** pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  common.qa.rolling( data: pandas.core.frame.DataFrame, window: int = 14, chart: bool = False, ) -&gt; Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame] .. raw:: html  Return rolling mean and standard deviation * **Parameters** data: pd.DataFrame Dataframe of target data window: int Length of rolling window chart: bool Flag to display chart * **Returns** pd.">
 
 
 
@@ -47532,7 +47532,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Dataframe of target data
     window: int
         Length of rolling window
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47581,7 +47581,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

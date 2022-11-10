@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  common.ta.donchian( data: pandas.core.frame.DataFrame, upper_length: int = 20, lower_length: int = 20, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Calculate Donchian Channels * **Parameters** data : pd.DataFrame Dataframe of ohlc prices upper_length : int Length of window to calculate upper channel lower_length : int Length of window to calculate lower channel chart: *bool* Flag to display chart * **Returns** pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  common.ta.donchian( data: pandas.core.frame.DataFrame, upper_length: int = 20, lower_length: int = 20, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Calculate Donchian Channels * **Parameters** data : pd.DataFrame Dataframe of ohlc prices upper_length : int Length of window to calculate upper channel lower_length : int Length of window to calculate lower channel chart: bool Flag to display chart * **Returns** pd.">
 
 
 
@@ -47535,7 +47535,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Length of window to calculate upper channel
     lower_length : int
         Length of window to calculate lower channel
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47582,7 +47582,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Format of export file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

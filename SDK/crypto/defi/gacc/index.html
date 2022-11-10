@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  crypto.defi.gacc( cumulative: bool = True, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get terra blockchain account growth history [Source: https://fcd.terra.dev/swagger] * **Parameters** cumulative: bool distinguish between periodical and cumulative account growth data chart: *bool* Flag to display chart * **Returns** pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  crypto.defi.gacc( cumulative: bool = True, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get terra blockchain account growth history [Source: https://fcd.terra.dev/swagger] * **Parameters** cumulative: bool distinguish between periodical and cumulative account growth data chart: bool Flag to display chart * **Returns** pd.">
 
 
 
@@ -47529,7 +47529,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
     cumulative: bool
         distinguish between periodical and cumulative account growth data
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47573,7 +47573,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

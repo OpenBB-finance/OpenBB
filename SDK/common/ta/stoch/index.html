@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  common.ta.stoch( data: pandas.core.frame.DataFrame, fastkperiod: int = 14, slowdperiod: int = 3, slowkperiod: int = 3, chart: bool = False, ) .. raw:: html  Stochastic oscillator * **Parameters** data : pd.DataFrame Dataframe of OHLC prices fastkperiod : int Fast k period slowdperiod : int Slow d period slowkperiod : int Slow k period chart: *bool* Flag to display chart * **Returns** pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  common.ta.stoch( data: pandas.core.frame.DataFrame, fastkperiod: int = 14, slowdperiod: int = 3, slowkperiod: int = 3, chart: bool = False, ) .. raw:: html  Stochastic oscillator * **Parameters** data : pd.DataFrame Dataframe of OHLC prices fastkperiod : int Fast k period slowdperiod : int Slow d period slowkperiod : int Slow k period chart: bool Flag to display chart * **Returns** pd.">
 
 
 
@@ -47538,7 +47538,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Slow d period
     slowkperiod : int
         Slow k period
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47588,7 +47588,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (3 axes are expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

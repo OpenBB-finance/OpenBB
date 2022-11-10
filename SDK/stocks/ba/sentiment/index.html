@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  stocks.ba.sentiment( symbol: str, n_tweets: int = 15, n_days_past: int = 2, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get sentiments from symbol * **Parameters** symbol: str Stock ticker symbol to get sentiment for n_tweets: int Number of tweets to get per hour n_days_past: int Number of days to extract tweets for chart: *bool* Flag to display chart | .">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  stocks.ba.sentiment( symbol: str, n_tweets: int = 15, n_days_past: int = 2, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get sentiments from symbol * **Parameters** symbol: str Stock ticker symbol to get sentiment for n_tweets: int Number of tweets to get per hour n_days_past: int Number of days to extract tweets for chart: bool Flag to display chart | .">
 
 
 
@@ -47535,7 +47535,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Number of tweets to get per hour
     n_days_past: int
         Number of days to extract tweets for
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47577,7 +47577,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Format to export tweet dataframe
     external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

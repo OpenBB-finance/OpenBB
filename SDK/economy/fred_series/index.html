@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  economy.fred_series( series_ids: List[str], start_date: str = None, end_date: str = None, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get Series data. [Source: FRED] * **Parameters** series_ids : List[str] Series ID to get data from start_date : str Start date to get data from, format yyyy-mm-dd end_date : str End data to get from, format yyyy-mm-dd chart: *bool* Flag to display chart * **Returns** pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  economy.fred_series( series_ids: List[str], start_date: str = None, end_date: str = None, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get Series data. [Source: FRED] * **Parameters** series_ids : List[str] Series ID to get data from start_date : str Start date to get data from, format yyyy-mm-dd end_date : str End data to get from, format yyyy-mm-dd chart: bool Flag to display chart * **Returns** pd.">
 
 
 
@@ -47527,7 +47527,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Start date to get data from, format yyyy-mm-dd
     end_date : str
         End data to get from, format yyyy-mm-dd
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47577,7 +47577,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

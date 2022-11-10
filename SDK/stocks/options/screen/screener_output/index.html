@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  stocks.options.screen.screener_output( preset: str, chart: bool = False, ) -&gt; Tuple[pandas.core.frame.DataFrame, str] .. raw:: html  Screen options based on preset filters * **Parameters** preset: str Chosen preset chart: *bool* Flag to display chart * **Returns** pd.DataFrame: DataFrame with screener data, or empty if errors str: String containing error message if supplied | .">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  stocks.options.screen.screener_output( preset: str, chart: bool = False, ) -&gt; Tuple[pandas.core.frame.DataFrame, str] .. raw:: html  Screen options based on preset filters * **Parameters** preset: str Chosen preset chart: bool Flag to display chart * **Returns** pd.DataFrame: DataFrame with screener data, or empty if errors str: String containing error message if supplied | .">
 
 
 
@@ -47537,7 +47537,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
     preset: str
         Chosen preset
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47577,7 +47577,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Number of randomly sorted rows to display
     export: str
         Format for export file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

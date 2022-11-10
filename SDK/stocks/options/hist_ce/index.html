@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  stocks.options.hist_ce( symbol: str = &#39;GME&#39;, date: str = &#39;2021-02-05&#39;, call: bool = True, price: str = &#39;90&#39;, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Historic prices for a specific option [chartexchange] * **Parameters** symbol : str Ticker symbol to get historical data from date : str Date as a string YYYYMMDD call : bool Whether to show a call or a put price : str Strike price for a specific option chart: *bool* Flag to display chart * **Returns** historical : pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  stocks.options.hist_ce( symbol: str = &#39;GME&#39;, date: str = &#39;2021-02-05&#39;, call: bool = True, price: str = &#39;90&#39;, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Historic prices for a specific option [chartexchange] * **Parameters** symbol : str Ticker symbol to get historical data from date : str Date as a string YYYYMMDD call : bool Whether to show a call or a put price : str Strike price for a specific option chart: bool Flag to display chart * **Returns** historical : pd.">
 
 
 
@@ -47538,7 +47538,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Whether to show a call or a put
     price : str
         Strike price for a specific option
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47588,7 +47588,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Export data as CSV, JSON, XLSX
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  economy.ycrv( date: datetime.datetime = None, chart: bool = False, ) -&gt; Tuple[pandas.core.frame.DataFrame, datetime.datetime] .. raw:: html  Gets yield curve data from FRED * **Parameters** date: datetime Date to get curve for. If None, gets most recent date chart: *bool* Flag to display chart * **Returns** pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  economy.ycrv( date: datetime.datetime = None, chart: bool = False, ) -&gt; Tuple[pandas.core.frame.DataFrame, datetime.datetime] .. raw:: html  Gets yield curve data from FRED * **Parameters** date: datetime Date to get curve for. If None, gets most recent date chart: bool Flag to display chart * **Returns** pd.">
 
 
 
@@ -47521,7 +47521,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
     date: datetime
         Date to get curve for.  If None, gets most recent date
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47560,7 +47560,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Date to get yield curve for
     external_axes: Optional[List[plt.Axes]]
         External axes to plot data on
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

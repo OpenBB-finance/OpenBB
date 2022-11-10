@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  crypto.dd.rm( symbol: str, ascend: bool = True, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Returns coin roadmap [Source: https://messari.io/] * **Parameters** symbol : str Crypto symbol to check roadmap ascend: bool reverse order chart: *bool* Flag to display chart * **Returns** pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  crypto.dd.rm( symbol: str, ascend: bool = True, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Returns coin roadmap [Source: https://messari.io/] * **Parameters** symbol : str Crypto symbol to check roadmap ascend: bool reverse order chart: bool Flag to display chart * **Returns** pd.">
 
 
 
@@ -47533,7 +47533,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Crypto symbol to check roadmap
     ascend: bool
         reverse order
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47578,7 +47578,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

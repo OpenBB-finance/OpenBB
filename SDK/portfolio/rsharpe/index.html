@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  portfolio.rsharpe( portfolio: pandas.core.frame.DataFrame, risk_free_rate: float = 0, window: str = &#39;1y&#39;, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get rolling sharpe ratio * **Parameters** portfolio_returns : pd.Series Series of portfolio returns risk_free_rate : float Risk free rate window : str Rolling window to use Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y chart: *bool* Flag to display chart * **Returns** pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  portfolio.rsharpe( portfolio: pandas.core.frame.DataFrame, risk_free_rate: float = 0, window: str = &#39;1y&#39;, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get rolling sharpe ratio * **Parameters** portfolio_returns : pd.Series Series of portfolio returns risk_free_rate : float Risk free rate window : str Rolling window to use Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y chart: bool Flag to display chart * **Returns** pd.">
 
 
 
@@ -47528,7 +47528,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
     window : str
         Rolling window to use
         Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47572,7 +47572,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Export to file
     external_axes: Optional[List[plt.Axes]]
         Optional axes to display plot on
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

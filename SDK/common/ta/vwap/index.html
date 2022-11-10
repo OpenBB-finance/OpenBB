@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  common.ta.vwap( data: pandas.core.series.Series, offset: int = 0, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Gets volume weighted average price (VWAP) * **Parameters** data: pd.DataFrame Dataframe of dates and prices offset: int Length of offset chart: *bool* Flag to display chart * **Returns** df_vwap: pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  common.ta.vwap( data: pandas.core.series.Series, offset: int = 0, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Gets volume weighted average price (VWAP) * **Parameters** data: pd.DataFrame Dataframe of dates and prices offset: int Length of offset chart: bool Flag to display chart * **Returns** df_vwap: pd.">
 
 
 
@@ -47532,7 +47532,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Dataframe of dates and prices
     offset: int
         Length of offset
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47585,7 +47585,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (3 axes are expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

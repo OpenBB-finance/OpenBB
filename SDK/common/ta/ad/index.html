@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  common.ta.ad( data: pandas.core.frame.DataFrame, use_open: bool = False, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Calculate AD technical indicator * **Parameters** data : pd.DataFrame Dataframe of prices with OHLC and Volume use_open : bool Whether to use open prices chart: *bool* Flag to display chart * **Returns** pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  common.ta.ad( data: pandas.core.frame.DataFrame, use_open: bool = False, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Calculate AD technical indicator * **Parameters** data : pd.DataFrame Dataframe of prices with OHLC and Volume use_open : bool Whether to use open prices chart: bool Flag to display chart * **Returns** pd.">
 
 
 
@@ -47532,7 +47532,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Dataframe of prices with OHLC and Volume
     use_open : bool
         Whether to use open prices
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47576,7 +47576,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Format to export data as
     external_axes : Optional[List[plt.Axes]], optional
         External axes (3 axes are expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

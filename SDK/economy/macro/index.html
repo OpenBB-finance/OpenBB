@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  economy.macro( parameters: list = None, countries: list = None, transform: str = &#39;&#39;, start_date: str = &#39;1900-01-01&#39;, end_date=datetime.date( 2022, 11, 9, chart: bool = False, ), symbol: str = &#39;&#39;, chart: bool = False, ) -&gt; Tuple[Any, Dict[Any, Dict[Any, Any]], str] .">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  economy.macro( parameters: list = None, countries: list = None, transform: str = &#39;&#39;, start_date: str = &#39;1900-01-01&#39;, end_date=datetime.date( 2022, 11, 10, chart: bool = False, ), symbol: str = &#39;&#39;, chart: bool = False, ) -&gt; Tuple[Any, Dict[Any, Dict[Any, Any]], str] .">
 
 
 
@@ -47512,7 +47512,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
     <span class="n">transform</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
     <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;1900-01-01&#39;</span><span class="p">,</span>
     <span class="n">end_date</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span>
-    <span class="mi">2022</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="mi">2022</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">),</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
     <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="nb">str</span><span class="p">]</span></code></pre></div>
@@ -47537,7 +47537,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
     symbol : str
         In what currency you wish to convert all values.
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47563,7 +47563,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
     <span class="n">countries</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">transform</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
     <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;1900-01-01&#39;</span><span class="p">,</span>
-    <span class="n">end_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2022-11-09&#39;</span><span class="p">,</span>
+    <span class="n">end_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2022-11-10&#39;</span><span class="p">,</span>
     <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
     <span class="n">raw</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">external_axes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">axes</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -47603,7 +47603,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         External axes to plot on
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

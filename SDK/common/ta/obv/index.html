@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  common.ta.obv( data: pandas.core.frame.DataFrame, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  On Balance Volume * **Parameters** data: pd.DataFrame Dataframe of OHLC prices chart: *bool* Flag to display chart * **Returns** pd.DataFrame Dataframe with technical indicator | .. raw:: html   Getting charts  common.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  common.ta.obv( data: pandas.core.frame.DataFrame, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  On Balance Volume * **Parameters** data: pd.DataFrame Dataframe of OHLC prices chart: bool Flag to display chart * **Returns** pd.DataFrame Dataframe with technical indicator | .. raw:: html   Getting charts  common.">
 
 
 
@@ -47529,7 +47529,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
     data: pd.DataFrame
         Dataframe of OHLC prices
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47570,7 +47570,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Format to export data as
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

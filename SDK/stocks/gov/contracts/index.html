@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  stocks.gov.contracts( symbol: str, past_transaction_days: int = 10, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get government contracts for ticker [Source: quiverquant.com] * **Parameters** symbol: str Ticker to get congress trading data from past_transaction_days: int Number of days to get transactions for chart: *bool* Flag to display chart * **Returns** pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  stocks.gov.contracts( symbol: str, past_transaction_days: int = 10, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get government contracts for ticker [Source: quiverquant.com] * **Parameters** symbol: str Ticker to get congress trading data from past_transaction_days: int Number of days to get transactions for chart: bool Flag to display chart * **Returns** pd.">
 
 
 
@@ -47532,7 +47532,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Ticker to get congress trading data from
     past_transaction_days: int
         Number of days to get transactions for
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47576,7 +47576,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

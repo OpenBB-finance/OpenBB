@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  forex.oanda.price( accountID: str = &#39;REPLACE_ME&#39;, instrument: Optional[str] = None, chart: bool = False, ) -&gt; Union[Dict[str, str], bool] .. raw:: html  Request price for a forex pair. * **Parameters** accountID : str, optional Oanda account ID, by default cfg.OANDA_ACCOUNT instrument : Union[str, None] The loaded currency pair, by default None chart: *bool* Flag to display chart * **Returns** Union[Dict[str, str], bool] The currency pair price or False | .">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  forex.oanda.price( accountID: str = &#39;REPLACE_ME&#39;, instrument: Optional[str] = None, chart: bool = False, ) -&gt; Union[Dict[str, str], bool] .. raw:: html  Request price for a forex pair. * **Parameters** accountID : str, optional Oanda account ID, by default cfg.OANDA_ACCOUNT instrument : Union[str, None] The loaded currency pair, by default None chart: bool Flag to display chart * **Returns** Union[Dict[str, str], bool] The currency pair price or False | .">
 
 
 
@@ -47532,7 +47532,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Oanda account ID, by default cfg.OANDA_ACCOUNT
     instrument : Union[str, None]
         The loaded currency pair, by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47567,7 +47567,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Oanda account ID
     instrument : Union[str, None]
         Instrument code or None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

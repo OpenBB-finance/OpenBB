@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  stocks.fa.yf_financials( symbol: str, statement: str, ratios: bool = False, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get cashflow statement for company * **Parameters** symbol : str Stock ticker symbol statement: str can be: - cash-flow - financials for Income - balance-sheet ratios: bool Shows percentage change chart: *bool* Flag to display chart * **Returns** pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  stocks.fa.yf_financials( symbol: str, statement: str, ratios: bool = False, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get cashflow statement for company * **Parameters** symbol : str Stock ticker symbol statement: str can be: - cash-flow - financials for Income - balance-sheet ratios: bool Shows percentage change chart: bool Flag to display chart * **Returns** pd.">
 
 
 
@@ -47540,7 +47540,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
     ratios: bool
         Shows percentage change
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47592,7 +47592,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         List of row labels to plot
     export: str
         Format to export data
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  crypto.defi.gdapps( limit: int = 50, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Display top dApps (in terms of TVL) grouped by chain. [Source: https://docs.llama.fi/api] * **Parameters** limit: int Number of top dApps to display chart: *bool* Flag to display chart * **Returns** pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  crypto.defi.gdapps( limit: int = 50, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Display top dApps (in terms of TVL) grouped by chain. [Source: https://docs.llama.fi/api] * **Parameters** limit: int Number of top dApps to display chart: bool Flag to display chart * **Returns** pd.">
 
 
 
@@ -47530,7 +47530,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
     limit: int
         Number of top dApps to display
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47569,7 +47569,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

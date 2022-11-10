@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  common.ta.fib( data: pandas.core.frame.DataFrame, limit: int = 120, start_date: Any = None, end_date: Any = None, chart: bool = False, ) -&gt; Tuple[pandas.core.frame.DataFrame, pandas._libs.tslibs.timestamps.Timestamp, pandas._libs.tslibs.timestamps.Timestamp, float, float] .. raw:: html  Calculate Fibonacci levels * **Parameters** data : pd.DataFrame Dataframe of prices limit : int Days to look back for retracement start_date : Any Custom start date for retracement end_date : Any Custom end date for retracement chart: *bool* Flag to display chart * **Returns** df : pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  common.ta.fib( data: pandas.core.frame.DataFrame, limit: int = 120, start_date: Any = None, end_date: Any = None, chart: bool = False, ) -&gt; Tuple[pandas.core.frame.DataFrame, pandas._libs.tslibs.timestamps.Timestamp, pandas._libs.tslibs.timestamps.Timestamp, float, float] .. raw:: html  Calculate Fibonacci levels * **Parameters** data : pd.DataFrame Dataframe of prices limit : int Days to look back for retracement start_date : Any Custom start date for retracement end_date : Any Custom end date for retracement chart: bool Flag to display chart * **Returns** df : pd.">
 
 
 
@@ -47538,7 +47538,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Custom start date for retracement
     end_date : Any
         Custom end date for retracement
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47596,7 +47596,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

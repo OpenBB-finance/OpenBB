@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  common.qa.spread( data: pandas.core.frame.DataFrame, window: int = 14, chart: bool = False, ) -&gt; Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame] .. raw:: html  Standard Deviation and Variance * **Parameters** data: pd.DataFrame DataFrame of targeted data window: int Length of window chart: *bool* Flag to display chart * **Returns** df_sd: pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  common.qa.spread( data: pandas.core.frame.DataFrame, window: int = 14, chart: bool = False, ) -&gt; Tuple[pandas.core.frame.DataFrame, pandas.core.frame.DataFrame] .. raw:: html  Standard Deviation and Variance * **Parameters** data: pd.DataFrame DataFrame of targeted data window: int Length of window chart: bool Flag to display chart * **Returns** df_sd: pd.">
 
 
 
@@ -47532,7 +47532,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         DataFrame of targeted data
     window: int
         Length of window
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47583,7 +47583,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional
         External axes (3 axes are expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

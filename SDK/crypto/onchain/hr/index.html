@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  crypto.onchain.hr( symbol: str, interval: str = &#39;24h&#39;, start_date: int = 1289601690, end_date: int = 1668033690, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Returns dataframe with mean hashrate of btc or eth blockchain and symbol price [Source: https://glassnode.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  crypto.onchain.hr( symbol: str, interval: str = &#39;24h&#39;, start_date: int = 1289645823, end_date: int = 1668077823, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Returns dataframe with mean hashrate of btc or eth blockchain and symbol price [Source: https://glassnode.">
 
 
 
@@ -47517,8 +47517,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">crypto</span><span class="o">.</span><span class="n">onchain</span><span class="o">.</span><span class="n">hr</span><span class="p">(</span>
     <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">interval</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;24h&#39;</span><span class="p">,</span>
-    <span class="n">start_date</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1289601690</span><span class="p">,</span>
-    <span class="n">end_date</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1668033690</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1289645823</span><span class="p">,</span>
+    <span class="n">end_date</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1668077823</span><span class="p">,</span>
     <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span></code></pre></div>
 
@@ -47539,7 +47539,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         End date timestamp (e.g., 1_614_556_800)
     interval : str
         Interval frequency (e.g., 24h)
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47558,8 +47558,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">crypto</span><span class="o">.</span><span class="n">onchain</span><span class="o">.</span><span class="n">hr</span><span class="p">(</span>
     <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">start_date</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1636497690</span><span class="p">,</span>
-    <span class="n">end_date</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1668033690</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1636541823</span><span class="p">,</span>
+    <span class="n">end_date</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1668077823</span><span class="p">,</span>
     <span class="n">interval</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;24h&#39;</span><span class="p">,</span>
     <span class="n">export</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
     <span class="n">external_axes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -47587,7 +47587,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

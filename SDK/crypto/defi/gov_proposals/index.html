@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  crypto.defi.gov_proposals( status: str = &#39;&#39;, sortby: str = &#39;id&#39;, ascend: bool = True, limit: int = 10, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get terra blockchain governance proposals list [Source: https://fcd.terra.dev/swagger] * **Parameters** status: str status of proposal, one from list: [&#39;Voting&#39;,&#39;Deposit&#39;,&#39;Passed&#39;,&#39;Rejected&#39;] sortby: str Key by which to sort data ascend: bool Flag to sort data ascending limit: int Number of records to display chart: *bool* Flag to display chart * **Returns** pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  crypto.defi.gov_proposals( status: str = &#39;&#39;, sortby: str = &#39;id&#39;, ascend: bool = True, limit: int = 10, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get terra blockchain governance proposals list [Source: https://fcd.terra.dev/swagger] * **Parameters** status: str status of proposal, one from list: [&#39;Voting&#39;,&#39;Deposit&#39;,&#39;Passed&#39;,&#39;Rejected&#39;] sortby: str Key by which to sort data ascend: bool Flag to sort data ascending limit: int Number of records to display chart: bool Flag to display chart * **Returns** pd.">
 
 
 
@@ -47538,7 +47538,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Flag to sort data ascending
     limit: int
         Number of records to display
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47582,7 +47582,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Flag to sort data ascend
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

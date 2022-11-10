@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  stocks.screener.screener_data( preset_loaded: str = &#39;top_gainers&#39;, data_type: str = &#39;overview&#39;, limit: int = 10, ascend: bool = False, chart: bool = False, ) .. raw:: html  Screener Overview * **Parameters** preset_loaded : str Loaded preset filter data_type : str Data type between: overview, valuation, financial, ownership, performance, technical limit : int Limit of stocks filtered with presets to print ascend : bool Ascended order of stocks filtered to print chart: *bool* Flag to display chart * **Returns** pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  stocks.screener.screener_data( preset_loaded: str = &#39;top_gainers&#39;, data_type: str = &#39;overview&#39;, limit: int = 10, ascend: bool = False, chart: bool = False, ) .. raw:: html  Screener Overview * **Parameters** preset_loaded : str Loaded preset filter data_type : str Data type between: overview, valuation, financial, ownership, performance, technical limit : int Limit of stocks filtered with presets to print ascend : bool Ascended order of stocks filtered to print chart: bool Flag to display chart * **Returns** pd.">
 
 
 
@@ -47538,7 +47538,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Limit of stocks filtered with presets to print
     ascend : bool
         Ascended order of stocks filtered to print
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47585,7 +47585,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Column to sort table by
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  stocks.options.voi_yf( symbol: str, expiry: str, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Plot volume and open interest * **Parameters** symbol: str Stock ticker symbol expiry: str Option expiration chart: *bool* Flag to display chart | .. raw:: html   Getting charts  stocks.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  stocks.options.voi_yf( symbol: str, expiry: str, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Plot volume and open interest * **Parameters** symbol: str Stock ticker symbol expiry: str Option expiration chart: bool Flag to display chart | .. raw:: html   Getting charts  stocks.">
 
 
 
@@ -47532,7 +47532,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Stock ticker symbol
     expiry: str
         Option expiration
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47577,7 +47577,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Format for exporting data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

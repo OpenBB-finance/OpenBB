@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  common.ta.rsi( data: pandas.core.series.Series, window: int = 14, scalar: float = 100, drift: int = 1, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Relative strength index * **Parameters** data: pd.Series Dataframe of prices window: int Length of window scalar: float Scalar variable drift: int Drift variable chart: *bool* Flag to display chart * **Returns** pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  common.ta.rsi( data: pandas.core.series.Series, window: int = 14, scalar: float = 100, drift: int = 1, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Relative strength index * **Parameters** data: pd.Series Dataframe of prices window: int Length of window scalar: float Scalar variable drift: int Drift variable chart: bool Flag to display chart * **Returns** pd.">
 
 
 
@@ -47538,7 +47538,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Scalar variable
     drift: int
         Drift variable
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47588,7 +47588,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

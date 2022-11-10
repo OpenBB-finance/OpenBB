@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  common.ta.cci( data: pandas.core.frame.DataFrame, window: int = 14, scalar: float = 0.0015, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Commodity channel index * **Parameters** high_vals: pd.Series High values low_values: pd.Series Low values close-values: pd.Series Close values window: int Length of window scalar: float Scalar variable chart: *bool* Flag to display chart * **Returns** pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  common.ta.cci( data: pandas.core.frame.DataFrame, window: int = 14, scalar: float = 0.0015, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Commodity channel index * **Parameters** high_vals: pd.Series High values low_values: pd.Series Low values close-values: pd.Series Close values window: int Length of window scalar: float Scalar variable chart: bool Flag to display chart * **Returns** pd.">
 
 
 
@@ -47539,7 +47539,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Length of window
     scalar: float
         Scalar variable
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47586,7 +47586,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

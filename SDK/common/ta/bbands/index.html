@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  common.ta.bbands( data: pandas.core.frame.DataFrame, window: int = 15, n_std: float = 2, mamode: str = &#39;ema&#39;, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Calculate Bollinger Bands * **Parameters** data : pd.DataFrame Dataframe of ohlc prices window : int Length of window to calculate BB n_std : float Number of standard deviations to show mamode : str Method of calculating average chart: *bool* Flag to display chart * **Returns** df_ta: pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  common.ta.bbands( data: pandas.core.frame.DataFrame, window: int = 15, n_std: float = 2, mamode: str = &#39;ema&#39;, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Calculate Bollinger Bands * **Parameters** data : pd.DataFrame Dataframe of ohlc prices window : int Length of window to calculate BB n_std : float Number of standard deviations to show mamode : str Method of calculating average chart: bool Flag to display chart * **Returns** df_ta: pd.">
 
 
 
@@ -47538,7 +47538,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Number of standard deviations to show
     mamode : str
         Method of calculating average
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47588,7 +47588,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Format of export file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

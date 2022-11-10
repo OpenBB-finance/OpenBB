@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  stocks.dd.rot( symbol: str, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get rating over time data. [Source: Finnhub] * **Parameters** symbol : str Ticker symbol to get ratings from chart: *bool* Flag to display chart * **Returns** pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  stocks.dd.rot( symbol: str, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get rating over time data. [Source: Finnhub] * **Parameters** symbol : str Ticker symbol to get ratings from chart: bool Flag to display chart * **Returns** pd.">
 
 
 
@@ -47529,7 +47529,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
     symbol : str
         Ticker symbol to get ratings from
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47573,7 +47573,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

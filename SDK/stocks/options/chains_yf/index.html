@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  stocks.options.chains_yf( symbol: str, expiry: str, min_sp: float = -1, max_sp: float = -1, calls: bool = True, puts: bool = True, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get full option chains with calculated greeks * **Parameters** symbol: str Stock ticker symbol expiry: str Expiration date for chain in format YYY-mm-dd calls: bool Flag to get calls puts: bool Flag to get puts chart: *bool* Flag to display chart * **Returns** pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  stocks.options.chains_yf( symbol: str, expiry: str, min_sp: float = -1, max_sp: float = -1, calls: bool = True, puts: bool = True, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Get full option chains with calculated greeks * **Parameters** symbol: str Stock ticker symbol expiry: str Expiration date for chain in format YYY-mm-dd calls: bool Flag to get calls puts: bool Flag to get puts chart: bool Flag to display chart * **Returns** pd.">
 
 
 
@@ -47540,7 +47540,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Flag to get calls
     puts: bool
         Flag to get puts
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47590,7 +47590,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Flag to get puts only
     export: str
         Format to export data
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

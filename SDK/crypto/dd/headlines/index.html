@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  crypto.dd.headlines( symbol: str, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Gets Sentiment analysis provided by FinBrain&#39;s API [Source: finbrain] * **Parameters** symbol : str Ticker symbol to get the sentiment analysis from chart: *bool* Flag to display chart * **Returns** DataFrame() Empty if there was an issue with data retrieval | .">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  crypto.dd.headlines( symbol: str, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Gets Sentiment analysis provided by FinBrain&#39;s API [Source: finbrain] * **Parameters** symbol : str Ticker symbol to get the sentiment analysis from chart: bool Flag to display chart * **Returns** DataFrame() Empty if there was an issue with data retrieval | .">
 
 
 
@@ -47529,7 +47529,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
     symbol : str
         Ticker symbol to get the sentiment analysis from
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -47577,7 +47577,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
