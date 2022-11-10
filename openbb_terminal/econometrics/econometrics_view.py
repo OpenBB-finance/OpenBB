@@ -363,7 +363,7 @@ def display_cointegration_test(
         console.print("[red]Co-integration requires at least two time series.[/red]")
         return
 
-    df = econometrics_model.get_coint_df(*datasets)
+    df: pd.DataFrame = econometrics_model.get_coint_df(*datasets)
 
     if significant:
         console.print(

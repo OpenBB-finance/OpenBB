@@ -226,7 +226,7 @@ def get_granger_causality(dependent_series, independent_series, lags):
     return granger
 
 
-# TODO: MAybe make a new function to return z instead of having this flag.
+# TODO: Maybe make a new function to return z instead of having this flag.
 def get_coint_df(
     *datasets: pd.Series, return_z: bool = False
 ) -> Union[pd.DataFrame, Dict]:
@@ -241,8 +241,8 @@ def get_coint_df(
 
     Returns
     -------
-    pd.DataFrame
-        Dataframe with results of cointegration tests
+    Union[pd.DataFrame,Dict]
+        Dataframe with results of cointegration tests or a Dict of the z results
     """
     result: Dict[str, list] = {}
     z_values: Dict[str, pd.Series] = {}
