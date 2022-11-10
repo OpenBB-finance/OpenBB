@@ -16,11 +16,11 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 stocks.screener.historical(
     preset_loaded: str = 'top_gainers',
     limit: int = 10,
-    start_date: str = '2022-05-12',
+    start_date: str = '2022-05-13',
     type_candle: str = 'a',
     normalize: bool = True,
     chart: bool = False,
-)
+) -> Tuple[pandas.core.frame.DataFrame, List[str], bool]
 {{< /highlight >}}
 
 .. raw:: html
@@ -66,7 +66,7 @@ stocks.screener.historical(
 stocks.screener.historical(
     preset_loaded: str = 'top_gainers',
     limit: int = 10,
-    start_date: str = '2022-05-12',
+    start_date: str = '2022-05-13',
     type_candle: str = 'a',
     normalize: bool = True,
     export: str = '',

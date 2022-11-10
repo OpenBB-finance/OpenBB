@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 {{< highlight python >}}
 stocks.ba.trend(
     start_date: datetime.datetime = datetime.datetime(
-    2022, 11, 8, 12, 2, 54, 989242, chart: bool = False,
+    2022, 11, 9, 17, 41, 29, 364353, chart: bool = False,
 ), hour: int = 0,
     number: int = 10,
     chart: bool = False,
@@ -60,7 +60,7 @@ stocks.ba.trend(
 {{< highlight python >}}
 stocks.ba.trend(
     start_date: datetime.datetime = datetime.datetime(
-    2022, 11, 8, 12, 2, 54, 989446, chart: bool = False,
+    2022, 11, 9, 17, 41, 29, 364749, chart: bool = False,
 ), hour: int = 0,
     number: int = 10,
     limit: int = 10,
