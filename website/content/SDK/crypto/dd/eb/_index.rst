@@ -2,12 +2,7 @@
     :language: python
     :class: highlight
 
-<<<<<<< HEAD:website/content/SDK/crypto/dd/eb/_index.md
-## Get underlying data 
-### crypto.dd.eb(symbol: str, exchange: str = 'binance', start_date: int = 1262322000, end_date: int = 1667592183) -> pandas.core.frame.DataFrame
-=======
 |
->>>>>>> main:website/content/SDK/crypto/dd/eb/_index.rst
 
 To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
@@ -22,7 +17,7 @@ crypto.dd.eb(
     symbol: str,
     exchange: str = 'binance',
     start_date: int = 1262304000,
-    end_date: int = 1667908975,
+    end_date: int = 1668077823,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -44,7 +39,7 @@ crypto.dd.eb(
         Initial date timestamp (e.g., 1_614_556_800)
     end_date : int
         End date timestamp (e.g., 1_614_556_800)
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -99,6 +94,6 @@ crypto.dd.eb(
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

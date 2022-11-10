@@ -40,7 +40,7 @@ stocks.options.chains_yf(
         Flag to get calls
     puts: bool
         Flag to get puts
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -92,6 +92,6 @@ stocks.options.chains_yf(
         Flag to get puts only
     export: str
         Format to export data
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

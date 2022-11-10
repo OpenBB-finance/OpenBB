@@ -29,7 +29,7 @@ portfolio.holdp(
 
     portfolio: Portfolio
         Portfolio object with trades loaded
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -44,7 +44,7 @@ portfolio.holdp(
 {{< highlight python >}}
 portfolio.holdp(
     portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
-    sum_assets: bool = False,
+    unstack: bool = False,
     raw: bool = False,
     limit: int = 10,
     export: str = '',
@@ -63,8 +63,8 @@ portfolio.holdp(
 
     portfolio: Portfolio
         Portfolio object with trades loaded
-    sum_assets: bool
-        Sum assets over time
+    unstack: bool
+        Individual assets over time
     raw : bool
         To display raw data
     limit : int
@@ -73,6 +73,6 @@ portfolio.holdp(
         Format to export plot
     external_axes: plt.Axes
         Optional axes to display plot on
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

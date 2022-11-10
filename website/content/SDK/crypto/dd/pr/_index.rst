@@ -38,7 +38,7 @@ crypto.dd.pr(
         Number of coins with highest market cap to compare main_coin with (e.g., 5)
     price
         Target price of main_coin to check potential returns (e.g., 5)
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -85,6 +85,6 @@ crypto.dd.pr(
         Target price of main_coin to check potential returns (e.g., 5)
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

@@ -32,7 +32,7 @@ crypto.tools.apy(
         value in percentage
     compounding_times: int
         number of compounded periods in a year
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -76,7 +76,7 @@ crypto.tools.apy(
         display narrative version instead of dataframe
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

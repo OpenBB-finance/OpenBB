@@ -236,12 +236,12 @@ class EconomyController(BaseController):
                 "-s": "--start",
                 "--end": None,
                 "-e": "--end",
-                "--limit": {str(c): {} for c in range(1, 500)},
+                "--limit": None,
                 "-l": "--limit",
                 "--raw": {},
             }
             self.choices["edebt"] = {
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
             }
             self.choices["rtps"] = {
@@ -293,7 +293,7 @@ class EconomyController(BaseController):
                 "-s": "--start",
                 "--end": None,
                 "-e": "--end",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--raw": {},
             }
@@ -319,7 +319,7 @@ class EconomyController(BaseController):
                 "-e": "--end",
                 "--query": None,
                 "-q": "--query",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--returns": {},
                 "-r": "--returns",
@@ -329,7 +329,7 @@ class EconomyController(BaseController):
                 "--y1": None,
                 "--y2": None,
                 "--raw": {},
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
             }
 

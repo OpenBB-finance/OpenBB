@@ -32,7 +32,7 @@ stocks.options.voi_yf(
         Stock ticker symbol
     expiry: str
         Option expiration
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -79,6 +79,6 @@ stocks.options.voi_yf(
         Format for exporting data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

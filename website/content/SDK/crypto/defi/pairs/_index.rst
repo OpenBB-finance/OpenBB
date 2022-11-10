@@ -44,7 +44,7 @@ crypto.defi.pairs(
         Minimum liquidity
     min_tx: int
         Minimum number of transactions done in given pool.
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -100,6 +100,6 @@ crypto.defi.pairs(
         Flag to sort data descending
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

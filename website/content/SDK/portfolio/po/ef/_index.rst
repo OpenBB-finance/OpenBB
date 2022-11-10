@@ -101,7 +101,7 @@ portfolio.po.ef(
         "Number of portfolios to simulate. The default value is 100.
     seed: int, optional
         Seed used to generate random portfolios. The default value is 123.
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -215,6 +215,6 @@ portfolio.po.ef(
         Optional axes to plot data on
     plot_tickers: bool
         Whether to plot the tickers for the assets
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

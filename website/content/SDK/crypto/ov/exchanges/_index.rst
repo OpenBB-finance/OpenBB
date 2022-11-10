@@ -32,7 +32,7 @@ crypto.ov.exchanges(
         Key by which to sort data
     ascend: bool
         Flag to sort data descending
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -78,6 +78,6 @@ crypto.ov.exchanges(
         Flag to display urls
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

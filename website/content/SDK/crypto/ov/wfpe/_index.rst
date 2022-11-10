@@ -30,7 +30,7 @@ crypto.ov.wfpe(
 
     symbol: str
         Coin to check withdrawal fees. By default bitcoin
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -69,6 +69,6 @@ crypto.ov.wfpe(
         Coin to check withdrawal fees
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

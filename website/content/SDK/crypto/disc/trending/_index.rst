@@ -28,7 +28,7 @@ crypto.disc.trending() -> pandas.core.frame.DataFrame
 * **Parameters**
 
     
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -62,6 +62,6 @@ crypto.disc.trending(
 
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

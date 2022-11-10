@@ -131,7 +131,7 @@ portfolio.po.maxsharpe(
         Amount to allocate to portfolio in long positions, by default 1.0
     value_short : float, optional
         Amount to allocate to portfolio in short positions, by default 0.0
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -272,6 +272,6 @@ portfolio.po.maxsharpe(
         Amount to allocate to portfolio in short positions, by default 0.0
     table: bool, optional
         True if plot table weights, by default False
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

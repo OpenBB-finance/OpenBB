@@ -16,7 +16,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 etf.news(
     query: str,
     limit: int = 10,
-    start_date: str = '2022-11-01',
+    start_date: str = '2022-11-03',
     show_newest: bool = True,
     sources: str = '',
     chart: bool = False,
@@ -39,7 +39,7 @@ etf.news(
         flag to show newest articles first
     sources: str
         sources to exclusively show news from (comma separated)
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -60,7 +60,7 @@ etf.news(
 etf.news(
     query: str,
     limit: int = 3,
-    start_date: str = '2022-11-01',
+    start_date: str = '2022-11-03',
     show_newest: bool = True,
     sources: str = '',
     export: str = '',
@@ -88,6 +88,6 @@ etf.news(
         sources to exclusively show news from
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
