@@ -5,6 +5,7 @@ __docformat__ = "numpy"
 from datetime import datetime
 from pathlib import Path
 from typing import List, Dict
+import traceback
 import argparse
 import logging
 import csv
@@ -68,7 +69,6 @@ def run_test_list(
     if not path_list:
         path_list = [""]
     test_files = build_test_path_list(path_list)
-    print(test_files)
     SUCCESSES = 0
     FAILURES = 0
     fails = {}
@@ -86,23 +86,39 @@ def run_test_list(
             )
             SUCCESSES += 1
         except Exception as e:
-            fails[file] = e
+            _, _, exc_traceback = sys.exc_info()
+            fails[file] = {
+                "exception": e,
+                "traceback": traceback.extract_tb(exc_traceback),
+            }
             FAILURES += 1
         i += 1
     if fails:
         console.print("\n[red]Failures:[/red]\n")
         for file, exception in fails.items():
-            logger.error("%s: %s failed", file, exception)
+            logger.error("%s: %s failed", file, exception["exception"])
         # Write results to CSV
         timestamp = datetime.now().timestamp()
         stamp_str = str(timestamp).replace(".", "")
         output_path = f"{stamp_str}_tests.csv"
         with open(output_path, "w") as file:  # type: ignore
-            header = ["File", "Error"]
+            header = ["Script File", "Type", "Error", "Stacktrace"]
             writer = csv.DictWriter(file, fieldnames=header)  # type: ignore
             writer.writeheader()
             for file, exception in fails.items():
-                writer.writerow({"File": file, "Error": exception})
+                clean_type = (
+                    str(type(exception["exception"]))
+                    .replace("<class '", "")
+                    .replace("'>", "")
+                )
+                writer.writerow(
+                    {
+                        "Script File": file,
+                        "Type": clean_type,
+                        "Error": exception["exception"],
+                        "Stacktrace": exception["traceback"],
+                    }
+                )
 
         console.print(f"CSV of errors saved to {output_path}")
 
