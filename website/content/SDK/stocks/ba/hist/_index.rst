@@ -15,8 +15,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 {{< highlight python >}}
 stocks.ba.hist(
     symbol: str,
-    start_date: str = '2022-11-02',
-    end_date: str = '2022-11-09',
+    start_date: str = '2022-11-03',
+    end_date: str = '2022-11-10',
     number: int = 100,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
@@ -41,7 +41,7 @@ stocks.ba.hist(
     number : int
         Number of results returned by API call
         Maximum 250 per api call
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -61,8 +61,8 @@ stocks.ba.hist(
 {{< highlight python >}}
 stocks.ba.hist(
     symbol: str,
-    start_date: str = '2022-11-02',
-    end_date: str = '2022-11-09',
+    start_date: str = '2022-11-03',
+    end_date: str = '2022-11-10',
     number: int = 100,
     raw: bool = False,
     limit: int = 10,
@@ -99,7 +99,7 @@ stocks.ba.hist(
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

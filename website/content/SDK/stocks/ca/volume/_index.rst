@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 {{< highlight python >}}
 stocks.ca.volume(
     similar: List[str],
-    start_date: str = '2021-11-08',
+    start_date: str = '2021-11-09',
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -34,7 +34,7 @@ stocks.ca.volume(
         finnhub_peers(), finviz_peers(), polygon_peers().
     start_date : str, optional
         Start date of comparison, by default 1 year ago
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -49,7 +49,7 @@ stocks.ca.volume(
 {{< highlight python >}}
 stocks.ca.volume(
     similar: List[str],
-    start_date: str = '2021-11-08',
+    start_date: str = '2021-11-09',
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
     chart: bool = False,
@@ -74,6 +74,6 @@ stocks.ca.volume(
         Format to export historical prices, by default ""
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

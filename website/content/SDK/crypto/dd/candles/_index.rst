@@ -32,7 +32,7 @@ crypto.dd.candles(
         Trading pair of coins on Coinbase e.g ETH-USDT or UNI-ETH
     interval: str
         Time interval. One from 1min, 5min ,15min, 1hour, 6hour, 24hour
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -72,6 +72,6 @@ crypto.dd.candles(
         Time interval. One from 1m, 5m ,15m, 1h, 6h, 24h
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

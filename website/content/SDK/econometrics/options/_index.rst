@@ -32,7 +32,7 @@ econometrics.options(
         The available datasets.
     dataset_name: str
         The dataset you wish to show the options for.
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -73,6 +73,6 @@ econometrics.options(
         The name of the dataset you wish to show options for
     export: str
         Format to export image
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

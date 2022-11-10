@@ -15,8 +15,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 {{< highlight python >}}
 stocks.dps.ftd(
     symbol: str,
-    start_date: str = '2022-09-10',
-    end_date: str = '2022-11-09',
+    start_date: str = '2022-09-11',
+    end_date: str = '2022-11-10',
     limit: int = 0,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
@@ -38,7 +38,7 @@ stocks.dps.ftd(
         End of data, in YYYY-MM-DD format
     limit : int
         Number of latest fails-to-deliver being printed
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -59,8 +59,8 @@ stocks.dps.ftd(
 stocks.dps.ftd(
     symbol: str,
     data: pandas.core.frame.DataFrame,
-    start_date: str = '2022-09-10',
-    end_date: str = '2022-11-09',
+    start_date: str = '2022-09-11',
+    end_date: str = '2022-11-10',
     limit: int = 0,
     raw: bool = False,
     export: str = '',
@@ -93,6 +93,6 @@ stocks.dps.ftd(
         Export dataframe data to csv,json,xlsx file
     external_axes: Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

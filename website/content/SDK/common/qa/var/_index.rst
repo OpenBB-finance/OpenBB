@@ -44,7 +44,7 @@ common.qa.var(
         VaR percentile
     portfolio: bool
         If the data is a portfolio
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -99,6 +99,6 @@ common.qa.var(
         Number of rows you want to use VaR over
     portfolio: bool
         If the data is a portfolio
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

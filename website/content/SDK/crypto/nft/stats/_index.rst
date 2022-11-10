@@ -29,7 +29,7 @@ crypto.nft.stats(
 
     slug : str
         Opensea collection slug. If the name of the collection is Mutant Ape Yacht Club the slug is mutant-ape-yacht-club
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -67,6 +67,6 @@ crypto.nft.stats(
         If the name of the collection is Mutant Ape Yacht Club the slug is mutant-ape-yacht-club
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

@@ -70,6 +70,6 @@ crypto.onchain.top(
         Sort in descending order.
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

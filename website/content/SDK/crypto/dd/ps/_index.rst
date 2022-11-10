@@ -68,7 +68,7 @@ crypto.dd.ps(
         Id of coin from CoinPaprika
     quotes: str
         Comma separated quotes to return e.g quotes = USD, BTC
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -109,6 +109,6 @@ crypto.dd.ps(
         Quoted currency
     export: str
         Export dataframe data to csv,json,xlsx
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

@@ -38,7 +38,7 @@ stocks.screener.screener_data(
         Limit of stocks filtered with presets to print
     ascend : bool
         Ascended order of stocks filtered to print
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -87,7 +87,7 @@ stocks.screener.screener_data(
         Column to sort table by
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

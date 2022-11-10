@@ -39,7 +39,7 @@ stocks.ca.income(
         Whether to use quarterly statements, by default False
     export : str, optional
         Format to export data
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -80,6 +80,6 @@ stocks.ca.income(
         Whether to use quarterly statements, by default False
     export : str, optional
         Format to export data
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

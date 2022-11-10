@@ -28,7 +28,7 @@ crypto.nft.collections() -> pandas.core.frame.DataFrame
 * **Parameters**
 
     
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -69,6 +69,6 @@ crypto.nft.collections(
         Number of NFT collections to display
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
