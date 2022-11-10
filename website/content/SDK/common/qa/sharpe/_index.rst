@@ -35,7 +35,7 @@ common.qa.sharpe(
         risk free rate
     window: float
         length of the rolling window
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -75,6 +75,6 @@ common.qa.sharpe(
         risk free rate
     window: float
         length of the rolling window
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

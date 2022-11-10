@@ -35,7 +35,7 @@ futures.search(
         Select the exchange where the future exists
     description: str
         Select the description where the future exists
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -73,6 +73,6 @@ futures.search(
         Select the description of the future
     export: str
         Type of format to export data
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

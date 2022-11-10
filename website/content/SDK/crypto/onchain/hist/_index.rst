@@ -34,7 +34,7 @@ crypto.onchain.hist(
         Key to sort by.
     ascend: str
         Sort in ascending order.
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -80,6 +80,6 @@ crypto.onchain.hist(
         Sort in ascending order.
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

@@ -30,7 +30,7 @@ etf.ld(
 
     description: str
         Search by description to find ETFs matching the criteria.
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -71,6 +71,6 @@ etf.ld(
         Limit of ETFs to display
     export: str
         Type of format to export data
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

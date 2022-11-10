@@ -31,7 +31,7 @@ common.qa.normality(
 
     data : pd.DataFrame
         Dataframe of targeted data
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -71,6 +71,6 @@ common.qa.normality(
         Column in data to look at
     export : str
         Format to export data
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

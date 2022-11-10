@@ -29,7 +29,7 @@ crypto.dd.basic(
 
     symbol: str
         Coin id
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -68,6 +68,6 @@ crypto.dd.basic(
         Cryptocurrency symbol (e.g. BTC)
     export: str
         Export dataframe data to csv,json,xlsx
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

@@ -35,7 +35,7 @@ forex.oanda.candles(
         Data granularity, by default "D"
     candlecount : int, optional
         Limit for the number of data points, by default 180
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -85,6 +85,6 @@ forex.oanda.candles(
         A dictionary of flags to include additional charts
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
