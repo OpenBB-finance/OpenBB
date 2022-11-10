@@ -15,8 +15,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 {{< highlight python >}}
 crypto.ov.altindex(
     period: int = 30,
-    start_date: int = 1262322000,
-    end_date: int = 1668033690,
+    start_date: int = 1262304000,
+    end_date: int = 1668077823,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -38,7 +38,7 @@ crypto.ov.altindex(
         Initial date timestamp (e.g., 1_609_459_200)
     end_date : int
         End date timestamp (e.g., 1_641_588_030)
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -58,8 +58,8 @@ crypto.ov.altindex(
 {{< highlight python >}}
 crypto.ov.altindex(
     period: int = 365,
-    start_date: int = 1262322000,
-    end_date: int = 1668033690,
+    start_date: int = 1262304000,
+    end_date: int = 1668077823,
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
     chart: bool = False,
@@ -87,6 +87,6 @@ crypto.ov.altindex(
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

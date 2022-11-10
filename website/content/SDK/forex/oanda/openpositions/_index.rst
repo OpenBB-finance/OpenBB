@@ -29,7 +29,7 @@ forex.oanda.openpositions(
 
     accountID : str, optional
         Oanda account ID, by default cfg.OANDA_ACCOUNT
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -58,6 +58,6 @@ forex.oanda.openpositions(
 
     accountID : str
         Oanda user account ID
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

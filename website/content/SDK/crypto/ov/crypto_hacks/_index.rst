@@ -33,7 +33,7 @@ crypto.ov.crypto_hacks(
         Key by which to sort data {Platform,Date,Amount [$],Audit,Slug,URL}
     ascend
         Flag to sort data ascending
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -81,6 +81,6 @@ crypto.ov.crypto_hacks(
         Flag to sort data ascending
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

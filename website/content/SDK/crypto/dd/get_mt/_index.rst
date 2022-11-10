@@ -30,7 +30,7 @@ crypto.dd.get_mt(
 
     only_free : bool
         Display only timeseries available for free
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -74,6 +74,6 @@ crypto.dd.get_mt(
         Display only timeseries available for free
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

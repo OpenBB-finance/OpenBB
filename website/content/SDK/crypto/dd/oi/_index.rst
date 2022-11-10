@@ -33,7 +33,7 @@ crypto.dd.oi(
         Crypto Symbol to search open interest futures (e.g., BTC)
     interval : int
         Frequency (possible values are: 0 for ALL, 2 for 1H, 1 for 4H, 4 for 12H), by default 0
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -74,6 +74,6 @@ crypto.dd.oi(
         Frequency (possible values are: 0 for ALL, 2 for 1H, 1 for 4H, 4 for 12H), by default 0
     export : str
         Export dataframe data to csv,json,xlsx fil
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

@@ -47,7 +47,7 @@ crypto.dd.news(
         Key to sort by.
     ascend: bool
         Sort in ascend order.
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -100,6 +100,6 @@ crypto.dd.news(
         Sort in ascending order.
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

@@ -29,7 +29,7 @@ portfolio.holdv(
 
     portfolio: Portfolio
         Portfolio object with trades loaded
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -78,6 +78,6 @@ portfolio.holdv(
         Format to export plot
     external_axes: plt.Axes
         Optional axes to display plot on
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
