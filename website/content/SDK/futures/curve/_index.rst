@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 futures.curve(
-    ticker: str = '',
+    symbol: str = '',
     chart: bool = False,
 )
 {{< /highlight >}}
@@ -27,8 +27,8 @@ futures.curve(
 
 * **Parameters**
 
-    ticker: str
-        Ticker to get forward curve
+    symbol: str
+        symbol to get forward curve
     chart: *bool*
        Flag to display chart
 
@@ -43,7 +43,7 @@ futures.curve(
 
 {{< highlight python >}}
 futures.curve(
-    ticker: str,
+    symbol: str,
     raw: bool = False,
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
@@ -59,8 +59,8 @@ futures.curve(
 
 * **Parameters**
 
-    ticker: str
-        Curve future ticker to display
+    symbol: str
+        Curve future symbol to display
     raw: bool
         Display futures timeseries in raw format
     export: str

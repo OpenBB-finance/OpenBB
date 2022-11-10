@@ -2,12 +2,7 @@
     :language: python
     :class: highlight
 
-<<<<<<< HEAD:website/content/SDK/crypto/dd/change/_index.md
-## Get underlying data 
-### crypto.dd.change(symbol: str, exchange: str = 'binance', start_date: int = 1262322000, end_date: int = 1667592183) -> pandas.core.frame.DataFrame
-=======
 |
->>>>>>> main:website/content/SDK/crypto/dd/change/_index.rst
 
 To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
@@ -21,8 +16,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 crypto.dd.change(
     symbol: str,
     exchange: str = 'binance',
-    start_date: int = 1262304000,
-    end_date: int = 1667908975,
+    start_date: int = 1262322000,
+    end_date: int = 1668033690,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
