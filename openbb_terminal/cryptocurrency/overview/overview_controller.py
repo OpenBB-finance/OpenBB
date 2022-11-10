@@ -501,12 +501,10 @@ class OverviewController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            start_date = ns_parser.since.strftime("%Y-%m-%d")
-            end_date = ns_parser.until.strftime("%Y-%m-%d")
 
             display_btc_rainbow(
-                start_date=start_date,
-                end_date=end_date,
+                start_date=ns_parser.since.strftime("%Y-%m-%d"),
+                end_date=ns_parser.until.strftime("%Y-%m-%d"),
                 export=ns_parser.export,
             )
 
@@ -562,8 +560,8 @@ class OverviewController(BaseController):
 
         if ns_parser:
             blockchaincenter_view.display_altcoin_index(
-                start_date=ns_parser.since.timestamp(),
-                end_date=ns_parser.until.timestamp(),
+                start_date=ns_parser.since.strftime("%Y-%m-%d"),
+                end_date=ns_parser.until.strftime("%Y-%m-%d"),
                 period=ns_parser.period,
                 export=ns_parser.export,
             )

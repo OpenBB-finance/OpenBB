@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 import logging
 import json
 
@@ -366,8 +366,8 @@ def get_active_addresses(
 def get_hashrate(
     symbol: str,
     interval: str = "24h",
-    start_date: int = int((datetime.now() - timedelta(days=365 * 12)).timestamp()),
-    end_date: int = int(datetime.now().timestamp()),
+    start_date: str = "2010-01-01",
+    end_date: str = datetime.now().strftime("%Y-%m-%d"),
 ) -> pd.DataFrame:
     """Returns dataframe with mean hashrate of btc or eth blockchain and symbol price
     [Source: https://glassnode.com]
@@ -376,10 +376,10 @@ def get_hashrate(
     ----------
     symbol : str
         Blockchain to check hashrate (BTC or ETH)
-    start_date : int
-        Initial date timestamp (e.g., 1_614_556_800)
-    end_date : int
-        End date timestamp (e.g., 1_614_556_800)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
     interval : str
         Interval frequency (e.g., 24h)
 
@@ -389,6 +389,9 @@ def get_hashrate(
         mean hashrate and symbol price over time
     """
 
+    ts_start_date = str_date_to_timestamp(start_date)
+    ts_end_date = str_date_to_timestamp(end_date)
+
     url = api_url + "mining/hash_rate_mean"
     url2 = api_url + "market/price_usd_close"
 
@@ -396,8 +399,8 @@ def get_hashrate(
         "api_key": cfg.API_GLASSNODE_KEY,
         "a": symbol,
         "i": interval,
-        "s": str(start_date),
-        "u": str(end_date),
+        "s": str(ts_start_date),
+        "u": str(ts_end_date),
     }
 
     df = pd.DataFrame()
