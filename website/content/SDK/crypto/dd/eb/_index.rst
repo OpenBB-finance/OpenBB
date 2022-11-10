@@ -16,8 +16,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 crypto.dd.eb(
     symbol: str,
     exchange: str = 'binance',
-    start_date: int = 1262322000,
-    end_date: int = 1668033690,
+    start_date: int = 1262304000,
+    end_date: int = 1668077079,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

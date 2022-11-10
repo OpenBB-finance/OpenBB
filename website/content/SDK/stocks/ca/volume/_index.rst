@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 {{< highlight python >}}
 stocks.ca.volume(
     similar: List[str],
-    start_date: str = '2021-11-08',
+    start_date: str = '2021-11-09',
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -49,7 +49,7 @@ stocks.ca.volume(
 {{< highlight python >}}
 stocks.ca.volume(
     similar: List[str],
-    start_date: str = '2021-11-08',
+    start_date: str = '2021-11-09',
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
     chart: bool = False,
