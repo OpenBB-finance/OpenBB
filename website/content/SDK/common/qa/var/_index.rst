@@ -27,7 +27,7 @@ common.qa.var(
 .. raw:: html
 
     <p>
-    Gets value at risk for specified stock dataframe
+    Gets value at risk for specified stock dataframe.
     </p>
 
 * **Parameters**
@@ -50,10 +50,8 @@ common.qa.var(
 
 * **Returns**
 
-    list
-        list of VaR
-    list
-        list of historical VaR
+    pd.DataFrame
+        DataFrame with Value at Risk per percentile
 
 |
 
@@ -80,7 +78,7 @@ common.qa.var(
 .. raw:: html
 
     <p>
-    Displays VaR of dataframe
+    Displays VaR of dataframe.
     </p>
 
 * **Parameters**

@@ -24,7 +24,7 @@ def process_file(file_path: str, exp: str):
         Regular expression to find all reserved args
     """
     errors_found = 0
-    with open(file_path) as f:
+    with open(file_path, encoding="utf8") as f:
         code = f.read()
     match = re.search(pattern=exp, string=code)
     if match:
@@ -34,7 +34,7 @@ def process_file(file_path: str, exp: str):
         )
         if long_arg is not None:
             long_arg = long_arg.group()
-        if long_arg != RESERVED_ARGS[short_arg]:
+        if long_arg not in ("HistoryManager.hist_file", RESERVED_ARGS[short_arg]):
             print(
                 f"{file_path}: "
                 f"'-{short_arg}' argument expected '{RESERVED_ARGS[short_arg]}'"
