@@ -9,12 +9,14 @@
 
 
 
-    <meta name="description" content="OpenBB Terminal Documentation">
+    <meta name="description" content="The Portfolio Optimization menu allows the user to apply advanced optimization techniques to a portfolio of any type and of any size. It does so by introducing a multitude of optimization techniques ranging from mean-variance optimization to risk parity models and hierarchical clustering models. By providing Excel templates, the user can make sense of the vast array of parameters that each command has. E.g. think of the historic period you wish to use or which of the more than 10 risk measures and covariance methods should be used?">
 
+
+    <meta name="keywords" content="portfolio,,optimization,,mean,variance,,risk,parity,,black,litterman,,mean,risk,,hierarchical,clustering,models">
 
 
     <title>
-      po | OpenBB Terminal Documentation
+      Introduction to Portfolio Optimization | OpenBB Terminal Documentation
     </title>
 
     <link rel="icon" href="/OpenBBTerminal/favicon/favicon-32x32.png" type="image/x-icon">
@@ -47466,7 +47468,7 @@ code, img {
         
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>OpenBB Terminal Documentation</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/SDK/' href='/OpenBBTerminal/SDK/'><span itemprop='name'>OpenBB Python SDK</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/SDK/portfolio/' href='/OpenBBTerminal/SDK/portfolio/'><span itemprop='name'>portfolio</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>po</span><meta itemprop='position' content='5' /></li>
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/' href='/OpenBBTerminal/'><span itemprop='name'>OpenBB Terminal Documentation</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/SDK/' href='/OpenBBTerminal/SDK/'><span itemprop='name'>OpenBB Python SDK</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/OpenBBTerminal/SDK/portfolio/' href='/OpenBBTerminal/SDK/portfolio/'><span itemprop='name'>Introduction to Portfolio</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Introduction to Portfolio Optimization</span><meta itemprop='position' content='5' /></li>
     
 
     
@@ -47491,8 +47493,311 @@ code, img {
 </div>
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
-        <h1>po</h1>
-        
+        <h1>Introduction to Portfolio Optimization</h1>
+        <p>The Portfolio Optimization menu allows the user to apply advanced optimization techniques to a portfolio of any type
+and of any size. It does so by introducing a multitude of optimization techniques ranging from <a href="https://www.investopedia.com/terms/m/meanvariance-analysis.asp" target="_blank">mean-variance optimization</a>
+to <a href="https://www.investopedia.com/terms/r/risk-parity.asp" target="_blank">risk parity models</a> and
+<a href="https://www.investopedia.com/terms/c/cluster_analysis.asp" target="_blank">hierarchical clustering models</a>.
+By providing Excel templates, the user can make sense of the vast array of parameters that each command has. E.g. think
+of the historic period you wish to use or which of the more than 10 risk measures and covariance methods should be used?
+These are questions the templates make easier to answer.</p>
+<p>The capabilities of the <a href="https://openbb-finance.github.io/OpenBBTerminal/terminal/portfolio/po" target="_blank">Portfolio Optimization menu</a> from the OpenBB Terminal are wrapped into a powerful SDK, enabling users to work with the data in a flexible environment that can be fully customized to meet the needs of any user. These functionalities allow the user to apply advanced optimization techniques to a portfolio of any type and of any size. It does so by introducing a multitude of optimization techniques ranging from <a href="https://www.investopedia.com/terms/m/meanvariance-analysis.asp" target="_blank">mean-variance optimization</a> to <a href="https://www.investopedia.com/terms/r/risk-parity.asp" target="_blank">risk parity models</a> and <a href="https://www.investopedia.com terms/c/cluster_analysis.asp" target="_blank">hierarchical clustering models</a>.
+By providing Excel templates, the user can make sense of the vast array of parameters that each command has. E.g. think of the historic period you wish to use or which of the more than 10 risk measures and covariance methods should be used? These are questions the templates make easier to answer.</p>
+<div class="gdoc-page__anchorwrap">
+    <h2 id="how-to-use">
+        How to use
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/portfolio/po/#how-to-use" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor How to use" href="#how-to-use">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h2>
+</div><p>Start a Python script or Notebook file by importing the module:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">openbb_terminal.sdk</span> <span class="kn">import</span> <span class="n">openbb</span>
+</code></pre></div><p>This menu requires the usage of the Excel templates to work properly. As there is a lot of complexity involved around
+these techniques, these templates allow the user to understand what values for each parameter are actually used and
+allow for an easy way to define the allocation.</p>
+<blockquote>
+<p>For this there are two templates that need to be set, the <strong>OpenBB Parameters Template</strong> and the <strong>OpenBB Portfolio Template</strong>. These files can be found in the
+<code>OpenBBUserData</code> folder. Please see <a href="https://openbb-finance.github.io/OpenBBTerminal/#importing-and-exporting-data-in-the-openbb-terminal" target="_blank">this guide</a> for how to find this folder.</p>
+</blockquote>
+<div class="gdoc-page__anchorwrap">
+    <h3 id="openbb-parameters-template">
+        OpenBB Parameters Template
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/portfolio/po/#openbb-parameters-template" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor OpenBB Parameters Template" href="#openbb-parameters-template">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h3>
+</div><p>This template provides the user with the ability to set define values for each parameter based on the optimization
+technique that is deployed. E.g. if you select <code>riskparity</code> for the <code>technique</code> parameter, you will notice that some
+parameters turn <span style="color: #BEBEBE">grey</span>. This means that the parameter is irrelevant for the selected
+method.</p>
+<p>The OpenBB Terminal does, however, allow the user to run any model despite the <code>technique</code> you selected. Therefore, if
+you are interested in running multiple models, consider removing the value for <code>technique</code>. Do note that this makes it
+more difficult to understand which values are used for which model.</p>
+<p><a target="_blank" href="https://user-images.githubusercontent.com/46355364/171144692-dd812efd-1e95-4a71-a93f-7ae8a480fe5d.png"><img alt="OpenBB Parameters Template" src="https://user-images.githubusercontent.com/46355364/171144692-dd812efd-1e95-4a71-a93f-7ae8a480fe5d.png"></a></p>
+<p>Once you have defined the parameters, save the template and load it inside the terminal by using the the following:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="c1"># Define your orderbook path here</span>
+<span class="n">order_book_path</span> <span class="o">=</span> <span class="s2">&#34;60_40_Portfolio.xlsx&#34;</span>
+
+<span class="c1"># Read in the file</span>
+<span class="n">order_book</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">order_book_path</span><span class="p">)</span>
+
+<span class="c1"># Adjust the columns accordingly</span>
+<span class="n">order_book_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Ticker&#39;</span><span class="p">,</span> <span class="s1">&#39;Asset Class&#39;</span><span class="p">,</span> <span class="s1">&#39;Sector&#39;</span><span class="p">,</span> <span class="s1">&#39;Industry&#39;</span><span class="p">,</span> <span class="s1">&#39;Country&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;Current Invested Amount&#39;</span><span class="p">,</span> <span class="s1">&#39;Currency&#39;</span><span class="p">]</span>
+
+<span class="n">order_book</span> <span class="o">=</span> <span class="n">order_book</span><span class="p">[</span><span class="n">order_book_cols</span><span class="p">]</span>
+</code></pre></div><div class="gdoc-page__anchorwrap">
+    <h3 id="openbb-portfolio-template">
+        OpenBB Portfolio Template
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/portfolio/po/#openbb-portfolio-template" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor OpenBB Portfolio Template" href="#openbb-portfolio-template">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h3>
+</div><p>This template hands the user a format to work with it to define the portfolio. Here, categorization is applied
+based on asset class, sector, industry, country and currency. By using the dropdown menus within this Excel, you
+are able to apply the proper categorization. This is based on the same methodology as found in other areas of the
+terminal.</p>
+<p><a target="_blank" href="https://user-images.githubusercontent.com/46355364/171145061-cd618153-801c-4771-ba57-7ee0ab8c57e8.png"><img alt="OpenBB Portfolio Template" src="https://user-images.githubusercontent.com/46355364/171145061-cd618153-801c-4771-ba57-7ee0ab8c57e8.png"></a></p>
+<p>You can load in the portfolio template with the following code:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># Define your own orderbook path here, current value won&#39;t work</span>
+<span class="n">order_book_path</span> <span class="o">=</span> <span class="s2">&#34;60_40_Portfolio.xlsx&#34;</span>
+
+<span class="c1"># Read in the file</span>
+<span class="n">order_book</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">order_book_path</span><span class="p">)</span>
+
+<span class="c1"># Adjust the columns accordingly</span>
+<span class="n">order_book_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Ticker&#39;</span><span class="p">,</span> <span class="s1">&#39;Asset Class&#39;</span><span class="p">,</span> <span class="s1">&#39;Sector&#39;</span><span class="p">,</span> <span class="s1">&#39;Industry&#39;</span><span class="p">,</span> <span class="s1">&#39;Country&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;Current Invested Amount&#39;</span><span class="p">,</span> <span class="s1">&#39;Currency&#39;</span><span class="p">]</span>
+
+<span class="n">order_book</span> <span class="o">=</span> <span class="n">order_book</span><span class="p">[</span><span class="n">order_book_cols</span><span class="p">]</span>
+
+<span class="c1"># Load in the portfolio</span>
+<span class="n">tickers</span><span class="p">,</span> <span class="n">categories</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">po</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">order_book_path</span><span class="p">)</span>
+</code></pre></div><div class="gdoc-page__anchorwrap">
+    <h3 id="performing-optimization">
+        Performing optimization
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/portfolio/po/#performing-optimization" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Performing optimization" href="#performing-optimization">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h3>
+</div><p>Based on the parameters and allocation the user has set, the optimization process begins. What optimization
+technique is ideal depends entirely on the user&rsquo;s risk profile and objectives. As an illustration,
+<a href="https://www.investopedia.com/terms/r/risk-parity.asp" target="_blank">Risk Parity</a>
+is presented below:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="c1"># Perform calculations</span>
+<span class="n">weights_riskparity</span><span class="p">,</span> <span class="n">data_returns_riskparity</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">po</span><span class="o">.</span><span class="n">riskparity</span><span class="p">(</span><span class="n">tickers</span><span class="p">)</span>
+
+<span class="c1"># Convert to a DataFrame</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">weights_riskparity</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&#34;Risk Parity&#34;</span><span class="p">])</span>
+</code></pre></div><p>Which returns:</p>
+<div class=table-wrap> <table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th style="text-align:right">Risk Parity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">AAPL</td>
+<td style="text-align:right">0.0462</td>
+</tr>
+<tr>
+<td style="text-align:left">AMZN</td>
+<td style="text-align:right">0.04545</td>
+</tr>
+<tr>
+<td style="text-align:left">APTV</td>
+<td style="text-align:right">0.03177</td>
+</tr>
+<tr>
+<td style="text-align:left">ASML</td>
+<td style="text-align:right">0.03328</td>
+</tr>
+<tr>
+<td style="text-align:left">BABA</td>
+<td style="text-align:right">0.04192</td>
+</tr>
+<tr>
+<td style="text-align:left">GOOGL</td>
+<td style="text-align:right">0.04758</td>
+</tr>
+<tr>
+<td style="text-align:left">HYG</td>
+<td style="text-align:right">0.13093</td>
+</tr>
+<tr>
+<td style="text-align:left">NKE</td>
+<td style="text-align:right">0.04909</td>
+</tr>
+<tr>
+<td style="text-align:left">TIP</td>
+<td style="text-align:right">0.30826</td>
+</tr>
+<tr>
+<td style="text-align:left">TLT</td>
+<td style="text-align:right">0.21927</td>
+</tr>
+<tr>
+<td style="text-align:left">TSM</td>
+<td style="text-align:right">0.04626</td>
+</tr>
+</tbody>
+</table> </div>
+<p>It is possible to use the commands without loading in the parameters template or by using the parameters template but
+changing some arguments directly into the terminal. For example, using the same method as described above, the risk
+measure is changed to <a href="https://www.investopedia.com/terms/c/conditional_value_at_risk.asp" target="_blank">Conditional Value at Risk (CVaR)</a>
+and the used historic period is increased to 10 years (keeping all other parameters unchanged):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">weights_riskparity</span><span class="p">,</span> <span class="n">data_returns_riskparity</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">po</span><span class="o">.</span><span class="n">riskparity</span><span class="p">(</span><span class="n">tickers</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="s2">&#34;10y&#34;</span><span class="p">,</span> <span class="n">risk_measure</span><span class="o">=</span><span class="s2">&#34;CVaR&#34;</span><span class="p">)</span>
+</code></pre></div><p>Which returns:</p>
+<div class=table-wrap> <table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th style="text-align:right">Risk Parity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">AAPL</td>
+<td style="text-align:right">0.04843</td>
+</tr>
+<tr>
+<td style="text-align:left">AMZN</td>
+<td style="text-align:right">0.04302</td>
+</tr>
+<tr>
+<td style="text-align:left">APTV</td>
+<td style="text-align:right">0.03907</td>
+</tr>
+<tr>
+<td style="text-align:left">ASML</td>
+<td style="text-align:right">0.03717</td>
+</tr>
+<tr>
+<td style="text-align:left">GOOGL</td>
+<td style="text-align:right">0.04877</td>
+</tr>
+<tr>
+<td style="text-align:left">HYG</td>
+<td style="text-align:right">0.14643</td>
+</tr>
+<tr>
+<td style="text-align:left">NKE</td>
+<td style="text-align:right">0.05275</td>
+</tr>
+<tr>
+<td style="text-align:left">TIP</td>
+<td style="text-align:right">0.33264</td>
+</tr>
+<tr>
+<td style="text-align:left">TLT</td>
+<td style="text-align:right">0.20371</td>
+</tr>
+<tr>
+<td style="text-align:left">TSM</td>
+<td style="text-align:right">0.04802</td>
+</tr>
+</tbody>
+</table> </div>
+<div class="gdoc-page__anchorwrap">
+    <h2 id="examples">
+        Examples
+        <a data-clipboard-text="https://openbb-finance.github.io/OpenBBTerminal/SDK/portfolio/po/#examples" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor Examples" href="#examples">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h2>
+</div><p>To demonstrate the capabilities of the Portfolio Optimization menu, the entire <a href="https://www.investopedia.com/terms/s/sp500.asp" target="_blank">S&amp;P 500 index</a> (as of 30th of May 2022)
+is used and optimized and analysed in a variety of ways. Starting by loading in the dataset with the following:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="c1"># Define your own orderbook path here, current value won&#39;t work</span>
+<span class="n">order_book_path</span> <span class="o">=</span> <span class="s2">&#34;SP_500_Portfolio.xlsx&#34;</span>
+
+<span class="c1"># Read in the file</span>
+<span class="n">order_book</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">order_book_path</span><span class="p">)</span>
+
+<span class="c1"># Adjust the columns accordingly</span>
+<span class="n">order_book_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Ticker&#39;</span><span class="p">,</span> <span class="s1">&#39;Asset Class&#39;</span><span class="p">,</span> <span class="s1">&#39;Sector&#39;</span><span class="p">,</span> <span class="s1">&#39;Industry&#39;</span><span class="p">,</span> <span class="s1">&#39;Country&#39;</span><span class="p">,</span>
+       <span class="s1">&#39;Current Invested Amount&#39;</span><span class="p">,</span> <span class="s1">&#39;Currency&#39;</span><span class="p">]</span>
+
+<span class="n">order_book</span> <span class="o">=</span> <span class="n">order_book</span><span class="p">[</span><span class="n">order_book_cols</span><span class="p">]</span>
+
+<span class="c1"># Load in the portfolio</span>
+<span class="n">tickers</span><span class="p">,</span> <span class="n">categories</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">po</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">order_book_path</span><span class="p">)</span>
+</code></pre></div><p>Then, the <a href="https://jpm.pm-research.com/content/42/4/59.short" target="_blank">Hierarchical Risk Parity</a> technique is applied by using the following:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">weights_hrp</span><span class="p">,</span> <span class="n">data_returns_hrp</span> <span class="o">=</span> <span class="n">openbb</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">po</span><span class="o">.</span><span class="n">hrp</span><span class="p">(</span>
+    <span class="n">tickers</span><span class="p">,</span>
+    <span class="n">interval</span><span class="o">=</span><span class="s2">&#34;5y&#34;</span><span class="p">,</span>
+    <span class="n">risk_measure</span><span class="o">=</span><span class="s2">&#34;cVaR&#34;</span><span class="p">,</span>
+    <span class="n">risk_aversion</span><span class="o">=</span><span class="mf">0.8</span>
+<span class="p">)</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">weights_hrp</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&#34;Hierarchical Risk Parity&#34;</span><span class="p">])</span>
+</code></pre></div><p>This results in the following (the result is edited, as it would show 500 tickers, to prevent flooding this page):</p>
+<div class=table-wrap> <table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th style="text-align:right">Hierarchical Risk Parity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">A</td>
+<td style="text-align:right">0.00199</td>
+</tr>
+<tr>
+<td style="text-align:left">AAL</td>
+<td style="text-align:right">0.00104</td>
+</tr>
+<tr>
+<td style="text-align:left">AAP</td>
+<td style="text-align:right">0.00185</td>
+</tr>
+<tr>
+<td style="text-align:left">AAPL</td>
+<td style="text-align:right">0.00184</td>
+</tr>
+<tr>
+<td style="text-align:left">ABBV</td>
+<td style="text-align:right">0.0028</td>
+</tr>
+<tr>
+<td style="text-align:left">&hellip;</td>
+<td style="text-align:right">&hellip;</td>
+</tr>
+<tr>
+<td style="text-align:left">NOC</td>
+<td style="text-align:right">0.00228</td>
+</tr>
+<tr>
+<td style="text-align:left">XOM</td>
+<td style="text-align:right">0.00167</td>
+</tr>
+<tr>
+<td style="text-align:left">ZBRA</td>
+<td style="text-align:right">0.00156</td>
+</tr>
+<tr>
+<td style="text-align:left">ZION</td>
+<td style="text-align:right">0.0014</td>
+</tr>
+<tr>
+<td style="text-align:left">ZTS</td>
+<td style="text-align:right">0.00225</td>
+</tr>
+</tbody>
+</table> </div>
+<p>It is possible to delve further into these findings with the <code>plot</code> functionality for example done by looking at the portfolio&rsquo;s returns <a href="https://www.investopedia.com/terms/h/histogram.asp" target="_blank">histogram</a>
+which also includes a variety of risk measures as well as the portfolio&rsquo;s drawdowns.</p>
+<pre><code>openbb.portfolio.po.plot(data=data_returns_hrp, weights=weights_hrp, risk_measure='cVaR', hist=True)
+</code></pre><p><a target="_blank" href="https://user-images.githubusercontent.com/46355364/171145848-5a3f5333-6b7f-4d7a-a96e-0859adb1ce78.png"><img alt="Portfokio Returns Histogram" src="https://user-images.githubusercontent.com/46355364/171145848-5a3f5333-6b7f-4d7a-a96e-0859adb1ce78.png"></a></p>
+<pre><code>openbb.portfolio.po.plot(data=data_returns_hrp, weights=weights_hrp, risk_measure='cVaR', dd=True)
+</code></pre><p><a target="_blank" href="https://user-images.githubusercontent.com/46355364/171145983-2d2c1c2e-67d2-4839-b43a-51bd22332de8.png"><img alt="Portfolio Drawdowns" src="https://user-images.githubusercontent.com/46355364/171145983-2d2c1c2e-67d2-4839-b43a-51bd22332de8.png"></a></p>
+
     </article>
  
 
