@@ -1188,13 +1188,13 @@ def get_start_date_from_period(period) -> date:
         start_date = date(date.today().year, 1, 1)
     elif period == "qtd":
         cm = date.today().month
-        if cm >= 1 and cm <= 3:
+        if 3 >= cm >= 1:
             start_date = date(date.today().year, 1, 1)
-        elif cm >= 4 and cm <= 6:
+        elif 6 >= cm >= 4:
             start_date = date(date.today().year, 4, 1)
-        elif cm >= 7 and cm <= 9:
+        elif 9 >= cm >= 7:
             start_date = date(date.today().year, 7, 1)
-        elif cm >= 10 and cm <= 12:
+        elif 12 >= cm >= 10:
             start_date = date(date.today().year, 10, 1)
         else:
             print("Error")

@@ -1723,11 +1723,8 @@ def display_attribution_categorisation(
             floatfmt=".2f",
         )
 
-    
     _, ax = plt.subplots(figsize=plot_autoscale(), dpi=PLOT_DPI)
     plot_out = display[plot_fields]
-    plot_out.plot.barh(
-        ax=ax, align="center", width=0.8, color=["#1f77b4", "#ff7f0e"]
-    )
+    plot_out.plot.barh(ax=ax, align="center", width=0.8, color=["#1f77b4", "#ff7f0e"])
     ax.set_title(f"{attrib_type} By Sector")
     plt.tight_layout()

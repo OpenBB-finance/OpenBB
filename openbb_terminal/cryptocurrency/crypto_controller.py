@@ -133,7 +133,11 @@ class CryptoController(CryptoBaseController):
                 "-s": "--symbol",
             }
             choices["headlines"] = {c: {} for c in finbrain_crypto_view.COINS}
-            # choices["prt"]["--vs"] = {c: {} for c in coingecko_coin_ids} # list is huge. makes typing buggy
+            choices["prt"]["--vs"] = None
+            choices["prt"]["--price"] = None
+            choices["prt"]["-p"] = "--price"
+            choices["prt"]["--top"] = None
+            choices["prt"]["-t"] = None
 
             choices["support"] = self.SUPPORT_CHOICES
             choices["about"] = self.ABOUT_CHOICES
@@ -190,7 +194,8 @@ class CryptoController(CryptoBaseController):
                 help="Coin to compare with",
                 dest="vs",
                 type=str,
-                required="-h" not in other_args,
+                # required="-h" not in other_args,
+                default=None,
             )
             parser.add_argument(
                 "-p",
@@ -216,27 +221,40 @@ class CryptoController(CryptoBaseController):
             )
 
             if ns_parser:
-                if ns_parser.vs:
-                    current_coin_id = cryptocurrency_helpers.get_coingecko_id(
-                        self.symbol
-                    )
+                num_args = 0
+                for arg in vars(ns_parser):
+                    if getattr(ns_parser, arg):
+                        num_args = num_args + 1
+                        if num_args > 1:
+                            console.print("[red]Please chose only one flag[/red]\n")
+                            return
+                current_coin_id = cryptocurrency_helpers.get_coingecko_id(self.symbol)
+                if ns_parser.vs is not None:
                     coin_found = cryptocurrency_helpers.get_coingecko_id(ns_parser.vs)
                     if not coin_found:
                         console.print(
                             f"VS Coin '{ns_parser.vs}' not found in CoinGecko\n"
                         )
                         return
-                    pycoingecko_view.display_coin_potential_returns(
-                        current_coin_id,
-                        coin_found,
-                        ns_parser.top,
-                        ns_parser.price,
-                    )
-
                 else:
+                    coin_found = None
+                if (
+                    ns_parser.vs is None
+                    and ns_parser.top is None
+                    and ns_parser.price is None
+                ):
                     console.print(
-                        "No coin selected. Use 'load' to load the coin you want to look at.\n"
+                        "[red]Please chose a flag: --top, --vs, or --price [/red]\n"
                     )
+                    return
+                pycoingecko_view.display_coin_potential_returns(
+                    current_coin_id,
+                    coin_found,
+                    ns_parser.top,
+                    ns_parser.price,
+                )
+        else:
+            console.print("[red]Please load a coin first![/red]\n")
 
     @log_start_end(log=logger)
     def call_price(self, other_args):
@@ -467,7 +485,7 @@ class CryptoController(CryptoBaseController):
             -l, --limit it displays top N number of records.
             coins: Shows list of coins available on CoinGecko, CoinPaprika and Binance.If you provide name of
             coin then in result you will see ids of coins with best match for all mentioned services.
-            If you provide ALL keyword in your search query, then all coins will be displayed. To move over coins you
+            If you provide "ALL" in your coin search query, then all coins will be displayed. To move over coins you
             can use pagination mechanism with skip, top params. E.g. coins ALL --skip 100 --limit 30 then all coins
             from 100 to 130 will be displayed. By default skip = 0, limit = 10.
             If you won't provide source of the data everything will be displayed (CoinGecko, CoinPaprika, Binance).
@@ -517,22 +535,24 @@ class CryptoController(CryptoBaseController):
             EXPORT_ONLY_RAW_DATA_ALLOWED,
         )
         # TODO: merge find + display_all_coins
-        if ns_parser and ns_parser.coin:
-            find(
-                query=ns_parser.coin,
-                source=ns_parser.source,
-                key=ns_parser.key,
-                limit=ns_parser.limit,
-                export=ns_parser.export,
-            )
-            display_all_coins(
-                symbol=ns_parser.coin,
-                source=ns_parser.source,
-                limit=ns_parser.limit,
-                skip=ns_parser.skip,
-                show_all=bool("ALL" in other_args),
-                export=ns_parser.export,
-            )
+        if ns_parser:
+            if ns_parser.coin == "ALL":
+                display_all_coins(
+                    symbol=ns_parser.coin,
+                    source=ns_parser.source,
+                    limit=ns_parser.limit,
+                    skip=ns_parser.skip,
+                    show_all=True,
+                    export=ns_parser.export,
+                )
+            else:
+                find(
+                    query=ns_parser.coin,
+                    source=ns_parser.source,
+                    key=ns_parser.key,
+                    limit=ns_parser.limit,
+                    export=ns_parser.export,
+                )
 
     @log_start_end(log=logger)
     def call_forecast(self, _):

@@ -1,16 +1,16 @@
-    Rank Trust_Score          Id                 Name                 Country Year_Established Trade_Volume_24h_BTC
-0      1        10.0     binance              Binance          Cayman Islands           2017.0       1192179.768168
-1      2        10.0    ftx_spot                  FTX     Antigua and Barbuda           2019.0        156286.013644
-2      3        10.0        okex                  OKX                  Belize           2013.0        143218.301919
-3      4        10.0        gdax    Coinbase Exchange           United States           2012.0        134642.761023
-4      5        10.0  bybit_spot                Bybit                    None           2018.0         95859.900953
-5      6        10.0        gate              Gate.io               Hong Kong             None         65909.352994
-6      7        10.0       huobi         Huobi Global              Seychelles           2013.0         49046.455566
-7      8        10.0    bitfinex             Bitfinex  British Virgin Islands           2014.0         48037.709355
-8      9        10.0      kraken               Kraken           United States           2011.0         44096.918333
-9     10        10.0  binance_us           Binance US           United States           2019.0         39782.517362
-10    11        10.0      ftx_us               FTX.US           United States           2020.0         20603.912069
-11    12        10.0  crypto_com  Crypto.com Exchange          Cayman Islands           2019.0         19917.375949
-12    13        10.0      gemini               Gemini           United States           2014.0          6615.439516
-13    14         9.0         mxc          MEXC Global                    None           2018.0        258068.479716
-14    15         9.0      ftx_tr               FTX TR                  Turkey             None        139774.569945
+     Rank Trust_Score                  Id                  Name Country Year_Established Trade_Volume_24h_BTC
+249   250         5.0  yoshi_exchange_bsc  Yoshi.exchange (BSC)    None             None             0.923042
+248   249         5.0        sphynx_brise        Sphynx (Brise)    None             None             1.080215
+247   248         5.0          solarflare            Solarflare    None             None             1.095427
+246   247         5.0            wigoswap              Wigoswap    None           2022.0             1.142818
+245   246         5.0       glide_finance         Glide Finance    None             None             1.211922
+244   245         5.0   milkyswap-milkada             MilkySwap    None           2022.0             1.233885
+243   244         5.0     elk_finance_bsc     Elk Finance (BSC)    None             None             1.251304
+242   243         5.0         sphynx_swap     Sphynx Swap (BSC)    None             None             1.278942
+241   242         5.0              crodex                Crodex    None             None             1.342047
+240   241         5.0           diffusion     Diffusion Finance    None           2022.0             1.385367
+239   240         5.0    zenlink_moonbeam    Zenlink (Moonbeam)    None             None             1.431943
+238   239         5.0              kuswap                Kuswap    None           2021.0             1.610176
+237   238         6.0      radioshack_bsc      RadioShack (BSC)    None             None             1.639109
+236   237         5.0   sushiswap_harmony   Sushiswap (Harmony)    None             None             1.761501
+235   236         5.0             pegasys               Pegasys    None             None             1.786929
