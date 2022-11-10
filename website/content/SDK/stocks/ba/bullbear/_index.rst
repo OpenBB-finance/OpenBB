@@ -29,7 +29,7 @@ stocks.ba.bullbear(
 
     symbol : str
         Ticker symbol to look at
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -70,6 +70,6 @@ stocks.ba.bullbear(
 
     symbol: str
         Stock ticker symbol
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

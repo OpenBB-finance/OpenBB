@@ -5,7 +5,7 @@ import importlib
 import os
 from ruamel.yaml import YAML
 
-from openbb_terminal.sdk import functions
+from openbb_terminal.sdk import trail_map
 
 # NOTE: The main.yml and documentation _index.md files are automaticallty overridden
 # every time this is ran. Folder level _index.md files are NOT overridden after creation
@@ -26,11 +26,12 @@ def list_endpoints_info(functions_: dict) -> List[Tuple[str, str, Callable[..., 
     func_list = []
     for key, sub_dict in functions_.items():
         for sub_key, item_path in sub_dict.items():
-            full_path = item_path.split(".")
-            module_path = ".".join(full_path[:-1])
-            module = importlib.import_module(module_path)
-            target_function = getattr(module, full_path[-1])
-            func_list.append((key, sub_key, target_function))
+            if item_path:
+                full_path = item_path.split(".")
+                module_path = ".".join(full_path[:-1])
+                module = importlib.import_module(module_path)
+                target_function = getattr(module, full_path[-1])
+                func_list.append((key, sub_key, target_function))
     return func_list
 
 
@@ -263,7 +264,7 @@ def write_docstring(name: str, func, file, chart: bool):
             )
             if chart:
                 file.write("\n")
-                file.write("    chart: *bool*\n")
+                file.write("    chart: bool\n")
                 file.write("       Flag to display chart\n")
             file.write("\n")
 
@@ -444,7 +445,7 @@ if __name__ == "__main__":
     folder_list = crawl_folders(main_path)
     for folder_path in [x[0] for x in folder_list]:
         folder_documentation(folder_path)
-    funcs = list_endpoints_info(functions)
+    funcs = list_endpoints_info(trail_map.map_dict)
     grouped_funcs = groupby(funcs, 0)
 
     # Create the documentation files

@@ -32,7 +32,7 @@ common.ta.cg(
         Data to use with close being titled values
     window: int
         Length for indicator window
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -78,6 +78,6 @@ common.ta.cg(
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

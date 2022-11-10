@@ -2,12 +2,7 @@
     :language: python
     :class: highlight
 
-<<<<<<< HEAD:website/content/SDK/economy/macro/_index.md
-## Get underlying data 
-### economy.macro(parameters: list = None, countries: list = None, transform: str = '', start_date: str = '1900-01-01', end_date=datetime.date(2022, 11, 4), symbol: str = '') -> Tuple[Any, Dict[Any, Dict[Any, Any]], str]
-=======
 |
->>>>>>> main:website/content/SDK/economy/macro/_index.rst
 
 To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
@@ -24,7 +19,7 @@ economy.macro(
     transform: str = '',
     start_date: str = '1900-01-01',
     end_date=datetime.date(
-    2022, 11, 8, chart: bool = False,
+    2022, 11, 10, chart: bool = False,
 ), symbol: str = '',
     chart: bool = False,
 ) -> Tuple[Any, Dict[Any, Dict[Any, Any]], str]
@@ -50,7 +45,7 @@ economy.macro(
         The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
     symbol : str
         In what currency you wish to convert all values.
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -63,12 +58,7 @@ economy.macro(
     str
         Denomination which can be Trillions, Billions, Millions, Thousands
 
-<<<<<<< HEAD:website/content/SDK/economy/macro/_index.md
-## Getting charts 
-### economy.macro(parameters: list = None, countries: list = None, transform: str = '', start_date: str = '1900-01-01', end_date: str = '2022-11-04', symbol: str = '', raw: bool = False, external_axes: Optional[List[axes]] = None, export: str = '', chart=True)
-=======
 |
->>>>>>> main:website/content/SDK/economy/macro/_index.rst
 
 .. raw:: html
 
@@ -82,7 +72,7 @@ economy.macro(
     countries: list = None,
     transform: str = '',
     start_date: str = '1900-01-01',
-    end_date: str = '2022-11-08',
+    end_date: str = '2022-11-10',
     symbol: str = '',
     raw: bool = False,
     external_axes: Optional[List[axes]] = None,
@@ -123,7 +113,7 @@ economy.macro(
         External axes to plot on
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

@@ -32,7 +32,7 @@ forex.oanda.fwd(
         To currency
     from_symbol: str
         From currency
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -71,6 +71,6 @@ forex.oanda.fwd(
         From currency
     export: str
         Format to export data
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

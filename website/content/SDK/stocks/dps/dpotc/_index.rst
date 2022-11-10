@@ -29,7 +29,7 @@ stocks.dps.dpotc(
 
     symbol : str
         Stock ticker to get data from
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -71,6 +71,6 @@ stocks.dps.dpotc(
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

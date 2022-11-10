@@ -63,6 +63,6 @@ crypto.ov.cgglobal(
         Whether to show a pie chart
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

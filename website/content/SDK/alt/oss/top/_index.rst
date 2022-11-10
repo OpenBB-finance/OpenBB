@@ -35,7 +35,7 @@ alt.oss.top(
             Check for repo categories. If more than one separate with a comma: e.g., finance,investment. Default: None
     limit : int
             Number of repos to search for
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -80,6 +80,6 @@ alt.oss.top(
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

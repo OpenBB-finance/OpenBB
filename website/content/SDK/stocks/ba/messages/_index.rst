@@ -32,7 +32,7 @@ stocks.ba.messages(
         Stock ticker symbol
     limit : int
         Number of messages to get
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -69,6 +69,6 @@ stocks.ba.messages(
         Stock ticker symbol
     limit: int
         Number of messages to get
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

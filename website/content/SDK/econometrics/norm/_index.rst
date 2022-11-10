@@ -31,7 +31,7 @@ econometrics.norm(
 
     data : pd.Series
         A series or column of a DataFrame to test normality for
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -80,6 +80,6 @@ econometrics.norm(
         Format to export data.
     external_axes: Optional[List[plt.axes]]
         External axes to plot on
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

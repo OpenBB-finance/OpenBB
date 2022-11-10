@@ -35,7 +35,7 @@ econometrics.root(
         Type of regression of ADF test
     kpss_reg : str
         Type of regression for KPSS test
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -84,6 +84,6 @@ econometrics.root(
         Type of regression for KPSS test. Choose c or ct
     export: str
         Format to export data.
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

@@ -47,7 +47,7 @@ crypto.defi.vaults(
         ]
     kind: str
         Kind/type of vault - one from list: ['lp','single','noimploss','stable']
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -112,6 +112,6 @@ crypto.defi.vaults(
         Flag to show links
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

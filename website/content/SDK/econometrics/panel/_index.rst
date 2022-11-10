@@ -42,7 +42,7 @@ econometrics.panel(
         Whether to apply Fixed Effects on entities.
     time_effects: bool
         Whether to apply Fixed Effects on time.
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -94,7 +94,7 @@ econometrics.panel(
         Whether to apply Fixed Effects on time.
     export : str
         Format to export data
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

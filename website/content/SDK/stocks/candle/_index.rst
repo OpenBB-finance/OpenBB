@@ -1,11 +1,6 @@
-<<<<<<< HEAD:website/content/SDK/stocks/candle/_index.md
-## Get underlying data 
-### stocks.candle(symbol: str, data: pandas.core.frame.DataFrame = None, use_matplotlib: bool = True, intraday: bool = False, add_trend: bool = False, ma: Optional[Iterable[int]] = None, asset_type: str = '', start_date: datetime.datetime = datetime.datetime(2019, 10, 31, 16, 3, 2, 269455), interval: int = 1440, end_date: datetime.datetime = datetime.datetime(2022, 11, 4, 16, 3, 2, 269462), prepost: bool = False, source: str = 'YahooFinance', iexrange: str = 'ytd', weekly: bool = False, monthly: bool = False, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, raw: bool = False, yscale: str = 'linear')
-=======
 .. role:: python(code)
     :language: python
     :class: highlight
->>>>>>> main:website/content/SDK/stocks/candle/_index.rst
 
 |
 
@@ -24,11 +19,13 @@ stocks.candle(
     add_trend: bool = False,
     ma: Optional[Iterable[int]] = None,
     asset_type: str = '',
-    start_date: datetime.datetime = datetime.datetime(
-    2019, 11, 4, 12, 2, 54, 348838, chart: bool = False,
+    start_date: Union[datetime.datetime, str,
+    NoneType] = datetime.datetime(
+    2019, 11, 6, 10, 57, 3, 415209, chart: bool = False,
 ), interval: int = 1440,
-    end_date: datetime.datetime = datetime.datetime(
-    2022, 11, 8, 12, 2, 54, 348849, chart: bool = False,
+    end_date: Union[datetime.datetime, str,
+    NoneType] = datetime.datetime(
+    2022, 11, 10, 10, 57, 3, 415211, chart: bool = False,
 ), prepost: bool = False,
     source: str = 'YahooFinance',
     iexrange: str = 'ytd',
@@ -69,12 +66,12 @@ stocks.candle(
         External axes (2 axes are expected in the list), by default None
     asset_type\_: str
         String to include in title
-    start_date: datetime
-        Start date to get data from with
+    start_date: str or datetime, optional
+        Start date to get data from with. - datetime or string format (YYYY-MM-DD)
     interval: int
         Interval (in minutes) to get data 1, 5, 15, 30, 60 or 1440
-    end_date: datetime
-        End date to get data from with
+    end_date: str or datetime, optional
+        End date to get data from with. - datetime or string format (YYYY-MM-DD)
     prepost: bool
         Pre and After hours data
     source: str

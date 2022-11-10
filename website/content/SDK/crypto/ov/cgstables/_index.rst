@@ -35,7 +35,7 @@ crypto.ov.cgstables(
         Key by which to sort data
     ascend: bool
         Flag to sort data ascending
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -81,6 +81,6 @@ crypto.ov.cgstables(
         Export dataframe data to csv,json,xlsx file
     pie : bool
         Whether to show a pie chart
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

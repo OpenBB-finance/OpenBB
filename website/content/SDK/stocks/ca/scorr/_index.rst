@@ -31,7 +31,7 @@ stocks.ca.scorr(
         Similar companies to compare income with.
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -71,6 +71,6 @@ stocks.ca.scorr(
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

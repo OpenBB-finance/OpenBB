@@ -2,12 +2,7 @@
     :language: python
     :class: highlight
 
-<<<<<<< HEAD:website/content/SDK/economy/treasury/_index.md
-## Get underlying data 
-### economy.treasury(instruments: list = None, maturities: list = None, frequency: str = 'monthly', start_date: str = '1900-01-01', end_date: str = '2022-11-04') -> pandas.core.frame.DataFrame
-=======
 |
->>>>>>> main:website/content/SDK/economy/treasury/_index.rst
 
 To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
@@ -23,7 +18,7 @@ economy.treasury(
     maturities: list = None,
     frequency: str = 'monthly',
     start_date: str = '1900-01-01',
-    end_date: str = '2022-11-08',
+    end_date: str = '2022-11-10',
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -47,7 +42,7 @@ economy.treasury(
         Starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31.
     end_date : str
         End date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -56,12 +51,7 @@ economy.treasury(
     treasury_data: pd.Dataframe
         Holds data of the selected types and maturities
 
-<<<<<<< HEAD:website/content/SDK/economy/treasury/_index.md
-## Getting charts 
-### economy.treasury(instruments: list = None, maturities: list = None, frequency: str = 'monthly', start_date: str = '1900-01-01', end_date: str = '2022-11-04', raw: bool = False, external_axes: Optional[List[axes]] = None, export: str = '', chart=True)
-=======
 |
->>>>>>> main:website/content/SDK/economy/treasury/_index.rst
 
 .. raw:: html
 
@@ -75,7 +65,7 @@ economy.treasury(
     maturities: list = None,
     frequency: str = 'monthly',
     start_date: str = '1900-01-01',
-    end_date: str = '2022-11-08',
+    end_date: str = '2022-11-10',
     raw: bool = False,
     external_axes: Optional[List[axes]] = None,
     export: str = '',
@@ -108,7 +98,7 @@ economy.treasury(
         External axes to plot on
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
