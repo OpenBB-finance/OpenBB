@@ -29,7 +29,7 @@ crypto.defi.sinfo(
 
     address: str
         terra blockchain address e.g. terra1jvwelvs7rdk6j3mqdztq5tya99w8lxk6l9hcqg
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -69,6 +69,6 @@ crypto.defi.sinfo(
         Number of records to display
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

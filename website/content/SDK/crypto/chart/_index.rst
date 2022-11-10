@@ -41,7 +41,7 @@ crypto.chart(
         Currency (only used for chart title), by default ""
     yscale: str
         Scale for y axis of plot Either linear or log
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -82,6 +82,6 @@ crypto.chart(
         Currency (only used for chart title), by default ""
     yscale: str
         Scale for y axis of plot Either linear or log
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

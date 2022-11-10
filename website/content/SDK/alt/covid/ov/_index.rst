@@ -31,7 +31,7 @@ alt.covid.ov(
         Country to get data for
     limit: int
         Number of raw data to show
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -71,6 +71,6 @@ alt.covid.ov(
         Format to export data
     plot: bool
         Flag to display historical plot
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

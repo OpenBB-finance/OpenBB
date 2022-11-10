@@ -35,7 +35,7 @@ common.qa.unitroot(
         Type of regression of ADF test. Can be ‘c’,’ct’,’ctt’,’nc’ 'c' - Constant and t - trend order
     kpss_reg : str
         Type of regression for KPSS test.  Can be ‘c’,’ct'
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -81,6 +81,6 @@ common.qa.unitroot(
         Type of regression for KPSS test. Can be ‘c’,’ct'
     export : str
         Format for exporting data
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

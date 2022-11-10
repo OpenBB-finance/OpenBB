@@ -27,7 +27,7 @@ common.qa.var(
 .. raw:: html
 
     <p>
-    Gets value at risk for specified stock dataframe
+    Gets value at risk for specified stock dataframe.
     </p>
 
 * **Parameters**
@@ -44,16 +44,14 @@ common.qa.var(
         VaR percentile
     portfolio: bool
         If the data is a portfolio
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
 * **Returns**
 
-    list
-        list of VaR
-    list
-        list of historical VaR
+    pd.DataFrame
+        DataFrame with Value at Risk per percentile
 
 |
 
@@ -80,7 +78,7 @@ common.qa.var(
 .. raw:: html
 
     <p>
-    Displays VaR of dataframe
+    Displays VaR of dataframe.
     </p>
 
 * **Parameters**
@@ -101,6 +99,6 @@ common.qa.var(
         Number of rows you want to use VaR over
     portfolio: bool
         If the data is a portfolio
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

@@ -35,7 +35,7 @@ crypto.ov.cpcontracts(
         Key by which to sort data
     ascend: bool
         Flag to sort data ascend
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -81,6 +81,6 @@ crypto.ov.cpcontracts(
         Flag to sort data ascending
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

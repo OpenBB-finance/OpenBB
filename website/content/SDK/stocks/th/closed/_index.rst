@@ -28,7 +28,7 @@ stocks.th.closed() -> pandas.core.frame.DataFrame
 * **Parameters**
 
     
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -61,6 +61,6 @@ stocks.th.closed()
 * **Parameters**
 
     
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

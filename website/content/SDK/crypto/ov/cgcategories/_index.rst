@@ -71,6 +71,6 @@ crypto.ov.cgcategories(
         Export dataframe data to csv,json,xlsx file
     pie: bool
         Whether to show the pie chart
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

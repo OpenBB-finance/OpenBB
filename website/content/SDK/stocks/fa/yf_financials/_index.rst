@@ -40,7 +40,7 @@ stocks.fa.yf_financials(
 
     ratios: bool
         Shows percentage change
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -94,6 +94,6 @@ stocks.fa.yf_financials(
         List of row labels to plot
     export: str
         Format to export data
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

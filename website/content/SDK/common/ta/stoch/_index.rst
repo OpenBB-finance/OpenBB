@@ -38,7 +38,7 @@ common.ta.stoch(
         Slow d period
     slowkperiod : int
         Slow k period
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -90,6 +90,6 @@ common.ta.stoch(
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (3 axes are expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

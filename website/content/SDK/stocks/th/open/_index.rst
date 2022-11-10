@@ -28,7 +28,7 @@ stocks.th.open() -> pandas.core.frame.DataFrame
 * **Parameters**
 
     
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -61,6 +61,6 @@ stocks.th.open()
 * **Parameters**
 
     
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

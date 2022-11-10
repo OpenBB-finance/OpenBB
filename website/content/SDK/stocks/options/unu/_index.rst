@@ -29,7 +29,7 @@ stocks.options.unu(
 
     limit: int
         Number to show
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -79,6 +79,6 @@ stocks.options.unu(
         Flag to show puts only
     export: str
         File type to export
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

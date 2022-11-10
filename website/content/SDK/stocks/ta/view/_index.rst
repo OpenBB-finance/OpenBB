@@ -29,7 +29,7 @@ stocks.ta.view(
 
     symbol: str
         Ticker symbol
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -66,6 +66,6 @@ stocks.ta.view(
         Stock ticker symbol
     external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

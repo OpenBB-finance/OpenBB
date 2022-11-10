@@ -32,7 +32,7 @@ stocks.options.chains(
         Ticker to get options for
     expiry : str
         Expiration date in the form of "YYYY-MM-DD"
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -87,6 +87,6 @@ stocks.options.chains(
         Only display puts
     export: str
         Format to  export file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
