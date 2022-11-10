@@ -16,8 +16,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 crypto.dd.change(
     symbol: str,
     exchange: str = 'binance',
-    start_date: int = 1262322000,
-    end_date: int = 1668033690,
+    start_date: int = 1262304000,
+    end_date: int = 1668077823,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -39,7 +39,7 @@ crypto.dd.change(
         Initial date timestamp (e.g., 1_614_556_800)
     end_date : int
         End date timestamp (e.g., 1_614_556_800)
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -91,6 +91,6 @@ crypto.dd.change(
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

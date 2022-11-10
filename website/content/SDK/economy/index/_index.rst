@@ -45,7 +45,7 @@ economy.index(
         Which column to load in, by default this is the Adjusted Close.
     returns: bool
         Flag to show cumulative returns on index
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -105,7 +105,7 @@ economy.index(
         External axes to plot on
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

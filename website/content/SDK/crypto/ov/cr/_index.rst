@@ -30,7 +30,7 @@ crypto.ov.cr(
 
     rate_type : str
         Interest rate type: {borrow, supply}. Default: supply
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -77,6 +77,6 @@ crypto.ov.cr(
         Number of records to show
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

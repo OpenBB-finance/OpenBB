@@ -29,7 +29,7 @@ etf.ln(
 
     name: str
         Search by name to find ETFs matching the criteria.
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -69,6 +69,6 @@ etf.ln(
         Limit of ETFs to display
     export: str
         Type of format to export data
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

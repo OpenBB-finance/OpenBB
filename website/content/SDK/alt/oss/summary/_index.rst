@@ -29,7 +29,7 @@ alt.oss.summary(
 
     repo : str
             Repo to search for Format: org/repo, e.g., openbb-finance/openbbterminal
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -65,6 +65,6 @@ alt.oss.summary(
             Repository to display summary. Format: org/repo, e.g., openbb-finance/openbbterminal
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

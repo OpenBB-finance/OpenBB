@@ -29,7 +29,7 @@ stocks.dps.spos(
 
     symbol: str
         Stock to get data from
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -75,6 +75,6 @@ stocks.dps.spos(
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

@@ -30,7 +30,7 @@ crypto.disc.top_nfts(
 
     sortby: str
         Key by which to sort data
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -70,6 +70,6 @@ crypto.disc.top_nfts(
         Key by which to sort data
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

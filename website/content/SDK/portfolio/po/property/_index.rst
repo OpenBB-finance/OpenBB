@@ -68,7 +68,7 @@ portfolio.po.property(
         Property to weight portfolio by
     value : float, optional
         Amount of money to allocate
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -167,6 +167,6 @@ portfolio.po.property(
         Amount to allocate to portfolio, by default 1.0
     table: bool, optional
         True if plot table weights, by default False
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

@@ -29,7 +29,7 @@ common.qa.summary(
 
     data : pd.DataFrame
         Dataframe to get summary statistics for
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -66,6 +66,6 @@ common.qa.summary(
         DataFrame to get statistics of
     export : str
         Format to export data
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

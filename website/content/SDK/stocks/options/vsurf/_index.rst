@@ -29,7 +29,7 @@ stocks.options.vsurf(
 
     symbol: str
         Stock ticker symbol to get
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -72,6 +72,6 @@ stocks.options.vsurf(
         The variable for the Z axis
     external_axes: Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

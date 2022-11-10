@@ -35,7 +35,7 @@ forex.oanda.close(
         Number of units to close. If empty default to all.
     accountID : str, optional
         Oanda account ID, by default cfg.OANDA_ACCOUNT
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -75,6 +75,6 @@ forex.oanda.close(
         ID of the order to close
     units : Union[int, None]
         Number of units to close. If empty default to all.
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

@@ -38,7 +38,7 @@ crypto.disc.coins(
         Key to sort data
     ascend: bool
         Sort data in ascending order
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -84,6 +84,6 @@ crypto.disc.coins(
         Export dataframe data to csv,json,xlsx file
     ascend: bool
         Sort data in ascending order
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

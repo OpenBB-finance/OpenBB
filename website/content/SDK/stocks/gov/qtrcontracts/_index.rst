@@ -32,7 +32,7 @@ stocks.gov.qtrcontracts(
         How to analyze.  Either gives total amount or sorts by high/low momentum.
     limit : int, optional
         Number to return, by default 5
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -78,6 +78,6 @@ stocks.gov.qtrcontracts(
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

@@ -52,7 +52,7 @@ crypto.dd.events(
         https://api.coinpaprika.com/docs#tag/Coins/paths/~1coins~1%7Bcoin_id%7D~1events/get).
     ascend: bool
         Flag to sort data ascending
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -104,6 +104,6 @@ crypto.dd.events(
         Flag to display urls
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

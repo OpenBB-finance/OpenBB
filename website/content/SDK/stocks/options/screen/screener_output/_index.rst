@@ -29,7 +29,7 @@ stocks.options.screen.screener_output(
 
     preset: str
         Chosen preset
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -71,7 +71,7 @@ stocks.options.screen.screener_output(
         Number of randomly sorted rows to display
     export: str
         Format for export file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

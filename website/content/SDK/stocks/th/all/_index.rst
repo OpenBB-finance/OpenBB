@@ -28,7 +28,7 @@ stocks.th.all() -> pandas.core.frame.DataFrame
 * **Parameters**
 
     
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -61,6 +61,6 @@ stocks.th.all()
 * **Parameters**
 
     
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

@@ -38,7 +38,7 @@ stocks.ba.infer(
         If given, the start time to get tweets from
     end_date: Optional[str]
         If given, the end time to get tweets from
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -78,6 +78,6 @@ stocks.ba.infer(
         Number of tweets to analyze
     export: str
         Format to export tweet dataframe
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
