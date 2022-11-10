@@ -506,13 +506,11 @@ def load_from_yahoofinance(
 
 def load(
     symbol: str,
-    start_date: Optional[Union[datetime, str]] = (
-        datetime.now() - timedelta(days=1100)
-    ).strftime("%Y-%m-%d"),
+    start_date: Optional[Union[datetime, str]] = None,
     interval: str = "1440",
     exchange: str = "binance",
     vs_currency: str = "usdt",
-    end_date: Optional[Union[datetime, str]] = datetime.now().strftime("%Y-%m-%d"),
+    end_date: Optional[Union[datetime, str]] = None,
     source: str = "CCXT",
 ) -> pd.DataFrame:
     """Load crypto currency to get data for
@@ -541,6 +539,12 @@ def load(
     pd.DataFrame
         Dataframe consisting of price and volume data
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
+
+    if end_date is None:
+        end_date = datetime.now().strftime("%Y-%m-%d")
 
     start_date = check_datetime(start_date)
     end_date = check_datetime(end_date, start=False)
