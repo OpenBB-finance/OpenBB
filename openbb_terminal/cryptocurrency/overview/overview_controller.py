@@ -98,6 +98,17 @@ class OverviewController(BaseController):
         "Volume_24H",
     ]
 
+    STABLES_CHOICES = [
+        "Symbol",
+        "Name",
+        "Price_[$]",
+        "Market_Cap_[$]",
+        "Market_Cap_Rank",
+        "Change_7d_[%]",
+        "Change_24h_[%]",
+        "Volume_[$]",
+    ]
+
     def __init__(self, queue: List[str] = None):
         """Constructor"""
         super().__init__(queue)
@@ -148,8 +159,9 @@ class OverviewController(BaseController):
                 "-l": "--limit",
                 "--pie": {},
             }
+
             choices["stables"] = {
-                "--sortby": {c: {} for c in pycoingecko_model.COINS_COLUMNS},
+                "--sortby": {c: {} for c in self.STABLES_CHOICES},
                 "-s": "--sortby",
                 "--limit": {str(c): {} for c in range(1, 100)},
                 "-l": "--limit",
@@ -825,13 +837,12 @@ class OverviewController(BaseController):
             dest="sortby",
             type=str,
             help="Sort by given column. Default: market_cap",
-            default="market_cap",
-            choices=pycoingecko_model.COINS_COLUMNS,
+            default="Market_Cap_[$]",
         )
 
         parser.add_argument(
             "--descend",
-            action="store_false",
+            action="store_true",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
             default=False,
