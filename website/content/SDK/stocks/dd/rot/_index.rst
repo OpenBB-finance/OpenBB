@@ -29,7 +29,7 @@ stocks.dd.rot(
 
     symbol : str
         Ticker symbol to get ratings from
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -75,6 +75,6 @@ stocks.dd.rot(
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]]
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

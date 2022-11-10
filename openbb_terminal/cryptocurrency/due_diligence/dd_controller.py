@@ -205,7 +205,6 @@ class DueDiligenceController(CryptoBaseController):
                 "--kind": {c: {} for c in cryptopanic_model.CATEGORIES},
                 "-k": "--kind",
                 "--filter": {c: {} for c in cryptopanic_model.FILTERS},
-                "-f": "--filter",
                 "--region": {c: {} for c in cryptopanic_model.REGIONS},
                 "-r": "--region",
             }

@@ -38,7 +38,7 @@ crypto.defi.tokens(
         The column to sort by
     ascend: bool
         Whether to sort in ascending order
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -85,6 +85,6 @@ crypto.defi.tokens(
         Flag to sort data descending
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

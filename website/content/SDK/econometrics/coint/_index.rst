@@ -46,7 +46,7 @@ econometrics.coint(
 
     independent_series : pd.Series
         The second time series of the pair to analyse.
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -128,6 +128,6 @@ econometrics.coint(
         Format to export data
     external_axes:Optional[List[plt.axes]]
         External axes to plot on
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

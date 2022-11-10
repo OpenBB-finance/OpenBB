@@ -35,7 +35,7 @@ stocks.ba.popular(
         How many posts to analyze in each subreddit
     subreddits : str, optional
         String of comma separated subreddits.
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -78,6 +78,6 @@ stocks.ba.popular(
         String of comma separated subreddits.
     export : str
         Format to export dataframe
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

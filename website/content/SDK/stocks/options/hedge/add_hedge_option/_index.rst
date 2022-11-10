@@ -41,7 +41,7 @@ stocks.options.hedge.add_hedge_option(
         The amount of days until expiration. Use annual notation thus a month would be 30 / 360.
     sign: int
         Whether you have a long (1) or short (-1) position
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -88,7 +88,7 @@ stocks.options.hedge.add_hedge_option(
         The amount of days until expiration. Use annual notation thus a month would be 30 / 360.
     sign: int
         Whether you have a long (1) or short (-1) position
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

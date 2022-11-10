@@ -34,7 +34,7 @@ alt.covid.stat(
         Statistic to get.  Either "cases", "deaths" or "rates"
     limit: int
         Number of raw data to show
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -77,6 +77,6 @@ alt.covid.stat(
         Format to export data
     plot : bool
         Flag to plot data
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

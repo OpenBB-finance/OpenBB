@@ -29,7 +29,7 @@ stocks.ins.act(
 
     symbol : str
         Ticker symbol to get insider activity data from
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -50,7 +50,7 @@ stocks.ins.act(
 stocks.ins.act(
     data: pandas.core.frame.DataFrame,
     symbol: str,
-    start_date: str = '2019-11-04',
+    start_date: str = '2019-11-06',
     interval: str = '1440min',
     limit: int = 10,
     raw: bool = False,
@@ -84,6 +84,6 @@ stocks.ins.act(
         Export dataframe data to csv,json,xlsx file
     external_axes: Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

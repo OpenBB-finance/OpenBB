@@ -35,7 +35,7 @@ forex.oanda.listorders(
         Limit the number of orders to retrieve
     accountID : str, optional
         Oanda account ID, by default cfg.OANDA_ACCOUNT
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -70,6 +70,6 @@ forex.oanda.listorders(
         Filter orders by a specific state ("PENDING", "CANCELLED", etc.)
     order_count : int
         Limit the number of orders to retrieve
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

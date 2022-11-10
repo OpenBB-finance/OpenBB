@@ -33,7 +33,7 @@ crypto.defi.validators(
         validatorName, tokensAmount, votingPower, commissionRate, status, uptime
     ascend: bool
         Flag to sort data descending
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -77,6 +77,6 @@ crypto.defi.validators(
         Flag to sort data descending
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

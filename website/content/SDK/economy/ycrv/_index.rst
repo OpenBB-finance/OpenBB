@@ -29,7 +29,7 @@ economy.ycrv(
 
     date: datetime
         Date to get curve for.  If None, gets most recent date
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -70,6 +70,6 @@ economy.ycrv(
         Date to get yield curve for
     external_axes: Optional[List[plt.Axes]]
         External axes to plot data on
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

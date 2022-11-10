@@ -36,7 +36,7 @@ crypto.disc.gainers(
     sortby: str
         Key to sort data. The table can be sorted by every of its columns. Refer to
         API documentation (see /coins/markets in https://www.coingecko.com/en/api/documentation)
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -81,6 +81,6 @@ crypto.disc.gainers(
         API documentation (see /coins/markets in https://www.coingecko.com/en/api/documentation)
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

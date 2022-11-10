@@ -38,7 +38,7 @@ stocks.ta.recom(
         Exchange based on tradingview docs https://python-tradingview-ta.readthedocs.io/en/latest/usage.html
     interval: str
         Interval time to check technical indicators and correspondent recommendation
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -84,6 +84,6 @@ stocks.ta.recom(
         Interval time to check technical indicators and correspondent recommendation
     export: str
         Format of export file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

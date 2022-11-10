@@ -34,7 +34,7 @@ stocks.dps.psi_q(
         ticker to get short interest from
     nyse : bool
         data from NYSE if true, otherwise NASDAQ
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -85,6 +85,6 @@ stocks.dps.psi_q(
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
