@@ -1,6 +1,3 @@
-# IMPORTATION STANDARD
-from datetime import datetime
-
 # IMPORTATION THIRDPARTY
 import pandas as pd
 import pytest
@@ -81,7 +78,7 @@ def test_display_historical_empty_df(mocker):
 @pytest.mark.record_stdout
 def test_display_trending():
     sentimentinvestor_view.display_trending(
-        start_date=datetime(2021, 12, 21),
+        start_date="2021-12-12",
         hour=9,
         number=10,
         limit=10,
@@ -101,7 +98,7 @@ def test_display_trending_empty_df(mocker):
     )
 
     sentimentinvestor_view.display_trending(
-        start_date=datetime(2021, 12, 21),
+        start_date="2021-12-12",
         hour=9,
         number=10,
         limit=10,
