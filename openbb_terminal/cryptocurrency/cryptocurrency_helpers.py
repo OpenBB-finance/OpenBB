@@ -472,11 +472,11 @@ def load_from_yahoofinance(
 
 def load(
     symbol: str,
-    start_date: datetime = (datetime.now() - timedelta(days=1100)),
+    start_date: str = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d"),
     interval: str = "1440",
     exchange: str = "binance",
     vs_currency: str = "usdt",
-    end_date: datetime = datetime.now(),
+    end_date: str = datetime.now().strftime("%Y-%m-%d"),
     source: str = "CCXT",
 ) -> pd.DataFrame:
     """Load crypto currency to get data for
@@ -485,8 +485,8 @@ def load(
     ----------
     symbol: str
         Coin to get
-    start_date: datetime
-        The datetime to start at
+    start_date : str
+        Initial date, format YYYY-MM-DD
     interval: str
         The interval between data points in minutes.
         Choose from: 1, 15, 30, 60, 240, 1440, 10080, 43200
@@ -494,8 +494,8 @@ def load(
         The exchange to get data from.
     vs_currency: str
         Quote Currency (Defaults to usdt)
-    end_date: datetime
-       The datetime to end at
+    end_date : str
+        Final date, format YYYY-MM-DD
     source: str
         The source of the data
         Choose from: CCXT, CoinGecko, YahooFinance
@@ -505,13 +505,17 @@ def load(
     pd.DataFrame
         Dataframe consisting of price and volume data
     """
+
+    dt_start_date = datetime.strptime(start_date, "%Y-%m-%d")
+    dt_end_date = datetime.strptime(end_date, "%Y-%m-%d")
+
     if source == "CCXT":
-        return load_from_ccxt(symbol, start_date, interval, exchange, vs_currency)
+        return load_from_ccxt(symbol, dt_start_date, interval, exchange, vs_currency)
     if source == "CoinGecko":
-        return load_from_coingecko(symbol, start_date, vs_currency)
+        return load_from_coingecko(symbol, dt_start_date, vs_currency)
     if source == "YahooFinance":
         return load_from_yahoofinance(
-            symbol, start_date, interval, vs_currency, end_date
+            symbol, dt_start_date, interval, vs_currency, dt_end_date
         )
     console.print("[red]Invalid source sent[/red]\n")
     return pd.DataFrame()
