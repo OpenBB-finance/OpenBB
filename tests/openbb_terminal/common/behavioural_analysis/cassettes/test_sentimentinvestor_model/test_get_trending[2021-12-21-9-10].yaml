@@ -1,0 +1,28 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - python-requests/2.28.1
+    method: GET
+    uri: https://api.sentimentinvestor.com/v1/trending?end=2021-12-21+09%3A00%3A00&limit=10&start=2021-12-21+09%3A00%3A00&token=MOCK_TOKEN
+  response:
+    body:
+      string: Service Unavailable
+    headers:
+      Content-Length:
+      - '19'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Thu, 10 Nov 2022 18:11:01 GMT
+    status:
+      code: 503
+      message: Service Unavailable
+version: 1
