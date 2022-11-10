@@ -11,7 +11,6 @@ import requests
 from openbb_terminal import config_terminal as cfg
 from openbb_terminal.decorators import log_start_end, check_api_key
 from openbb_terminal.rich_config import console
-from openbb_terminal.stocks.stocks_helper import check_datetime
 
 logger = logging.getLogger(__name__)
 
@@ -154,10 +153,8 @@ def get_trending(
         Dataframe of trending data
     """
 
-    start_date = check_datetime(start_date)
-
     # type is datetime
-    start_timestamp = start_date + timedelta(hours=hour)
+    start_timestamp = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(hours=hour)
 
     payload: Dict[str, Union[int, str]] = {
         "token": cfg.API_SENTIMENTINVESTOR_TOKEN,

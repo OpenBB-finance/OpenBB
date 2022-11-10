@@ -59,7 +59,7 @@ stocks.ba.trend(
 {{< highlight python >}}
 stocks.ba.trend(
     start_date: datetime.datetime = datetime.datetime(
-    2022, 11, 10, 16, 55, 0, 228058, chart: bool = False,
+    2022, 11, 10, 17, 4, 0, 785135, chart: bool = False,
 ), hour: int = 0,
     number: int = 10,
     limit: int = 10,
