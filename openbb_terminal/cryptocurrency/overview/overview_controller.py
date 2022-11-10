@@ -90,6 +90,24 @@ class OverviewController(BaseController):
     PATH = "/crypto/ov/"
 
     ORDERED_LIST_SOURCES_EXCHANGES = get_ordered_list_sources(f"{PATH}exchanges")
+    CATEGORIES_CHOICES = [
+        "Name",
+        "Market_Cap",
+        "Market_Cap_Change_24H",
+        "Top_3_Coins",
+        "Volume_24H",
+    ]
+
+    STABLES_CHOICES = [
+        "Symbol",
+        "Name",
+        "Price_[$]",
+        "Market_Cap_[$]",
+        "Market_Cap_Rank",
+        "Change_7d_[%]",
+        "Change_24h_[%]",
+        "Volume_[$]",
+    ]
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -135,14 +153,15 @@ class OverviewController(BaseController):
                 "--bar": {},
             }
             choices["categories"] = {
-                "--sortby": {c: {} for c in pycoingecko_model.CATEGORIES_FILTERS},
+                "--sortby": {c: {} for c in self.CATEGORIES_CHOICES},
                 "-s": "--sortby",
                 "--limit": None,
                 "-l": "--limit",
                 "--pie": {},
             }
+
             choices["stables"] = {
-                "--sortby": {c: {} for c in pycoingecko_model.COINS_COLUMNS},
+                "--sortby": {c: {} for c in self.STABLES_CHOICES},
                 "-s": "--sortby",
                 "--limit": None,
                 "-l": "--limit",
@@ -765,8 +784,8 @@ class OverviewController(BaseController):
             dest="sortby",
             type=str,
             help="Sort by given column. Default: market_cap_desc",
-            default=pycoingecko_model.SORT_VALUES[0],
-            choices=pycoingecko_model.SORT_VALUES,
+            default="Market_Cap",
+            choices=self.CATEGORIES_CHOICES,
         )
 
         parser.add_argument(
@@ -818,13 +837,12 @@ class OverviewController(BaseController):
             dest="sortby",
             type=str,
             help="Sort by given column. Default: market_cap",
-            default="market_cap",
-            choices=pycoingecko_model.COINS_COLUMNS,
+            default="Market_Cap_[$]",
         )
 
         parser.add_argument(
             "--descend",
-            action="store_false",
+            action="store_true",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
             default=False,
