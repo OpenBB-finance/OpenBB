@@ -222,7 +222,7 @@ def test_get_granger_causality(recorder, time_series_y, time_series_x, lags):
 
     # The first item is taken since the second item contains Statsmodels
     # objects (which change their identifier on every iteration)
-    recorder.capture_list(result[lags][0])
+    recorder.capture(result)
 
 
 @pytest.mark.vcr()
