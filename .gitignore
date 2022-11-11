@@ -29,6 +29,7 @@ openbb_terminal/portfolio/portfolios/*
 *.http
 .coverage.*
 !openbb_terminal/reports/templates/*.ipynb
+*_tests.csv
 
 # pyinstaller artifacts
 *.pyo
@@ -50,9 +51,6 @@ jupyterlab/*/.ipynb_checkpoints
 jupyterlab/*/*.tsbuildinfo
 jupyterlab/*/ui-tests/test-results/
 jupyterlab/*/ui-tests/tests/*.ts-snapshots/
-
-# Sphinx documentation build files
-docs/_build
 
 # User stylesheets
 styles/user

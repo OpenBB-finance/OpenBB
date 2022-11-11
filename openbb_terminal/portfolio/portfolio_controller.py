@@ -7,7 +7,6 @@ import os
 from typing import List
 from datetime import date
 
-import numpy as np
 import pandas as pd
 
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -18,7 +17,6 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    check_positive_float,
 )
 
 from openbb_terminal.menu import session
@@ -162,28 +160,31 @@ class PortfolioController(BaseController):
 
         choices: dict = {c: {} for c in self.controller_choices}
 
-        one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
-        zero_to_hundred_detailed = {str(c): {} for c in np.arange(0.0, 100.0, 0.1)}
         choices["load"] = {
             "--file": {c: {} for c in self.DATA_HOLDINGS_FILES},
             "-f": "--file",
             "--name": None,
             "-n": "--name",
-            "--rfr": zero_to_hundred_detailed,
+            "--rfr": None,
             "-r": "--rfr",
         }
         choices["show"] = {
-            "--limit": one_to_hundred,
+            "--limit": None,
             "-l": "--limit",
         }
         choices["bench"] = {c: {} for c in statics.BENCHMARK_LIST}
+        choices["bench"] = {
+            "--benchmark": {c: {} for c in statics.BENCHMARK_LIST},
+            "-b": "--benchmark",
+        }
+
         choices["bench"]["--full_shares"] = {}
         choices["bench"]["-s"] = "--full_shares"
         hold = {
-            "--sum": {},
-            "-s": "--sum",
+            "--unstack": {},
+            "-u": "--unstack",
             "--raw": {},
-            "--limit": one_to_hundred,
+            "--limit": None,
             "-l": "--limit",
         }
         choices["holdv"] = hold
@@ -203,7 +204,7 @@ class PortfolioController(BaseController):
         choices["dret"] = {
             "--period": {c: {} for c in self.PERIODS},
             "-p": "--period",
-            "--limit": one_to_hundred,
+            "--limit": None,
             "-l": "--limit",
             "--raw": {},
         }
@@ -219,7 +220,7 @@ class PortfolioController(BaseController):
         r_auto_complete = {
             "--period": {c: {} for c in portfolio_helper.PERIODS},
             "-p": "--period",
-            "--rfr": zero_to_hundred_detailed,
+            "--rfr": None,
             "-r": "--rfr",
         }
         choices["rsharpe"] = r_auto_complete
@@ -233,17 +234,15 @@ class PortfolioController(BaseController):
         choices["alloc"]["-a"] = "--agg"
         choices["alloc"]["--tables"] = {}
         choices["alloc"]["-t"] = "--tables"
-        choices["alloc"]["--limit"] = one_to_hundred
+        choices["alloc"]["--limit"] = None
         choices["alloc"]["-l"] = "--limit"
         choices["summary"] = r_auto_complete
         choices["metric"] = {c: {} for c in self.VALID_METRICS}
         choices["metric"]["--metric"] = {c: {} for c in self.VALID_METRICS}
         choices["metric"]["-m"] = "--metric"
-        choices["metric"]["--rfr"] = zero_to_hundred_detailed
+        choices["metric"]["--rfr"] = None
         choices["metric"]["-r"] = "--rfr"
         choices["perf"] = {
-            "--period": {c: {} for c in portfolio_helper.PERIODS},
-            "-p": "--period",
             "--show_trades": {},
             "-t": "--show_trades",
         }
@@ -254,7 +253,7 @@ class PortfolioController(BaseController):
             "-a": "--adjusted",
             "--student": {},
             "-s": "--student",
-            "--percentile": zero_to_hundred_detailed,
+            "--percentile": None,
             "-p": "--percentile",
         }
         choices["es"] = {
@@ -262,7 +261,7 @@ class PortfolioController(BaseController):
             "-m": "--mean",
             "--dist": {c: {} for c in self.VALID_DISTRIBUTIONS},
             "-d": "--dist",
-            "--percentile": zero_to_hundred_detailed,
+            "--percentile": None,
             "-p": "--percentile",
         }
         choices["om"] = {
@@ -287,14 +286,11 @@ class PortfolioController(BaseController):
         mt.add_raw("\n")
 
         mt.add_cmd("load")
+        mt.add_cmd("show")
+        mt.add_cmd("bench")
         mt.add_raw("\n")
         mt.add_param("_loaded", self.portfolio_name)
         mt.add_param("_riskfreerate", self.portfolio_name)
-        mt.add_raw("\n")
-        mt.add_cmd("show")
-        mt.add_raw("\n")
-        mt.add_cmd("bench")
-        mt.add_raw("\n")
         mt.add_param("_benchmark", self.benchmark_name)
         mt.add_raw("\n")
 
@@ -315,6 +311,8 @@ class PortfolioController(BaseController):
         mt.add_cmd("alloc", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("attrib", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("summary", self.portfolio_name and self.benchmark_name)
+        mt.add_cmd("alloc", self.portfolio_name and self.benchmark_name)
+        mt.add_cmd("attrib", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("metric", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("perf", self.portfolio_name and self.benchmark_name)
 
@@ -330,16 +328,13 @@ class PortfolioController(BaseController):
 >   bro              brokers holdings, \t\t supports: robinhood, ally, degiro, coinbase
 >   po               portfolio optimization, \t optimize your portfolio weights efficiently[/menu]
 [cmds]
-    load             load data into the portfolio[/cmds]
-
-[param]Loaded orderbook:[/param] {self.portfolio_name or ""}
+    load             load data into the portfolio
+    show             show existing transactions
+    bench            define the benchmark
+[/cmds]
+[param]Loaded transactions file:[/param] {self.portfolio_name}
 [param]Risk Free Rate:  [/param] {self.risk_free_rate:.2%}
-{("[unvl]", "[cmds]")[port]}
-    show             show existing transactions{("[/unvl]", "[/cmds]")[port]}
-{("[unvl]", "[cmds]")[port]}
-    bench            define the benchmark{("[/unvl]", "[/cmds]")[port]}
-
-[param]Benchmark:[/param] {self.benchmark_name or ""}
+[param]Benchmark:[/param] {self.benchmark_name}
 
 [info]Graphs:[/info]{("[unvl]", "[cmds]")[port_bench]}
     holdv            holdings of assets (absolute value)
@@ -355,9 +350,9 @@ class PortfolioController(BaseController):
     rbeta            rolling beta
 {("[/unvl]", "[/cmds]")[port_bench]}
 [info]Metrics:[/info]{("[unvl]", "[cmds]")[port_bench]}
+    summary          all portfolio vs benchmark metrics for a certain period of choice
     alloc            allocation on an asset, sector, countries or regions basis
     attrib           display sector attribution of the portfolio compared to the S&P 500
-    summary          all portfolio vs benchmark metrics for a certain period of choice
     metric           portfolio vs benchmark metric for all different periods
     perf             performance of the portfolio versus benchmark{("[/unvl]", "[/cmds]")[port_bench]}
 
@@ -413,7 +408,7 @@ class PortfolioController(BaseController):
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="load",
-            description="Load your portfolio",
+            description="Load your portfolio transactions.",
         )
         parser.add_argument(
             "-f",
@@ -447,10 +442,10 @@ class PortfolioController(BaseController):
             else:
                 file_location = ns_parser.file  # type: ignore
 
-            orderbook = portfolio_model.PortfolioModel.read_orderbook(
+            transactions = portfolio_model.PortfolioModel.read_transactions(
                 str(file_location)
             )
-            self.portfolio = portfolio_model.PortfolioModel(orderbook)
+            self.portfolio = portfolio_model.PortfolioModel(transactions)
             self.benchmark_name = ""
 
             if ns_parser.name:
@@ -494,7 +489,7 @@ class PortfolioController(BaseController):
             limit=10,
         )
         if ns_parser and self.portfolio is not None:
-            portfolio_view.display_orderbook(
+            portfolio_view.display_transactions(
                 self.portfolio,
                 show_index=False,
                 limit=ns_parser.limit,
@@ -557,7 +552,9 @@ class PortfolioController(BaseController):
                 )
 
             else:
-                console.print("[red]Please first load orderbook using 'load'[/red]\n")
+                console.print(
+                    "[red]Please first load transactions file using 'load'[/red]\n"
+                )
             console.print()
 
     @log_start_end(log=logger)
@@ -594,7 +591,7 @@ class PortfolioController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args, limit=10)
 
         if ns_parser and self.portfolio is not None:
-            console.print()
+
             if check_portfolio_benchmark_defined(
                 self.portfolio_name, self.benchmark_name
             ):
@@ -765,17 +762,6 @@ class PortfolioController(BaseController):
             dest="show_trades",
             help="Whether to show performance on all trades in comparison to the benchmark.",
         )
-        parser.add_argument(
-            "-p",
-            "--period",
-            type=str,
-            choices=portfolio_helper.PERIODS,
-            dest="period",
-            default="all",
-            help="The file to be loaded",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-p")
 
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
 
@@ -786,7 +772,6 @@ class PortfolioController(BaseController):
 
                 portfolio_view.display_performance_vs_benchmark(
                     self.portfolio,
-                    ns_parser.period,
                     ns_parser.show_trades,
                 )
 
@@ -800,11 +785,11 @@ class PortfolioController(BaseController):
             description="Display holdings of assets (absolute value)",
         )
         parser.add_argument(
-            "-s",
-            "--sum",
+            "-u",
+            "--unstack",
             action="store_true",
             default=False,
-            dest="sum_assets",
+            dest="unstack",
             help="Sum all assets value over time",
         )
         ns_parser = self.parse_known_args_and_warn(
@@ -820,7 +805,7 @@ class PortfolioController(BaseController):
             ):
                 portfolio_view.display_holdings_value(
                     self.portfolio,
-                    ns_parser.sum_assets,
+                    ns_parser.unstack,
                     ns_parser.raw,
                     ns_parser.limit,
                     ns_parser.export,
@@ -836,11 +821,11 @@ class PortfolioController(BaseController):
             description="Display holdings of assets (in percentage)",
         )
         parser.add_argument(
-            "-s",
-            "--sum",
+            "-u",
+            "--unstack",
             action="store_true",
             default=False,
-            dest="sum_assets",
+            dest="unstack",
             help="Sum all assets percentage over time",
         )
         ns_parser = self.parse_known_args_and_warn(
@@ -856,7 +841,7 @@ class PortfolioController(BaseController):
             ):
                 portfolio_view.display_holdings_percentage(
                     self.portfolio,
-                    ns_parser.sum_assets,
+                    ns_parser.unstack,
                     ns_parser.raw,
                     ns_parser.limit,
                     ns_parser.export,
@@ -877,7 +862,7 @@ class PortfolioController(BaseController):
             "-m",
             "--mean",
             action="store_true",
-            default=False,
+            default=True,
             dest="use_mean",
             help="If one should use the mean of the portfolio return",
         )
@@ -949,7 +934,7 @@ class PortfolioController(BaseController):
             "-m",
             "--mean",
             action="store_true",
-            default=False,
+            default=True,
             dest="use_mean",
             help="If one should use the mean of the portfolios return",
         )
@@ -1234,7 +1219,7 @@ class PortfolioController(BaseController):
         parser.add_argument(
             "-r",
             "--rfr",
-            type=check_positive_float,
+            type=float,
             dest="risk_free_rate",
             default=self.risk_free_rate,
             help="Set risk free rate for calculations.",
@@ -1276,7 +1261,7 @@ class PortfolioController(BaseController):
         parser.add_argument(
             "-r",
             "--rfr",
-            type=check_positive_float,
+            type=float,
             dest="risk_free_rate",
             default=self.risk_free_rate,
             help="Set risk free rate for calculations.",
@@ -1351,7 +1336,7 @@ class PortfolioController(BaseController):
         parser.add_argument(
             "-r",
             "--rfr",
-            type=check_positive_float,
+            type=float,
             dest="risk_free_rate",
             default=self.risk_free_rate,
             help="Set risk free rate for calculations.",
@@ -1483,7 +1468,7 @@ class PortfolioController(BaseController):
         parser.add_argument(
             "-r",
             "--rfr",
-            type=check_positive_float,
+            type=float,
             dest="risk_free_rate",
             default=self.risk_free_rate,
             help="Set risk free rate for calculations.",
@@ -1523,16 +1508,13 @@ def check_portfolio_benchmark_defined(portfolio_name: str, benchmark_name: str) 
     bool
         If both portfolio and benchmark have been defined
     """
-    if portfolio_name and benchmark_name:
-        return True
+
     if not portfolio_name:
-        if not benchmark_name:
-            console.print(
-                "[red]Please first define the portfolio (via 'load') "
-                "and the benchmark (via 'bench').[/red]\n"
-            )
-        else:
-            console.print("[red]Please first define the portfolio (via 'load')[/red]\n")
-    else:
+        console.print("[red]Please first define the portfolio (via 'load')[/red]\n")
+        return False
+
+    if not benchmark_name:
         console.print("[red]Please first define the benchmark (via 'bench')[/red]\n")
-    return False
+        return False
+
+    return True

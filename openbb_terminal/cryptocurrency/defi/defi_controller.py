@@ -69,7 +69,7 @@ class DefiController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
             choices["newspaper"] = {
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["vaults"] = {
@@ -91,13 +91,13 @@ class DefiController(BaseController):
                 "--sort": {c: {} for c in graph_model.TOKENS_FILTERS},
                 "-s": "--sort",
                 "--skip": {str(c): {} for c in range(1, 1000)},
-                "--limit": {str(c): {} for c in range(1, 1000)},
+                "--limit": None,
                 "--descend": {},
             }
             choices["pairs"] = {
                 "--sort": {c: {} for c in graph_model.PAIRS_FILTERS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 1000)},
+                "--limit": None,
                 "-l": "--limit",
                 "--vol": {str(c): {} for c in range(1, 1000)},
                 "-v": "--vol",
@@ -109,44 +109,44 @@ class DefiController(BaseController):
             choices["pools"] = {
                 "--sort": {c: {} for c in graph_model.POOLS_FILTERS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 1000)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
             choices["swaps"] = {
                 "--sort": {c: {} for c in graph_model.SWAPS_FILTERS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 1000)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
             choices["ldapps"] = {
                 "--sort": {c: {} for c in llama_model.LLAMA_FILTERS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
                 "--desc": {},
             }
             choices["gdapps"] = {
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["stvl"] = {
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["dtvl"] = {"--dapps": {}, "-d": "--dapps"}
             choices["sinfo"] = {
                 "--address": None,
                 "-a": "--address",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["validators"] = {
                 "--sort": {c: {} for c in terramoney_fcd_model.VALIDATORS_COLUMNS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
@@ -155,17 +155,17 @@ class DefiController(BaseController):
                 "-k": "--kind",
                 "--cumulative": {},
                 "--descend": {},
-                "--limit": {str(c): {} for c in range(1, 1000)},
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["sreturn"] = {
-                "--limit": {str(c): {} for c in range(1, 1000)},
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["lcsc"] = {
                 "--days": {str(c): {} for c in range(1, 1000)},
                 "-d": "--days",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["anchor"] = {

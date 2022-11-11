@@ -153,7 +153,7 @@ class OptionsController(BaseController):
                 "-p": "--puts_only",
                 "--calls_only": {},
                 "-c": "--calls_only",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["calc"] = {
@@ -236,7 +236,7 @@ class OptionsController(BaseController):
                 "--chain": None,
                 "-c": "--chain",
                 "--raw": {},
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["plot"] = {
@@ -302,8 +302,10 @@ class OptionsController(BaseController):
                 c: {} for c in get_ordered_list_sources(f"{self.PATH}exp")
             }
 
+            if isinstance(self.chain, pd.DataFrame):
+                return
             if self.chain and self.source != "Nasdaq":
-                one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
+
                 self.choices["hist"] = {
                     str(c): {}
                     for c in self.chain.puts["strike"] + self.chain.calls["strike"]
@@ -313,7 +315,7 @@ class OptionsController(BaseController):
                 self.choices["hist"]["--chain"] = None
                 self.choices["hist"]["-c"] = "--chain"
                 self.choices["hist"]["--raw"] = {}
-                self.choices["hist"]["--limit"] = one_to_hundred
+                self.choices["hist"]["--limit"] = None
                 self.choices["hist"]["-l"] = "--limit"
                 self.choices["grhist"]["--strike"] = {
                     str(c): {}
@@ -1261,7 +1263,7 @@ class OptionsController(BaseController):
             "--y_axis",
             type=str,
             dest="y",
-            default="y",
+            default="iv",
             choices=self.plot_vars_choices,
             help=(
                 "ltd- last trade date, s- strike, lp- last price, b- bid, a- ask,"
