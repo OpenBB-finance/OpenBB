@@ -10,7 +10,9 @@ optional arguments:
                         Number of records to display (default: 10)
   -s {volumeUSD,token0.name,token0.symbol,token1.name,token1.symbol,volumeUSD,txCount}, --sort {volumeUSD,token0.name,token0.symbol,token1.name,token1.symbol,volumeUSD,txCount}
                         Sort by given column. Default: volumeUSD (default: volumeUSD)
-  --descend             Flag to sort in descending order (lowest first) (default: False)
+  -r, --reverse         Data is sorted in descending order by default. Reverse
+                        flag will sort it in an ascending way. Only works when raw
+                        data is displayed. (default: False)
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx (default: )

@@ -13,7 +13,9 @@ optional arguments:
   --days DAYS           Number of days the pair has been active, (default: 10)
   -s {created,pair,token0,token1,volumeUSD,txCount,totalSupply}, --sort {created,pair,token0,token1,volumeUSD,txCount,totalSupply}
                         Sort by given column. Default: created (default: created)
-  --descend             Flag to sort in descending order (lowest first) (default: False)
+  -r, --reverse         Data is sorted in descending order by default. Reverse
+                        flag will sort it in an ascending way. Only works when raw
+                        data is displayed. (default: False)
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx (default: )

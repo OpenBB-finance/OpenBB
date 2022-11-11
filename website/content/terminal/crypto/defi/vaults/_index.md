@@ -18,7 +18,9 @@ optional arguments:
                         Number of records to display (default: 10)
   -s {name,chain,protocol,apy,tvl,link}, --sort {name,chain,protocol,apy,tvl,link}
                         Sort by given column. Default: timestamp (default: apy)
-  --descend             Flag to sort in descending order (lowest first) (default: False)
+  -r, --reverse         Data is sorted in descending order by default. Reverse
+                        flag will sort it in an ascending way. Only works when raw
+                        data is displayed. (default: False)
   -l, --links           Flag to show vault link (default: True)
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx}
