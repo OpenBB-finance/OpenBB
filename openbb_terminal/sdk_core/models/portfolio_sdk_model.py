@@ -154,8 +154,12 @@ class PortfolioPortfolioOptimization(Category):
 
     def __init__(self):
         super().__init__()
-        self.blacklitterman = lib.portfolio_optimization_optimizer_model.get_black_litterman_portfolio
-        self.blacklitterman_view = lib.portfolio_optimization_optimizer_view.display_black_litterman
+        self.blacklitterman = (
+            lib.portfolio_optimization_optimizer_model.get_black_litterman_portfolio
+        )
+        self.blacklitterman_view = (
+            lib.portfolio_optimization_optimizer_view.display_black_litterman
+        )
         self.ef = lib.portfolio_optimization_optimizer_model.get_ef
         self.ef_view = lib.portfolio_optimization_optimizer_view.display_ef
         self.equal = lib.portfolio_optimization_optimizer_model.get_equal_weights
@@ -168,17 +172,27 @@ class PortfolioPortfolioOptimization(Category):
         self.hrp_view = lib.portfolio_optimization_optimizer_view.display_hrp
         self.load = lib.portfolio_optimization_excel_model.load_allocation
         self.load_bls_view = lib.portfolio_optimization_excel_model.load_bl_views
-        self.maxdecorr = lib.portfolio_optimization_optimizer_model.get_max_decorrelation_portfolio
-        self.maxdecorr_view = lib.portfolio_optimization_optimizer_view.display_max_decorr
-        self.maxdiv = lib.portfolio_optimization_optimizer_model.get_max_diversification_portfolio
+        self.maxdecorr = (
+            lib.portfolio_optimization_optimizer_model.get_max_decorrelation_portfolio
+        )
+        self.maxdecorr_view = (
+            lib.portfolio_optimization_optimizer_view.display_max_decorr
+        )
+        self.maxdiv = (
+            lib.portfolio_optimization_optimizer_model.get_max_diversification_portfolio
+        )
         self.maxdiv_view = lib.portfolio_optimization_optimizer_view.display_max_div
         self.maxret = lib.portfolio_optimization_optimizer_model.get_max_ret
         self.maxret_view = lib.portfolio_optimization_optimizer_view.display_max_ret
         self.maxsharpe = lib.portfolio_optimization_optimizer_model.get_max_sharpe
-        self.maxsharpe_view = lib.portfolio_optimization_optimizer_view.display_max_sharpe
+        self.maxsharpe_view = (
+            lib.portfolio_optimization_optimizer_view.display_max_sharpe
+        )
         self.maxutil = lib.portfolio_optimization_optimizer_model.get_max_util
         self.maxutil_view = lib.portfolio_optimization_optimizer_view.display_max_util
-        self.meanrisk = lib.portfolio_optimization_optimizer_model.get_mean_risk_portfolio
+        self.meanrisk = (
+            lib.portfolio_optimization_optimizer_model.get_mean_risk_portfolio
+        )
         self.meanrisk_view = lib.portfolio_optimization_optimizer_view.display_mean_risk
         self.minrisk = lib.portfolio_optimization_optimizer_model.get_min_risk
         self.minrisk_view = lib.portfolio_optimization_optimizer_view.display_min_risk
@@ -187,8 +201,18 @@ class PortfolioPortfolioOptimization(Category):
         self.plot = lib.portfolio_optimization_optimizer_view.additional_plots
         self.plot_view = lib.portfolio_optimization_optimizer_view.additional_plots
         self.property = lib.portfolio_optimization_optimizer_model.get_property_weights
-        self.property_view = lib.portfolio_optimization_optimizer_view.display_property_weighting
-        self.relriskparity = lib.portfolio_optimization_optimizer_model.get_rel_risk_parity_portfolio
-        self.relriskparity_view = lib.portfolio_optimization_optimizer_view.display_rel_risk_parity
-        self.riskparity = lib.portfolio_optimization_optimizer_model.get_risk_parity_portfolio
-        self.riskparity_view = lib.portfolio_optimization_optimizer_view.display_risk_parity
+        self.property_view = (
+            lib.portfolio_optimization_optimizer_view.display_property_weighting
+        )
+        self.relriskparity = (
+            lib.portfolio_optimization_optimizer_model.get_rel_risk_parity_portfolio
+        )
+        self.relriskparity_view = (
+            lib.portfolio_optimization_optimizer_view.display_rel_risk_parity
+        )
+        self.riskparity = (
+            lib.portfolio_optimization_optimizer_model.get_risk_parity_portfolio
+        )
+        self.riskparity_view = (
+            lib.portfolio_optimization_optimizer_view.display_risk_parity
+        )

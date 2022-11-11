@@ -5,6 +5,7 @@ import os
 import re
 
 import importlib
+import subprocess
 from typing import Any, Dict, List, Optional, TextIO
 
 from openbb_terminal.sdk_core.sdk_helpers import clean_attr_desc, get_sdk_imports_text
@@ -522,6 +523,9 @@ class BuildCategoryModelClasses:
                     content = f.read()
                 with open(file, "wb") as f:
                     f.write(content.replace(b"\r", b"\n"))
+
+        # We run black to make sure the code is formatted correctly
+        subprocess.check_call(["black", "openbb_terminal"])
 
 
 def generate():

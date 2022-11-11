@@ -110,7 +110,9 @@ class CryptoDueDiligence(Category):
         self.balance = lib.crypto_dd_binance_model.get_balance
         self.balance_view = lib.crypto_dd_binance_view.display_balance
         self.basic_info = lib.crypto_dd_coinpaprika_model.basic_coin_info
-        self.binance_available_quotes_for_each_coin = lib.crypto_dd_binance_model.get_binance_available_quotes_for_each_coin
+        self.binance_available_quotes_for_each_coin = (
+            lib.crypto_dd_binance_model.get_binance_available_quotes_for_each_coin
+        )
         self.book = lib.crypto_dd_binance_model.get_order_book
         self.book_view = lib.crypto_dd_binance_view.display_order_book
         self.candles = lib.crypto_dd_coinbase_model.get_candles
@@ -118,8 +120,12 @@ class CryptoDueDiligence(Category):
         self.cbbook = lib.crypto_dd_coinbase_model.get_order_book
         self.cbbook_view = lib.crypto_dd_coinbase_view.display_order_book
         self.change = lib.crypto_dd_glassnode_model.get_exchange_net_position_change
-        self.change_view = lib.crypto_dd_glassnode_view.display_exchange_net_position_change
-        self.check_valid_binance_string = lib.crypto_dd_binance_model.check_valid_binance_str
+        self.change_view = (
+            lib.crypto_dd_glassnode_view.display_exchange_net_position_change
+        )
+        self.check_valid_binance_string = (
+            lib.crypto_dd_binance_model.check_valid_binance_str
+        )
         self.close = lib.crypto_dd_glassnode_model.get_close_price
         self.coin = lib.crypto_dd_coinpaprika_model.get_coin
         self.coin_market_chart = lib.crypto_dd_pycoingecko_model.get_coin_market_chart
@@ -132,7 +138,9 @@ class CryptoDueDiligence(Category):
         self.exchanges = lib.crypto_dd_ccxt_model.get_exchanges
         self.fr = lib.crypto_dd_messari_model.get_fundraising
         self.fr_view = lib.crypto_dd_messari_view.display_fundraising
-        self.get_binance_trading_pairs = lib.crypto_dd_binance_model.get_all_binance_trading_pairs
+        self.get_binance_trading_pairs = (
+            lib.crypto_dd_binance_model.get_all_binance_trading_pairs
+        )
         self.get_mt = lib.crypto_dd_messari_model.get_available_timeseries
         self.get_mt_view = lib.crypto_dd_messari_view.display_messari_timeseries_list
         self.gh = lib.crypto_dd_santiment_model.get_github_activity
@@ -140,7 +148,9 @@ class CryptoDueDiligence(Category):
         self.gov = lib.crypto_dd_messari_model.get_governance
         self.gov_view = lib.crypto_dd_messari_view.display_governance
         self.headlines = lib.stocks_ba_finbrain_model.get_sentiment
-        self.headlines_view = lib.crypto_dd_crypto_finbrain_view.display_crypto_sentiment_analysis
+        self.headlines_view = (
+            lib.crypto_dd_crypto_finbrain_view.display_crypto_sentiment_analysis
+        )
         self.inv = lib.crypto_dd_messari_model.get_investors
         self.inv_view = lib.crypto_dd_messari_view.display_investors
         self.links = lib.crypto_dd_messari_model.get_links
@@ -166,7 +176,9 @@ class CryptoDueDiligence(Category):
         self.ps_view = lib.crypto_dd_coinpaprika_view.display_price_supply
         self.rm = lib.crypto_dd_messari_model.get_roadmap
         self.rm_view = lib.crypto_dd_messari_view.display_roadmap
-        self.show_available_pairs_for_given_symbol = lib.crypto_dd_binance_model.show_available_pairs_for_given_symbol
+        self.show_available_pairs_for_given_symbol = (
+            lib.crypto_dd_binance_model.show_available_pairs_for_given_symbol
+        )
         self.stats = lib.crypto_dd_coinbase_model.get_product_stats
         self.stats_view = lib.crypto_dd_coinbase_view.display_stats
         self.team = lib.crypto_dd_messari_model.get_team
@@ -228,8 +240,12 @@ class CryptoDeFi(Category):
 
     def __init__(self):
         super().__init__()
-        self.aterra = lib.crypto_defi_terraengineer_model.get_history_asset_from_terra_address
-        self.aterra_view = lib.crypto_defi_terraengineer_view.display_terra_asset_history
+        self.aterra = (
+            lib.crypto_defi_terraengineer_model.get_history_asset_from_terra_address
+        )
+        self.aterra_view = (
+            lib.crypto_defi_terraengineer_view.display_terra_asset_history
+        )
         self.ayr = lib.crypto_defi_terraengineer_model.get_anchor_yield_reserve
         self.ayr_view = lib.crypto_defi_terraengineer_view.display_anchor_yield_reserve
         self.dtvl = lib.crypto_defi_llama_model.get_defi_protocol
@@ -239,11 +255,15 @@ class CryptoDeFi(Category):
         self.gdapps = lib.crypto_defi_llama_model.get_grouped_defi_protocols
         self.gdapps_view = lib.crypto_defi_llama_view.display_grouped_defi_protocols
         self.gov_proposals = lib.crypto_defi_terramoney_fcd_model.get_proposals
-        self.gov_proposals_view = lib.crypto_defi_terramoney_fcd_view.display_gov_proposals
+        self.gov_proposals_view = (
+            lib.crypto_defi_terramoney_fcd_view.display_gov_proposals
+        )
         self.ldapps = lib.crypto_defi_llama_model.get_defi_protocols
         self.ldapps_view = lib.crypto_defi_llama_view.display_defi_protocols
         self.luna_supply = lib.crypto_defi_smartstake_model.get_luna_supply_stats
-        self.luna_supply_view = lib.crypto_defi_smartstake_view.display_luna_circ_supply_change
+        self.luna_supply_view = (
+            lib.crypto_defi_smartstake_view.display_luna_circ_supply_change
+        )
         self.newsletters = lib.crypto_defi_substack_model.get_newsletters
         self.newsletters_view = lib.crypto_defi_substack_view.display_newsletters
         self.pairs = lib.crypto_defi_graph_model.get_uniswap_pool_recently_added
@@ -251,11 +271,17 @@ class CryptoDeFi(Category):
         self.pools = lib.crypto_defi_graph_model.get_uni_pools_by_volume
         self.pools_view = lib.crypto_defi_graph_view.display_uni_pools
         self.sinfo = lib.crypto_defi_terramoney_fcd_model.get_staking_account_info
-        self.sinfo_view = lib.crypto_defi_terramoney_fcd_view.display_account_staking_info
+        self.sinfo_view = (
+            lib.crypto_defi_terramoney_fcd_view.display_account_staking_info
+        )
         self.sratio = lib.crypto_defi_terramoney_fcd_model.get_staking_ratio_history
-        self.sratio_view = lib.crypto_defi_terramoney_fcd_view.display_staking_ratio_history
+        self.sratio_view = (
+            lib.crypto_defi_terramoney_fcd_view.display_staking_ratio_history
+        )
         self.sreturn = lib.crypto_defi_terramoney_fcd_model.get_staking_returns_history
-        self.sreturn_view = lib.crypto_defi_terramoney_fcd_view.display_staking_returns_history
+        self.sreturn_view = (
+            lib.crypto_defi_terramoney_fcd_view.display_staking_returns_history
+        )
         self.stats = lib.crypto_defi_graph_model.get_uniswap_stats
         self.stats_view = lib.crypto_defi_graph_view.display_uni_stats
         self.stvl = lib.crypto_defi_llama_model.get_defi_tvl
@@ -305,7 +331,9 @@ class CryptoDiscovery(Category):
         self.coin_list = lib.crypto_disc_pycoingecko_model.get_coin_list
         self.coins = lib.crypto_disc_pycoingecko_model.get_coins
         self.coins_view = lib.crypto_disc_pycoingecko_view.display_coins
-        self.coins_for_given_exchange = lib.crypto_disc_pycoingecko_model.get_coins_for_given_exchange
+        self.coins_for_given_exchange = (
+            lib.crypto_disc_pycoingecko_model.get_coins_for_given_exchange
+        )
         self.cpsearch = lib.crypto_disc_coinpaprika_model.get_search_results
         self.cpsearch_view = lib.crypto_disc_coinpaprika_view.display_search_results
         self.gainers = lib.crypto_disc_pycoingecko_model.get_gainers
@@ -402,12 +430,24 @@ class CryptoOnChain(Category):
         self.balance = lib.crypto_onchain_ethplorer_model.get_address_info
         self.balance_view = lib.crypto_onchain_ethplorer_view.display_address_info
         self.btc_supply = lib.crypto_onchain_blockchain_model.get_btc_circulating_supply
-        self.btc_supply_view = lib.crypto_onchain_blockchain_view.display_btc_circulating_supply
-        self.btc_transac = lib.crypto_onchain_blockchain_model.get_btc_confirmed_transactions
-        self.btc_transac_view = lib.crypto_onchain_blockchain_view.display_btc_confirmed_transactions
-        self.dex_trades_monthly = lib.crypto_onchain_bitquery_model.get_dex_trades_monthly
-        self.dvcp = lib.crypto_onchain_bitquery_model.get_daily_dex_volume_for_given_pair
-        self.dvcp_view = lib.crypto_onchain_bitquery_view.display_daily_volume_for_given_pair
+        self.btc_supply_view = (
+            lib.crypto_onchain_blockchain_view.display_btc_circulating_supply
+        )
+        self.btc_transac = (
+            lib.crypto_onchain_blockchain_model.get_btc_confirmed_transactions
+        )
+        self.btc_transac_view = (
+            lib.crypto_onchain_blockchain_view.display_btc_confirmed_transactions
+        )
+        self.dex_trades_monthly = (
+            lib.crypto_onchain_bitquery_model.get_dex_trades_monthly
+        )
+        self.dvcp = (
+            lib.crypto_onchain_bitquery_model.get_daily_dex_volume_for_given_pair
+        )
+        self.dvcp_view = (
+            lib.crypto_onchain_bitquery_view.display_daily_volume_for_given_pair
+        )
         self.erc20_tokens = lib.crypto_onchain_bitquery_model.get_erc20_tokens
         self.gwei = lib.crypto_onchain_ethgasstation_model.get_gwei_fees
         self.gwei_view = lib.crypto_onchain_ethgasstation_view.display_gwei_fees
@@ -422,7 +462,9 @@ class CryptoOnChain(Category):
         self.lt = lib.crypto_onchain_bitquery_model.get_dex_trades_by_exchange
         self.lt_view = lib.crypto_onchain_bitquery_view.display_dex_trades
         self.prices = lib.crypto_onchain_ethplorer_model.get_token_historical_price
-        self.prices_view = lib.crypto_onchain_ethplorer_view.display_token_historical_prices
+        self.prices_view = (
+            lib.crypto_onchain_ethplorer_view.display_token_historical_prices
+        )
         self.query_graph = lib.crypto_onchain_bitquery_model.query_graph
         self.th = lib.crypto_onchain_ethplorer_model.get_token_history
         self.th_view = lib.crypto_onchain_ethplorer_view.display_token_history
@@ -436,9 +478,13 @@ class CryptoOnChain(Category):
         self.tx = lib.crypto_onchain_ethplorer_model.get_tx_info
         self.tx_view = lib.crypto_onchain_ethplorer_view.display_tx_info
         self.ueat = lib.crypto_onchain_bitquery_model.get_ethereum_unique_senders
-        self.ueat_view = lib.crypto_onchain_bitquery_view.display_ethereum_unique_senders
+        self.ueat_view = (
+            lib.crypto_onchain_bitquery_view.display_ethereum_unique_senders
+        )
         self.whales = lib.crypto_onchain_whale_alert_model.get_whales_transactions
-        self.whales_view = lib.crypto_onchain_whale_alert_view.display_whales_transactions
+        self.whales_view = (
+            lib.crypto_onchain_whale_alert_view.display_whales_transactions
+        )
 
 
 class CryptoOverview(Category):
@@ -546,7 +592,9 @@ class CryptoOverview(Category):
         self.cpinfo = lib.crypto_ov_coinpaprika_model.get_coins_info
         self.cpinfo_view = lib.crypto_ov_coinpaprika_view.display_all_coins_info
         self.cpmarkets = lib.crypto_ov_coinpaprika_model.get_coins_market_info
-        self.cpmarkets_view = lib.crypto_ov_coinpaprika_view.display_all_coins_market_info
+        self.cpmarkets_view = (
+            lib.crypto_ov_coinpaprika_view.display_all_coins_market_info
+        )
         self.cpplatforms = lib.crypto_ov_coinpaprika_model.get_all_contract_platforms
         self.cpplatforms_view = lib.crypto_ov_coinpaprika_view.display_all_platforms
         self.cr = lib.crypto_ov_loanscan_model.get_rates
@@ -555,8 +603,12 @@ class CryptoOverview(Category):
         self.crypto_hack_slugs = lib.crypto_ov_rekt_model.get_crypto_hack_slugs
         self.crypto_hacks = lib.crypto_ov_rekt_model.get_crypto_hacks
         self.crypto_hacks_view = lib.crypto_ov_rekt_view.display_crypto_hacks
-        self.ewf = lib.crypto_ov_withdrawalfees_model.get_overall_exchange_withdrawal_fees
-        self.ewf_view = lib.crypto_ov_withdrawalfees_view.display_overall_exchange_withdrawal_fees
+        self.ewf = (
+            lib.crypto_ov_withdrawalfees_model.get_overall_exchange_withdrawal_fees
+        )
+        self.ewf_view = (
+            lib.crypto_ov_withdrawalfees_view.display_overall_exchange_withdrawal_fees
+        )
         self.exchanges = lib.crypto_ov_pycoingecko_model.get_exchanges
         self.exchanges_view = lib.crypto_ov_pycoingecko_view.display_exchanges
         self.global_info = lib.crypto_ov_pycoingecko_model.get_global_info
@@ -568,7 +620,9 @@ class CryptoOverview(Category):
         self.wf = lib.crypto_ov_withdrawalfees_model.get_overall_withdrawal_fees
         self.wf_view = lib.crypto_ov_withdrawalfees_view.display_overall_withdrawal_fees
         self.wfpe = lib.crypto_ov_withdrawalfees_model.get_crypto_withdrawal_fees
-        self.wfpe_view = lib.crypto_ov_withdrawalfees_view.display_crypto_withdrawal_fees
+        self.wfpe_view = (
+            lib.crypto_ov_withdrawalfees_view.display_crypto_withdrawal_fees
+        )
 
 
 class CryptoTools(Category):

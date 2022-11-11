@@ -403,7 +403,9 @@ class StocksGovernment(Category):
         super().__init__()
         self.contracts = lib.stocks_gov_quiverquant_model.get_contracts
         self.contracts_view = lib.stocks_gov_quiverquant_view.display_contracts
-        self.government_trading = lib.stocks_gov_quiverquant_model.get_government_trading
+        self.government_trading = (
+            lib.stocks_gov_quiverquant_model.get_government_trading
+        )
         self.gtrades = lib.stocks_gov_quiverquant_model.get_cleaned_government_trading
         self.gtrades_view = lib.stocks_gov_quiverquant_view.display_government_trading
         self.histcont = lib.stocks_gov_quiverquant_model.get_hist_contracts
@@ -440,8 +442,12 @@ class StocksInsiders(Category):
         self.act_view = lib.stocks_insider_businessinsider_view.insider_activity
         self.lins = lib.stocks_insider_finviz_model.get_last_insider_activity
         self.lins_view = lib.stocks_insider_finviz_view.last_insider_activity
-        self.print_insider_data = lib.stocks_insider_openinsider_model.get_print_insider_data
-        self.print_insider_data_view = lib.stocks_insider_openinsider_view.print_insider_data
+        self.print_insider_data = (
+            lib.stocks_insider_openinsider_model.get_print_insider_data
+        )
+        self.print_insider_data_view = (
+            lib.stocks_insider_openinsider_view.print_insider_data
+        )
 
 
 class StocksOptions(Category):
@@ -502,7 +508,9 @@ class StocksOptions(Category):
         self.dte = lib.stocks_options_yfinance_model.get_dte
         self.generate_data = lib.stocks_options_yfinance_model.generate_data
         self.grhist = lib.stocks_options_screen_syncretism_model.get_historical_greeks
-        self.grhist_view = lib.stocks_options_screen_syncretism_view.view_historical_greeks
+        self.grhist_view = (
+            lib.stocks_options_screen_syncretism_view.view_historical_greeks
+        )
         self.hist_ce = lib.stocks_options_chartexchange_model.get_option_history
         self.hist_ce_view = lib.stocks_options_chartexchange_view.display_raw
         self.hist_tr = lib.stocks_options_tradier_model.get_historical_options
@@ -587,16 +595,36 @@ class StocksSectorIndustryAnalysis(Category):
     def __init__(self):
         super().__init__()
         self.countries = lib.stocks_sia_financedatabase_model.get_countries
-        self.cpci = lib.stocks_sia_financedatabase_model.get_companies_per_country_in_industry
-        self.cpci_view = lib.stocks_sia_financedatabase_view.display_companies_per_country_in_industry
-        self.cpcs = lib.stocks_sia_financedatabase_model.get_companies_per_country_in_sector
-        self.cpcs_view = lib.stocks_sia_financedatabase_view.display_companies_per_country_in_sector
-        self.cpic = lib.stocks_sia_financedatabase_model.get_companies_per_industry_in_country
-        self.cpic_view = lib.stocks_sia_financedatabase_view.display_companies_per_industry_in_country
-        self.cpis = lib.stocks_sia_financedatabase_model.get_companies_per_industry_in_sector
-        self.cpis_view = lib.stocks_sia_financedatabase_view.display_companies_per_industry_in_sector
-        self.cps = lib.stocks_sia_financedatabase_model.get_companies_per_sector_in_country
-        self.cps_view = lib.stocks_sia_financedatabase_view.display_companies_per_sector_in_country
+        self.cpci = (
+            lib.stocks_sia_financedatabase_model.get_companies_per_country_in_industry
+        )
+        self.cpci_view = (
+            lib.stocks_sia_financedatabase_view.display_companies_per_country_in_industry
+        )
+        self.cpcs = (
+            lib.stocks_sia_financedatabase_model.get_companies_per_country_in_sector
+        )
+        self.cpcs_view = (
+            lib.stocks_sia_financedatabase_view.display_companies_per_country_in_sector
+        )
+        self.cpic = (
+            lib.stocks_sia_financedatabase_model.get_companies_per_industry_in_country
+        )
+        self.cpic_view = (
+            lib.stocks_sia_financedatabase_view.display_companies_per_industry_in_country
+        )
+        self.cpis = (
+            lib.stocks_sia_financedatabase_model.get_companies_per_industry_in_sector
+        )
+        self.cpis_view = (
+            lib.stocks_sia_financedatabase_view.display_companies_per_industry_in_sector
+        )
+        self.cps = (
+            lib.stocks_sia_financedatabase_model.get_companies_per_sector_in_country
+        )
+        self.cps_view = (
+            lib.stocks_sia_financedatabase_view.display_companies_per_sector_in_country
+        )
         self.filter_stocks = lib.stocks_sia_financedatabase_model.filter_stocks
         self.industries = lib.stocks_sia_financedatabase_model.get_industries
         self.marketcap = lib.stocks_sia_financedatabase_model.get_marketcap

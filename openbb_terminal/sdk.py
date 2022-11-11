@@ -31,9 +31,9 @@ SUPPRESS_LOGGING_CLASSES = {
     DashboardsController: "DashboardsController",
 }
 
+
 class OpenBBSDK:
     """OpenBB SDK Class."""
-
 
     def __init__(self, suppress_logging: bool = False):
         self.__suppress_logging = suppress_logging

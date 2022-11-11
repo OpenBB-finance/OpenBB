@@ -46,7 +46,9 @@ class EconometricsRoot(Category):
         self.bpag = lib.econometrics_regression_model.get_bpag
         self.bpag_view = lib.econometrics_regression_view.display_bpag
         self.clean = lib.econometrics_model.clean
-        self.coint = lib.econometrics_model.get_engle_granger_two_step_cointegration_test
+        self.coint = (
+            lib.econometrics_model.get_engle_granger_two_step_cointegration_test
+        )
         self.coint_view = lib.econometrics_view.display_cointegration_test
         self.comparison = lib.econometrics_regression_model.get_comparison
         self.dwat = lib.econometrics_regression_model.get_dwat
