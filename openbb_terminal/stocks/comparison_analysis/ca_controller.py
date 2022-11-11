@@ -89,7 +89,6 @@ class ComparisonAnalysisController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
 
-            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
             one_to_three_hundred: dict = {str(c): {} for c in range(1, 300)}
             choices["load"] = {
                 "--ticker": None,
@@ -98,7 +97,7 @@ class ComparisonAnalysisController(BaseController):
             choices["tsne"] = {
                 "--learnrate": one_to_three_hundred,
                 "-r": "--learnrate",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["get"] = {
@@ -106,7 +105,7 @@ class ComparisonAnalysisController(BaseController):
                 "-u": "--us_only",
                 "--nocountry": {},
                 "-n": "--nocountry",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--source": {
                     c: {} for c in get_ordered_list_sources(f"{self.PATH}get")

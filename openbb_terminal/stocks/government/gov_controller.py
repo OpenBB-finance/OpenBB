@@ -65,30 +65,30 @@ class GovController(StockBaseController):
             choices["topbuys"] = {c: {} for c in self.gov_type_choices}
             choices["topbuys"]["--past_transactions_months"] = one_to_hundred
             choices["topbuys"]["-p"] = "--past_transactions_months"
-            choices["topbuys"]["--limit"] = one_to_hundred
+            choices["topbuys"]["--limit"] = None
             choices["topbuys"]["-l"] = "--limit"
             choices["topbuys"]["--raw"] = {}
             choices["topsells"] = {c: {} for c in self.gov_type_choices}
             choices["topsells"]["--past_transactions_months"] = one_to_hundred
             choices["topsells"]["-p"] = "--past_transactions_months"
-            choices["topsells"]["--limit"] = one_to_hundred
+            choices["topsells"]["--limit"] = None
             choices["topsells"]["-l"] = "--limit"
             choices["topsells"]["--raw"] = {}
             choices["lastcontracts"]["--past_transactions_days"] = one_to_hundred
             choices["lastcontracts"]["-p"] = "--past_transactions_days"
-            choices["lastcontracts"]["--limit"] = one_to_hundred
+            choices["lastcontracts"]["--limit"] = None
             choices["lastcontracts"]["-l"] = "--limit"
             choices["lastcontracts"]["--sum"] = {}
             choices["lastcontracts"]["-s"] = "--sum"
             choices["qtrcontracts"] = {
                 "--analysis": {c: {} for c in self.analysis_choices},
                 "-a": "--analysis",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--raw": {},
             }
             choices["toplobbying"] = {
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--raw": {},
             }
@@ -103,7 +103,7 @@ class GovController(StockBaseController):
             }
             choices["histcont"]["--raw"] = {}
             choices["lobbying"] = {
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
 

@@ -125,7 +125,7 @@ class DiscoveryController(BaseController):
                 "-d": "--days",
                 "--start": None,
                 "-s": "--start",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["fipo"] = {
@@ -133,11 +133,11 @@ class DiscoveryController(BaseController):
                 "-d": "--days",
                 "--end": None,
                 "-e": "--end",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             limit = {
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["gainers"] = limit
@@ -157,11 +157,11 @@ class DiscoveryController(BaseController):
                 "--sell_only": {},
                 "-c": "--sell_only",
                 "--fund": {c: {} for c in self.arkord_fund_choices},
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["upcoming"] = {
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--pages": one_to_hundred,
                 "-p": "--pages",
@@ -169,7 +169,7 @@ class DiscoveryController(BaseController):
             choices["trending"] = {
                 "--id": None,
                 "-i": "--id",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--date": None,
                 "-d": "--date",
@@ -177,12 +177,12 @@ class DiscoveryController(BaseController):
             choices["cnews"] = {
                 "--type": {c: {} for c in self.cnews_type_choices},
                 "-t": "--type",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["lowfloat"] = limit
             choices["hotpenny"] = {
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--source": {
                     c: {} for c in get_ordered_list_sources(f"{self.PATH}hotpenny")
@@ -196,7 +196,7 @@ class DiscoveryController(BaseController):
                 "-s": "--sort",
                 "--ascend": {},
                 "-a": "--ascend",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["heatmap"]["--timeframe"] = {
