@@ -54,7 +54,6 @@ def get_fx_price(account: str, instrument: Union[str, None] = ""):
         ask = data["prices"][0]["asks"][0]["price"]
         console.print(f"{instrument if instrument else ''}" + " Bid: " + bid)
         console.print(f"{instrument if instrument else ''}" + " Ask: " + ask)
-        console.print("")
     else:
         console.print("No data was retrieved.\n")
 
@@ -109,7 +108,6 @@ def get_order_book(
         book_plot(
             df_orderbook_data, instrument, "Order Book", external_axes=external_axes
         )
-        console.print("")
     else:
         console.print("No data was retrieved.\n")
 
@@ -147,7 +145,6 @@ def get_position_book(
             "Position Book",
             external_axes=external_axes,
         )
-        console.print("")
     else:
         console.print("No data was retrieved.\n")
 
@@ -169,7 +166,6 @@ def list_orders(accountID: str, order_state: str = "PENDING", order_count: int =
     df_order_list = order_history_request(order_state, order_count, accountID)
     if df_order_list is not False and not df_order_list.empty:
         console.print(df_order_list)
-        console.print("")
     else:
         console.print("No data was retrieved.\n")
 
@@ -193,7 +189,6 @@ def create_order(accountID: str, instrument: str = "", price: int = 0, units: in
     df_orders = create_order_request(price, units, instrument, accountID)
     if df_orders is not False and not df_orders.empty:
         console.print(df_orders.to_string(index=False))
-        console.print("")
     else:
         console.print("No data was returned from Oanda.\n")
 
@@ -213,7 +208,6 @@ def cancel_pending_order(accountID: str, orderID: str = ""):
     order_id = cancel_pending_order_request(orderID, accountID)
     if order_id is not False and order_id is not None:
         console.print(f"Order {order_id} canceled.")
-        console.print("")
     else:
         console.print("No data was returned from Oanda.\n")
 
@@ -231,7 +225,6 @@ def get_open_positions(accountID: str):
     df_positions = open_positions_request(accountID)
     if df_positions is not False and not df_positions.empty:
         console.print(df_positions.to_string(index=False))
-        console.print("")
     else:
         console.print("No data was returned from Oanda.\n")
 
@@ -249,7 +242,6 @@ def get_pending_orders(accountID: str):
     df_pending = pending_orders_request(accountID)
     if df_pending is not False and not df_pending.empty:
         console.print(df_pending.to_string(index=False))
-        console.print("")
     elif df_pending is not False and df_pending.empty:
         console.print("No pending orders.\n")
     else:
@@ -269,7 +261,6 @@ def get_open_trades(accountID: str):
     df_trades = open_trades_request(accountID)
     if isinstance(df_trades, pd.DataFrame) and not df_trades.empty:
         console.print(df_trades.to_string(index=False))
-        console.print("")
     elif df_trades is not False and df_trades.empty:
         console.print("No trades were found.\n")
     else:
@@ -293,7 +284,6 @@ def close_trade(accountID: str, orderID: str = "", units: Union[int, None] = Non
     df_trades = close_trades_request(orderID, units, accountID)
     if df_trades is not False and not df_trades.empty:
         console.print(df_trades.to_string(index=False))
-        console.print("")
     elif df_trades is not False and df_trades.empty:
         console.print("No trades were found.\n")
     else:
@@ -404,7 +394,6 @@ def calendar(instrument: str, days: int = 7):
     df_calendar = get_calendar_request(days, instrument)
     if df_calendar is not False and not df_calendar.empty:
         console.print(df_calendar.to_string(index=False))
-        console.print("")
     elif df_calendar is not False and df_calendar.empty:
         console.print("No calendar records were found.\n")
     else:

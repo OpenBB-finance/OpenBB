@@ -103,7 +103,6 @@ def display_historical(
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "historical", df_similar
     )
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -156,7 +155,6 @@ def display_volume(
     export_data(
         export, os.path.dirname(os.path.abspath(__file__)), "volume", df_similar
     )
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -235,7 +233,6 @@ def display_correlation(
         theme.visualize_output()
 
     export_data(export, os.path.dirname(os.path.abspath(__file__)), "hcorr", df_similar)
-    console.print("")
 
 
 @log_start_end(log=logger)

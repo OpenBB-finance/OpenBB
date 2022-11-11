@@ -34,7 +34,6 @@ def valinvest_score(symbol: str):
     score = fmp_model.get_score(symbol)
     if score:
         console.print(f"Score: {score:.2f}".rstrip("0").rstrip(".") + " %")
-        console.print("")
 
 
 @log_start_end(log=logger)

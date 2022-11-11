@@ -22,7 +22,7 @@ def display_heatmap(timeframe: str, export: str = ""):
     export: str
         Format to export data
     """
-    console.print("")
+
     dfs = finviz_model.get_heatmap_data(timeframe)
     if dfs.empty:
         return

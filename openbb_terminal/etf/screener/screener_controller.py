@@ -130,8 +130,7 @@ class ScreenerController(BaseController):
                     "YrHigh",
                 ]
 
-                console.print("")
-                for filter_header in headers:
+                for i, filter_header in enumerate(headers):
                     console.print(f" - {filter_header} -")
                     d_filters = {**preset_filter[filter_header]}
                     d_filters = {k: v for k, v in d_filters.items() if v}
@@ -139,7 +138,9 @@ class ScreenerController(BaseController):
                         max_len = len(max(d_filters, key=len))
                         for key, value in d_filters.items():
                             console.print(f"{key}{(max_len-len(key))*' '}: {value}")
-                    console.print("")
+
+                    if i < len(headers) - 1:
+                        console.print("\n")
 
             else:
                 console.print("\nPresets:")
@@ -156,7 +157,6 @@ class ScreenerController(BaseController):
                     console.print(
                         f"   {preset}{(30-len(preset)) * ' '}{description.split('Description: ')[1].replace('#', '')}"
                     )
-                console.print("")
 
     @log_start_end(log=logger)
     def call_set(self, other_args: List[str]):
@@ -181,7 +181,6 @@ class ScreenerController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.preset = ns_parser.preset
-        console.print("")
 
     @log_start_end(log=logger)
     def call_screen(self, other_args):

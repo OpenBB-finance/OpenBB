@@ -22,7 +22,6 @@ dt_format = "%Y-%m-%dT%H:%M:%SZ"
 def login():
     """Robinhood login"""
     robinhood.login(user, pw)
-    console.print("")
 
 
 @log_start_end(log=logger)

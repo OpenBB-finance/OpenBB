@@ -880,7 +880,6 @@ class PortfolioOptimizationController(BaseController):
                 console.print(
                     f"\nCurrent Categories: {('None', ', '.join(categories))[bool(categories)]}"
                 )
-            console.print("")
 
     @log_start_end(log=logger)
     def call_rpf(self, other_args: List[str]):

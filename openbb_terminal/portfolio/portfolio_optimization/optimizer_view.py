@@ -721,7 +721,6 @@ def display_equal_weight(
             # b_sim=beta_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -836,7 +835,6 @@ def display_property_weighting(
             # b_sim=beta_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -1023,7 +1021,6 @@ def display_mean_risk(
             # b_sim=beta_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -1196,7 +1193,6 @@ def display_max_sharpe(
             # b_sim=beta_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -1365,7 +1361,6 @@ def display_min_risk(
             # b_sim=beta_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -1534,7 +1529,6 @@ def display_max_util(
             # b_sim=beta_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -1703,7 +1697,6 @@ def display_max_ret(
             # b_sim=beta_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -1818,7 +1811,6 @@ def display_max_div(
             # b_sim=None,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -1934,7 +1926,6 @@ def display_max_decorr(
             # b_simb_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -2075,7 +2066,6 @@ def display_black_litterman(
             # b_simb_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -2447,7 +2437,6 @@ def display_risk_parity(
             risk_free_rate=risk_free_rate,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -2588,7 +2577,6 @@ def display_rel_risk_parity(
             risk_measure=risk_choices["mv"],
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -2859,7 +2847,6 @@ def display_hcp(
             b_sim=b_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -3104,7 +3091,6 @@ def display_hrp(
             b_sim=b_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -3357,7 +3343,6 @@ def display_herc(
             b_sim=b_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 
@@ -3621,7 +3606,6 @@ def display_nco(
             b_sim=b_sim,
             freq=freq,
         )
-        console.print("")
 
     return weights
 

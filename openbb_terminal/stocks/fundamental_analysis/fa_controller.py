@@ -1546,4 +1546,3 @@ class FundamentalAnalysisController(StockBaseController):
                 while line:
                     console.print(f"{line.strip()}")
                     line = fp.readline()
-                console.print("")

@@ -93,7 +93,6 @@ def income(other_args: List[str], ticker: str):
         console.print("Marketwatch does not yet provide financials for this ticker")
     else:
         console.print(df_financials.to_string(index=False))
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -173,7 +172,6 @@ def balance(other_args: List[str], ticker: str):
         console.print("Marketwatch does not yet provide financials for this ticker")
     else:
         console.print(df_financials.to_string(index=False))
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -249,7 +247,6 @@ def cash(other_args: List[str], ticker: str):
         console.print("Marketwatch does not yet provide financials for this ticker")
     else:
         console.print(df_financials.to_string(index=False))
-    console.print("")
 
 
 @log_start_end(log=logger)

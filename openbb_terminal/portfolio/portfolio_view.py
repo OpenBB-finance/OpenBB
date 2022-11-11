@@ -140,7 +140,7 @@ def display_assets_allocation(
     )
 
     if include_separate_tables:
-        console.print("")
+        console.print("\n")
         print_rich_table(
             portfolio_allocation,
             headers=list(portfolio_allocation.columns),
@@ -149,7 +149,7 @@ def display_assets_allocation(
             floatfmt=[".2%", ".2%"],
             show_index=False,
         )
-        console.print("")
+        console.print("\n")
         print_rich_table(
             benchmark_allocation,
             headers=list(benchmark_allocation.columns),

@@ -118,8 +118,6 @@ def price_target_from_analysts(
         if not external_axes:
             theme.visualize_output()
 
-    console.print("")
-
     export_data(
         export,
         os.path.dirname(os.path.abspath(__file__)),

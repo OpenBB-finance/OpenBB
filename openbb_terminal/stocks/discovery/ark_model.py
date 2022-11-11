@@ -120,8 +120,6 @@ def add_order_total(data: DataFrame) -> DataFrame:
 
     tickers = " ".join(data["ticker"].unique())
 
-    console.print("")
-
     prices = yf.download(tickers, start=start_date, progress=False)
 
     if prices.empty:
