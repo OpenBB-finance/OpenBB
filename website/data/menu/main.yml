@@ -362,6 +362,8 @@ main:
                 ref: /terminal/crypto/onchain/btccp
               - name: btcct
                 ref: /terminal/crypto/onchain/btcct
+              - name: btcblockdata
+                ref: /terminal/crypto/onchain/btcblockdata
               - name: dvcp
                 ref: /terminal/crypto/onchain/dvcp
               - name: gwei

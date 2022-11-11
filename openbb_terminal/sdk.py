@@ -685,6 +685,10 @@ functions = {
         "model": "openbb_terminal.cryptocurrency.onchain.blockchain_model.get_btc_confirmed_transactions",
         "view": "openbb_terminal.cryptocurrency.onchain.blockchain_view.display_btc_confirmed_transactions",
     },
+    "crypto.onchain.btc_singleblock": {
+        "model": "openbb_terminal.cryptocurrency.onchain.blockchain_model.get_btc_single_block",
+        "view": "openbb_terminal.cryptocurrency.onchain.blockchain_view.display_btc_single_block",
+    },
     "crypto.onchain.gwei": {
         "model": "openbb_terminal.cryptocurrency.onchain.ethgasstation_model.get_gwei_fees",
         "view": "openbb_terminal.cryptocurrency.onchain.ethgasstation_view.display_gwei_fees",

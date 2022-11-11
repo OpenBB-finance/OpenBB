@@ -18,7 +18,10 @@ from openbb_terminal.helper_funcs import (
     lambda_long_number_format,
     plot_autoscale,
     is_valid_axes_count,
+    print_rich_table,
 )
+
+from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
@@ -129,3 +132,57 @@ def display_btc_confirmed_transactions(
         "btcct",
         df,
     )
+
+
+@log_start_end(log=logger)
+def display_btc_single_block(
+    blockhash: str,
+    export: str = "",
+) -> None:
+    """Returns BTC block data. [Source: https://api.blockchain.info/]
+    Parameters
+    ----------
+    blockhash : str
+        Hash of the block you are looking for.
+    export : str
+        Export dataframe data to csv,json,xlsx file
+    """
+
+    df = blockchain_model.get_btc_single_block(blockhash)
+    df.rename(index={0: "Values"}, inplace=True)
+    df_data = df.copy()
+
+    df_essentials = df[[
+            "hash",
+            "ver",
+            "prev_block",
+            "mrkl_root",
+            "bits",
+            "next_block",
+            "fee",
+            "nonce",
+            "n_tx",
+            "size",
+            "block_index",
+            "main_chain",
+            "height",
+            "weight",
+        ]]
+
+    df_flipped = df_essentials.transpose()
+
+    if df_flipped.empty:
+        console.print("No data found.")
+    else:
+        print_rich_table(
+            df_flipped,
+            show_index=True,
+            title=f"Block {int(df['height'])}",
+        )
+
+        export_data(
+            export,
+            os.path.dirname(os.path.abspath(__file__)),
+            "btcblockdata",
+            df_data,
+        )
