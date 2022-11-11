@@ -46,7 +46,7 @@ class OSSController(BaseController):
                 "-g": "--growth",
                 "--chart-type": {c: {} for c in ["stars", "forks"]},
                 "-t": "--chart-type",
-                "--limit": {str(c): {} for c in range(1, 50)},
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["tr"] = {
@@ -55,7 +55,7 @@ class OSSController(BaseController):
                 "--categories": None,
                 "-c": "--categories",
                 "--raw": {},
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["rs"] = {"--raw": {}, "--repo": None, "-r": "--repo"}

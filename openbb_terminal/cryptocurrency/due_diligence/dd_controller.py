@@ -167,7 +167,7 @@ class DueDiligenceController(CryptoBaseController):
                 "--vs": {c: {} for c in coinpaprika_view.CURRENCIES},
                 "--sort": {c: {} for c in coinpaprika_view.MARKET_FILTERS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
                 "--urls": {},
@@ -176,28 +176,28 @@ class DueDiligenceController(CryptoBaseController):
             choices["ex"] = {
                 "--sort": {c: {} for c in coinpaprika_view.EX_FILTERS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--ascend": {},
             }
             choices["events"] = {
                 "--sort": {c: {} for c in coinpaprika_view.EVENTS_FILTERS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
             choices["twitter"] = {
                 "--sort": {c: {} for c in coinpaprika_view.TWEETS_FILTERS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
             choices["news"] = {
                 "--sort": {c: {} for c in cryptopanic_model.SORT_FILTERS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
                 "--urls": {},
@@ -205,7 +205,6 @@ class DueDiligenceController(CryptoBaseController):
                 "--kind": {c: {} for c in cryptopanic_model.CATEGORIES},
                 "-k": "--kind",
                 "--filter": {c: {} for c in cryptopanic_model.FILTERS},
-                "-f": "--filter",
                 "--region": {c: {} for c in cryptopanic_model.REGIONS},
                 "-r": "--region",
             }

@@ -40,6 +40,11 @@ jobs:
         run: |
           conda activate obb
           poetry install -E installer
+      - name: Install Specific Papermill
+        run: |
+          conda activate obb
+          pip uninstall papermill -y
+          pip install git+https://github.com/nteract/papermill.git@main
       # Building ------------
       - name: Build Terminal.spec file
         run: |
@@ -61,7 +66,7 @@ jobs:
           name: Windows EXE Artifact
           path: '.\build\nsis\OpenBB Terminal Setup.exe'
       - name: Run Integration Tests
-        run: dist\OpenBBTerminal\OpenBBTerminal.exe C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\openbb_terminal\miscellaneous\scripts\*.openbb -t
+        run: dist\OpenBBTerminal\OpenBBTerminal.exe C:\Users\Administrator\actions-runner\_work\OpenBBTerminal\OpenBBTerminal\openbb_terminal\miscellaneous\scripts -t
       # Cleaning ------------------------
       # Make sure to add Remove-Item C:\Users\Administrator\Desktop\OPENBB-exports -Recurse whenever integration tests get fixed
       - name: Remove Previous Build

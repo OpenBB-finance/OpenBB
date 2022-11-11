@@ -905,8 +905,8 @@ en:
   econometrics/coint: co-integration test on a multitude of columns
   portfolio/bro: brokers holdings,   supports robinhood, ally, degiro, coinbase
   portfolio/po: portfolio optimization,  optimize your portfolio weights efficiently
-  portfolio/load: load data into the portfolio
-  portfolio/_loaded: Loaded orderbook
+  portfolio/load: load transactions into the portfolio
+  portfolio/_loaded: Loaded transactions
   portfolio/_riskfreerate: Risk Free Rate
   portfolio/show: show existing transactions
   portfolio/bench: define the benchmark
@@ -926,6 +926,7 @@ en:
   portfolio/rbeta: rolling beta
   portfolio/_metrics_: Metrics
   portfolio/alloc: allocation on an asset, sector, countries or regions basis
+  portfolio/attrib: display sector attribution of the portfolio compared to the S&P 500
   portfolio/summary: all portfolio vs benchmark metrics for a certain period of choice
   portfolio/metric: portfolio vs benchmark metric for all different periods
   portfolio/perf: performance of the portfolio versus benchmark

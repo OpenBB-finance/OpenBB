@@ -139,7 +139,7 @@ class FundamentalAnalysisController(StockBaseController):
                 "-q": "--quarter",
                 "--ratios": {},
                 "-r": "--ratios",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--source": {
                     c: {} for c in get_ordered_list_sources(f"{self.PATH}income")
@@ -154,7 +154,7 @@ class FundamentalAnalysisController(StockBaseController):
                 "-q": "--quarter",
                 "--ratios": {},
                 "-r": "--ratios",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--source": {
                     c: {} for c in get_ordered_list_sources(f"{self.PATH}balance")
@@ -167,7 +167,7 @@ class FundamentalAnalysisController(StockBaseController):
                 "-q": "--quarter",
                 "--ratios": {},
                 "-r": "--ratios",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--source": {
                     c: {} for c in get_ordered_list_sources(f"{self.PATH}cash")
@@ -176,7 +176,7 @@ class FundamentalAnalysisController(StockBaseController):
             fmp_standard = {
                 "--quarter": {},
                 "-q": "--quarter",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["enterprise"] = fmp_standard
@@ -195,7 +195,7 @@ class FundamentalAnalysisController(StockBaseController):
                 "-g": "--growth",
                 "--no-ratios": {},
                 "--no-filter": {},
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["dcfc"] = fmp_standard
@@ -206,13 +206,13 @@ class FundamentalAnalysisController(StockBaseController):
             choices["divs"] = {
                 "--plot": {},
                 "-p": "--plot",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["earnings"] = {
                 "--quarter": {},
                 "-q": "--quarter",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--source": {
                     c: {} for c in get_ordered_list_sources(f"{self.PATH}earnings")

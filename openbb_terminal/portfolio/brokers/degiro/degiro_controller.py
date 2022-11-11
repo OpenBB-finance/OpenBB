@@ -49,13 +49,13 @@ class DegiroController(BaseController):
             choices: dict = {c: {} for c in self.controller_choices}
 
             zero_to_hundred: dict = {str(c): {} for c in range(0, 100)}
-            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
+
             choices["login"] = {
                 "--one-time-password": None,
                 "-otp": "--one-time-password",
             }
             choices["lookup"] = {
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--offset": zero_to_hundred,
                 "-o": "--offset",
@@ -83,7 +83,7 @@ class DegiroController(BaseController):
                 "-p": "--price",
             }
             choices["lastnews"] = {
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["paexport"] = {

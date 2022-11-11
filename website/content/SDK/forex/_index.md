@@ -25,7 +25,7 @@ To load historical data for a desired currency pair, copy and paste the code bel
 ```python
 currency_pair = openbb.forex.load(
     from_symbol='USD',
-    to_symbol='EUR', 
+    to_symbol='EUR',
     source = 'Polygon',
     start_date = '2000-01-01',
     resolution = 'd',

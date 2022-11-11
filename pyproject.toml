@@ -94,7 +94,7 @@ jedi-language-server = {version = "^0.35.1", optional = true}
 tokenterminal = "^1.0.1"
 torch = {version = "1.11.0", optional = true}
 streamlit = "^1.12.2"
-charset-normalizer = "2.1.0"
+charset-normalizer = "2.1.1"
 watchdog = "^2.1.9"
 pythclient = "^0.1.2"
 ipyflex = "^0.2.4"
@@ -104,6 +104,7 @@ investiny = "^0.5.0"
 numpy = "1.23.4"
 papermill = "^2.4.0"
 stocksera = "^0.1.21"
+ipython = "8.5.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
