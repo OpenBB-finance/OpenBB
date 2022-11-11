@@ -179,7 +179,8 @@ class DueDiligenceController(CryptoBaseController):
                 "-s": "--sort",
                 "--limit": None,
                 "-l": "--limit",
-                "--ascend": {},
+                "--reverse": {},
+                "-r": "--reverse",
             }
             choices["events"] = {
                 "--sort": {c: {} for c in coinpaprika_view.EVENTS_FILTERS},
@@ -1128,11 +1129,10 @@ class DueDiligenceController(CryptoBaseController):
             description="""Get all exchanges found for given coin.
                 You can display only top N number of exchanges with --top parameter.
                 You can sort data by  id, name, adjusted_volume_24h_share, fiats --sort parameter
-                and also with --ascend flag to sort ascending.
+                and also with --reverse flag to sort ascending.
                 Displays:
                     id, name, adjusted_volume_24h_share, fiats""",
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -1141,7 +1141,6 @@ class DueDiligenceController(CryptoBaseController):
             help="Limit of records",
             type=check_positive,
         )
-
         parser.add_argument(
             "-s",
             "--sort",
@@ -1151,15 +1150,18 @@ class DueDiligenceController(CryptoBaseController):
             default="adjusted_volume_24h_share",
             choices=coinpaprika_view.EX_FILTERS,
         )
-
         parser.add_argument(
-            "--ascend",
+            "-r",
+            "--reverse",
             action="store_true",
-            help="Flag to sort in ascending order (lowest first)",
-            dest="ascend",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -1169,7 +1171,7 @@ class DueDiligenceController(CryptoBaseController):
                     symbol=self.symbol,
                     limit=ns_parser.limit,
                     sortby=ns_parser.sortby,
-                    ascend=ns_parser.ascend,
+                    ascend=ns_parser.reverse,
                     export=ns_parser.export,
                 )
 

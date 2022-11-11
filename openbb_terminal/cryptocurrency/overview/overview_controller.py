@@ -292,10 +292,14 @@ class OverviewController(BaseController):
                 "--until": None,
                 "-u": "--until",
             }
-            choices["fun"] = {c: {} for c in tokenterminal_model.METRICS}
-            choices["fun"]["-m"] = {c: {} for c in tokenterminal_model.METRICS}
-            choices["fun"]["-c"] = {c: {} for c in tokenterminal_model.CATEGORIES}
-            choices["fun"]["-t"] = {c: {} for c in tokenterminal_model.TIMELINES}
+            choices["fun"] = {
+                "--metric": {c: {} for c in tokenterminal_model.METRICS},
+                "-m": "--metric",
+                "--category": {c: {} for c in tokenterminal_model.CATEGORIES},
+                "-c": "--category",
+                "--timeline": {c: {} for c in tokenterminal_model.TIMELINES},
+                "-t": "--timeline",
+            }
 
             choices["support"] = self.SUPPORT_CHOICES
             choices["about"] = self.ABOUT_CHOICES
@@ -407,12 +411,16 @@ class OverviewController(BaseController):
             help="Choose timeline of interest",
         )
         parser.add_argument(
-            "-a",
-            "--ascend",
+            "-r",
+            "--reverse",
             action="store_true",
-            help="Flag to sort in ascending order",
-            dest="ascend",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         parser.add_argument(
             "-l",
@@ -433,7 +441,7 @@ class OverviewController(BaseController):
                 metric=ns_parser.metric,
                 category=ns_parser.category,
                 timeline=ns_parser.timeline,
-                ascend=ns_parser.ascend,
+                ascend=ns_parser.reverse,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
             )
