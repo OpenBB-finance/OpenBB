@@ -15,8 +15,9 @@ Cap,Market Cap Rank,Volume [$]} with CoinGecko Number of coins to show: -l 10
                         Limit of records (default: 10)
   -s {Symbol,Name,Volume [$],Market Cap,Market Cap Rank,7D Change [%],24H Change [%]} [{Symbol,Name,Volume [$],Market Cap,Market Cap Rank,7D Change [%],24H Change [%]} ...], --sort {Symbol,Name,Volume [$],Market Cap,Market Cap Rank,7D Change [%],24H Change [%]} [{Symbol,Name,Volume [$],Market Cap,Market Cap Rank,7D Change [%],24H Change [%]} ...]
                         Sort by given column. Default: Market Cap Rank (default: Market Cap Rank)
-  --descend             Flag to sort in descending order (lowest first) (default: False)
-  -h, --help            show this help message (default: False)
+-r, --reverse           Data is sorted in descending order by default. Reverse
+                        flag will sort it in an ascending way. Only works when raw
+                        data is displayed. (default: False)  -h, --help            show this help message (default: False)  -h, --help            show this help message (default: False)
   --export EXPORT       Export raw data into csv, json, xlsx (default: )
   --source {CoinGecko,CoinMarketCap}
                         Data source to select from (default: CoinGecko)

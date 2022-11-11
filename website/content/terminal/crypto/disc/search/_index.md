@@ -16,8 +16,9 @@ optional arguments:
                         Limit of records (default: 10)
   -s {category,id,name}, --sort {category,id,name}
                         Sort by given column. Default: id (default: id)
-  --descend             Flag to sort in descending order (lowest first) (default: True)
-  -h, --help            show this help message (default: False)
+-r, --reverse         Data is sorted in descending order by default. Reverse
+                        flag will sort it in an ascending way. Only works when raw
+                        data is displayed. (default: False)  -h, --help            show this help message (default: False)
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx (default: )
 ```
