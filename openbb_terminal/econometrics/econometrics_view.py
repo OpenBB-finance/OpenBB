@@ -277,20 +277,9 @@ def display_granger(
             f"{independent_series.dtype}. Consider using the command 'type' to change this."
         )
     else:
-        granger = econometrics_model.get_granger_causality(
+        granger_df = econometrics_model.get_granger_causality(
             dependent_series, independent_series, lags
         )
-
-        for test in granger[lags][0]:
-            # As ssr_chi2test and lrtest have one less value in the tuple, we fill
-            # this value with a '-' to allow the conversion to a DataFrame
-            if len(granger[lags][0][test]) != 4:
-                pars = granger[lags][0][test]
-                granger[lags][0][test] = (pars[0], pars[1], "-", pars[2])
-
-        granger_df = pd.DataFrame(
-            granger[lags][0], index=["F-test", "P-value", "Count", "Lags"]
-        ).T
 
         print_rich_table(
             granger_df,
@@ -299,7 +288,7 @@ def display_granger(
             title=f"Granger Causality Test [Y: {dependent_series.name} | X: {independent_series.name} | Lags: {lags}]",
         )
 
-        result_ftest = round(granger[lags][0]["params_ftest"][1], 3)
+        result_ftest = round(granger_df.loc["params_ftest"]["P-value"], 3)
 
         if result_ftest > confidence_level:
             console.print(

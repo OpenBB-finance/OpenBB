@@ -223,10 +223,22 @@ def get_granger_causality(dependent_series, independent_series, lags):
 
     granger = grangercausalitytests(granger_set, [lags], verbose=False)
 
-    return granger
+    for test in granger[lags][0]:
+        # As ssr_chi2test and lrtest have one less value in the tuple, we fill
+        # this value with a '-' to allow the conversion to a DataFrame
+        if len(granger[lags][0][test]) != 4:
+            pars = granger[lags][0][test]
+            granger[lags][0][test] = (pars[0], pars[1], "-", pars[2])
+
+    granger_df = pd.DataFrame(
+        granger[lags][0], index=["F-test", "P-value", "Count", "Lags"]
+    ).T
+
+    return granger_df
 
 
 # TODO: Maybe make a new function to return z instead of having this flag.
+# TODO: Allow for numpy arrays as well
 def get_coint_df(
     *datasets: pd.Series, return_z: bool = False
 ) -> Union[pd.DataFrame, Dict]:

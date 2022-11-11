@@ -1638,6 +1638,7 @@ class EconometricsController(BaseController):
             "by the second time series.",
             type=str,
             dest="ts",
+            metavar="Available time series",
         )
         parser.add_argument(
             "-l",
