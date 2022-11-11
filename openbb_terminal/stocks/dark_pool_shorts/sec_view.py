@@ -65,7 +65,9 @@ def fails_to_deliver(
         end_date = datetime.now().strftime("%Y-%m-%d")
 
     if data is None:
-        data = stocks_helper.load(symbol=symbol, start_date=start_date, end_date=end_date)
+        data = stocks_helper.load(
+            symbol=symbol, start_date=start_date, end_date=end_date
+        )
 
     ftds_data = sec_model.get_fails_to_deliver(symbol, start_date, end_date, limit)
 
