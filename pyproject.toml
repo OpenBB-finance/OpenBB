@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "OpenBBTerminal"
-version = "1.9.6"
+version = "1.9.1"
 description = "Investment Research for Everyone, Anywhere."
 license = "MIT"
 authors = ["Didier Rodrigues Lopes"]
