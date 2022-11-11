@@ -157,7 +157,6 @@ class BuildCategoryModelClasses:
         regex = re.compile(importstr)
         with open(
             filestr,
-            "rt",
         ) as init_file:
             check_init = bool(regex.search(init_file.read()))
             if not check_init:
