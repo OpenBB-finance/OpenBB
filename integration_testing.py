@@ -60,6 +60,44 @@ def build_test_path_list(path_list: List[str]) -> List[Path]:
     return [Path(x) for x in test_files_unique]
 
 
+def format_failures(fails: dict) -> None:
+    """Generates the message and csv from the fails dictionary
+
+    Parameters
+    -----------
+    fails: dict
+        The dictionary with failure information
+    """
+    if fails:
+        console.print("\n[red]Failures:[/red]\n")
+        for file, exception in fails.items():
+            logger.error("%s: %s failed", file, exception["exception"])
+        # Write results to CSV
+        timestamp = datetime.now().timestamp()
+        stamp_str = str(timestamp).replace(".", "")
+        output_path = f"{stamp_str}_tests.csv"
+        with open(output_path, "w") as file:  # type: ignore
+            header = ["Script File", "Type", "Error", "Stacktrace"]
+            writer = csv.DictWriter(file, fieldnames=header)  # type: ignore
+            writer.writeheader()
+            for file, exception in fails.items():
+                clean_type = (
+                    str(type(exception["exception"]))
+                    .replace("<class '", "")
+                    .replace("'>", "")
+                )
+                writer.writerow(
+                    {
+                        "Script File": file,
+                        "Type": clean_type,
+                        "Error": exception["exception"],
+                        "Stacktrace": exception["traceback"],
+                    }
+                )
+
+        console.print(f"CSV of errors saved to {output_path}")
+
+
 def run_test_list(
     path_list: List[str], verbose: bool, special_arguments: Dict[str, str]
 ):
@@ -93,35 +131,7 @@ def run_test_list(
             }
             FAILURES += 1
         i += 1
-    if fails:
-        console.print("\n[red]Failures:[/red]\n")
-        for file, exception in fails.items():
-            logger.error("%s: %s failed", file, exception["exception"])
-        # Write results to CSV
-        timestamp = datetime.now().timestamp()
-        stamp_str = str(timestamp).replace(".", "")
-        output_path = f"{stamp_str}_tests.csv"
-        with open(output_path, "w") as file:  # type: ignore
-            header = ["Script File", "Type", "Error", "Stacktrace"]
-            writer = csv.DictWriter(file, fieldnames=header)  # type: ignore
-            writer.writeheader()
-            for file, exception in fails.items():
-                clean_type = (
-                    str(type(exception["exception"]))
-                    .replace("<class '", "")
-                    .replace("'>", "")
-                )
-                writer.writerow(
-                    {
-                        "Script File": file,
-                        "Type": clean_type,
-                        "Error": exception["exception"],
-                        "Stacktrace": exception["traceback"],
-                    }
-                )
-
-        console.print(f"CSV of errors saved to {output_path}")
-
+    format_failures(fails)
     console.print(
         f"Summary: [green]Successes: {SUCCESSES}[/green] [red]Failures: {FAILURES}[/red]"
     )
