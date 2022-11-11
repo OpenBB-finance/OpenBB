@@ -80,7 +80,7 @@ spread -w 10
 quantile --window 5 --quantile 0.01
 skew --window 5
 kurtosis --window 9
-raw --limit 2 --descend
+raw --limit 2 --reverse
 cusum --threshold 10 --drift 10
 decompose
 exit
