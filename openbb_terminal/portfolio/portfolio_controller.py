@@ -157,7 +157,6 @@ class PortfolioController(BaseController):
 
         choices: dict = {c: {} for c in self.controller_choices}
 
-        one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
         choices["load"] = {
             "--file": {c: {} for c in self.DATA_HOLDINGS_FILES},
             "-f": "--file",
@@ -167,7 +166,7 @@ class PortfolioController(BaseController):
             "-r": "--rfr",
         }
         choices["show"] = {
-            "--limit": one_to_hundred,
+            "--limit": None,
             "-l": "--limit",
         }
         choices["bench"] = {c: {} for c in statics.BENCHMARK_LIST}
@@ -182,7 +181,7 @@ class PortfolioController(BaseController):
             "--unstack": {},
             "-u": "--unstack",
             "--raw": {},
-            "--limit": one_to_hundred,
+            "--limit": None,
             "-l": "--limit",
         }
         choices["holdv"] = hold
@@ -202,7 +201,7 @@ class PortfolioController(BaseController):
         choices["dret"] = {
             "--period": {c: {} for c in self.PERIODS},
             "-p": "--period",
-            "--limit": one_to_hundred,
+            "--limit": None,
             "-l": "--limit",
             "--raw": {},
         }
@@ -232,7 +231,7 @@ class PortfolioController(BaseController):
         choices["alloc"]["-a"] = "--agg"
         choices["alloc"]["--tables"] = {}
         choices["alloc"]["-t"] = "--tables"
-        choices["alloc"]["--limit"] = one_to_hundred
+        choices["alloc"]["--limit"] = None
         choices["alloc"]["-l"] = "--limit"
         choices["summary"] = r_auto_complete
         choices["metric"] = {c: {} for c in self.VALID_METRICS}

@@ -94,8 +94,6 @@ class ETFController(BaseController):
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
-
-            one_to_fifty: dict = {str(c): {} for c in range(1, 50)}
             one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
             choices["search"] = {
                 "--name": None,
@@ -105,7 +103,7 @@ class ETFController(BaseController):
                 "--source": {
                     c: {} for c in get_ordered_list_sources(f"{self.PATH}search")
                 },
-                "--limit": one_to_fifty,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["load"] = {
@@ -115,7 +113,7 @@ class ETFController(BaseController):
                 "-s": "--start",
                 "--end": None,
                 "-e": "--end",
-                "--limit": one_to_fifty,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["weights"] = {"--min": one_to_hundred, "-m": "--min", "--raw": {}}
