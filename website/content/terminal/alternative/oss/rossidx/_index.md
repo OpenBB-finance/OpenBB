@@ -7,7 +7,9 @@ Use --chart to display chart and -t {stars,forks} to set chart type
 optional arguments:
   -s SORTBY [SORTBY ...], --sortby SORTBY [SORTBY {GitHub,Company,Country,City,Founded,Raised [$M],Stars,Forks,Stars AGR [%],Forks AGR [%]}]
                         Sort startups by column (default: Stars AGR [%])
-  --descend             Flag to sort in descending order (lowest first) (default: False)
+  -r, --reverse         Data is sorted in descending order by default. Reverse
+                        flag will sort it in an ascending way. Only works when raw
+                        data is displayed. (default: False)
   -c, --chart           Flag to show chart (default: False)
   -g, --growth          Flag to show growth chart (default: False)
   -t {stars,forks}, --chart-type {stars,forks}
