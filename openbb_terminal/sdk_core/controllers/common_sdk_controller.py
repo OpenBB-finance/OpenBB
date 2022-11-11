@@ -19,9 +19,6 @@ class CommonController(model.CommonRoot):
     def qa(self):
         """OpenBB SDK Common Quantitative Analysis Submodule
 
-        Submodules:
-            `qa`: Quantitative Analysis Module
-
         Attributes:
             `bw`: Show box and whisker plots\n
             `calculate_adjusted_var`: Calculates VaR, which is adjusted for skew and kurtosis (Cornish-Fischer-Expansion)\n
@@ -59,9 +56,6 @@ class CommonController(model.CommonRoot):
     @property
     def ta(self):
         """OpenBB SDK Common Technical Analysis Submodule
-
-        Submodules:
-            `ta`: Technical Analysis Module
 
         Attributes:
             `ad`: Calculate AD technical indicator\n

@@ -313,7 +313,6 @@ class BuildCategoryModelClasses:
         f : TextIO
             The file to write to
         """
-        added_sub = False
         for nested_category, nested_dict in d.items():
             if isinstance(nested_dict, Trailmap):
                 continue
@@ -322,12 +321,7 @@ class BuildCategoryModelClasses:
             class_name = f"{category.title()}{subname.replace(' ', '')}(Category)"
             f.write(f'class {class_name}:\r    """OpenBB SDK {subname} Module.\r')
 
-            nested_subcat = self.get_nested_dict(nested_dict)
-            if nested_subcat:
-                for k in nested_subcat:
-                    self.write_submodule_doc(k, f, added_sub)
-                    if not added_sub:
-                        added_sub = True
+            self.write_nested_submodule_docs(nested_dict, f)
 
             if isinstance(nested_dict, dict):
                 self.write_class_attr_docs(nested_dict, f)
@@ -354,6 +348,31 @@ class BuildCategoryModelClasses:
             f.write("\r        Submodules:\r")
         subcat_name = self.get_subcat_fullname(k)
         f.write(f"{add_indent}        `{k}`: {subcat_name} Module\r")
+
+    def write_nested_submodule_docs(
+        self,
+        nested_dict: dict,
+        f: TextIO,
+        indent: bool = False,
+    ) -> None:
+        """Writes the nested submodule docs to the class docstring.
+
+        Parameters
+        ----------
+        nested_dict : dict
+            The nested dictionary
+        f : TextIO
+            The file to write to
+        indent : bool, optional
+            Whether or not to add an indent to the docstring, by default False
+        """
+        added = False
+        nested_subcat = self.get_nested_dict(nested_dict)
+        if nested_subcat:
+            for k in nested_subcat:
+                self.write_submodule_doc(k, f, added, indent)
+                if not added:
+                    added = True
 
     def write_controller_docs(
         self, category: str, d: dict, f: TextIO, sdk_file: bool = False
@@ -470,7 +489,7 @@ class BuildCategoryModelClasses:
                     continue
 
                 self.write_class_property(category, f, subcategory)
-                self.write_submodule_doc(subcategory, f, indent=True)
+                self.write_nested_submodule_docs(d[subcategory], f, True)
                 self.write_class_attr_docs(d[subcategory], f, False)
                 f.write(
                     f"        return model.{category.title()}"

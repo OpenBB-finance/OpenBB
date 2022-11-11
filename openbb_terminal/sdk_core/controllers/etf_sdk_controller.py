@@ -37,9 +37,6 @@ class EtfController(model.EtfRoot):
     def disc(self):
         """OpenBB SDK Etf Discovery Submodule
 
-        Submodules:
-            `disc`: Discovery Module
-
         Attributes:
             `mover`: Scrape data for top etf movers.\n
             `mover_view`: Show top ETF movers from wsj.com\n
@@ -50,9 +47,6 @@ class EtfController(model.EtfRoot):
     @property
     def scr(self):
         """OpenBB SDK Etf Scr Submodule
-
-        Submodules:
-            `scr`: Scr Module
 
         Attributes:
             `screen`: Screens the etfs pulled from my repo (https://github.com/jmaslek/etf_scraper),\n

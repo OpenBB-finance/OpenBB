@@ -15,9 +15,6 @@ class AltController:
     def covid(self):
         """OpenBB SDK Alt Covid Submodule
 
-        Submodules:
-            `covid`: Covid Module
-
         Attributes:
             `global_cases`: Get historical cases for given country\n
             `global_deaths`: Get historical deaths for given country\n
@@ -33,9 +30,6 @@ class AltController:
     @property
     def oss(self):
         """OpenBB SDK Alt Oss Submodule
-
-        Submodules:
-            `oss`: Oss Module
 
         Attributes:
             `github_data`: Get repository stats\n

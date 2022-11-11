@@ -63,9 +63,6 @@ class PortfolioController(model.PortfolioRoot):
     def po(self):
         """OpenBB SDK Portfolio Portfolio Optimization Submodule
 
-        Submodules:
-            `po`: Portfolio Optimization Module
-
         Attributes:
             `blacklitterman`: Builds a maximal diversification portfolio\n
             `blacklitterman_view`: Builds a black litterman portfolio\n

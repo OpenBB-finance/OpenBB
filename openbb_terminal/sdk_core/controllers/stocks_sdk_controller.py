@@ -35,9 +35,6 @@ class StocksController(model.StocksRoot):
     def ba(self):
         """OpenBB SDK Stocks Behavioral Analysis Submodule
 
-        Submodules:
-            `ba`: Behavioral Analysis Module
-
         Attributes:
             `bullbear`: Gets bullbear sentiment for ticker [Source: stocktwits]\n
             `bullbear_view`: Print bullbear sentiment based on last 30 messages on the board.\n
@@ -81,9 +78,6 @@ class StocksController(model.StocksRoot):
     def ca(self):
         """OpenBB SDK Stocks Comparison Analysis Submodule
 
-        Submodules:
-            `ca`: Comparison Analysis Module
-
         Attributes:
             `balance`: Get balance data. [Source: Marketwatch]\n
             `cashflow`: Get cashflow data. [Source: Marketwatch]\n
@@ -111,9 +105,6 @@ class StocksController(model.StocksRoot):
     def dd(self):
         """OpenBB SDK Stocks Due Diligence Submodule
 
-        Submodules:
-            `dd`: Due Diligence Module
-
         Attributes:
             `analyst`: Get analyst data. [Source: Finviz]\n
             `arktrades`: Gets a dataframe of ARK trades for ticker\n
@@ -135,9 +126,6 @@ class StocksController(model.StocksRoot):
     @property
     def disc(self):
         """OpenBB SDK Stocks Discovery Submodule
-
-        Submodules:
-            `disc`: Discovery Module
 
         Attributes:
             `active`: Get stocks ordered in descending order by intraday trade volume. [Source: Yahoo Finance]\n
@@ -165,9 +153,6 @@ class StocksController(model.StocksRoot):
     @property
     def dps(self):
         """OpenBB SDK Stocks Darkpool Shorts Submodule
-
-        Submodules:
-            `dps`: Darkpool Shorts Module
 
         Attributes:
             `ctb`: Get cost to borrow of stocks [Source: Stocksera]\n
@@ -197,9 +182,6 @@ class StocksController(model.StocksRoot):
     @property
     def fa(self):
         """OpenBB SDK Stocks Fundamental Analysis Submodule
-
-        Submodules:
-            `fa`: Fundamental Analysis Module
 
         Attributes:
             `analysis`: Save time reading SEC filings with the help of machine learning. [Source: https://eclect.us]\n
@@ -251,9 +233,6 @@ class StocksController(model.StocksRoot):
     def gov(self):
         """OpenBB SDK Stocks Government Submodule
 
-        Submodules:
-            `gov`: Government Module
-
         Attributes:
             `contracts`: Get government contracts for ticker [Source: quiverquant.com]\n
             `contracts_view`: Show government contracts for ticker [Source: quiverquant.com]\n
@@ -282,9 +261,6 @@ class StocksController(model.StocksRoot):
     def ins(self):
         """OpenBB SDK Stocks Insiders Submodule
 
-        Submodules:
-            `ins`: Insiders Module
-
         Attributes:
             `act`: Get insider activity. [Source: Business Insider]\n
             `act_view`: Display insider activity. [Source: Business Insider]\n
@@ -301,7 +277,8 @@ class StocksController(model.StocksRoot):
         """OpenBB SDK Stocks Options Submodule
 
         Submodules:
-            `options`: Options Module
+            `hedge`: Hedge Module
+            `screen`: Screen Module
 
         Attributes:
             `chains_nasdaq`: Get option chain for symbol at a given expiration\n
@@ -347,9 +324,6 @@ class StocksController(model.StocksRoot):
     def qa(self):
         """OpenBB SDK Stocks Quantitative Analysis Submodule
 
-        Submodules:
-            `qa`: Quantitative Analysis Module
-
         Attributes:
             `capm_information`: Provides information that relates to the CAPM model\n
             `fama_raw`: Gets base Fama French data to calculate risk\n
@@ -361,9 +335,6 @@ class StocksController(model.StocksRoot):
     @property
     def screener(self):
         """OpenBB SDK Stocks Screener Submodule
-
-        Submodules:
-            `screener`: Screener Module
 
         Attributes:
             `historical`: View historical price of stocks that meet preset\n
@@ -377,9 +348,6 @@ class StocksController(model.StocksRoot):
     @property
     def sia(self):
         """OpenBB SDK Stocks Sector Industry Analysis Submodule
-
-        Submodules:
-            `sia`: Sector Industry Analysis Module
 
         Attributes:
             `countries`: Get all countries in Yahoo Finance data based on sector or industry. [Source: Finance Database]\n
@@ -406,9 +374,6 @@ class StocksController(model.StocksRoot):
     def ta(self):
         """OpenBB SDK Stocks Technical Analysis Submodule
 
-        Submodules:
-            `ta`: Technical Analysis Module
-
         Attributes:
             `recom`: Get tradingview recommendation based on technical indicators\n
             `summary`: Get technical summary report provided by FinBrain's API\n
@@ -420,9 +385,6 @@ class StocksController(model.StocksRoot):
     @property
     def th(self):
         """OpenBB SDK Stocks Trading Hours Submodule
-
-        Submodules:
-            `th`: Trading Hours Module
 
         Attributes:
             `all`: Get all exchanges.\n

@@ -26,9 +26,6 @@ class CryptoController(model.CryptoRoot):
     def dd(self):
         """OpenBB SDK Crypto Due Diligence Submodule
 
-        Submodules:
-            `dd`: Due Diligence Module
-
         Attributes:
             `active`: Returns active addresses of a certain symbol\n
             `active_view`: Display active addresses of a certain symbol over time\n
@@ -113,9 +110,6 @@ class CryptoController(model.CryptoRoot):
     def defi(self):
         """OpenBB SDK Crypto DeFi Submodule
 
-        Submodules:
-            `defi`: DeFi Module
-
         Attributes:
             `aterra`: Returns historical data of an asset in a certain terra address\n
             `aterra_view`: Displays the 30-day history of specified asset in terra address\n
@@ -163,9 +157,6 @@ class CryptoController(model.CryptoRoot):
     def disc(self):
         """OpenBB SDK Crypto Discovery Submodule
 
-        Submodules:
-            `disc`: Discovery Module
-
         Attributes:
             `cmctop`: Shows top n coins. [Source: CoinMarketCap]\n
             `cmctop_view`: Shows top n coins. [Source: CoinMarketCap]\n
@@ -198,9 +189,6 @@ class CryptoController(model.CryptoRoot):
     def nft(self):
         """OpenBB SDK Crypto NFT Submodule
 
-        Submodules:
-            `nft`: NFT Module
-
         Attributes:
             `collections`: Get nft collections [Source: https://nftpricefloor.com/]\n
             `collections_view`: Display NFT collections. [Source: https://nftpricefloor.com/]\n
@@ -215,9 +203,6 @@ class CryptoController(model.CryptoRoot):
     @property
     def onchain(self):
         """OpenBB SDK Crypto OnChain Submodule
-
-        Submodules:
-            `onchain`: OnChain Module
 
         Attributes:
             `baas`: Get an average bid and ask prices, average spread for given crypto pair for chosen time period.\n
@@ -269,9 +254,6 @@ class CryptoController(model.CryptoRoot):
     @property
     def ov(self):
         """OpenBB SDK Crypto Overview Submodule
-
-        Submodules:
-            `ov`: Overview Module
 
         Attributes:
             `altindex`: Get altcoin index overtime\n
@@ -341,9 +323,6 @@ class CryptoController(model.CryptoRoot):
     @property
     def tools(self):
         """OpenBB SDK Crypto Tools Submodule
-
-        Submodules:
-            `tools`: Tools Module
 
         Attributes:
             `apy`: Converts apr into apy\n

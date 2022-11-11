@@ -22,9 +22,6 @@ class ForexController(model.ForexRoot):
     def oanda(self):
         """OpenBB SDK Forex Oanda Submodule
 
-        Submodules:
-            `oanda`: Oanda Module
-
         Attributes:
             `calendar`: Request data of significant events calendar.\n
             `calendar_view`: View calendar of significant events.\n
