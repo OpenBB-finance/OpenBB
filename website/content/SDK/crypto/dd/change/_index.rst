@@ -61,7 +61,7 @@ crypto.dd.change(
     symbol: str,
     exchange: str = 'binance',
     start_date: str = '2010-01-01',
-    end_date: str = '2022-11-11',
+    end_date: str = None,
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
     chart: bool = False,

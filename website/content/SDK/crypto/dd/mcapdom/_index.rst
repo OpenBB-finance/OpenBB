@@ -59,8 +59,8 @@ crypto.dd.mcapdom(
 {{< highlight python >}}
 crypto.dd.mcapdom(
     symbol: str,
-    start_date: str = '2021-11-11',
-    end_date: str = '2022-11-11',
+    start_date: str = None,
+    end_date: str = None,
     interval: str = '1d',
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,

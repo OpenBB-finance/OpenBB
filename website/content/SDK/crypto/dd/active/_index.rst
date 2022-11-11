@@ -60,7 +60,7 @@ crypto.dd.active(
 crypto.dd.active(
     symbol: str,
     start_date: str = '2010-01-01',
-    end_date: str = '2022-11-11',
+    end_date: str = None,
     interval: str = '24h',
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
