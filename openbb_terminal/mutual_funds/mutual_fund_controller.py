@@ -95,8 +95,8 @@ class FundController(BaseController):
                 "-s": "--sortby",
                 "--limit": None,
                 "-l": "--limit",
-                "--ascend": {},
-                "-a": "--ascend",
+                "--reverse": {},
+                "-r": "--reverse",
             }
             choices["load"] = {
                 "--fund": None,
@@ -227,12 +227,16 @@ class FundController(BaseController):
             default=10,
         )
         parser.add_argument(
-            "-a",
-            "--ascend",
-            dest="ascending",
-            help="Sort in ascending order",
+            "-r",
+            "--reverse",
             action="store_true",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--fund")
@@ -245,7 +249,7 @@ class FundController(BaseController):
                 country=self.country,
                 limit=ns_parser.limit,
                 sortby=ns_parser.sortby,
-                ascend=ns_parser.ascending,
+                ascend=ns_parser.reverse,
             )
         return self.queue
 

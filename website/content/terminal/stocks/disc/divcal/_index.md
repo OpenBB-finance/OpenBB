@@ -9,7 +9,9 @@ optional arguments:
   -d DATE, --date DATE  Date to get format for (default: 2022-02-16 09:53:53.533928)
   -s SORT [SORT ...], --sort SORT [SORT ...]
                         Column to sort by (default: ['Dividend'])
-  -a, --ascend          Flag to sort in ascending order (default: False)
+  -r, --reverse         Data is sorted in descending order by default.
+                        Reverse flag will sort it in an ascending way.
+                        Only works when raw data is show this help message (default: False)
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx (default: )
