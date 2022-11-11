@@ -1,0 +1,265 @@
+                                                                                                              name         ticker
+sp500                                                                                                S&P 500 Index          ^GSPC
+sp400                                                                                        S&P 400 Mid Cap Index         ^SP400
+sp600                                                                                      S&P 600 Small Cap Index         ^SP600
+sp500tr                                                                                           S&P 500 TR Index       ^SP500TR
+sp_xsp                                                                              S&P 500 Mini SPX Options Index           ^XSP
+nyse_ny                                                                                          NYSE US 100 Index            ^NY
+dow_djus                                                                                        Dow Jones US Index          ^DJUS
+nyse                                                                                          NYSE Composite Index           ^NYA
+amex                                                                                     NYSE-AMEX Composite Index           ^XAX
+nasdaq                                                                                      Nasdaq Composite Index          ^IXIC
+nasdaq100                                                                                               NASDAQ 100           ^NDX
+nasdaq100_ew                                                                       NASDAQ 100 Equal Weighted Index          ^NDXE
+nasdaq50                                                                                          NASDAQ Q50 Index          ^NXTQ
+russell1000                                                                                     Russell 1000 Index           ^RUI
+russell2000                                                                                     Russell 2000 Index           ^RUT
+cboe_bxr                                                                         CBOE Russell 2000 Buy-Write Index           ^BXR
+cboe_bxrt                                                               CBOE Russell 2000 30-Delta Buy-Write Index          ^BXRT
+russell3000                                                                                     Russell 3000 Index           ^RUA
+russellvalue                                                                              Russell 2000 Value Index           ^RUJ
+russellgrowth                                                                            Russell 2000 Growth Index           ^RUO
+w5000                                                                                                Wilshire 5000         ^W5000
+w5000flt                                                                        Wilshire 5000 Float Adjusted Index      ^W5000FLT
+dow_dja                                                                          Dow Jones Composite Average Index           ^DJA
+dow_dji                                                                         Dow Jones Industrial Average Index           ^DJI
+ca_tsx                                                                                   TSX Composite Index (CAD)        ^GSPTSE
+ca_banks                                                                       S&P/TSX Composite Banks Index (CAD)        TXBA.TS
+mx_ipc                                                                                      IPC Mexico Index (MXN)           ^MXX
+arca_mxy                                                                              NYSE ARCA Mexico Index (USD)           ^MXY
+br_bvsp                                                                      IBOVESPA Sao Paulo Brazil Index (BRL)          ^BVSP
+br_ivbx                                                                                  IVBX2 Indice Valour (BRL)          ^IVBX
+ar_mervel                                                                                S&P MERVAL TR Index (USD)           M.BA
+eu_fteu1                                                                              FTSE Eurotop 100 Index (EUR)         ^FTEU1
+eu_speup                                                                                S&P Europe 350 Index (EUR)         ^SPEUP
+eu_n100                                                                                   Euronext 100 Index (EUR)          ^N100
+ftse100                                                                                FTSE Global 100 Index (GBP)          ^FTSE
+ftse250                                                                                FTSE Global 250 Index (GBP)          ^FTMC
+ftse350                                                                                FTSE Global 350 Index (GBP)          ^FTLC
+ftai                                                                         FTSE AIM All-Share Global Index (GBP)          ^FTAI
+uk_ftas                                                                              UK FTSE All-Share Index (GBP)          ^FTAS
+uk_spuk                                                                             S&P United Kingdom Index (PDS)          ^SPUK
+uk_100                                                                                     CBOE UK 100 Index (GBP)       ^BUK100P
+ie_iseq                                                                          ISEQ Irish All Shares Index (EUR)          ^ISEQ
+nl_aex                                                                               Euronext Dutch 25 Index (EUR)           ^AEX
+nl_amx                                                                          Euronext Dutch Mid Cap Index (EUR)           ^AMX
+at_atx                                                                        Wiener Börse Austrian 20 Index (EUR)           ^ATX
+at_atx5                                                                                Vienna ATX Five Index (EUR)          ^ATX5
+at_prime                                                                              Vienna ATX Prime Index (EUR)      ^ATXPRIME
+ch_stoxx                                                                            Zurich STXE 600 PR Index (EUR)         ^STOXX
+ch_stoxx50e                                                                          Zurich ESTX 50 PR Index (EUR)      ^STOXX50E
+se_omx30                                                                              OMX Stockholm 30 Index (SEK)           ^OMX
+se_omxspi                                                                         OMX Stockholm All Share PI (SEK)        ^OMXSPI
+se_benchmark                                                                      OMX Stockholm Benchmark GI (SEK)       ^OMXSBGI
+dk_benchmark                                                                     OMX Copenhagen Benchmark GI (DKK)       ^OMXCBGI
+dk_omxc25                                                                            OMX Copenhagen 25 Index (DKK)        ^OMXC25
+fi_omxh25                                                                                    OMX Helsinki 25 (EUR)        ^OMXH25
+de_dax40                                                                               DAX Performance Index (EUR)         ^GDAXI
+de_mdax60                                                                      DAX Mid Cap Performance Index (EUR)         ^MDAXI
+de_sdax70                                                                    DAX Small Cap Performance Index (EUR)         ^SDAXI
+de_tecdax30                                                                         DAX Tech Sector TR Index (EUR)        ^TECDAX
+fr_cac40                                                                                     CAC 40 PR Index (EUR)          ^FCHI
+fr_next20                                                                                  CAC Next 20 Index (EUR)          ^CN20
+it_mib40                                                                                   FTSE MIB 40 Index (EUR)     FTSEMIB.MI
+be_bel20                                                                               BEL 20 Brussels Index (EUR)           ^BFX
+pt_bvlg                                                                        Lisbon PSI All-Share Index GR (EUR)          ^BVLG
+es_ibex35                                                                              IBEX 35 - Madrid CATS (EUR)          ^IBEX
+in_bse                                                                                     S&P Bombay SENSEX (INR)         ^BSESN
+in_bse500                                                                                  S&P BSE 500 Index (INR)     BSE-500.BO
+in_bse200                                                                                  S&P BSE 200 Index (INR)     BSE-200.BO
+in_bse100                                                                                  S&P BSE 100 Index (INR)     BSE-100.BO
+in_bse_mcap                                                                         S&P Bombay Mid Cap Index (INR)  BSE-MIDCAP.BO
+in_bse_scap                                                                       S&P Bombay Small Cap Index (INR)  BSE-SMLCAP.BO
+in_nse50                                                                                  NSE Nifty 50 Index (INR)          ^NSEI
+in_nse_mcap                                                                       NSE Nifty 50 Mid Cap Index (INR)     ^NSEMDCP50
+in_nse_bank                                                                    NSE Nifty Bank Industry Index (INR)       ^NSEBANK
+in_nse500                                                                                NSE Nifty 500 Index (INR)        ^CRSLDX
+il_ta125                                                                                  Tel-Aviv 125 Index (ILS)      ^TA125.TA
+za_shariah                                                              Johannesburg Shariah All Share Index (ZAR)       ^J143.JO
+za_jo                                                                           Johannesburg All Share Index (ZAR)       ^J203.JO
+za_jo_mcap                                                              Johannesburg Large and Mid Cap Index (ZAR)       ^J206.JO
+za_jo_altex                                                                  Johannesburg Alt Exchange Index (ZAR)       ^J232.JO
+ru_moex                                                                                    MOEX Russia Index (RUB)       IMOEX.ME
+au_aord                                                                   Australia All Ordinary Share Index (AUD)          ^AORD
+au_small                                                                      S&P/ASX Small Ordinaries Index (AUD)          ^AXSO
+au_asx20                                                                                    S&P/ASX 20 Index (AUD)          ^ATLI
+au_asx50                                                                                    S&P/ASX 50 Index (AUD)          ^AFLI
+au_asx50_mid                                                                        S&P/ASX Mid Cap 50 Index (AUD)          ^AXMD
+au_asx100                                                                                  S&P/ASX 100 Index (AUD)          ^ATOI
+au_asx200                                                                                  S&P/ASX 200 Index (AUD)          ^AXJO
+au_asx300                                                                                  S&P/ASX 300 Index (AUD)          ^AXKO
+au_energy                                                                    S&P/ASX 200 Energy Sector Index (AUD)          ^AXEJ
+au_resources                                                              S&P/ASX 200 Resources Sector Index (AUD)          ^AXJR
+au_materials                                                              S&P/ASX 200 Materials Sector Index (AUD)          ^AXMJ
+au_mining                                                         S&P/ASX 300 Metals and Mining Sector Index (AUD)          ^AXMM
+au_industrials                                                          S&P/ASX 200 Industrials Sector Index (AUD)          ^AXNJ
+au_discretionary                                             S&P/ASX 200 Consumer Discretionary Sector Index (AUD)          ^AXDJ
+au_staples                                                         S&P/ASX 200 Consumer Staples Sector Index (AUD)          ^AXSJ
+au_health                                                               S&P/ASX 200 Health Care Sector Index (AUD)          ^AXHJ
+au_financials                                                            S&P/ASX 200 Financials Sector Index (AUD)          ^AXFJ
+au_reit                                                                    S&P/ASX 200 A-REIT Industry Index (AUD)          ^AXPJ
+au_tech                                                                   S&P/ASX 200 Info Tech Sector Index (AUD)          ^AXIJ
+au_communications                                                    S&P/ASX 200 Communications Sector Index (AUD)          ^AXTJ
+au_utilities                                                              S&P/ASX 200 Utilities Sector Index (AUD)          ^AXUJ
+nz50                                                                                S&P New Zealand 50 Index (NZD)          ^nz50
+nz_small                                                                             S&P/NZX Small Cap Index (NZD)          ^NZSC
+kr_kospi                                                                               KOSPI Composite Index (KRW)          ^KS11
+jp_arca                                                                                NYSE ARCA Japan Index (JPY)           ^JPN
+jp_n225                                                                                     Nikkei 255 Index (JPY)          ^N225
+jp_n300                                                                                     Nikkei 300 Index (JPY)          ^N300
+jp_nknr                                                                              Nikkei Avg Net TR Index (JPY)       ^NKVI.OS
+jp_nkrc                                                                        Nikkei Avg Risk Control Index (JPY)       ^NKRC.OS
+jp_nklv                                                                            Nikkei Avg Leverage Index (JPY)       ^NKLV.OS
+jp_nkcc                                                                        Nikkei Avg Covered Call Index (JPY)       ^NKCC.OS
+jp_nkhd                                                                 Nikkei Avg High Dividend Yield Index (JPY)       ^NKHD.OS
+jp_auto                                                                   Nikkei 500 Auto & Auto Parts Index (JPY)       ^NG17.OS
+jp_fintech                                                                 Global Fintech Japan Hedged Index (JPY)    ^FDSFTPRJPY
+jp_nkdh                                                                       Nikkei Average USD Hedge Index (JPY)       ^NKDH.OS
+jp_nkeh                                                                       Nikkei Average EUR Hedge Index (JPY)       ^NKEH.OS
+jp_ndiv                                                                  Nikkei Average Double Inverse Index (JPY)       ^NDIV.OS
+cn_csi300                                                                                China CSI 300 Index (CNY)      000300.SS
+cn_sse_comp                                                                              SSE Composite Index (CNY)      000001.SS
+cn_sse_a                                                                                   SSE A Share Index (CNY)      000002.SS
+cn_szse_comp                                                                            SZSE Component Index (CNY)      399001.SZ
+cn_szse_a                                                                                SZSE A-Shares Index (CNY)      399107.SZ
+tw_twii                                                                                  TSEC Weighted Index (TWD)          ^TWII
+tw_tpai                                                                         TSEC Paper and Pulp Subindex (TWD)          ^TPAI
+hk_hsi                                                                                       Hang Seng Index (HKD)           ^HSI
+hk_utilities                                                                Hang Seng Utilities Sector Index (HKD)          ^HSNU
+hk_china                                                       Hang Seng China-Affiliated Corporations Index (HKD)          ^HSCC
+hk_finance                                                                    Hang Seng Finance Sector Index (HKD)          ^HSNF
+hk_properties                                                              Hang Seng Properties Sector Index (HKD)          ^HSNP
+hk_hko                                                                     NYSE ARCA Hong Kong Options Index (USD)           ^HKO
+id_jkse                                                                              Jakarta Composite Index (IDR)          ^JKSE
+id_lq45                                                                  Indonesia Stock Exchange LQ45 Index (IDR)        ^JKLQ45
+my_klci                                                                    FTSE Kuala Lumpur Composite Index (MYR)          ^KLSE
+ph_psei                                                                      Philippine Stock Exchange Index (PHP)        PSEI.PS
+sg_sti                                                                                   STI Singapore Index (SGD)           ^STI
+th_set                                                                                    Thailand SET Index (THB)        ^SET.BK
+sp_energy_ig                                                                 S&P 500 Energy (Industry Group) Index    ^SP500-1010
+sp_energy_equipment                                             S&P 500 Energy Equipment & Services Industry Index  ^SP500-101010
+sp_energy_oil                                                   S&P 500 Oil, Gas & Consumable Fuels Industry Index  ^SP500-101020
+sp_materials_sector                                                                 S&P 500 Materials Sector Index      ^SP500-15
+sp_materials_ig                                                           S&P 500 Materials (Industry Group) Index    ^SP500-1510
+sp_materials_construction                                            S&P 500 Construction Materials Industry Index  ^SP500-151020
+sp_materials_metals                                                         S&P 500 Mining & Metals Industry Index  ^SP500-151040
+sp_industrials_sector                                                             S&P 500 Industrials Sector Index      ^SP500-20
+sp_industrials_goods_ig                                               S&P 500 Capital Goods (Industry Group) Index    ^SP500-2010
+sp_industrials_aerospace                                                S&P 500 Aerospace & Defense Industry Index  ^SP500-201010
+sp_industrials_building                                                   S&P 500 Building Products Industry Index  ^SP500-201020
+sp_industrials_construction                                      S&P 500 Construction & Engineering Industry Index  ^SP500-201030
+sp_industrials_electrical                                              S&P 500 Electrical Equipment Industry Index  ^SP500-201040
+sp_industrials_conglomerates                                       S&P 500 Industrial Conglomerates Industry Index  ^SP500-201050
+sp_industrials_machinery                                                          S&P 500 Machinery Industry Index  ^SP500-201060
+sp_industrials_distributors                                S&P 500 Trading Companies & Distributors Industry Index  ^SP500-201070
+sp_industrials_services_ig                       S&P 500 Commercial & Professional Services (Industry Group) Index    ^SP500-2020
+sp_industrials_services_supplies                             S&P 500 Commercial Services & Supplies Industry Index  ^SP500-202010
+sp_industrials_transport_ig                                          S&P 500 Transportation (Industry Group) Index    ^SP500-2030
+sp_industrials_transport_air                                              S&P 500 Air Freight & Logistics Industry  ^SP500-203010
+sp_industrials_transport_airlines                                                  S&P 500 Airlines Industry Index  ^SP500-203020
+sp_industrials_transport_ground                                                 S&P 500 Road & Rail Industry Index  ^SP500-203040
+sp_discretionary_sector                                                       S&P 500 Consumer Discretionary Index      ^SP500-25
+sp_discretionary_autos-ig                                S&P 500 Automobiles and Components (Industry Group) Index    ^SP500-2510
+sp_discretionary_auto_components                                            S&P 500 Auto Components Industry Index  ^SP500-251010
+sp_discretionary_autos                                                          S&P 500 Automobiles Industry Index  ^SP500-251020
+sp_discretionary_durables_ig                            S&P 500 Consumer Durables & Apparel (Industry Group) Index    ^SP500-2520
+sp_discretionary_durables_household                                      S&P 500 Household Durables Industry Index  ^SP500-252010
+sp_discretionary_leisure                                                   S&P 500 Leisure Products Industry Index  ^SP500-252020
+sp_discretionary_textiles                                  S&P 500 Textiles, Apparel & Luxury Goods Industry Index  ^SP500-252030
+sp_discretionary_services_consumer                                S&P 500 Consumer Services (Industry Group) Index    ^SP500-2530
+sp_staples_sector                                                            S&P 500 Consumer Staples Sector Index      ^SP500-30
+sp_staples_retail_ig                                       S&P 500 Food & Staples Retailing (Industry Group) Index    ^SP500-3010
+sp_staples_food_ig                                          S&P 500 Food Beverage & Tobacco (Industry Group) Index    ^SP500-3020
+sp_staples_beverages                                                              S&P 500 Beverages Industry Index  ^SP500-302010
+sp_staples_products_food                                                      S&P 500 Food Products Industry Index  ^SP500-302020
+sp_staples_tobacco                                                                  S&P 500 Tobacco Industry Index  ^SP500-302030
+sp_staples_household_ig                               S&P 500 Household & Personal Products (Industry Group) Index    ^SP500-3030
+sp_staples_products_household                                            S&P 500 Household Products Industry Index  ^SP500-303010
+sp_staples_products_personal                                              S&P 500 Personal Products Industry Index  ^SP500-303020
+sp_health_sector                                                                  S&P 500 Health Care Sector Index      ^SP500-35
+sp_health_equipment                                S&P 500 Health Care Equipment & Services (Industry Group) Index    ^SP500-3510
+sp_health_supplies                                         S&P 500 Health Care Equipment & Supplies Industry Index  ^SP500-351010
+sp_health_providers                                        S&P 500 Health Care Providers & Services Industry Index  ^SP500-351020
+sp_health_sciences                   S&P 500 Pharmaceuticals, Biotechnology & Life Sciences (Industry Group) Index    ^SP500-3520
+sp_health_biotech                                                             S&P 500 Biotechnology Industry Index  ^SP500-352010
+sp_health_pharma                                                            S&P 500 Pharmaceuticals Industry Index  ^SP500-352020
+sp_financials_sector                                                               S&P 500 Financials Sector Index      ^SP500-40
+sp_financials_diversified_ig                                 S&P 500 Diversified Financials (Industry Group) Index    ^SP500-4020
+sp_financials_services                                       S&P 500 Diversified Financial Services Industry Index  ^SP500-402010
+sp_financials_consumer                                                     S&P 500 Consumer Finance Industry Index  ^SP500-402020
+sp_financials_capital                                                       S&P 500 Capital Markets Industry Index  ^SP500-402030
+sp_it_sector                                                                               S&P 500 IT Sector Index      ^SP500-45
+sp_it_saas_ig                                                 S&P 500 Software and Services (Industry Group) Index    ^SP500-4510
+sp_it_software                                                                     S&P 500 Software Industry Index  ^SP500-451030
+sp_it_hardware                                        S&P 500 Technology Hardware Equipment (Industry Group) Index    ^SP500-4520
+sp_it_semi                                                S&P 500 Semiconductor & Semiconductor Equipment Industry  ^SP500-453010
+sp_communications_sector                                                       S&P 500 Communications Sector Index      ^SP500-50
+sp_communications_telecom                           S&P 500 Diversified Telecommunications Services Industry Index  ^SP500-501010
+sp_utilities_sector                                                                 S&P 500 Utilities Sector Index      ^SP500-55
+sp_utilities_electricity                                                          S&P 500 Electric Utilities Index  ^SP500-551010
+sp_utilities_multis                                                         S&P 500 Multi-Utilities Industry Index  ^SP500-551030
+sp_re_sector                                                                      S&P 500 Real Estate Sector Index      ^SP500-60
+sp_re_ig                                                                S&P 500 Real Estate (Industry Group) Index    ^SP500-6010
+sphyda                                                                            S&P High Yield Aristocrats Index        ^SPHYDA
+dow_djt                                                                     Dow Jones Transportation Average Index           ^DJT
+dow_dju                                                                            Dow Jones Utility Average Index           ^DJU
+dow_rci                                                                         Dow Jones Composite All REIT Index           ^RCI
+reit_fnar                                                                       FTSE Nareit All Equity REITs Index          ^FNAR
+nq_ixch                                                                                   NASDAQ Health Care Index          ^IXCH
+nq_nbi                                                                                        NASDAQ Biotech Index           ^NBI
+nq_tech                                                                         NASDAQ 100 Technology Sector Index          ^NDXT
+nq_ex_tech                                                                         NASDAQ 100 Ex-Tech Sector Index          ^NDXX
+nq_ixtc                                                                            NASDAQ Telecommunications Index          ^IXTC
+nq_inds                                                                                    NASDAQ Industrial Index          ^INDS
+nq_ixco                                                                                      NASDAQ Computer Index          ^INCO
+nq_bank                                                                                          NASDAQ Bank Index          ^BANK
+nq_bkx                                                                                       KBW NASDAQ Bank Index           ^BKX
+nq_krx                                                                              KBW NASDAQ Regional Bank Index           ^KRX
+nq_kix                                                                                  KBW NASDAQ Insurance Index           ^KIX
+nq_ksx                                                                            KBW NASDAQ Capital Markets Index           ^KSX
+nq_tran                                                                                NASDAQ Transportation Index          ^TRAN
+ice_auto                                                                     ICE FactSet Global NextGen Auto Index       ^ICEFSNA
+ice_comm                                                           ICE FactSet Global NextGen Communications Index       ^ICEFSNC
+nyse_nyl                                                                                  NYSE World Leaders Index           ^NYL
+nyse_nyi                                                                              NYSE International 100 Index           ^NYI
+nyse_nyy                                                                                            NYSE TMT Index           ^NYY
+arca_xmi                                                                              NYSE ARCA Major Market Index           ^XMI
+arca_xbd                                                                  NYSE ARCA Securities Broker/Dealer Index           ^XBD
+arca_xii                                                                             NYSE ARCA Institutional Index           ^XII
+arca_xoi                                                                               NYSE ARCA Oil and Gas Index           ^XOI
+arca_xng                                                                               NYSE ARCA Natural Gas Index           ^XNG
+arca_hui                                                                                 NYSE ARCA Gold Bugs Index           ^HUI
+arca_ixb                                                                        NYSE Materials Select Sector Index           ^IXB
+arca_drg                                                                            NYSE ARCA Phramaceutical Index           ^DRG
+arca_btk                                                                                   NYSE ARCA Biotech Index           ^BKT
+arca_pse                                                                                  NYSE ARCA Tech 100 Index           ^PSE
+arca_nwx                                                                                NYSE ARCA Networking Index           ^NWX
+arca_xci                                                                             NYSE ARCA Computer Tech Index           ^XCI
+arca_xal                                                                                   NYSE ARCA Airline Index           ^XAL
+arca_xtc                                                                     NYSE ARCA N.A. Telecom Industry Index           ^XTC
+phlx_sox                                                                                  PHLX Semiconductor Index           ^SOX
+phlx_xau                                                                                    PHLX Gold/Silver Index           ^XAU
+phlx_hgx                                                                                 PHLX Housing Sector Index           ^HGX
+phlx_osx                                                                            PHLX Oil Services Sector Index           ^OSX
+phlx_uty                                                                                 PHLX Utility Sector Index           ^UTY
+w5klcg                                                                          Wilshire US Large Cap Growth Index        ^W5KLCG
+w5klcv                                                                           Wilshire US Large Cap Value Index        ^W5KLCV
+reit_wgreit                                                                             Wilshire Global REIT Index        ^WGREIT
+reit_wgresi                                                               Wilshire Global Real Estate Sector Index        ^WGRESI
+reit_wilreit                                                                                Wilshire US REIT Index       ^WILREIT
+reit_wilresi                                                                Wilshire US Real Estate Security Index       ^WILRESI
+cboe_bxm                                                                              CBOE Buy-Write Monthly Index           ^BXM
+cboe_vix                                                                                     CBOE Volatility Index           ^VIX
+cboe_vin                                                                                  CBOE Near-Term VIX Index           ^VIN
+cboe_vvix                                                                                CBOE VIX Volatility Index          ^VVIX
+cboe_shortvol                                                                         CBOE Short VIX Futures Index      ^SHORTVOL
+cboe_skew                                                                                          CBOE Skew Index          ^SKEW
+cboe_vxn                                                                          CBOE NASDAQ 100 Volatility Index           ^VXN
+cboe_gvz                                                                                CBOE Gold Volatility Index           ^GVZ
+cboe_ovx                                                                           CBOE Crude Oil Volatility Index           ^OVX
+cboe_tnx                                                                         CBOE Interest Rate 10 Year T-Note           ^TNX
+cboe_tyx                                                                              CBOE 30 year Treasury Yields           ^TYX
+cboe_irx                                                                                CBOE 13 Week Treasury Bill           ^IRX
+move                                                                                         ICE BofAML Move Index          ^MOVE
+dxy                                                                                                US Dollar Index       DX-Y.NYB
+crypto200                                                                          CMC Crypto 200 Index by Solacti        ^CMC200

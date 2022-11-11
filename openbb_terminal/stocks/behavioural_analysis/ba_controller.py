@@ -109,16 +109,16 @@ class BehaviouralAnalysisController(StockBaseController):
             choices["headlines"]["--raw"] = {}
             choices["wsb"] = {
                 "--new": {},
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             limit = {
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["watchlist"] = limit
             choices["popular"] = {
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--num": one_to_hundred,
                 "-n": "--num",
@@ -128,12 +128,12 @@ class BehaviouralAnalysisController(StockBaseController):
             choices["spacc"] = {
                 "--popular": {},
                 "-p": "--popular",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["spac"] = limit
             choices["getdd"] = {
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--days": one_to_hundred,
                 "-d": "--days",
@@ -153,19 +153,19 @@ class BehaviouralAnalysisController(StockBaseController):
                 "-g": "--graphic",
                 "--display": {},
                 "-d": "--display",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["stalker"] = {
                 "--user": None,
                 "-u": "--user",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["messages"] = limit
             choices["infer"] = limit
             choices["sentiment"] = {
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--days": one_to_hundred,
                 "-d": "--days",

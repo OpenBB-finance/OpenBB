@@ -42,7 +42,7 @@ crypto.defi.ldapps(
         Flag to display description of protocol
     drop_chain: bool
         Whether to drop the chain column
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -89,6 +89,6 @@ crypto.defi.ldapps(
         Flag to display description of protocol
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

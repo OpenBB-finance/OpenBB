@@ -29,7 +29,7 @@ etf.etf_by_name(
 
     name_to_search: str
         ETF name to match
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -69,6 +69,6 @@ etf.etf_by_name(
         Limit of ETFs to display
     export: str
         Export to given file type
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

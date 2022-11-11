@@ -43,9 +43,8 @@ class AllyController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
 
-            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
             choices["history"] = {
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["quote"] = {
@@ -57,7 +56,7 @@ class AllyController(BaseController):
                 "-t": "--type",
                 "--exchange": {c: {} for c in self.list_exchanges},
                 "-e": "--exchange",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
 

@@ -32,7 +32,7 @@ forex.oanda.calendar(
         The loaded currency pair, by default None
     days : int
         Number of days in advance
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -69,6 +69,6 @@ forex.oanda.calendar(
         The loaded currency pair
     days : int
         Number of days in advance
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

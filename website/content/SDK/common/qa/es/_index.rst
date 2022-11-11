@@ -26,7 +26,7 @@ common.qa.es(
 .. raw:: html
 
     <p>
-    Gets Expected Shortfall for specified stock dataframe
+    Gets Expected Shortfall for specified stock dataframe.
     </p>
 
 * **Parameters**
@@ -41,16 +41,14 @@ common.qa.es(
         VaR percentile
     portfolio: bool
         If the data is a portfolio
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
 * **Returns**
 
-    list
-        list of ES
-    list
-        list of historical ES
+    pd.DataFrame
+        DataFrame with Expected Shortfall per percentile
 
 |
 
@@ -75,7 +73,7 @@ common.qa.es(
 .. raw:: html
 
     <p>
-    Displays expected shortfall
+    Displays expected shortfall.
     </p>
 
 * **Parameters**
@@ -92,6 +90,6 @@ common.qa.es(
         es percentile
     portfolio: bool
         If the data is a portfolio
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

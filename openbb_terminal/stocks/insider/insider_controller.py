@@ -86,17 +86,16 @@ class InsiderController(StockBaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
 
-            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
             choices["view"] = {c: {} for c in self.preset_choices}
             choices["set"] = {c: {} for c in self.preset_choices}
             choices["filter"] = {
                 "--urls": {},
                 "-u": "--urls",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             limit = {
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["lcb"] = limit
@@ -123,12 +122,12 @@ class InsiderController(StockBaseController):
             choices["stats"] = {
                 "--urls": {},
                 "-u": "--urls",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["act"] = {
                 "--raw": {},
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["lins"] = limit

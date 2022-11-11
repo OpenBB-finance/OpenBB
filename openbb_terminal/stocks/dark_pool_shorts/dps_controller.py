@@ -94,7 +94,7 @@ class DarkPoolShortsController(StockBaseController):
                 },
             }
             limit = {
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["shorted"] = limit
@@ -106,13 +106,13 @@ class DarkPoolShortsController(StockBaseController):
             choices["prom"] = {
                 "--num": None,
                 "-n": "--num",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--tier": {c: {} for c in ["T1", "T2", "OTCE"]},
                 "-t": "--tier",
             }
             choices["pos"] = {
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--sort": {c: {} for c in self.POS_CHOICES},
                 "-s": "--sort",
@@ -120,7 +120,7 @@ class DarkPoolShortsController(StockBaseController):
                 "-a": "--ascend",
             }
             choices["sidtc"] = {
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--sort": {c: {} for c in ["float", "dtc", "si"]},
                 "-s": "--sort",
@@ -143,7 +143,7 @@ class DarkPoolShortsController(StockBaseController):
             choices["psi"] = {
                 "--nyse": {},
                 "--raw": {},
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--source": {
                     c: {} for c in get_ordered_list_sources(f"{self.PATH}psi")

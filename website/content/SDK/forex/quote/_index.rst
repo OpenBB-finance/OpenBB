@@ -32,7 +32,7 @@ forex.quote(
         To forex symbol
     from_symbol : str
         From forex symbol
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -69,6 +69,6 @@ forex.quote(
         To symbol
     from_symbol : str
         From forex symbol
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

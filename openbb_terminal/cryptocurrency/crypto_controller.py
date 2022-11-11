@@ -113,7 +113,7 @@ class CryptoController(CryptoBaseController):
             choices["find"] = {
                 "--key": {c: {} for c in FIND_KEYS},
                 "-k": "--key",
-                "--limit": {str(c): {} for c in range(1, 300)},
+                "--limit": None,
                 "-l": "--limit",
                 "--skip": {str(c): {} for c in range(1, 300)},
                 "-s": "--skip",

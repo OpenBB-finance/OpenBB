@@ -29,7 +29,7 @@ stocks.dd.sec(
 
     symbol : str
         Stock ticker symbol
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -69,6 +69,6 @@ stocks.dd.sec(
         Number of ratings to display
     export: str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

@@ -29,7 +29,7 @@ econometrics.dwat(
 
     residual : OLS Model
         Model containing residual values.
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -74,6 +74,6 @@ econometrics.dwat(
         Format to export data
     external_axes: Optional[List[plt.axes]]
         External axes to plot on
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

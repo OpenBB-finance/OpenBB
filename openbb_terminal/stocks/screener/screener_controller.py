@@ -84,7 +84,6 @@ class ScreenerController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
 
-            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
             choices["view"] = {c: {} for c in self.preset_choices}
             choices["set"] = {c: {} for c in self.preset_choices}
             choices["historical"] = {
@@ -93,7 +92,7 @@ class ScreenerController(BaseController):
                 "--type": {c: {} for c in self.historical_candle_choices},
                 "--no-scale": {},
                 "-n": "--no-scale",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             screener_standard = {
@@ -101,7 +100,7 @@ class ScreenerController(BaseController):
                 "-p": "--preset",
                 "--sort": {c: {} for c in finviz_view.d_cols_to_sort["overview"]},
                 "-s": "--sort",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--ascend": {},
                 "-a": "--ascend",

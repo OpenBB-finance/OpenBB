@@ -30,7 +30,7 @@ crypto.dd.stats(
 
     symbol: str
         Trading pair of coins on Coinbase e.g ETH-USDT or UNI-ETH
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -68,6 +68,6 @@ crypto.dd.stats(
         Trading pair of coins on Coinbase e.g ETH-USDT or UNI-ETH
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

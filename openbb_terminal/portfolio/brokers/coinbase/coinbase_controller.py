@@ -50,7 +50,6 @@ class CoinbaseController(BaseController):
         if session and obbff.USE_PROMPT_TOOLKIT:
             choices: dict = {c: {} for c in self.controller_choices}
 
-            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
             choices["account"] = {
                 "--all": {},
                 "--currency": None,
@@ -59,13 +58,13 @@ class CoinbaseController(BaseController):
             choices["history"] = {
                 "--acc": None,
                 "-a": "--acc",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["orders"] = {
                 "--sortby": {c: {} for c in self.order_sortby},
                 "-s": "--sortby",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
@@ -74,7 +73,7 @@ class CoinbaseController(BaseController):
                 "-t": "--type",
                 "--sortby": {c: {} for c in self.deposit_sort},
                 "-s": "--sortby",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
