@@ -13,9 +13,9 @@
 {{< highlight python >}}
 etf.load(
     symbol: str,
-    start_date: Union[datetime.datetime, str, NoneType] = '2019-11-07',
+    start_date: Union[datetime.datetime, str, NoneType] = None,
     interval: int = 1440,
-    end_date: Union[datetime.datetime, str, NoneType] = '2022-11-11',
+    end_date: Union[datetime.datetime, str, NoneType] = None,
     prepost: bool = False,
     source: str = 'YahooFinance',
     iexrange: str = 'ytd',

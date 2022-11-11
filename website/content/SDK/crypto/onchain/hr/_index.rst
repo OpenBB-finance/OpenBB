@@ -17,7 +17,7 @@ crypto.onchain.hr(
     symbol: str,
     interval: str = '24h',
     start_date: str = '2010-01-01',
-    end_date: str = '2022-11-11',
+    end_date: str = None,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
