@@ -90,6 +90,7 @@ INTERVAL_MAPS: Dict = {
 
 logger = logging.getLogger(__name__)
 
+
 @log_start_end(log=logger)
 def load(
     to_symbol: str,
@@ -127,7 +128,6 @@ def load(
 
     if start_date is None:
         start_date = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d")
-
 
     if source in ["YahooFinance", "AlphaVantage"]:
         interval_map = INTERVAL_MAPS[source]
@@ -180,7 +180,7 @@ def load(
             f"{from_symbol}{to_symbol}",
             multiplier=multiplier,
             timespan=timeframe,
-            from_date=start_date,
+            start_date=start_date,
         )
 
     console.print(f"Source {source} not supported")
