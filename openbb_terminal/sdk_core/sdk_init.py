@@ -456,7 +456,7 @@ try:
     # Failures later on, also importing utils ensures that darts is installed correctly
     from darts import utils
 
-    forecasting = True
+    FORECASTING = True
     from openbb_terminal.forecast import (
         forecast_model,
         forecast_view,
@@ -484,4 +484,4 @@ try:
         nhits_view as forecast_nhits_view,
     )
 except ImportError:
-    forecasting = False
+    FORECASTING = False
