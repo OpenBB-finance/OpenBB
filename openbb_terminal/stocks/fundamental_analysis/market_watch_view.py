@@ -274,7 +274,7 @@ def display_sean_seah_warnings(symbol: str, debug: bool = False):
     )
 
     if not warnings:
-        console.print("No warnings found.  Good stonk")
+        console.print("No warnings found. Good stonk")
         return
 
     messages = (
@@ -284,4 +284,4 @@ def display_sean_seah_warnings(symbol: str, debug: bool = False):
     )
 
     console.print("Warnings:\n")
-    console.print("\n".join(messages), "\n")
+    console.print("\n".join(messages))

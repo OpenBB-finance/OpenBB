@@ -141,7 +141,6 @@ class PricingController(BaseController):
             new = {"Price": ns_parser.price, "Chance": ns_parser.chance}
             df = df.append(new, ignore_index=True)
             self.prices = df.sort_values("Price")
-            console.print("")
 
     @log_start_end(log=logger)
     def call_rmv(self, other_args: List[str]):
@@ -176,7 +175,6 @@ class PricingController(BaseController):
                 self.prices = pd.DataFrame(columns=["Price", "Chance"])
             else:
                 self.prices = self.prices[(self.prices["Price"] != ns_parser.price)]
-            console.print("")
 
     @log_start_end(log=logger)
     def call_show(self, other_args):

@@ -168,7 +168,6 @@ def print_insider_filter(
         link = get_open_insider_link(preset)
 
     if not link:
-        console.print("")
         return
 
     df_insider = get_open_insider_data(link, has_company_name=bool(not symbol))
@@ -247,5 +246,3 @@ def print_insider_filter(
 
         for tradetype in l_utradetype:
             console.print(d_trade_types[tradetype])
-
-    console.print("")
