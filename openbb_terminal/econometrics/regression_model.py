@@ -477,24 +477,41 @@ def get_comparison(regressions, export: str = ""):
 
 
 @log_start_end(log=logger)
-def get_dwat(residual: pd.DataFrame) -> pd.DataFrame:
-    """Calculate test statistics for Durbing Watson autocorrelation
+def get_dwat(
+    model: statsmodels.regression.linear_model.RegressionResultsWrapper,
+) -> float:
+    """Calculate test statistics for Durbin Watson autocorrelation
 
     Parameters
     ----------
-    residual : OLS Model
-        Model containing residual values.
+    model : statsmodels.regression.linear_model.RegressionResultsWrapper
+        Previously fit statsmodels OLS.
 
     Returns
     -------
-    Test statistic of the Durbin Watson test.
+    float
+        Test statistic of the Durbin Watson test.
+
+    Notes
+    ------
+    When using chart = True, the dependent variable in the regression must be passed to view the residuals
+
+    Example
+    -------
+    >>> from openbb_terminal.sdk import openbb
+    >>> df = openbb.econometrics.load("wage_panel")
+    >>> Y, X = df["lwage"], df[["exper","educ"]]
+    >>> model = openbb.econometrics.ols(Y,X)
+    >>> durbin_watson_value = openbb.econometrics.dwat(model)
+    >>> durbin_watson_value
+        0.96
     """
     # Durbin Watson test: The test statistic is approximately equal to 2*(1-r) where r is the
     # sample autocorrelation of the residuals. Thus, for r == 0, indicating no serial correlation,
     # the test statistic equals 2. This statistic will always be between 0 and 4. The closer
     # to 0 the statistic, the more evidence for positive serial correlation. The closer to 4,
     # the more evidence for negative serial correlation.
-    result = durbin_watson(residual)
+    result = durbin_watson(model.resid)
 
     return round(result, 2)
 

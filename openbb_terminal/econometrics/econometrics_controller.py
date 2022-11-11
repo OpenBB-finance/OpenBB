@@ -264,13 +264,11 @@ class EconometricsController(BaseController):
         mt.add_cmd("bpag", self.files and self.regression["OLS"]["model"])
 
         console.print(text=mt.menu_text, menu="Econometrics")
+        console.print()
 
     def custom_reset(self):
         """Class specific component of reset command"""
-        if self.files:
-            load_files = [f"load -f {file}" for file in self.files]
-            return ["econometrics"] + load_files
-        return []
+        return ["econometrics"]
 
     def update_loaded(self):
         self.list_dataset_cols = []
@@ -1551,8 +1549,8 @@ class EconometricsController(BaseController):
                     self.regression["OLS"]["dependent"]
                 ]
                 regression_view.display_dwat(
+                    self.regression["OLS"]["model"],
                     dependent_variable,
-                    self.regression["OLS"]["model"].resid,
                     ns_parser.plot,
                     ns_parser.export,
                 )

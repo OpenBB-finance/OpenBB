@@ -7,6 +7,7 @@ from typing import Dict, List, Optional, Tuple
 
 import pandas as pd
 from matplotlib import pyplot as plt
+import statsmodels
 
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.config_terminal import theme
@@ -81,9 +82,9 @@ def display_panel(
 
 @log_start_end(log=logger)
 def display_dwat(
+    model: statsmodels.regression.linear_model.RegressionResultsWrapper,
     dependent_variable: pd.Series,
-    residual: pd.DataFrame,
-    plot: bool = False,
+    plot: bool = True,
     export: str = "",
     external_axes: Optional[List[plt.axes]] = None,
 ):
@@ -91,10 +92,10 @@ def display_dwat(
 
     Parameters
     ----------
+    model : OLS Model
+        A fit statsmodels OLS model.
     dependent_variable : pd.Series
-        The dependent variable.
-    residual : OLS Model
-        The residual of an OLS model.
+        The dependent variable for plotting
     plot : bool
         Whether to plot the residuals
     export : str
@@ -102,7 +103,7 @@ def display_dwat(
     external_axes: Optional[List[plt.axes]]
         External axes to plot on
     """
-    autocorr = regression_model.get_dwat(residual)
+    autocorr = regression_model.get_dwat(model)
 
     if 1.5 < autocorr < 2.5:
         console.print(
@@ -121,7 +122,7 @@ def display_dwat(
         else:
             ax = external_axes[0]
 
-        ax.scatter(dependent_variable, residual)
+        ax.scatter(dependent_variable, model.resid)
         ax.axhline(y=0, color="r", linestyle="-")
         ax.set_ylabel("Residual")
         ax.set_xlabel(dependent_variable.name.capitalize())
@@ -137,8 +138,6 @@ def display_dwat(
         f"{dependent_variable.name}_dwat",
         autocorr,
     )
-
-    console.print()
 
 
 @log_start_end(log=logger)
