@@ -195,7 +195,7 @@ class BuildCategoryModelClasses:
         self,
         category: str,
         f: TextIO,
-        subcat: Optional[str] = None,
+        subcat: Optional[str] = "",
     ) -> None:
         """Writes the class property to the file.
 
@@ -370,50 +370,11 @@ class BuildCategoryModelClasses:
         nested_subcat = self.get_nested_dict(nested_dict)
         if nested_subcat:
             for k in nested_subcat:
+                if isinstance(nested_dict[k], Trailmap):
+                    continue
                 self.write_submodule_doc(k, f, added, indent)
                 if not added:
                     added = True
-
-    def write_controller_docs(
-        self, category: str, d: dict, f: TextIO, sdk_file: bool = False
-    ) -> None:
-        """Writes the controller docstrings to the class.
-
-        Parameters
-        ----------
-        d : dict
-            The category dictionary
-        f : TextIO
-            The file to write to
-        sdk_file : bool, optional
-            Whether or not this is the SDK file, by default False
-        """
-        indent = "    " if sdk_file else ""
-        added_submodules = False
-        for subcategory in self.categories[category]:
-            if isinstance(d[subcategory], Trailmap):
-                continue
-            subcat_name = self.get_subcat_fullname(subcategory)
-            if not added_submodules:
-                f.write(f"\r{indent}    Submodules:\r")
-                added_submodules = True
-            f.write(f"{indent}        `{subcategory}`: {subcat_name} Module\r")
-
-        added_attributes = False
-        for v in d.values():
-            if isinstance(v, Trailmap):
-                if not added_attributes:
-                    f.write(f"\r{indent}    Attributes:\r")
-                    added_attributes = True
-                if v.model_func and v.short_doc.get("model", None):
-                    f.write(
-                        f"{indent}        `{v.class_attr}`: {v.short_doc['model']}\\n\r"
-                    )
-                if v.view_func and v.short_doc.get("view", None):
-                    f.write(
-                        f"{indent}        `{v.class_attr}_view`: {v.short_doc['view']}\\n\r"
-                    )
-        f.write(f'{indent}    """\r\r')
 
     def write_category_file(self, category: str, d: dict) -> None:
         """Writes the category file. This is the file that contains the categories
@@ -448,6 +409,7 @@ class BuildCategoryModelClasses:
 
             self.write_category(category, d, f)
             self.write_nested_category(category, d, f)
+
             f.seek(f.tell() - 2, os.SEEK_SET)
             f.truncate()
 
@@ -482,7 +444,8 @@ class BuildCategoryModelClasses:
                 added_init_imports.append(category)
 
             self.write_sdk_class(category, f, "Controller")
-            self.write_controller_docs(category, d, f)
+            self.write_nested_submodule_docs(self.categories[category], f, True)
+            self.write_class_attr_docs(d, f, False)
 
             for subcategory in self.categories[category]:
                 if isinstance(d[subcategory], Trailmap):
@@ -495,6 +458,7 @@ class BuildCategoryModelClasses:
                     f"        return model.{category.title()}"
                     f"{self.get_subcat_fullname(subcategory).replace(' ', '')}()\r\r"
                 )
+
             f.seek(f.tell() - 1, os.SEEK_SET)
             f.truncate()
 
@@ -510,7 +474,8 @@ class BuildCategoryModelClasses:
 
             for category in self.categories:
                 self.write_class_property(category, f)
-                self.write_controller_docs(category, self.categories[category], f, True)
+                self.write_nested_submodule_docs(self.categories[category], f, True)
+                self.write_class_attr_docs(self.categories[category], f, False)
 
                 if self.check_submodules(category):
                     f.write(f"        return ctrl.{category.title()}Controller()\r\r")

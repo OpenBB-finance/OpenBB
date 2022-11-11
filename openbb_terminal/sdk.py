@@ -51,7 +51,7 @@ class OpenBBSDK:
 
     @property
     def alt(self):
-        """OpenBB SDK AltNone Submodule
+        """OpenBB SDK Alt Submodule
 
         Submodules:
             `covid`: Covid Module
@@ -62,7 +62,7 @@ class OpenBBSDK:
 
     @property
     def common(self):
-        """OpenBB SDK CommonNone Submodule
+        """OpenBB SDK Common Submodule
 
         Submodules:
             `qa`: Quantitative Analysis Module
@@ -77,7 +77,7 @@ class OpenBBSDK:
 
     @property
     def crypto(self):
-        """OpenBB SDK CryptoNone Submodule
+        """OpenBB SDK Crypto Submodule
 
         Submodules:
             `dd`: Due Diligence Module
@@ -99,7 +99,7 @@ class OpenBBSDK:
 
     @property
     def econometrics(self):
-        """OpenBB SDK EconometricsNone Submodule
+        """OpenBB SDK Econometrics Submodule
 
         Attributes:
             `bgod`: Calculate test statistics for autocorrelation\n
@@ -136,7 +136,7 @@ class OpenBBSDK:
 
     @property
     def economy(self):
-        """OpenBB SDK EconomyNone Submodule
+        """OpenBB SDK Economy Submodule
 
         Attributes:
             `available_indices`: Get available indices\n
@@ -199,7 +199,7 @@ class OpenBBSDK:
 
     @property
     def etf(self):
-        """OpenBB SDK EtfNone Submodule
+        """OpenBB SDK Etf Submodule
 
         Submodules:
             `disc`: Discovery Module
@@ -232,7 +232,7 @@ class OpenBBSDK:
 
     @property
     def forecast(self):
-        """OpenBB SDK ForecastNone Submodule
+        """OpenBB SDK Forecast Submodule
 
         Attributes:
             `atr`: Calculate the Average True Range of a variable based on a a specific stock ticker.\n
@@ -280,7 +280,7 @@ class OpenBBSDK:
 
     @property
     def forex(self):
-        """OpenBB SDK ForexNone Submodule
+        """OpenBB SDK Forex Submodule
 
         Submodules:
             `oanda`: Oanda Module
@@ -298,7 +298,7 @@ class OpenBBSDK:
 
     @property
     def funds(self):
-        """OpenBB SDK FundsNone Submodule
+        """OpenBB SDK Funds Submodule
 
         Attributes:
             `info_view`: Display fund information.  Finds name from symbol first if name is false\n
@@ -311,7 +311,7 @@ class OpenBBSDK:
 
     @property
     def futures(self):
-        """OpenBB SDK FuturesNone Submodule
+        """OpenBB SDK Futures Submodule
 
         Attributes:
             `curve`: Get curve futures [Source: Yahoo Finance]\n
@@ -326,7 +326,7 @@ class OpenBBSDK:
 
     @property
     def keys(self):
-        """OpenBB SDK KeysNone Submodule
+        """OpenBB SDK Keys Submodule
 
         Attributes:
             `av`: Set Alpha Vantage key\n
@@ -369,7 +369,7 @@ class OpenBBSDK:
 
     @property
     def portfolio(self):
-        """OpenBB SDK PortfolioNone Submodule
+        """OpenBB SDK Portfolio Submodule
 
         Submodules:
             `po`: Portfolio Optimization Module
@@ -428,7 +428,7 @@ class OpenBBSDK:
 
     @property
     def stocks(self):
-        """OpenBB SDK StocksNone Submodule
+        """OpenBB SDK Stocks Submodule
 
         Submodules:
             `ba`: Behavioral Analysis Module
