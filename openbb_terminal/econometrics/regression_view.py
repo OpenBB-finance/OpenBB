@@ -141,7 +141,11 @@ def display_dwat(
 
 
 @log_start_end(log=logger)
-def display_bgod(model: pd.DataFrame, lags: int = 3, export: str = ""):
+def display_bgod(
+    model: statsmodels.regression.linear_model.RegressionResultsWrapper,
+    lags: int = 3,
+    export: str = "",
+):
     """Show Breusch-Godfrey autocorrelation test
 
     Parameters
@@ -153,17 +157,7 @@ def display_bgod(model: pd.DataFrame, lags: int = 3, export: str = ""):
     export : str
         Format to export data
     """
-    (
-        lm_stat,
-        p_value,
-        f_stat,
-        fp_value,
-    ) = regression_model.get_bgod(model, lags)
-
-    df = pd.DataFrame(
-        [lm_stat, p_value, f_stat, fp_value],
-        index=["LM-stat", "p-value", "f-stat", "fp-value"],
-    )
+    df = regression_model.get_bgod(model, lags)
 
     print_rich_table(
         df,
@@ -171,7 +165,7 @@ def display_bgod(model: pd.DataFrame, lags: int = 3, export: str = ""):
         show_index=True,
         title=f"Breusch-Godfrey autocorrelation test [Lags: {lags}]",
     )
-
+    p_value = df.loc["p-value"][0]
     if p_value > 0.05:
         console.print(
             f"{round(p_value, 2)} indicates the autocorrelation. Consider re-estimating with "
@@ -188,7 +182,10 @@ def display_bgod(model: pd.DataFrame, lags: int = 3, export: str = ""):
 
 
 @log_start_end(log=logger)
-def display_bpag(model: pd.DataFrame, export: str = ""):
+def display_bpag(
+    model: statsmodels.regression.linear_model.RegressionResultsWrapper,
+    export: str = "",
+):
     """Show Breusch-Pagan heteroscedasticity test
 
     Parameters
@@ -198,17 +195,7 @@ def display_bpag(model: pd.DataFrame, export: str = ""):
     export : str
         Format to export data
     """
-    (
-        lm_stat,
-        p_value,
-        f_stat,
-        fp_value,
-    ) = regression_model.get_bpag(model)
-
-    df = pd.DataFrame(
-        [lm_stat, p_value, f_stat, fp_value],
-        index=["lm-stat", "p-value", "f-stat", "fp-value"],
-    )
+    df = regression_model.get_bpag(model)
 
     print_rich_table(
         df,
@@ -216,7 +203,7 @@ def display_bpag(model: pd.DataFrame, export: str = ""):
         show_index=True,
         title="Breusch-Pagan heteroscedasticity test",
     )
-
+    p_value = df.loc["p-value"][0]
     if p_value > 0.05:
         console.print(
             f"{round(p_value, 2)} indicates heteroscedasticity. Consider taking the log "

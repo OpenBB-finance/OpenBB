@@ -517,7 +517,9 @@ def get_dwat(
 
 
 @log_start_end(log=logger)
-def get_bgod(model: pd.DataFrame, lags: int = 3) -> tuple:
+def get_bgod(
+    model: statsmodels.regression.linear_model.RegressionResultsWrapper, lags: int = 3
+) -> pd.DataFrame:
     """Calculate test statistics for autocorrelation
 
     Parameters
@@ -529,16 +531,22 @@ def get_bgod(model: pd.DataFrame, lags: int = 3) -> tuple:
 
     Returns
     -------
-    Test results from the Breusch-Godfrey Test
+    pd.DataFrame
+        Test results from the Breusch-Godfrey Test
     """
 
     lm_stat, p_value, f_stat, fp_value = acorr_breusch_godfrey(model, nlags=lags)
 
-    return lm_stat, p_value, f_stat, fp_value
+    return pd.DataFrame(
+        [lm_stat, p_value, f_stat, fp_value],
+        index=["lm-stat", "p-value", "f-stat", "fp-value"],
+    )
 
 
 @log_start_end(log=logger)
-def get_bpag(model: pd.DataFrame) -> tuple:
+def get_bpag(
+    model: statsmodels.regression.linear_model.RegressionResultsWrapper,
+) -> pd.DataFrame:
     """Calculate test statistics for heteroscedasticity
 
     Parameters
@@ -548,9 +556,12 @@ def get_bpag(model: pd.DataFrame) -> tuple:
 
     Returns
     -------
-    Test results from the Breusch-Pagan Test
+    pd.DataFrame
+        Test results from the Breusch-Pagan Test
     """
 
     lm_stat, p_value, f_stat, fp_value = het_breuschpagan(model.resid, model.model.exog)
-
-    return lm_stat, p_value, f_stat, fp_value
+    return pd.DataFrame(
+        [lm_stat, p_value, f_stat, fp_value],
+        index=["lm-stat", "p-value", "f-stat", "fp-value"],
+    )

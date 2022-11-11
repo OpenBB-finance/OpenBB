@@ -1600,7 +1600,7 @@ class EconometricsController(BaseController):
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             prog="bpag",
             description=(
-                "Show Breusch-Pagan heteroscedasticity test results."
+                "Show Breusch-Pagan heteroscedasticity test results. "
                 "Needs OLS to be run in advance with independent and dependent variables"
             ),
         )
