@@ -1,11 +1,14 @@
 portfolio
 load -f Public_Equity_Orderbook.xlsx
 show
-bench Vanguard Total Stock Market ETF (VTI)
+bench SPDR S&P 500 ETF Trust (SPY)
 alloc assets -t -l 4
 alloc sectors -t -l 4
 alloc countries -t -l 4
 alloc regions -t -l 4
+attrib
+attrib --raw
+attrib --type absolute
 summary -p mtd -r 0.5
 summary -p qtd -r 0.5
 summary -p ytd -r 0.5
