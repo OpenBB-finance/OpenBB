@@ -53,7 +53,6 @@ def get_performance_map(period: str = "1d", map_filter: str = "sp500"):
     d_type = {"sp500": "sec", "world": "geo", "full": "sec_all", "etf": "etf"}
     url = f"https://finviz.com/map.ashx?t={d_type[map_filter]}&st={d_period[period]}"
     webbrowser.open(url)
-    console.print("")
 
 
 @log_start_end(log=logger)

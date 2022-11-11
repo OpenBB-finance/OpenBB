@@ -360,7 +360,6 @@ class TerminalStyle:
         if obbff.USE_ION:
             plt.ion()
         plt.show()
-        console.print()
 
 
 class AllowArgsWithWhiteSpace(argparse.Action):

@@ -120,7 +120,6 @@ def display_spectrum(group: str = "sector", export: str = ""):
         Format to export data
     """
     finviz_model.get_spectrum_data(group)
-    console.print("")
 
     group = finviz_model.GROUPS[group]
     img = Image.open(group + ".jpg")

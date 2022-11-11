@@ -43,7 +43,6 @@ def display_funding_rate(symbol: str, export: str = "") -> None:
         return
 
     plot_data(df, symbol, f"Exchange {symbol} Funding Rate", "Funding Rate [%]")
-    console.print("")
 
     export_data(
         export,
@@ -77,7 +76,6 @@ def display_open_interest(symbol: str, interval: int = 0, export: str = "") -> N
         f"Exchange {symbol} Futures Open Interest",
         "Open futures value [$B]",
     )
-    console.print("")
 
     export_data(
         export,
@@ -109,7 +107,6 @@ def display_liquidations(symbol: str, export: str = "") -> None:
         f"Total liquidations for {symbol}",
         "Liquidations value [$M]",
     )
-    console.print("")
 
     export_data(
         export,

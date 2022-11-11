@@ -512,7 +512,6 @@ def display_companies_per_industry_in_country(
             )
         else:
             console.print("No industry found. No pie chart will be depicted.")
-    console.print("")
 
     export_data(
         export,
@@ -806,7 +805,6 @@ def display_companies_per_country_in_sector(
             )
         else:
             console.print("No country found. No pie chart will be depicted.")
-    console.print("")
 
     export_data(
         export,
@@ -950,7 +948,6 @@ def display_companies_per_country_in_industry(
             )
         else:
             console.print("No country found. No pie chart will be depicted.")
-    console.print("")
 
     export_data(
         export,

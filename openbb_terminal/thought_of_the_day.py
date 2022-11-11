@@ -141,4 +141,4 @@ def get_thought_of_the_day():
         totd.quote_to_str(quotes[random.randint(0, len(quotes) - 1)])  # nosec
     )
 
-    console.print("")
+    console.print("\n")

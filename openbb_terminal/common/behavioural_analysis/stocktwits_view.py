@@ -30,7 +30,6 @@ def display_bullbear(symbol: str):
         console.print(f"Bearish {round(100*n_bear/n_cases, 2)}%")
     else:
         console.print("No messages found")
-    console.print("")
 
 
 @log_start_end(log=logger)
@@ -87,4 +86,3 @@ def display_stalker(user: str, limit: int = 10):
         )
         console.print(message["created_at"].replace("T", " ").replace("Z", ""))
         console.print(message["body"])
-        console.print("")

@@ -1347,7 +1347,6 @@ def display_all_coins(
         else:
             df = pd.DataFrame(columns=["index", "id", "symbol"])
             console.print("Couldn't find any coins")
-        console.print("")
 
     try:
         df = df[skip : skip + limit]  # noqa

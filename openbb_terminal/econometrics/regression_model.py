@@ -172,7 +172,6 @@ def get_ols(
 
             if show_regression:
                 console.print(model.summary())
-                console.print("")
             if len(warning_messages) > 0:
                 console.print("Warnings:")
                 for warning in warning_messages:
@@ -188,8 +187,6 @@ def get_ols(
                 f"{dependent_variable}_ols_regression",
                 df,
             )
-        else:
-            console.print("")
 
     return regression_df, dependent_variable, independent_variables, model
 

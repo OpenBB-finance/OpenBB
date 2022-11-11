@@ -38,15 +38,12 @@ def get_retail_tickers() -> pd.DataFrame:
     # Wrong API Key
     elif r.status_code == 400:
         console.print(r.text)
-        console.print("\n")
     # Premium Feature
     elif r.status_code == 403:
         console.print(r.text)
-        console.print("\n")
     # Catching other exception
     elif r.status_code != 200:
         console.print(r.text)
-        console.print("\n")
 
     return df
 

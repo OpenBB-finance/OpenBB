@@ -273,7 +273,6 @@ def display_spac_community(limit: int = 10, popular: bool = False):
                     "The following stock tickers have been mentioned more than once across the previous SPACs:"
                 )
                 console.print(s_watchlist_tickers[:-2])
-        console.print("")
 
 
 @log_start_end(log=logger)
@@ -321,7 +320,6 @@ def display_spac(limit: int = 5):
                     "The following stock tickers have been mentioned more than once across the previous SPACs:"
                 )
                 console.print(s_watchlist_tickers[:-2])
-        console.print("")
 
 
 @log_start_end(log=logger)

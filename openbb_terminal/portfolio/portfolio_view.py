@@ -229,6 +229,7 @@ def display_category_allocation(
 
     if include_separate_tables:
 
+        console.print("\n")
         print_rich_table(
             pd.DataFrame(portfolio_allocation),
             headers=list(["Allocation"]),
@@ -237,7 +238,7 @@ def display_category_allocation(
             floatfmt=[".2%"],
             show_index=True,
         )
-
+        console.print("\n")
         print_rich_table(
             pd.DataFrame(benchmark_allocation),
             headers=list(["Allocation"]),
@@ -246,7 +247,6 @@ def display_category_allocation(
             floatfmt=[".2%"],
             show_index=True,
         )
-        console.print("\n")
 
 
 @log_start_end(log=logger)
@@ -411,7 +411,6 @@ def display_monthly_returns(
             headers=benchmark_returns.columns,
             show_index=True,
         )
-        console.print("\n")
 
     else:
         if external_axes is None:
