@@ -14,8 +14,10 @@ optional arguments:
   -l N, --limit N     Limit of records (default: 10)
   -s {pair,base_currency_name,quote_currency_name,category,reported_volume_24h_share,trust_score,market_url}, --sort {pair,base_currency_name,quote_currency_name,category,reported_volume_24h_share,trust_score,market_url}
                         Sort by given column. Default: reported_volume_24h_share (default: reported_volume_24h_share)
-  --descend             Flag to sort in descending order (lowest first) (default: False)
-  -u, --urls           Flag to show urls. If you will use that flag you will see only: exchange, pair, trust_score, market_url columns (default:
+  -r, --reverse         Data is sorted in descending order by default.
+                        Reverse flag will sort it in an ascending way.
+                        Only works when raw data is displayed. (default: False)
+  -u, --urls            Flag to show urls. If you will use that flag you will see only: exchange, pair, trust_score, market_url columns (default:
                         False)
   --export {csv,json,xlsx}
                         Export dataframe data to csv,json,xlsx file (default: )

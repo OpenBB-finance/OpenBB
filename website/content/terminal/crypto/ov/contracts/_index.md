@@ -15,7 +15,9 @@ optional arguments:
   -l N, --limit N     Limit of records (default: 15)
   -s {id,type,active,address}, --sort {id,type,active,address}
                         Sort by given column (default: id)
-  --descend             Flag to sort in descending order (lowest first) (default: True)
+  -r, --reverse         Data is sorted in ascending order by default.
+                        Reverse flag will sort it in an descending way.
+                        Only works when raw data is displayed. (default:False)
   --export {csv,json,xlsx}
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)

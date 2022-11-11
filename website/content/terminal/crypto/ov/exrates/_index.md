@@ -10,7 +10,9 @@ optional arguments:
   -l N, --limit N     display N number records (default: 15)
   -s {Index,Name,Unit,Value,Type}, --sort {Index,Name,Unit,Value,Type}
                         Sort by given column. Default: Index (default: Index)
-  --descend             Flag to sort in descending order (lowest first) (default: True)
+  -r, --reverse         Data is sorted in ascending order by default.
+                        Reverse flag will sort it in an descending way.
+                        Only works when raw data is displayed. (default:False)
   --export {csv,json,xlsx}
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)

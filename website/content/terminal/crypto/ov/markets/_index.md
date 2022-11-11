@@ -17,7 +17,9 @@ optional arguments:
   -l N, --limit N     Limit of records (default: 15)
   -s {rank,name,symbol,price,volume_24h,mcap_change_24h,pct_change_1h,pct_change_24h,ath_price,pct_from_ath}, --sort {rank,name,symbol,price,volume_24h,mcap_change_24h,pct_change_1h,pct_change_24h,ath_price,pct_from_ath}
                         Sort by given column. Default: rank (default: rank)
-  --descend             Flag to sort in descending order (lowest first) (default: True)
+  -r, --reverse         Data is sorted in ascending order by default.
+                        Reverse flag will sort it in an descending way.
+                        Only works when raw data is displayed. (default:False)
   --export {csv,json,xlsx}
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
