@@ -128,7 +128,7 @@ def check_supported_ticker(symbol: str) -> bool:
 
 @check_api_key(["API_SENTIMENTINVESTOR_TOKEN"])
 def get_trending(
-    start_date: str = datetime.today().strftime("%Y-%m-%d"),
+    start_date: str = None,
     hour: int = 0,
     number: int = 10,
 ) -> pd.DataFrame:
@@ -152,6 +152,9 @@ def get_trending(
     pd.DataFrame
         Dataframe of trending data
     """
+
+    if start_date is None:
+        start_date = datetime.today().strftime("%Y-%m-%d")
 
     # type is datetime
     start_timestamp = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(hours=hour)
