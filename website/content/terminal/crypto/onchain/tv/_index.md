@@ -14,8 +14,9 @@ optional arguments:
   -l N, --limit N     display N number records (default: 10)
   -s {exchange,coin,tradeAmount,trades}, --sort {exchange,coin,tradeAmount,trades}
                         Sort by given column. (default: trades)
-  --descend             Flag to sort in descending order (lowest first)
-                        (default: False)
+  -r, --reverse         Data is sorted in descending order by default.
+                        Reverse flag will sort it in an ascending way.
+                        Only works when raw data is displayed. (default: False)
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx (default: )

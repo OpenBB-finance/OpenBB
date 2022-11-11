@@ -9,7 +9,9 @@ optional arguments:
   -l N, --limit N     display N number records (default: 10)
   -s {balance,balance,share}, --sort {balance,balance,share}
                         Sort by given column. Default: share (default: share)
-  --descend             Flag to sort in descending order (lowest first) (default: False)
+  -r, --reverse         Data is sorted in descending order by default.
+                        Reverse flag will sort it in an ascending way.
+                        Only works when raw data is displayed. (default: False)
   --export {csv,json,xlsx}
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)

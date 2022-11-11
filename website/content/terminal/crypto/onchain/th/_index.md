@@ -9,7 +9,9 @@ optional arguments:
   -l N, --limit N     display N number records (default: 10)
   -s {value}, --sort {value}
                         Sort by given column. Default: value (default: value)
-  --descend             Flag to sort in descending order (lowest first) (default: True)
+  -r, --reverse         Data is sorted in descending order by default.
+                        Reverse flag will sort it in an ascending way.
+                        Only works when raw data is displayed. (default: False)
   --hash                Flag to show transaction hash (default: True)
   --export {csv,json,xlsx}
                         Export dataframe data to csv,json,xlsx file (default: )

@@ -21,8 +21,9 @@ optional arguments:
                         Time interval in which ethereum address made
                         transaction. month, week or day. Maximum time period
                         is 90 days (3 months, 14 weeks) (default: day)
-  --descend             Flag to sort in descending order (lowest first)
-                        (default: False)
+  -r, --reverse         Data is sorted in descending order by default.
+                        Reverse flag will sort it in an ascending way.
+                        Only works when raw data is displayed. (default: False)
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx (default: )
