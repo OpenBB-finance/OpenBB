@@ -709,8 +709,10 @@ class PortfolioController(BaseController):
                     start_date, end_date
                 )
                 portfolio_result = attribution_model.get_portfolio_sector_contributions(
-                    start_date, self.portfolio.get_orderbook()
+                    start_date, self.portfolio.portfolio_trades
                 )
+                
+            
                 # relative results - the proportions of return attribution
                 if ns_parser.type == "relative":
                     categorisation_result = (
