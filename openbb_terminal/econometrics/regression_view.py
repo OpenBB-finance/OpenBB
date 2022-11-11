@@ -151,7 +151,7 @@ def display_bgod(
     Parameters
     ----------
     model : OLS Model
-        Model containing residual values.
+        OLS model that has been fit.
     lags : int
         The amount of lags included.
     export : str
@@ -191,7 +191,7 @@ def display_bpag(
     Parameters
     ----------
     model : OLS Model
-        Model containing residual values.
+        OLS model that has been fit.
     export : str
         Format to export data
     """
