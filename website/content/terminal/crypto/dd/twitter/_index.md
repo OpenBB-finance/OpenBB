@@ -10,8 +10,9 @@ optional arguments:
   -l N, --limit N     Limit of records (default: 10)
   -s {date,user_name,status,retweet_count,like_count}, --sort {date,user_name,status,retweet_count,like_count}
                         Sort by given column. Default: date (default: date)
-  --descend             Flag to sort in descending order (lowest first) (default: False)
-  --export {csv,json,xlsx}
+  -r, --reverse               Data is sorted in descending order by default.
+                        Reverse flag will sort it in an ascending way.
+                        Only works when raw data is displayed. (default: False)  --export {csv,json,xlsx}
                         Export dataframe data to csv,json,xlsx file (default: )
   -h, --help            show this help message (default: False)
 ```

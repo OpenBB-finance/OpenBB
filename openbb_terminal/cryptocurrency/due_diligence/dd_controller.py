@@ -169,7 +169,8 @@ class DueDiligenceController(CryptoBaseController):
                 "-s": "--sort",
                 "--limit": None,
                 "-l": "--limit",
-                "--descend": {},
+                "--reverse": {},
+                "-r": "--reverse",
                 "--urls": {},
                 "-u": "--urls",
             }
@@ -185,21 +186,23 @@ class DueDiligenceController(CryptoBaseController):
                 "-s": "--sort",
                 "--limit": None,
                 "-l": "--limit",
-                "--descend": {},
+                "--reverse": {},
+                "-r": "--reverse",
             }
             choices["twitter"] = {
                 "--sort": {c: {} for c in coinpaprika_view.TWEETS_FILTERS},
                 "-s": "--sort",
                 "--limit": None,
                 "-l": "--limit",
-                "--descend": {},
+                "--reverse": {},
+                "-r": "--reverse",
             }
             choices["news"] = {
                 "--sort": {c: {} for c in cryptopanic_model.SORT_FILTERS},
                 "-s": "--sort",
                 "--limit": None,
                 "-l": "--limit",
-                "--descend": {},
+                "--reverse": {},
                 "--urls": {},
                 "-u": "--urls",
                 "--kind": {c: {} for c in cryptopanic_model.CATEGORIES},
@@ -1049,12 +1052,11 @@ class DueDiligenceController(CryptoBaseController):
             description="""Get all markets found for given coin.
                 You can display only N number of markets with --limt parameter.
                 You can sort data by pct_volume_share, exchange, pair, trust_score, volume, price --sort parameter
-                and also with --descend flag to sort descending.
+                and also with --reverse flag to sort ascending.
                 You can use additional flag --urls to see urls for each market
                 Displays:
                     exchange, pair, trust_score, volume, price, pct_volume_share,""",
         )
-
         parser.add_argument(
             "--vs",
             help="Quoted currency. Default USD",
@@ -1063,7 +1065,6 @@ class DueDiligenceController(CryptoBaseController):
             type=str,
             choices=coinpaprika_view.CURRENCIES,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -1072,7 +1073,6 @@ class DueDiligenceController(CryptoBaseController):
             help="Limit of records",
             type=check_positive,
         )
-
         parser.add_argument(
             "-s",
             "--sort",
@@ -1082,15 +1082,18 @@ class DueDiligenceController(CryptoBaseController):
             default="pct_volume_share",
             choices=coinpaprika_view.MARKET_FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
+            "-r",
+            "--reverse",
             action="store_true",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         parser.add_argument(
             "-u",
             "--urls",
@@ -1110,7 +1113,7 @@ class DueDiligenceController(CryptoBaseController):
                     to_symbol=ns_parser.vs,
                     limit=ns_parser.limit,
                     sortby=ns_parser.sortby,
-                    ascend=not ns_parser.descend,
+                    ascend=ns_parser.reverse,
                     links=ns_parser.urls,
                     export=ns_parser.export,
                 )
@@ -1181,12 +1184,11 @@ class DueDiligenceController(CryptoBaseController):
             Show information about most important coins events. Most of coins doesn't have any events.
             You can display only top N number of events with --limit parameter.
             You can sort data by id, date , date_to, name, description, is_conference --sort parameter
-            and also with --descend flag to sort descending.
+            and also with --reverse flag to sort ascending.
             You can use additional flag --urls to see urls for each event
             Displays:
                 date , date_to, name, description, is_conference, link, proof_image_link""",
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -1195,7 +1197,6 @@ class DueDiligenceController(CryptoBaseController):
             help="Limit of records",
             type=check_positive,
         )
-
         parser.add_argument(
             "-s",
             "--sort",
@@ -1205,15 +1206,18 @@ class DueDiligenceController(CryptoBaseController):
             default="date",
             choices=coinpaprika_view.EVENTS_FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
+            "-r",
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         parser.add_argument(
             "-u",
             "--urls",
@@ -1222,7 +1226,6 @@ class DueDiligenceController(CryptoBaseController):
             help="Flag to show urls. If you will use that flag you will see only date, name, link columns",
             default=False,
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -1232,7 +1235,7 @@ class DueDiligenceController(CryptoBaseController):
                     symbol=self.symbol,
                     limit=ns_parser.limit,
                     sortby=ns_parser.sortby,
-                    ascend=not ns_parser.descend,
+                    ascend=ns_parser.reverse,
                     links=ns_parser.urls,
                     export=ns_parser.export,
                 )
@@ -1247,12 +1250,11 @@ class DueDiligenceController(CryptoBaseController):
             description="""Show last 10 tweets for given coin.
                 You can display only N number of tweets with --limit parameter.
                 You can sort data by date, user_name, status, retweet_count, like_count --sort parameter
-                and also with --descend flag to sort descending.
+                and also with --reverse flag to sort ascending.
                 Displays:
                     date, user_name, status, retweet_count, like_count
                 """,
         )
-
         parser.add_argument(
             "-l",
             "--limit",
@@ -1261,7 +1263,6 @@ class DueDiligenceController(CryptoBaseController):
             help="Limit of records",
             type=check_positive,
         )
-
         parser.add_argument(
             "-s",
             "--sort",
@@ -1271,15 +1272,18 @@ class DueDiligenceController(CryptoBaseController):
             default="date",
             choices=coinpaprika_view.TWEETS_FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
+            "-r",
+            "--reverse",
             action="store_true",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -1289,7 +1293,7 @@ class DueDiligenceController(CryptoBaseController):
                     symbol=self.symbol,
                     limit=ns_parser.limit,
                     sortby=ns_parser.sortby,
-                    ascend=not ns_parser.descend,
+                    ascend=ns_parser.reverse,
                     export=ns_parser.export,
                 )
 
@@ -1449,22 +1453,25 @@ class DueDiligenceController(CryptoBaseController):
                 [Source: https://messari.io]
             """,
         )
-
         parser.add_argument(
-            "--descend",
+            "-r",
+            "--reverse",
             action="store_true",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=5
         )
 
         if ns_parser:
             messari_view.display_roadmap(
-                ascend=not ns_parser.descend,
+                ascend=ns_parser.reverse,
                 symbol=self.symbol.upper(),
                 limit=ns_parser.limit,
                 export=ns_parser.export,
@@ -1774,7 +1781,6 @@ class DueDiligenceController(CryptoBaseController):
             default="en",
             choices=cryptopanic_model.REGIONS,
         )
-
         parser.add_argument(
             "-s",
             "--sort",
@@ -1784,15 +1790,17 @@ class DueDiligenceController(CryptoBaseController):
             default="published_at",
             choices=cryptopanic_model.SORT_FILTERS,
         )
-
         parser.add_argument(
-            "--descend",
-            action="store_false",
-            help="Flag to sort in descending order (lowest first)",
-            dest="descend",
-            default=True,
+            "--reverse",
+            action="store_true",
+            dest="reverse",
+            default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         parser.add_argument(
             "-u",
             "--urls",
@@ -1801,7 +1809,6 @@ class DueDiligenceController(CryptoBaseController):
             help="Flag to disable urls. Hides column with URL.",
             default=True,
         )
-
         ns_parser = self.parse_known_args_and_warn(
             parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
         )
@@ -1812,7 +1819,7 @@ class DueDiligenceController(CryptoBaseController):
                 source=None,
                 symbol=self.symbol,
                 export=ns_parser.export,
-                ascend=not ns_parser.descend,
+                ascend=ns_parser.reverse,
                 post_kind=ns_parser.kind,
                 filter_=ns_parser.filter,
                 region=ns_parser.region,
