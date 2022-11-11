@@ -207,7 +207,7 @@ def get_root(
 
 
 @log_start_end(log=logger)
-def get_granger_causality(dependent_series, independent_series, lags):
+def get_granger_causality(dependent_series, independent_series, lags=3):
     """Calculate granger tests
 
     Parameters
