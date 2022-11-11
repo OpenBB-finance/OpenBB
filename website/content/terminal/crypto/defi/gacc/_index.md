@@ -1,5 +1,5 @@
 ```
-usage: gacc [-l LIMIT] [--cumulative] [-k {active,total}] [--descend] [-h] [--export {csv,json,xlsx,png,jpg,pdf,svg}]
+usage: gacc [-l LIMIT] [--cumulative] [-k {active,total}] [-h] [--export EXPORT]
 ```
 Displays terra blockchain account growth history. [Source: https://fcd.terra.dev/swagger]
 

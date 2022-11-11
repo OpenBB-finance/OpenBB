@@ -1,11 +1,11 @@
 ```
 usage: contracts
                    [-p {btc-bitcoin,eos-eos,eth-ethereum,xrp-xrp,bch-bitcoin-cash,xem-nem,neo-neo,xlm-stellar,etc-ethereum-classic,qtum-qtum,zec-zcash,bts-bitshares,waves-waves,nxt-nxt,act-achain,ubq-ubiq,xcp-counterparty,etp-metaverse-etp,burst-burst,omni-omni,trx-tron,bnb-binance-coin,ardr-ardor,ht-huobi-token,blvr-believer,cake-pancakeswap,fsxu-flashx-ultra,chik-chickenkebab-finance,jgn-juggernaut7492,crx-cryptex,whirl-whirl-finance,eubi-eubi-token,swam-swapmatic-token,shells-shells}]
-                   [-l N] [-s {id,type,active,address}] [--descend] [--export {csv,json,xlsx}] [-h]
+                   [-l N] [-s {id,type,active,address}] [--reverse] [--export {csv,json,xlsx}] [-h]
 ```
 
 Gets all contract addresses for given platform. Provide platform id with -p/--platform parameter You can display only N number of smart contracts
-with --limit parameter. You can sort data by id, type, active, address --sort parameter and also with --descend flag to sort descending. Displays: id,
+with --limit parameter. You can sort data by id, type, active, address --sort parameter and also with --reverse flag to sort descending. Displays: id,
 type, active, address
 
 ```

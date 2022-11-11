@@ -1,7 +1,7 @@
 ```
 usage: top [-l N]
            [-s {rank,name,symbol,price,txsCount,transfersCount,holdersCount,address}]
-           [--descend] [--export {csv,json,xlsx}] [-h]
+           [--reverse] [--export {csv,json,xlsx}] [-h]
 ```
 
 Display top ERC20 tokens. [Source: Ethplorer]

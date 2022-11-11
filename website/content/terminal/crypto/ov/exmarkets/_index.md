@@ -1,10 +1,10 @@
 ```
 usage: exmarkets [-e EXCHANGE] [-l N]
-                   [-s {pair,base_currency_name,quote_currency_name,category,reported_volume_24h_share,trust_score,market_url}] [--descend] [-l]
+                   [-s {pair,base_currency_name,quote_currency_name,category,reported_volume_24h_share,trust_score,market_url}] [--reverse] [-l]
                    [--export {csv,json,xlsx}] [-h]
 ```
 
-Get all exchange markets found for given exchange You can display only display N number records with --limit parameter. You can sort data by pair, base_currency_name, quote_currency_name, market_url, category, reported_volume_24h_share, trust_score --sort parameter and also with --descend flag to sort descending. You can use additional flag --urls to see urls for each market Displays: exchange_id, pair, base_currency_name,
+Get all exchange markets found for given exchange You can display only display N number records with --limit parameter. You can sort data by pair, base_currency_name, quote_currency_name, market_url, category, reported_volume_24h_share, trust_score --sort parameter and also with --reverse flag to sort ascending. You can use additional flag --urls to see urls for each market Displays: exchange_id, pair, base_currency_name,
 quote_currency_name, market_url, category, reported_volume_24h_share, trust_score,
 
 ```

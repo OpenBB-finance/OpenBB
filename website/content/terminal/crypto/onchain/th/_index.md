@@ -1,5 +1,5 @@
 ```
-usage: th [-l N] [-s {value}] [--descend] [--hash] [--export {csv,json,xlsx}] [-h]
+usage: th [-l N] [-s {value}] [--reverse] [--hash] [--export {csv,json,xlsx}] [-h]
 ```
 
 Displays info about token history. e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984 [Source: Ethplorer]

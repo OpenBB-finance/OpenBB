@@ -1,7 +1,7 @@
 ```
 usage: vaults [-c {ethereum,polygon,avalanche,bsc,terra,fantom,moonriver,celo,heco,okex,cronos,arbitrum,eth,harmony,fuse,defichain,solana,optimism,kusama}]
               [-p {aave,acryptos,alpaca,anchor,autofarm,balancer,bancor,beefy,belt,compound,convex,cream,curve,defichain,geist,lido,liquity,mirror,pancakeswap,raydium,sushi,tarot,traderjoe,tulip,ubeswap,uniswap,venus,yearn}]
-              [-k {lp,single,noimploss,stable}] [-t LIMIT] [-s {name,chain,protocol,apy,tvl,link}] [--descend] [-l] [-h] [--export {csv,json,xlsx}]
+              [-k {lp,single,noimploss,stable}] [-t LIMIT] [-s {name,chain,protocol,apy,tvl,link}] [--reverse] [-l] [-h] [--export {csv,json,xlsx}]
 ```
 
 Display Top DeFi Vaults. [Source: https://coindix.com/]

@@ -1,6 +1,6 @@
 ```
 usage: tv [-c COIN] [-vs {ETH,USD,BTC,USDT}] [-l N]
-          [-s {exchange,tradeAmount,trades}] [--descend] [-h]
+          [-s {exchange,tradeAmount,trades}] [--reverse] [-h]
           [--export {csv,json,xlsx}]
 ```
 

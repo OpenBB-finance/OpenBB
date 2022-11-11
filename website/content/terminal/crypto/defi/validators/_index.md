@@ -1,5 +1,5 @@
 ```
-usage: validators [-l LIMIT] [-s {validatorName,tokensAmount,votingPower,commissionRate,status,uptime}] [--descend] [-h] [--export {csv,json,xlsx}]
+usage: validators [-l LIMIT] [-s {validatorName,tokensAmount,votingPower,commissionRate,status,uptime}] [--reverse] [-h] [--export {csv,json,xlsx}]
 ```
 
 Displays information about terra validators. [Source: https://fcd.terra.dev/swagger]

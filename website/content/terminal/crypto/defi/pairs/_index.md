@@ -1,5 +1,5 @@
 ```
-usage: pairs [-l LIMIT] [-v VOL] [-tx TX] [--days DAYS] [-s {created,pair,token0,token1,volumeUSD,txCount,totalSupply}] [--descend] [-h] [--export {csv,json,xlsx}]
+usage: pairs [-l LIMIT] [-v VOL] [-tx TX] [--days DAYS] [-s {created,pair,token0,token1,volumeUSD,txCount,totalSupply}] [--reverse] [-h] [--export {csv,json,xlsx}]
 ```
 
 Display Lastly added pairs on Uniswap DEX. [Source: https://thegraph.com/en/]

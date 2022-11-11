@@ -1,5 +1,5 @@
 ```
-usage: tokens [--skip SKIP] [--limit LIMIT] [-s {index,symbol,name,tradeVolumeUSD,totalLiquidity,txCount}] [--descend] [-h] [--export {csv,json,xlsx}]
+usage: tokens [--skip SKIP] [--limit LIMIT] [-s {index,symbol,name,tradeVolumeUSD,totalLiquidity,txCount}] [--reverse] [-h] [--export {csv,json,xlsx}]
 ```
 Display tokens trade-able on Uniswap DEX [Source: https://thegraph.com/en/]
 

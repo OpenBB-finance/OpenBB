@@ -1,5 +1,5 @@
 ```
-usage: cgtop top [-c CATEGORY] [-l LIMIT] [-s {Symbol,Name,Volume [$],Market Cap,Market Cap Rank,7D Change [%],24H Change [%]} [{Symbol,Name,Volume [$],Market Cap,Market Cap Rank,7D Change [%],24H Change [%]} ...]] [--descend] [-h] [--export EXPORT] [--source {CoinGecko,CoinMarketCap}]
+usage: cgtop top [-c CATEGORY] [-l LIMIT] [-s {Symbol,Name,Volume [$],Market Cap,Market Cap Rank,7D Change [%],24H Change [%]} [{Symbol,Name,Volume [$],Market Cap,Market Cap Rank,7D Change [%],24H Change [%]} ...]] [--reverse] [-h] [--export EXPORT] [--source {CoinGecko,CoinMarketCap}]
 ```
 
 Display N coins from the data source, if the data source is CoinGecko it can receive a category as argument (-c

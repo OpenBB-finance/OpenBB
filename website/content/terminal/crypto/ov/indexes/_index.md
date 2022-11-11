@@ -1,10 +1,10 @@
 ```
-usage: indexes [-l N] [-s {Rank,Name,Id,Market,Last,MultiAsset}] [--descend] [--export {csv,json,xlsx}] [-h]
+usage: indexes [-l N] [-s {Rank,Name,Id,Market,Last,MultiAsset}] [--reverse] [--export {csv,json,xlsx}] [-h]
 ```
 
 Shows list of crypto indexes from CoinGecko. Each crypto index is made up of a selection of cryptocurrencies, grouped together and weighted by market
 cap. You can display only N number of indexes with --limit parameter. You can sort data by Rank, Name, Id, Market, Last, MultiAsset with --sort and
-also with --descend flag to sort descending. Displays: Rank, Name, Id, Market, Last, MultiAsset
+also with --reverse flag to sort descending. Displays: Rank, Name, Id, Market, Last, MultiAsset
 
 ```
 optional arguments:

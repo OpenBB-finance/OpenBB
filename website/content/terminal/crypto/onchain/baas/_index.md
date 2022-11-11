@@ -1,7 +1,7 @@
 ```
 usage: baas [-c COIN] [-l N] [-vs VS] [-d DAYS]
             [-s {date,baseCurrency,quoteCurrency,dailySpread,averageBidPrice,averageAskPrice}]
-            [--descend] [-h] [--export {csv,json,xlsx}]
+            [--reverse] [-h] [--export {csv,json,xlsx}]
 ```
 
 Display average bid, ask prices, spread for given crypto pair for chosen time

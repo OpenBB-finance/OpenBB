@@ -1,5 +1,5 @@
 ```
-usage: hist [-l N] [-s {timestamp,transactionHash,token,value}] [--descend] [--export {csv,json,xlsx}] [-h]
+usage: hist [-l N] [-s {timestamp,transactionHash,token,value}] [--reverse] [--export {csv,json,xlsx}] [-h]
 ```
 
 Display history for given ethereum blockchain address. e.g.

@@ -1,13 +1,13 @@
 ```
 usage: markets
                  [--vs {BTC,ETH,USD,EUR,PLN,KRW,GBP,CAD,JPY,RUB,TRY,NZD,AUD,CHF,UAH,HKD,SGD,NGN,PHP,MXN,BRL,THB,CLP,CNY,CZK,DKK,HUF,IDR,ILS,INR,MYR,NOK,PKR,SEK,TWD,ZAR,VND,BOB,COP,PEN,ARS,ISK}]
-                 [-l N] [-s {rank,name,symbol,price,volume_24h,mcap_change_24h,pct_change_1h,pct_change_24h,ath_price,pct_from_ath}] [--descend]
+                 [-l N] [-s {rank,name,symbol,price,volume_24h,mcap_change_24h,pct_change_1h,pct_change_24h,ath_price,pct_from_ath}] [--reverse]
                  [--export {csv,json,xlsx}] [-h]
 ```
 
 Show market related (price, supply, volume) coin information for all coins on CoinPaprika. You can display only N number of coins with --limit
 parameter. You can sort data by rank, name, symbol, price, volume_24h, mcap_change_24h, pct_change_1h, pct_change_24h, ath_price, pct_from_ath,
---sort parameter and also with --descend flag to sort descending. Displays: rank, name, symbol, price, volume_24h, mcap_change_24h, pct_change_1h,
+--sort parameter and also with --reverse flag to sort ascending. Displays: rank, name, symbol, price, volume_24h, mcap_change_24h, pct_change_1h,
 pct_change_24h, ath_price, pct_from_ath,
 
 ```

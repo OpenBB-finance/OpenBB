@@ -1,5 +1,5 @@
 ```
-usage: holders [-l N] [-s {balance,balance,share}] [--descend] [--export {csv,json,xlsx}] [-h]
+usage: holders [-l N] [-s {balance,balance,share}] [--reverse] [--export {csv,json,xlsx}] [-h]
 ```
 
 Display top ERC20 token holders: e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984 [Source: Ethplorer]

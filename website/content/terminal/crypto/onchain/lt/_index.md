@@ -1,6 +1,6 @@
 ```
 usage: lt [-k {dex,time}] [-vs {ETH,USD,BTC,USDT}] [-l N] [-d DAYS]
-          [-s {trades,tradeAmount,exchange}] [--descend] [-h]
+          [-s {trades,tradeAmount,exchange}] [--reverse] [-h]
           [--export {csv,json,xlsx}]
 ```
 

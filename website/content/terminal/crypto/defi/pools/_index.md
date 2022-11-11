@@ -1,5 +1,5 @@
 ```
-usage: pairs [-l LIMIT] [-s {volumeUSD,token0.name,token0.symbol,token1.name,token1.symbol,volumeUSD,txCount}] [--descend] [-h] [--export {csv,json,xlsx}]
+usage: pairs [-l LIMIT] [-s {volumeUSD,token0.name,token0.symbol,token1.name,token1.symbol,volumeUSD,txCount}] [--reverse] [-h] [--export {csv,json,xlsx}]
 ```
 
 Display uniswap pools by volume. [Source: https://thegraph.com/en/]

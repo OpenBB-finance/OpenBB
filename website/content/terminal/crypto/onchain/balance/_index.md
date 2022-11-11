@@ -1,5 +1,5 @@
 ```
-usage: balance [-l N] [-s {index,balance,tokenName,tokenSymbol}] [--descend] [--export {csv,json,xlsx}] [-h]
+usage: balance [-l N] [-s {index,balance,tokenName,tokenSymbol}] [--reverse] [--export {csv,json,xlsx}] [-h]
 ```
 
 Display info about tokens on given ethereum blockchain address. [Source:

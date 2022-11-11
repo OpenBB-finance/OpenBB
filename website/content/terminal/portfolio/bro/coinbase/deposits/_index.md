@@ -1,5 +1,5 @@
 ```
-usage: deposits [-t {internal_deposit,deposit}] [-l LIMIT] [-s {created_at,amount}] [--descend]
+usage: deposits [-t {internal_deposit,deposit}] [-l LIMIT] [-s {created_at,amount}] [--reverse]
                 [--export {csv,json,xlsx}] [-h]
 ```
 Display a list of deposits for your account.

@@ -1,5 +1,5 @@
 ```
-usage: pairs [-l N] [-s {id,display_name,base_currency,quote_currency,base_min_size,base_max_size,min_market_funds,max_market_funds}] [--descend]
+usage: pairs [-l N] [-s {id,display_name,base_currency,quote_currency,base_min_size,base_max_size,min_market_funds,max_market_funds}] [--reverse]
                [--export {csv,json,xlsx}] [-h]
 ```
 

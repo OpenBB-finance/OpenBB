@@ -1,9 +1,9 @@
 ```
-usage: ch [-l N] [-s {Platform,Date,Amount [$],Audit,Slug,URL}] [--descend] [-h] [--export {csv,json,xlsx}]
+usage: ch [-l N] [-s {Platform,Date,Amount [$],Audit,Slug,URL}] [--reverse] [-h] [--export {csv,json,xlsx}]
 ```
 
 Display list of major crypto-related hacks [Source: https://rekt.news]
-Can be sorted by {Platform,Date,Amount [$],Audit,Slug,URL} with --sort and reverse the display order with --descend
+Can be sorted by {Platform,Date,Amount [$],Audit,Slug,URL} with --sort and reverse the display order with --reverse
 Show only N elements with --limit N
 Accepts --slug or -s to check individual crypto hack (e.g., -s polynetwork-rekt)
 

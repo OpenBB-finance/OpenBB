@@ -2,7 +2,7 @@
 usage: ttcp [-l N]
             [-e {1inch,afrodex,airswap,amplbitcratic,balancer,bestswap,bitox,cellswap,cofix,coinchangex,curve,ddex,dubiex,decentrex,deversifi,dodo,ethercexchange,etherblockchain,etherdelta,ethernext,ethfinex,fegex,fffswap,fordex,gudecks,gudeks,hiswap,idex,ledgerdex,mat
 cha,miniswap,mooniswap,oasis,openrelay,s.finance,sakeswap,seeddex,singularx,starbitex,sushiswap,swapx,switchdex,tacoswap,tokenjar,tokenstore,tokentrove,tokenlon,tradexone,uniswap,zeusswap,dydx,dex.blue}]
-            [-d DAYS] [-s {base,quoted,trades,tradeAmount}] [--descend] [-h]
+            [-d DAYS] [-s {base,quoted,trades,tradeAmount}] [--reverse] [-h]
             [--export {csv,json,xlsx}]
 ```
 

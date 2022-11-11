@@ -1,9 +1,9 @@
 ```
-usage: ex [-l N] [-s {id,name,adjusted_volume_24h_share,fiats}] [--descend] [--export {csv,json,xlsx}] [-h]
+usage: ex [-l N] [-s {id,name,adjusted_volume_24h_share,fiats}] [--reverse] [--export {csv,json,xlsx}] [-h]
 ```
 
 Get all exchanges found for given coin. You can display only N number of exchanges with --limit parameter. You can sort data by id, name,
-adjusted_volume_24h_share, fiats --sort parameter and also with --descend flag to sort descending. Displays: id, name, adjusted_volume_24h_share, fiats
+adjusted_volume_24h_share, fiats --sort parameter and also with --reverse flag to sort ascending. Displays: id, name, adjusted_volume_24h_share, fiats
 
 ```
 optional arguments:

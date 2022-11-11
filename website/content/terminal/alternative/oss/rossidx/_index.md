@@ -1,4 +1,4 @@
-`usage: rossidx [-s SORTBY [SORTBY {GitHub,Company,Country,City,Founded,Raised [$M],Stars,Forks,Stars AGR [%],Forks AGR [%]}]] [--descend] [--chart] [--growth] [-ct {stars,forks}] [-h] [--export EXPORT] [-l LIMIT]`
+`usage: rossidx [-s SORTBY [SORTBY {GitHub,Company,Country,City,Founded,Raised [$M],Stars,Forks,Stars AGR [%],Forks AGR [%]}]] [--reverse] [--chart] [--growth] [-ct {stars,forks}] [-h] [--export EXPORT] [-l LIMIT]`
 
 Display list of startups from ross index [Source: https://runacap.com/]
 Use --chart to display chart and -t {stars,forks} to set chart type

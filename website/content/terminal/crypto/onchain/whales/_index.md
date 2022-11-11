@@ -1,7 +1,7 @@
 ```
 usage: whales [-m MIN] [-l N]
              [-s {date,symbol,blockchain,amount,amount_usd,from,to}]
-             [--descend] [-a] [--export {csv,json,xlsx}] [-h]
+             [--reverse] [-a] [--export {csv,json,xlsx}] [-h]
 ```
 
 Display huge value transactions from major blockchains. [Source: https://docs.whale-alert.io/]

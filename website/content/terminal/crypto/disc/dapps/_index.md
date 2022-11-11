@@ -1,5 +1,5 @@
 ```
-usage: dapps [-l N] [-s {Name,Category,Protocols,Daily Users,Daily Volume [$]}] [--descend] [-l] [--export {csv,json,xlsx}] [-h]
+usage: dapps [-l LIMIT] [-s SORTBY [SORTBY ...]] [-h] [--export EXPORT]
 ```
 
 Shows top decentralized applications [Source: https://dappradar.com/]

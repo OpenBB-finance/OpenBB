@@ -1,7 +1,7 @@
 ```
 usage: ueat [-l N]
             [-s {date,uniqueSenders,transactions,averageGasPrice,mediumGasPrice,maximumGasPrice}]
-            [-i {day,month,week}] [--descend] [-h] [--export {csv,json,xlsx}]
+            [-i {day,month,week}] [--reverse] [-h] [--export {csv,json,xlsx}]
 ```
 
 Display number of unique ethereum addresses which made a transaction in given

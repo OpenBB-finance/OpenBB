@@ -1,9 +1,9 @@
 ```
-usage: exrates [-l N] [-s {Index,Name,Unit,Value,Type}] [--descend] [--export {csv,json,xlsx}] [-h]
+usage: exrates [-l N] [-s {Index,Name,Unit,Value,Type}] [--reverse] [--export {csv,json,xlsx}] [-h]
 ```
 
 Shows list of crypto, fiats, commodity exchange rates from CoinGecko You can look on only display N number records with --limit, You can sort by Index,
-Name, Unit, Value, Type, and also use --descend flag to sort descending.
+Name, Unit, Value, Type, and also use --reverse flag to sort descending.
 
 ```
 optional arguments:

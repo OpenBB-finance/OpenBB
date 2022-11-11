@@ -1,9 +1,9 @@
 ```
-usage: twitter [-l N] [-s {date,user_name,status,retweet_count,like_count}] [--descend] [--export {csv,json,xlsx}] [-h]
+usage: twitter [-l N] [-s {date,user_name,status,retweet_count,like_count}] [--reverse] [--export {csv,json,xlsx}] [-h]
 ```
 
 Show last 10 tweets for given coin. You can display only N number of tweets with --limit parameter. You can sort data by date, user_name, status,
-retweet_count, like_count --sort parameter and also with --descend flag to sort descending. Displays: date, user_name, status, retweet_count, like_count
+retweet_count, like_count --sort parameter and also with --reverse flag to sort ascending. Displays: date, user_name, status, retweet_count, like_count
 
 ```
 optional arguments:

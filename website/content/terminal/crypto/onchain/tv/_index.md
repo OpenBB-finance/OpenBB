@@ -1,6 +1,6 @@
 ```
 usage: volt [-c COIN] [-vs {ETH,USD,BTC,USDT}] [-l N]
-            [-s {exchange,coin,tradeAmount,trades}] [--descend] [-h]
+            [-s {exchange,coin,tradeAmount,trades}] [--reverse] [-h]
             [--export {csv,json,xlsx}]
 ```
 

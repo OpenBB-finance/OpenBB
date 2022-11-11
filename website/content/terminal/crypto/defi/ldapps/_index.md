@@ -1,5 +1,5 @@
 ```
-usage: ldapps [-l LIMIT] [-s {tvl,symbol,category,chains,change_1h,change_1d,change_7d,name}] [--descend] [--desc] [-h] [--export {csv,json,xlsx}]
+usage: ldapps [-l LIMIT] [-s {tvl,symbol,category,chains,change_1h,change_1d,change_7d,name}] [--reverse] [--desc] [-h] [--export {csv,json,xlsx}]
 ```
 
 Display information about listed DeFi Protocols on DeFi Llama. [Source:https://docs.llama.fi/api]
