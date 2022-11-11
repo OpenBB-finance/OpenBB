@@ -8,7 +8,6 @@ import importlib
 from typing import Any, Dict, List, Optional, TextIO
 
 from openbb_terminal.sdk_core.sdk_helpers import clean_attr_desc, get_sdk_imports_text
-from openbb_terminal.sdk_core.sdk_init import FORECASTING
 
 sub_names = {
     "defi": "DeFi",
@@ -250,7 +249,9 @@ class BuildCategoryModelClasses:
         else:
             f.write(f'{add_indent}    """\r\r')
 
-    def write_class_attributes(self, d: dict, f: TextIO) -> None:
+    def write_class_attributes(
+        self, d: dict, f: TextIO, cat: Optional[str] = None
+    ) -> None:
         """Writes the class attributes to the category file.
 
         Parameters
@@ -260,11 +261,18 @@ class BuildCategoryModelClasses:
         f : TextIO
             The file to write to.
         """
+        add_indent = ""
+        if cat == "forecast":
+            add_indent = "    "
+            f.write("        if lib.FORECASTING:\r")
+
         for v in d.values():
             if isinstance(v, Trailmap):
                 for attr, func in zip(["", "_view"], [v.model_func, v.view_func]):
                     if func:
-                        f.write(f"        self.{v.class_attr}{attr} = {func}\r")
+                        f.write(
+                            f"{add_indent}        self.{v.class_attr}{attr} = {func}\r"
+                        )
         f.write("\r\r")
 
     def write_category(self, category: str, d: dict, f: TextIO) -> None:
@@ -291,7 +299,7 @@ class BuildCategoryModelClasses:
         f.write(f'    """OpenBB SDK {subname.title()} Module\r')
 
         self.write_class_attr_docs(d, f)
-        self.write_class_attributes(d, f)
+        self.write_class_attributes(d, f, category)
 
     def write_nested_category(self, category: str, d: dict, f: TextIO) -> None:
         """Writes the nested category classes.
@@ -523,8 +531,6 @@ def generate():
         next(reader)
         for row in reader:
             trail, model, view = row
-            if not FORECASTING and "forecast" in trail:
-                continue
             trail_map = Trailmap(trail, model, view)
             trailmaps.append(trail_map)
 

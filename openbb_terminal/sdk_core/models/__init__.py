@@ -12,3 +12,4 @@ from .futures_sdk_model import FuturesRoot
 from .keys_sdk_model import KeysRoot
 from .portfolio_sdk_model import PortfolioRoot
 from .stocks_sdk_model import StocksRoot
+from .forecast_sdk_model import ForecastRoot

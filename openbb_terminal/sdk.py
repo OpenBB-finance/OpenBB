@@ -20,7 +20,7 @@ from openbb_terminal.reports.reports_controller import ReportController
 from openbb_terminal.sdk_core.sdk_helpers import check_suppress_logging
 from openbb_terminal.sdk_core import (
     controllers as ctrl,
-    categories as model,
+    models as model,
 )
 
 logger = logging.getLogger(__name__)
@@ -229,6 +229,54 @@ class OpenBBSDK:
         """
 
         return ctrl.EtfController()
+
+    @property
+    def forecast(self):
+        """OpenBB SDK ForecastNone Submodule
+
+        Attributes:
+            `atr`: Calculate the Average True Range of a variable based on a a specific stock ticker.\n
+            `brnn`: Performs Block RNN forecasting\n
+            `brnn_view`: Display BRNN forecast\n
+            `clean`: Clean up NaNs from the dataset\n
+            `combine`: Adds the given column of df2 to df1\n
+            `corr`: Returns correlation for a given df\n
+            `corr_view`: Plot correlation coefficients for dataset features\n
+            `delta`: Calculate the %change of a variable based on a specific column\n
+            `desc`: Returns statistics for a given df\n
+            `ema`: A moving average provides an indication of the trend of the price movement\n
+            `expo`: Performs Probabilistic Exponential Smoothing forecasting\n
+            `expo_view`: Display Probabilistic Exponential Smoothing forecast\n
+            `linregr`: Perform Linear Regression Forecasting\n
+            `linregr_view`: Display Linear Regression Forecasting\n
+            `load`: Load custom file into dataframe.\n
+            `mom`: A momentum oscillator, which measures the percentage change between the current\n
+            `nbeats`: Perform NBEATS Forecasting\n
+            `nbeats_view`: Display NBEATS forecast\n
+            `nhits`: Performs Nhits forecasting\n
+            `nhits_view`: Display Nhits forecast\n
+            `plot`: Plot data from a dataset\n
+            `regr`: Perform Regression Forecasting\n
+            `regr_view`: Display Regression Forecasting\n
+            `rename`: Rename a column in a dataframe\n
+            `rnn`: Perform RNN forecasting\n
+            `rnn_view`: Display RNN forecast\n
+            `roc`: A momentum oscillator, which measures the percentage change between the current\n
+            `rsi`: A momentum indicator that measures the magnitude of recent price changes to evaluate\n
+            `season`: Plot seasonality from a dataset\n
+            `signal`: A price signal based on short/long term price.\n
+            `sto`: Stochastic Oscillator %K and %D : A stochastic oscillator is a momentum indicator comparing a particular closing\n
+            `tcn`: Perform TCN forecasting\n
+            `tcn_view`: Display TCN forecast\n
+            `tft`: Performs Temporal Fusion Transformer forecasting\n
+            `tft_view`: Display Temporal Fusion Transformer forecast\n
+            `theta`: Performs Theta forecasting\n
+            `theta_view`: Display Theta forecast\n
+            `trans`: Performs Transformer forecasting\n
+            `trans_view`: Display Transformer forecast\n
+        """
+
+        return model.ForecastRoot()
 
     @property
     def forex(self):
