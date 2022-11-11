@@ -89,7 +89,6 @@ class StocksController(StockBaseController):
 
             choices: dict = {c: {} for c in self.controller_choices}
 
-            one_to_hundred: dict = {str(c): {} for c in range(1, 100)}
             choices["load"] = {
                 "--ticker": None,
                 "-t": "--ticker",
@@ -134,7 +133,7 @@ class StocksController(StockBaseController):
                     c.lower(): {} for c in stocks_helper.market_coverage_suffix
                 },
                 "-e": "--exchange",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["candle"] = {
@@ -147,7 +146,7 @@ class StocksController(StockBaseController):
                 "--trend": {},
                 "-t": "--trend",
                 "--ma": None,
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["news"] = {
@@ -157,7 +156,7 @@ class StocksController(StockBaseController):
                 "-o": "--oldest",
                 "--sources": None,
                 "-s": "--sources",
-                "--limit": one_to_hundred,
+                "--limit": None,
                 "-l": "--limit",
                 "--source": {
                     c: {} for c in get_ordered_list_sources(f"{self.PATH}news")

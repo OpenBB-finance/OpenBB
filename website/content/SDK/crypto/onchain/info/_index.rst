@@ -28,7 +28,7 @@ crypto.onchain.info(
 
     address: str
         Token balance e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -68,6 +68,6 @@ crypto.onchain.info(
         Flag to display social media links
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

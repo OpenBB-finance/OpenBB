@@ -29,7 +29,7 @@ etf.overview(
 
     etf_symbol : str
         Etf symbol to get overview for
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -66,6 +66,6 @@ etf.overview(
         ETF symbols to display overview for
     export:str
         Format to export data
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

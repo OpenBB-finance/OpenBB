@@ -35,7 +35,7 @@ portfolio.om(
         annualized target return threshold start of plotted threshold range
     threshold_end: float
         annualized target return threshold end of plotted threshold range
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -74,6 +74,6 @@ portfolio.om(
         annualized target return threshold start of plotted threshold range
     threshold_end: float
         annualized target return threshold end of plotted threshold range
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

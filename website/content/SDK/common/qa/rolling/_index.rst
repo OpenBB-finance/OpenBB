@@ -32,7 +32,7 @@ common.qa.rolling(
         Dataframe of target data
     window: int
         Length of rolling window
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -83,6 +83,6 @@ common.qa.rolling(
         Format to export data
     external_axes: Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

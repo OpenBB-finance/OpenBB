@@ -32,7 +32,7 @@ crypto.disc.top_games(
         Number of records to display
     sortby: str
         Key by which to sort data
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -72,6 +72,6 @@ crypto.disc.top_games(
         Key by which to sort data
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

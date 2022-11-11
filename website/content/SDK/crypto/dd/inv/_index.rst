@@ -30,7 +30,7 @@ crypto.dd.inv(
 
     symbol : str
         Crypto symbol to check investors
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -70,6 +70,6 @@ crypto.dd.inv(
         Crypto symbol to check coin investors
     export : str
         Export dataframe data to csv,json,xlsx file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

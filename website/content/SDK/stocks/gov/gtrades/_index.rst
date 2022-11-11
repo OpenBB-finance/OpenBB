@@ -35,7 +35,7 @@ stocks.gov.gtrades(
         Type of government data between: congress, senate and house
     past_transactions_months: int
         Number of months to get transactions for
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -84,6 +84,6 @@ stocks.gov.gtrades(
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 

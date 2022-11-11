@@ -19,7 +19,7 @@ economy.macro(
     transform: str = '',
     start_date: str = '1900-01-01',
     end_date=datetime.date(
-    2022, 11, 8, chart: bool = False,
+    2022, 11, 10, chart: bool = False,
 ), symbol: str = '',
     chart: bool = False,
 ) -> Tuple[Any, Dict[Any, Dict[Any, Any]], str]
@@ -45,7 +45,7 @@ economy.macro(
         The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
     symbol : str
         In what currency you wish to convert all values.
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -72,7 +72,7 @@ economy.macro(
     countries: list = None,
     transform: str = '',
     start_date: str = '1900-01-01',
-    end_date: str = '2022-11-08',
+    end_date: str = '2022-11-10',
     symbol: str = '',
     raw: bool = False,
     external_axes: Optional[List[axes]] = None,
@@ -113,7 +113,7 @@ economy.macro(
         External axes to plot on
     export : str
         Export data to csv,json,xlsx or png,jpg,pdf,svg file
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 

@@ -34,7 +34,7 @@ crypto.defi.luna_supply(
         Supply type to unpack json
     days: int
         Day count to fetch data
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
 
@@ -81,6 +81,6 @@ crypto.defi.luna_supply(
         Default: 5
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
-    chart: *bool*
+    chart: bool
        Flag to display chart
 
