@@ -86,7 +86,7 @@ class Trailmap:
                     importlib.import_module("openbb_terminal.sdk_core.sdk_init"),
                     func.split(".")[0],
                 )
-                self.long_doc[key] = attr.__doc__
+                self.long_doc[key] = getattr(attr, func.split(".")[1]).__doc__
                 self.short_doc[key] = clean_attr_desc(getattr(attr, func.split(".")[1]))
 
 
