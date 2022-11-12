@@ -40,11 +40,11 @@ class PortfolioEngine:
     read_transactions: Class method to read transactions from file
 
     __set_transactions:
-        preprocess_transactions: Method to preprocess, format and compute auxiliary fields
+        __preprocess_transactions: Method to preprocess, format and compute auxiliary fields
 
     get_transactions: Outputs the formatted transactions DataFrame
 
-    load_benchmark: Adds benchmark ticker, info, prices and returns
+    set_benchmark: Adds benchmark ticker, info, prices and returns
         mimic_trades_for_benchmark: Mimic trades from the transactions based on chosen benchmark assuming partial shares
 
     generate_portfolio_data: Generates portfolio data from transactions
@@ -52,12 +52,11 @@ class PortfolioEngine:
         populate_historical_trade_data: Create a new dataframe to store historical prices by ticker
         calculate_value: Calculate value end of day from historical data
 
+    set_risk_free_rate: Sets risk free rate
+
     calculate_reserves: Takes dividends into account for returns calculation
 
     calculate_allocations: Determine allocations based on assets, sectors, countries and region
-
-    set_risk_free_rate: Sets risk free rate
-
     """
 
     def __init__(self, transactions: pd.DataFrame = pd.DataFrame()):
@@ -100,7 +99,7 @@ class PortfolioEngine:
 
     def __set_transactions(self, transactions):
         self.__transactions = transactions
-        self.preprocess_transactions()
+        self.__preprocess_transactions()
         self.empty = False
 
     def get_transactions(self):
@@ -110,6 +109,7 @@ class PortfolioEngine:
         -------
             pd.DataFrame: formatted transactions
         """
+
         df = self.__transactions[
             [
                 "Date",
@@ -155,7 +155,7 @@ class PortfolioEngine:
         return transactions
 
     @log_start_end(log=logger)
-    def preprocess_transactions(self):
+    def __preprocess_transactions(self):
         """Method to preprocess, format and compute auxiliary fields.
 
         Preprocessing steps:
@@ -434,7 +434,7 @@ class PortfolioEngine:
                         ] = info_list
 
     @log_start_end(log=logger)
-    def load_benchmark(self, symbol: str = "SPY", full_shares: bool = False):
+    def set_benchmark(self, symbol: str = "SPY", full_shares: bool = False):
         """Load benchmark into portfolio.
 
         Parameters
@@ -740,6 +740,18 @@ class PortfolioEngine:
         self.historical_trade_data = trade_data
 
     @log_start_end(log=logger)
+    def set_risk_free_rate(self, risk_free_rate: float):
+        """Sets risk free rate
+
+        Parameters
+        ----------
+        risk_free_rate : float
+            Risk free rate in float format
+        """
+
+        self.risk_free_rate = risk_free_rate
+
+    @log_start_end(log=logger)
     def calculate_reserves(self):
         """Takes dividends into account for returns calculation"""
         # TODO: Add back cash dividends and deduct exchange costs
@@ -784,18 +796,6 @@ class PortfolioEngine:
             ) = allocation_model.get_portfolio_region_country_allocation(
                 self.portfolio_trades
             )
-
-    @log_start_end(log=logger)
-    def set_risk_free_rate(self, risk_free_rate: float):
-        """Sets risk free rate
-
-        Parameters
-        ----------
-        risk_free_rate : float
-            Risk free rate in float format
-        """
-
-        self.risk_free_rate = risk_free_rate
 
 
 # Metrics
@@ -1553,6 +1553,7 @@ def get_rolling_sortino(
         Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y
     risk_free_rate: float
         Value to use for risk free rate in sharpe/other calculations
+
     Returns
     -------
     pd.DataFrame
@@ -1620,6 +1621,7 @@ def get_performance_vs_benchmark(
         PortfolioEngine object with trades loaded
     show_all_trades: bool
         Whether to also show all trades made and their performance (default is False)
+
     Returns
     -------
     pd.DataFrame
@@ -1732,6 +1734,7 @@ def get_var(
         If one should use the student-t distribution
     percentile: float
         var percentile (%)
+
     Returns
     -------
     pd.DataFrame
@@ -1766,6 +1769,7 @@ def get_es(
         choose distribution to use: logistic, laplace, normal
     percentile: float
         es percentile (%)
+
     Returns
     -------
     pd.DataFrame
@@ -1794,6 +1798,7 @@ def get_omega(
         annualized target return threshold start of plotted threshold range
     threshold_end: float
         annualized target return threshold end of plotted threshold range
+
     Returns
     -------
     pd.DataFrame
@@ -1821,6 +1826,7 @@ def get_summary(
         interval to compare cumulative returns and benchmark
     risk_free_rate : float
         Risk free rate for calculations
+
     Returns
     -------
     pd.DataFrame
@@ -1936,6 +1942,7 @@ def get_monthly_returns(
         PortfolioEngine object with trades loaded
     window : str
         interval to compare cumulative returns and benchmark
+
     Returns
     -------
     pd.DataFrame
@@ -2031,6 +2038,7 @@ def get_daily_returns(
         PortfolioEngine object with trades loaded
     window : str
         interval to compare cumulative returns and benchmark
+
     Returns
     -------
     pd.DataFrame
@@ -2078,7 +2086,7 @@ def generate_portfolio(
     transactions = PortfolioEngine.read_transactions(transactions_path)
     engine = PortfolioEngine(transactions)
     engine.generate_portfolio_data()
-    engine.load_benchmark(symbol=benchmark_symbol, full_shares=full_shares)
+    engine.set_benchmark(symbol=benchmark_symbol, full_shares=full_shares)
     engine.set_risk_free_rate(risk_free_rate)
 
     return engine
@@ -2117,7 +2125,7 @@ def set_benchmark(
         quantity to the nearest number
     """
 
-    engine.load_benchmark(symbol=symbol, full_shares=full_shares)
+    engine.set_benchmark(symbol=symbol, full_shares=full_shares)
 
 
 def set_risk_free_rate(engine: PortfolioEngine, risk_free_rate: float):

@@ -1,7 +1,7 @@
 ---
 title: Introduction to Portfolio
 keywords: "portfolio, attribution, optimization, pnl, benchmark, return, volatility, metrics, broker, integration, report"
-excerpt: "The Introduction to Portfolio explains how to use the 
+excerpt: "The Introduction to Portfolio explains how to use the
 menu and provides a brief description of its sub-menus"
 geekdocCollapseSection: true
 ---
@@ -50,7 +50,7 @@ in the following:
 from openbb_terminal.sdk import Portfolio
 
 # Define your own orderbook location here
-orderbook_path = "Public_Equity_Orderbook.xlsx" 
+orderbook_path = "Public_Equity_Orderbook.xlsx"
 
 # Load in the transactions
 transactions = Portfolio.read_orderbook(orderbook_path)
@@ -58,7 +58,7 @@ P = Portfolio(transactions)
 P.generate_portfolio_data()
 
 # Load in the benchmark, by default this is the SPY ETF
-P.load_benchmark()
+P.set_benchmark()
 ```
 
 Note that the Excel sheet requires the following columns:
@@ -134,7 +134,7 @@ takes a bit longer to load.
 from openbb_terminal.sdk import Portfolio
 
 # Define your own orderbook location here
-orderbook_path = "Public_Equity_Orderbook_No_Categorization.xlsx" 
+orderbook_path = "Public_Equity_Orderbook_No_Categorization.xlsx"
 
 # Load in the transactions
 transactions = Portfolio.read_orderbook(orderbook_path)
@@ -142,7 +142,7 @@ P = Portfolio(transactions)
 P.generate_portfolio_data()
 
 # Load in the benchmark, by default this is the SPY ETF
-P.load_benchmark()
+P.set_benchmark()
 ```
 
 Then, we can show our performance compared to that of the benchmark.

@@ -681,7 +681,7 @@ With:
     transactions = Portfolio.read_orderbook("../../portfolio/holdings/example.csv")
     P = Portfolio(transactions)
     P.generate_portfolio_data()
-    P.load_benchmark()
+    P.set_benchmark()
 
     # SDK endpoint access
     openbb.portfolio.gaintopain(P)

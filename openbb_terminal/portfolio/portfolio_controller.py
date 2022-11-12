@@ -538,7 +538,7 @@ class PortfolioController(BaseController):
                 else:
                     benchmark_ticker = chosen_benchmark
 
-                self.portfolio.load_benchmark(benchmark_ticker, ns_parser.full_shares)
+                self.portfolio.set_benchmark(benchmark_ticker, ns_parser.full_shares)
 
                 self.benchmark_name = chosen_benchmark
 
