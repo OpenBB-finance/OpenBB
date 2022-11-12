@@ -1863,7 +1863,7 @@ class ForecastController(BaseController):
                 naive=ns_parser.naive,
                 export_pred_raw=ns_parser.export_pred_raw,
             )
-            
+
     # SeasonalNaive Model
     @log_start_end(log=logger)
     def call_seasonalnaive(self, other_args: List[str]):
@@ -1917,7 +1917,7 @@ class ForecastController(BaseController):
                 end_date=ns_parser.s_end_date,
                 naive=ns_parser.naive,
                 export_pred_raw=ns_parser.export_pred_raw,
-            )         
+            )
 
     # EXPO Model
     @log_start_end(log=logger)
