@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.es(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     use_mean: bool = False,
     distribution: str = 'normal',
     percentile: float = 99.9,
@@ -28,8 +28,9 @@ portfolio.es(
 
 * **Parameters**
 
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     use_mean:
         if one should use the data mean return
     distribution: str

@@ -333,7 +333,8 @@ def display_yearly_returns(
     Parameters
     ----------
     portfolio_engine: PortfolioEngine
-        PortfolioEngine object with trades loaded
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     window : str
         interval to compare cumulative returns and benchmark
     raw : False
@@ -414,7 +415,8 @@ def display_monthly_returns(
     Parameters
     ----------
     portfolio_engine: PortfolioEngine
-        PortfolioEngine object with trades loaded
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     window : str
         interval to compare cumulative returns and benchmark
     raw : False
@@ -514,7 +516,8 @@ def display_daily_returns(
     Parameters
     ----------
     portfolio_engine: PortfolioEngine
-        PortfolioEngine object with trades loaded
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     window : str
         interval to compare cumulative returns and benchmark
     raw : False
@@ -669,7 +672,8 @@ def display_holdings_value(
     Parameters
     ----------
     portfolio_engine: PortfolioEngine
-        PortfolioEngine object with trades loaded
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     unstack: bool
         Individual assets over time
     raw : bool
@@ -747,7 +751,8 @@ def display_holdings_percentage(
     Parameters
     ----------
     portfolio_engine: PortfolioEngine
-        PortfolioEngine object with trades loaded
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     unstack: bool
         Individual assets over time
     raw : bool
@@ -1106,7 +1111,8 @@ def display_rsquare(
     Parameters
     ----------
     portfolio_engine: PortfolioEngine
-        PortfolioEngine object with trades loaded
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     export : str
         Export data format
     """
@@ -1138,7 +1144,8 @@ def display_skewness(
     Parameters
     ----------
     portfolio_engine: PortfolioEngine
-        PortfolioEngine object with trades loaded
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     export : str
         Export data format
     """
@@ -1168,7 +1175,8 @@ def display_kurtosis(
     Parameters
     ----------
     portfolio_engine: PortfolioEngine
-        PortfolioEngine object with trades loaded
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     export : str
         Export data format
     """
@@ -1199,7 +1207,8 @@ def display_stats(
     Parameters
     ----------
     portfolio_engine: PortfolioEngine
-        PortfolioEngine object with trades loaded
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     window : str
         interval to consider. Choices are: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all
     export : str
@@ -1231,7 +1240,8 @@ def display_volatility(
     Parameters
     ----------
     portfolio_engine: PortfolioEngine
-        PortfolioEngine object with trades loaded
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     export : str
         Export data format
     """
@@ -1259,7 +1269,8 @@ def display_sharpe_ratio(
     Parameters
     ----------
     portfolio_engine: PortfolioEngine
-        PortfolioEngine object with trades loaded
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     risk_free_rate: float
         Risk free rate value
     export : str
@@ -1292,7 +1303,8 @@ def display_sortino_ratio(
     Parameters
     ----------
     portfolio_engine: PortfolioEngine
-        PortfolioEngine object with trades loaded
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     risk_free_rate: float
         Risk free rate value
     export : str
@@ -1324,7 +1336,8 @@ def display_maximum_drawdown_ratio(
     Parameters
     ----------
     portfolio_engine: PortfolioEngine
-        PortfolioEngine object with trades loaded
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     export : str
         Export data format
     """
@@ -1584,7 +1597,8 @@ def display_payoff_ratio(
     Parameters
     ----------
     portfolio_engine: PortfolioEngine
-        PortfolioEngine object with trades loaded
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     export : str
         Export data format
     """
@@ -1610,7 +1624,8 @@ def display_profit_factor(
     Parameters
     ----------
     portfolio_engine: PortfolioEngine
-        PortfolioEngine object with trades loaded
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     export : str
         Export data format
     """
@@ -1639,7 +1654,8 @@ def display_summary(
     Parameters
     ----------
     portfolio_engine: PortfolioEngine
-        PortfolioEngine object with trades loaded
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     window : str
         interval to compare cumulative returns and benchmark
     risk_free_rate : float
@@ -1676,7 +1692,8 @@ def display_var(
     Parameters
     ----------
     portfolio_engine: PortfolioEngine
-        PortfolioEngine object with trades loaded
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     use_mean: bool
         if one should use the data mean return
     adjusted_var: bool
@@ -1710,7 +1727,8 @@ def display_es(
     Parameters
     ----------
     portfolio_engine: PortfolioEngine
-        PortfolioEngine object with trades loaded
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     use_mean:
         if one should use the data mean return
     distribution: str
@@ -1740,7 +1758,8 @@ def display_omega(
     Parameters
     ----------
     portfolio_engine: PortfolioEngine
-        PortfolioEngine object with trades loaded
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     threshold_start: float
         annualized target return threshold start of plotted threshold range
     threshold_end: float

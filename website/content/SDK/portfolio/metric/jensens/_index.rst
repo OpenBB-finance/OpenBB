@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.metric.jensens(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     risk_free_rate: float = 0,
     window: str = '1y',
     chart: bool = False,
@@ -27,8 +27,9 @@ portfolio.metric.jensens(
 
 * **Parameters**
 
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     window: str
         Interval used for rolling values
     risk_free_rate: float

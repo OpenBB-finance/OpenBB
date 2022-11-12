@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 portfolio.om(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     threshold_start: float = 0,
     threshold_end: float = 1.5,
     chart: bool = False,
@@ -29,8 +29,9 @@ portfolio.om(
 
 * **Parameters**
 
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     threshold_start: float
         annualized target return threshold start of plotted threshold range
     threshold_end: float
@@ -69,7 +70,8 @@ portfolio.om(
 * **Parameters**
 
     portfolio_engine: PortfolioEngine
-        PortfolioEngine object with trades loaded
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     threshold_start: float
         annualized target return threshold start of plotted threshold range
     threshold_end: float

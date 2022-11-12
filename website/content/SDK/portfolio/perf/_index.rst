@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.perf(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     show_all_trades: bool = False,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
@@ -26,8 +26,9 @@ portfolio.perf(
 
 * **Parameters**
 
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     show_all_trades: bool
         Whether to also show all trades made and their performance (default is False)
 

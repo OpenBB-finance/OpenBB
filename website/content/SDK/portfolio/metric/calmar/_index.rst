@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.metric.calmar(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     window: int = 756,
     chart: bool = False,
 )
@@ -26,8 +26,9 @@ portfolio.metric.calmar(
 
 * **Parameters**
 
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     window: int
         Interval used for rolling values
 

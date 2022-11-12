@@ -808,13 +808,14 @@ class PortfolioEngine:
 
 # Metrics
 @log_start_end(log=logger)
-def get_r2_score(portfolio: PortfolioEngine) -> pd.DataFrame:
+def get_r2_score(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     """Method that retrieves R2 Score for portfolio and benchmark selected
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
 
     Returns
     -------
@@ -827,9 +828,11 @@ def get_r2_score(portfolio: PortfolioEngine) -> pd.DataFrame:
         vals.append(
             round(
                 r2_score(
-                    portfolio_helper.filter_df_by_period(portfolio.returns, period),
                     portfolio_helper.filter_df_by_period(
-                        portfolio.benchmark_returns, period
+                        portfolio_engine.returns, period
+                    ),
+                    portfolio_helper.filter_df_by_period(
+                        portfolio_engine.benchmark_returns, period
                     ),
                 ),
                 3,
@@ -839,11 +842,12 @@ def get_r2_score(portfolio: PortfolioEngine) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_skewness(portfolio: PortfolioEngine) -> pd.DataFrame:
+def get_skewness(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     """Method that retrieves skewness for portfolio and benchmark selected
 
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
 
     Returns
     -------
@@ -857,14 +861,16 @@ def get_skewness(portfolio: PortfolioEngine) -> pd.DataFrame:
             [
                 round(
                     scipy.stats.skew(
-                        portfolio_helper.filter_df_by_period(portfolio.returns, period)
+                        portfolio_helper.filter_df_by_period(
+                            portfolio_engine.returns, period
+                        )
                     ),
                     3,
                 ),
                 round(
                     scipy.stats.skew(
                         portfolio_helper.filter_df_by_period(
-                            portfolio.benchmark_returns, period
+                            portfolio_engine.benchmark_returns, period
                         )
                     ),
                     3,
@@ -877,13 +883,14 @@ def get_skewness(portfolio: PortfolioEngine) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_kurtosis(portfolio: PortfolioEngine) -> pd.DataFrame:
+def get_kurtosis(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     """Method that retrieves kurtosis for portfolio and benchmark selected
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
 
     Returns
     -------
@@ -897,14 +904,16 @@ def get_kurtosis(portfolio: PortfolioEngine) -> pd.DataFrame:
             [
                 round(
                     scipy.stats.kurtosis(
-                        portfolio_helper.filter_df_by_period(portfolio.returns, period)
+                        portfolio_helper.filter_df_by_period(
+                            portfolio_engine.returns, period
+                        )
                     ),
                     3,
                 ),
                 round(
                     scipy.stats.skew(
                         portfolio_helper.filter_df_by_period(
-                            portfolio.benchmark_returns, period
+                            portfolio_engine.benchmark_returns, period
                         )
                     ),
                     3,
@@ -917,13 +926,14 @@ def get_kurtosis(portfolio: PortfolioEngine) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_stats(portfolio: PortfolioEngine, window: str = "all") -> pd.DataFrame:
+def get_stats(portfolio_engine: PortfolioEngine, window: str = "all") -> pd.DataFrame:
     """Method that retrieves stats for portfolio and benchmark selected based on a certain interval
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     window : str
         interval to consider. Choices are: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all
 
@@ -934,12 +944,12 @@ def get_stats(portfolio: PortfolioEngine, window: str = "all") -> pd.DataFrame:
     """
 
     df = (
-        portfolio_helper.filter_df_by_period(portfolio.returns, window)
+        portfolio_helper.filter_df_by_period(portfolio_engine.returns, window)
         .describe()
         .to_frame()
         .join(
             portfolio_helper.filter_df_by_period(
-                portfolio.benchmark_returns, window
+                portfolio_engine.benchmark_returns, window
             ).describe()
         )
     )
@@ -948,13 +958,14 @@ def get_stats(portfolio: PortfolioEngine, window: str = "all") -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_volatility(portfolio: PortfolioEngine) -> pd.DataFrame:
+def get_volatility(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     """Method that retrieves volatility for portfolio and benchmark selected
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
 
     Returns
     -------
@@ -964,9 +975,11 @@ def get_volatility(portfolio: PortfolioEngine) -> pd.DataFrame:
 
     vals = list()
     for period in portfolio_helper.PERIODS:
-        port_rets = portfolio_helper.filter_df_by_period(portfolio.returns, period)
+        port_rets = portfolio_helper.filter_df_by_period(
+            portfolio_engine.returns, period
+        )
         bench_rets = portfolio_helper.filter_df_by_period(
-            portfolio.benchmark_returns, period
+            portfolio_engine.benchmark_returns, period
         )
         vals.append(
             [
@@ -989,14 +1002,15 @@ def get_volatility(portfolio: PortfolioEngine) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_sharpe_ratio(
-    portfolio: PortfolioEngine, risk_free_rate: float = 0
+    portfolio_engine: PortfolioEngine, risk_free_rate: float = 0
 ) -> pd.DataFrame:
     """Method that retrieves sharpe ratio for portfolio and benchmark selected
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     risk_free_rate: float
         Risk free rate value
 
@@ -1012,7 +1026,9 @@ def get_sharpe_ratio(
             [
                 round(
                     portfolio_helper.sharpe_ratio(
-                        portfolio_helper.filter_df_by_period(portfolio.returns, period),
+                        portfolio_helper.filter_df_by_period(
+                            portfolio_engine.returns, period
+                        ),
                         risk_free_rate,
                     ),
                     3,
@@ -1020,7 +1036,7 @@ def get_sharpe_ratio(
                 round(
                     portfolio_helper.sharpe_ratio(
                         portfolio_helper.filter_df_by_period(
-                            portfolio.benchmark_returns, period
+                            portfolio_engine.benchmark_returns, period
                         ),
                         risk_free_rate,
                     ),
@@ -1035,14 +1051,15 @@ def get_sharpe_ratio(
 
 @log_start_end(log=logger)
 def get_sortino_ratio(
-    portfolio: PortfolioEngine, risk_free_rate: float = 0
+    portfolio_engine: PortfolioEngine, risk_free_rate: float = 0
 ) -> pd.DataFrame:
     """Method that retrieves sortino ratio for portfolio and benchmark selected
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     risk_free_rate: float
         Risk free rate value
 
@@ -1058,7 +1075,9 @@ def get_sortino_ratio(
             [
                 round(
                     portfolio_helper.sortino_ratio(
-                        portfolio_helper.filter_df_by_period(portfolio.returns, period),
+                        portfolio_helper.filter_df_by_period(
+                            portfolio_engine.returns, period
+                        ),
                         risk_free_rate,
                     ),
                     3,
@@ -1066,7 +1085,7 @@ def get_sortino_ratio(
                 round(
                     portfolio_helper.sortino_ratio(
                         portfolio_helper.filter_df_by_period(
-                            portfolio.benchmark_returns, period
+                            portfolio_engine.benchmark_returns, period
                         ),
                         risk_free_rate,
                     ),
@@ -1080,13 +1099,14 @@ def get_sortino_ratio(
 
 
 @log_start_end(log=logger)
-def get_maximum_drawdown_ratio(portfolio: PortfolioEngine) -> pd.DataFrame:
+def get_maximum_drawdown_ratio(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     """Method that retrieves maximum drawdown ratio for portfolio and benchmark selected
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
 
     Returns
     -------
@@ -1100,14 +1120,16 @@ def get_maximum_drawdown_ratio(portfolio: PortfolioEngine) -> pd.DataFrame:
             [
                 round(
                     portfolio_helper.maximum_drawdown(
-                        portfolio_helper.filter_df_by_period(portfolio.returns, period)
+                        portfolio_helper.filter_df_by_period(
+                            portfolio_engine.returns, period
+                        )
                     ),
                     3,
                 ),
                 round(
                     portfolio_helper.maximum_drawdown(
                         portfolio_helper.filter_df_by_period(
-                            portfolio.benchmark_returns, period
+                            portfolio_engine.benchmark_returns, period
                         )
                     ),
                     3,
@@ -1120,13 +1142,14 @@ def get_maximum_drawdown_ratio(portfolio: PortfolioEngine) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_gaintopain_ratio(portfolio: PortfolioEngine):
+def get_gaintopain_ratio(portfolio_engine: PortfolioEngine):
     """Get Pain-to-Gain ratio based on historical data
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
 
     Returns
     -------
@@ -1135,22 +1158,23 @@ def get_gaintopain_ratio(portfolio: PortfolioEngine):
     """
 
     gtp_period_df = portfolio_helper.get_gaintopain_ratio(
-        portfolio.historical_trade_data,
-        portfolio.benchmark_trades,
-        portfolio.benchmark_returns,
+        portfolio_engine.historical_trade_data,
+        portfolio_engine.benchmark_trades,
+        portfolio_engine.benchmark_returns,
     )
 
     return gtp_period_df
 
 
 @log_start_end(log=logger)
-def get_tracking_error(portfolio: PortfolioEngine, window: int = 252):
+def get_tracking_error(portfolio_engine: PortfolioEngine, window: int = 252):
     """Get tracking error
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     window: int
         Interval used for rolling values
 
@@ -1163,20 +1187,21 @@ def get_tracking_error(portfolio: PortfolioEngine, window: int = 252):
     """
 
     trackr_period_df, trackr_rolling = portfolio_helper.get_tracking_error(
-        portfolio.returns, portfolio.benchmark_returns, window
+        portfolio_engine.returns, portfolio_engine.benchmark_returns, window
     )
 
     return trackr_period_df, trackr_rolling
 
 
 @log_start_end(log=logger)
-def get_information_ratio(portfolio: PortfolioEngine):
+def get_information_ratio(portfolio_engine: PortfolioEngine):
     """Get information ratio
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
 
     Returns
     -------
@@ -1185,23 +1210,24 @@ def get_information_ratio(portfolio: PortfolioEngine):
     """
 
     ir_period_df = portfolio_helper.get_information_ratio(
-        portfolio.returns,
-        portfolio.historical_trade_data,
-        portfolio.benchmark_trades,
-        portfolio.benchmark_returns,
+        portfolio_engine.returns,
+        portfolio_engine.historical_trade_data,
+        portfolio_engine.benchmark_trades,
+        portfolio_engine.benchmark_returns,
     )
 
     return ir_period_df
 
 
 @log_start_end(log=logger)
-def get_tail_ratio(portfolio: PortfolioEngine, window: int = 252):
+def get_tail_ratio(portfolio_engine: PortfolioEngine, window: int = 252):
     """Get tail ratio
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
 
     window: int
         Interval used for rolling values
@@ -1217,20 +1243,21 @@ def get_tail_ratio(portfolio: PortfolioEngine, window: int = 252):
     """
 
     tailr_period_df, portfolio_tr, benchmark_tr = portfolio_helper.get_tail_ratio(
-        portfolio.returns, portfolio.benchmark_returns, window
+        portfolio_engine.returns, portfolio_engine.benchmark_returns, window
     )
 
     return tailr_period_df, portfolio_tr, benchmark_tr
 
 
 @log_start_end(log=logger)
-def get_common_sense_ratio(portfolio: PortfolioEngine):
+def get_common_sense_ratio(portfolio_engine: PortfolioEngine):
     """Get common sense ratio
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
 
     Returns
     -------
@@ -1239,10 +1266,10 @@ def get_common_sense_ratio(portfolio: PortfolioEngine):
     """
 
     csr_period_df = portfolio_helper.get_common_sense_ratio(
-        portfolio.returns,
-        portfolio.historical_trade_data,
-        portfolio.benchmark_trades,
-        portfolio.benchmark_returns,
+        portfolio_engine.returns,
+        portfolio_engine.historical_trade_data,
+        portfolio_engine.benchmark_trades,
+        portfolio_engine.benchmark_returns,
     )
 
     return csr_period_df
@@ -1250,14 +1277,15 @@ def get_common_sense_ratio(portfolio: PortfolioEngine):
 
 @log_start_end(log=logger)
 def get_jensens_alpha(
-    portfolio: PortfolioEngine, risk_free_rate: float = 0, window: str = "1y"
+    portfolio_engine: PortfolioEngine, risk_free_rate: float = 0, window: str = "1y"
 ):
     """Get jensen's alpha
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     window: str
         Interval used for rolling values
     risk_free_rate: float
@@ -1272,10 +1300,10 @@ def get_jensens_alpha(
     """
 
     ja_period_df, ja_rolling = portfolio_helper.jensens_alpha(
-        portfolio.returns,
-        portfolio.historical_trade_data,
-        portfolio.benchmark_trades,
-        portfolio.benchmark_returns,
+        portfolio_engine.returns,
+        portfolio_engine.historical_trade_data,
+        portfolio_engine.benchmark_trades,
+        portfolio_engine.benchmark_returns,
         risk_free_rate,
         window,
     )
@@ -1284,13 +1312,14 @@ def get_jensens_alpha(
 
 
 @log_start_end(log=logger)
-def get_calmar_ratio(portfolio: PortfolioEngine, window: int = 756):
+def get_calmar_ratio(portfolio_engine: PortfolioEngine, window: int = 756):
     """Get calmar ratio
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     window: int
         Interval used for rolling values
 
@@ -1303,10 +1332,10 @@ def get_calmar_ratio(portfolio: PortfolioEngine, window: int = 756):
     """
 
     cr_period_df, cr_rolling = portfolio_helper.get_calmar_ratio(
-        portfolio.returns,
-        portfolio.historical_trade_data,
-        portfolio.benchmark_trades,
-        portfolio.benchmark_returns,
+        portfolio_engine.returns,
+        portfolio_engine.historical_trade_data,
+        portfolio_engine.benchmark_trades,
+        portfolio_engine.benchmark_returns,
         window,
     )
 
@@ -1314,13 +1343,14 @@ def get_calmar_ratio(portfolio: PortfolioEngine, window: int = 756):
 
 
 @log_start_end(log=logger)
-def get_kelly_criterion(portfolio: PortfolioEngine):
+def get_kelly_criterion(portfolio_engine: PortfolioEngine):
     """Gets kelly criterion
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
 
     Returns
     -------
@@ -1329,14 +1359,14 @@ def get_kelly_criterion(portfolio: PortfolioEngine):
     """
 
     kc_period_df = portfolio_helper.get_kelly_criterion(
-        portfolio.returns, portfolio.portfolio_trades
+        portfolio_engine.returns, portfolio_engine.portfolio_trades
     )
 
     return kc_period_df
 
 
 @log_start_end(log=logger)
-def get_payoff_ratio(portfolio: PortfolioEngine):
+def get_payoff_ratio(portfolio_engine: PortfolioEngine):
     """Gets payoff ratio
 
     Returns
@@ -1345,19 +1375,22 @@ def get_payoff_ratio(portfolio: PortfolioEngine):
         DataFrame of payoff ratio of the portfolio during different time periods
     """
 
-    pr_period_ratio = portfolio_helper.get_payoff_ratio(portfolio.portfolio_trades)
+    pr_period_ratio = portfolio_helper.get_payoff_ratio(
+        portfolio_engine.portfolio_trades
+    )
 
     return pr_period_ratio
 
 
 @log_start_end(log=logger)
-def get_profit_factor(portfolio: PortfolioEngine):
+def get_profit_factor(portfolio_engine: PortfolioEngine):
     """Gets profit factor
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
 
     Returns
     -------
@@ -1365,18 +1398,19 @@ def get_profit_factor(portfolio: PortfolioEngine):
         DataFrame of profit factor of the portfolio during different time periods
     """
 
-    pf_period_df = portfolio_helper.get_profit_factor(portfolio.portfolio_trades)
+    pf_period_df = portfolio_helper.get_profit_factor(portfolio_engine.portfolio_trades)
 
     return pf_period_df
 
 
-def get_holdings_value(portfolio: PortfolioEngine) -> pd.DataFrame:
+def get_holdings_value(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     """Get holdings of assets (absolute value)
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
 
     Returns
     -------
@@ -1384,7 +1418,9 @@ def get_holdings_value(portfolio: PortfolioEngine) -> pd.DataFrame:
         DataFrame of holdings
     """
 
-    all_holdings = portfolio.historical_trade_data["End Value"][portfolio.tickers_list]
+    all_holdings = portfolio_engine.historical_trade_data["End Value"][
+        portfolio_engine.tickers_list
+    ]
 
     all_holdings["Total Value"] = all_holdings.sum(axis=1)
     # No need to account for time since this is daily data
@@ -1394,17 +1430,20 @@ def get_holdings_value(portfolio: PortfolioEngine) -> pd.DataFrame:
 
 
 def get_holdings_percentage(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
 ):
     """Get holdings of assets (in percentage)
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     """
 
-    all_holdings = portfolio.historical_trade_data["End Value"][portfolio.tickers_list]
+    all_holdings = portfolio_engine.historical_trade_data["End Value"][
+        portfolio_engine.tickers_list
+    ]
 
     all_holdings = all_holdings.divide(all_holdings.sum(axis=1), axis=0) * 100
 
@@ -1416,7 +1455,7 @@ def get_holdings_percentage(
 
 @log_start_end(log=logger)
 def get_maximum_drawdown(
-    portfolio: PortfolioEngine, is_returns: bool = False
+    portfolio_engine: PortfolioEngine, is_returns: bool = False
 ) -> pd.Series:
     """Calculate the drawdown (MDD) of historical series.  Note that the calculation is done
      on cumulative returns (or prices).  The definition of drawdown is
@@ -1438,7 +1477,7 @@ def get_maximum_drawdown(
         Drawdown series
     """
 
-    holdings: pd.Series = portfolio.portfolio_value
+    holdings: pd.Series = portfolio_engine.portfolio_value
     if is_returns:
         holdings = (1 + holdings).cumprod()
 
@@ -1449,22 +1488,25 @@ def get_maximum_drawdown(
 
 
 def get_distribution_returns(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     window: str = "all",
 ):
     """Display daily returns
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     window : str
         interval to compare cumulative returns and benchmark
     """
 
-    portfolio_returns = portfolio_helper.filter_df_by_period(portfolio.returns, window)
+    portfolio_returns = portfolio_helper.filter_df_by_period(
+        portfolio_engine.returns, window
+    )
     benchmark_returns = portfolio_helper.filter_df_by_period(
-        portfolio.benchmark_returns, window
+        portfolio_engine.benchmark_returns, window
     )
 
     df = pd.DataFrame(portfolio_returns).join(pd.DataFrame(benchmark_returns))
@@ -1475,25 +1517,28 @@ def get_distribution_returns(
 
 
 def get_rolling_volatility(
-    portfolio: PortfolioEngine, window: str = "1y"
+    portfolio_engine: PortfolioEngine, window: str = "1y"
 ) -> pd.DataFrame:
     """Get rolling volatility
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     window : str
         Rolling window size to use
         Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y
     """
 
-    portfolio_rvol = portfolio_helper.rolling_volatility(portfolio.returns, window)
+    portfolio_rvol = portfolio_helper.rolling_volatility(
+        portfolio_engine.returns, window
+    )
     if portfolio_rvol.empty:
         return pd.DataFrame()
 
     benchmark_rvol = portfolio_helper.rolling_volatility(
-        portfolio.benchmark_returns, window
+        portfolio_engine.benchmark_returns, window
     )
     if benchmark_rvol.empty:
         return pd.DataFrame()
@@ -1506,7 +1551,7 @@ def get_rolling_volatility(
 
 
 def get_rolling_sharpe(
-    portfolio: pd.DataFrame, risk_free_rate: float = 0, window: str = "1y"
+    portfolio_engine: pd.DataFrame, risk_free_rate: float = 0, window: str = "1y"
 ) -> pd.DataFrame:
     """Get rolling sharpe ratio
 
@@ -1527,13 +1572,13 @@ def get_rolling_sharpe(
     """
 
     portfolio_rsharpe = portfolio_helper.rolling_sharpe(
-        portfolio.returns, risk_free_rate, window
+        portfolio_engine.returns, risk_free_rate, window
     )
     if portfolio_rsharpe.empty:
         return pd.DataFrame()
 
     benchmark_rsharpe = portfolio_helper.rolling_sharpe(
-        portfolio.benchmark_returns, risk_free_rate, window
+        portfolio_engine.benchmark_returns, risk_free_rate, window
     )
     if benchmark_rsharpe.empty:
         return pd.DataFrame()
@@ -1546,7 +1591,7 @@ def get_rolling_sharpe(
 
 
 def get_rolling_sortino(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     risk_free_rate: float = 0,
     window: str = "1y",
 ) -> pd.DataFrame:
@@ -1569,13 +1614,13 @@ def get_rolling_sortino(
     """
 
     portfolio_rsortino = portfolio_helper.rolling_sortino(
-        portfolio.returns, risk_free_rate, window
+        portfolio_engine.returns, risk_free_rate, window
     )
     if portfolio_rsortino.empty:
         return pd.DataFrame()
 
     benchmark_rsortino = portfolio_helper.rolling_sortino(
-        portfolio.benchmark_returns, risk_free_rate, window
+        portfolio_engine.benchmark_returns, risk_free_rate, window
     )
     if benchmark_rsortino.empty:
         return pd.DataFrame()
@@ -1589,7 +1634,7 @@ def get_rolling_sortino(
 
 @log_start_end(log=logger)
 def get_rolling_beta(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     window: str = "1y",
 ) -> pd.DataFrame:
     """Get rolling beta using portfolio and benchmark returns
@@ -1609,7 +1654,7 @@ def get_rolling_beta(
     """
 
     df = portfolio_helper.rolling_beta(
-        portfolio.returns, portfolio.benchmark_returns, window
+        portfolio_engine.returns, portfolio_engine.benchmark_returns, window
     )
 
     return df
@@ -1617,7 +1662,7 @@ def get_rolling_beta(
 
 @log_start_end(log=logger)
 def get_performance_vs_benchmark(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     show_all_trades: bool = False,
 ) -> pd.DataFrame:
 
@@ -1625,8 +1670,9 @@ def get_performance_vs_benchmark(
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     show_all_trades: bool
         Whether to also show all trades made and their performance (default is False)
 
@@ -1635,8 +1681,8 @@ def get_performance_vs_benchmark(
     pd.DataFrame
     """
 
-    portfolio_trades = portfolio.portfolio_trades
-    benchmark_trades = portfolio.benchmark_trades
+    portfolio_trades = portfolio_engine.portfolio_trades
+    benchmark_trades = portfolio_engine.benchmark_trades
 
     portfolio_trades.index = pd.to_datetime(portfolio_trades["Date"].values)
     benchmark_trades.index = pd.to_datetime(benchmark_trades["Date"].values)
@@ -1721,7 +1767,7 @@ def get_performance_vs_benchmark(
 
 @log_start_end(log=logger)
 def get_var(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     use_mean: bool = False,
     adjusted_var: bool = False,
     student_t: bool = False,
@@ -1732,8 +1778,9 @@ def get_var(
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     use_mean: bool
         if one should use the data mean return
     adjusted_var: bool
@@ -1749,7 +1796,7 @@ def get_var(
     """
 
     return qa_model.get_var(
-        data=portfolio.returns,
+        data=portfolio_engine.returns,
         use_mean=use_mean,
         adjusted_var=adjusted_var,
         student_t=student_t,
@@ -1760,7 +1807,7 @@ def get_var(
 
 @log_start_end(log=logger)
 def get_es(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     use_mean: bool = False,
     distribution: str = "normal",
     percentile: float = 99.9,
@@ -1769,8 +1816,9 @@ def get_es(
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     use_mean:
         if one should use the data mean return
     distribution: str
@@ -1784,7 +1832,7 @@ def get_es(
     """
 
     return qa_model.get_es(
-        data=portfolio.returns,
+        data=portfolio_engine.returns,
         use_mean=use_mean,
         distribution=distribution,
         percentile=percentile,
@@ -1794,14 +1842,17 @@ def get_es(
 
 @log_start_end(log=logger)
 def get_omega(
-    portfolio: PortfolioEngine, threshold_start: float = 0, threshold_end: float = 1.5
+    portfolio_engine: PortfolioEngine,
+    threshold_start: float = 0,
+    threshold_end: float = 1.5,
 ) -> pd.DataFrame:
     """Get omega ratio
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     threshold_start: float
         annualized target return threshold start of plotted threshold range
     threshold_end: float
@@ -1813,14 +1864,14 @@ def get_omega(
     """
 
     return qa_model.get_omega(
-        data=portfolio.returns,
+        data=portfolio_engine.returns,
         threshold_start=threshold_start,
         threshold_end=threshold_end,
     )
 
 
 def get_summary(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     window: str = "all",
     risk_free_rate: float = 0,
 ) -> pd.DataFrame:
@@ -1828,8 +1879,9 @@ def get_summary(
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     window : str
         interval to compare cumulative returns and benchmark
     risk_free_rate : float
@@ -1841,9 +1893,11 @@ def get_summary(
 
     """
 
-    portfolio_returns = portfolio_helper.filter_df_by_period(portfolio.returns, window)
+    portfolio_returns = portfolio_helper.filter_df_by_period(
+        portfolio_engine.returns, window
+    )
     benchmark_returns = portfolio_helper.filter_df_by_period(
-        portfolio.benchmark_returns, window
+        portfolio_engine.benchmark_returns, window
     )
 
     metrics = {
@@ -1889,22 +1943,25 @@ def get_summary(
 
 @log_start_end(log=logger)
 def get_yearly_returns(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     window: str = "all",
 ):
     """Get yearly returns
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     window : str
         interval to compare cumulative returns and benchmark
     """
 
-    portfolio_returns = portfolio_helper.filter_df_by_period(portfolio.returns, window)
+    portfolio_returns = portfolio_helper.filter_df_by_period(
+        portfolio_engine.returns, window
+    )
     benchmark_returns = portfolio_helper.filter_df_by_period(
-        portfolio.benchmark_returns, window
+        portfolio_engine.benchmark_returns, window
     )
 
     creturns_year_val = list()
@@ -1939,15 +1996,16 @@ def get_yearly_returns(
 
 @log_start_end(log=logger)
 def get_monthly_returns(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     window: str = "all",
 ) -> pd.DataFrame:
     """Get monthly returns
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     window : str
         interval to compare cumulative returns and benchmark
 
@@ -1956,9 +2014,11 @@ def get_monthly_returns(
     pd.DataFrame
     """
 
-    portfolio_returns = portfolio_helper.filter_df_by_period(portfolio.returns, window)
+    portfolio_returns = portfolio_helper.filter_df_by_period(
+        portfolio_engine.returns, window
+    )
     benchmark_returns = portfolio_helper.filter_df_by_period(
-        portfolio.benchmark_returns, window
+        portfolio_engine.benchmark_returns, window
     )
 
     creturns_month_val = list()
@@ -2035,15 +2095,16 @@ def get_monthly_returns(
 
 @log_start_end(log=logger)
 def get_daily_returns(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     window: str = "all",
 ) -> pd.DataFrame:
     """Get daily returns
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     window : str
         interval to compare cumulative returns and benchmark
 
@@ -2052,9 +2113,11 @@ def get_daily_returns(
     pd.DataFrame
     """
 
-    portfolio_returns = portfolio_helper.filter_df_by_period(portfolio.returns, window)
+    portfolio_returns = portfolio_helper.filter_df_by_period(
+        portfolio_engine.returns, window
+    )
     benchmark_returns = portfolio_helper.filter_df_by_period(
-        portfolio.benchmark_returns, window
+        portfolio_engine.benchmark_returns, window
     )
 
     df = portfolio_returns.to_frame()

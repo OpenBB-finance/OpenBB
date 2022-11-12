@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.metric.profitfactor(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     chart: bool = False,
 )
 {{< /highlight >}}
@@ -25,8 +25,9 @@ portfolio.metric.profitfactor(
 
 * **Parameters**
 
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
 
 * **Returns**
 

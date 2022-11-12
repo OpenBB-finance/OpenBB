@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.metric.sharpe(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     risk_free_rate: float = 0,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
@@ -26,8 +26,9 @@ portfolio.metric.sharpe(
 
 * **Parameters**
 
-    portfolio: PortfolioEngine
-        PortfolioEngine object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     risk_free_rate: float
         Risk free rate value
 

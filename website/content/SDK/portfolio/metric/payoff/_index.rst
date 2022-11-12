@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.metric.payoff(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     chart: bool = False,
 )
 {{< /highlight >}}
