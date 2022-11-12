@@ -10,6 +10,7 @@ import subprocess
 from typing import Any, Dict, List, Optional, TextIO
 
 from openbb_terminal.sdk_core.sdk_helpers import clean_attr_desc, get_sdk_imports_text
+from openbb_terminal.sdk_core.sdk_init import FORECASTING
 
 REPO_ROOT = Path(__file__).parent.joinpath("openbb_terminal").resolve()
 
@@ -521,6 +522,11 @@ def get_trailmaps():
         next(reader)
         for row in reader:
             trail, model, view = row
+            if not FORECASTING and "forecast" in trail:
+                print(
+                    f"Forecasting is disabled. {trail} will not be included in the SDK."
+                )
+                continue
             trail_map = Trailmap(trail, model, view)
             trailmaps.append(trail_map)
 
