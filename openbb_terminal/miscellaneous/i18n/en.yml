@@ -926,6 +926,7 @@ en:
   portfolio/rbeta: rolling beta
   portfolio/_metrics_: Metrics
   portfolio/alloc: allocation on an asset, sector, countries or regions basis
+  portfolio/attrib: display sector attribution of the portfolio compared to the S&P 500
   portfolio/summary: all portfolio vs benchmark metrics for a certain period of choice
   portfolio/metric: portfolio vs benchmark metric for all different periods
   portfolio/perf: performance of the portfolio versus benchmark
