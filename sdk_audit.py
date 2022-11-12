@@ -51,15 +51,15 @@ def all_view_models() -> List[Path]:
     List[Path]
         All paths in openbb_terminal with 'view' or 'model' in the name
     """
-    file_list = []
-    all_files = os.walk(base_path)
-    for root, _, files in all_files:
-        for filename in files:
-            if filename.endswith(".py"):
-                if "view" in filename or "model" in filename:
-                    file_list.append(f"{root}/{filename}")
-    clean_list = set(file_list)
-    return [Path(x) for x in clean_list]
+
+    pattern_list = ["**/*_model.py", "**/*_view.py"]
+    module_path_list = []
+
+    for pattern in pattern_list:
+        module_path_generator = base_path.glob(pattern)
+        module_path_list += list(module_path_generator)
+
+    return module_path_list
 
 
 def get_sdk(file_path: str = "miscellaneous/library/trail_map.csv") -> pd.DataFrame:
