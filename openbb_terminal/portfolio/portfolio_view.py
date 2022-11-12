@@ -104,7 +104,7 @@ def display_transactions(
 
     Parameters
     ----------
-    portfolio: Portfolio
+    portfolio: PortfolioEngine
         Instance of Portfolio class
     show_index: bool
         Defaults to False.
@@ -330,8 +330,8 @@ def display_yearly_returns(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     window : str
         interval to compare cumulative returns and benchmark
     raw : False
@@ -411,8 +411,8 @@ def display_monthly_returns(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     window : str
         interval to compare cumulative returns and benchmark
     raw : False
@@ -511,8 +511,8 @@ def display_daily_returns(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     window : str
         interval to compare cumulative returns and benchmark
     raw : False
@@ -666,8 +666,8 @@ def display_holdings_value(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     unstack: bool
         Individual assets over time
     raw : bool
@@ -744,8 +744,8 @@ def display_holdings_percentage(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     unstack: bool
         Individual assets over time
     raw : bool
@@ -826,7 +826,7 @@ def display_rolling_volatility(
     Parameters
     ----------
     portfolio : PortfolioEngine
-        Portfolio object
+        PortfolioEngine object
     interval: str
         interval for window to consider
     export: str
@@ -883,7 +883,7 @@ def display_rolling_sharpe(
     Parameters
     ----------
     portfolio : PortfolioEngine
-        Portfolio object
+        PortfolioEngine object
     risk_free_rate: float
         Value to use for risk free rate in sharpe/other calculations
     window: str
@@ -942,7 +942,7 @@ def display_rolling_sortino(
     Parameters
     ----------
     portfolio : PortfolioEngine
-        Portfolio object
+        PortfolioEngine object
     risk_free_rate: float
         Value to use for risk free rate in sharpe/other calculations
     window: str
@@ -1000,7 +1000,7 @@ def display_rolling_beta(
     Parameters
     ----------
     portfolio : PortfolioEngine
-        Portfolio object
+        PortfolioEngine object
     window: str
         interval for window to consider
         Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y.
@@ -1060,7 +1060,7 @@ def display_maximum_drawdown(
     Parameters
     ----------
     portfolio : PortfolioEngine
-        Portfolio object
+        PortfolioEngine object
     export: str
         Format to export data
     external_axes: plt.Axes
@@ -1103,8 +1103,8 @@ def display_rsquare(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     export : str
         Export data format
     """
@@ -1135,8 +1135,8 @@ def display_skewness(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     export : str
         Export data format
     """
@@ -1165,8 +1165,8 @@ def display_kurtosis(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     export : str
         Export data format
     """
@@ -1196,8 +1196,8 @@ def display_stats(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     window : str
         interval to consider. Choices are: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all
     export : str
@@ -1228,8 +1228,8 @@ def display_volatility(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     export : str
         Export data format
     """
@@ -1256,8 +1256,8 @@ def display_sharpe_ratio(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     risk_free_rate: float
         Risk free rate value
     export : str
@@ -1289,8 +1289,8 @@ def display_sortino_ratio(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     risk_free_rate: float
         Risk free rate value
     export : str
@@ -1321,8 +1321,8 @@ def display_maximum_drawdown_ratio(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     export : str
         Export data format
     """
@@ -1348,8 +1348,8 @@ def display_gaintopain_ratio(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with returns and benchmark loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with returns and benchmark loaded
     export : str
         Export data format
     """
@@ -1378,8 +1378,8 @@ def display_tracking_error(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with returns and benchmark loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with returns and benchmark loaded
     export : str
         Export data format
     """
@@ -1406,8 +1406,8 @@ def display_information_ratio(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with returns and benchmark loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with returns and benchmark loaded
     export : str
         Export data format
     """
@@ -1436,8 +1436,8 @@ def display_tail_ratio(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with returns and benchmark loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with returns and benchmark loaded
     window: str
         interval for window to consider
     export : str
@@ -1466,8 +1466,8 @@ def display_common_sense_ratio(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with returns and benchmark loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with returns and benchmark loaded
     export : str
         Export data format
     """
@@ -1497,8 +1497,8 @@ def display_jensens_alpha(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with returns and benchmark loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with returns and benchmark loaded
     risk_free_rate: float
             Risk free rate
     export : str
@@ -1527,8 +1527,8 @@ def display_calmar_ratio(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with returns and benchmark loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with returns and benchmark loaded
     export : str
         Export data format
     """
@@ -1555,8 +1555,8 @@ def display_kelly_criterion(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades and returns loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades and returns loaded
     export : str
         Export data format
     """
@@ -1581,8 +1581,8 @@ def display_payoff_ratio(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     export : str
         Export data format
     """
@@ -1607,8 +1607,8 @@ def display_profit_factor(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     export : str
         Export data format
     """
@@ -1636,8 +1636,8 @@ def display_summary(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     window : str
         interval to compare cumulative returns and benchmark
     risk_free_rate : float
@@ -1673,8 +1673,8 @@ def display_var(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     use_mean: bool
         if one should use the data mean return
     adjusted_var: bool
@@ -1707,8 +1707,8 @@ def display_es(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     use_mean:
         if one should use the data mean return
     distribution: str
@@ -1737,8 +1737,8 @@ def display_omega(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     threshold_start: float
         annualized target return threshold start of plotted threshold range
     threshold_end: float
