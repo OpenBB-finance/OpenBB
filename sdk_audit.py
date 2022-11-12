@@ -5,6 +5,16 @@ import importlib.util
 from pathlib import Path
 import os
 import pandas as pd
+try:
+    import darts  # pylint: disable=W0611 # noqa: F401
+
+    # If you just import darts this will pass during pip install, this creates
+    # Failures later on, also importing utils ensures that darts is installed correctly
+    from darts import utils  # pylint: disable=W0611 # noqa: F401
+
+    FORECASTING = True
+except ImportError:
+    FORECASTING = False
 
 base_path = Path(__file__).parent / "openbb_terminal"
 
@@ -113,6 +123,8 @@ def functions_df() -> pd.DataFrame:
     the_list.sort()
     all_formatted = []
     for module in modules:
+        if not FORECASTING and "forecast" in str(module):
+            continue
         loaded = load_modules(module)
         # Gets all of a module's functions, but ignores imported functions
         func_list = [
