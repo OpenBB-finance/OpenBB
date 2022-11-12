@@ -80,7 +80,7 @@ def get_mstl_data(
     ticker_series.insert(0, "unique_id", target_column)
     # check MSLT availability
     try:
-        from statsforecast.models import MSTL
+        from statsforecast.models import MSTL  # pylint: disable=import-outside-toplevel
     except Exception as e:
         error = str(e)
         if "cannot import name" in error:
