@@ -893,7 +893,7 @@ class PortfolioController(BaseController):
                     )
                 else:
                     portfolio_view.display_var(
-                        portfolio=self.portfolio,
+                        portfolio_engine=self.portfolio,
                         use_mean=ns_parser.use_mean,
                         adjusted_var=ns_parser.adjusted,
                         student_t=ns_parser.student_t,
@@ -950,7 +950,7 @@ class PortfolioController(BaseController):
         if ns_parser and self.portfolio is not None:
             if self.portfolio_name:
                 portfolio_view.display_es(
-                    portfolio=self.portfolio,
+                    portfolio_engine=self.portfolio,
                     use_mean=ns_parser.use_mean,
                     distribution=ns_parser.distribution,
                     percentile=ns_parser.percentile,
@@ -1261,7 +1261,7 @@ class PortfolioController(BaseController):
                 self.portfolio_name, self.benchmark_name
             ):
                 portfolio_view.display_rolling_sortino(
-                    portfolio=self.portfolio,
+                    portfolio_engine=self.portfolio,
                     risk_free_rate=ns_parser.risk_free_rate / 100,
                     window=ns_parser.period,
                     export=ns_parser.export,

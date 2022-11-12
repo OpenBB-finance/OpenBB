@@ -2092,20 +2092,20 @@ def generate_portfolio(
     """
 
     transactions = PortfolioEngine.read_transactions(transactions_file_path)
-    engine = PortfolioEngine(transactions)
-    engine.generate_portfolio_data()
-    engine.set_benchmark(symbol=benchmark_symbol, full_shares=full_shares)
-    engine.set_risk_free_rate(risk_free_rate)
+    portfolio_engine = PortfolioEngine(transactions)
+    portfolio_engine.generate_portfolio_data()
+    portfolio_engine.set_benchmark(symbol=benchmark_symbol, full_shares=full_shares)
+    portfolio_engine.set_risk_free_rate(risk_free_rate)
 
-    return engine
+    return portfolio_engine
 
 
-def get_transactions(engine: PortfolioEngine) -> pd.DataFrame:
+def get_transactions(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     """Get portfolio transactions
 
     Parameters
     ----------
-    engine: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         PortfolioEngine object
 
     Returns
@@ -2114,17 +2114,17 @@ def get_transactions(engine: PortfolioEngine) -> pd.DataFrame:
         Portfolio transactions
     """
 
-    return engine.get_transactions()
+    return portfolio_engine.get_transactions()
 
 
 def set_benchmark(
-    engine: PortfolioEngine, symbol: str = "SPY", full_shares: bool = False
+    portfolio_engine: PortfolioEngine, symbol: str, full_shares: bool = False
 ):
     """Load benchmark into portfolio
 
     Parameters
     ----------
-    engine: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         PortfolioEngine object
     symbol: str
         Benchmark symbol to download data
@@ -2133,21 +2133,21 @@ def set_benchmark(
         quantity to the nearest number
     """
 
-    engine.set_benchmark(symbol=symbol, full_shares=full_shares)
+    portfolio_engine.set_benchmark(symbol=symbol, full_shares=full_shares)
 
 
-def set_risk_free_rate(engine: PortfolioEngine, risk_free_rate: float):
+def set_risk_free_rate(portfolio_engine: PortfolioEngine, risk_free_rate: float):
     """Set risk-free rate
 
     Parameters
     ----------
-    engine: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         PortfolioEngine object
     risk_free_rate: float
         Risk free rate in float format
     """
 
-    engine.set_risk_free_rate(risk_free_rate=risk_free_rate)
+    portfolio_engine.set_risk_free_rate(risk_free_rate=risk_free_rate)
 
 
 # Old code

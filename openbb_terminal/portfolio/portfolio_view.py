@@ -96,7 +96,7 @@ In order to load a CSV do the following:
 
 @log_start_end(log=logger)
 def display_transactions(
-    portfolio=None,
+    portfolio_engine=None,
     show_index=False,
     limit: int = 10,
     export: str = "",
@@ -105,7 +105,7 @@ def display_transactions(
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         Instance of PortfolioEngine class
     show_index: bool
         Defaults to False.
@@ -115,12 +115,12 @@ def display_transactions(
         Export certain type of data
     """
 
-    if portfolio.empty:
+    if portfolio_engine.empty:
         logger.warning("No transactions file loaded.")
         console.print("[red]No transactions file loaded.[/red]\n")
 
     else:
-        df = get_transactions(portfolio)
+        df = get_transactions(portfolio_engine)
         print_rich_table(
             df=df[:limit],
             show_index=show_index,
@@ -286,7 +286,7 @@ def display_category_allocation(
 
 @log_start_end(log=logger)
 def display_performance_vs_benchmark(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     show_all_trades: bool = False,
 ):
     """Display portfolio performance vs the benchmark
@@ -301,7 +301,7 @@ def display_performance_vs_benchmark(
         Whether to also show all trades made and their performance (default is False)
     """
 
-    df = get_performance_vs_benchmark(portfolio, show_all_trades)
+    df = get_performance_vs_benchmark(portfolio_engine, show_all_trades)
 
     if show_all_trades:
         print_rich_table(
@@ -322,7 +322,7 @@ def display_performance_vs_benchmark(
 
 @log_start_end(log=logger)
 def display_yearly_returns(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     window: str = "all",
     raw: bool = False,
     export: str = "",
@@ -332,7 +332,7 @@ def display_yearly_returns(
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         PortfolioEngine object with trades loaded
     window : str
         interval to compare cumulative returns and benchmark
@@ -344,7 +344,7 @@ def display_yearly_returns(
         Optional axes to display plot on
     """
 
-    df = get_yearly_returns(portfolio, window)
+    df = get_yearly_returns(portfolio_engine, window)
 
     if raw:
         print_rich_table(
@@ -402,7 +402,7 @@ def display_yearly_returns(
 
 @log_start_end(log=logger)
 def display_monthly_returns(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     window: str = "all",
     raw: bool = False,
     show_vals: bool = False,
@@ -413,7 +413,7 @@ def display_monthly_returns(
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         PortfolioEngine object with trades loaded
     window : str
         interval to compare cumulative returns and benchmark
@@ -427,7 +427,7 @@ def display_monthly_returns(
         Optional axes to display plot on
     """
 
-    portfolio_returns, benchmark_returns = get_monthly_returns(portfolio, window)
+    portfolio_returns, benchmark_returns = get_monthly_returns(portfolio_engine, window)
 
     if raw:
         print_rich_table(
@@ -502,7 +502,7 @@ def display_monthly_returns(
 
 @log_start_end(log=logger)
 def display_daily_returns(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     window: str = "all",
     raw: bool = False,
     limit: int = 10,
@@ -513,7 +513,7 @@ def display_daily_returns(
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         PortfolioEngine object with trades loaded
     window : str
         interval to compare cumulative returns and benchmark
@@ -527,7 +527,7 @@ def display_daily_returns(
         Optional axes to display plot on
     """
 
-    df = get_daily_returns(portfolio, window)
+    df = get_daily_returns(portfolio_engine, window)
 
     if raw:
         print_rich_table(
@@ -570,7 +570,7 @@ def display_daily_returns(
 
 @log_start_end(log=logger)
 def display_distribution_returns(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     window: str = "all",
     raw: bool = False,
     export: str = "",
@@ -594,7 +594,7 @@ def display_distribution_returns(
         Optional axes to display plot on
     """
 
-    df = get_distribution_returns(portfolio, window)
+    df = get_distribution_returns(portfolio_engine, window)
     df_portfolio = df["portfolio"]
     df_benchmark = df["benchmark"]
 
@@ -657,7 +657,7 @@ def display_distribution_returns(
 
 @log_start_end(log=logger)
 def display_holdings_value(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     unstack: bool = False,
     raw: bool = False,
     limit: int = 10,
@@ -668,7 +668,7 @@ def display_holdings_value(
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         PortfolioEngine object with trades loaded
     unstack: bool
         Individual assets over time
@@ -682,7 +682,7 @@ def display_holdings_value(
         Optional axes to display plot on
     """
 
-    all_holdings = get_holdings_value(portfolio)
+    all_holdings = get_holdings_value(portfolio_engine)
 
     if raw:
         print_rich_table(
@@ -735,7 +735,7 @@ def display_holdings_value(
 
 @log_start_end(log=logger)
 def display_holdings_percentage(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     unstack: bool = False,
     raw: bool = False,
     limit: int = 10,
@@ -746,7 +746,7 @@ def display_holdings_percentage(
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         PortfolioEngine object with trades loaded
     unstack: bool
         Individual assets over time
@@ -760,7 +760,7 @@ def display_holdings_percentage(
         Optional axes to display plot on
     """
 
-    all_holdings = get_holdings_percentage(portfolio)
+    all_holdings = get_holdings_percentage(portfolio_engine)
 
     if raw:
         # No need to account for time since this is daily data
@@ -818,7 +818,7 @@ def display_holdings_percentage(
 
 @log_start_end(log=logger)
 def display_rolling_volatility(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     window: str = "1y",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -838,7 +838,7 @@ def display_rolling_volatility(
     """
 
     metric = "volatility"
-    df = get_rolling_volatility(portfolio, window)
+    df = get_rolling_volatility(portfolio_engine, window)
     if df.empty:
         return
 
@@ -874,7 +874,7 @@ def display_rolling_volatility(
 
 @log_start_end(log=logger)
 def display_rolling_sharpe(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     risk_free_rate: float = 0,
     window: str = "1y",
     export: str = "",
@@ -897,7 +897,7 @@ def display_rolling_sharpe(
     """
 
     metric = "sharpe"
-    df = get_rolling_sharpe(portfolio, risk_free_rate, window)
+    df = get_rolling_sharpe(portfolio_engine, risk_free_rate, window)
     if df.empty:
         return
 
@@ -933,7 +933,7 @@ def display_rolling_sharpe(
 
 @log_start_end(log=logger)
 def display_rolling_sortino(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     risk_free_rate: float = 0,
     window: str = "1y",
     export: str = "",
@@ -956,7 +956,7 @@ def display_rolling_sortino(
     """
 
     metric = "sortino"
-    df = get_rolling_sortino(portfolio, risk_free_rate, window)
+    df = get_rolling_sortino(portfolio_engine, risk_free_rate, window)
     if df.empty:
         return
 
@@ -992,7 +992,7 @@ def display_rolling_sortino(
 
 @log_start_end(log=logger)
 def display_rolling_beta(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     window: str = "1y",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -1012,7 +1012,7 @@ def display_rolling_beta(
         Optional axes to display plot on
     """
 
-    rolling_beta = get_rolling_beta(portfolio, window)
+    rolling_beta = get_rolling_beta(portfolio_engine, window)
     if rolling_beta.empty:
         return
 
@@ -1053,7 +1053,7 @@ def display_rolling_beta(
 
 @log_start_end(log=logger)
 def display_maximum_drawdown(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -1068,7 +1068,7 @@ def display_maximum_drawdown(
     external_axes: plt.Axes
         Optional axes to display plot on
     """
-    holdings, drawdown = get_maximum_drawdown(portfolio)
+    holdings, drawdown = get_maximum_drawdown(portfolio_engine)
     if external_axes is None:
         _, ax = plt.subplots(2, 1, figsize=plot_autoscale(), dpi=PLOT_DPI, sharex=True)
     else:
@@ -1098,20 +1098,20 @@ def display_maximum_drawdown(
 
 @log_start_end(log=logger)
 def display_rsquare(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     export: str = "",
 ):
     """Display R-square
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         PortfolioEngine object with trades loaded
     export : str
         Export data format
     """
 
-    df = get_r2_score(portfolio).fillna("-")
+    df = get_r2_score(portfolio_engine).fillna("-")
 
     print_rich_table(
         df,
@@ -1130,20 +1130,20 @@ def display_rsquare(
 
 @log_start_end(log=logger)
 def display_skewness(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     export: str = "",
 ):
     """Display skewness
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         PortfolioEngine object with trades loaded
     export : str
         Export data format
     """
 
-    df = get_skewness(portfolio).fillna("-")
+    df = get_skewness(portfolio_engine).fillna("-")
 
     print_rich_table(
         df,
@@ -1160,20 +1160,20 @@ def display_skewness(
 
 @log_start_end(log=logger)
 def display_kurtosis(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     export: str = "",
 ):
     """Display kurtosis
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         PortfolioEngine object with trades loaded
     export : str
         Export data format
     """
 
-    df = get_kurtosis(portfolio).fillna("-")
+    df = get_kurtosis(portfolio_engine).fillna("-")
 
     print_rich_table(
         df,
@@ -1190,7 +1190,7 @@ def display_kurtosis(
 
 @log_start_end(log=logger)
 def display_stats(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     window: str = "all",
     export: str = "",
 ):
@@ -1198,7 +1198,7 @@ def display_stats(
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         PortfolioEngine object with trades loaded
     window : str
         interval to consider. Choices are: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all
@@ -1206,7 +1206,7 @@ def display_stats(
         Export data format
     """
 
-    df = get_stats(portfolio, window)
+    df = get_stats(portfolio_engine, window)
 
     print_rich_table(
         df,
@@ -1223,20 +1223,20 @@ def display_stats(
 
 @log_start_end(log=logger)
 def display_volatility(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     export: str = "",
 ):
     """Display volatility for multiple intervals
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         PortfolioEngine object with trades loaded
     export : str
         Export data format
     """
 
-    df = get_volatility(portfolio).fillna("-")
+    df = get_volatility(portfolio_engine).fillna("-")
     print_rich_table(
         df,
         title="Volatility for Portfolio and Benchmark",
@@ -1250,7 +1250,7 @@ def display_volatility(
 
 @log_start_end(log=logger)
 def display_sharpe_ratio(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     risk_free_rate: float = 0,
     export: str = "",
 ):
@@ -1258,7 +1258,7 @@ def display_sharpe_ratio(
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         PortfolioEngine object with trades loaded
     risk_free_rate: float
         Risk free rate value
@@ -1266,7 +1266,7 @@ def display_sharpe_ratio(
         Export data format
     """
 
-    df = get_sharpe_ratio(portfolio, risk_free_rate).fillna("-")
+    df = get_sharpe_ratio(portfolio_engine, risk_free_rate).fillna("-")
     print_rich_table(
         df,
         title="Sharpe ratio for Portfolio and Benchmark",
@@ -1283,7 +1283,7 @@ def display_sharpe_ratio(
 
 @log_start_end(log=logger)
 def display_sortino_ratio(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     risk_free_rate: float = 0,
     export: str = "",
 ):
@@ -1291,7 +1291,7 @@ def display_sortino_ratio(
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         PortfolioEngine object with trades loaded
     risk_free_rate: float
         Risk free rate value
@@ -1299,7 +1299,7 @@ def display_sortino_ratio(
         Export data format
     """
 
-    df = get_sortino_ratio(portfolio, risk_free_rate).fillna("-")
+    df = get_sortino_ratio(portfolio_engine, risk_free_rate).fillna("-")
     print_rich_table(
         df,
         title="Sortino ratio for Portfolio and Benchmark",
@@ -1316,20 +1316,20 @@ def display_sortino_ratio(
 
 @log_start_end(log=logger)
 def display_maximum_drawdown_ratio(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     export: str = "",
 ):
     """Display maximum drawdown for multiple intervals
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         PortfolioEngine object with trades loaded
     export : str
         Export data format
     """
 
-    df = get_maximum_drawdown_ratio(portfolio).fillna("-")
+    df = get_maximum_drawdown_ratio(portfolio_engine).fillna("-")
     print_rich_table(
         df,
         title="Maximum drawdown for Portfolio and Benchmark",
@@ -1343,20 +1343,20 @@ def display_maximum_drawdown_ratio(
 
 @log_start_end(log=logger)
 def display_gaintopain_ratio(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     export: str = "",
 ):
     """Display gain-to-pain ratio for multiple intervals
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         PortfolioEngine object with returns and benchmark loaded
     export : str
         Export data format
     """
 
-    df = get_gaintopain_ratio(portfolio).fillna("-")
+    df = get_gaintopain_ratio(portfolio_engine).fillna("-")
     print_rich_table(
         df,
         title="Gain-to-pain ratio for portfolio and benchmark",
@@ -1373,20 +1373,20 @@ def display_gaintopain_ratio(
 
 @log_start_end(log=logger)
 def display_tracking_error(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     export: str = "",
 ):
     """Display tracking error for multiple intervals
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         PortfolioEngine object with returns and benchmark loaded
     export : str
         Export data format
     """
 
-    df, _ = get_tracking_error(portfolio)
+    df, _ = get_tracking_error(portfolio_engine)
     df = df.fillna("-")
     print_rich_table(
         df,
@@ -1401,20 +1401,20 @@ def display_tracking_error(
 
 @log_start_end(log=logger)
 def display_information_ratio(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     export: str = "",
 ):
     """Display information ratio for multiple intervals
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         PortfolioEngine object with returns and benchmark loaded
     export : str
         Export data format
     """
 
-    df = get_information_ratio(portfolio).fillna("-")
+    df = get_information_ratio(portfolio_engine).fillna("-")
     print_rich_table(
         df,
         title="Information ratio for portfolio",
@@ -1431,14 +1431,14 @@ def display_information_ratio(
 
 @log_start_end(log=logger)
 def display_tail_ratio(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     export: str = "",
 ):
     """Display tail ratio for multiple intervals
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         PortfolioEngine object with returns and benchmark loaded
     window: str
         interval for window to consider
@@ -1446,7 +1446,7 @@ def display_tail_ratio(
         Export data format
     """
 
-    df, _, _ = get_tail_ratio(portfolio)
+    df, _, _ = get_tail_ratio(portfolio_engine)
     df = df.fillna("-")
     print_rich_table(
         df,
@@ -1461,20 +1461,20 @@ def display_tail_ratio(
 
 @log_start_end(log=logger)
 def display_common_sense_ratio(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     export: str = "",
 ):
     """Display common sense ratio for multiple intervals
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         PortfolioEngine object with returns and benchmark loaded
     export : str
         Export data format
     """
 
-    df = get_common_sense_ratio(portfolio).fillna("-")
+    df = get_common_sense_ratio(portfolio_engine).fillna("-")
     print_rich_table(
         df,
         title="Common sense ratio for portfolio and benchmark",
@@ -1491,7 +1491,7 @@ def display_common_sense_ratio(
 
 @log_start_end(log=logger)
 def display_jensens_alpha(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     risk_free_rate: float = 0,
     export: str = "",
 ):
@@ -1499,7 +1499,7 @@ def display_jensens_alpha(
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         PortfolioEngine object with returns and benchmark loaded
     risk_free_rate: float
             Risk free rate
@@ -1507,7 +1507,7 @@ def display_jensens_alpha(
         Export data format
     """
 
-    df, _ = get_jensens_alpha(portfolio, risk_free_rate)
+    df, _ = get_jensens_alpha(portfolio_engine, risk_free_rate)
     df = df.fillna("-")
     print_rich_table(
         df,
@@ -1522,20 +1522,20 @@ def display_jensens_alpha(
 
 @log_start_end(log=logger)
 def display_calmar_ratio(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     export: str = "",
 ):
     """Display calmar ratio for multiple intervals
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         PortfolioEngine object with returns and benchmark loaded
     export : str
         Export data format
     """
 
-    df, _ = get_calmar_ratio(portfolio)
+    df, _ = get_calmar_ratio(portfolio_engine)
     df = df.fillna("-")
     print_rich_table(
         df,
@@ -1550,20 +1550,20 @@ def display_calmar_ratio(
 
 @log_start_end(log=logger)
 def display_kelly_criterion(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     export: str = "",
 ):
     """Display kelly criterion for multiple intervals
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         PortfolioEngine object with trades and returns loaded
     export : str
         Export data format
     """
 
-    df = get_kelly_criterion(portfolio).fillna("-")
+    df = get_kelly_criterion(portfolio_engine).fillna("-")
     print_rich_table(
         df,
         title="Kelly criterion of the portfolio",
@@ -1576,20 +1576,20 @@ def display_kelly_criterion(
 
 
 def display_payoff_ratio(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     export: str = "",
 ):
     """Display payoff ratio for multiple intervals
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         PortfolioEngine object with trades loaded
     export : str
         Export data format
     """
 
-    df = get_payoff_ratio(portfolio).fillna("-")
+    df = get_payoff_ratio(portfolio_engine).fillna("-")
     print_rich_table(
         df,
         title="Portfolio's payoff ratio",
@@ -1602,20 +1602,20 @@ def display_payoff_ratio(
 
 
 def display_profit_factor(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     export: str = "",
 ):
     """Display profit factor for multiple intervals
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         PortfolioEngine object with trades loaded
     export : str
         Export data format
     """
 
-    df = get_profit_factor(portfolio).fillna("-")
+    df = get_profit_factor(portfolio_engine).fillna("-")
     print_rich_table(
         df,
         title="Portfolio's profit factor",
@@ -1629,7 +1629,7 @@ def display_profit_factor(
 
 @log_start_end(log=logger)
 def display_summary(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     window: str = "all",
     risk_free_rate: float = 0,
     export: str = "",
@@ -1638,7 +1638,7 @@ def display_summary(
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         PortfolioEngine object with trades loaded
     window : str
         interval to compare cumulative returns and benchmark
@@ -1648,7 +1648,7 @@ def display_summary(
         Export certain type of data
     """
 
-    summary = get_summary(portfolio, window, risk_free_rate)
+    summary = get_summary(portfolio_engine, window, risk_free_rate)
     print_rich_table(
         summary,
         title=f"Summary of Portfolio vs Benchmark for {window} period",
@@ -1665,7 +1665,7 @@ def display_summary(
 
 @log_start_end(log=logger)
 def display_var(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     use_mean: bool = True,
     adjusted_var: bool = False,
     student_t: bool = False,
@@ -1675,7 +1675,7 @@ def display_var(
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         PortfolioEngine object with trades loaded
     use_mean: bool
         if one should use the data mean return
@@ -1688,7 +1688,7 @@ def display_var(
     """
 
     qa_view.display_var(
-        data=portfolio.returns,
+        data=portfolio_engine.returns,
         symbol="Portfolio",
         use_mean=use_mean,
         adjusted_var=adjusted_var,
@@ -1700,7 +1700,7 @@ def display_var(
 
 @log_start_end(log=logger)
 def display_es(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     use_mean: bool = True,
     distribution: str = "normal",
     percentile: float = 99.9,
@@ -1709,7 +1709,7 @@ def display_es(
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         PortfolioEngine object with trades loaded
     use_mean:
         if one should use the data mean return
@@ -1720,7 +1720,7 @@ def display_es(
     """
 
     qa_view.display_es(
-        data=portfolio.returns,
+        data=portfolio_engine.returns,
         symbol="Portfolio",
         use_mean=use_mean,
         distribution=distribution,
@@ -1731,7 +1731,7 @@ def display_es(
 
 @log_start_end(log=logger)
 def display_omega(
-    portfolio: PortfolioEngine,
+    portfolio_engine: PortfolioEngine,
     threshold_start: float = 0,
     threshold_end: float = 1.5,
 ):
@@ -1739,7 +1739,7 @@ def display_omega(
 
     Parameters
     ----------
-    portfolio: PortfolioEngine
+    portfolio_engine: PortfolioEngine
         PortfolioEngine object with trades loaded
     threshold_start: float
         annualized target return threshold start of plotted threshold range
@@ -1748,7 +1748,7 @@ def display_omega(
     """
 
     qa_view.display_omega(
-        data=portfolio.returns,
+        data=portfolio_engine.returns,
         threshold_start=threshold_start,
         threshold_end=threshold_end,
     )
