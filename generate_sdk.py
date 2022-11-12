@@ -2,6 +2,7 @@ import csv
 import glob
 import inspect
 import os
+from pathlib import Path
 import re
 
 import importlib
@@ -9,6 +10,8 @@ import subprocess
 from typing import Any, Dict, List, Optional, TextIO
 
 from openbb_terminal.sdk_core.sdk_helpers import clean_attr_desc, get_sdk_imports_text
+
+REPO_ROOT = Path(__file__).parent.joinpath("openbb_terminal").resolve()
 
 sub_names = {
     "defi": "DeFi",
@@ -105,16 +108,16 @@ class BuildCategoryModelClasses:
             self.categories = self.add_todict(self.categories, local, tmap)
 
         for folder in ["models", "controllers"]:
-            if not os.path.exists(f"openbb_terminal/sdk_core/{folder}"):
-                os.makedirs(f"openbb_terminal/sdk_core/{folder}")
-            if not os.path.exists(f"openbb_terminal/sdk_core/{folder}/__init__.py"):
-                with open(f"openbb_terminal/sdk_core/{folder}/__init__.py", "w") as f:
+            if not os.path.exists(REPO_ROOT / f"sdk_core/{folder}"):
+                os.makedirs(REPO_ROOT / f"sdk_core/{folder}")
+            if not os.path.exists(REPO_ROOT / f"sdk_core/{folder}/__init__.py"):
+                with open(REPO_ROOT / f"sdk_core/{folder}/__init__.py", "w") as f:
                     f.write(
                         "# flake8: noqa\r# pylint: disable=unused-import,wrong-import-order\r\r"
                     )
 
-        if not os.path.exists("openbb_terminal/sdk_core/__init__.py"):
-            with open("openbb_terminal/sdk_core/__init__.py", "w") as f:
+        if not os.path.exists(REPO_ROOT / "sdk_core/__init__.py"):
+            with open(REPO_ROOT / "sdk_core/__init__.py", "w") as f:
                 f.write("")
 
     def add_todict(self, d: dict, location_path: list, tmap: Trailmap) -> dict:
@@ -156,12 +159,12 @@ class BuildCategoryModelClasses:
         """Checks if a category has submodules and adds the imports to the init file."""
         regex = re.compile(importstr)
         with open(
-            filestr,
+            REPO_ROOT / filestr,
         ) as init_file:
             check_init = bool(regex.search(init_file.read()))
             if not check_init:
                 with open(
-                    filestr,
+                    REPO_ROOT / filestr,
                     "a",
                 ) as init_file:
                     init_file.write(f"{importstr}\r")
@@ -388,7 +391,7 @@ class BuildCategoryModelClasses:
             The category dictionary
         """
         with open(
-            f"openbb_terminal/sdk_core/models/{category}_sdk_model.py",
+            REPO_ROOT / f"sdk_core/models/{category}_sdk_model.py",
             "w",
         ) as f:
             import_cat_class = self.import_cat_class
@@ -404,7 +407,7 @@ class BuildCategoryModelClasses:
             ):
                 self.write_init_imports(
                     f"from .{category}_sdk_model import {category.title()}Root",
-                    "openbb_terminal/sdk_core/models/__init__.py",
+                    "sdk_core/models/__init__.py",
                 )
 
             self.write_category(category, d, f)
@@ -426,7 +429,7 @@ class BuildCategoryModelClasses:
         """
         added_init_imports = []
         with open(
-            f"openbb_terminal/sdk_core/controllers/{category}_sdk_controller.py",
+            REPO_ROOT / f"sdk_core/controllers/{category}_sdk_controller.py",
             "w",
         ) as f:
             f.write(
@@ -439,7 +442,7 @@ class BuildCategoryModelClasses:
             ):
                 self.write_init_imports(
                     f"from .{category}_sdk_controller import {category.title()}Controller",
-                    "openbb_terminal/sdk_core/controllers/__init__.py",
+                    "sdk_core/controllers/__init__.py",
                 )
                 added_init_imports.append(category)
 
@@ -465,7 +468,7 @@ class BuildCategoryModelClasses:
     def write_sdk_file(self) -> None:
         """Writes the main sdk file. This is the file that we initialize the SDK with openbb."""
 
-        with open("openbb_terminal/sdk.py", "w") as f:
+        with open(REPO_ROOT / "sdk.py", "w") as f:
 
             sdk_funcs = "\r".join(sdk_init_funcs.splitlines())
             f.write(
@@ -501,7 +504,7 @@ class BuildCategoryModelClasses:
             "sdk_core/models/*.py",
             "sdk_core/controllers/*.py",
         ]:
-            for file in glob.glob(f"openbb_terminal/{path}"):
+            for file in glob.glob(str(REPO_ROOT / path)):
                 with open(file, "rb") as f:
                     content = f.read()
                 with open(file, "wb") as f:
@@ -511,9 +514,9 @@ class BuildCategoryModelClasses:
         subprocess.check_call(["black", "openbb_terminal"])
 
 
-def generate():
+def get_trailmaps():
     trailmaps = []
-    with open("openbb_terminal/sdk_core/trail_map.csv") as f:
+    with open(REPO_ROOT / "sdk_core/trail_map.csv") as f:
         reader = csv.reader(f)
         next(reader)
         for row in reader:
@@ -521,8 +524,11 @@ def generate():
             trail_map = Trailmap(trail, model, view)
             trailmaps.append(trail_map)
 
+    return trailmaps
+
+
+def generate_sdk():
+    trailmaps = get_trailmaps()
     BuildCategoryModelClasses(trailmaps).build()
-
-
-if __name__ == "__main__":
-    generate()
+    print("SDK Generated Successfully.")
+    return
