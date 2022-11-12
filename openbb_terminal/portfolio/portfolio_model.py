@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import contextlib
 import logging
-from typing import Dict, Any
+from typing import Dict, Any, Tuple, Union
 import datetime
 
 import numpy as np
@@ -2128,6 +2128,7 @@ def get_daily_returns(
     return df
 
 
+@log_start_end(log=logger)
 def generate_portfolio(
     transactions_file_path: str,
     benchmark_symbol: str = "SPY",
@@ -2163,6 +2164,7 @@ def generate_portfolio(
     return portfolio_engine
 
 
+@log_start_end(log=logger)
 def get_transactions(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     """Get portfolio transactions
 
@@ -2180,6 +2182,7 @@ def get_transactions(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     return portfolio_engine.get_transactions()
 
 
+@log_start_end(log=logger)
 def set_benchmark(
     portfolio_engine: PortfolioEngine, symbol: str, full_shares: bool = False
 ):
@@ -2199,6 +2202,7 @@ def set_benchmark(
     portfolio_engine.set_benchmark(symbol=symbol, full_shares=full_shares)
 
 
+@log_start_end(log=logger)
 def set_risk_free_rate(portfolio_engine: PortfolioEngine, risk_free_rate: float):
     """Set risk-free rate
 
@@ -2211,6 +2215,44 @@ def set_risk_free_rate(portfolio_engine: PortfolioEngine, risk_free_rate: float)
     """
 
     portfolio_engine.set_risk_free_rate(risk_free_rate=risk_free_rate)
+
+
+@log_start_end(log=logger)
+def get_assets_allocation(
+    portfolio_engine: PortfolioEngine,
+    include_separate_tables: bool = False,
+    limit: int = 10,
+) -> Union[pd.DataFrame, Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]]:
+    """Display portfolio asset allocation compared to the benchmark
+
+    Parameters
+    ----------
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine object
+    include_separate_tables: bool
+        Whether to include separate asset allocation tables
+    limit: int
+        The amount of assets you wish to show, by default this is set to 10.
+
+    Returns
+    -------
+    Union[pd.DataFrame, Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]]
+        DataFrame with combined allocation plus individual allocation if include_separate_tables is `True`.
+    """
+
+    portfolio_allocation = portfolio_engine.portfolio_assets_allocation.iloc[:limit]
+    benchmark_allocation = portfolio_engine.benchmark_assets_allocation.iloc[:limit]
+
+    combined = pd.merge(
+        portfolio_allocation, benchmark_allocation, on="Symbol", how="left"
+    )
+    combined["Difference"] = combined["Portfolio"] - combined["Benchmark"]
+    combined = combined.replace(np.nan, "-")
+    combined = combined.replace(0, "-")
+
+    if include_separate_tables:
+        return combined, portfolio_allocation, benchmark_allocation
+    return combined
 
 
 # Old code

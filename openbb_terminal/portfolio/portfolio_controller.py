@@ -583,10 +583,9 @@ class PortfolioController(BaseController):
                     if self.portfolio.portfolio_assets_allocation.empty:
                         self.portfolio.calculate_allocations("asset")
                     portfolio_view.display_assets_allocation(
-                        self.portfolio.portfolio_assets_allocation,
-                        self.portfolio.benchmark_assets_allocation,
-                        ns_parser.limit,
+                        self.portfolio,
                         ns_parser.tables,
+                        ns_parser.limit,
                     )
                 elif ns_parser.agg == "sectors":
                     if self.portfolio.portfolio_sectors_allocation.empty:

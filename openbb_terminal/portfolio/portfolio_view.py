@@ -16,6 +16,7 @@ from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.portfolio.portfolio_model import (
     PortfolioEngine,
+    get_assets_allocation,
     get_transactions,
     get_daily_returns,
     get_performance_vs_benchmark,
@@ -137,34 +138,34 @@ def display_transactions(
 
 @log_start_end(log=logger)
 def display_assets_allocation(
-    portfolio_allocation: pd.DataFrame,
-    benchmark_allocation: pd.DataFrame,
-    limit: int = 10,
+    portfolio_engine=None,
     include_separate_tables: bool = False,
+    limit: int = 10,
 ):
     """Display portfolio asset allocation compared to the benchmark
 
     Parameters
     ----------
-    portfolio_allocation: pd.DataFrame
-        The asset allocation of the portfolio
-    benchmark_allocation: pd.DataFrame
-        The asset allocation of the benchmark
-    limit: int
-        The amount of assets you wish to show, by default this is set to 10.
+    portfolio_engine: PortfolioEngine
+        Instance of PortfolioEngine class
     include_separate_tables: bool
         Whether to include separate asset allocation tables
+    limit: int
+        The amount of assets you wish to show, by default this is set to 10.
     """
 
-    benchmark_allocation = benchmark_allocation.iloc[:limit]
-    portfolio_allocation = portfolio_allocation.iloc[:limit]
-
-    combined = pd.merge(
-        portfolio_allocation, benchmark_allocation, on="Symbol", how="left"
-    )
-    combined["Difference"] = combined["Portfolio"] - combined["Benchmark"]
-    combined = combined.replace(np.nan, "-")
-    combined = combined.replace(0, "-")
+    if include_separate_tables:
+        combined, portfolio_allocation, benchmark_allocation = get_assets_allocation(
+            portfolio_engine=portfolio_engine,
+            include_separate_tables=include_separate_tables,
+            limit=limit,
+        )
+    else:
+        combined = get_assets_allocation(
+            portfolio_engine=portfolio_engine,
+            include_separate_tables=include_separate_tables,
+            limit=limit,
+        )
 
     print_rich_table(
         combined,
