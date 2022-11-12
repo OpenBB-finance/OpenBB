@@ -484,6 +484,7 @@ class PortfolioEngine:
     @log_start_end(log=logger)
     def mimic_trades_for_benchmark(self, full_shares: bool = False):
         """Mimic trades from the transactions based on chosen benchmark assuming partial shares
+
         Parameters
         ----------
         full_shares: bool
@@ -752,7 +753,6 @@ class PortfolioEngine:
         ----------
         category: str
             chosen allocation category from asset, sector, country or region
-
         """
 
         if category == "asset":
@@ -794,6 +794,7 @@ class PortfolioEngine:
         risk_free_rate : float
             Risk free rate in float format
         """
+
         self.risk_free_rate = risk_free_rate
 
 
@@ -812,6 +813,7 @@ def get_r2_score(portfolio: PortfolioEngine) -> pd.DataFrame:
     pd.DataFrame
         DataFrame with R2 Score between portfolio and benchmark for different periods
     """
+
     vals = list()
     for period in portfolio_helper.PERIODS:
         vals.append(
@@ -840,6 +842,7 @@ def get_skewness(portfolio: PortfolioEngine) -> pd.DataFrame:
     pd.DataFrame
         DataFrame with skewness for portfolio and benchmark for different periods
     """
+
     vals = list()
     for period in portfolio_helper.PERIODS:
         vals.append(
@@ -879,6 +882,7 @@ def get_kurtosis(portfolio: PortfolioEngine) -> pd.DataFrame:
     pd.DataFrame
         DataFrame with kurtosis for portfolio and benchmark for different periods
     """
+
     vals = list()
     for period in portfolio_helper.PERIODS:
         vals.append(
@@ -920,6 +924,7 @@ def get_stats(portfolio: PortfolioEngine, window: str = "all") -> pd.DataFrame:
     pd.DataFrame
         DataFrame with overall stats for portfolio and benchmark for a certain period
     """
+
     df = (
         portfolio_helper.filter_df_by_period(portfolio.returns, window)
         .describe()
@@ -948,6 +953,7 @@ def get_volatility(portfolio: PortfolioEngine) -> pd.DataFrame:
     pd.DataFrame
         DataFrame with volatility for portfolio and benchmark for different periods
     """
+
     vals = list()
     for period in portfolio_helper.PERIODS:
         port_rets = portfolio_helper.filter_df_by_period(portfolio.returns, period)
@@ -991,6 +997,7 @@ def get_sharpe_ratio(
     pd.DataFrame
         DataFrame with sharpe ratio for portfolio and benchmark for different periods
     """
+
     vals = list()
     for period in portfolio_helper.PERIODS:
         vals.append(
@@ -1036,6 +1043,7 @@ def get_sortino_ratio(
     pd.DataFrame
         DataFrame with sortino ratio for portfolio and benchmark for different periods
     """
+
     vals = list()
     for period in portfolio_helper.PERIODS:
         vals.append(
@@ -1077,6 +1085,7 @@ def get_maximum_drawdown_ratio(portfolio: PortfolioEngine) -> pd.DataFrame:
     pd.DataFrame
         DataFrame with maximum drawdown for portfolio and benchmark for different periods
     """
+
     vals = list()
     for period in portfolio_helper.PERIODS:
         vals.append(
@@ -1116,6 +1125,7 @@ def get_gaintopain_ratio(portfolio: PortfolioEngine):
     pd.DataFrame
         DataFrame of the portfolio's gain-to-pain ratio
     """
+
     gtp_period_df = portfolio_helper.get_gaintopain_ratio(
         portfolio.historical_trade_data,
         portfolio.benchmark_trades,
@@ -1143,6 +1153,7 @@ def get_tracking_error(portfolio: PortfolioEngine, window: int = 252):
     pd.Series
         Series of rolling tracking error
     """
+
     trackr_period_df, trackr_rolling = portfolio_helper.get_tracking_error(
         portfolio.returns, portfolio.benchmark_returns, window
     )
@@ -1164,6 +1175,7 @@ def get_information_ratio(portfolio: PortfolioEngine):
     pd.DataFrame
         DataFrame of the information ratio during different time periods
     """
+
     ir_period_df = portfolio_helper.get_information_ratio(
         portfolio.returns,
         portfolio.historical_trade_data,
@@ -1195,6 +1207,7 @@ def get_tail_ratio(portfolio: PortfolioEngine, window: int = 252):
     pd.Series
         Series of the benchmarks rolling tail ratio
     """
+
     tailr_period_df, portfolio_tr, benchmark_tr = portfolio_helper.get_tail_ratio(
         portfolio.returns, portfolio.benchmark_returns, window
     )
@@ -1216,6 +1229,7 @@ def get_common_sense_ratio(portfolio: PortfolioEngine):
     pd.DataFrame
         DataFrame of the portfolios and the benchmarks common sense ratio during different time periods
     """
+
     csr_period_df = portfolio_helper.get_common_sense_ratio(
         portfolio.returns,
         portfolio.historical_trade_data,
@@ -1248,6 +1262,7 @@ def get_jensens_alpha(
     pd.Series
         Series of jensens's alpha data
     """
+
     ja_period_df, ja_rolling = portfolio_helper.jensens_alpha(
         portfolio.returns,
         portfolio.historical_trade_data,
@@ -1278,6 +1293,7 @@ def get_calmar_ratio(portfolio: PortfolioEngine, window: int = 756):
     pd.Series
         Series of calmar ratio data
     """
+
     cr_period_df, cr_rolling = portfolio_helper.get_calmar_ratio(
         portfolio.returns,
         portfolio.historical_trade_data,
@@ -1303,6 +1319,7 @@ def get_kelly_criterion(portfolio: PortfolioEngine):
     pd.DataFrame
         DataFrame of kelly criterion of the portfolio during different time periods
     """
+
     kc_period_df = portfolio_helper.get_kelly_criterion(
         portfolio.returns, portfolio.portfolio_trades
     )
@@ -1319,6 +1336,7 @@ def get_payoff_ratio(portfolio: PortfolioEngine):
     pd.DataFrame
         DataFrame of payoff ratio of the portfolio during different time periods
     """
+
     pr_period_ratio = portfolio_helper.get_payoff_ratio(portfolio.portfolio_trades)
 
     return pr_period_ratio
@@ -1338,6 +1356,7 @@ def get_profit_factor(portfolio: PortfolioEngine):
     pd.DataFrame
         DataFrame of profit factor of the portfolio during different time periods
     """
+
     pf_period_df = portfolio_helper.get_profit_factor(portfolio.portfolio_trades)
 
     return pf_period_df
@@ -1356,6 +1375,7 @@ def get_holdings_value(portfolio: PortfolioEngine) -> pd.DataFrame:
     pd.DataFrame
         DataFrame of holdings
     """
+
     all_holdings = portfolio.historical_trade_data["End Value"][portfolio.tickers_list]
 
     all_holdings["Total Value"] = all_holdings.sum(axis=1)
@@ -1403,12 +1423,13 @@ def get_maximum_drawdown(
         Flag to indicate inputs are returns
 
     Returns
-    ----------
+    -------
     pd.Series
         Holdings series
     pd.Series
         Drawdown series
     """
+
     holdings: pd.Series = portfolio.portfolio_value
     if is_returns:
         holdings = (1 + holdings).cumprod()
@@ -1432,6 +1453,7 @@ def get_distribution_returns(
     window : str
         interval to compare cumulative returns and benchmark
     """
+
     portfolio_returns = portfolio_helper.filter_df_by_period(portfolio.returns, window)
     benchmark_returns = portfolio_helper.filter_df_by_period(
         portfolio.benchmark_returns, window
@@ -1601,7 +1623,6 @@ def get_performance_vs_benchmark(
     Returns
     -------
     pd.DataFrame
-
     """
 
     portfolio_trades = portfolio.portfolio_trades
@@ -1714,8 +1735,8 @@ def get_var(
     Returns
     -------
     pd.DataFrame
-
     """
+
     return qa_model.get_var(
         data=portfolio.returns,
         use_mean=use_mean,
@@ -1748,7 +1769,6 @@ def get_es(
     Returns
     -------
     pd.DataFrame
-
     """
 
     return qa_model.get_es(
@@ -1777,7 +1797,6 @@ def get_omega(
     Returns
     -------
     pd.DataFrame
-
     """
 
     return qa_model.get_omega(
@@ -1868,6 +1887,7 @@ def get_yearly_returns(
     window : str
         interval to compare cumulative returns and benchmark
     """
+
     portfolio_returns = portfolio_helper.filter_df_by_period(portfolio.returns, window)
     benchmark_returns = portfolio_helper.filter_df_by_period(
         portfolio.benchmark_returns, window
@@ -1919,8 +1939,8 @@ def get_monthly_returns(
     Returns
     -------
     pd.DataFrame
-
     """
+
     portfolio_returns = portfolio_helper.filter_df_by_period(portfolio.returns, window)
     benchmark_returns = portfolio_helper.filter_df_by_period(
         portfolio.benchmark_returns, window
@@ -2062,6 +2082,23 @@ def generate_portfolio(
     engine.set_risk_free_rate(risk_free_rate)
 
     return engine
+
+
+def get_transactions(engine: PortfolioEngine) -> pd.DataFrame:
+    """Get portfolio transactions
+
+    Parameters
+    ----------
+    engine: PortfolioEngine
+        PortfolioEngine object
+
+    Returns
+    -------
+    pd.DataFrame
+        Portfolio transactions
+    """
+
+    return engine.get_transactions()
 
 
 def set_benchmark(

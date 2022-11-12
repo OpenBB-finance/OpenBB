@@ -16,6 +16,7 @@ from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.portfolio.portfolio_model import (
     PortfolioEngine,
+    get_transactions,
     get_daily_returns,
     get_performance_vs_benchmark,
     get_yearly_returns,
@@ -117,8 +118,10 @@ def display_transactions(
     if portfolio.empty:
         logger.warning("No transactions file loaded.")
         console.print("[red]No transactions file loaded.[/red]\n")
+
     else:
-        df = portfolio.get_transactions()
+
+        df = get_transactions()
         print_rich_table(
             df=df[:limit],
             show_index=show_index,
