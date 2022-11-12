@@ -5,6 +5,7 @@ import argparse
 import logging
 import os
 from typing import List
+from datetime import date
 
 import pandas as pd
 
@@ -25,6 +26,7 @@ from openbb_terminal.portfolio import portfolio_model
 from openbb_terminal.portfolio import statics
 from openbb_terminal.portfolio import portfolio_view
 from openbb_terminal.portfolio import portfolio_helper
+from openbb_terminal.portfolio import attribution_model
 from openbb_terminal.portfolio.portfolio_optimization import po_controller
 from openbb_terminal.rich_config import console, MenuText
 from openbb_terminal.common.quantitative_analysis import qa_view
@@ -42,6 +44,7 @@ class PortfolioController(BaseController):
         "show",
         "bench",
         "alloc",
+        "attrib",
         "perf",
         "yret",
         "mret",
@@ -305,8 +308,11 @@ class PortfolioController(BaseController):
         mt.add_cmd("rbeta", self.portfolio_name and self.benchmark_name)
 
         mt.add_info("_metrics_")
+        mt.add_cmd("alloc", self.portfolio_name and self.benchmark_name)
+        mt.add_cmd("attrib", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("summary", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("alloc", self.portfolio_name and self.benchmark_name)
+        mt.add_cmd("attrib", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("metric", self.portfolio_name and self.benchmark_name)
         mt.add_cmd("perf", self.portfolio_name and self.benchmark_name)
 
@@ -346,6 +352,7 @@ class PortfolioController(BaseController):
 [info]Metrics:[/info]{("[unvl]", "[cmds]")[port_bench]}
     summary          all portfolio vs benchmark metrics for a certain period of choice
     alloc            allocation on an asset, sector, countries or regions basis
+    attrib           display sector attribution of the portfolio compared to the S&P 500
     metric           portfolio vs benchmark metric for all different periods
     perf             performance of the portfolio versus benchmark{("[/unvl]", "[/cmds]")[port_bench]}
 
@@ -632,6 +639,110 @@ class PortfolioController(BaseController):
                         f"{ns_parser.agg} is not an available option. The options "
                         f"are: {', '.join(self.AGGREGATION_METRICS)}"
                     )
+
+    @log_start_end(log=logger)
+    def call_attrib(self, other_args: List[str]):
+        """Process attrib command"""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="attrib",
+            description="""
+                Displays sector attribution of the portfolio compared to the S&P 500
+                """,
+        )
+        parser.add_argument(
+            "-p",
+            "--period",
+            type=str,
+            choices=portfolio_helper.PERIODS,
+            dest="period",
+            default="all",
+            help="Period in which to calculate attribution",
+        )
+        parser.add_argument(
+            "-t",
+            "--type",
+            type=str,
+            choices=["relative", "absolute"],
+            dest="type",
+            default="relative",
+            help="Select between relative or absolute attribution values",
+        )
+        parser.add_argument(
+            "--raw",
+            type=bool,
+            dest="raw",
+            default=False,
+            const=True,
+            nargs="?",
+            help="View raw attribution values in a table",
+        )
+
+        if other_args:
+            if other_args and "-" not in other_args[0][0]:
+                other_args.insert(0, "-a")
+
+        ns_parser = self.parse_known_args_and_warn(parser, other_args, limit=10)
+
+        if ns_parser and self.portfolio is not None:
+
+            if check_portfolio_benchmark_defined(
+                self.portfolio_name, self.benchmark_name
+            ):
+                if self.benchmark_name != "SPDR S&P 500 ETF Trust (SPY)":
+                    print(
+                        "This feature uses S&P 500 as benchmark and will disregard selected benchmark if different."
+                    )
+                # sector contribution
+                end_date = date.today()
+                # set correct time period
+                if ns_parser.period == "all":
+                    start_date = self.portfolio.inception_date
+                else:
+                    start_date = portfolio_helper.get_start_date_from_period(
+                        ns_parser.period
+                    )
+
+                # calculate benchmark and portfolio contribution values
+                bench_result = attribution_model.get_spy_sector_contributions(
+                    start_date, end_date
+                )
+                portfolio_result = attribution_model.get_portfolio_sector_contributions(
+                    start_date, self.portfolio.portfolio_trades
+                )
+
+                # relative results - the proportions of return attribution
+                if ns_parser.type == "relative":
+                    categorisation_result = (
+                        attribution_model.percentage_attrib_categorizer(
+                            bench_result, portfolio_result
+                        )
+                    )
+
+                    portfolio_view.display_attribution_categorisation(
+                        display=categorisation_result,
+                        time_period=ns_parser.period,
+                        attrib_type="Contributions as % of PF",
+                        plot_fields=["S&P500 [%]", "Portfolio [%]"],
+                        show_table=ns_parser.raw,
+                    )
+
+                # absolute - the raw values of return attribution
+                if ns_parser.type == "absolute":
+                    categorisation_result = attribution_model.raw_attrib_categorizer(
+                        bench_result, portfolio_result
+                    )
+
+                    portfolio_view.display_attribution_categorisation(
+                        display=categorisation_result,
+                        time_period=ns_parser.period,
+                        attrib_type="Raw contributions (Return x PF Weight)",
+                        plot_fields=["S&P500", "Portfolio"],
+                        show_table=ns_parser.raw,
+                    )
+
+            console.print()
 
     @log_start_end(log=logger)
     def call_perf(self, other_args: List[str]):
