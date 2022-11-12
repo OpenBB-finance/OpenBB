@@ -60,7 +60,7 @@ def get_regressions_results(
     the regression model.
     """
     regressions = {
-        # "OLS": lambda: get_ols(regression_variables, data, False),
+        # "OLS": lambda: get_ols(Y,X),
         "POLS": lambda: get_pols(regression_variables, data),
         "RE": lambda: get_re(regression_variables, data),
         "BOLS": lambda: get_bols(regression_variables, data),
