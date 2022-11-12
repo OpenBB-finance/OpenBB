@@ -442,33 +442,26 @@ class PortfolioController(BaseController):
             else:
                 file_location = ns_parser.file  # type: ignore
 
-            transactions = portfolio_model.PortfolioEngine.read_transactions(
-                str(file_location)
+            self.portfolio = portfolio_model.generate_portfolio(
+                transactions_file_path=str(file_location),
+                benchmark_symbol="SPY",
+                risk_free_rate=ns_parser.risk_free_rate / 100,
             )
-            self.portfolio = portfolio_model.PortfolioEngine(transactions)
-            self.benchmark_name = ""
 
             if ns_parser.name:
                 self.portfolio_name = ns_parser.name
             else:
                 self.portfolio_name = ns_parser.file
-
-            # Generate holdings from trades
-            self.portfolio.generate_portfolio_data()
-
-            # Add in the Risk-free rate
-            self.portfolio.set_risk_free_rate(ns_parser.risk_free_rate / 100)
-            self.risk_free_rate = ns_parser.risk_free_rate / 100
-
-            # Load benchmark
-            self.call_bench(["-b", "SPDR S&P 500 ETF Trust (SPY)"])
-
             console.print(
                 f"\n[bold][param]Portfolio:[/param][/bold] {self.portfolio_name}"
             )
+
+            self.benchmark_name = "SPDR S&P 500 ETF Trust (SPY)"
             console.print(
                 f"[bold][param]Risk Free Rate:[/param][/bold] {self.risk_free_rate:.2%}"
             )
+
+            self.risk_free_rate = ns_parser.risk_free_rate / 100
             console.print(
                 f"[bold][param]Benchmark:[/param][/bold] {self.benchmark_name}\n"
             )
@@ -541,15 +534,6 @@ class PortfolioController(BaseController):
                 self.portfolio.set_benchmark(benchmark_ticker, ns_parser.full_shares)
 
                 self.benchmark_name = chosen_benchmark
-
-                # Make it so that there is no chance of there being a difference in length between
-                # the portfolio and benchmark return DataFrames
-                (
-                    self.portfolio.returns,
-                    self.portfolio.benchmark_returns,
-                ) = portfolio_helper.make_equal_length(
-                    self.portfolio.returns, self.portfolio.benchmark_returns
-                )
 
             else:
                 console.print(

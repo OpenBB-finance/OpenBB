@@ -18,6 +18,7 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.portfolio import (
     portfolio_helper,
     allocation_model,
+    statics,
 )
 from openbb_terminal.rich_config import console
 
@@ -446,7 +447,7 @@ class PortfolioEngine:
             quantity to the nearest number
         """
 
-        p_bar = tqdm(range(3), desc="         Loading benchmark")
+        p_bar = tqdm(range(4), desc="         Loading benchmark")
 
         self.benchmark_ticker = symbol
 
@@ -477,6 +478,14 @@ class PortfolioEngine:
 
         self.benchmark_returns = self.benchmark_historical_prices.pct_change().dropna()
         self.benchmark_info = yf.Ticker(symbol).info
+
+        p_bar.n += 1
+        p_bar.refresh()
+
+        (
+            self.returns,
+            self.benchmark_returns,
+        ) = portfolio_helper.make_equal_length(self.returns, self.benchmark_returns)
 
         p_bar.n += 1
         p_bar.refresh()
@@ -2058,7 +2067,7 @@ def get_daily_returns(
 
 
 def generate_portfolio(
-    transactions_path: str,
+    transactions_file_path: str,
     benchmark_symbol: str = "SPY",
     full_shares: bool = False,
     risk_free_rate: float = 0,
@@ -2067,7 +2076,7 @@ def generate_portfolio(
 
     Parameters
     ----------
-    file_path : str
+    transactions_file_path : str
         Path to transactions file
     benchmark_symbol : str
         Benchmark ticker to download data
@@ -2083,7 +2092,7 @@ def generate_portfolio(
         PortfolioEngine object
     """
 
-    transactions = PortfolioEngine.read_transactions(transactions_path)
+    transactions = PortfolioEngine.read_transactions(transactions_file_path)
     engine = PortfolioEngine(transactions)
     engine.generate_portfolio_data()
     engine.set_benchmark(symbol=benchmark_symbol, full_shares=full_shares)
