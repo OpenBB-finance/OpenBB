@@ -804,8 +804,8 @@ def get_r2_score(portfolio: PortfolioEngine) -> pd.DataFrame:
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
 
     Returns
     -------
@@ -832,8 +832,8 @@ def get_r2_score(portfolio: PortfolioEngine) -> pd.DataFrame:
 def get_skewness(portfolio: PortfolioEngine) -> pd.DataFrame:
     """Class method that retrieves skewness for portfolio and benchmark selected
 
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
 
     Returns
     -------
@@ -871,8 +871,8 @@ def get_kurtosis(portfolio: PortfolioEngine) -> pd.DataFrame:
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
 
     Returns
     -------
@@ -910,8 +910,8 @@ def get_stats(portfolio: PortfolioEngine, window: str = "all") -> pd.DataFrame:
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     window : str
         interval to consider. Choices are: mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all
 
@@ -940,8 +940,8 @@ def get_volatility(portfolio: PortfolioEngine) -> pd.DataFrame:
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
 
     Returns
     -------
@@ -981,8 +981,8 @@ def get_sharpe_ratio(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     risk_free_rate: float
         Risk free rate value
 
@@ -1026,8 +1026,8 @@ def get_sortino_ratio(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     risk_free_rate: float
         Risk free rate value
 
@@ -1069,8 +1069,8 @@ def get_maximum_drawdown_ratio(portfolio: PortfolioEngine) -> pd.DataFrame:
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
 
     Returns
     -------
@@ -1108,8 +1108,8 @@ def get_gaintopain_ratio(portfolio: PortfolioEngine):
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
 
     Returns
     -------
@@ -1131,8 +1131,8 @@ def get_tracking_error(portfolio: PortfolioEngine, window: int = 252):
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     window: int
         Interval used for rolling values
 
@@ -1156,8 +1156,8 @@ def get_information_ratio(portfolio: PortfolioEngine):
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
 
     Returns
     -------
@@ -1180,8 +1180,8 @@ def get_tail_ratio(portfolio: PortfolioEngine, window: int = 252):
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
 
     window: int
         Interval used for rolling values
@@ -1208,8 +1208,8 @@ def get_common_sense_ratio(portfolio: PortfolioEngine):
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
 
     Returns
     -------
@@ -1234,8 +1234,8 @@ def get_jensens_alpha(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     window: str
         Interval used for rolling values
     risk_free_rate: float
@@ -1266,8 +1266,8 @@ def get_calmar_ratio(portfolio: PortfolioEngine, window: int = 756):
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     window: int
         Interval used for rolling values
 
@@ -1295,8 +1295,8 @@ def get_kelly_criterion(portfolio: PortfolioEngine):
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
 
     Returns
     -------
@@ -1330,8 +1330,8 @@ def get_profit_factor(portfolio: PortfolioEngine):
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
 
     Returns
     -------
@@ -1348,8 +1348,8 @@ def get_holdings_value(portfolio: PortfolioEngine) -> pd.DataFrame:
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
 
     Returns
     -------
@@ -1372,8 +1372,8 @@ def get_holdings_percentage(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     """
 
     all_holdings = portfolio.historical_trade_data["End Value"][portfolio.tickers_list]
@@ -1427,8 +1427,8 @@ def get_distribution_returns(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     window : str
         interval to compare cumulative returns and benchmark
     """
@@ -1451,8 +1451,8 @@ def get_rolling_volatility(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     window : str
         Rolling window size to use
         Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y
@@ -1525,7 +1525,7 @@ def get_rolling_sortino(
     Parameters
     ----------
     portfolio : PortfolioEngine
-        Portfolio object
+        PortfolioEngine object
     window: str
         interval for window to consider
         Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y
@@ -1566,7 +1566,7 @@ def get_rolling_beta(
     Parameters
     ----------
     portfolio : PortfolioEngine
-        Portfolio object
+        PortfolioEngine object
     window: string
         Interval used for rolling values.
         Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y.
@@ -1594,8 +1594,8 @@ def get_performance_vs_benchmark(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     show_all_trades: bool
         Whether to also show all trades made and their performance (default is False)
     Returns
@@ -1701,8 +1701,8 @@ def get_var(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     use_mean: bool
         if one should use the data mean return
     adjusted_var: bool
@@ -1737,8 +1737,8 @@ def get_es(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     use_mean:
         if one should use the data mean return
     distribution: str
@@ -1768,8 +1768,8 @@ def get_omega(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     threshold_start: float
         annualized target return threshold start of plotted threshold range
     threshold_end: float
@@ -1796,8 +1796,8 @@ def get_summary(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     window : str
         interval to compare cumulative returns and benchmark
     risk_free_rate : float
@@ -1863,8 +1863,8 @@ def get_yearly_returns(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     window : str
         interval to compare cumulative returns and benchmark
     """
@@ -1912,8 +1912,8 @@ def get_monthly_returns(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     window : str
         interval to compare cumulative returns and benchmark
     Returns
@@ -2007,8 +2007,8 @@ def get_daily_returns(
 
     Parameters
     ----------
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     window : str
         interval to compare cumulative returns and benchmark
     Returns
