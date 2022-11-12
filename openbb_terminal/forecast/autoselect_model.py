@@ -89,7 +89,7 @@ def get_autoselect_data(
 
     # check statsforecast dependency
     try:
-        from statsforecast.models import (
+        from statsforecast.models import (  # pylint: disable=import-outside-toplevel
             AutoARIMA,
             ETS,
             AutoCES,
