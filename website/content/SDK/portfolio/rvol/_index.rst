@@ -28,8 +28,8 @@ portfolio.rvol(
 
 * **Parameters**
 
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     window : str
         Rolling window size to use
         Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y
@@ -47,7 +47,7 @@ portfolio.rvol(
 
 {{< highlight python >}}
 portfolio.rvol(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     window: str = '1y',
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
@@ -64,7 +64,7 @@ portfolio.rvol(
 * **Parameters**
 
     portfolio : PortfolioEngine
-        Portfolio object
+        PortfolioEngine object
     interval: str
         interval for window to consider
     export: str
@@ -73,3 +73,4 @@ portfolio.rvol(
         Optional axes to display plot on
     chart: bool
        Flag to display chart
+

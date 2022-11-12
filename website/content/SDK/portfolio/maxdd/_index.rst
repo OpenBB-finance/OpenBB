@@ -56,7 +56,7 @@ portfolio.maxdd(
 
 {{< highlight python >}}
 portfolio.maxdd(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
     chart: bool = False,
@@ -72,10 +72,11 @@ portfolio.maxdd(
 * **Parameters**
 
     portfolio : PortfolioEngine
-        Portfolio object
+        PortfolioEngine object
     export: str
         Format to export data
     external_axes: plt.Axes
         Optional axes to display plot on
     chart: bool
        Flag to display chart
+

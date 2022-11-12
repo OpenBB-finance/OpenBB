@@ -27,8 +27,8 @@ portfolio.summary(
 
 * **Parameters**
 
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     window : str
         interval to compare cumulative returns and benchmark
     risk_free_rate : float

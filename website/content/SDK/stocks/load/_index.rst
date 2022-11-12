@@ -15,11 +15,11 @@ stocks.load(
     symbol: str,
     start_date: Union[datetime.datetime, str,
     NoneType] = datetime.datetime(
-    2019, 11, 6, 10, 57, 3, 415198, chart: bool = False,
+    2019, 11, 8, 21, 35, 12, 215141, chart: bool = False,
 ), interval: int = 1440,
     end_date: Union[datetime.datetime, str,
     NoneType] = datetime.datetime(
-    2022, 11, 10, 10, 57, 3, 415206, chart: bool = False,
+    2022, 11, 12, 21, 35, 12, 215148, chart: bool = False,
 ), prepost: bool = False,
     source: str = 'YahooFinance',
     iexrange: str = 'ytd',

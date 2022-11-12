@@ -28,8 +28,8 @@ portfolio.distr(
 
 * **Parameters**
 
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     window : str
         interval to compare cumulative returns and benchmark
     chart: bool
@@ -46,7 +46,7 @@ portfolio.distr(
 
 {{< highlight python >}}
 portfolio.distr(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     window: str = 'all',
     raw: bool = False,
     export: str = '',
@@ -77,3 +77,4 @@ portfolio.distr(
         Optional axes to display plot on
     chart: bool
        Flag to display chart
+

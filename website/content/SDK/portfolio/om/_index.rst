@@ -29,8 +29,8 @@ portfolio.om(
 
 * **Parameters**
 
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     threshold_start: float
         annualized target return threshold start of plotted threshold range
     threshold_end: float
@@ -53,7 +53,7 @@ portfolio.om(
 
 {{< highlight python >}}
 portfolio.om(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     threshold_start: float = 0,
     threshold_end: float = 1.5,
     chart: bool = False,
@@ -68,11 +68,12 @@ portfolio.om(
 
 * **Parameters**
 
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine object with trades loaded
     threshold_start: float
         annualized target return threshold start of plotted threshold range
     threshold_end: float
         annualized target return threshold end of plotted threshold range
     chart: bool
        Flag to display chart
+

@@ -29,7 +29,7 @@ portfolio.rbeta(
 * **Parameters**
 
     portfolio : PortfolioEngine
-        Portfolio object
+        PortfolioEngine object
     window: string
         Interval used for rolling values.
         Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y.
@@ -52,7 +52,7 @@ portfolio.rbeta(
 
 {{< highlight python >}}
 portfolio.rbeta(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     window: str = '1y',
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
@@ -69,7 +69,7 @@ portfolio.rbeta(
 * **Parameters**
 
     portfolio : PortfolioEngine
-        Portfolio object
+        PortfolioEngine object
     window: str
         interval for window to consider
         Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y.
@@ -79,3 +79,4 @@ portfolio.rbeta(
         Optional axes to display plot on
     chart: bool
        Flag to display chart
+

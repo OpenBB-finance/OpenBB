@@ -21,11 +21,11 @@ stocks.candle(
     asset_type: str = '',
     start_date: Union[datetime.datetime, str,
     NoneType] = datetime.datetime(
-    2019, 11, 6, 10, 57, 3, 415209, chart: bool = False,
+    2019, 11, 8, 21, 35, 12, 215151, chart: bool = False,
 ), interval: int = 1440,
     end_date: Union[datetime.datetime, str,
     NoneType] = datetime.datetime(
-    2022, 11, 10, 10, 57, 3, 415211, chart: bool = False,
+    2022, 11, 12, 21, 35, 12, 215152, chart: bool = False,
 ), prepost: bool = False,
     source: str = 'YahooFinance',
     iexrange: str = 'ytd',

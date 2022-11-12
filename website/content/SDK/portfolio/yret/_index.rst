@@ -28,8 +28,8 @@ portfolio.yret(
 
 * **Parameters**
 
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     window : str
         interval to compare cumulative returns and benchmark
     chart: bool
@@ -46,7 +46,7 @@ portfolio.yret(
 
 {{< highlight python >}}
 portfolio.yret(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     window: str = 'all',
     raw: bool = False,
     export: str = '',
@@ -63,8 +63,8 @@ portfolio.yret(
 
 * **Parameters**
 
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine object with trades loaded
     window : str
         interval to compare cumulative returns and benchmark
     raw : False
@@ -75,3 +75,4 @@ portfolio.yret(
         Optional axes to display plot on
     chart: bool
        Flag to display chart
+

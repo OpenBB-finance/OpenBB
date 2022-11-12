@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 {{< highlight python >}}
 stocks.fa.mktcap(
     symbol: str,
-    start_date: str = '2019-11-08',
+    start_date: str = '2019-11-10',
     chart: bool = False,
 ) -> Tuple[pandas.core.frame.DataFrame, str]
 {{< /highlight >}}
@@ -54,7 +54,7 @@ stocks.fa.mktcap(
 {{< highlight python >}}
 stocks.fa.mktcap(
     symbol: str,
-    start_date: str = '2019-11-08',
+    start_date: str = '2019-11-10',
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
     chart: bool = False,

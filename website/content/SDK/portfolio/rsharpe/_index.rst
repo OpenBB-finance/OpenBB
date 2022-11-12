@@ -55,7 +55,7 @@ portfolio.rsharpe(
 
 {{< highlight python >}}
 portfolio.rsharpe(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     risk_free_rate: float = 0,
     window: str = '1y',
     export: str = '',
@@ -73,7 +73,7 @@ portfolio.rsharpe(
 * **Parameters**
 
     portfolio : PortfolioEngine
-        Portfolio object
+        PortfolioEngine object
     risk_free_rate: float
         Value to use for risk free rate in sharpe/other calculations
     window: str
@@ -84,3 +84,4 @@ portfolio.rsharpe(
         Optional axes to display plot on
     chart: bool
        Flag to display chart
+

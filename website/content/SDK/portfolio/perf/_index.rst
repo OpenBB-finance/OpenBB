@@ -26,8 +26,8 @@ portfolio.perf(
 
 * **Parameters**
 
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     show_all_trades: bool
         Whether to also show all trades made and their performance (default is False)
 

@@ -27,8 +27,8 @@ portfolio.holdv(
 
 * **Parameters**
 
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     chart: bool
        Flag to display chart
 
@@ -48,7 +48,7 @@ portfolio.holdv(
 
 {{< highlight python >}}
 portfolio.holdv(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     unstack: bool = False,
     raw: bool = False,
     limit: int = 10,
@@ -66,8 +66,8 @@ portfolio.holdv(
 
 * **Parameters**
 
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine object with trades loaded
     unstack: bool
         Individual assets over time
     raw : bool
@@ -80,3 +80,4 @@ portfolio.holdv(
         Optional axes to display plot on
     chart: bool
        Flag to display chart
+

@@ -29,8 +29,8 @@ portfolio.var(
 
 * **Parameters**
 
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     use_mean: bool
         if one should use the data mean return
     adjusted_var: bool

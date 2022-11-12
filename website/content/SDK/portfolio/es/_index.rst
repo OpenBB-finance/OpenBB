@@ -28,8 +28,8 @@ portfolio.es(
 
 * **Parameters**
 
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio: PortfolioEngine
+        PortfolioEngine object with trades loaded
     use_mean:
         if one should use the data mean return
     distribution: str
