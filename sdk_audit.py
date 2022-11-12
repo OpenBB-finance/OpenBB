@@ -21,8 +21,7 @@ def load_modules(full_path: Path):
     ----------
     The python module
     """
-    mod_path = str(full_path).split("OpenBBTerminal/")[1].replace("/", ".")
-    spec = importlib.util.spec_from_file_location(mod_path, full_path)
+    spec = importlib.util.spec_from_file_location(full_path.stem, full_path)
     if not spec:
         raise ValueError(f"Could not import path: {full_path}")
     mod = importlib.util.module_from_spec(spec)
