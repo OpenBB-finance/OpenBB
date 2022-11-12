@@ -4,7 +4,7 @@ from openbb_terminal.helper_classes import TerminalStyle
 from openbb_terminal import helper_funcs as helper  # noqa: F401
 from openbb_terminal.reports import widget_helpers as widgets  # noqa: F401
 from openbb_terminal.portfolio.portfolio_model import (  # noqa: F401
-    PortfolioModel as Portfolio,
+    PortfolioEngine as Portfolio,
 )
 from openbb_terminal.cryptocurrency.due_diligence.pycoingecko_model import (  # noqa: F401
     Coin,

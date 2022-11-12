@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 portfolio.rbeta(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     window: str = '1y',
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
@@ -28,7 +28,7 @@ portfolio.rbeta(
 
 * **Parameters**
 
-    portfolio : PortfolioModel
+    portfolio : PortfolioEngine
         Portfolio object
     window: string
         Interval used for rolling values.
@@ -52,7 +52,7 @@ portfolio.rbeta(
 
 {{< highlight python >}}
 portfolio.rbeta(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     window: str = '1y',
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
@@ -68,7 +68,7 @@ portfolio.rbeta(
 
 * **Parameters**
 
-    portfolio : PortfolioModel
+    portfolio : PortfolioEngine
         Portfolio object
     window: str
         interval for window to consider
@@ -79,4 +79,3 @@ portfolio.rbeta(
         Optional axes to display plot on
     chart: bool
        Flag to display chart
-

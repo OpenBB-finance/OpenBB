@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.skew(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

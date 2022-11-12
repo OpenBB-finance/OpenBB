@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.summary(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     window: str = 'all',
     risk_free_rate: float = 0,
     chart: bool = False,

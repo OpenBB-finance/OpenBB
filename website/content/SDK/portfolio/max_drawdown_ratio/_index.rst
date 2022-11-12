@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 portfolio.max_drawdown_ratio(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     is_returns: bool = False,
     chart: bool = False,
 ) -> pandas.core.series.Series
@@ -56,7 +56,7 @@ portfolio.max_drawdown_ratio(
 
 {{< highlight python >}}
 portfolio.max_drawdown_ratio(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     export: str = '',
     chart: bool = False,
 )
@@ -76,4 +76,3 @@ portfolio.max_drawdown_ratio(
         Export data format
     chart: bool
        Flag to display chart
-

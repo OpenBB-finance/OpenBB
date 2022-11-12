@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 portfolio.dret(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     window: str = 'all',
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
@@ -50,7 +50,7 @@ portfolio.dret(
 
 {{< highlight python >}}
 portfolio.dret(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     window: str = 'all',
     raw: bool = False,
     limit: int = 10,
@@ -82,4 +82,3 @@ portfolio.dret(
         Optional axes to display plot on
     chart: bool
        Flag to display chart
-

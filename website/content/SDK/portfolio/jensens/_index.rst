@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.jensens(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     risk_free_rate: float = 0,
     window: str = '1y',
     chart: bool = False,

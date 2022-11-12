@@ -139,8 +139,8 @@ class PortfolioController(BaseController):
         self.original_benchmark_name = ""
         self.risk_free_rate = 0
         self.portlist: List[str] = os.listdir(self.DEFAULT_HOLDINGS_PATH)
-        self.portfolio: portfolio_model.PortfolioModel = (
-            portfolio_model.PortfolioModel()
+        self.portfolio: portfolio_model.PortfolioEngine = (
+            portfolio_model.PortfolioEngine()
         )
 
         if session and obbff.USE_PROMPT_TOOLKIT:
@@ -442,10 +442,10 @@ class PortfolioController(BaseController):
             else:
                 file_location = ns_parser.file  # type: ignore
 
-            transactions = portfolio_model.PortfolioModel.read_transactions(
+            transactions = portfolio_model.PortfolioEngine.read_transactions(
                 str(file_location)
             )
-            self.portfolio = portfolio_model.PortfolioModel(transactions)
+            self.portfolio = portfolio_model.PortfolioEngine(transactions)
             self.benchmark_name = ""
 
             if ns_parser.name:

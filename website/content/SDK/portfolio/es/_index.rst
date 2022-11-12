@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.es(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     use_mean: bool = False,
     distribution: str = 'normal',
     percentile: float = 99.9,

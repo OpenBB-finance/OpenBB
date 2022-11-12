@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 portfolio.maxdd(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     is_returns: bool = False,
     chart: bool = False,
 ) -> pandas.core.series.Series
@@ -56,7 +56,7 @@ portfolio.maxdd(
 
 {{< highlight python >}}
 portfolio.maxdd(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
     chart: bool = False,
@@ -71,7 +71,7 @@ portfolio.maxdd(
 
 * **Parameters**
 
-    portfolio : PortfolioModel
+    portfolio : PortfolioEngine
         Portfolio object
     export: str
         Format to export data
@@ -79,4 +79,3 @@ portfolio.maxdd(
         Optional axes to display plot on
     chart: bool
        Flag to display chart
-

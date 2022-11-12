@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.var(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     use_mean: bool = False,
     adjusted_var: bool = False,
     student_t: bool = False,

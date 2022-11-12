@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 portfolio.mret(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     window: str = 'all',
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
@@ -50,7 +50,7 @@ portfolio.mret(
 
 {{< highlight python >}}
 portfolio.mret(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     window: str = 'all',
     raw: bool = False,
     show_vals: bool = False,
@@ -82,4 +82,3 @@ portfolio.mret(
         Optional axes to display plot on
     chart: bool
        Flag to display chart
-

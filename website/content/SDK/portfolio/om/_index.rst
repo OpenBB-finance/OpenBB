@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 portfolio.om(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     threshold_start: float = 0,
     threshold_end: float = 1.5,
     chart: bool = False,
@@ -53,7 +53,7 @@ portfolio.om(
 
 {{< highlight python >}}
 portfolio.om(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     threshold_start: float = 0,
     threshold_end: float = 1.5,
     chart: bool = False,
@@ -76,4 +76,3 @@ portfolio.om(
         annualized target return threshold end of plotted threshold range
     chart: bool
        Flag to display chart
-

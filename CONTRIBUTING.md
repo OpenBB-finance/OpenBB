@@ -695,7 +695,7 @@ With:
     <td>
 
     ```python
-    def get_gaintopain_ratio(portfolio: PortfolioModel) -> pd.DataFrame:
+    def get_gaintopain_ratio(portfolio: PortfolioEngine) -> pd.DataFrame:
 
     """..."""
 

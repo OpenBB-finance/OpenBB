@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.calmar(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     window: int = 756,
     chart: bool = False,
 )

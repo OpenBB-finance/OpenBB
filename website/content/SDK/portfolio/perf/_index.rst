@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.perf(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     show_all_trades: bool = False,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame

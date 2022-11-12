@@ -30,7 +30,7 @@ cg = CoinGeckoAPI()
 pd.options.mode.chained_assignment = None
 
 
-class PortfolioModel:
+class PortfolioEngine:
     """
     Class for portfolio analysis in OpenBB
     Implements a Portfolio and related methods.
@@ -61,7 +61,7 @@ class PortfolioModel:
     """
 
     def __init__(self, transactions: pd.DataFrame = pd.DataFrame()):
-        """Initialize PortfolioModel class"""
+        """Initialize PortfolioEngine class"""
 
         # Portfolio
         self.tickers_list = None
@@ -106,7 +106,8 @@ class PortfolioModel:
     def get_transactions(self):
         """Get formatted transactions
 
-        Returns:
+        Returns
+        -------
             pd.DataFrame: formatted transactions
         """
         df = self.__transactions[
@@ -133,12 +134,17 @@ class PortfolioModel:
 
     @staticmethod
     def read_transactions(path: str) -> pd.DataFrame:
-        """Static method to read transactions from file
+        """Static method to read transactions from file.
 
         Parameters
         ----------
         path: str
             path to transactions file
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with transactions
         """
         # Load transactions from file
         if path.endswith(".xlsx"):
@@ -428,24 +434,24 @@ class PortfolioModel:
                         ] = info_list
 
     @log_start_end(log=logger)
-    def load_benchmark(self, ticker: str = "SPY", full_shares: bool = False):
-        """Adds benchmark dataframe
+    def load_benchmark(self, symbol: str = "SPY", full_shares: bool = False):
+        """Load benchmark into portfolio.
 
         Parameters
         ----------
-        ticker: str
-            benchmark ticker to download data
+        symbol: str
+            Benchmark symbol to download data
         full_shares: bool
-            whether to mimic the portfolio trades exactly (partial shares) or round down the
-            quantity to the nearest number.
+            Whether to mimic the portfolio trades exactly (partial shares) or round down the
+            quantity to the nearest number
         """
 
         p_bar = tqdm(range(3), desc="         Loading benchmark")
 
-        self.benchmark_ticker = ticker
+        self.benchmark_ticker = symbol
 
         self.benchmark_historical_prices = yf.download(
-            ticker,
+            symbol,
             start=self.inception_date - datetime.timedelta(days=1),
             threads=False,
             progress=False,
@@ -470,7 +476,7 @@ class PortfolioModel:
         p_bar.refresh()
 
         self.benchmark_returns = self.benchmark_historical_prices.pct_change().dropna()
-        self.benchmark_info = yf.Ticker(ticker).info
+        self.benchmark_info = yf.Ticker(symbol).info
 
         p_bar.n += 1
         p_bar.refresh()
@@ -785,14 +791,15 @@ class PortfolioModel:
 
         Parameters
         ----------
-        risk_free (float): risk free rate in float format
+        risk_free_rate : float
+            Risk free rate in float format
         """
         self.risk_free_rate = risk_free_rate
 
 
 # Metrics
 @log_start_end(log=logger)
-def get_r2_score(portfolio: PortfolioModel) -> pd.DataFrame:
+def get_r2_score(portfolio: PortfolioEngine) -> pd.DataFrame:
     """Class method that retrieves R2 Score for portfolio and benchmark selected
 
     Parameters
@@ -822,7 +829,7 @@ def get_r2_score(portfolio: PortfolioModel) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_skewness(portfolio: PortfolioModel) -> pd.DataFrame:
+def get_skewness(portfolio: PortfolioEngine) -> pd.DataFrame:
     """Class method that retrieves skewness for portfolio and benchmark selected
 
     portfolio: Portfolio
@@ -859,7 +866,7 @@ def get_skewness(portfolio: PortfolioModel) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_kurtosis(portfolio: PortfolioModel) -> pd.DataFrame:
+def get_kurtosis(portfolio: PortfolioEngine) -> pd.DataFrame:
     """Class method that retrieves kurtosis for portfolio and benchmark selected
 
     Parameters
@@ -898,7 +905,7 @@ def get_kurtosis(portfolio: PortfolioModel) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_stats(portfolio: PortfolioModel, window: str = "all") -> pd.DataFrame:
+def get_stats(portfolio: PortfolioEngine, window: str = "all") -> pd.DataFrame:
     """Class method that retrieves stats for portfolio and benchmark selected based on a certain interval
 
     Parameters
@@ -928,7 +935,7 @@ def get_stats(portfolio: PortfolioModel, window: str = "all") -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_volatility(portfolio: PortfolioModel) -> pd.DataFrame:
+def get_volatility(portfolio: PortfolioEngine) -> pd.DataFrame:
     """Class method that retrieves volatility for portfolio and benchmark selected
 
     Parameters
@@ -968,7 +975,7 @@ def get_volatility(portfolio: PortfolioModel) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_sharpe_ratio(
-    portfolio: PortfolioModel, risk_free_rate: float = 0
+    portfolio: PortfolioEngine, risk_free_rate: float = 0
 ) -> pd.DataFrame:
     """Class method that retrieves sharpe ratio for portfolio and benchmark selected
 
@@ -1013,7 +1020,7 @@ def get_sharpe_ratio(
 
 @log_start_end(log=logger)
 def get_sortino_ratio(
-    portfolio: PortfolioModel, risk_free_rate: float = 0
+    portfolio: PortfolioEngine, risk_free_rate: float = 0
 ) -> pd.DataFrame:
     """Class method that retrieves sortino ratio for portfolio and benchmark selected
 
@@ -1057,7 +1064,7 @@ def get_sortino_ratio(
 
 
 @log_start_end(log=logger)
-def get_maximum_drawdown_ratio(portfolio: PortfolioModel) -> pd.DataFrame:
+def get_maximum_drawdown_ratio(portfolio: PortfolioEngine) -> pd.DataFrame:
     """Class method that retrieves maximum drawdown ratio for portfolio and benchmark selected
 
     Parameters
@@ -1096,7 +1103,7 @@ def get_maximum_drawdown_ratio(portfolio: PortfolioModel) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_gaintopain_ratio(portfolio: PortfolioModel):
+def get_gaintopain_ratio(portfolio: PortfolioEngine):
     """Get Pain-to-Gain ratio based on historical data
 
     Parameters
@@ -1119,7 +1126,7 @@ def get_gaintopain_ratio(portfolio: PortfolioModel):
 
 
 @log_start_end(log=logger)
-def get_tracking_error(portfolio: PortfolioModel, window: int = 252):
+def get_tracking_error(portfolio: PortfolioEngine, window: int = 252):
     """Get tracking error
 
     Parameters
@@ -1144,7 +1151,7 @@ def get_tracking_error(portfolio: PortfolioModel, window: int = 252):
 
 
 @log_start_end(log=logger)
-def get_information_ratio(portfolio: PortfolioModel):
+def get_information_ratio(portfolio: PortfolioEngine):
     """Get information ratio
 
     Parameters
@@ -1168,7 +1175,7 @@ def get_information_ratio(portfolio: PortfolioModel):
 
 
 @log_start_end(log=logger)
-def get_tail_ratio(portfolio: PortfolioModel, window: int = 252):
+def get_tail_ratio(portfolio: PortfolioEngine, window: int = 252):
     """Get tail ratio
 
     Parameters
@@ -1196,7 +1203,7 @@ def get_tail_ratio(portfolio: PortfolioModel, window: int = 252):
 
 
 @log_start_end(log=logger)
-def get_common_sense_ratio(portfolio: PortfolioModel):
+def get_common_sense_ratio(portfolio: PortfolioEngine):
     """Get common sense ratio
 
     Parameters
@@ -1221,7 +1228,7 @@ def get_common_sense_ratio(portfolio: PortfolioModel):
 
 @log_start_end(log=logger)
 def get_jensens_alpha(
-    portfolio: PortfolioModel, risk_free_rate: float = 0, window: str = "1y"
+    portfolio: PortfolioEngine, risk_free_rate: float = 0, window: str = "1y"
 ):
     """Get jensen's alpha
 
@@ -1254,7 +1261,7 @@ def get_jensens_alpha(
 
 
 @log_start_end(log=logger)
-def get_calmar_ratio(portfolio: PortfolioModel, window: int = 756):
+def get_calmar_ratio(portfolio: PortfolioEngine, window: int = 756):
     """Get calmar ratio
 
     Parameters
@@ -1283,7 +1290,7 @@ def get_calmar_ratio(portfolio: PortfolioModel, window: int = 756):
 
 
 @log_start_end(log=logger)
-def get_kelly_criterion(portfolio: PortfolioModel):
+def get_kelly_criterion(portfolio: PortfolioEngine):
     """Gets kelly criterion
 
     Parameters
@@ -1304,7 +1311,7 @@ def get_kelly_criterion(portfolio: PortfolioModel):
 
 
 @log_start_end(log=logger)
-def get_payoff_ratio(portfolio: PortfolioModel):
+def get_payoff_ratio(portfolio: PortfolioEngine):
     """Gets payoff ratio
 
     Returns
@@ -1318,7 +1325,7 @@ def get_payoff_ratio(portfolio: PortfolioModel):
 
 
 @log_start_end(log=logger)
-def get_profit_factor(portfolio: PortfolioModel):
+def get_profit_factor(portfolio: PortfolioEngine):
     """Gets profit factor
 
     Parameters
@@ -1336,7 +1343,7 @@ def get_profit_factor(portfolio: PortfolioModel):
     return pf_period_df
 
 
-def get_holdings_value(portfolio: PortfolioModel) -> pd.DataFrame:
+def get_holdings_value(portfolio: PortfolioEngine) -> pd.DataFrame:
     """Get holdings of assets (absolute value)
 
     Parameters
@@ -1359,7 +1366,7 @@ def get_holdings_value(portfolio: PortfolioModel) -> pd.DataFrame:
 
 
 def get_holdings_percentage(
-    portfolio: PortfolioModel,
+    portfolio: PortfolioEngine,
 ):
     """Get holdings of assets (in percentage)
 
@@ -1381,7 +1388,7 @@ def get_holdings_percentage(
 
 @log_start_end(log=logger)
 def get_maximum_drawdown(
-    portfolio: PortfolioModel, is_returns: bool = False
+    portfolio: PortfolioEngine, is_returns: bool = False
 ) -> pd.Series:
     """Calculate the drawdown (MDD) of historical series.  Note that the calculation is done
      on cumulative returns (or prices).  The definition of drawdown is
@@ -1413,7 +1420,7 @@ def get_maximum_drawdown(
 
 
 def get_distribution_returns(
-    portfolio: PortfolioModel,
+    portfolio: PortfolioEngine,
     window: str = "all",
 ):
     """Display daily returns
@@ -1438,7 +1445,7 @@ def get_distribution_returns(
 
 
 def get_rolling_volatility(
-    portfolio: PortfolioModel, window: str = "1y"
+    portfolio: PortfolioEngine, window: str = "1y"
 ) -> pd.DataFrame:
     """Get rolling volatility
 
@@ -1509,7 +1516,7 @@ def get_rolling_sharpe(
 
 
 def get_rolling_sortino(
-    portfolio: PortfolioModel,
+    portfolio: PortfolioEngine,
     risk_free_rate: float = 0,
     window: str = "1y",
 ) -> pd.DataFrame:
@@ -1517,7 +1524,7 @@ def get_rolling_sortino(
 
     Parameters
     ----------
-    portfolio : PortfolioModel
+    portfolio : PortfolioEngine
         Portfolio object
     window: str
         interval for window to consider
@@ -1551,14 +1558,14 @@ def get_rolling_sortino(
 
 @log_start_end(log=logger)
 def get_rolling_beta(
-    portfolio: PortfolioModel,
+    portfolio: PortfolioEngine,
     window: str = "1y",
 ) -> pd.DataFrame:
     """Get rolling beta using portfolio and benchmark returns
 
     Parameters
     ----------
-    portfolio : PortfolioModel
+    portfolio : PortfolioEngine
         Portfolio object
     window: string
         Interval used for rolling values.
@@ -1579,7 +1586,7 @@ def get_rolling_beta(
 
 @log_start_end(log=logger)
 def get_performance_vs_benchmark(
-    portfolio: PortfolioModel,
+    portfolio: PortfolioEngine,
     show_all_trades: bool = False,
 ) -> pd.DataFrame:
 
@@ -1683,7 +1690,7 @@ def get_performance_vs_benchmark(
 
 @log_start_end(log=logger)
 def get_var(
-    portfolio: PortfolioModel,
+    portfolio: PortfolioEngine,
     use_mean: bool = False,
     adjusted_var: bool = False,
     student_t: bool = False,
@@ -1721,7 +1728,7 @@ def get_var(
 
 @log_start_end(log=logger)
 def get_es(
-    portfolio: PortfolioModel,
+    portfolio: PortfolioEngine,
     use_mean: bool = False,
     distribution: str = "normal",
     percentile: float = 99.9,
@@ -1755,7 +1762,7 @@ def get_es(
 
 @log_start_end(log=logger)
 def get_omega(
-    portfolio: PortfolioModel, threshold_start: float = 0, threshold_end: float = 1.5
+    portfolio: PortfolioEngine, threshold_start: float = 0, threshold_end: float = 1.5
 ) -> pd.DataFrame:
     """Get omega ratio
 
@@ -1781,7 +1788,7 @@ def get_omega(
 
 
 def get_summary(
-    portfolio: PortfolioModel,
+    portfolio: PortfolioEngine,
     window: str = "all",
     risk_free_rate: float = 0,
 ) -> pd.DataFrame:
@@ -1849,7 +1856,7 @@ def get_summary(
 
 @log_start_end(log=logger)
 def get_yearly_returns(
-    portfolio: PortfolioModel,
+    portfolio: PortfolioEngine,
     window: str = "all",
 ):
     """Get yearly returns
@@ -1898,7 +1905,7 @@ def get_yearly_returns(
 
 @log_start_end(log=logger)
 def get_monthly_returns(
-    portfolio: PortfolioModel,
+    portfolio: PortfolioEngine,
     window: str = "all",
 ) -> pd.DataFrame:
     """Get monthly returns
@@ -1993,7 +2000,7 @@ def get_monthly_returns(
 
 @log_start_end(log=logger)
 def get_daily_returns(
-    portfolio: PortfolioModel,
+    portfolio: PortfolioEngine,
     window: str = "all",
 ) -> pd.DataFrame:
     """Get daily returns
@@ -2007,8 +2014,8 @@ def get_daily_returns(
     Returns
     -------
     pd.DataFrame
-
     """
+
     portfolio_returns = portfolio_helper.filter_df_by_period(portfolio.returns, window)
     benchmark_returns = portfolio_helper.filter_df_by_period(
         portfolio.benchmark_returns, window
@@ -2020,6 +2027,74 @@ def get_daily_returns(
     df.columns = ["portfolio", "benchmark"]
 
     return df
+
+
+def generate_portfolio(
+    transactions_path: str,
+    benchmark_symbol: str = "SPY",
+    full_shares: bool = False,
+    risk_free_rate: float = 0,
+) -> PortfolioEngine:
+    """Get PortfolioEngine object
+
+    Parameters
+    ----------
+    file_path : str
+        Path to transactions file
+    benchmark_symbol : str
+        Benchmark ticker to download data
+    full_shares : bool
+        Whether to mimic the portfolio trades exactly (partial shares) or round down the
+        quantity to the nearest number
+    risk_free_rate : float
+        Risk free rate in float format
+
+    Returns
+    -------
+    PortfolioEngine
+        PortfolioEngine object
+    """
+
+    transactions = PortfolioEngine.read_transactions(transactions_path)
+    engine = PortfolioEngine(transactions)
+    engine.generate_portfolio_data()
+    engine.load_benchmark(symbol=benchmark_symbol, full_shares=full_shares)
+    engine.set_risk_free_rate(risk_free_rate)
+
+    return engine
+
+
+def set_benchmark(
+    engine: PortfolioEngine, symbol: str = "SPY", full_shares: bool = False
+):
+    """Load benchmark into portfolio
+
+    Parameters
+    ----------
+    engine: PortfolioEngine
+        PortfolioEngine object
+    symbol: str
+        Benchmark symbol to download data
+    full_shares: bool
+        Whether to mimic the portfolio trades exactly (partial shares) or round down the
+        quantity to the nearest number
+    """
+
+    engine.load_benchmark(symbol=symbol, full_shares=full_shares)
+
+
+def set_risk_free_rate(engine: PortfolioEngine, risk_free_rate: float):
+    """Set risk-free rate
+
+    Parameters
+    ----------
+    engine: PortfolioEngine
+        PortfolioEngine object
+    risk_free_rate: float
+        Risk free rate in float format
+    """
+
+    engine.set_risk_free_rate(risk_free_rate=risk_free_rate)
 
 
 # Old code

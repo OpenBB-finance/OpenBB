@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.sortino(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     risk_free_rate: float = 0,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame

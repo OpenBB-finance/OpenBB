@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 portfolio.holdp(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     chart: bool = False,
 )
 {{< /highlight >}}
@@ -43,7 +43,7 @@ portfolio.holdp(
 
 {{< highlight python >}}
 portfolio.holdp(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     unstack: bool = False,
     raw: bool = False,
     limit: int = 10,
@@ -75,4 +75,3 @@ portfolio.holdp(
         Optional axes to display plot on
     chart: bool
        Flag to display chart
-

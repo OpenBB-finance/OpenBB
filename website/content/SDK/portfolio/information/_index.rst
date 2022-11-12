@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.information(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     chart: bool = False,
 )
 {{< /highlight >}}

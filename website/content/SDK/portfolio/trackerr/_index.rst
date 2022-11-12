@@ -12,7 +12,7 @@
 
 {{< highlight python >}}
 portfolio.trackerr(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     window: int = 252,
     chart: bool = False,
 )

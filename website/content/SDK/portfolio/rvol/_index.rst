@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 portfolio.rvol(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     window: str = '1y',
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
@@ -47,7 +47,7 @@ portfolio.rvol(
 
 {{< highlight python >}}
 portfolio.rvol(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     window: str = '1y',
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
@@ -63,7 +63,7 @@ portfolio.rvol(
 
 * **Parameters**
 
-    portfolio : PortfolioModel
+    portfolio : PortfolioEngine
         Portfolio object
     interval: str
         interval for window to consider
@@ -73,4 +73,3 @@ portfolio.rvol(
         Optional axes to display plot on
     chart: bool
        Flag to display chart
-
