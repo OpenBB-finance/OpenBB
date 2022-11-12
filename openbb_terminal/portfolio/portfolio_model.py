@@ -18,7 +18,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.portfolio import (
     portfolio_helper,
     allocation_model,
-    statics,
 )
 from openbb_terminal.rich_config import console
 
@@ -810,7 +809,7 @@ class PortfolioEngine:
 # Metrics
 @log_start_end(log=logger)
 def get_r2_score(portfolio: PortfolioEngine) -> pd.DataFrame:
-    """Class method that retrieves R2 Score for portfolio and benchmark selected
+    """Method that retrieves R2 Score for portfolio and benchmark selected
 
     Parameters
     ----------
@@ -841,7 +840,7 @@ def get_r2_score(portfolio: PortfolioEngine) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_skewness(portfolio: PortfolioEngine) -> pd.DataFrame:
-    """Class method that retrieves skewness for portfolio and benchmark selected
+    """Method that retrieves skewness for portfolio and benchmark selected
 
     portfolio: PortfolioEngine
         PortfolioEngine object with trades loaded
@@ -879,7 +878,7 @@ def get_skewness(portfolio: PortfolioEngine) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_kurtosis(portfolio: PortfolioEngine) -> pd.DataFrame:
-    """Class method that retrieves kurtosis for portfolio and benchmark selected
+    """Method that retrieves kurtosis for portfolio and benchmark selected
 
     Parameters
     ----------
@@ -919,7 +918,7 @@ def get_kurtosis(portfolio: PortfolioEngine) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_stats(portfolio: PortfolioEngine, window: str = "all") -> pd.DataFrame:
-    """Class method that retrieves stats for portfolio and benchmark selected based on a certain interval
+    """Method that retrieves stats for portfolio and benchmark selected based on a certain interval
 
     Parameters
     ----------
@@ -950,7 +949,7 @@ def get_stats(portfolio: PortfolioEngine, window: str = "all") -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_volatility(portfolio: PortfolioEngine) -> pd.DataFrame:
-    """Class method that retrieves volatility for portfolio and benchmark selected
+    """Method that retrieves volatility for portfolio and benchmark selected
 
     Parameters
     ----------
@@ -992,7 +991,7 @@ def get_volatility(portfolio: PortfolioEngine) -> pd.DataFrame:
 def get_sharpe_ratio(
     portfolio: PortfolioEngine, risk_free_rate: float = 0
 ) -> pd.DataFrame:
-    """Class method that retrieves sharpe ratio for portfolio and benchmark selected
+    """Method that retrieves sharpe ratio for portfolio and benchmark selected
 
     Parameters
     ----------
@@ -1038,7 +1037,7 @@ def get_sharpe_ratio(
 def get_sortino_ratio(
     portfolio: PortfolioEngine, risk_free_rate: float = 0
 ) -> pd.DataFrame:
-    """Class method that retrieves sortino ratio for portfolio and benchmark selected
+    """Method that retrieves sortino ratio for portfolio and benchmark selected
 
     Parameters
     ----------
@@ -1082,7 +1081,7 @@ def get_sortino_ratio(
 
 @log_start_end(log=logger)
 def get_maximum_drawdown_ratio(portfolio: PortfolioEngine) -> pd.DataFrame:
-    """Class method that retrieves maximum drawdown ratio for portfolio and benchmark selected
+    """Method that retrieves maximum drawdown ratio for portfolio and benchmark selected
 
     Parameters
     ----------
