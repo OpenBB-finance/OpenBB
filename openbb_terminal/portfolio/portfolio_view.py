@@ -106,7 +106,7 @@ def display_transactions(
     Parameters
     ----------
     portfolio: PortfolioEngine
-        Instance of Portfolio class
+        Instance of PortfolioEngine class
     show_index: bool
         Defaults to False.
     limit: int
@@ -120,8 +120,7 @@ def display_transactions(
         console.print("[red]No transactions file loaded.[/red]\n")
 
     else:
-
-        df = get_transactions()
+        df = get_transactions(portfolio)
         print_rich_table(
             df=df[:limit],
             show_index=show_index,
