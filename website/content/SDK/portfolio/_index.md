@@ -33,7 +33,7 @@ The SDK commands of the the menu:
 	<openbb>.portfolio.maxdd
 	<openbb>.portfolio.rvol
 	<openbb>.portfolio.rsharpe
-	<openbb>.portfolio.rsortino
+	<openbb>.portfolio.rsort
 	<openbb>.portfolio.rbeta
 	<openbb>.portfolio.summary
 	<openbb>.portfolio.skew

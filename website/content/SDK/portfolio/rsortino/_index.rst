@@ -13,7 +13,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
     </h3>
 
 {{< highlight python >}}
-portfolio.rsortino(
+portfolio.rsort(
     portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     risk_free_rate: float = 0,
     window: str = '1y',
@@ -54,7 +54,7 @@ portfolio.rsortino(
     </h3>
 
 {{< highlight python >}}
-portfolio.rsortino(
+portfolio.rsort(
     portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     risk_free_rate: float = 0,
     window: str = '1y',

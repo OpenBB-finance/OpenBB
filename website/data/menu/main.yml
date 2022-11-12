@@ -2572,8 +2572,8 @@ main:
             ref: /SDK/portfolio/rbeta
           - name: rsharpe
             ref: /SDK/portfolio/rsharpe
-          - name: rsortino
-            ref: /SDK/portfolio/rsortino
+          - name: rsort
+            ref: /SDK/portfolio/rsort
           - name: rsquare
             ref: /SDK/portfolio/rsquare
           - name: rvol
