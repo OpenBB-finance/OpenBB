@@ -89,3 +89,4 @@ crypto.ov.altindex(
         External axes (1 axis is expected in the list), by default None
     chart: bool
        Flag to display chart
+
