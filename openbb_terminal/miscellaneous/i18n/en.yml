@@ -1045,6 +1045,7 @@ en:
   forecast/autoselect: Select best statistical model from AutoARIMA, AutoETS, AutoCES, MSTL, etc.
   forecast/autoces: Automatic Complex Exponential Smoothing Model
   forecast/autoets: Automatic ETS (Error, Trend, Seasonality) Model
+  forecast/rwd: Random Walk with Drift Model 
   forecast/arima: Arima (Non-darts)
   forecast/expo: Probabilistic Exponential Smoothing
   forecast/theta: Theta Method
