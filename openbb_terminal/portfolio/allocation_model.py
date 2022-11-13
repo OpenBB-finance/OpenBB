@@ -353,9 +353,8 @@ def get_symbol_allocation(symbol: str, category: str) -> pd.DataFrame:
             row[1]: float(row[2].strip("%")) / 100
             for _, row in df_list[item_list].dropna(axis="columns").iterrows()
         }
-        allocation_df = pd.DataFrame.from_dict(allocation, orient="index").reset_index(
-            inplace=True
-        )
+        allocation_df = pd.DataFrame.from_dict(allocation, orient="index")
+        allocation_df.reset_index(inplace=True)
         allocation_df.columns = [category, "Benchmark"]
     else:
         allocation_df = pd.DataFrame()
