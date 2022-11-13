@@ -58,6 +58,7 @@ from openbb_terminal.forecast import (
     autoselect_view,
     autoces_view,
     autoets_view,
+    rwd_view,
     seasonalnaive_view,
     expo_model,
     expo_view,
@@ -116,6 +117,7 @@ class ForecastController(BaseController):
         "autoselect",
         "autoces",
         "autoets",
+        "rwd",
         "seasonalnaive",
         "expo",
         "theta",
@@ -257,6 +259,7 @@ class ForecastController(BaseController):
                 "autoselect",
                 "autoces",
                 "autoets",
+                "rwd",
                 "seasonalnaive",
                 "expo",
                 "theta",
@@ -339,6 +342,7 @@ class ForecastController(BaseController):
         mt.add_cmd("autoselect", self.files)
         mt.add_cmd("autoces", self.files)
         mt.add_cmd("autoets", self.files)
+        mt.add_cmd("rwd", self.files)
         mt.add_cmd("seasonalnaive", self.files)
         mt.add_cmd("expo", self.files)
         mt.add_cmd("theta", self.files)
@@ -1852,6 +1856,60 @@ class ForecastController(BaseController):
                 n_predict=ns_parser.n_days,
                 target_column=ns_parser.target_column,
                 seasonal_periods=ns_parser.seasonal_periods,
+                start_window=ns_parser.start_window,
+                forecast_horizon=ns_parser.n_days,
+                export=ns_parser.export,
+                residuals=ns_parser.residuals,
+                forecast_only=ns_parser.forecast_only,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
+                naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
+            )
+
+    # RWD Model
+    @log_start_end(log=logger)
+    def call_rwd(self, other_args: List[str]):
+        """Process rwd command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="rwd",
+            description="""
+                Perform Random Walk with Drift forecast:
+                https://nixtla.github.io/statsforecast/models.html#randomwalkwithdrift
+            """,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--target-dataset")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+            target_dataset=True,
+            target_column=True,
+            n_days=True,
+            seasonal="A",
+            periods=False,
+            window=True,
+            residuals=True,
+            forecast_only=True,
+            start=True,
+            end=True,
+            naive=True,
+            export_pred_raw=True,
+        )
+        # TODO Convert this to multi series
+        if ns_parser:
+            if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+
+            rwd_view.display_rwd_forecast(
+                data=self.datasets[ns_parser.target_dataset],
+                dataset_name=ns_parser.target_dataset,
+                n_predict=ns_parser.n_days,
+                target_column=ns_parser.target_column,
                 start_window=ns_parser.start_window,
                 forecast_horizon=ns_parser.n_days,
                 export=ns_parser.export,
