@@ -1,6 +1,5 @@
 """Fundamental Analysis Controller."""
 __docformat__ = "numpy"
-
 import argparse
 import logging
 from datetime import datetime, timedelta
@@ -31,6 +30,7 @@ from openbb_terminal.stocks.fundamental_analysis import (
     polygon_view,
     fmp_view,
     eodhd_view,
+    seeking_alpha_view,
 )
 
 # pylint: disable=inconsistent-return-statements,C0302,R0904
@@ -52,6 +52,8 @@ class FundamentalAnalysisController(StockBaseController):
         "metrics",
         "ratios",
         "growth",
+        "revfc",
+        "epsfc",
         "warnings",
         "data",
         "income",
@@ -226,6 +228,8 @@ class FundamentalAnalysisController(StockBaseController):
                 "-d": "--detail",
             }
             choices["dupont"]["--raw"] = {}
+            choices["revfc"] = {}
+            choices["epsfc"] = {}
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -249,6 +253,8 @@ class FundamentalAnalysisController(StockBaseController):
         mt.add_cmd("metrics")
         mt.add_cmd("ratios")
         mt.add_cmd("growth")
+        mt.add_cmd("revfc")
+        mt.add_cmd("epsfc")
         mt.add_cmd("warnings")
         mt.add_cmd("dcf")
         mt.add_cmd("dcfc")
@@ -661,6 +667,38 @@ class FundamentalAnalysisController(StockBaseController):
             yahoo_finance_view.display_mktcap(
                 self.ticker, start_date=ns_parser.start, export=ns_parser.export
             )
+
+    @log_start_end(log=logger)
+    def call_epsfc(self, other_args: List[str]):
+        """Process eps forecast command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="epsfc",
+            description="""Estimated EPS [Source: Seeking Alpha]""",
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args 
+        )
+
+        if ns_parser:
+            seeking_alpha_view.display_eps_estimates(self.ticker)
+
+    @log_start_end(log=logger)
+    def call_revfc(self, other_args: List[str]):
+        """Process revenue forecast command."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="revfc",
+            description="""Estimated revenue [Source: Seeking Alpha]""",
+        )
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args 
+        )
+
+        if ns_parser:
+            seeking_alpha_view.display_rev_estimates(self.ticker)
 
     @log_start_end(log=logger)
     def call_splits(self, other_args: List[str]):
