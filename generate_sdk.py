@@ -116,7 +116,7 @@ class Trailmap:
         """Creates the function definition to be used in SDK docs."""
         funcspec = inspect.getfullargspec(self.func_attr[key])
 
-        defintion = f"def {getattr(self, f'{key}_func').split('.')[-1]}("
+        definition = f"def {getattr(self, f'{key}_func').split('.')[-1]}("
         added_comma = False
         for arg in funcspec.args:
             annotation = (
@@ -131,11 +131,11 @@ class Trailmap:
                     .replace("pandas.core.frame.", "pd.")
                     .replace("pandas.core.series.", "pd.")
                 )
-            defintion += f"{arg}: {annotation}, "
+            definition += f"{arg}: {annotation}, "
             added_comma = True
 
         if added_comma:
-            defintion = defintion[:-2]
+            definition = definition[:-2]
 
         return_def = (
             funcspec.annotations["return"].__name__
@@ -144,8 +144,8 @@ class Trailmap:
             and funcspec.annotations["return"] is not None
             else "None"
         )
-        defintion = f"{defintion }) -> {return_def}:"
-        return defintion
+        definition = f"{definition }) -> {return_def}:"
+        return definition
 
 
 class BuildCategoryModelClasses:
