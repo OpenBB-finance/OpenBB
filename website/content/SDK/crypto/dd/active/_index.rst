@@ -16,8 +16,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 crypto.dd.active(
     symbol: str,
     interval: str = '24h',
-    start_date: int = 1262304000,
-    end_date: int = 1668362499,
+    start_date: str = '2010-01-01',
+    end_date: str = '2022-11-10',
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -33,12 +33,12 @@ crypto.dd.active(
 
     symbol : str
         Asset to search active addresses (e.g., BTC)
-    start_date : int
-        Initial date timestamp (e.g., 1_614_556_800)
-    end_date : int
-        End date timestamp (e.g., 1_614_556_800)
     interval : str
         Interval frequency (e.g., 24h)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
     chart: bool
        Flag to display chart
 
@@ -59,8 +59,8 @@ crypto.dd.active(
 {{< highlight python >}}
 crypto.dd.active(
     symbol: str,
-    start_date: int = 1577836800,
-    end_date: int = 1609459200,
+    start_date: str = '2010-01-01',
+    end_date: str = '2022-11-10',
     interval: str = '24h',
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
@@ -79,10 +79,10 @@ crypto.dd.active(
 
     symbol : str
         Asset to search active addresses (e.g., BTC)
-    start_date : int
-        Initial date timestamp (e.g., 1_614_556_800)
-    end_date : int
-        End date timestamp (e.g., 1_614_556_800)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
     interval : str
         Interval frequency (possible values are: 24h, 1w, 1month)
     export : str
