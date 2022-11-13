@@ -1,6 +1,3 @@
-# IMPORTATION STANDARD
-from datetime import datetime
-
 # IMPORTATION THIRDPARTY
 import pandas as pd
 import pytest
@@ -44,7 +41,7 @@ def test_get_historical(symbol, start_date, end_date, limit, recorder):
 @pytest.mark.vcr
 @pytest.mark.parametrize(
     "start, hour, number",
-    [(datetime(2021, 12, 21), 9, 10)],
+    [("2021-12-21", 9, 10)],
 )
 def test_get_trending(start, hour, number, recorder):
     df = sentimentinvestor_model.get_trending(start, hour, number)
@@ -64,7 +61,7 @@ def test_get_trending_status_400(mocker):
     mock_response.status_code = 400
 
     df = sentimentinvestor_model.get_trending(
-        start_date=datetime(2021, 12, 21),
+        start_date="2021-12-21",
         hour=9,
         number=10,
     )

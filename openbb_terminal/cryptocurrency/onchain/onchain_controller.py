@@ -441,7 +441,7 @@ class OnchainController(BaseController):
             "--until",
             dest="until",
             type=valid_date,
-            help="Final date. Default: 2021-01-01",
+            help=f"Final date. Default: {(datetime.now()).strftime('%Y-%m-%d')}",
             default=(datetime.now()).strftime("%Y-%m-%d"),
         )
 
@@ -451,8 +451,8 @@ class OnchainController(BaseController):
 
         if ns_parser:
             blockchain_view.display_btc_confirmed_transactions(
-                start_date=int(datetime.timestamp(ns_parser.since)),
-                end_date=int(datetime.timestamp(ns_parser.until)),
+                start_date=ns_parser.since.strftime("%Y-%m-%d"),
+                end_date=ns_parser.until.strftime("%Y-%m-%d"),
                 export=ns_parser.export,
             )
 
@@ -492,8 +492,8 @@ class OnchainController(BaseController):
 
         if ns_parser:
             blockchain_view.display_btc_circulating_supply(
-                start_date=int(datetime.timestamp(ns_parser.since)),
-                end_date=int(datetime.timestamp(ns_parser.until)),
+                start_date=ns_parser.since.strftime("%Y-%m-%d"),
+                end_date=ns_parser.until.strftime("%Y-%m-%d"),
                 export=ns_parser.export,
             )
 
@@ -559,8 +559,8 @@ class OnchainController(BaseController):
             display_hashrate(
                 symbol=ns_parser.coin,
                 interval=ns_parser.interval,
-                start_date=int(datetime.timestamp(ns_parser.since)),
-                end_date=int(datetime.timestamp(ns_parser.until)),
+                start_date=ns_parser.since.strftime("%Y-%m-%d"),
+                end_date=ns_parser.until.strftime("%Y-%m-%d"),
                 export=ns_parser.export,
             )
 
