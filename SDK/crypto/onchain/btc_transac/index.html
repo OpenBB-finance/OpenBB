@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  crypto.onchain.btc_transac() -&gt; pandas.core.frame.DataFrame .. raw:: html  Returns BTC confirmed transactions [Source: https://api.blockchain.info/] * **Returns** pd.DataFrame BTC confirmed transactions | .. raw:: html   Getting charts  crypto.onchain.btc_transac( start_date: int = 1262304000, end_date: int = 1668077823, export: str = &#39;&#39;, external_axes: Optional[List[matplotlib.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  crypto.onchain.btc_transac() -&gt; pandas.core.frame.DataFrame .. raw:: html  Returns BTC confirmed transactions [Source: https://api.blockchain.info/] * **Returns** pd.DataFrame BTC confirmed transactions | .. raw:: html   Getting charts  crypto.onchain.btc_transac( start_date: str = &#39;2010-01-01&#39;, end_date: str = &#39;2022-11-10&#39;, export: str = &#39;&#39;, external_axes: Optional[List[matplotlib.">
 
 
 
@@ -47629,8 +47629,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
     </h3>
 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">crypto</span><span class="o">.</span><span class="n">onchain</span><span class="o">.</span><span class="n">btc_transac</span><span class="p">(</span>
-    <span class="n">start_date</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1262304000</span><span class="p">,</span>
-    <span class="n">end_date</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1668077823</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2010-01-01&#39;</span><span class="p">,</span>
+    <span class="n">end_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2022-11-10&#39;</span><span class="p">,</span>
     <span class="n">export</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
     <span class="n">external_axes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
@@ -47644,10 +47644,10 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 * **Parameters**
 
-    since : int
-        Initial date timestamp (e.g., 1_609_459_200)
-    until : int
-        End date timestamp (e.g., 1_641_588_030)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional

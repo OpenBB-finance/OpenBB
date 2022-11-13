@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | .. raw:: html   Getting data  crypto.load( symbol: &#39;str&#39;, start_date: &#39;datetime&#39; = datetime.datetime( 2019, 11, 6, 10, 57, 3, 350989, chart: bool = False, ), interval: &#39;str&#39; = &#39;1440&#39;, exchange: &#39;str&#39; = &#39;binance&#39;, vs_currency: &#39;str&#39; = &#39;usdt&#39;, end_date: &#39;datetime&#39; = datetime.datetime( 2022, 11, 10, 10, 57, 3, 350990, chart: bool = False, ), source: &#39;str&#39; = &#39;CCXT&#39;, chart: bool = False, ) -&gt; &#39;pd.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | .. raw:: html   Getting data  crypto.load( symbol: &#39;str&#39;, start_date: &#39;Optional[Union[datetime, str]]&#39; = None, interval: &#39;str&#39; = &#39;1440&#39;, exchange: &#39;str&#39; = &#39;binance&#39;, vs_currency: &#39;str&#39; = &#39;usdt&#39;, end_date: &#39;Optional[Union[datetime, str]]&#39; = None, source: &#39;str&#39; = &#39;CCXT&#39;, chart: bool = False, ) -&gt; &#39;pd.DataFrame&#39; .. raw:: html  Load crypto currency to get data for * **Parameters** symbol: str Coin to get start_date: str or datetime, optional Start date to get data from with.">
 
 
 
@@ -47599,14 +47599,12 @@ code, img {
 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">crypto</span><span class="o">.</span><span class="n">load</span><span class="p">(</span>
     <span class="n">symbol</span><span class="p">:</span> <span class="s1">&#39;str&#39;</span><span class="p">,</span>
-    <span class="n">start_date</span><span class="p">:</span> <span class="s1">&#39;datetime&#39;</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span>
-    <span class="mi">2019</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">57</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">350989</span><span class="p">,</span> <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-<span class="p">),</span> <span class="n">interval</span><span class="p">:</span> <span class="s1">&#39;str&#39;</span> <span class="o">=</span> <span class="s1">&#39;1440&#39;</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="p">:</span> <span class="s1">&#39;Optional[Union[datetime, str]]&#39;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">interval</span><span class="p">:</span> <span class="s1">&#39;str&#39;</span> <span class="o">=</span> <span class="s1">&#39;1440&#39;</span><span class="p">,</span>
     <span class="n">exchange</span><span class="p">:</span> <span class="s1">&#39;str&#39;</span> <span class="o">=</span> <span class="s1">&#39;binance&#39;</span><span class="p">,</span>
     <span class="n">vs_currency</span><span class="p">:</span> <span class="s1">&#39;str&#39;</span> <span class="o">=</span> <span class="s1">&#39;usdt&#39;</span><span class="p">,</span>
-    <span class="n">end_date</span><span class="p">:</span> <span class="s1">&#39;datetime&#39;</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span>
-    <span class="mi">2022</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">57</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">350990</span><span class="p">,</span> <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-<span class="p">),</span> <span class="n">source</span><span class="p">:</span> <span class="s1">&#39;str&#39;</span> <span class="o">=</span> <span class="s1">&#39;CCXT&#39;</span><span class="p">,</span>
+    <span class="n">end_date</span><span class="p">:</span> <span class="s1">&#39;Optional[Union[datetime, str]]&#39;</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">source</span><span class="p">:</span> <span class="s1">&#39;str&#39;</span> <span class="o">=</span> <span class="s1">&#39;CCXT&#39;</span><span class="p">,</span>
     <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;pd.DataFrame&#39;</span></code></pre></div>
 
@@ -47620,8 +47618,8 @@ code, img {
 
     symbol: str
         Coin to get
-    start_date: datetime
-        The datetime to start at
+    start_date: str or datetime, optional
+        Start date to get data from with. - datetime or string format (YYYY-MM-DD)
     interval: str
         The interval between data points in minutes.
         Choose from: 1, 15, 30, 60, 240, 1440, 10080, 43200
@@ -47629,8 +47627,8 @@ code, img {
         The exchange to get data from.
     vs_currency: str
         Quote Currency (Defaults to usdt)
-    end_date: datetime
-       The datetime to end at
+    end_date: str or datetime, optional
+        End date to get data from with. - datetime or string format (YYYY-MM-DD)
     source: str
         The source of the data
         Choose from: CCXT, CoinGecko, YahooFinance

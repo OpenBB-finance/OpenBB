@@ -9,7 +9,7 @@
 
 
 
-    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  crypto.dd.active( symbol: str, interval: str = &#39;24h&#39;, start_date: int = 1262304000, end_date: int = 1668077823, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Returns active addresses of a certain symbol [Source: https://glassnode.com] * **Parameters** symbol : str Asset to search active addresses (e.">
+    <meta name="description" content=".. role:: python(code) :language: python :class: highlight | To obtain charts, make sure to add :python:`chart = True` as the last parameter. .. raw:: html   Getting data  crypto.dd.active( symbol: str, interval: str = &#39;24h&#39;, start_date: str = &#39;2010-01-01&#39;, end_date: str = &#39;2022-11-10&#39;, chart: bool = False, ) -&gt; pandas.core.frame.DataFrame .. raw:: html  Returns active addresses of a certain symbol [Source: https://glassnode.com] * **Parameters** symbol : str Asset to search active addresses (e.">
 
 
 
@@ -47610,8 +47610,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">crypto</span><span class="o">.</span><span class="n">dd</span><span class="o">.</span><span class="n">active</span><span class="p">(</span>
     <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">interval</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;24h&#39;</span><span class="p">,</span>
-    <span class="n">start_date</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1262304000</span><span class="p">,</span>
-    <span class="n">end_date</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1668077823</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2010-01-01&#39;</span><span class="p">,</span>
+    <span class="n">end_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2022-11-10&#39;</span><span class="p">,</span>
     <span class="n">chart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span></code></pre></div>
 
@@ -47626,12 +47626,12 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
     symbol : str
         Asset to search active addresses (e.g., BTC)
-    start_date : int
-        Initial date timestamp (e.g., 1_614_556_800)
-    end_date : int
-        End date timestamp (e.g., 1_614_556_800)
     interval : str
         Interval frequency (e.g., 24h)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
     chart: bool
        Flag to display chart
 
@@ -47651,8 +47651,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">crypto</span><span class="o">.</span><span class="n">dd</span><span class="o">.</span><span class="n">active</span><span class="p">(</span>
     <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">start_date</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1577836800</span><span class="p">,</span>
-    <span class="n">end_date</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1609459200</span><span class="p">,</span>
+    <span class="n">start_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2010-01-01&#39;</span><span class="p">,</span>
+    <span class="n">end_date</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;2022-11-10&#39;</span><span class="p">,</span>
     <span class="n">interval</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;24h&#39;</span><span class="p">,</span>
     <span class="n">export</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
     <span class="n">external_axes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_axes</span><span class="o">.</span><span class="n">Axes</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -47670,10 +47670,10 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
     symbol : str
         Asset to search active addresses (e.g., BTC)
-    start_date : int
-        Initial date timestamp (e.g., 1_614_556_800)
-    end_date : int
-        End date timestamp (e.g., 1_614_556_800)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
     interval : str
         Interval frequency (possible values are: 24h, 1w, 1month)
     export : str
