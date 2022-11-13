@@ -33,3 +33,4 @@ forecast.trans,openbb_terminal.forecast.trans_model.get_trans_data,openbb_termin
 forecast.tft,openbb_terminal.forecast.tft_model.get_tft_data,openbb_terminal.forecast.tft_view.display_tft_forecast
 forecast.nhits,openbb_terminal.forecast.nhits_model.get_nhits_data,openbb_terminal.forecast.nhits_view.display_nhits_forecast
 forecast.rwd,openbb_terminal.forecast.rwd_model.get_rwd_data,openbb_terminal.forecast.rwd_view.display_rwd_forecast
+forecast.autoselect,openbb_terminal.forecast.autoselect_model.get_autoselect_data,openbb_terminal.forecast.autoselect_view.display_autoselect_forecast
