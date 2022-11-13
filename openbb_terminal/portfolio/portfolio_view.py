@@ -154,7 +154,7 @@ def display_assets_allocation(
     tables: bool
         Whether to include separate asset allocation tables
     limit: int
-        The amount of assets you wish to show, by default this is set to 10.
+        The amount of assets you wish to show, by default this is set to 10
     """
 
     combined, portfolio_allocation, benchmark_allocation = get_assets_allocation(
@@ -186,7 +186,7 @@ def display_sectors_allocation(
     portfolio_engine: PortfolioEngine
         Instance of PortfolioEngine class
     limit: int
-        The amount of assets you wish to show, by default this is set to 10.
+        The amount of assets you wish to show, by default this is set to 10
     tables: bool
         Whether to include separate asset allocation tables
     """
@@ -220,7 +220,7 @@ def display_countries_allocation(
     portfolio_engine: PortfolioEngine
         Instance of PortfolioEngine class
     limit: int
-        The amount of assets you wish to show, by default this is set to 10.
+        The amount of assets you wish to show, by default this is set to 10
     tables: bool
         Whether to include separate asset allocation tables
     """
@@ -254,7 +254,7 @@ def display_regions_allocation(
     portfolio_engine: PortfolioEngine
         Instance of PortfolioEngine class
     limit: int
-        The amount of assets you wish to show, by default this is set to 10.
+        The amount of assets you wish to show, by default this is set to 10
     tables: bool
         Whether to include separate asset allocation tables
     """

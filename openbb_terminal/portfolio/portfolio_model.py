@@ -63,17 +63,21 @@ class PortfolioEngine:
         """Initialize PortfolioEngine class"""
 
         # Portfolio
+        self.empty = True
         self.tickers_list = None
         self.tickers: Dict[Any, Any] = {}
         self.inception_date = datetime.date(1970, 1, 1)
         self.historical_trade_data = pd.DataFrame()
-        self.returns = pd.DataFrame()
         self.itemized_value = pd.DataFrame()
-        self.portfolio_trades = pd.DataFrame()
         self.portfolio_value = None
         self.portfolio_historical_prices = pd.DataFrame()
-        self.empty = True
+        self.returns = pd.DataFrame()
+        self.portfolio_trades = pd.DataFrame()
         self.risk_free_rate = float(0)
+        self.portfolio_assets_allocation = pd.DataFrame()
+        self.portfolio_sectors_allocation = pd.DataFrame()
+        self.portfolio_regions_allocation = pd.DataFrame()
+        self.portfolio_countries_allocation = pd.DataFrame()
 
         # Benchmark
         self.benchmark_ticker: str = ""
@@ -81,13 +85,6 @@ class PortfolioEngine:
         self.benchmark_historical_prices = pd.DataFrame()
         self.benchmark_returns = pd.DataFrame()
         self.benchmark_trades = pd.DataFrame()
-
-        # Allocations
-        self.portfolio_assets_allocation = pd.DataFrame()
-        self.portfolio_sectors_allocation = pd.DataFrame()
-        self.portfolio_regions_allocation = pd.DataFrame()
-        self.portfolio_countries_allocation = pd.DataFrame()
-
         self.benchmark_assets_allocation = pd.DataFrame()
         self.benchmark_sectors_allocation = pd.DataFrame()
         self.benchmark_regions_allocation = pd.DataFrame()
@@ -2168,7 +2165,7 @@ def generate_portfolio(
     Returns
     -------
     PortfolioEngine
-        PortfolioEngine object
+        PortfolioEngine class instance, this will hold transactions and perform calculations
     """
 
     transactions = PortfolioEngine.read_transactions(transactions_file_path)
