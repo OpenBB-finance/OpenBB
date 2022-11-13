@@ -6,6 +6,7 @@ import os
 import re
 import subprocess
 from pathlib import Path
+from types import FunctionType
 from typing import Any, Dict, List, Optional, TextIO
 
 import pandas as pd
@@ -83,7 +84,7 @@ class Trailmap:
         self.lineon: Dict[str, int] = {}
         self.full_path: Dict[str, str] = {}
         self.func_def: Dict[str, str] = {}
-        self.func_attr: Dict[str, str] = {}
+        self.func_attr: Dict[str, FunctionType] = {}
         self.params: Dict[str, Dict[str, inspect.Parameter]] = {}
         self.get_docstrings()
 
@@ -96,13 +97,17 @@ class Trailmap:
                     importlib.import_module("openbb_terminal.sdk_core.sdk_init"),
                     func.split(".")[0],
                 )
-                self.func_attr[key] = (
-                    getattr(attr, func.split(".")[1])
-                    if "__wrapped__" not in dir(getattr(attr, func.split(".")[1]))
-                    else getattr(attr, func.split(".")[1]).__wrapped__
+                self.func_attr[key] = getattr(attr, func.split(".")[1])
+
+                add_juan = 0
+                if "__wrapped__" in dir(self.func_attr[key]):
+                    self.func_attr[key] = self.func_attr[key].__wrapped__
+                    add_juan = 1
+                self.lineon[key] = (
+                    inspect.getsourcelines(self.func_attr[key])[1] + add_juan
                 )
+
                 self.func_def[key] = self.get_definition(key)
-                self.lineon[key] = inspect.getsourcelines(self.func_attr[key])[1]
                 self.long_doc[key] = self.func_attr[key].__doc__
                 self.short_doc[key] = clean_attr_desc(self.func_attr[key])
                 full_path = (
