@@ -403,39 +403,37 @@ def get_portfolio_allocation(
         .groupby(by="Ticker")
         .agg({"Portfolio Value": "sum"})
     )
-    etf_global_country_alloc = pd.DataFrame()
+    etf_global_alloc = pd.DataFrame()
 
     # Loop through each etf and multiply sector weights by current value
     for item in etf_ticker_value.index.values:
 
-        etf_country_weight = get_symbol_allocation(symbol=item, category=category)
+        etf_weight = get_symbol_allocation(symbol=item, category=category)
+        etf_weight.set_index(category, inplace=True)
 
-        if etf_country_weight.empty:
-            etf_country_weight = pd.DataFrame.from_dict(
+        if etf_weight.empty:
+            etf_weight = pd.DataFrame.from_dict(
                 data={"Other": 1}, orient="index", columns=["Portfolio Value"]
             )
 
         etf_value = etf_ticker_value["Portfolio Value"][item]
 
         # Aggregate etf allocation by value
-        etf_ticker_country_alloc = etf_country_weight * etf_value
-        etf_global_country_alloc = pd.concat(
-            [etf_global_country_alloc, etf_ticker_country_alloc], axis=1
-        )
-        etf_global_country_alloc.fillna(0, inplace=True)
-        etf_global_country_alloc = etf_global_country_alloc.sum(axis=1)
+        etf_ticker_alloc = etf_weight
+        etf_ticker_alloc["Benchmark"] = etf_ticker_alloc["Benchmark"] * etf_value
+        etf_global_alloc = pd.concat([etf_global_alloc, etf_ticker_alloc], axis=1)
+        etf_global_alloc.fillna(0, inplace=True)
+        etf_global_alloc = etf_global_alloc.sum(axis=1)
 
     p_bar.n += 1
     p_bar.refresh()
 
-    etf_global_country_alloc = pd.DataFrame(
-        etf_global_country_alloc, columns=["Portfolio Value"]
-    )
+    etf_global_alloc = pd.DataFrame(etf_global_alloc, columns=["Portfolio Value"])
 
     # Aggregate allocation for stocks and crypto with ETFs
     allocation = pd.merge(
         allocation,
-        etf_global_country_alloc,
+        etf_global_alloc,
         how="outer",
         left_index=True,
         right_index=True,
