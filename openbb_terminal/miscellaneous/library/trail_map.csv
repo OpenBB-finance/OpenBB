@@ -310,6 +310,10 @@ portfolio.rsharpe,openbb_terminal.portfolio.portfolio_model.get_rolling_sharpe,o
 portfolio.rsort,openbb_terminal.portfolio.portfolio_model.get_rolling_sortino,openbb_terminal.portfolio.portfolio_view.display_rolling_sortino
 portfolio.rbeta,openbb_terminal.portfolio.portfolio_model.get_rolling_beta,openbb_terminal.portfolio.portfolio_view.display_rolling_beta
 portfolio.summary,openbb_terminal.portfolio.portfolio_model.get_summary,
+portfolio.alloc.assets,openbb_terminal.portfolio.portfolio_model.get_assets_allocation,
+portfolio.alloc.sectors,openbb_terminal.portfolio.portfolio_model.get_sectors_allocation,
+portfolio.alloc.countries,openbb_terminal.portfolio.portfolio_model.get_countries_allocation,
+portfolio.alloc.regions,openbb_terminal.portfolio.portfolio_model.get_regions_allocation,
 portfolio.metric.volatility,openbb_terminal.portfolio.portfolio_model.get_volatility,
 portfolio.metric.sharpe,openbb_terminal.portfolio.portfolio_model.get_sharpe_ratio,
 portfolio.metric.sortino,openbb_terminal.portfolio.portfolio_model.get_sortino_ratio,

@@ -16,7 +16,6 @@ from openbb_terminal.config_terminal import theme
 from openbb_terminal.config_plot import PLOT_DPI
 from openbb_terminal.portfolio.portfolio_model import (
     PortfolioEngine,
-    get_assets_allocation,
     get_transactions,
     get_daily_returns,
     get_performance_vs_benchmark,
@@ -34,6 +33,10 @@ from openbb_terminal.portfolio.portfolio_model import (
     get_skewness,
     get_kurtosis,
     get_stats,
+    get_assets_allocation,
+    get_sectors_allocation,
+    get_countries_allocation,
+    get_regions_allocation,
     get_volatility,
     get_sharpe_ratio,
     get_sortino_ratio,
@@ -139,8 +142,8 @@ def display_transactions(
 @log_start_end(log=logger)
 def display_assets_allocation(
     portfolio_engine=None,
-    include_separate_tables: bool = False,
     limit: int = 10,
+    tables: bool = False,
 ):
     """Display portfolio asset allocation compared to the benchmark
 
@@ -148,141 +151,181 @@ def display_assets_allocation(
     ----------
     portfolio_engine: PortfolioEngine
         Instance of PortfolioEngine class
-    include_separate_tables: bool
+    tables: bool
         Whether to include separate asset allocation tables
     limit: int
         The amount of assets you wish to show, by default this is set to 10.
     """
 
-    if include_separate_tables:
-        combined, portfolio_allocation, benchmark_allocation = get_assets_allocation(
-            portfolio_engine=portfolio_engine,
-            include_separate_tables=include_separate_tables,
-            limit=limit,
-        )
-    else:
-        combined = get_assets_allocation(
-            portfolio_engine=portfolio_engine,
-            include_separate_tables=include_separate_tables,
-            limit=limit,
-        )
-
-    print_rich_table(
-        combined,
-        headers=list(combined.columns),
-        title=f"Portfolio vs. Benchmark - Top {len(combined) if len(combined) < limit else limit} Assets Allocation",
-        floatfmt=["", ".2%", ".2%", ".2%"],
-        show_index=False,
+    combined, portfolio_allocation, benchmark_allocation = get_assets_allocation(
+        portfolio_engine=portfolio_engine,
+        limit=limit,
+        tables=True,
     )
 
-    if include_separate_tables:
-        console.print("")
-        print_rich_table(
-            portfolio_allocation,
-            headers=list(portfolio_allocation.columns),
-            title=f"Portfolio - Top {len(portfolio_allocation) if len(benchmark_allocation) < limit else limit} "
-            f"Assets Allocation",
-            floatfmt=[".2%", ".2%"],
-            show_index=False,
-        )
-        console.print("")
-        print_rich_table(
-            benchmark_allocation,
-            headers=list(benchmark_allocation.columns),
-            title=f"Benchmark - Top {len(benchmark_allocation) if len(benchmark_allocation) < limit else limit} "
-            f"Assets Allocation",
-            floatfmt=[".2%", ".2%"],
-            show_index=False,
-        )
+    display_category(
+        category="assets",
+        df0=combined,
+        df1=portfolio_allocation,
+        df2=benchmark_allocation,
+        tables=tables,
+        limit=limit,
+    )
 
 
 @log_start_end(log=logger)
-def display_category_allocation(
-    portfolio_allocation: pd.DataFrame,
-    benchmark_allocation: pd.DataFrame,
-    category: str = "sectors",
+def display_sectors_allocation(
+    portfolio_engine=None,
     limit: int = 10,
-    include_separate_tables: bool = False,
+    tables: bool = False,
 ):
-    """Display portfolio sector, country or region allocation compared to the benchmark
+    """Display portfolio sector allocation compared to the benchmark
 
     Parameters
     ----------
-    portfolio_allocation: pd.DataFrame
-        The allocation to the set category of the portfolio
-    benchmark_allocation: pd.DataFrame
-        The allocation to the set category of the benchmark
-    category: str
-        Whether you want to show sectors, countries or regions
+    portfolio_engine: PortfolioEngine
+        Instance of PortfolioEngine class
     limit: int
         The amount of assets you wish to show, by default this is set to 10.
-    include_separate_tables: bool
+    tables: bool
         Whether to include separate asset allocation tables
     """
 
-    if benchmark_allocation.empty:
-        console.print(f"[red]Benchmark data for {category} is empty.\n[/red]")
-        return
-
-    if portfolio_allocation.empty:
-        console.print(f"[red]Portfolio data for {category} is empty.\n[/red]")
-        return
-
-    benchmark_allocation = benchmark_allocation.iloc[:limit]
-    portfolio_allocation = portfolio_allocation.iloc[:limit]
-
-    combined = pd.DataFrame()
-
-    for category_name, allocation in portfolio_allocation.items():
-        if category_name in benchmark_allocation.index:
-            benchmark_allocation_value = float(
-                benchmark_allocation[benchmark_allocation.index == category_name]
-            )
-        else:
-            benchmark_allocation_value = 0
-
-        combined = combined.append(
-            [
-                [
-                    category_name,
-                    allocation,
-                    benchmark_allocation_value,
-                    allocation - benchmark_allocation_value,
-                ]
-            ]
-        )
-
-    combined.columns = [category.capitalize(), "Portfolio", "Benchmark", "Difference"]
-
-    print_rich_table(
-        combined.replace(0, "-"),
-        headers=list(combined.columns),
-        title=f"Portfolio vs. Benchmark - Top {len(combined) if len(combined) < limit else limit} "
-        f"{category.capitalize()} Allocation",
-        floatfmt=[".2f", ".2%", ".2%", ".2%"],
-        show_index=False,
+    combined, portfolio_allocation, benchmark_allocation = get_sectors_allocation(
+        portfolio_engine=portfolio_engine,
+        limit=limit,
+        tables=True,
     )
 
-    if include_separate_tables:
+    display_category(
+        category="sectors",
+        df0=combined,
+        df1=portfolio_allocation,
+        df2=benchmark_allocation,
+        tables=tables,
+        limit=limit,
+    )
 
+
+@log_start_end(log=logger)
+def display_countries_allocation(
+    portfolio_engine=None,
+    limit: int = 10,
+    tables: bool = False,
+):
+    """Display portfolio country allocation compared to the benchmark
+
+    Parameters
+    ----------
+    portfolio_engine: PortfolioEngine
+        Instance of PortfolioEngine class
+    limit: int
+        The amount of assets you wish to show, by default this is set to 10.
+    tables: bool
+        Whether to include separate asset allocation tables
+    """
+
+    combined, portfolio_allocation, benchmark_allocation = get_countries_allocation(
+        portfolio_engine=portfolio_engine,
+        limit=limit,
+        tables=True,
+    )
+
+    display_category(
+        category="countries",
+        df0=combined,
+        df1=portfolio_allocation,
+        df2=benchmark_allocation,
+        tables=tables,
+        limit=limit,
+    )
+
+
+@log_start_end(log=logger)
+def display_regions_allocation(
+    portfolio_engine=None,
+    limit: int = 10,
+    tables: bool = False,
+):
+    """Display portfolio region allocation compared to the benchmark
+
+    Parameters
+    ----------
+    portfolio_engine: PortfolioEngine
+        Instance of PortfolioEngine class
+    limit: int
+        The amount of assets you wish to show, by default this is set to 10.
+    tables: bool
+        Whether to include separate asset allocation tables
+    """
+
+    combined, portfolio_allocation, benchmark_allocation = get_regions_allocation(
+        portfolio_engine=portfolio_engine,
+        limit=limit,
+        tables=True,
+    )
+
+    display_category(
+        category="regions",
+        df0=combined,
+        df1=portfolio_allocation,
+        df2=benchmark_allocation,
+        tables=tables,
+        limit=limit,
+    )
+
+
+def display_category(**kwargs):
+    """Display category tables
+
+    Parameters
+    ----------
+    **kwargs
+    """
+
+    category = kwargs["category"]
+    combined = kwargs["df0"]
+    portfolio_allocation = kwargs["df1"]
+    benchmark_allocation = kwargs["df2"]
+    tables = kwargs["tables"]
+    limit = kwargs["limit"]
+
+    if tables:
+        print_rich_table(
+            combined.replace(0, "-"),
+            headers=list(combined.columns),
+            title=f"Portfolio vs. Benchmark - Top {len(combined) if len(combined) < limit else limit} "
+            f"{category.capitalize()} Allocation",
+            floatfmt=[".2f", ".2%", ".2%", ".2%"],
+            show_index=False,
+        )
+        console.print("")
         print_rich_table(
             pd.DataFrame(portfolio_allocation),
-            headers=list(["Allocation"]),
+            headers=["Symbol", "Allocation"],
             title=f"Portfolio - Top {len(portfolio_allocation) if len(portfolio_allocation) < limit else limit} "
             f"{category.capitalize()} Allocation",
-            floatfmt=[".2%"],
-            show_index=True,
+            floatfmt=["", ".2%"],
+            show_index=False,
         )
-
+        console.print("")
         print_rich_table(
             pd.DataFrame(benchmark_allocation),
-            headers=list(["Allocation"]),
+            headers=["Symbol", "Allocation"],
             title=f"Benchmark - Top {len(benchmark_allocation) if len(benchmark_allocation) < limit else limit} "
             f"{category.capitalize()} Allocation",
-            floatfmt=[".2%"],
-            show_index=True,
+            floatfmt=["", ".2%"],
+            show_index=False,
         )
-        console.print("\n")
+    else:
+        print_rich_table(
+            combined.replace(0, "-"),
+            headers=list(combined.columns),
+            title=f"Portfolio vs. Benchmark - Top {len(combined) if len(combined) < limit else limit} "
+            f"{category.capitalize()} Allocation",
+            floatfmt=[".2f", ".2%", ".2%", ".2%"],
+            show_index=False,
+        )
 
 
 @log_start_end(log=logger)

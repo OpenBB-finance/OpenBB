@@ -580,40 +580,26 @@ class PortfolioController(BaseController):
                 self.portfolio_name, self.benchmark_name
             ):
                 if ns_parser.agg == "assets":
-                    if self.portfolio.portfolio_assets_allocation.empty:
-                        self.portfolio.calculate_allocations("asset")
                     portfolio_view.display_assets_allocation(
                         self.portfolio,
-                        ns_parser.tables,
                         ns_parser.limit,
+                        ns_parser.tables,
                     )
                 elif ns_parser.agg == "sectors":
-                    if self.portfolio.portfolio_sectors_allocation.empty:
-                        self.portfolio.calculate_allocations("sector")
-                    portfolio_view.display_category_allocation(
-                        self.portfolio.portfolio_sectors_allocation,
-                        self.portfolio.benchmark_sectors_allocation,
-                        ns_parser.agg,
+                    portfolio_view.display_sectors_allocation(
+                        self.portfolio,
                         ns_parser.limit,
                         ns_parser.tables,
                     )
                 elif ns_parser.agg == "countries":
-                    if self.portfolio.portfolio_country_allocation.empty:
-                        self.portfolio.calculate_allocations("country")
-                    portfolio_view.display_category_allocation(
-                        self.portfolio.portfolio_country_allocation,
-                        self.portfolio.benchmark_country_allocation,
-                        ns_parser.agg,
+                    portfolio_view.display_countries_allocation(
+                        self.portfolio,
                         ns_parser.limit,
                         ns_parser.tables,
                     )
                 elif ns_parser.agg == "regions":
-                    if self.portfolio.portfolio_region_allocation.empty:
-                        self.portfolio.calculate_allocations("region")
-                    portfolio_view.display_category_allocation(
-                        self.portfolio.portfolio_region_allocation,
-                        self.portfolio.benchmark_region_allocation,
-                        ns_parser.agg,
+                    portfolio_view.display_regions_allocation(
+                        self.portfolio,
                         ns_parser.limit,
                         ns_parser.tables,
                     )

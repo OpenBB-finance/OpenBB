@@ -55,8 +55,6 @@ class PortfolioEngine:
     set_risk_free_rate: Sets risk free rate
 
     calculate_reserves: Takes dividends into account for returns calculation
-
-    calculate_allocations: Determine allocations based on assets, sectors, countries and region
     """
 
     def __init__(self, transactions: pd.DataFrame = pd.DataFrame()):
@@ -764,46 +762,6 @@ class PortfolioEngine:
         """Takes dividends into account for returns calculation"""
         # TODO: Add back cash dividends and deduct exchange costs
         console.print("Still has to be build.")
-
-    @log_start_end(log=logger)
-    def calculate_allocations(self, category: str):
-        """Determine allocations based on assets, sectors, countries and region.
-
-        Parameters
-        ----------
-        category: str
-            chosen allocation category from asset, sector, country or region
-        """
-
-        if category == "asset":
-            # Determine asset allocation
-            (
-                self.benchmark_assets_allocation,
-                self.portfolio_assets_allocation,
-            ) = allocation_model.get_assets_allocation(
-                self.benchmark_info, self.portfolio_trades
-            )
-        elif category == "sector":
-            # Determine sector allocation
-            (
-                self.benchmark_sectors_allocation,
-                self.portfolio_sectors_allocation,
-            ) = allocation_model.get_sector_allocation(
-                self.benchmark_info, self.portfolio_trades
-            )
-        elif category in ("country", "region"):
-            # Determine region and country allocations
-            (
-                self.benchmark_region_allocation,
-                self.benchmark_country_allocation,
-            ) = allocation_model.get_region_country_allocation(self.benchmark_ticker)
-
-            (
-                self.portfolio_region_allocation,
-                self.portfolio_country_allocation,
-            ) = allocation_model.get_portfolio_region_country_allocation(
-                self.portfolio_trades
-            )
 
 
 # Metrics
@@ -2217,10 +2175,37 @@ def set_risk_free_rate(portfolio_engine: PortfolioEngine, risk_free_rate: float)
     portfolio_engine.set_risk_free_rate(risk_free_rate=risk_free_rate)
 
 
+def join_allocation(
+    portfolio: pd.DataFrame, benchmark: pd.DataFrame, column: str
+) -> pd.DataFrame:
+    """Helper method to join portfolio and benchmark allocation by column
+
+    Parameters
+    ----------
+    portfolio: pd.DataFrame
+        Portfolio allocation
+    benchmark: pd.DataFrame
+        Benchmark allocation
+    column: str
+        Column to join DataFrames
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame with portfolio and benchmark allocations
+    """
+    combined = pd.merge(portfolio, benchmark, on=column, how="left")
+    combined["Difference"] = combined["Portfolio"] - combined["Benchmark"]
+    combined = combined.replace(np.nan, "-")
+    combined = combined.replace(0, "-")
+
+    return combined
+
+
 @log_start_end(log=logger)
 def get_assets_allocation(
     portfolio_engine: PortfolioEngine,
-    include_separate_tables: bool = False,
+    tables: bool = False,
     limit: int = 10,
 ) -> Union[pd.DataFrame, Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]]:
     """Display portfolio asset allocation compared to the benchmark
@@ -2229,30 +2214,136 @@ def get_assets_allocation(
     ----------
     portfolio_engine: PortfolioEngine
         PortfolioEngine object
-    include_separate_tables: bool
-        Whether to include separate asset allocation tables
+    tables: bool
+        Whether to include separate allocation tables
     limit: int
         The amount of assets you wish to show, by default this is set to 10.
 
     Returns
     -------
     Union[pd.DataFrame, Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]]
-        DataFrame with combined allocation plus individual allocation if include_separate_tables is `True`.
+        DataFrame with combined allocation plus individual allocation if tables is `True`.
     """
 
-    portfolio_allocation = portfolio_engine.portfolio_assets_allocation.iloc[:limit]
-    benchmark_allocation = portfolio_engine.benchmark_assets_allocation.iloc[:limit]
-
-    combined = pd.merge(
-        portfolio_allocation, benchmark_allocation, on="Symbol", how="left"
+    (
+        benchmark_assets_allocation,
+        portfolio_assets_allocation,
+    ) = allocation_model.get_assets_allocation(
+        portfolio_engine.benchmark_info, portfolio_engine.portfolio_trades
     )
-    combined["Difference"] = combined["Portfolio"] - combined["Benchmark"]
-    combined = combined.replace(np.nan, "-")
-    combined = combined.replace(0, "-")
 
-    if include_separate_tables:
+    benchmark_allocation = benchmark_assets_allocation.iloc[:limit]
+    portfolio_allocation = portfolio_assets_allocation.iloc[:limit]
+
+    combined = join_allocation(
+        portfolio_allocation, benchmark_allocation, "Symbol"
+    )
+
+    if tables:
         return combined, portfolio_allocation, benchmark_allocation
     return combined
+
+
+def get_sectors_allocation(
+    portfolio_engine=None,
+    limit: int = 10,
+    tables: bool = False,
+):
+    """Display portfolio sector allocation compared to the benchmark
+
+    Parameters
+    ----------
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine object
+    tables: bool
+        Whether to include separate allocation tables
+    limit: int
+        The amount of assets you wish to show, by default this is set to 10.
+
+    Returns
+    -------
+    Union[pd.DataFrame, Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]]
+        DataFrame with combined allocation plus individual allocation if tables is `True`.
+    """
+
+    (
+        benchmark_sectors_allocation,
+        portfolio_sectors_allocation,
+    ) = allocation_model.get_sectors_allocation(
+        portfolio_engine.benchmark_info, portfolio_engine.portfolio_trades
+    )
+
+    benchmark_allocation = benchmark_sectors_allocation.iloc[:limit]
+    portfolio_allocation = portfolio_sectors_allocation.iloc[:limit]
+
+    combined = join_allocation(portfolio_allocation, benchmark_allocation, "Sector")
+
+    if tables:
+        return combined, portfolio_allocation, benchmark_allocation
+    return combined
+
+
+def get_countries_allocation(
+    portfolio_engine=None,
+    limit: int = 10,
+    tables: bool = False,
+):
+    """Display portfolio country allocation compared to the benchmark
+
+    Parameters
+    ----------
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine object
+    tables: bool
+        Whether to include separate allocation tables
+    limit: int
+        The amount of assets you wish to show, by default this is set to 10.
+
+    Returns
+    -------
+    Union[pd.DataFrame, Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]]
+        DataFrame with combined allocation plus individual allocation if tables is `True`.
+    """
+
+    (
+        benchmark_region_allocation,
+        benchmark_country_allocation,
+    ) = allocation_model.get_region_country_allocation(
+        portfolio_engine.benchmark_ticker
+    )
+    # Must return country (bench, portf)
+
+
+def get_regions_allocation(
+    portfolio_engine=None,
+    limit: int = 10,
+    tables: bool = False,
+):
+    """Display portfolio region allocation compared to the benchmark
+
+    Parameters
+    ----------
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine object
+    tables: bool
+        Whether to include separate allocation tables
+    limit: int
+        The amount of assets you wish to show, by default this is set to 10.
+
+    Returns
+    -------
+    Union[pd.DataFrame, Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]]
+        DataFrame with combined allocation plus individual allocation if tables is `True`.
+    """
+
+    (
+        portfolio_region_allocation,
+        portfolio_country_allocation,
+    ) = allocation_model.get_portfolio_region_country_allocation(
+        portfolio_engine.portfolio_trades
+    )
+
+    # Must return region (bench, portf)
 
 
 # Old code

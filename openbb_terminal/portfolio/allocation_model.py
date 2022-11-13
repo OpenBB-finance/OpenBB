@@ -51,7 +51,7 @@ def get_assets_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFrame):
 
 
 @log_start_end(log=logger)
-def get_sector_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFrame):
+def get_sectors_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFrame):
     """Obtain the sector allocation of the benchmark and portfolio [Source: Yahoo Finance]
 
     Parameters
@@ -91,6 +91,9 @@ def get_sector_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFrame):
     ]
 
     benchmark_sectors_allocation.index = prettified
+    benchmark_sectors_allocation = pd.DataFrame(benchmark_sectors_allocation)
+    benchmark_sectors_allocation.reset_index(inplace=True)
+    benchmark_sectors_allocation.columns = ["Sector", "Benchmark"]
 
     # Define portfolio sector allocation
     # Aggregate sector value for stocks and crypto
@@ -182,6 +185,9 @@ def get_sector_allocation(benchmark_info: Dict, portfolio_trades: pd.DataFrame):
     )
 
     portfolio_sectors_allocation.fillna(0, inplace=True)
+    portfolio_sectors_allocation = pd.DataFrame(portfolio_sectors_allocation)
+    portfolio_sectors_allocation.reset_index(inplace=True)
+    portfolio_sectors_allocation.columns = ["Sector", "Portfolio"]
 
     p_bar.n += 1
     p_bar.refresh()
