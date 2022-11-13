@@ -795,6 +795,8 @@ main:
             ref: terminal/forecast/roc
           - name: rsi
             ref: terminal/forecast/rsi
+          - name: rwd
+            ref: terminal/forecast/rwd
           - name: season
             ref: terminal/forecast/season
           - name: seasonalnaive

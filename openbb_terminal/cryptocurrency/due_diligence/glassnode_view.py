@@ -1,6 +1,6 @@
 import logging
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import List, Optional
 
 import numpy as np
@@ -32,8 +32,8 @@ logger = logging.getLogger(__name__)
 @check_api_key(["API_GLASSNODE_KEY"])
 def display_active_addresses(
     symbol: str,
-    start_date: int = 1577836800,
-    end_date: int = 1609459200,
+    start_date: str = "2010-01-01",
+    end_date: str = datetime.now().strftime("%Y-%m-%d"),
     interval: str = "24h",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -45,10 +45,10 @@ def display_active_addresses(
     ----------
     symbol : str
         Asset to search active addresses (e.g., BTC)
-    start_date : int
-        Initial date timestamp (e.g., 1_614_556_800)
-    end_date : int
-        End date timestamp (e.g., 1_614_556_800)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
     interval : str
         Interval frequency (possible values are: 24h, 1w, 1month)
     export : str
@@ -93,8 +93,8 @@ def display_active_addresses(
 @check_api_key(["API_GLASSNODE_KEY"])
 def display_non_zero_addresses(
     symbol: str,
-    start_date: int = 1577836800,
-    end_date: int = 1609459200,
+    start_date: str = "2010-01-01",
+    end_date: str = datetime.now().strftime("%Y-%m-%d"),
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -105,10 +105,10 @@ def display_non_zero_addresses(
     ----------
     symbol : str
         Asset to search (e.g., BTC)
-    start_date : int
-        Initial date timestamp (e.g., 1_577_836_800)
-    end_date : int
-        End date timestamp (e.g., 1_609_459_200)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
@@ -152,8 +152,8 @@ def display_non_zero_addresses(
 def display_exchange_net_position_change(
     symbol: str,
     exchange: str = "binance",
-    start_date: int = 1577836800,
-    end_date: int = 1609459200,
+    start_date: str = "2010-01-01",
+    end_date: str = datetime.now().strftime("%Y-%m-%d"),
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -168,10 +168,10 @@ def display_exchange_net_position_change(
         Exchange to check net position change (possible values are: aggregated, binance,
         bittrex, coinex, gate.io, gemini, huobi, kucoin, poloniex, bibox, bigone, bitfinex,
         hitbtc, kraken, okex, bithumb, zb.com, cobinhood, bitmex, bitstamp, coinbase, coincheck, luno)
-    start_date : int
-        Initial date timestamp (e.g., 1_614_556_800)
-    end_date : int
-        End date timestamp (e.g., 1_614_556_800)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
     export : str
         Export dataframe data to csv,json,xlsx file
     external_axes : Optional[List[plt.Axes]], optional
@@ -230,8 +230,8 @@ def display_exchange_net_position_change(
 def display_exchange_balances(
     symbol: str,
     exchange: str = "binance",
-    start_date: int = 1577836800,
-    end_date: int = 1609459200,
+    start_date: str = "2010-01-01",
+    end_date: str = datetime.now().strftime("%Y-%m-%d"),
     percentage: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -247,10 +247,10 @@ def display_exchange_balances(
         Exchange to check net position change (possible values are: aggregated, binance, bittrex,
         coinex, gate.io, gemini, huobi, kucoin, poloniex, bibox, bigone, bitfinex, hitbtc, kraken,
         okex, bithumb, zb.com, cobinhood, bitmex, bitstamp, coinbase, coincheck, luno)
-    start_date : int
-        Initial date timestamp (e.g., 1_614_556_800)
-    end_date : int
-        End date timestamp (e.g., 1_614_556_800)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
     percentage : bool
         Show percentage instead of stacked value.
     export : str
@@ -306,8 +306,8 @@ def display_exchange_balances(
 @check_api_key(["API_GLASSNODE_KEY"])
 def display_hashrate(
     symbol: str,
-    start_date: int = int((datetime.now() - timedelta(days=365)).timestamp()),
-    end_date: int = int(datetime.now().timestamp()),
+    start_date: str = "2010-01-01",
+    end_date: str = datetime.now().strftime("%Y-%m-%d"),
     interval: str = "24h",
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
@@ -319,10 +319,10 @@ def display_hashrate(
     ----------
     symbol : str
         Blockchain to check mean hashrate (BTC or ETH)
-    start_date : int
-        Initial date timestamp (e.g., 1_614_556_800)
-    end_date : int
-        End date timestamp (e.g., 1_614_556_800)
+    start_date : str
+        Initial date, format YYYY-MM-DD
+    end_date : str
+        Final date, format YYYY-MM-DD
     interval : str
         Interval frequency (possible values are: 24, 1w, 1month)
     export : str

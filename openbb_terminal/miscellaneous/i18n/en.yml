@@ -1046,6 +1046,7 @@ en:
   forecast/autoces: Automatic Complex Exponential Smoothing Model
   forecast/autoets: Automatic ETS (Error, Trend, Seasonality) Model
   forecast/mstl: Multiple Seasonalities and Trend using Loess (MSTL) Model
+  forecast/rwd: Random Walk with Drift Model 
   forecast/arima: Arima (Non-darts)
   forecast/expo: Probabilistic Exponential Smoothing
   forecast/theta: Theta Method
