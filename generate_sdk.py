@@ -6,7 +6,6 @@ import os
 import re
 import subprocess
 from pathlib import Path
-from types import FunctionType
 from typing import Any, Dict, List, Optional, TextIO
 
 import pandas as pd
@@ -102,7 +101,7 @@ class Trailmap:
                     if "__wrapped__" not in dir(getattr(attr, func.split(".")[1]))
                     else getattr(attr, func.split(".")[1]).__wrapped__
                 )
-                self.func_def[key] = self.get_definition(self.func_attr[key])
+                self.func_def[key] = self.get_definition(key)
                 self.lineon[key] = inspect.getsourcelines(self.func_attr[key])[1]
                 self.long_doc[key] = self.func_attr[key].__doc__
                 self.short_doc[key] = clean_attr_desc(self.func_attr[key])
@@ -113,11 +112,12 @@ class Trailmap:
                 )
                 self.full_path[key] = f"openbb_terminal/{full_path}"
 
-    def get_definition(self, func_attr: FunctionType) -> str:
+    def get_definition(self, key: str) -> str:
         """Creates the function definition to be used in SDK docs."""
-        funcspec = inspect.getfullargspec(func_attr)
+        funcspec = inspect.getfullargspec(self.func_attr[key])
 
-        defintion = f"def {self.class_attr}("
+        defintion = f"def {getattr(self, f'{key}_func').split('.')[-1]}("
+        added_comma = False
         for arg in funcspec.args:
             annotation = (
                 funcspec.annotations[arg] if arg in funcspec.annotations else "Any"
@@ -132,6 +132,10 @@ class Trailmap:
                     .replace("pandas.core.series.", "pd.")
                 )
             defintion += f"{arg}: {annotation}, "
+            added_comma = True
+
+        if added_comma:
+            defintion = defintion[:-2]
 
         return_def = (
             funcspec.annotations["return"].__name__
@@ -140,7 +144,7 @@ class Trailmap:
             and funcspec.annotations["return"] is not None
             else "None"
         )
-        defintion = defintion[:-2] + f") -> {return_def}:"
+        defintion = f"{defintion }) -> {return_def}:"
         return defintion
 
 
