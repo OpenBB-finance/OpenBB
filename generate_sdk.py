@@ -78,7 +78,7 @@ class Trailmap:
         self.view_func: Optional[str] = f"lib.{view}" if view else None
         self.short_doc: Dict[str, Optional[str]] = {}
         self.long_doc: Dict[str, str] = {}
-        self.lineon: int | None = None
+        self.lineon: Dict[str, int] = {}
         self.params: Dict[str, Dict[str, inspect.Parameter]] = {}
         self.get_docstrings()
 
@@ -91,9 +91,9 @@ class Trailmap:
                     importlib.import_module("openbb_terminal.sdk_core.sdk_init"),
                     func.split(".")[0],
                 )
-                self.lineon = inspect.getsourcelines(getattr(attr, func.split(".")[1]))[
-                    1
-                ]
+                self.lineon[key] = inspect.getsourcelines(
+                    getattr(attr, func.split(".")[1])
+                )[1]
                 self.long_doc[key] = getattr(attr, func.split(".")[1]).__doc__
                 self.short_doc[key] = clean_attr_desc(getattr(attr, func.split(".")[1]))
 
