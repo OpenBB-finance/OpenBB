@@ -60,9 +60,9 @@ def get_function_meta(trailmap, trail_type: Literal["model", "view"]):
 def generate_markdown(meta):
     # head meta https://docusaurus.io/docs/markdown-features/head-metadata
     markdown = f"""---
-    title: {meta["name"]}
-    description: {meta["description"]}
-    ---\n"""
+title: {meta["name"]}
+description: {meta["description"]}
+---\n"""
     markdown += f"# {meta['name']}\n\n"
     markdown += f"## {meta['function_name']}\n\n"
     markdown += f"```python\n{meta['func_def']}\n```\n"
@@ -114,7 +114,6 @@ def main():
                 f.write(markdown)
         if view_meta:
             markdown = generate_markdown(view_meta)
-            print(trailmap.class_attr)
             filepath = (
                 "functions/"
                 + "/".join(trailmap.location_path)
