@@ -41,4 +41,4 @@ portfolio.load(
 * **Returns**
 
     PortfolioEngine
-        PortfolioEngine object
+        PortfolioEngine class instance, this will hold transactions and perform calculations

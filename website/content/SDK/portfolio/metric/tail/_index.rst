@@ -29,7 +29,6 @@ portfolio.metric.tail(
     portfolio_engine: PortfolioEngine
         PortfolioEngine class instance, this will hold transactions and perform calculations.
         Use `portfolio.load` to create a PortfolioEngine.
-
     window: int
         Interval used for rolling values
 
