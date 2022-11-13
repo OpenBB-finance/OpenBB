@@ -57,7 +57,12 @@ def get_function_meta(trailmap, trail_type: Literal["model", "view"]):
 
 
 def generate_markdown(meta):
-    markdown = f"# {meta['name']}\n\n"
+    # head meta https://docusaurus.io/docs/markdown-features/head-metadata
+    markdown = f"""---
+    title: {meta["name"]}
+    description: {meta["description"]}
+    ---\n"""
+    markdown += f"# {meta['name']}\n\n"
     markdown += f"## {meta['function_name']}\n\n"
     markdown += f"```python\n{meta['source_code']}\n```\n"
     markdown += f"[Source Code]({meta['source_code_url']})\n\n"
