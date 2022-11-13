@@ -9,6 +9,7 @@ from typing import Any, Dict, List, Tuple
 import pandas as pd
 import statsmodels
 import statsmodels.api as sm
+import linearmodels
 from linearmodels import PooledOLS
 from linearmodels.panel import (
     BetweenOLS,
@@ -32,9 +33,9 @@ logger = logging.getLogger(__name__)
 
 
 def get_regressions_results(
-    regression_type: str,
-    regression_variables: List[Tuple],
-    data: Dict[str, pd.DataFrame],
+    Y: pd.DataFrame,
+    X: pd.DataFrame,
+    regression_type: str = "OLS",
     entity_effects: bool = False,
     time_effects: bool = False,
 ) -> Tuple[DataFrame, Any, List[Any], Any]:
@@ -42,13 +43,12 @@ def get_regressions_results(
 
     Parameters
     ----------
+    Y: pd.DataFrame
+        Dataframe containing the dependent variable.
+    X: pd.DataFrame
+        Dataframe containing the independent variables.
     regression_type: str
         The type of regression you wish to execute.
-    regression_variables : list
-        The regressions variables entered where the first variable is
-        the dependent variable.
-    data : dict
-        A dictionary containing the datasets.
     entity_effects: bool
         Whether to apply Fixed Effects on entities.
     time_effects: bool
@@ -60,12 +60,12 @@ def get_regressions_results(
     the regression model.
     """
     regressions = {
-        # "OLS": lambda: get_ols(Y,X),
-        "POLS": lambda: get_pols(regression_variables, data),
-        "RE": lambda: get_re(regression_variables, data),
-        "BOLS": lambda: get_bols(regression_variables, data),
-        "FE": lambda: get_fe(regression_variables, data, entity_effects, time_effects),
-        "FDOLS": lambda: get_fdols(regression_variables, data),
+        "OLS": lambda: get_ols(Y, X),
+        "POLS": lambda: get_pols(Y, X),
+        "RE": lambda: get_re(Y, X),
+        "BOLS": lambda: get_bols(Y, X),
+        "FE": lambda: get_fe(Y, X, entity_effects, time_effects),
+        "FDOLS": lambda: get_fdols(Y, X),
     }
     if regression_type in regressions:
         return regressions[regression_type]()
@@ -201,151 +201,119 @@ def get_ols(
 
 
 @log_start_end(log=logger)
-def get_pols(
-    regression_variables: List[Tuple],
-    data: Dict[str, pd.DataFrame],
-) -> Tuple[DataFrame, Any, List[Any], Any]:
+def get_pols(Y: pd.DataFrame, X: pd.DataFrame) -> linearmodels.panel.model.PooledOLS:
     """PooledOLS is just plain OLS that understands that various panel data structures.
     It is useful as a base model. [Source: LinearModels]
 
     Parameters
     ----------
-    regression_variables : list
-        The regressions variables entered where the first variable is
-        the dependent variable.
-    data : dict
-        A dictionary containing the datasets.
+    Y: pd.DataFrame
+        Dataframe containing the dependent variable.
+    X: pd.DataFrame
+        Dataframe containing the independent variables.
 
     Returns
     -------
-    The dataset used, the dependent variable, the independent variable and
-    the Pooled OLS model.
+    PooledOLS model
     """
 
-    regression_df, dependent_variable, independent_variables = get_regression_data(
-        regression_variables, data, "POLS"
-    )
-
-    if regression_df.empty:
+    if Y.empty or X.empty:
         model = None
     else:
         with warnings.catch_warnings(record=True) as warning_messages:
-            exogenous = add_constant(regression_df[independent_variables])
-            model = PooledOLS(regression_df[dependent_variable], exogenous).fit()
-            console.print(model)
+            exogenous = add_constant(X)
+            model = PooledOLS(Y, exogenous).fit()
 
             if len(warning_messages) > 0:
                 console.print("Warnings:")
                 for warning in warning_messages:
                     console.print(f"[red]{warning.message}[/red]".replace("\n", ""))
 
-    return regression_df, dependent_variable, independent_variables, model
+    return model
 
 
 @log_start_end(log=logger)
-def get_re(
-    regression_variables: List[Tuple],
-    data: Dict[str, pd.DataFrame],
-) -> Tuple[DataFrame, Any, List[Any], Any]:
+def get_re(Y: pd.DataFrame, X: pd.DataFrame) -> linearmodels.panel.model.RandomEffects:
     """The random effects model is virtually identical to the pooled OLS model except that is accounts for the
     structure of the model and so is more efficient. Random effects uses a quasi-demeaning strategy which
     subtracts the time average of the within entity values to account for the common shock. [Source: LinearModels]
 
     Parameters
     ----------
-    regression_variables : list
-        The regressions variables entered where the first variable is
-        the dependent variable.
-    data : dict
-        A dictionary containing the datasets.
+    Y: pd.DataFrame
+        Dataframe containing the dependent variable.
+    X: pd.DataFrame
+        Dataframe containing the independent variables.
 
     Returns
     -------
-    The dataset used, the dependent variable, the independent variable and
-    the RandomEffects model.
+    RandomEffects model
     """
 
-    regression_df, dependent_variable, independent_variables = get_regression_data(
-        regression_variables, data, "RE"
-    )
-
-    if regression_df.empty:
+    if X.empty or Y.empty:
         model = None
     else:
         with warnings.catch_warnings(record=True) as warning_messages:
-            exogenous = add_constant(regression_df[independent_variables])
-            model = RandomEffects(regression_df[dependent_variable], exogenous).fit()
-            console.print(model)
+            exogenous = add_constant(X)
+            model = RandomEffects(Y, exogenous).fit()
 
             if len(warning_messages) > 0:
                 console.print("Warnings:")
                 for warning in warning_messages:
                     console.print(f"[red]{warning.message}[/red]".replace("\n", ""))
 
-    return regression_df, dependent_variable, independent_variables, model
+    return model
 
 
 @log_start_end(log=logger)
-def get_bols(
-    regression_variables: List[Tuple],
-    data: Dict[str, pd.DataFrame],
-) -> Tuple[DataFrame, Any, List[Any], Any]:
+def get_bols(Y: pd.DataFrame, X: pd.DataFrame) -> linearmodels.panel.model.BetweenOLS:
     """The between estimator is an alternative, usually less efficient estimator, can can be used to
      estimate model parameters. It is particular simple since it first computes the time averages of
      y and x and then runs a simple regression using these averages. [Source: LinearModels]
 
     Parameters
     ----------
-    regression_variables : list
-        The regressions variables entered where the first variable is
-        the dependent variable.
-    data : dict
-        A dictionary containing the datasets.
+    Y: pd.DataFrame
+        Dataframe containing the dependent variable.
+    X: pd.DataFrame
+        Dataframe containing the independent variables.
 
     Returns
     -------
-    The dataset used, the dependent variable, the independent variable and
-    the Between OLS model.
+    BetweenOLS model
     """
-
-    regression_df, dependent_variable, independent_variables = get_regression_data(
-        regression_variables, data, "BOLS"
-    )
-
-    if regression_df.empty:
+    if Y.empty or X.empty:
         model = None
     else:
         with warnings.catch_warnings(record=True) as warning_messages:
-            exogenous = add_constant(regression_df[independent_variables])
-            model = BetweenOLS(regression_df[dependent_variable], exogenous).fit()
-            console.print(model)
+            exogenous = add_constant(X)
+            model = BetweenOLS(Y, exogenous).fit()
 
             if len(warning_messages) > 0:
                 console.print("Warnings:")
                 for warning in warning_messages:
                     console.print(f"[red]{warning.message}[/red]".replace("\n", ""))
 
-    return regression_df, dependent_variable, independent_variables, model
+    return model
 
 
 @log_start_end(log=logger)
 def get_fe(
-    regression_variables: List[Tuple],
-    data: Dict[str, pd.DataFrame],
+    Y: pd.DataFrame,
+    X: pd.DataFrame,
     entity_effects: bool = False,
     time_effects: bool = False,
-) -> Tuple[DataFrame, Any, List[Any], Any]:
+) -> linearmodels.panel.model.FixedEffects:
     """When effects are correlated with the regressors the RE and BE estimators are not consistent.
     The usual solution is to use Fixed Effects which are called entity_effects when applied to
     entities and time_effects when applied to the time dimension. [Source: LinearModels]
 
     Parameters
     ----------
-    regression_variables : list
-        The regressions variables entered where the first variable is
-        the dependent variable.
-    data : dict
-        A dictionary containing the datasets.
+    Y: pd.DataFrame
+        Dataframe containing the dependent variable.
+    X: pd.DataFrame
+        Dataframe containing the independent variables.
     entity_effects : bool
         Whether to include entity effects
     time_effects : bool
@@ -353,40 +321,32 @@ def get_fe(
 
     Returns
     -------
-    The dataset used, the dependent variable, the independent variable and
-    the OLS model.
+    PanelOLS model with Fixed Effects
     """
-
-    regression_df, dependent_variable, independent_variables = get_regression_data(
-        regression_variables, data, "FE"
-    )
-
-    if regression_df.empty:
+    if X.empty or Y.empty:
         model = None
     else:
         with warnings.catch_warnings(record=True) as warning_messages:
-            exogenous = add_constant(regression_df[independent_variables])
+            exogenous = add_constant(X)
             model = PanelOLS(
-                regression_df[dependent_variable],
+                Y,
                 exogenous,
                 entity_effects=entity_effects,
                 time_effects=time_effects,
             ).fit()
-            console.print(model)
 
             if len(warning_messages) > 0:
                 console.print("Warnings:")
                 for warning in warning_messages:
                     console.print(f"[red]{warning.message}[/red]".replace("\n", ""))
 
-    return regression_df, dependent_variable, independent_variables, model
+    return model
 
 
 @log_start_end(log=logger)
 def get_fdols(
-    regression_variables: List[Tuple],
-    data: Dict[str, pd.DataFrame],
-) -> Tuple[DataFrame, Any, List[Any], Any]:
+    Y: pd.DataFrame, X: pd.DataFrame
+) -> linearmodels.panel.model.FirstDifferenceOLS:
     """First differencing is an alternative to using fixed effects when there might be correlation.
     When using first differences, time-invariant variables must be excluded. Additionally,
     only one linear time-trending variable can be included since this will look like a constant.
@@ -395,41 +355,31 @@ def get_fdols(
 
     Parameters
     ----------
-    regression_variables : list
-        The regressions variables entered where the first variable is
-        the dependent variable.
-    data : dict
-        A dictionary containing the datasets.
+    Y: pd.DataFrame
+        Dataframe containing the dependent variable.
+    X: pd.DataFrame
+        Dataframe containing the independent variables.
 
     Returns
     -------
-    The dataset used, the dependent variable, the independent variable and
-    the OLS model.
+    First Difference OLS model
     """
-
-    regression_df, dependent_variable, independent_variables = get_regression_data(
-        regression_variables, data, "FDOLS"
-    )
-
-    if regression_df.empty:
+    if X.empty or Y.empty:
         model = None
     else:
         with warnings.catch_warnings(record=True) as warning_messages:
-            model = FirstDifferenceOLS(
-                regression_df[dependent_variable], regression_df[independent_variables]
-            ).fit()
-            console.print(model)
+            model = FirstDifferenceOLS(Y, X).fit()
 
             if len(warning_messages) > 0:
                 console.print("Warnings:")
                 for warning in warning_messages:
                     console.print(f"[red]{warning.message}[/red]".replace("\n", ""))
 
-    return regression_df, dependent_variable, independent_variables, model
+    return model
 
 
 @log_start_end(log=logger)
-def get_comparison(regressions, export: str = ""):
+def get_comparison(regressions: Dict, export: str = ""):
     """Compare regression results between Panel Data regressions.
 
     Parameters

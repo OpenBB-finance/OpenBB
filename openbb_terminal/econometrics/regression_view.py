@@ -21,8 +21,8 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def display_panel(
-    data: Dict[str, pd.DataFrame],
-    regression_variables: List[Tuple],
+    Y:pd.DataFrame,
+    X:pd.DataFrame,
     regression_type: str = "OLS",
     entity_effects: bool = False,
     time_effects: bool = False,
@@ -53,18 +53,14 @@ def display_panel(
     The dataset used, the dependent variable, the independent variable and
     the regression model.
     """
-    (
-        regression_df,
-        dependent,
-        independent,
-        model,
-    ) = regression_model.get_regressions_results(
+    model = regression_model.get_regressions_results(
+        Y,
+        X,
         regression_type,
-        regression_variables,
-        data,
         entity_effects,
         time_effects,
     )
+    console.print(model)
 
     if export:
         results_as_html = model.summary.tables[1].as_html()
@@ -77,7 +73,7 @@ def display_panel(
             df,
         )
 
-    return regression_df, dependent, independent, model
+    return model
 
 
 @log_start_end(log=logger)

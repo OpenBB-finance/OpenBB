@@ -1471,7 +1471,7 @@ class EconometricsController(BaseController):
                             )
 
                     # Ensure that OLS is always ran to be able to perform tests
-                    regression_types = ["OLS", ns_parser.type.upper()]
+                    regression_types = [ns_parser.type.upper(), "OLS"]
 
                     for regression in regression_types:
                         regression_name = regression
@@ -1482,18 +1482,29 @@ class EconometricsController(BaseController):
                                 regression_name = regression_name + "_IE"
 
                         (
-                            self.regression[regression_name]["data"],
-                            self.regression[regression_name]["dependent"],
-                            self.regression[regression_name]["independent"],
-                            self.regression[regression_name]["model"],
-                        ) = regression_view.display_panel(
+                            regression_df,
+                            dependent_variable,
+                            independent_variables,
+                        ) = regression_model.get_regression_data(
+                            [ns_parser.dependent] + ns_parser.independent,
                             self.datasets,
-                            regression_vars,
+                            regression,
+                        )
+                        self.regression[regression]["data"] = regression_df
+                        self.regression[regression]["dependent"] = dependent_variable
+                        self.regression[regression][
+                            "independent"
+                        ] = independent_variables
+                        self.regression[regression_name][
+                            "model"
+                        ] = regression_view.display_panel(
+                            regression_df[dependent_variable],
+                            regression_df[independent_variables],
                             regression,
                             ns_parser.entity_effects,
                             ns_parser.time_effects,
+                            ns_parser.export,
                         )
-                        console.print()
             else:
                 console.print(
                     f"{ns_parser.dependent} not in {','.join(self.choices['regressions'])}\n"
