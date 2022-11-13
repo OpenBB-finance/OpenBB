@@ -10,6 +10,7 @@ def get_function_meta(trailmap, trail_type: Literal["model", "view"]):
     doc_parsed = parse(trailmap.long_doc[trail_type])
     line = trailmap.lineon[trail_type]
     path = trailmap.full_path[trail_type]
+    func_def = trailmap.func_def[trail_type]
     source_code_url = (
         "https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/"
         + path
@@ -47,8 +48,8 @@ def get_function_meta(trailmap, trail_type: Literal["model", "view"]):
     return {
         "name": trailmap.class_attr,
         "function_name": function_name,
+        "func_def": func_def,
         "source_code_url": source_code_url,
-        "source_code": "def get_stars_history(repo: str):",
         "description": doc_parsed.short_description,
         "params": params,
         "returns": returns,
@@ -64,7 +65,7 @@ def generate_markdown(meta):
     ---\n"""
     markdown += f"# {meta['name']}\n\n"
     markdown += f"## {meta['function_name']}\n\n"
-    markdown += f"```python\n{meta['source_code']}\n```\n"
+    markdown += f"```python\n{meta['func_def']}\n```\n"
     markdown += f"[Source Code]({meta['source_code_url']})\n\n"
     markdown += f"Description: {meta['description']}\n\n"
     markdown += "## Parameters\n\n"
@@ -93,10 +94,12 @@ def generate_markdown(meta):
 
 
 def main():
+    print("Loading trailmaps...")
     trailmaps = get_trailmaps()
+    print("Generating markdown files...")
     for trailmap in trailmaps:
         model_meta = get_function_meta(trailmap, "model") if trailmap.model else None
-        # view_meta = get_function_meta(trailmap, "view") if trailmap.view else None
+        view_meta = get_function_meta(trailmap, "view") if trailmap.view else None
         if model_meta:
             markdown = generate_markdown(model_meta)
             filepath = (
@@ -109,6 +112,20 @@ def main():
             os.makedirs(os.path.dirname(filepath), exist_ok=True)
             with open(filepath, "w") as f:
                 f.write(markdown)
+        if view_meta:
+            markdown = generate_markdown(view_meta)
+            print(trailmap.class_attr)
+            filepath = (
+                "functions/"
+                + "/".join(trailmap.location_path)
+                + "/"
+                + trailmap.class_attr
+                + "_view.md"
+            )
+            os.makedirs(os.path.dirname(filepath), exist_ok=True)
+            with open(filepath, "w") as f:
+                f.write(markdown)
+    print("Markdown files generated, check the functions folder")
 
 
 if __name__ == "__main__":
