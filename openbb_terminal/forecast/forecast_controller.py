@@ -1706,7 +1706,7 @@ class ForecastController(BaseController):
             ns_parser.type,
             ns_parser.target_dataset,
         )
-    
+
     # Best Statistical Model
     @log_start_end(log=logger)
     def call_autoselect(self, other_args: List[str]):
@@ -1798,7 +1798,7 @@ class ForecastController(BaseController):
         if ns_parser:
             if not helpers.check_parser_input(ns_parser, self.datasets):
                 return
-            
+
             autoarima_view.display_autoarima_forecast(
                 data=self.datasets[ns_parser.target_dataset],
                 dataset_name=ns_parser.target_dataset,
