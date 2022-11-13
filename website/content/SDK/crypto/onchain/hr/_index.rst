@@ -91,3 +91,4 @@ crypto.onchain.hr(
         External axes (2 axes are expected in the list), by default None
     chart: bool
        Flag to display chart
+

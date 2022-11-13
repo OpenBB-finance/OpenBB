@@ -90,3 +90,4 @@ stocks.ba.trend(
         Format to export data
     chart: bool
        Flag to display chart
+

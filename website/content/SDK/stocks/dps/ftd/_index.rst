@@ -58,7 +58,7 @@ stocks.dps.ftd(
 {{< highlight python >}}
 stocks.dps.ftd(
     symbol: str,
-    data: pandas.core.frame.DataFrame,
+    data: pandas.core.frame.DataFrame = None,
     start_date: str = None,
     end_date: str = None,
     limit: int = 0,
