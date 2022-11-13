@@ -9,7 +9,6 @@ from typing import Any, Dict, List, Tuple
 import pandas as pd
 import statsmodels
 import statsmodels.api as sm
-import linearmodels
 from linearmodels import PooledOLS
 from linearmodels.panel import (
     BetweenOLS,
@@ -38,26 +37,63 @@ def get_regressions_results(
     regression_type: str = "OLS",
     entity_effects: bool = False,
     time_effects: bool = False,
-) -> Tuple[DataFrame, Any, List[Any], Any]:
+) -> Any:
     """Based on the regression type, this function decides what regression to run.
 
-    Parameters
-    ----------
-    Y: pd.DataFrame
-        Dataframe containing the dependent variable.
-    X: pd.DataFrame
-        Dataframe containing the independent variables.
-    regression_type: str
-        The type of regression you wish to execute.
-    entity_effects: bool
-        Whether to apply Fixed Effects on entities.
-    time_effects: bool
-        Whether to apply Fixed Effects on time.
+        Parameters
+        ----------
+        Y: pd.DataFrame
+            Dataframe containing the dependent variable.
+        X: pd.DataFrame
+            Dataframe containing the independent variables.
+        regression_type: str
+            The type of regression you wish to execute.
+        entity_effects: bool
+            Whether to apply Fixed Effects on entities.
+        time_effects: bool
+            Whether to apply Fixed Effects on time.
 
-    Returns
-    -------
-    The dataset used, the dependent variable, the independent variable and
-    the regression model.
+        Returns
+        -------
+        A regression model
+
+        Examples
+        --------
+        >>> from openbb_terminal.sdk import openbb
+        >>> df = openbb.econometrics.load("wage_panel")
+        >>> df = df.set_index(["nr","year"])
+        >>> X = df[["exper","educ","union"]]
+        >>> Y = df["lwage"]
+        >>> pooled_ols_model = openbb.econometrics.panel(Y,X,"POLS")
+        >>> print(pooled_ols_model.summary)
+                              PooledOLS Estimation Summary
+    ================================================================================
+    Dep. Variable:                  lwage   R-squared:                        0.1634
+    Estimator:                  PooledOLS   R-squared (Between):              0.1686
+    No. Observations:                4360   R-squared (Within):               0.1575
+    Date:                Sun, Nov 13 2022   R-squared (Overall):              0.1634
+    Time:                        13:04:02   Log-likelihood                   -3050.4
+    Cov. Estimator:            Unadjusted
+                                            F-statistic:                      283.68
+    Entities:                         545   P-value                           0.0000
+    Avg Obs:                       8.0000   Distribution:                  F(3,4356)
+    Min Obs:                       8.0000
+    Max Obs:                       8.0000   F-statistic (robust):             283.68
+                                            P-value                           0.0000
+    Time periods:                       8   Distribution:                  F(3,4356)
+    Avg Obs:                       545.00
+    Min Obs:                       545.00
+    Max Obs:                       545.00
+
+                                 Parameter Estimates
+    ==============================================================================
+                Parameter  Std. Err.     T-stat    P-value    Lower CI    Upper CI
+    ------------------------------------------------------------------------------
+    const         -0.0308     0.0620    -0.4965     0.6196     -0.1523      0.0908
+    exper          0.0561     0.0028     20.220     0.0000      0.0507      0.0616
+    educ           0.1080     0.0045     24.034     0.0000      0.0992      0.1168
+    union          0.1777     0.0172     10.344     0.0000      0.1441      0.2114
+    ==============================================================================
     """
     regressions = {
         "OLS": lambda: get_ols(Y, X),
@@ -137,7 +173,7 @@ def get_regression_data(
 def get_ols(
     Y: pd.DataFrame,
     X: pd.DataFrame,
-) -> statsmodels.regression.linear_model.RegressionResultsWrapper:
+) -> Any:
     """Performs an OLS regression on timeseries data. [Source: Statsmodels]
 
         Parameters
@@ -201,7 +237,7 @@ def get_ols(
 
 
 @log_start_end(log=logger)
-def get_pols(Y: pd.DataFrame, X: pd.DataFrame) -> linearmodels.panel.model.PooledOLS:
+def get_pols(Y: pd.DataFrame, X: pd.DataFrame) -> Any:
     """PooledOLS is just plain OLS that understands that various panel data structures.
     It is useful as a base model. [Source: LinearModels]
 
@@ -233,7 +269,7 @@ def get_pols(Y: pd.DataFrame, X: pd.DataFrame) -> linearmodels.panel.model.Poole
 
 
 @log_start_end(log=logger)
-def get_re(Y: pd.DataFrame, X: pd.DataFrame) -> linearmodels.panel.model.RandomEffects:
+def get_re(Y: pd.DataFrame, X: pd.DataFrame) -> Any:
     """The random effects model is virtually identical to the pooled OLS model except that is accounts for the
     structure of the model and so is more efficient. Random effects uses a quasi-demeaning strategy which
     subtracts the time average of the within entity values to account for the common shock. [Source: LinearModels]
@@ -266,7 +302,7 @@ def get_re(Y: pd.DataFrame, X: pd.DataFrame) -> linearmodels.panel.model.RandomE
 
 
 @log_start_end(log=logger)
-def get_bols(Y: pd.DataFrame, X: pd.DataFrame) -> linearmodels.panel.model.BetweenOLS:
+def get_bols(Y: pd.DataFrame, X: pd.DataFrame) -> Any:
     """The between estimator is an alternative, usually less efficient estimator, can can be used to
      estimate model parameters. It is particular simple since it first computes the time averages of
      y and x and then runs a simple regression using these averages. [Source: LinearModels]
@@ -303,7 +339,7 @@ def get_fe(
     X: pd.DataFrame,
     entity_effects: bool = False,
     time_effects: bool = False,
-) -> linearmodels.panel.model.FixedEffects:
+) -> Any:
     """When effects are correlated with the regressors the RE and BE estimators are not consistent.
     The usual solution is to use Fixed Effects which are called entity_effects when applied to
     entities and time_effects when applied to the time dimension. [Source: LinearModels]
@@ -344,9 +380,7 @@ def get_fe(
 
 
 @log_start_end(log=logger)
-def get_fdols(
-    Y: pd.DataFrame, X: pd.DataFrame
-) -> linearmodels.panel.model.FirstDifferenceOLS:
+def get_fdols(Y: pd.DataFrame, X: pd.DataFrame) -> Any:
     """First differencing is an alternative to using fixed effects when there might be correlation.
     When using first differences, time-invariant variables must be excluded. Additionally,
     only one linear time-trending variable can be included since this will look like a constant.
