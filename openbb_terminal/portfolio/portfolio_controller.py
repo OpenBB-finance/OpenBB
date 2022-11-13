@@ -22,7 +22,7 @@ from openbb_terminal.helper_funcs import (
 from openbb_terminal.menu import session
 from openbb_terminal.core.config.paths import MISCELLANEOUS_DIRECTORY
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.portfolio import portfolio_model
+from openbb_terminal.portfolio.portfolio_model import generate_portfolio
 from openbb_terminal.portfolio import statics
 from openbb_terminal.portfolio import portfolio_view
 from openbb_terminal.portfolio import portfolio_helper
@@ -139,9 +139,7 @@ class PortfolioController(BaseController):
         self.original_benchmark_name = ""
         self.risk_free_rate = 0
         self.portlist: List[str] = os.listdir(self.DEFAULT_HOLDINGS_PATH)
-        self.portfolio: portfolio_model.PortfolioEngine = (
-            portfolio_model.PortfolioEngine()
-        )
+        self.portfolio = None
 
         if session and obbff.USE_PROMPT_TOOLKIT:
             self.update_choices()
@@ -442,7 +440,7 @@ class PortfolioController(BaseController):
             else:
                 file_location = ns_parser.file  # type: ignore
 
-            self.portfolio = portfolio_model.generate_portfolio(
+            self.portfolio = generate_portfolio(
                 transactions_file_path=str(file_location),
                 benchmark_symbol="SPY",
                 risk_free_rate=ns_parser.risk_free_rate / 100,

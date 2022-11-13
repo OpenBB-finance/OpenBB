@@ -12,10 +12,47 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
+def get_allocation(
+    category: str, benchmark_info: Dict, portfolio_trades: pd.DataFrame
+) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """Get category allocation for benchmark and portfolio
+
+    Parameters
+    ----------
+    category: str
+        Chosen category: Asset, Sector, Country or Region
+    benchmark_info: Dict
+        Dictionary containing Yahoo Finance information
+    portfolio_trades: pd.DataFrame
+        Object containing trades made within the portfolio
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame with the top 10 of the benchmark's asset allocations
+    pd.DataFrame
+        DataFrame with the portfolio's asset allocations
+    """
+
+    if category == "Asset":
+        return get_assets_allocation(benchmark_info, portfolio_trades)
+    if category == "Sector":
+        return get_sectors_allocation(benchmark_info, portfolio_trades)
+    if category == "Country":
+        return get_countries_allocation(benchmark_info, portfolio_trades)
+    if category == "Region":
+        return get_regions_allocation(benchmark_info, portfolio_trades)
+    console.print(
+        "Category not available. Choose from: Asset, Sector, Country or Region."
+    )
+    return pd.DataFrame(), pd.DataFrame()
+
+
+@log_start_end(log=logger)
 def get_assets_allocation(
     benchmark_info: Dict, portfolio_trades: pd.DataFrame
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
-    """Obtain the assets allocation of the benchmark and portfolio [Source: Yahoo Finance]
+    """Get assets allocation for benchmark and portfolio [Source: Yahoo Finance]
 
     Parameters
     ----------
@@ -56,7 +93,7 @@ def get_assets_allocation(
 def get_sectors_allocation(
     benchmark_info: Dict, portfolio_trades: pd.DataFrame
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
-    """Obtain the sector allocation of the benchmark and portfolio [Source: Yahoo Finance]
+    """Get sector allocation for benchmark and portfolio [Source: Yahoo Finance]
 
     Parameters
     ----------
@@ -110,7 +147,7 @@ def get_sectors_allocation(
     p_bar.refresh()
 
     # Aggregate sector value for ETFs
-    # Start by getting value by isin/ticker
+    # Start by getting value by isin/symbol
     etf_ticker_value = (
         portfolio_trades[portfolio_trades["Type"].isin(["ETF"])]
         .groupby(by="Ticker")
@@ -182,11 +219,9 @@ def get_sectors_allocation(
         portfolio_sectors_allocation, columns=["Portfolio Value"]
     )
 
-    portfolio_sectors_allocation = (
-        portfolio_sectors_allocation.div(portfolio_trades["Portfolio Value"].sum())
-        .squeeze(axis=1)
-        .sort_values(ascending=False)
-    )
+    portfolio_sectors_allocation = portfolio_sectors_allocation.div(
+        portfolio_trades["Portfolio Value"].sum()
+    ).sort_values(by="Portfolio Value", ascending=False)
 
     portfolio_sectors_allocation.fillna(0, inplace=True)
     portfolio_sectors_allocation = pd.DataFrame(portfolio_sectors_allocation)
@@ -205,7 +240,7 @@ def get_sectors_allocation(
 def get_countries_allocation(
     benchmark_info: Dict, portfolio_trades: pd.DataFrame
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
-    """Obtain the countries allocation of the benchmark and portfolio [Source: Yahoo Finance]
+    """Get countries allocation for benchmark and portfolio [Source: Yahoo Finance]
 
     Parameters
     ----------
@@ -221,19 +256,23 @@ def get_countries_allocation(
     pd.DataFrame
         DataFrame with country allocations
     """
-    benchmark_countries_allocation = get_ticker_country_allocation(
-        benchmark_info["symbol"]
-    )
-    portfolio_countries_allocation = get_portfolio_country_allocation(portfolio_trades)
 
-    return benchmark_countries_allocation, portfolio_countries_allocation
+    benchmark_allocation = get_symbol_allocation(
+        symbol=benchmark_info["symbol"], category="Country"
+    )
+
+    portfolio_allocation = get_portfolio_allocation(
+        category="Country", portfolio_trades=portfolio_trades
+    )
+
+    return benchmark_allocation, portfolio_allocation
 
 
 @log_start_end(log=logger)
 def get_regions_allocation(
     benchmark_info: Dict, portfolio_trades: pd.DataFrame
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
-    """Obtain the regions allocation of the benchmark and portfolio [Source: Yahoo Finance]
+    """Get regions allocation for benchmark and portfolio [Source: Yahoo Finance]
 
     Parameters
     ----------
@@ -249,93 +288,35 @@ def get_regions_allocation(
     pd.DataFrame
         DataFrame with country allocations
     """
-    benchmark_regions_allocation = get_ticker_region_allocation(
-        benchmark_info["symbol"]
+    benchmark_allocation = get_symbol_allocation(
+        symbol=benchmark_info["symbol"], category="Region"
     )
-    portfolio_regions_allocation = get_portfolio_region_allocation(portfolio_trades)
 
-    return benchmark_regions_allocation, portfolio_regions_allocation
+    portfolio_allocation = get_portfolio_allocation(
+        category="Region", portfolio_trades=portfolio_trades
+    )
+
+    return benchmark_allocation, portfolio_allocation
 
 
-@log_start_end(log=logger)
-def get_ticker_country_allocation(ticker: str, country_test: list = None):
-
-    """Obtain the region and country allocation for ETF ticker. [Source: Fidelity.com]
+def get_symbol_allocation(symbol: str, category: str) -> pd.DataFrame:
+    """Get benchmark allocation [Source: Fidelity]
 
     Parameters
     ----------
-    benchmark_ticker: str
-        The ticker, e.g. "SPY"
-    country_test: list
-        This includes a list of country names that should be used to discover
-        which list on the Fidelity page is the correct one
+    symbol: str
+        ETF symbol to get allocation
+    category: str
+        Chosen category: Country or Region
 
     Returns
     -------
     pd.DataFrame
-        Dictionary with country allocation
+        Dictionary with country allocations
     """
 
-    # Initialize variables
-    if not country_test:
-        country_test = [
-            "United States",
-            "United Kingdom",
-            "Japan",
-            "Switzerland",
-            "China",
-        ]
-
-    country_list = 0
-
-    # Collect data from Fidelity about the portfolio composition of the benchmark
-    URL = f"https://screener.fidelity.com/ftgw/etf/goto/snapshot/portfolioComposition.jhtml?symbols={ticker}"
-    html = requests.get(URL).content
-    df_list = pd.read_html(html)
-
-    # Find the ones that contain regions and countries
-    for index, item in enumerate(df_list):
-        for country in country_test:
-            if country in item.values:
-                country_list = index
-                break
-
-    if country_list:
-        country_allocation = {
-            row[1]: float(row[2].strip("%")) / 100
-            for _, row in df_list[country_list].dropna(axis="columns").iterrows()
-        }
-        country_allocation = pd.DataFrame.from_dict(
-            country_allocation, orient="index"
-        ).squeeze()
-    else:
-        country_allocation = pd.DataFrame()
-
-    return country_allocation
-
-
-@log_start_end(log=logger)
-def get_ticker_region_allocation(ticker: str, region_test: list = None) -> pd.DataFrame:
-
-    """Obtain the region and country allocation for ETF ticker. [Source: Fidelity.com]
-
-    Parameters
-    ----------
-    benchmark_ticker: str
-        The ticker, e.g. "SPY"
-    region_test: list
-        This includes a list of region names that should be used to discover
-        which list on the Fidelity page is the correct one
-
-    Returns
-    -------
-    pd.DataFrame
-        Dictionary with region allocations
-    """
-
-    # Initialize variables
-    if not region_test:
-        region_test = [
+    if category == "Region":
+        category_list = [
             "North America",
             "Europe",
             "Asia",
@@ -344,66 +325,80 @@ def get_ticker_region_allocation(ticker: str, region_test: list = None) -> pd.Da
             "Middle East",
         ]
 
-    region_list = 0
+    if category == "Country":
+        category_list = [
+            "United States",
+            "United Kingdom",
+            "Japan",
+            "Switzerland",
+            "China",
+        ]
+
+    item_list = 0
 
     # Collect data from Fidelity about the portfolio composition of the benchmark
-    URL = f"https://screener.fidelity.com/ftgw/etf/goto/snapshot/portfolioComposition.jhtml?symbols={ticker}"
+    URL = f"https://screener.fidelity.com/ftgw/etf/goto/snapshot/portfolioComposition.jhtml?symbols={symbol}"
     html = requests.get(URL).content
     df_list = pd.read_html(html)
 
     # Find the ones that contain regions and countries
     for index, item in enumerate(df_list):
-        for region in region_test:
-            if region in item.values:
-                region_list = index
+        for category_item in category_list:
+            if category_item in item.values:
+                item_list = index
                 break
 
-    if region_list:
-        region_allocation = {
+    if item_list:
+        allocation = {
             row[1]: float(row[2].strip("%")) / 100
-            for _, row in df_list[region_list].dropna(axis="columns").iterrows()
+            for _, row in df_list[item_list].dropna(axis="columns").iterrows()
         }
-        region_allocation = pd.DataFrame.from_dict(
-            region_allocation, orient="index"
-        ).squeeze()
+        allocation_df = pd.DataFrame.from_dict(allocation, orient="index").reset_index(
+            inplace=True
+        )
+        allocation_df.columns = [category, "Benchmark"]
     else:
-        region_allocation = pd.DataFrame()
+        allocation_df = pd.DataFrame()
 
-    return region_allocation
+    return allocation_df
 
 
 @log_start_end(log=logger)
-def get_portfolio_country_allocation(portfolio_trades: pd.DataFrame) -> pd.DataFrame:
-    """Obtain the country allocation of the portfolio.
+def get_portfolio_allocation(
+    category: str, portfolio_trades: pd.DataFrame
+) -> pd.DataFrame:
+    """Get portfolio allocation
 
     Parameters
     ----------
+    category: str
+        Chosen category: Country or Region
     portfolio_trades: pd.DataFrame
         Object containing trades made within the portfolio
 
     Returns
-    ------
+    -------
     pd.DataFrame
         Dictionary with country allocations
     """
 
-    p_bar = tqdm(range(3), desc="Loading country data")
+    p_bar = tqdm(range(3), desc=f"Loading {category.lower()} data")
 
-    # Define portfolio country allocation
-    if not portfolio_trades["Country"].isnull().any():
-        portfolio_country_allocation = (
+    # Define portfolio allocation
+    if not portfolio_trades[category].isnull().any():
+        allocation = (
             portfolio_trades[portfolio_trades["Type"].isin(["STOCK", "CRYPTO"])]
-            .groupby(by="Country")
+            .groupby(by=category)
             .agg({"Portfolio Value": "sum"})
         )
     else:
-        portfolio_country_allocation = pd.DataFrame()
+        allocation = pd.DataFrame()
 
     p_bar.n += 1
     p_bar.refresh()
 
     # Aggregate sector value for ETFs
-    # Start by getting value by ticker
+    # Start by getting value by symbol
     etf_ticker_value = (
         portfolio_trades[portfolio_trades["Type"].isin(["ETF"])]
         .groupby(by="Ticker")
@@ -414,7 +409,7 @@ def get_portfolio_country_allocation(portfolio_trades: pd.DataFrame) -> pd.DataF
     # Loop through each etf and multiply sector weights by current value
     for item in etf_ticker_value.index.values:
 
-        etf_country_weight = get_ticker_country_allocation(item)
+        etf_country_weight = get_symbol_allocation(symbol=item, category=category)
 
         if etf_country_weight.empty:
             etf_country_weight = pd.DataFrame.from_dict(
@@ -423,7 +418,7 @@ def get_portfolio_country_allocation(portfolio_trades: pd.DataFrame) -> pd.DataF
 
         etf_value = etf_ticker_value["Portfolio Value"][item]
 
-        # Aggregate etf country allocation by value
+        # Aggregate etf allocation by value
         etf_ticker_country_alloc = etf_country_weight * etf_value
         etf_global_country_alloc = pd.concat(
             [etf_global_country_alloc, etf_ticker_country_alloc], axis=1
@@ -438,125 +433,30 @@ def get_portfolio_country_allocation(portfolio_trades: pd.DataFrame) -> pd.DataF
         etf_global_country_alloc, columns=["Portfolio Value"]
     )
 
-    # Aggregate country allocation for stocks and crypto with ETFs
-    portfolio_country_allocation = pd.merge(
-        portfolio_country_allocation,
+    # Aggregate allocation for stocks and crypto with ETFs
+    allocation = pd.merge(
+        allocation,
         etf_global_country_alloc,
         how="outer",
         left_index=True,
         right_index=True,
     ).sum(axis=1)
 
-    portfolio_country_allocation = pd.DataFrame(
-        portfolio_country_allocation, columns=["Portfolio Value"]
+    allocation = pd.DataFrame(allocation, columns=["Portfolio Value"])
+
+    allocation = allocation.div(portfolio_trades["Portfolio Value"].sum()).sort_values(
+        by="Portfolio Value", ascending=False
     )
 
-    portfolio_country_allocation = (
-        portfolio_country_allocation.div(portfolio_trades["Portfolio Value"].sum())
-        .squeeze(axis=1)
-        .sort_values(ascending=False)
-    )
-
-    portfolio_country_allocation.fillna(0, inplace=True)
+    allocation.fillna(0, inplace=True)
 
     p_bar.n += 1
     p_bar.refresh()
     p_bar.disable = True
     console.print("\n")
 
-    return portfolio_country_allocation
+    allocation.reset_index(inplace=True)
 
+    allocation.columns = [category, "Portfolio"]
 
-@log_start_end(log=logger)
-def get_portfolio_region_allocation(portfolio_trades: pd.DataFrame) -> pd.DataFrame:
-    """Obtain the region allocation of the portfolio.
-
-    Parameters
-    ----------
-    portfolio_trades: pd.DataFrame
-        Object containing trades made within the portfolio
-
-    Returns
-    ------
-    pd.DataFrame
-        Dictionary with region allocations
-    """
-
-    p_bar = tqdm(range(3), desc="Loading region data")
-
-    # Define portfolio region allocation
-    if not portfolio_trades["Region"].isnull().any():
-        portfolio_region_allocation = (
-            portfolio_trades[portfolio_trades["Type"].isin(["STOCK", "CRYPTO"])]
-            .groupby(by="Region")
-            .agg({"Portfolio Value": "sum"})
-        )
-    else:
-        portfolio_region_allocation = pd.DataFrame()
-
-    p_bar.n += 1
-    p_bar.refresh()
-
-    # Aggregate sector value for ETFs
-    # Start by getting value by ticker
-    etf_ticker_value = (
-        portfolio_trades[portfolio_trades["Type"].isin(["ETF"])]
-        .groupby(by="Ticker")
-        .agg({"Portfolio Value": "sum"})
-    )
-    etf_global_region_alloc = pd.DataFrame()
-
-    # Loop through each etf and multiply sector weights by current value
-    for item in etf_ticker_value.index.values:
-
-        etf_region_weight = get_ticker_region_allocation(item)
-
-        if etf_region_weight.empty:
-            etf_region_weight = pd.DataFrame.from_dict(
-                data={"Other": 1}, orient="index", columns=["Portfolio Value"]
-            )
-
-        etf_value = etf_ticker_value["Portfolio Value"][item]
-
-        # Aggregate etf region allocation by value
-        etf_ticker_region_alloc = etf_region_weight * etf_value
-        etf_global_region_alloc = pd.concat(
-            [etf_global_region_alloc, etf_ticker_region_alloc], axis=1
-        )
-        etf_global_region_alloc.fillna(0, inplace=True)
-        etf_global_region_alloc = etf_global_region_alloc.sum(axis=1)
-
-    p_bar.n += 1
-    p_bar.refresh()
-
-    etf_global_region_alloc = pd.DataFrame(
-        etf_global_region_alloc, columns=["Portfolio Value"]
-    )
-
-    # Aggregate region allocation for stocks and crypto with ETFs
-    portfolio_region_allocation = pd.merge(
-        portfolio_region_allocation,
-        etf_global_region_alloc,
-        how="outer",
-        left_index=True,
-        right_index=True,
-    ).sum(axis=1)
-
-    portfolio_region_allocation = pd.DataFrame(
-        portfolio_region_allocation, columns=["Portfolio Value"]
-    )
-
-    portfolio_region_allocation = (
-        portfolio_region_allocation.div(portfolio_trades["Portfolio Value"].sum())
-        .squeeze(axis=1)
-        .sort_values(ascending=False)
-    )
-
-    portfolio_region_allocation.fillna(0, inplace=True)
-
-    p_bar.n += 1
-    p_bar.refresh()
-    p_bar.disable = True
-    console.print("\n")
-
-    return portfolio_region_allocation
+    return allocation

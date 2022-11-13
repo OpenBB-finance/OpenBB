@@ -15,10 +15,8 @@ from sklearn.metrics import r2_score
 from pycoingecko import CoinGeckoAPI
 from openbb_terminal.common.quantitative_analysis import qa_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.portfolio import (
-    portfolio_helper,
-    allocation_model,
-)
+from openbb_terminal.portfolio import portfolio_helper
+from openbb_terminal.portfolio.allocation_model import get_allocation
 from openbb_terminal.rich_config import console
 
 # pylint: disable=E1136,W0201,R0902,C0302
@@ -764,17 +762,17 @@ class PortfolioEngine:
 
     @log_start_end(log=logger)
     def calculate_allocation(self, category: str, recalculate: bool = False):
-        """Determine allocation based on assets, sectors, countries and regions.
+        """Determine allocation based on Asset, Sector, Country or Region
 
         Parameters
         ----------
         category: str
-            Chosen allocation category from assets, sectors, countries or regions
+            Chosen allocation category from Asset, Sector, Country or Region
         recalculate: bool
             Flag to force recalculate allocation if already exists
         """
 
-        if category == "assets":
+        if category == "Asset":
             if (
                 self.benchmark_assets_allocation.empty
                 or self.portfolio_assets_allocation.empty
@@ -783,39 +781,48 @@ class PortfolioEngine:
                 (
                     self.benchmark_assets_allocation,
                     self.portfolio_assets_allocation,
-                ) = allocation_model.get_assets_allocation(
-                    self.benchmark_info, self.portfolio_trades
+                ) = get_allocation(
+                    category, self.benchmark_info, self.portfolio_trades
                 )
-        elif category == "sectors":
+        elif category == "Sector":
             if (
                 self.benchmark_sectors_allocation.empty
                 or self.portfolio_sectors_allocation.empty
                 or recalculate
             ):
-                # Determine sector allocation
                 (
                     self.benchmark_sectors_allocation,
                     self.portfolio_sectors_allocation,
-                ) = allocation_model.get_sectors_allocation(
-                    self.benchmark_info, self.portfolio_trades
+                ) = get_allocation(
+                    category, self.benchmark_info, self.portfolio_trades
                 )
-        elif category == "countries":
+        elif category == "Country":
             if (
                 self.benchmark_countries_allocation.empty
                 or self.portfolio_countries_allocation.empty
                 or recalculate
             ):
-                pass
-        elif category == "regions":
+                (
+                    self.benchmark_countries_allocation,
+                    self.portfolio_countries_allocation,
+                ) = get_allocation(
+                    category, self.benchmark_info, self.portfolio_trades
+                )
+        elif category == "Region":
             if (
                 self.benchmark_regions_allocation.empty
                 or self.portfolio_regions_allocation.empty
                 or recalculate
             ):
-                pass
+                (
+                    self.benchmark_regions_allocation,
+                    self.portfolio_regions_allocation,
+                ) = get_allocation(
+                    category, self.benchmark_info, self.portfolio_trades
+                )
         else:
             console.print(
-                "Category not available. Choose from: assets, sectors, countries or regions"
+                "Category not available. Choose from: Asset, Sector, Country or Region"
             )
 
 
@@ -2283,7 +2290,7 @@ def get_assets_allocation(
         DataFrame with combined allocation plus individual allocation if tables is `True`.
     """
 
-    portfolio_engine.calculate_allocation(category="assets", recalculate=recalculate)
+    portfolio_engine.calculate_allocation(category="Asset", recalculate=recalculate)
 
     benchmark_allocation = portfolio_engine.benchmark_assets_allocation.iloc[:limit]
     portfolio_allocation = portfolio_engine.portfolio_assets_allocation.iloc[:limit]
@@ -2320,7 +2327,7 @@ def get_sectors_allocation(
         DataFrame with combined allocation plus individual allocation if tables is `True`.
     """
 
-    portfolio_engine.calculate_allocation(category="sectors", recalculate=recalculate)
+    portfolio_engine.calculate_allocation(category="Sector", recalculate=recalculate)
 
     benchmark_allocation = portfolio_engine.benchmark_sectors_allocation.iloc[:limit]
     portfolio_allocation = portfolio_engine.portfolio_sectors_allocation.iloc[:limit]
@@ -2357,10 +2364,10 @@ def get_countries_allocation(
         DataFrame with combined allocation plus individual allocation if tables is `True`.
     """
 
-    portfolio_engine.calculate_allocation(category="countries", recalculate=recalculate)
+    portfolio_engine.calculate_allocation(category="Country", recalculate=recalculate)
 
-    benchmark_allocation = portfolio_engine.benchmark_sectors_allocation.iloc[:limit]
-    portfolio_allocation = portfolio_engine.portfolio_sectors_allocation.iloc[:limit]
+    benchmark_allocation = portfolio_engine.benchmark_countries_allocation.iloc[:limit]
+    portfolio_allocation = portfolio_engine.portfolio_countries_allocation.iloc[:limit]
 
     combined = join_allocation(portfolio_allocation, benchmark_allocation, "Country")
 
@@ -2394,10 +2401,10 @@ def get_regions_allocation(
         DataFrame with combined allocation plus individual allocation if tables is `True`.
     """
 
-    portfolio_engine.calculate_allocation(category="regions", recalculate=recalculate)
+    portfolio_engine.calculate_allocation(category="Region", recalculate=recalculate)
 
-    benchmark_allocation = portfolio_engine.benchmark_sectors_allocation.iloc[:limit]
-    portfolio_allocation = portfolio_engine.portfolio_sectors_allocation.iloc[:limit]
+    benchmark_allocation = portfolio_engine.benchmark_regions_allocation.iloc[:limit]
+    portfolio_allocation = portfolio_engine.portfolio_regions_allocation.iloc[:limit]
 
     combined = join_allocation(portfolio_allocation, benchmark_allocation, "Region")
 
