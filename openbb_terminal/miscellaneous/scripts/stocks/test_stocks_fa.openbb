@@ -42,3 +42,6 @@ earnings --source YahooFinance
 earnings --source AlphaVantage
 fraud
 dupont
+epsfc
+revfc
+exit
