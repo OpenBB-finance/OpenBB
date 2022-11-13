@@ -16,7 +16,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 crypto.ov.altindex(
     period: int = 30,
     start_date: str = '2010-01-01',
-    end_date: str = '2022-11-10',
+    end_date: str = None,
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -59,7 +59,7 @@ crypto.ov.altindex(
 crypto.ov.altindex(
     period: int = 365,
     start_date: str = '2010-01-01',
-    end_date: str = '2022-11-10',
+    end_date: str = None,
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
     chart: bool = False,
@@ -89,4 +89,3 @@ crypto.ov.altindex(
         External axes (1 axis is expected in the list), by default None
     chart: bool
        Flag to display chart
-

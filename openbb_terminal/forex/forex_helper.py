@@ -90,8 +90,6 @@ INTERVAL_MAPS: Dict = {
 
 logger = logging.getLogger(__name__)
 
-last_year = datetime.now() - timedelta(days=365)
-
 
 @log_start_end(log=logger)
 def load(
@@ -99,7 +97,7 @@ def load(
     from_symbol: str,
     resolution: str = "d",
     interval: str = "1day",
-    start_date: str = last_year.strftime("%Y-%m-%d"),
+    start_date: str = None,
     source: str = "YahooFinance",
     verbose: bool = False,
 ) -> pd.DataFrame:
@@ -127,6 +125,10 @@ def load(
     pd.DataFrame
         The loaded data
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=365)).strftime("%Y-%m-%d")
+
     if source in ["YahooFinance", "AlphaVantage"]:
         interval_map = INTERVAL_MAPS[source]
 
@@ -178,7 +180,7 @@ def load(
             f"{from_symbol}{to_symbol}",
             multiplier=multiplier,
             timespan=timeframe,
-            from_date=start_date,
+            start_date=start_date,
         )
 
     console.print(f"Source {source} not supported")
