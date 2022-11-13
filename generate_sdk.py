@@ -6,6 +6,7 @@ import os
 import re
 import subprocess
 from pathlib import Path
+from types import FunctionType
 from typing import Any, Dict, List, Optional, TextIO
 
 import pandas as pd
@@ -82,6 +83,8 @@ class Trailmap:
         self.long_doc: Dict[str, str] = {}
         self.lineon: Dict[str, int] = {}
         self.full_path: Dict[str, str] = {}
+        self.func_def: Dict[str, str] = {}
+        self.func_attr: Dict[str, str] = {}
         self.params: Dict[str, Dict[str, inspect.Parameter]] = {}
         self.get_docstrings()
 
@@ -94,20 +97,51 @@ class Trailmap:
                     importlib.import_module("openbb_terminal.sdk_core.sdk_init"),
                     func.split(".")[0],
                 )
-                func_attr = (
+                self.func_attr[key] = (
                     getattr(attr, func.split(".")[1])
                     if "__wrapped__" not in dir(getattr(attr, func.split(".")[1]))
                     else getattr(attr, func.split(".")[1]).__wrapped__
                 )
-                self.lineon[key] = inspect.getsourcelines(func_attr)[1]
-                self.long_doc[key] = func_attr.__doc__
-                self.short_doc[key] = clean_attr_desc(func_attr)
+                self.func_def[key] = self.get_definition(self.func_attr[key])
+                self.lineon[key] = inspect.getsourcelines(self.func_attr[key])[1]
+                self.long_doc[key] = self.func_attr[key].__doc__
+                self.short_doc[key] = clean_attr_desc(self.func_attr[key])
                 full_path = (
-                    inspect.getfile(func_attr)
+                    inspect.getfile(self.func_attr[key])
                     .replace("\\", "/")
                     .split("openbb_terminal/")[1]
                 )
                 self.full_path[key] = f"openbb_terminal/{full_path}"
+
+    def get_definition(self, func_attr: FunctionType) -> str:
+        """Creates the function definition to be used in SDK docs."""
+        funcspec = inspect.getfullargspec(func_attr)
+        defintion = "def " + self.class_attr + "("
+
+        for arg in funcspec.args:
+            annotation = (
+                funcspec.annotations[arg] if arg in funcspec.annotations else "Any"
+            )
+            if arg in funcspec.annotations:
+                annotation = (
+                    str(annotation)
+                    .replace("<class '", "")
+                    .replace("'>", "")
+                    .replace("typing.", "")
+                    .replace("pandas.core.frame.", "pd.")
+                    .replace("pandas.core.series.", "pd.")
+                )
+            defintion += f"{arg}: {annotation}, "
+
+        return_def = (
+            funcspec.annotations["return"].__name__
+            if "return" in funcspec.annotations
+            and hasattr(funcspec.annotations["return"], "__name__")
+            and funcspec.annotations["return"] is not None
+            else "None"
+        )
+        defintion = defintion[:-2] + f") -> {return_def}:"
+        return defintion
 
 
 class BuildCategoryModelClasses:
@@ -531,7 +565,7 @@ class BuildCategoryModelClasses:
         subprocess.check_call(["black", "openbb_terminal"])
 
 
-def get_trailmaps():
+def get_trailmaps() -> List[Trailmap]:
     trailmaps = []
     with open(REPO_ROOT / "sdk_core/trail_map.csv") as f:
         reader = csv.reader(f)

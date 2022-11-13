@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def plot_covid_ov(
-    country,
+    country: str,
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
     """Plot historical cases and deaths by country
@@ -77,7 +77,7 @@ def plot_covid_ov(
 
 
 def plot_covid_stat(
-    country,
+    country: str,
     stat: str = "cases",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
@@ -130,7 +130,7 @@ def plot_covid_stat(
 
 @log_start_end(log=logger)
 def display_covid_ov(
-    country,
+    country: str,
     raw: bool = False,
     limit: int = 10,
     export: str = "",
@@ -170,7 +170,7 @@ def display_covid_ov(
 
 @log_start_end(log=logger)
 def display_covid_stat(
-    country,
+    country: str,
     stat: str = "cases",
     raw: bool = False,
     limit: int = 10,
