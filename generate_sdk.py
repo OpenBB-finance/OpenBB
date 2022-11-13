@@ -116,8 +116,8 @@ class Trailmap:
     def get_definition(self, func_attr: FunctionType) -> str:
         """Creates the function definition to be used in SDK docs."""
         funcspec = inspect.getfullargspec(func_attr)
-        defintion = "def " + self.class_attr + "("
 
+        defintion = f"def {self.class_attr}("
         for arg in funcspec.args:
             annotation = (
                 funcspec.annotations[arg] if arg in funcspec.annotations else "Any"
