@@ -751,6 +751,8 @@ main:
             ref: terminal/forecast/autoces
           - name: autoets
             ref: terminal/forecast/autoets
+          - name: autoselect 
+            ref: terminal/forecast/autoselect
           - name: brnn
             ref: terminal/forecast/brnn
           - name: clean
@@ -793,6 +795,8 @@ main:
             ref: terminal/forecast/roc
           - name: rsi
             ref: terminal/forecast/rsi
+          - name: rwd
+            ref: terminal/forecast/rwd
           - name: season
             ref: terminal/forecast/season
           - name: seasonalnaive
