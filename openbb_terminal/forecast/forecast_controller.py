@@ -1925,7 +1925,7 @@ class ForecastController(BaseController):
                 naive=ns_parser.naive,
                 export_pred_raw=ns_parser.export_pred_raw,
             )
-            
+
     # RWD Model
     @log_start_end(log=logger)
     def call_rwd(self, other_args: List[str]):
