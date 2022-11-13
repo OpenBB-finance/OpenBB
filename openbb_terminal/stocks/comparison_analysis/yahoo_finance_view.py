@@ -43,7 +43,7 @@ d_candle_types = {
 @log_start_end(log=logger)
 def display_historical(
     similar: List[str],
-    start_date: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+    start_date: str = None,
     candle_type: str = "a",
     normalize: bool = True,
     export: str = "",
@@ -58,7 +58,7 @@ def display_historical(
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
     start_date: str, optional
-        Start date of comparison, by default 1 year ago
+        Initial date (e.g., 2021-10-01). Defaults to 1 year back
     candle_type: str, optional
         OHLCA column to use or R to use daily returns calculated from Adjusted Close, by default "a" for Adjusted Close
     normalize: bool, optional
@@ -109,7 +109,7 @@ def display_historical(
 @log_start_end(log=logger)
 def display_volume(
     similar: List[str],
-    start_date: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+    start_date: str = None,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -122,7 +122,7 @@ def display_volume(
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
     start_date : str, optional
-        Start date of comparison, by default 1 year ago
+        Initial date (e.g., 2021-10-01). Defaults to 1 year back
     export : str, optional
         Format to export historical prices, by default ""
     external_axes : Optional[List[plt.Axes]], optional
@@ -162,7 +162,7 @@ def display_volume(
 @log_start_end(log=logger)
 def display_correlation(
     similar: List[str],
-    start_date: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
+    start_date: str = None,
     candle_type: str = "a",
     display_full_matrix: bool = False,
     raw: bool = False,
@@ -180,7 +180,7 @@ def display_correlation(
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
     start_date : str, optional
-        Start date of comparison, by default 1 year ago
+        Initial date (e.g., 2021-10-01). Defaults to 1 year back
     candle_type : str, optional
         OHLCA column to use for candles or R for returns, by default "a" for Adjusted Close
     display_full_matrix : bool, optional
@@ -192,6 +192,9 @@ def display_correlation(
     export : str, optional
         Format to export correlation prices, by default ""
     """
+
+    if start_date is None:
+        start_date = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d")
 
     correlations, df_similar = yahoo_finance_model.get_correlation(
         similar, start_date, candle_type

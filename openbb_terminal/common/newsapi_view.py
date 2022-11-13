@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 def display_news(
     query: str,
     limit: int = 3,
-    start_date: str = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d"),
+    start_date: str = None,
     show_newest: bool = True,
     sources: str = "",
     export: str = "",

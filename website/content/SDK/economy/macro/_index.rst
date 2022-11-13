@@ -71,7 +71,7 @@ economy.macro(
     countries: list = None,
     transform: str = '',
     start_date: str = '1900-01-01',
-    end_date: str = '2022-11-11',
+    end_date: str = None,
     symbol: str = '',
     raw: bool = False,
     external_axes: Optional[List[axes]] = None,

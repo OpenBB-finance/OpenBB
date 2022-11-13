@@ -63,9 +63,9 @@ crypto.dd.gh(
 {{< highlight python >}}
 crypto.dd.gh(
     symbol: str,
-    start_date: str = '2021-11-11T11:21:47Z',
+    start_date: str = None,
     dev_activity: bool = False,
-    end_date: str = '2022-11-11T11:21:47Z',
+    end_date: str = None,
     interval: str = '1d',
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
@@ -99,3 +99,4 @@ crypto.dd.gh(
         External axes (1 axis is expected in the list), by default None
     chart: bool
        Flag to display chart
+

@@ -60,7 +60,7 @@ etf.news(
 etf.news(
     query: str,
     limit: int = 3,
-    start_date: str = '2022-11-04',
+    start_date: str = None,
     show_newest: bool = True,
     sources: str = '',
     export: str = '',

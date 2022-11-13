@@ -337,7 +337,7 @@ def display_splits(
 @log_start_end(log=logger)
 def display_mktcap(
     symbol: str,
-    start_date: str = (datetime.now() - timedelta(days=3 * 366)).strftime("%Y-%m-%d"),
+    start_date: str = None,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
@@ -348,12 +348,13 @@ def display_mktcap(
     symbol: str
         Stock ticker symbol
     start_date: str
-        Start date to display market cap
+        Initial date (e.g., 2021-10-01). Defaults to 3 years back
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axis is expected in the list), by default None
     """
+
     df_mktcap, currency = yahoo_finance_model.get_mktcap(symbol, start_date)
     if df_mktcap.empty:
         console.print("No Market Cap data available.\n")
