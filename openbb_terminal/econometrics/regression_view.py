@@ -60,9 +60,7 @@ def display_panel(
         entity_effects,
         time_effects,
     )
-    if regression_type == "OLS":
-        console.print(model.summary())
-    else:
+    if regression_type != "OLS":
         console.print(model)
 
     if export:

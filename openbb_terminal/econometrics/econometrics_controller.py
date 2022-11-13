@@ -90,6 +90,19 @@ class EconometricsController(BaseController):
         "pie",
         "hexbin",
     ]
+
+    PANEL_CHOICES = [
+        "pols",
+        "re",
+        "bols",
+        "fe",
+        "fdols",
+        "POLS",
+        "RE",
+        "BOLS",
+        "FE",
+        "FDOLS",
+    ]
     PATH = "/econometrics/"
 
     loaded_dataset_cols = "\n"
@@ -172,7 +185,7 @@ class EconometricsController(BaseController):
 
             choices["support"] = self.SUPPORT_CHOICES
             choices["about"] = self.ABOUT_CHOICES
-
+            choices["panel"]["-r"] = {c: {} for c in self.PANEL_CHOICES}
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def update_runtime_choices(self):
@@ -1398,18 +1411,7 @@ class EconometricsController(BaseController):
             "-r",
             "--regression",
             type=str,
-            choices=[
-                "pols",
-                "re",
-                "bols",
-                "fe",
-                "fdols",
-                "POLS",
-                "RE",
-                "BOLS",
-                "FE",
-                "FDOLS",
-            ],
+            choices=self.PANEL_CHOICES,
             dest="type",
             help="The type of regression you wish to perform. This can be either pols (Pooled OLS), "
             "re (Random Effects), bols (Between OLS), fe (Fixed Effects) or fdols (First Difference OLS)",
