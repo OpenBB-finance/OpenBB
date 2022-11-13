@@ -1,14 +1,16 @@
 import csv
 import glob
+import importlib
 import inspect
 import os
-from pathlib import Path
 import re
-
-import importlib
 import subprocess
+from pathlib import Path
 from typing import Any, Dict, List, Optional, TextIO
 
+import pandas as pd
+
+from openbb_terminal.rich_config import console
 from openbb_terminal.sdk_core.sdk_helpers import clean_attr_desc, get_sdk_imports_text
 from openbb_terminal.sdk_core.sdk_init import FORECASTING
 
@@ -537,8 +539,8 @@ def get_trailmaps():
         for row in reader:
             trail, model, view = row
             if not FORECASTING and "forecast" in trail:
-                print(
-                    f"Forecasting is disabled. {trail} will not be included in the SDK."
+                console.print(
+                    f"[bold red]Forecasting is disabled. {trail} will not be included in the SDK.[/bold red]"
                 )
                 continue
             trail_map = Trailmap(trail, model, view)
@@ -550,8 +552,11 @@ def get_trailmaps():
 def generate_sdk():
     trailmaps = get_trailmaps()
     BuildCategoryModelClasses(trailmaps).build()
-    print("SDK Generated Successfully.")
+    console.print("[green]SDK Generated Successfully.[/green]")
     return
 
 
-generate_sdk()
+def sort_csv():
+    df = pd.read_csv(REPO_ROOT / "sdk_core/trail_map.csv")
+    df.sort_values(by=["trail"], inplace=True)
+    df.to_csv(REPO_ROOT / "sdk_core/trail_map.csv", index=False)

@@ -7,6 +7,7 @@ class PortfolioController(model.PortfolioRoot):
     """OpenBB SDK Portfolio Module.
 
     Submodules:
+        `metric`: Metric Module
         `po`: Portfolio Optimization Module
 
     Attributes:
@@ -26,38 +27,53 @@ class PortfolioController(model.PortfolioRoot):
         `jensens`: Get jensen's alpha\n
         `kelly`: Gets kelly criterion\n
         `kurtosis`: Class method that retrieves kurtosis for portfolio and benchmark selected\n
-        `max_drawdown_ratio`: Calculate the drawdown (MDD) of historical series.  Note that the calculation is done\n
-        `max_drawdown_ratio_view`: Display maximum drawdown for multiple intervals\n
         `maxdd`: Calculate the drawdown (MDD) of historical series.  Note that the calculation is done\n
         `maxdd_view`: Display maximum drawdown curve\n
-        `maxdrawdown`: Class method that retrieves maximum drawdown ratio for portfolio and benchmark selected\n
         `mret`: Get monthly returns\n
         `mret_view`: Display monthly returns\n
         `om`: Get omega ratio\n
         `om_view`: Display omega ratio\n
         `payoff`: Gets payoff ratio\n
         `perf`: Get portfolio performance vs the benchmark\n
-        `profitfactor`: Gets profit factor\n
         `rbeta`: Get rolling beta using portfolio and benchmark returns\n
         `rbeta_view`: Display rolling beta\n
         `rsharpe`: Get rolling sharpe ratio\n
         `rsharpe_view`: Display rolling sharpe\n
-        `rsortino`: Get rolling sortino\n
-        `rsortino_view`: Display rolling sortino\n
-        `rsquare`: Class method that retrieves R2 Score for portfolio and benchmark selected\n
+        `rsort`: Get rolling sortino\n
+        `rsort_view`: Display rolling sortino\n
         `rvol`: Get rolling volatility\n
         `rvol_view`: Display rolling volatility\n
-        `sharpe`: Class method that retrieves sharpe ratio for portfolio and benchmark selected\n
-        `skew`: Class method that retrieves skewness for portfolio and benchmark selected\n
-        `sortino`: Class method that retrieves sortino ratio for portfolio and benchmark selected\n
         `summary`: Get summary portfolio and benchmark returns\n
-        `tail`: Get tail ratio\n
-        `trackerr`: Get tracking error\n
         `var`: Get portfolio VaR\n
-        `volatility`: Class method that retrieves volatility for portfolio and benchmark selected\n
         `yret`: Get yearly returns\n
         `yret_view`: Display yearly returns\n
     """
+
+    @property
+    def metric(self):
+        """OpenBB SDK Portfolio Metric Submodule
+
+        Attributes:
+            `calmar`: Get calmar ratio\n
+            `commonsense`: Get common sense ratio\n
+            `gaintopain`: Get Pain-to-Gain ratio based on historical data\n
+            `information`: Get information ratio\n
+            `jensens`: Get jensen's alpha\n
+            `kelly`: Gets kelly criterion\n
+            `kurtosis`: Class method that retrieves kurtosis for portfolio and benchmark selected\n
+            `maxdrawdown`: Class method that retrieves maximum drawdown ratio for portfolio and benchmark selected\n
+            `payoff`: Gets payoff ratio\n
+            `profitfactor`: Gets profit factor\n
+            `rsquare`: Class method that retrieves R2 Score for portfolio and benchmark selected\n
+            `sharpe`: Class method that retrieves sharpe ratio for portfolio and benchmark selected\n
+            `skew`: Class method that retrieves skewness for portfolio and benchmark selected\n
+            `sortino`: Class method that retrieves sortino ratio for portfolio and benchmark selected\n
+            `tail`: Get tail ratio\n
+            `trackerr`: Get tracking error\n
+            `volatility`: Class method that retrieves volatility for portfolio and benchmark selected\n
+        """
+
+        return model.PortfolioMetric()
 
     @property
     def po(self):
