@@ -55,6 +55,8 @@ class PortfolioEngine:
     set_risk_free_rate: Sets risk free rate
 
     calculate_reserves: Takes dividends into account for returns calculation
+
+    calculate_allocation: Determine allocation based on assets, sectors, countries and regions.
     """
 
     def __init__(self, transactions: pd.DataFrame = pd.DataFrame()):
@@ -79,6 +81,17 @@ class PortfolioEngine:
         self.benchmark_historical_prices = pd.DataFrame()
         self.benchmark_returns = pd.DataFrame()
         self.benchmark_trades = pd.DataFrame()
+
+        # Allocations
+        self.portfolio_assets_allocation = pd.DataFrame()
+        self.portfolio_sectors_allocation = pd.DataFrame()
+        self.portfolio_regions_allocation = pd.DataFrame()
+        self.portfolio_countries_allocation = pd.DataFrame()
+
+        self.benchmark_assets_allocation = pd.DataFrame()
+        self.benchmark_sectors_allocation = pd.DataFrame()
+        self.benchmark_regions_allocation = pd.DataFrame()
+        self.benchmark_countries_allocation = pd.DataFrame()
 
         # Set and preprocess transactions
         if not transactions.empty:
@@ -751,6 +764,62 @@ class PortfolioEngine:
         """Takes dividends into account for returns calculation"""
         # TODO: Add back cash dividends and deduct exchange costs
         console.print("Still has to be build.")
+
+    @log_start_end(log=logger)
+    def calculate_allocation(self, category: str, recalculate: bool = False):
+        """Determine allocation based on assets, sectors, countries and regions.
+
+        Parameters
+        ----------
+        category: str
+            Chosen allocation category from assets, sectors, countries or regions
+        recalculate: bool
+            Flag to force recalculate allocation if already exists
+        """
+
+        if category == "assets":
+            if (
+                self.benchmark_assets_allocation.empty
+                or self.portfolio_assets_allocation.empty
+                or recalculate
+            ):
+                (
+                    self.benchmark_assets_allocation,
+                    self.portfolio_assets_allocation,
+                ) = allocation_model.get_assets_allocation(
+                    self.benchmark_info, self.portfolio_trades
+                )
+        elif category == "sectors":
+            if (
+                self.benchmark_sectors_allocation.empty
+                or self.portfolio_sectors_allocation.empty
+                or recalculate
+            ):
+                # Determine sector allocation
+                (
+                    self.benchmark_sectors_allocation,
+                    self.portfolio_sectors_allocation,
+                ) = allocation_model.get_sectors_allocation(
+                    self.benchmark_info, self.portfolio_trades
+                )
+        elif category == "countries":
+            if (
+                self.benchmark_countries_allocation.empty
+                or self.portfolio_countries_allocation.empty
+                or recalculate
+            ):
+                pass
+        elif category == "regions":
+            if (
+                self.benchmark_regions_allocation.empty
+                or self.portfolio_regions_allocation.empty
+                or recalculate
+            ):
+                pass
+        else:
+            console.print(
+                "Category not available. Choose from: assets, sectors, countries or regions"
+            )
 
 
 # Metrics
@@ -2196,6 +2265,7 @@ def get_assets_allocation(
     portfolio_engine: PortfolioEngine,
     tables: bool = False,
     limit: int = 10,
+    recalculate: bool = False,
 ) -> Union[pd.DataFrame, Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]]:
     """Display portfolio asset allocation compared to the benchmark
 
@@ -2206,7 +2276,9 @@ def get_assets_allocation(
     tables: bool
         Whether to include separate allocation tables
     limit: int
-        The amount of assets you wish to show, by default this is set to 10.
+        The amount of assets you wish to show, by default this is set to 10
+    recalculate: bool
+        Flag to force recalculate allocation if already exists
 
     Returns
     -------
@@ -2214,15 +2286,10 @@ def get_assets_allocation(
         DataFrame with combined allocation plus individual allocation if tables is `True`.
     """
 
-    (
-        benchmark_assets_allocation,
-        portfolio_assets_allocation,
-    ) = allocation_model.get_assets_allocation(
-        portfolio_engine.benchmark_info, portfolio_engine.portfolio_trades
-    )
+    portfolio_engine.calculate_allocation(category="assets", recalculate=recalculate)
 
-    benchmark_allocation = benchmark_assets_allocation.iloc[:limit]
-    portfolio_allocation = portfolio_assets_allocation.iloc[:limit]
+    benchmark_allocation = portfolio_engine.benchmark_assets_allocation.iloc[:limit]
+    portfolio_allocation = portfolio_engine.portfolio_assets_allocation.iloc[:limit]
 
     combined = join_allocation(portfolio_allocation, benchmark_allocation, "Symbol")
 
@@ -2235,6 +2302,7 @@ def get_sectors_allocation(
     portfolio_engine=None,
     limit: int = 10,
     tables: bool = False,
+    recalculate: bool = False,
 ):
     """Display portfolio sector allocation compared to the benchmark
 
@@ -2245,7 +2313,9 @@ def get_sectors_allocation(
     tables: bool
         Whether to include separate allocation tables
     limit: int
-        The amount of assets you wish to show, by default this is set to 10.
+        The amount of assets you wish to show, by default this is set to 10
+    recalculate: bool
+        Flag to force recalculate allocation if already exists
 
     Returns
     -------
@@ -2253,15 +2323,10 @@ def get_sectors_allocation(
         DataFrame with combined allocation plus individual allocation if tables is `True`.
     """
 
-    (
-        benchmark_sectors_allocation,
-        portfolio_sectors_allocation,
-    ) = allocation_model.get_sectors_allocation(
-        portfolio_engine.benchmark_info, portfolio_engine.portfolio_trades
-    )
+    portfolio_engine.calculate_allocation(category="sectors", recalculate=recalculate)
 
-    benchmark_allocation = benchmark_sectors_allocation.iloc[:limit]
-    portfolio_allocation = portfolio_sectors_allocation.iloc[:limit]
+    benchmark_allocation = portfolio_engine.benchmark_sectors_allocation.iloc[:limit]
+    portfolio_allocation = portfolio_engine.portfolio_sectors_allocation.iloc[:limit]
 
     combined = join_allocation(portfolio_allocation, benchmark_allocation, "Sector")
 
@@ -2274,6 +2339,7 @@ def get_countries_allocation(
     portfolio_engine=None,
     limit: int = 10,
     tables: bool = False,
+    recalculate: bool = False,
 ):
     """Display portfolio country allocation compared to the benchmark
 
@@ -2284,7 +2350,9 @@ def get_countries_allocation(
     tables: bool
         Whether to include separate allocation tables
     limit: int
-        The amount of assets you wish to show, by default this is set to 10.
+        The amount of assets you wish to show, by default this is set to 10
+    recalculate: bool
+        Flag to force recalculate allocation if already exists
 
     Returns
     -------
@@ -2292,19 +2360,23 @@ def get_countries_allocation(
         DataFrame with combined allocation plus individual allocation if tables is `True`.
     """
 
-    (
-        benchmark_region_allocation,
-        benchmark_country_allocation,
-    ) = allocation_model.get_region_country_allocation(
-        portfolio_engine.benchmark_ticker
-    )
-    # Must return country (bench, portf)
+    portfolio_engine.calculate_allocation(category="countries", recalculate=recalculate)
+
+    benchmark_allocation = portfolio_engine.benchmark_sectors_allocation.iloc[:limit]
+    portfolio_allocation = portfolio_engine.portfolio_sectors_allocation.iloc[:limit]
+
+    combined = join_allocation(portfolio_allocation, benchmark_allocation, "Country")
+
+    if tables:
+        return combined, portfolio_allocation, benchmark_allocation
+    return combined
 
 
 def get_regions_allocation(
     portfolio_engine=None,
     limit: int = 10,
     tables: bool = False,
+    recalculate: bool = False,
 ):
     """Display portfolio region allocation compared to the benchmark
 
@@ -2315,7 +2387,9 @@ def get_regions_allocation(
     tables: bool
         Whether to include separate allocation tables
     limit: int
-        The amount of assets you wish to show, by default this is set to 10.
+        The amount of assets you wish to show, by default this is set to 10
+    recalculate: bool
+        Flag to force recalculate allocation if already exists
 
     Returns
     -------
@@ -2323,14 +2397,16 @@ def get_regions_allocation(
         DataFrame with combined allocation plus individual allocation if tables is `True`.
     """
 
-    (
-        portfolio_region_allocation,
-        portfolio_country_allocation,
-    ) = allocation_model.get_portfolio_region_country_allocation(
-        portfolio_engine.portfolio_trades
-    )
+    portfolio_engine.calculate_allocation(category="regions", recalculate=recalculate)
 
-    # Must return region (bench, portf)
+    benchmark_allocation = portfolio_engine.benchmark_sectors_allocation.iloc[:limit]
+    portfolio_allocation = portfolio_engine.portfolio_sectors_allocation.iloc[:limit]
+
+    combined = join_allocation(portfolio_allocation, benchmark_allocation, "Region")
+
+    if tables:
+        return combined, portfolio_allocation, benchmark_allocation
+    return combined
 
 
 # Old code
