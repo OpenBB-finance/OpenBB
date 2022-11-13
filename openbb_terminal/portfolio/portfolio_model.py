@@ -80,17 +80,6 @@ class PortfolioEngine:
         self.benchmark_returns = pd.DataFrame()
         self.benchmark_trades = pd.DataFrame()
 
-        # Allocations
-        self.portfolio_assets_allocation = pd.DataFrame()
-        self.portfolio_sectors_allocation = pd.DataFrame()
-        self.portfolio_region_allocation = pd.DataFrame()
-        self.portfolio_country_allocation = pd.DataFrame()
-
-        self.benchmark_assets_allocation = pd.DataFrame()
-        self.benchmark_sectors_allocation = pd.DataFrame()
-        self.benchmark_region_allocation = pd.DataFrame()
-        self.benchmark_country_allocation = pd.DataFrame()
-
         # Set and preprocess transactions
         if not transactions.empty:
             self.__set_transactions(transactions)
@@ -2235,9 +2224,7 @@ def get_assets_allocation(
     benchmark_allocation = benchmark_assets_allocation.iloc[:limit]
     portfolio_allocation = portfolio_assets_allocation.iloc[:limit]
 
-    combined = join_allocation(
-        portfolio_allocation, benchmark_allocation, "Symbol"
-    )
+    combined = join_allocation(portfolio_allocation, benchmark_allocation, "Symbol")
 
     if tables:
         return combined, portfolio_allocation, benchmark_allocation
