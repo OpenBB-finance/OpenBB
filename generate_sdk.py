@@ -79,6 +79,7 @@ class Trailmap:
         self.short_doc: Dict[str, Optional[str]] = {}
         self.long_doc: Dict[str, str] = {}
         self.lineon: Dict[str, int] = {}
+        self.full_path: Dict[str, str] = {}
         self.params: Dict[str, Dict[str, inspect.Parameter]] = {}
         self.get_docstrings()
 
@@ -91,11 +92,20 @@ class Trailmap:
                     importlib.import_module("openbb_terminal.sdk_core.sdk_init"),
                     func.split(".")[0],
                 )
-                self.lineon[key] = inspect.getsourcelines(
+                func_attr = (
                     getattr(attr, func.split(".")[1])
-                )[1]
-                self.long_doc[key] = getattr(attr, func.split(".")[1]).__doc__
-                self.short_doc[key] = clean_attr_desc(getattr(attr, func.split(".")[1]))
+                    if "__wrapped__" not in dir(getattr(attr, func.split(".")[1]))
+                    else getattr(attr, func.split(".")[1]).__wrapped__
+                )
+                self.lineon[key] = inspect.getsourcelines(func_attr)[1]
+                self.long_doc[key] = func_attr.__doc__
+                self.short_doc[key] = clean_attr_desc(func_attr)
+                full_path = (
+                    inspect.getfile(func_attr)
+                    .replace("\\", "/")
+                    .split("openbb_terminal/")[1]
+                )
+                self.full_path[key] = f"openbb_terminal/{full_path}"
 
 
 class BuildCategoryModelClasses:
@@ -542,3 +552,6 @@ def generate_sdk():
     BuildCategoryModelClasses(trailmaps).build()
     print("SDK Generated Successfully.")
     return
+
+
+generate_sdk()
