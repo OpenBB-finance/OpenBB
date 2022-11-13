@@ -781,9 +781,7 @@ class PortfolioEngine:
                 (
                     self.benchmark_assets_allocation,
                     self.portfolio_assets_allocation,
-                ) = get_allocation(
-                    category, self.benchmark_info, self.portfolio_trades
-                )
+                ) = get_allocation(category, self.benchmark_info, self.portfolio_trades)
         elif category == "Sector":
             if (
                 self.benchmark_sectors_allocation.empty
@@ -793,9 +791,7 @@ class PortfolioEngine:
                 (
                     self.benchmark_sectors_allocation,
                     self.portfolio_sectors_allocation,
-                ) = get_allocation(
-                    category, self.benchmark_info, self.portfolio_trades
-                )
+                ) = get_allocation(category, self.benchmark_info, self.portfolio_trades)
         elif category == "Country":
             if (
                 self.benchmark_countries_allocation.empty
@@ -805,9 +801,7 @@ class PortfolioEngine:
                 (
                     self.benchmark_countries_allocation,
                     self.portfolio_countries_allocation,
-                ) = get_allocation(
-                    category, self.benchmark_info, self.portfolio_trades
-                )
+                ) = get_allocation(category, self.benchmark_info, self.portfolio_trades)
         elif category == "Region":
             if (
                 self.benchmark_regions_allocation.empty
@@ -817,9 +811,7 @@ class PortfolioEngine:
                 (
                     self.benchmark_regions_allocation,
                     self.portfolio_regions_allocation,
-                ) = get_allocation(
-                    category, self.benchmark_info, self.portfolio_trades
-                )
+                ) = get_allocation(category, self.benchmark_info, self.portfolio_trades)
         else:
             console.print(
                 "Category not available. Choose from: Asset, Sector, Country or Region"
