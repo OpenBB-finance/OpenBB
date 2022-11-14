@@ -842,20 +842,24 @@ class ForecastController(BaseController):
         )
         parser.add_argument(
             "-s",
-            "--sortcol",
+            "--sortby",
             help="Sort based on a column in the DataFrame",
             nargs="+",
             type=str,
-            dest="sortcol",
+            dest="sortby",
             default="",
         )
         parser.add_argument(
-            "-a",
-            "--ascend",
-            help="Use this argument to sort in a descending order",
+            "-r",
+            "--reverse",
             action="store_true",
+            dest="reverse",
             default=False,
-            dest="ascend",
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         parser.add_argument(
             "--limit-col",
@@ -888,15 +892,15 @@ class ForecastController(BaseController):
                     console.print(
                         f"[red]No data available for {ns_parser.name}.[/red]\n"
                     )
-                elif ns_parser.sortcol:
-                    sort_column = " ".join(ns_parser.sortcol)
+                elif ns_parser.sortby:
+                    sort_column = " ".join(ns_parser.sortby)
                     if sort_column not in self.datasets[name].columns:
                         console.print(
                             f"[red]{sort_column} not a valid column."
                             "Showing without sorting.\n[/red]"
                         )
                     else:
-                        df = df.sort_values(by=sort_column, ascending=ns_parser.ascend)
+                        df = df.sort_values(by=sort_column, ascending=ns_parser.reverse)
 
                 forecast_view.show_df(
                     df, ns_parser.limit, ns_parser.limit_col, name, ns_parser.export

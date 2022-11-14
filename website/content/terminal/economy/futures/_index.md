@@ -7,18 +7,19 @@ Futures/Commodities frrom Wall St. Journal and FinViz.
 ```
 optional arguments:
   -c {energy,metals,meats,grains,softs}, --commodity {energy,metals,meats,grains,softs}
-                        Obtain commodity futures from FinViz (default: )
+                         Obtain commodity futures from FinViz (default: )
   -s {ticker,last,change,prevClose}, --sortby {ticker,last,change,prevClose}
-  -a, -ascend           Flag to sort in ascending order (default: False)
-  -h, --help            show this help message (default: False)
+  -r, --reverse          Data is sorted in descending order by default.
+                         Reverse flag will sort it in an ascending way.
+                         Only works when raw data is show this help message (default: False)
   --export {csv,json,xlsx}
-                        Export raw data into csv, json, xlsx (default: )
+                         Export raw data into csv, json, xlsx (default: )
 ```
 
 Example:
 ```
 2022 Mar 15, 07:02 (✨) /economy/ $ futures
-     Futures/Commodities [Source: Wall St. Journal]      
+     Futures/Commodities [Source: Wall St. Journal]
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┓
 ┃                           ┃ Price   ┃ Chg     ┃ %Chg  ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━┩
@@ -44,7 +45,7 @@ Example:
 └───────────────────────────┴─────────┴─────────┴───────┘
 
 2022 Mar 15, 07:03 (✨) /economy/ $ futures energy
-            Future Table [Source: FinViz]            
+            Future Table [Source: FinViz]
 ┏━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓
 ┃                 ┃ prevClose ┃ last   ┃ change (%) ┃
 ┡━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩
@@ -62,7 +63,7 @@ Example:
 └─────────────────┴───────────┴────────┴────────────┘
 
 2022 Mar 15, 07:04 (✨) /economy/ $ futures metals
-         Future Table [Source: FinViz]          
+         Future Table [Source: FinViz]
 ┏━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃           ┃ prevClose ┃ last    ┃ change (%) ┃
 ┡━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━┩
@@ -78,7 +79,7 @@ Example:
 └───────────┴───────────┴─────────┴────────────┘
 
 2022 Mar 15, 07:04 (✨) /economy/ $ futures meats
-           Future Table [Source: FinViz]           
+           Future Table [Source: FinViz]
 ┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┓
 ┃               ┃ prevClose ┃ last   ┃ change (%) ┃
 ┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━┩
@@ -90,7 +91,7 @@ Example:
 └───────────────┴───────────┴────────┴────────────┘
 
 2022 Mar 15, 07:04 (✨) /economy/ $ futures grains
-           Future Table [Source: FinViz]           
+           Future Table [Source: FinViz]
 ┏━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃              ┃ prevClose ┃ last    ┃ change (%) ┃
 ┡━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━┩
@@ -112,7 +113,7 @@ Example:
 └──────────────┴───────────┴─────────┴────────────┘
 
 2022 Mar 15, 07:04 (✨) /economy/ $ futures softs
-           Future Table [Source: FinViz]           
+           Future Table [Source: FinViz]
 ┏━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃              ┃ prevClose ┃ last    ┃ change (%) ┃
 ┡━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━┩
