@@ -47,6 +47,8 @@ def show_plot(
     ax_1_coloring = 0
     ax_2_coloring = -1
 
+    dataset_yaxis_1 = dataset_yaxis_1.dropna()
+
     for column in dataset_yaxis_1:
         ax1.plot(
             dataset_yaxis_1[column],
@@ -68,6 +70,8 @@ def show_plot(
 
     if not dataset_yaxis_2.empty:
         ax2 = ax1.twinx()
+
+        dataset_yaxis_2 = dataset_yaxis_2.dropna()
 
         for column in dataset_yaxis_2:
             ax2.plot(
