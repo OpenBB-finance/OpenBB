@@ -90,8 +90,8 @@ def check_supported_ticker(symbol: str) -> bool:
 
     Returns
     -------
-    result: Boolean
-
+    bool
+        True if ticker is supported
     """
 
     payload: Dict[str, str] = {

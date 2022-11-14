@@ -74,7 +74,8 @@ def _make_request(url: str) -> Union[BeautifulSoup, None]:
 
     Returns
     -------
-        BeautifulSoup object
+    Union[BeautifulSoup, None]
+        BeautifulSoup object or None
     """
     headers = {"User-Agent": get_user_agent()}
     session = _retry_session("https://runacap.com/")

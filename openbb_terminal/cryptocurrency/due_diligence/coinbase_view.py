@@ -58,7 +58,7 @@ def display_trades(
     symbol: str
         Trading pair of coins on Coinbase e.g ETH-USDT or UNI-ETH
     limit: int
-        Last <limit> of trades. Maximum is 1000.
+        Last `limit` of trades. Maximum is 1000.
     side: Optional[str]
         You can chose either sell or buy side. If side is not set then all trades will be displayed.
     export : str

@@ -58,12 +58,8 @@ def get_watchlists(
 
     Returns
     -------
-    list[praw.models.reddit.submission.Submission]:
-        List of reddit submissions
-    dict:
-        Dictionary of tickers and counts
-    int
-        Count of how many posts were analyzed
+    Tuple[List[praw.models.reddit.submission.Submission], dict, int]
+        List of reddit submissions, Dictionary of tickers and their count, Count of how many posts were analyzed
     """
     d_watchlist_tickers: dict = {}
     l_watchlist_author = []
@@ -156,7 +152,7 @@ def get_watchlists(
 def get_popular_tickers(
     limit: int = 10, post_limit: int = 50, subreddits: str = ""
 ) -> pd.DataFrame:
-    """Get popular tickers from list of subreddits [Source: reddit]
+    """Get popular tickers from list of subreddits [Source: reddit].
 
     Parameters
     ----------
@@ -328,7 +324,7 @@ def get_popular_tickers(
 def get_spac_community(
     limit: int = 10, popular: bool = False
 ) -> Tuple[pd.DataFrame, dict]:
-    """Get top tickers from r/SPACs [Source: reddit]
+    """Get top tickers from r/SPACs [Source: reddit].
 
     Parameters
     ----------
@@ -339,10 +335,8 @@ def get_spac_community(
 
     Returns
     -------
-    pd.DataFrame:
-        Dataframe of reddit submission
-    dict:
-        Dictionary of tickers and number of mentions
+    Tuple[pd.DataFrame, dict]
+        Dataframe of reddit submission, Dictionary of tickers and number of mentions
     """
     praw_api = praw.Reddit(
         client_id=cfg.API_REDDIT_CLIENT_ID,
@@ -477,12 +471,8 @@ def get_spac(
 
     Returns
     -------
-    pd.DataFrame :
-        Dataframe of reddit submissions
-    dict :
-        Dictionary of tickers and counts
-    int :
-        Number of posts found.
+    Tuple[pd.DataFrame, dict, int]
+        Dataframe of reddit submission, Dictionary of tickers and counts, Number of posts found.
     """
     praw_api = praw.Reddit(
         client_id=cfg.API_REDDIT_CLIENT_ID,
@@ -904,10 +894,8 @@ def get_posts_about(
 
     Returns
     -------
-    tuple[pd.DataFrame, list, float]:
-        Dataframe of submissions related to the search term,
-        List of polarity scores,
-        Average polarity score
+    Tuple[pd.DataFrame, list, float]:
+        Dataframe of submissions related to the search term, List of polarity scores, Average polarity score
     """
     praw_api = praw.Reddit(
         client_id=cfg.API_REDDIT_CLIENT_ID,

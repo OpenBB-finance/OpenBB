@@ -82,8 +82,8 @@ def get_queries(symbol: str, limit: int = 10) -> pd.DataFrame:
 
     Returns
     -------
-    dict : {'top': pd.DataFrame or None, 'rising': pd.DataFrame or None}
-
+    pd.DataFrame
+        Dataframe of related queries
     """
     try:
         pytrend = TrendReq()
