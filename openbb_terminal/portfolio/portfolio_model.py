@@ -349,10 +349,10 @@ class PortfolioEngine:
 
             p_bar.n += 1
             p_bar.refresh()
-            p_bar.disable = True
 
             # Warn user of removed ISINs
             if removed_tickers:
+                p_bar.disable = True
                 console.print(
                     f"\n[red]The following tickers are not supported and were removed: {removed_tickers}."
                     f"\nManually edit the 'Ticker' field with the proper Yahoo Finance suffix or provide a valid ISIN."
