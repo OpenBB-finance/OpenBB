@@ -40,6 +40,7 @@ market
 mkt
 mkt --urls
 mkt --vs ETH --limit 3 --sort volume --urls
+mkt --vs BTC -s volume -r
 
 # ex
 ex
@@ -96,10 +97,12 @@ rm
 # events
 events
 events --limit 3 --sort name --urls
+events --sort date -r
 
 # news
 news
 news --limit 3 -k media -r en --filter bullish
+news --sort published_at --reverse
 
 # links
 links
@@ -107,6 +110,7 @@ links
 # twitter
 twitter
 twitter --limit 3 --sort retweet_count
+twitter --sort date -r
 
 # social
 social

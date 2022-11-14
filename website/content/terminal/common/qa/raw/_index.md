@@ -9,7 +9,8 @@ optional arguments:
   -n NUM, --num NUM     Number to show (default: 20)
   -s SORTBY, --sortby SORTBY
                         The column to sort by (default: None)
-  -d, --descend         Sort in descending order (default: False)
+  -r, --reverse         Data is sorted in descending order by default. Reverse flag will sort it in an ascending way.
+                        Only works when raw data is displayed. (default: False)
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx (default: )
