@@ -290,6 +290,14 @@ def display_category(**kwargs):
     tables = kwargs["tables"]
     limit = kwargs["limit"]
 
+    if benchmark_allocation.empty:
+        console.print(f"[red]Benchmark data for {category} is empty.\n[/red]")
+        return
+
+    if portfolio_allocation.empty:
+        console.print(f"[red]Portfolio data for {category} is empty.\n[/red]")
+        return
+
     if tables:
         print_rich_table(
             combined.replace(0, "-"),
