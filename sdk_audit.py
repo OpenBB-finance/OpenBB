@@ -94,7 +94,7 @@ def format_function(function: Callable) -> Tuple[str, str]:
     Tuple[str, str]
         The functions pretty name and docstring
     """
-    mod = str(function.__module__).replace("py", "").replace("/", ".")
+    mod = str(function.__module__)[:-2].replace("/", ".")
     name = function.__name__
     if mod[-1] != ".":
         mod = f"{mod}."
@@ -110,8 +110,6 @@ def functions_df() -> pd.DataFrame:
         Information for all view and model functions
     """
     modules = all_view_models()
-    the_list = [str(x) for x in modules]
-    the_list.sort()
     all_formatted = []
     for module in modules:
         loaded = load_modules(module)
