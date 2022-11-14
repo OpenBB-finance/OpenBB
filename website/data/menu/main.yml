@@ -745,6 +745,8 @@ main:
         sub:
           - name: atr
             ref: terminal/forecast/atr
+          - name: autoarima
+            ref: terminal/forecast/autoarima
           - name: autoces
             ref: terminal/forecast/autoces
           - name: autoets
