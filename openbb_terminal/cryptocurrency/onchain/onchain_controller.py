@@ -105,7 +105,7 @@ class OnchainController(BaseController):
                 "-s": "--sort",
                 "--min": None,
                 "-m": "--min",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
                 "--address": {},
@@ -140,28 +140,28 @@ class OnchainController(BaseController):
             choices["balance"] = {
                 "--sort": {c: None for c in ethplorer_model.BALANCE_FILTERS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
             choices["holders"] = {
                 "--sort": {c: None for c in ethplorer_model.HOLDERS_FILTERS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
             choices["hist"] = {
                 "--sort": {c: None for c in ethplorer_model.HIST_FILTERS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
             choices["top"] = {
                 "--sort": {c: None for c in ethplorer_model.TOP_FILTERS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
@@ -169,7 +169,7 @@ class OnchainController(BaseController):
             choices["th"] = {
                 "--sort": {c: None for c in ethplorer_model.TH_FILTERS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
                 "--hash": {},
@@ -177,7 +177,7 @@ class OnchainController(BaseController):
             choices["prices"] = {
                 "--sort": {c: None for c in ethplorer_model.PRICES_FILTERS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
@@ -190,7 +190,7 @@ class OnchainController(BaseController):
                 "-s": "--sort",
                 "--days": {str(c): {} for c in range(1, 360)},
                 "-d": "--days",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
@@ -201,7 +201,7 @@ class OnchainController(BaseController):
                 "-vs": "--vs",
                 "--sort": {c: {} for c in bitquery_model.LT_FILTERS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
@@ -233,7 +233,7 @@ class OnchainController(BaseController):
             choices["ttcp"]["-s"] = "--sort"
             choices["ttcp"]["--days"] = {str(c): {} for c in range(1, 100)}
             choices["ttcp"]["-d"] = "--days"
-            choices["ttcp"]["--limit"] = {str(c): {} for c in range(1, 100)}
+            choices["ttcp"]["--limit"] = None
             choices["ttcp"]["-l"] = "--limit"
             choices["ttcp"]["--descend"] = {}
             choices["baas"] = {
@@ -441,7 +441,7 @@ class OnchainController(BaseController):
             "--until",
             dest="until",
             type=valid_date,
-            help="Final date. Default: 2021-01-01",
+            help=f"Final date. Default: {(datetime.now()).strftime('%Y-%m-%d')}",
             default=(datetime.now()).strftime("%Y-%m-%d"),
         )
 
@@ -451,8 +451,8 @@ class OnchainController(BaseController):
 
         if ns_parser:
             blockchain_view.display_btc_confirmed_transactions(
-                start_date=int(datetime.timestamp(ns_parser.since)),
-                end_date=int(datetime.timestamp(ns_parser.until)),
+                start_date=ns_parser.since.strftime("%Y-%m-%d"),
+                end_date=ns_parser.until.strftime("%Y-%m-%d"),
                 export=ns_parser.export,
             )
 
@@ -492,8 +492,8 @@ class OnchainController(BaseController):
 
         if ns_parser:
             blockchain_view.display_btc_circulating_supply(
-                start_date=int(datetime.timestamp(ns_parser.since)),
-                end_date=int(datetime.timestamp(ns_parser.until)),
+                start_date=ns_parser.since.strftime("%Y-%m-%d"),
+                end_date=ns_parser.until.strftime("%Y-%m-%d"),
                 export=ns_parser.export,
             )
 
@@ -559,8 +559,8 @@ class OnchainController(BaseController):
             display_hashrate(
                 symbol=ns_parser.coin,
                 interval=ns_parser.interval,
-                start_date=int(datetime.timestamp(ns_parser.since)),
-                end_date=int(datetime.timestamp(ns_parser.until)),
+                start_date=ns_parser.since.strftime("%Y-%m-%d"),
+                end_date=ns_parser.until.strftime("%Y-%m-%d"),
                 export=ns_parser.export,
             )
 

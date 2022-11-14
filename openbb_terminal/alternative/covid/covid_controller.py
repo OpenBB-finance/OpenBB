@@ -49,22 +49,22 @@ class CovidController(BaseController):
             }
             choices["ov"] = {
                 "--raw": {},
-                "--limit": {str(c): {} for c in range(1, 1000)},
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["rates"] = {
                 "--raw": {},
-                "--limit": {str(c): {} for c in range(1, 1000)},
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["cases"] = {
                 "--raw": {},
-                "--limit": {str(c): {} for c in range(1, 1000)},
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["deaths"] = {
                 "--raw": {},
-                "--limit": {str(c): {} for c in range(1, 1000)},
+                "--limit": None,
                 "-l": "--limit",
             }
             self.completer = NestedCompleter.from_nested_dict(choices)
