@@ -39,7 +39,7 @@ def display_sentiment_analysis(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Sentiment analysis from FinBrain
+    """Sentiment analysis from FinBrain.
 
     Parameters
     ----------

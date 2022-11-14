@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 def display_star_history(
     repo: str, export: str = "", external_axes: Optional[List[plt.Axes]] = None
 ) -> None:
-    """Display repo summary [Source: https://api.github.com]
+    """Display repo summary [Source: https://api.github.com].
 
     Parameters
     ----------
@@ -69,7 +69,7 @@ def display_top_repos(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ) -> None:
-    """Display repo summary [Source: https://api.github.com]
+    """Display repo summary [Source: https://api.github.com].
 
     Parameters
     ----------
@@ -121,7 +121,7 @@ def display_top_repos(
 
 @log_start_end(log=logger)
 def display_repo_summary(repo: str, export: str = "") -> None:
-    """Display repo summary [Source: https://api.github.com]
+    """Display repo summary [Source: https://api.github.com].
 
     Parameters
     ----------

@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 @check_api_key(["API_GITHUB_KEY"])
 def get_github_data(url: str, **kwargs) -> Dict[str, Any]:
-    """Get repository stats
+    """Get repository stats.
 
     Parameters
     ----------
@@ -55,7 +55,7 @@ def get_github_data(url: str, **kwargs) -> Dict[str, Any]:
 def search_repos(
     sortby: str = "stars", page: int = 1, categories: str = ""
 ) -> pd.DataFrame:
-    """Get repos sorted by stars or forks. Can be filtered by categories
+    """Get repos sorted by stars or forks. Can be filtered by categories.
 
     Parameters
     ----------
@@ -84,7 +84,7 @@ def search_repos(
 
 @log_start_end(log=logger)
 def get_stars_history(repo: str) -> pd.DataFrame:
-    """Get repository star history
+    """Get repository star history.
 
     Parameters
     ----------
@@ -131,7 +131,7 @@ def get_stars_history(repo: str) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_top_repos(sortby: str, limit: int = 50, categories: str = "") -> pd.DataFrame:
-    """Get repos sorted by stars or forks. Can be filtered by categories
+    """Get repos sorted by stars or forks. Can be filtered by categories.
 
     Parameters
     ----------
@@ -174,7 +174,7 @@ def get_top_repos(sortby: str, limit: int = 50, categories: str = "") -> pd.Data
 
 @log_start_end(log=logger)
 def get_repo_summary(repo: str) -> pd.DataFrame:
-    """Get repository summary
+    """Get repository summary.
 
     Parameters
     ----------

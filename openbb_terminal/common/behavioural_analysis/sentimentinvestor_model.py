@@ -23,7 +23,7 @@ def get_historical(
     end_date: str = datetime.utcnow().strftime("%Y-%m-%d"),
     number: int = 100,
 ) -> pd.DataFrame:
-    """Get hour-level sentiment data for the chosen symbol
+    """Get hour-level sentiment data for the chosen symbol.
 
     Source: [Sentiment Investor]
 
@@ -79,7 +79,7 @@ def get_historical(
 
 @check_api_key(["API_SENTIMENTINVESTOR_TOKEN"])
 def check_supported_ticker(symbol: str) -> bool:
-    """Check if the ticker is supported
+    """Check if the ticker is supported.
 
     Source: [Sentiment Investor]
 
@@ -133,9 +133,7 @@ def get_trending(
     number: int = 10,
 ) -> pd.DataFrame:
     """Get sentiment data on the most talked about tickers
-    within the last hour
-
-    Source: [Sentiment Investor]
+    within the last hour Source: [Sentiment Investor].
 
     Parameters
     ----------

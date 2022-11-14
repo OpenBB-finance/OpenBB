@@ -1,4 +1,4 @@
-"""Twitter view"""
+"""Twitter view."""
 __docformat__ = "numpy"
 
 import logging
@@ -19,6 +19,8 @@ from openbb_terminal.helper_funcs import (
     plot_autoscale,
     get_closing_price,
     is_valid_axes_count,
+    MatplotlibShow,
+    ConsolePrint,
 )
 from openbb_terminal.rich_config import console
 
@@ -26,8 +28,8 @@ logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_inference(symbol: str, limit: int = 100, export: str = ""):
-    """Infer sentiment from past n tweets
+def display_inference(symbol: str, limit: int = 100, export: str = "") -> ConsolePrint:
+    """Infer sentiment from past n tweets.
 
     Parameters
     ----------
@@ -83,7 +85,7 @@ def display_sentiment(
     compare: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
-):
+) -> MatplotlibShow | Optional[plt.Axes]:
     """Plot sentiments from symbol
 
     Parameters

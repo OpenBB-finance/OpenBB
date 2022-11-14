@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 @log_start_end(log=logger)
 def get_sentiment(symbol: str) -> pd.DataFrame:
-    """Gets Sentiment analysis provided by FinBrain's API [Source: finbrain]
+    """Gets Sentiment analysis provided by FinBrain's API [Source: finbrain].
 
     Parameters
     ----------

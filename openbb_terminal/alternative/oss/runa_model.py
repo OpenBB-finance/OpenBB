@@ -32,7 +32,7 @@ SORT_COLUMNS = [
 def _retry_session(
     url: str, retries: int = 3, backoff_factor: float = 1.0
 ) -> requests.Session:
-    """Helper methods that retries to make request
+    """Helper methods that retries to make request.
 
 
     Parameters
@@ -65,7 +65,7 @@ def _retry_session(
 
 @log_start_end(log=logger)
 def _make_request(url: str) -> Union[BeautifulSoup, None]:
-    """Helper method to scrap
+    """Helper method to scrap.
 
     Parameters
     ----------
@@ -102,7 +102,7 @@ def _make_request(url: str) -> Union[BeautifulSoup, None]:
 
 @log_start_end(log=logger)
 def get_startups() -> pd.DataFrame:
-    """Get startups from ROSS index [Source: https://runacap.com/]
+    """Get startups from ROSS index [Source: https://runacap.com/].
 
     Returns
     -------

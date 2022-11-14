@@ -29,7 +29,7 @@ def display_mentions(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot weekly bars of stock's interest over time. other users watchlist. [Source: Google]
+    """Plot weekly bars of stock's interest over time. other users watchlist. [Source: Google].
 
     Parameters
     ----------
@@ -92,7 +92,7 @@ def display_correlation_interest(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot interest over time of words/sentences versus stock price. [Source: Google]
+    """Plot interest over time of words/sentences versus stock price. [Source: Google].
 
     Parameters
     ----------
@@ -159,7 +159,7 @@ def display_regions(
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
 ):
-    """Plot bars of regions based on stock's interest. [Source: Google]
+    """Plot bars of regions based on stock's interest. [Source: Google].
 
     Parameters
     ----------
@@ -204,7 +204,7 @@ def display_regions(
 
 @log_start_end(log=logger)
 def display_queries(symbol: str, limit: int = 5, export: str = ""):
-    """Print top related queries with this stock's query. [Source: Google]
+    """Print top related queries with this stock's query. [Source: Google].
 
     Parameters
     ----------
@@ -241,7 +241,7 @@ def display_queries(symbol: str, limit: int = 5, export: str = ""):
 
 @log_start_end(log=logger)
 def display_rise(symbol: str, limit: int = 10, export: str = ""):
-    """Print top rising related queries with this stock's query. [Source: Google]
+    """Print top rising related queries with this stock's query. [Source: Google].
 
     Parameters
     ----------

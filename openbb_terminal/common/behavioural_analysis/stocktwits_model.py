@@ -24,7 +24,10 @@ def get_bullbear(symbol: str) -> Tuple[int, int, int, int]:
     Returns
     -------
     Tuple[int, int, int, int]
-        Watchlist count, Number of cases found for ticker, Bullish count, Bearish count
+        Watchlist count,
+        Number of cases found for ticker,
+        Number of bullish statements,
+        Number of bearish statements,
     """
     result = requests.get(
         f"https://api.stocktwits.com/api/2/streams/symbol/{symbol}.json"

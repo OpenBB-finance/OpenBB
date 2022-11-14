@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 @log_start_end(log=logger)
 @check_api_key(["API_FINNHUB_KEY"])
 def get_sentiment_stats(ticker: str) -> pd.DataFrame:
-    """Get sentiment stats [Source: finnhub]
+    """Get sentiment stats [Source: finnhub].
 
     Parameters
     ----------
