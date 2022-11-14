@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import logging
 from datetime import datetime, timedelta
-from typing import List
+from typing import List, Tuple
 import warnings
 
 import numpy as np
@@ -96,7 +96,7 @@ def get_correlation(
     similar: List[str],
     start_date: str = (datetime.now() - timedelta(days=366)).strftime("%Y-%m-%d"),
     candle_type: str = "a",
-):
+) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """
     Get historical price correlation. [Source: Yahoo Finance]
 
@@ -110,6 +110,11 @@ def get_correlation(
         Start date of comparison, by default 1 year ago
     candle_type : str, optional
         OHLCA column to use for candles or R for returns, by default "a" for Adjusted Close
+
+    Returns
+    -------
+    Tuple[pd.DataFrame, pd.DataFrame]
+        Dataframe with correlation matrix, Dataframe with historical prices for all comparison stocks
     """
     df_similar = get_historical(similar, start_date, candle_type)
 
@@ -133,6 +138,11 @@ def get_volume(
         finnhub_peers(), finviz_peers(), polygon_peers().
     start_date : str, optional
         Start date of comparison, by default 1 year ago
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe with volume for stock
     """
 
     df_similar = get_historical(similar, start_date, "v")

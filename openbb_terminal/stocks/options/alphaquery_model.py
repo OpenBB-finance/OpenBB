@@ -28,6 +28,11 @@ def get_put_call_ratio(
         Window to consider, by default 30
     start_date: str, optional
         Start date to plot, by default last 366 days
+
+    Returns
+    -------
+    pd.DataFrame
+        Put call ratio
     """
     url = f"https://www.alphaquery.com/data/option-statistic-chart?ticker={symbol}\
         &perType={window}-Day&identifier=put-call-ratio-volume"

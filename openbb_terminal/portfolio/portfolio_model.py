@@ -3,7 +3,7 @@ __docformat__ = "numpy"
 
 import contextlib
 import logging
-from typing import Dict, Any
+from typing import Dict, Any, Tuple
 import datetime
 
 import numpy as np
@@ -1096,7 +1096,7 @@ def get_maximum_drawdown_ratio(portfolio: PortfolioModel) -> pd.DataFrame:
 
 
 @log_start_end(log=logger)
-def get_gaintopain_ratio(portfolio: PortfolioModel):
+def get_gaintopain_ratio(portfolio: PortfolioModel) -> pd.DataFrame:
     """Get Pain-to-Gain ratio based on historical data
 
     Parameters
@@ -1119,7 +1119,9 @@ def get_gaintopain_ratio(portfolio: PortfolioModel):
 
 
 @log_start_end(log=logger)
-def get_tracking_error(portfolio: PortfolioModel, window: int = 252):
+def get_tracking_error(
+    portfolio: PortfolioModel, window: int = 252
+) -> Tuple[pd.DataFrame, pd.Series]:
     """Get tracking error
 
     Parameters
@@ -1132,9 +1134,7 @@ def get_tracking_error(portfolio: PortfolioModel, window: int = 252):
     Returns
     -------
     pd.DataFrame
-        DataFrame of tracking errors during different time windows
-    pd.Series
-        Series of rolling tracking error
+        DataFrame of tracking errors during different time windows, Series of rolling tracking error
     """
     trackr_period_df, trackr_rolling = portfolio_helper.get_tracking_error(
         portfolio.returns, portfolio.benchmark_returns, window
@@ -1144,7 +1144,7 @@ def get_tracking_error(portfolio: PortfolioModel, window: int = 252):
 
 
 @log_start_end(log=logger)
-def get_information_ratio(portfolio: PortfolioModel):
+def get_information_ratio(portfolio: PortfolioModel) -> pd.DataFrame:
     """Get information ratio
 
     Parameters
@@ -1168,7 +1168,9 @@ def get_information_ratio(portfolio: PortfolioModel):
 
 
 @log_start_end(log=logger)
-def get_tail_ratio(portfolio: PortfolioModel, window: int = 252):
+def get_tail_ratio(
+    portfolio: PortfolioModel, window: int = 252
+) -> Tuple[pd.DataFrame, pd.Series, pd.Series]:
     """Get tail ratio
 
     Parameters
@@ -1181,12 +1183,8 @@ def get_tail_ratio(portfolio: PortfolioModel, window: int = 252):
 
     Returns
     -------
-    pd.DataFrame
-        DataFrame of the portfolios and the benchmarks tail ratio during different time windows
-    pd.Series
-        Series of the portfolios rolling tail ratio
-    pd.Series
-        Series of the benchmarks rolling tail ratio
+    Tuple[pd.DataFrame, pd.Series, pd.Series]
+        DataFrame of the portfolios and the benchmarks tail ratio during different time windows, Series of the portfolios rolling tail ratio, Series of the benchmarks rolling tail ratio
     """
     tailr_period_df, portfolio_tr, benchmark_tr = portfolio_helper.get_tail_ratio(
         portfolio.returns, portfolio.benchmark_returns, window
@@ -1196,7 +1194,7 @@ def get_tail_ratio(portfolio: PortfolioModel, window: int = 252):
 
 
 @log_start_end(log=logger)
-def get_common_sense_ratio(portfolio: PortfolioModel):
+def get_common_sense_ratio(portfolio: PortfolioModel) -> pd.DataFrame:
     """Get common sense ratio
 
     Parameters
@@ -1222,7 +1220,7 @@ def get_common_sense_ratio(portfolio: PortfolioModel):
 @log_start_end(log=logger)
 def get_jensens_alpha(
     portfolio: PortfolioModel, risk_free_rate: float = 0, window: str = "1y"
-):
+) -> Tuple[pd.DataFrame, pd.Series]:
     """Get jensen's alpha
 
     Parameters
@@ -1236,10 +1234,8 @@ def get_jensens_alpha(
 
     Returns
     -------
-    pd.DataFrame
-        DataFrame of jensens's alpha during different time windows
-    pd.Series
-        Series of jensens's alpha data
+    Tuple[pd.DataFrame, pd.Series]
+        DataFrame of jensens's alpha during different time windows, Series of jensens's alpha data
     """
     ja_period_df, ja_rolling = portfolio_helper.jensens_alpha(
         portfolio.returns,
@@ -1254,7 +1250,9 @@ def get_jensens_alpha(
 
 
 @log_start_end(log=logger)
-def get_calmar_ratio(portfolio: PortfolioModel, window: int = 756):
+def get_calmar_ratio(
+    portfolio: PortfolioModel, window: int = 756
+) -> Tuple[pd.DataFrame, pd.Series]:
     """Get calmar ratio
 
     Parameters
@@ -1266,10 +1264,8 @@ def get_calmar_ratio(portfolio: PortfolioModel, window: int = 756):
 
     Returns
     -------
-    pd.DataFrame
-        DataFrame of calmar ratio of the benchmark and portfolio during different time periods
-    pd.Series
-        Series of calmar ratio data
+    Tuple[pd.DataFrame, pd.Series]
+        DataFrame of calmar ratio of the benchmark and portfolio during different time periods, Series of calmar ratio data
     """
     cr_period_df, cr_rolling = portfolio_helper.get_calmar_ratio(
         portfolio.returns,
@@ -1283,7 +1279,7 @@ def get_calmar_ratio(portfolio: PortfolioModel, window: int = 756):
 
 
 @log_start_end(log=logger)
-def get_kelly_criterion(portfolio: PortfolioModel):
+def get_kelly_criterion(portfolio: PortfolioModel) -> pd.DataFrame:
     """Gets kelly criterion
 
     Parameters
@@ -1304,7 +1300,7 @@ def get_kelly_criterion(portfolio: PortfolioModel):
 
 
 @log_start_end(log=logger)
-def get_payoff_ratio(portfolio: PortfolioModel):
+def get_payoff_ratio(portfolio: PortfolioModel) -> pd.DataFrame:
     """Gets payoff ratio
 
     Returns
@@ -1318,7 +1314,7 @@ def get_payoff_ratio(portfolio: PortfolioModel):
 
 
 @log_start_end(log=logger)
-def get_profit_factor(portfolio: PortfolioModel):
+def get_profit_factor(portfolio: PortfolioModel) -> pd.DataFrame:
     """Gets profit factor
 
     Parameters
@@ -1382,7 +1378,7 @@ def get_holdings_percentage(
 @log_start_end(log=logger)
 def get_maximum_drawdown(
     portfolio: PortfolioModel, is_returns: bool = False
-) -> pd.Series:
+) -> Tuple[pd.Series, pd.Series]:
     """Calculate the drawdown (MDD) of historical series.  Note that the calculation is done
      on cumulative returns (or prices).  The definition of drawdown is
 
@@ -1398,9 +1394,7 @@ def get_maximum_drawdown(
     Returns
     -------
     pd.Series
-        Holdings series
-    pd.Series
-        Drawdown series
+        Holdings series, Drawdown series
     """
     holdings: pd.Series = portfolio.portfolio_value
     if is_returns:
@@ -1591,10 +1585,11 @@ def get_performance_vs_benchmark(
         Portfolio object with trades loaded
     show_all_trades: bool
         Whether to also show all trades made and their performance (default is False)
+
     Returns
     -------
     pd.DataFrame
-
+        DataFrame of the portfolio's performance vs the benchmark
     """
 
     portfolio_trades = portfolio.portfolio_trades
@@ -1704,9 +1699,11 @@ def get_var(
         If one should use the student-t distribution
     percentile: float
         var percentile (%)
+
     Returns
     -------
     pd.DataFrame
+        DataFrame of the portfolio's VaR
 
     """
     return qa_model.get_var(
@@ -1738,9 +1735,11 @@ def get_es(
         choose distribution to use: logistic, laplace, normal
     percentile: float
         es percentile (%)
+
     Returns
     -------
     pd.DataFrame
+        DataFrame of the portfolio's expected shortfall
 
     """
 
@@ -1767,9 +1766,11 @@ def get_omega(
         annualized target return threshold start of plotted threshold range
     threshold_end: float
         annualized target return threshold end of plotted threshold range
+
     Returns
     -------
     pd.DataFrame
+        DataFrame of the portfolio's omega ratio
 
     """
 
@@ -1795,9 +1796,11 @@ def get_summary(
         interval to compare cumulative returns and benchmark
     risk_free_rate : float
         Risk free rate for calculations
+
     Returns
     -------
     pd.DataFrame
+        DataFrame of the portfolio's summary
 
     """
 
@@ -1909,9 +1912,11 @@ def get_monthly_returns(
         Portfolio object with trades loaded
     window : str
         interval to compare cumulative returns and benchmark
+
     Returns
     -------
     pd.DataFrame
+        DataFrame of the portfolio's monthly returns
 
     """
     portfolio_returns = portfolio_helper.filter_df_by_period(portfolio.returns, window)
@@ -2004,9 +2009,11 @@ def get_daily_returns(
         Portfolio object with trades loaded
     window : str
         interval to compare cumulative returns and benchmark
+
     Returns
     -------
     pd.DataFrame
+        DataFrame of the portfolio's daily returns
 
     """
     portfolio_returns = portfolio_helper.filter_df_by_period(portfolio.returns, window)

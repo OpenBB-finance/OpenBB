@@ -93,7 +93,8 @@ def get_expirations(symbol: str) -> List[str]:
 
     Parameters
     ----------
-    symbol
+    symbol : str
+        Ticker symbol to get expirations for
 
     Returns
     -------
@@ -117,8 +118,9 @@ def get_chain_given_expiration(symbol: str, expiration: str) -> pd.DataFrame:
     ----------
     symbol: str
         Symbol to get chain for
-    expiration
+    expiration: str
         Expiration to get chain for
+
     Returns
     -------
     pd.DataFrame

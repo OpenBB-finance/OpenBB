@@ -172,7 +172,7 @@ def get_equal_weights(
     threshold: float = 0,
     method: str = "time",
     value: float = 1.0,
-) -> Tuple:
+) -> Tuple[dict[str, float], pd.DataFrame]:
     """Equally weighted portfolio, where weight = 1/# of symbols
 
     Parameters
@@ -209,8 +209,8 @@ def get_equal_weights(
 
     Returns
     -------
-    dict
-        Dictionary of weights where keys are the tickers
+    Tuple[dict[str, float], pd.DataFrame]
+        Dictionary of weights where keys are the tickers, dataframe of stock returns
     """
 
     stock_prices = yahoo_finance_model.process_stocks(
@@ -263,11 +263,9 @@ def get_property_weights(
     freq: str, optional
         The frequency used to calculate returns. Default value is 'D'. Possible
         values are:
-
         - 'D' for daily returns.
         - 'W' for weekly returns.
         - 'M' for monthly returns.
-
     maxnan: float
         Max percentage of nan values accepted per asset to be included in
         returns.
@@ -339,7 +337,7 @@ def get_mean_risk_portfolio(
     d_ewma: float = 0.94,
     value: float = 1.0,
     value_short: float = 0.0,
-) -> Tuple:
+) -> Tuple[Any, pd.DataFrame]:
     """Builds a mean risk optimal portfolio
 
     Parameters
