@@ -3,14 +3,11 @@
 >   po               portfolio optimization, 	 optimize your portfolio weights efficiently
 
     load             load data into the portfolio
+    show             show existing transactions
+    bench            define the benchmark
 
-Loaded orderbook: 
+Loaded transactions file: 
 Risk Free Rate:   0.00%
-[unvl]
-    show             show existing transactions[/unvl]
-[unvl]
-    bench            define the benchmark[/unvl]
-
 Benchmark: 
 
 Graphs:[unvl]
@@ -27,8 +24,9 @@ Graphs:[unvl]
     rbeta            rolling beta
 [/unvl]
 Metrics:[unvl]
-    alloc            allocation on an asset, sector, countries or regions basis
     summary          all portfolio vs benchmark metrics for a certain period of choice
+    alloc            allocation on an asset, sector, countries or regions basis
+    attrib           display sector attribution of the portfolio compared to the S&P 500
     metric           portfolio vs benchmark metric for all different periods
     perf             performance of the portfolio versus benchmark[/unvl]
 

@@ -167,7 +167,7 @@ class DueDiligenceController(CryptoBaseController):
                 "--vs": {c: {} for c in coinpaprika_view.CURRENCIES},
                 "--sort": {c: {} for c in coinpaprika_view.MARKET_FILTERS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
                 "--urls": {},
@@ -176,28 +176,28 @@ class DueDiligenceController(CryptoBaseController):
             choices["ex"] = {
                 "--sort": {c: {} for c in coinpaprika_view.EX_FILTERS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--ascend": {},
             }
             choices["events"] = {
                 "--sort": {c: {} for c in coinpaprika_view.EVENTS_FILTERS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
             choices["twitter"] = {
                 "--sort": {c: {} for c in coinpaprika_view.TWEETS_FILTERS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
             choices["news"] = {
                 "--sort": {c: {} for c in cryptopanic_model.SORT_FILTERS},
                 "-s": "--sort",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
                 "--urls": {},
@@ -205,7 +205,6 @@ class DueDiligenceController(CryptoBaseController):
                 "--kind": {c: {} for c in cryptopanic_model.CATEGORIES},
                 "-k": "--kind",
                 "--filter": {c: {} for c in cryptopanic_model.FILTERS},
-                "-f": "--filter",
                 "--region": {c: {} for c in cryptopanic_model.REGIONS},
                 "-r": "--region",
             }
@@ -342,10 +341,11 @@ class DueDiligenceController(CryptoBaseController):
             )
 
             if ns_parser:
+
                 glassnode_view.display_non_zero_addresses(
                     symbol=self.symbol.upper(),
-                    start_date=int(datetime.timestamp(ns_parser.since)),
-                    end_date=int(datetime.timestamp(ns_parser.until)),
+                    start_date=ns_parser.since.strftime("%Y-%m-%d"),
+                    end_date=ns_parser.until.strftime("%Y-%m-%d"),
                     export=ns_parser.export,
                 )
 
@@ -430,11 +430,12 @@ class DueDiligenceController(CryptoBaseController):
             )
 
             if ns_parser:
+
                 glassnode_view.display_active_addresses(
                     symbol=self.symbol.upper(),
                     interval=ns_parser.interval,
-                    start_date=int(datetime.timestamp(ns_parser.since)),
-                    end_date=int(datetime.timestamp(ns_parser.until)),
+                    start_date=ns_parser.since.strftime("%Y-%m-%d"),
+                    end_date=ns_parser.until.strftime("%Y-%m-%d"),
                     export=ns_parser.export,
                 )
 
@@ -494,11 +495,12 @@ class DueDiligenceController(CryptoBaseController):
             )
 
             if ns_parser:
+
                 glassnode_view.display_exchange_net_position_change(
                     symbol=self.symbol.upper(),
                     exchange=ns_parser.exchange,
-                    start_date=int(datetime.timestamp(ns_parser.since)),
-                    end_date=int(datetime.timestamp(ns_parser.until)),
+                    start_date=ns_parser.since.strftime("%Y-%m-%d"),
+                    end_date=ns_parser.until.strftime("%Y-%m-%d"),
                     export=ns_parser.export,
                 )
         else:
@@ -565,11 +567,12 @@ class DueDiligenceController(CryptoBaseController):
             )
 
             if ns_parser:
+
                 glassnode_view.display_exchange_balances(
                     symbol=self.symbol.upper(),
                     exchange=ns_parser.exchange,
-                    start_date=int(datetime.timestamp(ns_parser.since)),
-                    end_date=int(datetime.timestamp(ns_parser.until)),
+                    start_date=ns_parser.since.strftime("%Y-%m-%d"),
+                    end_date=ns_parser.until.strftime("%Y-%m-%d"),
                     percentage=ns_parser.percentage,
                     export=ns_parser.export,
                 )

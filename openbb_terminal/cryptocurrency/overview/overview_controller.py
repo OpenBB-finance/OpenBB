@@ -90,6 +90,24 @@ class OverviewController(BaseController):
     PATH = "/crypto/ov/"
 
     ORDERED_LIST_SOURCES_EXCHANGES = get_ordered_list_sources(f"{PATH}exchanges")
+    CATEGORIES_CHOICES = [
+        "Name",
+        "Market_Cap",
+        "Market_Cap_Change_24H",
+        "Top_3_Coins",
+        "Volume_24H",
+    ]
+
+    STABLES_CHOICES = [
+        "Symbol",
+        "Name",
+        "Price_[$]",
+        "Market_Cap_[$]",
+        "Market_Cap_Rank",
+        "Change_7d_[%]",
+        "Change_24h_[%]",
+        "Volume_[$]",
+    ]
 
     def __init__(self, queue: List[str] = None):
         """Constructor"""
@@ -115,7 +133,7 @@ class OverviewController(BaseController):
             choices["cr"]["-c"] = "--cryptocurrrencies"
             choices["cr"]["--platforms"] = {c: None for c in loanscan_model.PLATFORMS}
             choices["cr"]["-p"] = "--platforms"
-            choices["cr"]["--limit"] = {str(c): {} for c in range(1, 100)}
+            choices["cr"]["--limit"] = None
             choices["cr"]["-l"] = "--limit"
             choices["cr"]["--type"] = {c: {} for c in ["borrow", "supply"]}
             choices["cr"]["-t"] = "--type"
@@ -123,28 +141,29 @@ class OverviewController(BaseController):
                 "--sortby": {c: {} for c in rekt_model.HACKS_COLUMNS},
                 "--slug": {c: {} for c in crypto_hack_slugs},
                 "-s": "--slug",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
             choices["hold"] = {
                 "--coin": {c: {} for c in pycoingecko_model.HOLD_COINS},
                 "-c": "--coin",
-                "--limit": {str(c): {} for c in range(1, 50)},
+                "--limit": None,
                 "-l": "--limit",
                 "--bar": {},
             }
             choices["categories"] = {
-                "--sortby": {c: {} for c in pycoingecko_model.CATEGORIES_FILTERS},
+                "--sortby": {c: {} for c in self.CATEGORIES_CHOICES},
                 "-s": "--sortby",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--pie": {},
             }
+
             choices["stables"] = {
-                "--sortby": {c: {} for c in pycoingecko_model.COINS_COLUMNS},
+                "--sortby": {c: {} for c in self.STABLES_CHOICES},
                 "-s": "--sortby",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
                 "--pie": {},
@@ -152,7 +171,7 @@ class OverviewController(BaseController):
             choices["exchanges"] = {
                 "--sortby": {c: {} for c in self.combined_filters},
                 "-s": "--sortby",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
                 "--urls": {},
@@ -163,21 +182,21 @@ class OverviewController(BaseController):
             choices["exrates"] = {
                 "--sortby": {c: {} for c in pycoingecko_model.EXRATES_FILTERS},
                 "-s": "--sortby",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
             choices["indexes"] = {
                 "--sortby": {c: {} for c in pycoingecko_model.INDEXES_FILTERS},
                 "-s": "--sortby",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
             choices["derivatives"] = {
                 "--sortby": {c: {} for c in pycoingecko_model.DERIVATIVES_FILTERS},
                 "-s": "--sortby",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
@@ -185,7 +204,7 @@ class OverviewController(BaseController):
                 "--vs": {c: {} for c in CURRENCIES},
                 "--sortby": {c: {} for c in coinpaprika_model.MARKETS_FILTERS},
                 "-s": "--sortby",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
@@ -194,7 +213,7 @@ class OverviewController(BaseController):
                 "-e": "--exchange",
                 "--sortby": {c: {} for c in coinpaprika_model.EXMARKETS_FILTERS},
                 "-s": "--sortby",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
                 "--urls": {},
@@ -208,25 +227,25 @@ class OverviewController(BaseController):
                 c: None for c in coinpaprika_model.CONTRACTS_FILTERS
             }
             choices["contracts"]["-s"] = "--sortby"
-            choices["contracts"]["--limit"] = {str(c): {} for c in range(1, 100)}
+            choices["contracts"]["--limit"] = None
             choices["contracts"]["-l"] = "--limit"
             choices["contracts"]["--descend"] = {}
             choices["hm"]["--category"] = {c: {} for c in get_categories_keys()}
             choices["hm"]["-c"] = "--category"
-            choices["hm"]["--limit"] = {str(c): {} for c in range(1, 100)}
+            choices["hm"]["--limit"] = None
             choices["hm"]["-l"] = "--limit"
             choices["info"] = {
                 "--vs": {c: {} for c in CURRENCIES},
                 "--sortby": {c: {} for c in coinpaprika_model.INFO_FILTERS},
                 "-s": "--sortby",
-                "--limit": {str(c): {} for c in range(1, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
             choices["pairs"] = {
                 "--sortby": {c: {} for c in coinbase_model.PAIRS_FILTERS},
                 "-s": "--sortby",
-                "--limit": {str(c): {} for c in range(10, 100)},
+                "--limit": None,
                 "-l": "--limit",
                 "--descend": {},
             }
@@ -243,7 +262,7 @@ class OverviewController(BaseController):
                 "-u": "--urls",
             }
             choices["wf"] = {
-                "--limit": {str(c): {} for c in range(10, 100)},
+                "--limit": None,
                 "-l": "--limit",
             }
             choices["wfpe"] = {c: {} for c in withdrawalfees_model.POSSIBLE_CRYPTOS}
@@ -501,12 +520,10 @@ class OverviewController(BaseController):
             parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
         )
         if ns_parser:
-            start_date = ns_parser.since.strftime("%Y-%m-%d")
-            end_date = ns_parser.until.strftime("%Y-%m-%d")
 
             display_btc_rainbow(
-                start_date=start_date,
-                end_date=end_date,
+                start_date=ns_parser.since.strftime("%Y-%m-%d"),
+                end_date=ns_parser.until.strftime("%Y-%m-%d"),
                 export=ns_parser.export,
             )
 
@@ -562,8 +579,8 @@ class OverviewController(BaseController):
 
         if ns_parser:
             blockchaincenter_view.display_altcoin_index(
-                start_date=ns_parser.since.timestamp(),
-                end_date=ns_parser.until.timestamp(),
+                start_date=ns_parser.since.strftime("%Y-%m-%d"),
+                end_date=ns_parser.until.strftime("%Y-%m-%d"),
                 period=ns_parser.period,
                 export=ns_parser.export,
             )
@@ -765,8 +782,8 @@ class OverviewController(BaseController):
             dest="sortby",
             type=str,
             help="Sort by given column. Default: market_cap_desc",
-            default=pycoingecko_model.SORT_VALUES[0],
-            choices=pycoingecko_model.SORT_VALUES,
+            default="Market_Cap",
+            choices=self.CATEGORIES_CHOICES,
         )
 
         parser.add_argument(
@@ -818,13 +835,12 @@ class OverviewController(BaseController):
             dest="sortby",
             type=str,
             help="Sort by given column. Default: market_cap",
-            default="market_cap",
-            choices=pycoingecko_model.COINS_COLUMNS,
+            default="Market_Cap_[$]",
         )
 
         parser.add_argument(
             "--descend",
-            action="store_false",
+            action="store_true",
             help="Flag to sort in descending order (lowest first)",
             dest="descend",
             default=False,

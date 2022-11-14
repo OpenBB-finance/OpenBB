@@ -356,7 +356,17 @@ def display_stablecoins(
     pie : bool
         Whether to show a pie chart
     """
-
+    sort_mapping = {
+        "Symbol": "symbol",
+        "Name": "name",
+        "Price_[$]": "current_price",
+        "Market_Cap_[$]": "market_cap",
+        "Market_Cap_Rank": "market_cap_rank",
+        "Change_7d_[%]": "price_change_percentage_7d_in_currency",
+        "Change_24h_[%]": "price_change_percentage_24h_in_currency",
+        "Volume_[$]": "total_volume",
+    }
+    sortby = sort_mapping[sortby]
     df = gecko.get_stable_coins(limit, sortby=sortby, ascend=ascend)
 
     if not df.empty:
@@ -372,13 +382,13 @@ def display_stablecoins(
                 "Price [$]",
                 "Market Cap [$]",
                 "Market Cap Rank",
-                "Change 24h [%]",
                 "Change 7d [%]",
+                "Change 24h [%]",
                 "Volume [$]",
                 f"Percentage [%] of top {limit}",
             ],
             axis=1,
-            inplace=False,
+            copy=False,
         )
         df = df.applymap(lambda x: lambda_long_number_format_with_type_check(x))
         if pie:

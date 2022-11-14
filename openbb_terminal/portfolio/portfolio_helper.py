@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
-from datetime import datetime
+from datetime import datetime, date
 import os
 from pathlib import Path
 import csv
@@ -1166,3 +1166,41 @@ def get_profit_factor(portfolio_trades: pd.DataFrame) -> pd.DataFrame:
     )
 
     return pf_period_df
+
+
+def get_start_date_from_period(period) -> date:
+    """
+    Returns start date of a time period based on the period string (e.g. 10y, 3m, etc.)
+    """
+    if period == "10y":
+        start_date = date.today() + relativedelta(years=-10)
+    elif period == "5y":
+        start_date = date.today() + relativedelta(years=-5)
+    elif period == "3y":
+        start_date = date.today() + relativedelta(years=-3)
+    elif period == "1y":
+        start_date = date.today() + relativedelta(years=-1)
+    elif period == "6m":
+        start_date = date.today() + relativedelta(months=-6)
+    elif period == "3m":
+        start_date = date.today() + relativedelta(months=-3)
+    elif period == "ytd":
+        start_date = date(date.today().year, 1, 1)
+    elif period == "qtd":
+        cm = date.today().month
+        if 3 >= cm >= 1:
+            start_date = date(date.today().year, 1, 1)
+        elif 6 >= cm >= 4:
+            start_date = date(date.today().year, 4, 1)
+        elif 9 >= cm >= 7:
+            start_date = date(date.today().year, 7, 1)
+        elif 12 >= cm >= 10:
+            start_date = date(date.today().year, 10, 1)
+        else:
+            print("Error")
+    elif period == "mtd":
+        cur_month = date.today().month
+        cur_year = date.today().year
+        start_date = date(cur_year, cur_month, 1)
+
+    return start_date

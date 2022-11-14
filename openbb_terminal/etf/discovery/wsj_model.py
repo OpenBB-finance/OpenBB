@@ -18,7 +18,7 @@ def etf_movers(sort_type: str = "gainers", export: bool = False) -> pd.DataFrame
     Parameters
     ----------
     sort_type: str
-        Data to get.  Can be "gainers", "decliners" or "active"
+        Data to get. Can be "gainers", "decliners" or "active"
 
     Returns
     -------
