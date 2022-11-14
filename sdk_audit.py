@@ -3,8 +3,18 @@ from typing import List, Callable, Tuple
 from datetime import datetime
 import importlib.util
 from pathlib import Path
-import os
 import pandas as pd
+
+try:
+    import darts  # pylint: disable=W0611 # noqa: F401
+
+    # If you just import darts this will pass during pip install, this creates
+    # Failures later on, also importing utils ensures that darts is installed correctly
+    from darts import utils  # pylint: disable=W0611 # noqa: F401
+
+    FORECASTING = True
+except ImportError:
+    FORECASTING = False
 
 base_path = Path(__file__).parent / "openbb_terminal"
 
@@ -21,8 +31,7 @@ def load_modules(full_path: Path):
     ----------
     The python module
     """
-    mod_path = str(full_path).split("OpenBBTerminal/")[1].replace("/", ".")
-    spec = importlib.util.spec_from_file_location(mod_path, full_path)
+    spec = importlib.util.spec_from_file_location(full_path.stem, full_path)
     if not spec:
         raise ValueError(f"Could not import path: {full_path}")
     mod = importlib.util.module_from_spec(spec)
@@ -42,15 +51,15 @@ def all_view_models() -> List[Path]:
     List[Path]
         All paths in openbb_terminal with 'view' or 'model' in the name
     """
-    file_list = []
-    all_files = os.walk(base_path)
-    for root, _, files in all_files:
-        for filename in files:
-            if filename.endswith(".py"):
-                if "view" in filename or "model" in filename:
-                    file_list.append(f"{root}/{filename}")
-    clean_list = set(file_list)
-    return [Path(x) for x in clean_list]
+
+    pattern_list = ["**/*_model.py", "**/*_view.py"]
+    module_path_list = []
+
+    for pattern in pattern_list:
+        module_path_generator = base_path.glob(pattern)
+        module_path_list += list(module_path_generator)
+
+    return module_path_list
 
 
 def get_sdk(file_path: str = "miscellaneous/library/trail_map.csv") -> pd.DataFrame:
@@ -112,6 +121,8 @@ def functions_df() -> pd.DataFrame:
     modules = all_view_models()
     all_formatted = []
     for module in modules:
+        if not FORECASTING and "forecast" in str(module):
+            continue
         loaded = load_modules(module)
         # Gets all of a module's functions, but ignores imported functions
         func_list = [
