@@ -47,6 +47,7 @@ def get_function_meta(trailmap, trail_type: Literal["model", "view"]):
 
     return {
         "name": trailmap.class_attr,
+        "path": path,
         "function_name": function_name,
         "func_def": func_def,
         "source_code_url": source_code_url,
@@ -57,18 +58,41 @@ def get_function_meta(trailmap, trail_type: Literal["model", "view"]):
     }
 
 
-def generate_markdown(meta, trail_type: Literal["model", "view"]):
-    # head meta https://docusaurus.io/docs/markdown-features/head-metadata
-    markdown = ""
-    if trail_type == "model":
-        markdown = f"""---
-title: {meta["name"]}
+def generate_markdown(meta_model, meta_view):
+    main_model = meta_model
+    if not meta_model:
+        if not meta_view:
+            raise ValueError("No model or view")
+        main_model = meta_view
+    markdown = f"""---
+title: {main_model["name"]}
 description: OpenBB SDK Function
----\n"""
+---\n\n"""
+    if meta_view and meta_model:
+        markdown += """import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';\n\n"""
+
+    markdown += f"# {main_model['name']}\n\n"
+
+    if meta_view and meta_model:
+        markdown += f"""<Tabs>
+<TabItem value="model" label="Model" default>\n
+{generate_markdown_section(meta_model)}\n
+</TabItem>
+<TabItem value="view" label="View">\n
+{generate_markdown_section(meta_view)}\n
+</TabItem>
+</Tabs>"""
+    else:
+        markdown += generate_markdown_section(main_model)
+    return markdown
+
+
+def generate_markdown_section(meta):
+    # head meta https://docusaurus.io/docs/markdown-features/head-metadata
     # use real description but need to parse it
-    markdown += f"# {meta['name']}\n\n"
-    markdown += f"## {meta['function_name']}\n\n"
-    markdown += f"```python\n{meta['func_def']}\n```\n"
+    markdown = f"## {meta['function_name']}\n\n"
+    markdown += f"```python title='{meta['path']}'\n{meta['func_def']}\n```\n"
     markdown += f"[Source Code]({meta['source_code_url']})\n\n"
     markdown += f"Description: {meta['description']}\n\n"
     markdown += "## Parameters\n\n"
@@ -82,10 +106,9 @@ description: OpenBB SDK Function
     if meta["returns"]:
         markdown += "| Type | Description |\n"
         markdown += "| ---- | ----------- |\n"
-        markdown += f"| {meta['returns']['type']} | {meta['returns']['doc']} |\n"
-        markdown += "\n"
+        markdown += f"| {meta['returns']['type']} | {meta['returns']['doc']} |\n\n"
     else:
-        markdown += "None\n\n"
+        markdown += "This function does not return anything\n\n"
 
     markdown += "## Examples\n\n"
     for example in meta["examples"]:
@@ -103,11 +126,7 @@ def main():
     for trailmap in trailmaps:
         model_meta = get_function_meta(trailmap, "model") if trailmap.model else None
         view_meta = get_function_meta(trailmap, "view") if trailmap.view else None
-        markdown = ""
-        if model_meta:
-            markdown = generate_markdown(model_meta, "model")
-        if view_meta:
-            markdown += "\n\n\n# VIEW\n\n" + generate_markdown(view_meta, "view")
+        markdown = generate_markdown(model_meta, view_meta)
 
         filepath = (
             "functions/"
