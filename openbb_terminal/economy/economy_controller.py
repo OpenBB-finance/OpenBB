@@ -186,8 +186,8 @@ class EconomyController(BaseController):
                 "-c": "--commodity",
                 "--sortby": {c: {} for c in self.wsj_sortby_cols_dict.keys()},
                 "-s": "--sortby",
-                "--ascend": {},
-                "-a": "--ascend",
+                "--reverse": {},
+                "-r": "--reverse",
             }
             self.choices["map"] = {
                 "--period": {c: {} for c in self.map_period_list},
@@ -252,16 +252,16 @@ class EconomyController(BaseController):
                 "-g": "--group",
                 "--sortby": {c: {} for c in self.valuation_sort_cols},
                 "-s": "--sortby",
-                "--ascend": {},
-                "-a": "--ascend",
+                "--reverse": {},
+                "-r": "--reverse",
             }
             self.choices["performance"] = {
                 "--group": {c: {} for c in self.d_GROUPS},
                 "-g": "--group",
                 "--sortby": {c: {} for c in self.performance_sort_list},
                 "-s": "--sortby",
-                "--ascend": {},
-                "-a": "--ascend",
+                "--reverse": {},
+                "-r": "--reverse",
             }
             self.choices["spectrum"] = {
                 "--group": {c: {} for c in self.d_GROUPS},
@@ -494,14 +494,17 @@ class EconomyController(BaseController):
             default="ticker",
         )
         parser.add_argument(
-            "-a",
-            "--ascend",
-            dest="ascend",
-            help="Flag to sort in ascending order",
+            "-r",
+            "--reverse",
             action="store_true",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-c")
         ns_parser = self.parse_known_args_and_warn(
@@ -514,7 +517,7 @@ class EconomyController(BaseController):
                     finviz_view.display_future(
                         future_type=ns_parser.commodity.capitalize(),
                         sortby=ns_parser.sortby,
-                        ascend=ns_parser.ascend,
+                        ascend=ns_parser.reverse,
                         export=ns_parser.export,
                     )
                 else:
@@ -1610,12 +1613,16 @@ class EconomyController(BaseController):
             help="Column to sort by",
         )
         parser.add_argument(
-            "-a",
-            "-ascend",
-            dest="ascend",
-            help="Flag to sort in ascending order",
+            "-r",
+            "--reverse",
             action="store_true",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-g")
@@ -1632,7 +1639,7 @@ class EconomyController(BaseController):
             finviz_view.display_valuation(
                 group=ns_group,
                 sortby=ns_parser.sortby,
-                ascend=ns_parser.ascend,
+                ascend=ns_parser.reverse,
                 export=ns_parser.export,
             )
 
@@ -1665,12 +1672,16 @@ class EconomyController(BaseController):
             help="Column to sort by",
         )
         parser.add_argument(
-            "-a",
-            "-ascend",
-            dest="ascend",
-            help="Flag to sort in ascending order",
+            "-r",
+            "--reverse",
             action="store_true",
+            dest="reverse",
             default=False,
+            help=(
+                "Data is sorted in descending order by default. "
+                "Reverse flag will sort it in an ascending way. "
+                "Only works when raw data is displayed."
+            ),
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-g")
@@ -1686,7 +1697,7 @@ class EconomyController(BaseController):
             finviz_view.display_performance(
                 group=ns_group,
                 sortby=ns_parser.sortby,
-                ascend=ns_parser.ascend,
+                ascend=ns_parser.reverse,
                 export=ns_parser.export,
             )
 

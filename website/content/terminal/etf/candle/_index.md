@@ -8,7 +8,8 @@ optional arguments:
   -p, --plotly          Flag to show interactive plotly chart. (default: True)
   --sort {AdjClose,Open,Close,High,Low,Volume,Returns,LogRet}
                         Choose a column to sort by (default: )
-  -d, --descending      Sort selected column descending (default: True)
+  -r, --reverse         Data is sorted in descending order by  default. Reverse flag will sort it in an ascending way.
+                        Only works when raw data is displayed. (default: False)
   --raw                 Shows raw data instead of chart (default: False)
   -n NUM, --num NUM     Number to show if raw selected (default: 20)
   -t, --trend           Flag to add high and low trends to candle. (default: False)

@@ -1,5 +1,5 @@
 ```
-usage: swaps [-l LIMIT] [-s {timestamp,token0,token1,amountUSD}] [--descend] [-h] [--export {csv,json,xlsx}]
+usage: swaps [-l LIMIT] [-s {timestamp,token0,token1,amountUSD}] [--reverse] [-h] [--export {csv,json,xlsx}]
 ```
 
 Display last swaps done on Uniswap DEX. [Source: https://thegraph.com/en/]
@@ -10,7 +10,9 @@ optional arguments:
                         Number of records to display (default: 10)
   -s {timestamp,token0,token1,amountUSD}, --sort {timestamp,token0,token1,amountUSD}
                         Sort by given column. Default: timestamp (default: timestamp)
-  --descend             Flag to sort in descending order (lowest first) (default: False)
+  -r, --reverse         Data is sorted in descending order by default.
+                        Reverse flag will sort it in an ascending way.
+                        Only works when raw data is show this help message (default: False)
   -h, --help            show this help message (default: False)
   --export {csv,json,xlsx}
                         Export raw data into csv, json, xlsx (default: )
