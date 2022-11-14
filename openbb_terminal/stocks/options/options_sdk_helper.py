@@ -27,7 +27,7 @@ def get_full_option_chain(symbol: str, source: str = "Nasdaq"):
     Examples
     --------
     >>> from openbb_terminal.sdk import openbb
-    >>> aapl_option_chain = openbb.get_full_option_chain("AAPL", source = "Nasdaq")
+    >>> aapl_option_chain = openbb.stocks.options.chains("AAPL", source = "Nasdaq")
     """
 
     if source == "Tradier":
