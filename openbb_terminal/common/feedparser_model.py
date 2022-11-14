@@ -25,7 +25,7 @@ def get_news(
         the column to sort by
 
     Returns
-    ----------
+    -------
     articles : dict
         term to search on the news articles
     """

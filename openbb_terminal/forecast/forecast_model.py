@@ -411,7 +411,7 @@ def combine_dfs(
         A name for df2 (shows in name of new column)
 
     Returns
-    ----------
+    -------
     data: pd.DataFrame
         The new dataframe
     """

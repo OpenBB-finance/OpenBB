@@ -78,7 +78,7 @@ def get_valuation_data(
         Flag to sort in ascending order
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         dataframe with valuation/performance data
     """
@@ -124,7 +124,7 @@ def get_performance_data(
         Flag to sort in ascending order
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         dataframe with performance data
     """
@@ -199,7 +199,7 @@ def get_futures(
         Flag to sort in ascending order
 
     Returns
-    ----------
+    -------
     pd.Dataframe
        Indices, Energy, Metals, Meats, Grains, Softs, Bonds, Currencies
     """

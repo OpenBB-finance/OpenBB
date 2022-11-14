@@ -299,7 +299,7 @@ def get_last_uni_swaps(
     """Get the last 100 swaps done on Uniswap [Source: https://thegraph.com/en/]
 
     Parameters
-    -------
+    ----------
     limit: int
         Number of swaps to return. Maximum possible number: 1000.
     sortby: str

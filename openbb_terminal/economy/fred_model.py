@@ -76,7 +76,7 @@ def get_series_notes(search_query: str, limit: int = -1) -> pd.DataFrame:
     limit : int
         Maximum number of series notes to display
     Returns
-    ----------
+    -------
     pd.DataFrame
         DataFrame of matched series
     """
@@ -132,7 +132,7 @@ def get_series_ids(search_query: str, limit: int = -1) -> pd.DataFrame:
     limit : int
         Maximum number of series IDs to output
     Returns
-    ----------
+    -------
     pd.Dataframe
         Dataframe with series IDs and titles
     """
@@ -179,7 +179,7 @@ def get_series_data(
         End data to get from, format yyyy-mm-dd
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Series data
     """
@@ -216,7 +216,7 @@ def get_aggregated_series_data(
         End data to get from, format yyyy-mm-dd
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Series data
     """

@@ -105,7 +105,7 @@ def get_startups() -> pd.DataFrame:
 
     Returns
     -------
-    pandas.DataFrame:
+    pd.DataFrame:
         list of startups
     """
     response = requests.get("https://runacap.com/ross-index/", timeout=10)

@@ -511,7 +511,7 @@ def get_macro_data(
         In what currency you wish to convert all values.
 
     Returns
-    ----------
+    -------
     pd.Series
         A series with the requested macro data of the chosen country
     units
@@ -614,7 +614,7 @@ def get_macro_transform() -> Dict[str, str]:
     """This function returns the available macro transform with detail.
 
     Returns
-    ----------
+    -------
     Dict[str]
         A dictionary with the available macro transforms.
     """
@@ -626,7 +626,7 @@ def get_macro_parameters() -> Dict[str, Dict[str, str]]:
     """This function returns the available macro parameters with detail.
 
     Returns
-    ----------
+    -------
     Dict[str, Dict[str, str]]
         A dictionary with the available macro parameters.
     """
@@ -638,7 +638,7 @@ def get_macro_countries() -> Dict[str, str]:
     """This function returns the available countries and respective currencies.
 
     Returns
-    ----------
+    -------
     Dict[str, str]
         A dictionary with the available countries and respective currencies.
     """
@@ -672,7 +672,7 @@ def get_aggregated_macro_data(
         In what currency you wish to convert all values.
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         A DataFrame with the requested macro data of all chosen countries
     Dictionary
@@ -745,7 +745,7 @@ def get_treasuries(
         End date, format "YEAR-MONTH-DAY", i.e. 2020-06-05.
 
     Returns
-    ----------
+    -------
     treasury_data: pd.Dataframe
         Holds data of the selected types and maturities
     """
@@ -830,7 +830,7 @@ def get_treasury_maturities() -> pd.DataFrame:
     """Get treasury maturity options [Source: EconDB]
 
     Returns
-    ----------
+    -------
     df: pd.DataFrame
         Contains the name of the instruments and a string containing all options.
     """

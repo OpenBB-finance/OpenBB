@@ -33,7 +33,7 @@ def get_dark_pool_short_positions(
         Data in ascending order
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dark pool short position data
     """
@@ -85,7 +85,7 @@ def get_short_interest_days_to_cover(sortby: str = "float") -> pd.DataFrame:
         'dtc': Days to Cover, 'si': Short Interest
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Short interest and days to cover data
     """
@@ -129,7 +129,7 @@ def get_short_interest_volume(symbol: str) -> Tuple[pd.DataFrame, List]:
         Stock to get data from
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Short interest volume data
     List
@@ -175,7 +175,7 @@ def get_net_short_position(symbol: str) -> pd.DataFrame:
         Stock to get data from
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Net short position
     """

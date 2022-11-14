@@ -5,7 +5,7 @@ __docformat__ = "numpy"
 # flake8: noqa: E501
 
 import logging
-from typing import Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 from datetime import date
 
 import numpy as np
@@ -243,7 +243,7 @@ def get_property_weights(
     method: str = "time",
     s_property: str = "marketCap",
     value: float = 1.0,
-) -> Tuple:
+) -> Tuple[Optional[Dict[str, Any]], Optional[pd.DataFrame]]:
     """Calculate portfolio weights based on selected property
 
     Parameters
@@ -282,7 +282,7 @@ def get_property_weights(
 
     Returns
     -------
-    Dict
+    Tuple[Dict[str, Any], pd.DataFrame]
         Dictionary of portfolio weights or allocations
     """
 

@@ -407,7 +407,7 @@ def get_daily_dex_volume_for_given_pair(
     """Get daily volume for given pair [Source: https://graphql.bitquery.io/]
 
     Parameters
-    -------
+    ----------
     limit:  int
         Last n days to query data
     symbol: str

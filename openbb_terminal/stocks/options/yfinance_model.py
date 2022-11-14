@@ -264,7 +264,7 @@ def get_price(symbol: str) -> float:
         The ticker symbol to get the price for
 
     Returns
-    ----------
+    -------
     price : float
         The price of the ticker
     """
@@ -285,7 +285,7 @@ def get_info(symbol: str):
         The ticker symbol to get the price for
 
     Returns
-    ----------
+    -------
     price : float
         The info for a given ticker
     """
@@ -303,7 +303,7 @@ def get_closing(symbol: str) -> pd.Series:
         The ticker symbol to get the price for
 
     Returns
-    ----------
+    -------
     price : List[float]
         A list of closing prices for a ticker
     """

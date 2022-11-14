@@ -588,10 +588,6 @@ def display_clenow_momentum(
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (2 axes are expected in the list), by default None
-
-    Returns
-    -------
-
     """
     r2, coef, fit_data = momentum_model.clenow_momentum(data, window)
 
@@ -660,10 +656,6 @@ def display_demark(
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional
         External axes (1 axes are expected in the list), by default None
-
-    Returns
-    -------
-
     """
     close_col = ta_helpers.check_columns(data, high=False, low=False)
     if close_col is None:

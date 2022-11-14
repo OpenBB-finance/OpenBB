@@ -127,7 +127,7 @@ def get_overall_withdrawal_fees(limit: int = 100) -> pd.DataFrame:
         Number of coins to search, by default n=100, one page has 100 coins, so 1 page is scraped.
     Returns
     -------
-    pandas.DataFrame:
+    pd.DataFrame:
         Coin, Lowest, Average, Median, Highest, Exchanges Compared
     """
 
@@ -187,7 +187,7 @@ def get_overall_exchange_withdrawal_fees() -> pd.DataFrame:
 
     Returns
     -------
-    pandas.DataFrame:
+    pd.DataFrame:
         Exchange, Coins, Lowest, Average, Median, Highest
     """
     exchange_withdrawal_fees = BeautifulSoup(
@@ -220,7 +220,7 @@ def get_crypto_withdrawal_fees(
     -------
     List:
         - str:              Overall statistics (exchanges, lowest, average and median)
-        - pandas.DataFrame: Exchange, Withdrawal Fee, Minimum Withdrawal Amount
+        - pd.DataFrame: Exchange, Withdrawal Fee, Minimum Withdrawal Amount
     """
     crypto_withdrawal_fees = BeautifulSoup(
         requests.get(

@@ -39,7 +39,7 @@ def get_accounts(add_current_price: bool = True, currency: str = "USD") -> pd.Da
     .
 
     Parameters
-    -------
+    ----------
     add_current_price: bool
         Boolean to query coinbase for current price
     currency: str

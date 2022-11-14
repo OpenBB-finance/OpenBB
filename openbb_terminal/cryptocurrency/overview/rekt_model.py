@@ -102,7 +102,7 @@ def get_crypto_hacks(sortby: str = "Platform", ascend: bool = False) -> pd.DataF
 
     Returns
     -------
-    pandas.DataFrame:
+    pd.DataFrame:
         Hacks with columns {Platform,Date,Amount [$],Audited,Slug,URL}
     """
     soup = _make_request("https://rekt.news/leaderboard")
@@ -146,7 +146,7 @@ def get_crypto_hack(slug: str) -> Union[str, None]:
 
     Returns
     -------
-    pandas.DataFrame:
+    pd.DataFrame:
         Hacks with columns {Platform,Date,Amount [$],Audited,URL}
     """
     url = f"https://rekt.news/{slug}"

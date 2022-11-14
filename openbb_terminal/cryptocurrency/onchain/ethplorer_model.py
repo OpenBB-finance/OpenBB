@@ -86,7 +86,7 @@ def split_cols_with_dot(column: str) -> str:
             Index of string element.
 
         Returns
-        -------
+        ----------
         str:
             Camel case string with no dots. E.g. price.availableSupply -> priceAvailableSupply.
         """

@@ -56,7 +56,7 @@ def get_etf_overview(symbol: str) -> pd.DataFrame:
         Etf symbol to get overview for
 
     Returns
-    ----------
+    -------
     df : pd.DataFrame
         Dataframe of stock overview data
     """
@@ -118,7 +118,7 @@ def compare_etfs(symbols: List[str]) -> pd.DataFrame:
         ETF symbols to compare
 
     Returns
-    ----------
+    -------
     df_compare : pd.DataFrame
         Dataframe of etf comparisons
     """

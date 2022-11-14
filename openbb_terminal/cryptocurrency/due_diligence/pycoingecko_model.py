@@ -235,7 +235,7 @@ def get_coin_market_chart(
 
     Returns
     -------
-    pandas.DataFrame
+    pd.DataFrame
         Prices for given coin
         Columns: time, price, currency
     """
@@ -260,7 +260,7 @@ def get_coin_tokenomics(symbol: str = "") -> pd.DataFrame:
 
     Returns
     -------
-    pandas.DataFrame
+    pd.DataFrame
         Metric, Value with tokenomics
     """
     client = CoinGeckoAPI()
@@ -318,7 +318,7 @@ class Coin:
             Either coin symbol or coin id
 
         Returns
-        -------
+        ----------
         Tuple[str, str]
             - str with coin
             - str with symbol
@@ -339,8 +339,8 @@ class Coin:
         """List all available coins [Source: CoinGecko]
 
         Returns
-        -------
-        list
+        ----------
+        Dict[str, Any]
             list of all available coin ids
         """
 
@@ -352,8 +352,8 @@ class Coin:
          (name, price, market, ... including exchange tickers) [Source: CoinGecko]
 
         Returns
-        -------
-        dict
+        ----------
+        Dict[str, Any]
             Coin information
         """
 
@@ -365,8 +365,8 @@ class Coin:
         """Helper method that extracts links from coin [Source: CoinGecko]
 
         Returns
-        -------
-        dict
+        ----------
+        Dict[str, Any]
             Links related to coin
         """
 
@@ -377,8 +377,8 @@ class Coin:
         """Get list of all repositories for given coin [Source: CoinGecko]
 
         Returns
-        -------
-        list
+        ----------
+        Dict[str, Any]
             Repositories related to coin
         """
 
@@ -390,8 +390,8 @@ class Coin:
             number of pull requests, contributor etc [Source: CoinGecko]
 
         Returns
-        -------
-        pandas.DataFrame
+        ----------
+        pd.DataFrame
             Developers Data
             Columns: Metric, Value
         """
@@ -417,8 +417,8 @@ class Coin:
         """Get list of URLs to blockchain explorers for given coin. [Source: CoinGecko]
 
         Returns
-        -------
-        pandas.DataFrame
+        ----------
+        pd.DataFrame
             Blockchain Explorers
             Columns: Metric, Value
         """
@@ -441,8 +441,8 @@ class Coin:
         """Get list of URLs to social media like twitter, facebook, reddit... [Source: CoinGecko]
 
         Returns
-        -------
-        pandas.DataFrame
+        ----------
+        pd.DataFrame
             Urls to social media
             Columns: Metric, Value
         """
@@ -475,8 +475,8 @@ class Coin:
         """Get list of URLs to websites like homepage of coin, forum. [Source: CoinGecko]
 
         Returns
-        -------
-        pandas.DataFrame
+        ----------
+        pd.DataFrame
             Urls to website, homepage, forum
             Columns: Metric, Value
         """
@@ -501,8 +501,8 @@ class Coin:
         """Coins categories. [Source: CoinGecko]
 
         Returns
-        -------
-        list/dict
+        ----------
+        Union[Dict[Any, Any], List[Any]]
             Coin categories
         """
 
@@ -513,8 +513,8 @@ class Coin:
         """Helper method that fetches all the base market/price information about given coin. [Source: CoinGecko]
 
         Returns
-        -------
-        dict
+        ----------
+        Dict[str, Any]
             All market related information for given coin
         """
         market_dct = {}
@@ -539,8 +539,8 @@ class Coin:
         """Get all the base information about given coin. [Source: CoinGecko]
 
         Returns
-        -------
-        pandas.DataFrame
+        ----------
+        pd.DataFrame
             Base information about coin
         """
 
@@ -570,8 +570,8 @@ class Coin:
         """Get all the base market information about given coin. [Source: CoinGecko]
 
         Returns
-        -------
-        pandas.DataFrame
+        ----------
+        pd.DataFrame
             Base market information about coin
             Metric,Value
         """
@@ -627,8 +627,8 @@ class Coin:
         """Get all time high data for given coin. [Source: CoinGecko]
 
         Returns
-        -------
-        pandas.DataFrame
+        ----------
+        pd.DataFrame
             All time high price data
             Metric,Value
         """
@@ -660,8 +660,8 @@ class Coin:
         """Get all time low data for given coin. [Source: CoinGecko]
 
         Returns
-        -------
-        pandas.DataFrame
+        ----------
+        pd.DataFrame
             All time low price data
             Metric,Value
         """
@@ -693,8 +693,8 @@ class Coin:
         """Get different kind of scores for given coin. [Source: CoinGecko]
 
         Returns
-        -------
-        pandas.DataFrame
+        ----------
+        pd.DataFrame
             Social, community, sentiment scores for coin
             Metric,Value
         """
@@ -748,8 +748,8 @@ class Coin:
         kwargs
 
         Returns
-        -------
-        pandas.DataFrame
+        ----------
+        pd.DataFrame
             Prices for given coin
             Columns: time, price, currency
         """
@@ -777,8 +777,8 @@ class Coin:
             on from (1/7/14/30/90/180/365, max)
 
         Returns
-        -------
-        pandas.DataFrame
+        ----------
+        pd.DataFrame
             OHLC data for coin
             Columns: time, price, currency
         """
@@ -805,7 +805,7 @@ def get_ohlc(symbol: str, vs_currency: str = "usd", days: int = 90) -> pd.DataFr
 
     Returns
     -------
-    pandas.DataFrame
+    pd.DataFrame
         OHLC data for coin
         Columns: time, price, currency
     """

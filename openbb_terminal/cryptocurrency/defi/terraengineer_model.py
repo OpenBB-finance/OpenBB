@@ -64,7 +64,7 @@ def get_anchor_yield_reserve() -> pd.DataFrame:
     [Source: https://terra.engineer/]
 
     Returns
-    ----------
+    -------
     pd.DataFrame
         Dataframe containing historical data
     """

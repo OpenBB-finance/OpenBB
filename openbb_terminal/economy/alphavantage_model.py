@@ -20,7 +20,7 @@ def get_sector_data() -> pd.DataFrame:
     """Get real-time performance sector data
 
     Returns
-    ----------
+    -------
     df_sectors : pd.Dataframe
         Real-time performance data
     """

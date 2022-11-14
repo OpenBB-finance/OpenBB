@@ -36,7 +36,7 @@ class PortfolioModel:
     Implements a Portfolio and related methods.
 
     Methods
-    -------
+    ----------
     read_transactions: Class method to read transactions from file
 
     __set_transactions:
@@ -1396,7 +1396,7 @@ def get_maximum_drawdown(
         Flag to indicate inputs are returns
 
     Returns
-    ----------
+    -------
     pd.Series
         Holdings series
     pd.Series
@@ -2033,7 +2033,7 @@ def get_main_text(data: pd.DataFrame) -> str:
         Stock holdings and returns with market returns
 
     Returns
-    ----------
+    -------
     text : str
         The main summary of performance
     """
@@ -2076,7 +2076,7 @@ def get_beta_text(data: pd.DataFrame) -> str:
         The beta history of the stock
 
     Returns
-    ----------
+    -------
     text : str
         The beta history for a ticker
     """

@@ -613,7 +613,7 @@ def get_index(
         The column you wish to select, by default this is Adjusted Close.
 
     Returns
-    ----------
+    -------
     pd.Series
         A series with the requested index
     """
@@ -693,7 +693,7 @@ def get_indices(
     returns: bool
         Flag to show cumulative returns on index
     Returns
-    ----------
+    -------
     pd.Dataframe
         Dataframe with historical data on selected indices.
     """
@@ -721,7 +721,7 @@ def get_search_indices(keyword: list, limit: int = 10) -> pd.DataFrame:
     limit: int
         The amount of views you want to show, by default this is set to 10.
     Returns
-    ----------
+    -------
     pd.Dataframe
         Dataframe with the available options.
     """

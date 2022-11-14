@@ -22,7 +22,7 @@ def get_sentiment(symbol: str) -> pd.DataFrame:
 
     Returns
     -------
-    DataFrame()
+    pd.DataFrame
         Empty if there was an issue with data retrieval
     """
     result = requests.get(f"https://api.finbrain.tech/v0/sentiments/{symbol}")
