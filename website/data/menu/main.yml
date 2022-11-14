@@ -1971,8 +1971,6 @@ main:
             sub:
               - name: categories_keys
                 ref: /SDK/crypto/disc/categories_keys
-              - name: cmctop
-                ref: /SDK/crypto/disc/cmctop
               - name: coin_list
                 ref: /SDK/crypto/disc/coin_list
               - name: coins
