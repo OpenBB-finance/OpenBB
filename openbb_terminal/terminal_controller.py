@@ -1027,7 +1027,7 @@ def run_scripts(
                     terminal(file_cmds, test_mode=True)
 
 
-def replace_dynamic(match: re.Match[str], special_arguments: Dict[str, str]) -> str:
+def replace_dynamic(match: re.Match, special_arguments: Dict[str, str]) -> str:
     """Replaces ${key=default} with value in special_arguments if it exists, else with default.
 
     Parameters
