@@ -3,6 +3,7 @@ from typing import List, Callable, Tuple
 from datetime import datetime
 import importlib.util
 from pathlib import Path
+import os
 import pandas as pd
 
 try:
@@ -22,7 +23,7 @@ base_path = Path(__file__).parent / "openbb_terminal"
 def load_modules(full_path: Path):
     """Loads a module from a given Path.
 
-    Parameters:
+    Parameter:
     ----------
     full_path: Path
         The path to the module
@@ -31,7 +32,8 @@ def load_modules(full_path: Path):
     ----------
     The python module
     """
-    spec = importlib.util.spec_from_file_location(full_path.stem, full_path)
+    mod_path = str(full_path).split("OpenBBTerminal/")[1].replace("/", ".")
+    spec = importlib.util.spec_from_file_location(mod_path, full_path)
     if not spec:
         raise ValueError(f"Could not import path: {full_path}")
     mod = importlib.util.module_from_spec(spec)
@@ -52,20 +54,21 @@ def all_view_models() -> List[Path]:
         All paths in openbb_terminal with 'view' or 'model' in the name
     """
 
-    pattern_list = ["**/*_model.py", "**/*_view.py"]
-    module_path_list = []
-
-    for pattern in pattern_list:
-        module_path_generator = base_path.glob(pattern)
-        module_path_list += list(module_path_generator)
-
-    return module_path_list
+    file_list = []
+    all_files = os.walk(base_path)
+    for root, _, files in all_files:
+        for filename in files:
+            if filename.endswith(".py"):
+                if "view" in filename or "model" in filename:
+                    file_list.append(f"{root}/{filename}")
+    clean_list = set(file_list)
+    return [Path(x) for x in clean_list]
 
 
 def get_sdk(file_path: str = "miscellaneous/library/trail_map.csv") -> pd.DataFrame:
     """Reads the CSV that generates the sdk and converts it to a dataframe
 
-    Parameters:
+    Parameters
     ----------
     file_path: str
         The path to the sdk csv
@@ -78,13 +81,17 @@ def get_sdk(file_path: str = "miscellaneous/library/trail_map.csv") -> pd.DataFr
     """
     df = pd.read_csv(base_path / file_path)
     df_dups = len(df["trail"]) - len(df["trail"].drop_duplicates())
-    print(f"Number of duplicate sdk paths: {df_dups}\n")
+    if df_dups > 0:
+        print(f"Number of duplicate sdk paths: {df_dups}")
+        print("This indicates that the same SDK trail is being used multiple times\n")
     views = list(df[["view", "trail"]].itertuples(index=False, name=None))
     models = list(df[["model", "trail"]].itertuples(index=False, name=None))
-    combined = views + models
+    # Add in whether it is a view or a model in pandas
+    combined = [x + ("view",) for x in views] + [x + ("model",) for x in models]
     final_df = pd.DataFrame()
     final_df["name"] = [x[0] for x in combined]
     final_df["trail"] = [x[1] for x in combined]
+    final_df["type"] = [x[2] for x in combined]
     final_df = final_df.dropna()
     final_df = final_df.set_index("name")
     return final_df
@@ -93,7 +100,7 @@ def get_sdk(file_path: str = "miscellaneous/library/trail_map.csv") -> pd.DataFr
 def format_function(function: Callable) -> Tuple[str, str]:
     """Gives a function a pretty name
 
-    Parameters:
+    Parameters
     ----------
     function: Callable
         The function to get a pretty string for
@@ -136,9 +143,50 @@ def functions_df() -> pd.DataFrame:
     func_df["name"] = [x[0] for x in all_formatted]
     func_df["docstring"] = [x[1] for x in all_formatted]
     func_dups = len(func_df["name"]) - len(func_df["name"].drop_duplicates())
-    print(f"Number of duplicate functions found: {func_dups}\n")
+    if func_dups > 0:
+        print(f"Number of duplicate functions found: {func_dups}")
+        print(
+            "This may indicate that functions are defined several times in the terminal.\n"
+        )
     func_df = func_df.set_index("name")
     return func_df
+
+
+def save_df(data: pd.DataFrame) -> None:
+    timestamp = datetime.now().timestamp()
+    time_str = (str(timestamp)).replace(".", "")
+    output_path = f"{time_str}_sdk_audit.csv"
+    data.to_csv(output_path)
+    print(f"File saved to {output_path}")
+
+
+def get_nonconforming_functions(data: pd.DataFrame) -> pd.DataFrame:
+    """When we first check all functions we only look in model and view files. This means that any
+    function in the helpers will be ignored. This function checks any helper funcs in the sdk
+    treemap, so that we can get a clearer picture of whether or not functions exist
+
+    Parameters
+    ----------
+    data: pd.DataFrame
+        The dataframe of all values, this will be searched
+
+    Returns
+    ----------
+    pd.DataFrame
+        The dataframe with any functions that could not be found
+    """
+    df = data[data["docstring"].isnull()]
+    names = df.index.tolist()
+    for name in names:
+        path_list = name.split(".")
+        file = "/".join(path_list[:-1])
+        mod_path = Path(__file__).parent / f"{file}.py"
+        module = load_modules(mod_path)
+        command = path_list[-1]
+        function = getattr(module, command)
+        if function:
+            data.loc[name, "docstring"] = function.__doc__
+    return data
 
 
 def main():
@@ -153,11 +201,23 @@ def main():
 
     final_df = funcs_df.merge(sdk_df, how="outer", left_index=True, right_index=True)
     final_df = final_df.sort_values("trail")
-    timestamp = datetime.now().timestamp()
-    time_str = (str(timestamp)).replace(".", "")
-    output_path = f"{time_str}_sdk_audit.csv"
-    final_df.to_csv(output_path)
-    print(f"File saved to {output_path}")
+    final_df = get_nonconforming_functions(final_df)
+    # Get further stats on bad data
+    no_doc_count = len(final_df[final_df["docstring"].isnull()].index)
+    if no_doc_count > 0:
+        print(f"The number of rows with blank docstrings is: {no_doc_count}")
+        print(
+            "This indicates a matching function does not exist, is not in a 'model' or 'view'\n"
+            "file, or that the trailmap does not import it from the place it is defined.\n"
+        )
+    dup_name_count = len(final_df[final_df.index.duplicated(keep=False)].index)
+    if dup_name_count > 0:
+        print(f"The number of duplicate functions after merge is: {dup_name_count}")
+        print(
+            "This most likely indicates that the same function is being used at "
+            "different SDK endpoints.\n"
+        )
+    save_df(final_df)
 
 
 if __name__ == "__main__":
