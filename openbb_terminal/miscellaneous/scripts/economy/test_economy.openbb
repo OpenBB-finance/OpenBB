@@ -15,7 +15,7 @@ futures -c metals
 futures -c meats
 futures -c grains
 futures -c softs
-futures -c energy -s ticker --ascend --source Finviz
+futures -c energy -s ticker --reverse --source Finviz
 map
 map -p 1w -t world
 bigmac
@@ -32,7 +32,7 @@ spread --group PIIGS --color binary
 spread --countries portugal,spain,italy,united states --maturity 5Y --change=True --color openbb
 rtps
 valuation
-valuation --group sector --sortby MarketCap --ascend
+valuation --group sector --sortby MarketCap --reverse
 performance
 performance -g basic_materials -s Month -a
 spectrum
@@ -80,7 +80,7 @@ spread -w 10
 quantile --window 5 --quantile 0.01
 skew --window 5
 kurtosis --window 9
-raw --limit 2 --descend
+raw --limit 2 --reverse
 cusum --threshold 10 --drift 10
 decompose
 exit
