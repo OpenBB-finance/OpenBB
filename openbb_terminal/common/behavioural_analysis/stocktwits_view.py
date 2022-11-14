@@ -5,14 +5,18 @@ import logging
 
 from openbb_terminal.common.behavioural_analysis import stocktwits_model
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.helper_funcs import print_rich_table
+from openbb_terminal.helper_funcs import (
+    print_rich_table,
+    ConsolePrint,
+    TableConsolePrint,
+)
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
 
 
 @log_start_end(log=logger)
-def display_bullbear(symbol: str):
+def display_bullbear(symbol: str) -> ConsolePrint:
     """
     Print bullbear sentiment based on last 30 messages on the board.
     Also prints the watchlist_count. [Source: Stocktwits]
@@ -21,6 +25,11 @@ def display_bullbear(symbol: str):
     ----------
     symbol: str
         Stock ticker symbol
+
+    Returns
+    -------
+    ConsolePrint
+        Rich console print
     """
     watchlist_count, n_cases, n_bull, n_bear = stocktwits_model.get_bullbear(symbol)
     console.print(f"Watchlist count: {watchlist_count}")
@@ -34,8 +43,8 @@ def display_bullbear(symbol: str):
 
 
 @log_start_end(log=logger)
-def display_messages(symbol: str, limit: int = 30):
-    """Print up to 30 of the last messages on the board. [Source: Stocktwits]
+def display_messages(symbol: str, limit: int = 30) -> TableConsolePrint:
+    """Print up to 30 of the last messages on the board. [Source: Stocktwits].
 
     Parameters
     ----------
@@ -43,6 +52,11 @@ def display_messages(symbol: str, limit: int = 30):
         Stock ticker symbol
     limit: int
         Number of messages to get
+
+    Returns
+    -------
+    TableConsolePrint
+        Rich table console print
     """
     messages = stocktwits_model.get_messages(symbol, limit)
 
@@ -58,8 +72,15 @@ def display_messages(symbol: str, limit: int = 30):
 
 
 @log_start_end(log=logger)
-def display_trending():
-    """Show trensing stocks on stocktwits"""
+def display_trending() -> TableConsolePrint:
+    """Show trensing stocks on stocktwits
+
+
+    Returns
+    -------
+    TableConsolePrint
+        Rich table console print
+    """
     df_trending = stocktwits_model.get_trending()
     print_rich_table(
         df_trending,
@@ -70,8 +91,8 @@ def display_trending():
 
 
 @log_start_end(log=logger)
-def display_stalker(user: str, limit: int = 10):
-    """Show last posts for given user
+def display_stalker(user: str, limit: int = 10) -> ConsolePrint:
+    """Show last posts for given user.
 
     Parameters
     ----------
@@ -79,6 +100,11 @@ def display_stalker(user: str, limit: int = 10):
         Stocktwits username
     limit : int, optional
         Number of messages to show, by default 10
+
+    Returns
+    -------
+    ConsolePrint
+        Rich console print
     """
     messages = stocktwits_model.get_stalker(user, limit)
     for message in messages:

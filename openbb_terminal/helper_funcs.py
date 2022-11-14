@@ -1825,3 +1825,15 @@ def str_date_to_timestamp(date: str) -> int:
     )
 
     return date_ts
+
+
+class MatplotlibShow(type):
+    """Opens a matplotlib figure."""
+
+
+class TableConsolePrint(type):
+    """Prints a rich table in the console."""
+
+
+class ConsolePrint(type):
+    """Prints rich text in the console."""
