@@ -113,6 +113,53 @@ def get_historical_options(
 
 # pylint: disable=no-else-return
 
+option_cols = [
+    "strike",
+    "bid",
+    "ask",
+    "volume",
+    "open_interest",
+    "mid_iv",
+]
+
+option_col_map = {"open_interest": "openinterest", "mid_iv": "iv"}
+
+
+@log_start_end(log=logger)
+@check_api_key(["API_TRADIER_TOKEN"])
+def get_full_option_chain(symbol: str) -> pd.DataFrame:
+    """Get available expiration dates for given ticker
+
+    Parameters
+    ----------
+    symbol: str
+        Ticker symbol to get expirations for
+
+    Returns
+    -------
+    pd.DataFrame
+       Dataframe of all option chains
+    """
+
+    expirations = option_expirations(symbol)
+
+    options = pd.DataFrame()
+
+    for date in expirations:
+        temp = get_option_chains(symbol, date)
+        calls = temp[temp.option_type == "call"][option_cols].rename(
+            columns=option_col_map
+        )
+        puts = temp[temp.option_type == "put"][option_cols].rename(
+            columns=option_col_map
+        )
+        temp = pd.merge(calls, puts, how="outer", on="strike", suffixes=("_c", "_p"))
+        temp["expiration"] = date
+
+        options = pd.concat([options, temp], axis=0)
+
+    return options
+
 
 @log_start_end(log=logger)
 @check_api_key(["API_TRADIER_TOKEN"])

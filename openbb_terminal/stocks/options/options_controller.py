@@ -52,6 +52,9 @@ from openbb_terminal.stocks.options.screen import (
 #       - At the moment there's too much logic in the controller to implement an
 #         API wrapper. Please refactor functions like 'call_exp'
 
+# TODO: Additional refactoring -- load should bring in a df from the sdk_helpers functions and we can get expirations
+# from there.  Additionally each view function should be made a function that takes the df and plots it instead of
+# getting the new chain
 
 logger = logging.getLogger(__name__)
 
