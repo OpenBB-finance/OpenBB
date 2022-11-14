@@ -49,7 +49,7 @@ def format_units(num: int) -> str:
 
 @log_start_end(log=logger)
 @check_api_key(["API_FRED_KEY"])
-def notes(search_query: str, limit: int = 10) -> pd.DataFrame:
+def notes(search_query: str, limit: int = 10):
     """Display series notes. [Source: FRED]
 
     Parameters
@@ -165,6 +165,8 @@ def display_fred_series(
 
     if get_data:
         return data, detail
+
+    return
 
 
 def format_data_to_plot(data: pd.DataFrame, detail: dict) -> Tuple[pd.DataFrame, str]:
