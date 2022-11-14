@@ -32,10 +32,9 @@ def get_full_option_chain(symbol: str, source: str = "Nasdaq"):
 
     if source == "Tradier":
         return tradier_model.get_full_option_chain(symbol)
-    elif source == "YahooFinance":
+    if source == "YahooFinance":
         return yfinance_model.get_full_option_chain(symbol)
-    elif source == "Nasdaq":
+    if source == "Nasdaq":
         return nasdaq_model.get_full_option_chain(symbol)
-    else:
-        logger.info("Invalid Source")
-        return pd.DataFrame()
+    logger.info("Invalid Source")
+    return pd.DataFrame()
