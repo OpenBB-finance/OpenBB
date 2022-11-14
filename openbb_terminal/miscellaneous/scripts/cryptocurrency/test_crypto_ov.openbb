@@ -11,7 +11,7 @@ defi
 # stables
 stables
 stables --pie
-stables --limit 3 --sort current_price
+stables --sortbyby Price_[$] --reverse --limit 3
 
 # exchanges
 exchanges
@@ -19,24 +19,24 @@ exchanges --source CoinGecko
 exchanges --source CoinPaprika
 exchanges --urls
 exchanges --vs ETH
-exchanges --source CoinGecko --limit 3 --sort Trust_Score
+exchanges --source CoinGecko --limit 3 --sortby Trust_Score -r
 
 # exrates
 exrates
-exrates --sort Value --limit 3
+exrates --sortby Value --reverse --limit 3
 
 # indexes
 indexes
-indexes --sort Last --limit 3
+indexes --sortby Last --limit 3 -r
 
 # derivatives
 derivatives
-derivatives --sort Basis --limit 3
+derivatives --sortby Basis --limit 3
 
 # categories
 categories
 categories --pie
-categories --sort Market_Cap --limit 3
+categories --sortby Market_Cap --limit 3
 
 # hold
 hold
@@ -49,15 +49,15 @@ hm --category stablecoins --limit 3
 
 # info
 info
-info --vs ETH --sort price --limit 3
+info --vs ETH --sortby price --limit 3
 
 # markets
 markets
-markets --vs ETH --sort price --limit 3
+markets --vs ETH --sortby price --limit 3
 
 # exmarkets
 exmarkets
-exmarkets --limit 3--sort quote_currency_name
+exmarkets --limit 3 --sortby quote_currency_name
 exmarkets --urls
 
 # platforms
@@ -65,7 +65,7 @@ platforms
 
 # contracts
 contracts
-contracts --platform eth-ethereum --limit 3 --sort type
+contracts --platform eth-ethereum --limit 3 --sortby type
 
 # pairs
 pairs
@@ -73,7 +73,7 @@ pairs
 # news
 news
 news --region es
-news --limit 3 --kind media --filter hot --sort title
+news --limit 3 --kind media --filter hot --sortby title
 
 # wf
 wf
@@ -93,8 +93,8 @@ altindex --period 30 --since 2020-10-25 --until 2021-12-01
 
 # ch
 ch
-ch --limit 3 --sort Amount [$]
 ch --slug polynetwork-rekt
+ch --sortbyby Amount [$] -r --limit 3
 
 # cr
 cr

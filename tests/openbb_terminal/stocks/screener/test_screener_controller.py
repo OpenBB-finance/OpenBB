@@ -272,7 +272,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             "call_overview",
             [
                 "1",
-                "--ascend",
+                "--reverse",
                 "--sort=Ticker",
                 "--export=csv",
             ],
@@ -292,7 +292,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [
                 "1",
                 "--preset=top_gainers",
-                "--ascend",
+                "--reverse",
                 "--sort=Ticker",
                 "--export=csv",
             ],
@@ -312,7 +312,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [
                 "1",
                 "--preset=top_gainers",
-                "--ascend",
+                "--reverse",
                 "--sort=Ticker",
                 "--export=csv",
             ],
@@ -332,7 +332,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [
                 "1",
                 "--preset=top_gainers",
-                "--ascend",
+                "--reverse",
                 "--sort=Ticker",
                 "--export=csv",
             ],
@@ -352,7 +352,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [
                 "1",
                 "--preset=top_gainers",
-                "--ascend",
+                "--reverse",
                 "--sort=Ticker",
                 "--export=csv",
             ],
@@ -372,7 +372,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             [
                 "1",
                 "--preset=top_gainers",
-                "--ascend",
+                "--reverse",
                 "--sort=Ticker",
                 "--export=csv",
             ],
