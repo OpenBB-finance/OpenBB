@@ -9,17 +9,16 @@ from typing import Any, List
 import numpy as np
 import pandas as pd
 
-from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal import feature_flags as obbff
 from openbb_terminal.config_terminal import API_TRADIER_TOKEN
+from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_FIGURES_ALLOWED,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    valid_date,
     parse_and_split_input,
+    valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -42,8 +41,8 @@ from openbb_terminal.stocks.options.hedge import hedge_controller
 from openbb_terminal.stocks.options.pricing import pricing_controller
 from openbb_terminal.stocks.options.screen import (
     screener_controller,
-    syncretism_view,
     syncretism_model,
+    syncretism_view,
 )
 
 # pylint: disable=R1710,C0302,R0916

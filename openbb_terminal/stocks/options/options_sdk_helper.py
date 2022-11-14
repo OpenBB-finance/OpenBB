@@ -4,7 +4,7 @@ import logging
 
 import pandas as pd
 
-from openbb_terminal.stocks.options import yfinance_model, tradier_model, nasdaq_model
+from openbb_terminal.stocks.options import nasdaq_model, tradier_model, yfinance_model
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +35,7 @@ def get_full_option_chain(
 
     To get a specific expiration date, use the expiration parameter
 
-    >>> aapl_chain_date = openbb.stocks.options.chains("AAPL", expiration="2023-07-21", source="Nasdaq)
+    >>> aapl_chain_date = openbb.stocks.options.chains("AAPL", expiration="2023-07-21", source="Nasdaq")
     """
 
     if source == "Tradier":
