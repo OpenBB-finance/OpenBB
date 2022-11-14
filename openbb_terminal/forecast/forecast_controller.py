@@ -56,8 +56,10 @@ from openbb_terminal.forecast import (
     forecast_model,
     forecast_view,
     autoselect_view,
+    autoarima_view,
     autoces_view,
     autoets_view,
+    mstl_view,
     rwd_view,
     seasonalnaive_view,
     expo_model,
@@ -115,8 +117,10 @@ class ForecastController(BaseController):
         "atr",
         "signal",
         "autoselect",
+        "autoarima",
         "autoces",
         "autoets",
+        "mstl",
         "rwd",
         "seasonalnaive",
         "expo",
@@ -257,8 +261,10 @@ class ForecastController(BaseController):
                 "combine",
                 "rename",
                 "autoselect",
+                "autoarima",
                 "autoces",
                 "autoets",
+                "mstl",
                 "rwd",
                 "seasonalnaive",
                 "expo",
@@ -340,8 +346,10 @@ class ForecastController(BaseController):
         mt.add_raw("\n")
         mt.add_info("_tsforecasting_")
         mt.add_cmd("autoselect", self.files)
+        mt.add_cmd("autoarima", self.files)
         mt.add_cmd("autoces", self.files)
         mt.add_cmd("autoets", self.files)
+        mt.add_cmd("mstl", self.files)
         mt.add_cmd("rwd", self.files)
         mt.add_cmd("seasonalnaive", self.files)
         mt.add_cmd("expo", self.files)
@@ -1757,6 +1765,61 @@ class ForecastController(BaseController):
                 export_pred_raw=ns_parser.export_pred_raw,
             )
 
+    # AutoARIMA Model
+    @log_start_end(log=logger)
+    def call_autoarima(self, other_args: List[str]):
+        """Process autoarima command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="autoarima",
+            description="""
+                Perform Automatic ARIMA forecast:
+                https://nixtla.github.io/statsforecast/examples/getting_started_with_auto_arima_and_ets.html
+            """,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--target-dataset")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+            target_dataset=True,
+            target_column=True,
+            n_days=True,
+            seasonal="A",
+            periods=True,
+            window=True,
+            residuals=True,
+            forecast_only=True,
+            start=True,
+            end=True,
+            naive=True,
+            export_pred_raw=True,
+        )
+        # TODO Convert this to multi series
+        if ns_parser:
+            if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+
+            autoarima_view.display_autoarima_forecast(
+                data=self.datasets[ns_parser.target_dataset],
+                dataset_name=ns_parser.target_dataset,
+                n_predict=ns_parser.n_days,
+                target_column=ns_parser.target_column,
+                seasonal_periods=ns_parser.seasonal_periods,
+                start_window=ns_parser.start_window,
+                forecast_horizon=ns_parser.n_days,
+                export=ns_parser.export,
+                residuals=ns_parser.residuals,
+                forecast_only=ns_parser.forecast_only,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
+                naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
+            )
+
     # AutoCES Model
     @log_start_end(log=logger)
     def call_autoces(self, other_args: List[str]):
@@ -1851,6 +1914,61 @@ class ForecastController(BaseController):
                 return
 
             autoets_view.display_autoets_forecast(
+                data=self.datasets[ns_parser.target_dataset],
+                dataset_name=ns_parser.target_dataset,
+                n_predict=ns_parser.n_days,
+                target_column=ns_parser.target_column,
+                seasonal_periods=ns_parser.seasonal_periods,
+                start_window=ns_parser.start_window,
+                forecast_horizon=ns_parser.n_days,
+                export=ns_parser.export,
+                residuals=ns_parser.residuals,
+                forecast_only=ns_parser.forecast_only,
+                start_date=ns_parser.s_start_date,
+                end_date=ns_parser.s_end_date,
+                naive=ns_parser.naive,
+                export_pred_raw=ns_parser.export_pred_raw,
+            )
+
+    # MSTL Model
+    @log_start_end(log=logger)
+    def call_mstl(self, other_args: List[str]):
+        """Process mstl command"""
+        parser = argparse.ArgumentParser(
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            add_help=False,
+            prog="mstl",
+            description="""
+                Perform Multiple Seasonalities and Trend using Loess (MSTL) forecast:
+                https://nixtla.github.io/statsforecast/examples/multipleseasonalities.html
+            """,
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "--target-dataset")
+
+        ns_parser = self.parse_known_args_and_warn(
+            parser,
+            other_args,
+            export_allowed=EXPORT_ONLY_FIGURES_ALLOWED,
+            target_dataset=True,
+            target_column=True,
+            n_days=True,
+            seasonal="A",
+            periods=True,
+            window=True,
+            residuals=True,
+            forecast_only=True,
+            start=True,
+            end=True,
+            naive=True,
+            export_pred_raw=True,
+        )
+        # TODO Convert this to multi series
+        if ns_parser:
+            if not helpers.check_parser_input(ns_parser, self.datasets):
+                return
+
+            mstl_view.display_mstl_forecast(
                 data=self.datasets[ns_parser.target_dataset],
                 dataset_name=ns_parser.target_dataset,
                 n_predict=ns_parser.n_days,
