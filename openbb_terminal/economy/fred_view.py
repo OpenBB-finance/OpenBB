@@ -83,7 +83,7 @@ def display_fred_series(
     raw: bool = False,
     export: str = "",
     external_axes: Optional[List[plt.Axes]] = None,
-) -> Tuple[pd.DataFrame, dict]:
+):
     """Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]
 
     Parameters
