@@ -669,7 +669,7 @@ class ScreenerController(BaseController):
                         loaded_preset=self.preset,
                         data_type="performance",
                         limit=ns_parser.limit,
-                        ascend=ns_parser.store_true,
+                        ascend=ns_parser.reverse,
                         sortby=ns_parser.sort,
                         export=ns_parser.export,
                     )
