@@ -14,7 +14,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 
 {{< highlight python >}}
 portfolio.holdp(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     chart: bool = False,
 )
 {{< /highlight >}}
@@ -27,11 +27,20 @@ portfolio.holdp(
 
 * **Parameters**
 
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     chart: bool
        Flag to display chart
 
+
+* **Examples**
+
+    {{< highlight python >}}
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.holdp(P)
+    {{< /highlight >}}
 
 |
 
@@ -43,7 +52,7 @@ portfolio.holdp(
 
 {{< highlight python >}}
 portfolio.holdp(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+    portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     unstack: bool = False,
     raw: bool = False,
     limit: int = 10,
@@ -61,8 +70,9 @@ portfolio.holdp(
 
 * **Parameters**
 
-    portfolio: Portfolio
-        Portfolio object with trades loaded
+    portfolio_engine: PortfolioEngine
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     unstack: bool
         Individual assets over time
     raw : bool
