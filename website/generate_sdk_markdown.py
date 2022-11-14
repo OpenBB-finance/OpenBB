@@ -57,12 +57,15 @@ def get_function_meta(trailmap, trail_type: Literal["model", "view"]):
     }
 
 
-def generate_markdown(meta):
+def generate_markdown(meta, trail_type: Literal["model", "view"]):
     # head meta https://docusaurus.io/docs/markdown-features/head-metadata
-    markdown = f"""---
+    markdown = ""
+    if trail_type == "model":
+        markdown = f"""---
 title: {meta["name"]}
-description: {meta["description"]}
+description: OpenBB SDK Function
 ---\n"""
+    # use real description but need to parse it
     markdown += f"# {meta['name']}\n\n"
     markdown += f"## {meta['function_name']}\n\n"
     markdown += f"```python\n{meta['func_def']}\n```\n"
@@ -100,30 +103,22 @@ def main():
     for trailmap in trailmaps:
         model_meta = get_function_meta(trailmap, "model") if trailmap.model else None
         view_meta = get_function_meta(trailmap, "view") if trailmap.view else None
+        markdown = ""
         if model_meta:
-            markdown = generate_markdown(model_meta)
-            filepath = (
-                "functions/"
-                + "/".join(trailmap.location_path)
-                + "/"
-                + trailmap.class_attr
-                + ".md"
-            )
-            os.makedirs(os.path.dirname(filepath), exist_ok=True)
-            with open(filepath, "w") as f:
-                f.write(markdown)
+            markdown = generate_markdown(model_meta, "model")
         if view_meta:
-            markdown = generate_markdown(view_meta)
-            filepath = (
-                "functions/"
-                + "/".join(trailmap.location_path)
-                + "/"
-                + trailmap.class_attr
-                + "_view.md"
-            )
-            os.makedirs(os.path.dirname(filepath), exist_ok=True)
-            with open(filepath, "w") as f:
-                f.write(markdown)
+            markdown += "\n\n\n# VIEW\n\n" + generate_markdown(view_meta, "view")
+
+        filepath = (
+            "functions/"
+            + "/".join(trailmap.location_path)
+            + "/"
+            + trailmap.class_attr
+            + ".md"
+        )
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        with open(filepath, "w") as f:
+            f.write(markdown)
     print("Markdown files generated, check the functions folder")
 
 
