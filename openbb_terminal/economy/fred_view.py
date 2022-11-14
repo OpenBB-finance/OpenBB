@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 import logging
 import os
 import textwrap
-from typing import Dict, Optional, List, Tuple
+from typing import Optional, List, Tuple
 from datetime import datetime
 
 import matplotlib.pyplot as plt
