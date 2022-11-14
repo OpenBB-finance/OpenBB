@@ -28,6 +28,10 @@ should be `test_<menu>_<command>.openbb` if you are testing a specific command o
 if you are testing the entire menu. However, it is encouraged to create as specific of integration tests
 as possible to identify errors more precisely. Additionally, all tests must end with the `exit` command.
 
+These files can be given dynamic output with the following syntax `${key=default}`. Please note that
+both key and default can only contain letters and numbers with NO special characters. Each dynamic
+argument MUST contain a key and a default value.
+
 ### Examples
 
 Testing a specific command and it's arguments:
@@ -94,13 +98,13 @@ few different ways using the wildcard expression.
 - Run all integration tests:
 
     ```zsh
-    python terminal.py scripts/*.openbb -t
+    python testing.py
     ```
 
 - Run some integration tests:
 
     ```zsh
-    python terminal.py scripts/test_stocks_*.openbb -t
+    python testing.py stocks crypto
     ```
 
     *This specific example runs all of the stocks integration tests. One can use this same format for different tests.*
@@ -108,8 +112,24 @@ few different ways using the wildcard expression.
 - Run one integration tests:
 
     ```zsh
-    python terminal.py scripts/test_alt_covid.openbb -t
+    python testing.py scripts/test_alt_covid.openbb
     ```
+
+    *Note that the base path is `OpenBBTerminal/openbb_terminal/miscellaneous/scripts`.*
+
+- Run integration tests with arguments by adding --key=value
+
+    ```zsh
+    python testing.py --ticker=aapl
+    ```
+
+- To see a lot of possible keys, run the following:
+
+    ```zsh
+    python testing.py -h
+    ```
+
+If there are any test failures a csv will be generated with detailed information on the failures.
 
 ### Installer Terminal
 
