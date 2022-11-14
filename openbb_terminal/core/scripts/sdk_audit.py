@@ -17,7 +17,7 @@ try:
 except ImportError:
     FORECASTING = False
 
-base_path = Path(__file__).parent / "openbb_terminal"
+base_path = Path(__file__).parent.parent.parent.parent / "openbb_terminal"
 
 
 def load_modules(full_path: Path):
@@ -180,7 +180,7 @@ def get_nonconforming_functions(data: pd.DataFrame) -> pd.DataFrame:
     for name in names:
         path_list = name.split(".")
         file = "/".join(path_list[:-1])
-        mod_path = Path(__file__).parent / f"{file}.py"
+        mod_path = Path(__file__).parent.parent.parent.parent / f"{file}.py"
         module = load_modules(mod_path)
         command = path_list[-1]
         function = getattr(module, command)
