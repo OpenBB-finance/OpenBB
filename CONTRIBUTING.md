@@ -681,7 +681,7 @@ With:
     transactions = Portfolio.read_orderbook("../../portfolio/holdings/example.csv")
     P = Portfolio(transactions)
     P.generate_portfolio_data()
-    P.load_benchmark()
+    P.set_benchmark()
 
     # SDK endpoint access
     openbb.portfolio.gaintopain(P)
@@ -695,7 +695,7 @@ With:
     <td>
 
     ```python
-    def get_gaintopain_ratio(portfolio: PortfolioModel) -> pd.DataFrame:
+    def get_gaintopain_ratio(portfolio: PortfolioEngine) -> pd.DataFrame:
 
     """..."""
 
