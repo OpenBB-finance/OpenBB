@@ -1443,6 +1443,11 @@ def get_print_insider_data(type_insider: str = "lcb", limit: int = 10):
         Insider type of data. Available types can be accessed through get_insider_types().
     limit: int
         Limit of data rows to display
+
+    Returns
+    -------
+    data : pd.DataFrame
+        Open insider filtered data
     """
     response = requests.get(f"http://openinsider.com/{d_open_insider[type_insider]}")
     soup = BeautifulSoup(response.text, "html.parser")

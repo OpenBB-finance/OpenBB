@@ -2,7 +2,7 @@
 __docformat__ = "numpy"
 
 import logging
-from typing import List
+from typing import List, Tuple
 
 import pandas as pd
 import requests
@@ -20,7 +20,7 @@ def find_smallest_num_data_point(results_list: List[dict]) -> int:
     data points than another then it will throw an indexing error. The solution is to
     have each ticker have the same number of data points as to graph and view properly.
     We chose to set each ticker to the minimum of number data points out of all the
-    tickers
+    tickers.
 
     Parameters
     ----------
@@ -45,12 +45,12 @@ def find_smallest_num_data_point(results_list: List[dict]) -> int:
 
 @log_start_end(log=logger)
 def get_sentiments(symbols: List[str]) -> pd.DataFrame:
-    """Gets Sentiment analysis from several symbols provided by FinBrain's API
+    """Gets Sentiment analysis from several symbols provided by FinBrain's API.
 
     Parameters
     ----------
     symbols : List[str]
-        List of tickers to get sentiment
+        List of tickers to get sentiment.
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
 
@@ -124,8 +124,8 @@ def get_sentiments(symbols: List[str]) -> pd.DataFrame:
 @log_start_end(log=logger)
 def get_sentiment_correlation(
     similar: List[str],
-):
-    """Get correlation sentiments across similar companies. [Source: FinBrain]
+) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """Get correlation sentiments across similar companies. [Source: FinBrain].
 
     Parameters
     ----------
@@ -133,6 +133,11 @@ def get_sentiment_correlation(
         Similar companies to compare income with.
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
+
+    Returns
+    -------
+    Tuple[pd.DataFrame,pd.DataFrame]
+        Contains sentiment analysis from several tickers
     """
     df_sentiment = get_sentiments(similar)
     corrs = df_sentiment.corr()

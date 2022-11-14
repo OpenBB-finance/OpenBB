@@ -887,11 +887,9 @@ def get_posts_about(
     limit: int
         Number of posts to get per subreddit
     sortby: str
-        Search type
-        Possibilities: "relevance", "hot", "top", "new", or "comments"
+        Search type (Possibilities: "relevance", "hot", "top", "new", or "comments")
     time_frame: str
-        Relative time of post
-        Possibilities: "hour", "day", "week", "month", "year", "all"
+        Relative time of post (Possibilities: "hour", "day", "week", "month", "year", "all")
     full_search: bool
         Enable comprehensive search for ticker
     subreddits: str
