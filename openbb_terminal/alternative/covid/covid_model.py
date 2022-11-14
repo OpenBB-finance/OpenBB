@@ -35,6 +35,21 @@ def get_global_cases(country: str) -> pd.DataFrame:
     -------
     pd.DataFrame
         Dataframe of historical cases
+
+    Examples
+    --------
+
+    >>> df = get_global_cases("United States")
+    Dataframe of historical cases for United States
+
+
+    >>> df = get_global_cases("Portugal")
+    Dataframe of historical cases for Portugal
+
+
+    >>> df = get_global_cases("Spain")
+    Dataframe of historical cases for Spain
+
     """
     cases = pd.read_csv(global_cases_time_series)
     cases = cases.rename(columns={"Country/Region": "Country"})
@@ -82,7 +97,7 @@ def get_global_deaths(country: str) -> pd.DataFrame:
 
 @log_start_end(log=logger)
 def get_covid_ov(
-    country,
+    country: str,
     limit: int = 100,
 ) -> pd.DataFrame:
     """Get historical cases and deaths by country
@@ -104,7 +119,7 @@ def get_covid_ov(
 
 @log_start_end(log=logger)
 def get_covid_stat(
-    country,
+    country: str,
     stat: str = "cases",
     limit: int = 10,
 ) -> pd.DataFrame:
