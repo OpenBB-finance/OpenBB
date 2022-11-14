@@ -17,7 +17,7 @@ crypto.dd.eb(
     symbol: str,
     exchange: str = 'binance',
     start_date: str = '2010-01-01',
-    end_date: str = '2022-11-10',
+    end_date: str = '2022-11-14',
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
@@ -61,7 +61,7 @@ crypto.dd.eb(
     symbol: str,
     exchange: str = 'binance',
     start_date: str = '2010-01-01',
-    end_date: str = '2022-11-10',
+    end_date: str = '2022-11-14',
     percentage: bool = False,
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,

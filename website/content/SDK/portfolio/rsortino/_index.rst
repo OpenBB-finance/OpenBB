@@ -13,8 +13,8 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
     </h3>
 
 {{< highlight python >}}
-portfolio.rsortino(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+portfolio.rsort(
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     risk_free_rate: float = 0,
     window: str = '1y',
     chart: bool = False,
@@ -29,7 +29,7 @@ portfolio.rsortino(
 
 * **Parameters**
 
-    portfolio : PortfolioModel
+    portfolio : PortfolioEngine
         Portfolio object
     window: str
         interval for window to consider
@@ -54,8 +54,8 @@ portfolio.rsortino(
     </h3>
 
 {{< highlight python >}}
-portfolio.rsortino(
-    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioModel,
+portfolio.rsort(
+    portfolio: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     risk_free_rate: float = 0,
     window: str = '1y',
     export: str = '',
@@ -72,7 +72,7 @@ portfolio.rsortino(
 
 * **Parameters**
 
-    portfolio : PortfolioModel
+    portfolio : PortfolioEngine
         Portfolio object
     risk_free_rate: float
         Value to use for risk free rate in sharpe/other calculations
@@ -84,4 +84,3 @@ portfolio.rsortino(
         Optional axes to display plot on
     chart: bool
        Flag to display chart
-
