@@ -86,7 +86,7 @@ enableGitInfo = true
 [security]
   enableInlineShortcodes = false
   [security.exec]
-    allow = ['^dart-sass-embedded$', '^go$', '^npx$', '^postcss$', "rst2html.py"]
+    allow = ['^dart-sass-embedded$', '^go$', '^npx$', '^postcss$', "rst2html.py", "rst2html"]
     osEnv = ['(?i)^((HTTPS?|NO)_PROXY|PATH(EXT)?|APPDATA|TE?MP|TERM)$']
   [security.funcs]
     getenv = ['^HUGO_']
