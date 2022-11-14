@@ -121,7 +121,7 @@ class Trailmap:
         """Creates the function definition to be used in SDK docs."""
         funcspec = inspect.getfullargspec(self.func_attr[key])
 
-        definition = f"def {getattr(self, f'{key}_func').split('.')[-1]}("
+        definition = ""
         added_comma = False
         for arg in funcspec.args:
             annotation = (
@@ -149,7 +149,7 @@ class Trailmap:
             and funcspec.annotations["return"] is not None
             else "None"
         )
-        definition = f"{definition }) -> {return_def}:"
+        definition = f"def {getattr(self, f'{key}_func').split('.')[-1]}({definition }) -> {return_def}"
         return definition
 
 

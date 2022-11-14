@@ -99,7 +99,7 @@ def generate_markdown_section(meta):
     markdown += "| Name | Type | Description | Default | Optional |\n"
     markdown += "| ---- | ---- | ----------- | ------- | -------- |\n"
     for param in meta["params"]:
-        description = param["doc"].replace("\n", " ")
+        description = param["doc"].replace("\n", "<br/>")
         markdown += f"| {param['name']} | {param['type']} | {description} | {param['default']} | {param['optional']} |\n"
     markdown += "\n"
 
@@ -107,7 +107,11 @@ def generate_markdown_section(meta):
     if meta["returns"]:
         markdown += "| Type | Description |\n"
         markdown += "| ---- | ----------- |\n"
-        return_desc = meta["returns"]["doc"].replace("\n", " ")
+        return_desc = (
+            meta["returns"]["doc"].replace("\n", "<br/>")
+            if meta["returns"]["doc"]
+            else ""
+        )
         markdown += f"| {meta['returns']['type']} | {return_desc} |\n\n"
     else:
         markdown += "This function does not return anything\n\n"

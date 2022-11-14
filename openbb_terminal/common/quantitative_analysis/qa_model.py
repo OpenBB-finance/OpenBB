@@ -7,7 +7,7 @@ from typing import Any, Tuple, Union
 import pandas as pd
 import statsmodels.api as sm
 from statsmodels.tools.sm_exceptions import MissingDataError
-from statsmodels.tsa.seasonal import seasonal_decompose
+from statsmodels.tsa.seasonal import DecomposeResult, seasonal_decompose
 from statsmodels.tsa.stattools import adfuller, kpss
 from scipy import stats
 import numpy as np
@@ -45,7 +45,7 @@ def get_summary(data: pd.DataFrame) -> pd.DataFrame:
 @log_start_end(log=logger)
 def get_seasonal_decomposition(
     data: pd.DataFrame, multiplicative: bool = False
-) -> Tuple[Any, pd.DataFrame, pd.DataFrame]:
+) -> Tuple[DecomposeResult, pd.DataFrame, pd.DataFrame]:
     """Perform seasonal decomposition
 
     Parameters
@@ -57,12 +57,10 @@ def get_seasonal_decomposition(
 
     Returns
     -------
-    result: Any
-        Result of statsmodels seasonal_decompose
-    cycle: pd.DataFrame
-        Filtered cycle
-    trend: pd.DataFrame
-        Filtered Trend
+    Tuple[DecomposeResult, pd.DataFrame, pd.DataFrame]
+        DecomposeResult class from statsmodels (observed, seasonal, trend, residual, and weights),
+        Filtered cycle DataFrame,
+        Filtered trend DataFrame
     """
     seasonal_periods = 5
     # Hodrick-Prescott filter
