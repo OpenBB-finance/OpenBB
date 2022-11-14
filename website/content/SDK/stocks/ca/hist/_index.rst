@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 {{< highlight python >}}
 stocks.ca.hist(
     similar: List[str],
-    start_date: str = None,
+    start_date: str = '2021-11-09',
     candle_type: str = 'a',
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
@@ -34,7 +34,7 @@ stocks.ca.hist(
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
     start_date: str, optional
-        Initial date (e.g., 2021-10-01). Defaults to 1 year back
+        Start date of comparison. Defaults to 1 year previously
     candle_type: str, optional
         Candle variable to compare, by default "a" for Adjusted Close. Possible values are: o, h, l, c, a, v, r
     chart: bool
@@ -57,7 +57,7 @@ stocks.ca.hist(
 {{< highlight python >}}
 stocks.ca.hist(
     similar: List[str],
-    start_date: str = None,
+    start_date: str = '2021-11-09',
     candle_type: str = 'a',
     normalize: bool = True,
     export: str = '',
@@ -79,7 +79,7 @@ stocks.ca.hist(
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
     start_date: str, optional
-        Initial date (e.g., 2021-10-01). Defaults to 1 year back
+        Start date of comparison, by default 1 year ago
     candle_type: str, optional
         OHLCA column to use or R to use daily returns calculated from Adjusted Close, by default "a" for Adjusted Close
     normalize: bool, optional

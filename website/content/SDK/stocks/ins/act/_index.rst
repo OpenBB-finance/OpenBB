@@ -50,7 +50,7 @@ stocks.ins.act(
 stocks.ins.act(
     data: pandas.core.frame.DataFrame,
     symbol: str,
-    start_date: str = None,
+    start_date: str = '2019-11-06',
     interval: str = '1440min',
     limit: int = 10,
     raw: bool = False,
@@ -73,7 +73,7 @@ stocks.ins.act(
     symbol: str
         Due diligence ticker symbol
     start_date: str
-        Initial date (e.g., 2021-10-01). Defaults to 3 years back
+        Start date of the stock data
     interval: str
         Stock data interval
     limit: int

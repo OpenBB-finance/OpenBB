@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 {{< highlight python >}}
 stocks.fa.mktcap(
     symbol: str,
-    start_date: str = None,
+    start_date: str = '2019-11-08',
     chart: bool = False,
 ) -> Tuple[pandas.core.frame.DataFrame, str]
 {{< /highlight >}}
@@ -31,7 +31,7 @@ stocks.fa.mktcap(
     symbol: str
         Ticker to get market cap over time
     start_date: str
-        Initial date (e.g., 2021-10-01). Defaults to 3 years back
+        Start date to display market cap
     chart: bool
        Flag to display chart
 
@@ -54,7 +54,7 @@ stocks.fa.mktcap(
 {{< highlight python >}}
 stocks.fa.mktcap(
     symbol: str,
-    start_date: str = None,
+    start_date: str = '2019-11-08',
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
     chart: bool = False,
@@ -72,7 +72,7 @@ stocks.fa.mktcap(
     symbol: str
         Stock ticker symbol
     start_date: str
-        Initial date (e.g., 2021-10-01). Defaults to 3 years back
+        Start date to display market cap
     export: str
         Format to export data
     external_axes : Optional[List[plt.Axes]], optional

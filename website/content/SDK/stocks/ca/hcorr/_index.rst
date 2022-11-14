@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 {{< highlight python >}}
 stocks.ca.hcorr(
     similar: List[str],
-    start_date: str = None,
+    start_date: str = '2021-11-09',
     candle_type: str = 'a',
     chart: bool = False,
 )
@@ -34,7 +34,7 @@ stocks.ca.hcorr(
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
     start_date : str, optional
-        Initial date (e.g., 2021-10-01). Defaults to 1 year back
+        Start date of comparison, by default 1 year ago
     candle_type : str, optional
         OHLCA column to use for candles or R for returns, by default "a" for Adjusted Close
     chart: bool
@@ -52,7 +52,7 @@ stocks.ca.hcorr(
 {{< highlight python >}}
 stocks.ca.hcorr(
     similar: List[str],
-    start_date: str = None,
+    start_date: str = '2021-11-09',
     candle_type: str = 'a',
     display_full_matrix: bool = False,
     raw: bool = False,
@@ -76,7 +76,7 @@ stocks.ca.hcorr(
         Comparable companies can be accessed through
         finnhub_peers(), finviz_peers(), polygon_peers().
     start_date : str, optional
-        Initial date (e.g., 2021-10-01). Defaults to 1 year back
+        Start date of comparison, by default 1 year ago
     candle_type : str, optional
         OHLCA column to use for candles or R for returns, by default "a" for Adjusted Close
     display_full_matrix : bool, optional

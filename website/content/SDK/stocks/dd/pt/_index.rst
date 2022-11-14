@@ -50,7 +50,7 @@ stocks.dd.pt(
 stocks.dd.pt(
     symbol: str,
     data: pandas.core.frame.DataFrame,
-    start_date: str = None,
+    start_date: str = '2022-11-10',
     limit: int = 10,
     raw: bool = False,
     export: str = '',
@@ -72,7 +72,7 @@ stocks.dd.pt(
     data: DataFrame
         Due diligence stock dataframe
     start_date : str
-        Start date of the stock data, format YYYY-MM-DD
+        Start date of the stock data
     limit : int
         Number of latest price targets from analysts to print
     raw: bool

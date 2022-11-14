@@ -13,10 +13,12 @@
 {{< highlight python >}}
 crypto.load(
     symbol: 'str',
-    start_date: 'datetime | str | None' = None, interval: 'str' = '1440',
+    start_date: 'Optional[Union[datetime, str]]' = None,
+    interval: 'str' = '1440',
     exchange: 'str' = 'binance',
     vs_currency: 'str' = 'usdt',
-    end_date: 'datetime | str | None' = None, source: 'str' = 'CCXT',
+    end_date: 'Optional[Union[datetime, str]]' = None,
+    source: 'str' = 'CCXT',
     chart: bool = False,
 ) -> 'pd.DataFrame'
 {{< /highlight >}}
