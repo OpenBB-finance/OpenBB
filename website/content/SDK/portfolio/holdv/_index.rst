@@ -39,6 +39,14 @@ portfolio.holdv(
     pd.DataFrame
         DataFrame of holdings
 
+* **Examples**
+
+    {{< highlight python >}}
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.holdv(P)
+    {{< /highlight >}}
+
 |
 
 .. raw:: html

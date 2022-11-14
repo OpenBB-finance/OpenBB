@@ -38,6 +38,14 @@ portfolio.rvol(
        Flag to display chart
 
 
+* **Examples**
+
+    {{< highlight python >}}
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.rvol(P)
+    {{< /highlight >}}
+
 |
 
 .. raw:: html

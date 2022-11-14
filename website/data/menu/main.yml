@@ -2487,6 +2487,17 @@ main:
       - name: portfolio
         ref: /SDK/portfolio
         sub:
+          - name: alloc
+            ref: /SDK/portfolio/alloc
+            sub:
+              - name: assets
+                ref: /SDK/portfolio/alloc/assets
+              - name: countries
+                ref: /SDK/portfolio/alloc/countries
+              - name: regions
+                ref: /SDK/portfolio/alloc/regions
+              - name: sectors
+                ref: /SDK/portfolio/alloc/sectors
           - name: bench
             ref: /SDK/portfolio/bench
           - name: calmar
@@ -2515,8 +2526,6 @@ main:
             ref: /SDK/portfolio/kurtosis
           - name: load
             ref: /SDK/portfolio/load
-          - name: max_drawdown_ratio
-            ref: /SDK/portfolio/max_drawdown_ratio
           - name: maxdd
             ref: /SDK/portfolio/maxdd
           - name: maxdrawdown

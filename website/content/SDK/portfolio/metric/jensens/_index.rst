@@ -41,3 +41,11 @@ portfolio.metric.jensens(
         DataFrame of jensens's alpha during different time windows
     pd.Series
         Series of jensens's alpha data
+
+* **Examples**
+
+    {{< highlight python >}}
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.metric.jensens(P)
+    {{< /highlight >}}

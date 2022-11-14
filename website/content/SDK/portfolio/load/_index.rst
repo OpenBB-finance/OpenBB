@@ -42,3 +42,10 @@ portfolio.load(
 
     PortfolioEngine
         PortfolioEngine class instance, this will hold transactions and perform calculations
+
+* **Examples**
+
+    {{< highlight python >}}
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    {{< /highlight >}}

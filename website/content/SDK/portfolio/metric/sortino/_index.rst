@@ -36,3 +36,11 @@ portfolio.metric.sortino(
 
     pd.DataFrame
         DataFrame with sortino ratio for portfolio and benchmark for different periods
+
+* **Examples**
+
+    {{< highlight python >}}
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.metric.sortino(P)
+    {{< /highlight >}}

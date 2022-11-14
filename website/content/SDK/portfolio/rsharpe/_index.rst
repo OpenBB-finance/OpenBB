@@ -45,6 +45,14 @@ portfolio.rsharpe(
     pd.DataFrame
         Rolling sharpe ratio DataFrame
 
+* **Examples**
+
+    {{< highlight python >}}
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.rsharpe(P)
+    {{< /highlight >}}
+
 |
 
 .. raw:: html

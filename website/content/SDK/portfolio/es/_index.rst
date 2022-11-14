@@ -41,3 +41,12 @@ portfolio.es(
 * **Returns**
 
     pd.DataFrame
+        DataFrame with portfolio expected shortfall
+
+* **Examples**
+
+    {{< highlight python >}}
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.es(P)
+    {{< /highlight >}}

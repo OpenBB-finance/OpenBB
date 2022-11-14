@@ -50,7 +50,7 @@ stocks.ins.act(
 stocks.ins.act(
     data: pandas.core.frame.DataFrame,
     symbol: str,
-    start_date: str = '2019-11-09',
+    start_date: str = '2019-11-10',
     interval: str = '1440min',
     limit: int = 10,
     raw: bool = False,

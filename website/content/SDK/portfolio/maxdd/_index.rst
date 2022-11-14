@@ -46,6 +46,14 @@ portfolio.maxdd(
     pd.Series
         Drawdown series
 
+* **Examples**
+
+    {{< highlight python >}}
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.maxdd(P)
+    {{< /highlight >}}
+
 |
 
 .. raw:: html

@@ -44,3 +44,12 @@ portfolio.var(
 * **Returns**
 
     pd.DataFrame
+        DataFrame with portfolio VaR
+
+* **Examples**
+
+    {{< highlight python >}}
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.var(P)
+    {{< /highlight >}}

@@ -43,6 +43,15 @@ portfolio.om(
 * **Returns**
 
     pd.DataFrame
+        DataFrame with portfolio omega ratio
+
+* **Examples**
+
+    {{< highlight python >}}
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.om(P)
+    {{< /highlight >}}
 
 |
 

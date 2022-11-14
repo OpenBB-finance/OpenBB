@@ -17,7 +17,7 @@ portfolio.yret(
     portfolio_engine: openbb_terminal.portfolio.portfolio_model.PortfolioEngine,
     window: str = 'all',
     chart: bool = False,
-)
+) -> pandas.core.frame.DataFrame
 {{< /highlight >}}
 
 .. raw:: html
@@ -36,6 +36,19 @@ portfolio.yret(
     chart: bool
        Flag to display chart
 
+
+* **Returns**
+
+    pd.DataFrame
+        DataFrame with yearly returns
+
+* **Examples**
+
+    {{< highlight python >}}
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.yret(P)
+    {{< /highlight >}}
 
 |
 

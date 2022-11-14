@@ -33,3 +33,11 @@ portfolio.metric.profitfactor(
 
     pd.DataFrame
         DataFrame of profit factor of the portfolio during different time periods
+
+* **Examples**
+
+    {{< highlight python >}}
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.metric.profitfactor(P)
+    {{< /highlight >}}

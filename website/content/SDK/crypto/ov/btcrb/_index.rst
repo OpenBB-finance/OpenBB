@@ -15,7 +15,7 @@ To obtain charts, make sure to add :python:`chart = True` as the last parameter.
 {{< highlight python >}}
 crypto.ov.btcrb(
     start_date: str = '2010-01-01',
-    end_date: str = '2022-11-13',
+    end_date: str = '2022-11-14',
     chart: bool = False,
 )
 {{< /highlight >}}
@@ -49,7 +49,7 @@ crypto.ov.btcrb(
 {{< highlight python >}}
 crypto.ov.btcrb(
     start_date: str = '2010-01-01',
-    end_date: str = '2022-11-13',
+    end_date: str = '2022-11-14',
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,
     chart: bool = False,

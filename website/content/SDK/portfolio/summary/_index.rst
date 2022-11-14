@@ -22,7 +22,7 @@ portfolio.summary(
 .. raw:: html
 
     <p>
-    Get summary portfolio and benchmark returns
+    Get portfolio and benchmark returns summary
     </p>
 
 * **Parameters**
@@ -38,3 +38,12 @@ portfolio.summary(
 * **Returns**
 
     pd.DataFrame
+        DataFrame with portfolio and benchmark returns summary
+
+* **Examples**
+
+    {{< highlight python >}}
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.summary(P)
+    {{< /highlight >}}

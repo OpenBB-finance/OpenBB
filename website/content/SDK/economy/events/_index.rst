@@ -13,8 +13,8 @@
 {{< highlight python >}}
 economy.events(
     countries: Union[List[str], str] = '',
-    start_date: str = '2022-11-13',
-    end_date: str = '2022-11-13',
+    start_date: str = '2022-11-14',
+    end_date: str = '2022-11-14',
     chart: bool = False,
 ) -> pandas.core.frame.DataFrame
 {{< /highlight >}}

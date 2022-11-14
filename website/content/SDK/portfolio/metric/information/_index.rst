@@ -33,3 +33,11 @@ portfolio.metric.information(
 
     pd.DataFrame
         DataFrame of the information ratio during different time periods
+
+* **Examples**
+
+    {{< highlight python >}}
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.metric.information(P)
+    {{< /highlight >}}

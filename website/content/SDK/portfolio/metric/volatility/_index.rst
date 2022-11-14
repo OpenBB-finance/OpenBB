@@ -33,3 +33,11 @@ portfolio.metric.volatility(
 
     pd.DataFrame
         DataFrame with volatility for portfolio and benchmark for different periods
+
+* **Examples**
+
+    {{< highlight python >}}
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.metric.volatility(P)
+    {{< /highlight >}}

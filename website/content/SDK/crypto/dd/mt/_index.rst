@@ -17,8 +17,8 @@ crypto.dd.mt(
     symbol: str,
     timeseries_id: str,
     interval: str = '1d',
-    start_date: str = '2021-11-13',
-    end_date: str = '2022-11-13',
+    start_date: str = '2021-11-14',
+    end_date: str = '2022-11-14',
     chart: bool = False,
 ) -> Tuple[pandas.core.frame.DataFrame, str]
 {{< /highlight >}}
@@ -65,8 +65,8 @@ crypto.dd.mt(
 crypto.dd.mt(
     symbol: str,
     timeseries_id: str,
-    start_date: str = '2021-11-13',
-    end_date: str = '2022-11-13',
+    start_date: str = '2021-11-14',
+    end_date: str = '2022-11-14',
     interval: str = '1d',
     export: str = '',
     external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None,

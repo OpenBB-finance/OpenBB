@@ -30,9 +30,23 @@ portfolio.metric.skew(
     -------
     pd.DataFrame
         DataFrame with skewness for portfolio and benchmark for different periods
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.metric.skew(P)
     </p>
 
 * **Returns**
 
     pd.DataFrame
         DataFrame with skewness for portfolio and benchmark for different periods
+
+* **Examples**
+
+    {{< highlight python >}}
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.metric.skew(P)
+    {{< /highlight >}}

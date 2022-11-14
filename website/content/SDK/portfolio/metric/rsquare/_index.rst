@@ -33,3 +33,11 @@ portfolio.metric.rsquare(
 
     pd.DataFrame
         DataFrame with R2 Score between portfolio and benchmark for different periods
+
+* **Examples**
+
+    {{< highlight python >}}
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.metric.rsquare(P)
+    {{< /highlight >}}

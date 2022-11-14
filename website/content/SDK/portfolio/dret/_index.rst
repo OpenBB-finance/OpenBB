@@ -40,6 +40,15 @@ portfolio.dret(
 * **Returns**
 
     pd.DataFrame
+        DataFrame with daily returns
+
+* **Examples**
+
+    {{< highlight python >}}
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.dret(P)
+    {{< /highlight >}}
 
 |
 

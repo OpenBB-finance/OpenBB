@@ -29,7 +29,8 @@ portfolio.alloc.assets(
 * **Parameters**
 
     portfolio_engine: PortfolioEngine
-        PortfolioEngine object
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     tables: bool
         Whether to include separate allocation tables
     limit: int
@@ -41,3 +42,11 @@ portfolio.alloc.assets(
 
     Union[pd.DataFrame, Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]]
         DataFrame with combined allocation plus individual allocation if tables is `True`.
+
+* **Examples**
+
+    {{< highlight python >}}
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.alloc.assets(P)
+    {{< /highlight >}}

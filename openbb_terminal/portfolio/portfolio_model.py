@@ -834,6 +834,12 @@ def get_r2_score(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     -------
     pd.DataFrame
         DataFrame with R2 Score between portfolio and benchmark for different periods
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.metric.rsquare(P)
     """
 
     vals = list()
@@ -866,6 +872,12 @@ def get_skewness(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     -------
     pd.DataFrame
         DataFrame with skewness for portfolio and benchmark for different periods
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.metric.skew(P)
     """
 
     vals = list()
@@ -909,6 +921,12 @@ def get_kurtosis(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     -------
     pd.DataFrame
         DataFrame with kurtosis for portfolio and benchmark for different periods
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.metric.kurtosis(P)
     """
 
     vals = list()
@@ -954,6 +972,12 @@ def get_stats(portfolio_engine: PortfolioEngine, window: str = "all") -> pd.Data
     -------
     pd.DataFrame
         DataFrame with overall stats for portfolio and benchmark for a certain period
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.metric.stats(P)
     """
 
     df = (
@@ -984,6 +1008,12 @@ def get_volatility(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     -------
     pd.DataFrame
         DataFrame with volatility for portfolio and benchmark for different periods
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.metric.volatility(P)
     """
 
     vals = list()
@@ -1031,6 +1061,12 @@ def get_sharpe_ratio(
     -------
     pd.DataFrame
         DataFrame with sharpe ratio for portfolio and benchmark for different periods
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.metric.sharpe(P)
     """
 
     vals = list()
@@ -1080,6 +1116,12 @@ def get_sortino_ratio(
     -------
     pd.DataFrame
         DataFrame with sortino ratio for portfolio and benchmark for different periods
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.metric.sortino(P)
     """
 
     vals = list()
@@ -1125,6 +1167,12 @@ def get_maximum_drawdown_ratio(portfolio_engine: PortfolioEngine) -> pd.DataFram
     -------
     pd.DataFrame
         DataFrame with maximum drawdown for portfolio and benchmark for different periods
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.metric.maxdrawdown(P)
     """
 
     vals = list()
@@ -1168,6 +1216,12 @@ def get_gaintopain_ratio(portfolio_engine: PortfolioEngine):
     -------
     pd.DataFrame
         DataFrame of the portfolio's gain-to-pain ratio
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.metric.gaintopain(P)
     """
 
     gtp_period_df = portfolio_helper.get_gaintopain_ratio(
@@ -1197,6 +1251,12 @@ def get_tracking_error(portfolio_engine: PortfolioEngine, window: int = 252):
         DataFrame of tracking errors during different time windows
     pd.Series
         Series of rolling tracking error
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.metric.trackerr(P)
     """
 
     trackr_period_df, trackr_rolling = portfolio_helper.get_tracking_error(
@@ -1220,6 +1280,12 @@ def get_information_ratio(portfolio_engine: PortfolioEngine):
     -------
     pd.DataFrame
         DataFrame of the information ratio during different time periods
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.metric.information(P)
     """
 
     ir_period_df = portfolio_helper.get_information_ratio(
@@ -1252,6 +1318,12 @@ def get_tail_ratio(portfolio_engine: PortfolioEngine, window: int = 252):
         Series of the portfolios rolling tail ratio
     pd.Series
         Series of the benchmarks rolling tail ratio
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.metric.tail(P)
     """
 
     tailr_period_df, portfolio_tr, benchmark_tr = portfolio_helper.get_tail_ratio(
@@ -1275,6 +1347,12 @@ def get_common_sense_ratio(portfolio_engine: PortfolioEngine):
     -------
     pd.DataFrame
         DataFrame of the portfolios and the benchmarks common sense ratio during different time periods
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.metric.commonsense(P)
     """
 
     csr_period_df = portfolio_helper.get_common_sense_ratio(
@@ -1309,6 +1387,12 @@ def get_jensens_alpha(
         DataFrame of jensens's alpha during different time windows
     pd.Series
         Series of jensens's alpha data
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.metric.jensens(P)
     """
 
     ja_period_df, ja_rolling = portfolio_helper.jensens_alpha(
@@ -1341,6 +1425,12 @@ def get_calmar_ratio(portfolio_engine: PortfolioEngine, window: int = 756):
         DataFrame of calmar ratio of the benchmark and portfolio during different time periods
     pd.Series
         Series of calmar ratio data
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.metric.calmar(P)
     """
 
     cr_period_df, cr_rolling = portfolio_helper.get_calmar_ratio(
@@ -1368,6 +1458,12 @@ def get_kelly_criterion(portfolio_engine: PortfolioEngine):
     -------
     pd.DataFrame
         DataFrame of kelly criterion of the portfolio during different time periods
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.metric.kelly(P)
     """
 
     kc_period_df = portfolio_helper.get_kelly_criterion(
@@ -1385,6 +1481,12 @@ def get_payoff_ratio(portfolio_engine: PortfolioEngine):
     -------
     pd.DataFrame
         DataFrame of payoff ratio of the portfolio during different time periods
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.metric.payoff(P)
     """
 
     pr_period_ratio = portfolio_helper.get_payoff_ratio(
@@ -1408,6 +1510,12 @@ def get_profit_factor(portfolio_engine: PortfolioEngine):
     -------
     pd.DataFrame
         DataFrame of profit factor of the portfolio during different time periods
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.metric.profitfactor(P)
     """
 
     pf_period_df = portfolio_helper.get_profit_factor(portfolio_engine.portfolio_trades)
@@ -1428,6 +1536,12 @@ def get_holdings_value(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     -------
     pd.DataFrame
         DataFrame of holdings
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.holdv(P)
     """
 
     all_holdings = portfolio_engine.historical_trade_data["End Value"][
@@ -1451,6 +1565,12 @@ def get_holdings_percentage(
     portfolio_engine: PortfolioEngine
         PortfolioEngine class instance, this will hold transactions and perform calculations.
         Use `portfolio.load` to create a PortfolioEngine.
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.holdp(P)
     """
 
     all_holdings = portfolio_engine.historical_trade_data["End Value"][
@@ -1487,6 +1607,12 @@ def get_maximum_drawdown(
         Holdings series
     pd.Series
         Drawdown series
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.maxdd(P)
     """
 
     holdings: pd.Series = portfolio_engine.portfolio_value
@@ -1512,6 +1638,12 @@ def get_distribution_returns(
         Use `portfolio.load` to create a PortfolioEngine.
     window : str
         interval to compare cumulative returns and benchmark
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.distr(P)
     """
 
     portfolio_returns = portfolio_helper.filter_df_by_period(
@@ -1541,6 +1673,12 @@ def get_rolling_volatility(
     window : str
         Rolling window size to use
         Possible options: mtd, qtd, ytd, 1d, 5d, 10d, 1m, 3m, 6m, 1y, 3y, 5y, 10y
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.rvol(P)
     """
 
     portfolio_rvol = portfolio_helper.rolling_volatility(
@@ -1581,6 +1719,12 @@ def get_rolling_sharpe(
     -------
     pd.DataFrame
         Rolling sharpe ratio DataFrame
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.rsharpe(P)
     """
 
     portfolio_rsharpe = portfolio_helper.rolling_sharpe(
@@ -1623,6 +1767,12 @@ def get_rolling_sortino(
     -------
     pd.DataFrame
         Rolling sortino ratio DataFrame
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.rsortino(P)
     """
 
     portfolio_rsortino = portfolio_helper.rolling_sortino(
@@ -1663,6 +1813,12 @@ def get_rolling_beta(
     -------
     pd.DataFrame
         DataFrame of the portfolio's rolling beta
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.rbeta(P)
     """
 
     df = portfolio_helper.rolling_beta(
@@ -1691,6 +1847,13 @@ def get_performance_vs_benchmark(
     Returns
     -------
     pd.DataFrame
+        DataFrame with portfolio performance vs the benchmark
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.perf(P)
     """
 
     portfolio_trades = portfolio_engine.portfolio_trades
@@ -1805,6 +1968,13 @@ def get_var(
     Returns
     -------
     pd.DataFrame
+        DataFrame with portfolio VaR
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.var(P)
     """
 
     return qa_model.get_var(
@@ -1841,6 +2011,13 @@ def get_es(
     Returns
     -------
     pd.DataFrame
+        DataFrame with portfolio expected shortfall
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.es(P)
     """
 
     return qa_model.get_es(
@@ -1873,6 +2050,13 @@ def get_omega(
     Returns
     -------
     pd.DataFrame
+        DataFrame with portfolio omega ratio
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.om(P)
     """
 
     return qa_model.get_omega(
@@ -1887,7 +2071,7 @@ def get_summary(
     window: str = "all",
     risk_free_rate: float = 0,
 ) -> pd.DataFrame:
-    """Get summary portfolio and benchmark returns
+    """Get portfolio and benchmark returns summary
 
     Parameters
     ----------
@@ -1902,7 +2086,13 @@ def get_summary(
     Returns
     -------
     pd.DataFrame
+        DataFrame with portfolio and benchmark returns summary
 
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.summary(P)
     """
 
     portfolio_returns = portfolio_helper.filter_df_by_period(
@@ -1957,7 +2147,7 @@ def get_summary(
 def get_yearly_returns(
     portfolio_engine: PortfolioEngine,
     window: str = "all",
-):
+) -> pd.DataFrame:
     """Get yearly returns
 
     Parameters
@@ -1967,6 +2157,17 @@ def get_yearly_returns(
         Use `portfolio.load` to create a PortfolioEngine.
     window : str
         interval to compare cumulative returns and benchmark
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame with yearly returns
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.yret(P)
     """
 
     portfolio_returns = portfolio_helper.filter_df_by_period(
@@ -2024,6 +2225,13 @@ def get_monthly_returns(
     Returns
     -------
     pd.DataFrame
+        DataFrame with monthly returns
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.mret(P)
     """
 
     portfolio_returns = portfolio_helper.filter_df_by_period(
@@ -2123,6 +2331,13 @@ def get_daily_returns(
     Returns
     -------
     pd.DataFrame
+        DataFrame with daily returns
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.dret(P)
     """
 
     portfolio_returns = portfolio_helper.filter_df_by_period(
@@ -2165,6 +2380,11 @@ def generate_portfolio(
     -------
     PortfolioEngine
         PortfolioEngine class instance, this will hold transactions and perform calculations
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
     """
 
     transactions = PortfolioEngine.read_transactions(transactions_file_path)
@@ -2189,6 +2409,12 @@ def get_transactions(portfolio_engine: PortfolioEngine) -> pd.DataFrame:
     -------
     pd.DataFrame
         Portfolio transactions
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.show(P)
     """
 
     return portfolio_engine.get_transactions()
@@ -2209,6 +2435,12 @@ def set_benchmark(
     full_shares: bool
         Whether to mimic the portfolio trades exactly (partial shares) or round down the
         quantity to the nearest number
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.bench(P, symbol="SPY")
     """
 
     portfolio_engine.set_benchmark(symbol=symbol, full_shares=full_shares)
@@ -2268,7 +2500,8 @@ def get_assets_allocation(
     Parameters
     ----------
     portfolio_engine: PortfolioEngine
-        PortfolioEngine object
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     tables: bool
         Whether to include separate allocation tables
     limit: int
@@ -2280,6 +2513,12 @@ def get_assets_allocation(
     -------
     Union[pd.DataFrame, Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]]
         DataFrame with combined allocation plus individual allocation if tables is `True`.
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.alloc.assets(P)
     """
 
     portfolio_engine.calculate_allocation(category="Asset", recalculate=recalculate)
@@ -2305,7 +2544,8 @@ def get_sectors_allocation(
     Parameters
     ----------
     portfolio_engine: PortfolioEngine
-        PortfolioEngine object
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     tables: bool
         Whether to include separate allocation tables
     limit: int
@@ -2317,6 +2557,12 @@ def get_sectors_allocation(
     -------
     Union[pd.DataFrame, Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]]
         DataFrame with combined allocation plus individual allocation if tables is `True`.
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.alloc.sectors(P)
     """
 
     portfolio_engine.calculate_allocation(category="Sector", recalculate=recalculate)
@@ -2342,7 +2588,8 @@ def get_countries_allocation(
     Parameters
     ----------
     portfolio_engine: PortfolioEngine
-        PortfolioEngine object
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     tables: bool
         Whether to include separate allocation tables
     limit: int
@@ -2354,6 +2601,12 @@ def get_countries_allocation(
     -------
     Union[pd.DataFrame, Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]]
         DataFrame with combined allocation plus individual allocation if tables is `True`.
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.alloc.countries(P)
     """
 
     portfolio_engine.calculate_allocation(category="Country", recalculate=recalculate)
@@ -2379,7 +2632,8 @@ def get_regions_allocation(
     Parameters
     ----------
     portfolio_engine: PortfolioEngine
-        PortfolioEngine object
+        PortfolioEngine class instance, this will hold transactions and perform calculations.
+        Use `portfolio.load` to create a PortfolioEngine.
     tables: bool
         Whether to include separate allocation tables
     limit: int
@@ -2391,6 +2645,12 @@ def get_regions_allocation(
     -------
     Union[pd.DataFrame, Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]]
         DataFrame with combined allocation plus individual allocation if tables is `True`.
+
+    Examples
+    --------
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.alloc.regions(P)
     """
 
     portfolio_engine.calculate_allocation(category="Region", recalculate=recalculate)

@@ -40,3 +40,11 @@ portfolio.metric.tail(
         Series of the portfolios rolling tail ratio
     pd.Series
         Series of the benchmarks rolling tail ratio
+
+* **Examples**
+
+    {{< highlight python >}}
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.metric.tail(P)
+    {{< /highlight >}}

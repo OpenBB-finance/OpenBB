@@ -35,3 +35,12 @@ portfolio.perf(
 * **Returns**
 
     pd.DataFrame
+        DataFrame with portfolio performance vs the benchmark
+
+* **Examples**
+
+    {{< highlight python >}}
+    >>> from openbb_terminal.sdk import openbb
+    >>> P = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
+    >>> openbb.portfolio.perf(P)
+    {{< /highlight >}}
