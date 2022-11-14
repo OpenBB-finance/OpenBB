@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import os
 import logging
 
-from datetime import datetime, timedelta
 import pandas as pd
 
 from openbb_terminal.decorators import check_api_key

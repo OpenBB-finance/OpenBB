@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 import logging
 import os
 import webbrowser
-from datetime import datetime, timedelta
 from typing import List, Optional
 from fractions import Fraction
 
